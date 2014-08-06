@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  	<classPathEntry location="tool/MBG/mysql-connector-java-5.1.12.jar" />
+	    	
+	<context id="common" targetRuntime="MyBatis3">
+		<plugin type="com.juzhai.mybatisPlugin.ModelExampleLimitPlugin" />
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+  
+	    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+	        connectionURL="jdbc:mysql://115.182.93.240:3306/mms"
+	        userId="test"
+	        password="test">
+	    </jdbcConnection>
+
+	    <javaTypeResolver>
+	      <property name="forceBigDecimals" value="false" />
+	    </javaTypeResolver>
+
+		<javaModelGenerator targetPackage="com.letv.mms.model" targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="mybatis"  targetProject="src/main/resources">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.juzhai.common.mapper"  targetProject="src/main/java">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+	 
+	 	<table tableName="DICTIONARY_TYPE_INFO" domainObjectName="DictionaryTypeInfo">
+			<property name="useActualColumnNames" value="false"/>
+		</table>
+	</context>
+	
+</generatorConfiguration>

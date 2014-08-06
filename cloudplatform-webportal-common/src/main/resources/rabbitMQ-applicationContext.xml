@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+                           http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd
+                           http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="connectionFactory"
+        class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        <constructor-arg value="123.126.32.59" />
+        <constructor-arg value="5672" />
+        <property name="username" value="guest" />
+        <property name="password" value="guest" />
+        <property name="channelCacheSize" value="25"/>
+    </bean>
+    <bean id="amqpAdmin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
+        <constructor-arg ref="connectionFactory" />
+    </bean>
+    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <constructor-arg ref="connectionFactory"></constructor-arg>
+        <property name="mandatory" value="false" />
+    </bean>
+
+</beans>

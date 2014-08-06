@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.letv.cloudplatform</groupId>
+  <artifactId>webportal</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>cloudplatform-webportal</name>
+  <url>http://www.letv.com</url>
+  <description>cloud platform web portal</description>
+
+  <modules>
+        <module>cloudplatform-webportal-common</module>
+        <module>cloudplatform-webportal-data-model</module>
+        <module>cloudplatform-webportal-webapp</module>
+        <module>cloudplatform-webportal-webservice</module>
+  </modules>
+
+
+    <developers>
+        <developer>
+            <id>cloudplatform-webportal-dev</id>
+            <name>cloudplatform-webportal-dev</name>
+            <email>cloud-platform@letv.com</email>
+            <timezone></timezone>
+        </developer>
+    </developers>
+
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hibernate.version>3.6.5.Final</hibernate.version>
+    <spring.version>3.1.0.RELEASE</spring.version>
+    <ehcache.version>2.4.6</ehcache.version>
+    <c3p0.version>0.9.1.2</c3p0.version>
+    <jackson.version>1.8.3</jackson.version>
+    <joda-time.version>1.6.2</joda-time.version>
+    <httpclient.version>3.1</httpclient.version>
+    <aspectj.version>1.6.8</aspectj.version>
+  </properties>
+
+  <dependencyManagement>
+      <dependencies>
+            <dependency>
+                <groupId>log.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>log.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>1.7.1</version>
+            </dependency>
+            <dependency>
+                <groupId>log.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+            <dependency>
+                <groupId>log.logback</groupId>
+                <artifactId>core</artifactId>
+                <version>1.0.7</version>
+            </dependency>
+            <dependency>
+                <groupId>log.logback</groupId>
+                <artifactId>classic</artifactId>
+                <version>1.0.7</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.18</version>
+            </dependency>
+            <dependency>
+                <groupId>javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.9.0.GA</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-asm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jms</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-oxm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache-core</artifactId>
+                <version>${ehcache.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>c3p0</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>${c3p0.version}</version>
+                <scope>compile</scope>
+            </dependency>
+             <dependency>
+                <groupId>commons-pool</groupId>
+                <artifactId>commons-pool</artifactId>
+                <version>1.6</version>
+            </dependency>
+             <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.1.2</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>1.1.2</version>
+                <scope>runtime</scope>
+            </dependency>
+             <!-- Jackson JSON Processor -->
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+
+            <!-- logger -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+
+    <!--         <dependency> -->
+    <!--             <groupId>org.slf4j</groupId> -->
+    <!--             <artifactId>slf4j-log4j12</artifactId> -->
+    <!--             <version>1.6.1</version> -->
+    <!--         </dependency> -->
+    <!--         <dependency> -->
+    <!--             <groupId>log4j</groupId> -->
+    <!--             <artifactId>log4j</artifactId> -->
+    <!--             <version>${log4j.version}</version> -->
+    <!--             <exclusions> -->
+    <!--                 <exclusion> -->
+    <!--                     <groupId>javax.mail</groupId> -->
+    <!--                     <artifactId>mail</artifactId> -->
+    <!--                 </exclusion> -->
+    <!--                 <exclusion> -->
+    <!--                     <groupId>javax.jms</groupId> -->
+    <!--                     <artifactId>jms</artifactId> -->
+    <!--                 </exclusion> -->
+    <!--                 <exclusion> -->
+    <!--                     <groupId>com.sun.jdmk</groupId> -->
+    <!--                     <artifactId>jmxtools</artifactId> -->
+    <!--                 </exclusion> -->
+    <!--                 <exclusion> -->
+    <!--                     <groupId>com.sun.jmx</groupId> -->
+    <!--                     <artifactId>jmxri</artifactId> -->
+    <!--                 </exclusion> -->
+    <!--             </exclusions> -->
+    <!--         </dependency> -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.8.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.5</version>
+                <scope>provided</scope>
+            </dependency>
+
+
+             <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>1.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-tools</artifactId>
+                <version>2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.json-lib</groupId>
+                <artifactId>json-lib-ext-spring</artifactId>
+                <version>1.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>2.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>1.4</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.1.20</version>
+            </dependency>
+
+            <dependency>
+              <groupId>commons-dbcp</groupId>
+              <artifactId>commons-dbcp</artifactId>
+              <version>1.2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.2.2</version>
+            </dependency>
+            <dependency>
+            	<groupId>org.springframework.retry</groupId>
+            	<artifactId>spring-retry</artifactId>
+            	<version>1.0.2.RELEASE</version>
+            	<type>jar</type>
+            	<scope>compile</scope>
+            </dependency>
+      </dependencies>
+  </dependencyManagement>
+  
+  <build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
+				<configuration>
+					<forkMode>pertest</forkMode>
+					<argLine>-Xms256m -Xmx1024m</argLine>
+					<testFailureIgnore>false</testFailureIgnore>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/distribution.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<sourceExcludes>
+						<sourceExclude>**/.svn/**</sourceExclude>
+					</sourceExcludes>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+					</additionalBuildcommands>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>1.5</wtpversion>
+					<outputDirectory>classes</outputDirectory>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.core.resources.prefs</name>
+							<content>  
+               						<![CDATA[eclipse.preferences.version=1${line.separator}encoding/<project>=${app.encoding}${line.separator}]]>
+							</content>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-idea-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<dependenciesAsLibraries>true</dependenciesAsLibraries>
+					<useFullNames>false</useFullNames>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<dependentWarExcludes>
+						**/jdbc.properties,**/hibernate.cfg.xml,**/web.xml,WEB-INF/classes/META-INF/**,**/.svn/**
+					</dependentWarExcludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<excludes>
+						<exclude>**/.svn/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.2</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.9</version>
+				<configuration>
+					<contextPath>/</contextPath>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<scanTargetPatterns>
+						<scanTargetPattern>
+							<directory>src/main/webapp/WEB-INF</directory>
+							<excludes>
+								<exclude>**/*.jsp</exclude>
+							</excludes>
+							<includes>
+								<include>**/*.properties</include>
+								<include>**/*.xml</include>
+							</includes>
+						</scanTargetPattern>
+					</scanTargetPatterns>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>**/.svn/**</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<excludes>
+					<exclude>**/.svn/**</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+	</build>
+	
+
+    <!-- 部署环境相关配置-->
+    <!-- 1. 如果是本地测试[默认是Windows系统] 则使用local配置的属性-->
+    <!-- 2. 如果是服务器测试[默认是Linux系统] 则使用test配置的属性-->
+    <!-- 3. 如果是服务器上线[默认是Linux系统] 则使用production配置的属性-->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                </os>
+            </activation>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>production</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                </os>
+            </activation>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+            </properties>
+        </profile>
+
+    </profiles>
+  
+   <repositories>
+        <repository>
+            <id>letv.public</id>
+            <name>Letv.com Repository</name>
+            <url>http://maven.letv.cn/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+	<!-- <repositories> <repository> <snapshots> <enabled>false</enabled> </snapshots> 
+		<id>central</id> <name>Maven Repository Switchboard</name> <url>http://repo1.maven.org/maven2</url> 
+		</repository> <repository> <id>java.net2</id> <name>java.net Repository hosting 
+		the jee6 artifacts</name> <url>http://download.java.net/maven/2</url> </repository> 
+		<repository> <id>jboss-public-repository-group</id> <name>JBoss Public Repository 
+		Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url> 
+		<layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
+		</releases> <snapshots> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
+		</snapshots> </repository> <repository> <id>JBOSS</id> <name>JBoss Repository 
+		Deprecated</name> <url>http://repository.jboss.org/maven2/</url> </repository> 
+		</repositories> -->
+    <pluginRepositories>
+        <pluginRepository>
+			<id>letv.public</id>
+			<name>Letv.com Repository</name>
+			<url>http://maven.letv.cn/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+    </pluginRepositories>
+    <distributionManagement>
+       <repository>
+            <id>project-release</id>
+            <name>Projects Release repository</name>
+            <url>http://maven.letv.cn/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>project-snapshots</id>
+            <name>Projects SnapShot repository</name>
+            <url>http://maven.letv.cn/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>   
+    </distributionManagement>    
+
+</project>
