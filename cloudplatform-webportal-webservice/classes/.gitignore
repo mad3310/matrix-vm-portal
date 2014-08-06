@@ -1,9 +1,0 @@
-/com/
-/config.properties
-/converter-applicationContext.xml
-/letvCacheConfig.properties
-/letvLogConfig.properties
-/logback.xml
-/memcached.xml
-/org/
-/webservice-applicationContext.xml
