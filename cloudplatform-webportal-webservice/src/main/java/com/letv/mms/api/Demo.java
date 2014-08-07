@@ -19,7 +19,7 @@ public class Demo {
 	
 	@RequestMapping(value="/show")
 	public void test(){
-		System.out.println("abc111"); 
+		System.out.println("a"); 
 	}
 	
 }
