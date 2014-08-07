@@ -72,7 +72,7 @@ public class DictionaryAPI {
 		} catch (CommonException e) {
 			throw new CommonException("执行根据字典分类查询字典信息出错!",e);
 		}
-		System.out.println();
+		System.out.println("1");
 		return obj;
 	}
 }
