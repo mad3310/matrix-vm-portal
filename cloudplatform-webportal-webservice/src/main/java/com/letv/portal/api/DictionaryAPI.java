@@ -11,7 +11,7 @@
  * -------------------------------------------------------------- 
  * 2012-12-11                          
  */
-package com.letv.mms.api;
+package com.letv.portal.api;
 
 import java.util.ArrayList;
 import java.util.List;
