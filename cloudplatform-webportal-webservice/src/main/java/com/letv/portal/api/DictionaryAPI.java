@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
-import com.letv.mms.model.DictionaryModel;
-import com.letv.mms.service.IDictionaryService;
+import com.letv.portal.model.DictionaryModel;
+import com.letv.portal.service.IDictionaryService;
 
 @Controller
 @RequestMapping("/dictionary")

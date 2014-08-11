@@ -3,7 +3,7 @@ package com.letv.portal.api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.letv.mms.model.StarModel;
+import com.letv.portal.model.StarModel;
 
 @Controller
 @RequestMapping("/demo")

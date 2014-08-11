@@ -16,22 +16,25 @@
  *                                           			  3.实现IDBOperationService接口定义的方法
  *                 
  */
-package com.letv.mms.service.impl;
+package com.letv.portal.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.IPage;
 import com.letv.common.paging.impl.PageImpl;
 import com.letv.common.util.CommonUtil;
-import com.letv.mms.dao.IBaseDao;
-import com.letv.mms.dao.IDictionaryDao;
-import com.letv.mms.dao.IDictionarySpecialDAO;
-import com.letv.mms.model.DictionaryModel;
-import com.letv.mms.service.IDictionaryService;
+import com.letv.portal.dao.IBaseDao;
+import com.letv.portal.dao.IDictionaryDao;
+import com.letv.portal.dao.IDictionarySpecialDAO;
+import com.letv.portal.model.DictionaryModel;
+import com.letv.portal.service.IDictionaryService;
 
 @Service("dictionaryService")
 public class DictionaryServiceImpl extends BaseServiceImpl<DictionaryModel> implements
@@ -174,6 +177,8 @@ public class DictionaryServiceImpl extends BaseServiceImpl<DictionaryModel> impl
 	public DictionaryModel getDataFromDbByKey(String key) {
 		DictionaryModel model = null;
 		String modelId = key;
+		System.out.println("1");
+		System.out.println("1");
 		model = dictionaryDao.selectById(Long.parseLong(modelId));
 		return model;
 	}

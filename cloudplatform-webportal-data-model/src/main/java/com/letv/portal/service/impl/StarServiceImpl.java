@@ -1,12 +1,12 @@
-package com.letv.mms.service.impl;
+package com.letv.portal.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.letv.mms.dao.IBaseDao;
-import com.letv.mms.dao.StarDao;
-import com.letv.mms.model.StarModel;
-import com.letv.mms.service.IStarService;
+import com.letv.portal.dao.IBaseDao;
+import com.letv.portal.dao.StarDao;
+import com.letv.portal.model.StarModel;
+import com.letv.portal.service.IStarService;
 
 /**
  * 

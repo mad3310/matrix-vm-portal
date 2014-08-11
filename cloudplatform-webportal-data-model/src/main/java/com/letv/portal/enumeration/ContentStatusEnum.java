@@ -1,4 +1,4 @@
-package com.letv.mms.enumeration;
+package com.letv.portal.enumeration;
 //--implements这里有实现
 public enum ContentStatusEnum implements ByteEnum{
 	/** 正在审核 */

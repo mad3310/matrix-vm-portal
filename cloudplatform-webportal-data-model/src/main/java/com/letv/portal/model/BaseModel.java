@@ -1,4 +1,4 @@
-package com.letv.mms.model;
+package com.letv.portal.model;
 
 public class BaseModel implements IEntity,ISoftDelete{
 

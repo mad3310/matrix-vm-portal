@@ -11,10 +11,10 @@
  * -------------------------------------------------------------- 
  * 2012-12-5                          
  */
-package com.letv.mms.dao;
+package com.letv.portal.dao;
 
 
-import com.letv.mms.model.DictionaryModel;
+import com.letv.portal.model.DictionaryModel;
 
 public interface IDictionaryDao extends IBaseDao<DictionaryModel> {
 	

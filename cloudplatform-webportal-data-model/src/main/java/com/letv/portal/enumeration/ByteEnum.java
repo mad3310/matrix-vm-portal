@@ -1,4 +1,4 @@
-package com.letv.mms.enumeration;
+package com.letv.portal.enumeration;
 
 public interface ByteEnum {
 	

@@ -11,15 +11,15 @@
  * -------------------------------------------------------------- 
  * 2012-11-22                          
  */
-package com.letv.mms.service.impl;
+package com.letv.portal.service.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import com.letv.common.exception.ValidateException;
-import com.letv.mms.dao.IBaseDao;
-import com.letv.mms.model.ISoftDelete;
-import com.letv.mms.service.IBaseService;
+import com.letv.portal.dao.IBaseDao;
+import com.letv.portal.model.ISoftDelete;
+import com.letv.portal.service.IBaseService;
 
 /**
  * <p>

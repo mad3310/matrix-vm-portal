@@ -11,7 +11,7 @@
  * -------------------------------------------------------------- 
  * 2012-12-5                          
  */
-package com.letv.mms.dao;
+package com.letv.portal.dao;
 
 import java.util.List;
 import java.util.Map;

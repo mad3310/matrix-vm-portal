@@ -1,6 +1,6 @@
-package com.letv.mms.dao;
+package com.letv.portal.dao;
 
-import com.letv.mms.model.StarModel;
+import com.letv.portal.model.StarModel;
 
 /**
  * Star Dao

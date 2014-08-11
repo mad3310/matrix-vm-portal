@@ -11,7 +11,7 @@
  * -------------------------------------------------------------- 
  * 2012-12-5                          
  */
-package com.letv.mms.model;
+package com.letv.portal.model;
 
 public class DictionaryTypeModel extends BaseModel {
 	/**

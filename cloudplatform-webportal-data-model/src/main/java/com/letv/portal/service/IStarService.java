@@ -1,6 +1,6 @@
-package com.letv.mms.service;
+package com.letv.portal.service;
 
-import com.letv.mms.model.StarModel;
+import com.letv.portal.model.StarModel;
 
 
 

@@ -11,10 +11,11 @@
  * -------------------------------------------------------------- 
  * 2012-12-5                          
  */
-package com.letv.mms.service;
+package com.letv.portal.service;
 
 import java.util.List;
-import com.letv.mms.model.DictionaryModel;
+
+import com.letv.portal.model.DictionaryModel;
 
 public interface IDictionaryService extends IBaseService<DictionaryModel> {
 	/**

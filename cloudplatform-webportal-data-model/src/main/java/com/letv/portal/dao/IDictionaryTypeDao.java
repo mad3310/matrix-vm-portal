@@ -11,9 +11,9 @@
  * -------------------------------------------------------------- 
  * 2012-12-10                          
  */
-package com.letv.mms.dao;
+package com.letv.portal.dao;
 
-import com.letv.mms.model.DictionaryTypeModel;
+import com.letv.portal.model.DictionaryTypeModel;
 
 public interface IDictionaryTypeDao extends IBaseDao<DictionaryTypeModel> {
 
