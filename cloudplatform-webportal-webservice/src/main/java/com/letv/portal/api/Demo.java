@@ -1,4 +1,4 @@
-package com.letv.mms.api;
+package com.letv.portal.api;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class Demo {
 	
 	@RequestMapping(value="/show")
 	public void test(){
-		System.out.println("c"); 
+		System.out.println("a"); 
 	}
 	
 }

@@ -9,12 +9,12 @@
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 	
-	<import resource="classpath:data-applicationContext.xml"/>
+	<!-- <import resource="classpath:data-applicationContext.xml"/> -->
 	<util:properties id="settings" location="classpath:config.properties" />  
 	<context:component-scan base-package="com.letv" />
 	
 	<!-- ============ Spring MVC config start ============ -->
-    <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <!-- <bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
         <property name="configLocation" value="classpath:velocity.properties" />
     </bean>
 
@@ -30,7 +30,7 @@
         <property name="exposeSessionAttributes" value="true" />
         <property name="exposeSpringMacroHelpers" value="true" />
         <property name="toolboxConfigLocation" value="/WEB-INF/classes/toolbox.xml" />
-    </bean>
+    </bean> -->
     
     <!-- 异常处理 -->
     <bean id="exceptionResolver" class="com.letv.common.exception.DefaultMappingExceptionResolver" />

@@ -11,7 +11,7 @@
  * -------------------------------------------------------------- 
  * 2012-12-11                          
  */
-package com.letv.mms.api;
+package com.letv.portal.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class DictionaryAPI {
 		} catch (CommonException e) {
 			throw new CommonException("执行根据字典分类查询字典信息出错!",e);
 		}
-		System.out.println("1");
+		System.out.println("b");
 		return obj;
 	}
 }
