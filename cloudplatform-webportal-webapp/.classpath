@@ -142,4 +142,4 @@
 	<classpathentry kind="var" path="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2.jar" sourcepath="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2-sources.jar"/>
 	<classpathentry kind="src" path="/webportal-common"/>
 	<classpathentry kind="output" path="classes"/>
-</classpath> 
+</classpath>
