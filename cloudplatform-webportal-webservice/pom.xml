@@ -5,7 +5,7 @@
   <parent>
   	<artifactId>webportal</artifactId>
   	<groupId>com.letv.cloudplatform</groupId>
-      <version>1.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>com.letv.cloudplatform</groupId>

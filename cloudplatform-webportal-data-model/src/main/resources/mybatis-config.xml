@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias alias="Star" type="com.letv.mms.model.StarModel" />
+        <typeAlias alias="Star" type="com.letv.portal.model.StarModel" />
        <!--  <typeAlias alias="Content" type="com.letv.mms.model.ContentModel" />
         <typeAlias alias="Subcontent" type="com.letv.mms.model.SubcontentModel" />
         <typeAlias alias="EPMeta" type="com.letv.mms.model.EPMetaModel" />
@@ -17,8 +17,8 @@
         <typeAlias alias="ParentChildContentRel" type="com.letv.mms.model.ParentChildContentRelModel" />
         <typeAlias alias="EPCheck" type="com.letv.mms.model.EPCheckModel" /> -->
 
-        <typeAlias alias="Dictionary" type="com.letv.mms.model.DictionaryModel" />
-        <typeAlias alias="DictionaryType" type="com.letv.mms.model.DictionaryTypeModel" />
+        <typeAlias alias="Dictionary" type="com.letv.portal.model.DictionaryModel" />
+        <typeAlias alias="DictionaryType" type="com.letv.portal.model.DictionaryTypeModel" />
 		<!-- <typeAlias alias="PropertyCategory" type="com.letv.mms.model.PropertyCategoryModel" />
 		<typeAlias alias="ColumnInfo" type="com.letv.mms.model.ColumnInfoModel" />
 		<typeAlias alias="ColumnLayoutRelation" type="com.letv.mms.model.ColumnLayoutRelationModel" />
