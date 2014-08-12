@@ -7,7 +7,7 @@ public class BaseModel implements IEntity,ISoftDelete{
 	 */
 	private static final long serialVersionUID = 5822755615614280336L;
 	
-	private Long id;
+	private String id;
 	
 	private boolean deleted;
 
@@ -22,12 +22,12 @@ public class BaseModel implements IEntity,ISoftDelete{
 	}
 
 	@Override
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
 	@Deprecated
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	
