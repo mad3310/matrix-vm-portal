@@ -18,7 +18,7 @@ public class ContainerModel extends BaseModel {
 	private String clusterId; //所属cluster
 	private String hostId;  //所属host
 	private Integer diskSize; //磁盘大小
-	private Integer numberOfCores; //cpu内核数
+	private Integer coresNumber; //cpu内核数
 	private Integer cpuSpeed; //cpu速度 
 	private Integer memorySize; //内存大小
 	
@@ -26,7 +26,8 @@ public class ContainerModel extends BaseModel {
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
-	
+	private String updateTime;
+	private String updateUser;
 	public String getId() {
 		return id;
 	}
@@ -63,11 +64,11 @@ public class ContainerModel extends BaseModel {
 	public void setDiskSize(Integer diskSize) {
 		this.diskSize = diskSize;
 	}
-	public Integer getNumberOfCores() {
-		return numberOfCores;
+	public Integer getCoresNumber() {
+		return coresNumber;
 	}
-	public void setNumberOfCores(Integer numberOfCores) {
-		this.numberOfCores = numberOfCores;
+	public void setCoresNumber(Integer coresNumber) {
+		this.coresNumber = coresNumber;
 	}
 	public Integer getCpuSpeed() {
 		return cpuSpeed;
@@ -105,16 +106,29 @@ public class ContainerModel extends BaseModel {
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
-	
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	public String getUpdateUser() {
+		return updateUser;
+	}
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
 	@Override
 	public String toString() {
 		return "ContainerModel [id=" + id + ", nodeName=" + nodeName
 				+ ", nodeIp=" + nodeIp + ", clusterId=" + clusterId
 				+ ", hostId=" + hostId + ", diskSize=" + diskSize
-				+ ", numberOfCores=" + numberOfCores + ", cpuSpeed=" + cpuSpeed
+				+ ", coresNumber=" + coresNumber + ", cpuSpeed=" + cpuSpeed
 				+ ", memorySize=" + memorySize + ", status=" + status
 				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
-				+ ", createUser=" + createUser + "]";
+				+ ", createUser=" + createUser + ", updateTime=" + updateTime
+				+ ", updateUser=" + updateUser + "]";
 	}
+	
 	
 }

@@ -13,12 +13,14 @@ public class MclusterModel extends BaseModel {
 	private static final long serialVersionUID = 8873122802478974943L;
 	
 	private String id;   //主键ID
-	private String name; //名称
+	private String clusterName; //名称
 	
 	private String status; //状态： 0:已创建 1:启动 2:关闭 3:异常
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
+	private String updateTime;
+	private String updateUser;
 	
 	public String getId() {
 		return id;
@@ -26,11 +28,11 @@ public class MclusterModel extends BaseModel {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+	public String getClusterName() {
+		return clusterName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
 	}
 	public String getStatus() {
 		return status;
@@ -56,14 +58,26 @@ public class MclusterModel extends BaseModel {
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
-	
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
+	public String getUpdateUser() {
+		return updateUser;
+	}
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
 	@Override
 	public String toString() {
-		return "MclusterModel [id=" + id + ", name=" + name + ", status="
-				+ status + ", isDeleted=" + isDeleted + ", createTime="
-				+ createTime + ", createUser=" + createUser + "]";
+		return "MclusterModel [id=" + id + ", clusterName=" + clusterName
+				+ ", status=" + status + ", isDeleted=" + isDeleted
+				+ ", createTime=" + createTime + ", createUser=" + createUser
+				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
+				+ "]";
 	}
-	
 	
 	
 }
