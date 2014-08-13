@@ -70,6 +70,22 @@ public class MclusterModel extends BaseModel {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 * 
+	 * 
+	 * rest api
+	 * 
+	 * 
+	 * func:在提供ip的host机器上，创建相应container：1个vip 3个normal
+	 * 
+	 * 传入参数：
+	 * 
+	 * 返回结果：  返回4个container信息：  ip 及标识 vip/normal
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return "MclusterModel [id=" + id + ", clusterName=" + clusterName
@@ -78,6 +94,5 @@ public class MclusterModel extends BaseModel {
 				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
 				+ "]";
 	}
-	
 	
 }
