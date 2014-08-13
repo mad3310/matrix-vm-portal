@@ -53,7 +53,7 @@
 
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-left">Mcluster管理</h3>
+					<h3 class="text-left">DB管理</h3>
 				</div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
@@ -71,43 +71,29 @@
 				<div class="col-md-9 column">
 
 					<button type="button" href="#modal-container-22341"
-						class="btn btn-primary" data-toggle="modal">添加Mcluster</button>
+						class="btn btn-primary" data-toggle="modal">添加DB</button>
 						
 						
 					<table id="userdata"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
-								<th>Mcluster名称</th>
-								<th>DB个数</th>
-								<th>node_个数</th>
+								<th>DB名称</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>移动</td>
-								<td>1</td>
-								<td>3</td>
+								<td>phone_app_db</td>
 								<td>01/04/2014</td>
 								<td>正常</td>
 							</tr>
 							<tr>
-								<td>视频</td>
-								<td>2</td>
-								<td>3</td>
+								<td>phone_tv_db</td>
 								<td>07/04/2014</td>
 								<td>异常</td>
 							</tr>
-							<tr>
-								<td>云计算</td>
-								<td>1</td>
-								<td>3</td>
-								<td>07/04/2014</td>
-								<td>异常</td>
-							</tr>
-
 						</tbody>
 					</table>
 
@@ -149,7 +135,7 @@
 		$("#sqlcluster").addClass("active");
 
 		$("#userdata tr").click(function() {
-			location.href = "./mclusterdetail.jsp";
+			alert("hello");
 		});
 	});
 </script>
