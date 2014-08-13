@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.springframework.util.Assert;
 
 import com.letv.mms.base.AbstractTestCase;
-import com.letv.mms.model.DictionaryModel;
-import com.letv.mms.service.IDictionaryService;
+import com.letv.portal.model.DictionaryModel;
+import com.letv.portal.service.IDictionaryService;
 
 
 public class DictionaryServiceTest extends AbstractTestCase {

@@ -31,7 +31,7 @@
     </tx:advice>
     
     <aop:config>
-        <aop:advisor pointcut="execution(public * com.letv.mms.service..*(..))" advice-ref="txAdvice"/>
+        <aop:advisor pointcut="execution(public * com.letv.portal.service..*(..))" advice-ref="txAdvice"/>
     </aop:config>
   	
 </beans>
