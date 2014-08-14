@@ -71,10 +71,10 @@
 				<div class="col-md-9 column">
 				
 
-					<form class="form-horizontal">
+					<form class="form-horizontal" role="form">
 						<div class="control-group">
-							<label class="control-label" for="inputEmail">上线项目名称</label>
-							<div class="controls">
+							<label class="col-offset-2  col-sm-2 control-label" for="inputEmail">上线项目名称</label>
+							<div class="col-sm-5">
 								<input id="inputEmail" type="text" />
 							</div>
 						</div>

@@ -8,8 +8,10 @@
 	response.setDateHeader("Expires", 0); //防止代理服务器缓
 %>
 
-<link href="${pageContext.request.contextPath}/static/styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="../static/styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet"></link>
 
-<script src="${pageContext.request.contextPath}/scripts/bootstrap/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/scripts/jquery/jquery.min.js"></script>
+<script src="../static/scripts/jquery/jquery.min.js"></script>
+<script src="../static/scripts/bootstrap/bootstrap.min.js"></script>
+
