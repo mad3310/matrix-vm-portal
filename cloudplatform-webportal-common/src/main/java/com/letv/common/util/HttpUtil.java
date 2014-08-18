@@ -155,6 +155,7 @@ public final class HttpUtil {
 	}
 	public static String getResultFromDBAPI(HttpServletRequest request){
 		RestTemplate restTemplate = new RestTemplate();
+		System.out.println(getAPIUrl(request));
 		String message = restTemplate.postForObject(getAPIUrl(request), null,String.class);
 		return message;
 	}
