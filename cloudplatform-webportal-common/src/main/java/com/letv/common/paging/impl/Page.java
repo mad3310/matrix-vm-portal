@@ -2,8 +2,7 @@ package com.letv.common.paging.impl;
 
 import com.letv.common.paging.IPage;
 
-
-public class PageImpl implements IPage {
+public class Page implements IPage {
 
     /**
      * @serial
@@ -21,8 +20,14 @@ public class PageImpl implements IPage {
     private long preId = -1;
     private long nextId = -1;
     private int currentRecord = 0;
+    
+    private Object data = new Object();
+    
+    public Page(){
+    	
+    }
 
-    public int getStartRowPosition() {
+	public int getStartRowPosition() {
     	if(recordsPerPage >= 0)
             return recordsPerPage * (getCurrentPage() - 1);
     	else
@@ -107,4 +112,11 @@ public class PageImpl implements IPage {
     public void setCurrentRecord(int currentRecord){
     	this.currentRecord = currentRecord;
     }
+	public Object getData() {
+		return data;
+	}
+	public void setData(Object data) {
+		this.data = data;
+	}
+	
 }
