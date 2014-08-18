@@ -33,6 +33,10 @@ public class MclusterAPI {
 	public ResultObject list(HttpServletRequest request) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		Page page = new Page();
+//		page.setCurrentPage(Integer.parseInt((String) params.get("currentPage")));
+		page.setCurrentPage(1);
+//		page.setRecordsPerPage(Integer.parseInt((String) params.get("recordsPerPage")));
+		page.setRecordsPerPage(5);
 		ResultObject obj = new ResultObject();
 		obj.setData(this.mclusterService.findPagebyParams(params, page));
 		return obj;
