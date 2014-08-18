@@ -22,7 +22,7 @@ public class MclusterController {
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			out = response.getWriter();
-			out.write(HttpUtil.getResultFromDBAPI(request));
+			out.write(HttpUtil.getResultFromDBAPI(request,"/mcluster/list"));
 			out.flush();
 			out.close();
 		} catch (IOException e) {

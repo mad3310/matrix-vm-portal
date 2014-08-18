@@ -147,15 +147,15 @@ public final class HttpUtil {
 		}
 		return buffer.subSequence(0, buffer.length()-1).toString();
 	}
-	public static String getAPIUrl(HttpServletRequest request){
+	public static String getAPIUrl(HttpServletRequest request,String apiName){
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(API_URL).append(requestParamtoString(request));
+		buffer.append(API_URL).append(apiName).append(requestParamtoString(request));
 		return buffer.toString();
 	}
-	public static String getResultFromDBAPI(HttpServletRequest request){
+	public static String getResultFromDBAPI(HttpServletRequest request,String apiName){
 		RestTemplate restTemplate = new RestTemplate();
-		String message = restTemplate.postForObject(getAPIUrl(request), null,String.class);
+		String message = restTemplate.postForObject(getAPIUrl(request,apiName), null,String.class);
 		return message;
 	}
 }
