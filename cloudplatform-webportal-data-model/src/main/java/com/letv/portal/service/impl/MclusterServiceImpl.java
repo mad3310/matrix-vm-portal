@@ -40,6 +40,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	public Page findPagebyParams(Map<String, Object> params, Page page) {
 		QueryParam param = new QueryParam(params,page);
 		page.setData(this.mclusterDao.selectPageByMap(param));
+		page.setTotalRecords(this.mclusterDao.selectByMapCount(params));
 		return page;
 		
 	}
