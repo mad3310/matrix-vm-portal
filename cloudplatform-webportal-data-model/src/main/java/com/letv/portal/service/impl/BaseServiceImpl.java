@@ -71,7 +71,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	}
 
 	@Override
-	public T selectById(Long id) {
+	public T selectById(String id) {
 		if (null == id) 
 			throw new ValidateException("select操作中，id不可为空！");
 		

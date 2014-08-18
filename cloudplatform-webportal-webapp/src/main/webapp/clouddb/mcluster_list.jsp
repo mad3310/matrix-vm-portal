@@ -21,9 +21,9 @@
 				<div class="col-md-6">
 					<form class="navbar-form navbar-right" role="search">
 						<div class="form-group">
-							<input id="mclusterName" type="text" class="form-control" />
+							<input id="mclusterName" type="text" value="1" class="form-control" />
 						</div>
-						<button type="submit" class="btn btn-default">搜索</button>
+						<button type="button" class="btn btn-default">搜索</button>
 					</form>
 				</div>
 				<hr
@@ -83,59 +83,63 @@
 	/**
 	 * V1.0
 	 */
-	$(document).ready(function() {
+	
+	$(document).ready(
+		function() {
+			var currentPage = 1; //第几页 
+			var recordsPerPage = 10; //每页显示条数
+			$("#signin").show();//显示header中登录框
+			$("#sqlcluster").addClass("active");//高亮显示页面名
 
-						var currentPage = 1; //第几页 
-						var recordsPerPage = 10; //每页显示条数
-						$("#signin").show();//显示header中登录框
-						$("#sqlcluster").addClass("active");//高亮显示页面名
-
-						//分页查询  
-						var queryByPage = function() {
-							$("#tby tr").remove();
-							$.ajax({
-										type : "post",
-										url : "${ctx}/mcluster/list?currentPage="
-												+ currentPage
-												+ "&recordsPerPage="
-												+ recordsPerPage
-												+ "&mclusterName="
-												+ $("#mclusterName").text,
-										dataType : "json", /*这句可用可不用，没有影响*/
-										contentType : "application/json; charset=utf-8",
-										success:function(data) {
-											var array = data.data.data;
-											var tby = $("#tby");
-											var totalPages = data.totalPages;
-											$("#totalPage_input").val(totalPages);
-											$("#currentPage").html(currentPage);
-											$("#totalRows").html(data.totalRecords);
-											$("#totalPage").html(totalPages);
-											//循环json中的数据 
-											for (var i = 0, len = array.length; i < len; i++) {
-												var td1 = $("<td>"
-														+ array[i].mclusterName
-														+ "</td>");
-												var td2 = $("<td>"
-														+ array[i].createTime
-														+ "</td>");
-												var td3 = $("<td>"
-														+ array[i].status
-														+ "</td>");
-												var tr = $("<tr></tr>");
-												tr.append(td1).append(td2).append(td3);
-												tr.appendTo(tby);
-											}
-										},
-										error:function(XMLHttpRequest,
-												textStatus, errorThrown) {
-											alert(errorThrown);
-										}
-									});
+			//分页查询  
+			var queryByPage = function() {
+				$("#tby tr").remove();
+				$.ajax({
+					type : "post",
+					url : "${ctx}/mcluster/list?currentPage="
+							+ currentPage
+							+ "&recordsPerPage="
+							+ recordsPerPage
+							+ "&mclusterName="
+							+ $("#mclusterName").val(),
+					dataType : "json", /*这句可用可不用，没有影响*/
+					contentType : "application/json; charset=utf-8",
+					success : function(data) {
+						var array = data.data.data;
+						var tby = $("#tby");
+						var totalPages = data.totalPages;
+						$("#totalPage_input").val(
+								totalPages);
+						$("#currentPage").html(currentPage);
+						$("#totalRows").html(
+								data.totalRecords);
+						$("#totalPage").html(totalPages);
+						//循环json中的数据 
+						for (var i = 0, len = array.length; i < len; i++) {
+							var td1 = $("<td>"
+									+ array[i].mclusterName
+									+ "</td>");
+							var td2 = $("<td>"
+									+ array[i].createTime
+									+ "</td>");
+							var td3 = $("<td>"
+									+ array[i].status
+									+ "</td>");
+							var tr = $("<tr></tr>");
+							tr.append(td1).append(td2)
+									.append(td3);
+							tr.appendTo(tby);
 						}
-						//初始化列表 
-						queryByPage(currentPage, recordsPerPage);
-					});
+					},
+					error : function(XMLHttpRequest,
+							textStatus, errorThrown) {
+						alert(errorThrown);
+					}
+				});
+			}
+			//初始化列表 
+			queryByPage(currentPage, recordsPerPage);
+		});
 </script>
 
 </html>

@@ -44,7 +44,7 @@ public interface IBaseService<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	T selectById(Long id);
+	T selectById(String id);
 	
 	/**
 	 * 根据model查询总数

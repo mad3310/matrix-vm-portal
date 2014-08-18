@@ -34,7 +34,7 @@ public class DictionaryServiceTest extends AbstractTestCase {
 	public void testSelectById()
 	{
 		DictionaryModel model=null;
-		model=dictionaryProxy.selectById(10000l);
+		model=dictionaryProxy.selectById("100001");
 		Assert.notNull(model);
 	}
 	@Test

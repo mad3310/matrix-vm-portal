@@ -13,7 +13,7 @@ public class MclusterModel extends BaseModel {
 	private static final long serialVersionUID = 8873122802478974943L;
 	
 	private String id;   //主键ID
-	private String clusterName; //名称
+	private String mclusterName; //名称
 	
 	private String status; //状态： 0:已创建 1:启动 2:关闭 3:异常
 	private String isDeleted; //是否删除   0:无效 1:有效
@@ -28,11 +28,12 @@ public class MclusterModel extends BaseModel {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getClusterName() {
-		return clusterName;
+	
+	public String getMclusterName() {
+		return mclusterName;
 	}
-	public void setClusterName(String clusterName) {
-		this.clusterName = clusterName;
+	public void setMclusterName(String mclusterName) {
+		this.mclusterName = mclusterName;
 	}
 	public String getStatus() {
 		return status;
@@ -88,7 +89,7 @@ public class MclusterModel extends BaseModel {
 	 */
 	@Override
 	public String toString() {
-		return "MclusterModel [id=" + id + ", clusterName=" + clusterName
+		return "MclusterModel [id=" + id + ", mclusterName=" + mclusterName
 				+ ", status=" + status + ", isDeleted=" + isDeleted
 				+ ", createTime=" + createTime + ", createUser=" + createUser
 				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser

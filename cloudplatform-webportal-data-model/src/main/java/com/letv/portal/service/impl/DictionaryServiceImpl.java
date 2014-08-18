@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.IPage;
-import com.letv.common.paging.impl.PageImpl;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.util.CommonUtil;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IDictionaryDao;
@@ -86,7 +86,7 @@ public class DictionaryServiceImpl extends BaseServiceImpl<DictionaryModel> impl
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public DictionaryModel selectById(Long id) {
+	public DictionaryModel selectById(String id) {
 		if(null == id){
 			throw new ValidateException("字典ID值不能为空!");
 		}
@@ -179,7 +179,7 @@ public class DictionaryServiceImpl extends BaseServiceImpl<DictionaryModel> impl
 		String modelId = key;
 		System.out.println("1");
 		System.out.println("1");
-		model = dictionaryDao.selectById(Long.parseLong(modelId));
+		model = dictionaryDao.selectById(modelId);
 		return model;
 	}
 	/**
@@ -189,7 +189,7 @@ public class DictionaryServiceImpl extends BaseServiceImpl<DictionaryModel> impl
 	public List<DictionaryModel> loadData() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		List<DictionaryModel> resultList = new ArrayList<DictionaryModel>();
-		IPage page = new PageImpl();
+		IPage page = new Page();
 		page.setCurrentPage(CACHE_CURRPAGE);
 		page.setRecordsPerPage(CACHE_PAGESIZE);
 		do {
