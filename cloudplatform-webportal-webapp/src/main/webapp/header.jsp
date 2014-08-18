@@ -18,12 +18,6 @@
 				<ul class="nav navbar-nav">
 					<li id="sqlcluster"><a href="#">Mcluster</a></li>
 				</ul>
-				<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" />
-					</div>
-					<button type="submit" class="btn btn-default">搜索</button>
-				</form>
 
 				<form id="signin" class="navbar-form form-inline navbar-right"  style="display:none;">
 					<input type="text" class="form-control input-small"

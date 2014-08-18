@@ -33,10 +33,6 @@
 
 					<button id="db_apply" type="button" class="btn btn-default"
 						data-toggle="modal">申请DB</button>
-					<button id="db_on_apply" type="button" class="btn btn-default"
-						data-toggle="modal">申请中DB</button>
-					<button id="db_create" type="button" class="btn btn-default"
-						data-toggle="modal">创建DB</button>
 
 					<table id="userdata"
 						class="table table-striped table-hover table-responsive">
@@ -52,6 +48,16 @@
 								<td>phone_app_db</td>
 								<td>01/04/2014</td>
 								<td>正常</td>
+							</tr>
+							<tr>
+								<td>phone_tv_db</td>
+								<td>07/04/2014</td>
+								<td>审核中</td>
+							</tr>
+							<tr>
+								<td>phone_tv_db</td>
+								<td>07/04/2014</td>
+								<td>审核通过，可创建</td>
 							</tr>
 							<tr>
 								<td>phone_tv_db</td>
