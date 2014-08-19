@@ -11,7 +11,7 @@
 <body>
 
 	<div class="container">
-		<%@include file="header.jsp"%>
+		<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
@@ -84,7 +84,7 @@
 				</div>
 			</div>
 		</div>
-		<%@include file="footer.jsp"%>
+		<%@include file="/common/footer.jsp"%>
 	</div>
 	<div class="modal fade" id="modal-container-22341" role="dialog"
 		aria-labelledby="smallModal" aria-hidden="true">

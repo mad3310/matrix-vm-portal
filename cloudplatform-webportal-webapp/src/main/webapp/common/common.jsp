@@ -11,7 +11,7 @@
 
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-<link href="${ctx}/css/style.css" rel="stylesheet"></link>
+<link href="${ctx}/static/styles/style.css" rel="stylesheet"></link>
 
 <script src="${ctx}/static/scripts/jquery/jquery.min.js"></script>
 <script src="${ctx}/static/scripts/bootstrap/bootstrap.min.js"></script>

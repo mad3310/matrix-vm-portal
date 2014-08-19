@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="container">
-		<%@include file="header.jsp"%>
+		<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
@@ -31,7 +31,7 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<form class="form-horizontal" role="form" action="http://10.58.164.66:8080/api/mcluster/save">
+					<form class="form-horizontal" role="form" action="${ctx}/mcluster/save">
 						<!--has-success has-feedback 输入框显示输入成功，边框变绿 -->
 						<div class="form-group has-success has-feedback">
 							<label class="col-sm-2 control-label" for="inputEmail">Mcluster名称</label>
@@ -44,14 +44,14 @@
 
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" class="btn btn-primary">创建</button>
+								<button id="formSave" type="submit" class="btn btn-primary">创建</button>
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-		<%@include file="footer.jsp"%>
+		<%@include file="/common/footer.jsp"%>
 	</div>
 </body>
 </html>

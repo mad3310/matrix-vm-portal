@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
@@ -145,17 +146,24 @@ public final class HttpUtil {
 			}
 			buffer.append(paramName).append("=").append(value).append("&");
 		}
-		return buffer.subSequence(0, buffer.length()-1).toString();
+		return buffer.toString();
 	}
-	public static String getAPIUrl(HttpServletRequest request,String apiName){
+	public static String getAPIUrl(HttpServletRequest request,String apiName,Map<String,String> map){
 		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(API_URL).append(apiName).append(requestParamtoString(request));
-		return buffer.toString();
+		if(null != map) {
+			Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();  
+	        while (iterator.hasNext()) {  
+	            Map.Entry<String, String> entry = iterator.next();  
+	            buffer.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+	        }  
+		}
+		return buffer.subSequence(0, buffer.length()-1).toString();
 	}
-	public static String getResultFromDBAPI(HttpServletRequest request,String apiName){
+	public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> map){
 		RestTemplate restTemplate = new RestTemplate();
-		String message = restTemplate.postForObject(getAPIUrl(request,apiName), null,String.class);
+		String message = restTemplate.postForObject(getAPIUrl(request,apiName,map), null,String.class);
 		return message;
 	}
 }
