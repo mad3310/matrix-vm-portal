@@ -57,13 +57,13 @@
 	<insert id="insert" parameterType="com.letv.portal.model.MclusterModel">
 		insert into
 		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(UUID(),#{mclusterName},#{status},#{isDeleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
+		values(UUID(),#{mclusterName},#{status},#{isDeleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="com.letv.portal.model.MclusterModel">
 		update WEBPORTAL_MCLUSTER_INFO set
-		ID=#{id},MCLUSTER_NAME=#{mclusterName},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{CREATE_USER},UPDATE_TIME=#{updateTime},UPDATE_USER=#{updateUser}
+		ID=#{id},MCLUSTER_NAME=#{mclusterName},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{CREATE_USER},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -86,9 +86,7 @@
 			<if test="createUser != null  ">
 				CREATE_USER=#{createUser},
 			</if>
-			<if test="updateTime != null  ">
-				UPDATE_TIME=#{updateTime},
-			</if>
+				UPDATE_TIME=now(),
 			<if test="updateUser != null  ">
 				UPDATE_USER=#{updateUser}
 			</if>
@@ -187,6 +185,7 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO
 		<include refid="Example_Page_Where_Clause" />
+		ORDER BY CREATE_TIME
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
