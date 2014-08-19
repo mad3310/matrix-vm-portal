@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,8 @@ import com.mysql.jdbc.StringUtils;
 public class MclusterAPI {
 	@Resource
 	private IMclusterService mclusterService;
+	
+	private final static Logger logger = LoggerFactory.getLogger(MclusterAPI.class);
 	
 	/**Methods Name: list <br>
 	 * Description: 根据查询条件及分页信息获取分页数据<br>
