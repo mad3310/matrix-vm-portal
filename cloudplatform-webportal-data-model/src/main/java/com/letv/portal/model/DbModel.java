@@ -16,7 +16,9 @@ public class DbModel extends BaseModel {
 	private String id;   //主键ID
 	private String dbName; //db名称
 	private String clusterId; //所属cluster
+	private MclusterModel cluster; //所属cluster
 
+	private String status; //状态
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
@@ -71,13 +73,28 @@ public class DbModel extends BaseModel {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public MclusterModel getCluster() {
+		return cluster;
+	}
+	public void setCluster(MclusterModel cluster) {
+		this.cluster = cluster;
+	}
 	@Override
 	public String toString() {
-		return "DataBaseModel [id=" + id + ", dbName=" + dbName
-				+ ", clusterId=" + clusterId + ", isDeleted=" + isDeleted
-				+ ", createTime=" + createTime + ", createUser=" + createUser
-				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
-				+ "]";
+		return "DbModel [id=" + id + ", dbName=" + dbName + ", clusterId="
+				+ clusterId + ", cluster=" + cluster + ", status=" + status
+				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
+				+ ", createUser=" + createUser + ", updateTime=" + updateTime
+				+ ", updateUser=" + updateUser + "]";
 	}
+	
 	
 }

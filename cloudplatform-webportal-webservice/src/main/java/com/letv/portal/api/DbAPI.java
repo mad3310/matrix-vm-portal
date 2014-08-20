@@ -9,30 +9,29 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.MclusterModel;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.service.IDbService;
 import com.mysql.jdbc.StringUtils;
 
-/**Program Name: MclusterAPI <br>
+/**Program Name: DbAPI <br>
  * Description:  <br>
  * @author name: liuhao1 <br>
- * Written Date: 2014年8月14日 <br>
+ * Written Date: 2014年8月20日 <br>
  * Modified By: <br>
  * Modified Date: <br>
  */
 @Controller
-@RequestMapping("/mcluster")
-public class MclusterAPI {
+@RequestMapping("/db")
+public class DbAPI {
 	@Resource
-	private IMclusterService mclusterService;
+	private IDbService dbService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(MclusterAPI.class);
+	private final static Logger logger = LoggerFactory.getLogger(DbAPI.class);
 	
 	/**Methods Name: list <br>
 	 * Description: 根据查询条件及分页信息获取分页数据<br>
@@ -40,7 +39,7 @@ public class MclusterAPI {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/list")   //http://localhost:8080/api/mcluster/list?currentPage=1&recordsPage=2&mcluster=
+	@RequestMapping("/list")   //http://localhost:8080/api/db/list?currentPage=1&recordsPage=2&dbName=
 	public ResultObject list(HttpServletRequest request) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		Page page = new Page();
@@ -50,23 +49,23 @@ public class MclusterAPI {
 		page.setRecordsPerPage(StringUtils.isNullOrEmpty(recordsPerPage)?10:Integer.parseInt(recordsPerPage));
 	
 		ResultObject obj = new ResultObject();
-		obj.setData(this.mclusterService.findPagebyParams(params, page));
+		obj.setData(this.dbService.findPagebyParams(params, page));
 		return obj;
 	}
 	
-	@RequestMapping("/save")   //http://localhost:8080/api/mcluster/save
-	public ResultObject save(MclusterModel mclusterModel, HttpServletRequest request) {
+	@RequestMapping("/save")   //http://localhost:8080/api/dbModel/save
+	public ResultObject save(DbModel dbModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		
 		/*mclusterModel.setCreateUser(createUser);
 		mclusterModel.setCreateTime(createTime);
 		mclusterModel.setUpdateUser(updateUser);
 		mclusterModel.setUpdateTime(updateTime);*/
-
-		if(StringUtils.isNullOrEmpty(mclusterModel.getId())) {
-			this.mclusterService.insert(mclusterModel);
+		
+		if(StringUtils.isNullOrEmpty(dbModel.getId())) {
+			this.dbService.insert(dbModel);
 		} else {
-			this.mclusterService.updateBySelective(mclusterModel);
+			this.dbService.updateBySelective(dbModel);
 		}
 		return obj;
 	}

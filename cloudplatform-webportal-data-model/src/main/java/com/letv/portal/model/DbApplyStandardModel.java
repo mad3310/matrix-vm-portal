@@ -19,7 +19,7 @@ public class DbApplyStandardModel extends BaseModel {
 	private String version;   //版本
 	private String backupCycle;   //备份周期
 	private String isEmailNotice;   //邮件通知:0:否 1 :是
-	private String desc;   //描述
+	private String descn;   //描述
 	private String maxConcurrency;   //最大并发量
 	private String engineType;   //存储引擎类型   0:INNOB   1:ISMIY
 	private String fromDbIp;   //原数据库ip
@@ -83,11 +83,12 @@ public class DbApplyStandardModel extends BaseModel {
 	public void setIsEmailNotice(String isEmailNotice) {
 		this.isEmailNotice = isEmailNotice;
 	}
-	public String getDesc() {
-		return desc;
+	
+	public String getDescn() {
+		return descn;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescn(String descn) {
+		this.descn = descn;
 	}
 	public String getMaxConcurrency() {
 		return maxConcurrency;
@@ -244,7 +245,7 @@ public class DbApplyStandardModel extends BaseModel {
 		return "DbApplyStandardModel [id=" + id + ", applyCode=" + applyCode
 				+ ", applyName=" + applyName + ", version=" + version
 				+ ", backupCycle=" + backupCycle + ", isEmailNotice="
-				+ isEmailNotice + ", desc=" + desc + ", maxConcurrency="
+				+ isEmailNotice + ", descn=" + descn + ", maxConcurrency="
 				+ maxConcurrency + ", engineType=" + engineType + ", fromDbIp="
 				+ fromDbIp + ", fromDbPort=" + fromDbPort + ", fromDbName="
 				+ fromDbName + ", dataLimitIpList=" + dataLimitIpList
