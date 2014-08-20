@@ -39,11 +39,7 @@
 <link rel="apple-touch-icon-precomposed"
 	href="img/apple-touch-icon-57-precomposed.png">
 <link rel="shortcut icon" href="img/favicon.png">
-
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-switch.min.js"></script>
-<script type="text/javascript" src="js/scripts.js"></script>
+<%@include file="/common/common.jsp"%>
 </head>
 
 <body>

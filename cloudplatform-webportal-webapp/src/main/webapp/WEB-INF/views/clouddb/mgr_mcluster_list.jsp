@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mcluster概览</title>
+<title>Mcluster管理</title>
 </head>
 <body>
 	<div class="container">
@@ -43,15 +43,12 @@
 				</div>
 				<div class="col-md-9 column">
 
-					<button id="create_mcluster" type="button" class="btn btn-primary"
-						data-toggle="modal">添加Mcluster</button>
-
-
 					<table id="userdata"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
 								<th>Mcluster名称</th>
+								<th>所属用户</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
 							</tr>
@@ -82,12 +79,13 @@
 		<%@include file="/common/footer.jsp"%>
 	</div>
 </body>
-<script src="${ctx}/static/scripts/pageMessage.js"></script>
+<script src="${ctx}/static/scripts/pageControl.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
 	
 	 $(function(){
+		$("#signin").show();//显示header中登录框
 		$("#sqlcluster").addClass("active");//高亮显示页面名
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
@@ -98,7 +96,7 @@ var recordsPerPage = 10; //每页显示条数
 		$("#tby tr").remove();
 		$.ajax({
 			type : "post",
-			url : "${ctx}/mcluster/list/data?currentPage="
+			url : "${ctx}/mcluster/list/mgrData?currentPage="
 					+ currentPage
 					+ "&recordsPerPage="
 					+ recordsPerPage
@@ -112,6 +110,7 @@ var recordsPerPage = 10; //每页显示条数
 				var totalPages = data.data.totalPages;
 				
 				function translateStatus(status){
+					var statuStr;
 					if(status == 1){
 						return "启动";
 					}else if(status  == 2){
@@ -126,9 +125,12 @@ var recordsPerPage = 10; //每页显示条数
 							+ array[i].mclusterName
 							+ "</td>");
 					var td2 = $("<td>"
-							+ array[i].createTime
+							+ array[i].userName
 							+ "</td>");
 					var td3 = $("<td>"
+							+ array[i].createTime
+							+ "</td>");
+					var td4 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
 					if(array[i].status == 3){
@@ -137,7 +139,7 @@ var recordsPerPage = 10; //每页显示条数
 						var tr = $("<tr></tr>");
 					}
 					
-					tr.append(td1).append(td2).append(td3);
+					tr.append(td1).append(td2).append(td3).append(td4);
 					tr.appendTo(tby);
 				}
 				if (totalPages <= 1) {
@@ -152,7 +154,7 @@ var recordsPerPage = 10; //每页显示条数
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$('#pageMessage').html(pageMessage("warning",errorThrown)).show().fadeOut(3000);
+				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
 			}
 		});
     }
@@ -167,7 +169,7 @@ var recordsPerPage = 10; //每页显示条数
 		// 上一页
 		$("#prevPage").click(function() {
 			if (currentPage == 1) {
-				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
+				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>已经到达最后一页</p>").show().fadeOut(3000);
 				
 			} else {
 				currentPage--;
@@ -178,7 +180,7 @@ var recordsPerPage = 10; //每页显示条数
 		// 下一页
 		$("#nextPage").click(function() {
 			if (currentPage == $("#totalPage_input").val()) {
-				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
+				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>已经到达最后一页</p>").show().fadeOut(3000);
 			} else {
 				currentPage++;
 				queryByPage(currentPage,recordsPerPage);

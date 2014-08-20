@@ -16,3 +16,11 @@
 <script src="${ctx}/static/scripts/jquery/jquery.min.js"></script>
 <script src="${ctx}/static/scripts/bootstrap/bootstrap.min.js"></script>
 
+<!-- bootstrap validator -->
+<script type="text/javascript" src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<link href="${ctx}/static/styles/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet"/>
+
+<!-- bootstrap switch -->
+<link href="${ctx}/static/styles/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+<script src="${ctx}/static/scripts/bootstrap/bootstrap-switch.min.js"></script>
+

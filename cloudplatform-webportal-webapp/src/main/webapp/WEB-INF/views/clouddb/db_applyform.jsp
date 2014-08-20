@@ -7,10 +7,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>申请数据库</title>
-<!-- bootstrap switch -->
-<link href="../static/styles/bootstrap/css/bootstrap-switch.min.css"
-	rel="stylesheet">
-<script src="../static/scripts/bootstrap/bootstrap-switch.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -34,112 +30,97 @@
 				</p>
 			</div>
 			<div class="col-md-9 column">
-				<form class="form-horizontal" role="form">
-					<!--has-success has-feedback 输入框显示输入成功，边框变绿 -->
+				<form id="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save">
+					<input type="hidden" id="clusterId" name="clusterId" value="${clusterId}">
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">上线项目名称</label>
+						<label class="col-sm-2 control-label" for="project_name">上线项目名称</label>
 						<div class="col-sm-4">
-							<input class="form-control" id="inputEmail" type="text" />
-							<!--再输入框添加绿色对勾 -->
-							<!-- <span class="glyphicon glyphicon-ok form-control-feedback"></span> -->
+							<input class="form-control" name="applyName" id="applyName" type="text" />
 						</div>
 					</div>
-					<!--has-warning has-feedback 输入框显示输入警告，边框变黄 -->
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">业务描述</label>
+						<label class="col-sm-2 control-label" for="business_description">业务描述</label>
 						<div class="col-sm-8">
-							<textarea class="form-control" rows="3"></textarea>
-							<!--再输入框添加黄色叹号警告 -->
-							<!--  <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>-->
+							<textarea name="descn" id="descn" class="form-control" rows="3"></textarea>
 						</div>
 					</div>
-					<!--输入框显示输入失败，边框变红 -->
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">原数据库IP</label>
+						<label class="col-sm-2 control-label" for="origin_db_ip">原数据库IP</label>
 						<div class="col-sm-4">
-							<input class="form-control" id="inputEmail" type="text"
-								placeholder="127.0.0.1" />
-							<!--再输入框添加红色叉-->
-						<!--	<span class="glyphicon glyphicon-remove form-control-feedback"></span>-->
+							<input class="form-control" name="fromDbIp" id="fromDbIp" type="text" placeholder="没有不用填写" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">原数据库port</label>
+						<label class="col-sm-2 control-label" for="origi_db_port">原数据库port</label>
 						<div class="col-sm-2">
-							<input class="form-control" id="inputEmail" type="text"
-								placeholder="3306" />
+							<input class="form-control" name="fromDbPort" id="fromDbPort" type="text" placeholder="" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">原数据库名</label>
+						<label class="col-sm-2 control-label" for="origin_db_name">原数据库名</label>
 						<div class="col-sm-4">
-							<input class="form-control" id="inputEmail" type="text" />
+							<input class="form-control" name="fromDbName" id="fromDbName" type="text" placeholder="没有不用填写"/>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<!-- fieldset disabled 将输入框置灰，不可输入 -->
-						<fieldset disabled>
-							<label class="col-sm-2 control-label" for="disabledSelect">存储引擎</label>
+<!-- 						<fieldset disabled> -->
+							<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
 							<div class="col-sm-4">
-								<select class="form-control">
+								<select class="form-control" name="engineType" id="engineType">
 									<option>InnoDB</option>
-									<option>MyISAM</option>
-									<option>MEMORY</option>
-									<option>MERGE</option>
-
 								</select>
 							</div>
-						</fieldset>
+<!-- 						</fieldset> -->
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">访问数据库IP列表</label>
+						<label class="col-sm-2 control-label" for="database_access_ip_list">访问数据库IP列表</label>
 						<div class="col-sm-6">
-							<input class="form-control" id="inputEmail" type="text"
+							<input class="form-control" name="dataLimitIpList" id="dataLimitIpList" type="text"
 								placeholder="192.168.1.102-192.168.105;192.168.1.107" />
 						</div>
 
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">数据库管理IP</label>
+						<label class="col-sm-2 control-label" for="database_mgr_ip_list">数据库管理IP</label>
 						<div class="col-sm-6">
-							<input class="form-control" id="inputEmail" type="text"
+							<input class="form-control" name="mgrLimitIpList" id="mgrLimitIpList" type="text"
 								placeholder="192.168.1.102-192.168.105;192.168.1.107" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">读写比例</label>
+						<label class="col-sm-2 control-label" for="read_write_ratio">读写比例</label>
 						<div class="col-sm-2">
-							<input class="form-control" id="inputEmail" type="text"
+							<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
 								placeholder="1:1" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">最大并发量</label>
+						<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 						<div class="col-sm-2">
-							<input class="form-control" id="inputEmail" type="text"
-								placeholder="100/s" />
+							<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
+								placeholder="100" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">开发语言</label>
+						<label class="col-sm-2 control-label" for="develop_language">开发语言</label>
 						<div class="col-sm-4">
-							<input class="form-control" id="inputEmail" type="text"
-								placeholder="python，java" />
+							<input class="form-control" name="developLanguage" id="developLanguage" type="text"
+								placeholder="python,java" />
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">链接类型</label>
+						<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
 						<div class="col-sm-4">
-							<select class="form-control">
+							<select class="form-control" name="linkType" id="linkType">
 								<option>长链接</option>
 								<option>短链接</option>
 							</select>
@@ -148,10 +129,10 @@
 
 
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="inputEmail">邮件通知</label>
+						<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
 						<div class="col-sm-3">
 							<div class="switch switch-small">
-								<input id="emailmessage_switch" type="checkbox" checked />
+								<input name="isEmailNotice" id="isEmailNotice" type="checkbox" value="1" checked />
 							</div>
 						</div>
 					</div>
@@ -172,9 +153,100 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#emailmessage_switch").bootstrapSwitch();
-	});
+$(document).ready(function() {
+	$("#isEmailNotice").bootstrapSwitch();
+	$("#db_apply_form").bootstrapValidator({
+		  message: 'This value is not valid',
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+        	  applyName: {
+                  validMessage: 'The project_name looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '上线项目名称不能为空!'
+                      }
+                  }
+              },
+              descn: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '业务描述不能为空!'
+                      }
+                  }
+              },
+              fromDbIp:{
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      	regexp: {
+                          regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/,
+                          message: '请按ip格式输入'
+                      }
+                  }
+              },
+              fromDbPort:{
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                	  integer: {
+                          message: '请输入端口号'
+                      }
+                  }
+              },
+              dataLimitIpList: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '数据库访问ip不能为空!'
+                      },
+		              regexp: {
+		                  regexp: /^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})((\-?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})*|(\;?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})*)*$/,
+		                  message: '请按ip格式输入'
+		              }
+                  }
+              },
+              mgrLimitIpList: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '数据库管理ip不能为空!'
+                      },
+		              regexp: {
+		                  regexp: /^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})((\-?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})*|(\;?(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3})*)*$/,
+		                  message: '请按ip格式输入'
+		              }
+                  }
+              },
+              readWriterRate: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '读写比例不能为空!'
+                      }
+                  }
+              },
+              maxConcurrency: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '最大并发量不能为空!'
+                      }
+                  }
+              },
+              developLanguage: {
+                  validMessage: 'The business_description looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '开发语言不能为空!'
+                      }
+                  }
+              }
+          }
+      });
+});
 </script>
 
 </html>

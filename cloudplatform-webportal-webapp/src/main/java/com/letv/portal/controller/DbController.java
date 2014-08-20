@@ -10,14 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.util.HttpUtil;
 
 @Controller
-@RequestMapping("/mcluster")
-public class MclusterController {
+@RequestMapping("/db")
+public class DbController {
+	@RequestMapping(value="/list")
+	public String list(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/db_list";
+	}	
 	
-	@RequestMapping("/list/data")   //http://localhost:8080/mcluster/list/data
+	@RequestMapping(value="/toForm")
+	public String toForm(HttpServletRequest request,HttpServletResponse response){
+		request.setAttribute("clusterId", request.getParameter("clusterId"));
+		return "/clouddb/db_applyform";
+	}	
+	
+	@RequestMapping("/list/data")   //http://localhost:8080/db/list/data
 	public void listData(HttpServletRequest request,HttpServletResponse response) {
 		
 		//取出session中用户id，追加到http rest请求中
@@ -28,41 +39,15 @@ public class MclusterController {
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			out = response.getWriter();
-			out.write(HttpUtil.getResultFromDBAPI(request,"/mcluster/list",map));
+			out.write(HttpUtil.getResultFromDBAPI(request,"/db/list",map));
 			out.flush();
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-	}
-	@RequestMapping("/list/mgrData")   //http://localhost:8080/mcluster/list/mgrData
-	public void mgrData(HttpServletRequest request,HttpServletResponse response) {
-		PrintWriter out;
-		try {
-			response.setContentType("text/html;charset=UTF-8");
-			out = response.getWriter();
-			out.write(HttpUtil.getResultFromDBAPI(request,"/mcluster/list",null));
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	@RequestMapping("/list")   //http://localhost:8080/mcluster/list
-	public String list(HttpServletRequest request,HttpServletResponse response) {
-		return "/clouddb/mcluster_list";
-	}
-	@RequestMapping("/mgrList")   //http://localhost:8080/mcluster/list
-	public String mgr_list(HttpServletRequest request,HttpServletResponse response) {
-		return "/clouddb/mgr_mcluster_list";
 	}
 	
-	@RequestMapping("/toCreate")   //http://localhost:8080/mcluster/toCreate
-	public String toCreate(HttpServletRequest request,HttpServletResponse response) {
-		return "/clouddb/mcluster_create";
-	}
 	@RequestMapping("/save")   //http://localhost:8080/mcluster/save
 	public String save(HttpServletRequest request,HttpServletResponse response) {
 		
@@ -71,11 +56,10 @@ public class MclusterController {
 		map.put("createUser", (String) request.getSession().getAttribute("userId"));
 		map.put("status", "1");
 		
-		String result = HttpUtil.getResultFromDBAPI(request,"/mcluster/save",map);
+		String result = HttpUtil.getResultFromDBAPI(request,"/dbApplyStandard/save",map);
 		if(result.contains("\"result\":1")) {
-			return "redirect:/mcluster/list";
+			return "redirect:/db/list";
 		}
 		return "/common/error";
 	}
-
 }

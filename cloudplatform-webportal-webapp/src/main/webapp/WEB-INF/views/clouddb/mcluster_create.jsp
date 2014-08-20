@@ -7,16 +7,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>申请数据库</title>
-
 </head>
 <body>
 	<div class="container">
 		<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-3">
 					<h3 class="text-left">Mcluster创建</h3>
 				</div>
+				<div  class="col-md-6">
+					<div id="pageMessage"></div>
+				</div>
+				<div class="col-md-3"></div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
 					width="100%" color=#987cb9 SIZE=3></hr>
@@ -31,14 +34,11 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<form class="form-horizontal" role="form" action="${ctx}/mcluster/save">
-						<!--has-success has-feedback 输入框显示输入成功，边框变绿 -->
-						<div class="form-group has-success has-feedback">
-							<label class="col-sm-2 control-label" for="inputEmail">Mcluster名称</label>
+					<form id="mclusterCreateForm" data-toggle="validator" class="form-horizontal" role="form" action="${ctx}/mcluster/save">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Mcluster名称</label>
 							<div class="col-sm-4">
 								<input class="form-control" id="mclusterName" name="mclusterName" type="text" />
-								<!--再输入框添加绿色对勾 -->
-								<span class="glyphicon glyphicon-ok form-control-feedback"></span>
 							</div>
 						</div>
 
@@ -54,4 +54,27 @@
 		<%@include file="/common/footer.jsp"%>
 	</div>
 </body>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#mclusterCreateForm").bootstrapValidator({
+		  message: 'This value is not valid',
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+        	  mclusterName: {
+                  validMessage: 'The username looks great',
+                  validators: {
+                      notEmpty: {
+                          message: 'Mcluster名称不能为空!'
+                      }
+                  }
+              }
+          }
+      });
+});
+</script>
 </html>

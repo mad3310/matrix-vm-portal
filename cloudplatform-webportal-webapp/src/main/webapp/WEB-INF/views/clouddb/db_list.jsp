@@ -9,12 +9,25 @@
 <title>Bootstrap 101 Template</title>
 </head>
 <body>
-	<div class="container"">
+	<div class="container">
 		<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-3">
 					<h3 class="text-left">DB管理</h3>
+				</div>
+				<div  class="col-md-6">
+					<div id="pageMessage"></div>
+				</div>
+				<div class="col-md-3">
+					<form class="navbar-form navbar-right" role="search">
+						<div class="form-group">
+							<input id="clusterId" type="hidden" value="0e7e5fba-274f-11e4-a3d9-b82a72b53876" />
+							<input id="dbName" type="text" value=""
+								class="form-control" />
+						</div>
+						<button type="button" class="btn btn-default" id="searchButton">搜索</button>
+					</form>
 				</div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
@@ -30,41 +43,24 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-
 					<button id="db_apply" type="button" class="btn btn-default"
 						data-toggle="modal">申请DB</button>
-
+					<button id="db_create" type="button" class="btn btn-default"
+						data-toggle="modal">DB创建</button>
+					<button id="db_apply_detail" type="button" class="btn btn-default"
+						data-toggle="modal">DB申请内容</button>
+					
 					<table id="userdata"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
 								<th>DB名称</th>
+								<th>所属Mcluster</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>phone_app_db</td>
-								<td>01/04/2014</td>
-								<td>正常</td>
-							</tr>
-							<tr>
-								<td>phone_tv_db</td>
-								<td>07/04/2014</td>
-								<td>审核中</td>
-							</tr>
-							<tr>
-								<td>phone_tv_db</td>
-								<td>07/04/2014</td>
-								<td>审核通过，可创建</td>
-							</tr>
-							<tr>
-								<td>phone_tv_db</td>
-								<td>07/04/2014</td>
-								<td>异常</td>
-							</tr>
-						</tbody>
+						<tbody id="tby"></tbody>
 					</table>
 				</div>
 
@@ -76,23 +72,124 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#userdata tr").click(function() {
-			location.href = "./db_info.jsp";
+var currentPage = 1; //第几页 
+var recordsPerPage = 10; //每页显示条数
+	
+	 $(function(){
+		$("#sqlcluster").addClass("active");//高亮显示页面名
+		//初始化列表 
+		queryByPage(currentPage, recordsPerPage);
+		pageControl();
+		$("#pageMessage").hide();
+	});	
+	function queryByPage(currentPage,recordsPerPage) {
+		$("#tby tr").remove();
+		$.ajax({ 
+			type : "post",
+			url : "${ctx}/db/list/data?currentPage="
+					+ currentPage
+					+ "&recordsPerPage="
+					+ recordsPerPage
+					+"&clusterId="
+					+ $("#clusterId").val(),
+					/* + "&dbName="
+					+ $("#dbName").val() */
+			dataType : "json", /*这句可用可不用，没有影响*/
+			contentType : "application/json; charset=utf-8",
+			success : function(data) {
+				var array = data.data.data;
+				var tby = $("#tby");
+				var totalPages = data.data.totalPages;
+				
+				function translateStatus(status){
+					if(status == 0){
+						return "审核中";
+					}else if(status  == 1){
+						return "审核通过";
+					}else if(status  == 2){
+						return "审核未通过";
+					}
+				}
+				
+				for (var i = 0, len = array.length; i < len; i++) {
+					var td1 = $("<td>"
+							+ array[i].dbName
+							+ "</td>");
+					var td2 = $("<td>"
+							+ array[i].cluster.mclusterName
+							+ "</td>");
+					var td3 = $("<td>"
+							+ array[i].createTime
+							+ "</td>");
+					var td4 = $("<td>"
+							+ translateStatus(array[i].status)
+							+ "</td>");
+					if(array[i].status == 2){
+						var tr = $("<tr class=\"danger\"></tr>");
+					}else{
+						var tr = $("<tr></tr>");
+					}
+					
+					tr.append(td1).append(td2).append(td3).append(td4);
+					tr.appendTo(tby);
+				}
+				if (totalPages <= 1) {
+					$("#pageControlBar").hide();
+				} else {
+					$("#pageControlBar").show();
+					$("#totalPage_input").val(totalPages);
+					$("#currentPage").html(currentPage);
+					$("#totalRows").html(data.data.totalRecords);
+					$("#totalPage").html(totalPages);
+					//循环json中的数据 
+				}
+			},
+			error : function(XMLHttpRequest,textStatus, errorThrown) {
+				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
+			}
 		});
-	});
+    }
+	
+	function pageControl() {
+		// 首页
+		$("#firstPage").bind("click", function() {
+			currentPage = 1;
+			queryByPage(currentPage,recordsPerPage);
+		});
 
-	$('#db_apply').on('click', function() {
-		$(this).button('loading')
-		location.href = "./db_applyform.jsp";
-	});
-	$('#db_create').on('click', function() {
-		$(this).button('loading')
-		location.href = "./db_create.jsp";
-	});
-	$('#db_on_apply').on('click', function() {
-		$(this).button('loading')
-		location.href = "./db_on_apply.jsp";
-	});
+		// 上一页
+		$("#prevPage").click(function() {
+			if (currentPage == 1) {
+				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
+				
+			} else {
+				currentPage--;
+				queryByPage(currentPage,recordsPerPage);
+			}
+		});
+
+		// 下一页
+		$("#nextPage").click(function() {
+			if (currentPage == $("#totalPage_input").val()) {
+				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
+			} else {
+				currentPage++;
+				queryByPage(currentPage,recordsPerPage);
+			}
+		});
+
+		// 末页
+		$("#lastPage").bind("click", function() {
+			currentPage = $("#totalPage_input").val();
+			queryByPage(currentPage,recordsPerPage);
+		});
+		$("#searchButton").click(function() {
+			queryByPage(currentPage,recordsPerPage);
+		});
+		$("#db_apply").click(function() {
+			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
+		});
+	}
 </script>
+
 </html>
