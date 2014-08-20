@@ -70,7 +70,14 @@
 	<insert id="insert" parameterType="Db">
 		insert into
 		WEBPORTAL_DB(ID,DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(UUID(),#{dbName},#{clusterId},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		values(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="id == null">
+			UUID(),
+		</if>
+		#{dbName},#{clusterId},'0','1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
@@ -170,7 +177,7 @@
 			<if test="params != null and params.id !=null  ">
 				and WEBPORTAL_DB.ID=#{params.id}
 			</if>
-			<if test="params != null and params.dbName != null  and params.dbName != '' ">
+			<if test="params != null and params.dbName != null  and params.dbName != ''">
 				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
 			<if test="params != null and params.clusterId != null  ">

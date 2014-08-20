@@ -53,7 +53,7 @@ public class DbAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/save")   //http://localhost:8080/api/dbModel/save
+	@RequestMapping("/save")   //http://localhost:8080/api/db/save
 	public ResultObject save(DbModel dbModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		

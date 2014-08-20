@@ -9,16 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.DbApplyStandardModel;
-import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbApplyStandardService;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IDbService;
 import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbApplyStandardAPI <br>
@@ -64,7 +63,6 @@ public class DbApplyStandardAPI {
 		mclusterModel.setCreateTime(createTime);
 		mclusterModel.setUpdateUser(updateUser);
 		mclusterModel.setUpdateTime(updateTime);*/
-
 		if(StringUtils.isNullOrEmpty(dbApplyStandardModel.getId())) {
 			this.dbApplyStandardService.insert(dbApplyStandardModel);
 		} else {

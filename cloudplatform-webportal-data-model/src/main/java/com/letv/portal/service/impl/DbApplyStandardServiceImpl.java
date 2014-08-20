@@ -1,6 +1,7 @@
 package com.letv.portal.service.impl;
 
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -10,7 +11,9 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
+import com.letv.portal.dao.IDbDao;
 import com.letv.portal.model.DbApplyStandardModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbApplyStandardService;
 
 @Service("dbApplyStandardService")
@@ -19,6 +22,8 @@ public class DbApplyStandardServiceImpl extends BaseServiceImpl<DbApplyStandardM
 	
 	@Resource
 	private IDbApplyStandardDao dbApplyStandardDao;
+	@Resource
+	private IDbDao dbDao;
 
 	public DbApplyStandardServiceImpl() {
 		super(DbApplyStandardModel.class);
@@ -36,6 +41,21 @@ public class DbApplyStandardServiceImpl extends BaseServiceImpl<DbApplyStandardM
 		page.setTotalRecords(this.dbApplyStandardDao.selectByMapCount(params));
 		return page;
 		
+	}
+	
+	@Override
+	public void insert(DbApplyStandardModel t) {
+		
+		String uuid = UUID.randomUUID().toString();
+		DbModel dbModel = new DbModel();
+		dbModel.setDbName(t.getApplyName());
+		dbModel.setClusterId(t.getClusterId());
+		dbModel.setCreateUser(t.getCreateUser());
+		dbModel.setId(uuid);
+		this.dbDao.insert(dbModel);
+		
+		t.setBelongDb(uuid);
+		super.insert(t);
 	}
 	
 }

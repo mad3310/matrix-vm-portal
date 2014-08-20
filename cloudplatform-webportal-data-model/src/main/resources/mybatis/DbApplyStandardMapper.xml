@@ -76,7 +76,7 @@
 		values
 		(UUID(),#{applyCode},#{applyName},#{version},#{backupCycle},#{isEmailNotice},#{descn},#{maxConcurrency},#{engineType},#{fromDbIp},#{fromDbPort},#{fromDbName},
 		#{dataLimitIpList},#{mgrLimitIpList},#{readWriterRate},#{developLanguage},#{linkType},#{maxQueriesPerHour},#{maxUpdatesPerHour},
-		#{maxConnectionsPerHour},#{maxUserConnections},#{belongDb},#{auditTime},#{auditUser},#{status},#{auditInfo},#{clusterId},#{isDeleted},now(),#{createUser},now(),#{updateUser})
+		#{maxConnectionsPerHour},#{maxUserConnections},#{belongDb},#{auditTime},#{auditUser},'0',#{auditInfo},#{clusterId},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
