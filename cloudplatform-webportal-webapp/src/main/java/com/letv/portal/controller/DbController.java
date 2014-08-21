@@ -62,4 +62,29 @@ public class DbController {
 		}
 		return "/common/error";
 	}
+	
+	@RequestMapping(value="/dbApplyInfo")
+	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/db_apply_info";
+	}
+	
+	@RequestMapping("/list/dbApplyInfo")   //http://localhost:8080/db/list/data
+	public void listDbApplyInfo(HttpServletRequest request,HttpServletResponse response) {
+		
+		//取出session中用户id，追加到http rest请求中
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("createUser", (String) request.getSession().getAttribute("userId"));
+				
+		PrintWriter out;
+		try {
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			out.write(HttpUtil.getResultFromDBAPI(request,"/db/dbApplyInfo",map));
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

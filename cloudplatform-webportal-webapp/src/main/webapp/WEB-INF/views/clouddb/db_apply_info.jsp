@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>创建数据库</title>
+<title>数据库申请详情</title>
 
 </head>
 <body>
@@ -15,7 +15,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-left">申请中DB</h3>
+					<h3 class="text-left">DB申请内容</h3>
 				</div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
@@ -31,17 +31,6 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<form class="form-horizontal" role="form">
-						<div class="form-group">
-							<label class="col-sm-2 control-label" for="inputEmail">正在申请</label>
-							<div class="col-sm-4">
-								<select class="form-control">
-									<option>mcluster_cloud_db_apply</option>
-									<option>phone_app_db_apply</option>
-								</select>
-							</div>
-						</div>
-					</form>
 					<div class="col-sm-10">
 					<table class="table table-bordered">
 						<tr>

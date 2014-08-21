@@ -105,8 +105,9 @@
 						<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 						<div class="col-sm-2">
 							<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
-								placeholder="100" />
+								placeholder="100"/>
 						</div>
+						<label class="control-label" for="maximum_concurrency">/s</label>
 					</div>
 
 					<div class="form-group">
@@ -168,7 +169,11 @@ $(document).ready(function() {
                   validators: {
                       notEmpty: {
                           message: '上线项目名称不能为空!'
-                      }
+                      },
+			          stringLength: {
+			              max: 40,
+			              message: '项目名过长'
+			          }
                   }
               },
               descn: {
@@ -176,15 +181,19 @@ $(document).ready(function() {
                   validators: {
                       notEmpty: {
                           message: '业务描述不能为空!'
-                      }
-                  }
+                      },
+                      stringLength: {
+		              	  max: 100,
+		              	  message: '项目描述名过长'
+				  		}
+             	 	}
               },
+              
               fromDbIp:{
                   validMessage: 'The business_description looks great',
                   validators: {
-                      	regexp: {
-                          regexp: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/,
-                          message: '请按ip格式输入'
+                	  ip: {
+                          message: 'IP地址无效'
                       }
                   }
               },

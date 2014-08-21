@@ -47,8 +47,7 @@
 						data-toggle="modal">添加Mcluster</button>
 
 
-					<table id="userdata"
-						class="table table-striped table-hover table-responsive">
+					<table id="mcluster_list" name="mcluster_list" class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
 								<th>Mcluster名称</th>
@@ -57,6 +56,9 @@
 							</tr>
 						</thead>
 						<tbody id="tby"></tbody>
+						<td>liuhao</td>
+						<td>今年</td>
+						<td>很好</td>				
 					</table>
 					<div id="pageControlBar">
 						<input type="hidden" id="totalPage_input" />
@@ -193,8 +195,15 @@ var recordsPerPage = 10; //每页显示条数
 		$("#searchButton").click(function() {
 			queryByPage(currentPage,recordsPerPage);
 		});
+		//创建mcluster按钮跳转
 		$("#create_mcluster").click(function() {
 			location.href = "${ctx}/mcluster/toCreate";
+		});
+		
+		$("#mcluster_list tr").click(function() {
+/* 			$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
+			alert("${ctx}/db/list?clusterName="+$(this).children("td:first").text());
+			location.href = "${ctx}/db/list?clusterName="+$(this).children("td:first").text();
 		});
 	}
 </script>

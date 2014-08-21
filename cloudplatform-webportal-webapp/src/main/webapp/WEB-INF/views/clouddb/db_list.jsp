@@ -47,10 +47,10 @@
 						data-toggle="modal">申请DB</button>
 					<button id="db_create" type="button" class="btn btn-default"
 						data-toggle="modal">DB创建</button>
-					<button id="db_apply_detail" type="button" class="btn btn-default"
+					<button id="db_apply_info" type="button" class="btn btn-default"
 						data-toggle="modal">DB申请内容</button>
 					
-					<table id="userdata"
+					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
@@ -60,7 +60,13 @@
 								<th>当前状态</th>
 							</tr>
 						</thead>
-						<tbody id="tby"></tbody>
+						<tbody id="tby">
+							
+						</tbody>
+							<td>liuhao</td>
+							<td>liuhaomcluster</td>
+							<td>time</td>
+							<td>good</td>
 					</table>
 				</div>
 
@@ -74,6 +80,7 @@
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
+var currentSelectedLineDbName = 1;
 	
 	 $(function(){
 		$("#sqlcluster").addClass("active");//高亮显示页面名
@@ -183,13 +190,25 @@ var recordsPerPage = 10; //每页显示条数
 			currentPage = $("#totalPage_input").val();
 			queryByPage(currentPage,recordsPerPage);
 		});
+		//搜索
 		$("#searchButton").click(function() {
 			queryByPage(currentPage,recordsPerPage);
 		});
+		//申请数据库button跳转
 		$("#db_apply").click(function() {
 			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
 		});
+		//获取当前选中行dbName
+		$("#db_list tr").click(function() {
+		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
+			alert($(this).children("td:first").text());
+			currentSelectedLineDbName = $(this).children("td:first").text();
+		});
+		//申请数据库button跳转
+		$("#db_apply_info").click(function() {
+			alert("${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName);
+			location.href = "${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName;
+		});
 	}
 </script>
-
 </html>
