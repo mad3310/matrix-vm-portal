@@ -61,7 +61,7 @@ function queryByDbId(dbId) {
 		success : function(data) {
 			var array = data.data;
 			var tby = $("#db_detail_table");
-			
+/* 			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td>"
 						+ array[i].dbName
@@ -83,17 +83,8 @@ function queryByDbId(dbId) {
 				
 				tr.append(td1).append(td2).append(td3).append(td4);
 				tr.appendTo(tby);
-			}
-			if (totalPages <= 1) {
-				$("#pageControlBar").hide();
-			} else {
-				$("#pageControlBar").show();
-				$("#totalPage_input").val(totalPages);
-				$("#currentPage").html(currentPage);
-				$("#totalRows").html(data.data.totalRecords);
-				$("#totalPage").html(totalPages);
-				//循环json中的数据 
-			}
+			} */
+		alert(array);
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
