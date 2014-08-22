@@ -11,4 +11,11 @@ import com.letv.portal.model.DbApplyStandardModel;
  */
 public interface IDbApplyStandardDao extends IBaseDao<DbApplyStandardModel> {
 	
+	/**Methods Name: selectByDbId <br>
+	 * Description: 根据所属Db查出申请信息<br>
+	 * @author name: liuhao1
+	 * @param belongDb
+	 * @return
+	 */
+	public DbApplyStandardModel selectByDbId(String belongDb);
 }

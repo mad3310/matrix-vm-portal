@@ -127,9 +127,35 @@ public final class HttpUtil {
 		}
 		return map;
 	}
+	
+	/**Methods Name: requestParam2ListMap <br>
+	 * Description: name重复表单，转换多个map<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @return
+	 */
+	public static Map<String, Object> requestParam2ListMap(HttpServletRequest request){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Enumeration enume = request.getParameterNames();
+		while(enume.hasMoreElements()){
+			Object item = enume.nextElement();
+			String paramName = item.toString();
+			String value = request.getParameter(paramName);
+			String[] values = request.getParameterValues(paramName);
+			if(values.length>1){
+				String va=values[0];
+				for(int i=1;i<values.length;i++){
+					va+=","+values[i];
+				}
+				value=va;
+			}
+			map.put(paramName, value);
+		}
+		return map;
+	}
 	/**Methods Name: requestParam2Map <br>
 	 * Description: 扩展request参数转map:加入额外参数<br>
-	 * @author name: yaokuo
+	 * @author name: liuhao1
 	 * @param request
 	 * @param extraParams
 	 * @return
@@ -168,7 +194,7 @@ public final class HttpUtil {
 			if(values.length>1){
 				String va=values[0];
 				for(int i=1;i<values.length;i++){
-					va+=","+values[i];
+					va+="|"+values[i];
 				}
 				value=va;
 			}

@@ -3,69 +3,50 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.letv.portal.dao.IDbApplyStandardDao">
+
 	<!-- Result Map -->
-	<resultMap id="BaseResultMap" type="Db">
+	<resultMap id="BaseResultMap" type="DbStandard">
 		<result column="ID" property="id" />
-		<result column="DB_NAME" property="dbName" />
+		<result column="APPLY_CODE" property="applyCode" />
+		<result column="APPLY_NAME" property="applyName" />
+		<result column="VERSION" property="version" />
+		<result column="BACKUP_CYCLE" property="backupCycle" />
+		<result column="IS_EMAIL_NOTICE" property="isEmailNotice" />
+		<result column="DESCN" property="descn" />
+		<result column="MAX_CONCURRENCY" property="maxConcurrency" />
+		<result column="ENGINE_TYPE" property="engineType" />
+		<result column="FROM_DB_IP" property="fromDbIp" />
+		<result column="FROM_DB_PORT" property="fromDbPort" />
+		<result column="FROM_DB_NAME" property="fromDbName" />
+		<result column="DATA_LIMIT_IP_LIST" property="dataLimitIpList" />
+		<result column="MGR_LIMIT_IP_LIST" property="mgrLimitIpList" />
+		<result column="READ_WRITER_RATE" property="readWriterRate" />
+		<result column="DEVELOP_LANGUAGE" property="developLanguage" />
+		<result column="LINK_TYPE" property="linkType" />
+		<result column="MAX_QUERIES_PER_HOUR" property="maxQueriesPerHour" />
+		<result column="MAX_UPDATES_PER_HOUR" property="maxUpdatesPerHour" />
+		<result column="MAX_CONNECTIONS_PER_HOUR" property="maxConnectionsPerHour" />
+		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
+		<result column="BELONG_DB" property="belongDb" />
+		<result column="AUDIT_TIME" property="auditTime" />
+		<result column="AUDIT_USER" property="auditUser" />
+		<result column="AUDIT_INFO" property="auditInfo" />
 		<result column="CLUSTER_ID" property="clusterId" />
 		<result column="STATUS" property="status" />
-		
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
-		
-		<association property="cluster" javaType="Mcluster">
-			<result column="MCLUSTER_NAME" property="mclusterName" />
-		</association>
-		
 	</resultMap>
 	
 	<!-- WEBPORTAL_DB_APPLY_STANDARD table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,APPLY_CODE,APPLY_NAME,VERSION,BACKUP_CYCLE,IS_EMAIL_NOTICE,DESCN,MAX_CONCURRENCY,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
+		DATA_LIMIT_IP_LIST,MGR_LIMIT_IP_LIST,READ_WRITER_RATE,DEVELOP_LANGUAGE,LINK_TYPE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,
+		MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,BELONG_DB,AUDIT_TIME,AUDIT_USER,STATUS,AUDIT_INFO,CLUSTER_ID,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
-	<sql id="Base_Column_List_add_cluster">
-		WEBPORTAL_DB_APPLY_STANDARD.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB_APPLY_STANDARD.DB_NAME,WEBPORTAL_DB_APPLY_STANDARD.CLUSTER_ID,WEBPORTAL_DB_APPLY_STANDARD.STATUS,WEBPORTAL_DB_APPLY_STANDARD.IS_DELETED,WEBPORTAL_DB_APPLY_STANDARD.CREATE_TIME,WEBPORTAL_DB_APPLY_STANDARD.CREATE_USER,WEBPORTAL_DB_APPLY_STANDARD.UPDATE_TIME,WEBPORTAL_DB_APPLY_STANDARD.UPDATE_USER
-	</sql>
-
 	
-	<!-- 查询条件 -->
-	<sql id="Example_Where_Clause">
-		where 1=1
-		<trim suffixOverrides=",">
-			<if test="id != null  ">
-				and ID=#{id}
-			</if>
-			<if test="dbName != null  and dbName != '' ">
-				and DB_NAME like CONCAT('%','${dbName}','%')
-			</if>
-			<if test="clusterId != null  ">
-				and CLUSTER_ID=#{clusterId}
-			</if>
-			<if test="status != null  ">
-				and STATUS=#{status}
-			</if>
-			<if test="isDeleted != null  ">
-				and IS_DELETED=#{isDeleted}
-			</if>
-			<if test="createTime != null  ">
-				and CREATE_TIME=#{createTime}
-			</if>
-			<if test="createUser != null  ">
-				and CREATE_USER=#{createUser}
-			</if>
-			<if test="updateTime != null  ">
-				and UPDATE_TIME=#{updateTime}
-			</if>
-			<if test="updateUser != null  ">
-				and UPDATE_USER=#{updateUser}
-			</if>
-		</trim>
-	</sql>
-
-
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="DbStandard">
 		insert into
@@ -79,50 +60,13 @@
 		#{maxConnectionsPerHour},#{maxUserConnections},#{belongDb},#{auditTime},#{auditUser},'0',#{auditInfo},#{clusterId},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
-	<!-- 根据id，修改记录 -->
-	<update id="update" parameterType="Db">
-		update WEBPORTAL_DB_APPLY_STANDARD set
-		ID=#{id},DB_NAME=#{dbName},CLUSTER_ID=#{clusterId},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
-		where ID=#{id}
-	</update>
-
-	<!-- -->
-	<update id="updateBySelective" parameterType="Db">
-		update WEBPORTAL_DB_APPLY_STANDARD
-		<set>
-			<if test="dbName != null  and dbName != '' ">
-				DB_NAME=#{dbName},
-			</if>
-			<if test="clusterId != null  ">
-				CLUSTER_ID=#{clusterId},
-			</if>
-			<if test="status != null  ">
-				STATUS=#{status},
-			</if>
-			<if test="isDeleted != null  ">
-				IS_DELETED=#{isDeleted},
-			</if>
-			<if test="createTime != null  ">
-				CREATE_TIME=#{createTime},
-			</if>
-			<if test="createUser != null  ">
-				CREATE_USER=#{createUser},
-			</if>
-				UPDATE_TIME=now(),
-			<if test="updateUser != null  ">
-				UPDATE_USER=#{updateUser}
-			</if>
-		</set>
-		where ID=#{id}
-	</update>
-
 	<!-- 物理删除 -->
-	<update id="delete" parameterType="Db">
+	<update id="delete" parameterType="DbStandard">
 		delete from WEBPORTAL_DB_APPLY_STANDARD where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
-	<update id="updateFlag" parameterType="Db">
+	<update id="updateFlag" parameterType="DbStandard">
 		update WEBPORTAL_DB_APPLY_STANDARD set
 		<if test="isDeleted != null  ">
 			IS_DELETED=#{isDeleted}
@@ -136,84 +80,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_APPLY_STANDARD where ID = #{id}
 	</select>
-
-	<!-- 列表总数 -->
-	<select id="selectByModelCount" resultType="java.lang.Integer"
-		parameterType="Db">
-		select count(1) from WEBPORTAL_DB_APPLY_STANDARD
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 根据条件查询 -->
-	<select id="selectByModel" resultMap="BaseResultMap"
-		parameterType="Db">
+	<!-- 根据db id查询-->
+	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from DICTIONARY_INFO
-		<include refid="Example_Where_Clause" />
-	</select>
-
-
-	<!-- 列表总数 -->
-	<select id="selectByMapCount" resultType="java.lang.Integer"
-		parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_DB_APPLY_STANDARD
-		<include refid="Example_Where_Clause" />
-	</select>
-	<!-- 根据条件查询 -->
-	<select id="selectByMap" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_APPLY_STANDARD
-		<include refid="Example_Where_Clause" />
+		from WEBPORTAL_DB_APPLY_STANDARD where BELONG_DB = #{belongDb}
 	</select>
 	
-	
-	<sql id="Example_Page_Where_Clause">
-		where 1=1
-		<trim suffixOverrides=",">
-			<if test="params != null and params.id !=null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.ID=#{params.id}
-			</if>
-			<if test="params != null and params.dbName != null  and params.dbName != '' ">
-				and WEBPORTAL_DB_APPLY_STANDARD.DB_NAME like CONCAT('%','${params.dbName}','%')
-			</if>
-			<if test="params != null and params.clusterId != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.CLUSTER_ID=#{params.clusterId}
-			</if>
-			<if test="params != null and params.status != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.STATUS=#{params.status}
-			</if>
-			<if test="params != null and params.isDeleted != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.IS_DELETED=#{params.isDeleted}
-			</if>
-			<if test="params != null and params.createTime != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.CREATE_TIME=#{params.createTime}
-			</if>
-			<if test="params != null and params.createUser != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.CREATE_USER=#{params.createUser}
-			</if>
-			<if test="params != null and params.updateTime != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.UPDATE_TIME=#{params.updateTime}
-			</if>
-			<if test="params != null and params.updateUser != null  ">
-				and WEBPORTAL_DB_APPLY_STANDARD.UPDATE_USER=#{params.updateUser}
-			</if>
-		</trim>
-	</sql>
-	
-	<!-- 分页：根据条件查询 -->
-	<select id="selectPageByMap" resultMap="BaseResultMap"
-		parameterType="com.letv.common.dao.QueryParam">
-		select
-		<include refid="Base_Column_List_add_cluster" />
-		from WEBPORTAL_DB_APPLY_STANDARD,WEBPORTAL_MCLUSTER_INFO 
-		<include refid="Example_Page_Where_Clause" />
-		AND WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB_APPLY_STANDARD.CLUSTER_ID
-		ORDER BY WEBPORTAL_DB_APPLY_STANDARD.CREATE_TIME
-		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.recordsPerPage}
-    	</if>
-	</select>
 </mapper>   

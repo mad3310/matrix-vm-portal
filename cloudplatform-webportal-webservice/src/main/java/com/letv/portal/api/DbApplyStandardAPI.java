@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
@@ -71,7 +72,12 @@ public class DbApplyStandardAPI {
 		return obj;
 	}
 	
-	
+	@RequestMapping("/getByDbId")
+	public ResultObject selectByDbId(String belongDb,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		obj.setData(this.dbApplyStandardService.selectByDbId(belongDb));
+		return obj;
+	}
 	
 	
 	

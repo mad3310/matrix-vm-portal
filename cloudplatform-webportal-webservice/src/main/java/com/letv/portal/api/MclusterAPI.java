@@ -1,6 +1,8 @@
 
 package com.letv.portal.api;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
@@ -43,6 +44,7 @@ public class MclusterAPI {
 	@RequestMapping("/list")   //http://localhost:8080/api/mcluster/list?currentPage=1&recordsPage=2&mcluster=
 	public ResultObject list(HttpServletRequest request) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		
 		Page page = new Page();
 		String currentPage = (String) params.get("currentPage");
 		String recordsPerPage = (String) params.get("recordsPerPage");

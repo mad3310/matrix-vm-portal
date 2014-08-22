@@ -57,5 +57,10 @@ public class DbApplyStandardServiceImpl extends BaseServiceImpl<DbApplyStandardM
 		t.setBelongDb(uuid);
 		super.insert(t);
 	}
+
+	@Override
+	public DbApplyStandardModel selectByDbId(String belongDb) {
+		return this.dbApplyStandardDao.selectByDbId(belongDb);
+	}
 	
 }
