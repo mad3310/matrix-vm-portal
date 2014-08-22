@@ -78,7 +78,7 @@
 					</table>
 
 					<button id="db_create" type="button" class="btn btn-default"
-						data-toggle="modal">通过</button>
+						data-toggle="modal">通过并创建Mcluster</button>
 					<button type="button" href="#modal-container-22341"
 						class="btn btn-default" data-toggle="modal">不通过</button>
 				</div>

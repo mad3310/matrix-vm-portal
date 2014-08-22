@@ -17,7 +17,7 @@
 <script src="${ctx}/static/scripts/bootstrap/bootstrap.min.js"></script>
 
 <!-- bootstrap validator -->
-<script type="text/javascript" src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
 <link href="${ctx}/static/styles/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet"/>
 
 <!-- bootstrap switch -->

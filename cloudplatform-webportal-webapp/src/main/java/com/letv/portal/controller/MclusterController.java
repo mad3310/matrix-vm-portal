@@ -17,13 +17,13 @@ import com.letv.common.util.HttpUtil;
 @RequestMapping("/mcluster")
 public class MclusterController {
 	
+	
 	@RequestMapping("/list/data")   //http://localhost:8080/mcluster/list/data
 	public void listData(HttpServletRequest request,HttpServletResponse response) {
-		
 		//取出session中用户id，追加到http rest请求中
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("createUser", (String) request.getSession().getAttribute("userId"));
-				
+		System.out.println(request.getParameter("mclusterName"));
 		PrintWriter out;
 		try {
 			response.setContentType("text/html;charset=UTF-8");

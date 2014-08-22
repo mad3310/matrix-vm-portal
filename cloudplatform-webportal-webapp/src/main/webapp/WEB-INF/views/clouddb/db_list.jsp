@@ -60,13 +60,8 @@
 								<th>当前状态</th>
 							</tr>
 						</thead>
-						<tbody id="tby">
-							
+						<tbody id="tby">							
 						</tbody>
-							<td>liuhao</td>
-							<td>liuhaomcluster</td>
-							<td>time</td>
-							<td>good</td>
 					</table>
 				</div>
 

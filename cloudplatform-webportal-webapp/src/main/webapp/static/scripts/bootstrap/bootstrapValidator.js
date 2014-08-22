@@ -4338,6 +4338,43 @@
         }
     };
 }(window.jQuery));
+//by yaokuo
+(function($) {
+    $.fn.bootstrapValidator.validators.ipRangeValidator = {
+        validate: function(validator, $field, options) {
+            var value = $field.val();
+            if (value === '') {
+                return true;
+            }
+            
+            function ipvalue(ip){
+            	ipvalues = ip.split('.');
+            	return ipvalues[3]+ipvalues[2]*255+ipvalues[1]*255*255+ipvalues[0]*255*255*255;	
+            }
+
+            var ipUnits = value.split(";");
+            for(var i=0; ipUnits[i] != null;i++)
+            	{
+            		if(ipUnits[i].indexOf('-') > 0)
+            		{
+            			var rangeIp = ipUnits[i];
+            		}else{
+            			continue;
+            		}
+
+            		var ips = rangeIp.split("-");
+            		var ip0 = ips[0];
+            		var ip1 = ips[1];
+            		if((ipvalue(ip1)-ipvalue(ip0))>0){
+            			continue;
+            		}else{
+            			return false;
+            		}
+            	}
+            return true;
+        }
+    };
+}(window.jQuery));
 ;(function($) {
     $.fn.bootstrapValidator.i18n.numeric = $.extend($.fn.bootstrapValidator.i18n.numeric || {}, {
         'default': 'Please enter a valid float number'

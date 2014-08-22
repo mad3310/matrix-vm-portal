@@ -53,12 +53,14 @@
 								<th>Mcluster名称</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
-							</tr>
+							</tr> 
 						</thead>
-						<tbody id="tby"></tbody>
-						<td>liuhao</td>
-						<td>今年</td>
-						<td>很好</td>				
+						<tbody id="tby">
+							<td style="display:none">5</td>
+							<td>fad</td>
+							<td>adfa</td>
+							<td>afda	</td>
+						</tbody>
 					</table>
 					<div id="pageControlBar">
 						<input type="hidden" id="totalPage_input" />
@@ -96,6 +98,7 @@ var recordsPerPage = 10; //每页显示条数
 		pageControl();
 		$("#pageMessage").hide();
 	});	
+	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
 		$.ajax({
@@ -107,6 +110,7 @@ var recordsPerPage = 10; //每页显示条数
 					+ "&mclusterName="
 					+ $("#mclusterName").val(),
 			dataType : "json", /*这句可用可不用，没有影响*/
+
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
 				var array = data.data.data;
@@ -125,7 +129,7 @@ var recordsPerPage = 10; //每页显示条数
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+ array[i].mclusterName
+							+ "<a href=\"${ctx}/db/list?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
 							+ "</td>");
 					var td2 = $("<td>"
 							+ array[i].createTime
@@ -200,7 +204,7 @@ var recordsPerPage = 10; //每页显示条数
 			location.href = "${ctx}/mcluster/toCreate";
 		});
 		
-		$("#mcluster_list tr").click(function() {
+		$("#mcluster_list tbody tr").click(function() {
 /* 			$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
 			alert("${ctx}/db/list?clusterName="+$(this).children("td:first").text());
 			location.href = "${ctx}/db/list?clusterName="+$(this).children("td:first").text();

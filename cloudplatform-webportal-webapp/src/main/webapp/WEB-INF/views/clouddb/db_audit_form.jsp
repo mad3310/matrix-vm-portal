@@ -34,11 +34,23 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<form id="mclusterCreateForm" data-toggle="validator" class="form-horizontal" role="form" action="${ctx}/mcluster/save">
+					<form id="mclusterCreateForm" data-toggle="validator" class="form-horizontal" role="form" action="${ctx}/db/audit">
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Mcluster名称</label>
 							<div class="col-sm-4">
 								<input class="form-control" id="mclusterName" name="mclusterName" type="text" />
+							</div>
+							<label class="col-sm-2 control-label">ip名称</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="ip" name="ip" type="text" />
+							</div>
+							<label class="col-sm-2 control-label">Mcluster名称</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="mclusterName" name="mclusterName" type="text" />
+							</div>
+							<label class="col-sm-2 control-label">ip名称</label>
+							<div class="col-sm-4">
+								<input class="form-control" id="ip" name="ip" type="text" />
 							</div>
 						</div>
 

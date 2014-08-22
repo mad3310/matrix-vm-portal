@@ -30,7 +30,7 @@ public final class HttpUtil {
 
 	private static final Log log = LogFactory.getLog(HttpUtil.class);
 	
-	public static final String API_URL = "http://10.58.164.66:8080/api";
+	public static final String API_URL = "http://10.58.166.19:8080/api";
 
 	public static final String readContent(String url) {
 		
@@ -127,6 +127,34 @@ public final class HttpUtil {
 		}
 		return map;
 	}
+	/**Methods Name: requestParam2Map <br>
+	 * Description: 扩展request参数转map:加入额外参数<br>
+	 * @author name: yaokuo
+	 * @param request
+	 * @param extraParams
+	 * @return
+	 */
+	public static Map<String, Object> requestParam2Map(HttpServletRequest request,Map<String,String> extraParams){
+		Map<String, Object> map = new HashMap<String, Object>();
+		Enumeration enume = request.getParameterNames();
+		while(enume.hasMoreElements()){
+			Object item = enume.nextElement();
+			String paramName = item.toString();
+			System.out.println(paramName + "..........." +request.getParameter(paramName) );
+			String value = request.getParameter(paramName);
+			String[] values = request.getParameterValues(paramName);
+			if(values.length>1){
+				String va=values[0];
+				for(int i=1;i<values.length;i++){
+					va+=","+values[i];
+				}
+				value=va;
+			}
+			map.put(paramName, value);
+		}
+		map.putAll(extraParams);
+		return map;
+	}
 	public static String requestParamtoString(HttpServletRequest request){
 		
 		StringBuffer buffer = new StringBuffer("?");
@@ -161,10 +189,26 @@ public final class HttpUtil {
 		}
 		return buffer.subSequence(0, buffer.length()-1).toString();
 	}
-	public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> map){
+	public static String getAPIUrl(String apiName){
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(API_URL).append(apiName);
+		return buffer.toString();
+	}
+	
+	public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
 		RestTemplate restTemplate = new RestTemplate();
-		String message = restTemplate.postForObject(getAPIUrl(request,apiName,map), null,String.class);
+		String message = restTemplate.postForObject(getAPIUrl(request,apiName,extraParams), null,String.class);
 		return message;
 	}
+	/*public static String getResultFromDBAPI(HttpServletRequest request,String apiName,Map<String,String> extraParams){
+		RestTemplate restTemplate = new RestTemplate();
+		
+		String message = restTemplate.postForObject(getAPIUrl(apiName),
+													null,
+													String.class,
+													requestParam2Map(request, extraParams));
+		return message;
+	}*/
 }
 

@@ -84,7 +84,24 @@ public class DbController {
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}	
+	}
+	
+	
+	@RequestMapping(value="/toAudit")
+	public String toAudit(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/db_audit_form";
+	}
+	@RequestMapping(value="/audit")
+	public String audit(HttpServletRequest request,HttpServletResponse response){
+		String[] names = request.getParameterValues("mclusterName");
+		String[] ips = request.getParameterValues("ip");
+		for (String string : names) {
+			System.out.println("mclusterName:" + string);
 		}
-		
+		for (String string : ips) {
+			System.out.println("ip:" + string);
+		}
+		return "/clouddb/db_audit_form";
 	}
 }

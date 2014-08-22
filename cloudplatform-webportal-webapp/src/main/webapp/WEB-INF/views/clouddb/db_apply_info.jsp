@@ -32,41 +32,12 @@
 				</div>
 				<div class="col-md-9 column">
 					<div class="col-sm-10">
-					<table class="table table-bordered">
-						<tr>
-							<td>项目名称</td>
-							<td>Mcluster-webportal-开发团队</td>
-						</tr>
-						<tr>
-							<td>存储引擎</td>
-							<td>InnoDB</td>
-						</tr>
-						<tr>
-							<td>需求人</td>
-							<td>贾跃亭</td>
-						</tr>
-						<tr>
-							<td>原数据IP</td>
-							<td>192.168.30.49</td>
-						</tr>
-						<tr>
-							<td>原数据库port</td>
-							<td>3306</td>
-						</tr>
-						<tr>
-							<td>原数据库名</td>
-							<td>Mcluster_db</td>
-						</tr>
-						<tr>
-							<td>开发语言</td>
-							<td>java</td>
-						</tr>
+					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">		
 					</table>
-
 					</div>
-					<div class="col-sm-10">
+<!-- 					<div class="col-sm-10">
 						<button id="db_apply_modify" type="submit" class="btn btn-default">修改</button>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -74,8 +45,60 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$('#db_apply_modify').on('click', function() {
-		$(this).button('loading')
-	location.href = "./db_applyform.jsp";
+$(function(){
+
+});
+function queryByDbId(dbId) {
+	$("#db_detail_table tr").remove();
+	$.ajax({ 
+		type : "post",
+		url : "${ctx}/db/dbApplyStandard/getByDbId?belongDb"
+				+"fb7241cc-5438-403b-a815-08c5c3ed67aa",
+				/* + "&dbName="
+				+ $("#dbName").val() */
+		dataType : "json", /*这句可用可不用，没有影响*/
+		contentType : "application/json; charset=utf-8",
+		success : function(data) {
+			var array = data.data;
+			var tby = $("#db_detail_table");
+			
+			for (var i = 0, len = array.length; i < len; i++) {
+				var td1 = $("<td>"
+						+ array[i].dbName
+						+ "</td>");
+				var td2 = $("<td>"
+						+ array[i].cluster.mclusterName
+						+ "</td>");
+				var td3 = $("<td>"
+						+ array[i].createTime
+						+ "</td>");
+				var td4 = $("<td>"
+						+ translateStatus(array[i].status)
+						+ "</td>");
+				if(array[i].status == 2){
+					var tr = $("<tr class=\"danger\"></tr>");
+				}else{
+					var tr = $("<tr></tr>");
+				}
+				
+				tr.append(td1).append(td2).append(td3).append(td4);
+				tr.appendTo(tby);
+			}
+			if (totalPages <= 1) {
+				$("#pageControlBar").hide();
+			} else {
+				$("#pageControlBar").show();
+				$("#totalPage_input").val(totalPages);
+				$("#currentPage").html(currentPage);
+				$("#totalRows").html(data.data.totalRecords);
+				$("#totalPage").html(totalPages);
+				//循环json中的数据 
+			}
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
+		}
+	});
+}
 </script>
 </html>
