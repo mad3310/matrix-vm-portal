@@ -3,6 +3,7 @@ package com.letv.portal.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.util.HttpUtil;
 
@@ -79,7 +79,7 @@ public class DbController {
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			out = response.getWriter();
-			out.write(HttpUtil.getResultFromDBAPI(request,"/db/dbApplyInfo",map));
+			out.write(HttpUtil.getResultFromDBAPI(request,"/dbApplyStandard/getByDbId",map));
 			out.flush();
 			out.close();
 		} catch (IOException e) {
@@ -88,20 +88,4 @@ public class DbController {
 	}
 	
 	
-	@RequestMapping(value="/toAudit")
-	public String toAudit(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/db_audit_form";
-	}
-	@RequestMapping(value="/audit")
-	public String audit(HttpServletRequest request,HttpServletResponse response){
-		String[] names = request.getParameterValues("mclusterName");
-		String[] ips = request.getParameterValues("ip");
-		for (String string : names) {
-			System.out.println("mclusterName:" + string);
-		}
-		for (String string : ips) {
-			System.out.println("ip:" + string);
-		}
-		return "/clouddb/db_audit_form";
-	}
 }

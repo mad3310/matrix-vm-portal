@@ -32,7 +32,8 @@
 				</div>
 				<div class="col-md-9 column">
 					<div class="col-sm-10">
-					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">		
+					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
+						
 					</table>
 					</div>
 <!-- 					<div class="col-sm-10">
@@ -46,54 +47,35 @@
 </body>
 <script type="text/javascript">
 $(function(){
-
+	queryByDbId("fb7241cc-5438-403b-a815-08c5c3ed67aa");
 });
 function queryByDbId(dbId) {
-	$("#db_detail_table tr").remove();
+//	$("#db_detail_table tr").remove();
 	$.ajax({ 
 		type : "post",
-		url : "${ctx}/db/dbApplyStandard/getByDbId?belongDb"
-				+"fb7241cc-5438-403b-a815-08c5c3ed67aa",
+		url : "${ctx}/db/list/dbApplyInfo?belongDb="
+				+dbId,
 				/* + "&dbName="
 				+ $("#dbName").val() */
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			var array = data.data;
-			var tby = $("#db_detail_table");
 			
-			for (var i = 0, len = array.length; i < len; i++) {
-				var td1 = $("<td>"
-						+ array[i].dbName
-						+ "</td>");
-				var td2 = $("<td>"
-						+ array[i].cluster.mclusterName
-						+ "</td>");
-				var td3 = $("<td>"
-						+ array[i].createTime
-						+ "</td>");
-				var td4 = $("<td>"
-						+ translateStatus(array[i].status)
-						+ "</td>");
-				if(array[i].status == 2){
-					var tr = $("<tr class=\"danger\"></tr>");
-				}else{
-					var tr = $("<tr></tr>");
-				}
-				
-				tr.append(td1).append(td2).append(td3).append(td4);
-				tr.appendTo(tby);
-			}
-			if (totalPages <= 1) {
-				$("#pageControlBar").hide();
-			} else {
-				$("#pageControlBar").show();
-				$("#totalPage_input").val(totalPages);
-				$("#currentPage").html(currentPage);
-				$("#totalRows").html(data.data.totalRecords);
-				$("#totalPage").html(totalPages);
-				//循环json中的数据 
-			}
+			var value = data.data;
+			var apply_table = $("#db_detail_table");
+
+			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
+			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
+			apply_table.append("<tr><td>最大访问量</td><td>"+value.maxConcurrency+"</td></tr>");
+			apply_table.append("<tr><td>开发语言</td><td>"+value.developLanguage+"</td></tr>");
+			apply_table.append("<tr><td>IP访问列表</td><td>"+value.dataLimitIpList+"</td></tr>");
+			apply_table.append("<tr><td>管理IP访问列表</td><td>"+value.mgrLimitIpList+"</td></tr>");
+			apply_table.append("<tr><td>数据库引擎</td><td>"+value.engineType+"</td></tr>");
+			apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
+			apply_table.append("<tr><td>原始数据库IP</td><td>"+value.fromDbIp+"</td></tr>");
+			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>");
+			apply_table.append("<tr><td>邮件通知</td><td>"+value.isEmailNotice+"</td></tr>");
+			apply_table.append("<tr><td>申请时间</td><td>"+value.createTime+"</td></tr>");
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
