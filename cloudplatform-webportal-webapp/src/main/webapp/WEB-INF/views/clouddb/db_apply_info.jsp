@@ -65,8 +65,10 @@ function queryByDbId(dbId) {
 			var apply_table = $("#db_detail_table");
 
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
+			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
 			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
-			apply_table.append("<tr><td>最大访问量</td><td>"+value.maxConcurrency+"</td></tr>");
+			apply_table.append("<tr><td>最大访问量</td><td>"+value.maxConcurrency+"/s</td></tr>");
+			apply_table.append("<tr><td>读写比例</td><td>"+value.readWriterRate+"</td></tr>");
 			apply_table.append("<tr><td>开发语言</td><td>"+value.developLanguage+"</td></tr>");
 			apply_table.append("<tr><td>IP访问列表</td><td>"+value.dataLimitIpList+"</td></tr>");
 			apply_table.append("<tr><td>管理IP访问列表</td><td>"+value.mgrLimitIpList+"</td></tr>");
@@ -74,7 +76,7 @@ function queryByDbId(dbId) {
 			apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
 			apply_table.append("<tr><td>原始数据库IP</td><td>"+value.fromDbIp+"</td></tr>");
 			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>");
-			apply_table.append("<tr><td>邮件通知</td><td>"+value.isEmailNotice+"</td></tr>");
+			apply_table.append("<tr><td>邮件通知</td><td>"+translateStatus(value.isEmailNotice)+"</td></tr>");
 			apply_table.append("<tr><td>申请时间</td><td>"+value.createTime+"</td></tr>");
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {

@@ -71,13 +71,29 @@ var currentPage = 1; //第几页
 var recordsPerPage = 10; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
-	 $(function(){
+	$(function(){
 		$("#sqlcluster").addClass("active");//高亮显示页面名
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
+		
 		$("#pageMessage").hide();
+		//搜索
+		$("#searchButton").click(function() {
+			queryByPage(currentPage,recordsPerPage);
+		});
+		//申请数据库button跳转
+		$("#db_apply").click(function() {
+			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
+		});
+		//获取当前选中行dbName
+		$("#db_list tr").click(function() {
+		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
+			alert($(this).children("td:first").text());
+			currentSelectedLineDbName = $(this).children("td:first").text();
+		});
 	});	
+	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
 		$.ajax({ 
@@ -181,25 +197,7 @@ var currentSelectedLineDbName = 1;
 			currentPage = $("#totalPage_input").val();
 			queryByPage(currentPage,recordsPerPage);
 		});
-		//搜索
-		$("#searchButton").click(function() {
-			queryByPage(currentPage,recordsPerPage);
-		});
-		//申请数据库button跳转
-		$("#db_apply").click(function() {
-			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
-		});
-		//获取当前选中行dbName
-		$("#db_list tr").click(function() {
-		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
-			alert($(this).children("td:first").text());
-			currentSelectedLineDbName = $(this).children("td:first").text();
-		});
-		//申请数据库button跳转
-		$("#db_apply_info").click(function() {
-			alert("${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName);
-			location.href = "${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName;
-		});
+		
 	}
 </script>
 </html>

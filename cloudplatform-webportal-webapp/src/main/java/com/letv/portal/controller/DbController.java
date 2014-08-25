@@ -21,7 +21,6 @@ public class DbController {
 	public String list(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/db_list";
 	}	
-	
 	@RequestMapping(value="/toForm")
 	public String toForm(HttpServletRequest request,HttpServletResponse response){
 		request.setAttribute("clusterId", request.getParameter("clusterId"));
@@ -44,8 +43,7 @@ public class DbController {
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 	
 	@RequestMapping("/save")   //http://localhost:8080/mcluster/save
@@ -87,5 +85,29 @@ public class DbController {
 		}	
 	}
 	
+	@RequestMapping(value="/mgrAudit/list")
+	public String mgrAuditList(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mgr_audit_db_list";
+	}	
 	
+
+	@RequestMapping(value="/toMgrAudit")
+	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mgr_audit_db";
+	}
+
+	@RequestMapping("/toMgrAudit/save")   //http://localhost:8080/mcluster/save
+	public String toMgrAuditSave(HttpServletRequest request,HttpServletResponse response) {
+		
+		//取出session中用户id，追加到http rest请求中
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("createUser", (String) request.getSession().getAttribute("userId"));
+		map.put("status", "1");
+		
+		String result = HttpUtil.getResultFromDBAPI(request,"/container/save",map);
+		if(result.contains("\"result\":1")) {
+			return "redirect:/db/mgrAudit/list";
+		}
+		return "/common/error";
+	}
 }
