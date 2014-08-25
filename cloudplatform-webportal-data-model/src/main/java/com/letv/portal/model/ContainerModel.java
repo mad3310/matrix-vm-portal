@@ -13,14 +13,26 @@ public class ContainerModel extends BaseModel {
 	private static final long serialVersionUID = 4029730587083735122L;
 	
 	private String id;   //主键ID
-	private String nodeName; //节点名称
-	private String nodeIp; //节点ip
-	private String clusterId; //所属cluster
-	private String hostId;  //所属host
+	private String containerName; //节点名称  
+	private String mountDir; //挂载路径
+	private String zookeeperId;
+	private String ipAddr; //节点ip  
+	
+	private String geteAddr; //网关
+	private String ipMask; //子网掩码
+	private String clusterNodeName; //cluster名称
+	private String assignName; 
+	private String originName;
+	private String type; // VIP or normal
+	
+	
 	private Integer diskSize; //磁盘大小
 	private Integer coresNumber; //cpu内核数
 	private Integer cpuSpeed; //cpu速度 
 	private Integer memorySize; //内存大小
+	
+	private String hostId;  //所属host
+	private String clusterId; //所属cluster
 	
 	private String status; //状态:0:停止  1:正常
 	private String isDeleted; //是否删除   0:无效 1:有效
@@ -33,18 +45,6 @@ public class ContainerModel extends BaseModel {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getNodeName() {
-		return nodeName;
-	}
-	public void setNodeName(String nodeName) {
-		this.nodeName = nodeName;
-	}
-	public String getNodeIp() {
-		return nodeIp;
-	}
-	public void setNodeIp(String nodeIp) {
-		this.nodeIp = nodeIp;
 	}
 	public String getClusterId() {
 		return clusterId;
@@ -118,17 +118,80 @@ public class ContainerModel extends BaseModel {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	public String getContainerName() {
+		return containerName;
+	}
+	public void setContainerName(String containerName) {
+		this.containerName = containerName;
+	}
+	public String getMountDir() {
+		return mountDir;
+	}
+	public void setMountDir(String mountDir) {
+		this.mountDir = mountDir;
+	}
+	public String getZookeeperId() {
+		return zookeeperId;
+	}
+	public void setZookeeperId(String zookeeperId) {
+		this.zookeeperId = zookeeperId;
+	}
+	public String getIpAddr() {
+		return ipAddr;
+	}
+	public void setIpAddr(String ipAddr) {
+		this.ipAddr = ipAddr;
+	}
+	public String getGeteAddr() {
+		return geteAddr;
+	}
+	public void setGeteAddr(String geteAddr) {
+		this.geteAddr = geteAddr;
+	}
+	public String getIpMask() {
+		return ipMask;
+	}
+	public void setIpMask(String ipMask) {
+		this.ipMask = ipMask;
+	}
+	public String getClusterNodeName() {
+		return clusterNodeName;
+	}
+	public void setClusterNodeName(String clusterNodeName) {
+		this.clusterNodeName = clusterNodeName;
+	}
+	public String getAssignName() {
+		return assignName;
+	}
+	public void setAssignName(String assignName) {
+		this.assignName = assignName;
+	}
+	public String getOriginName() {
+		return originName;
+	}
+	public void setOriginName(String originName) {
+		this.originName = originName;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	@Override
 	public String toString() {
-		return "ContainerModel [id=" + id + ", nodeName=" + nodeName
-				+ ", nodeIp=" + nodeIp + ", clusterId=" + clusterId
-				+ ", hostId=" + hostId + ", diskSize=" + diskSize
+		return "ContainerModel [id=" + id + ", containerName=" + containerName
+				+ ", mountDir=" + mountDir + ", zookeeperId=" + zookeeperId
+				+ ", ipAddr=" + ipAddr + ", geteAddr=" + geteAddr + ", ipMask="
+				+ ipMask + ", clusterNodeName=" + clusterNodeName
+				+ ", assignName=" + assignName + ", originName=" + originName
+				+ ", type=" + type + ", diskSize=" + diskSize
 				+ ", coresNumber=" + coresNumber + ", cpuSpeed=" + cpuSpeed
-				+ ", memorySize=" + memorySize + ", status=" + status
+				+ ", memorySize=" + memorySize + ", hostId=" + hostId
+				+ ", clusterId=" + clusterId + ", status=" + status
 				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
 				+ ", createUser=" + createUser + ", updateTime=" + updateTime
 				+ ", updateUser=" + updateUser + "]";
 	}
-	
 	
 }
