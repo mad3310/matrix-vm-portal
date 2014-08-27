@@ -47,6 +47,12 @@ public class DbApplyStandardModel extends BaseModel {
 	private String updateTime;
 	private String updateUser;
 	
+	public DbApplyStandardModel(){}
+	public DbApplyStandardModel(String id,String status){
+		this.id = id;
+		this.status = status;
+	}
+	
 	public String getId() {
 		return id;
 	}

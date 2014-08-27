@@ -17,7 +17,7 @@ public class HostModel extends BaseModel {
 	private String hostIp; //主机ip
 	private Integer nodesNumber; //节点个数
 	private String hostModel; //主机型号
-	private String cpu_model; //cpu型号
+	private String cpuModel; //cpu型号
 	private Integer coresNumber; //cpu核数
 	private Integer memorySize; //内存大小
 	private Integer diskSize; //磁盘大小
@@ -60,11 +60,12 @@ public class HostModel extends BaseModel {
 	public void setHostModel(String hostModel) {
 		this.hostModel = hostModel;
 	}
-	public String getCpu_model() {
-		return cpu_model;
+	
+	public String getCpuModel() {
+		return cpuModel;
 	}
-	public void setCpu_model(String cpu_model) {
-		this.cpu_model = cpu_model;
+	public void setCpuModel(String cpuModel) {
+		this.cpuModel = cpuModel;
 	}
 	public Integer getCoresNumber() {
 		return coresNumber;
@@ -130,7 +131,7 @@ public class HostModel extends BaseModel {
 	public String toString() {
 		return "HostModel [id=" + id + ", hostName=" + hostName + ", hostIp="
 				+ hostIp + ", nodesNumber=" + nodesNumber + ", hostModel="
-				+ hostModel + ", cpu_model=" + cpu_model + ", coresNumber="
+				+ hostModel + ", cpuModel=" + cpuModel + ", coresNumber="
 				+ coresNumber + ", memorySize=" + memorySize + ", diskSize="
 				+ diskSize + ", diskUsed=" + diskUsed + ", status=" + status
 				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime

@@ -3,6 +3,7 @@ package com.letv.portal.service;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 
 /**Program Name: IMclusterService <br>
@@ -22,4 +23,15 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	
+	
+	
+	/**Methods Name: build <br>
+	 * Description: 创建mcluster<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @return
+	 */
+	public String build(String mclusterId);
+	
 }

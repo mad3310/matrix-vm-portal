@@ -130,6 +130,15 @@
 		</if>
 		where ID = #{id}
 	</update>
+	
+	<!--  审批状态，将deleted 改成 0或1 -->
+	<update id="audit" parameterType="Db">
+		update WEBPORTAL_DB set
+		<if test="status != null  ">
+			status=#{status}
+		</if>
+		where ID = #{id}
+	</update>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">

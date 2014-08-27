@@ -14,6 +14,7 @@
         <typeAlias alias="Db" type="com.letv.portal.model.DbModel" />
         <typeAlias alias="DbStandard" type="com.letv.portal.model.DbApplyStandardModel" />
         <typeAlias alias="Container" type="com.letv.portal.model.ContainerModel" />
+        <typeAlias alias="Host" type="com.letv.portal.model.HostModel" />
         
         
         

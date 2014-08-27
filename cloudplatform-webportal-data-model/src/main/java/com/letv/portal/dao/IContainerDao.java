@@ -3,7 +3,6 @@ package com.letv.portal.dao;
 import java.util.List;
 
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbApplyStandardModel;
 
 /**Program Name: IContainerDao <br>
  * Description:  <br>
@@ -22,5 +21,5 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<DbApplyStandardModel> selectByClusterId(String clusterId);
+	public List<ContainerModel> selectByClusterId(String clusterId);
 }

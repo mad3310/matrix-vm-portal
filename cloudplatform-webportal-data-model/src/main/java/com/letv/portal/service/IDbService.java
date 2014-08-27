@@ -1,8 +1,10 @@
 package com.letv.portal.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 
 
@@ -23,4 +25,24 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	
+	
+	/**Methods Name: build <br>
+	 * Description: 创建db<br>
+	 * @author name: liuhao1
+	 * @param dbModel
+	 * @return
+	 */
+	public String build(DbModel dbModel);
+	
+	
+	/**Methods Name: audit <br>
+	 * Description: 审核db，并保存container信息<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param dbApplyStandardId
+	 * @param containers
+	 * @return
+	 */
+	public void audit(String dbId,String dbApplyStandardId,List<ContainerModel> containers);
 }

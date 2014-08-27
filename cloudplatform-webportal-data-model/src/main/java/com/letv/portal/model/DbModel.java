@@ -25,6 +25,12 @@ public class DbModel extends BaseModel {
 	private String updateTime;
 	private String updateUser;
 	
+	public DbModel(){}
+	public DbModel(String id,String status){
+		this.id = id;
+		this.status = status;
+	}
+	
 	public String getId() {
 		return id;
 	}

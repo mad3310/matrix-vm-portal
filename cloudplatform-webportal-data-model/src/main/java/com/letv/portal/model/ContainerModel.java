@@ -18,7 +18,7 @@ public class ContainerModel extends BaseModel {
 	private String zookeeperId;
 	private String ipAddr; //节点ip  
 	
-	private String geteAddr; //网关
+	private String gateAddr; //网关
 	private String ipMask; //子网掩码
 	private String clusterNodeName; //cluster名称
 	private String assignName; 
@@ -142,11 +142,11 @@ public class ContainerModel extends BaseModel {
 	public void setIpAddr(String ipAddr) {
 		this.ipAddr = ipAddr;
 	}
-	public String getGeteAddr() {
-		return geteAddr;
+	public String getGateAddr() {
+		return gateAddr;
 	}
-	public void setGeteAddr(String geteAddr) {
-		this.geteAddr = geteAddr;
+	public void setGateAddr(String gateAddr) {
+		this.gateAddr = gateAddr;
 	}
 	public String getIpMask() {
 		return ipMask;
@@ -182,7 +182,7 @@ public class ContainerModel extends BaseModel {
 	public String toString() {
 		return "ContainerModel [id=" + id + ", containerName=" + containerName
 				+ ", mountDir=" + mountDir + ", zookeeperId=" + zookeeperId
-				+ ", ipAddr=" + ipAddr + ", geteAddr=" + geteAddr + ", ipMask="
+				+ ", ipAddr=" + ipAddr + ", gateAddr=" + gateAddr + ", ipMask="
 				+ ipMask + ", clusterNodeName=" + clusterNodeName
 				+ ", assignName=" + assignName + ", originName=" + originName
 				+ ", type=" + type + ", diskSize=" + diskSize

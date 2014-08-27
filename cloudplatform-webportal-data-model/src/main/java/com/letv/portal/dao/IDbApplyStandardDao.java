@@ -1,6 +1,7 @@
 package com.letv.portal.dao;
 
 import com.letv.portal.model.DbApplyStandardModel;
+import com.letv.portal.model.DbModel;
 
 /**Program Name: IDbApplyStandardDao <br>
  * Description:  <br>
@@ -18,4 +19,12 @@ public interface IDbApplyStandardDao extends IBaseDao<DbApplyStandardModel> {
 	 * @return
 	 */
 	public DbApplyStandardModel selectByDbId(String belongDb);
+	
+	
+	/**Methods Name: audit <br>
+	 * Description: 审核<br>
+	 * @author name: liuhao1
+	 * @param dbApplyStandardModel
+	 */
+	public void audit(DbApplyStandardModel dbApplyStandardModel);
 }

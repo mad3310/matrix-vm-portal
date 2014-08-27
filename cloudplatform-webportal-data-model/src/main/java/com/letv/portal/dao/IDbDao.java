@@ -12,4 +12,10 @@ import com.letv.portal.model.DbModel;
  */
 public interface IDbDao extends IBaseDao<DbModel> {
 	
+	/**Methods Name: audit <br>
+	 * Description: 审核<br>
+	 * @author name: liuhao1
+	 * @param dbModel
+	 */
+	public void audit(DbModel dbModel);
 }

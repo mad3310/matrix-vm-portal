@@ -12,7 +12,7 @@
 		<result column="MOUNT_DIR" property="mountDir" />
 		<result column="ZOOKEEPER_ID" property="zookeeperId" />
 		<result column="IP_ADDR" property="ipAddr" />
-		<result column="GETE_ADDR" property="geteAddr" />
+		<result column="GATE_ADDR" property="gateAddr" />
 		<result column="IP_MASK" property="ipMask" />
 		<result column="CLUSTER_NODE_NAME" property="clusterNodeName" />
 		<result column="ASSIGN_NAME" property="assignName" />
@@ -37,7 +37,7 @@
 	
 	<!-- WEBPORTAL_CONTAINER table all fields -->
 	<sql id="Base_Column_List">
-		ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GETE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
+		ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
@@ -45,10 +45,10 @@
 	<insert id="insert" parameterType="Container">
 		insert into
 		WEBPORTAL_CONTAINER
-		(ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GETE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
+		(ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{geteAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
+		(UUID(),#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
 		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{clusterId},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
