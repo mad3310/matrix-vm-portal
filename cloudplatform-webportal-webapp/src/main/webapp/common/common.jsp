@@ -10,7 +10,7 @@
 %>
 
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="${ctx}/static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+<%-- <link href="${ctx}/static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet"> --%>
 <link href="${ctx}/static/styles/style.css" rel="stylesheet"></link>
 
 <script src="${ctx}/static/scripts/jquery/jquery.min.js"></script>
@@ -24,3 +24,6 @@
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
 <script src="${ctx}/static/scripts/bootstrap/bootstrap-switch.min.js"></script>
 
+<!-- bootstrap-duallistbox 左右选框 -->
+<link href="${ctx}/static/styles/bootstrap/css/bootstrap-duallistbox.min.css" rel="stylesheet">
+<script src="${ctx}/static/scripts/bootstrap/bootstrap-duallistbox.js"></script>

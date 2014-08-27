@@ -17,7 +17,6 @@ import com.letv.common.util.HttpUtil;
 @RequestMapping("/mcluster")
 public class MclusterController {
 	
-	
 	@RequestMapping("/list/data")   //http://localhost:8080/mcluster/list/data
 	public void listData(HttpServletRequest request,HttpServletResponse response) {
 		//取出session中用户id，追加到http rest请求中
@@ -50,10 +49,10 @@ public class MclusterController {
 		}
 		
 	}
-	@RequestMapping("/list")   //http://localhost:8080/mcluster/list
+	/*@RequestMapping("/list")   //http://localhost:8080/mcluster/list
 	public String list(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mcluster_list";
-	}
+	}*/
 	@RequestMapping("/mgrList")   //http://localhost:8080/mcluster/list
 	public String mgr_list(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mgr_mcluster_list";
@@ -76,6 +75,11 @@ public class MclusterController {
 			return "redirect:/mcluster/list";
 		}
 		return "/common/error";
+	}
+	
+	@RequestMapping(value="/mclusterInfo")
+	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mcluster_info";
 	}
 
 }

@@ -39,18 +39,6 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="db_name">用户名</label>
-						<div class="col-sm-4">
-							<input class="form-control" name="applyName" id="applyName" type="text" />
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="db_password">密码</label>
-						<div class="col-sm-4">
-							<input class="form-control" name="applyName" id="applyName" type="text" />
-						</div>
-					</div>
-					<div class="form-group">
 						<label class="col-sm-2 control-label" for="business_description">业务描述</label>
 						<div class="col-sm-8">
 							<textarea name="descn" id="descn" class="form-control" rows="3"></textarea>

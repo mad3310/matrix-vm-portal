@@ -3,12 +3,12 @@ package com.letv.portal.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,7 +20,13 @@ public class DbController {
 	@RequestMapping(value="/list")
 	public String list(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/db_list";
-	}	
+	}
+	
+	@RequestMapping(value="/mgrList")
+	public String mgrList(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mgr_db_list";
+	}
+	
 	@RequestMapping(value="/toForm")
 	public String toForm(HttpServletRequest request,HttpServletResponse response){
 		request.setAttribute("clusterId", request.getParameter("clusterId"));
@@ -29,10 +35,12 @@ public class DbController {
 	
 	@RequestMapping("/list/data")   //http://localhost:8080/db/list/data
 	public void listData(HttpServletRequest request,HttpServletResponse response) {
-		
-		//取出session中用户id，追加到http rest请求中
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("createUser", (String) request.getSession().getAttribute("userId"));
+		String flag = request.getParameter("flag");
+		if("self".equals(flag)){
+			//取出session中用户id，追加到http rest请求中
+			map.put("createUser", (String) request.getSession().getAttribute("userId"));
+		}
 				
 		PrintWriter out;
 		try {
@@ -93,6 +101,16 @@ public class DbController {
 
 	@RequestMapping(value="/toMgrAudit")
 	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
+		String result = HttpUtil.getResultFromDBAPI(request,"/host/list",null);
+		System.out.println(result);
+		ObjectMapper mapper = new ObjectMapper();
+		Map map = null;
+		try {
+			map = mapper.readValue(result, Map.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		request.setAttribute("list", map.get("data"));
 		return "/clouddb/mgr_audit_db";
 	}
 
@@ -104,7 +122,7 @@ public class DbController {
 		map.put("createUser", (String) request.getSession().getAttribute("userId"));
 		map.put("status", "1");
 		
-		String result = HttpUtil.getResultFromDBAPI(request,"/container/save",map);
+		String result = HttpUtil.getResultFromDBAPI(request,"/db/audit/save",map);
 		if(result.contains("\"result\":1")) {
 			return "redirect:/db/mgrAudit/list";
 		}

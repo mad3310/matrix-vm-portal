@@ -15,7 +15,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-left">DB详情</h3>
+					<h3 class="text-left">Mcluster详情</h3>
 				</div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
@@ -33,16 +33,47 @@
 				<div class="col-md-9 column">
 					<div class="col-sm-10">
 					<button type="button" class="btn btn-default">返回</button>
-					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
-					<caption>数据库信息</caption>
+					
+					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
+						<caption>container</caption>
+						<tr><td>名称</td><td>node1</td></tr>
+						<tr><td>ip</td><td>192.168.10.11</td></tr>
+						<tr><td>网关</td><td>192.168.10.1</td></tr>
+						<tr><td>掩码</td><td>24</td></tr>
+						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
+						<tr><td>zookeeper</td><td>1</td></tr>
 					</table>
-					<table class="table table-bordered" id="db_apply_table" name="db_apply_table">
-					<caption>申请信息</caption>
+					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
+						<caption>container</caption>
+						<tr><td>名称</td><td>node1</td></tr>
+						<tr><td>ip</td><td>192.168.10.11</td></tr>
+						<tr><td>网关</td><td>192.168.10.1</td></tr>
+						<tr><td>掩码</td><td>24</td></tr>
+						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
+						<tr><td>zookeeper</td><td>1</td></tr>
 					</table>
-					</div>
+					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
+						<caption>container</caption>
+						<tr><td>名称</td><td>node1</td></tr>
+						<tr><td>ip</td><td>192.168.10.11</td></tr>
+						<tr><td>网关</td><td>192.168.10.1</td></tr>
+						<tr><td>掩码</td><td>24</td></tr>
+						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
+						<tr><td>zookeeper</td><td>1</td></tr>
+					</table>
+					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
+						<caption>container</caption>
+						<tr><td>名称</td><td>node1</td></tr>
+						<tr><td>ip</td><td>192.168.10.11</td></tr>
+						<tr><td>网关</td><td>192.168.10.1</td></tr>
+						<tr><td>掩码</td><td>24</td></tr>
+						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
+						<tr><td>zookeeper</td><td>1</td></tr>
+					</table>
 <!-- 					<div class="col-sm-10">
 						<button id="db_apply_modify" type="submit" class="btn btn-default">修改</button>
 					</div> -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -58,7 +89,7 @@ function queryByDbId(dbId) {
 //	$("#db_detail_table tr").remove();
 	$.ajax({ 
 		type : "post",
-		url : "${ctx}/db/list/dbApplyInfo?belongDb="
+		url : "${ctx}/db/list/mclusterInfo?belongDb="
 				+dbId,
 				/* + "&dbName="
 				+ $("#dbName").val() */
@@ -67,31 +98,14 @@ function queryByDbId(dbId) {
 		success : function(data) {
 			
 			var value = data.data;
-			var apply_detail = $("#db_detail_table");
-			var apply_table = $("#db_apply_table");
-			
-			apply_detail.append("<tr><td>数据库名</td><td>"+"hello world"+"</td></tr>");
-			apply_detail.append("<tr><td>用户名</td><td>"+"hello"+"</td></tr>");
-			apply_detail.append("<tr><td>密码</td><td>"+"*************************************"+"</td></tr>");
-			apply_detail.append("<tr><td>VIP</td><td>"+"182.182.182.182"+"</td></tr>");
-			apply_detail.append("<tr><td>container_1_ip</td><td>"+"182.182.182.183"+"</td></tr>");
-			apply_detail.append("<tr><td>container_2_ip</td><td>"+"182.182.182.184"+"</td></tr>");
-			apply_detail.append("<tr><td>container_3_ip</td><td>"+"182.182.182.185"+"</td></tr>");
-
-			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
-			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
-			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
-			apply_table.append("<tr><td>最大访问量</td><td>"+value.maxConcurrency+"/s</td></tr>");
-			apply_table.append("<tr><td>读写比例</td><td>"+value.readWriterRate+"</td></tr>");
-			apply_table.append("<tr><td>开发语言</td><td>"+value.developLanguage+"</td></tr>");
-			apply_table.append("<tr><td>IP访问列表</td><td>"+value.dataLimitIpList+"</td></tr>");
-			apply_table.append("<tr><td>管理IP访问列表</td><td>"+value.mgrLimitIpList+"</td></tr>");
-			apply_table.append("<tr><td>数据库引擎</td><td>"+value.engineType+"</td></tr>");
-			apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
-			apply_table.append("<tr><td>原始数据库IP</td><td>"+value.fromDbIp+"</td></tr>");
-			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>");
-			apply_table.append("<tr><td>邮件通知</td><td>"+translateStatus(value.isEmailNotice)+"</td></tr>");
-			apply_table.append("<tr><td>申请时间</td><td>"+value.createTime+"</td></tr>");
+			var mcluster_detail_table = $("#Mcluster_detail_table");
+				mcluster_detail_table.append("<caption>"+container+"</caption>");
+				mcluster_detail_table.append("<tr><td>名称</td><td>"+"node1"+"</td></tr>");
+				mcluster_detail_table.append("<tr><td>ip</td><td>"+"192.168.10.11"+"</td></tr>");
+				mcluster_detail_table.append("<tr><td>网关</td><td>"+"192.168.10.1"+"</td></tr>");
+				mcluster_detail_table.append("<tr><td>掩码</td><td>"+"24"+"</td></tr>");
+				mcluster_detail_table.append("<tr><td>挂载路径</td><td>"+"/opt;/mnt/db:/srv/db"+"</td></tr>");
+				mcluster_detail_table.append("<tr><td>zookeeper</td><td>"+"1"+"</td></tr>");
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);

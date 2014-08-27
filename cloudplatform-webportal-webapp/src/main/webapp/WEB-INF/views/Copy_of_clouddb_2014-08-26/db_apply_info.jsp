@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>数据库详情</title>
+<title>数据库申请详情</title>
 
 </head>
 <body>
@@ -15,7 +15,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
-					<h3 class="text-left">DB详情</h3>
+					<h3 class="text-left">DB申请内容</h3>
 				</div>
 				<hr
 					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
@@ -32,12 +32,8 @@
 				</div>
 				<div class="col-md-9 column">
 					<div class="col-sm-10">
-					<button type="button" class="btn btn-default">返回</button>
 					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
-					<caption>数据库信息</caption>
-					</table>
-					<table class="table table-bordered" id="db_apply_table" name="db_apply_table">
-					<caption>申请信息</caption>
+						
 					</table>
 					</div>
 <!-- 					<div class="col-sm-10">
@@ -51,8 +47,7 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	var dbId = request("belongDb");
-	queryByDbId(dbId);
+	queryByDbId("fb7241cc-5438-403b-a815-08c5c3ed67aa");
 });
 function queryByDbId(dbId) {
 //	$("#db_detail_table tr").remove();
@@ -67,16 +62,7 @@ function queryByDbId(dbId) {
 		success : function(data) {
 			
 			var value = data.data;
-			var apply_detail = $("#db_detail_table");
-			var apply_table = $("#db_apply_table");
-			
-			apply_detail.append("<tr><td>数据库名</td><td>"+"hello world"+"</td></tr>");
-			apply_detail.append("<tr><td>用户名</td><td>"+"hello"+"</td></tr>");
-			apply_detail.append("<tr><td>密码</td><td>"+"*************************************"+"</td></tr>");
-			apply_detail.append("<tr><td>VIP</td><td>"+"182.182.182.182"+"</td></tr>");
-			apply_detail.append("<tr><td>container_1_ip</td><td>"+"182.182.182.183"+"</td></tr>");
-			apply_detail.append("<tr><td>container_2_ip</td><td>"+"182.182.182.184"+"</td></tr>");
-			apply_detail.append("<tr><td>container_3_ip</td><td>"+"182.182.182.185"+"</td></tr>");
+			var apply_table = $("#db_detail_table");
 
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
 			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
@@ -97,30 +83,6 @@ function queryByDbId(dbId) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
 		}
 	});
-}
-function request(paras)
-{ 
-    var url = location.href; 
-    var paraString = url.substring(url.indexOf("?")+1,url.length).split("&"); 
-    var paraObj = {} 
-    for (i=0; j=paraString[i]; i++){ 
-    paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length); 
-    } 
-    var returnValue = paraObj[paras.toLowerCase()]; 
-    if(typeof(returnValue)=="undefined"){ 
-    return ""; 
-    }else{ 
-    return returnValue; 
-    } 
-}
-
-function translateStatus(status){
-	if(status = 1)
-	{
-		return "是";
-	}else{
-		return "否";
-	}
 }
 </script>
 </html>

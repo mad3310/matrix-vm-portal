@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>运维管理</title>
+<title>管理员审批</title>
 </head>
 <body>
 	<div class="container">
@@ -14,7 +14,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-3">
-					<h3 class="text-left">运维管理</h3>
+					<h3 class="text-left">DB管理</h3>
 				</div>
 				<div  class="col-md-6">
 					<div id="pageMessage"></div>
@@ -22,7 +22,8 @@
 				<div class="col-md-3">
 					<form class="navbar-form navbar-right" role="search">
 						<div class="form-group">
-							<input id="mclusterName" type="text" value=""
+							<input id="clusterId" type="hidden" value="0e7e5fba-274f-11e4-a3d9-b82a72b53876" />
+							<input id="dbName" type="text" value=""
 								class="form-control" />
 						</div>
 						<button type="button" class="btn btn-default" id="searchButton">搜索</button>
@@ -42,67 +43,69 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-		<!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
-					<table id="userdata"
+					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
-								<th>Mcluster名称</th>
+								<th>DB名称</th>
+								<th>所属Mcluster</th>
 								<th>所属用户</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
 							</tr>
 						</thead>
-						<tbody id="tby"></tbody>
+						<tbody id="tby">				
+						</tbody>
 					</table>
-					<div id="pageControlBar">
-						<input type="hidden" id="totalPage_input" />
-						<ul class="pager">
-							<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-							<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-							<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-							<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-
-							<li>共<lable id="totalPage"></lable>页
-							</li>
-							<li>第<lable id="currentPage"></lable>页
-							</li>
-							<li>共<lable id="totalRows"></lable>条记录
-							</li>
-						</ul>
-					</div>
 				</div>
 
 			</div>
 
 		</div>
+
 		<%@include file="/common/footer.jsp"%>
 	</div>
 </body>
-<script src="${ctx}/static/scripts/pageControl.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
+var currentSelectedLineDbName = 1;
 	
-	 $(function(){
-		$("#signin").show();//显示header中登录框
-		$("#mclusterMgr").addClass("active");//高亮显示页面名
+	$(function(){
+		$("#sqlcluster").addClass("active");//高亮显示页面名
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
+		
 		$("#pageMessage").hide();
-		page_init();
+		//搜索
+		$("#searchButton").click(function() {
+			queryByPage(currentPage,recordsPerPage);
+		});
+		//申请数据库button跳转
+		$("#db_apply").click(function() {
+			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
+		});
+		//获取当前选中行dbName
+		$("#db_list tr").click(function() {
+		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
+			alert($(this).children("td:first").text());
+			currentSelectedLineDbName = $(this).children("td:first").text();
+		});
 	});	
+	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
-		$.ajax({
+		$.ajax({ 
 			type : "post",
-			url : "${ctx}/mcluster/list/mgrData?currentPage="
+			url : "${ctx}/db/list/data?currentPage="
 					+ currentPage
 					+ "&recordsPerPage="
 					+ recordsPerPage
-					+ "&mclusterName="
-					+ $("#mclusterName").val(),
+					+"&clusterId="
+					+ $("#clusterId").val(),
+					/* + "&dbName="
+					+ $("#dbName").val() */
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
@@ -111,39 +114,37 @@ var recordsPerPage = 10; //每页显示条数
 				var totalPages = data.data.totalPages;
 				
 				function translateStatus(status){
-					var statuStr;
-					if(status == 1){
-						return "启动";
+					if(status == 0){
+						return "审核中";
+					}else if(status  == 1){
+						return "审核通过";
 					}else if(status  == 2){
-						return "关闭";
-					}else{
-						return "异常";
+						return "审核未通过";
 					}
 				}
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+  "<a href=\"${ctx}/mcluster/mclusterInfo?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
+							+ array[i].dbName
 							+ "</td>");
-/* 					var td1 = $("<td>"
-							+  "<a href=\"${ctx}/db/mgrList?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
-							+ "</td>"); */
 					var td2 = $("<td>"
-							+ array[i].mclusterName
+							+ array[i].cluster.mclusterName
 							+ "</td>");
 					var td3 = $("<td>"
-							+ array[i].createTime
+							+ array[i].cluster.userName
 							+ "</td>");
 					var td4 = $("<td>"
+							+ array[i].createTime
+							+ "</td>");
+					var td5 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					if(array[i].status == 3){
+					if(array[i].status == 2){
 						var tr = $("<tr class=\"danger\"></tr>");
 					}else{
 						var tr = $("<tr></tr>");
 					}
-					
-					tr.append(td1).append(td2).append(td3).append(td4);
+					tr.append(td1).append(td2).append(td3).append(td4).append(td5);
 					tr.appendTo(tby);
 				}
 				if (totalPages <= 1) {
@@ -173,7 +174,7 @@ var recordsPerPage = 10; //每页显示条数
 		// 上一页
 		$("#prevPage").click(function() {
 			if (currentPage == 1) {
-				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>已经到达最后一页</p>").show().fadeOut(3000);
+				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
 				
 			} else {
 				currentPage--;
@@ -184,7 +185,7 @@ var recordsPerPage = 10; //每页显示条数
 		// 下一页
 		$("#nextPage").click(function() {
 			if (currentPage == $("#totalPage_input").val()) {
-				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>已经到达最后一页</p>").show().fadeOut(3000);
+				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
 			} else {
 				currentPage++;
 				queryByPage(currentPage,recordsPerPage);
@@ -196,17 +197,7 @@ var recordsPerPage = 10; //每页显示条数
 			currentPage = $("#totalPage_input").val();
 			queryByPage(currentPage,recordsPerPage);
 		});
-		$("#searchButton").click(function() {
-			queryByPage(currentPage,recordsPerPage);
-		});
-	}
-	
-	function page_init(){
-		$("#db_audit").click(function() {
-			location.href = "${ctx}/db/mgrAudit/list";
-		});
 		
 	}
 </script>
-
 </html>

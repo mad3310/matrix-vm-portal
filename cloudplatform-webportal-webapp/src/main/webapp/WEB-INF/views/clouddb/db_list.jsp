@@ -43,19 +43,18 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<button id="db_apply" type="button" class="btn btn-default"
+					<button id="db_apply" type="button" class="btn btn-success"
 						data-toggle="modal">申请DB</button>
-					<button id="db_create" type="button" class="btn btn-default"
+<!-- 					<button id="db_create" type="button" class="btn btn-default"
 						data-toggle="modal">DB创建</button>
 					<button id="db_apply_info" type="button" class="btn btn-default"
-						data-toggle="modal">DB申请内容</button>
+						data-toggle="modal">DB申请内容</button> -->
 					
 					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
 						<thead>
 							<tr>
 								<th>DB名称</th>
-								<th>所属Mcluster</th>
 								<th>创建时间</th>
 								<th>当前状态</th>
 							</tr>
@@ -78,6 +77,9 @@ var recordsPerPage = 10; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
 	 $(function(){
+		//隐藏header的页面按钮
+		$("#headNavList").hide();
+		
 		$("#sqlcluster").addClass("active");//高亮显示页面名
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
@@ -92,9 +94,10 @@ var currentSelectedLineDbName = 1;
 					+ currentPage
 					+ "&recordsPerPage="
 					+ recordsPerPage
-					+"&clusterId="
+					+ "&flag=self",
+					/*+"&clusterId="
 					+ $("#clusterId").val(),
-					/* + "&dbName="
+					 + "&dbName="
 					+ $("#dbName").val() */
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
@@ -115,15 +118,15 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+ array[i].dbName
+							+ "<a href=\"${ctx}/db/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
-					var td2 = $("<td>"
+					/* var td2 = $("<td>"
 							+ array[i].cluster.mclusterName
-							+ "</td>");
-					var td3 = $("<td>"
+							+ "</td>"); */
+					var td2 = $("<td>"
 							+ array[i].createTime
 							+ "</td>");
-					var td4 = $("<td>"
+					var td3 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
 					if(array[i].status == 2){
@@ -132,7 +135,7 @@ var currentSelectedLineDbName = 1;
 						var tr = $("<tr></tr>");
 					}
 					
-					tr.append(td1).append(td2).append(td3).append(td4);
+					tr.append(td1).append(td2).append(td3);
 					tr.appendTo(tby);
 				}
 				if (totalPages <= 1) {
@@ -191,7 +194,8 @@ var currentSelectedLineDbName = 1;
 		});
 		//申请数据库button跳转
 		$("#db_apply").click(function() {
-			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
+//			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
+			location.href = "${ctx}/db/toForm";
 		});
 		//获取当前选中行dbName
 		$("#db_list tr").click(function() {

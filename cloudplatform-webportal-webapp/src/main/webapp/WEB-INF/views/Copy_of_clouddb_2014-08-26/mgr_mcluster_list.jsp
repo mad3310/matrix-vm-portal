@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>运维管理</title>
+<title>Mcluster管理</title>
 </head>
 <body>
 	<div class="container">
@@ -14,7 +14,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-3">
-					<h3 class="text-left">运维管理</h3>
+					<h3 class="text-left">Mcluster管理</h3>
 				</div>
 				<div  class="col-md-6">
 					<div id="pageMessage"></div>
@@ -42,7 +42,7 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-		<!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
+
 					<table id="userdata"
 						class="table table-striped table-hover table-responsive">
 						<thead>
@@ -86,12 +86,11 @@ var recordsPerPage = 10; //每页显示条数
 	
 	 $(function(){
 		$("#signin").show();//显示header中登录框
-		$("#mclusterMgr").addClass("active");//高亮显示页面名
+		$("#sqlcluster").addClass("active");//高亮显示页面名
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
 		$("#pageMessage").hide();
-		page_init();
 	});	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
@@ -123,13 +122,10 @@ var recordsPerPage = 10; //每页显示条数
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+  "<a href=\"${ctx}/mcluster/mclusterInfo?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
-							+ "</td>");
-/* 					var td1 = $("<td>"
-							+  "<a href=\"${ctx}/db/mgrList?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
-							+ "</td>"); */
-					var td2 = $("<td>"
 							+ array[i].mclusterName
+							+ "</td>");
+					var td2 = $("<td>"
+							+ "<a href=\"${ctx}/db/list?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
 							+ "</td>");
 					var td3 = $("<td>"
 							+ array[i].createTime
@@ -199,13 +195,9 @@ var recordsPerPage = 10; //每页显示条数
 		$("#searchButton").click(function() {
 			queryByPage(currentPage,recordsPerPage);
 		});
-	}
-	
-	function page_init(){
-		$("#db_audit").click(function() {
-			location.href = "${ctx}/db/mgrAudit/list";
+		$("#create_mcluster").click(function() {
+			location.href = "${ctx}/mcluster/toCreate";
 		});
-		
 	}
 </script>
 

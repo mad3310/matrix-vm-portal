@@ -14,7 +14,7 @@
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-3">
-					<h3 class="text-left">DB管理</h3>
+					<h3 class="text-left">审核DB列表</h3>
 				</div>
 				<div  class="col-md-6">
 					<div id="pageMessage"></div>
@@ -42,7 +42,7 @@
 						<a class="btn" href="#">查看详细使用教程 »</a>
 					</p>
 				</div>
-				<div class="col-md-9 column">>
+				<div class="col-md-9 column">
 					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
 						<thead>
@@ -115,9 +115,9 @@ var currentSelectedLineDbName = 1;
 				
 				function translateStatus(status){
 					if(status == 0){
-						return "审核中";
+						return "需审核";
 					}else if(status  == 1){
-						return "审核通过";
+						return "已审核";
 					}else if(status  == 2){
 						return "审核未通过";
 					}
@@ -125,7 +125,7 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+ array[i].dbName
+							+"<a href=\"${ctx}/db/toMgrAudit?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 					var td2 = $("<td>"
 							+ array[i].cluster.mclusterName

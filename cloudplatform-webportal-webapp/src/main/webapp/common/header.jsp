@@ -15,9 +15,12 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="menu">
-				<ul class="nav navbar-nav">
-					<li id="sqlcluster">
-						<a href="#">Mcluster</a>
+				<ul class="nav navbar-nav" id="headNavList" name="headNavList">
+					<li id="mclusterMgr">
+						<a href="${ctx}/mcluster/mgrList">Mcluster管理</a>
+					</li>
+					<li id="dbMgr">
+						<a href="${ctx}/db/mgrList">DB管理</a>
 					</li>
 				</ul>
 				<c:if test="${empty sessionScope.userId}">

@@ -31,75 +31,49 @@
 				<div class="col-md-7 column">
 					<ul id="myTab" class="nav nav-tabs">
 					   <li class="active">
-					      <a href="#agree" data-toggle="tab">同意</a>
+					      <a href="#create_on_cluster" data-toggle="tab">在已有集群创建</a>
+					   </li>
+					   <li>
+					   	  <a href="#create_on_new_cluster" data-toggle="tab">在新集群创建</a>
 					   </li>
 					   <li>
 					   	  <a href="#disagree" data-toggle="tab">不同意</a>
 					   </li>
 					</ul>					
-					<div id="myTabContent" class="tab-content">
-						<div class="tab-pane fade in active" id="agree">
-						<form id="surveyForm" method="post" role="form" action="${ctx}/db/toMgrAudit/save">
-						<div class="form-group" id="template" >
-						<hr class="hide" style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)" width="100%" color=#987cb9 SIZE=3></hr>
-						    <div class="form-group  col-md-4">
-						        <label>container名称</label>
-						        <input type="text" class="form-control" id="containerName" name="containerName" placeholder="输入container名称" />
+					<div id="myTabContent" class="tab-content" >
+						<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
+						<form class="form-horizontal" role="form">
+						  <div class="form-group">
+						    <label for="text" class="col-sm-2 control-label">选择集群</label>
+						    <div class="col-sm-8">
+						      <select id="mclusterOption" class="form-control">
+						        <option>Mcluster1</option>
+						        <option>Mcluster2</option>
+						        <option>Mcluster3</option>
+						      </select>
 						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>挂载目录</label>
-						        <input type="text" class="form-control" id="mountDir" name="mountDir" placeholder="输入挂载目录" />
+						    <div class="col-sm-2">
+						      <button type="submit" class="btn btn-primary">创建</button>
 						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>Zookeeper编号</label>
-						        <input type="text" class="form-control" id="zookeeperId" name="zookeeperId" placeholder="输入Zookeeper编号" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>IP地址</label>
-						        <input type="text" class="form-control" id="ipAddr" name="ipAddr" placeholder="输入container IP地址" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>网关</label>
-						        <input type="text" class="form-control" id="gateAddr" name="gateAddr" placeholder="输入网关" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>子网掩码</label>
-						        <input type="text" class="form-control" id="ipMask" name="ipMask" placeholder="输入container子网掩码" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>Cluster名称</label>
-						        <input type="text" class="form-control" id="clusterNodeName" name="clusterNodeName" placeholder="输入Cluster名称" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>原名</label>
-						        <input type="text" class="form-control" id="originName" name="originName" placeholder="输入原始名字" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>新名</label>
-						        <input type="text" class="form-control" id="assignName" name="assignName" placeholder="输入新名字" />
-						    </div>
-						    <div class="form-group  col-md-4">
-						        <label>类型</label>
-						        <select class="form-control" id="type" name="type">
-								  <option>VIP</option>
-								  <option>normal</option>
-								</select>
-						    </div>
-						    <div class="col-md-12">
-					            <button type="button" class="btn btn-success addButton">
-					                <i class="glyphicon glyphicon-plus"></i>
-					            </button>
-					            <button type="button" class="btn btn-danger removeButton hide" name="minusButton">
-						                <i class="glyphicon glyphicon-minus"></i>
-						        </button>	 
-					        </div>
-						</div>
-						    <div class="form-group">
-						        <div class="col-md-12">
-						            <button type="submit" class="btn btn-primary  pull-right">确定</button>
-						        </div>
-						    </div>
+						  </div>
 						</form>
+						<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
+					   </div>
+					   <div class="tab-pane fade" id="create_on_new_cluster">
+							<form id="demoform" action="#" method="post">
+				            <select multiple="multiple" size="10" name="duallistbox" id="duallistbox" style="height: 256px;">
+							<option value="fadfad">dfadfa</option>
+							<c:forEach var="host" items="${list}">
+								<option value="1">${host.hostName}</option>
+							</c:forEach>
+				            </select>
+				            <button type="submit" class="btn btn-primary pull-right">创建</button>
+				          </form>
+				          <script>
+				           
+				          </script>
+							
+					     
 					   </div>
 					   <div class="tab-pane fade" id="disagree">
 
@@ -122,8 +96,10 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	queryByDbId("fb7241cc-5438-403b-a815-08c5c3ed67aa");
-	dynamicField();
+	var dbId = request("dbId");
+	//queryAllHost();
+	queryByDbId(dbId);
+	hostDualListBox();
 });
 function queryByDbId(dbId) {
 //	$("#db_detail_table tr").remove();
@@ -139,7 +115,9 @@ function queryByDbId(dbId) {
 			
 			var value = data.data;
 			var apply_table = $("#db_detail_table");
-
+			$("#clusterId").val(value.clusterId);
+			$("#dbId").val(value.belongDb);
+			$("#dbApplyStandardId").val(value.id);
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
 			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
 			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
@@ -149,11 +127,30 @@ function queryByDbId(dbId) {
 			apply_table.append("<tr><td>IP访问列表</td><td>"+value.dataLimitIpList+"</td></tr>");
 			apply_table.append("<tr><td>管理IP访问列表</td><td>"+value.mgrLimitIpList+"</td></tr>");
 			apply_table.append("<tr><td>数据库引擎</td><td>"+value.engineType+"</td></tr>");
-			apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
+			/* apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
 			apply_table.append("<tr><td>原始数据库IP</td><td>"+value.fromDbIp+"</td></tr>");
-			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>");
+			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>"); */
 			apply_table.append("<tr><td>邮件通知</td><td>"+translateStatus(value.isEmailNotice)+"</td></tr>");
 			apply_table.append("<tr><td>申请时间</td><td>"+value.createTime+"</td></tr>");
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
+		}
+	});
+}
+function queryAllHost() {
+	$.ajax({ 
+		type : "post",
+		url : "${ctx}/host/listAll",
+		dataType : "json", /*这句可用可不用，没有影响*/
+		contentType : "application/json; charset=utf-8",
+		success : function(data) {
+			var hostDatArray = data.data;
+			var duallistbox = $('select[name="duallistbox"]');
+			for (var i = 0, len = hostDatArray.length; i < len; i++) {
+				var hostOption = "<option value=\""+hostDatArray[i].hostIp+"\">"+hostDatArray[i].hostName+"</option>";
+				duallistbox.append(hostOption);
+			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
@@ -172,86 +169,29 @@ function translateStatus(status){
 	
 }
 
-function dynamicField(){
- var MAX_OPTIONS = 5;
+function request(paras)
+{ 
+    var url = location.href; 
+    var paraString = url.substring(url.indexOf("?")+1,url.length).split("&"); 
+    var paraObj = {} 
+    for (i=0; j=paraString[i]; i++){ 
+    paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length); 
+    } 
+    var returnValue = paraObj[paras.toLowerCase()]; 
+    if(typeof(returnValue)=="undefined"){ 
+    return ""; 
+    }else{ 
+    return returnValue; 
+    } 
+}
 
-    $('#surveyForm')
-        .bootstrapValidator({
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                question: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The question required and cannot be empty'
-                        }
-                    }
-                },
-                'option[]': {
-                    validators: {
-                        notEmpty: {
-                            message: 'The option required and cannot be empty'
-                        },
-                        stringLength: {
-                            max: 100,
-                            message: 'The option must be less than 100 characters long'
-                        }
-                    }
-                }
-            }
-        })
-
-        // Add button click handler
-        .on('click', '.addButton', function() {
-            var $template = $('#template'),
-                $clone    = $template
-                                .clone()
-                                .removeAttr('id')
-                                .insertAfter($template)
-                                .find('[name="minusButton"]').removeClass('hide')
-                                .find("hr").removeClass('hide')
-                                .find("input").val(''),
-                $option   = $clone.find('[name="option[]"]');
-
-            // Add new field
-            $('#surveyForm').bootstrapValidator('addField', $option);
-        })
-
-        // Remove button click handler
-        .on('click', '.removeButton', function() {
-            var $row    = $(this).parents('.form-group');
-
-            // Remove element containing the option
-            $row.remove();
-
-            // Remove field
-            $('#surveyForm').bootstrapValidator('removeField', $option);
-        })
-
-        // Called after adding new field
-        .on('added.field.bv', function(e, data) {
-            // data.field   --> The field name
-            // data.element --> The new field element
-            // data.options --> The new field options
-
-            if (data.field === 'option[]') {
-                if ($('#surveyForm').find(':visible[name="option[]"]').length >= MAX_OPTIONS) {
-                    $('#surveyForm').find('.addButton').attr('disabled', 'disabled');
-                }
-            }
-        })
-
-        // Called after removing the field
-        .on('removed.field.bv', function(e, data) {
-           if (data.field === 'option[]') {
-                if ($('#surveyForm').find(':visible[name="option[]"]').length < MAX_OPTIONS) {
-                    $('#surveyForm').find('.addButton').removeAttr('disabled');
-                }
-            }
-        });
+function hostDualListBox()
+{
+	 var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox();
+     $("#demoform").submit(function() {
+       alert($('[name="duallistbox"]').val());
+       return false;
+     });		
 }
 </script>
 </html>
