@@ -15,15 +15,13 @@ public class ConfigUtil {
 	private static String FSP = System.getProperty("file.separator");
 	private static Properties properties = new Properties();
 	// 配置文件名称
-	private static final String configName = "config.properties";
+	private static final String configName = "/config.properties";
 	private static ConfigUtil instance;
-
 	/**
 	 * 构造方法 加载配置文件
 	 */
 	private ConfigUtil() {
 		try {
-			
 			properties.load(getClass().getResourceAsStream(configName));
 		} catch (IOException e) {
 			e.printStackTrace();
