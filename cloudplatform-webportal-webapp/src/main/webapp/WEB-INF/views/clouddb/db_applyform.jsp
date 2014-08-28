@@ -39,17 +39,12 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="db_name">用户名</label>
+						<label class="col-sm-2 control-label" for="db_name">数据库名</label>
 						<div class="col-sm-4">
-							<input class="form-control" name="applyName" id="applyName" type="text" />
+							<input class="form-control" name="applyCode" id="applyCode" type="text" />
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="db_password">密码</label>
-						<div class="col-sm-4">
-							<input class="form-control" name="applyName" id="applyName" type="text" />
-						</div>
-					</div>
+
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="business_description">业务描述</label>
 						<div class="col-sm-8">
@@ -112,7 +107,6 @@
 								placeholder="1:1" />
 						</div>
 					</div>
-
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 						<div class="col-sm-2">

@@ -19,6 +19,7 @@
 				</div>
 				<hr style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)" width="100%" color=#987cb9 SIZE=3></hr>
 			</div>
+			<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
 
 			<div class="row clearfix">
 				<div class="col-md-5 column">
@@ -42,14 +43,18 @@
 					</ul>					
 					<div id="myTabContent" class="tab-content" >
 						<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
-						<form class="form-horizontal" role="form">
+						<form class="form-horizontal" role="form" action="${ctx}/db/createDb/onOldCluster/save">
+							<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+							<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+							<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
 						  <div class="form-group">
 						    <label for="text" class="col-sm-2 control-label">选择集群</label>
 						    <div class="col-sm-8">
 						      <select id="mclusterOption" class="form-control">
-						        <option>Mcluster1</option>
-						        <option>Mcluster2</option>
-						        <option>Mcluster3</option>
+									<option value=""></option>
+						        <c:forEach var="mcluster" items="${mclusterList}">
+									<option value="${mcluster.id}">${mcluster.mclusterName}</option>
+								</c:forEach>
 						      </select>
 						    </div>
 						    <div class="col-sm-2">
@@ -57,23 +62,19 @@
 						    </div>
 						  </div>
 						</form>
-						<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
 					   </div>
 					   <div class="tab-pane fade" id="create_on_new_cluster">
-							<form id="demoform" action="#" method="post">
-				            <select multiple="multiple" size="10" name="duallistbox" id="duallistbox" style="height: 256px;">
-							<option value="fadfad">dfadfa</option>
-							<c:forEach var="host" items="${list}">
-								<option value="1">${host.hostName}</option>
-							</c:forEach>
-				            </select>
-				            <button type="submit" class="btn btn-primary pull-right">创建</button>
+							<form id="demoform" action="${ctx}/db/createDb/onNewCluster/save" method="post">
+								<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+								<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+								<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					            <select multiple="multiple" size="10" name="duallistbox" id="duallistbox" style="height: 256px;">
+								<c:forEach var="host" items="${hostList}">
+									<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
+								</c:forEach>
+					            </select>
+				          <button type="submit" class="btn btn-primary pull-right">创建</button>				     
 				          </form>
-				          <script>
-				           
-				          </script>
-							
-					     
 					   </div>
 					   <div class="tab-pane fade" id="disagree">
 
@@ -97,7 +98,6 @@
 <script type="text/javascript">
 $(function(){
 	var dbId = request("dbId");
-	//queryAllHost();
 	queryByDbId(dbId);
 	hostDualListBox();
 });
@@ -117,6 +117,7 @@ function queryByDbId(dbId) {
 			var apply_table = $("#db_detail_table");
 			$("#clusterId").val(value.clusterId);
 			$("#dbId").val(value.belongDb);
+			$("#applyCode").val(value.applyCode);
 			$("#dbApplyStandardId").val(value.id);
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
 			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
@@ -127,30 +128,8 @@ function queryByDbId(dbId) {
 			apply_table.append("<tr><td>IP访问列表</td><td>"+value.dataLimitIpList+"</td></tr>");
 			apply_table.append("<tr><td>管理IP访问列表</td><td>"+value.mgrLimitIpList+"</td></tr>");
 			apply_table.append("<tr><td>数据库引擎</td><td>"+value.engineType+"</td></tr>");
-			/* apply_table.append("<tr><td>原数据库名</td><td>"+value.fromDbName+"</td></tr>");
-			apply_table.append("<tr><td>原始数据库IP</td><td>"+value.fromDbIp+"</td></tr>");
-			apply_table.append("<tr><td>原始数据库port</td><td>"+value.fromDbPort+"</td></tr>"); */
 			apply_table.append("<tr><td>邮件通知</td><td>"+translateStatus(value.isEmailNotice)+"</td></tr>");
 			apply_table.append("<tr><td>申请时间</td><td>"+value.createTime+"</td></tr>");
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
-		}
-	});
-}
-function queryAllHost() {
-	$.ajax({ 
-		type : "post",
-		url : "${ctx}/host/listAll",
-		dataType : "json", /*这句可用可不用，没有影响*/
-		contentType : "application/json; charset=utf-8",
-		success : function(data) {
-			var hostDatArray = data.data;
-			var duallistbox = $('select[name="duallistbox"]');
-			for (var i = 0, len = hostDatArray.length; i < len; i++) {
-				var hostOption = "<option value=\""+hostDatArray[i].hostIp+"\">"+hostDatArray[i].hostName+"</option>";
-				duallistbox.append(hostOption);
-			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);

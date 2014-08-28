@@ -32,7 +32,7 @@
 				</div>
 				<div class="col-md-9 column">
 					<div class="col-sm-10">
-					<button type="button" class="btn btn-default">返回</button>
+					<button id="goBack" name="goBack" type="button" class="btn btn-default">返回</button>
 					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
 					<caption>数据库信息</caption>
 					</table>
@@ -53,6 +53,7 @@
 $(function(){
 	var dbId = request("belongDb");
 	queryByDbId(dbId);
+	initPage();
 });
 function queryByDbId(dbId) {
 //	$("#db_detail_table tr").remove();
@@ -121,6 +122,12 @@ function translateStatus(status){
 	}else{
 		return "否";
 	}
+}
+
+function initPage(){
+	$("#goBack").click(function() {
+		/* location.href = "${ctx}/mcluster/mgrList"; */
+	});
 }
 </script>
 </html>

@@ -101,21 +101,40 @@ public class DbController {
 
 	@RequestMapping(value="/toMgrAudit")
 	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
-		String result = HttpUtil.getResultFromDBAPI(request,"/host/list",null);
-		System.out.println(result);
-		ObjectMapper mapper = new ObjectMapper();
-		Map map = null;
+		String getHostResult = HttpUtil.getResultFromDBAPI(request,"/host/list",null);
+		String getMclusterResult = HttpUtil.getResultFromDBAPI(request,"/mcluster/list",null);
+		
+		ObjectMapper hostMapper = new ObjectMapper();
+		ObjectMapper mclusterMapper = new ObjectMapper();
+		Map hostMap = null;
+		Map mclusterMap = null;
 		try {
-			map = mapper.readValue(result, Map.class);
+			hostMap = hostMapper.readValue(getHostResult, Map.class);
+			mclusterMap = mclusterMapper.readValue(getMclusterResult, Map.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		request.setAttribute("list", map.get("data"));
+		request.setAttribute("hostList", hostMap.get("data"));
+		request.setAttribute("mclusterList", ((Map)mclusterMap.get("data")).get("data"));
 		return "/clouddb/mgr_audit_db";
 	}
 
 	@RequestMapping("/toMgrAudit/save")   //http://localhost:8080/mcluster/save
 	public String toMgrAuditSave(HttpServletRequest request,HttpServletResponse response) {
+		
+		//取出session中用户id，追加到http rest请求中
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("createUser", (String) request.getSession().getAttribute("userId"));
+		map.put("status", "1");
+		
+		String result = HttpUtil.getResultFromDBAPI(request,"/db/audit/save",map);
+		if(result.contains("\"result\":1")) {
+			return "redirect:/db/mgrAudit/list";
+		}
+		return "/common/error";
+	}
+	@RequestMapping("/createDb/onOldCluster/save")   //http://localhost:8080/mcluster/save
+	public String createDbOnOldClusterSave(HttpServletRequest request,HttpServletResponse response) {
 		
 		//取出session中用户id，追加到http rest请求中
 		Map<String,String> map = new HashMap<String,String>();
