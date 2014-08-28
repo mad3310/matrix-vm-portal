@@ -15,12 +15,20 @@ public class MclusterModel extends BaseModel {
 	private String id;   //主键ID
 	private String mclusterName; //名称
 	
-	private String status; //状态： 0:已创建 1:启动 2:关闭 3:异常
+	private String status; //状态：
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
 	private String updateTime;
 	private String updateUser;
+	
+	public MclusterModel(){};
+	public MclusterModel(String id,String mclusterName,String status,String createUser){
+		this.id = id;
+		this.mclusterName = mclusterName;
+		this.status = status;
+		this.createUser = createUser;
+	};
 	
 	public String getId() {
 		return id;

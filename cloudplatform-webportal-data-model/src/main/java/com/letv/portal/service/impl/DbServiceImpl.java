@@ -62,10 +62,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		
 	}
 
-	@Override
+	/*@Override
 	public void audit(String dbId, String dbApplyStandardId,List<ContainerModel> containers) {
 		
-		//审核成功  //审核状态:    0:未审核1:审核通过2:审核不通过
 		this.dbDao.audit(new DbModel(dbId,"1")); //审核成功
 		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,"1"));
 		
@@ -73,11 +72,16 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		for (ContainerModel containerModel : containers) {
 			this.containerDao.insert(containerModel);
 		}
+	}*/
+	
+	@Override
+	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
+		this.dbDao.audit(new DbModel(dbId,status,mclusterId));
+		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,status,auditInfo));
 	}
 
 	@Override
 	public String build(DbModel dbModel) {
-
 		
 		//判断手动创建 还是调用API创建
 		

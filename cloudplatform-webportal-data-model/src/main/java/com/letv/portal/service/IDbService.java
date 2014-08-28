@@ -35,14 +35,15 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public String build(DbModel dbModel);
 	
-	
 	/**Methods Name: audit <br>
-	 * Description: 审核db，并保存container信息<br>
+	 * Description: 审核db<br>
 	 * @author name: liuhao1
 	 * @param dbId
 	 * @param dbApplyStandardId
-	 * @param containers
-	 * @return
+	 * @param status
+	 * @param mclusterId
+	 * @param auditInfo
 	 */
-	public void audit(String dbId,String dbApplyStandardId,List<ContainerModel> containers);
+	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
+	
 }

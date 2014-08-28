@@ -52,6 +52,11 @@ public class DbApplyStandardModel extends BaseModel {
 		this.id = id;
 		this.status = status;
 	}
+	public DbApplyStandardModel(String id,String status,String auditInfo){
+		this.id = id;
+		this.status = status;
+		this.auditInfo = auditInfo;
+	}
 	
 	public String getId() {
 		return id;
