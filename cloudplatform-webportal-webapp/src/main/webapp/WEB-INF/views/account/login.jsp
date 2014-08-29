@@ -12,18 +12,18 @@
 		<div id="wrap">
 			<div class="row clearfix">
 				<div class="col-md-offset-3 col-md-8 column ">
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" action="/account/login">
 						<div class="form-group">
-							<label class="col-sm-2 control-label" for="inputEmail">邮箱</label>
+							<label class="col-sm-2 control-label" for="inputEmail">用户名</label>
 							<div class="col-sm-4">
-								<input class="form-control" id="inputEmail" type="text" />
+								<input class="form-control" id="loginName" name="loginName" type="text" />
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="inputEmail">密码</label>
 							<div class="col-sm-4">
-								<input class="form-control" id="inputEmail" type="text" />
+								<input class="form-control" id="password" name="password" type="text" />
 							</div>
 						</div>
 
