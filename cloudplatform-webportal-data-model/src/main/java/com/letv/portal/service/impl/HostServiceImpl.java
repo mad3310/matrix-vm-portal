@@ -44,4 +44,13 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		return this.hostDao;
 	}
 
+	@Override
+	public void updateNodeCount(String hostId,String type) {
+		HostModel host = this.hostDao.selectById(hostId);
+		Integer number = "+".equals(type)?host.getNodesNumber()+1:host.getNodesNumber()-1;
+		host.setNodesNumber(number);
+		this.hostDao.updateNodesNumber(host);
+		
+	}
+
 }

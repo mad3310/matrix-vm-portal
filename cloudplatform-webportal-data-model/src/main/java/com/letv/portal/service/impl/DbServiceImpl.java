@@ -19,12 +19,13 @@ import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
 import com.letv.portal.dao.IDbDao;
+import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.Result;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
-import com.mysql.jdbc.StringUtils;
 
 @Service("dbService")
 public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
@@ -47,6 +48,8 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Resource
 	private IMclusterService mclusterService;
 	
+	@Resource
+	private IIpResourceDao ipResourceDao;
 	@Resource
 	private SimpleTextEmailSender simpleTextEmailSender;
 
@@ -106,7 +109,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Override
 	public void build(String auditType, String mclusterId, String dbId,
 			String dbApplyStandardId,String auditUser) {
-		
 		if(DB_CREATE_TYPE.equals(auditType)) {
 			String content = " mcluster创建信息：           \r\n db创建信息：             \r\n 创建成功后，点击链接通知webportal系统 http://localhost:8080/build/notice/success/" + dbId;
 			//手动创建 发送邮件

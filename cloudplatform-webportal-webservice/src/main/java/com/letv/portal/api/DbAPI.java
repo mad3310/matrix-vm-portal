@@ -1,8 +1,6 @@
 
 package com.letv.portal.api;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,7 +17,6 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
@@ -112,7 +109,6 @@ public class DbAPI {
 		String createUser = request.getParameter("createUser");
 		
 		logger.debug("auditType==>" + auditType);
-		logger.debug("dbApplyStandardId==>" + mclusterId);
 		logger.debug("mclusterId==>" + mclusterId);
 		logger.debug("dbId==>" + dbId);
 		logger.debug("dbName==>" + dbName);

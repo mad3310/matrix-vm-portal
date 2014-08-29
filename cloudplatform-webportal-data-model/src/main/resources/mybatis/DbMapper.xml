@@ -223,9 +223,9 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List_add_cluster" />
-		from WEBPORTAL_DB,WEBPORTAL_MCLUSTER_INFO 
+		from WEBPORTAL_DB left join WEBPORTAL_MCLUSTER_INFO 
+		on WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.CLUSTER_ID
 		<include refid="Example_Page_Where_Clause" />
-		AND WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.CLUSTER_ID
 		ORDER BY WEBPORTAL_DB.CREATE_TIME
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

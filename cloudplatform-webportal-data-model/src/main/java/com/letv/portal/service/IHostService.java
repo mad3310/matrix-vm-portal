@@ -12,5 +12,12 @@ import com.letv.portal.model.HostModel;
  * Modified Date: <br>
  */
 public interface IHostService extends IBaseService<HostModel> {
-	
+
+	/**Methods Name: updateNodeCount <br>
+	 * Description: 改变node数量<br>
+	 * @author name: liuhao1
+	 * @param hostId
+	 * @param type  +增加  -减少    
+	 */
+	public void updateNodeCount(String hostId,String type); 
 }

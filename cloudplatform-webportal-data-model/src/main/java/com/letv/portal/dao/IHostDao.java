@@ -10,5 +10,6 @@ import com.letv.portal.model.HostModel;
  * Modified Date: <br>
  */
 public interface IHostDao extends IBaseDao<HostModel> {
-	
+
+	public void updateNodesNumber(HostModel host);
 }
