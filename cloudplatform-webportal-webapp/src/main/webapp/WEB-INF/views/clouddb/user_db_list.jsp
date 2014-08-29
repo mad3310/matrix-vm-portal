@@ -1,5 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@include file="/common/common.jsp"%>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -10,7 +9,6 @@
 </head>
 <body>
 	<div class="container">
-		<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 			<div class="row">
 				<div class="col-md-3">
@@ -64,7 +62,6 @@
 
 		</div>
 
-		<%@include file="/common/footer.jsp"%>
 	</div>
 </body>
 <script type="text/javascript">
