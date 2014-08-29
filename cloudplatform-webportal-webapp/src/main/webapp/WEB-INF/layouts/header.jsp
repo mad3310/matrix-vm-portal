@@ -50,4 +50,4 @@ $(function(){
 			</div>
 		</nav>
 	</div>
-</div>
+</div> 

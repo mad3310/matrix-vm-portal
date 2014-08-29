@@ -10,43 +10,35 @@
 
 </head>
 <body>
-	<div class="container">
-		<div id="wrap">
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="text-left">DB详情</h3>
-				</div>
-				<hr
-					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-					width="100%" color=#987cb9 SIZE=3></hr>
-			</div>
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="text-left">DB详情</h3>
+	</div>
+	<hr
+		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
+		width="100%" color=#987cb9 SIZE=3></hr>
+</div>
 
-			<div class="row clearfix">
-				<div class="col-md-3 column">
-					<h2>通告：</h2>
-					<p>关于数据库使用的通知、帮助和注意事项。</p>
-					<p>
-						<a class="btn" href="#">查看详细使用教程 »</a>
-					</p>
-				</div>
-				<div class="col-md-9 column">
-					<div class="col-sm-10">
-					<button id="goBack" name="goBack" type="button" class="btn btn-default">返回</button>
-					<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
-					<caption>数据库信息</caption>
-					</table>
-					<table class="table table-bordered" id="db_apply_table" name="db_apply_table">
-					<caption>申请信息</caption>
-					</table>
-					</div>
-<!-- 					<div class="col-sm-10">
-						<button id="db_apply_modify" type="submit" class="btn btn-default">修改</button>
-					</div> -->
-				</div>
-			</div>
+<div class="row clearfix">
+	<div class="col-md-3 column">
+		<h2>通告：</h2>
+		<p>关于数据库使用的通知、帮助和注意事项。</p>
+		<p>
+			<a class="btn" href="#">查看详细使用教程 »</a>
+		</p>
+	</div>
+	<div class="col-md-9 column">
+		<div class="col-sm-10">
+		<button id="goBack" name="goBack" type="button" class="btn btn-default">返回</button>
+		<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
+		<caption>数据库信息</caption>
+		</table>
+		<table class="table table-bordered" id="db_apply_table" name="db_apply_table">
+		<caption>申请信息</caption>
+		</table>
 		</div>
 	</div>
-</body>
+</div>
 <script type="text/javascript">
 $(function(){
 	var dbId = request("belongDb");
@@ -121,8 +113,9 @@ function translateStatus(status){
 
 function initPage(){
 	$("#goBack").click(function() {
-		/* location.href = "${ctx}/mcluster/mgrList"; */
+		location.href = "${ctx}/mcluster/mgrList";
 	});
 }
 </script>
+</body>
 </html>

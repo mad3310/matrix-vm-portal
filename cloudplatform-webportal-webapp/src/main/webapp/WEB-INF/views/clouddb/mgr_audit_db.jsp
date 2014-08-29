@@ -10,95 +10,90 @@
 
 </head>
 <body>
-	<div class="container">
-		<div id="wrap">
-			<div class="row">
-				<div class="col-md-12">
-					<h3 class="text-left">DB审核</h3>
-				</div>
-				<hr style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)" width="100%" color=#987cb9 SIZE=3></hr>
-			</div>
-			<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
+<div class="row">
+	<div class="col-md-12">
+		<h3 class="text-left">DB审核</h3>
+	</div>
+	<hr style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)" width="100%" color=#987cb9 SIZE=3></hr>
+</div>
+<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
 
-			<div class="row clearfix">
-				<div class="col-md-5 column">
-					<div class="col-sm-12">
-					<table class="table table-bordered" id="db_detail_table">	
-						<caption>用户申请单</caption>
-					</table>
-					</div>
-				</div>
-				<div class="col-md-7 column">
-					<ul id="myTab" class="nav nav-tabs">
-					   <li class="active">
-					      <a href="#create_on_cluster" data-toggle="tab">在已有集群创建</a>
-					   </li>
-					   <li>
-					   	  <a href="#create_on_new_cluster" data-toggle="tab">在新集群创建</a>
-					   </li>
-					   <li>
-					   	  <a href="#disagree" data-toggle="tab">不同意</a>
-					   </li>
-					</ul>					
-					<div id="myTabContent" class="tab-content" >
-						<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
-						<form class="form-horizontal" role="form" action="${ctx}/db/toMgrAudit/save">
-							<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
-							<input type="text" class="form-control hide" id="dbId" name="dbId"/>
-							<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
-							<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
-						  <div class="form-group">
-						    <label for="text" class="col-sm-2 control-label">选择集群</label>
-						    <div class="col-sm-8">
-						      <select id="mclusterOption" name="mclusterId" class="form-control">
-									<option value=""></option>
-						        <c:forEach var="mcluster" items="${mclusterList}">
-									<option value="${mcluster.id}">${mcluster.mclusterName}</option>
-								</c:forEach>
-						      </select>
-						    </div>
-						    <div class="col-sm-2">
-						      <button type="submit" class="btn btn-primary">创建</button>
-						    </div>
-						  </div>
-						</form>
-					   </div>
-					   <div class="tab-pane fade" id="create_on_new_cluster">
-							<form id="demoform" method="post" action="${ctx}/db/toMgrAudit/save">
-								<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
-								<input type="text" class="form-control hide" id="dbId" name="dbId"/>
-								<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
-								<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
-					            <select multiple="multiple" size="10" name="hostIds" id="duallistbox" style="height: 256px;">
-								<c:forEach var="host" items="${hostList}">
-									<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
-								</c:forEach>
-					            </select>
-				          <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;">创建</button>				     
-				          </form>
-					   </div>
-					   <div class="tab-pane fade" id="disagree">
-
-					      <form role="form" method="post" action="${ctx}/db/toMgrAudit/save">
-							  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
-								<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
-								<input type="text" class="form-control hide" id="dbId" name="dbId"/>
-								<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
-							  <div class="form-group form-group-lg">
-							    <label class="control-label" for="formGroupInputLarge">原因</label>
-							    <div>
-							      <textarea id="disagreeForm" name="disagreeForm" class="form-control" rows="12" placeholder="请输入未通过原因"></textarea>
-							    </div>
-							  </div>
-							  <button type="submit" class="btn btn-primary pull-right">确定</button>
-						  </form>
-					   </div>
-					   </div>
-				</div>
-			</div>
+<div class="row clearfix">
+	<div class="col-md-5 column">
+		<div class="col-sm-12">
+		<table class="table table-bordered" id="db_detail_table">	
+			<caption>用户申请单</caption>
+		</table>
 		</div>
 	</div>
-</body>
+	<div class="col-md-7 column">
+		<ul id="myTab" class="nav nav-tabs">
+		   <li class="active">
+		      <a href="#create_on_cluster" data-toggle="tab">在已有集群创建</a>
+		   </li>
+		   <li>
+		   	  <a href="#create_on_new_cluster" data-toggle="tab">在新集群创建</a>
+		   </li>
+		   <li>
+		   	  <a href="#disagree" data-toggle="tab">不同意</a>
+		   </li>
+		</ul>					
+		<div id="myTabContent" class="tab-content" >
+			<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
+			<form class="form-horizontal" role="form" action="${ctx}/db/toMgrAudit/save">
+				<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+				<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+				<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
+				<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+			  <div class="form-group">
+			    <label for="text" class="col-sm-2 control-label">选择集群</label>
+			    <div class="col-sm-8">
+			      <select id="mclusterOption" name="mclusterId" class="form-control">
+						<option value=""></option>
+			        <c:forEach var="mcluster" items="${mclusterList}">
+						<option value="${mcluster.id}">${mcluster.mclusterName}</option>
+					</c:forEach>
+			      </select>
+			    </div>
+			    <div class="col-sm-2">
+			      <button type="submit" class="btn btn-primary">创建</button>
+			    </div>
+			  </div>
+			</form>
+		   </div>
+		   <div class="tab-pane fade" id="create_on_new_cluster">
+				<form id="demoform" method="post" action="${ctx}/db/toMgrAudit/save">
+					<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+					<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
+		            <select multiple="multiple" size="10" name="hostIds" id="duallistbox" style="height: 256px;">
+					<c:forEach var="host" items="${hostList}">
+						<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
+					</c:forEach>
+		            </select>
+	          <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;">创建</button>				     
+	          </form>
+		   </div>
+		   <div class="tab-pane fade" id="disagree">
+
+		      <form role="form" method="post" action="${ctx}/db/toMgrAudit/save">
+				  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
+					<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+					<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+				  <div class="form-group form-group-lg">
+				    <label class="control-label" for="formGroupInputLarge">原因</label>
+				    <div>
+				      <textarea id="disagreeForm" name="disagreeForm" class="form-control" rows="12" placeholder="请输入未通过原因"></textarea>
+				    </div>
+				  </div>
+				  <button type="submit" class="btn btn-primary pull-right">确定</button>
+			  </form>
+		   </div>
+		   </div>
+	</div>
+</div>
 <script type="text/javascript">
 $(function(){
 	var dbId = request("dbId");
@@ -177,4 +172,6 @@ function hostDualListBox()
      });		
 }
 </script>
+</body>
+
 </html>
