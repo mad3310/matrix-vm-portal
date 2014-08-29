@@ -7,7 +7,7 @@
 
 
 <!DOCTYPE html>
-<html>
+<html> 
 <head>
 <title>QuickStart示例:<sitemesh:title/></title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />

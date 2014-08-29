@@ -5,7 +5,7 @@ $(function(){
 	alert("1");
 }
 
-</script>
+</script> 
 <div id="header" class="row clearfix">
 	<div class="col-md-12 column">
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse"
