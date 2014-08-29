@@ -10,8 +10,6 @@
 
 </head>
 <body>
-	<div class="container">
-		<div id="wrap">
 			<div class="row">
 				<div class="col-md-12">
 					<h3 class="text-left">DB详情</h3>
@@ -39,13 +37,8 @@
 					<caption>申请信息</caption>
 					</table>
 					</div>
-<!-- 					<div class="col-sm-10">
-						<button id="db_apply_modify" type="submit" class="btn btn-default">修改</button>
-					</div> -->
 				</div>
 			</div>
-		</div>
-	</div>
 </body>
 <script type="text/javascript">
 $(function(){

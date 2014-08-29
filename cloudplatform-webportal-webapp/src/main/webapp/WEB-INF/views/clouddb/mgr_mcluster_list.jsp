@@ -9,8 +9,6 @@
 <title>运维管理</title>
 </head>
 <body>
-	<div class="container">
-		<div id="wrap">
 			<div class="row">
 				<div class="col-md-3">
 					<h3 class="text-left">运维管理</h3>
@@ -71,11 +69,7 @@
 						</ul>
 					</div>
 				</div>
-
 			</div>
-
-		</div>
-	</div>
 </body>
 <script src="${ctx}/static/scripts/pageControl.js"></script>
 <script type="text/javascript">
@@ -143,7 +137,8 @@ var recordsPerPage = 10; //每页显示条数
 					
 					tr.append(td1).append(td2).append(td3).append(td4);
 					tr.appendTo(tby);
-				}
+				}//循环json中的数据 
+				
 				if (totalPages <= 1) {
 					$("#pageControlBar").hide();
 				} else {
@@ -152,7 +147,6 @@ var recordsPerPage = 10; //每页显示条数
 					$("#currentPage").html(currentPage);
 					$("#totalRows").html(data.data.totalRecords);
 					$("#totalPage").html(totalPages);
-					//循环json中的数据 
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {

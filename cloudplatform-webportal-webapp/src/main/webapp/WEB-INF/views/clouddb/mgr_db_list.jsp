@@ -135,7 +135,7 @@ var currentSelectedLineDbName = 1;
 					
 					tr.append(td1).append(td2).append(td3).append(td4);
 					tr.appendTo(tby);
-				}
+				}//循环json中的数据 
 				if (totalPages <= 1) {
 					$("#pageControlBar").hide();
 				} else {
@@ -144,7 +144,6 @@ var currentSelectedLineDbName = 1;
 					$("#currentPage").html(currentPage);
 					$("#totalRows").html(data.data.totalRecords);
 					$("#totalPage").html(totalPages);
-					//循环json中的数据 
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
