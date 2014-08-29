@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap 101 Template</title>
+<title>用户数据库管理</title>
 </head>
 <body>
 	<div class="container">
@@ -45,10 +45,6 @@
 				<div class="col-md-9 column">
 					<button id="db_apply" type="button" class="btn btn-success"
 						data-toggle="modal">申请DB</button>
-<!-- 					<button id="db_create" type="button" class="btn btn-default"
-						data-toggle="modal">DB创建</button>
-					<button id="db_apply_info" type="button" class="btn btn-default"
-						data-toggle="modal">DB申请内容</button> -->
 					
 					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
@@ -77,10 +73,7 @@ var recordsPerPage = 10; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
 	 $(function(){
-		//隐藏header的页面按钮
-		$("#headNavList").hide();
-		
-		$("#sqlcluster").addClass("active");//高亮显示页面名
+		$("#headNavList").hide();//隐藏header的页面按钮
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
@@ -94,11 +87,9 @@ var currentSelectedLineDbName = 1;
 					+ currentPage
 					+ "&recordsPerPage="
 					+ recordsPerPage
-					+ "&flag=self",
-					/*+"&clusterId="
-					+ $("#clusterId").val(),
-					 + "&dbName="
-					+ $("#dbName").val() */
+					+ "&flag=self"
+					+ "&dbName="
+					+ $("#dbName").val(),
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
@@ -109,9 +100,9 @@ var currentSelectedLineDbName = 1;
 				function translateStatus(status){
 					if(status == 0){
 						return "审核中";
-					}else if(status  == 1){
+					}else if(status  == 1 ||status  == 2){
 						return "审核通过";
-					}else if(status  == 2){
+					}else if(status  == -1){
 						return "审核未通过";
 					}
 				}
@@ -129,7 +120,7 @@ var currentSelectedLineDbName = 1;
 					var td3 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					if(array[i].status == 2){
+					if(array[i].status == -1){
 						var tr = $("<tr class=\"danger\"></tr>");
 					}else{
 						var tr = $("<tr></tr>");
@@ -196,17 +187,6 @@ var currentSelectedLineDbName = 1;
 		$("#db_apply").click(function() {
 //			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
 			location.href = "${ctx}/db/toForm";
-		});
-		//获取当前选中行dbName
-		$("#db_list tr").click(function() {
-		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
-			alert($(this).children("td:first").text());
-			currentSelectedLineDbName = $(this).children("td:first").text();
-		});
-		//申请数据库button跳转
-		$("#db_apply_info").click(function() {
-			alert("${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName);
-			location.href = "${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName;
 		});
 	}
 </script>

@@ -31,45 +31,26 @@
 					</p>
 				</div>
 				<div class="col-md-9 column">
-					<div class="col-sm-10">
+					<div class="col-sm-12">
 					<button id="goBack" name="goBack" type="button" class="btn btn-default">返回</button>
 					
 					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
-						<caption>container</caption>
-						<tr><td>名称</td><td>node1</td></tr>
-						<tr><td>ip</td><td>192.168.10.11</td></tr>
-						<tr><td>网关</td><td>192.168.10.1</td></tr>
-						<tr><td>掩码</td><td>24</td></tr>
-						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
-						<tr><td>zookeeper</td><td>1</td></tr>
-					</table>
-					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
-						<caption>container</caption>
-						<tr><td>名称</td><td>node1</td></tr>
-						<tr><td>ip</td><td>192.168.10.11</td></tr>
-						<tr><td>网关</td><td>192.168.10.1</td></tr>
-						<tr><td>掩码</td><td>24</td></tr>
-						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
-						<tr><td>zookeeper</td><td>1</td></tr>
-					</table>
-					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
-						<caption>container</caption>
-						<tr><td>名称</td><td>node1</td></tr>
-						<tr><td>ip</td><td>192.168.10.11</td></tr>
-						<tr><td>网关</td><td>192.168.10.1</td></tr>
-						<tr><td>掩码</td><td>24</td></tr>
-						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
-						<tr><td>zookeeper</td><td>1</td></tr>
-					</table>
-					<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
-						<caption>container</caption>
-						<tr><td>名称</td><td>node1</td></tr>
-						<tr><td>ip</td><td>192.168.10.11</td></tr>
-						<tr><td>网关</td><td>192.168.10.1</td></tr>
-						<tr><td>掩码</td><td>24</td></tr>
-						<tr><td>挂载路径</td><td>/opt;/mnt/db:/srv/db</td></tr>
-						<tr><td>zookeeper</td><td>1</td></tr>
-					</table>
+						<caption>Mcluster信息</caption>
+						<thead>
+					      <tr>
+					         <th>container名称</th>
+					         <th>有户名</th>
+					         <th>密码</th>
+					         <th>宿主机</th>
+					         <th>ip</th>
+					         <th>网关</th>
+					         <th>掩码</th>
+					         <th>挂在路径</th>
+					         <th>zookeepId</th>
+					         <th>状态</th>
+					      </tr>
+					   </thead>
+						</table>
 <!-- 					<div class="col-sm-10">
 						<button id="db_apply_modify" type="submit" class="btn btn-default">修改</button>
 					</div> -->

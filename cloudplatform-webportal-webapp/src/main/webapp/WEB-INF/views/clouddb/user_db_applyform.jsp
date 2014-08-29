@@ -31,7 +31,6 @@
 			</div>
 			<div class="col-md-9 column">
 				<form id="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save">
-					<input type="hidden" id="clusterId" name="clusterId" value="${clusterId}">
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="project_name">上线项目名称</label>
 						<div class="col-sm-4">

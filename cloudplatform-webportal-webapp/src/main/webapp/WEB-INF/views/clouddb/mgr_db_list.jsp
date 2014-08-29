@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bootstrap 101 Template</title>
+<title>管理员数据库管理</title>
 </head>
 <body>
 	<div class="container">
@@ -107,18 +107,22 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1;
-					if(array[i].status == 1 || array[i].status == 2){
+					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
 						td1 = $("<td>"
-								+ "<a href=\"${ctx}/db/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "<a href=\"${ctx}/db/mgr/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}else{	
 						td1 = $("<td>"
 								+ "<a href=\"${ctx}/db/toMgrAudit?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}
-					var td2 = $("<td>"
-							+ array[i].cluster.mclusterName
-							+ "</td>");
+					if(array[i].cluster){
+						var td2 = $("<td>"
+								+ array[i].cluster.mclusterName
+								+ "</td>");
+					} else {
+						var td2 = $("<td> </td>");
+					}
 					var td3 = $("<td>"
 							+ array[i].createTime
 							+ "</td>");
@@ -192,17 +196,6 @@ var currentSelectedLineDbName = 1;
 		$("#db_apply").click(function() {
 //			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
 			location.href = "${ctx}/db/toForm";
-		});
-		//获取当前选中行dbName
-		$("#db_list tr").click(function() {
-		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
-			alert($(this).children("td:first").text());
-			currentSelectedLineDbName = $(this).children("td:first").text();
-		});
-		//申请数据库button跳转
-		$("#db_apply_info").click(function() {
-			alert("${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName);
-			location.href = "${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName;
 		});
 	}
 </script>

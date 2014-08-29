@@ -51,7 +51,6 @@
 </body>
 <script type="text/javascript">
 $(function(){
-	$("#headNavList").hide();//隐藏header的页面按钮
 	var dbId = request("belongDb");
 	queryByDbId(dbId);
 	initPage();

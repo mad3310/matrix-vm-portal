@@ -112,9 +112,9 @@ var recordsPerPage = 10; //每页显示条数
 				
 				function translateStatus(status){
 					var statuStr;
-					if(status == 1){
+					if(status == 0){
 						return "启动";
-					}else if(status  == 2){
+					}else if(status  == 1){
 						return "关闭";
 					}else{
 						return "异常";

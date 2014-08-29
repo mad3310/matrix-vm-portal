@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>数据库审核</title>
+<title>管理员数据库审核</title>
 
 </head>
 <body>
@@ -75,13 +75,16 @@
 									<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
 								</c:forEach>
 					            </select>
-				          <button type="submit" class="btn btn-primary pull-right">创建</button>				     
+				          <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;">创建</button>				     
 				          </form>
 					   </div>
 					   <div class="tab-pane fade" id="disagree">
 
 					      <form role="form" method="post" action="${ctx}/db/toMgrAudit/save">
 							  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
+								<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+								<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+								<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
 							  <div class="form-group form-group-lg">
 							    <label class="control-label" for="formGroupInputLarge">原因</label>
 							    <div>
@@ -122,7 +125,6 @@ function queryByDbId(dbId) {
 			$("input[name='dbId']").val(value.belongDb);
 			$("input[name='applyCode']").val(value.applyCode);
 			$("input[name='dbApplyStandardId']").val(value.id);
-			alert($("input[name='dbApplyStandardId']").val());
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
 			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
 			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
@@ -172,8 +174,8 @@ function hostDualListBox()
 {
 	 var demo1 = $('select[name="hostIds"]').bootstrapDualListbox();
      $("#demoform").submit(function() {
-       
-       
+		alert($('select[name="hostIds"]').val()));  
+     	return false;
      });		
 }
 </script>

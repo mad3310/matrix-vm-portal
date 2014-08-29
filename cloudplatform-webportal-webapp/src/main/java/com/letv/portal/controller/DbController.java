@@ -74,6 +74,11 @@ public class DbController {
 		return "/clouddb/user_db_apply_info";
 	}
 	
+	@RequestMapping(value="/mgr/dbApplyInfo")
+	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mgr_db_apply_info";
+	}
+	
 	@RequestMapping("/list/dbApplyInfo")   //http://localhost:8080/db/list/data
 	public void listDbApplyInfo(HttpServletRequest request,HttpServletResponse response) {
 		
@@ -91,13 +96,7 @@ public class DbController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
-	}
-	
-	@RequestMapping(value="/mgrAudit/list")
-	public String mgrAuditList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/mgr_audit_db_list";
 	}	
-	
 
 	@RequestMapping(value="/toMgrAudit")
 	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
@@ -129,7 +128,7 @@ public class DbController {
 		
 		String result = HttpUtil.getResultFromDBAPI(request,"/db/audit/save",map);
 		if(result.contains("\"result\":1")) {
-			return "redirect:/db/mgrAudit/list";
+			return "redirect:/db/mgrList";
 		}
 		return "common/error";
 	}
@@ -143,7 +142,7 @@ public class DbController {
 		
 		String result = HttpUtil.getResultFromDBAPI(request,"/db/audit/save",map);
 		if(result.contains("\"result\":1")) {
-			return "redirect:/db/mgrAudit/list";
+			return "redirect:/db/mgrList";
 		}
 		return "common/error";
 	}

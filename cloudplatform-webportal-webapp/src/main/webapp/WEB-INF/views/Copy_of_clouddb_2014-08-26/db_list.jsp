@@ -45,10 +45,6 @@
 				<div class="col-md-9 column">
 					<button id="db_apply" type="button" class="btn btn-success"
 						data-toggle="modal">申请DB</button>
-<!-- 					<button id="db_create" type="button" class="btn btn-default"
-						data-toggle="modal">DB创建</button>
-					<button id="db_apply_info" type="button" class="btn btn-default"
-						data-toggle="modal">DB申请内容</button> -->
 					
 					<table id="db_list"
 						class="table table-striped table-hover table-responsive">
@@ -193,17 +189,6 @@ var currentSelectedLineDbName = 1;
 		$("#db_apply").click(function() {
 //			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
 			location.href = "${ctx}/db/toForm";
-		});
-		//获取当前选中行dbName
-		$("#db_list tr").click(function() {
-		/*$(this).children("ul").children("li:first-child").css("color","#FF6666"); */
-			alert($(this).children("td:first").text());
-			currentSelectedLineDbName = $(this).children("td:first").text();
-		});
-		//申请数据库button跳转
-		$("#db_apply_info").click(function() {
-			alert("${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName);
-			location.href = "${ctx}/db/dbApplyInfo?clusterId="+$("#clusterId").val()+"&dbName="+currentSelectedLineDbName;
 		});
 	}
 </script>
