@@ -9,69 +9,67 @@
 <title>运维管理</title>
 </head>
 <body>
-			<div class="row">
-				<div class="col-md-3">
-					<h3 class="text-left">运维管理</h3>
-				</div>
-				<div  class="col-md-6">
-					<div id="pageMessage"></div>
-				</div>
-				<div class="col-md-3">
-					<form class="navbar-form navbar-right" role="search">
-						<div class="form-group">
-							<input id="mclusterName" type="text" value=""
-								class="form-control" />
-						</div>
-						<button type="button" class="btn btn-default" id="searchButton">搜索</button>
-					</form>
-				</div>
-				<hr
-					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-					width="100%" color=#987cb9 SIZE=3></hr>
+<div class="row">
+	<div class="col-md-3">
+		<h3 class="text-left">运维管理</h3>
+	</div>
+	<div  class="col-md-6">
+		<div id="pageMessage"></div>
+	</div>
+	<div class="col-md-3">
+		<form class="navbar-form navbar-right" role="search">
+			<div class="form-group">
+				<input id="mclusterName" type="text" value=""
+					class="form-control" />
 			</div>
+			<button type="button" class="btn btn-default" id="searchButton">搜索</button>
+		</form>
+	</div>
+	<hr
+		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
+		width="100%" color=#987cb9 SIZE=3></hr>
+</div>
 
-			<div class="row clearfix">
-				<div class="col-md-3 column">
-					<h2>通告：</h2>
-					<p>关于数据库使用的通知、帮助和注意事项。</p>
-					<p>
-						<a class="btn" href="#">查看详细使用教程 »</a>
-					</p>
-				</div>
-				<div class="col-md-9 column">
-		<!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
-					<table id="userdata"
-						class="table table-striped table-hover table-responsive">
-						<thead>
-							<tr>
-								<th>Mcluster名称</th>
-								<th>所属用户</th>
-								<th>创建时间</th>
-								<th>当前状态</th>
-							</tr>
-						</thead>
-						<tbody id="tby"></tbody>
-					</table>
-					<div id="pageControlBar">
-						<input type="hidden" id="totalPage_input" />
-						<ul class="pager">
-							<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-							<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-							<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-							<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+<div class="row clearfix">
+	<div class="col-md-3 column">
+		<h2>通告：</h2>
+		<p>关于数据库使用的通知、帮助和注意事项。</p>
+		<p>
+			<a class="btn" href="#">查看详细使用教程 »</a>
+		</p>
+	</div>
+	<div class="col-md-9 column">
+<!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
+		<table id="userdata"
+			class="table table-striped table-hover table-responsive">
+			<thead>
+				<tr>
+					<th>Mcluster名称</th>
+					<th>所属用户</th>
+					<th>创建时间</th>
+					<th>当前状态</th>
+				</tr>
+			</thead>
+			<tbody id="tby"></tbody>
+		</table>
+		<div id="pageControlBar">
+			<input type="hidden" id="totalPage_input" />
+			<ul class="pager">
+				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 
-							<li>共<lable id="totalPage"></lable>页
-							</li>
-							<li>第<lable id="currentPage"></lable>页
-							</li>
-							<li>共<lable id="totalRows"></lable>条记录
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-</body>
-<script src="${ctx}/static/scripts/pageControl.js"></script>
+				<li>共<lable id="totalPage"></lable>页
+				</li>
+				<li>第<lable id="currentPage"></lable>页
+				</li>
+				<li>共<lable id="totalRows"></lable>条记录
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -201,4 +199,5 @@ var recordsPerPage = 10; //每页显示条数
 	}
 </script>
 
+</body>
 </html>

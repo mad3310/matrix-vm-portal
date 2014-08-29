@@ -8,63 +8,61 @@
 <title>用户数据库管理</title>
 </head>
 <body>
-			<div class="row">
-				<div class="col-md-3">
-					<h3 class="text-left">DB管理</h3>
-				</div>
-				<div  class="col-md-6">
-					<div id="pageMessage"></div>
-				</div>
-				<div class="col-md-3">
-					<form class="navbar-form navbar-right" role="search">
-						<div class="form-group">
-							<input id="clusterId" type="hidden" value="0e7e5fba-274f-11e4-a3d9-b82a72b53876" />
-							<input id="dbName" type="text" value=""
-								class="form-control" />
-						</div>
-						<button type="button" class="btn btn-default" id="searchButton">搜索</button>
-					</form>
-				</div>
-				<hr
-					style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-					width="100%" color=#987cb9 SIZE=3></hr>
+<div class="row">
+	<div class="col-md-3">
+		<h3 class="text-left">DB管理</h3>
+	</div>
+	<div  class="col-md-6">
+		<div id="pageMessage"></div>
+	</div>
+	<div class="col-md-3">
+		<form class="navbar-form navbar-right" role="search">
+			<div class="form-group">
+				<input id="clusterId" type="hidden" value="0e7e5fba-274f-11e4-a3d9-b82a72b53876" />
+				<input id="dbName" type="text" value=""
+					class="form-control" />
 			</div>
+			<button type="button" class="btn btn-default" id="searchButton">搜索</button>
+		</form>
+	</div>
+	<hr
+		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
+		width="100%" color=#987cb9 SIZE=3></hr>
+</div>
 
-			<div class="row clearfix">
-				<div class="col-md-3 column">
-					<h2>通告：</h2>
-					<p>关于数据库使用的通知、帮助和注意事项。</p>
-					<p>
-						<a class="btn" href="#">查看详细使用教程 »</a>
-					</p>
-				</div>
-				<div class="col-md-9 column">
-					<button id="db_apply" type="button" class="btn btn-success"
-						data-toggle="modal">申请DB</button>
-					
-					<table id="db_list"
-						class="table table-striped table-hover table-responsive">
-						<thead>
-							<tr>
-								<th>DB名称</th>
-								<th>创建时间</th>
-								<th>当前状态</th>
-							</tr>
-						</thead>
-						<tbody id="tby">							
-						</tbody>
-					</table>
-				</div>
+<div class="row clearfix">
+	<div class="col-md-3 column">
+		<h2>通告：</h2>
+		<p>关于数据库使用的通知、帮助和注意事项。</p>
+		<p>
+			<a class="btn" href="#">查看详细使用教程 »</a>
+		</p>
+	</div>
+	<div class="col-md-9 column">
+		<button id="db_apply" type="button" class="btn btn-success"
+			data-toggle="modal">申请DB</button>
+		
+		<table id="db_list"
+			class="table table-striped table-hover table-responsive">
+			<thead>
+				<tr>
+					<th>DB名称</th>
+					<th>创建时间</th>
+					<th>当前状态</th>
+				</tr>
+			</thead>
+			<tbody id="tby">							
+			</tbody>
+		</table>
+	</div>
 
-			</div>
-</body>
+</div>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
 	 $(function(){
-		$("#headNavList").hide();//隐藏header的页面按钮
 		//初始化列表 
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
@@ -181,4 +179,5 @@ var currentSelectedLineDbName = 1;
 		});
 	}
 </script>
+</body>
 </html>

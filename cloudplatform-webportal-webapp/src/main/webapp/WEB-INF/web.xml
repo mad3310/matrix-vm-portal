@@ -28,10 +28,6 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<welcome-file-list>
-		<welcome-file>overView.jsp</welcome-file>
-	</welcome-file-list>
-
 <!-- 配置静态资源访问 -->
 	<servlet-mapping>   
 	    <servlet-name>default</servlet-name>  
@@ -104,4 +100,4 @@
 		<url-pattern>/webapp1/*</url-pattern>
 	</filter-mapping>
  -->
-</web-app>
+</web-app>   

@@ -23,7 +23,7 @@
 					</li>
 				</ul>
 				<ul id="usercenter" class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.username}<strong class="caret"></strong></a>
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.loginName}<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
 							<li><a href="#">用户中心</a></li>
 							<li class="divider"></li>
@@ -34,4 +34,4 @@
 			</div>
 		</nav>
 	</div>
-</div>
+</div> 
