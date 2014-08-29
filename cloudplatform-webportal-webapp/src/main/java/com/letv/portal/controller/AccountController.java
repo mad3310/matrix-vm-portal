@@ -22,8 +22,23 @@ public class AccountController {
 		}
 		request.getSession().setAttribute("loginName", loginName);
 		request.getSession().setAttribute("userId", loginName);
+		if("sysadmin@letv.com".equals(loginName)) {
+			request.getSession().setAttribute("role", "sysadmin");
+		} else {
+			request.getSession().setAttribute("role", "user");
+		} 
 		
 		return "redirect:/db/list";
+	}
+	@RequestMapping("/logout")   //http://localhost:8080/account/logout
+	public String logout(HttpServletRequest request,HttpServletResponse response) {
+	
+		request.getSession().removeAttribute("loginName");
+		request.getSession().removeAttribute("userId");
+		request.getSession().removeAttribute("role");
+		
+		
+		return "redirect:/account/login";
 	}
 	
 	

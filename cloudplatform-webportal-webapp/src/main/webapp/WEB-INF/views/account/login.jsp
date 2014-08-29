@@ -8,8 +8,6 @@
 <title>Bootstrap 101 Template</title>
 </head>
 <body>
-	<div class="container">
-		<div id="wrap">
 			<div class="row clearfix">
 				<div class="col-md-offset-3 col-md-8 column ">
 					<form class="form-horizontal" role="form" action="/account/login">
@@ -36,11 +34,6 @@
 					</form>
 				</div>
 			</div>
-		</div>
-
-	</div>
-
-
 </body>
 
 </html>

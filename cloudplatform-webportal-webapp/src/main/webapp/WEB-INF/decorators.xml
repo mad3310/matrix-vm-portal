@@ -3,6 +3,9 @@
 	<excludes>
 		<pattern>/static/*</pattern>
 		<pattern>/db/list/data*</pattern>
+		<pattern>/db/list/dbApplyInfo*</pattern>
+		<pattern>/mcluster/list/mgrData*</pattern>
+		<pattern>/db/list/mgrMclusterInfo*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

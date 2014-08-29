@@ -39,9 +39,11 @@
 
 <body>
 	<div class="container">
-		<%@ include file="/WEB-INF/layouts/header.jsp"%>
-		<div id="content">
-			<sitemesh:body/>
+		<div id="wrap" style="min-height:800px;">
+			<%@ include file="/WEB-INF/layouts/header.jsp"%>
+			<div id="content">
+				<sitemesh:body/>
+			</div>
 		</div>
 		<%@ include file="/WEB-INF/layouts/footer.jsp"%>
 	</div>
