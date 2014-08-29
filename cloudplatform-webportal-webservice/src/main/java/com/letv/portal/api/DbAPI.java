@@ -95,23 +95,6 @@ public class DbAPI {
 		return obj;
 	}
 	
-	
-	/*@RequestMapping("/build")   //http://localhost:8080/api/db/build
-	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
-		ResultObject obj = new ResultObject();
-		
-		mclusterModel.setCreateUser(createUser);
-		mclusterModel.setCreateTime(createTime);
-		mclusterModel.setUpdateUser(updateUser);
-		mclusterModel.setUpdateTime(updateTime);
-		dbModel.setClusterId("0e7e5fba-274f-11e4-a3d9-b82a72b53876");
-		
-		logger.debug("python.createContainer.url==>"+ConfigUtil.getString("python.createContainer.url"));
-		
-//		this.dbService.build(dbModel);
-		return obj;
-	}*/
-	
 	@RequestMapping("/audit/save")   //http://localhost:8080/api/db/audit/save
 	public ResultObject save(HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -147,7 +130,16 @@ public class DbAPI {
 		
 		
 		//创建mcluster db
+//		this.dbService.build(auditType,mclusterId,dbId,dbApplyStandardId);
 		
+		return obj;
+	}
+	
+	@RequestMapping("/build")   //http://localhost:8080/api/db/build
+	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		
+		this.dbService.build("0", null, null, null);
 		
 		return obj;
 	}

@@ -26,15 +26,6 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	
-	/**Methods Name: build <br>
-	 * Description: 创建db<br>
-	 * @author name: liuhao1
-	 * @param dbModel
-	 * @return
-	 */
-	public String build(DbModel dbModel);
-	
 	/**Methods Name: audit <br>
 	 * Description: 审核db<br>
 	 * @author name: liuhao1
@@ -45,5 +36,23 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @param auditInfo
 	 */
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
+
+	/**Methods Name: build <br>
+	 * Description: 创建db<br>
+	 * @author name: liuhao1
+	 * @param dbModel
+	 * @return
+	 */
+	public String build(DbModel dbModel);
+	
+	/**Methods Name: build <br>
+	 * Description: 创建db<br>
+	 * @author name: liuhao1
+	 * @param auditType
+	 * @param mclusterId
+	 * @param dbId
+	 * @param dbApplyStandardId
+	 */
+	public void build(String auditType, String mclusterId, String dbId,String dbApplyStandardId);
 	
 }
