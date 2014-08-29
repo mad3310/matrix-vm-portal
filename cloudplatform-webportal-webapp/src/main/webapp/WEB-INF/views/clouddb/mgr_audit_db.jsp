@@ -148,7 +148,8 @@ function translateStatus(status){
 	}else
 	{
 		return "否";
-	}	
+	}
+	
 }
 
 function request(paras)
