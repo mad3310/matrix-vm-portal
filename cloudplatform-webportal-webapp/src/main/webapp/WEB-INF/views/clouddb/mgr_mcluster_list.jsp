@@ -123,7 +123,7 @@ var recordsPerPage = 10; //每页显示条数
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+  "<a href=\"${ctx}/mcluster/mclusterInfo?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
+							+  "<a href=\"${ctx}/mcluster/mgrMclusterInfo?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"
 							+ "</td>");
 /* 					var td1 = $("<td>"
 							+  "<a href=\"${ctx}/db/mgrList?clusterId="+array[i].id+"\">"+array[i].mclusterName+"</a>"

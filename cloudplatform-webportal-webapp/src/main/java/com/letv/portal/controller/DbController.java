@@ -19,7 +19,7 @@ import com.letv.common.util.HttpUtil;
 public class DbController {
 	@RequestMapping(value="/list")
 	public String list(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/db_list";
+		return "/clouddb/user_db_list";
 	}
 	
 	@RequestMapping(value="/mgrList")
@@ -30,7 +30,7 @@ public class DbController {
 	@RequestMapping(value="/toForm")
 	public String toForm(HttpServletRequest request,HttpServletResponse response){
 		request.setAttribute("clusterId", request.getParameter("clusterId"));
-		return "/clouddb/db_applyform";
+		return "/clouddb/user_db_applyform";
 	}	
 	
 	@RequestMapping("/list/data")   //http://localhost:8080/db/list/data
@@ -66,12 +66,12 @@ public class DbController {
 		if(result.contains("\"result\":1")) {
 			return "redirect:/db/list";
 		}
-		return "/common/error";
+		return "common/error";
 	}
 	
 	@RequestMapping(value="/dbApplyInfo")
 	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/db_apply_info";
+		return "/clouddb/user_db_apply_info";
 	}
 	
 	@RequestMapping("/list/dbApplyInfo")   //http://localhost:8080/db/list/data
@@ -131,7 +131,7 @@ public class DbController {
 		if(result.contains("\"result\":1")) {
 			return "redirect:/db/mgrAudit/list";
 		}
-		return "/common/error";
+		return "common/error";
 	}
 	@RequestMapping("/createDb/onOldCluster/save")   //http://localhost:8080/mcluster/save
 	public String createDbOnOldClusterSave(HttpServletRequest request,HttpServletResponse response) {
@@ -145,6 +145,6 @@ public class DbController {
 		if(result.contains("\"result\":1")) {
 			return "redirect:/db/mgrAudit/list";
 		}
-		return "/common/error";
+		return "common/error";
 	}
 }

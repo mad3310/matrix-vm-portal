@@ -43,14 +43,15 @@
 					</ul>					
 					<div id="myTabContent" class="tab-content" >
 						<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
-						<form class="form-horizontal" role="form" action="${ctx}/db/createDb/onOldCluster/save">
+						<form class="form-horizontal" role="form" action="${ctx}/db/toMgrAudit/save">
 							<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
 							<input type="text" class="form-control hide" id="dbId" name="dbId"/>
+							<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
 							<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
 						  <div class="form-group">
 						    <label for="text" class="col-sm-2 control-label">选择集群</label>
 						    <div class="col-sm-8">
-						      <select id="mclusterOption" class="form-control">
+						      <select id="mclusterOption" name="mclusterId" class="form-control">
 									<option value=""></option>
 						        <c:forEach var="mcluster" items="${mclusterList}">
 									<option value="${mcluster.id}">${mcluster.mclusterName}</option>
@@ -64,11 +65,12 @@
 						</form>
 					   </div>
 					   <div class="tab-pane fade" id="create_on_new_cluster">
-							<form id="demoform" action="${ctx}/db/createDb/onNewCluster/save" method="post">
+							<form id="demoform" method="post" action="${ctx}/db/toMgrAudit/save">
 								<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
 								<input type="text" class="form-control hide" id="dbId" name="dbId"/>
 								<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
-					            <select multiple="multiple" size="10" name="duallistbox" id="duallistbox" style="height: 256px;">
+								<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
+					            <select multiple="multiple" size="10" name="hostIds" id="duallistbox" style="height: 256px;">
 								<c:forEach var="host" items="${hostList}">
 									<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
 								</c:forEach>
@@ -78,7 +80,8 @@
 					   </div>
 					   <div class="tab-pane fade" id="disagree">
 
-					      <form role="form">
+					      <form role="form" method="post" action="${ctx}/db/toMgrAudit/save">
+							  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
 							  <div class="form-group form-group-lg">
 							    <label class="control-label" for="formGroupInputLarge">原因</label>
 							    <div>
@@ -115,10 +118,11 @@ function queryByDbId(dbId) {
 			
 			var value = data.data;
 			var apply_table = $("#db_detail_table");
-			$("#clusterId").val(value.clusterId);
-			$("#dbId").val(value.belongDb);
-			$("#applyCode").val(value.applyCode);
-			$("#dbApplyStandardId").val(value.id);
+			$("input[name='clusterId']").val(value.clusterId);
+			$("input[name='dbId']").val(value.belongDb);
+			$("input[name='applyCode']").val(value.applyCode);
+			$("input[name='dbApplyStandardId']").val(value.id);
+			alert($("input[name='dbApplyStandardId']").val());
 			apply_table.append("<tr><td>项目名称</td><td>"+value.applyName+"</td></tr>");
 			apply_table.append("<tr><td>业务描述</td><td>"+value.descn+"</td></tr>");
 			apply_table.append("<tr><td>链接类型</td><td>"+value.linkType+"</td></tr>");
@@ -166,10 +170,10 @@ function request(paras)
 
 function hostDualListBox()
 {
-	 var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox();
+	 var demo1 = $('select[name="hostIds"]').bootstrapDualListbox();
      $("#demoform").submit(function() {
-       alert($('[name="duallistbox"]').val());
-       return false;
+       
+       
      });		
 }
 </script>

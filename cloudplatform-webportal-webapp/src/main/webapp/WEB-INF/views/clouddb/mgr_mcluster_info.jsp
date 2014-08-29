@@ -90,7 +90,7 @@ function queryByDbId(dbId) {
 //	$("#db_detail_table tr").remove();
 	$.ajax({ 
 		type : "post",
-		url : "${ctx}/db/list/mclusterInfo?belongDb="
+		url : "${ctx}/db/list/mgrMclusterInfo?belongDb="
 				+dbId,
 				/* + "&dbName="
 				+ $("#dbName").val() */

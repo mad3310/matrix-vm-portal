@@ -49,19 +49,12 @@ public class MclusterController {
 		}
 		
 	}
-	/*@RequestMapping("/list")   //http://localhost:8080/mcluster/list
-	public String list(HttpServletRequest request,HttpServletResponse response) {
-		return "/clouddb/mcluster_list";
-	}*/
+
 	@RequestMapping("/mgrList")   //http://localhost:8080/mcluster/list
 	public String mgr_list(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mgr_mcluster_list";
 	}
-	
-	@RequestMapping("/toCreate")   //http://localhost:8080/mcluster/toCreate
-	public String toCreate(HttpServletRequest request,HttpServletResponse response) {
-		return "/clouddb/mcluster_create";
-	}
+
 	@RequestMapping("/save")   //http://localhost:8080/mcluster/save
 	public String save(HttpServletRequest request,HttpServletResponse response) {
 		
@@ -77,9 +70,9 @@ public class MclusterController {
 		return "/common/error";
 	}
 	
-	@RequestMapping(value="/mclusterInfo")
-	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/mcluster_info";
+	@RequestMapping(value="/mgrMclusterInfo")
+	public String mgrMclusterInfo(HttpServletRequest request,HttpServletResponse response){
+		return "/clouddb/mgr_mcluster_info";
 	}
 
 }

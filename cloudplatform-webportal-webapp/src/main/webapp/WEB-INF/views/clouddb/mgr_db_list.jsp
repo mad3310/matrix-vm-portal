@@ -98,16 +98,16 @@ var currentSelectedLineDbName = 1;
 				function translateStatus(status){
 					if(status == 0){
 						return "审核中";
-					}else if(status  == 1){
+					}else if(status  == 1 ||status  == 2){
 						return "审核通过";
-					}else if(status  == 2){
+					}else if(status  == -1){
 						return "审核未通过";
 					}
 				}
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1;
-					if(array[i].status == 1){
+					if(array[i].status == 1 || array[i].status == 2){
 						td1 = $("<td>"
 								+ "<a href=\"${ctx}/db/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
@@ -125,7 +125,7 @@ var currentSelectedLineDbName = 1;
 					var td4 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					if(array[i].status == 2){
+					if(array[i].status == -1){
 						var tr = $("<tr class=\"danger\"></tr>");
 					}else{
 						var tr = $("<tr></tr>");

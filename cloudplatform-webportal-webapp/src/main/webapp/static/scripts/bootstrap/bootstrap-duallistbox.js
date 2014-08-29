@@ -21,7 +21,7 @@
       preserveSelectionOnMove: false,                                                     // 'all' / 'moved' / false
       selectedListLabel: false,                                                           // 'string', false
       nonSelectedListLabel: false,                                                        // 'string', false
-      helperSelectNamePostfix: '_帮助',                                                 // 'string_of_postfix' / false
+      helperSelectNamePostfix: '',                                                 // 'string_of_postfix' / false
       selectorMinimalHeight: 100,
       showFilterInputs: true,                                                             // whether to show filter inputs
       nonSelectedFilter: '',                                                              // string, filter the non selected options
@@ -558,7 +558,7 @@
       this.settings.helperSelectNamePostfix = value;
       if (value) {
         this.elements.select1.attr('name', this.originalSelectName + value + '1');
-        this.elements.select2.attr('name', this.originalSelectName + value + '2');
+        this.elements.select2.attr('name', this.originalSelectName + value);
       } else {
         this.elements.select1.removeAttr('name');
         this.elements.select2.removeAttr('name');

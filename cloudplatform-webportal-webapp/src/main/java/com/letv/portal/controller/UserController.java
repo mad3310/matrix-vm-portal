@@ -26,7 +26,7 @@ public class UserController {
 		request.getSession().setAttribute("username", username);
 		request.getSession().setAttribute("userId", userId);
 		
-		return "/clouddb/db_list";
+		return "/clouddb/user_db_list";
 		
 	}
 	
