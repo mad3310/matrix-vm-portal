@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@include file="/common/common.jsp" %>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -8,7 +9,7 @@
 <title>Bootstrap 101 Template</title>
 </head> 
 <body>
-			<div class="row clearfix">
+			<div class="row clearfix" style="margin-top:200px;">
 				<div class="col-md-offset-3 col-md-8 column ">
 					<form class="form-horizontal" role="form" action="/account/login">
 						<div class="form-group">
@@ -21,10 +22,10 @@
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="inputEmail">密码</label>
 							<div class="col-sm-4">
-								<input class="form-control" id="password" name="password" type="text" />
+								<input class="form-control" id="password" name="password" type="password" />
 							</div>
 						</div>
-
+						<div>${error}</div>
 						<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-4">
 							<button id="db_create_button" type="submit"

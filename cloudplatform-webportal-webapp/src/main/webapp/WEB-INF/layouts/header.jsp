@@ -1,7 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type="text/javascript">
-</script> 
+<%@page import="com.mysql.jdbc.StringUtils" %>
+<%
+	if(StringUtils.isNullOrEmpty((String)request.getSession().getAttribute("loginName"))) {
+		out.println("<script>window.location='/account/login';</script>");
+	}
+%>
 <div id="header" class="row clearfix">
 	<div class="col-md-12 column">
 		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse"
@@ -37,8 +41,6 @@
 				<ul id="usercenter" class="nav navbar-nav navbar-right">
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" id="loginName">${sessionScope.loginName}<strong class="caret"></strong></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">用户中心</a></li>
-							<li class="divider"></li>
 							<li><a href="${ctx}/account/logout">退出登录</a></li>
 						</ul>
 					</li>
