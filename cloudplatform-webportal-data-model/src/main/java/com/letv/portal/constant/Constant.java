@@ -12,6 +12,9 @@ public class Constant {
 	public static String DB_AUDIT_STATUS_TRUE_BUILD_OLD_MCLUSTER = "1"; 
 	public static String DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER = "2"; 
 	
+	public static String DB_AUDIT_STATUS_BUILD_SUCCESS = "3";  //创建成功
+	public static String DB_AUDIT_STATUS_BUILD_FAIL = "4";  //创建失败
+	
 	
 	public static String IS_DELETE_FALSE="0";
 	public static String IS_DELETE_TRUE="1";

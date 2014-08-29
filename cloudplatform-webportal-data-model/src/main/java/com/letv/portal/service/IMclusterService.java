@@ -45,5 +45,15 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @return
 	 */
 	public String insert(String mclusterId,String[] hostIds,String dbName,String createUser);
+
+
+
+	/**Methods Name: buildNotice <br>
+	 * Description: 手动创建 通知<br>
+	 * @author name: liuhao1
+	 * @param clusterId
+	 * @param flag
+	 */
+	public void buildNotice(String clusterId,String flag);
 	
 }

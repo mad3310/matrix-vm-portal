@@ -22,11 +22,11 @@
     <!-- MailSender -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="username" value="liuhao1" />
-        <property name="password" value="111111" />
+        <property name="password" value="Passw0rd" />
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.user">liuhao1@letv.com</prop>
-                <prop key="mail.smtp.password">111111</prop>
+                <prop key="mail.smtp.password">Passw0rd</prop>
                 <prop key="mail.smtp.host">mail.letv.com</prop>
                 <prop key="mail.smtp.port">25</prop>
                 <prop key="mail.smtp.auth">true</prop>

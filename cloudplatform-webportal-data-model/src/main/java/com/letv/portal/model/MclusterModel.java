@@ -29,6 +29,10 @@ public class MclusterModel extends BaseModel {
 		this.status = status;
 		this.createUser = createUser;
 	};
+	public MclusterModel(String id,String status){
+		this.id = id;
+		this.status = status;
+	};
 	
 	public String getId() {
 		return id;

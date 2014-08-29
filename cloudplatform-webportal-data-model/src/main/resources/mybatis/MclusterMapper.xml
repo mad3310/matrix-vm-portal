@@ -107,6 +107,14 @@
 		</if>
 		where ID = #{id}
 	</update>
+	<!-- status状态修改 -->
+	<update id="audit" parameterType="Mcluster">
+		update WEBPORTAL_MCLUSTER_INFO set
+		<if test="status != null  ">
+			STATUS=#{status}
+		</if>
+		where ID = #{id}
+	</update>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">

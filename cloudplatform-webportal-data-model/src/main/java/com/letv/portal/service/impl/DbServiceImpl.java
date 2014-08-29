@@ -1,6 +1,5 @@
 package com.letv.portal.service.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -15,16 +14,17 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.ConfigUtil;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
 import com.letv.portal.dao.IDbDao;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.Result;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
+import com.mysql.jdbc.StringUtils;
 
 @Service("dbService")
 public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
@@ -105,11 +105,12 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 	@Override
 	public void build(String auditType, String mclusterId, String dbId,
-			String dbApplyStandardId) {
+			String dbApplyStandardId,String auditUser) {
 		
 		if(DB_CREATE_TYPE.equals(auditType)) {
+			String content = " mcluster创建信息：           \r\n db创建信息：             \r\n 创建成功后，点击链接通知webportal系统 http://localhost:8080/build/notice/success/" + dbId;
 			//手动创建 发送邮件
-			this.simpleTextEmailSender.send("1", "1", "1", "liuhao1@letv.com");
+			this.simpleTextEmailSender.send("WebPortal管理系统-系统通知", auditUser, content, auditUser);
 			
 		} else if("1".equals(DB_CREATE_TYPE)) {
 			
@@ -139,6 +140,16 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void buildNotice(String dbId,String buildFlag) {
+		buildFlag = "success".equals(buildFlag)?Constant.DB_AUDIT_STATUS_BUILD_SUCCESS:Constant.DB_AUDIT_STATUS_BUILD_FAIL;
+		DbModel dbModel = this.selectById(dbId);
+		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(dbModel.getStatus())) {
+			this.mclusterService.buildNotice(dbModel.getClusterId(),Constant.DB_AUDIT_STATUS_BUILD_SUCCESS);
+		}
+		this.dbDao.audit(new DbModel(dbId,Constant.DB_AUDIT_STATUS_BUILD_SUCCESS));
 	}
 
 }

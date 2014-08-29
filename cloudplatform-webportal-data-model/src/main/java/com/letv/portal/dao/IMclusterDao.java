@@ -11,5 +11,12 @@ import com.letv.portal.model.MclusterModel;
  * Modified Date: <br>
  */
 public interface IMclusterDao extends IBaseDao<MclusterModel> {
+
+	/**Methods Name: audit <br>
+	 * Description: 改变status状态<br>
+	 * @author name: liuhao1
+	 * @param mclusterModel
+	 */
+	void audit(MclusterModel mclusterModel);
 	
 }

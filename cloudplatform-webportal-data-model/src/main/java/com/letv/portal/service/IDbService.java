@@ -52,7 +52,15 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @param mclusterId
 	 * @param dbId
 	 * @param dbApplyStandardId
+	 * @param auditUser
 	 */
-	public void build(String auditType, String mclusterId, String dbId,String dbApplyStandardId);
+	public void build(String auditType, String mclusterId, String dbId,String dbApplyStandardId,String auditUser);
 	
+	/**Methods Name: buildNotice <br>
+	 * Description: 手动创建完成后，通知<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param buildFlag
+	 */
+	public void buildNotice(String dbId,String buildFlag);
 }

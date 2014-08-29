@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
@@ -139,8 +140,15 @@ public class DbAPI {
 	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		
-		this.dbService.build("0", null, null, null);
+		this.dbService.build("0", null, null, null,"liuhao1@letv.com");
 		
+		return obj;
+	}
+	
+	@RequestMapping("/build/notice/{buildFlag}/{dbId}")   //http://localhost:8080/api/db/build/notice/{success/fail}/{dbId}
+	public ResultObject notice(@PathVariable String buildFlag,@PathVariable String dbId,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		this.dbService.buildNotice(dbId,buildFlag);
 		return obj;
 	}
 	

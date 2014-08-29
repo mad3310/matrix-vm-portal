@@ -128,5 +128,10 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		
 		return null;
 	}
+
+	@Override
+	public void buildNotice(String clusterId,String flag) {
+		this.mclusterDao.audit(new MclusterModel(clusterId,flag));
+	}
 	
 }
