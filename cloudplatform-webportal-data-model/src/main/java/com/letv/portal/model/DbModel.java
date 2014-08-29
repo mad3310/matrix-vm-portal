@@ -30,6 +30,11 @@ public class DbModel extends BaseModel {
 		this.id = id;
 		this.status = status;
 	}
+	public DbModel(String id,String status,String clusterId){
+		this.id = id;
+		this.status = status;
+		this.clusterId = clusterId;
+	}
 	
 	public String getId() {
 		return id;

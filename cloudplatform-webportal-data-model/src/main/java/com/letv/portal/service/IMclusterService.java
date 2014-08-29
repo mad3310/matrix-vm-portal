@@ -34,4 +34,16 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public String build(String mclusterId);
 	
+
+	/**Methods Name: insert <br>
+	 * Description: 创建完整mcluster<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @param hostIds
+	 * @param dbName
+	 * @param createUser
+	 * @return
+	 */
+	public String insert(String mclusterId,String[] hostIds,String dbName,String createUser);
+	
 }

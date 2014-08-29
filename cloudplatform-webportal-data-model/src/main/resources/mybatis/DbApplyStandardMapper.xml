@@ -73,12 +73,17 @@
 		</if>
 		where ID = #{id}
 	</update>
-	<!--  审批状态，将deleted 改成 0或1 -->
+	<!--  审批状态， -->
 	<update id="audit" parameterType="DbStandard">
-		update WEBPORTAL_DB_APPLY_STANDARD set
-		<if test="status != null  ">
-			status=#{status}
-		</if>
+		update WEBPORTAL_DB_APPLY_STANDARD
+		<set>
+			<if test="status != null  ">
+				status=#{status},
+			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo}
+			</if>
+		</set>
 		where ID = #{id}
 	</update>
 

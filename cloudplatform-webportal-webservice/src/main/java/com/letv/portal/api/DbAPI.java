@@ -4,6 +4,7 @@ package com.letv.portal.api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IMclusterService;
 import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbAPI <br>
@@ -34,6 +37,10 @@ import com.mysql.jdbc.StringUtils;
 public class DbAPI {
 	@Resource
 	private IDbService dbService;
+	@Resource
+	private IContainerService containerService;
+	@Resource
+	private IMclusterService mclusterService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbAPI.class);
 	
@@ -88,72 +95,56 @@ public class DbAPI {
 		return obj;
 	}
 	
+	@RequestMapping("/audit/save")   //http://localhost:8080/api/db/audit/save
+	public ResultObject save(HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		String auditType = request.getParameter("auditType");
+		String auditInfo = request.getParameter("auditInfo");
+		
+		String mclusterId = request.getParameter("mclusterId");
+		
+		String dbId = request.getParameter("dbId");
+		String dbName = request.getParameter("applyCode");
+		String dbApplyStandardId = request.getParameter("dbApplyStandardId");
+		
+		String hostIds = request.getParameter("hostIds");
+		String createUser = request.getParameter("createUser");
+		
+		logger.debug("auditType==>" + auditType);
+		logger.debug("dbApplyStandardId==>" + mclusterId);
+		logger.debug("mclusterId==>" + mclusterId);
+		logger.debug("dbId==>" + dbId);
+		logger.debug("dbName==>" + dbName);
+		logger.debug("dbApplyStandardId==>" + dbApplyStandardId);
+		logger.debug("auditInfo==>" + auditInfo);
+		
+		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(auditType)) {
+			logger.debug("hostIds==>" + hostIds.toString());
+			//审核通过，已有mcluster创建db
+			mclusterId = UUID.randomUUID().toString();
+			this.mclusterService.insert(mclusterId,hostIds.split("\\|"),dbName,createUser);
+		}
+		//保存审批信息
+		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
+		
+		
+		
+		//创建mcluster db
+//		this.dbService.build(auditType,mclusterId,dbId,dbApplyStandardId);
+		
+		return obj;
+	}
 	
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		
-		/*mclusterModel.setCreateUser(createUser);
-		mclusterModel.setCreateTime(createTime);
-		mclusterModel.setUpdateUser(updateUser);
-		mclusterModel.setUpdateTime(updateTime);*/
-		dbModel.setClusterId("0e7e5fba-274f-11e4-a3d9-b82a72b53876");
+		this.dbService.build("0", null, null, null);
 		
-		logger.debug("python.createContainer.url==>"+ConfigUtil.getString("python.createContainer.url"));
-		
-//		this.dbService.build(dbModel);
 		return obj;
 	}
 	
-	@RequestMapping("/audit/save")   //http://localhost:8080/api/db/audit/save
-	public ResultObject save(HttpServletRequest request) {
-		ResultObject obj = new ResultObject();
-		
-		String clusterId = request.getParameter("clusterId");
-		String dbId = request.getParameter("dbId");
-		String dbApplyStandardId = request.getParameter("dbApplyStandardId");
-		
-		logger.debug("clusterId========>" + clusterId);
-		logger.debug("dbId========>" + dbId);
-		logger.debug("dbApplyStandardId========>" + dbApplyStandardId);
-		
-		String[] containerNames = request.getParameter("containerName").split("\\|");
-		String[] mountDirs = request.getParameter("mountDir").split("\\|");
-		String[] zookeeperIds = request.getParameter("zookeeperId").split("\\|");
-		String[] ipAddrs = request.getParameter("ipAddr").split("\\|");
-		String[] gateAddrs = request.getParameter("gateAddr").split("\\|");
-		String[] ipMasks = request.getParameter("ipMask").split("\\|");
-		String[] clusterNodeNames = request.getParameter("clusterNodeName").split("\\|");
-		String[] assignNames = request.getParameter("assignName").split("\\|");
-		String[] originNames = request.getParameter("originName").split("\\|");
-		String[] types = request.getParameter("type").split("\\|");
-		
-		String createUser = request.getParameter("createUser");
-			
-		List<ContainerModel> containers = new ArrayList<ContainerModel>();
-		for (int i = 0; i < containerNames.length; i++) {
-			ContainerModel t = new ContainerModel();
-			t.setContainerName(containerNames[i]);
-			t.setMountDir(mountDirs[i]);
-			t.setZookeeperId(zookeeperIds[i]);
-			t.setIpAddr(ipAddrs[i]);
-			t.setGateAddr(gateAddrs[i]);
-			t.setIpMask(ipMasks[i]);
-			t.setClusterNodeName(clusterNodeNames[i]);
-			t.setAssignName(assignNames[i]);
-			t.setOriginName(originNames[i]);
-			t.setType(types[i]);
-			
-			t.setClusterId(clusterId);
-			t.setCreateUser(createUser);
-			
-			containers.add(t);
-			logger.debug("container====>" + t);
-		}
-		this.dbService.audit(dbId,dbApplyStandardId,containers);
-		
-		return obj;
-	}
+	
 	
 	
 }

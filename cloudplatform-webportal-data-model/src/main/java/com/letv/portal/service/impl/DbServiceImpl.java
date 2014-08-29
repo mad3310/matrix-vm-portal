@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.letv.common.dao.QueryParam;
+import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
@@ -32,6 +34,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	
 	private static final String PYTHON_URL = "";
 	private static final String SUCCESS_CODE = "";
+	private static final String DB_CREATE_TYPE = ConfigUtil.getString("db.create.type");
 	
 	@Resource
 	private IDbDao dbDao;
@@ -43,6 +46,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	
 	@Resource
 	private IMclusterService mclusterService;
+	
+	@Resource
+	private SimpleTextEmailSender simpleTextEmailSender;
 
 	public DbServiceImpl() {
 		super(DbModel.class);
@@ -62,10 +68,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		
 	}
 
-	@Override
+	/*@Override
 	public void audit(String dbId, String dbApplyStandardId,List<ContainerModel> containers) {
 		
-		//审核成功  //审核状态:    0:未审核1:审核通过2:审核不通过
 		this.dbDao.audit(new DbModel(dbId,"1")); //审核成功
 		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,"1"));
 		
@@ -73,11 +78,16 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		for (ContainerModel containerModel : containers) {
 			this.containerDao.insert(containerModel);
 		}
+	}*/
+	
+	@Override
+	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
+		this.dbDao.audit(new DbModel(dbId,status,mclusterId));
+		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,status,auditInfo));
 	}
 
 	@Override
 	public String build(DbModel dbModel) {
-
 		
 		//判断手动创建 还是调用API创建
 		
@@ -91,9 +101,20 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		//创建db
 		//创建db用户
 		this.buildDb(dbModel);
-		
-		
 		return null;
+	}
+	@Override
+	public void build(String auditType, String mclusterId, String dbId,
+			String dbApplyStandardId) {
+		
+		if(DB_CREATE_TYPE.equals(auditType)) {
+			//手动创建 发送邮件
+			this.simpleTextEmailSender.send("1", "1", "1", "liuhao1@letv.com");
+			
+		} else if("1".equals(DB_CREATE_TYPE)) {
+			
+		}
+		
 	}
 	
 	private String buildDb(DbModel dbModel) {
@@ -119,4 +140,5 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		
 		return null;
 	}
+
 }

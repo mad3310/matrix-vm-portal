@@ -57,7 +57,7 @@
 	<insert id="insert" parameterType="Mcluster">
 		insert into
 		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(UUID(),#{mclusterName},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		values(#{id},#{mclusterName},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
