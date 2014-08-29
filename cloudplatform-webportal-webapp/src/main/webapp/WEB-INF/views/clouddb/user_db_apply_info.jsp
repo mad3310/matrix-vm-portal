@@ -118,7 +118,7 @@ function translateStatus(status){
 
 function initPage(){
 	$("#goBack").click(function() {
-		/* location.href = "${ctx}/mcluster/mgrList"; */
+		location.href = "${ctx}/db/list";
 	});
 }
 </script>
