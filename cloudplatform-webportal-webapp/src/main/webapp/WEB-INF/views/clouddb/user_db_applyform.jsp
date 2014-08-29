@@ -10,7 +10,6 @@
 </head>
 <body>
 	<div class="container">
-	<%@include file="/common/header.jsp"%>
 		<div id="wrap">
 		<div class="row">
 			<div class="col-md-12">
@@ -154,7 +153,6 @@
 			</div>
 		</div>
 	</div>
-	<%@include file="/common/footer.jsp"%>
 </div>
 
 </body>
