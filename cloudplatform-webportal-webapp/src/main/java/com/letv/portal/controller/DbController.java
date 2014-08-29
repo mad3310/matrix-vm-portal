@@ -75,7 +75,7 @@ public class DbController {
 	}
 	
 	@RequestMapping(value="/mgr/dbApplyInfo")
-	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+	public String mgrDbApplyInfo(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/mgr_db_apply_info";
 	}
 	
