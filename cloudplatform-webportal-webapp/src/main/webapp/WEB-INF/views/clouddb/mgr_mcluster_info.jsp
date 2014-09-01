@@ -21,11 +21,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>提示：</h2>
+		<p>管理员在修改Mcluster信息，请联系我们及时更新。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<div class="col-sm-12">
@@ -36,13 +36,11 @@
 			<thead>
 		      <tr>
 		         <th>container名称</th>
-		         <th>有户名</th>
-		         <th>密码</th>
 		         <th>宿主机</th>
 		         <th>ip</th>
 		         <th>网关</th>
 		         <th>掩码</th>
-		         <th>挂在路径</th>
+		         <th>挂载路径</th>
 		         <th>zookeepId</th>
 		         <th>状态</th>
 		      </tr>

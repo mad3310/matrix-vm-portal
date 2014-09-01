@@ -32,11 +32,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>提示：</h2>
+		<p>一个Mcluster上可以有多个DB。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 <!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->

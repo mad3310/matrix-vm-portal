@@ -20,11 +20,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>提示：</h2>
+		<p>请填写右方的表单申请数据库，如果长时间没有成功，请联系运维管理员。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<form id="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save">
