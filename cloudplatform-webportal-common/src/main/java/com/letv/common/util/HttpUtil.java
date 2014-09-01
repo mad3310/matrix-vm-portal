@@ -30,7 +30,7 @@ public final class HttpUtil {
 
 	private static final Log log = LogFactory.getLog(HttpUtil.class);
 	
-	public static final String API_URL = "http://localhost:8080/api";
+	public static final String API_URL = ConfigUtil.getString("server_api_url");
 
 	public static final String readContent(String url) {
 		
