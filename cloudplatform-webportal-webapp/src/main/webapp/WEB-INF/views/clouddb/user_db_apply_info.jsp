@@ -23,9 +23,9 @@
 	<div class="col-md-3 column">
 		<h2>提示：</h2>
 		<p>请按照数据库信息表中提供的信息配置使用数据库，如有问题请联系运维管理员。</p>
-		<p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<div class="col-sm-10">

@@ -36,13 +36,11 @@
 			<thead>
 		      <tr>
 		         <th>container名称</th>
-		         <th>有户名</th>
-		         <th>密码</th>
 		         <th>宿主机</th>
 		         <th>ip</th>
 		         <th>网关</th>
 		         <th>掩码</th>
-		         <th>挂在路径</th>
+		         <th>挂载路径</th>
 		         <th>zookeepId</th>
 		         <th>状态</th>
 		      </tr>
