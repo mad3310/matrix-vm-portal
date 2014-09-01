@@ -34,6 +34,9 @@
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap-duallistbox.min.css" rel="stylesheet">
 <script src="${ctx}/static/scripts/bootstrap/bootstrap-duallistbox.js"></script>
 
+<!-- 警告框 -->
+<script src="${ctx}/static/scripts/pageMessage.js"></script>
+
 <sitemesh:head/>
 </head>
 

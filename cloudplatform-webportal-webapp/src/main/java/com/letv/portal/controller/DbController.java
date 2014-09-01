@@ -89,7 +89,7 @@ public class DbController {
 		}
 		
 		request.setAttribute("containers", data.get("containers"));
-		request.setAttribute("dbUser", data.get("dbUsers"));
+		request.setAttribute("dbUsers", data.get("dbUsers"));
 		request.setAttribute("dbApplyStandard", data.get("dbApplyStandard"));
 		request.setAttribute("db", data.get("dbModel"));
 
@@ -99,7 +99,6 @@ public class DbController {
 	@RequestMapping(value="/mgr/dbApplyInfo")
 	public String mgrDbApplyInfo(HttpServletRequest request,HttpServletResponse response){
 		String result = HttpUtil.getResultFromDBAPI(request,"/db/getById",null);
-		System.out.println(result);
 		ObjectMapper resultMapper = new ObjectMapper();
 		Map jsonResult = null;
 		Map data = null;
@@ -112,10 +111,9 @@ public class DbController {
 		}
 		
 		request.setAttribute("containers", data.get("containers"));
-		request.setAttribute("dbUser", data.get("dbUsers"));
+		request.setAttribute("dbUsers", data.get("dbUsers"));
 		request.setAttribute("dbApplyStandard", data.get("dbApplyStandard"));
 		request.setAttribute("db", data.get("dbModel"));
-
 		return "/clouddb/mgr_db_apply_info";
 	}
 	
@@ -123,19 +121,24 @@ public class DbController {
 	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
 		String getHostResult = HttpUtil.getResultFromDBAPI(request,"/host/list",null);
 		String getMclusterResult = HttpUtil.getResultFromDBAPI(request,"/mcluster/list",null);
+		String dbApplyResult = HttpUtil.getResultFromDBAPI(request,"/db/getById",null);
 		
 		ObjectMapper hostMapper = new ObjectMapper();
 		ObjectMapper mclusterMapper = new ObjectMapper();
+		ObjectMapper dbApplyMapper = new ObjectMapper();
 		Map hostMap = null;
 		Map mclusterMap = null;
+		Map dbApplyMap = null;
 		try {
 			hostMap = hostMapper.readValue(getHostResult, Map.class);
 			mclusterMap = mclusterMapper.readValue(getMclusterResult, Map.class);
+			dbApplyMap = dbApplyMapper.readValue(dbApplyResult, Map.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		request.setAttribute("hostList", hostMap.get("data"));
 		request.setAttribute("mclusterList", ((Map)mclusterMap.get("data")).get("data"));
+		request.setAttribute("dbApplyStandard", ((Map)dbApplyMap.get("data")).get("dbApplyStandard"));
 		return "/clouddb/mgr_audit_db";
 	}
 

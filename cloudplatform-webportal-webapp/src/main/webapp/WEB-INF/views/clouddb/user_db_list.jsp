@@ -174,7 +174,6 @@ var currentSelectedLineDbName = 1;
 		});
 		//申请数据库button跳转
 		$("#db_apply").click(function() {
-//			location.href = "${ctx}/db/toForm?clusterId="+$("#clusterId").val();
 			location.href = "${ctx}/db/toForm";
 		});
 	}

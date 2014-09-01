@@ -33,8 +33,8 @@
 		<table class="table table-bordered" id="db_detail_table" name="db_detail_table">
 				<caption>数据库信息</caption>
 			<tr>
-				<td>数据库名</td>
-				<td>${db.dbName}</td>
+				<td width="30%">数据库名</td>
+				<td width="70%">${db.dbName}</td>
 			</tr>
 			<c:forEach items="${dbUsers}" var="dbUser">
 				<tr>
@@ -56,8 +56,8 @@
 		<table class="table table-bordered" id="db_apply_table" name="db_apply_table">
 		<caption>申请信息</caption>
 		<tr>
-			<td>项目名称</td>
-			<td>${dbApplyStandard.applyName}</td>
+			<td width="30%">项目名称</td>
+			<td width="70%">${dbApplyStandard.applyName}</td>
 		</tr>
 		<tr>
 			<td>业务描述</td>

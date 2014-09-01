@@ -30,7 +30,7 @@
 	<div class="col-md-10 column">
 		<div class="col-md-12 column">
 		<button id="goBack" name="goBack" type="button" class="btn btn-default">返回</button>
-		<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table">
+		<table class="table table-bordered" id="Mcluster_detail_table" name="Mcluster_detail_table" style="margin-top: 10px;">
 			<thead>
 		      <tr>
 		         <th>container名称</th>
