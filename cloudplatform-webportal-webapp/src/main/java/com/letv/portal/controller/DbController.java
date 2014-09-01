@@ -8,10 +8,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.util.HttpUtil;
 
 @Controller
@@ -71,33 +76,49 @@ public class DbController {
 	
 	@RequestMapping(value="/dbApplyInfo")
 	public String dbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+		String result = HttpUtil.getResultFromDBAPI(request,"/db/getById",null);
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map jsonResult = null;
+		Map data = null;
+		
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+			data =  (Map) jsonResult.get("data");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("containers", data.get("containers"));
+		request.setAttribute("dbUser", data.get("dbUsers"));
+		request.setAttribute("dbApplyStandard", data.get("dbApplyStandard"));
+		request.setAttribute("db", data.get("dbModel"));
+
 		return "/clouddb/user_db_apply_info";
 	}
 	
 	@RequestMapping(value="/mgr/dbApplyInfo")
 	public String mgrDbApplyInfo(HttpServletRequest request,HttpServletResponse response){
+		String result = HttpUtil.getResultFromDBAPI(request,"/db/getById",null);
+		System.out.println(result);
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map jsonResult = null;
+		Map data = null;
+		
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+			data =  (Map) jsonResult.get("data");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		request.setAttribute("containers", data.get("containers"));
+		request.setAttribute("dbUser", data.get("dbUsers"));
+		request.setAttribute("dbApplyStandard", data.get("dbApplyStandard"));
+		request.setAttribute("db", data.get("dbModel"));
+
 		return "/clouddb/mgr_db_apply_info";
 	}
 	
-	@RequestMapping("/list/dbApplyInfo")   //http://localhost:8080/db/list/data
-	public void listDbApplyInfo(HttpServletRequest request,HttpServletResponse response) {
-		
-		//取出session中用户id，追加到http rest请求中
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("createUser", (String) request.getSession().getAttribute("userId"));
-				
-		PrintWriter out;
-		try {
-			response.setContentType("text/html;charset=UTF-8");
-			out = response.getWriter();
-			out.write(HttpUtil.getResultFromDBAPI(request,"/dbApplyStandard/getByDbId",map));
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-	}	
-
 	@RequestMapping(value="/toMgrAudit")
 	public String toMgrAduit(HttpServletRequest request,HttpServletResponse response){
 		String getHostResult = HttpUtil.getResultFromDBAPI(request,"/host/list",null);

@@ -2,15 +2,23 @@ package com.letv.portal.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.util.HttpUtil;
 
 @Controller
@@ -72,7 +80,17 @@ public class MclusterController {
 	
 	@RequestMapping(value="/mgrMclusterInfo")
 	public String mgrMclusterInfo(HttpServletRequest request,HttpServletResponse response){
+		String result = HttpUtil.getResultFromDBAPI(request,"/mcluster/getById",null);
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map jsonResult = null;
+		
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		request.setAttribute("mclusterInfoList", jsonResult.get("data"));
 		return "/clouddb/mgr_mcluster_info";
 	}
-
 }

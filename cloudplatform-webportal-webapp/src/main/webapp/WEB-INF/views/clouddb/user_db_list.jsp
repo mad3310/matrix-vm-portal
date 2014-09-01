@@ -98,7 +98,7 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td>"
-							+ "<a href=\"${ctx}/db/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/db/dbApplyInfo?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 					/* var td2 = $("<td>"
 							+ array[i].cluster.mclusterName

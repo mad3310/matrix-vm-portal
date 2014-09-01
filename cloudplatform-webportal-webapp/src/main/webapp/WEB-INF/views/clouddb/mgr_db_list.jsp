@@ -99,7 +99,7 @@ var currentSelectedLineDbName = 1;
 					var td1;
 					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
 						td1 = $("<td>"
-								+ "<a href=\"${ctx}/db/mgr/dbApplyInfo?belongDb="+array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "<a href=\"${ctx}/db/mgr/dbApplyInfo?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}else{	
 						td1 = $("<td>"
