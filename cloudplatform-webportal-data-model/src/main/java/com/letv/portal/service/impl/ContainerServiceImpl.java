@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -52,6 +53,11 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 //		if(StringUtils.isNullOrEmpty(toTest))
 		
 		super.insert(t);
+	}
+
+	@Override
+	public List<ContainerModel> selectByClusterId(String clusterId) {
+		return this.containerDao.selectByClusterId(clusterId);
 	}
 	
 	

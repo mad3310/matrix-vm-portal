@@ -20,6 +20,8 @@ public class DbUserModel extends BaseModel {
 	private String password; //密码
 	private String salt; //加密盐
 
+	private String type; //用户类型   1管理员 2读用户3 读写用户
+
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
@@ -85,13 +87,21 @@ public class DbUserModel extends BaseModel {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	@Override
 	public String toString() {
 		return "DbUserModel [id=" + id + ", dbId=" + dbId + ", username="
 				+ username + ", password=" + password + ", salt=" + salt
-				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
-				+ ", createUser=" + createUser + ", updateTime=" + updateTime
-				+ ", updateUser=" + updateUser + "]";
+				+ ", type=" + type + ", isDeleted=" + isDeleted
+				+ ", createTime=" + createTime + ", createUser=" + createUser
+				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
+				+ "]";
 	}
-	
 }

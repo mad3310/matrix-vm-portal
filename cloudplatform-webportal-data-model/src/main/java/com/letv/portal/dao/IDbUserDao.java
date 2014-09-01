@@ -1,5 +1,7 @@
 package com.letv.portal.dao;
 
+import java.util.List;
+
 import com.letv.portal.model.DbUserModel;
 
 /**Program Name: IDbUserDao <br>
@@ -11,4 +13,11 @@ import com.letv.portal.model.DbUserModel;
  */
 public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	
+	/**Methods Name: selectByDbId <br>
+	 * Description: 根据dbId查询相关用户<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @return
+	 */
+	public List<DbUserModel> selectByDbId(String dbId);
 }

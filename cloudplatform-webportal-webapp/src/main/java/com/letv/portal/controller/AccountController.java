@@ -32,11 +32,12 @@ public class AccountController {
 		request.getSession().setAttribute("userId", loginName);
 		if("sysadmin@letv.com".equals(loginName)) {
 			request.getSession().setAttribute("role", "sysadmin");
+			return "redirect:/db/mgrList";
 		} else {
 			request.getSession().setAttribute("role", "user");
+			return "redirect:/db/list";
 		} 
-		
-		return "redirect:/db/list";
+
 	}
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {

@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
@@ -26,5 +27,13 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	
+	/**Methods Name: selectByClusterId <br>
+	 * Description: 根据clusterId查出节点<br>
+	 * @author name: liuhao1
+	 * @param clusterId
+	 * @return
+	 */
+	public List<ContainerModel> selectByClusterId(String clusterId);
 	
 }

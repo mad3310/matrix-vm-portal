@@ -3,6 +3,7 @@ package com.letv.portal.api;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,8 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbApplyStandardModel;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IDbApplyStandardService;
+import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.view.DbInfoView;
 import com.mysql.jdbc.StringUtils;
 
 /**Program Name: MclusterAPI <br>
@@ -32,6 +42,8 @@ import com.mysql.jdbc.StringUtils;
 public class MclusterAPI {
 	@Resource
 	private IMclusterService mclusterService;
+	@Resource
+	private IContainerService containerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterAPI.class);
 	
@@ -70,6 +82,15 @@ public class MclusterAPI {
 		} else {
 			this.mclusterService.updateBySelective(mclusterModel);
 		}
+		return obj;
+	}
+	
+	@RequestMapping("/getById") //http://localhost:8080/api/mcluster/getById
+	public ResultObject getInfoById(String clusterId,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		
+		List<ContainerModel> containers = this.containerService.selectByClusterId(clusterId);
+		obj.setData(containers);
 		return obj;
 	}
 	

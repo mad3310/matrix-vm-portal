@@ -73,7 +73,7 @@
 		where ID = #{id}
 	</update>
 	
-	<!-- 逻辑删除，将deleted 改成 0或1 -->
+	<!--修改node数量 -->
 	<update id="updateNodesNumber" parameterType="Host">
 		update WEBPORTAL_HOST set
 		<if test="nodesNumber != null  ">

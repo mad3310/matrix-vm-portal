@@ -111,7 +111,6 @@ function queryByDbId(dbId) {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			
 			var value = data.data;
 			var apply_table = $("#db_detail_table");
 			$("input[name='clusterId']").val(value.clusterId);
@@ -147,8 +146,7 @@ function translateStatus(status){
 	
 }
 
-function request(paras)
-{ 
+function request(paras) { 
     var url = location.href; 
     var paraString = url.substring(url.indexOf("?")+1,url.length).split("&"); 
     var paraObj = {} 
@@ -158,17 +156,14 @@ function request(paras)
     var returnValue = paraObj[paras.toLowerCase()]; 
     if(typeof(returnValue)=="undefined"){ 
     return ""; 
-    }else{ 
+    }else{ 	
     return returnValue; 
     } 
 }
 
-function hostDualListBox()
-{
+function hostDualListBox() {
 	 var demo1 = $('select[name="hostIds"]').bootstrapDualListbox();
      $("#demoform").submit(function() {
-		alert($('select[name="hostIds"]').val()));  
-     	return false;
      });		
 }
 </script>

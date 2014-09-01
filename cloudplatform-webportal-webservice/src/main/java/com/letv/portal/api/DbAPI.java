@@ -1,6 +1,8 @@
 
 package com.letv.portal.api;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,10 +19,16 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.view.DbInfoView;
 import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbAPI <br>
@@ -39,6 +47,10 @@ public class DbAPI {
 	private IContainerService containerService;
 	@Resource
 	private IMclusterService mclusterService;
+	@Resource
+	private IDbUserService dbUserService;
+	@Resource
+	private IDbApplyStandardService dbApplyStandardService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbAPI.class);
 	
@@ -108,13 +120,6 @@ public class DbAPI {
 		String hostIds = request.getParameter("hostIds");
 		String createUser = request.getParameter("createUser");
 		
-		logger.debug("auditType==>" + auditType);
-		logger.debug("mclusterId==>" + mclusterId);
-		logger.debug("dbId==>" + dbId);
-		logger.debug("dbName==>" + dbName);
-		logger.debug("dbApplyStandardId==>" + dbApplyStandardId);
-		logger.debug("auditInfo==>" + auditInfo);
-		
 		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(auditType)) {
 			logger.debug("hostIds==>" + hostIds.toString());
 			//审核通过，已有mcluster创建db
@@ -145,6 +150,21 @@ public class DbAPI {
 	public ResultObject notice(@PathVariable String buildFlag,@PathVariable String dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.dbService.buildNotice(dbId,buildFlag);
+		return obj;
+	}
+	
+	@RequestMapping("/getById") //http://localhost:8080/api/db/getById
+	public ResultObject getInfoById(String dbId,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		
+		DbModel dbModel = this.dbService.selectById(dbId);
+		List<ContainerModel> containers = this.containerService.selectByClusterId(dbModel.getClusterId());
+		List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId);
+		DbApplyStandardModel dbApplyStandard = this.dbApplyStandardService.selectByDbId(dbId);
+		
+		DbInfoView dbInfoView = new DbInfoView(dbModel,dbApplyStandard,dbUsers,containers);
+		
+		obj.setData(dbInfoView);
 		return obj;
 	}
 	
