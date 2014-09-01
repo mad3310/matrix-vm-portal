@@ -21,8 +21,8 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
+		<h2>提示：</h2>
+		<p>请按照数据库信息表中提供的信息配置使用数据库，如有问题请联系运维管理员。</p>
 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
 		</p>

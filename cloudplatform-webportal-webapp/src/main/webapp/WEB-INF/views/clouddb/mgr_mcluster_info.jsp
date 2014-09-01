@@ -21,11 +21,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>提示：</h2>
+		<p>管理员在修改Mcluster信息，请联系我们及时更新。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<div class="col-sm-12">

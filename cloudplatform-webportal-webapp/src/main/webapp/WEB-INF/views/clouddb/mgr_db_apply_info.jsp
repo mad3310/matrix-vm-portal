@@ -21,11 +21,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>注意：</h2>
+		<p>如果修改数据库后，请联系我们更新相关数据。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<div class="col-sm-10">
@@ -62,7 +62,7 @@ function queryByDbId(dbId) {
 			var apply_table = $("#db_apply_table");
 			
 			apply_detail.append("<tr><td>数据库名</td><td>"+"hello world"+"</td></tr>");
-			apply_detail.append("<tr><td>用户名</td><td>"+"hello"+"</td></tr>");
+			apply_detail.append("<tr><td>管理用户名</td><td>"+"hello"+"</td></tr>");
 			apply_detail.append("<tr><td>密码</td><td>"+"*************************************"+"</td></tr>");
 			apply_detail.append("<tr><td>VIP</td><td>"+"182.182.182.182"+"</td></tr>");
 			apply_detail.append("<tr><td>container_1_ip</td><td>"+"182.182.182.183"+"</td></tr>");

@@ -33,11 +33,11 @@
 
 <div class="row clearfix">
 	<div class="col-md-3 column">
-		<h2>通告：</h2>
-		<p>关于数据库使用的通知、帮助和注意事项。</p>
-		<p>
+		<h2>提示：</h2>
+		<p>搜索为按名称模糊查询，数据库状态为需审核请管理员审批并创建。</p>
+<!-- 		<p>
 			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p>
+		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<table id="db_list"
@@ -87,7 +87,7 @@ var currentSelectedLineDbName = 1;
 				
 				function translateStatus(status){
 					if(status == 0){
-						return "审核中";
+						return "需审核";
 					}else if(status  == 1 ||status  == 2){
 						return "审核通过";
 					}else if(status  == -1){
