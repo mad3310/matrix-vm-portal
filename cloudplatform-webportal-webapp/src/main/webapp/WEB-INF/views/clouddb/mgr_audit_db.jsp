@@ -94,10 +94,10 @@
 		<div id="myTabContent" class="tab-content" >
 			<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
 			<form class="form-horizontal" role="form" action="${ctx}/db/toMgrAudit/save">
-				<input type="text" class="form-control hide" value="1" id="applyCode" name="applyCode"/>
-				<input type="text" class="form-control hide" value="1" id="dbId" name="dbId"/>
+				<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode}" id="applyCode" name="applyCode"/>
+				<input type="text" class="form-control hide" id="dbId" name="dbId"/>
 				<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
-				<input type="text" class="form-control hide" value="1" id="dbApplyStandardId" name="dbApplyStandardId"/>
+				<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 			  <div class="form-group">
 			    <label for="text" class="col-sm-2 control-label">选择集群</label>
 			    <div class="col-sm-8">
@@ -116,9 +116,9 @@
 		   </div>
 		   <div class="tab-pane fade" id="create_on_new_cluster">
 				<form id="demoform" method="post" action="${ctx}/db/toMgrAudit/save">
-					<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
 					<input type="text" class="form-control hide" id="dbId" name="dbId"/>
-					<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 		            <select multiple="multiple" size="10" name="hostIds" id="duallistbox" style="height: 256px;">
 					<c:forEach var="host" items="${hostList}">
@@ -132,9 +132,9 @@
 
 		      <form role="form" method="post" action="${ctx}/db/toMgrAudit/save">
 				  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
-					<input type="text" class="form-control hide" id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
 					<input type="text" class="form-control hide" id="dbId" name="dbId"/>
-					<input type="text" class="form-control hide" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 				  <div class="form-group form-group-lg">
 				    <label class="control-label" for="formGroupInputLarge">原因</label>
 				    <div>
@@ -150,6 +150,8 @@
 <script type="text/javascript">
 $(function(){
 	var dbId = request("dbId");
+	$('input[name="dbId"]').val(dbId);
+	
 	hostDualListBox();
 	$("#pageMessage").hide();
 });
