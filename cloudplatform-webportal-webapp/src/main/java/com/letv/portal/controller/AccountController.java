@@ -22,11 +22,15 @@ public class AccountController {
 			return "/account/login";
 		}
 		
-		if(!"yaokuo@letv.com".equals(loginName) && !"sysadmin@letv.com".equals(loginName) && !"000000".equals(password)) {
+		if(!"yaokuo@letv.com".equals(loginName) && !"sysadmin@letv.com".equals(loginName) ) {
 			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
 		}
 		
+		if(!"000000".equals(password)) {
+			request.setAttribute("error", "用户名或密码错误！");
+			return "/account/login";
+		}
 		
 		request.getSession().setAttribute("loginName", loginName);
 		request.getSession().setAttribute("userId", loginName);
