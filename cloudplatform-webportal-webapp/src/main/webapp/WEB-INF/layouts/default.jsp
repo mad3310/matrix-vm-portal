@@ -32,10 +32,13 @@
 
 <!-- bootstrap-duallistbox 左右选框 -->
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap-duallistbox.min.css" rel="stylesheet">
-<script src="${ctx}/static/scripts/bootstrap/bootstrap-duallistbox.js"></script>
+<link href="${ctx}/static/styles/bootstrap/css/bootstrap-duallistbox.min.css" rel="stylesheet">
 
 <!-- 警告框 -->
 <script src="${ctx}/static/scripts/pageMessage.js"></script>
+
+<!-- 风格1 -->
+<%-- <link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet"> --%>
 
 <sitemesh:head/>
 </head>
