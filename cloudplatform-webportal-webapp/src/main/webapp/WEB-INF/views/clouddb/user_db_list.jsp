@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>用户数据库管理</title>
 </head>
-<body>
+<body class="metro">
 <div class="row">
 	<div class="col-md-3">
 		<h3 class="text-left">DB管理</h3>

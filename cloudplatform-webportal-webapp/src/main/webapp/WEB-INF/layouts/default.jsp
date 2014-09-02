@@ -38,7 +38,13 @@
 <script src="${ctx}/static/scripts/pageMessage.js"></script>
 
 <!-- 风格1 -->
-<link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet">
+<%-- <link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet"> --%>
+
+<!-- 风格2 metro -->
+<script src="${ctx}/static/scripts/js/jquery.widget.min.js"></script>
+<script src="${ctx}/static/scripts/js/metro.min.js"></script>
+<link href="${ctx}/static/styles/css/metro-bootstrap.min.css" rel="stylesheet">
+<link href="${ctx}/static/styles/css/metro-bootstrap-responsive.min.css" rel="stylesheet">
 
 <sitemesh:head/>
 </head>

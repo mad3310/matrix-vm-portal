@@ -188,8 +188,8 @@ function hostDualListBox()
 	 var demo1 = $('select[name="hostIds"]').bootstrapDualListbox();
      $("#demoform").submit(function() {
     	 if(4 != $("#duallistbox").val().length){
-    		$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+"请选择4个物理机"+"</p>").show().fadeOut(3000);
-			return false;
+			$('#pageMessage').html(pageMessage("warning","请选择4台物理机")).show().fadeOut(3000);
+    		return false;
     	 }else{
     		 return true;
     	 }
