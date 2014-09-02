@@ -38,7 +38,7 @@
 <script src="${ctx}/static/scripts/pageMessage.js"></script>
 
 <!-- 风格1 -->
-<%-- <link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet"> --%>
+<link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet">
 
 <sitemesh:head/>
 </head>
