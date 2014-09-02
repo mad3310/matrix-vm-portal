@@ -120,6 +120,12 @@ public class DbAPI {
 		String hostIds = request.getParameter("hostIds");
 		String createUser = request.getParameter("createUser");
 		
+		logger.debug("dbIds==>" + dbId);
+		logger.debug("dbName==>" + dbName);
+		logger.debug("mclusterId==>" + mclusterId);
+		logger.debug("auditType==>" + auditType);
+		logger.debug("auditInfo==>" + auditInfo);
+		
 		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(auditType)) {
 			logger.debug("hostIds==>" + hostIds.toString());
 			//审核通过，已有mcluster创建db
