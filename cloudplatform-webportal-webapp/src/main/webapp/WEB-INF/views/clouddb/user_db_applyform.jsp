@@ -173,6 +173,18 @@ $(document).ready(function() {
 			          }
                   }
               },
+              applyCode: {
+                  validMessage: 'The project_name looks great',
+                  validators: {
+                      notEmpty: {
+                          message: '上线项目名称不能为空!'
+                      },
+			          stringLength: {
+			              max: 40,
+			              message: '项目名过长'
+			          }
+                  }
+              },
               descn: {
                   validMessage: 'The business_description looks great',
                   validators: {
@@ -234,7 +246,11 @@ $(document).ready(function() {
                   validators: {
                       notEmpty: {
                           message: '读写比例不能为空!'
-                      }
+                      },
+                      regexp: {
+		                  regexp: /^((\d|\d\d|\d\d\d)(\:(\d|\d\d|\d\d\d))){1}$/,
+		                  message: '请按提示输入'
+		              }
                   }
               },
               maxConcurrency: {
