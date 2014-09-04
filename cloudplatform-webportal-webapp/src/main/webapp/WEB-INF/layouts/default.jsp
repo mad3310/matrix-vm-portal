@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<c:set var="ctx" value="${pageContext.request.contextPath }" />
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 
 <!DOCTYPE html>
@@ -16,7 +16,6 @@
 <meta http-equiv="Expires" content="0" />
 
 <link href="${ctx}/static/styles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<%-- <link href="${ctx}/static/styles/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet"> --%>
 <link href="${ctx}/static/styles/style.css" rel="stylesheet"></link>
 
 <script src="${ctx}/static/scripts/jquery/jquery.min.js"></script>
@@ -41,11 +40,28 @@
 <%-- <link href="${ctx}/static/styles/css/flat-ui.css" rel="stylesheet"> --%>
 
 <!-- 风格2 metro -->
-<script src="${ctx}/static/scripts/js/jquery.widget.min.js"></script>
+<%-- <script src="${ctx}/static/scripts/js/jquery.widget.min.js"></script>
 <script src="${ctx}/static/scripts/js/metro.min.js"></script>
 <link href="${ctx}/static/styles/css/metro-bootstrap.min.css" rel="stylesheet">
-<link href="${ctx}/static/styles/css/metro-bootstrap-responsive.min.css" rel="stylesheet">
+<link href="${ctx}/static/styles/css/metro-bootstrap-responsive.min.css" rel="stylesheet"> --%>
 
+<!-- 风格3 -->
+<%-- <link href="${ctx}/static/styles/css/bootstrap-united.min.css" rel="stylesheet"> --%>
+
+<!-- 风格4 -->
+<%-- <link href="${ctx}/static/styles/css/bootstrap-cerulean.min.css" rel="stylesheet"> --%>
+
+<!-- 风格5 -->
+<%-- <link href="${ctx}/static/styles/css/cosmo-bootstrap.css" rel="stylesheet"> --%>
+
+<!-- 风格6 -->
+<%-- <link href="${ctx}/static/styles/css/sandstone-bootstrap.css" rel="stylesheet"> --%>
+
+<!-- 风格7 -->
+<%-- <link href="${ctx}/static/styles/css/metro-bootstrap.css" rel="stylesheet"> --%>
+
+<!-- 风格8 -->
+<%-- <link href="${ctx}/static/styles/css/yeti-bootstrap.css" rel="stylesheet"> --%>
 <sitemesh:head/>
 </head>
 
