@@ -47,6 +47,20 @@
 	</bean>
 	
 	<mvc:view-controller path="/" view-name="redirect:/account/login"/>
+	
+	
+	<!-- 配置RestTemplate -->
+     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
+     	<property name="messageConverters">
+     		<list>
+     			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+   			</list>
+   		</property>
+     </bean>
+
+	
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- 编码方式 -->

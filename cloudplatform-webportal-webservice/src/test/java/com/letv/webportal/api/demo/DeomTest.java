@@ -1,11 +1,11 @@
-package com.letv.mms.api.demo;
+package com.letv.webportal.api.demo;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import com.letv.common.util.HttpUtil;
-import com.letv.mms.base.AbstractTestCase;
+import com.letv.webportal.api.base.AbstractTestCase;
 
 public class DeomTest extends AbstractTestCase {
 
