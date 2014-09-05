@@ -13,10 +13,10 @@
 	<div class="col-md-3">
 		<h3 class="text-left">运维管理</h3>
 	</div>
-	<div  class="col-md-6">
+	<div  class="col-md-5">
 		<div id="pageMessage"></div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<form class="navbar-form navbar-right" role="search">
 			<div class="form-group">
 				<input id="mclusterName" type="text" value=""
