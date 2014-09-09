@@ -1,14 +1,30 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<div id="footer" class="row clearfix">
-<footer class="footer">
-	<hr style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-		width="100%" color=#987cb9 SIZE=3></hr>
-	<p class="pull-right">
-		<a href="#">返回顶部</a>
-	</p>
-	<p>jQuery UI Bootstrap &copy; LETV 2012 - 2014.</p>
-	<p>
-		<a href="#">乐视PAAS云管理系统</a>&middot;
-	</p>
-</footer>
-</div>
+
+<div class="footer">
+			<div class="footer-inner">
+				<!-- #section:basics/footer -->
+				<div class="footer-content">
+					<span class="bigger-120"> 
+						<span class="blue bolder">Letv</span>
+						webportal-team &copy; 2013-2014
+					</span> &nbsp; &nbsp;
+					 <span class="action-buttons"> 
+						<a href="#">
+							<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+						</a> 
+						<a href="#"> 
+							<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+						</a> 
+						<a href="#"> 
+							<i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+						</a>
+					</span>
+				</div>
+
+				<!-- /section:basics/footer -->
+			</div>
+		</div>
+<a href="#" id="btn-scroll-up"
+	class="btn-scroll-up btn btn-sm btn-inverse"> 
+	<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
