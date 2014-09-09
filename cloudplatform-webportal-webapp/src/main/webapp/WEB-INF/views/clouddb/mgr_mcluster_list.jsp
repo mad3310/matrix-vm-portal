@@ -1,22 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@include file="/common/common.jsp"%>
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>运维管理</title>
-</head>
-<body>
 <div class="row">
-	<div class="col-md-3">
-		<h3 class="text-left">运维管理</h3>
-	</div>
-	<div  class="col-md-5">
-		<div id="pageMessage"></div>
-	</div>
-	<div class="col-md-4">
+	<div class="col-md-9">
 		<form class="navbar-form navbar-right" role="search">
 			<div class="form-group">
 				<input id="mclusterName" type="text" value=""
@@ -34,9 +18,6 @@
 	<div class="col-md-3 column">
 		<h2>提示：</h2>
 		<p>一个Mcluster上可以有多个DB。</p>
-<!-- 		<p>
-			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p> -->
 	</div>
 	<div class="col-md-9 column">
 <!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
@@ -198,6 +179,3 @@ var recordsPerPage = 10; //每页显示条数
 		
 	}
 </script>
-
-</body>
-</html>

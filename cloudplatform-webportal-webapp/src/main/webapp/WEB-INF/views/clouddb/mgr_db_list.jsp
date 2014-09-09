@@ -1,14 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@include file="/common/common.jsp"%>
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>管理员数据库管理</title>
-</head>
-<body>
 <div class="row">
 	<div class="col-md-3">
 		<h3 class="text-left">DB管理</h3>
@@ -32,12 +22,9 @@
 </div>
 
 <div class="row clearfix">
-	<div class="col-md-3 column">
+	<div class="col-md-9 column">
 		<h2>提示：</h2>
 		<p>搜索为按名称模糊查询，数据库状态为需审核请管理员审批并创建。</p>
-<!-- 		<p>
-			<a class="btn" href="#">查看详细使用教程 »</a>
-		</p> -->
 	</div>
 	<div class="col-md-9 column">
 		<table id="db_list"
@@ -188,5 +175,3 @@ var currentSelectedLineDbName = 1;
 		});
 	}
 </script>
-</body>
-</html>

@@ -1,15 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@include file="/common/common.jsp"%>
-<!DOCTYPE html>
-<html lang="zh-cn">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>管理员数据库审核</title>
-
-</head>
-<body>
 <div class="row">
 	<div class="col-md-3">
 		<h3 class="text-left">DB审核</h3>
@@ -196,6 +185,3 @@ function hostDualListBox()
      });		
 }
 </script>
-</body>
-
-</html>
