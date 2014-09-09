@@ -182,6 +182,11 @@
                 <artifactId>jackson-mapper-asl</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>joda-time</groupId>
@@ -497,7 +502,7 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://localhost:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>

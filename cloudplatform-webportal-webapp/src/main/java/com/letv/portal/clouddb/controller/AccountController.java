@@ -1,4 +1,4 @@
-package com.letv.portal.controller;
+package com.letv.portal.clouddb.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +36,7 @@ public class AccountController {
 		request.getSession().setAttribute("userId", loginName);
 		if("sysadmin@letv.com".equals(loginName)) {
 			request.getSession().setAttribute("role", "sysadmin");
-			return "redirect:/mcluster/mgrList";
+			return "redirect:/mcluster/toMgrList";
 		} else {
 			request.getSession().setAttribute("role", "user");
 			return "redirect:/db/list";

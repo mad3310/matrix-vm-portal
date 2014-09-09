@@ -110,6 +110,10 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
+        <dependency>  
+		    <groupId>org.codehaus.jackson</groupId>  
+		    <artifactId>jackson-core-asl</artifactId>  
+		</dependency>  
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -118,6 +122,7 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
         </dependency>
+		
 
         <!-- logger -->
         <dependency>
@@ -178,13 +183,6 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
         </dependency>
-        <dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-common</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
-        </dependency>
         
         <!-- SECURITY begin -->
 		<dependency>
@@ -220,14 +218,20 @@
 		  <artifactId>janino</artifactId>
 		</dependency>
 		
-		
-        <!-- <dependency>
+		<dependency>
+        	<groupId>com.letv.cloudplatform</groupId>
+        	<artifactId>webportal-common</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
         	<groupId>com.letv.cloudplatform</groupId>
         	<artifactId>webportal-data-model</artifactId>
         	<version>1.0-SNAPSHOT</version>
         	<type>jar</type>
         	<scope>compile</scope>
-        </dependency> -->
+        </dependency>
     </dependencies>
     
     <build>

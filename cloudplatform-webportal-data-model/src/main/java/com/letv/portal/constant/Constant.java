@@ -2,6 +2,10 @@ package com.letv.portal.constant;
 
 public class Constant {
 
+	public static int RESULT_SUCCESS = 1;
+	public static int RESULT_ERROR = 0;
+
+	
 	public static int PAGE_SIZE = 10;
 	
 	//container node节点类型
@@ -22,9 +26,9 @@ public class Constant {
 	
 	public static String STATUS_DEFAULT="0";
 	
-	public static final int MCLUSTER_CONTAINERS_COUNT = 4;
+	public static int MCLUSTER_CONTAINERS_COUNT = 4;
 
-	public static final String IPRESOURCE_STATUS_USERD= "1";
+	public static String IPRESOURCE_STATUS_USERD= "1";
 	
 	
 	
