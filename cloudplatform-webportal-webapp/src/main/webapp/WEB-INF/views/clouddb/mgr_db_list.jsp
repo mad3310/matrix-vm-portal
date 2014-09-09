@@ -1,10 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<<<<<<< HEAD
 <body>
-=======
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 <div class="row">
-<<<<<<< HEAD
 	<div class="col-xs-12">
 	<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
 		<div class="table-header">数据库列表</div>
@@ -32,48 +28,6 @@
 				</tbody>
 			</table>
 		</div>
-=======
-	<div class="col-md-3">
-		<h3 class="text-left">DB管理</h3>
-	</div>
-	<div  class="col-md-5">
-		<div id="pageMessage"></div>
-	</div>
-	<div class="col-md-4">
-		<form class="navbar-form navbar-right" role="search">
-			<div class="form-group">
-				<input id="clusterId" type="hidden" value="0e7e5fba-274f-11e4-a3d9-b82a72b53876" />
-				<input id="dbName" type="text" value=""
-					class="form-control" />
-			</div>
-			<button type="button" class="btn btn-default" id="searchButton">搜索</button>
-		</form>
-	</div>
-	<hr
-		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-		width="100%" color=#987cb9 SIZE=3></hr>
-</div>
-
-<div class="row clearfix">
-	<div class="col-md-9 column">
-		<h2>提示：</h2>
-		<p>搜索为按名称模糊查询，数据库状态为需审核请管理员审批并创建。</p>
-	</div>
-	<div class="col-md-9 column">
-		<table id="db_list"
-			class="table table-striped table-hover table-responsive">
-			<thead>
-				<tr>
-					<th>DB名称</th>
-					<th>所属Mcluster</th>
-					<th>创建时间</th>
-					<th>当前状态</th>
-				</tr>
-			</thead>
-			<tbody id="tby">							
-			</tbody>
-		</table>
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 	</div>
 </div>
 <script type="text/javascript">

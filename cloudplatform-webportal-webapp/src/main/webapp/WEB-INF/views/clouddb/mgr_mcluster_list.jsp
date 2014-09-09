@@ -1,10 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<<<<<<< HEAD
 <body>
-=======
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 <div class="row">
-<<<<<<< HEAD
 	<div class="col-xs-12">
 	<div class="table-header">集群列表</div>
 		<div>
@@ -45,59 +41,7 @@
 					<li>共<lable id="totalRows"></lable>条记录
 					</li>
 				</ul>
-=======
-	<div class="col-md-9">
-		<form class="navbar-form navbar-right" role="search">
-			<div class="form-group">
-				<input id="mclusterName" type="text" value=""
-					class="form-control" />
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 			</div>
-<<<<<<< HEAD
-=======
-			<button type="button" class="btn btn-default" id="searchButton">搜索</button>
-		</form>
-	</div>
-	<hr
-		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
-		width="100%" color=#987cb9 SIZE=3></hr>
-</div>
-
-<div class="row clearfix">
-	<div class="col-md-3 column">
-		<h2>提示：</h2>
-		<p>一个Mcluster上可以有多个DB。</p>
-	</div>
-	<div class="col-md-9 column">
-<!-- 		<button id="db_audit" type="button" class="btn btn-success" data-toggle="modal">审批DB</button> -->
-		<table id="userdata"
-			class="table table-striped table-hover table-responsive">
-			<thead>
-				<tr>
-					<th>Mcluster名称</th>
-					<th>所属用户</th>
-					<th>创建时间</th>
-					<th>当前状态</th>
-				</tr>
-			</thead>
-			<tbody id="tby"></tbody>
-		</table>
-		<div id="pageControlBar">
-			<input type="hidden" id="totalPage_input" />
-			<ul class="pager">
-				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-
-				<li>共<lable id="totalPage"></lable>页
-				</li>
-				<li>第<lable id="currentPage"></lable>页
-				</li>
-				<li>共<lable id="totalRows"></lable>条记录
-				</li>
-			</ul>
->>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 		</div>
 	</div>
 </div>
