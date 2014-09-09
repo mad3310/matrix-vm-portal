@@ -36,7 +36,7 @@ public class AccountController {
 		request.getSession().setAttribute("userId", loginName);
 		if("sysadmin@letv.com".equals(loginName)) {
 			request.getSession().setAttribute("role", "sysadmin");
-			return "redirect:/db/mgrList";
+			return "redirect:/mcluster/mgrList";
 		} else {
 			request.getSession().setAttribute("role", "user");
 			return "redirect:/db/list";

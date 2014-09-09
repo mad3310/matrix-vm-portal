@@ -10,7 +10,23 @@
 </head>
 <body>
 <div class="row">
-	<div class="col-xs-12">
+	<div class="col-md-12">
+		<h3 class="text-left">DB申请</h3>
+	</div>
+	<hr
+		style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)"
+		width="100%" color=#987cb9 SIZE=3></hr>
+</div>
+
+<div class="row clearfix">
+	<div class="col-md-3 column">
+		<h2>提示：</h2>
+		<p>请填写右方的表单申请数据库，如果长时间没有成功，请联系运维管理员。</p>
+<!-- 		<p>
+			<a class="btn" href="#">查看详细使用教程 »</a>
+		</p> -->
+	</div>
+	<div class="col-md-9 column">
 		<form id="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save">
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="project_name">上线项目名称</label>
@@ -31,6 +47,27 @@
 					<textarea name="descn" id="descn" class="form-control" rows="3"></textarea>
 				</div>
 			</div>
+			<!-- <div class="form-group">
+				<label class="col-sm-2 control-label" for="origin_db_ip">原数据库IP</label>
+				<div class="col-sm-4">
+					<input class="form-control" name="fromDbIp" id="fromDbIp" type="text" placeholder="没有不用填写" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="origi_db_port">原数据库port</label>
+				<div class="col-sm-2">
+					<input class="form-control" name="fromDbPort" id="fromDbPort" type="text" placeholder="" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="origin_db_name">原数据库名</label>
+				<div class="col-sm-4">
+					<input class="form-control" name="fromDbName" id="fromDbName" type="text" placeholder="没有不用填写"/>
+				</div>
+			</div> -->
+
 			<div class="form-group">
 <!-- 						<fieldset disabled> -->
 					<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
