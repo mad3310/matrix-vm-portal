@@ -101,7 +101,7 @@
 
 										</div><!-- /.widget-main -->
 
-										<div class="toolbar clearfix">
+										<!--注册和找回密码 <div class="toolbar clearfix">
 											<div>
 												<a href="#" data-target="#forgot-box" class="forgot-password-link">
 													<i class="ace-icon fa fa-arrow-left"></i>
@@ -115,7 +115,7 @@
 													<i class="ace-icon fa fa-arrow-right"></i>
 												</a>
 											</div>
-										</div>
+										</div> -->
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
 
