@@ -19,8 +19,7 @@
         <property name="locations">
             <list>
                 <value>classpath*:jdbc.properties</value>
-                <value>classpath:config.properties</value>
-               <!--  <value>classpath:ApproveRule.properties</value> -->
+                <value>classpath*:config.properties</value>
             </list>
         </property>
     </bean>

@@ -202,11 +202,6 @@
             </dependency>
 
     <!--         <dependency> -->
-    <!--             <groupId>org.slf4j</groupId> -->
-    <!--             <artifactId>slf4j-log4j12</artifactId> -->
-    <!--             <version>1.6.1</version> -->
-    <!--         </dependency> -->
-    <!--         <dependency> -->
     <!--             <groupId>log4j</groupId> -->
     <!--             <artifactId>log4j</artifactId> -->
     <!--             <version>${log4j.version}</version> -->
@@ -240,9 +235,7 @@
                 <version>2.5</version>
                 <scope>provided</scope>
             </dependency>
-
-
-             <dependency>
+            <dependency>
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>1.7</version>
@@ -263,13 +256,11 @@
                 <version>${aspectj.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
                 <version>2.2.2</version>
             </dependency>
-
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
@@ -280,7 +271,6 @@
                 <artifactId>fastjson</artifactId>
                 <version>1.1.20</version>
             </dependency>
-
             <dependency>
               <groupId>commons-dbcp</groupId>
               <artifactId>commons-dbcp</artifactId>
@@ -313,6 +303,30 @@
             	<type>jar</type>
             	<scope>compile</scope>
             </dependency>
+	        <dependency>
+			  <groupId>janino</groupId>
+			  <artifactId>janino</artifactId>
+			  <version>2.5.10</version>
+			</dependency>
+			<!-- SECURITY begin -->
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-ehcache</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			<!-- SECURITY end -->
+			
+			<dependency>
+				<groupId>opensymphony</groupId>
+				<artifactId>sitemesh</artifactId>
+				<version>2.4.2</version>
+				<scope>runtime</scope>
+			</dependency>
       </dependencies>
   </dependencyManagement>
   
@@ -483,9 +497,14 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                
+                <webportal.log.path>D:</webportal.log.path>
             </properties>
         </profile>
 
@@ -501,6 +520,11 @@
                 <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
             </properties>
         </profile>
 
@@ -516,6 +540,11 @@
                 <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                
+                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
             </properties>
         </profile>
 
