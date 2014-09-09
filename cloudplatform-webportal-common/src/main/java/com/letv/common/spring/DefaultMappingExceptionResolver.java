@@ -31,7 +31,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     @Override
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
-		if (e instanceof ValidateException) {
+		/*if (e instanceof ValidateException) {
 			responseJson(req, res, e.getMessage());
             return null;
 		} else if (e instanceof CommonException) {
@@ -44,7 +44,10 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 
 			logger.error(ERROR_SYSTEM_ERROR, e);
 			return null;
-        }
+        }*/
+		responseJson(req, res, e.getMessage());
+		logger.error(ERROR_SYSTEM_ERROR, e);
+        return null;
     }
 
 	/**
@@ -57,7 +60,8 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
     	PrintWriter out = null;
 		try {
-			res.setCharacterEncoding("utf-8");
+//			res.setCharacterEncoding("UTF-8");
+			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
 			e1.printStackTrace();

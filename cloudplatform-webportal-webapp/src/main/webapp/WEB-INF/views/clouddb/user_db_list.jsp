@@ -1,5 +1,8 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 <body>
+=======
+>>>>>>> branch 'develop' of ssh://git@git.letv.cn/liuhao1/letv_mcluster_webportal.git
 <div class="row">
 	<div class="col-xs-12">
 	<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
@@ -218,5 +221,3 @@ var currentSelectedLineDbName = 1;
 		pageControl();
 	}
 </script>
-</body>
-</html>

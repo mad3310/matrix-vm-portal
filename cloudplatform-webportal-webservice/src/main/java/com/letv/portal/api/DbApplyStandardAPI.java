@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
@@ -42,9 +45,9 @@ public class DbApplyStandardAPI {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/list")   //http://localhost:8080/api/dbApplyStandard/list?currentPage=1&recordsPage=2&mcluster=
-	public ResultObject list(HttpServletRequest request) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+	@RequestMapping(value="/list",method=RequestMethod.POST)   //http://localhost:8080/api/dbApplyStandard/list
+	@ResponseBody
+	public ResultObject list(@RequestBody Map<String,Object> params, HttpServletRequest request) {
 		Page page = new Page();
 		String currentPage = (String) params.get("currentPage");
 		String recordsPerPage = (String) params.get("recordsPerPage");
@@ -56,14 +59,16 @@ public class DbApplyStandardAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/save")   //http://localhost:8080/api/dbApplyStandard/save
-	public ResultObject save(DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
+	/**Methods Name: save <br>
+	 * Description: 保存申请信息<br>
+	 * @author name: liuhao1
+	 * @param dbApplyStandardModel
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/save",method=RequestMethod.POST)   //http://localhost:8080/api/dbApplyStandard/save
+	public ResultObject save(@RequestBody DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		
-		/*mclusterModel.setCreateUser(createUser);
-		mclusterModel.setCreateTime(createTime);
-		mclusterModel.setUpdateUser(updateUser);
-		mclusterModel.setUpdateTime(updateTime);*/
 		if(StringUtils.isNullOrEmpty(dbApplyStandardModel.getId())) {
 			this.dbApplyStandardService.insert(dbApplyStandardModel);
 		} else {
@@ -72,8 +77,16 @@ public class DbApplyStandardAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/getByDbId")
-	public ResultObject selectByDbId(String belongDb,HttpServletRequest request) {
+	/**Methods Name: selectByDbId <br>
+	 * Description: 根据db获取申请信息<br>
+	 * @author name: liuhao1
+	 * @param belongDb
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/getByDbId/{belongDb}",method=RequestMethod.GET)
+	@ResponseBody
+	public ResultObject selectByDbId(@PathVariable String belongDb,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbApplyStandardService.selectByDbId(belongDb));
 		return obj;
