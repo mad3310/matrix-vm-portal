@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
@@ -36,12 +39,11 @@ public class HostAPI {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/list")   //http://localhost:8080/api/db/list?
-	public ResultObject list(HttpServletRequest request) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+	@RequestMapping(value ="/list",method=RequestMethod.POST)   //http://localhost:8080/api/db/list
+	@ResponseBody
+	public ResultObject list(@RequestBody Map<String,Object> params,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hostService.selectByMap(params));
-		logger.debug("obj====>" + obj);
 		return obj;
 	}
 	

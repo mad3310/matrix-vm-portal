@@ -2,35 +2,32 @@ package com.letv.portal.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.letv.common.util.HttpUtil;
 
 @Controller
 @RequestMapping("/mcluster")
 public class MclusterController {
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	@RequestMapping("/list/data")   //http://localhost:8080/mcluster/list/data
 	public void listData(HttpServletRequest request,HttpServletResponse response) {
 		//取出session中用户id，追加到http rest请求中
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("createUser", (String) request.getSession().getAttribute("userId"));
-		System.out.println(request.getParameter("mclusterName"));
 		PrintWriter out;
 		try {
 			response.setContentType("text/html;charset=UTF-8");
@@ -45,6 +42,11 @@ public class MclusterController {
 	}
 	@RequestMapping("/list/mgrData")   //http://localhost:8080/mcluster/list/mgrData
 	public void mgrData(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, String> params = new HashMap<String, String>();  
+        params.put("mclusterName", "test"); 
+        
+		String str = restTemplate.postForObject(HttpUtil.getAPIUrl("/mcluster/list"), params, String.class);
+		System.out.println("result===>" + str);
 		PrintWriter out;
 		try {
 			response.setContentType("text/html;charset=UTF-8");

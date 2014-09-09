@@ -60,11 +60,12 @@ public class MclusterAPI {
 		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.mclusterService.findPagebyParams(params, page));
+		logger.debug("reslut===>" +this.mclusterService.findPagebyParams(params, page).getData().toString());
 		return obj;
 	}	
 	
 	/**Methods Name: save <br>
-	 * Description: mcluster 保存<br>
+	 * Description: 保存mcluster<br>
 	 * @author name: liuhao1
 	 * @param mclusterModel
 	 * @param request
@@ -74,12 +75,6 @@ public class MclusterAPI {
 	@ResponseBody
 	public ResultObject save(@RequestBody MclusterModel mclusterModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		
-		/*mclusterModel.setCreateUser(createUser);
-		mclusterModel.setCreateTime(createTime);
-		mclusterModel.setUpdateUser(updateUser);
-		mclusterModel.setUpdateTime(updateTime);*/
-		logger.debug(mclusterModel.getMclusterName());
 
 		if(StringUtils.isNullOrEmpty(mclusterModel.getId())) {
 			this.mclusterService.insert(mclusterModel);
@@ -90,7 +85,7 @@ public class MclusterAPI {
 	}
 	
 	/**Methods Name: getInfoById <br>
-	 * Description: 根据id查找mcluster详情<br>
+	 * Description: 根据id查找mcluster详情，获取container详情<br>
 	 * @author name: liuhao1
 	 * @param clusterId
 	 * @param request

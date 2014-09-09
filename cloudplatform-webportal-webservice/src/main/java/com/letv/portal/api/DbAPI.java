@@ -12,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
@@ -22,6 +25,7 @@ import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
@@ -59,9 +63,9 @@ public class DbAPI {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/list")   //http://localhost:8080/api/db/list?currentPage=1&recordsPage=2&dbName=
-	public ResultObject list(HttpServletRequest request) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+	@RequestMapping(value = "/list", method=RequestMethod.POST)   //http://localhost:8080/api/db/list
+	@ResponseBody
+	public ResultObject list(@RequestBody Map<String,Object> params,HttpServletRequest request) {
 		Page page = new Page();
 		String currentPage = (String) params.get("currentPage");
 		String recordsPerPage = (String) params.get("recordsPerPage");
@@ -73,9 +77,16 @@ public class DbAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/audit/list")   //http://localhost:8080/api/db/audit/list?currentPage=1&recordsPage=2&dbName=
-	public ResultObject auditList(HttpServletRequest request) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+	/**Methods Name: auditList <br>
+	 * Description: 根据查询条件及分页信息获取分页数据:未审核数据<br>
+	 * @author name: liuhao1
+	 * @param params
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/audit/list", method=RequestMethod.POST)   //http://localhost:8080/api/db/audit/list
+	@ResponseBody
+	public ResultObject auditList(@RequestBody Map<String,Object> params,HttpServletRequest request) {
 		params.put("status", "0");//未审核
 		Page page = new Page();
 		String currentPage = (String) params.get("currentPage");
@@ -87,14 +98,17 @@ public class DbAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/save")   //http://localhost:8080/api/db/save
-	public ResultObject save(DbModel dbModel, HttpServletRequest request) {
+	/**Methods Name: save <br>
+	 * Description: 保存db<br>
+	 * @author name: liuhao1
+	 * @param dbModel
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/save",method=RequestMethod.POST)   //http://localhost:8080/api/db/save
+	@ResponseBody
+	public ResultObject save(@RequestBody DbModel dbModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		
-		/*mclusterModel.setCreateUser(createUser);
-		mclusterModel.setCreateTime(createTime);
-		mclusterModel.setUpdateUser(updateUser);
-		mclusterModel.setUpdateTime(updateTime);*/
 		
 		if(StringUtils.isNullOrEmpty(dbModel.getId())) {
 			this.dbService.insert(dbModel);
@@ -104,20 +118,36 @@ public class DbAPI {
 		return obj;
 	}
 	
-	@RequestMapping("/audit/save")   //http://localhost:8080/api/db/audit/save
-	public ResultObject save(HttpServletRequest request) {
+	/**Methods Name: save <br>
+	 * Description: 保存审批信息<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/audit/save",method=RequestMethod.POST)   //http://localhost:8080/api/db/audit/save
+	@ResponseBody
+	public ResultObject save(@RequestBody Map<String,Object> params,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		String auditType = request.getParameter("auditType");
-		String auditInfo = request.getParameter("auditInfo");
+//		String auditType = request.getParameter("auditType");
+//		String auditInfo = request.getParameter("auditInfo");
+//		
+//		String mclusterId = request.getParameter("mclusterId");
+//		
+//		String dbId = request.getParameter("dbId");
+//		String dbName = request.getParameter("applyCode");
+//		String dbApplyStandardId = request.getParameter("dbApplyStandardId");
+//		
+//		String hostIds = request.getParameter("hostIds");
+//		String createUser = request.getParameter("createUser");
 		
-		String mclusterId = request.getParameter("mclusterId");
-		
-		String dbId = request.getParameter("dbId");
-		String dbName = request.getParameter("applyCode");
-		String dbApplyStandardId = request.getParameter("dbApplyStandardId");
-		
-		String hostIds = request.getParameter("hostIds");
-		String createUser = request.getParameter("createUser");
+		String auditType = (String) params.get("auditType");
+		String auditInfo = (String) params.get("auditInfo");
+		String mclusterId = (String) params.get("mclusterId");
+		String dbId = (String) params.get("dbId");
+		String dbName = (String) params.get("applyCode");
+		String dbApplyStandardId = (String) params.get("dbApplyStandardId");
+		String hostIds = (String) params.get("hostIds");
+		String createUser = (String) params.get("createUser");
 		
 		logger.debug("dbIds==>" + dbId);
 		logger.debug("dbName==>" + dbName);
@@ -134,32 +164,38 @@ public class DbAPI {
 		//保存审批信息
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
 		
-		
-		
 		//创建mcluster db
 //		this.dbService.build(auditType,mclusterId,dbId,dbApplyStandardId);
 		
 		return obj;
 	}
 	
-	@RequestMapping("/build")   //http://localhost:8080/api/db/build
+	/*@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		
 		this.dbService.build("0", null, null, null,"liuhao1@letv.com");
 		
 		return obj;
-	}
+	}*/
 	
-	@RequestMapping("/build/notice/{buildFlag}/{dbId}")   //http://localhost:8080/api/db/build/notice/{success/fail}/{dbId}
+	/*@RequestMapping("/build/notice/{buildFlag}/{dbId}")   //http://localhost:8080/api/db/build/notice/{success/fail}/{dbId}
 	public ResultObject notice(@PathVariable String buildFlag,@PathVariable String dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.dbService.buildNotice(dbId,buildFlag);
 		return obj;
-	}
+	}*/
 	
-	@RequestMapping("/getById") //http://localhost:8080/api/db/getById
-	public ResultObject getInfoById(String dbId,HttpServletRequest request) {
+	/**Methods Name: getInfoById <br>
+	 * Description: 根据id获取db信息<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/getById/{dbId}",method=RequestMethod.GET) //http://localhost:8080/api/db/getById/{dbId}
+	@ResponseBody
+	public ResultObject getInfoById(@PathVariable String dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		
 		DbModel dbModel = this.dbService.selectById(dbId);
@@ -172,8 +208,5 @@ public class DbAPI {
 		obj.setData(dbInfoView);
 		return obj;
 	}
-	
-	
-	
 	
 }

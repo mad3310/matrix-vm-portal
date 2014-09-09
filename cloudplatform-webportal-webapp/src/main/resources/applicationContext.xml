@@ -49,11 +49,29 @@
 	<mvc:view-controller path="/" view-name="redirect:/account/login"/>
 	
 	
+	<!-- Register JSON Converter for RESTful Web Service -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	    <property name="messageConverters">
+	        <list>
+	            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+	            <bean class = "org.springframework.http.converter.StringHttpMessageConverter">   
+                 <property name = "supportedMediaTypes">
+                       <list>
+                           <value>text/html;charset=UTF-8</value>   
+                      </list>   
+                 </property>   
+              </bean>   
+	        </list>
+	    </property>
+	</bean>
+	
+	
 	<!-- 配置RestTemplate -->
      <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
      	<property name="messageConverters">
      		<list>
-     			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" />
+     			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+     			</bean>
 				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
 				<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
    			</list>
