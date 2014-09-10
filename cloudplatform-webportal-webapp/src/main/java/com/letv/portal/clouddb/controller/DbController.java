@@ -57,7 +57,7 @@ public class DbController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
-	@RequestMapping(value="/list")
+	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/user_db_list";
 	}
@@ -78,8 +78,7 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
-	@ResponseBody
-	public ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
+	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);

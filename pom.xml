@@ -15,7 +15,7 @@
         <module>cloudplatform-webportal-common</module>
         <module>cloudplatform-webportal-data-model</module>
         <module>cloudplatform-webportal-webapp</module>
-        <module>cloudplatform-webportal-webservice</module>
+        <module>cloudplatform-webportal-webadmin</module>
   </modules>
 
 

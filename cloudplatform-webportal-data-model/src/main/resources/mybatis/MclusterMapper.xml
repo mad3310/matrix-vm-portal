@@ -28,7 +28,7 @@
 			<if test="id != null  ">
 				and ID=#{id}
 			</if>
-			<if test="mclusterName != null  and mclusterName != '' ">
+			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
 				and MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
 			</if>
 			<if test="status != null  ">
@@ -165,7 +165,7 @@
 			<if test="params != null and params.id !=null  ">
 				and ID=#{params.id}
 			</if>
-			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' ">
+			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
 				and MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
 			</if>
 			<if test="params != null and params.status != null  ">
@@ -196,7 +196,7 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY CREATE_TIME
+		ORDER BY CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
