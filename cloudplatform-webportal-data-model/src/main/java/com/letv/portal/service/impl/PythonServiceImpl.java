@@ -24,7 +24,7 @@ public class PythonServiceImpl implements IPythonService{
 	private RestTemplate restTemplate;
 
 	@Override
-	public String createContainer(String containers) {
+	public String createContainer() {
 		
 		
 //		HttpHeaders headers = new HttpHeaders();
@@ -35,11 +35,11 @@ public class PythonServiceImpl implements IPythonService{
 //		restTemplate.postForObject(url, request, responseType);
 		// TODO Auto-generated method stub
 		
-		HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+		/*HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
 		DefaultHttpClient httpClient = (DefaultHttpClient)requestFactory.getHttpClient();
 		httpClient.getCredentialsProvider().setCredentials(new AuthScope(null, (Integer) null, AuthScope.ANY_REALM),new UsernamePasswordCredentials("name", "pass"));
 			
-		restTemplate.exchange("http://localhost:8080/spring-security-rest-template/api/foos/1", HttpMethod.POST, null, String.class);
+		restTemplate.exchange("http://localhost:8080/spring-security-rest-template/api/foos/1", HttpMethod.POST, null, String.class);*/
 		
 		
 		 /*String userName = "XXXX";
