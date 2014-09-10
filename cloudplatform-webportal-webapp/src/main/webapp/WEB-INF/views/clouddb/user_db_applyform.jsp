@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="row">
 	<div class="col-xs-12">
-		<form id="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save">
+		<form id="db_apply_form" method="post" class="form-horizontal" role="form" action="${ctx}/db/save">
 			<div class="form-group">
-				<label class="col-sm-2 control-label" for="project_name">上线项目名称</label>
+				<label class="col-sm-2 control-label" for="project_name">上线项目名称11111</label>
 				<div class="col-sm-4">
 					<input class="form-control" name="applyName" id="applyName" type="text" />
 				</div>

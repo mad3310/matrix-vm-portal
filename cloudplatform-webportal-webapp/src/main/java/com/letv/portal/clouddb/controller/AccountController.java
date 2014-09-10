@@ -22,7 +22,7 @@ public class AccountController {
 			return "/account/login";
 		}
 		
-		if(!"yaokuo@letv.com".equals(loginName) && !"sysadmin@letv.com".equals(loginName) ) {
+		if(!"yaokuo@letv.com".equals(loginName) ) {
 			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
 		}
@@ -34,13 +34,8 @@ public class AccountController {
 		
 		request.getSession().setAttribute("loginName", loginName);
 		request.getSession().setAttribute("userId", loginName);
-		if("sysadmin@letv.com".equals(loginName)) {
-			request.getSession().setAttribute("role", "sysadmin");
-			return "redirect:/mcluster/toMgrList";
-		} else {
-			request.getSession().setAttribute("role", "user");
-			return "redirect:/db/list";
-		} 
+		request.getSession().setAttribute("role", "user");
+		return "redirect:/db/list";
 
 	}
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout

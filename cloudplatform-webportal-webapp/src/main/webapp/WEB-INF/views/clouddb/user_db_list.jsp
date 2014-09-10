@@ -49,16 +49,11 @@ var currentSelectedLineDbName = 1;
 });	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
+		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
-			type : "post",
-			url : "${ctx}/db/list/data?currentPage="
-					+ currentPage
-					+ "&recordsPerPage="
-					+ recordsPerPage
-					 + "&dbName="
-					+ $("#nav-search-input").val(),
+			type : "get",
+			url : "${ctx}/db/list/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
-			contentType : "application/json; charset=utf-8",
 			success : function(data) {
 				var array = data.data.data;
 				var tby = $("#tby");
@@ -84,7 +79,7 @@ var currentSelectedLineDbName = 1;
 					var td2;
 					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
 						td2 = $("<td>"
-								+ "<a href=\"${ctx}/db/mgr/dbApplyInfo?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "<a href=\"${ctx}/db/detail/" + array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}else{	
 						td2 = $("<td>"
