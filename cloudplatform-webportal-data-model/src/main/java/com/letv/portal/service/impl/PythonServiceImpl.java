@@ -1,5 +1,8 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -20,8 +23,11 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createContainer() {
-		
-		getRestTemplate().exchange("http://localhost:8080/spring-security-rest-template/api/foos/1", HttpMethod.POST, null, String.class);
+		Map<String,String> map = new HashMap<String,String>();
+//		getRestTemplate().exchange("http://10.58.166.129:8888/test", HttpMethod.POST, map, String.class);
+		String result = getRestTemplate().postForObject("http://10.58.166.129:8888/test", map, String.class);
+		logger.debug("result==>" + result);
+		System.out.println("result==>" + result);
 		return null;
 	}
 
