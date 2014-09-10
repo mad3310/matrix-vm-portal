@@ -1,5 +1,6 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,44 +39,19 @@ public class MclusterController {
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
 	/**Methods Name: list <br>
-	 * Description: 会员根据查询条件及分页信息获取分页数据<br>
+	 * Description: 管理员根据查询条件及分页信息获取分页数据   http://localhost:8080/mcluster/<br>
 	 * @author name: liuhao1
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/list/data", method=RequestMethod.POST)   //http://localhost:8080/api/mcluster/list
-	public @ResponseBody ResultObject list(@RequestBody Map<String,Object> params,HttpServletRequest request) {
-		
-		params.put("createUser", request.getSession().getAttribute("userId"));
+	@RequestMapping(value = "/list/{currentPage}/{recordsPerPage}/{mclusterName}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String mclusterName,HttpServletRequest request) {
 		Page page = new Page();
-		String currentPage = (String) params.get("currentPage");
-		String recordsPerPage = (String) params.get("recordsPerPage");
-		page.setCurrentPage(StringUtils.isNullOrEmpty(currentPage)?1:Integer.parseInt(currentPage));
-		page.setRecordsPerPage(StringUtils.isNullOrEmpty(recordsPerPage)?10:Integer.parseInt(recordsPerPage));
+		page.setCurrentPage(currentPage);
+		page.setRecordsPerPage(recordsPerPage);
 		
-		ResultObject obj = new ResultObject();
-		obj.setData(this.mclusterService.findPagebyParams(params, page));
-		return obj;
-	}	
-	
-	/**Methods Name: mgrList <br>
-	 * Description: 管理员根据查询条件及分页信息获取分页数据<br>
-	 * @author name: liuhao1
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value = "/list/{currentPage}/{recordsPerPage}/{}", method=RequestMethod.GET)   //http://localhost:8080/mcluster/
-	public @ResponseBody ResultObject mgrList(@RequestBody Page page,HttpServletRequest request) {
-		Map params = HttpUtil.requestParam2Map(request);
-//		Page page = new Page();
-		String currentPage = (String) params.get("currentPage");
-		String recordsPerPage = (String) params.get("recordsPerPage");
-		logger.debug("currentPage==>" + request.getParameter("currentPage"));
-		logger.debug("recordsPerPage==>" + page.getRecordsPerPage());
-		logger.debug("currentPage==>" + currentPage);
-		logger.debug("recordsPerPage==>" + recordsPerPage);
-		page.setCurrentPage(StringUtils.isNullOrEmpty(currentPage)?1:Integer.parseInt(currentPage));
-		page.setRecordsPerPage(StringUtils.isNullOrEmpty(recordsPerPage)?10:Integer.parseInt(recordsPerPage));
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("mclusterName", mclusterName);
 		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.mclusterService.findPagebyParams(params, page));
@@ -89,8 +65,8 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="",method=RequestMethod.POST)   //http://localhost:8080/api/mcluster/save
-	public String save(@RequestBody MclusterModel mclusterModel, HttpServletRequest request) {
+	@RequestMapping(value="save",method=RequestMethod.POST)   //http://localhost:8080/api/mcluster/save
+	public String save(MclusterModel mclusterModel, HttpServletRequest request) {
 		
 		if(StringUtils.isNullOrEmpty(mclusterModel.getId())) {
 			mclusterModel.setCreateUser((String)request.getSession().getAttribute("userId"));
@@ -103,14 +79,14 @@ public class MclusterController {
 		return "redirect:/mcluster/list";
 	}
 	
-	/**Methods Name: getInfoById <br>
+	/**Methods Name: detail <br>
 	 * Description: 根据id查找mcluster详情，获取container详情<br>
 	 * @author name: liuhao1
 	 * @param clusterId
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/getById/{clusterId}",method=RequestMethod.GET) //http://localhost:8080/api/mcluster/getById/{clusterId}
+	@RequestMapping(value="/detail/{clusterId}",method=RequestMethod.GET) //http://localhost:8080/api/mcluster/getById/{clusterId}
 	public ModelAndView getInfoById(@PathVariable String clusterId,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		List<ContainerModel> containers = this.containerService.selectByClusterId(clusterId);
@@ -119,7 +95,7 @@ public class MclusterController {
 		return mav;
 	}
 	
-	@RequestMapping("/toMgrList")   //http://localhost:8080/mcluster/toMgrList
+	@RequestMapping("/list")   //http://localhost:8080/mcluster/list
 	public String toMgrList(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mgr_mcluster_list";
 	}
