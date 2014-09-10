@@ -14,8 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.letv.portal.service.IPythonService;
 
-
-
 @Service("pythonService")
 public class PythonServiceImpl implements IPythonService{
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
