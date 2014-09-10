@@ -37,7 +37,7 @@
 		<![endif]-->
 	</head>
 
-	<body class="login-layout">
+	<body class="login-layout blur-login">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -84,10 +84,10 @@
 													<div class="space"></div>
 													<div>${error}</div>
 													<div class="clearfix">
-														<label class="inline">
+														<!-- <label class="inline">
 															<input type="checkbox" class="ace" />
 															<span class="lbl"> 记住密码</span>
-														</label>
+														</label> -->
 
 														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
@@ -290,16 +290,16 @@
 			
 			//you don't need this, just used for changing background
 			jQuery(function($) {
+			 $('#btn-login-light').on('click', function(e) {
+					$('body').attr('class', 'login-layout light-login');
+					$('#id-text2').attr('class', 'grey');
+					$('#id-company-text').attr('class', 'blue');
+					
+					e.preventDefault();
+				 });
 			 $('#btn-login-dark').on('click', function(e) {
 				$('body').attr('class', 'login-layout');
 				$('#id-text2').attr('class', 'white');
-				$('#id-company-text').attr('class', 'blue');
-				
-				e.preventDefault();
-			 });
-			 $('#btn-login-light').on('click', function(e) {
-				$('body').attr('class', 'login-layout light-login');
-				$('#id-text2').attr('class', 'grey');
 				$('#id-company-text').attr('class', 'blue');
 				
 				e.preventDefault();
