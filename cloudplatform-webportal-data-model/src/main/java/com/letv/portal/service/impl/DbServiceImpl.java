@@ -71,18 +71,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		
 	}
 
-	/*@Override
-	public void audit(String dbId, String dbApplyStandardId,List<ContainerModel> containers) {
-		
-		this.dbDao.audit(new DbModel(dbId,"1")); //审核成功
-		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,"1"));
-		
-		//保存container信息	
-		for (ContainerModel containerModel : containers) {
-			this.containerDao.insert(containerModel);
-		}
-	}*/
-	
 	@Override
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
 		this.dbDao.audit(new DbModel(dbId,status,mclusterId));
@@ -105,19 +93,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		//创建db用户
 		this.buildDb(dbModel);
 		return null;
-	}
-	@Override
-	public void build(String auditType, String mclusterId, String dbId,
-			String dbApplyStandardId,String auditUser) {
-		if(DB_CREATE_TYPE.equals(auditType)) {
-			String content = " mcluster创建信息：           \r\n db创建信息：             \r\n 创建成功后，点击链接通知webportal系统 http://localhost:8080/build/notice/success/" + dbId;
-			//手动创建 发送邮件
-			this.simpleTextEmailSender.send("WebPortal管理系统-系统通知", auditUser, content, auditUser);
-			
-		} else if("1".equals(DB_CREATE_TYPE)) {
-			
-		}
-		
 	}
 	
 	private String buildDb(DbModel dbModel) {
@@ -142,6 +117,20 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public void build(String auditType, String mclusterId, String dbId,
+			String dbApplyStandardId,String auditUser) {
+		if(DB_CREATE_TYPE.equals(auditType)) {
+			String content = " mcluster创建信息：           \r\n db创建信息：             \r\n 创建成功后，点击链接通知webportal系统 http://localhost:8080/build/notice/success/" + dbId;
+			//手动创建 发送邮件
+			this.simpleTextEmailSender.send("WebPortal管理系统-系统通知", auditUser, content, auditUser);
+			
+		} else if("1".equals(DB_CREATE_TYPE)) {
+			
+		}
+		
 	}
 
 	@Override

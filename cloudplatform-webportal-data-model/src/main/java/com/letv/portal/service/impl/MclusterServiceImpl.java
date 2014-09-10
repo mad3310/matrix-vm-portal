@@ -1,11 +1,14 @@
 package com.letv.portal.service.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.JsonUtils;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
@@ -80,25 +84,20 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		//判断是否已创建
 		if("0".equals(mcluster.getStatus())) {
 			
+			//初始化container
+			Map<String,String> map = new HashMap<String,String>();
 			List<ContainerModel> containers = this.containerDao.selectByClusterId(mclusterId);
-			String json=null;
-			ObjectMapper mapper = null;
-			RestTemplate  rest = new RestTemplate();
 			try {
-				mapper = new ObjectMapper();
-				json = mapper.writeValueAsString(containers);// 把map或者是list转换成
-				//创建
-				String result = rest.postForObject("", null, String.class);
-			
-				Result r = mapper.readValue(result, Result.class);
-				
-				if(SUCCESS_CODE.equals(r.getCode())){
-					//初始化
-					result = rest.postForObject("", null, String.class);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				String data = JsonUtils.writeObject(containers);
+				map.put("data", data);
+			} catch (Exception e1) {
+				e1.printStackTrace();
 			}
+			RestTemplate  rest = new RestTemplate();
+			
+			
+			rest.postForObject("", null, String.class);
+				
 		}
 		return null;
 	}

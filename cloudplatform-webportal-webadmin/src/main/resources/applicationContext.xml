@@ -44,10 +44,16 @@
 	<!-- Register JSON Converter for RESTful Web Service -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 	    <property name="messageConverters">
-	        <list>
-	            <bean
-	                class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-	            </bean>
+		    <list>
+			    <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+			        <property name="supportedMediaTypes">
+			            <list>
+			            <value>text/plain;charset=GBK</value>
+			            </list>
+			        </property>
+		        </bean>
+		        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		        </bean>
 	        </list>
 	    </property>
 	</bean>
