@@ -13,7 +13,7 @@
 	<ul id="sidebar-list" class="nav nav-list">
 		<li class="active open hsub">
 			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-cubes"></i> 
+				<i class="menu-icon fa fa-database"></i> 
 				<span class="menu-text">数据库管理</span> 
 				<b class="arrow fa fa-angle-down"></b>
 			</a>

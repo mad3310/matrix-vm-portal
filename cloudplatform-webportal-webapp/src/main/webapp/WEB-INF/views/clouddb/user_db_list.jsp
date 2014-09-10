@@ -5,9 +5,10 @@
 		<div class="widget-header">
 			<h5 class="widget-title">数据库列表</h5>
 			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger">
-					<i class="ace-icont"></i>
-					创建数据库
+				<!-- Button trigger modal -->
+				<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#apply-form">
+					<i class="ace-icont fa fa-plus"></i>
+					 创建数据库
 				</button>
 			</div>
 		</div>
@@ -46,6 +47,89 @@
 						</li>
 					</ul>
 				</div>
+		</div>
+	</div>
+	<div class="modal fade" id="apply-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="col-xs-12">
+					<h4 class="lighter">
+						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+						<a href="#modal-wizard" data-toggle="modal" class="pink"> 创建数据库 </a>
+					</h4>
+					<div class="hr hr-18 hr-double dotted"></div>
+					<div class="widget-box">
+						<div class="widget-body">
+							<div class="widget-main">
+								<hr />
+									<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save" method="post">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="db_name">数据库名</label>
+											<div class="col-sm-8">
+												<input class="form-control" name="applyCode" id="applyCode" type="text" />
+											</div>
+										</div>
+										<div class="form-group">
+												<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
+												<div class="col-sm-4">
+													<select class="form-control" name="engineType" id="engineType">
+														<option>InnoDB</option>
+													</select>
+												</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="read_write_ratio">读写比例</label>
+											<div class="col-sm-4">
+												<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
+													placeholder="例如(1:1)" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
+											<div class="col-sm-4">
+												<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
+													placeholder="例如(100)"/>
+											</div>
+											<label class="control-label" for="maximum_concurrency">/s</label>
+										</div>
+							
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="develop_language">开发语言</label>
+											<div class="col-sm-8">
+												<input class="form-control" name="developLanguage" id="developLanguage" type="text"
+													placeholder="例如(python,java)" />
+											</div>
+										</div>
+							
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
+											<div class="col-sm-4">
+												<select class="form-control" name="linkType" id="linkType">
+													<option>长链接</option>
+													<option>短链接</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
+											<div class="col-sm-6">
+												<label class="inline" style="margin-top: 3px;">
+													<input name="isEmailNotice" id="isEmailNotice" checked="checked" type="checkbox" class="ace ace-switch ace-switch-5">
+													<span class="lbl middle"></span>
+												</label>
+											</div>
+										</div>
+									</form>
+								<hr />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" onclick="document.all.db_apply_form.submit()">创建</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
