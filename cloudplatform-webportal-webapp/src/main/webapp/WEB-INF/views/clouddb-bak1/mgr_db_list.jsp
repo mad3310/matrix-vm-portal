@@ -1,51 +1,32 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <body>
 <div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
-		<div class="widget-header">
-			<h5 class="widget-title">数据库列表</h5>
-			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger">
-					<i class="ace-icont"></i>
-					创建数据库
-				</button>
-			</div>
-		</div>
-	
-		<div class="widget-body">
+	<div class="col-xs-12">
+	<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
+		<div class="table-header">数据库列表</div>
 			<div>
 				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>DB名称</th>
-							<th>
-								<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-								创建时间 
-							</th>
-							<th class="hidden-480">当前状态</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody id="tby">							
-					</tbody>
-				</table>
-			</div>
-			<div id="pageControlBar">
-					<input type="hidden" id="totalPage_input" />
-					<ul class="pager">
-						<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-						<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-						<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-						<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-		
-						<li>共<lable id="totalPage"></lable>页
-						</li>
-						<li>第<lable id="currentPage"></lable>页
-						</li>
-						<li>共<lable id="totalRows"></lable>条记录
-						</li>
-					</ul>
-				</div>
+				<thead>
+					<tr>
+						<th class="center">
+							<label class="position-relative">
+								<input type="checkbox" class="ace" />
+								<span class="lbl"></span>
+							</label>
+						</th>
+						<th>DB名称</th>
+						<th>所属Mcluster</th>
+						<th>
+							<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+							创建时间 
+						</th>
+						<th class="hidden-480">当前状态</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="tby">							
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>
@@ -69,11 +50,17 @@ var currentSelectedLineDbName = 1;
 });	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
-		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
-			type : "get",
-			url : "${ctx}/db/list/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
+			type : "post",
+			url : "${ctx}/db/list/data?currentPage="
+					+ currentPage
+					+ "&recordsPerPage="
+					+ recordsPerPage
+					 + "&dbName="
+					+ $("#nav-search-input").val()
+					+ "&flag=all",
 			dataType : "json", /*这句可用可不用，没有影响*/
+			contentType : "application/json; charset=utf-8",
 			success : function(data) {
 				var array = data.data.data;
 				var tby = $("#tby");
@@ -90,35 +77,78 @@ var currentSelectedLineDbName = 1;
 				}
 				
 				for (var i = 0, len = array.length; i < len; i++) {
+					var td1 = $("<td class=\"center\">"
+									+"<label class=\"position-relative\">"
+									+"<input type=\"checkbox\" class=\"ace\"/>"
+									+"<span class=\"lbl\"></span>"
+									+"</label>"
+								+"</td>");
 					var td2;
 					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
 						td2 = $("<td>"
-								+ "<a href=\"${ctx}/db/detail/" + array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "<a href=\"${ctx}/db/mgr/dbApplyInfo?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}else{	
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/db/toMgrAudit?dbId="+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}
-					var td3 = $("<td>"
+					if(array[i].cluster){
+						var td3 = $("<td>"
+								+ array[i].cluster.mclusterName
+								+ "</td>");
+					} else {
+						var td3 = $("<td> </td>");
+					}
+					var td4 = $("<td>"
 							+ array[i].createTime
 							+ "</td>");
-					var td4 = $("<td>"
+					var td5 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					var td5 = $("<td>"
-								+"<div class=\"hidden-sm hidden-xs btn-group\">"
-								+"<button class=\"btn disabled btn-xs btn-success\">"
-								+"<i class=\"ace-icon fa fa-play-circle-o bigger-120\"></i>"
-								+"</button>"
-								+"<button class=\"btn disabled btn-xs btn-info\">"
-									+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-								+"</button>"
-								+"<button class=\"btn disabled btn-xs btn-danger\">"
-									+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-								+"</button>"
+					var td6 = $("<td>"
+								+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+									+"<a class=\"blue\" href=\"#\">"
+										+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+									+"</a>"
+									+"<a class=\"green\" href=\"#\">"
+										+"<i class=\"ace-icon fa  fa-power-off bigger-130\"></i>"
+									+"</a>"
+									+"<a class=\"red\" href=\"#\">"
+										+"<i class=\"ace-icon fa fa-trash-o bigger-130\"></i>"
+									+"</a>"
 								+"</div>"
-								+ "</td>"
+								+"<div class=\"hidden-md hidden-lg\">"
+									+"<div class=\"inline position-relative\">"
+										+"<button class=\"btn btn-minier btn-yellow dropdown-toggle\" data-toggle=\"dropdown\" data-position=\"auto\">"
+											+"<i class=\"ace-icon fa fa-caret-down icon-only bigger-120\"></i>"
+										+"</button>"
+										+"<ul class=\"dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close\">"
+											+"<li>"
+												+"<a href=\"#\" class=\"tooltip-info\" data-rel=\"tooltip\" title=\"View\">"
+													+"<span class=\"blue\">"
+														+"<i class=\"ace-icon fa fa-search-plus bigger-120\"></i>"
+													+"</span>"
+												+"</a>"
+											+"</li>"
+											+"<li>"
+												+"<a href=\"#\" class=\"tooltip-success\" data-rel=\"tooltip\" title=\"Edit\">"
+													+"<span class=\"green\">"
+														+"<i class=\"ace-icon fa fa-pencil-square-o bigger-120\"></i>"
+													+"</span>"
+												+"</a>"
+											+"</li>"
+											+"<li>"
+												+"<a href=\"#\" class=\"tooltip-error\" data-rel=\"tooltip\" title=\"Delete\">"
+													+"<span class=\"red\">"
+														+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+													+"</span>"
+												+"</a>"
+											+"</li>"
+										+"</ul>"
+									+"</div>"
+								+"</div>"
+							+"</td>"
 						);	
 						
 					if(array[i].status == 3){
@@ -127,7 +157,7 @@ var currentSelectedLineDbName = 1;
 						var tr = $("<tr></tr>");
 					}
 					
-					tr.append(td2).append(td3).append(td4).append(td5);
+					tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 					tr.appendTo(tby);
 				}//循环json中的数据 
 				

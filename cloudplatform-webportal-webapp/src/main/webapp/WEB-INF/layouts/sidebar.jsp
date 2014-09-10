@@ -10,67 +10,19 @@
 	</script>
 	<!-- /.sidebar-shortcuts -->
 
-	<ul class="nav nav-list">
-		<li class="active">
-			<a href="${ctx}/mcluster/mgrList">
-				<i class="menu-icon fa fa-tachometer"></i>
-				<span class="menu-text"> Dashboard </span>
-			</a> 
-			<b class="arrow"></b>
-		</li>
-		<li class="">
+	<ul id="sidebar-list" class="nav nav-list">
+		<li class="active open hsub">
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> 
-				<span class="menu-text"> 集群管理 </span> 
+				<span class="menu-text">数据库管理</span> 
 				<b class="arrow fa fa-angle-down"></b>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li class="">
-					<a href="${ctx}/mcluster/mgrList"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						集群列表
-					</a>
-					<b class="arrow"></b>
-				</li>
-			</ul>
-		</li>
-		<li class="">
-			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-database"></i> 
-				<span class="menu-text"> 数据库管理 </span> 
-				<b class="arrow fa fa-angle-down"></b>
-			</a>
-			<b class="arrow"></b>
-			<ul class="submenu">
-				<li class="">
-					<a href="${ctx}/db/mgrList"> 
+					<a href="${ctx}/db/list"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库列表
-					</a>
-					<b class="arrow"></b>
-				</li>
-				<li class="">
-					<a href="#"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						建表管理
-					</a>
-					<b class="arrow"></b>
-				</li>
-			</ul>
-		</li>
-		<li class="">
-			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-gears"></i> 
-				<span class="menu-text"> 系统管理 </span> 
-				<b class="arrow fa fa-angle-down"></b>
-			</a>
-			<b class="arrow"></b>
-			<ul class="submenu">
-				<li class="">
-					<a href="#"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						审核日志列表
 					</a>
 					<b class="arrow"></b>
 				</li>

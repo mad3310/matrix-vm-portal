@@ -78,12 +78,10 @@
 				}
 			</script>
 
-			<ul id="main-content-header" class="breadcrumb">
-				<li>
-					<i class="ace-icon fa fa-home home-icon"></i> 
-					<a href="#">数据库管理</a>
+			<ul class="breadcrumb">
+				<li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">集群管理</a>
 				</li>
-				<li class="active">数据库列表</li>
+				<li class="active">集群列表</li>
 			</ul>
 			<!-- /.breadcrumb -->
 
@@ -204,7 +202,7 @@
 		
 			<!-- /section:settings.box -->
 			<div class="page-content-area">
-				<div id="page-header-id" class="page-header">
+				<div class="page-header">
 					<h1> 
 						集群列表
 						<!-- <small> 
@@ -245,21 +243,7 @@
 	if ('ontouchstart' in document.documentElement)
 		document.write("<script src='${ctx}/static/ace/js/jquery.mobile.custom.min.js'>" + "<"+"/script>");
 </script>
-<!-- 设置sidebar的高亮显示 -->
-<script type="text/javascript">
-		var path = window.location.pathname;
-		if(path.indexOf("/db/list") >= 0){
-			$('#sidebar-list ul li:first').addClass("active");
-			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
-			$('#main-content-header li:eq(1)').html("数据库列表");
-			$('#page-header-id h1').html("数据库列表");
-		}else if(path.indexOf("/db/detail") >= 0){
-			$('#sidebar-list ul li:first').addClass("active");
-			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
-			$('#main-content-header li:eq(1)').html("数据库列表");
-			$('#page-header-id h1').html("<h1>数据库列表<small><i class=\"ace-icon fa fa-angle-double-right\"></i>数据库详情</small>");
-		}
-	</script>
+
 <!-- ace scripts -->
 <script src="${ctx}/static/ace/js/ace-elements.min.js"></script>
 <script src="${ctx}/static/ace/js/ace.min.js"></script>
