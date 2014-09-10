@@ -37,7 +37,7 @@
     <c3p0.version>0.9.1.2</c3p0.version>
     <jackson.version>1.8.3</jackson.version>
     <joda-time.version>1.6.2</joda-time.version>
-    <httpclient.version>3.1</httpclient.version>
+    <httpclient.version>4.3.3</httpclient.version>
     <aspectj.version>1.6.8</aspectj.version>
   </properties>
 
@@ -194,10 +194,10 @@
                 <version>${joda-time.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
+			   <groupId>org.apache.httpcomponents</groupId>
+			   <artifactId>httpclient</artifactId>
+			   <version>${httpclient.version}</version>
+			</dependency>
 
             <!-- logger -->
             <dependency>

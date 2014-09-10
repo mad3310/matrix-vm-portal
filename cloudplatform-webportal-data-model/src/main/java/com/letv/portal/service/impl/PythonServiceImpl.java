@@ -1,62 +1,29 @@
 package com.letv.portal.service.impl;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.auth.CredentialsProvider;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.letv.portal.service.IPythonService;
 
+
+
 @Service("pythonService")
 public class PythonServiceImpl implements IPythonService{
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
-	
-	@Resource
-	private RestTemplate restTemplate;
 
 	@Override
 	public String createContainer() {
 		
-		
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//
-//		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-//
-//		restTemplate.postForObject(url, request, responseType);
-		// TODO Auto-generated method stub
-		
-		/*HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
-		DefaultHttpClient httpClient = (DefaultHttpClient)requestFactory.getHttpClient();
-		httpClient.getCredentialsProvider().setCredentials(new AuthScope(null, (Integer) null, AuthScope.ANY_REALM),new UsernamePasswordCredentials("name", "pass"));
-			
-		restTemplate.exchange("http://localhost:8080/spring-security-rest-template/api/foos/1", HttpMethod.POST, null, String.class);*/
-		
-		
-		 /*String userName = "XXXX";
-         String password = "XXXX";
-         
-         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-         UsernamePasswordCredentials usernamePassword = new UsernamePasswordCredentials(
-                 userName, password);
-         credsProvider.setCredentials(AuthScope.ANY, usernamePassword);
-         httpclient.setCredentialsProvider(credsProvider);
-         
-         HttpPost httpPost = new HttpPost(url);
-         HttpResponse response = httpclient.execute(httpPost);*/
-
-
-			    		
-			    		
+		getRestTemplate().exchange("http://localhost:8080/spring-security-rest-template/api/foos/1", HttpMethod.POST, null, String.class);
 		return null;
 	}
 
@@ -144,6 +111,36 @@ public class PythonServiceImpl implements IPythonService{
 		return null;
 	}
 	
+	@SuppressWarnings("deprecation")
+	private RestTemplate getRestTemplate() {
+		String username = "";
+		String password = "";
+		RestTemplate restTemplate = new RestTemplate();
+		HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+		DefaultHttpClient httpClient = (DefaultHttpClient)requestFactory.getHttpClient();
+		httpClient.getCredentialsProvider().setCredentials(new AuthScope(null, (Integer) null, AuthScope.ANY_REALM),new UsernamePasswordCredentials(username, password));
+		return restTemplate;
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private DefaultHttpClient getHttpClient() {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		
+		 String userName = "";
+         String password = "";
+         
+         CredentialsProvider credsProvider = new BasicCredentialsProvider();
+         UsernamePasswordCredentials usernamePassword = new UsernamePasswordCredentials(
+                 userName, password);
+         credsProvider.setCredentials(AuthScope.ANY, usernamePassword);
+         httpClient.setCredentialsProvider(credsProvider);
+         
+        /* HttpPost httpPost = new HttpPost();
+         HttpResponse response = httpClient.execute(httpPost);*/
+         
+         return httpClient;
+	}
 	
 	
 }
