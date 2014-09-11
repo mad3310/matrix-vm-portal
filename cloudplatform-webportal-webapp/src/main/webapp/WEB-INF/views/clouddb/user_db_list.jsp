@@ -262,11 +262,6 @@ var currentSelectedLineDbName = 1;
 		});
 	}
 	
-	function pageAction() {
-		$("#searchButton").click(function() {
-			queryByPage(currentPage,recordsPerPage);
-		});
-	}
 	function formValidate() {
 		$("#db_apply_form").bootstrapValidator({
 		  message: 'This value is not valid',
@@ -292,10 +287,22 @@ var currentSelectedLineDbName = 1;
       });
 	}
 	
+	function searchAction(){
+		$('#nav-search-input').bind('change', function(){
+			queryByPage(currentPage, recordsPerPage);
+		});
+		$('#nav-search-input').bind('keypress',function(event){
+            if(event.keyCode == "13")    
+            {
+            	queryByPage(currentPage, recordsPerPage);
+            }
+        });
+	}
+	
 	function page_init(){
+		searchAction();
 		formValidate();
 		queryByPage(currentPage, recordsPerPage);
-		pageAction();
 		pageControl();
 	}
 </script>

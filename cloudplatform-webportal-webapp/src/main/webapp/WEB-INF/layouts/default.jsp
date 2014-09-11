@@ -89,12 +89,10 @@
 
 			<!-- #section:basics/content.searchbox -->
 			<div class="nav-search" id="nav-search">
-				<form class="form-search">
-					<span class="input-icon"> 
-						<input type="text" placeholder="Search ..." value="" class="nav-search-input" id="nav-search-input" autocomplete="off" /> 
-						<i class="ace-icon fa fa-search nav-search-icon"></i>
-					</span>
-				</form>
+				<span class="input-icon"> 
+					<input type="text" placeholder="Search ..." value="" class="nav-search-input" id="nav-search-input" autocomplete="off" /> 
+					<i class="ace-icon fa fa-search nav-search-icon"></i>
+				</span>
 			</div>
 			<!-- /.nav-search -->
 
@@ -231,15 +229,10 @@
 <!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
 		var path = window.location.pathname;
-		if(path.indexOf("/db/list") >= 0){
+		if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/detail") >= 0){
 			$('#sidebar-list ul li:first').addClass("active");
 			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
 			$('#main-content-header li:eq(1)').html("数据库列表");
-		}else if(path.indexOf("/db/detail") >= 0){
-			$('#sidebar-list ul li:first').addClass("active");
-			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
-			$('#main-content-header li:eq(1)').html("数据库列表");
-			$('#page-header-id h1').html("<h1>数据库列表<small><i class=\"ace-icon fa fa-angle-double-right\"></i>数据库详情</small>");
 		}
 	</script>
 <!-- ace scripts -->
