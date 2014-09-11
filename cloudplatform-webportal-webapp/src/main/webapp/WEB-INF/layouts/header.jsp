@@ -1,11 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page import="com.mysql.jdbc.StringUtils" %>
-<%
-	if(StringUtils.isNullOrEmpty((String)request.getSession().getAttribute("loginName"))) {
-		out.println("<script>window.location='/account/login';</script>");
-	}
-%>
+
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default">
 	<script type="text/javascript">
@@ -43,7 +38,7 @@
 						<img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" /> 
 						<span class="user-info"> 
 							<small>欢迎会员,</small> 
-							${sessionScope.loginName}
+							${sessionScope.username}
 						</span>
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>

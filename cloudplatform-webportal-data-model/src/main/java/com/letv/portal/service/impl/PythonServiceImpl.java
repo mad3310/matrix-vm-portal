@@ -3,92 +3,124 @@ package com.letv.portal.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.HttpClient;
 import com.letv.portal.service.IPythonService;
 
 @Service("pythonService")
 public class PythonServiceImpl implements IPythonService{
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
+	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");
+	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
+	private final static String URL_IP = "";			//ConfigUtil.getString("");
+	private final static String URL_PORT = "8888";		//ConfigUtil.getString("8888");
 
 	@Override
-	public String createContainer() {
-		Map<String,String> map = new HashMap<String,String>();
-//		getRestTemplate().exchange("http://10.58.166.129:8888/test", HttpMethod.POST, map, String.class);
-		String result = getRestTemplate().postForObject("http://10.58.166.129:8888/test", map, String.class);
-		logger.debug("result==>" + result);
-		System.out.println("result==>" + result);
-		return null;
+	public String createContainer(String mclusterName) {
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containers/create", null);
+		return result;
 	}
 
 	@Override
 	public String checkContainerCreateStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containers/status", null);
+		return result;
 	}
 
 	@Override
-	public String initZookeeper() {
-		// TODO Auto-generated method stub
-		return null;
+	public String initZookeeper(String nodeIp) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/admin/conf";
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("zkAddress", "127.0.0.1");
+		
+		String result = HttpClient.post(url, map);
+		return result;
 	}
 
 	@Override
-	public String initUserAndPwd4Manager() {
-		// TODO Auto-generated method stub
-		return null;
+	public String initUserAndPwd4Manager(String nodeIp,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/admin/user";
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("username", username);
+		map.put("password", password);
+		
+		String result = HttpClient.post(url, map);
+		return result;
 	}
 
 	@Override
-	public String postMclusterInfo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster";
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("clusterName", mclusterName);
+		map.put("dataNodeIp", nodeIp);
+		map.put("dataNodeName", nodeName);
+		
+		String result = HttpClient.post(url, map,username,password);
+		return result;
 	}
 
 	@Override
-	public String initMcluster() {
-		// TODO Auto-generated method stub
-		return null;
+	public String initMcluster(String nodeIp,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/init";
+	
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("forceInit", "false");
+	
+		String result = HttpClient.post(url, map,username,password);
+		return result;
 	}
 
 	@Override
-	public String postContainerInfo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String postContainerInfo(String nodeIp,String nodeName,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/node";
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("dataNodeIp", nodeIp);
+		map.put("dataNodeName", nodeName);
+		
+		String result = HttpClient.post(url, map,username,password);
+		return result;
 	}
 
 	@Override
-	public String syncContainer() {
-		// TODO Auto-generated method stub
-		return null;
+	public String syncContainer(String nodeIp,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/sync";
+		String result = HttpClient.post(url, null,username,password);
+		return result;
 	}
 
 	@Override
-	public String startMcluster() {
-		// TODO Auto-generated method stub
-		return null;
+	public String startMcluster(String nodeIp,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/start";
+
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("cluster_flag", "new");
+		
+		String result = HttpClient.post(url, map,username,password);
+		return result;
 	}
 
 	@Override
-	public String checkContainerStatus() {
-		// TODO Auto-generated method stub
-		return null;
+	public String checkContainerStatus(String nodeIp,String username,String password) {
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/check/online_node";
+		String result = HttpClient.post(url, null,username,password);
+		return result;
 	}
 
 	@Override
-	public String createDb() {
-		// TODO Auto-generated method stub
-		return null;
+	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
+		ipAddress = "127.0.0.1";
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/db";
+		String result = HttpClient.post(url, null,username,password);
+		return result;
 	}
 
 	@Override
@@ -111,40 +143,15 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String initContainer() {
-		// TODO Auto-generated method stub
+		String nodeIp1 = "";
+		this.initZookeeper(nodeIp1);
+		
+		
+		
+		
+		
+		
 		return null;
 	}
-	
-	@SuppressWarnings("deprecation")
-	private RestTemplate getRestTemplate() {
-		String username = "";
-		String password = "";
-		RestTemplate restTemplate = new RestTemplate();
-		HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
-		DefaultHttpClient httpClient = (DefaultHttpClient)requestFactory.getHttpClient();
-		httpClient.getCredentialsProvider().setCredentials(new AuthScope(null, (Integer) null, AuthScope.ANY_REALM),new UsernamePasswordCredentials(username, password));
-		return restTemplate;
-	}
-	
-	
-	@SuppressWarnings("deprecation")
-	private DefaultHttpClient getHttpClient() {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		
-		 String userName = "";
-         String password = "";
-         
-         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-         UsernamePasswordCredentials usernamePassword = new UsernamePasswordCredentials(
-                 userName, password);
-         credsProvider.setCredentials(AuthScope.ANY, usernamePassword);
-         httpClient.setCredentialsProvider(credsProvider);
-         
-        /* HttpPost httpPost = new HttpPost();
-         HttpResponse response = httpClient.execute(httpPost);*/
-         
-         return httpClient;
-	}
-	
 	
 }
