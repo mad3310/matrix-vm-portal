@@ -1,46 +1,63 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<body>
+<!-- /section:settings.box -->
+<div class="page-content-area">
+	<div class="page-header">
+		<h1> 
+			集群列表
+			<!-- <small> 
+				<i class="ace-icon fa fa-angle-double-right"></i> 
+				overview &amp; stats
+			</small> -->
+		</h1>
+	</div>
+	<!-- /.page-header -->
+</div>
+<!-- /.page-content-area -->
 <div class="row">
 	<div class="col-xs-12">
-	<div class="table-header">集群列表</div>
-		<div>
-			<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="center">
-							<label class="position-relative">
-								<input type="checkbox" class="ace" />
-								<span class="lbl"></span>
-							</label>
-						</th>
-						<th>集群名称</th>
-						<th>集群所属用户</th>
-						<th>
-							<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							创建时间 
-						</th>
-						<th class="hidden-480">当前状态</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody id="tby">
-				</tbody>
-			</table>
-			<div id="pageControlBar">
-				<input type="hidden" id="totalPage_input" />
-				<ul class="pager">
-					<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-					<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-					<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-					<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-	
-					<li>共<lable id="totalPage"></lable>页
-					</li>
-					<li>第<lable id="currentPage"></lable>页
-					</li>
-					<li>共<lable id="totalRows"></lable>条记录
-					</li>
-				</ul>
+		<div class="row">
+			<div class="col-xs-12">
+			<div class="table-header">集群列表</div>
+				<div>
+					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="center">
+									<label class="position-relative">
+										<input type="checkbox" class="ace" />
+										<span class="lbl"></span>
+									</label>
+								</th>
+								<th>集群名称</th>
+								<th>集群所属用户</th>
+								<th>
+									<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+									创建时间 
+								</th>
+								<th class="hidden-480">当前状态</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="tby">
+						</tbody>
+					</table>
+					<div id="pageControlBar">
+						<input type="hidden" id="totalPage_input" />
+						<ul class="pager">
+							<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+							<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+							<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+							<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+			
+							<li>共<lable id="totalPage"></lable>页
+							</li>
+							<li>第<lable id="currentPage"></lable>页
+							</li>
+							<li>共<lable id="totalRows"></lable>条记录
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

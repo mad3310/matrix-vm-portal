@@ -1,5 +1,4 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<body>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 

@@ -1,32 +1,50 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<body>
+<!-- /section:settings.box -->
+<div class="page-content-area">
+	<div class="page-header">
+		<h1> 
+			数据库列表
+			<!-- <small> 
+				<i class="ace-icon fa fa-angle-double-right"></i> 
+				overview &amp; stats
+			</small> -->
+		</h1>
+	</div>
+	<!-- /.page-header -->
+</div>
+<!-- /.page-content-area -->
+<!-- /.page-content-area -->
 <div class="row">
 	<div class="col-xs-12">
-	<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
-		<div class="table-header">数据库列表</div>
-			<div>
-				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="center">
-							<label class="position-relative">
-								<input type="checkbox" class="ace" />
-								<span class="lbl"></span>
-							</label>
-						</th>
-						<th>DB名称</th>
-						<th>所属Mcluster</th>
-						<th>
-							<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							创建时间 
-						</th>
-						<th class="hidden-480">当前状态</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody id="tby">							
-				</tbody>
-			</table>
+		<div class="row">
+			<div class="col-xs-12">
+			<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
+				<div class="table-header">数据库列表</div>
+					<div>
+						<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="center">
+									<label class="position-relative">
+										<input type="checkbox" class="ace" />
+										<span class="lbl"></span>
+									</label>
+								</th>
+								<th>DB名称</th>
+								<th>所属Mcluster</th>
+								<th>
+									<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+									创建时间 
+								</th>
+								<th class="hidden-480">当前状态</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="tby">							
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
