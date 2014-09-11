@@ -62,12 +62,6 @@ public class DbController {
 		return "/clouddb/user_db_list";
 	}
 	
-	@RequestMapping(value="/form",method=RequestMethod.GET)
-	public String toForm(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/user_db_applyform";
-	}	
-	
-	
 	/**Methods Name: list <br>
 	 * Description: http://localhost:8080/db/list/${currentPage}/${recordsPerPage}/${dbName}<br>
 	 * @author name: liuhao1
@@ -128,7 +122,7 @@ public class DbController {
 		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
 		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		mav.addObject("db", dbModel);
-		mav.setViewName("/clouddb/user_db_apply_info");
+		mav.setViewName("/clouddb/user_db_detail");
 		return mav;
 	}
 	

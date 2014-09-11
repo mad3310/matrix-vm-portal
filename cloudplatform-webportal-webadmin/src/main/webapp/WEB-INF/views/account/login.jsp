@@ -37,18 +37,18 @@
 		<![endif]-->
 	</head>
 
-	<body class="login-layout blur-login">
+	<body class="login-layout light-login">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="login-container">
 							<div class="center">
-								<h1>
+								<h2>
 									<i class="ace-icon fa fa-leaf green"></i>
 									<span class="red">Paas</span>
-									<span class="white" id="id-text2">Webportal</span>
-								</h1>
+									<span class="white" id="id-text2">后台管理系统</span>
+								</h2>
 								<h4 class="blue" id="id-company-text">&copy;乐视云计算 </h4>
 							</div>
 
@@ -92,7 +92,7 @@
 														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">登录</span>
-														</button>
+														</button>   
 													</div>
 
 													<div class="space-4"></div>
