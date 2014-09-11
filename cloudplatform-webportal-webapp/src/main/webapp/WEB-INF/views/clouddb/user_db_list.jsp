@@ -33,7 +33,6 @@
 										创建时间 
 									</th>
 									<th class="hidden-480">当前状态</th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody id="tby">							
@@ -182,7 +181,7 @@ var currentSelectedLineDbName = 1;
 					var td4 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					var td5 = $("<td>"
+					/* var td5 = $("<td>"
 								+"<div class=\"hidden-sm hidden-xs btn-group\">"
 								+"<button class=\"btn disabled btn-xs btn-success\">"
 								+"<i class=\"ace-icon fa fa-play-circle-o bigger-120\"></i>"
@@ -195,7 +194,7 @@ var currentSelectedLineDbName = 1;
 								+"</button>"
 								+"</div>"
 								+ "</td>"
-						);	
+						);	 */
 						
 					if(array[i].status == 0){
 						var tr = $("<tr class=\"danger\"></tr>");
@@ -203,7 +202,7 @@ var currentSelectedLineDbName = 1;
 						var tr = $("<tr></tr>");
 					}
 					
-					tr.append(td2).append(td3).append(td4).append(td5);
+					tr.append(td2).append(td3).append(td4);
 					tr.appendTo(tby);
 				}//循环json中的数据 
 				
@@ -288,9 +287,6 @@ var currentSelectedLineDbName = 1;
 	}
 	
 	function searchAction(){
-		$('#nav-search-input').bind('change', function(){
-			queryByPage(currentPage, recordsPerPage);
-		});
 		$('#nav-search-input').bind('keypress',function(event){
             if(event.keyCode == "13")    
             {
