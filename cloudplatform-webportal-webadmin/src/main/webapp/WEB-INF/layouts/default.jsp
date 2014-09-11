@@ -243,7 +243,22 @@
 	if ('ontouchstart' in document.documentElement)
 		document.write("<script src='${ctx}/static/ace/js/jquery.mobile.custom.min.js'>" + "<"+"/script>");
 </script>
-
+	<!-- 设置sidebar的高亮显示 -->
+<script type="text/javascript">
+	var path = window.location.pathname;
+	if(path.indexOf("/mcluster/list") >= 0){
+		$('#sidebar-list ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("集群管理");
+		$('#main-content-header li:eq(1)').html("集群列表");
+	}else if(path.indexOf("/db/list") >= 0){
+		$('#sidebar-list li:first').removeClass("active open hsub");
+		$('#sidebar-list li:eq(1)').addClass("active open hsub");
+		$('#sidebar-list ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
+		$('#main-content-header li:eq(1)').html("数据库列表");
+		$('#page-header-id h1').html("<h1>数据库列表<small><i class=\"ace-icon fa fa-angle-double-right\"></i>数据库详情</small>");
+	}
+</script>
 <!-- ace scripts -->
 <script src="${ctx}/static/ace/js/ace-elements.min.js"></script>
 <script src="${ctx}/static/ace/js/ace.min.js"></script>

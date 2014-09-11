@@ -104,14 +104,14 @@
 		<!-- /section:basics/content.breadcrumbs -->
 		<div class="page-content">
 			<!-- #section:settings.box -->
-			<div class="ace-settings-container" id="ace-settings-container">
+	<!--		<div class="ace-settings-container" id="ace-settings-container">
 				<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
 					<i class="ace-icon fa fa-cog bigger-150"></i>
 				</div>
 
 				<div class="ace-settings-box clearfix" id="ace-settings-box">
 					<div class="pull-left width-50">
-						<!-- #section:settings.skins -->
+						#section:settings.skins
 						<div class="ace-settings-item">
 							<div class="pull-left">
 								<select id="skin-colorpicker" class="hide">
@@ -124,45 +124,45 @@
 							<span>&nbsp; Choose Skin</span>
 						</div>
 
-						<!-- /section:settings.skins -->
+						/section:settings.skins
 
-						<!-- #section:settings.navbar -->
+						#section:settings.navbar
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-navbar" /> <label class="lbl"
 								for="ace-settings-navbar"> Fixed Navbar</label>
 						</div>
 
-						<!-- /section:settings.navbar -->
+						/section:settings.navbar
 
-						<!-- #section:settings.sidebar -->
+						#section:settings.sidebar
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-sidebar" /> <label class="lbl"
 								for="ace-settings-sidebar"> Fixed Sidebar</label>
 						</div>
 
-						<!-- /section:settings.sidebar -->
+						/section:settings.sidebar
 
-						<!-- #section:settings.breadcrumbs -->
+						#section:settings.breadcrumbs
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-breadcrumbs" /> <label class="lbl"
 								for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
 						</div>
 
-						<!-- /section:settings.breadcrumbs -->
+						/section:settings.breadcrumbs
 
-						<!-- #section:settings.rtl -->
+						#section:settings.rtl
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-rtl" /> <label class="lbl"
 								for="ace-settings-rtl"> Right To Left (rtl)</label>
 						</div>
 
-						<!-- /section:settings.rtl -->
+						/section:settings.rtl
 
-						<!-- #section:settings.container -->
+						#section:settings.container
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-add-container" /> <label class="lbl"
@@ -170,12 +170,12 @@
 							</label>
 						</div>
 
-						<!-- /section:settings.container -->
+						/section:settings.container
 					</div>
-					<!-- /.pull-left -->
+					/.pull-left
 
 					<div class="pull-left width-50">
-						<!-- #section:basics/sidebar.options -->
+						#section:basics/sidebar.options
 						<div class="ace-settings-item">
 							<input type="checkbox" class="ace ace-checkbox-2"
 								id="ace-settings-hover" /> <label class="lbl"
@@ -194,33 +194,16 @@
 								for="ace-settings-highlight"> Alt. Active Item</label>
 						</div>
 
-						<!-- /section:basics/sidebar.options -->
+						/section:basics/sidebar.options
 					</div>
-					<!-- /.pull-left -->
+					/.pull-left
 				</div>
-				<!-- /.ace-settings-box -->
+				/.ace-settings-box
 			</div>
-			<!-- /.ace-settings-container -->
-		
+			/.ace-settings-container
+		 -->
 			<!-- /section:settings.box -->
-			<div class="page-content-area">
-				<div id="page-header-id" class="page-header">
-					<h1> 
-						集群列表
-						<!-- <small> 
-							<i class="ace-icon fa fa-angle-double-right"></i> 
-							overview &amp; stats
-						</small> -->
-					</h1>
-				</div>
-				<!-- /.page-header -->
-			</div>
-			<!-- /.page-content-area -->
-			<div class="row">
-				<div class="col-xs-12">
-					<sitemesh:body/>
-				</div>
-			</div>
+			<sitemesh:body/>
 		</div>
 	</div>
 	<!-- /.内容显示  -->
@@ -252,7 +235,6 @@
 			$('#sidebar-list ul li:first').addClass("active");
 			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
 			$('#main-content-header li:eq(1)').html("数据库列表");
-			$('#page-header-id h1').html("数据库列表");
 		}else if(path.indexOf("/db/detail") >= 0){
 			$('#sidebar-list ul li:first').addClass("active");
 			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");

@@ -10,15 +10,8 @@
 	</script>
 	<!-- /.sidebar-shortcuts -->
 
-	<ul class="nav nav-list">
-		<li class="active">
-			<a href="${ctx}/mcluster/mgrList">
-				<i class="menu-icon fa fa-tachometer"></i>
-				<span class="menu-text"> Dashboard </span>
-			</a> 
-			<b class="arrow"></b>
-		</li>
-		<li class="">
+	<ul id="sidebar-list" class="nav nav-list">
+		<li class="active open hsub">
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> 
 				<span class="menu-text"> 集群管理 </span> 
@@ -62,7 +55,7 @@
 			data-icon1="ace-icon fa fa-angle-double-left"
 			data-icon2="ace-icon fa fa-angle-double-right"></i>
 	</div>
-
+	
 	<!-- /section:basics/sidebar.layout.minimize -->
 	<script type="text/javascript">
 		try {
