@@ -32,6 +32,8 @@ public class Constant {
 	
 	public static String PYTHON_API_RESULT_SECCESS= "000000";
 	
+	public static String PYTHON_API_CHECK_CONTAINER_RUNNING= "<running>";
+	
 	
 	
 }

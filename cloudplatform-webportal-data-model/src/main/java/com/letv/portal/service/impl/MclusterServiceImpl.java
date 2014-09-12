@@ -7,27 +7,26 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.ConfigUtil;
-import com.letv.common.util.JsonUtils;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.dao.IMclusterDao;
+import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.Result;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IPythonService;
 
 /**Program Name: MclusterServiceImpl <br>
  * Description:  <br>
@@ -48,8 +47,12 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	
 	@Resource
 	private IIpResourceDao ipResourceDao;
+	
 	@Resource
 	private IHostService hostService;
+	
+	@Resource
+	private IPythonService pythonService;
 	
 	private static final String PYTHON_URL = "";
 	private static final String SUCCESS_CODE = "";
@@ -75,31 +78,6 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		page.setTotalRecords(this.mclusterDao.selectByMapCount(params));
 		return page;
 		
-	}
-
-	@Override
-	public String build(String mclusterId) {
-		
-		MclusterModel mcluster = this.mclusterDao.selectById(mclusterId);
-		//判断是否已创建
-		if("0".equals(mcluster.getStatus())) {
-			
-			//初始化container
-			Map<String,String> map = new HashMap<String,String>();
-			List<ContainerModel> containers = this.containerDao.selectByClusterId(mclusterId);
-			try {
-				String data = JsonUtils.writeObject(containers);
-				map.put("data", data);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			RestTemplate  rest = new RestTemplate();
-			
-			
-			rest.postForObject("", null, String.class);
-				
-		}
-		return null;
 	}
 
 	@Override
@@ -152,6 +130,42 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	@Override
 	public void buildNotice(String clusterId,String flag) {
 		this.mclusterDao.audit(new MclusterModel(clusterId,flag));
+	}
+
+	@Override
+	public String build(String mclusterName) {
+		
+		/*
+		 * Mcluster创建过程：
+		 * 1、执行pythonService.createContainer ，返回四组container信息
+		 * 2、数据库写入mcluster 数据库写入一组container
+		 * 3、循环执行pythonService。checkContainerCreateStatus  检查创建状态
+		 * 4、创建成功后，执行pythonService.initContainer方法
+		 * 5、循环调用pythonService.checkContainerStatus方法 检查节点初始化状态
+		 * 6、mcluster创建成功！
+		 */
+		
+		String result = this.pythonService.createContainer(mclusterName);
+		ObjectMapper resultMapper = new ObjectMapper();
+		
+		try {
+			List<ContainerModel> containerModel = resultMapper.readValue(result, List.class);
+		}  catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		pythonService.checkContainerCreateStatus();
+		
+		pythonService.initContainer();
+		pythonService.checkContainerStatus("", "", "");
+		
+		return null;
+	}
+	
+	@Override
+	public String initContainer(String mclusterId) {
+		
+		return null;
 	}
 	
 }

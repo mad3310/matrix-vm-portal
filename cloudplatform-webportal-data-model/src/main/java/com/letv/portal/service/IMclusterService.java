@@ -34,6 +34,15 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public String build(String mclusterId);
 	
+	
+	/**Methods Name: initContainer <br>
+	 * Description: 初始化mcluster的container<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @return
+	 */
+	public String initContainer(String mclusterId);
+	
 
 	/**Methods Name: insert <br>
 	 * Description: 创建完整mcluster<br>
