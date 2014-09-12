@@ -52,7 +52,7 @@
 	    </property>
 	</bean>
 	
-	<mvc:view-controller path="/" view-name="redirect:/account/login"/>
+	<mvc:view-controller path="/" view-name="redirect:/db/list"/>
 	
 	
 	

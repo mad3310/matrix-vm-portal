@@ -6,13 +6,11 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,9 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.common.util.HttpUtil;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
@@ -32,7 +28,6 @@ import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IPythonService;
 import com.letv.portal.view.DbAuditView;
-import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbController <br>
  * Description:  db数据库的相关操作<br>
@@ -159,10 +154,10 @@ public class DbController {
 	}
 	
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
-	public ResultObject build(DbModel dbModel,HttpServletRequest request) {
+	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		this.pythonService.createContainer();
-		
+		String str = this.pythonService.createContainer("mclusterName");
+		obj.setData(str);
 		return obj;
 	}
 	

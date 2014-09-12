@@ -3,8 +3,12 @@ package com.letv.portal.clouddb.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+
 
 import com.mysql.jdbc.StringUtils;
 
@@ -12,6 +16,7 @@ import com.mysql.jdbc.StringUtils;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+	private final static Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
 	@RequestMapping("/login")   //http://localhost:8080/account/login
 	public String login(HttpServletRequest request,HttpServletResponse response) {
@@ -32,7 +37,7 @@ public class AccountController {
 			return "/account/login";
 		}
 		
-		request.getSession().setAttribute("loginName", loginName);
+		request.getSession().setAttribute("username", loginName);
 		request.getSession().setAttribute("userId", loginName);
 		request.getSession().setAttribute("role", "user");
 		return "redirect:/db/list";
@@ -40,13 +45,12 @@ public class AccountController {
 	}
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
-	
-		request.getSession().removeAttribute("loginName");
+		logger.debug("logout===>");
+		request.getSession().removeAttribute("username");
 		request.getSession().removeAttribute("userId");
 		request.getSession().removeAttribute("role");
 		
-		
-		return "redirect:/account/login";
+		return "redirect:http://cas.oss.letv.cn:7777/cas/logout?service=http://10.58.166.19:8081";
 	}
 	
 	
