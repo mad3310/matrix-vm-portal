@@ -100,7 +100,7 @@ public class DbController {
 		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
 		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		mav.addObject("db", dbModel);
-		mav.setViewName("/clouddb/mgr_db_apply_info");
+		mav.setViewName("/clouddb/mgr_db_detail");
 		return mav;
 	}
 	

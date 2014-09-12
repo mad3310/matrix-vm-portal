@@ -1,18 +1,19 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="${ctx}/static/scripts/jquery.bootstrap-duallistbox.min.js"></script>
-<div class="row">
-	<div class="col-md-3">
-		<h3 class="text-left">DB审核</h3>
+<div class="page-content-area">
+	<div id="page-header-id" class="page-header">
+		<h1> 
+			<a href="${ctx}/db/list">数据库列表</a>
+			<small> 
+				<i class="ace-icon fa fa-angle-double-right"></i> 
+				${dbApplyStandard.applyCode}
+			</small>
+		</h1>
 	</div>
-	<div  class="col-md-6">
-		<div id="pageMessage"></div>
-	</div>
-	<div  class="col-md-3">
-		<div></div>
-	</div>
-	<hr style="FILTER: alpha(opacity = 0, finishopacity = 100, style = 1)" width="100%" color=#987cb9 SIZE=3></hr>
+	<!-- /.page-header -->
 </div>
+
 <input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
 
 <div class="row clearfix">
