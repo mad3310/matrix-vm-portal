@@ -79,17 +79,6 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping> -->
-	
-	<!-- 增加session拦截器，保证用户登录状态下访问资源 -->
-	<!-- <filter>
-        <filter-name>SessionFilter</filter-name>
-        <filter-class>com.letv.portal.filter.SessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	
 	<filter>
 		<filter-name>sitemeshFilter</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
@@ -112,7 +101,6 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
 
 	<!-- manage one ip can connect our server's count,in some api server , it's 
 		very important. -->

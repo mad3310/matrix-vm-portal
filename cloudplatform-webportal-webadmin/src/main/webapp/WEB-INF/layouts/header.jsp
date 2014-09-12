@@ -1,11 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page import="com.mysql.jdbc.StringUtils" %>
-<%
-	if(StringUtils.isNullOrEmpty((String)request.getSession().getAttribute("loginName"))) {
-		out.println("<script>window.location='/account/login';</script>");
-	}
-%>
+
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default">
 	<script type="text/javascript">
