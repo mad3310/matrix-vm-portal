@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.util.AssertionHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,14 +33,19 @@ public class SessionFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
+        AttributePrincipal principal = (AttributePrincipal) ((HttpServletRequest) request).getUserPrincipal();
         if (session.getAttribute("username") == null) {
-            AttributePrincipal principal = (AttributePrincipal) ((HttpServletRequest) request).getUserPrincipal();
-            logger.debug("principal===>" + principal);
             String username = principal.getName();
+            
             username = username + "@letv.com";
             session.setAttribute("username", username);
             session.setAttribute("userId", username);
             session.setAttribute("role", "user");
+        }
+        if(principal != null) {
+        	logger.debug("AssertionHolder.getAssertion().getPrincipal().getName()==>" +AssertionHolder.getAssertion().getPrincipal().getName());
+        	logger.debug("principal===>" + principal.getName());
+        	logger.debug("req.getRemoteUser===>" + req.getRemoteUser());
         }
         chain.doFilter(req, res);
     } 

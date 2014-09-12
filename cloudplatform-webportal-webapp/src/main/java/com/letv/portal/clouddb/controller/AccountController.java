@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 
+
+
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.letv.common.util.ConfigUtil;
 import com.mysql.jdbc.StringUtils;
 
 
@@ -17,8 +22,11 @@ import com.mysql.jdbc.StringUtils;
 @RequestMapping("/account")
 public class AccountController {
 	private final static Logger logger = LoggerFactory.getLogger(AccountController.class);
+	private final static String CAS_AUTH_HTTP = ConfigUtil.getString("cas.auth.http");
+	private final static String CAS_LOCAL_HTTP = ConfigUtil.getString("cas.local.http");
 	
-	@RequestMapping("/login")   //http://localhost:8080/account/login
+	//集成cas登录方案
+	/*@RequestMapping("/login")   //http://localhost:8080/account/login
 	public String login(HttpServletRequest request,HttpServletResponse response) {
 		
 		String loginName=request.getParameter("loginName");
@@ -42,15 +50,20 @@ public class AccountController {
 		request.getSession().setAttribute("role", "user");
 		return "redirect:/db/list";
 
-	}
-	@RequestMapping("/logout")   //http://localhost:8080/account/logout
+	}*/
+	/**Methods Name: logout <br>
+	 * Description: 用户登出<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value="/logout",method=RequestMethod.GET)   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
-		logger.debug("logout===>");
-		request.getSession().removeAttribute("username");
-		request.getSession().removeAttribute("userId");
-		request.getSession().removeAttribute("role");
-		
-		return "redirect:http://cas.oss.letv.cn:7777/cas/logout?service=http://10.58.166.19:8081";
+		request.getSession().invalidate();
+		String redirect = "redirect:" + CAS_AUTH_HTTP + "/cas/logout?service=" + CAS_LOCAL_HTTP;
+		logger.debug("logout redirect==>" + redirect);
+		return redirect;
 	}
 	
 	
