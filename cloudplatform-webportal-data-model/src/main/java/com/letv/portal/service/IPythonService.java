@@ -148,5 +148,5 @@ public interface IPythonService {
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public String initContainer();
+	public void initContainer();
 }

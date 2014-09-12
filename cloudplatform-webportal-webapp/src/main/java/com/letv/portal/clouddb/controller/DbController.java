@@ -1,7 +1,6 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,17 +19,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
-import com.letv.portal.view.DbInfoView;
 
 /**Program Name: DbController <br>
  * Description:  db数据库的相关操作<br>

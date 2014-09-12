@@ -42,13 +42,9 @@ public class AccountController {
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
 	
-		request.getSession().removeAttribute("loginName");
-		request.getSession().removeAttribute("userId");
-		request.getSession().removeAttribute("role");
-		
+		request.getSession().invalidate();
 		return "redirect:/account/login";
 	}
-	
 	
 
 }

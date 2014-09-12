@@ -156,8 +156,7 @@ public class DbController {
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		String str = this.pythonService.createContainer("mclusterName");
-		obj.setData(str);
+		this.pythonService.initContainer();
 		return obj;
 	}
 	

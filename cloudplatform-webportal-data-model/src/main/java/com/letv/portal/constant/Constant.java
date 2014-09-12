@@ -30,6 +30,8 @@ public class Constant {
 
 	public static String IPRESOURCE_STATUS_USERD= "1";
 	
+	public static String PYTHON_API_RESULT_SECCESS= "000000";
+	
 	
 	
 }
