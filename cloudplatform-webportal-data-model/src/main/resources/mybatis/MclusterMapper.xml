@@ -7,6 +7,8 @@
 	<resultMap id="BaseResultMap" type="Mcluster" >
 		<result column="ID" property="id" />
 		<result column="MCLUSTER_NAME" property="mclusterName" />
+		<result column="ADMIN_USER" property="adminUser" />
+		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="STATUS" property="status" />
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -17,7 +19,7 @@
 	
 	<!-- WEBPORTAL_MCLUSTER_INFO table all fields -->
 	<sql id="Base_Column_List">
-		ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 
 	
@@ -56,17 +58,17 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster">
 		insert into
-		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
 		<if test="id != null">#{id}</if>
 		<if test="id == null">UUID()</if>
-		,#{mclusterName},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		,#{mclusterName},#{adminUser},#{adminPassword},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
-		ID=#{id},MCLUSTER_NAME=#{mclusterName},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
