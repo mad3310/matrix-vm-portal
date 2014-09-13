@@ -37,16 +37,7 @@
 									<td width="50%">数据库名</td>
 									<td width="50%">${db.dbName}</td>
 								</tr>
-								<c:forEach items="${dbUsers}" var="dbUser">
-									<tr>
-										<td>用户名</td>
-										<td>${dbUser.username}</td>
-									</tr>
-									<tr>
-										<td>密码</td>
-										<td>${dbUser.password}</td>
-									</tr>
-								</c:forEach>
+								
 								<c:forEach items="${containers}" var="container">
 									<tr>
 										<td>${container.type}</td>
@@ -81,10 +72,6 @@
 										<i class="ace-icon fa fa-user bigger-110 hidden-480"></i>
 										用户名
 									</th>
-									<th>
-										<i class="ace-icon fa fa-key bigger-110 hidden-480"></i>
-										用户密码 
-									</th>
 									<th>用户权限</th>
 									<th>ip地址</th>
 									<th>频次限制</th>
@@ -104,7 +91,6 @@
 											</label>
 										</td>
 										<td>${dbUser.username}</td>
-										<td>${dbUser.password}</td>
 										<td>${dbUser.type}</td>
 										<td>${dbUser.acceptIp}</td>
 										<td>${dbUser.maxConcurrency}</td>

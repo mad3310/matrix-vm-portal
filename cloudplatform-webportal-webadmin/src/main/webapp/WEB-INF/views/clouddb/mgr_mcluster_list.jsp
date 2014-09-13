@@ -43,7 +43,7 @@
 								创建时间 
 							</th>
 							<th class="hidden-480">当前状态</th>
-							<th></th>
+							<!-- <th></th> -->
 						</tr>
 					</thead>
 					<tbody id="tby">
@@ -155,7 +155,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+  "<a href=\"${ctx}/mcluster/detail/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
-						+ array[i].mclusterName
+						+ array[i].createUser
 						+ "</td>");
 				var td4 = $("<td>"
 						+ array[i].createTime
@@ -164,7 +164,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ translateStatus(array[i].status)
 						+ "</td>");
 					
-				var td6 = $("<td>"
+				/* var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs btn-group\">"
 						+"<button class=\"btn disabled btn-xs btn-success\">"
 						+"<i class=\"ace-icon fa fa-play-circle-o bigger-120\"></i>"
@@ -177,7 +177,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+"</button>"
 						+"</div>"
 						+ "</td>"
-				);
+				); */
 					
 				if(array[i].status == 3){
 					var tr = $("<tr class=\"danger\"></tr>");
@@ -185,7 +185,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			

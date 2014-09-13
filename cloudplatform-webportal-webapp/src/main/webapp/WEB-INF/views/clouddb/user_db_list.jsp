@@ -193,7 +193,10 @@ var currentSelectedLineDbName = 1;
 						);	 */
 						
 					if(array[i].status == 0){
+						var tr = $("<tr class=\"warning\"></tr>");
+					}else if(array[i].status == -1){
 						var tr = $("<tr class=\"danger\"></tr>");
+						
 					}else{
 						var tr = $("<tr></tr>");
 					}

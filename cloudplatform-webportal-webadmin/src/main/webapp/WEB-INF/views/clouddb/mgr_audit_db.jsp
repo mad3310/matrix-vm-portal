@@ -60,7 +60,7 @@
 		   </li>
 		</ul>					
 		<div id="myTabContent" class="tab-content" >
-			<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 50px;">
+			<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 45px;margin-bottom: 45px;">
 			<form class="form-horizontal" role="form" action="${ctx}/db/audit/save" method="post">
 				<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode}" id="applyCode" name="applyCode"/>
 				<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
@@ -69,8 +69,7 @@
 					<div class="form-group">
 						<label for="text" class="col-sm-2 control-label">选择集群</label>
 						<div class="col-sm-8">
-							<select id="mclusterOption" name="mclusterId"
-								class="form-control">
+							<select id="mclusterOption" name="mclusterId" class="form-control">
 								<option value=""></option>
 								<c:forEach var="mcluster" items="${mclusters}">
 									<option value="${mcluster.id}">${mcluster.mclusterName}</option>
@@ -83,36 +82,38 @@
 					</div>
 				</form>
 		   </div>
-		   <div class="tab-pane fade" id="create_on_new_cluster">
-				<form id="demoform" method="post" action="${ctx}/db/audit/save">
+			<div class="tab-pane fade" id="create_on_new_cluster" style="margin-top: 45px;margin-bottom: 45px;">
+				<form class="form-horizontal" id="demoform" method="post" action="${ctx}/db/audit/save">
 					<div class="form-group">
 						<label for="text" class="control-label col-sm-2">集群名称</label>
 						<div class="col-sm-8">
 							<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 						</div>
 						<div class="col-sm-2">
-							<button type="submit" class="btn btn-sm btn-primary pull-right" style="margin-top: 10px;">创建</button>
+							<button type="submit" class="btn btn-sm btn-primary">创建</button>
 						</div>
 					</div>
 				</form>
 			</div>
-		   <div class="tab-pane fade" id="disagree">
-
-		      <form role="form" method="post" action="${ctx}/db/audit/save">
-				  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
-					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
-					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
-					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
-				  <div class="form-group form-group-lg">
-				    <label class="control-label" for="formGroupInputLarge">原因</label>
-				    <div>
-				      <textarea id="auditInfo" name="auditInfo" class="form-control" rows="12" placeholder="请输入未通过原因"></textarea>
-				    </div>
-				  </div>
-				  <button type="submit" class="btn btn-sm btn-primary pull-right">确定</button>
-			  </form>
+			<div class="tab-pane fade" id="disagree">
+			<div>
+			      <form class="form-horizontal" role="form" method="post" action="${ctx}/db/audit/save">
+					  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
+						<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
+						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
+						<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					  <div class="form-group">
+					  	<div class="col-sm-12">
+					      <textarea  id="auditInfo" name="auditInfo" class="form-control" rows="3" placeholder="请输入未通过原因"></textarea>
+					  	</div>
+					  	<div class="col-sm-12">
+					  		<button type="submit" class="btn btn-sm btn-primary pull-right" style="margin-top:10px">确定</button>
+					  		</div>
+					  </div>
+				  </form>
+			  </div>
 		   </div>
-		   </div>
+		</div>
 	</div>
 </div>
 <script type="text/javascript">
