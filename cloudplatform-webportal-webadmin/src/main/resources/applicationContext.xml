@@ -32,7 +32,7 @@
 	<mvc:interceptors>
 	  <!-- session超时 -->
 	  <mvc:interceptor>
-	    <mvc:mapping path="/*/*"/>
+	    <mvc:mapping path="/**"/>
 	    <bean class="com.letv.portal.interceptor.SessionTimeoutInterceptor">
 	      <property name="allowUrls">
 	        <list>

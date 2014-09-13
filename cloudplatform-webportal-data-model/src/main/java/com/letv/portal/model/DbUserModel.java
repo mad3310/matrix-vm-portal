@@ -31,6 +31,8 @@ public class DbUserModel extends BaseModel {
 	private String maxConnectionsPerHour;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
 	private String maxUserConnections;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
 	
+	private String status; 
+	
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
@@ -147,13 +149,25 @@ public class DbUserModel extends BaseModel {
 		this.type = type;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "DbUserModel [id=" + id + ", dbId=" + dbId + ", username="
 				+ username + ", password=" + password + ", salt=" + salt
-				+ ", type=" + type + ", isDeleted=" + isDeleted
-				+ ", createTime=" + createTime + ", createUser=" + createUser
-				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
-				+ "]";
+				+ ", type=" + type + ", acceptIp=" + acceptIp
+				+ ", maxConcurrency=" + maxConcurrency + ", readWriterRate="
+				+ readWriterRate + ", maxQueriesPerHour=" + maxQueriesPerHour
+				+ ", maxUpdatesPerHour=" + maxUpdatesPerHour
+				+ ", maxConnectionsPerHour=" + maxConnectionsPerHour
+				+ ", maxUserConnections=" + maxUserConnections + ", status="
+				+ status + ", isDeleted=" + isDeleted + ", createTime="
+				+ createTime + ", createUser=" + createUser + ", updateTime="
+				+ updateTime + ", updateUser=" + updateUser + "]";
 	}
+	
 }

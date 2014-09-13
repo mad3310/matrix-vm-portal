@@ -62,11 +62,12 @@ public class DbUserController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		if(StringUtils.isEmpty(dbUserModel.getId())) {
-			dbUserModel.setCreateUser((String)request.getSession().getAttribute("userId"));
+		String[] ips = dbUserModel.getAcceptIp().split(",");
+		
+		dbUserModel.setCreateUser((String)request.getSession().getAttribute("userId"));
+		for (String ip : ips) {
+			dbUserModel.setAcceptIp(ip);
 			this.dbUserService.insert(dbUserModel);
-		} else {
-			this.dbUserService.updateBySelective(dbUserModel);
 		}
 		return obj;
 	}

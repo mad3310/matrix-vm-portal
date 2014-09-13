@@ -21,6 +21,7 @@
 		<result column="MAX_CONNECTIONS_PER_HOUR" property="maxConnectionsPerHour" />
 		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
 		
+		<result column="STATUS" property="status" />
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -48,7 +49,7 @@
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
 		ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
-		IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
@@ -56,10 +57,10 @@
 		insert into
 		WEBPORTAL_DB_USER
 		(ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
-		IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(UUID(),#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
-		'1',now(),#{createUser},now(),#{updateUser})
+		#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 物理删除 -->

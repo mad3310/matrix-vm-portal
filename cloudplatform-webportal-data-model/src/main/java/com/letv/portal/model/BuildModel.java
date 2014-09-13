@@ -21,7 +21,8 @@ public class BuildModel extends BaseModel {
 	private String msg;
 	
 
-	private String createTime;
+	private String startTime;
+	private String endTime;
 
 
 	public String getId() {
@@ -94,23 +95,30 @@ public class BuildModel extends BaseModel {
 	}
 
 
-	public String getCreateTime() {
-		return createTime;
+	public String getStartTime() {
+		return startTime;
 	}
 
 
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 
 	@Override
 	public String toString() {
 		return "BuildModel [id=" + id + ", mclusterId=" + mclusterId
 				+ ", dbId=" + dbId + ", step=" + step + ", status=" + status
-				+ ", code=" + code + ", msg=" + msg + ", createTime="
-				+ createTime + "]";
+				+ ", code=" + code + ", msg=" + msg + ", startTime="
+				+ startTime + ", endTime=" + endTime + "]";
 	}
-	
-	
 }

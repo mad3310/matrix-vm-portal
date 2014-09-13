@@ -125,7 +125,7 @@ public class PythonServiceImpl implements IPythonService{
 		Map<String,Object> jsonResult = new HashMap<String,Object>();
 		while(!Constant.PYTHON_API_CHECK_CONTAINER_RUNNING.equals(jsonResult.get("message"))) {
 			jsonResult = transResult(HttpClient.get(url,username,password));
-			if(!Constant.PYTHON_API_RESULT_SECCESS.equals(jsonResult.get("code"))) {
+			if(!Constant.PYTHON_API_RESULT_SUCCESS.equals(jsonResult.get("code"))) {
 				//请求错误，记录错误信息。
 				return "";
 			}
@@ -179,6 +179,8 @@ public class PythonServiceImpl implements IPythonService{
 		String nodeIp3 = "10.200.85.112";
 		String nodeName3="webportal-test-node3";
 		
+		String mclusterId="";
+		String dbId="";
 		
 		/*mcluster-manager测试用集群
 		10.200.85.110
@@ -194,77 +196,119 @@ public class PythonServiceImpl implements IPythonService{
 		
 		boolean nextStep = true;
 		String step = "";
+		String startTime = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if(nextStep) {
 			step = "初始化Zookeeper节点";
-			nextStep = analysis(this.initZookeeper(nodeIp1),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.initZookeeper(nodeIp1),step,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
 			step = "初始化mcluster管理用户名密码";
-			nextStep = analysis(this.initUserAndPwd4Manager(nodeIp1,username,password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.initUserAndPwd4Manager(nodeIp1,username,password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "提交mcluster集群信息";
-			nextStep = analysis(this.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "初始化集群";
-			nextStep = analysis(this.initMcluster(nodeIp1, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.initMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "同步节点信息 " + nodeIp2;
-			nextStep = analysis(this.syncContainer(nodeIp2, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.syncContainer(nodeIp2, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "提交节点信息" + nodeIp2;
-			nextStep = analysis(this.postContainerInfo(nodeIp2, nodeName2, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.postContainerInfo(nodeIp2, nodeName2, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "同步节点信息 " + nodeIp3;
-			nextStep = analysis(this.syncContainer(nodeIp3, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.syncContainer(nodeIp3, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "提交节点信息 " + nodeIp3;
-			nextStep = analysis(this.postContainerInfo(nodeIp3, nodeName3, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.postContainerInfo(nodeIp3, nodeName3, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
 		if(nextStep) {
 			step = "启动集群";
-			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step);
+			startTime = sdf.format(new Date());
+			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
+		} else {
+			return;
 		}
-		if(nextStep) {
+		/*if(nextStep) {
 			step = "检查各节点状态";
+			startTime = sdf.format(new Date());
 			while(1==1){
-				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step);
+				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step,mclusterId,dbId);
 			}
-		}
+		}*/
 		
 	}
 	
-	private boolean analysis(String result,String step){
+	private boolean analysis(String result,String step,String startTime,String mclusterId,String dbId){
 		Map<String,Object> jsonResult = transResult(result);
+		Map<String,Object> meta = (Map)jsonResult.get("meta");
 		BuildModel buildModel = new BuildModel();
+		
+		buildModel.setMclusterId(mclusterId);
+		buildModel.setDbId(dbId);
+		buildModel.setStep(step);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		buildModel.setStartTime(startTime);
+		buildModel.setEndTime(sdf.format(new Date()));
+		
+		//{"meta": {"code": 200}, "response": {"message": "admin conf successful!", "code": "000000"}}
+		//{"notification": {"message": "direct"}, "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, "response": "the server has belonged to a cluster,should be not create new cluster!"}
 		boolean flag = true;
 		
-		if(Constant.PYTHON_API_RESULT_SECCESS.equals(jsonResult.get("code"))) {
-			buildModel.setStatus("SUCCESS");
-			//写入数据库 执行状态   + step
-			//返回true，执行下一步
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+			Map<String,Object> response = (Map)jsonResult.get("response");
+			buildModel.setCode((String)response.get("code"));
+			buildModel.setMsg((String) response.get("message"));
+			if(Constant.PYTHON_API_RESULT_SUCCESS.equals(response.get("code"))) {
+				buildModel.setStatus("SUCCESS");
+				//写入数据库 执行状态   + step
+				//返回true，执行下一步
+			} else {
+				buildModel.setStatus("FAIL");
+				//返回false，执行结束
+				flag =  false;
+			}
+			
 		} else {
+			buildModel.setCode(String.valueOf(meta.get("code")));
+			buildModel.setMsg((String)meta.get("errorDetail"));
 			buildModel.setStatus("FAIL");
-			//返回false，执行结束
 			flag =  false;
 		}
 		
-		buildModel.setStep(step);
-		buildModel.setCode((String) jsonResult.get("code"));
-		buildModel.setMsg((String) jsonResult.get("message"));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		buildModel.setCreateTime(sdf.format(new Date()));
-		logger.debug("===================================================");
-		logger.debug("buildModel===>" + buildModel);
-		
-//		this.buildService.insert(buildModel);
+		this.buildService.insert(buildModel);
 		return flag;
 	}
 	
@@ -275,7 +319,6 @@ public class PythonServiceImpl implements IPythonService{
 		Map<String,Object> jsonResult = new HashMap<String,Object>();
 		try {
 			jsonResult = resultMapper.readValue(result, Map.class);
-			jsonResult = (Map)jsonResult.get("response");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
