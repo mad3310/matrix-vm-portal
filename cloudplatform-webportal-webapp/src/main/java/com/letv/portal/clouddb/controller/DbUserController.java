@@ -1,8 +1,5 @@
 package com.letv.portal.clouddb.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,18 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.DbApplyStandardModel;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
-import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IDbApplyStandardService;
-import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
-import com.letv.portal.service.IMclusterService;
 
 /**Program Name: DbUserController <br>
  * Description:  db用户<br>
@@ -71,15 +60,15 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/save",method=RequestMethod.POST)   
-	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
-		
+	public @ResponseBody ResultObject save(DbUserModel dbUserModel, HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
 		if(StringUtils.isEmpty(dbUserModel.getId())) {
 			dbUserModel.setCreateUser((String)request.getSession().getAttribute("userId"));
 			this.dbUserService.insert(dbUserModel);
 		} else {
 			this.dbUserService.updateBySelective(dbUserModel);
 		}
-		return "redirect:/db/list";
+		return obj;
 	}
 	
 }
