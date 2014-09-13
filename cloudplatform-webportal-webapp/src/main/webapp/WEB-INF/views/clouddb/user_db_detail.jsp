@@ -19,10 +19,10 @@
 			<div class="widget-toolbar no-border pull-left">
 				<ul id="db-detail-tabs" class="nav nav-tabs" id="myTab2">
 					<li class="active">
-						<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
+						<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
 					</li>
 					<li class="">
-						<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
+						<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
 					</li>
 				</ul>
 			</div>
@@ -30,23 +30,13 @@
 		<div class="widget-body">
 			<div class="widget-main padding-12 no-padding-left no-padding-right">
 				<div class="tab-content padding-4">
-					<div id="db-detail-info" class="tab-pane active">
+					<div id="db-detail-info" class="tab-pane">
 						<div id="db-detail-table" class="col-xs-6">
 							<table class="table table-bordered" id="db_detail_table">
 								<tr>
 									<td width="50%">数据库名</td>
 									<td width="50%">${db.dbName}</td>
 								</tr>
-								<c:forEach items="${dbUsers}" var="dbUser">
-									<tr>
-										<td>用户名</td>
-										<td>${dbUser.username}</td>
-									</tr>
-									<tr>
-										<td>密码</td>
-										<td>${dbUser.password}</td>
-									</tr>
-								</c:forEach>
 								<c:forEach items="${containers}" var="container">
 									<tr>
 										<td>${container.type}</td>
@@ -56,15 +46,15 @@
 							</table>
 						</div>
 					</div>
-					<div id="db-detail-user-mgr" class="tab-pane">
+					<div id="db-detail-user-mgr" class="tab-pane active">
 						<div class="col-xs-10">
 							<div class=" pull-right">
 								<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
 									<i class="ace-icont fa fa-plus"></i>创建用户
 								</button>
-								<button type="button" class="btn btn-xs btn-danger bigger disabled">
+								<!-- <button type="button" class="btn btn-xs btn-danger bigger disabled">
 									<i class="ace-icont fa fa-trash-o"></i>删除用户
-								</button>
+								</button> -->
 							</div>
 						</div>
 						<div class="col-xs-10" style="margin-top:8px">
@@ -94,62 +84,28 @@
 									</th>
 								</tr>
 							</thead>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
+								<tbody id="tby">
+								<c:forEach items="${dbUsers}" var="dbUser">
+									<tr>
+										<td class="center">
+											<label class="position-relative">
 											<input type="checkbox" class="ace"/>
 											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >管理员+读+写</td>
-									<td >192.168.30.%</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.%</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.49</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.49</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
+											</label>
+										</td>
+										<td>${dbUser.username}</td>
+										<td>${dbUser.password}</td>
+										<td>${dbUser.type}</td>
+										<td>${dbUser.acceptIp}</td>
+										<td>${dbUser.maxConcurrency}</td>
+										<td>
+											<c:if test="${dbUser.status eq 0}">审核中</c:if>
+											<c:if test="${dbUser.status eq 1}">已创建</c:if>
+											<c:if test="${dbUser.status eq 2}">审核失败</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -160,7 +116,7 @@
 	<div class="modal fade" id="create-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="" method="post">
+				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/user/save" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
 						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
@@ -170,9 +126,11 @@
 						<div class="widget-body">
 							<div class="widget-main">
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="userName">用户名</label>
+									<input class="hidden" value="${db.id}" name="dbId" id="dbId" type="text" />
+									<input class="hidden" value="0" name="status" id="status" type="text" />
+									<label class="col-sm-2 control-label" for="username">用户名</label>
 									<div class="col-sm-8">
-										<input class="form-control" name="userName" id="userName" type="text" />
+										<input class="form-control" name="username" id="username" type="text" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -184,16 +142,16 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label" for="connection_type">用户类型</label>
 									<div class="col-sm-4">
-										<select class="form-control" name="userPrivilege" id="userPrivilege">
-											<option>管理员</option>
-											<option>读写</option>
+										<select class="form-control" name="type" id="type">
+											<option>manager</option>
+											<option>rw</option>
 										</select>
 									</div>
 								</div>
 								 <div class="form-group">
 							        <label class="col-sm-2 control-label">IP地址</label>
 							        <div class="col-sm-4">
-							            <input type="text" class="form-control" name="Ip[]" />
+							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
 							        <div class="col-sm-2">
 							            <button type="button" class="btn btn-success addButton btn-sm">
@@ -203,7 +161,7 @@
 							    </div>
 							    <div class="form-group hide" id="optionTemplate">
 							        <div class="col-sm-offset-2 col-sm-4">
-							            <input type="text" class="form-control" name="Ip[]" />
+							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
 							        <div class="col-sm-4">
 							            <button type="button" class="btn btn-danger btn-sm removeButton">
@@ -296,13 +254,13 @@ $(function(){
 	                        }
 	                    }
 	                },
-	                'Ip[]': {
+	                'acceptIp': {
 	                    validators: {
 	                        notEmpty: {
 	                            message: '地址不能为空'
 	                        },
 	  		              regexp: {
-			                  regexp: /^(\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
+			                  regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
 			                  message: '请按提示格式输入'
 			              }
 	                    }
@@ -315,22 +273,22 @@ $(function(){
 	                                .removeClass('hide')
 	                                .removeAttr('id')
 	                                .insertBefore($template),
-	                $option   = $clone.find('[name="Ip[]"]');
+	                $option   = $clone.find('[name="acceptIp"]');
 	            $('#db_apply_form').bootstrapValidator('addField', $option);
 	        }).on('click', '.removeButton', function() {
 	            var $row    = $(this).parents('.form-group'),
-	                $option = $row.find('[name="Ip[]"]');
+	                $option = $row.find('[name="acceptIp"]');
 	            $row.remove();
 	            $('#db_apply_form').bootstrapValidator('removeField', $option);
 	        }).on('added.field.bv', function(e, data) {
-	            if (data.field === 'Ip[]') {
-	                if ($('#db_apply_form').find(':visible[name="Ip[]"]').length >= MAX_OPTIONS) {
+	            if (data.field === 'acceptIp') {
+	                if ($('#db_apply_form').find(':visible[name="acceptIp"]').length >= MAX_OPTIONS) {
 	                    $('#db_apply_form').find('.addButton').attr('disabled', 'disabled');
 	                }
 	            }
 	        }).on('removed.field.bv', function(e, data) {
-	           if (data.field === 'Ip[]') {
-	                if ($('#db_apply_form').find(':visible[name="Ip[]"]').length < MAX_OPTIONS) {
+	           if (data.field === 'acceptIp') {
+	                if ($('#db_apply_form').find(':visible[name="acceptIp"]').length < MAX_OPTIONS) {
 	                    $('#db_apply_form').find('.addButton').removeAttr('disabled');
 	                }
 	            }

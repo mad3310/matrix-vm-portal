@@ -20,38 +20,14 @@
 	<div class="col-md-5 column">
 		<div class="col-sm-12">
 		<table class="table table-bordered" id="db_detail_table">	
-			<caption>用户申请单</caption>
-			<tr>
-			<td>项目名称</td>
-			<td>${dbApplyStandard.applyName}</td>
-		</tr>
+		<caption>用户申请单</caption>
 		<tr>
-			<td>业务描述</td>
-			<td>${dbApplyStandard.descn}</td>
+			<td>数据库名</td>
+			<td>${dbApplyStandard.applyCode}</td>
 		</tr>
 		<tr>
 			<td>链接类型</td>
 			<td>${dbApplyStandard.linkType}</td>
-		</tr>
-		<tr>
-			<td>最大访问量</td>
-			<td>${dbApplyStandard.maxConcurrency}</td>
-		</tr>
-		<tr>
-			<td>读写比例</td>
-			<td>${dbApplyStandard.readWriterRate}</td>
-		</tr>
-		<tr>
-			<td>开发语言</td>
-			<td>${dbApplyStandard.developLanguage}</td>
-		</tr>
-		<tr>
-			<td>ip访问列表</td>
-			<td>${dbApplyStandard.dataLimitIpList}</td>
-		</tr>
-		<tr>
-			<td>管理员ip访问列表</td>
-			<td>${dbApplyStandard.mgrLimitIpList}</td>
 		</tr>
 		<tr>
 			<td>数据库引擎</td>
@@ -90,36 +66,36 @@
 				<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
 				<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
 				<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
-			  <div class="form-group">
-			    <label for="text" class="col-sm-2 control-label">选择集群</label>
-			    <div class="col-sm-8">
-			      <select id="mclusterOption" name="mclusterId" class="form-control">
-						<option value=""></option>
-			        <c:forEach var="mcluster" items="${mclusters}">
-						<option value="${mcluster.id}">${mcluster.mclusterName}</option>
-					</c:forEach>
-			      </select>
-			    </div>
-			    <div class="col-sm-2">
-			      <button type="submit" class="btn btn-primary">创建</button>
-			    </div>
-			  </div>
-			</form>
+					<div class="form-group">
+						<label for="text" class="col-sm-2 control-label">选择集群</label>
+						<div class="col-sm-8">
+							<select id="mclusterOption" name="mclusterId"
+								class="form-control">
+								<option value=""></option>
+								<c:forEach var="mcluster" items="${mclusters}">
+									<option value="${mcluster.id}">${mcluster.mclusterName}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-sm-2">
+							<button type="submit" class="btn btn-sm btn-primary">创建</button>
+						</div>
+					</div>
+				</form>
 		   </div>
 		   <div class="tab-pane fade" id="create_on_new_cluster">
 				<form id="demoform" method="post" action="${ctx}/db/audit/save">
-					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
-					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
-					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
-					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
-		            <select multiple="multiple" size="10" name="hostIds" id="duallistbox" style="height: 256px;">
-					<c:forEach var="host" items="${hosts}">
-						<option value="${host.id}">${host.hostName}(${host.hostIp})</option>
-					</c:forEach>
-		            </select>
-	          <button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px;">创建</button>				     
-	          </form>
-		   </div>
+					<div class="form-group">
+						<label for="text" class="control-label col-sm-2">集群名称</label>
+						<div class="col-sm-8">
+							<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+						</div>
+						<div class="col-sm-2">
+							<button type="submit" class="btn btn-sm btn-primary pull-right" style="margin-top: 10px;">创建</button>
+						</div>
+					</div>
+				</form>
+			</div>
 		   <div class="tab-pane fade" id="disagree">
 
 		      <form role="form" method="post" action="${ctx}/db/audit/save">
@@ -133,7 +109,7 @@
 				      <textarea id="auditInfo" name="auditInfo" class="form-control" rows="12" placeholder="请输入未通过原因"></textarea>
 				    </div>
 				  </div>
-				  <button type="submit" class="btn btn-primary pull-right">确定</button>
+				  <button type="submit" class="btn btn-sm btn-primary pull-right">确定</button>
 			  </form>
 		   </div>
 		   </div>

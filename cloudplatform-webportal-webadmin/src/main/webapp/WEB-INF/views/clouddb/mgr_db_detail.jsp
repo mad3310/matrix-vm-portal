@@ -57,7 +57,7 @@
 						</div>
 					</div>
 					<div id="db-detail-user-mgr" class="tab-pane">
-						<div class="col-xs-10">
+						<!-- <div class="col-xs-10">
 							<div class=" pull-right">
 								<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
 									<i class="ace-icont fa fa-plus"></i>创建用户
@@ -66,8 +66,8 @@
 									<i class="ace-icont fa fa-trash-o"></i>删除用户
 								</button>
 							</div>
-						</div>
-						<div class="col-xs-10" style="margin-top:8px">
+						</div> -->
+						<div class="col-xs-10"><!--style="margin-top:8px"  -->
 							<table class="table table-bordered" id="db_detail_table" >
 							<thead>
 								<tr class="info">

@@ -14,54 +14,94 @@
 </div>
 <!-- /.page-content-area -->
 <div class="row">
-	<div class="col-xs-12">
-		<div class="row">
-			<div class="col-xs-12">
-			<div class="table-header">集群列表</div>
-				<div>
-					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-						<thead>
-							<tr>
-								<th class="center">
-									<label class="position-relative">
-										<input type="checkbox" class="ace" />
-										<span class="lbl"></span>
-									</label>
-								</th>
-								<th>集群名称</th>
-								<th>集群所属用户</th>
-								<th>
-									<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-									创建时间 
-								</th>
-								<th class="hidden-480">当前状态</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id="tby">
-						</tbody>
-					</table>
-					<div id="pageControlBar">
-						<input type="hidden" id="totalPage_input" />
-						<ul class="pager">
-							<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-							<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-							<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-							<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-			
-							<li>共<lable id="totalPage"></lable>页
-							</li>
-							<li>第<lable id="currentPage"></lable>页
-							</li>
-							<li>共<lable id="totalRows"></lable>条记录
-							</li>
-						</ul>
+	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
+		<div class="widget-header">
+			<h5 class="widget-title">集群列表</h5>
+			<div class="widget-toolbar no-border">
+				<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-mcluster-modal">
+					<i class="ace-icont fa fa-plus"></i>
+					 创建集群
+				</button>
+			</div>
+		</div>
+	
+		<div class="widget-body">
+			<div class="widget-main no-padding">
+				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="center">
+								<label class="position-relative">
+									<input type="checkbox" class="ace" />
+									<span class="lbl"></span>
+								</label>
+							</th>
+							<th>集群名称</th>
+							<th>集群所属用户</th>
+							<th>
+								<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+								创建时间 
+							</th>
+							<th class="hidden-480">当前状态</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="tby">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div id="pageControlBar">
+		<input type="hidden" id="totalPage_input" />
+		<ul class="pager">
+			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+			<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+			<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+			<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+
+			<li>共<lable id="totalPage"></lable>页
+			</li>
+			<li>第<lable id="currentPage"></lable>页
+			</li>
+			<li>共<lable id="totalRows"></lable>条记录
+			</li>
+		</ul>
+	</div>
+	<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="" method="post">
+				<div class="col-xs-12">
+					<h4 class="lighter">
+						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
+					</h4>
+					<div class="widget-box">
+						<div class="widget-body">
+							<div class="widget-main">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="mcluster_name">集群名称</label>
+									<div class="col-sm-8">
+										<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
+				</div>
+			</form>
 			</div>
 		</div>
 	</div>
 </div>
+<link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
 <script type="text/javascript">
@@ -203,10 +243,37 @@ function pageControl() {
 	        }
 	    });
 	}
+	
+
+function formValidate() {
+	$("#create-mcluster-form").bootstrapValidator({
+	  message: 'This value is not valid',
+         feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+         },
+         fields: {
+       	  mclusterName: {
+                 validMessage: 'The project_name looks great',
+                 validators: {
+                     notEmpty: {
+                         message: '上线项目名称不能为空!'
+                     },
+		          stringLength: {
+		              max: 40,
+		              message: '项目名过长'
+		          }
+                 }
+             }
+         }
+     });
+}
 
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
 	searchAction();
+	formValidate();
 	pageControl();
 }
 </script>

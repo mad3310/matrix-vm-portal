@@ -60,8 +60,8 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/save",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(DbUserModel dbUserModel, HttpServletRequest request) {
-		ResultObject obj = new ResultObject();
+	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
+		String dbId = dbUserModel.getDbId();
 		String[] ips = dbUserModel.getAcceptIp().split(",");
 		
 		dbUserModel.setCreateUser((String)request.getSession().getAttribute("userId"));
@@ -69,7 +69,7 @@ public class DbUserController {
 			dbUserModel.setAcceptIp(ip);
 			this.dbUserService.insert(dbUserModel);
 		}
-		return obj;
+		return "redirect:/db/detail/" + dbId;
 	}
 	
 }
