@@ -30,7 +30,9 @@ public class Constant {
 
 	public static String IPRESOURCE_STATUS_USERD= "1";
 	
-	public static String PYTHON_API_RESULT_SECCESS= "000000";
+	public static String PYTHON_API_RESPONSE_SUCCESS= "200";
+	
+	public static String PYTHON_API_RESULT_SUCCESS= "000000";
 	
 	public static String PYTHON_API_CHECK_CONTAINER_RUNNING= "<running>";
 	

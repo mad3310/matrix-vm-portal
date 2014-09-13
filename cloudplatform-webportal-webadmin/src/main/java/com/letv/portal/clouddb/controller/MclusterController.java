@@ -21,6 +21,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
 import com.mysql.jdbc.StringUtils;
@@ -33,6 +34,8 @@ public class MclusterController {
 	private IMclusterService mclusterService;
 	@Resource
 	private IContainerService containerService;
+	@Resource
+	private IBuildService buildService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
@@ -96,5 +99,19 @@ public class MclusterController {
 	@RequestMapping(value="/list",method=RequestMethod.GET)   //http://localhost:8080/mcluster/list
 	public String toMgrList(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mgr_mcluster_list";
+	}
+	
+	/**Methods Name: list <br>
+	 * Description: 管理员根据查询条件及分页信息获取分页数据   http://localhost:8080/mcluster/<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/build/status/{mclusterId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable String mclusterId,HttpServletRequest request) {
+		
+		ResultObject obj = new ResultObject();
+		obj.setData(this.buildService.selectByMclusterId(mclusterId));
+		return obj;
 	}
 }

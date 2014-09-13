@@ -1,5 +1,7 @@
 package com.letv.portal.service;
 
+import java.util.List;
+
 import com.letv.portal.model.BuildModel;
 
 
@@ -14,4 +16,5 @@ import com.letv.portal.model.BuildModel;
  */
 public interface IBuildService extends IBaseService<BuildModel> {
 
+	public List<BuildModel> selectByMclusterId(String mclusterId);
 }

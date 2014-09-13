@@ -1,5 +1,7 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -27,6 +29,11 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	@Override
 	public IBaseDao<BuildModel> getDao() {
 		return this.buildDao;
+	}
+
+	@Override
+	public List<BuildModel> selectByMclusterId(String mclusterId) {
+		return this.buildDao.selectByMclusterId(mclusterId);
 	}
 
 
