@@ -267,14 +267,14 @@ var currentSelectedLineDbName = 1;
           },
           fields: {
               applyCode: {
-                  validMessage: 'The project_name looks great',
+                  validMessage: '请按提示输入',
                   validators: {
                       notEmpty: {
-                          message: '上线项目名称不能为空!'
+                          message: '数据库名称不能为空!'
                       },
 			          stringLength: {
 			              max: 40,
-			              message: '项目名过长'
+			              message: '数据库名名过长!'
 			          }
                   }
               }
