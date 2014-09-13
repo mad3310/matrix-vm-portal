@@ -121,17 +121,9 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkContainerStatus(String nodeIp,String username,String password) {
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/check/online_node";
+		String result = HttpClient.get(url,username,password);
+		return result;
 		
-		Map<String,Object> jsonResult = new HashMap<String,Object>();
-		while(!Constant.PYTHON_API_CHECK_CONTAINER_RUNNING.equals(jsonResult.get("message"))) {
-			jsonResult = transResult(HttpClient.get(url,username,password));
-			if(!Constant.PYTHON_API_RESULT_SUCCESS.equals(jsonResult.get("code"))) {
-				//请求错误，记录错误信息。
-				return "";
-			}
-		}
-		//成功！记录成功信息，返回1
-		return "";
 	}
 
 	@Override
@@ -261,13 +253,13 @@ public class PythonServiceImpl implements IPythonService{
 		} else {
 			return;
 		}
-		/*if(nextStep) {
+		if(nextStep) {
 			step = "检查各节点状态";
 			startTime = sdf.format(new Date());
 			while(1==1){
-				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step,mclusterId,dbId);
+				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step,startTime,mclusterId,dbId);
 			}
-		}*/
+		}
 		
 	}
 	
@@ -283,8 +275,9 @@ public class PythonServiceImpl implements IPythonService{
 		buildModel.setStartTime(startTime);
 		buildModel.setEndTime(sdf.format(new Date()));
 		
-		//{"meta": {"code": 200}, "response": {"message": "admin conf successful!", "code": "000000"}}
-		//{"notification": {"message": "direct"}, "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, "response": "the server has belonged to a cluster,should be not create new cluster!"}
+		//SUCCESS==>{"meta": {"code": 200}, "response": {"message": "admin conf successful!", "code": "000000"}}
+		//FAIL==>{"notification": {"message": "direct"}, "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, "response": "the server has belonged to a cluster,should be not create new cluster!"}
+		
 		boolean flag = true;
 		
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
