@@ -79,7 +79,6 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping> -->
-	
 	<filter>
 		<filter-name>sitemeshFilter</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
@@ -102,7 +101,6 @@
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
 
 	<!-- manage one ip can connect our server's count,in some api server , it's 
 		very important. -->

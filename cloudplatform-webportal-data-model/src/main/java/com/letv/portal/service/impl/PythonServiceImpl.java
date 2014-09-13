@@ -27,7 +27,7 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
 	private final static String URL_IP = "";			//ConfigUtil.getString("");
-	private final static String URL_PORT = "8888";		//ConfigUtil.getString("8888");
+	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
 	
 	@Resource
 	private IBuildService buildService;
@@ -60,8 +60,8 @@ public class PythonServiceImpl implements IPythonService{
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/admin/user";
 		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("username", username);
-		map.put("password", password);
+		map.put("adminUser", username);
+		map.put("adminPassword", password);
 		
 		String result = HttpClient.post(url, map);
 		return result;
@@ -82,12 +82,9 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String initMcluster(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/init";
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/init?forceInit=false";
 	
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("forceInit", "false");
-	
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
@@ -106,7 +103,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String syncContainer(String nodeIp,String username,String password) {
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/sync";
-		String result = HttpClient.post(url, null,username,password);
+		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
@@ -124,8 +121,17 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkContainerStatus(String nodeIp,String username,String password) {
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/cluster/check/online_node";
-		String result = HttpClient.post(url, null,username,password);
-		return result;
+		
+		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		while(!Constant.PYTHON_API_CHECK_CONTAINER_RUNNING.equals(jsonResult.get("message"))) {
+			jsonResult = transResult(HttpClient.get(url,username,password));
+			if(!Constant.PYTHON_API_RESULT_SECCESS.equals(jsonResult.get("code"))) {
+				//请求错误，记录错误信息。
+				return "";
+			}
+		}
+		//成功！记录成功信息，返回1
+		return "";
 	}
 
 	@Override
@@ -156,15 +162,13 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public void initContainer() {
+		logger.debug("initContainer==>in");
+		
+		//假设数据
 		String username = "root";
 		String password = "webportal-test";
 		
 		String mclusterName="webportal-test";
-		
-		/*mcluster-manager测试用集群
-		10.200.85.110
-		10.200.85.111
-		10.200.85.112*/
 		
 		String nodeIp1 = "10.200.85.110";
 		String nodeName1="webportal-test-node1";
@@ -175,6 +179,19 @@ public class PythonServiceImpl implements IPythonService{
 		String nodeIp3 = "10.200.85.112";
 		String nodeName3="webportal-test-node3";
 		
+		
+		/*mcluster-manager测试用集群
+		10.200.85.110
+		10.200.85.111
+		10.200.85.112
+		
+		物理机
+		10.200.91.142
+		10.200.91.143
+		10.200.91.144
+		root/dabingge$1985
+		*/
+		
 		boolean nextStep = true;
 		String step = "";
 		if(nextStep) {
@@ -184,62 +201,64 @@ public class PythonServiceImpl implements IPythonService{
 			return;
 		}
 		if(nextStep) {
-			step = "初始化Zookeeper节点";
+			step = "初始化mcluster管理用户名密码";
 			nextStep = analysis(this.initUserAndPwd4Manager(nodeIp1,username,password),step);
 		}
 		if(nextStep) {
+			step = "提交mcluster集群信息";
 			nextStep = analysis(this.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step);
 		}
 		if(nextStep) {
+			step = "初始化集群";
 			nextStep = analysis(this.initMcluster(nodeIp1, username, password),step);
 		}
 		if(nextStep) {
+			step = "同步节点信息 " + nodeIp2;
 			nextStep = analysis(this.syncContainer(nodeIp2, username, password),step);
 		}
 		if(nextStep) {
+			step = "提交节点信息" + nodeIp2;
 			nextStep = analysis(this.postContainerInfo(nodeIp2, nodeName2, username, password),step);
 		}
 		if(nextStep) {
+			step = "同步节点信息 " + nodeIp3;
 			nextStep = analysis(this.syncContainer(nodeIp3, username, password),step);
 		}
 		if(nextStep) {
+			step = "提交节点信息 " + nodeIp3;
 			nextStep = analysis(this.postContainerInfo(nodeIp3, nodeName3, username, password),step);
 		}
 		if(nextStep) {
+			step = "启动集群";
 			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step);
 		}
-		/*if(nextStep) {
-			nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step);
-		}*/
+		if(nextStep) {
+			step = "检查各节点状态";
+			while(1==1){
+				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step);
+			}
+		}
 		
 	}
 	
 	private boolean analysis(String result,String step){
-		ObjectMapper resultMapper = new ObjectMapper();
-		Map<String,String> jsonResult = new HashMap<String,String>();
+		Map<String,Object> jsonResult = transResult(result);
 		BuildModel buildModel = new BuildModel();
 		boolean flag = true;
-		//写入数据库 错误信息 + step
-		String msg = jsonResult.get("message");
-		try {
-			jsonResult = resultMapper.readValue(result, Map.class);
-			jsonResult = resultMapper.readValue(jsonResult.get("response"), Map.class);
-			
-			if(Constant.PYTHON_API_RESULT_SECCESS.equals(jsonResult.get("code"))) {
-				buildModel.setStatus("SUCCESS");
-				//写入数据库 执行状态   + step
-				//返回true，执行下一步
-			} else {
-				buildModel.setStatus("FAIL");
-				//返回false，执行结束
-				flag =  false;
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
+		
+		if(Constant.PYTHON_API_RESULT_SECCESS.equals(jsonResult.get("code"))) {
+			buildModel.setStatus("SUCCESS");
+			//写入数据库 执行状态   + step
+			//返回true，执行下一步
+		} else {
+			buildModel.setStatus("FAIL");
+			//返回false，执行结束
+			flag =  false;
 		}
+		
 		buildModel.setStep(step);
-		buildModel.setCode(jsonResult.get("code"));
-		buildModel.setMsg(jsonResult.get("message"));
+		buildModel.setCode((String) jsonResult.get("code"));
+		buildModel.setMsg((String) jsonResult.get("message"));
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		buildModel.setCreateTime(sdf.format(new Date()));
 		logger.debug("===================================================");
@@ -247,6 +266,20 @@ public class PythonServiceImpl implements IPythonService{
 		
 //		this.buildService.insert(buildModel);
 		return flag;
+	}
+	
+	
+	
+	private Map<String,Object> transResult(String result){
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+			jsonResult = (Map)jsonResult.get("response");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonResult;
 	}
 	
 }

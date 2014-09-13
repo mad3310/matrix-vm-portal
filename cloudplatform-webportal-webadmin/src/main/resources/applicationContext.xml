@@ -28,7 +28,23 @@
 	 <!-- 异常处理 -->
     <bean id="exceptionResolver" class="com.letv.common.spring.DefaultMappingExceptionResolver" />
     
-    
+    <!-- 拦截器配置 -->
+	<mvc:interceptors>
+	  <!-- session超时 -->
+	  <mvc:interceptor>
+	    <mvc:mapping path="/*/*"/>
+	    <bean class="com.letv.portal.interceptor.SessionTimeoutInterceptor">
+	      <property name="allowUrls">
+	        <list>
+	          <!-- 如果请求中包含以下路径，则不进行拦截 -->
+	          <value>/login</value>
+	          <value>/static</value>
+	        </list>
+	      </property>
+	    </bean>
+	  </mvc:interceptor>
+	</mvc:interceptors>
+	
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>  
 	
 	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

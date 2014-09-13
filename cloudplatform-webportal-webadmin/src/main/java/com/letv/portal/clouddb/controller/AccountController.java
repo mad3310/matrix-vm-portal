@@ -35,6 +35,7 @@ public class AccountController {
 		request.getSession().setAttribute("loginName", loginName);
 		request.getSession().setAttribute("userId", loginName);
 		request.getSession().setAttribute("role", "sysadmin");
+		request.getSession().setMaxInactiveInterval(3600);//单位：秒
 		return "redirect:/mcluster/list";
 		
 
