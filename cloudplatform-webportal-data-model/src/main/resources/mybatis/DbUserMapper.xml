@@ -13,6 +13,14 @@
 		<result column="SALT" property="salt" />
 		<result column="TYPE" property="type" />
 		
+		<result column="ACCEPT_IP" property="acceptIp" />
+		<result column="MAX_CONCURRENCY" property="maxConcurrency" />
+		<result column="READ_WRITER_RATE" property="readWriterRate" />
+		<result column="MAX_QUERIES_PER_HOUR" property="maxQueriesPerHour" />
+		<result column="MAX_UPDATES_PER_HOUR" property="maxUpdatesPerHour" />
+		<result column="MAX_CONNECTIONS_PER_HOUR" property="maxConnectionsPerHour" />
+		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
+		
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -39,7 +47,7 @@
 	
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,
+		ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
 		IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
@@ -47,10 +55,10 @@
 	<insert id="insert" parameterType="DbUser">
 		insert into
 		WEBPORTAL_DB_USER
-		(ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,
+		(ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
 		IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{dbId},#{username},#{password},#{salt},#{type},
+		(UUID(),#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
 		'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	

@@ -21,12 +21,22 @@ public class DbUserModel extends BaseModel {
 	private String salt; //加密盐
 
 	private String type; //用户类型   1管理员 2读用户3 读写用户
-
+	
+	private String acceptIp;         //用户访问IP(192.178.2.1或192.168.3.%)
+	private String maxConcurrency;   //最大并发量(100/s)
+	private String readWriterRate;   // 读写比例(1:2)
+	
+	private String maxQueriesPerHour;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
+	private String maxUpdatesPerHour;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
+	private String maxConnectionsPerHour;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
+	private String maxUserConnections;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
+	
 	private String isDeleted; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
 	private String updateTime;
 	private String updateUser;
+	
 	public String getId() {
 		return id;
 	}
@@ -88,13 +98,55 @@ public class DbUserModel extends BaseModel {
 		this.updateUser = updateUser;
 	}
 	
-	
+	public String getAcceptIp() {
+		return acceptIp;
+	}
+	public void setAcceptIp(String acceptIp) {
+		this.acceptIp = acceptIp;
+	}
+	public String getMaxConcurrency() {
+		return maxConcurrency;
+	}
+	public void setMaxConcurrency(String maxConcurrency) {
+		this.maxConcurrency = maxConcurrency;
+	}
+	public String getReadWriterRate() {
+		return readWriterRate;
+	}
+	public void setReadWriterRate(String readWriterRate) {
+		this.readWriterRate = readWriterRate;
+	}
+	public String getMaxQueriesPerHour() {
+		return maxQueriesPerHour;
+	}
+	public void setMaxQueriesPerHour(String maxQueriesPerHour) {
+		this.maxQueriesPerHour = maxQueriesPerHour;
+	}
+	public String getMaxUpdatesPerHour() {
+		return maxUpdatesPerHour;
+	}
+	public void setMaxUpdatesPerHour(String maxUpdatesPerHour) {
+		this.maxUpdatesPerHour = maxUpdatesPerHour;
+	}
+	public String getMaxConnectionsPerHour() {
+		return maxConnectionsPerHour;
+	}
+	public void setMaxConnectionsPerHour(String maxConnectionsPerHour) {
+		this.maxConnectionsPerHour = maxConnectionsPerHour;
+	}
+	public String getMaxUserConnections() {
+		return maxUserConnections;
+	}
+	public void setMaxUserConnections(String maxUserConnections) {
+		this.maxUserConnections = maxUserConnections;
+	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
+	
 	@Override
 	public String toString() {
 		return "DbUserModel [id=" + id + ", dbId=" + dbId + ", username="
