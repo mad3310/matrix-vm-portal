@@ -71,10 +71,6 @@
 										<i class="ace-icon fa fa-user bigger-110 hidden-480"></i>
 										用户名
 									</th>
-									<th>
-										<i class="ace-icon fa fa-key bigger-110 hidden-480"></i>
-										用户密码 
-									</th>
 									<th>用户权限</th>
 									<th>ip地址</th>
 									<th>频次限制</th>
@@ -94,12 +90,11 @@
 											</label>
 										</td>
 										<td>${dbUser.username}</td>
-										<td>${dbUser.password}</td>
 										<td>${dbUser.type}</td>
 										<td>${dbUser.acceptIp}</td>
 										<td>${dbUser.maxConcurrency}</td>
 										<td>
-											<c:if test="${dbUser.status eq 0}">审核中</c:if>
+											<c:if test="${dbUser.status eq 0}">未审核</c:if>
 											<c:if test="${dbUser.status eq 1}">已创建</c:if>
 											<c:if test="${dbUser.status eq 2}">审核失败</c:if>
 										</td>
@@ -116,7 +111,7 @@
 	<div class="modal fade" id="create-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/user/save" method="post">
+				<form id="db_user_apply_form" name="db_user_apply_form" class="form-horizontal" role="form" action="${ctx}/db/user/save" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
 						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
@@ -128,19 +123,19 @@
 								<div class="form-group">
 									<input class="hidden" value="${db.id}" name="dbId" id="dbId" type="text" />
 									<input class="hidden" value="0" name="status" id="status" type="text" />
-									<label class="col-sm-2 control-label" for="username">用户名</label>
-									<div class="col-sm-8">
+									<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
+									<div class="col-sm-4">
 										<input class="form-control" name="username" id="username" type="text" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="db_name">密码</label>
-									<div class="col-sm-8">
-										<input class="form-control" name="password" id="password" type="text" />
+									<label class="col-sm-offset-1 col-sm-2 control-label" for="db_name">密码</label>
+									<div class="col-sm-4">
+										<input class="form-control" name="password" id="password" type="password" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="connection_type">用户类型</label>
+									<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 									<div class="col-sm-4">
 										<select class="form-control" name="type" id="type">
 											<option>manager</option>
@@ -149,7 +144,7 @@
 									</div>
 								</div>
 								 <div class="form-group">
-							        <label class="col-sm-2 control-label">IP地址</label>
+							        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
 							        <div class="col-sm-4">
 							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
@@ -160,27 +155,27 @@
 							        </div>
 							    </div>
 							    <div class="form-group hide" id="optionTemplate">
-							        <div class="col-sm-offset-2 col-sm-4">
+							        <div class="col-sm-offset-3 col-sm-4">
 							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
-							        <div class="col-sm-4">
-							            <button type="button" class="btn btn-danger btn-sm removeButton">
+							        <div class="col-sm-2">
+							            <button type="button" class="btn btn-default btn-sm removeButton">
 							                <i class="fa fa-minus"></i>
 							            </button>
 							        </div>
 							    </div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="read_write_ratio">读写比例</label>
-									<div class="col-sm-2">
+									<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
+									<div class="col-sm-4">
 										<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
-											placeholder="1:1" />
+											placeholder="" />
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
-									<div class="col-sm-2">
+									<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
+									<div class="col-sm-4">
 										<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
-											placeholder="100"/>
+											placeholder=""/>
 									</div>
 									<label class="control-label" for="maximum_concurrency">/s</label>
 								</div>
@@ -203,7 +198,7 @@
 $(function(){
 	pageinit();
 	 var MAX_OPTIONS = 10;
-	    $('#db_apply_form').bootstrapValidator({
+	    $('#db_user_apply_form').bootstrapValidator({
 	            feedbackIcons: {
 	                valid: 'glyphicon glyphicon-ok',
 	                invalid: 'glyphicon glyphicon-remove',
@@ -213,18 +208,18 @@ $(function(){
 	            	userName: {
 	                    validators: {
 	                        notEmpty: {
-	                            message: 'The question required and cannot be empty'
+	                            message: '用户名不能为空!'
 	                        },
 	  			          stringLength: {
 				              max: 40,
-				              message: '用户名太长了!'
+				              message: '用户名过长!'
 				          }
 	                    }
 	                },
 	                password: {
 	                    validators: {
 	                        notEmpty: {
-	                            message: 'The question required and cannot be empty'
+	                            message: '密码不能为空!'
 	                        },
 	  			          stringLength: {
 				              max: 20,
@@ -233,7 +228,7 @@ $(function(){
 	                    }
 	                },
 	                readWriterRate: {
-	                    validMessage: 'The business_description looks great',
+	                    validMessage: '请按提示输入',
 	                    validators: {
 	                        notEmpty: {
 	                            message: '读写比例不能为空!'
@@ -245,7 +240,7 @@ $(function(){
 	                    }
 	                },
 	                maxConcurrency: {
-	                    validMessage: 'The business_description looks great',
+	                    validMessage: '请按提示输入',
 	                    validators: {
 	                        notEmpty: {
 	                            message: '最大并发量不能为空!'
@@ -274,22 +269,22 @@ $(function(){
 	                                .removeAttr('id')
 	                                .insertBefore($template),
 	                $option   = $clone.find('[name="acceptIp"]');
-	            $('#db_apply_form').bootstrapValidator('addField', $option);
+	            $('#db_user_apply_form').bootstrapValidator('addField', $option);
 	        }).on('click', '.removeButton', function() {
 	            var $row    = $(this).parents('.form-group'),
 	                $option = $row.find('[name="acceptIp"]');
 	            $row.remove();
-	            $('#db_apply_form').bootstrapValidator('removeField', $option);
+	            $('#db_user_apply_form').bootstrapValidator('removeField', $option);
 	        }).on('added.field.bv', function(e, data) {
 	            if (data.field === 'acceptIp') {
-	                if ($('#db_apply_form').find(':visible[name="acceptIp"]').length >= MAX_OPTIONS) {
-	                    $('#db_apply_form').find('.addButton').attr('disabled', 'disabled');
+	                if ($('#db_user_apply_form').find(':visible[name="acceptIp"]').length >= MAX_OPTIONS) {
+	                    $('#db_user_apply_form').find('.addButton').attr('disabled', 'disabled');
 	                }
 	            }
 	        }).on('removed.field.bv', function(e, data) {
 	           if (data.field === 'acceptIp') {
-	                if ($('#db_apply_form').find(':visible[name="acceptIp"]').length < MAX_OPTIONS) {
-	                    $('#db_apply_form').find('.addButton').removeAttr('disabled');
+	                if ($('#db_user_apply_form').find(':visible[name="acceptIp"]').length < MAX_OPTIONS) {
+	                    $('#db_user_apply_form').find('.addButton').removeAttr('disabled');
 	                }
 	            }
 	        });

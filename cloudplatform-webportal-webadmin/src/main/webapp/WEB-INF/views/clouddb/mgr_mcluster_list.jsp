@@ -255,14 +255,14 @@ function formValidate() {
          },
          fields: {
        	  mclusterName: {
-                 validMessage: 'The project_name looks great',
+                 validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
-                         message: '上线项目名称不能为空!'
+                         message: '集群名称不能为空!'
                      },
 		          stringLength: {
 		              max: 40,
-		              message: '项目名过长'
+		              message: '集群名过长'
 		          }
                  }
              }

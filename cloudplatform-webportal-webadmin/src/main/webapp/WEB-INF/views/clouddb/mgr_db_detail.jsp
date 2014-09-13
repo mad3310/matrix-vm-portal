@@ -94,62 +94,28 @@
 									</th>
 								</tr>
 							</thead>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
+								<tbody id="tby">
+								<c:forEach items="${dbUsers}" var="dbUser">
+									<tr>
+										<td class="center">
+											<label class="position-relative">
 											<input type="checkbox" class="ace"/>
 											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >管理员+读+写</td>
-									<td >192.168.30.%</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.%</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.49</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
-								<tr>
-									<td class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-										</label>
-									</td>	
-									<td >liuhao1</td>
-									<td >123456</td>
-									<td >读+写</td>
-									<td >192.168.30.49</td>
-									<td >200/s</td>
-									<td >正在审核</td>
-								</tr>
+											</label>
+										</td>
+										<td>${dbUser.username}</td>
+										<td>${dbUser.password}</td>
+										<td>${dbUser.type}</td>
+										<td>${dbUser.acceptIp}</td>
+										<td>${dbUser.maxConcurrency}</td>
+										<td>
+											<c:if test="${dbUser.status eq 0}">未审核</c:if>
+											<c:if test="${dbUser.status eq 1}">已创建</c:if>
+											<c:if test="${dbUser.status eq 2}">审核失败</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+								</tbody>
 							</table>
 						</div>
 					</div>

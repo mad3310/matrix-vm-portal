@@ -107,8 +107,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-primary" onclick="">创建</button>
+					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+					<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
 				</div>
 			</form>
 			</div>
@@ -152,7 +152,7 @@ var currentSelectedLineDbName = 1;
 				
 				function translateStatus(status){
 					if(status == 0){
-						return "需审核";
+						return "未审核";
 					}else if(status  == 1 ||status  == 2){
 						return "审核通过";
 					}else if(status  == -1){
