@@ -1,5 +1,7 @@
 package com.letv.portal.service;
 
+import com.letv.portal.model.DbUserModel;
+
 /**Program Name: IPythonService <br>
  * Description:  与底层python rest交互接口<br>
  * @author name: liuhao1 <br>
@@ -118,28 +120,17 @@ public interface IPythonService {
 	 */
 	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password);
 	
-	/**Methods Name: createDbManagerUser <br>
-	 * Description: 创建管理用户<br>
+
+	/**Methods Name: createDbUser <br>
+	 * Description: 创建数据库用户<br>
 	 * @author name: liuhao1
+	 * @param dbUserModel
+	 * @param dbName
+	 * @param username
+	 * @param password
 	 * @return
 	 */
-	public String createDbManagerUser();
-	
-	/**Methods Name: createDbRoDbUser <br>
-	 * Description: 创建只读用户<br>
-	 * @author name: liuhao1
-	 * @return
-	 */
-	public String createDbRoDbUser();
-	
-	/**Methods Name: createDbWrUser <br>
-	 * Description: 创建读写用户<br>
-	 * @author name: liuhao1
-	 * @return
-	 */
-	public String createDbWrUser(); 
-	
-	
+	public String createDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username,String password);
 	
 	//组合功能
 	

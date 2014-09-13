@@ -16,6 +16,7 @@ import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IPythonService;
 
@@ -24,7 +25,7 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
-	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");
+	private final static String MCLUSTER_CREATE_URL = "http://192.168.84.132:8888"; //ConfigUtil.getString("mcluster_create_url");
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
 	private final static String URL_IP = "";			//ConfigUtil.getString("");
 	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
@@ -34,13 +35,20 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createContainer(String mclusterName) {
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containers/create", null);
+		//curl --user root:root -d"containerClusterName=clustername" http://192.168.84.132:8888/containerCluster
+
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("mclusterName", "mclusterName");
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster", map);
+		logger.debug("result====>" + result);
+		
+		
 		return result;
 	}
 
 	@Override
 	public String checkContainerCreateStatus() {
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containers/status", null);
+		String result = HttpClient.get(MCLUSTER_CREATE_URL + "/containers/status");
 		return result;
 	}
 
@@ -128,29 +136,55 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
+		//假设数据
+		nodeIp = "10.200.85.110";
+		username = "root";
+		password = "webportal-test";
+		
+		
+		dbName="paascloud";
 		ipAddress = "127.0.0.1";
+		dbUserName="paascloud";
+		
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/db";
-		String result = HttpClient.post(url, null,username,password);
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("dbName", dbName);
+		map.put("userName", dbUserName);
+		map.put("ip_address", ipAddress);
+		
+		String result = HttpClient.post(url, map,username,password);
+		logger.debug("result==>" + result);
 		return result;
 	}
 
-	@Override
-	public String createDbManagerUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public String createDbRoDbUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String createDbUser(DbUserModel dbUser, String dbName,String nodeIp,String username, String password) {
+		//假设数据
+		nodeIp = "10.200.85.110";
+		username = "root";
+		password = "webportal-test";
+		
+		dbName="paascloud";
 
-	@Override
-	public String createDbWrUser() {
-		// TODO Auto-generated method stub
-		return null;
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/dbUser";
+		
+				
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("role", dbUser.getType());
+		map.put("dbName", dbName);
+		map.put("userName", dbUser.getUsername());
+		map.put("user_password", dbUser.getPassword());
+		map.put("p_address", dbUser.getAcceptIp());
+		map.put("max_queries_per_hour", dbUser.getMaxQueriesPerHour());
+		map.put("max_updates_per_hour", dbUser.getMaxUpdatesPerHour());
+		map.put("max_connections_per_hour", dbUser.getMaxConnectionsPerHour());
+		map.put("max_user_connections", dbUser.getMaxUserConnections());
+		
+		String result = HttpClient.post(url, map,username,password);
+		return result;
 	}
+	
 
 	@Override
 	public void initContainer() {
@@ -252,13 +286,6 @@ public class PythonServiceImpl implements IPythonService{
 			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
 		} else {
 			return;
-		}
-		if(nextStep) {
-			step = "检查各节点状态";
-			startTime = sdf.format(new Date());
-			while(1==1){
-				nextStep = analysis(this.checkContainerStatus(nodeIp1, username, password),step,startTime,mclusterId,dbId);
-			}
 		}
 		
 	}

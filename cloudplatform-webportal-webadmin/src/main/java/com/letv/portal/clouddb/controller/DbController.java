@@ -20,6 +20,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
@@ -156,7 +157,18 @@ public class DbController {
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		this.pythonService.initContainer();
+		/*this.pythonService.initContainer();*/
+		/*this.pythonService.createDb(null, null, null, null, null, null);
+		DbUserModel dbUser = new DbUserModel();
+		dbUser.setUsername("liuhao");
+		dbUser.setPassword("liuhao");
+		dbUser.setAcceptIp("10.58.166.19");
+		dbUser.setType("wr");
+		dbUser.setMaxConnectionsPerHour(String.valueOf(360000));
+		dbUser.setMaxQueriesPerHour(String.valueOf(360000));
+		dbUser.setMaxUpdatesPerHour(String.valueOf(360000));
+		dbUser.setMaxUserConnections(String.valueOf(50));
+		this.pythonService.createDbUser(dbUser, null, null, null, null);*/
 		return obj;
 	}
 	
