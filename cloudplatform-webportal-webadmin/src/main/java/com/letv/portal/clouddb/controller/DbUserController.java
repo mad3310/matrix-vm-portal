@@ -37,9 +37,9 @@ public class DbUserController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
-	@RequestMapping(value="/list/",method=RequestMethod.GET)
+	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/mgr_db_list";
+		return "/clouddb/mgr_dbuser_list";
 	}
 	
 	/**Methods Name: list <br>
