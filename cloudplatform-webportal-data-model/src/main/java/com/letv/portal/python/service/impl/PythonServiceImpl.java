@@ -1,4 +1,4 @@
-package com.letv.portal.service.impl;
+package com.letv.portal.python.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,13 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
-import com.letv.portal.service.IPythonService;
 
 @Service("pythonService")
 public class PythonServiceImpl implements IPythonService{

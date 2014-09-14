@@ -26,7 +26,6 @@ import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
-import com.letv.portal.service.IPythonService;
 
 /**Program Name: MclusterServiceImpl <br>
  * Description:  <br>
@@ -50,9 +49,6 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	
 	@Resource
 	private IHostService hostService;
-	
-	@Resource
-	private IPythonService pythonService;
 	
 	private static final String PYTHON_URL = "";
 	private static final String SUCCESS_CODE = "";
@@ -133,31 +129,20 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public String build(String mclusterName) {
+	public String build(MclusterModel mclusterModel) {
 		
 		/*
 		 * Mcluster创建过程：
-		 * 1、执行pythonService.createContainer ，返回四组container信息
-		 * 2、数据库写入mcluster 数据库写入一组container
-		 * 3、循环执行pythonService。checkContainerCreateStatus  检查创建状态
-		 * 4、创建成功后，执行pythonService.initContainer方法
-		 * 5、循环调用pythonService.checkContainerStatus方法 检查节点初始化状态
-		 * 6、mcluster创建成功！
+		 * 1、根据mclusterName创建一条数据，存到数据库
+		 * 2、执行pythonService.createContainer.
+		 * 3、数据库写入mcluster 数据库写入一组container
+		 * 4、循环执行pythonService。checkContainerCreateStatus  检查创建状态
+		 * 5、创建成功后，执行pythonService.initContainer方法
+		 * 6、循环调用pythonService.checkContainerStatus方法 检查节点初始化状态
+		 * 7、mcluster创建成功！
 		 */
 		
-		String result = this.pythonService.createContainer(mclusterName);
-		ObjectMapper resultMapper = new ObjectMapper();
-		
-		try {
-			List<ContainerModel> containerModel = resultMapper.readValue(result, List.class);
-		}  catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		pythonService.checkContainerCreateStatus();
-		
-		pythonService.initContainer();
-		pythonService.checkContainerStatus("", "", "");
+		this.insert(mclusterModel);
 		
 		return null;
 	}

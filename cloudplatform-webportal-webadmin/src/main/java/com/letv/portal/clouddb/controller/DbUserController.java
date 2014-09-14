@@ -37,9 +37,9 @@ public class DbUserController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
-	@RequestMapping(value="/list/",method=RequestMethod.GET)
+	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/mgr_db_list";
+		return "/clouddb/mgr_dbuser_list";
 	}
 	
 	/**Methods Name: list <br>
@@ -62,6 +62,12 @@ public class DbUserController {
 		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbUserService.findPagebyParams(params, page));
+		return obj;
+	}
+	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
+	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
+		logger.debug("ids====>" + ids);
+		ResultObject obj = new ResultObject();
 		return obj;
 	}
 	

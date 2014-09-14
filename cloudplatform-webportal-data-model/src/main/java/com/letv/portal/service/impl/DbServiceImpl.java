@@ -86,7 +86,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		//判断是否已创建mcluster
 			//创建mcluster
 			//初始化mcluster
-		this.mclusterService.build(dbModel.getClusterId());
+//		this.mclusterService.build(dbModel.getClusterId());
 			
 		
 		//创建db

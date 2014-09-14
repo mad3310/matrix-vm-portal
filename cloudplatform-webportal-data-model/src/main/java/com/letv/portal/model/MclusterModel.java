@@ -18,8 +18,8 @@ public class MclusterModel extends BaseModel {
 	private String adminUser;
 	private String adminPassword;
 	
-	private String status; //状态：
-	private String isDeleted; //是否删除   0:无效 1:有效
+	private String status = "0"; //状态：0 初始化状态
+	private String isDeleted = "1"; //是否删除   0:无效 1:有效
 	private String createTime;
 	private String createUser;
 	private String updateTime;

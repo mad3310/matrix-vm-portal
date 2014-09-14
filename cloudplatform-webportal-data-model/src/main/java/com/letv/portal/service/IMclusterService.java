@@ -29,10 +29,10 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	/**Methods Name: build <br>
 	 * Description: 创建mcluster<br>
 	 * @author name: liuhao1
-	 * @param mclusterId
+	 * @param mclusterModel
 	 * @return
 	 */
-	public String build(String mclusterId);
+	public String build(MclusterModel mclusterModel);
 	
 	
 	/**Methods Name: initContainer <br>

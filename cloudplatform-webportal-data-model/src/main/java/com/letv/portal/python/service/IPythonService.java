@@ -1,4 +1,4 @@
-package com.letv.portal.service;
+package com.letv.portal.python.service;
 
 import com.letv.portal.model.DbUserModel;
 

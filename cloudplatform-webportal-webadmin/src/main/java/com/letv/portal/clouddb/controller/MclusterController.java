@@ -21,6 +21,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
@@ -36,6 +37,8 @@ public class MclusterController {
 	private IContainerService containerService;
 	@Resource
 	private IBuildService buildService;
+	@Resource
+	private IBuildTaskService buildTaskService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
@@ -71,7 +74,6 @@ public class MclusterController {
 		
 		if(StringUtils.isNullOrEmpty(mclusterModel.getId())) {
 			mclusterModel.setCreateUser((String)request.getSession().getAttribute("userId"));
-			mclusterModel.setStatus("1");
 			this.mclusterService.insert(mclusterModel);
 		} else {
 			this.mclusterService.updateBySelective(mclusterModel);
@@ -101,14 +103,25 @@ public class MclusterController {
 		return "/clouddb/mgr_mcluster_list";
 	}
 	
-	/**Methods Name: list <br>
+	
+	@RequestMapping(value = "/build", method=RequestMethod.POST)   
+	public String build(MclusterModel mclusterModel,HttpServletRequest request) {
+		mclusterModel.setCreateUser((String) request.getSession().getAttribute("userId"));
+//		this.mclusterService.build(mclusterModel);
+		
+//		this.buildTaskService.buildMcluster();
+		
+		return "redirect:/mcluster/list";
+	}
+	
+	/**Methods Name: buildStatuslist <br>
 	 * Description: 管理员根据查询条件及分页信息获取分页数据   http://localhost:8080/mcluster/<br>
 	 * @author name: liuhao1
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/build/status/{mclusterId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable String mclusterId,HttpServletRequest request) {
+	public @ResponseBody ResultObject buildStatuslist(@PathVariable String mclusterId,HttpServletRequest request) {
 		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.buildService.selectByMclusterId(mclusterId));

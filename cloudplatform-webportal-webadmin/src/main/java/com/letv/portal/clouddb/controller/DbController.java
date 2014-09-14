@@ -27,7 +27,6 @@ import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
-import com.letv.portal.service.IPythonService;
 import com.letv.portal.view.DbAuditView;
 
 /**Program Name: DbController <br>
@@ -53,8 +52,7 @@ public class DbController {
 	private IDbApplyStandardService dbApplyStandardService;
 	@Resource
 	private IHostService hostService;
-	@Resource
-	private IPythonService pythonService;
+	
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
@@ -157,7 +155,7 @@ public class DbController {
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		this.pythonService.initContainer();
+//		this.pythonService.initContainer();
 		/*this.pythonService.createDb(null, null, null, null, null, null);
 		DbUserModel dbUser = new DbUserModel();
 		dbUser.setUsername("liuhao");
