@@ -237,6 +237,11 @@
 		$('#sidebar-db-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
 		$('#main-content-header li:eq(1)').html("数据库列表");
+	}else if(path.indexOf("/db/user/list") >= 0){
+		$('#sidebar-db-mgr').addClass("active open hsub");
+		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/db/user/list").html("数据库用户管理");
+		$('#main-content-header li:eq(1)').html("数据库列表");
 	}
 </script>
 <!-- ace scripts -->

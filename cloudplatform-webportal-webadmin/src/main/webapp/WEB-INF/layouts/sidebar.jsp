@@ -43,6 +43,13 @@
 					</a>
 					<b class="arrow"></b>
 				</li>
+				<li id="sidebar-db-list" class="">
+					<a href="${ctx}/db/user/list"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						数据库用户列表
+					</a>
+					<b class="arrow"></b>
+				</li>
 			</ul>
 		</li>
 		
