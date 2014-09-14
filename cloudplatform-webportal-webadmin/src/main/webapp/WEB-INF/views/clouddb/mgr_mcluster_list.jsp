@@ -258,11 +258,12 @@ function formValidate() {
                      notEmpty: {
                          message: '集群名称不能为空!'
                      },
-		          stringLength: {
-		              max: 40,
-		              message: '集群名过长'
-		          }
-             }
+			          stringLength: {
+			              max: 40,
+			              message: '集群名过长'
+			          }
+	             }
+         	}	
          }
      });
 }
