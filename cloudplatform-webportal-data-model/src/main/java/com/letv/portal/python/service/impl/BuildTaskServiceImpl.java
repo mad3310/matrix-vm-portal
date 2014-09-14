@@ -6,9 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
+import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
 
 @Service("buildTaskService")
@@ -17,6 +19,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private final static Logger logger = LoggerFactory.getLogger(BuildTaskServiceImpl.class);
 	@Resource
 	private IMclusterService mclusterService;
+	@Resource
+	private IDbUserService dbUserService;
 	@Resource
 	private IPythonService pythonService;
 	
@@ -39,6 +43,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 //		this.pythonService.checkContainerStatus(nodeIp, username, password);
 		
 		this.mclusterService.update(mclusterModel);
+	}
+
+
+	@Override
+	public void buildUser(String ids) {
+		String[] str = ids.split(",");
+		for (String id : str) {
+			
+			//查询所属db 所属mcluster 及container数据
+			DbUserModel dbUserModel = this.dbUserService.selectById(id);
+//			this.pythonService.createDbUser(dbUserModel, dbName, nodeIp, username, password);
+			
+		}
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

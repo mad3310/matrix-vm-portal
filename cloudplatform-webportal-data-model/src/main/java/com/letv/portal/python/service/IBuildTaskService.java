@@ -12,5 +12,17 @@ import com.letv.portal.model.MclusterModel;
  */
 public interface IBuildTaskService { 
 	
+	/**Methods Name: buildMcluster <br>
+	 * Description: 创建mcluster<br>
+	 * @author name: liuhao1
+	 * @param mclusterModel
+	 */
 	public void buildMcluster(MclusterModel mclusterModel);
+
+	/**Methods Name: buildUser <br>
+	 * Description: 创建用户<br>
+	 * @author name: liuhao1
+	 * @param ids
+	 */
+	public void buildUser(String ids);
 }

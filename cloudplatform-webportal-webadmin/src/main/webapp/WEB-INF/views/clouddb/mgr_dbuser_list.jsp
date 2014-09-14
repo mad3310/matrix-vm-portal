@@ -74,20 +74,26 @@ var currentSelectedLineDbName = 1;
  	function buildUser() {
  		var ids = $("[name='db_user_id']:checked");
  		var str="";
+ 		boolean flag = false;
  		ids.each(function(){
  			str +=($(this).val())+",";
+ 			flag = true;
  		});
- 		$.ajax({ 
-			type : "get",
-			url : "${ctx}/db/user/build/"+ str,
-			dataType : "json",
-			success : function(data) {
-				if(data.result == 1) {
-					$("#titleCheckbox").attr("checked", false);
-					queryByPage(currentPage,recordsPerPage);
+ 		if(flag) {
+	 		$.ajax({ 
+				type : "get",
+				url : "${ctx}/db/user/build/"+ str,
+				dataType : "json",
+				success : function(data) {
+					if(data.result == 1) {
+						$("#titleCheckbox").attr("checked", false);
+						queryByPage(currentPage,recordsPerPage);
+					}
 				}
-			}
- 		});
+	 		});
+ 		} else {
+ 			//提示选择用户！
+ 		}
  	}
  
 	function queryByPage(currentPage,recordsPerPage) {

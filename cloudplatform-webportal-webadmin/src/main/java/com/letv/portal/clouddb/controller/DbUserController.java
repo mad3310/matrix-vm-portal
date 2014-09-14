@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
 /**Program Name: DbUserController <br>
@@ -34,6 +35,8 @@ public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
+	@Resource
+	private IBuildTaskService buildTaskService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
@@ -66,11 +69,8 @@ public class DbUserController {
 	}
 	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
-		String[] array = ids.split(",");
-		for (String id : array) {
-			logger.debug("id===>" + id);
-		}
 		
+		this.buildTaskService.buildUser(ids);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
