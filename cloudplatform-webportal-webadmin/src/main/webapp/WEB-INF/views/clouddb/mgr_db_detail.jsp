@@ -69,14 +69,12 @@
 										</label>
 									</th>
 									<th>
-										<i class="ace-icon fa fa-user bigger-110 hidden-480"></i>
 										用户名
 									</th>
 									<th>用户权限</th>
 									<th>ip地址</th>
 									<th>频次限制</th>
 									<th>
-										<i class="ace-icon fa fa-flag-o bigger-110 hidden-480"></i>
 										当前状态
 									</th>
 								</tr>

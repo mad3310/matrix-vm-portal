@@ -29,7 +29,6 @@
 						<th>DB名称</th>
 						<th>所属Mcluster</th>
 						<th>
-							<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
 							创建时间 
 						</th>
 						<th class="hidden-480">当前状态</th>

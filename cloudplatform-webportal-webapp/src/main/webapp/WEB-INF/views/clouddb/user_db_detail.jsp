@@ -68,14 +68,12 @@
 										</label>
 									</th>
 									<th>
-										<i class="ace-icon fa fa-user bigger-110 hidden-480"></i>
 										用户名
 									</th>
 									<th>用户权限</th>
 									<th>ip地址</th>
 									<th>频次限制</th>
 									<th>
-										<i class="ace-icon fa fa-flag-o bigger-110 hidden-480"></i>
 										当前状态
 									</th>
 								</tr>
@@ -114,7 +112,6 @@
 				<form id="db_user_apply_form" name="db_user_apply_form" class="form-horizontal" role="form" action="${ctx}/db/user/save" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
-						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库用户 </a>
 					</h4>
 					<div class="widget-box">
@@ -124,19 +121,19 @@
 									<input class="hidden" value="${db.id}" name="dbId" id="dbId" type="text" />
 									<input class="hidden" value="0" name="status" id="status" type="text" />
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<input class="form-control" name="username" id="username" type="text" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="db_name">密码</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<input class="form-control" name="password" id="password" type="password" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<select class="form-control" name="type" id="type">
 											<option>manager</option>
 											<option>rw</option>
@@ -145,7 +142,7 @@
 								</div>
 								 <div class="form-group">
 							        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
-							        <div class="col-sm-4">
+							        <div class="col-sm-5">
 							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
 							        <div class="col-sm-2">
@@ -155,7 +152,7 @@
 							        </div>
 							    </div>
 							    <div class="form-group hide" id="optionTemplate">
-							        <div class="col-sm-offset-3 col-sm-4">
+							        <div class="col-sm-offset-3 col-sm-5">
 							            <input type="text" class="form-control" name="acceptIp" />
 							        </div>
 							        <div class="col-sm-2">
@@ -166,14 +163,14 @@
 							    </div>
 								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
 											placeholder="" />
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
-									<div class="col-sm-4">
+									<div class="col-sm-5">
 										<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
 											placeholder=""/>
 									</div>
@@ -205,15 +202,18 @@ $(function(){
 	                validating: 'glyphicon glyphicon-refresh'
 	            },
 	            fields: {
-	            	userName: {
+	            	username: {
 	                    validators: {
 	                        notEmpty: {
 	                            message: '用户名不能为空!'
 	                        },
 	  			          stringLength: {
-				              max: 40,
+				              max: 30,
 				              message: '用户名过长!'
-				          }
+				          }, regexp: {
+			                  regexp: /^(([a-zA-Z_]+[0-9]*)|([0-9]*[a-zA-Z_]+))$/,
+	  		                  message: "请输入字母数字或'_',用户名不能单独为数字."
+	                 	  }
 	                    }
 	                },
 	                password: {

@@ -27,7 +27,6 @@
 						<tr>
 							<th>DB名称</th>
 							<th>
-								<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
 								创建时间 
 							</th>
 							<th class="hidden-480">当前状态</th>
@@ -61,47 +60,43 @@
 				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
-						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库 </a>
 					</h4>
-					<div class="hr hr-18 hr-double dotted"></div>
 					<div class="widget-box">
 						<div class="widget-body">
 							<div class="widget-main">
-								<hr />
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="db_name">数据库名</label>
-											<div class="col-sm-8">
-												<input class="form-control" name="applyCode" id="applyCode" type="text" />
-											</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="db_name">数据库名</label>
+									<div class="col-sm-8">
+										<input class="form-control" name="applyCode" id="applyCode" type="text" />
+									</div>
+								</div>
+								<div class="form-group">
+										<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
+										<div class="col-sm-4">
+											<select class="form-control" name="engineType" id="engineType">
+												<option>InnoDB</option>
+											</select>
 										</div>
-										<div class="form-group">
-												<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
-												<div class="col-sm-4">
-													<select class="form-control" name="engineType" id="engineType">
-														<option>InnoDB</option>
-													</select>
-												</div>
-										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
-											<div class="col-sm-4">
-												<select class="form-control" name="linkType" id="linkType">
-													<option>长链接</option>
-													<option>短链接</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
-											<div class="col-sm-6">
-												<label class="inline" style="margin-top: 3px;">
-													<input name="isEmailNotice" id="isEmailNotice" checked="checked" type="checkbox" class="ace ace-switch ace-switch-5">
-													<span class="lbl middle"></span>
-												</label>
-											</div>
-										</div>
-								<hr />
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
+									<div class="col-sm-4">
+										<select class="form-control" name="linkType" id="linkType">
+											<option>长链接</option>
+											<option>短链接</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
+									<div class="col-sm-6">
+										<label class="inline" style="margin-top: 3px;">
+											<input name="isEmailNotice" id="isEmailNotice" checked="checked" type="checkbox" class="ace ace-switch ace-switch-5">
+											<span class="lbl middle"></span>
+										</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -276,9 +271,12 @@ var currentSelectedLineDbName = 1;
                           message: '数据库名称不能为空!'
                       },
 			          stringLength: {
-			              max: 40,
+			              max: 30,
 			              message: '数据库名名过长!'
-			          }
+			          }, regexp: {
+		                  regexp: /^(([a-zA-Z_]+[0-9]*)|([0-9]*[a-zA-Z_]+))$/,
+  		                  message: "请输入字母数字或'_',数据库名不能单独为数字."
+                 	  }
                   }
               }
           }

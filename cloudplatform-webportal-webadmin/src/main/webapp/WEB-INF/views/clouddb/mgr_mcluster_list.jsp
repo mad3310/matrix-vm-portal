@@ -39,7 +39,6 @@
 							<th>集群名称</th>
 							<th>集群所属用户</th>
 							<th>
-								<i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
 								创建时间 
 							</th>
 							<th class="hidden-480">当前状态</th>
@@ -74,7 +73,6 @@
 				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
-						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
 					</h4>
 					<div class="widget-box">
@@ -247,7 +245,7 @@ function pageControl() {
 
 function formValidate() {
 	$("#create-mcluster-form").bootstrapValidator({
-	  message: 'This value is not valid',
+	  message: '无效的输入',
          feedbackIcons: {
              valid: 'glyphicon glyphicon-ok',
              invalid: 'glyphicon glyphicon-remove',
@@ -264,7 +262,6 @@ function formValidate() {
 		              max: 40,
 		              message: '集群名过长'
 		          }
-                 }
              }
          }
      });
