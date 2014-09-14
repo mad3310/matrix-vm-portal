@@ -10,6 +10,7 @@
 		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="DB_ID" property="dbId" />
 		<result column="STEP" property="step" />
+		<result column="STEP＿MSG" property="stepMsg" />
 		<result column="STATUS" property="status" />
 		<result column="CODE" property="code" />
 		<result column="MSG" property="msg" />
@@ -36,16 +37,16 @@
 	
 	<!-- WEBPORTAL_BUILD table all fields -->
 	<sql id="Base_Column_List">
-		ID,MCLUSTER_ID,DB_ID,STEP,STATUS,CODE,MSG,START_TIME,END_TIME
+		ID,MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME
 	</sql>
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="build">
 		insert into
 		WEBPORTAL_BUILD
-		(ID,MCLUSTER_ID,DB_ID,STEP,STATUS,CODE,MSG,START_TIME,END_TIME)
+		(ID,MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME)
 		values
-		(UUID(),#{mclusterId},#{dbId},#{step},#{status},#{code},#{msg},#{startTime},#{endTime})
+		(UUID(),#{mclusterId},#{dbId},#{step},#{stepMsg},#{status},#{code},#{msg},#{startTime},#{endTime})
 	</insert>
 	
 	<!-- 物理删除 -->
@@ -57,14 +58,14 @@
 	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId}
+		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
 	</select>
 	
 	<!-- 根据dbId查询-->
 	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_BUILD where DB_ID = #{dbId}
+		from WEBPORTAL_BUILD where DB_ID = #{dbId} ORDER BY STEP
 	</select>
 	
 	<!-- 根据条件查询 -->

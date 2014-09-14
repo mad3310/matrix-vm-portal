@@ -39,6 +39,8 @@ public class DbUserModel extends BaseModel {
 	private String updateTime;
 	private String updateUser;
 	
+	private DbModel db;
+	
 	public String getId() {
 		return id;
 	}
@@ -154,6 +156,13 @@ public class DbUserModel extends BaseModel {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public DbModel getDb() {
+		return db;
+	}
+	public void setDb(DbModel db) {
+		this.db = db;
 	}
 	@Override
 	public String toString() {

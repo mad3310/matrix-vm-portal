@@ -15,7 +15,8 @@ public class BuildModel extends BaseModel {
 	private String id;   //主键ID
 	private String mclusterId;
 	private String dbId;
-	private String step;
+	private int step;
+	private String stepMsg;
 	private String status;
 	private String code;
 	private String msg;
@@ -54,14 +55,24 @@ public class BuildModel extends BaseModel {
 		this.dbId = dbId;
 	}
 
-
-	public String getStep() {
+	
+	public int getStep() {
 		return step;
 	}
 
 
-	public void setStep(String step) {
+	public void setStep(int step) {
 		this.step = step;
+	}
+
+
+	public String getStepMsg() {
+		return stepMsg;
+	}
+
+
+	public void setStepMsg(String stepMsg) {
+		this.stepMsg = stepMsg;
 	}
 
 

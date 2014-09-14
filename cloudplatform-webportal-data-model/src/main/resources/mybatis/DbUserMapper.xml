@@ -27,6 +27,10 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="db" javaType="Db">
+			<result column="DB_NAME" property="dbName" />
+		</association>
 	</resultMap>
 	
 	<!-- 查询条件 -->
@@ -51,6 +55,15 @@
 		ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
 		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
+	
+	
+	<sql id="Base_Column_List_add_db">
+		WEBPORTAL_DB_USER.ID,WEBPORTAL_DB.ID,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB_USER.DB_ID,WEBPORTAL_DB_USER.USERNAME,WEBPORTAL_DB_USER.PASSWORD,WEBPORTAL_DB_USER.SALT,WEBPORTAL_DB_USER.TYPE,WEBPORTAL_DB_USER.ACCEPT_IP,
+		WEBPORTAL_DB_USER.MAX_CONCURRENCY,WEBPORTAL_DB_USER.READ_WRITER_RATE,WEBPORTAL_DB_USER.MAX_QUERIES_PER_HOUR,WEBPORTAL_DB_USER.MAX_UPDATES_PER_HOUR,WEBPORTAL_DB_USER.MAX_CONNECTIONS_PER_HOUR,
+		WEBPORTAL_DB_USER.MAX_USER_CONNECTIONS,
+		WEBPORTAL_DB_USER.STATUS,WEBPORTAL_DB_USER.IS_DELETED,WEBPORTAL_DB_USER.CREATE_TIME,WEBPORTAL_DB_USER.CREATE_USER,WEBPORTAL_DB_USER.UPDATE_TIME,WEBPORTAL_DB_USER.UPDATE_USER
+	</sql>
+	
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="DbUser">
@@ -99,5 +112,43 @@
 		from WEBPORTAL_DB_USER
 		<include refid="Example_Where_Clause" />
 	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_DB_USER
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List_add_db" />
+		from WEBPORTAL_DB_USER left join WEBPORTAL_DB 
+		on WEBPORTAL_DB.ID = WEBPORTAL_DB_USER.DB_ID
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY WEBPORTAL_DB_USER.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+	</select>
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and WEBPORTAL_DB_USER.ID=#{params.id}
+			</if>
+			<if test="params != null and params.username !=null  ">
+				and WEBPORTAL_DB_USER.ID=#{params.username}
+			</if>
+			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
+				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
+			</if>
+			
+		</trim>
+	</sql>
+	
 	
 </mapper>   

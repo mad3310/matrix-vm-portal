@@ -221,76 +221,86 @@ public class PythonServiceImpl implements IPythonService{
 		*/
 		
 		boolean nextStep = true;
-		String step = "";
+		int step = 0;
+		String stepMsg = "";
 		String startTime = "";
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if(nextStep) {
-			step = "初始化Zookeeper节点";
+			step++;
+			stepMsg = "初始化Zookeeper节点";
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.initZookeeper(nodeIp1),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.initZookeeper(nodeIp1),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "初始化mcluster管理用户名密码";
+			step++;
+			stepMsg = "初始化mcluster管理用户名密码";
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.initUserAndPwd4Manager(nodeIp1,username,password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.initUserAndPwd4Manager(nodeIp1,username,password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "提交mcluster集群信息";
+			step++;
+			stepMsg = "提交mcluster集群信息";
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "初始化集群";
+			step++;
+			stepMsg = "初始化集群";
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.initMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.initMcluster(nodeIp1, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "同步节点信息 " + nodeIp2;
+			step++;
+			stepMsg = "同步节点信息 " + nodeIp2;
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.syncContainer(nodeIp2, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.syncContainer(nodeIp2, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "提交节点信息" + nodeIp2;
+			step++;
+			stepMsg = "提交节点信息" + nodeIp2;
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.postContainerInfo(nodeIp2, nodeName2, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.postContainerInfo(nodeIp2, nodeName2, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "同步节点信息 " + nodeIp3;
+			step++;
+			stepMsg = "同步节点信息 " + nodeIp3;
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.syncContainer(nodeIp3, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.syncContainer(nodeIp3, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "提交节点信息 " + nodeIp3;
+			step++;
+			stepMsg = "提交节点信息 " + nodeIp3;
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.postContainerInfo(nodeIp3, nodeName3, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.postContainerInfo(nodeIp3, nodeName3, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		if(nextStep) {
-			step = "启动集群";
+			step++;
+			stepMsg = "启动集群";
 			startTime = sdf.format(new Date());
-			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
+			nextStep = analysis(this.startMcluster(nodeIp1, username, password),step,stepMsg,startTime,mclusterId,dbId);
 		} else {
 			return;
 		}
 		
 	}
 	
-	private boolean analysis(String result,String step,String startTime,String mclusterId,String dbId){
+	private boolean analysis(String result,int step,String stepMsg,String startTime,String mclusterId,String dbId){
 		Map<String,Object> jsonResult = transResult(result);
 		Map<String,Object> meta = (Map)jsonResult.get("meta");
 		BuildModel buildModel = new BuildModel();
@@ -298,6 +308,7 @@ public class PythonServiceImpl implements IPythonService{
 		buildModel.setMclusterId(mclusterId);
 		buildModel.setDbId(dbId);
 		buildModel.setStep(step);
+		buildModel.setStepMsg(stepMsg);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		buildModel.setStartTime(startTime);
 		buildModel.setEndTime(sdf.format(new Date()));

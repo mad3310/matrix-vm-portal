@@ -157,7 +157,7 @@ public class DbController {
 	@RequestMapping("/build")   //http://localhost:8080/api/db/build
 	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		/*this.pythonService.initContainer();*/
+		this.pythonService.initContainer();
 		/*this.pythonService.createDb(null, null, null, null, null, null);
 		DbUserModel dbUser = new DbUserModel();
 		dbUser.setUsername("liuhao");
