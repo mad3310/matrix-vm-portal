@@ -74,7 +74,7 @@ var currentSelectedLineDbName = 1;
  	function buildUser() {
  		var ids = $("[name='db_user_id']:checked");
  		var str="";
- 		boolean flag = false;
+ 		var flag = false;
  		ids.each(function(){
  			str +=($(this).val())+",";
  			flag = true;
