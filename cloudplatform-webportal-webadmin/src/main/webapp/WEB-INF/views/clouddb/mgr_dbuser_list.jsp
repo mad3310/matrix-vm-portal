@@ -31,7 +31,7 @@
 						<tr class="info">
 							<th class="center">
 								<label class="position-relative">
-									<input type="checkbox" class="ace" />
+									<input type="checkbox" id="titleCheckbox" class="ace" />
 									<span class="lbl"></span>
 								</label>
 							</th>
@@ -73,11 +73,19 @@ var currentSelectedLineDbName = 1;
  
  	function buildUser() {
  		var ids = $("[name='db_user_id']:checked");
+ 		var str="";
+ 		ids.each(function(){
+ 			str +=($(this).val())+",";
+ 		});
  		$.ajax({ 
 			type : "get",
-			url : "${ctx}/db/user/build/"+ ids,
+			url : "${ctx}/db/user/build/"+ str,
+			dataType : "json",
 			success : function(data) {
-				alert(data);
+				if(data.result == 1) {
+					$("#titleCheckbox").attr("checked", false);
+					queryByPage(currentPage,recordsPerPage);
+				}
 			}
  		});
  	}

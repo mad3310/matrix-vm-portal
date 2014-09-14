@@ -66,7 +66,11 @@ public class DbUserController {
 	}
 	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
-		logger.debug("ids====>" + ids);
+		String[] array = ids.split(",");
+		for (String id : array) {
+			logger.debug("id===>" + id);
+		}
+		
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

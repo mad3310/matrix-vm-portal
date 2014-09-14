@@ -11,7 +11,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("buildService")
+@Service("buildTaskService")
 public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildTaskServiceImpl.class);
