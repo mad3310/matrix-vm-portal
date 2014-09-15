@@ -132,12 +132,4 @@ public interface IPythonService {
 	 */
 	public String createDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username,String password);
 	
-	//组合功能
-	
-	/**Methods Name: initContainer <br>
-	 * Description: 初始化contianer,组合各分步骤<br>
-	 * @author name: liuhao1
-	 * @return
-	 */
-	public void initContainer();
 }

@@ -70,7 +70,7 @@
 	<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="" method="post">
+				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="${ctx}/mcluster/build" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
@@ -90,7 +90,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
+					<button type="button" class="btn btn-sm btn-primary" onclick="createMcluster()">创建</button>
 				</div>
 			</form>
 			</div>
@@ -400,7 +400,15 @@ function queryBuildStatus(mclusterId) {
 
 /* $("buildStatusBoxLink"){alert($(this).closest("tr").val())}; */
 
-
+function createMcluster(){
+	$.gritter.add({
+		title: '警告',
+		text: "后台API调用测试中，暂不可用",
+		sticky: false,
+		time: '5',
+		class_name: 'gritter-warning'
+	});
+}
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
 	queryBuildStatus("845769fd-5df0-4bdd-8bec-ac9aa0d3706f");

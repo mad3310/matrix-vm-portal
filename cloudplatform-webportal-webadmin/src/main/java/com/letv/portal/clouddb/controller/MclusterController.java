@@ -107,7 +107,6 @@ public class MclusterController {
 	@RequestMapping(value = "/build", method=RequestMethod.POST)   
 	public String build(MclusterModel mclusterModel,HttpServletRequest request) {
 		mclusterModel.setCreateUser((String) request.getSession().getAttribute("userId"));
-//		this.mclusterService.build(mclusterModel);
 		
 		this.buildTaskService.buildMcluster(mclusterModel);
 		

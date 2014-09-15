@@ -77,7 +77,7 @@
 							</select>
 						</div>
 						<div class="col-sm-2">
-							<button type="submit" class="btn btn-sm btn-primary">创建</button>
+							<button type="button" onclick="createDb()" class="btn btn-sm btn-primary">创建</button>
 						</div>
 					</div>
 				</form>
@@ -90,7 +90,7 @@
 							<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 						</div>
 						<div class="col-sm-2">
-							<button type="submit" class="btn btn-sm btn-primary">创建</button>
+							<button type="button" onclick="createDb()" class="btn btn-sm btn-primary">创建</button>
 						</div>
 					</div>
 				</form>
@@ -132,7 +132,15 @@ function translateStatus(status){
 	}
 	
 }
-
+function createDb(){
+	$.gritter.add({
+		title: '警告',
+		text: "后台API调用测试中，暂不可用",
+		sticky: false,
+		time: '5',
+		class_name: 'gritter-warning'
+	});
+}
 function request(paras)
 { 
     var url = location.href; 

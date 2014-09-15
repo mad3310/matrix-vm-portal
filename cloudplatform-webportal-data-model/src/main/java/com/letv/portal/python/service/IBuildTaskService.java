@@ -32,4 +32,11 @@ public interface IBuildTaskService {
 	 * @param dbId
 	 */
 	public void buildDb(String dbId);
+	
+	/**Methods Name: initContainer <br>
+	 * Description: 初始化contianer,组合各分步骤<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	public void initContainer();
 }
