@@ -211,7 +211,15 @@ var currentSelectedLineDbName = 1;
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: errorThrown,
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 			}
 		});
     }
@@ -226,7 +234,15 @@ var currentSelectedLineDbName = 1;
 		// 上一页
 		$("#prevPage").click(function() {
 			if (currentPage == 1) {
-				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达首页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 				
 			} else {
 				currentPage--;
@@ -237,7 +253,16 @@ var currentSelectedLineDbName = 1;
 		// 下一页
 		$("#nextPage").click(function() {
 			if (currentPage == $("#totalPage_input").val()) {
-				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达末页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
+				
 			} else {
 				currentPage++;
 				queryByPage(currentPage,recordsPerPage);

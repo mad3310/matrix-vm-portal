@@ -13,10 +13,12 @@
 </div>
 <!-- /.page-content-area -->
 <div class="row">
-	<div class="col-xs-12">
-	<!-- <h3 class="header smaller lighter blue">集群列表</h3> -->
-		<div class="table-header">数据库列表</div>
-			<div>
+	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
+		<div class="widget-header">
+			<h5 class="widget-title">数据库列表</h5>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main no-padding">
 				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
@@ -35,9 +37,10 @@
 						<!-- <th></th> -->
 					</tr>
 				</thead>
-				<tbody id="tby">							
-				</tbody>
-			</table>
+					<tbody id="tby">							
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
@@ -181,7 +184,15 @@ var currentSelectedLineDbName = 1;
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$('#pageMessage').html("<p class=\"bg-warning\" style=\"color:red;font-size:16px;\"><strong>警告!</strong>"+errorThrown+"</p>").show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: errorThrown,
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 			}
 		});
     }
@@ -196,7 +207,15 @@ var currentSelectedLineDbName = 1;
 		// 上一页
 		$("#prevPage").click(function() {
 			if (currentPage == 1) {
-				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达首页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 				
 			} else {
 				currentPage--;
@@ -207,7 +226,16 @@ var currentSelectedLineDbName = 1;
 		// 下一页
 		$("#nextPage").click(function() {
 			if (currentPage == $("#totalPage_input").val()) {
-				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达末页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
+				
 			} else {
 				currentPage++;
 				queryByPage(currentPage,recordsPerPage);

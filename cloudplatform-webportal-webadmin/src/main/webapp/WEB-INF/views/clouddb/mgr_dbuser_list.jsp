@@ -18,7 +18,7 @@
 		<div class="widget-header">
 			<h5 class="widget-title">数据库用户列表</h5>
 			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
+				<button id="create_db_user" class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
 					<i class="ace-icont fa fa-plus"></i>
 					 创建用户
 				</button>
@@ -50,6 +50,22 @@
 				</table>
 			</div>
 		</div>
+	</div>
+	<div id="pageControlBar">
+		<input type="hidden" id="totalPage_input" />
+		<ul class="pager">
+			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+			<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+			<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+			<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+
+			<li>共<lable id="totalPage"></lable>页
+			</li>
+			<li>第<lable id="currentPage"></lable>页
+			</li>
+			<li>共<lable id="totalRows"></lable>条记录
+			</li>
+		</ul>
 	</div>
 </div>
 <script type="text/javascript">
@@ -92,7 +108,15 @@ var currentSelectedLineDbName = 1;
 				}
 	 		});
  		} else {
- 			//提示选择用户！
+ 			$.gritter.add({
+				title: '警告',
+				text: '请选择数据！',
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
  		}
  	}
  
@@ -167,6 +191,15 @@ var currentSelectedLineDbName = 1;
 				}
 			},
 			error : function(XMLHttpRequest,textStatus, errorThrown) {
+				$.gritter.add({
+					title: '警告',
+					text: errorThrown,
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 			}
 		});
     }
@@ -181,7 +214,15 @@ var currentSelectedLineDbName = 1;
 		// 上一页
 		$("#prevPage").click(function() {
 			if (currentPage == 1) {
-				$('#pageMessage').html(pageMessage("warning","已经到达首页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达首页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
 				
 			} else {
 				currentPage--;
@@ -192,7 +233,16 @@ var currentSelectedLineDbName = 1;
 		// 下一页
 		$("#nextPage").click(function() {
 			if (currentPage == $("#totalPage_input").val()) {
-				$('#pageMessage').html(pageMessage("warning","已经到达末页")).show().fadeOut(3000);
+				$.gritter.add({
+					title: '警告',
+					text: '已到达末页',
+					sticky: false,
+					time: '5',
+					class_name: 'gritter-warning'
+				});
+		
+				return false;
+				
 			} else {
 				currentPage++;
 				queryByPage(currentPage,recordsPerPage);

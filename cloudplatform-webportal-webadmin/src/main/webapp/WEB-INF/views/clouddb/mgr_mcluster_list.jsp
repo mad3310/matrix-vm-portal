@@ -198,6 +198,15 @@ function queryByPage(currentPage,recordsPerPage) {
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
 		}
 	});
    }
@@ -211,6 +220,16 @@ function pageControl() {
 	// 上一页
 	$("#prevPage").click(function() {
 		if (currentPage == 1) {
+			$.gritter.add({
+				title: '警告',
+				text: '已到达首页',
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
+			
 		} else {
 			currentPage--;
 			queryByPage(currentPage,recordsPerPage);
@@ -220,6 +239,16 @@ function pageControl() {
 	// 下一页
 	$("#nextPage").click(function() {
 		if (currentPage == $("#totalPage_input").val()) {
+			$.gritter.add({
+				title: '警告',
+				text: '已到达末页',
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
+			
 		} else {
 			currentPage++;
 			queryByPage(currentPage,recordsPerPage);
