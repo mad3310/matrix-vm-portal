@@ -234,7 +234,7 @@
 	if(path.indexOf("/mcluster/list") >= 0||path.indexOf("/mcluster/detail") >= 0){
 		$('#sidebar-mcluster-mgr').addClass("active open hsub");
 		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("集群管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/mcluster/list").html("集群管理");
 		$('#main-content-header li:eq(1)').html("集群列表");
 	}else if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/db/detail") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");

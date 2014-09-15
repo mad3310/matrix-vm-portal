@@ -96,6 +96,35 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">
+	        	<i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>
+	        	创建中...
+	        </h4>
+	      </div>
+	      <div class="modal-body">
+	        <table id="mcluster_list" class="table">
+					<thead>
+						<tr class="info">
+							<th width="5%">#</th>
+							<th width="20%">操作</th>
+							<th width="20%">开始时间</th>
+							<th width="20%">结束时间</th>
+							<th>信息</th>
+							<th width="5%">结果  </th>
+						</tr>
+					</thead>
+					<tbody id="build_status_tby">
+					</tbody>
+				</table>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
@@ -118,6 +147,13 @@ $(function(){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+		mclusterId = $(this).closest('tr').find('td:first input').val();
+		queryBuildStatus(mclusterId);
+		/* $('body').everyTime('5s','A',function(){
+			alert("dfadfa");
+		}); */
+	});
 });	
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
@@ -133,19 +169,17 @@ function queryByPage(currentPage,recordsPerPage) {
 			
 			function translateStatus(status){
 				var statuStr;
-				if(status == 0){
-					return "启动";
-				}else if(status  == 1){
-					return "关闭";
+				if(status == 1){
+					return "正常";
 				}else{
-					return "异常";
+					return "创建失败";
 				}
 			}
 			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
-								+"<input type=\"checkbox\" class=\"ace\"/>"
+								+"<input value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 								+"<span class=\"lbl\"></span>"
 								+"</label>"
 							+"</td>");
@@ -158,9 +192,22 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td4 = $("<td>"
 						+ array[i].createTime
 						+ "</td>");
-				var td5 = $("<td>"
-						+ translateStatus(array[i].status)
-						+ "</td>");
+				if(array[i].status == 2){
+					var td5 = $("<td>"
+							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
+							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+							+"创建中</a>"
+							+ "</td>");
+				}else{
+					/* var td5 = $("<td>"
+							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
+							+translateStatus(array[i].status)
+							+"</a>"
+							+ "</td>"); */
+					var td5 = $("<td>"
+							+translateStatus(array[i].status)
+							+ "</td>");
+				}
 					
 				/* var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs btn-group\">"
@@ -210,6 +257,8 @@ function queryByPage(currentPage,recordsPerPage) {
 		}
 	});
    }
+   
+
 function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
@@ -296,9 +345,65 @@ function formValidate() {
          }
      });
 }
+function queryBuildStatus(mclusterId) {
+	$("#build_status_tby tr").remove();
+	$.ajax({
+		type : "get",
+		url : "${ctx}/mcluster/build/status/"+mclusterId,
+		dataType : "json", /*这句可用可不用，没有影响*/
+		success : function(data) {
+			var array = data.data;
+			var build_status_tby = $("#build_status_tby");
+			
+			for (var i = 0, len = array.length; i < len; i++) {
+				var td1 = $("<td>"
+						+ array[i].step
+						+"</td>");
+				var td2 = $("<td>"
+						+ array[i].stepMsg
+						+"</td>");
+				var td3 = $("<td>"
+						+   array[i].startTime
+						+ "</td>");
+				var td4 = $("<td>"
+						+ array[i].endTime
+						+ "</td>");
+				var td5 = $("<td>"
+						+ array[i].msg
+						+ "</td>");
+				var td6 = $("<td>"
+						+ array[i].status
+						+ "</td>");
+					
+				if(array[i].status == "FAIL"){
+					var tr = $("<tr class=\"danger\"></tr>");
+				}else{
+					var tr = $("<tr></tr>");
+				}
+				
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.appendTo(build_status_tby);
+			}
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+			return false;
+		}
+	});
+ }
+
+/* $("buildStatusBoxLink"){alert($(this).closest("tr").val())}; */
+
 
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
+	queryBuildStatus("845769fd-5df0-4bdd-8bec-ac9aa0d3706f");
 	searchAction();
 	formValidate();
 	pageControl();

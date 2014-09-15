@@ -35,7 +35,6 @@
 				<!-- #section:basics/navbar.user_menu -->
 				<li class="light-blue">
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
-						<img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" /> 
 						<span class="user-info"> 
 							<small>欢迎会员,</small> 
 							${sessionScope.username}

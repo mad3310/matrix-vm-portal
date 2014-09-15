@@ -135,8 +135,8 @@
 									<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 									<div class="col-sm-5">
 										<select class="form-control" name="type" id="type">
-											<option>manager</option>
-											<option>rw</option>
+											<option value="manager">manager</option>
+											<option value="wr">wr</option>
 										</select>
 									</div>
 								</div>
