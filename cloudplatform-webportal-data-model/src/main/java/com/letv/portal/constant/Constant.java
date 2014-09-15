@@ -36,6 +36,12 @@ public class Constant {
 	
 	public static String PYTHON_API_CHECK_CONTAINER_RUNNING= "<running>";
 	
+	public static String DB_USER_STATUS_BUILD_SUCCESS= "1";
+	public static String DB_USER_STATUS_BUILD_FAIL= "-1";
+	
+	
+	public static String DB_USER_TYPE_MANAGER= "manager";
+	
 	
 	
 }

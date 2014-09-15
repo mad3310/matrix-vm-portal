@@ -69,9 +69,8 @@ public class DbUserController {
 	}
 	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
-		
-		this.buildTaskService.buildUser(ids);
 		ResultObject obj = new ResultObject();
+		this.buildTaskService.buildUser(ids);
 		return obj;
 	}
 	

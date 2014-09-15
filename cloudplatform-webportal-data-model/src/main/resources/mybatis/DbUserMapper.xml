@@ -32,6 +32,12 @@
 			<result column="DB_NAME" property="dbName" />
 		</association>
 	</resultMap>
+	<resultMap id="createParams" type="java.util.Map">
+		<result column="DB_NAME" property="dbName" />
+		<result column="IP_ADDR" property="nodeIp" />
+		<result column="ADMIN_USER" property="username" />
+		<result column="ADMIN_PASSWORD" property="password" />
+	</resultMap>
 	
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -56,14 +62,12 @@
 		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
-	
 	<sql id="Base_Column_List_add_db">
 		WEBPORTAL_DB_USER.ID,WEBPORTAL_DB.ID,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB_USER.DB_ID,WEBPORTAL_DB_USER.USERNAME,WEBPORTAL_DB_USER.PASSWORD,WEBPORTAL_DB_USER.SALT,WEBPORTAL_DB_USER.TYPE,WEBPORTAL_DB_USER.ACCEPT_IP,
 		WEBPORTAL_DB_USER.MAX_CONCURRENCY,WEBPORTAL_DB_USER.READ_WRITER_RATE,WEBPORTAL_DB_USER.MAX_QUERIES_PER_HOUR,WEBPORTAL_DB_USER.MAX_UPDATES_PER_HOUR,WEBPORTAL_DB_USER.MAX_CONNECTIONS_PER_HOUR,
 		WEBPORTAL_DB_USER.MAX_USER_CONNECTIONS,
 		WEBPORTAL_DB_USER.STATUS,WEBPORTAL_DB_USER.IS_DELETED,WEBPORTAL_DB_USER.CREATE_TIME,WEBPORTAL_DB_USER.CREATE_USER,WEBPORTAL_DB_USER.UPDATE_TIME,WEBPORTAL_DB_USER.UPDATE_USER
 	</sql>
-	
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="DbUser">
@@ -90,6 +94,15 @@
 		where ID = #{id}
 	</update>
 	
+	<!-- 更新status状态 -->
+	<update id="updateStatus" parameterType="DbUser">
+		update WEBPORTAL_DB_USER set
+		<if test="status != null  ">
+			STATUS=#{status}
+		</if>
+		where ID = #{id}
+	</update>
+	
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
@@ -102,6 +115,13 @@
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER where DB_ID = #{dbId}
+	</select>
+	<!-- 查询创建用户所需参数-->
+	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.String">
+		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD
+		from WEBPORTAL_DB_USER USER,WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
+		where
+		USER.DB_ID = DB.ID AND DB.CLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.CLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND USER.Id=#{id}
 	</select>
 	
 	<!-- 根据条件查询 -->

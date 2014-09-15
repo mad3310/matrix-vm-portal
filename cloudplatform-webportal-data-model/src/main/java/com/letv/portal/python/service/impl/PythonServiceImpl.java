@@ -160,12 +160,6 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String createDbUser(DbUserModel dbUser, String dbName,String nodeIp,String username, String password) {
 		//假设数据
-		nodeIp = "10.200.85.110";
-		username = "root";
-		password = "webportal-test";
-		
-		dbName="paascloud";
-
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/dbUser";
 		
 				
@@ -175,12 +169,13 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("userName", dbUser.getUsername());
 		map.put("user_password", dbUser.getPassword());
 		map.put("p_address", dbUser.getAcceptIp());
-		map.put("max_queries_per_hour", dbUser.getMaxQueriesPerHour());
-		map.put("max_updates_per_hour", dbUser.getMaxUpdatesPerHour());
-		map.put("max_connections_per_hour", dbUser.getMaxConnectionsPerHour());
-		map.put("max_user_connections", dbUser.getMaxUserConnections());
+		map.put("max_queries_per_hour", String.valueOf(dbUser.getMaxQueriesPerHour()));
+		map.put("max_updates_per_hour", String.valueOf(dbUser.getMaxUpdatesPerHour()));
+		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
+		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
 		
 		String result = HttpClient.post(url, map,username,password);
+		logger.debug("createDbUser。result==》" + result);
 		return result;
 	}
 	
@@ -313,7 +308,9 @@ public class PythonServiceImpl implements IPythonService{
 		buildModel.setEndTime(sdf.format(new Date()));
 		
 		//SUCCESS==>{"meta": {"code": 200}, "response": {"message": "admin conf successful!", "code": "000000"}}
-		//FAIL==>{"notification": {"message": "direct"}, "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, "response": "the server has belonged to a cluster,should be not create new cluster!"}
+		//FAIL==>{"notification": {"message": "direct"}, 
+		//		  "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, 
+		//	      "response": "the server has belonged to a cluster,should be not create new cluster!"}
 		
 		boolean flag = true;
 		

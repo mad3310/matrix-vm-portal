@@ -1,11 +1,16 @@
 package com.letv.portal.python.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -53,13 +58,38 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(id);
-//			this.pythonService.createDbUser(dbUserModel, dbName, nodeIp, username, password);
+			Map<String,String> params = this.dbUserService.selectCreateParams(id);
 			
+			String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
+			if(analysisResult(transResult(result))) {
+				dbUserModel.setStatus(Constant.DB_USER_STATUS_BUILD_SUCCESS);
+			} else {
+				dbUserModel.setStatus(Constant.DB_USER_STATUS_BUILD_FAIL);
+			}
+			//保存用户创建成功状态
+			this.dbUserService.updateStatus(dbUserModel);
 		}
-		// TODO Auto-generated method stub
 		
 	}
 	
+	private Map<String,Object> transResult(String result){
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonResult;
+	}
 	
+	private boolean analysisResult(Map result){
+		boolean flag = true;
+		Map meta = (Map) result.get("meta");
+		if(!Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+			flag = false;
+		} 
+		return flag;
+	}
 	
 }

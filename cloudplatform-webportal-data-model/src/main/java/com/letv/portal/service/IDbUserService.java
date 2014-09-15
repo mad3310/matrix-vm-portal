@@ -31,5 +31,20 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建用户相关参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	public Map<String,String> selectCreateParams(String id);
+	
+	/**Methods Name: updateStatus <br>
+	 * Description: 更新用户状态<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 */
+	public void updateStatus(DbUserModel dbUserModel);
 
 }

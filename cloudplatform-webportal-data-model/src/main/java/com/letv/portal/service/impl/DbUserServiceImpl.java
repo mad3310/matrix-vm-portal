@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.model.DbUserModel;
@@ -48,4 +49,41 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		return page;
 	}
 
+	@Override
+	public Map<String, String> selectCreateParams(String id) {
+		return this.dbUserDao.selectCreateParams(id);
+	}
+
+	@Override
+	public void updateStatus(DbUserModel dbUserModel) {
+		this.dbUserDao.updateStatus(dbUserModel);
+	}
+
+	@Override
+	public void insert(DbUserModel dbUserModel){
+		
+		
+		//计算相关参数
+		int maxQueriesPerHour = 1000;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
+		int maxUpdatesPerHour=1000;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
+		int maxConnectionsPerHour=100;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
+		int maxUserConnections=10;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
+		
+		int maxConcurrency = dbUserModel.getMaxConcurrency();
+		
+		if(!Constant.DB_USER_TYPE_MANAGER.equals(dbUserModel.getType())) {
+			maxUserConnections = maxConcurrency;
+			maxConnectionsPerHour = maxConcurrency*2*60*60;
+			maxQueriesPerHour = maxConcurrency*2*60*60;
+			maxUpdatesPerHour = maxConcurrency*60*60;
+		} 
+		dbUserModel.setMaxUserConnections(maxUserConnections);
+		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
+		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);
+		dbUserModel.setMaxUpdatesPerHour(maxUpdatesPerHour);
+		
+		super.insert(dbUserModel);
+		
+	}
+	
 }
