@@ -1,5 +1,7 @@
 package com.letv.portal.dao;
 
+import java.util.Map;
+
 import com.letv.portal.model.DbModel;
 
 
@@ -18,4 +20,12 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	 * @param dbModel
 	 */
 	public void audit(DbModel dbModel);
+	
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建db相关参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	public Map<String,String> selectCreateParams(String id);
 }

@@ -135,24 +135,14 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
-		//假设数据
-		nodeIp = "10.200.85.110";
-		username = "root";
-		password = "webportal-test";
-		
-		
-		dbName="paascloud";
-		ipAddress = "127.0.0.1";
-		dbUserName="paascloud";
-		
+	
 		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/db";
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("dbName", dbName);
 		map.put("userName", dbUserName);
-		map.put("ip_address", ipAddress);
+		map.put("ip_address", "127.0.0.1");
 		
 		String result = HttpClient.post(url, map,username,password);
-		logger.debug("result==>" + result);
 		return result;
 	}
 
@@ -175,15 +165,12 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
 		
 		String result = HttpClient.post(url, map,username,password);
-		logger.debug("createDbUser。result==》" + result);
 		return result;
 	}
 	
 
 	@Override
 	public void initContainer() {
-		logger.debug("initContainer==>in");
-		
 		//假设数据
 		String username = "root";
 		String password = "webportal-test";

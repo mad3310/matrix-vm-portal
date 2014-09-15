@@ -143,4 +143,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		this.dbDao.audit(new DbModel(dbId,Constant.DB_AUDIT_STATUS_BUILD_SUCCESS));
 	}
 
+	@Override
+	public Map<String, String> selectCreateParams(String id) {
+		return this.dbDao.selectCreateParams(id);
+	}
+
 }

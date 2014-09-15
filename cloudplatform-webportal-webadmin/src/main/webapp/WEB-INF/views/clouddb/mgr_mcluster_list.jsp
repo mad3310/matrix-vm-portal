@@ -96,8 +96,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog">
+	<div class="modal fade bs-example-modal-lg"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -110,10 +110,10 @@
 	        <table id="mcluster_list" class="table">
 					<thead>
 						<tr class="info">
-							<th width="5%">#</th>
-							<th width="20%">操作</th>
-							<th width="20%">开始时间</th>
-							<th width="20%">结束时间</th>
+							<th width="3%">#</th>
+							<th width="30%">操作</th>
+							<th width="15%">开始时间</th>
+							<th width="15%">结束时间</th>
 							<th>信息</th>
 							<th width="5%">结果  </th>
 						</tr>

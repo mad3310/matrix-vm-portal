@@ -10,7 +10,7 @@
 		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="DB_ID" property="dbId" />
 		<result column="STEP" property="step" />
-		<result column="STEP＿MSG" property="stepMsg" />
+		<result column="STEP_MSG" property="stepMsg" />
 		<result column="STATUS" property="status" />
 		<result column="CODE" property="code" />
 		<result column="MSG" property="msg" />

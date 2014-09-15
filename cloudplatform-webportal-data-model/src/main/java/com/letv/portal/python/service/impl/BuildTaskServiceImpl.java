@@ -11,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.portal.constant.Constant;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
 
@@ -28,6 +30,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IDbUserService dbUserService;
 	@Resource
 	private IPythonService pythonService;
+	@Resource
+	private IDbService dbService;
 	
 	
 	@Override
@@ -41,13 +45,35 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.mclusterService.insert(mclusterModel);
 		this.pythonService.createContainer(mclusterModel.getMclusterName());
 		
-		this.pythonService.checkContainerCreateStatus();
+		Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus());
+		while(!analysisResult(result)) {
+			result = transResult(pythonService.checkContainerCreateStatus());
+		}
 		
 		this.pythonService.initContainer();
 		
 //		this.pythonService.checkContainerStatus(nodeIp, username, password);
 		
-		this.mclusterService.update(mclusterModel);
+//		this.pythonService.createDb(nodeIp, dbName, dbUserName, ipAddress, username, password);
+		
+//		this.dbService.updateStatus();
+//		this.mclusterService.updateStatus(mclusterModel);
+	}
+	
+	
+	@Override
+	public void buildDb(String dbId) {
+		Map<String,String> params = this.dbService.selectCreateParams(dbId);
+		String result = this.pythonService.createDb(params.get("nodeIp"), params.get("dbName"), params.get("dbName"), null, params.get("username"), params.get("password"));
+		
+		String status = "";
+		if(analysisResult(transResult(result))) {
+			status = Constant.DB_USER_STATUS_BUILD_SUCCESS;
+		} else {
+			status = Constant.DB_USER_STATUS_BUILD_FAIL;
+		}
+		//保存用户创建成功状态
+		this.dbService.build(new DbModel(dbId,status));
 	}
 
 
@@ -92,4 +118,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return flag;
 	}
 	
+	public class Check extends Thread{
+		public void run(){
+			 
+			
+			
+		}
+	}
 }

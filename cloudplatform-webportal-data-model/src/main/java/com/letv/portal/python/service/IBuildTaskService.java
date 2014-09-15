@@ -25,4 +25,11 @@ public interface IBuildTaskService {
 	 * @param ids
 	 */
 	public void buildUser(String ids);
+
+	/**Methods Name: buildDb <br>
+	 * Description: 创建数据库<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 */
+	public void buildDb(String dbId);
 }

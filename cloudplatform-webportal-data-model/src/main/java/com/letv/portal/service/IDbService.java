@@ -64,4 +64,12 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public void buildNotice(String dbId,String buildFlag);
 	
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建dbUser相关参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	public Map<String,String> selectCreateParams(String id);
+
 }

@@ -109,7 +109,7 @@ public class MclusterController {
 		mclusterModel.setCreateUser((String) request.getSession().getAttribute("userId"));
 //		this.mclusterService.build(mclusterModel);
 		
-//		this.buildTaskService.buildMcluster();
+		this.buildTaskService.buildMcluster(mclusterModel);
 		
 		return "redirect:/mcluster/list";
 	}
