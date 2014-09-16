@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public boolean createContainer(MclusterModel mclusterModel) {
 		boolean nextStep = true;
+		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
 		this.mclusterService.insert(mclusterModel);
 		this.buildService.initStatus(mclusterModel.getId());
 		
@@ -75,17 +77,28 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			step++;
 			nextStep = this.analysis(this.pythonService.createContainer(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
 		}
+		//测试集群：mclusterModel.setMclusterName("test_mcluster_003");
 		if(nextStep) {
 			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			while(!analysisCheckResult(result)) {
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			}
-			nextStep = analysis(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
+			//nextStep = analysis(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
 			//保存container信息
 			
-			List<ContainerModel> containers = (List<ContainerModel>) ((Map)result.get("response")).get("message");
-			for (ContainerModel container : containers) {
-				container.setClusterId(mclusterModel.getId());
+			List<Map> containers = (List<Map>) ((Map)result.get("response")).get("message");
+			
+			for (Map map : containers) {
+				ContainerModel container = new ContainerModel();
+				try {
+					BeanUtils.populate(container, map);
+					container.setClusterId(mclusterModel.getId());
+					container.setIpMask((String) map.get("netMask"));
+					container.setContainerName((String) map.get("containerClusterName"));
+					container.setClusterNodeName((String)map.get("containerName"));
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 				this.containerService.insert(container);
 			}
 		}
@@ -99,9 +112,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		String status = "";
 		if(analysisResult(transResult(result))) {
-			status = Constant.DB_USER_STATUS_BUILD_SUCCESS;
+			status = Constant.STATUS_OK;
 		} else {
-			status = Constant.DB_USER_STATUS_BUILD_FAIL;
+			status = Constant.STATUS_BUILD_FAIL;
 		}
 		//保存用户创建成功状态
 		this.dbService.build(new DbModel(dbId,status));
@@ -118,9 +131,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 			if(analysisResult(transResult(result))) {
-				dbUserModel.setStatus(Constant.DB_USER_STATUS_BUILD_SUCCESS);
+				dbUserModel.setStatus(Constant.STATUS_OK);
 			} else {
-				dbUserModel.setStatus(Constant.DB_USER_STATUS_BUILD_FAIL);
+				dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
 			}
 			//保存用户创建成功状态
 			this.dbUserService.updateStatus(dbUserModel);
@@ -231,6 +244,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Map<String,Object> response = (Map)jsonResult.get("response");
 			buildModel.setCode((String)response.get("code"));
 			buildModel.setMsg((String) response.get("message"));
+			buildModel.setStatus("SUCCESS");
 		} else {
 			buildModel.setCode(String.valueOf(meta.get("code")));
 			buildModel.setMsg((String)meta.get("errorDetail"));
@@ -264,7 +278,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		boolean flag = true;
 		Map meta = (Map) result.get("meta");
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
-			if(!"000000".equals(((Map)result.get("response")).get("code"))) {
+			if(!Constant.PYTHON_API_RESULT_SUCCESS.equals(((Map)result.get("response")).get("code"))) {
 				flag = false;
 			}
 		} 

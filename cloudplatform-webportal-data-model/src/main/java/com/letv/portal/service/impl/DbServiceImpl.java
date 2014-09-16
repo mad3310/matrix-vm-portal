@@ -135,12 +135,12 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void buildNotice(String dbId,String buildFlag) {
-		buildFlag = "success".equals(buildFlag)?Constant.DB_AUDIT_STATUS_BUILD_SUCCESS:Constant.DB_AUDIT_STATUS_BUILD_FAIL;
+		/*buildFlag = "success".equals(buildFlag)?Constant.DB_AUDIT_STATUS_BUILD_SUCCESS:Constant.DB_AUDIT_STATUS_BUILD_FAIL;
 		DbModel dbModel = this.selectById(dbId);
 		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(dbModel.getStatus())) {
 			this.mclusterService.buildNotice(dbModel.getClusterId(),Constant.DB_AUDIT_STATUS_BUILD_SUCCESS);
 		}
-		this.dbDao.audit(new DbModel(dbId,Constant.DB_AUDIT_STATUS_BUILD_SUCCESS));
+		this.dbDao.audit(new DbModel(dbId,Constant.));*/
 	}
 
 	@Override

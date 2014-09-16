@@ -21,6 +21,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
@@ -28,6 +29,7 @@ import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.view.DbAuditView;
+import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbController <br>
  * Description:  db数据库的相关操作<br>
@@ -52,6 +54,9 @@ public class DbController {
 	private IDbApplyStandardService dbApplyStandardService;
 	@Resource
 	private IHostService hostService;
+	@Resource
+	private IBuildTaskService buildTaskService;
+	
 	
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
@@ -128,7 +133,7 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/audit/save",method=RequestMethod.POST)   
-	public String save(DbAuditView dav,HttpServletRequest request) {
+	public void save(DbAuditView dav,HttpServletRequest request) {
 		String auditType = dav.getAuditType();
 		String auditInfo = dav.getAuditInfo();
 		String mclusterId = dav.getMclusterId();
@@ -136,39 +141,12 @@ public class DbController {
 		String dbName = dav.getApplyCode();
 		String dbApplyStandardId = dav.getDbApplyStandardId();
 		String hostIds = dav.getHostIds();
-		String createUser = dav.getCreateUser();
-		
-		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(auditType)) {
-			mclusterId = UUID.randomUUID().toString();
-			this.mclusterService.insert(mclusterId,hostIds.split(","),dbName,createUser);
-		}
 		//保存审批信息
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
 		
-		//创建mcluster db
-//		this.dbService.build(auditType,mclusterId,dbId,dbApplyStandardId);
-		
-		return "redirect:/db/list";
-		
+		this.buildTaskService.buildDb(dbId);
 	}
 	
-	@RequestMapping("/build")   //http://localhost:8080/api/db/build
-	public @ResponseBody ResultObject build(DbModel dbModel,HttpServletRequest request) {
-		ResultObject obj = new ResultObject();
-//		this.pythonService.initContainer();
-		/*this.pythonService.createDb(null, null, null, null, null, null);
-		DbUserModel dbUser = new DbUserModel();
-		dbUser.setUsername("liuhao");
-		dbUser.setPassword("liuhao");
-		dbUser.setAcceptIp("10.58.166.19");
-		dbUser.setType("wr");
-		dbUser.setMaxConnectionsPerHour(String.valueOf(360000));
-		dbUser.setMaxQueriesPerHour(String.valueOf(360000));
-		dbUser.setMaxUpdatesPerHour(String.valueOf(360000));
-		dbUser.setMaxUserConnections(String.valueOf(50));
-		this.pythonService.createDbUser(dbUser, null, null, null, null);*/
-		return obj;
-	}
 	
 	/*@RequestMapping("/build/notice/{buildFlag}/{dbId}")   //http://localhost:8080/api/db/build/notice/{success/fail}/{dbId}
 	public ResultObject notice(@PathVariable String buildFlag,@PathVariable String dbId,HttpServletRequest request) {
