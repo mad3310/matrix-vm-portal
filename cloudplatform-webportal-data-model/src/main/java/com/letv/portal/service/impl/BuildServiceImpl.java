@@ -36,5 +36,21 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 		return this.buildDao.selectByMclusterId(mclusterId);
 	}
 
+	@Override
+	public void initStatus(String mclusterId) {
+		
+		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点信息","提交节点信息","同步节点信息","提交节点信息 ","启动集群"};
+		
+		for (int i = 0; i < stepMsgs.length; i++) {
+			BuildModel buildModel = new BuildModel();
+			buildModel.setStep(i+1);
+			buildModel.setStepMsg(stepMsgs[i]);
+			buildModel.setStatus("waitting");
+			buildModel.setMclusterId(mclusterId);
+			this.buildDao.insert(buildModel);
+		}
+		
+	}
+
 
 }

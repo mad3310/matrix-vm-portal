@@ -25,7 +25,7 @@ public interface IPythonService {
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public String checkContainerCreateStatus();
+	public String checkContainerCreateStatus(String mclusterName);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>

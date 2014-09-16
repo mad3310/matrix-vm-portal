@@ -1,5 +1,7 @@
 package com.letv.portal.python.service;
 
+import java.util.Map;
+
 import com.letv.portal.model.MclusterModel;
 
 
@@ -33,10 +35,19 @@ public interface IBuildTaskService {
 	 */
 	public void buildDb(String dbId);
 	
+	/**Methods Name: createContainer <br>
+	 * Description: 创建container<br>
+	 * @author name: liuhao1
+	 * @param mclusterModel
+	 * @return
+	 */
+	public boolean createContainer(MclusterModel mclusterModel);
+	
 	/**Methods Name: initContainer <br>
 	 * Description: 初始化contianer,组合各分步骤<br>
 	 * @author name: liuhao1
+	 * @param params
 	 * @return
 	 */
-	public void initContainer();
+	public boolean initContainer(MclusterModel mclusterModel);
 }

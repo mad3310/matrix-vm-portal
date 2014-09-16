@@ -24,27 +24,22 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
-	private final static String MCLUSTER_CREATE_URL = "http://192.168.84.132:8888"; //ConfigUtil.getString("mcluster_create_url");
+	private final static String MCLUSTER_CREATE_URL = "http://10.200.91.142:8888"; //ConfigUtil.getString("mcluster_create_url");
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
 	private final static String URL_IP = "";			//ConfigUtil.getString("");
 	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
 	
 	@Override
 	public String createContainer(String mclusterName) {
-		//curl --user root:root -d"containerClusterName=clustername" http://192.168.84.132:8888/containerCluster
-
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("mclusterName", "mclusterName");
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster", map);
-		logger.debug("result====>" + result);
-		
-		
+		map.put("containerClusterName", mclusterName);
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster", map,"root","root");
 		return result;
 	}
 
 	@Override
-	public String checkContainerCreateStatus() {
-		String result = HttpClient.get(MCLUSTER_CREATE_URL + "/containers/status");
+	public String checkContainerCreateStatus(String mclusterName) {
+		String result = HttpClient.get(MCLUSTER_CREATE_URL + "/containerCluster/status/" + mclusterName,"root","root");
 		return result;
 	}
 

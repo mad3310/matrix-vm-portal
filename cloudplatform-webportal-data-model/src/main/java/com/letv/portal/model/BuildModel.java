@@ -1,5 +1,8 @@
 package com.letv.portal.model;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 
 /**Program Name: BuildModel <br>
  * Description:  <br>
@@ -22,8 +25,8 @@ public class BuildModel extends BaseModel {
 	private String msg;
 	
 
-	private String startTime;
-	private String endTime;
+	private Date startTime;
+	private Date endTime;
 
 
 	public String getId() {
@@ -105,25 +108,25 @@ public class BuildModel extends BaseModel {
 		this.msg = msg;
 	}
 
-
-	public String getStartTime() {
+	public Date getStartTime() {
 		return startTime;
 	}
 
 
-	public void setStartTime(String startTime) {
+	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
 
 
-	public String getEndTime() {
+	public Date getEndTime() {
 		return endTime;
 	}
 
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+
 
 	@Override
 	public String toString() {

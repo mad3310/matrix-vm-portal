@@ -1,9 +1,10 @@
 package com.letv.portal.python.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
@@ -37,34 +40,57 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Resource
 	private IDbService dbService;
 	@Resource
+	private IContainerService containerService;
+	@Resource
 	private IBuildService buildService;
 	
 	
 	@Override
 	public void buildMcluster(MclusterModel mclusterModel) {
-		/*
-		 * 创建过程
-		 * 1、保存mcluster初始状态
-		 * 2、调用python api 创建mcluster
-		 * 3、循环检查创建结果，检查成功后，保存创建结果。 
-		 */
-		this.mclusterService.insert(mclusterModel);
-		this.pythonService.createContainer(mclusterModel.getMclusterName());
+		boolean nextStep = true;
+		mclusterModel.setId(UUID.randomUUID().toString());
 		
-		Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus());
-		while(!analysisResult(result)) {
-			result = transResult(pythonService.checkContainerCreateStatus());
+		if(nextStep) {
+			nextStep = createContainer(mclusterModel);
 		}
-		
-		this.initContainer();
-		
+		/*if(nextStep) {
+			nextStep = initContainer(mclusterModel);
+		}*/
 		/*result = transResult(pythonService.checkContainerStatus(nodeIp, username, password));
 		while(!analysisResult(result)) {
 			result = transResult(pythonService.checkContainerStatus(nodeIp, username, password));
 		}*/
 		
 	}
-	
+	@Override
+	public boolean createContainer(MclusterModel mclusterModel) {
+		boolean nextStep = true;
+		this.mclusterService.insert(mclusterModel);
+		this.buildService.initStatus(mclusterModel.getId());
+		
+		int step = 0;
+		Date startTime = new Date();
+		
+		if(nextStep) {
+			step++;
+			nextStep = this.analysis(this.pythonService.createContainer(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
+		}
+		if(nextStep) {
+			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
+			while(!analysisCheckResult(result)) {
+				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
+			}
+			nextStep = analysis(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
+			//保存container信息
+			
+			List<ContainerModel> containers = (List<ContainerModel>) ((Map)result.get("response")).get("message");
+			for (ContainerModel container : containers) {
+				container.setClusterId(mclusterModel.getId());
+				this.containerService.insert(container);
+			}
+		}
+		return nextStep;
+	}
 	
 	@Override
 	public void buildDb(String dbId) {
@@ -86,7 +112,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
 		for (String id : str) {
-			
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(id);
 			Map<String,String> params = this.dbUserService.selectCreateParams(id);
@@ -104,24 +129,29 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	public void initContainer() {
+	public boolean initContainer(MclusterModel mclusterModel) {
+		boolean nextStep = true;
+		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId());
+		
+		Map<String,String> params = new HashMap<String,String>();
+		
 		//假设数据
-		String username = "root";
-		String password = "webportal-test";
+		String username = params.get("username");//"root";
+		String password = params.get("password");//"webportal-test";
 		
-		String mclusterName="webportal-test";
+		String mclusterName = params.get("mclusterName");//"webportal-test";
 		
-		String nodeIp1 = "10.200.85.110";
-		String nodeName1="webportal-test-node1";
+		String nodeIp1 = params.get("nodeIp1");//"10.200.85.110";
+		String nodeName1 = params.get("nodeName1");//"webportal-test-node1";
 		
-		String nodeIp2 = "10.200.85.111";
-		String nodeName2="webportal-test-node2";
+		String nodeIp2 = params.get("nodeIp2");//"10.200.85.111";
+		String nodeName2 = params.get("nodeName2");//"webportal-test-node2";
 
-		String nodeIp3 = "10.200.85.112";
-		String nodeName3="webportal-test-node3";
+		String nodeIp3 = params.get("nodeIp3");//"10.200.85.112";
+		String nodeName3 = params.get("nodeName3");//"webportal-test-node3";
 		
-		String mclusterId="";
-		String dbId="";
+		String mclusterId = params.get("mclusterId");//"";
+		String dbId = params.get("dbId");//"";
 		
 		/*mcluster-manager测试用集群
 		10.200.85.110
@@ -135,87 +165,57 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		root/dabingge$1985
 		*/
 		
-		boolean nextStep = true;
 		int step = 0;
-		String stepMsg = "";
-		String startTime = "";
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startTime = new Date();
 		if(nextStep) {
 			step++;
-			stepMsg = "初始化Zookeeper节点";
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.initZookeeper(nodeIp1),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.initZookeeper(nodeIp1),step,startTime,mclusterId,dbId);
 		}
 		if(nextStep) {
 			step++;
-			stepMsg = "初始化mcluster管理用户名密码";
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.initUserAndPwd4Manager(nodeIp1,username,password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.initUserAndPwd4Manager(nodeIp1,username,password),step,startTime,mclusterId,dbId);
 		}
 		if(nextStep) {
 			step++;
-			stepMsg = "提交mcluster集群信息";
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password),step,startTime,mclusterId,dbId);
 		}
 		if(nextStep) {
 			step++;
-			stepMsg = "初始化集群";
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.initMcluster(nodeIp1, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.initMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
 		}
 		if(nextStep) {
 			step++;
-			stepMsg = "同步节点信息 " + nodeIp2;
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.syncContainer(nodeIp2, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
-		}
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.syncContainer(nodeIp2, username, password),step,startTime,mclusterId,dbId);
+		} 
 		if(nextStep) {
 			step++;
-			stepMsg = "提交节点信息" + nodeIp2;
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
-		}
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password),step,startTime,mclusterId,dbId);
+		} 
 		if(nextStep) {
 			step++;
-			stepMsg = "同步节点信息 " + nodeIp3;
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.syncContainer(nodeIp3, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
-		}
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.syncContainer(nodeIp3, username, password),step,startTime,mclusterId,dbId);
+		} 
 		if(nextStep) {
 			step++;
-			stepMsg = "提交节点信息 " + nodeIp3;
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
-		}
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password),step,startTime,mclusterId,dbId);
+		} 
 		if(nextStep) {
 			step++;
-			stepMsg = "启动集群";
-			startTime = sdf.format(new Date());
-			nextStep = analysis(this.pythonService.startMcluster(nodeIp1, username, password),step,stepMsg,startTime,mclusterId,dbId);
-		} else {
-			return;
-		}
-		
+			startTime = new Date();
+			nextStep = analysis(this.pythonService.startMcluster(nodeIp1, username, password),step,startTime,mclusterId,dbId);
+		} 
+		return nextStep;
 	}
 	
-	private boolean analysis(String result,int step,String stepMsg,String startTime,String mclusterId,String dbId){
+	private boolean analysis(String result,int step,Date startTime,String mclusterId,String dbId){
 		Map<String,Object> jsonResult = transResult(result);
 		Map<String,Object> meta = (Map)jsonResult.get("meta");
 		BuildModel buildModel = new BuildModel();
@@ -223,40 +223,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		buildModel.setMclusterId(mclusterId);
 		buildModel.setDbId(dbId);
 		buildModel.setStep(step);
-		buildModel.setStepMsg(stepMsg);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		buildModel.setStartTime(startTime);
-		buildModel.setEndTime(sdf.format(new Date()));
-		
-		//SUCCESS==>{"meta": {"code": 200}, "response": {"message": "admin conf successful!", "code": "000000"}}
-		//FAIL==>{"notification": {"message": "direct"}, 
-		//		  "meta": {"code": 417, "errorType": "user_visible_error", "errorDetail": "server has belong to a cluster,should be not create new cluster!"}, 
-		//	      "response": "the server has belonged to a cluster,should be not create new cluster!"}
+		buildModel.setEndTime(new Date());
 		
 		boolean flag = true;
-		
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
 			Map<String,Object> response = (Map)jsonResult.get("response");
 			buildModel.setCode((String)response.get("code"));
 			buildModel.setMsg((String) response.get("message"));
-			if(Constant.PYTHON_API_RESULT_SUCCESS.equals(response.get("code"))) {
-				buildModel.setStatus("SUCCESS");
-				//写入数据库 执行状态   + step
-				//返回true，执行下一步
-			} else {
-				buildModel.setStatus("FAIL");
-				//返回false，执行结束
-				flag =  false;
-			}
-			
 		} else {
 			buildModel.setCode(String.valueOf(meta.get("code")));
 			buildModel.setMsg((String)meta.get("errorDetail"));
 			buildModel.setStatus("FAIL");
 			flag =  false;
 		}
-		
-		this.buildService.insert(buildModel);
+		this.buildService.updateBySelective(buildModel);
 		return flag;
 	}
 	
@@ -276,6 +257,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Map meta = (Map) result.get("meta");
 		if(!Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
 			flag = false;
+		} 
+		return flag;
+	}
+	private boolean analysisCheckResult(Map result){
+		boolean flag = true;
+		Map meta = (Map) result.get("meta");
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+			if(!"000000".equals(((Map)result.get("response")).get("code"))) {
+				flag = false;
+			}
 		} 
 		return flag;
 	}
