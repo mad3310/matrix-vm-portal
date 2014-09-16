@@ -88,7 +88,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button type="button" class="btn btn-sm btn-primary" onclick="createMcluster()">创建</button>
+						<button id="create-mcluster-botton" type="button" class="btn btn-sm btn-primary disabled" onclick="createMcluster()">创建</button>
 					</div>
 				</form>
 				</div>
@@ -178,7 +178,6 @@ function queryByPage(currentPage,recordsPerPage) {
 			var totalPages = data.data.totalPages;
 			
 			function translateStatus(status){
-				var statuStr;
 				if(status == 1){
 					return "正常";
 				}else if(status == 2){
@@ -348,10 +347,17 @@ function formValidate() {
 			          stringLength: {
 			              max: 40,
 			              message: '集群名过长'
-			          }
+			          },regexp: {
+		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+  		                  message: "请输入字母数字或'_',集群名不能以数字开头."
+                 	  }
 	             }
          	}	
          }
+     }).on('error.field.bv', function(e, data) {
+    	 $('#create-mcluster-botton').addClass("disabled");
+     }).on('success.field.bv', function(e, data) {
+    	 $('#create-mcluster-botton').removeClass("disabled");
      });
 }
 function queryBuildStatus(mclusterId) {
@@ -372,7 +378,7 @@ function queryBuildStatus(mclusterId) {
 						+ array[i].stepMsg
 						+"</td>");
 				var td3 = $("<td>"
-						+   array[i].startTime
+						+ array[i].startTime
 						+ "</td>");
 				var td4 = $("<td>"
 						+ array[i].endTime
@@ -410,17 +416,19 @@ function queryBuildStatus(mclusterId) {
 /* $("buildStatusBoxLink"){alert($(this).closest("tr").val())}; */
 
 function createMcluster(){
-	$.gritter.add({
-		title: '警告',
-		text: "后台API调用测试中，暂不可用",
-		sticky: false,
-		time: '5',
-		class_name: 'gritter-warning'
+	$.ajax({
+		type : "post",
+		url : "${ctx}/mcluster/build",
+		data :$('#create-mcluster-form').serialize()
 	});
+	$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
+	$('#create-mcluster-form').data('bootstrapValidator').resetForm();
+	$('#create-mcluster-botton').addClass('disabled');
+	$('#create-mcluster-modal').modal('hide');
+	queryByPage(currentPage,recordsPerPage);
 }
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
-	queryBuildStatus("845769fd-5df0-4bdd-8bec-ac9aa0d3706f");
 	searchAction();
 	formValidate();
 	pageControl();

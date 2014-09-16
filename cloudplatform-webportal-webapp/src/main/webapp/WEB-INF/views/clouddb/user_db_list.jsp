@@ -313,8 +313,8 @@ var currentSelectedLineDbName = 1;
 			              max: 30,
 			              message: '数据库名名过长!'
 			          }, regexp: {
-		                  regexp: /^(([a-zA-Z_]+[0-9]*)|([0-9]*[a-zA-Z_]+))$/,
-  		                  message: "请输入字母数字或'_',数据库名不能单独为数字."
+		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+  		                  message: "请输入字母数字或'_',数据库名不能以数字开头."
                  	  }
                   }
               }
