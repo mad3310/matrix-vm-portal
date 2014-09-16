@@ -377,15 +377,31 @@ function queryBuildStatus(mclusterId) {
 				var td2 = $("<td>"
 						+ array[i].stepMsg
 						+"</td>");
-				var td3 = $("<td>"
-						+ array[i].startTime
-						+ "</td>");
-				var td4 = $("<td>"
-						+ array[i].endTime
-						+ "</td>");
-				var td5 = $("<td>"
-						+ array[i].msg
-						+ "</td>");
+				if(array[i].startTime != null)
+				{
+					var td3 = $("<td>"
+							+ parseTime(array[i].startTime)
+							+ "</td>");
+				}else{
+					var td3 = $("<td>\-</td>");
+				}
+				if(array[i].startTime != null)
+				{
+					var td4 = $("<td>"
+							+ parseTime(array[i].endTime)
+							+ "</td>");
+				}else{
+					var td4 = $("<td>\-</td>");
+				}
+				if(array[i].startTime != null)
+				{
+					var td5 = $("<td>"
+							+ array[i].msg
+							+ "</td>");
+				}else{
+					var td5 = $("<td>\-</td>");
+				}
+				
 				var td6 = $("<td>"
 						+ array[i].status
 						+ "</td>");

@@ -247,6 +247,10 @@
 		$('#main-content-header li:first a').attr("href", "${ctx}/db/user/list").html("数据库用户管理");
 		$('#main-content-header li:eq(1)').html("数据库用户列表");
 	}
+	
+	function parseTime(nS) {   
+	    return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');   
+	}  
 </script>
 <!-- ace scripts -->
 <script src="${ctx}/static/ace/js/ace-elements.min.js"></script>
