@@ -101,7 +101,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title">
+	        <h4 class="modal-title" id="buildStatusHeader">
 	        	<i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>
 	        	创建中...
 	        </h4>
@@ -148,7 +148,14 @@ $(function(){
 		});
 	});
 	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
-		mclusterId = $(this).closest('tr').find('td:first input').val();
+		var mclusterId = $(this).closest('tr').find('td:first input').val();
+		if($(this).html().indexOf("正常")>=0){
+			$('#buildStatusHeader').html("创建成功");
+		}else if($(this).html().indexOf("创建中")>=0){
+			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+		}else if($(this).html().indexOf("创建失败")>=0){
+			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+		}
 		queryBuildStatus(mclusterId);
 		/* $('body').everyTime('5s','A',function(){
 			alert("dfadfa");
@@ -199,13 +206,10 @@ function queryByPage(currentPage,recordsPerPage) {
 							+"创建中</a>"
 							+ "</td>");
 				}else{
-					/* var td5 = $("<td>"
+					var td5 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+translateStatus(array[i].status)
 							+"</a>"
-							+ "</td>"); */
-					var td5 = $("<td>"
-							+translateStatus(array[i].status)
 							+ "</td>");
 				}
 					
