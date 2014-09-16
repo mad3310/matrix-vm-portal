@@ -11,121 +11,122 @@
 		</h1>
 	</div>
 	<!-- /.page-header -->
-</div>
-<!-- /.page-content-area -->
-<div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
-		<div class="widget-header">
-			<h5 class="widget-title">集群列表</h5>
-			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-mcluster-modal">
-					<i class="ace-icont fa fa-plus"></i>
-					 创建集群
-				</button>
+	<div class="row">
+		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
+			<div class="widget-header">
+				<h5 class="widget-title">集群列表</h5>
+				<div class="widget-toolbar no-border">
+					<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-mcluster-modal">
+						<i class="ace-icont fa fa-plus"></i>
+						 创建集群
+					</button>
+				</div>
+			</div>
+		
+			<div class="widget-body">
+				<div class="widget-main no-padding">
+					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="center">
+									<label class="position-relative">
+										<input type="checkbox" class="ace" />
+										<span class="lbl"></span>
+									</label>
+								</th>
+								<th>集群名称</th>
+								<th>集群所属用户</th>
+								<th>
+									创建时间 
+								</th>
+								<th class="hidden-480">当前状态</th>
+								<!-- <th></th> -->
+							</tr>
+						</thead>
+						<tbody id="tby">
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
+		<div id="pageControlBar">
+			<input type="hidden" id="totalPage_input" />
+			<ul class="pager">
+				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-		<div class="widget-body">
-			<div class="widget-main no-padding">
-				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th class="center">
-								<label class="position-relative">
-									<input type="checkbox" class="ace" />
-									<span class="lbl"></span>
-								</label>
-							</th>
-							<th>集群名称</th>
-							<th>集群所属用户</th>
-							<th>
-								创建时间 
-							</th>
-							<th class="hidden-480">当前状态</th>
-							<!-- <th></th> -->
-						</tr>
-					</thead>
-					<tbody id="tby">
-					</tbody>
-				</table>
-			</div>
+				<li>共<lable id="totalPage"></lable>页
+				</li>
+				<li>第<lable id="currentPage"></lable>页
+				</li>
+				<li>共<lable id="totalRows"></lable>条记录
+				</li>
+			</ul>
 		</div>
-	</div>
-	<div id="pageControlBar">
-		<input type="hidden" id="totalPage_input" />
-		<ul class="pager">
-			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-			<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-			<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-			<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-
-			<li>共<lable id="totalPage"></lable>页
-			</li>
-			<li>第<lable id="currentPage"></lable>页
-			</li>
-			<li>共<lable id="totalRows"></lable>条记录
-			</li>
-		</ul>
-	</div>
-	<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="${ctx}/mcluster/build" method="post">
-				<div class="col-xs-12">
-					<h4 class="lighter">
-						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
-					</h4>
-					<div class="widget-box">
-						<div class="widget-body">
-							<div class="widget-main">
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="mcluster_name">集群名称</label>
-									<div class="col-sm-8">
-										<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="${ctx}/mcluster/build" method="post">
+					<div class="col-xs-12">
+						<h4 class="lighter">
+							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
+						</h4>
+						<div class="widget-box">
+							<div class="widget-body">
+								<div class="widget-main">
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="mcluster_name">集群名称</label>
+										<div class="col-sm-8">
+											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-sm btn-primary" onclick="createMcluster()">创建</button>
+					</div>
+				</form>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-sm btn-primary" onclick="createMcluster()">创建</button>
-				</div>
-			</form>
 			</div>
 		</div>
+		<div class="modal fade bs-example-modal-lg"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="buildStatusHeader">
+		        	<i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>
+		        	创建中...
+		        </h4>
+		      </div>
+		      <div class="modal-body">
+		        <table id="mcluster_list" class="table">
+						<thead>
+							<tr class="info">
+								<th width="3%">#</th>
+								<th width="30%">操作</th>
+								<th width="15%">开始时间</th>
+								<th width="15%">结束时间</th>
+								<th>信息</th>
+								<th width="8%">结果  </th>
+							</tr>
+						</thead>
+						<tbody id="build_status_tby">
+						</tbody>
+					</table>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
 	</div>
-	<div class="modal fade bs-example-modal-lg"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="buildStatusHeader">
-	        	<i class="ace-icon fa fa-spinner fa-spin green bigger-125"></i>
-	        	创建中...
-	        </h4>
-	      </div>
-	      <div class="modal-body">
-	        <table id="mcluster_list" class="table">
-					<thead>
-						<tr class="info">
-							<th width="3%">#</th>
-							<th width="30%">操作</th>
-							<th width="15%">开始时间</th>
-							<th width="15%">结束时间</th>
-							<th>信息</th>
-							<th width="5%">结果  </th>
-						</tr>
-					</thead>
-					<tbody id="build_status_tby">
-					</tbody>
-				</table>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
 </div>
+<!-- /.page-content-area -->
+
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 
@@ -147,6 +148,8 @@ $(function(){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+	
+	//modal显示创建进度
 	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
 		var mclusterId = $(this).closest('tr').find('td:first input').val();
 		if($(this).html().indexOf("正常")>=0){
@@ -178,6 +181,8 @@ function queryByPage(currentPage,recordsPerPage) {
 				var statuStr;
 				if(status == 1){
 					return "正常";
+				}else if(status == 2){
+					return "创建中...";
 				}else{
 					return "创建失败";
 				}
@@ -203,7 +208,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var td5 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
-							+"创建中</a>"
+							+"创建中...</a>"
 							+ "</td>");
 				}else{
 					var td5 = $("<td>"

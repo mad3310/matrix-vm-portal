@@ -132,6 +132,7 @@ var currentSelectedLineDbName = 1;
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+	
 });	
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
@@ -146,18 +147,20 @@ var currentSelectedLineDbName = 1;
 				var totalPages = data.data.totalPages;
 				
 				function translateStatus(status){
-					if(status == 0){
+					if(status == 0 || status == 2){
 						return "未审核";
-					}else if(status  == 1 ||status  == 2){
-						return "审核通过";
-					}else if(status  == -1){
-						return "审核未通过";
+					}else if(status  == 1){
+						return "正常";
+					}else if(status  == 4){
+						return "未通过";
+					}else{
+						return "创建失败";
 					}
 				}
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td2;
-					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
+					if(array[i].status == 1){
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/db/detail/" + array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
@@ -169,9 +172,17 @@ var currentSelectedLineDbName = 1;
 					var td3 = $("<td>"
 							+ array[i].createTime
 							+ "</td>");
-					var td4 = $("<td>"
-							+ translateStatus(array[i].status)
-							+ "</td>");
+					if(array[i].status == 4){
+						var td4 = $("<td>"
+								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\"看你不顺眼.\" >"
+								+ translateStatus(array[i].status)
+								+"</a>"
+								+ "</td>");
+					}else{
+						var td4 = $("<td>"
+								+ translateStatus(array[i].status)
+								+ "</td>");
+					}
 					/* var td5 = $("<td>"
 								+"<div class=\"hidden-sm hidden-xs btn-group\">"
 								+"<button class=\"btn disabled btn-xs btn-success\">"
@@ -189,7 +200,7 @@ var currentSelectedLineDbName = 1;
 						
 					if(array[i].status == 0){
 						var tr = $("<tr class=\"warning\"></tr>");
-					}else if(array[i].status == -1){
+					}else if(array[i].status == 3 ||array[i].status == 4){
 						var tr = $("<tr class=\"danger\"></tr>");
 						
 					}else{
@@ -198,6 +209,9 @@ var currentSelectedLineDbName = 1;
 					
 					tr.append(td2).append(td3).append(td4);
 					tr.appendTo(tby);
+					
+					//初始化鼠标事件悬浮框
+					$('[name="dbRefuseStatus"]').popover();
 				}//循环json中的数据 
 				
 				if (totalPages <= 1) {

@@ -121,17 +121,6 @@ $(function(){
 	hostDualListBox();
 	$("#pageMessage").hide();
 });
-
-function translateStatus(status){
-	if(status = 1)
-	{
-		return "是";
-	}else
-	{
-		return "否";
-	}
-	
-}
 function createDb(){
 	$.gritter.add({
 		title: '警告',

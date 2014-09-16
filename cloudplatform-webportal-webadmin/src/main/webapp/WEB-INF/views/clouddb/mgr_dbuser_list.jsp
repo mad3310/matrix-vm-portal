@@ -11,63 +11,63 @@
 		</h1>
 	</div>
 	<!-- /.page-header -->
+	<div class="row">
+		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
+			<div class="widget-header">
+				<h5 class="widget-title">数据库用户列表</h5>
+				<div class="widget-toolbar no-border">
+					<button id="create_db_user" class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
+						<i class="ace-icont fa fa-plus"></i>
+						 创建用户
+					</button>
+				</div>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main no-padding">
+					<table class="table table-bordered" id="db_detail_table" >
+						<thead>
+							<tr>
+								<th class="center">
+									<label class="position-relative">
+										<input type="checkbox" id="titleCheckbox" class="ace" />
+										<span class="lbl"></span>
+									</label>
+								</th>
+								<th>用户名</th>
+								<th>所属数据库</th>
+								<th>用户权限</th>
+								<th>ip地址</th>
+								<th>频次限制</th>
+								<th>
+									当前状态
+								</th>
+							</tr>
+						</thead>
+						<tbody id="tby">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="pageControlBar">
+			<input type="hidden" id="totalPage_input" />
+			<ul class="pager">
+				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+	
+				<li>共<lable id="totalPage"></lable>页
+				</li>
+				<li>第<lable id="currentPage"></lable>页
+				</li>
+				<li>共<lable id="totalRows"></lable>条记录
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 <!-- /.page-content-area -->
-<div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
-		<div class="widget-header">
-			<h5 class="widget-title">数据库用户列表</h5>
-			<div class="widget-toolbar no-border">
-				<button id="create_db_user" class="btn btn-xs btn-success bigger" type="button" onclick="buildUser()">
-					<i class="ace-icont fa fa-plus"></i>
-					 创建用户
-				</button>
-			</div>
-		</div>
-		<div class="widget-body">
-			<div class="widget-main no-padding">
-				<table class="table table-bordered" id="db_detail_table" >
-					<thead>
-						<tr class="info">
-							<th class="center">
-								<label class="position-relative">
-									<input type="checkbox" id="titleCheckbox" class="ace" />
-									<span class="lbl"></span>
-								</label>
-							</th>
-							<th>用户名</th>
-							<th>所属数据库</th>
-							<th>用户权限</th>
-							<th>ip地址</th>
-							<th>频次限制</th>
-							<th>
-								当前状态
-							</th>
-						</tr>
-					</thead>
-					<tbody id="tby">
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-	<div id="pageControlBar">
-		<input type="hidden" id="totalPage_input" />
-		<ul class="pager">
-			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-			<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-			<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-			<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-
-			<li>共<lable id="totalPage"></lable>页
-			</li>
-			<li>第<lable id="currentPage"></lable>页
-			</li>
-			<li>共<lable id="totalRows"></lable>条记录
-			</li>
-		</ul>
-	</div>
-</div>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -136,10 +136,12 @@ var currentSelectedLineDbName = 1;
 				function translateStatus(status){
 					if(status == 0){
 						return "待审核";
-					}else if(status  == 1 ||status  == 2){
-						return "审核通过";
-					}else if(status  == -1){
-						return "审核未通过";
+					}else if(status  == 1){
+						return "正常";
+					}else if(status  == 4){
+						return "未通过";
+					}else{
+						return "创建失败";
 					}
 				}
 				

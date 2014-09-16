@@ -10,40 +10,41 @@
 		</h1>
 	</div>
 	<!-- /.page-header -->
-</div>
-<!-- /.page-content-area -->
-<div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
-		<div class="widget-header">
-			<h5 class="widget-title">数据库列表</h5>
-		</div>
-		<div class="widget-body">
-			<div class="widget-main no-padding">
-				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="center">
-							<label class="position-relative">
-								<input type="checkbox" class="ace" />
-								<span class="lbl"></span>
-							</label>
-						</th>
-						<th>DB名称</th>
-						<th>所属Mcluster</th>
-						<th>
-							创建时间 
-						</th>
-						<th class="hidden-480">当前状态</th>
-						<!-- <th></th> -->
-					</tr>
-				</thead>
-					<tbody id="tby">							
-					</tbody>
-				</table>
+	<div class="row">
+		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
+			<div class="widget-header">
+				<h5 class="widget-title">数据库列表</h5>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main no-padding">
+					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="center">
+								<label class="position-relative">
+									<input type="checkbox" class="ace" />
+									<span class="lbl"></span>
+								</label>
+							</th>
+							<th>DB名称</th>
+							<th>所属Mcluster</th>
+							<th>
+								创建时间 
+							</th>
+							<th class="hidden-480">当前状态</th>
+							<!-- <th></th> -->
+						</tr>
+					</thead>
+						<tbody id="tby">							
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<!-- /.page-content-area -->
+
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -78,10 +79,14 @@ var currentSelectedLineDbName = 1;
 				function translateStatus(status){
 					if(status == 0){
 						return "待审核";
-					}else if(status  == 1 ||status  == 2){
-						return "审核通过";
-					}else if(status  == -1){
-						return "审核未通过";
+					}else if(status  == 1){
+						return "正常";
+					}else if(status  == 2){
+						return "创建中...";
+					}else if(status  == 4){
+						return "未通过";
+					}else{
+						return "创建失败";
 					}
 				}
 				
@@ -93,13 +98,17 @@ var currentSelectedLineDbName = 1;
 									+"</label>"
 								+"</td>");
 					var td2;
-					if(array[i].status == 1 || array[i].status == 2 || array[i].status == -1 ){
+					if(array[i].status == 1){
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/db/detail/"+array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
-					}else{	
+					}else if(array[i].status == 0 ||array[i].status == 3){	
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/db/audit/"+array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "</td>");
+					}else{
+						td2 = $("<td>"
+								+ "<a href=\"#\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}
 					if(array[i].cluster){
@@ -112,9 +121,22 @@ var currentSelectedLineDbName = 1;
 					var td4 = $("<td>"
 							+ array[i].createTime
 							+ "</td>");
-					var td5 = $("<td>"
-							+ translateStatus(array[i].status)
-							+ "</td>");
+					if(array[i].status == 4){
+						var td5 = $("<td>"
+								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\"看你不顺眼.\" >"
+								+ translateStatus(array[i].status)
+								+"</a>"
+								+ "</td>");
+					}else if(array[i].status == 2){
+						var td5 = $("<td>"
+								+ translateStatus(array[i].status)
+								+ "</td>");
+					}else{
+						var td5 = $("<td>"
+								+ translateStatus(array[i].status)
+								+ "</td>");
+					}
+					
 					/* var td6 = $("<td>"
 								+"<div class=\"hidden-sm hidden-xs action-buttons\">"
 									+"<a class=\"blue\" href=\"#\">"
@@ -162,7 +184,7 @@ var currentSelectedLineDbName = 1;
 						
 					if(array[i].status == 0){
 						var tr = $("<tr class=\"warning\"></tr>");
-					}else if(array[i].status == -1){
+					}else if(array[i].status == 3 || array[i].status == 4){
 						var tr = $("<tr class=\"danger\"></tr>");
 						
 					}else{
