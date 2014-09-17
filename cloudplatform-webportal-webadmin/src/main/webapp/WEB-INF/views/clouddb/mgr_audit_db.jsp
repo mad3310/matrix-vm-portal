@@ -61,7 +61,7 @@
 				<form id="create_on_old_cluster_form" class="form-horizontal" role="form" action="${ctx}/db/audit/save" method="post">
 					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode}" id="applyCode" name="applyCode"/>
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
-					<input type="text" class="form-control hide" value="1" id="auditType" name="auditType"/>
+					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 						<div class="form-group">
 							<label for="text" class="col-sm-2 control-label">选择集群</label>
@@ -81,6 +81,10 @@
 			   </div>
 				<div class="tab-pane fade" id="create_on_new_cluster" style="margin-top: 45px;margin-bottom: 45px;">
 					<form class="form-horizontal" id="create_on_new_cluster_form" method="post" action="${ctx}/db/audit/save">
+					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
 							<label for="text" class="control-label col-sm-2">集群名称</label>
 							<div class="col-sm-8">
@@ -95,7 +99,7 @@
 				<div class="tab-pane fade" id="disagree">
 				<div>
 				      <form class="form-horizontal" role="form" method="post" action="${ctx}/db/audit/save">
-						  <input type="text" class="form-control hide" value="-1" id="auditType" name="auditType"/>
+						  <input type="text" class="form-control hide" value="4" id="auditType" name="auditType"/>
 							<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
 							<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
 							<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>

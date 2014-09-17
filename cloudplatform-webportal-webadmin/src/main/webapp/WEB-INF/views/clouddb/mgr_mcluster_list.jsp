@@ -362,6 +362,7 @@ function formValidate() {
     	 $('#create-mcluster-botton').removeClass("disabled");
      });
 }
+//查询集群创建过程
 function queryBuildStatus(mclusterId) {
 	$("#build_status_tby tr").remove();
 	$.ajax({
@@ -430,8 +431,6 @@ function queryBuildStatus(mclusterId) {
 		}
 	});
  }
-
-/* $("buildStatusBoxLink"){alert($(this).closest("tr").val())}; */
 
 function createMcluster(){
 	$.ajax({
