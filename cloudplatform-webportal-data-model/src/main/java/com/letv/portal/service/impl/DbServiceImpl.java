@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -146,6 +147,11 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Override
 	public Map<String, String> selectCreateParams(String id) {
 		return this.dbDao.selectCreateParams(id);
+	}
+
+	@Override
+	public List<DbModel> selectByDbName(String dbName) {
+		return this.dbDao.selectByDbName(dbName);
 	}
 
 }

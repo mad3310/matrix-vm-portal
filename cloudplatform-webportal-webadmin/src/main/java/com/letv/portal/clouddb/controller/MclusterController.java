@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBuildService;
@@ -125,5 +126,17 @@ public class MclusterController {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.buildService.selectByMclusterId(mclusterId));
 		return obj;
+	}
+	
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validate(String mclusterName,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<DbModel> list = this.mclusterService.selectByClusterName(mclusterName);
+		if(list.size()>0) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 }

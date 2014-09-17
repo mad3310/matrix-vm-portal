@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
@@ -71,5 +72,15 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @param mclusterModel
 	 */
 	void audit(MclusterModel mclusterModel);
+
+
+
+	/**Methods Name: selectByClusterName <br>
+	 * Description: 根据mcluster名称查询数据：用于验证mcluster名是否重复<br>
+	 * @author name: liuhao1
+	 * @param applyCode
+	 * @return
+	 */
+	public List<DbModel> selectByClusterName(String mclusterName);
 	
 }

@@ -17,6 +17,7 @@ import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.dao.IMclusterDao;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IHostService;
@@ -152,6 +153,11 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	public void audit(MclusterModel mclusterModel) {
 		this.mclusterDao.audit(mclusterModel);
 		
+	}
+
+	@Override
+	public List<DbModel> selectByClusterName(String mclusterName) {
+		return this.mclusterDao.selectByClusterName(mclusterName);
 	}
 	
 }

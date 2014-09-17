@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -118,6 +119,17 @@ public class DbController {
 		mav.addObject("db", dbModel);
 		mav.setViewName("/clouddb/user_db_detail");
 		return mav;
+	}
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validate(String applyCode,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<DbModel> list = this.dbService.selectByDbName(applyCode);
+		if(list.size()>0) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 	
 }

@@ -179,7 +179,10 @@ function formValidate() {
 			          },regexp: {
 		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
   		                  message: "请输入字母数字或'_',集群名不能以数字开头."
-                 	  }
+                 	  },remote: {
+	                        message: '集群名已存在!',
+	                        url: "${ctx}/mcluster/validate"
+	                    }
 	             }
          	}	
          }

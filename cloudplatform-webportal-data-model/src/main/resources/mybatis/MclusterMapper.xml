@@ -127,6 +127,12 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO where ID = #{id}
 	</select>
+	
+	<select id="selectByClusterName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_MCLUSTER_INFO WHERE MCLUSTER_NAME = #{mclusterName}
+	</select>
 
 	<!-- 列表总数 -->
 	<select id="selectByModelCount" resultType="java.lang.Integer"

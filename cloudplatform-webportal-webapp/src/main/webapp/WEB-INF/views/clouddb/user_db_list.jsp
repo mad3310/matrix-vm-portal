@@ -315,7 +315,11 @@ var currentSelectedLineDbName = 1;
 			          }, regexp: {
 		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
   		                  message: "请输入字母数字或'_',数据库名不能以数字开头."
-                 	  }
+                 	  },
+			          remote: {
+	                        message: '数据库名已存在!',
+	                        url: "${ctx}/db/validate"
+	                    }
                   }
               }
           }

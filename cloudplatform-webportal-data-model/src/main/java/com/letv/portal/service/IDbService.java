@@ -72,4 +72,12 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public Map<String,String> selectCreateParams(String id);
 
+	/**Methods Name: selectByDbName <br>
+	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
+	 * @author name: liuhao1
+	 * @param applyCode
+	 * @return
+	 */
+	public List<DbModel> selectByDbName(String dbName);
+
 }

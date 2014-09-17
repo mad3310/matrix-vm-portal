@@ -161,6 +161,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB where ID = #{id}
 	</select>
+	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB WHERE DB_NAME = #{dbName}
+	</select>
 
 	<!-- 查询创建用户所需参数-->
 	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.String">
