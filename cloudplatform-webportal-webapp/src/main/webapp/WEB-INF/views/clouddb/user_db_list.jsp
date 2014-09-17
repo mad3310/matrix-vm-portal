@@ -174,7 +174,7 @@ var currentSelectedLineDbName = 1;
 							+ "</td>");
 					if(array[i].status == 4){
 						var td4 = $("<td>"
-								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\"看你不顺眼.\" >"
+								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' style=\"cursor:pointer; text-decoration:none;\" data-content=\""+ array[i].auditInfo+"\" >"
 								+ translateStatus(array[i].status)
 								+"</a>"
 								+ "</td>");

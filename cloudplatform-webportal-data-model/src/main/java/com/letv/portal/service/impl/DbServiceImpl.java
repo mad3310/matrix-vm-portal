@@ -73,7 +73,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
-		this.dbDao.audit(new DbModel(dbId,status,mclusterId));
+		this.dbDao.audit(new DbModel(dbId,status,mclusterId,auditInfo));
 		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,status,auditInfo));
 	}
 

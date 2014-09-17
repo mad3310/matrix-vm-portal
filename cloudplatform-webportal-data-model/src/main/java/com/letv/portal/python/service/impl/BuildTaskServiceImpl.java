@@ -29,6 +29,7 @@ import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
 import com.mysql.jdbc.Constants;
+import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
 public class BuildTaskServiceImpl implements IBuildTaskService{
@@ -51,22 +52,30 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	
 	@Override
-	public void buildMcluster(MclusterModel mclusterModel) {
+	public void buildMcluster(MclusterModel mclusterModel,String dbId) {
 		boolean nextStep = true;
 		mclusterModel.setId(UUID.randomUUID().toString());
 		
-		/*if(nextStep) {
-			nextStep = createContainer(mclusterModel);
-		}*/
-		if(nextStep) {
-			nextStep = initContainer(mclusterModel);
+		try {
+			if(nextStep) {
+				nextStep = createContainer(mclusterModel,dbId);
+			}
+			if(nextStep) {
+				nextStep = initContainer(mclusterModel,dbId);
+			}
+			if(nextStep) {
+				this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
+			}
+		} catch (Exception e) {
+			this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
 		}
-		
-		this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
+		if(nextStep || StringUtils.isNullOrEmpty(dbId)) {
+			this.buildDb(dbId);
+		}
 		
 	}
 	@Override
-	public boolean createContainer(MclusterModel mclusterModel) {
+	public boolean createContainer(MclusterModel mclusterModel,String dbId) {
 		boolean nextStep = true;
 		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
 		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
@@ -79,9 +88,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		if(nextStep) {
 			step++;
-			nextStep = this.analysis(this.pythonService.createContainer(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
+			nextStep = this.analysis(this.pythonService.createContainer(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), dbId);
 		}
-		//测试集群：mclusterModel.setMclusterName("test_mcluster_003");
 		if(nextStep) {
 			step++;
 			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -102,7 +110,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			}
-			nextStep = analysis(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), null);
+			nextStep = analysis(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()), step, startTime, mclusterModel.getId(), dbId);
 			//保存container信息
 			
 			List<Map> containers = (List<Map>) ((Map)result.get("response")).get("containers");
@@ -161,31 +169,28 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	public boolean initContainer(MclusterModel mclusterModel) {
-		//测试数据
-		mclusterModel.setId("929b8b08-a2f7-4fc6-b7fd-a400fbc750eb");
+	public boolean initContainer(MclusterModel mclusterModel,String dbId) {
 		
 		boolean nextStep = true;
 		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId());
 		
 		int step = 3;
 		//假设数据
-		String username = mclusterModel.getAdminUser();//"root";
-		String password = mclusterModel.getAdminPassword();//"webportal-test";
+		String username = mclusterModel.getAdminUser();
+		String password = mclusterModel.getAdminPassword();
 		
-		String mclusterName = mclusterModel.getMclusterName();//"webportal-test";
+		String mclusterName = mclusterModel.getMclusterName();
 		
-		String nodeIp1 = containers.get(0).getIpAddr();//"10.200.85.110";
-		String nodeName1 = containers.get(0).getClusterNodeName();//"webportal-test-node1";
+		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeName1 = containers.get(0).getClusterNodeName();
 		
-		String nodeIp2 = containers.get(1).getIpAddr();//"10.200.85.111";
-		String nodeName2 = containers.get(1).getClusterNodeName();//"webportal-test-node2";
+		String nodeIp2 = containers.get(1).getIpAddr();
+		String nodeName2 = containers.get(1).getClusterNodeName();
 
-		String nodeIp3 = containers.get(2).getIpAddr();//"10.200.85.112";
-		String nodeName3 = containers.get(2).getClusterNodeName();//"webportal-test-node3";
+		String nodeIp3 = containers.get(2).getIpAddr();
+		String nodeName3 = containers.get(2).getClusterNodeName();
 		
-		String mclusterId = mclusterModel.getId();//"";
-		String dbId = "";
+		String mclusterId = mclusterModel.getId();
 		
 		/*mcluster-manager测试用集群
 		
@@ -262,6 +267,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
 			}
+			nextStep = analysis(pythonService.checkContainerStatus(nodeIp1, username, password), step, startTime, mclusterModel.getId(), null);
 		}
 		return nextStep;
 	}

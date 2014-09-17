@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -126,7 +127,6 @@ public class DbController {
 		mav.setViewName("/clouddb/mgr_audit_db");
 		return mav;
 	}
-
 	/**Methods Name: save <br>
 	 * Description: 保存审批信息 //http://localhost:8080/api/db/audit/save<br>
 	 * @author name: liuhao1
@@ -143,15 +143,17 @@ public class DbController {
 		String dbApplyStandardId = dav.getDbApplyStandardId();
 		//保存审批信息
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
-		
-		if(StringUtils.isNullOrEmpty(mclusterId)) {
-			MclusterModel mcluster = new MclusterModel();
-			mcluster.setMclusterName(mclusterName);
-			mcluster.setCreateUser((String) request.getSession().getAttribute("userId"));
-			this.buildTaskService.buildMcluster(mcluster);
+		if(Constant.STATUS_BUILDDING.equals(auditType)) {
+			if(StringUtils.isNullOrEmpty(mclusterId)) {
+				MclusterModel mcluster = new MclusterModel();
+				mcluster.setMclusterName(mclusterName);
+				mcluster.setCreateUser((String) request.getSession().getAttribute("userId"));
+				this.buildTaskService.buildMcluster(mcluster,dbId);
+			} else {
+				this.buildTaskService.buildDb(dbId);
+			}
 		}
 		
-		this.buildTaskService.buildDb(dbId);
 	}
 	
 	

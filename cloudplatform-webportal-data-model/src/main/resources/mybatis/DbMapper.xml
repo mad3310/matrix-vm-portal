@@ -9,6 +9,7 @@
 		<result column="DB_NAME" property="dbName" />
 		<result column="CLUSTER_ID" property="clusterId" />
 		<result column="STATUS" property="status" />
+		<result column="AUDIT_INFO" property="auditInfo" />
 		
 		<result column="IS_DELETED" property="isDeleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -30,10 +31,10 @@
 	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,DB_NAME,CLUSTER_ID,STATUS,AUDIT_INFO,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	<sql id="Base_Column_List_add_cluster">
-		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.CLUSTER_ID,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.IS_DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
+		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.CLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.IS_DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
 	</sql>
 
 	
@@ -143,6 +144,9 @@
 		<set>
 			<if test="status != null  ">
 				STATUS=#{status},
+			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo},
 			</if>
 			<if test="clusterId != null  ">
 				CLUSTER_ID=#{clusterId}

@@ -170,7 +170,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ "</td>");
 				if(array[i].status == 4){
 					var td5 = $("<td>"
-							+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\"测试不通过显示.\" style=\"cursor:pointer; text-decoration:none;\">"
+							+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\""+ array[i].auditInfo + "\" style=\"cursor:pointer; text-decoration:none;\">"
 							+ translateStatus(array[i].status)
 							+"</a>"
 							+ "</td>");
