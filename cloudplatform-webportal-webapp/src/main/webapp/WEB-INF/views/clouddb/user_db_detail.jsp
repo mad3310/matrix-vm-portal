@@ -255,10 +255,21 @@ $(function(){
 	                        notEmpty: {
 	                            message: '地址不能为空'
 	                        },
-	  		              regexp: {
+	  		                regexp: {
 			                  regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
 			                  message: '请按提示格式输入'
-			              }
+			              	}, 
+			                remote: {
+		                        url: '${ctx}/db/user/validate',
+		                        // Send { username: 'its value', email: 'its value' } to the back-end
+		                        data: function(validator) {
+		                            return {
+		                                username: validator.getFieldElements('username').val(),
+		                                dbId:validator.getFieldElements('dbId').val()
+		                            };
+		                        },
+		                        message: '该用户名此IP也存在!'
+		                    }
 	                    }
 	                }
 	            }
@@ -269,7 +280,7 @@ $(function(){
 	                                .removeClass('hide')
 	                                .removeAttr('id')
 	                                .insertBefore($template),
-	                $option   = $clone.find('[name="acceptIp"]');
+	                $option = $clone.find('[name="acceptIp"]');
 	            $('#db_user_apply_form').bootstrapValidator('addField', $option);
 	        }).on('click', '.removeButton', function() {
 	            var $row    = $(this).parents('.form-group'),

@@ -14,6 +14,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IDbUserDao;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
 
@@ -58,7 +59,12 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	public void updateStatus(DbUserModel dbUserModel) {
 		this.dbUserDao.updateStatus(dbUserModel);
 	}
-
+	
+	@Override
+	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel){
+		return this.dbUserDao.selectByIpAndUsername(dbUserModel);
+	}
+	
 	@Override
 	public void insert(DbUserModel dbUserModel){
 		

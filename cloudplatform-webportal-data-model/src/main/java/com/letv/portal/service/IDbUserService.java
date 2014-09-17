@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 
 /**Program Name: IDbUserService <br>
@@ -46,5 +47,12 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void updateStatus(DbUserModel dbUserModel);
+
+	/**Methods Name: updateStatus <br>
+	 * Description: 根据数据库用户名和ip查询数据：用于验证数据库用户名和ip是否重复<br>
+	 * @author name: yaokuo
+	 * @param dbUserModel
+	 */
+	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
 
 }

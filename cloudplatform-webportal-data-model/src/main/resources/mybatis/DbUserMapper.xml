@@ -109,6 +109,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB_USER where ID = #{id}
 	</select>
+	<select id="selectByIpAndUsername" resultMap="BaseResultMap" parameterType="DbUser">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB_USER WHERE USERNAME = #{username} and ACCEPT_IP=#{acceptIp} and DB_ID=#{dbId}
+	</select>
 	
 	<!-- 根据dbId查询-->
 	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">

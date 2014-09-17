@@ -36,4 +36,6 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void updateStatus(DbUserModel dbUserModel);
+
+	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
 }

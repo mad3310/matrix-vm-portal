@@ -1,5 +1,9 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
 
@@ -70,6 +75,19 @@ public class DbUserController {
 			this.dbUserService.insert(dbUserModel);
 		}
 		return "redirect:/db/detail/" + dbId;
+	}
+	
+	
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validate(DbUserModel dbUserModel,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<DbUserModel> list = this.dbUserService.selectByIpAndUsername(dbUserModel);
+		if(list.size()>0) {
+			map.put("valid", false);
+		} else {
+			map.put("valid", true);
+		}
+		return map;
 	}
 	
 }
