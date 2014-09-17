@@ -132,6 +132,8 @@
 
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
+
+<script src="${ctx}/static/scripts/date-transform.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -377,23 +379,23 @@ function queryBuildStatus(mclusterId) {
 				var td2 = $("<td>"
 						+ array[i].stepMsg
 						+"</td>");
-				if(array[i].startTime != null)
+				if(array[i].startTime != null )
 				{
 					var td3 = $("<td>"
-							+ parseTime(array[i].startTime)
+							+ date('Y-m-d H:i:s',array[i].startTime)
 							+ "</td>");
 				}else{
 					var td3 = $("<td>\-</td>");
 				}
-				if(array[i].startTime != null)
+				if(array[i].endTime != null)
 				{
 					var td4 = $("<td>"
-							+ parseTime(array[i].endTime)
+							+ date('Y-m-d H:i:s',array[i].endTime)
 							+ "</td>");
 				}else{
 					var td4 = $("<td>\-</td>");
 				}
-				if(array[i].startTime != null)
+				if(array[i].msg != null)
 				{
 					var td5 = $("<td>"
 							+ array[i].msg
