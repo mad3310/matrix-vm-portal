@@ -2,7 +2,6 @@ package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbApplyStandardService;
@@ -119,7 +118,9 @@ public class DbController {
 	public ModelAndView audit(@PathVariable String dbId,HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("hosts", this.hostService.selectByMap(null));
-		mav.addObject("mclusters", this.mclusterService.selectByMap(null));
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("status", Constant.STATUS_OK);
+		mav.addObject("mclusters", this.mclusterService.selectByMap(map));
 		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		
 		mav.setViewName("/clouddb/mgr_audit_db");
@@ -137,12 +138,18 @@ public class DbController {
 		String auditType = dav.getAuditType();
 		String auditInfo = dav.getAuditInfo();
 		String mclusterId = dav.getMclusterId();
+		String mclusterName = dav.getMclusterName();
 		String dbId = dav.getDbId();
-		String dbName = dav.getApplyCode();
 		String dbApplyStandardId = dav.getDbApplyStandardId();
-		String hostIds = dav.getHostIds();
 		//保存审批信息
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
+		
+		if(StringUtils.isNullOrEmpty(mclusterId)) {
+			MclusterModel mcluster = new MclusterModel();
+			mcluster.setMclusterName(mclusterName);
+			mcluster.setCreateUser((String) request.getSession().getAttribute("userId"));
+			this.buildTaskService.buildMcluster(mcluster);
+		}
 		
 		this.buildTaskService.buildDb(dbId);
 	}

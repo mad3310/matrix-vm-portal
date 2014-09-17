@@ -1,15 +1,11 @@
 package com.letv.portal.service.impl;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.QueryParam;
@@ -20,7 +16,6 @@ import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.dao.IMclusterDao;
-import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.IpResourceModel;
 import com.letv.portal.model.MclusterModel;
@@ -151,6 +146,12 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	public String initContainer(String mclusterId) {
 		
 		return null;
+	}
+
+	@Override
+	public void audit(MclusterModel mclusterModel) {
+		this.mclusterDao.audit(mclusterModel);
+		
 	}
 	
 }

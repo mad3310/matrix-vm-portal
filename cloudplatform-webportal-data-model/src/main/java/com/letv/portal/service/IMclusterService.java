@@ -65,4 +65,11 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public void buildNotice(String clusterId,String flag);
 	
+	/**Methods Name: audit <br>
+	 * Description: 改变status状态<br>
+	 * @author name: liuhao1
+	 * @param mclusterModel
+	 */
+	void audit(MclusterModel mclusterModel);
+	
 }

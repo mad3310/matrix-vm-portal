@@ -7,6 +7,7 @@ public class DbAuditView {
 	private String auditType;
 	private String auditInfo;
 	private String mclusterId;
+	private String mclusterName;
 	private String dbId;
 	private String applyCode;
 	private String dbApplyStandardId;
@@ -62,7 +63,11 @@ public class DbAuditView {
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
-	
-	
+	public String getMclusterName() {
+		return mclusterName;
+	}
+	public void setMclusterName(String mclusterName) {
+		this.mclusterName = mclusterName;
+	}
 	
 }
