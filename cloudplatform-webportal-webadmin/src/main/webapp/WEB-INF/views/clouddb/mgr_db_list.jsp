@@ -155,7 +155,7 @@ function queryByPage(currentPage,recordsPerPage) {
 							+ "</td>");
 				}else{
 					td2 = $("<td>"
-							+ "<a href=\"#\">"+array[i].dbName+"</a>"
+							+ "<a style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}
 				if(array[i].cluster){
@@ -364,9 +364,23 @@ function queryBuildStatus(mclusterId) {
 					var td5 = $("<td>\-</td>");
 				}
 				
-				var td6 = $("<td>"
-						+ array[i].status
-						+ "</td>");
+				if(array[i].status == "success"){
+					var td6 = $("<td>"
+							+"<a class=\"green\"><i class=\"ace-icon fa fa-check bigger-120\">成功</a>"
+							+ "</td>");
+				}else if(array[i].status == "fail"){
+					var td6 = $("<td>"
+							+"<a class=\"red\"><i class=\"ace-icon fa fa-times red bigger-120\">失败</a>"
+							+ "</td>");
+				}else if(array[i].status == "building"){
+					var td6 = $("<td>"
+							+"<a style=\"text-decoration:none;\" class=\"green\"><h5><i class=\"ace-icon fa fa-spinner fa-spin green bigger-120\"/>运行中</h5></a>"
+							+ "</td>");
+				}else{
+					var td6 = $("<td>"
+							+"<a class=\"orange\"><i class=\"ace-icon fa fa-coffee orange bigger-120\">等待</a>"
+							+ "</td>");
+				}
 					
 				if(array[i].status == "FAIL"){
 					var tr = $("<tr class=\"danger\"></tr>");

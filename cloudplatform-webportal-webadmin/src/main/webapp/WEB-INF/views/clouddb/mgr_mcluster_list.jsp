@@ -113,7 +113,7 @@
 								<th width="15%">开始时间</th>
 								<th width="15%">结束时间</th>
 								<th>信息</th>
-								<th width="8%">结果  </th>
+								<th width="10%">结果  </th>
 							</tr>
 						</thead>
 						<tbody id="build_status_tby">
@@ -409,11 +409,25 @@ function queryBuildStatus(mclusterId) {
 					var td5 = $("<td>\-</td>");
 				}
 				
-				var td6 = $("<td>"
-						+ array[i].status
-						+ "</td>");
+				if(array[i].status == "success"){
+					var td6 = $("<td>"
+							+"<a class=\"green\"><i class=\"ace-icon fa fa-check bigger-120\">成功</a>"
+							+ "</td>");
+				}else if(array[i].status == "fail"){
+					var td6 = $("<td>"
+							+"<a class=\"red\"><i class=\"ace-icon fa fa-times red bigger-120\">失败</a>"
+							+ "</td>");
+				}else if(array[i].status == "building"){
+					var td6 = $("<td>"
+							+"<a style=\"text-decoration:none;\" class=\"green\"><h5><i class=\"ace-icon fa fa-spinner fa-spin green bigger-120\"/>运行中</h5></a>"
+							+ "</td>");
+				}else{
+					var td6 = $("<td>"
+							+"<a class=\"orange\"><i class=\"ace-icon fa fa-coffee orange bigger-120\">等待</a>"
+							+ "</td>");
+				}
 					
-				if(array[i].status == "FAIL"){
+				if(array[i].status == "fail"){
 					var tr = $("<tr class=\"danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");

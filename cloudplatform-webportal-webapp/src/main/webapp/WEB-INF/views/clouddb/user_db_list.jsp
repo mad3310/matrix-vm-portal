@@ -88,7 +88,7 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
 									<div class="col-sm-6">
 										<label class="inline" style="margin-top: 3px;">
@@ -96,7 +96,7 @@
 											<span class="lbl middle"></span>
 										</label>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -166,7 +166,7 @@ var currentSelectedLineDbName = 1;
 								+ "</td>");
 					}else{	
 						td2 = $("<td>"
-								+ "<a href=\"#\">"+array[i].dbName+"</a>"
+								+ "<a style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}
 					var td3 = $("<td>"
