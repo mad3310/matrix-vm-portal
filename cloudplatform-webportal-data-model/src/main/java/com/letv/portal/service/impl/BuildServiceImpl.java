@@ -39,7 +39,7 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	@Override
 	public void initStatus(String mclusterId) {
 		
-		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点信息","提交节点信息","同步节点信息","提交节点信息 ","启动集群"};
+		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点1信息","提交节点1信息","同步节点2信息","提交节点2信息 ","启动集群","检查集群状态"};
 		
 		for (int i = 0; i < stepMsgs.length; i++) {
 			BuildModel buildModel = new BuildModel();
@@ -49,6 +49,12 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 			buildModel.setMclusterId(mclusterId);
 			this.buildDao.insert(buildModel);
 		}
+		
+	}
+
+	@Override
+	public void updateStatusFail(BuildModel buildModel) {
+		this.buildDao.updateStatusFail(buildModel);
 		
 	}
 

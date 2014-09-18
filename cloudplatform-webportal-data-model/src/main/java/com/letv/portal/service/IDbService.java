@@ -37,24 +37,6 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
 
-	/**Methods Name: build <br>
-	 * Description: 创建db<br>
-	 * @author name: liuhao1
-	 * @param dbModel
-	 * @return
-	 */
-	public String build(DbModel dbModel);
-	
-	/**Methods Name: build <br>
-	 * Description: 创建db<br>
-	 * @author name: liuhao1
-	 * @param auditType
-	 * @param mclusterId
-	 * @param dbId
-	 * @param dbApplyStandardId
-	 * @param auditUser
-	 */
-	public void build(String auditType, String mclusterId, String dbId,String dbApplyStandardId,String auditUser);
 	
 	/**Methods Name: buildNotice <br>
 	 * Description: 手动创建完成后，通知<br>

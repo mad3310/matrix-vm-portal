@@ -2,7 +2,7 @@
 <decorators defaultdir="/WEB-INF/layouts/">
 	<excludes>
 		<pattern>/static/*</pattern>
-		<pattern>/account/login</pattern>
+		<pattern>/account/login*</pattern>
 		
 		<!-- 异步请求 -->
 		<!-- <pattern>/db/list/*</pattern> -->
