@@ -142,6 +142,7 @@
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
+var queryBuildStatusrefresh;//刷新handler
 	
 $(function(){
 	//初始化 
@@ -157,7 +158,7 @@ $(function(){
 	});
 	
 	//modal显示创建进度
-	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
 		var mclusterId = $(this).closest('tr').find('td:first input').val();
 		if($(this).html().indexOf("正常")>=0){
 			$('#buildStatusHeader').html("创建成功");
@@ -167,9 +168,11 @@ $(function(){
 			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
 		}
 		queryBuildStatus(mclusterId);
-		/* $('body').everyTime('5s','A',function(){
-			alert("dfadfa");
-		}); */
+		queryBuildStatusrefresh = setInterval(function() {  
+			queryBuildStatus(mclusterId);
+		},10000);
+	}).on('hidden.bs.modal', function (e) {
+		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
 	});
 });	
 function queryByPage(currentPage,recordsPerPage) {
@@ -335,7 +338,7 @@ function pageControl() {
 	    });
 	}
 	
-
+//创建集群表单验证
 function formValidate() {
 	$("#create-mcluster-form").bootstrapValidator({
 	  message: '无效的输入',
@@ -441,6 +444,9 @@ function queryBuildStatus(mclusterId) {
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(build_status_tby);
 			}
+				if(array[array.length-1].status == "success"){
+					 location.reload();
+				}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$.gritter.add({
@@ -465,7 +471,8 @@ function createMcluster(){
 	$('#create-mcluster-form').data('bootstrapValidator').resetForm();
 	$('#create-mcluster-botton').addClass('disabled');
 	$('#create-mcluster-modal').modal('hide');
-	queryByPage(currentPage,recordsPerPage);
+	//延时一秒刷新列表
+	setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
 }
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
