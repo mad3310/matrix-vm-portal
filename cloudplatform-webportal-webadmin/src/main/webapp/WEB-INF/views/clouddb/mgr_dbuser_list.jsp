@@ -120,7 +120,7 @@ var currentSelectedLineDbName = 1;
 					}
 				}
 	 		});
- 		} else if (flag = 0){
+ 		} else if (flag == 0){
  			$.gritter.add({
 				title: '警告',
 				text: '请选择数据！',

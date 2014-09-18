@@ -70,14 +70,24 @@
 									<div class="col-sm-8">
 										<input class="form-control" name="applyCode" id="applyCode" type="text" />
 									</div>
+									<label class="control-label" for="maximum_concurrency">
+										<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请按数据库规范输入，数据库名为字母数字或下划线" style="cursor:pointer; text-decoration:none;">
+											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+										</a>
+									</label>
 								</div>
 								<div class="form-group">
-										<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
-										<div class="col-sm-4">
-											<select class="form-control" name="engineType" id="engineType">
-												<option>InnoDB</option>
-											</select>
-										</div>
+									<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
+									<div class="col-sm-4">
+										<select class="form-control" name="engineType" id="engineType">
+											<option>InnoDB</option>
+										</select>
+									</div>
+									<label class="control-label" for="maximum_concurrency">
+										<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择数据库引擎类型" style="cursor:pointer; text-decoration:none;">
+											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+										</a>
+									</label>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
@@ -87,6 +97,11 @@
 											<option>短链接</option>
 										</select>
 									</div>
+									<label class="control-label" for="maximum_concurrency">
+										<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型选择链接类型，如有疑问请联系管理员." style="cursor:pointer; text-decoration:none;">
+											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+										</a>
+									</label>
 								</div>
 								<!-- <div class="form-group">
 									<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
@@ -340,5 +355,6 @@ var currentSelectedLineDbName = 1;
 		formValidate();
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
+		$('[name = "popoverHelp"]').popover();
 	}
 </script>
