@@ -1,24 +1,16 @@
 package com.letv.portal.python.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
-import com.letv.portal.constant.Constant;
-import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.python.service.IPythonService;
-import com.letv.portal.service.IBuildService;
 
 @Service("pythonService")
 public class PythonServiceImpl implements IPythonService{
@@ -156,6 +148,22 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("max_updates_per_hour", String.valueOf(dbUser.getMaxUpdatesPerHour()));
 		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
 		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
+		
+		String result = HttpClient.post(url, map,username,password);
+		return result;
+	}
+
+	@Override
+	public String startGbalancer(String nodeIp,String user,String pwd,String ipListPort,String port,String args,String username,String password) {
+		
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/glb/start";
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("user", user);
+		map.put("passwd", pwd);
+		map.put("iplist_port",ipListPort);
+		map.put("port", port);
+		map.put("args",args);
 		
 		String result = HttpClient.post(url, map,username,password);
 		return result;

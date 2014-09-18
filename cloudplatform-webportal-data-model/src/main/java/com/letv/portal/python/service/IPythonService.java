@@ -132,4 +132,19 @@ public interface IPythonService {
 	 */
 	public String createDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username,String password);
 	
+	/**Methods Name: startGbalancer <br>
+	 * Description: 启动gbalancer<br>
+	 * @author name: liuhao1
+	 * @param nodeIp
+	 * @param user
+	 * @param pwd
+	 * @param ipListPort
+	 * @param port
+	 * @param args
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public String startGbalancer(String nodeIp,String user,String pwd,String ipListPort,String port,String args,String username,String password);
+	
 }
