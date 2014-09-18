@@ -90,12 +90,25 @@ var currentSelectedLineDbName = 1;
  	function buildUser() {
  		var ids = $("[name='db_user_id']:checked");
  		var str="";
- 		var flag = false;
+ 		var flag = 0; //0:无数据 -1:错误
  		ids.each(function(){
- 			str +=($(this).val())+",";
- 			flag = true;
+ 			if($(this).closest("tr").children().last().html() == "待审核"){
+ 				str +=($(this).val())+",";
+ 	 			flag += 1;
+ 			}else{
+ 				$.gritter.add({
+ 					title: '警告',
+ 					text: '创建用户只能选择待审核数据!',
+ 					sticky: false,
+ 					time: '3000',
+ 					class_name: 'gritter-warning'
+ 				});
+ 				flag = -1;
+ 				return false;
+ 			}
+ 			
  		});
- 		if(flag) {
+ 		if(flag > 0) {
 	 		$.ajax({ 
 				type : "get",
 				url : "${ctx}/db/user/build/"+ str,
@@ -107,7 +120,7 @@ var currentSelectedLineDbName = 1;
 					}
 				}
 	 		});
- 		} else {
+ 		} else if (flag = 0){
  			$.gritter.add({
 				title: '警告',
 				text: '请选择数据！',
@@ -117,6 +130,8 @@ var currentSelectedLineDbName = 1;
 			});
 	
 			return false;
+ 		}else{
+ 			return false;
  		}
  	}
  
