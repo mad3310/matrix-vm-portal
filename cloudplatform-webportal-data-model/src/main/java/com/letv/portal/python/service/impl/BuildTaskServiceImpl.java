@@ -56,10 +56,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		boolean nextStep = true;
 		mclusterModel.setId(UUID.randomUUID().toString());
 		
+		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
+		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
+		mclusterModel.setAdminPassword(mclusterModel.getMclusterName());
+		
+		this.mclusterService.insert(mclusterModel);
+		
+		this.buildService.initStatus(mclusterModel.getId());
+		
 		try {
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
 			}
+			
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
 			}
@@ -67,7 +76,17 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
 			}
 		} catch (Exception e) {
+			BuildModel nextBuild = new BuildModel();
+			nextBuild.setMclusterId(mclusterModel.getId());
+			nextBuild.setStartTime(new Date());
+			nextBuild.setStatus("fail");
+			nextBuild.setMsg(e.getMessage());
+			this.buildService.updateStatusFail(nextBuild);
 			this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+			if(!StringUtils.isNullOrEmpty(dbId)) {
+				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+			}
+			return;
 		}
 		if(nextStep || !StringUtils.isNullOrEmpty(dbId)) {
 			this.buildDb(dbId);
@@ -77,11 +96,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public boolean createContainer(MclusterModel mclusterModel,String dbId) {
 		boolean nextStep = true;
-		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
-		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
-		mclusterModel.setAdminPassword(mclusterModel.getMclusterName());
-		this.mclusterService.insert(mclusterModel);
-		this.buildService.initStatus(mclusterModel.getId());
 		
 		int step = 0;
 		Date startTime = new Date();
@@ -135,17 +149,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	@Override
 	public void buildDb(String dbId) {
-		Map<String,String> params = this.dbService.selectCreateParams(dbId);
-		String result = this.pythonService.createDb(params.get("nodeIp"), params.get("dbName"), params.get("dbName"), null, params.get("username"), params.get("password"));
-		
 		String status = "";
-		if(analysisResult(transResult(result))) {
-			status = Constant.STATUS_OK;
-		} else {
+		Map<String,String> params = this.dbService.selectCreateParams(dbId);
+		try {
+			String result = this.pythonService.createDb(params.get("nodeIp"), params.get("dbName"), params.get("dbName"), null, params.get("username"), params.get("password"));
+			
+			if(analysisResult(transResult(result))) {
+				status = Constant.STATUS_OK;
+			} else {
+				status = Constant.STATUS_BUILD_FAIL;
+			}
+		} catch (Exception e) {
 			status = Constant.STATUS_BUILD_FAIL;
+		} finally {
+			//保存用户创建成功状态
+			this.dbService.updateBySelective(new DbModel(dbId,status));
 		}
-		//保存用户创建成功状态
-		this.dbService.build(new DbModel(dbId,status));
 	}
 
 
@@ -155,16 +174,20 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(id);
-			Map<String,String> params = this.dbUserService.selectCreateParams(id);
-			
-			String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
-			if(analysisResult(transResult(result))) {
-				dbUserModel.setStatus(Constant.STATUS_OK);
-			} else {
+			try {
+				Map<String,String> params = this.dbUserService.selectCreateParams(id);
+				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
+				if(analysisResult(transResult(result))) {
+					dbUserModel.setStatus(Constant.STATUS_OK);
+				} else {
+					dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
+				}
+			} catch (Exception e) {
 				dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
+			} finally {
+				//保存用户创建成功状态
+				this.dbUserService.updateStatus(dbUserModel);
 			}
-			//保存用户创建成功状态
-			this.dbUserService.updateStatus(dbUserModel);
 		}
 		
 	}
@@ -175,7 +198,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		boolean nextStep = true;
 		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId());
 		
-		int step = 3;
+		int step = 2;
 		//假设数据
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
@@ -321,19 +344,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	private boolean analysisResult(Map result){
-		boolean flag = true;
+		boolean flag = false;
 		Map meta = (Map) result.get("meta");
-		if(!Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
-			flag = false;
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+			flag = true;
 		} 
 		return flag;
 	}
 	private boolean analysisCheckResult(Map result){
-		boolean flag = true;
+		boolean flag = false;
 		Map meta = (Map) result.get("meta");
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
-			if(!Constant.PYTHON_API_RESULT_SUCCESS.equals(((Map)result.get("response")).get("code"))) {
-				flag = false;
+			if(Constant.PYTHON_API_RESULT_SUCCESS.equals(((Map)result.get("response")).get("code"))) {
+				flag = true;
 			}
 		} 
 		return flag;

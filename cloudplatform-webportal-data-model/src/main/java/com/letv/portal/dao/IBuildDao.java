@@ -14,4 +14,6 @@ import com.letv.portal.model.BuildModel;
 public interface IBuildDao extends IBaseDao<BuildModel> {
 	
 	public List<BuildModel> selectByMclusterId(String mclusterId);
+	
+	public void updateStatusFail(BuildModel buildModel);
 }
