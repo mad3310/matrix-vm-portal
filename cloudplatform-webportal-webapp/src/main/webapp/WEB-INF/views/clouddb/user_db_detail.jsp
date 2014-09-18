@@ -269,7 +269,11 @@ $(function(){
 		                            };
 		                        },
 		                        message: '该用户名此IP也存在!'
-		                    }
+		                    }/* , 
+		                    different: {
+		                        field: 'acceptIp',
+		                        message: '您已输入此IP地址!'
+		                    } */
 	                    }
 	                }
 	            }

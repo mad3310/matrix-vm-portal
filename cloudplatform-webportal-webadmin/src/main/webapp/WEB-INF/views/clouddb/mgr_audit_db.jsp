@@ -98,7 +98,7 @@
 				</div>
 				<div class="tab-pane fade" id="disagree">
 				<div>
-				      <form class="form-horizontal" role="form" method="post" action="${ctx}/db/audit/save">
+				      <form class="form-horizontal" id="refuse_create_mcluster" role="form" method="post" action="${ctx}/db/audit/save">
 						  <input type="text" class="form-control hide" value="4" id="auditType" name="auditType"/>
 							<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
 							<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
@@ -108,7 +108,7 @@
 						      <textarea  id="auditInfo" name="auditInfo" class="form-control" rows="3" placeholder="请输入未通过原因"></textarea>
 						  	</div>
 						  	<div class="col-sm-12">
-						  		<button type="submit" class="btn btn-sm btn-primary pull-right" style="margin-top:10px">确定</button>
+						  		<button type="button" class="btn btn-sm btn-primary pull-right" onclick="refuseCreateMcluster()" style="margin-top:10px">确定</button>
 						  		</div>
 						  </div>
 					  </form>
@@ -140,6 +140,14 @@ function createDbOnNewMcluster(){
 		type : "post",
 		url : "${ctx}/db/audit/save",
 		data :$('#create_on_new_cluster_form').serialize()
+	});
+	window.location = "${ctx}/db/list";
+}
+function refuseCreateMcluster(){
+	$.ajax({
+		type : "post",
+		url : "${ctx}/db/audit/save",
+		data :$('#refuse_create_mcluster').serialize()
 	});
 	window.location = "${ctx}/db/list";
 }
