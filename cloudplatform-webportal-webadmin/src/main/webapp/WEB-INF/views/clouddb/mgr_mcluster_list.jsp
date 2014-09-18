@@ -183,6 +183,7 @@ $(function(){
 		}
 	}).on('hidden.bs.modal', function (e) {
 		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
+		location.reload();
 	});
 	
 });	
@@ -455,9 +456,6 @@ function queryBuildStatus(mclusterId) {
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(build_status_tby);
 			}
-				/* if(array[array.length-1].status == "success"){
-					 location.reload();
-				} */
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$.gritter.add({
