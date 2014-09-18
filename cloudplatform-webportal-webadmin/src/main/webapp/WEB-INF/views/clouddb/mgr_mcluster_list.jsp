@@ -156,24 +156,35 @@ $(function(){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
-	
+	var mclusterId;
+	var status;
 	//modal显示创建进度
-	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
-		var mclusterId = $(this).closest('tr').find('td:first input').val();
+	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+		mclusterId = $(this).closest('tr').find('td:first input').val();
+		
 		if($(this).html().indexOf("正常")>=0){
 			$('#buildStatusHeader').html("创建成功");
+			status = "1";
 		}else if($(this).html().indexOf("创建中")>=0){
 			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+			status = "2";
 		}else if($(this).html().indexOf("创建失败")>=0){
 			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			status = "3";
 		}
 		queryBuildStatus(mclusterId);
-		queryBuildStatusrefresh = setInterval(function() {  
-			queryBuildStatus(mclusterId);
-		},10000);
+	});
+	
+	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
+		if(status == "2") {
+			queryBuildStatusrefresh = setInterval(function() {  
+				queryBuildStatus(mclusterId);
+			},10000);
+		}
 	}).on('hidden.bs.modal', function (e) {
 		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
 	});
+	
 });	
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
@@ -444,9 +455,9 @@ function queryBuildStatus(mclusterId) {
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(build_status_tby);
 			}
-				if(array[array.length-1].status == "success"){
+				/* if(array[array.length-1].status == "success"){
 					 location.reload();
-				}
+				} */
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$.gritter.add({
