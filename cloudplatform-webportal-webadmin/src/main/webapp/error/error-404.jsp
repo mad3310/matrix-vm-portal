@@ -19,15 +19,6 @@
 				<h3 class="lighter smaller">无法载入页面!</h3>
 
 				<div>
-					<form class="form-search">
-						<span class="input-icon align-middle">
-							<i class="ace-icon fa fa-search"></i>
-
-							<input type="text" class="search-query" placeholder="Give it a search...">
-						</span>
-						<button class="btn btn-sm" type="button">Go!</button>
-					</form>
-
 					<div class="space"></div>
 					<h4 class="smaller">尝试如下动作:</h4>
 
