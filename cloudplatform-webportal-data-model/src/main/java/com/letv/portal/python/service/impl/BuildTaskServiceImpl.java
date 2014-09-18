@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
@@ -28,7 +27,6 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
-import com.mysql.jdbc.Constants;
 import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
@@ -36,7 +34,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildTaskServiceImpl.class);
 	
-	private static long PYTHON_CHECK_TIME = 30;//ConfigUtil.getint("python_check_time");
+	private static long PYTHON_CREATE_CHECK_TIME = 300;//ConfigUtil.getint("python_check_time");
+	private static long PYTHON_INIT_CHECK_TIME = 600;//ConfigUtil.getint("python_check_time");
 	@Resource
 	private IMclusterService mclusterService;
 	@Resource
@@ -68,7 +67,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
 			}
-			
+			Thread.sleep(300000);
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
 			}
@@ -108,11 +107,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			step++;
 			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			Date checkStartDate = new Date();
-			while(!analysisCheckResult(result)) {
+			while(!analysisCheckCreateResult(result)) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				Date checkDate = new Date();
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
 				long time = diff/1000;
-				if(time >PYTHON_CHECK_TIME) {
+				if(time >PYTHON_CREATE_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
@@ -275,11 +279,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			step++;
 			Map<String,Object> result =  transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
 			Date checkStartDate = new Date();
-			while(!analysisCheckResult(result)) {
+			while(!analysisCheckInitResult(result)) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				Date checkDate = new Date();
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
 				long time = diff/1000;
-				if(time >PYTHON_CHECK_TIME) {
+				if(time >PYTHON_INIT_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
@@ -287,7 +296,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
+					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
 					return false;
+					
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
 			}
@@ -351,11 +362,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} 
 		return flag;
 	}
-	private boolean analysisCheckResult(Map result){
+	private boolean analysisCheckCreateResult(Map result){
 		boolean flag = false;
 		Map meta = (Map) result.get("meta");
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
 			if(Constant.PYTHON_API_RESULT_SUCCESS.equals(((Map)result.get("response")).get("code"))) {
+				flag = true;
+			}
+		} 
+		return flag;
+	}
+	private boolean analysisCheckInitResult(Map result){
+		boolean flag = false;
+		Map meta = (Map) result.get("meta");
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+			if(Constant.MCLUSTER_INIT_STATUS_RUNNING.equals(((Map)result.get("response")).get("message"))) {
 				flag = true;
 			}
 		} 

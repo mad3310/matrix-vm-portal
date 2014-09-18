@@ -40,6 +40,8 @@ public class Constant {
 	
 	public static String DB_USER_TYPE_MANAGER= "manager";
 	
+	public static String MCLUSTER_INIT_STATUS_RUNNING = "running";
+	
 	
 	
 }
