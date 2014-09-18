@@ -74,7 +74,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2">
-								<button type="button" onclick="createDbOnOldMcluster()" class="btn btn-sm btn-primary">创建</button>
+								<button id="create_on_old_mcluster_botton" type="button" onclick="createDbOnOldMcluster()" class="btn btn-sm btn-primary disabled">创建</button>
 							</div>
 						</div>
 					</form>
@@ -166,6 +166,7 @@ function request(paras)
     return returnValue; 
     } 
 }
+//创建db表单验证
 function formValidate() {
 	$("#create_on_new_cluster_form").bootstrapValidator({
 	  message: '无效的输入',
@@ -198,6 +199,24 @@ function formValidate() {
     	 $('#create-mcluster-botton').addClass("disabled");
      }).on('success.field.bv', function(e, data) {
     	 $('#create-mcluster-botton').removeClass("disabled");
+     });
+	
+	$("#create_on_old_cluster_form").bootstrapValidator({
+	  message: '无效的输入',
+         fields: {
+        	 mclusterId: {
+                 validMessage: '请按提示输入',
+                 validators: {
+                     notEmpty: {
+                         message: '选择集群不能为空!'
+                     }
+	             }
+         	}	
+         }
+     }).on('error.field.bv', function(e, data) {
+    	 $('#create_on_old_mcluster_botton').addClass("disabled");
+     }).on('success.field.bv', function(e, data) {
+    	 $('#create_on_old_mcluster_botton').removeClass("disabled");
      });
 }
 function hostDualListBox()
