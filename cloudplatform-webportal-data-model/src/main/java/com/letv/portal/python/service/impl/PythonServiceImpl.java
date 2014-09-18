@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
@@ -24,7 +25,7 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
-	private final static String MCLUSTER_CREATE_URL = "http://10.200.91.142:8888"; //ConfigUtil.getString("mcluster_create_url");
+	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");//"http://10.200.91.142:8888"; //ConfigUtil.getString("mcluster_create_url");
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
 	private final static String URL_IP = "";			//ConfigUtil.getString("");
 	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");

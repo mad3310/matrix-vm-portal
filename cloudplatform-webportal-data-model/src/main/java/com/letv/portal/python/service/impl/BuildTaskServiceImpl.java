@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
@@ -34,8 +35,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildTaskServiceImpl.class);
 	
-	private static long PYTHON_CREATE_CHECK_TIME = 300;//ConfigUtil.getint("python_check_time");
-	private static long PYTHON_INIT_CHECK_TIME = 600;//ConfigUtil.getint("python_check_time");
+	private static long PYTHON_CREATE_CHECK_TIME = ConfigUtil.getlong("python_create_check_time"); //300000;//单位：ms
+	private static long PYTHON_CHECK_INTERVAL_TIME = ConfigUtil.getlong("python_check_interval_time");// 2000;//单位：ms
+	
+	private static long PYTHON_CREATE_INTERVAL_INIT_TIME = ConfigUtil.getlong("python_create_interval_init_time");//60000;//单位：ms
+	
+	private static long PYTHON_INIT_CHECK_TIME = ConfigUtil.getlong("python_init_check_time");//600000;//单位：ms
+	private static long PYTHON_INIT_CHECK_INTERVAL_TIME = ConfigUtil.getlong("python_init_check_interval_time");//5000;//单位：ms
+	
 	@Resource
 	private IMclusterService mclusterService;
 	@Resource
@@ -67,7 +74,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
 			}
-			Thread.sleep(300000);
+			Thread.sleep(PYTHON_CREATE_INTERVAL_INIT_TIME);
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
 			}
@@ -109,14 +116,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Date checkStartDate = new Date();
 			while(!analysisCheckCreateResult(result)) {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				Date checkDate = new Date();
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
-				long time = diff/1000;
-				if(time >PYTHON_CREATE_CHECK_TIME) {
+				if(diff >PYTHON_CREATE_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
@@ -281,14 +287,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Date checkStartDate = new Date();
 			while(!analysisCheckInitResult(result)) {
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(PYTHON_INIT_CHECK_INTERVAL_TIME);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				Date checkDate = new Date();
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
-				long time = diff/1000;
-				if(time >PYTHON_INIT_CHECK_TIME) {
+				if(diff >PYTHON_INIT_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
