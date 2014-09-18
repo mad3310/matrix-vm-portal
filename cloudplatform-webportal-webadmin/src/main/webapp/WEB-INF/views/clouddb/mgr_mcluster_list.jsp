@@ -208,7 +208,7 @@ function queryByPage(currentPage,recordsPerPage) {
 				if(array[i].status == 2){
 					var td5 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"/>"
 							+"创建中...</a>"
 							+ "</td>");
 				}else{

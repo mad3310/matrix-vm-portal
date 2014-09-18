@@ -163,17 +163,24 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
-												placeholder="" />
+											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" placeholder="" />
 										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="readWriterRateHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入读写比例.如  1:2 ,如有疑问请联系管理员" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
-												placeholder=""/>
+											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" placeholder=""/>
 										</div>
-										<label class="control-label" for="maximum_concurrency">/s</label>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入每秒最大并发量.如  50 ,第一次使用建议咨询管理员" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
 									</div>
 								</div>
 							</div>
@@ -195,6 +202,9 @@
 <script type="text/javascript">
 $(function(){
 	pageinit();
+	$('#readWriterRateHelp').popover();
+	$('#maxConcurrencyHelp').popover();
+	
 	 var MAX_OPTIONS = 10;
 	    $('#db_user_apply_form').bootstrapValidator({
 	            feedbackIcons: {
