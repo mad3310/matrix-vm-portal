@@ -469,11 +469,11 @@ function queryBuildStatus(mclusterId) {
 		}
 	});
  }
-function updateBuildStatus(mclusterId) {
+/* function updateBuildStatus(mclusterId) {
 	$.ajax({
 		type : "get",
 		url : "${ctx}/mcluster/build/status/"+mclusterId,
-		dataType : "json", /*这句可用可不用，没有影响*/
+		dataType : "json",
 		success : function(data) {
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
@@ -551,7 +551,7 @@ function updateBuildStatus(mclusterId) {
 			return false;
 		}
 	});
- }
+ } */
 
 function createMcluster(){
 	$.ajax({
