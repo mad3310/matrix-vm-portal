@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
@@ -142,11 +143,14 @@ public class DbController {
 		String mclusterName = dav.getMclusterName();
 		String dbId = dav.getDbId();
 		String dbApplyStandardId = dav.getDbApplyStandardId();
-		//保存审批信息
+		boolean isNew = StringUtils.isNullOrEmpty(mclusterId);
+		if(isNew) {
+			mclusterId = UUID.randomUUID().toString();
+		}
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
+		//保存审批信息
 		if(Constant.STATUS_BUILDDING.equals(auditType)) {
-			if(StringUtils.isNullOrEmpty(mclusterId)) {
-				mclusterId = UUID.randomUUID().toString();
+			if(isNew) {
 				MclusterModel mcluster = new MclusterModel();
 				mcluster.setId(mclusterId);
 				mcluster.setMclusterName(mclusterName);

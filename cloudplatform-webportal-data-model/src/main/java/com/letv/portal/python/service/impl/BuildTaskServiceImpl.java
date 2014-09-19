@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -12,8 +11,12 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.BuildModel;
@@ -56,6 +59,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Resource
 	private IBuildService buildService;
 	
+	@Value("${error.email.to}")
+	private String ERROR_MAIL_ADDRESS;
+	
+	@Value("${error.email.enabled}")
+	private Boolean ERROR_MAIL_ENABLED;
+	
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
 	public void buildMcluster(MclusterModel mclusterModel,String dbId) {
@@ -147,6 +158,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setIpMask((String) map.get("netMask"));
 					container.setContainerName((String) map.get("containerClusterName"));
 					container.setClusterNodeName((String)map.get("containerName"));
+					container.setHostId((String)map.get("hostIp"));
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -387,4 +399,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return flag;
 	}
 	
+	
+	public void sendMessage(){
+		MailMessage mailMessage = new MailMessage("乐视云平台web-porta系统", ERROR_MAIL_ADDRESS,"mcluster-db创建结果","build.ftl",null);
+		try {
+			defaultEmailSender.sendMessage(mailMessage);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
 }

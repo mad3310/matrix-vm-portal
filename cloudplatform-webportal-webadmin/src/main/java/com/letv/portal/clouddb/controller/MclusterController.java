@@ -3,6 +3,7 @@ package com.letv.portal.clouddb.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -108,7 +109,7 @@ public class MclusterController {
 	@RequestMapping(value = "/build", method=RequestMethod.POST)   
 	public String build(MclusterModel mclusterModel,HttpServletRequest request) {
 		mclusterModel.setCreateUser((String) request.getSession().getAttribute("userId"));
-		
+		mclusterModel.setId(UUID.randomUUID().toString());
 		this.buildTaskService.buildMcluster(mclusterModel,null);
 		
 		return "redirect:/mcluster/list";
