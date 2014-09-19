@@ -343,6 +343,8 @@ $(function(){
 	                    $('#db_user_apply_form').find('.addButton').removeAttr('disabled');
 	                }
 	            }
+	        }).on('keyup', '[name="username"]', function() {
+	                $('#db_user_apply_form').bootstrapValidator('revalidateField', 'acceptIp');
 	        });
 });
 
