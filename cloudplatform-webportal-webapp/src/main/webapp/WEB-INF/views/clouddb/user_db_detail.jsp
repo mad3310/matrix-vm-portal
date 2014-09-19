@@ -249,7 +249,7 @@ $(function(){
 	                            message: '用户名不能为空!'
 	                        },
 	  			          stringLength: {
-				              max: 30,
+				              max: 16,
 				              message: '用户名过长!'
 				          }, regexp: {
 			                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,

@@ -325,7 +325,7 @@ var currentSelectedLineDbName = 1;
                           message: '数据库名称不能为空!'
                       },
 			          stringLength: {
-			              max: 30,
+			              max: 16,
 			              message: '数据库名名过长!'
 			          }, regexp: {
 		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
