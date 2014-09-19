@@ -2,6 +2,7 @@ package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -145,7 +146,9 @@ public class DbController {
 		this.dbService.audit(dbId,dbApplyStandardId,auditType,mclusterId,auditInfo);
 		if(Constant.STATUS_BUILDDING.equals(auditType)) {
 			if(StringUtils.isNullOrEmpty(mclusterId)) {
+				mclusterId = UUID.randomUUID().toString();
 				MclusterModel mcluster = new MclusterModel();
+				mcluster.setId(mclusterId);
 				mcluster.setMclusterName(mclusterName);
 				mcluster.setCreateUser((String) request.getSession().getAttribute("userId"));
 				this.buildTaskService.buildMcluster(mcluster,dbId);

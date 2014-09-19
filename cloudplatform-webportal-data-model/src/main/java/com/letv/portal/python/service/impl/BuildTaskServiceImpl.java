@@ -60,7 +60,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public void buildMcluster(MclusterModel mclusterModel,String dbId) {
 		boolean nextStep = true;
-		mclusterModel.setId(UUID.randomUUID().toString());
 		
 		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
 		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
