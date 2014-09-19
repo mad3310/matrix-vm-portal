@@ -92,10 +92,7 @@ var currentSelectedLineDbName = 1;
  		var str="";
  		var flag = 0; //0:无数据 -1:错误
  		ids.each(function(){
- 			if($(this).closest("tr").children().last().html() == "待审核"){
- 				str +=($(this).val())+",";
- 	 			flag += 1;
- 			}else{
+ 			if($(this).closest("tr").children().last().html() == "正常"){
  				$.gritter.add({
  					title: '警告',
  					text: '创建用户只能选择待审核数据!',
@@ -105,9 +102,12 @@ var currentSelectedLineDbName = 1;
  				});
  				flag = -1;
  				return false;
+ 			}else{
+ 				str +=($(this).val())+",";
+ 	 			flag += 1;
  			}
- 			
  		});
+ 		
  		if(flag > 0) {
 	 		$.ajax({ 
 				type : "get",
