@@ -88,10 +88,10 @@
 						<div class="form-group">
 							<label for="text" class="control-label col-sm-2">集群名称</label>
 							<div class="col-sm-8">
-								<input class="form-control" name="mclusterName" id="mclusterName" type="text" placeholder="${dbApplyStandard.applyCode}"/>
+								<input class="form-control" name="mclusterName" id="mclusterName" type="text" value="${dbApplyStandard.applyCode}"/>
 							</div>
 							<div class="col-sm-2">
-								<button id="create-mcluster-botton" type="button" onclick="createDbOnNewMcluster()" class="btn btn-sm btn-primary disabled">创建</button>
+								<button id="create-mcluster-botton" type="button" onclick="createDbOnNewMcluster()" class="btn btn-sm btn-primary">创建</button>
 							</div>
 						</div>
 					</form>
