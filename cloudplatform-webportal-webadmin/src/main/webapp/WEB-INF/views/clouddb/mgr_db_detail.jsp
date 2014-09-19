@@ -35,10 +35,17 @@
 										<td width="50%">数据库名</td>
 										<td width="50%">${db.dbName}</td>
 									</tr>
-									
+									<tr>
+										<td>所属用户</td>
+										<td>${db.createUser}</td>
+									</tr>
+									<tr>
+										<td>创建时间</td>
+										<td>${db.createTime}</td>
+									</tr>
 									<c:forEach items="${containers}" var="container">
 										<tr>
-											<td>${container.type}</td>
+											<td>${container.clusterNodeName}</td>
 											<td>${container.ipAddr}</td>
 										</tr>
 									</c:forEach>

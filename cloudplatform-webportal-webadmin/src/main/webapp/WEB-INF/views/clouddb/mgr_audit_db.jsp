@@ -30,13 +30,13 @@
 				<td>数据库引擎</td>
 				<td>${dbApplyStandard.engineType}</td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td>邮件通知</td>
 				<td>
 					<c:if test="${dbApplyStandard.isEmailNotice == '1'}">开启</c:if>
 					<c:if test="${dbApplyStandard.isEmailNotice != '1'}">关闭</c:if>
 				</td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<td>申请时间</td>
 				<td>${dbApplyStandard.createTime}</td>
