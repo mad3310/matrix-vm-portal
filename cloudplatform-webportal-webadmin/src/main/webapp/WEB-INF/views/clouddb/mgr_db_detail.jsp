@@ -94,7 +94,10 @@
 												</label>
 											</td>
 											<td>${dbUser.username}</td>
-											<td>${dbUser.type}</td>
+											<td>
+												<c:if test="${dbUser.type eq 'wr'}">读写</c:if>
+												<c:if test="${dbUser.type eq 'manager'}">管理员</c:if>
+											</td>
 											<td>${dbUser.acceptIp}</td>
 											<td>${dbUser.maxConcurrency}</td>
 											<td>

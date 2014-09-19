@@ -173,9 +173,12 @@ var currentSelectedLineDbName = 1;
 					var td3 = $("<td>"
 							+ "<a href=\"${ctx}/db/detail/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 							+ "</td>");
-					var td4 = $("<td>"
-							+ array[i].type
-							+ "</td>");
+					if(array[i].type == "wr")
+					{
+						var td4 = $("<td>读写</td>");
+					}else{
+						var td4 = $("<td>管理员</td>");
+					}
 					var td5 = $("<td>"
 							+ array[i].acceptIp
 							+ "</td>");
@@ -188,7 +191,7 @@ var currentSelectedLineDbName = 1;
 						
 					if(array[i].status == 0){
 						var tr = $("<tr class=\"warning\"></tr>");
-					}else if(array[i].status == -1){
+					}else if(array[i].status == 3||array[i].status == 4){
 						var tr = $("<tr class=\"danger\"></tr>");
 					}else{
 						var tr = $("<tr></tr>");
