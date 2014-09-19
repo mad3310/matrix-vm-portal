@@ -213,7 +213,7 @@ var currentSelectedLineDbName = 1;
 								+ "</td>"
 						);	 */
 						
-					if(array[i].status == 0){
+					if(array[i].status == 0 ||array[i].status == 2){
 						var tr = $("<tr class=\"warning\"></tr>");
 					}else if(array[i].status == 3 ||array[i].status == 4){
 						var tr = $("<tr class=\"danger\"></tr>");
