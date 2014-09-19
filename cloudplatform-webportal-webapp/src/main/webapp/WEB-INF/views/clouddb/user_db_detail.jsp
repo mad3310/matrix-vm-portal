@@ -144,8 +144,8 @@
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="wr">wr</option>
-												<option value="manager">manager</option>
+												<option value="wr">读写用户</option>
+												<option value="manager">管理员</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
