@@ -56,7 +56,7 @@
 						<thead>
 							<tr class="info">
 								<th width="3%">#</th>
-								<th width="30%">操作</th>
+								<th width="18%">操作</th>
 								<th width="15%">开始时间</th>
 								<th width="15%">结束时间</th>
 								<th>信息</th>
@@ -98,15 +98,26 @@ var currentSelectedLineDbName = 1;
 		var mclusterId = $(this).closest('tr').find('input').val();
 		if($(this).html().indexOf("正常")>=0){
 			$('#buildStatusHeader').html("创建成功");
+			status = "1";
 		}else if($(this).html().indexOf("创建中")>=0){
 			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+			status = "2";
 		}else if($(this).html().indexOf("创建失败")>=0){
 			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			status = "3";
 		}
 		queryBuildStatus(mclusterId);
-		/* $('body').everyTime('5s','A',function(){
-			alert("dfadfa");
-		}); */
+	});
+	
+	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
+		if(status == "2") {
+			queryBuildStatusrefresh = setInterval(function() {  
+				queryBuildStatus(mclusterId);
+			},10000);
+		}
+	}).on('hidden.bs.modal', function (e) {
+		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
+		location.reload();
 	});
 });	
 function queryByPage(currentPage,recordsPerPage) {
