@@ -60,7 +60,7 @@
 								<th width="15%">开始时间</th>
 								<th width="15%">结束时间</th>
 								<th>信息</th>
-								<th width="8%">结果  </th>
+								<th width="10%">结果  </th>
 							</tr>
 						</thead>
 						<tbody id="build_status_tby">
@@ -106,14 +106,14 @@ var currentSelectedLineDbName = 1;
 			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
 			status = "3";
 		}
-		queryBuildStatus(mclusterId);
+		queryBuildStatus(mclusterId,"new");
 	});
 	
 	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
 		if(status == "2") {
 			queryBuildStatusrefresh = setInterval(function() {  
-				queryBuildStatus(mclusterId);
-			},10000);
+				queryBuildStatus(mclusterId,"update");
+			},5000);
 		}
 	}).on('hidden.bs.modal', function (e) {
 		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
@@ -332,9 +332,11 @@ function pageControl() {
 		queryByPage(currentPage,recordsPerPage);
 	});
 }
-//查询db创建过程
-function queryBuildStatus(mclusterId) {
-	$("#build_status_tby tr").remove();
+//查询集群创建过程
+function queryBuildStatus(mclusterId,type) {	//type(update或new)
+	if(type == "new"){
+		$("#build_status_tby tr").remove();
+	}
 	$.ajax({
 		type : "get",
 		url : "${ctx}/mcluster/build/status/"+mclusterId,
@@ -393,14 +395,18 @@ function queryBuildStatus(mclusterId) {
 							+ "</td>");
 				}
 					
-				if(array[i].status == "FAIL"){
+				if(array[i].status == "fail"){
 					var tr = $("<tr class=\"danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-				tr.appendTo(build_status_tby);
+				if(type == "new"){
+					tr.appendTo(build_status_tby);
+				}else{
+					build_status_tby.find("tr:eq("+i+")").html(tr.html());
+				}
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {

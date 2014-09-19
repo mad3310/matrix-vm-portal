@@ -172,14 +172,14 @@ $(function(){
 			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
 			status = "3";
 		}
-		queryBuildStatus(mclusterId);
+		queryBuildStatus(mclusterId,"new");
 	});
 	
 	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
 		if(status == "2") {
 			queryBuildStatusrefresh = setInterval(function() {  
-				queryBuildStatus(mclusterId);
-			},10000);
+				queryBuildStatus(mclusterId,"update");
+			},5000);
 		}
 	}).on('hidden.bs.modal', function (e) {
 		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
@@ -387,8 +387,10 @@ function formValidate() {
      });
 }
 //查询集群创建过程
-function queryBuildStatus(mclusterId) {
-	$("#build_status_tby tr").remove();
+function queryBuildStatus(mclusterId,type) {	//type(update或new)
+	if(type == "new"){
+		$("#build_status_tby tr").remove();
+	}
 	$.ajax({
 		type : "get",
 		url : "${ctx}/mcluster/build/status/"+mclusterId,
@@ -454,7 +456,11 @@ function queryBuildStatus(mclusterId) {
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-				tr.appendTo(build_status_tby);
+				if(type == "new"){
+					tr.appendTo(build_status_tby);
+				}else{
+					build_status_tby.find("tr:eq("+i+")").html(tr.html());
+				}
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
@@ -469,89 +475,6 @@ function queryBuildStatus(mclusterId) {
 		}
 	});
  }
-/* function updateBuildStatus(mclusterId) {
-	$.ajax({
-		type : "get",
-		url : "${ctx}/mcluster/build/status/"+mclusterId,
-		dataType : "json",
-		success : function(data) {
-			var array = data.data;
-			var build_status_tby = $("#build_status_tby");
-			
-			for (var i = 0, len = array.length; i < len; i++) {
-				build_status_tby.children().
-				
-				var td1 = $("<td>"
-						+ array[i].step
-						+"</td>");
-				var td2 = $("<td>"
-						+ array[i].stepMsg
-						+"</td>");
-				if(array[i].startTime != null )
-				{
-					var td3 = $("<td>"
-							+ date('Y-m-d H:i:s',array[i].startTime)
-							+ "</td>");
-				}else{
-					var td3 = $("<td>\-</td>");
-				}
-				if(array[i].endTime != null)
-				{
-					var td4 = $("<td>"
-							+ date('Y-m-d H:i:s',array[i].endTime)
-							+ "</td>");
-				}else{
-					var td4 = $("<td>\-</td>");
-				}
-				if(array[i].msg != null)
-				{
-					var td5 = $("<td>"
-							+ array[i].msg
-							+ "</td>");
-				}else{
-					var td5 = $("<td>\-</td>");
-				}
-				
-				if(array[i].status == "success"){
-					var td6 = $("<td>"
-							+"<a class=\"green\"><i class=\"ace-icon fa fa-check bigger-120\">成功</a>"
-							+ "</td>");
-				}else if(array[i].status == "fail"){
-					var td6 = $("<td>"
-							+"<a class=\"red\"><i class=\"ace-icon fa fa-times red bigger-120\">失败</a>"
-							+ "</td>");
-				}else if(array[i].status == "building"){
-					var td6 = $("<td>"
-							+"<a style=\"text-decoration:none;\" class=\"green\"><h5><i class=\"ace-icon fa fa-spinner fa-spin green bigger-120\"/>运行中</h5></a>"
-							+ "</td>");
-				}else{
-					var td6 = $("<td>"
-							+"<a class=\"orange\"><i class=\"ace-icon fa fa-coffee orange bigger-120\">等待</a>"
-							+ "</td>");
-				}
-					
-				if(array[i].status == "fail"){
-					var tr = $("<tr class=\"danger\"></tr>");
-				}else{
-					var tr = $("<tr></tr>");
-				}
-				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-				tr.appendTo(build_status_tby);
-			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
-			return false;
-		}
-	});
- } */
 
 function createMcluster(){
 	$.ajax({
