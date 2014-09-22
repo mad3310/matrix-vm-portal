@@ -46,6 +46,10 @@
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
 
+<!-- warning box -->
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
+<script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
 <!--[if lte IE 8]>

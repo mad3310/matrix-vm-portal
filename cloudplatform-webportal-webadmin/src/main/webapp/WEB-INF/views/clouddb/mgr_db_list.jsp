@@ -42,6 +42,22 @@
 				</div>
 			</div>
 		</div>
+		<div id="pageControlBar">
+			<input type="hidden" id="totalPage_input" />
+			<ul class="pager">
+				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+	
+				<li>共<lable id="totalPage"></lable>页
+				</li>
+				<li>第<lable id="currentPage"></lable>页
+				</li>
+				<li>共<lable id="totalRows"></lable>条记录
+				</li>
+			</ul>
+		</div>
 		<div class="modal fade bs-example-modal-lg"  id="create-mcluster-status-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
