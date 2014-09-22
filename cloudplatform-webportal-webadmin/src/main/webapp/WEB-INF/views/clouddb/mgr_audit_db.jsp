@@ -23,6 +23,10 @@
 				<td>${dbApplyStandard.applyCode}</td>
 			</tr>
 			<tr>
+				<td>所属用户</td>
+				<td>${dbApplyStandard.createUser}</td>
+			</tr>
+			<tr>
 				<td>链接类型</td>
 				<td>${dbApplyStandard.linkType}</td>
 			</tr>

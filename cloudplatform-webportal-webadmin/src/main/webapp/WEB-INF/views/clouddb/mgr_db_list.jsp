@@ -28,6 +28,7 @@
 							</th>
 							<th>DB名称</th>
 							<th>所属Mcluster</th>
+							<th>所属用户</th>
 							<th>
 								创建时间 
 							</th>
@@ -178,22 +179,25 @@ function queryByPage(currentPage,recordsPerPage) {
 					var td3 = $("<td> </td>");
 				}
 				var td4 = $("<td>"
+						+ array[i].createUser
+						+ "</td>");
+				var td5 = $("<td>"
 						+ array[i].createTime
 						+ "</td>");
 				if(array[i].status == 4){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' data-content=\""+ array[i].auditInfo + "\" style=\"cursor:pointer; text-decoration:none;\">"
 							+ translateStatus(array[i].status)
 							+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 2){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
 							+"创建中...</a>"
 							+ "</td>");
 				}else{
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
 				}
@@ -252,7 +256,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);//.append(td6);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 				
 				$('[name = "dbRefuseStatus"]').popover();
