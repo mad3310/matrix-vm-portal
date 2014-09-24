@@ -135,7 +135,7 @@
 											<input class="form-control" name="username" id="username" type="text" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请按数据库规范输入，用户名为字母数字或下划线" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',用户名不能以数字开头." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -146,7 +146,7 @@
 											<input class="form-control" name="password" id="password" type="password" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="密码请自己保管好!" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="密码请妥善保管!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -176,7 +176,7 @@
 								            </button>
 								        </div>
 								        <label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -197,7 +197,7 @@
 											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" placeholder="" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入读写比例.如  1:2 ,如有疑问请联系管理员" style="cursor:pointer; text-decoration:none;">
+											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入读写比例，建议值'2:1'" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -208,7 +208,7 @@
 											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" placeholder=""/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="根据业务类型输入每秒最大并发量.如  50 ,第一次使用建议咨询管理员" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入每秒最大并发量.建议值'50'" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
