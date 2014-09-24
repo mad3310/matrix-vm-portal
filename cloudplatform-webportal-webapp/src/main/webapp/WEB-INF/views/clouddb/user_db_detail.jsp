@@ -232,6 +232,9 @@
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	//隐藏搜索框
+	$('#nav-search').addClass("hidden");
+	
 	pageinit();
 	$('[name = "popoverHelp"]').popover();
 	

@@ -127,6 +127,9 @@
 
 <script type="text/javascript">
 $(function(){
+	//隐藏搜索框
+	$('#nav-search').addClass("hidden");
+	
 	hostDualListBox();
 	formValidate();
 	$("#pageMessage").hide();
