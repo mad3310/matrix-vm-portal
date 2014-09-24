@@ -26,7 +26,7 @@
 									<span class="lbl"></span>
 								</label>
 							</th>
-							<th>DB名称</th>
+							<th>数据库名称</th>
 							<th>所属Mcluster</th>
 							<th>所属用户</th>
 							<th>

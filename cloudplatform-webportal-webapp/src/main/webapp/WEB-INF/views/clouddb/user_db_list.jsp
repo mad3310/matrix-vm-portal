@@ -25,7 +25,7 @@
 				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th>DB名称</th>
+							<th>数据库名称</th>
 							<th>
 								创建时间 
 							</th>
