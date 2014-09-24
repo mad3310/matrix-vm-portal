@@ -147,7 +147,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
-					this.buildResultToMgr("mcluster集群", "失败", "time over check", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -330,7 +330,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
 					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
-					this.buildResultToMgr("mcluster集群", "失败", "time over check", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群", "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
@@ -421,7 +421,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("buildType", buildType);
 		map.put("result", result);
-		map.put("erorDetail", detail);
+		map.put("errorDetail", detail);
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		try {
 			defaultEmailSender.sendMessage(mailMessage);

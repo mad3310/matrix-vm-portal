@@ -545,7 +545,7 @@
                 
                  <webportal.cas.local.http>http://10.200.94.203:8081</webportal.cas.local.http>
                 
-                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>
