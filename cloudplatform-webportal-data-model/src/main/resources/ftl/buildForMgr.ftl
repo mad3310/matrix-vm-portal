@@ -1,7 +1,7 @@
 您好：
 
 ${buildType}创建${buildResult}，
-${erorDetail}
+${errorDetail}
 请登录系统查看。
 谢谢。
 

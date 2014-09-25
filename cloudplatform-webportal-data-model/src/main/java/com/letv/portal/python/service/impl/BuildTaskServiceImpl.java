@@ -420,7 +420,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void buildResultToMgr(String buildType,String result,String detail,String to){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("buildType", buildType);
-		map.put("result", result);
+		map.put("buildResult", result);
 		map.put("errorDetail", detail);
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		try {
