@@ -57,6 +57,32 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
+<<<<<<< HEAD
+		<div class="widget-body">
+			<div class="widget-main no-padding">
+				<table id="mcluster_list" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="center">
+								<label class="position-relative">
+									<input type="checkbox" class="ace" />
+									<span class="lbl"></span>
+								</label>
+							</th>
+							<th>集群名称</th>
+							<th>集群所属用户</th>
+							<th>
+								创建时间 
+							</th>
+							<th class="hidden-480">当前状态</th>
+							<!-- <th></th> -->
+						</tr>
+					</thead>
+					<tbody id="tby">
+					</tbody>
+				</table>
+			</div>
+=======
 				<li>共<lable id="totalPage"></lable>页
 				</li>
 				<li>第<lable id="currentPage"></lable>页
@@ -64,7 +90,42 @@
 				<li>共<lable id="totalRows"></lable>条记录
 				</li>
 			</ul>
+>>>>>>> refs/remotes/origin/develop
 		</div>
+<<<<<<< HEAD
+	</div>
+	<div id="pageControlBar">
+		<input type="hidden" id="totalPage_input" />
+		<ul class="pager">
+			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+			<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+			<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+			<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+
+			<li>共<lable id="totalPage"></lable>页
+			</li>
+			<li>第<lable id="currentPage"></lable>页
+			</li>
+			<li>共<lable id="totalRows"></lable>条记录
+			</li>
+		</ul>
+	</div>
+	<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="${ctx}/mcluster/build" method="post">
+				<div class="col-xs-12">
+					<h4 class="lighter">
+						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
+					</h4>
+					<div class="widget-box">
+						<div class="widget-body">
+							<div class="widget-main">
+								<div class="form-group">
+									<label class="col-sm-2 control-label" for="mcluster_name">集群名称</label>
+									<div class="col-sm-8">
+										<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+=======
 		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -81,11 +142,15 @@
 										<div class="col-sm-8">
 											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 										</div>
+<<<<<<< HEAD
+>>>>>>> refs/remotes/origin/develop
+=======
 										<label class="control-label">
 											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',集群名不能以数字开头." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
+>>>>>>> refs/remotes/origin/develop
 									</div>
 								</div>
 							</div>
@@ -378,7 +443,7 @@ function formValidate() {
 	                        url: "${ctx}/mcluster/validate"
 	                    }
 	             }
-         	}	
+         	}
          }
      }).on('error.field.bv', function(e, data) {
     	 $('#create-mcluster-botton').addClass("disabled");
