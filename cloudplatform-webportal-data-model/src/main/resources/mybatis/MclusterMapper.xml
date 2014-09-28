@@ -10,7 +10,7 @@
 		<result column="ADMIN_USER" property="adminUser" />
 		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -58,11 +58,8 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster">
 		insert into
-		WEBPORTAL_MCLUSTER_INFO(ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(
-		<if test="id != null">#{id}</if>
-		<if test="id == null">UUID()</if>
-		,#{mclusterName},#{adminUser},#{adminPassword},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
@@ -113,7 +110,7 @@
 		where ID = #{id}
 	</update>
 	<!-- status状态修改 -->
-	<update id="audit" parameterType="Mcluster">
+	<update id="audit" parameterType="java.util.Map">
 		update WEBPORTAL_MCLUSTER_INFO set
 		<if test="status != null  ">
 			STATUS=#{status}

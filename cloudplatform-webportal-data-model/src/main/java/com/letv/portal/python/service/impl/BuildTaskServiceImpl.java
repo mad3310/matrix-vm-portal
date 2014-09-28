@@ -72,6 +72,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
+	HashMap mclusterHashMap = new HashMap();
+	HashMap DbHashMap = new HashMap();
+	
 	@Override
 	public void buildMcluster(MclusterModel mclusterModel,String dbId) {
 		boolean nextStep = true;
@@ -82,8 +85,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		this.mclusterService.insert(mclusterModel);
 		
-		this.buildService.initStatus(mclusterModel.getId());
-		
+		this.buildService.initStatus(mclusterModel.getId().toString());
+		mclusterHashMap.put("id", mclusterModel.getId());
 		try {
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
@@ -94,18 +97,20 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				nextStep = initContainer(mclusterModel,dbId);
 			}
 			if(nextStep) {
-				this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_OK));
+				mclusterHashMap.put("status", Constant.STATUS_OK);
+				this.mclusterService.audit(mclusterHashMap);
 			}
 		} catch (Exception e) {
 			BuildModel nextBuild = new BuildModel();
-			nextBuild.setMclusterId(mclusterModel.getId());
+			nextBuild.setMclusterId(mclusterModel.getId().toString());
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus("fail");
 			nextBuild.setMsg(e.getMessage());
 			this.buildService.updateStatusFail(nextBuild);
-			this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+			mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
+			this.mclusterService.audit(mclusterHashMap);
 			if(!StringUtils.isNullOrEmpty(dbId)) {
-				this.dbService.updateBySelective(new DbModel(dbId,Constant.STATUS_BUILD_FAIL));
+				this.dbService.updateBySelective(new DbModel(Constant.STATUS_BUILD_FAIL));
 			}
 			this.buildResultToMgr("mcluster集群", "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
@@ -124,7 +129,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		if(nextStep) {
 			step++;
-			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName())), step, startTime, mclusterModel.getId(), dbId);
+			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName())), step, startTime, mclusterModel.getId().toString(), dbId);
 		}
 		if(nextStep) {
 			step++;
@@ -140,19 +145,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
 				if(diff >PYTHON_CREATE_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
-					nextBuild.setMclusterId(mclusterModel.getId());
+					nextBuild.setMclusterId(mclusterModel.getId().toString());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
-					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+					mclusterHashMap.put("id", mclusterModel.getId());
+					mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
+					this.mclusterService.audit(mclusterHashMap);
 					this.buildResultToMgr("mcluster集群", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			}
-			nextStep = analysis(result, step, startTime, mclusterModel.getId(), dbId);
+			nextStep = analysis(result, step, startTime, mclusterModel.getId().toString(), dbId);
 			//保存container信息
 			
 			List<Map> containers = (List<Map>) ((Map)result.get("response")).get("containers");
@@ -161,7 +168,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				ContainerModel container = new ContainerModel();
 				try {
 					BeanUtils.populate(container, map);
-					container.setClusterId(mclusterModel.getId());
+					container.setClusterId(mclusterModel.getId().toString());
 					container.setIpMask((String) map.get("netMask"));
 					container.setContainerName((String) map.get("containerClusterName"));
 					container.setClusterNodeName((String)map.get("containerName"));
@@ -196,7 +203,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			status = Constant.STATUS_BUILD_FAIL;
 		} finally {
 			this.buildResultToMgr("DB数据库", resultMsg, null, ERROR_MAIL_ADDRESS);
-			this.dbService.updateBySelective(new DbModel(dbId,status));
+			DbHashMap.put("id", dbId);
+			DbHashMap.put("status", status);
+			this.dbService.updateByMap(DbHashMap);
 		}
 	}
 
@@ -234,7 +243,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public boolean initContainer(MclusterModel mclusterModel,String dbId) {
 		
 		boolean nextStep = true;
-		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId());
+		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId().toString());
 		
 		int step = 2;
 		//假设数据
@@ -267,47 +276,47 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.initZookeeper(nodeIp1)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.initZookeeper(nodeIp1)),step,startTime,mclusterId.toString(),dbId);
 		}
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.initUserAndPwd4Manager(nodeIp1,username,password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.initUserAndPwd4Manager(nodeIp1,username,password)),step,startTime,mclusterId.toString(),dbId);
 		}
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password)),step,startTime,mclusterId.toString(),dbId);
 		}
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.initMcluster(nodeIp1, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.initMcluster(nodeIp1, username, password)),step,startTime,mclusterId.toString(),dbId);
 		}
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp2, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp2, username, password)),step,startTime,mclusterId.toString(),dbId);
 		} 
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password)),step,startTime,mclusterId.toString(),dbId);
 		} 
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp3, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp3, username, password)),step,startTime,mclusterId.toString(),dbId);
 		} 
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password)),step,startTime,mclusterId.toString(),dbId);
 		} 
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.startMcluster(nodeIp1, username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.startMcluster(nodeIp1, username, password)),step,startTime,mclusterId.toString(),dbId);
 		} 
 		if(nextStep) {
 			step++;
@@ -323,19 +332,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
 				if(diff >PYTHON_INIT_CHECK_TIME) {
 					BuildModel nextBuild = new BuildModel();
-					nextBuild.setMclusterId(mclusterModel.getId());
+					nextBuild.setMclusterId(mclusterModel.getId().toString());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
-					this.mclusterService.audit(new MclusterModel(mclusterModel.getId(),Constant.STATUS_BUILD_FAIL));
+					mclusterHashMap.put("id", mclusterModel.getId());
+					mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
+					this.mclusterService.audit(mclusterHashMap);
 					this.buildResultToMgr("mcluster集群", "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
 			}
-			nextStep = analysis(result, step, startTime, mclusterModel.getId(), null);
+			nextStep = analysis(result, step, startTime, mclusterModel.getId().toString(), null);
 		}
 		return nextStep;
 	}
@@ -362,7 +373,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			buildModel.setStatus("fail");
 			flag =  false;
 			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
-			this.mclusterService.audit(new MclusterModel(mclusterId,Constant.STATUS_BUILD_FAIL));
+			mclusterHashMap.put("id", mclusterId);
+			mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
+			this.mclusterService.audit(mclusterHashMap);
 		}
 		this.buildService.updateBySelective(buildModel);
 		if(flag) {

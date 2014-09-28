@@ -56,7 +56,7 @@
 						</li>
 						<li class="divider"></li> -->
 						<li>
-							<a href="${ctx}/account/logout"> 
+							<a href="${ctx}/logout"> 
 								<i class="ace-icon fa fa-power-off"></i>
 								退出登录
 							</a>

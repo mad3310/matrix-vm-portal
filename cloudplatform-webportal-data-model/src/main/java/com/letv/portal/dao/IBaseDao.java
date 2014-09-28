@@ -6,7 +6,7 @@ import java.util.Map;
 import com.letv.common.dao.QueryParam;
 
 public interface IBaseDao<T> {
-	
+	 
 	public void insert(T t);
 	
 	public void update(T t);

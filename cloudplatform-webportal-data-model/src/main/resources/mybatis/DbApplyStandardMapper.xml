@@ -33,7 +33,7 @@
 		<result column="AUDIT_INFO" property="auditInfo" />
 		<result column="CLUSTER_ID" property="clusterId" />
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -48,14 +48,14 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="DbStandard">
+	<insert id="insert" parameterType="DbStandard" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_DB_APPLY_STANDARD
-		(ID,APPLY_CODE,APPLY_NAME,VERSION,BACKUP_CYCLE,IS_EMAIL_NOTICE,DESCN,MAX_CONCURRENCY,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
+		(APPLY_CODE,APPLY_NAME,VERSION,BACKUP_CYCLE,IS_EMAIL_NOTICE,DESCN,MAX_CONCURRENCY,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
 		DATA_LIMIT_IP_LIST,MGR_LIMIT_IP_LIST,READ_WRITER_RATE,DEVELOP_LANGUAGE,LINK_TYPE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,
 		MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,BELONG_DB,AUDIT_TIME,AUDIT_USER,STATUS,AUDIT_INFO,CLUSTER_ID,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{applyCode},#{applyName},#{version},#{backupCycle},#{isEmailNotice},#{descn},#{maxConcurrency},#{engineType},#{fromDbIp},#{fromDbPort},#{fromDbName},
+		(#{applyCode},#{applyName},#{version},#{backupCycle},#{isEmailNotice},#{descn},#{maxConcurrency},#{engineType},#{fromDbIp},#{fromDbPort},#{fromDbName},
 		#{dataLimitIpList},#{mgrLimitIpList},#{readWriterRate},#{developLanguage},#{linkType},#{maxQueriesPerHour},#{maxUpdatesPerHour},
 		#{maxConnectionsPerHour},#{maxUserConnections},#{belongDb},#{auditTime},#{auditUser},'0',#{auditInfo},#{clusterId},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>

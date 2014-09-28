@@ -19,7 +19,7 @@
         <typeAlias alias="DbUser" type="com.letv.portal.model.DbUserModel" />
         <typeAlias alias="build" type="com.letv.portal.model.BuildModel" />
         
-        
+         <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
         
     </typeAliases>
 </configuration>

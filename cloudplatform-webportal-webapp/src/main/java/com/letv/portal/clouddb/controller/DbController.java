@@ -8,9 +8,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
@@ -50,6 +51,9 @@ public class DbController {
 	@Resource
 	private IDbApplyStandardService dbApplyStandardService;
 	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
+	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
@@ -68,6 +72,7 @@ public class DbController {
 	 */
 	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
+		sessionService.getSession();
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
@@ -91,8 +96,7 @@ public class DbController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)   
 	public String save(DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
 		
-		if(StringUtils.isEmpty(dbApplyStandardModel.getId())) {
-			dbApplyStandardModel.setCreateUser((String)request.getSession().getAttribute("userId"));
+		if(0 == Long.parseLong(dbApplyStandardModel.getId())) {
 			dbApplyStandardModel.setStatus("1");
 			this.dbApplyStandardService.insert(dbApplyStandardModel);
 		} else {

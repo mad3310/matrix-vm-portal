@@ -12,7 +12,7 @@ import com.letv.portal.model.BuildModel;
  * Modified Date: <br>
  */
 public interface IBuildDao extends IBaseDao<BuildModel> {
-	
+	  
 	public List<BuildModel> selectByMclusterId(String mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);

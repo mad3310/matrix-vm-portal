@@ -143,7 +143,7 @@ public class DbController {
 		String mclusterName = dav.getMclusterName();
 		String dbId = dav.getDbId();
 		String dbApplyStandardId = dav.getDbApplyStandardId();
-		boolean isNew = StringUtils.isNullOrEmpty(mclusterId);
+		boolean isNew = StringUtils.isNullOrEmpty(mclusterId.toString());
 		if(isNew) {
 			mclusterId = UUID.randomUUID().toString();
 		}
@@ -152,9 +152,9 @@ public class DbController {
 		if(Constant.STATUS_BUILDDING.equals(auditType)) {
 			if(isNew) {
 				MclusterModel mcluster = new MclusterModel();
-				mcluster.setId(mclusterId);
+//				mcluster.setId(mclusterId);
 				mcluster.setMclusterName(mclusterName);
-				mcluster.setCreateUser((String) request.getSession().getAttribute("userId"));
+				mcluster.setCreateUser(Long.parseLong(request.getSession().getAttribute("userId").toString()));
 				this.buildTaskService.buildMcluster(mcluster,dbId);
 			} else {
 				this.buildTaskService.buildDb(dbId);

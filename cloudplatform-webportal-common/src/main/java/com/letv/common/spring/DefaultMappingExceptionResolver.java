@@ -21,10 +21,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.NoSessionException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
-import com.letv.common.session.SessionManager;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.WebUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	
 	private Logger logger = LoggerFactory.getLogger(DefaultMappingExceptionResolver.class);
 	
+	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	
@@ -49,7 +52,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private ITemplateMessageSender defaultEmailSender;
 	
 	@Autowired
-	private SessionManager sessionManager;
+	private SessionServiceImpl sessionManager;
 
     @Override
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
@@ -58,6 +61,33 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			responseJson(req, res, e.getMessage());
             return null;
 		}
+//		else if(e instanceof NoSessionException)
+//		{
+//			String indexPageAddress = CAS_AUTH_HTTP + "?";
+//			String requestURL = req.getRequestURL().toString();
+//			String requestParams = req.getQueryString();
+//			String requestAttribute = getRequestValue(req);
+//			
+//			String encodedRequestParams = "";
+//			String paramOrAttr = requestAttribute;
+//			if(null != requestParams)
+//				paramOrAttr = requestParams;
+//			
+//			if(StringUtils.isNotEmpty(paramOrAttr))
+//			        encodedRequestParams = WebUtil.urlEncode(paramOrAttr);
+//			   
+//			String returnUrl = indexPageAddress + "retURL=" + requestURL;
+//			
+//			if(!encodedRequestParams.equals(""))
+//				returnUrl += "&requestQueryStr=" + encodedRequestParams;
+//			
+//			try {
+//				res.sendRedirect(returnUrl);
+//			} catch (IOException e1) {
+//				logger.error("登录跳转时出现异常！",e1);
+//			}
+//			return null;
+//		}
 		
 		if(Boolean.valueOf(ERROR_MAIL_ENABLED))
 		{
@@ -82,12 +112,10 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
     	PrintWriter out = null;
 		try {
-//			res.setCharacterEncoding("UTF-8");
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
-			e1.printStackTrace();
-//			logger.error("在取得PrintWriter时出现异常",e1);
+			logger.error("在取得PrintWriter时出现异常",e1);
 		}
 		ResultObject resultObject = new ResultObject(0);
 		resultObject.addMsg(message);
@@ -104,7 +132,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		params.put("requestUrl", request.getRequestURL());
 		
 		Session session = sessionManager.getSession();
-		params.put("exceptionId", session == null ? "error session" : session.getSeqNum());
+		params.put("exceptionId", session == null ? "error session" : session.getUserName());
 		
 		String requestValue = getRequestValue(request);
 		params.put("exceptionParams",  StringUtils.isBlank(requestValue) ? "无" : requestValue);

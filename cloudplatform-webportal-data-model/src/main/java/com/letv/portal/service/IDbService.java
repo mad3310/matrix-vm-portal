@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,5 +62,13 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @return
 	 */
 	public List<DbModel> selectByDbName(String dbName);
+	/**
+	 * Methods Name: updateByMap <br>
+	 * Description: 修改记录通过map
+	 * @author name: wujun
+	 * @param hashMap
+	 * @return
+	 */
+	public void updateByMap(HashMap hashMap);
 
 }

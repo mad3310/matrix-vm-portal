@@ -13,10 +13,21 @@
  */
 package com.letv.portal.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.BeanUtil;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.model.ISoftDelete;
 import com.letv.portal.service.IBaseService;
@@ -30,29 +41,110 @@ import com.letv.portal.service.IBaseService;
  */
 public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	
+	private final static Logger logger = LoggerFactory.getLogger(BaseServiceImpl.class);
+	
+	private static final String FIELD_CREATED_BY = "createdBy";
+	private static final String FIELD_CREATED_ON = "createdOn";
+	private static final String FIELD_UPDATED_BY = "updatedBy";
+	private static final String FIELD_UPDATED_ON = "updatedOn";
+	private static final String FIELD_USER_INFO_ID = "userInfoId";
+	
 	protected final Class<T> entityClass;
 	
 	private final boolean isSoftDelete;
+	
+	private final boolean hasUserInfoId;
+	
+	private final boolean hasCreateBy;
+	
+	private final boolean hasCreatedOn;
+	
+	private final boolean hasUpdatedBy;
+	
+	private final boolean hasUpdatedOn;
+	
+	@Autowired
+	private SessionServiceImpl sessionService;
 	
 	public BaseServiceImpl(Class<T> entityClass)
 	{
 		this.entityClass = entityClass;
 		
 		isSoftDelete = ISoftDelete.class.isAssignableFrom(this.entityClass);
+		hasUserInfoId = BeanUtil.hasField(this.entityClass, FIELD_USER_INFO_ID);
+		
+		hasCreateBy = BeanUtil.hasField(this.entityClass, FIELD_CREATED_BY);
+		hasCreatedOn = BeanUtil.hasField(this.entityClass, FIELD_CREATED_ON);
+		hasUpdatedBy = BeanUtil.hasField(this.entityClass, FIELD_UPDATED_BY);
+		hasUpdatedOn = BeanUtil.hasField(this.entityClass, FIELD_UPDATED_ON);
+	}
+	
+	protected void abstractPreSaveObject(T o, boolean isNew) {
+		initSystemProperties(o, isNew);
+	}
+	
+	private final void initSystemProperties(T o, boolean isNew) {
+		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+		try {
+			Session userSession = sessionService.getSession();
+
+			if (userSession == null) {
+				logger.warn("UserSession is null for new/updated object " + o);
+			}
+
+			if (isNew) {
+				if (userSession != null) {
+					if (hasUserInfoId)
+						PropertyUtils.setProperty(o, FIELD_USER_INFO_ID, userSession.getUserId());
+					
+					if (hasCreateBy && PropertyUtils.getProperty(o, FIELD_CREATED_BY) == null)
+						PropertyUtils.setProperty(o, FIELD_CREATED_BY, userSession.getUserId());
+
+					if (hasUpdatedBy && PropertyUtils.getProperty(o, FIELD_UPDATED_BY) == null)
+						PropertyUtils.setProperty(o, FIELD_UPDATED_BY, userSession.getUserId());
+
+					if (hasCreatedOn && PropertyUtils.getProperty(o, FIELD_CREATED_ON) == null)
+						PropertyUtils.setProperty(o, FIELD_CREATED_ON, timestamp);
+	
+					if (hasUpdatedOn && PropertyUtils.getProperty(o, FIELD_UPDATED_ON) == null)
+						PropertyUtils.setProperty(o, FIELD_UPDATED_ON, timestamp);
+				}
+
+			}
+			else {
+				if (userSession != null && hasUpdatedBy) {
+					PropertyUtils.setProperty(o, FIELD_UPDATED_BY, userSession.getUserId());
+					PropertyUtils.setProperty(o, FIELD_UPDATED_ON, timestamp);
+				}
+			}
+		}
+		catch (NoSuchMethodException e) {
+			throw new CommonException(e);
+		}
+		catch (InvocationTargetException e) {
+			throw new CommonException(e);
+		}
+		catch (IllegalAccessException e) {
+			throw new CommonException(e);
+		}
 	}
 
 	@Override
 	public void insert(T t) {
+		abstractPreSaveObject(t, true);
 		getDao().insert(t);
 	}
 
 	@Override
 	public void update(T t) {
+		abstractPreSaveObject(t, false);
 		getDao().update(t);
 	}
 
 	@Override
 	public void updateBySelective(T t) {
+		abstractPreSaveObject(t, false);
 		getDao().updateBySelective(t);
 	}
 

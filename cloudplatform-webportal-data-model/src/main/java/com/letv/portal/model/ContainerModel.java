@@ -12,7 +12,6 @@ public class ContainerModel extends BaseModel {
 	
 	private static final long serialVersionUID = 4029730587083735122L;
 	
-	private String id;   //主键ID
 	private String containerName; //节点名称  
 	private String mountDir; //挂载路径
 	private String zookeeperId;
@@ -35,17 +34,6 @@ public class ContainerModel extends BaseModel {
 	private String clusterId; //所属cluster
 	
 	private String status; //状态:0:停止  1:正常
-	private String isDeleted; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getClusterId() {
 		return clusterId;
 	}
@@ -87,36 +75,6 @@ public class ContainerModel extends BaseModel {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
 	}
 	public String getContainerName() {
 		return containerName;
@@ -180,7 +138,7 @@ public class ContainerModel extends BaseModel {
 	}
 	@Override
 	public String toString() {
-		return "ContainerModel [id=" + id + ", containerName=" + containerName
+		return "ContainerModel [containerName=" + containerName
 				+ ", mountDir=" + mountDir + ", zookeeperId=" + zookeeperId
 				+ ", ipAddr=" + ipAddr + ", gateAddr=" + gateAddr + ", ipMask="
 				+ ipMask + ", clusterNodeName=" + clusterNodeName
@@ -189,9 +147,7 @@ public class ContainerModel extends BaseModel {
 				+ ", coresNumber=" + coresNumber + ", cpuSpeed=" + cpuSpeed
 				+ ", memorySize=" + memorySize + ", hostId=" + hostId
 				+ ", clusterId=" + clusterId + ", status=" + status
-				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
-				+ ", createUser=" + createUser + ", updateTime=" + updateTime
-				+ ", updateUser=" + updateUser + "]";
+				+ "]";
 	}
 	
 }

@@ -12,37 +12,23 @@ public class MclusterModel extends BaseModel {
 	
 	private static final long serialVersionUID = 8873122802478974943L;
 	
-	private String id;   //主键ID
 	private String mclusterName; //名称
 	
 	private String adminUser;
 	private String adminPassword;
 	
-	private String status = "0"; //状态：0 初始化状态
-	private String isDeleted = "1"; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
+	private String status; //状态：
+
 	
 	public MclusterModel(){};
-	public MclusterModel(String id,String mclusterName,String status,String createUser){
-		this.id = id;
+	public MclusterModel(String mclusterName,String status){
 		this.mclusterName = mclusterName;
 		this.status = status;
-		this.createUser = createUser;
-	};
-	public MclusterModel(String id,String status){
-		this.id = id;
+	}
+	public MclusterModel(String status){
 		this.status = status;
-	};
+	}
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	
 	public String getMclusterName() {
 		return mclusterName;
@@ -55,36 +41,6 @@ public class MclusterModel extends BaseModel {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
 	}
 	
 	public String getAdminUser() {
@@ -101,12 +57,10 @@ public class MclusterModel extends BaseModel {
 	}
 	@Override
 	public String toString() {
-		return "MclusterModel [id=" + id + ", mclusterName=" + mclusterName
+		return "MclusterModel [mclusterName=" + mclusterName
 				+ ", adminUser=" + adminUser + ", adminPassword="
-				+ adminPassword + ", status=" + status + ", isDeleted="
-				+ isDeleted + ", createTime=" + createTime + ", createUser="
-				+ createUser + ", updateTime=" + updateTime + ", updateUser="
-				+ updateUser + "]";
+				+ adminPassword + ", status=" + status
+				+ "]";
 	}
 	
 	

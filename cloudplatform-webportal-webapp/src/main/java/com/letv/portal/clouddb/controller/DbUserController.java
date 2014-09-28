@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -64,12 +63,11 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/save",method=RequestMethod.POST)   
+	@RequestMapping(value="/save",method=RequestMethod.POST)
 	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
 		String dbId = dbUserModel.getDbId();
 		String[] ips = dbUserModel.getAcceptIp().split(",");
 		
-		dbUserModel.setCreateUser((String)request.getSession().getAttribute("userId"));
 		for (String ip : ips) {
 			dbUserModel.setAcceptIp(ip);
 			this.dbUserService.insert(dbUserModel);

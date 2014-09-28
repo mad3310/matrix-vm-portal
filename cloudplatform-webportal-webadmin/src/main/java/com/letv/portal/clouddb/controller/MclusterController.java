@@ -74,8 +74,7 @@ public class MclusterController {
 	@RequestMapping(value="save",method=RequestMethod.POST)   //http://localhost:8080/api/mcluster/save
 	public String save(MclusterModel mclusterModel, HttpServletRequest request) {
 		
-		if(StringUtils.isNullOrEmpty(mclusterModel.getId())) {
-			mclusterModel.setCreateUser((String)request.getSession().getAttribute("userId"));
+		if(null == mclusterModel.getId()) {
 			this.mclusterService.insert(mclusterModel);
 		} else {
 			this.mclusterService.updateBySelective(mclusterModel);
@@ -105,11 +104,24 @@ public class MclusterController {
 		return "/clouddb/mgr_mcluster_list";
 	}
 	
+	/**Methods Name: list <br>
+	 * Description: 管理员根据查询条件及分页信息获取分页数据   http://localhost:8080/mcluster/<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/build/status/{mclusterId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable String mclusterId,HttpServletRequest request) {
+		
+		ResultObject obj = new ResultObject();
+		obj.setData(this.buildService.selectByMclusterId(mclusterId));
+		return obj;
+	}
 	
 	@RequestMapping(value = "/build", method=RequestMethod.POST)   
 	public String build(MclusterModel mclusterModel,HttpServletRequest request) {
-		mclusterModel.setCreateUser((String) request.getSession().getAttribute("userId"));
-		mclusterModel.setId(UUID.randomUUID().toString());
+		mclusterModel.setCreateUser(Long.parseLong(request.getSession().getAttribute("userId").toString()));
+//		mclusterModel.setId(Long.parseLong(UUID.randomUUID().toString()));
 		this.buildTaskService.buildMcluster(mclusterModel,null);
 		
 		return "redirect:/mcluster/list";

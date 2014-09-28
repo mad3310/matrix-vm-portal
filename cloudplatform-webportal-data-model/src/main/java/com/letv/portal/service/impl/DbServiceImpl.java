@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +65,8 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
-		this.dbDao.audit(new DbModel(dbId,status,mclusterId,auditInfo));
-		this.dbApplyStandardDao.audit(new DbApplyStandardModel(dbApplyStandardId,status,auditInfo));
+		this.dbDao.audit(new DbModel(status,mclusterId,auditInfo));
+		this.dbApplyStandardDao.audit(new DbApplyStandardModel(status,auditInfo));
 	}
 
 	@Override
@@ -88,4 +89,14 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		return this.dbDao.selectByDbName(dbName);
 	}
 
+	/**
+	 * Methods Name: updateByMap <br>
+	 * Description: 修改记录通过map
+	 * @author name: wujun
+	 * @param hashMap
+	 * @return
+	 */
+	public void updateByMap(HashMap hashMap){
+		 this.dbDao.updateByMap(hashMap);
+	}
 }

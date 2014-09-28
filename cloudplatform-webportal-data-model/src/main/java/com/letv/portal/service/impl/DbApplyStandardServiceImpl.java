@@ -63,15 +63,15 @@ public class DbApplyStandardServiceImpl extends BaseServiceImpl<DbApplyStandardM
 	@Override
 	public void insert(DbApplyStandardModel t) {
 		
-		String uuid = UUID.randomUUID().toString();
+		Long uuid = Long.parseLong(UUID.randomUUID().toString());
 		DbModel dbModel = new DbModel();
 		dbModel.setDbName(t.getApplyCode());
 		dbModel.setClusterId(t.getClusterId());
 		dbModel.setCreateUser(t.getCreateUser());
-		dbModel.setId(uuid);
+//		dbModel.setId(uuid);
 		this.dbDao.insert(dbModel);
 		
-		t.setBelongDb(uuid);
+		t.setBelongDb(uuid);//待解释
 		super.insert(t);
 		
 		//邮件通知

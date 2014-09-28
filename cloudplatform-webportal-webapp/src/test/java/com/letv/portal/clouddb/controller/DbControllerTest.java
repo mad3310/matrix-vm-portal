@@ -55,14 +55,14 @@ public class DbControllerTest extends AbstractTest{
     @Test
 	public void saveInsert(){
     	DbApplyStandardModel dbApplyStandardModel = new DbApplyStandardModel();
-		dbApplyStandardModel.setCreateUser("letvTest3");
+//		dbApplyStandardModel.setCreateUser(123);
 		dbApplyStandardModel.setStatus("1");
 		this.dbApplyStandardService.insert(dbApplyStandardModel);
 	}
     @Test
    	public void saveUpdate(){
     	DbApplyStandardModel dbApplyStandardModel1 = new DbApplyStandardModel();
-    	dbApplyStandardModel1.setCreateUser("letvTest1");
+//    	dbApplyStandardModel1.setCreateUser("letvTest1");
     	dbApplyStandardModel1.setStatus("2");
 		this.dbApplyStandardService.updateBySelective(dbApplyStandardModel1);
     }

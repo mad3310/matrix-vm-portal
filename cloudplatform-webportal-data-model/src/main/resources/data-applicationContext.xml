@@ -11,11 +11,14 @@
     <import resource="classpath*:common-applicationContext.xml" />
     <import resource="classpath*:datasource-applicationContext.xml" />
     <import resource="classpath*:data-dao-applicationContext.xml" />
+
     <import resource="classpath*:data-service-applicationContext.xml" />
     <import resource="classpath*:transactional-applicationContext.xml" />
     <import resource="classpath*:email-applicationContext.xml" />
     <import resource="classpath*:freemarker-applicationContext.xml" />
-    
+   
+   
+       
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

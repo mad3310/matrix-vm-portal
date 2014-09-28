@@ -18,7 +18,7 @@
 		<result column="DISK_USED" property="diskUsed" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -49,13 +49,13 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Host">
+	<insert id="insert" parameterType="Host" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_HOST
-		(ID,HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED
+		(HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED
 		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
+		(#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
 		#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	

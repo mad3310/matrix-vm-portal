@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @author name: liuhao1
 	 * @param mclusterModel
 	 */
-	void audit(MclusterModel mclusterModel);
+	void audit(HashMap mclusterHashMap);
 
 
 

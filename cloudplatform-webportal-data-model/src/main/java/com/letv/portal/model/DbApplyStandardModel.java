@@ -13,7 +13,6 @@ public class DbApplyStandardModel extends BaseModel {
 	
 	private static final long serialVersionUID = 3933353876563424673L;
 	
-	private String id;   //主键ID
 	private String applyCode;   //编码
 	private String applyName;   //名称
 	private String version;   //版本
@@ -34,36 +33,23 @@ public class DbApplyStandardModel extends BaseModel {
 	private String maxUpdatesPerHour;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
 	private String maxConnectionsPerHour;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
 	private String maxUserConnections;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
-	private String belongDb;   //所属db
+	private Long belongDb;   //所属db
 	private String auditTime;   //审核时间
 	private String auditUser;   //审核人
 	private String auditInfo;   //审核信息
 	private String clusterId;   //所属cluster
 
 	private String status; //审核状态:    0:未审核1:审核通过2:审核不通过
-	private String isDeleted; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
 	
 	public DbApplyStandardModel(){}
-	public DbApplyStandardModel(String id,String status){
-		this.id = id;
+	public DbApplyStandardModel(String status){
 		this.status = status;
 	}
-	public DbApplyStandardModel(String id,String status,String auditInfo){
-		this.id = id;
+	public DbApplyStandardModel(String status,String auditInfo){
 		this.status = status;
 		this.auditInfo = auditInfo;
 	}
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getApplyCode() {
 		return applyCode;
 	}
@@ -185,10 +171,10 @@ public class DbApplyStandardModel extends BaseModel {
 	public void setMaxUserConnections(String maxUserConnections) {
 		this.maxUserConnections = maxUserConnections;
 	}
-	public String getBelongDb() {
+	public Long getBelongDb() {
 		return belongDb;
 	}
-	public void setBelongDb(String belongDb) {
+	public void setBelongDb(Long belongDb) {
 		this.belongDb = belongDb;
 	}
 	public String getAuditTime() {
@@ -221,39 +207,9 @@ public class DbApplyStandardModel extends BaseModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
 	@Override
 	public String toString() {
-		return "DbApplyStandardModel [id=" + id + ", applyCode=" + applyCode
+		return "DbApplyStandardModel [applyCode=" + applyCode
 				+ ", applyName=" + applyName + ", version=" + version
 				+ ", backupCycle=" + backupCycle + ", isEmailNotice="
 				+ isEmailNotice + ", descn=" + descn + ", maxConcurrency="
@@ -269,9 +225,6 @@ public class DbApplyStandardModel extends BaseModel {
 				+ maxUserConnections + ", belongDb=" + belongDb
 				+ ", auditTime=" + auditTime + ", auditUser=" + auditUser
 				+ ", auditInfo=" + auditInfo + ", clusterId=" + clusterId
-				+ ", status=" + status + ", isDeleted=" + isDeleted
-				+ ", createTime=" + createTime + ", createUser=" + createUser
-				+ ", updateTime=" + updateTime + ", updateUser=" + updateUser
 				+ "]";
 	}
 	

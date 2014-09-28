@@ -14,7 +14,6 @@ public class DbUserModel extends BaseModel {
 	
 	private static final long serialVersionUID = 549601154139114218L;
 	
-	private String id;   //主键ID
 	private String dbId; //所属db
 	private String username; //用户名
 	private String password; //密码
@@ -33,20 +32,8 @@ public class DbUserModel extends BaseModel {
 	
 	private String status; 
 	
-	private String isDeleted; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
-	
 	private DbModel db;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getDbId() {
 		return dbId;
 	}
@@ -71,37 +58,6 @@ public class DbUserModel extends BaseModel {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-	
 	public String getAcceptIp() {
 		return acceptIp;
 	}
@@ -168,7 +124,7 @@ public class DbUserModel extends BaseModel {
 	}
 	@Override
 	public String toString() {
-		return "DbUserModel [id=" + id + ", dbId=" + dbId + ", username="
+		return "DbUserModel [dbId=" + dbId + ", username="
 				+ username + ", password=" + password + ", salt=" + salt
 				+ ", type=" + type + ", acceptIp=" + acceptIp
 				+ ", readWriterRate=" + readWriterRate + ", maxConcurrency="
@@ -176,10 +132,7 @@ public class DbUserModel extends BaseModel {
 				+ ", maxUpdatesPerHour=" + maxUpdatesPerHour
 				+ ", maxConnectionsPerHour=" + maxConnectionsPerHour
 				+ ", maxUserConnections=" + maxUserConnections + ", status="
-				+ status + ", isDeleted=" + isDeleted + ", createTime="
-				+ createTime + ", createUser=" + createUser + ", updateTime="
-				+ updateTime + ", updateUser=" + updateUser + ", db=" + db
-				+ "]";
+				+ status + "]";
 	}
 	
 	

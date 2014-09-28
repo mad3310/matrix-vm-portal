@@ -1,6 +1,5 @@
 package com.letv.portal.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -15,7 +14,6 @@ public class BuildModel extends BaseModel {
 	
 	private static final long serialVersionUID = 3290439855942720161L;
 	
-	private String id;   //主键ID
 	private String mclusterId;
 	private String dbId;
 	private int step;
@@ -23,21 +21,9 @@ public class BuildModel extends BaseModel {
 	private String status;
 	private String code;
 	private String msg;
-	
 
 	private Date startTime;
 	private Date endTime;
-
-
-	public String getId() {
-		return id;
-	}
-
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 
 	public String getMclusterId() {
 		return mclusterId;
@@ -130,7 +116,7 @@ public class BuildModel extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "BuildModel [id=" + id + ", mclusterId=" + mclusterId
+		return "BuildModel [mclusterId=" + mclusterId
 				+ ", dbId=" + dbId + ", step=" + step + ", status=" + status
 				+ ", code=" + code + ", msg=" + msg + ", startTime="
 				+ startTime + ", endTime=" + endTime + "]";

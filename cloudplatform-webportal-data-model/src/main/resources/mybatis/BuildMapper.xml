@@ -41,12 +41,12 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="build">
+	<insert id="insert" parameterType="build" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_BUILD
-		(ID,MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME)
+		(MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME)
 		values
-		(UUID(),#{mclusterId},#{dbId},#{step},#{stepMsg},#{status},#{code},#{msg},#{startTime},#{endTime})
+		(#{mclusterId},#{dbId},#{step},#{stepMsg},#{status},#{code},#{msg},#{startTime},#{endTime})
 	</insert>
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="build">

@@ -28,7 +28,7 @@
 		<result column="CLUSTER_ID" property="clusterId" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -42,13 +42,13 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Container">
+	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_CONTAINER
 		(ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
+		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
 		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{clusterId},#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	

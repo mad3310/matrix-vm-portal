@@ -12,7 +12,6 @@ public class HostModel extends BaseModel {
 	
 	private static final long serialVersionUID = 3497965985607790962L;
 	
-	private String id;   //主键ID
 	private String hostName; //主机名称
 	private String hostIp; //主机ip
 	private Integer nodesNumber; //节点个数
@@ -24,18 +23,7 @@ public class HostModel extends BaseModel {
 	private Integer diskUsed; //磁盘使用量
 
 	private String status; //状态:0:关闭   1:正常
-	private String isDeleted; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
 	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getHostName() {
 		return hostName;
 	}
@@ -97,46 +85,14 @@ public class HostModel extends BaseModel {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
 	@Override
 	public String toString() {
-		return "HostModel [id=" + id + ", hostName=" + hostName + ", hostIp="
+		return "HostModel [hostName=" + hostName + ", hostIp="
 				+ hostIp + ", nodesNumber=" + nodesNumber + ", hostModel="
 				+ hostModel + ", cpuModel=" + cpuModel + ", coresNumber="
 				+ coresNumber + ", memorySize=" + memorySize + ", diskSize="
 				+ diskSize + ", diskUsed=" + diskUsed + ", status=" + status
-				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
-				+ ", createUser=" + createUser + ", updateTime=" + updateTime
-				+ ", updateUser=" + updateUser + "]";
+				+ "]";
 	}
 	
 	

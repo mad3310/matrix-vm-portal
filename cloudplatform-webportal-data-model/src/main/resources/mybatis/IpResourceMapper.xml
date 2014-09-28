@@ -12,7 +12,7 @@
 		<result column="MASK" property="mask" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -39,13 +39,13 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="IpResource">
+	<insert id="insert" parameterType="IpResource" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_IP_RESOURCE
-		(ID,IP,GATE_WAY,MASK,
+		(IP,GATE_WAY,MASK,
 		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{ip},#{gateWay},#{mask},
+		(#{ip},#{gateWay},#{mask},
 		'0','1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
