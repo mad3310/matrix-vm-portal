@@ -107,7 +107,11 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_user       where 1=1    and USERNAME like CONCAT('%','wujun@letv.com','%')
+		from webportal_user 
+		where 1=1
+		<if test="userName != null  and userName != '' ">
+			and USERNAME like CONCAT('%',#{userName},'%')
+		</if>
 	</select>
 	
 </mapper>   

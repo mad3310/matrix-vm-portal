@@ -17,9 +17,7 @@ public class UserLoginTest extends AbstractTest{
 	public void testInsertUser()
 	{
 		try {  
-//			UserModel userModel = new UserModel();
-//			userModel.setUserName("wujun");					
-//				userService.insert(userModel);
+
 			System.out.print("xx");
 
 		} catch (Exception e) {
