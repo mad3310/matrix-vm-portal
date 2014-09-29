@@ -96,12 +96,12 @@ public class DbController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)   
 	public String save(DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
 		
-		if(0 == Long.parseLong(dbApplyStandardModel.getId())) {
+//		if(0 == Long.parseLong(dbApplyStandardModel.getId())) {
 			dbApplyStandardModel.setStatus("1");
 			this.dbApplyStandardService.insert(dbApplyStandardModel);
-		} else {
-			this.dbApplyStandardService.updateBySelective(dbApplyStandardModel);
-		}
+//		} else {
+//			this.dbApplyStandardService.updateBySelective(dbApplyStandardModel);
+//		}
 		return "redirect:/db/list";
 	}
 	

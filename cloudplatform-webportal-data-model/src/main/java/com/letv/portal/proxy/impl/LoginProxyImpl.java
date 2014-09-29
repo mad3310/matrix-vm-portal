@@ -1,4 +1,4 @@
-package com.letv.portal.proxy;
+package com.letv.portal.proxy.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +14,12 @@ import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IUserLoginDao;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.impl.LoginServiceImpl;
 
 @Component
-public class LoginProxy {
-	private final static Logger logger = LoggerFactory.getLogger(LoginProxy.class);
+public class LoginProxyImpl extends BaseProxyImpl<UserModel> implements ILoginProxy{
+private final static Logger logger = LoggerFactory.getLogger(LoginProxyImpl.class);
 	
 	@Autowired
 	private SessionServiceImpl sessionService;
@@ -30,7 +30,7 @@ public class LoginProxy {
 	@Autowired
 	private IUserLoginDao userLoginDao;
 	
-	public LoginProxy() {
+	public LoginProxyImpl() {
 	}
 
 
@@ -57,8 +57,8 @@ public class LoginProxy {
 		logger.debug("logined successfully");
 		return session;
 	}
-	
-	private Session createUserSession(UserModel user)
+
+	public Session createUserSession(UserModel user)
 	{
 		Session session = new Session();
 		session.setUserInfoId(user.getId().toString());
@@ -89,5 +89,4 @@ public class LoginProxy {
 	public IBaseDao<UserLogin> getDao() {
 		return userLoginDao;
 	}
-	
 }

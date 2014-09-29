@@ -1,5 +1,8 @@
 package com.letv.portal.service;
 
+import java.util.Map;
+
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.HostModel;
 
 
@@ -20,4 +23,13 @@ public interface IHostService extends IBaseService<HostModel> {
 	 * @param type  +增加  -减少    
 	 */
 	public void updateNodeCount(String hostId,String type); 
+	
+	/**Methods Name: findPagebyParams <br>
+	 * Description: 根据查询条件查出分页数据<br>
+	 * @author name: liuhao1
+	 * @param params
+	 * @param page
+	 * @return
+	 */
+	public Page findPagebyParams(Map<String,Object> params,Page page);
 }

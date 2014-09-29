@@ -12,7 +12,7 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.WebUtil;
 import com.letv.portal.model.UserLogin;
-import com.letv.portal.proxy.LoginProxy;
+import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 
 @Controller
@@ -27,7 +27,7 @@ public class LoginController{
 	private SessionServiceImpl sessionService;
 	
 	@Autowired
-	private LoginProxy loginProxy;
+	private ILoginProxy loginProxy;
 
 	
 	@RequestMapping("/login")
@@ -51,8 +51,8 @@ public class LoginController{
 	    //loginProxy
 		Session userSession = loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		//设置全局的session
-		sessionService.setSession(userSession, "login");
-		
+//		sessionService.setSession(userSession, "login");
+//		
 		if (StringUtils.isEmpty(redirectUrl)) {
 			return LogoutController.DASHBORAD_ADDRESS;
 		}

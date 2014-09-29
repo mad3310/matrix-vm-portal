@@ -1,7 +1,5 @@
 package com.letv.common.session;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
@@ -12,9 +10,9 @@ import com.letv.common.exception.CommonException;
 @Component("sessionService")
 public class SessionServiceImpl {
    private static final Logger logger = LoggerFactory.getLogger(SessionServiceImpl.class);
-   private NamedThreadLocal<Session>  tlSession = new NamedThreadLocal<Session>("store of request status");  
+   private  NamedThreadLocal<Session>  tlSession = new NamedThreadLocal<Session>("store of request status");  
    
-   public void setSession(Session session, String message) {
+   public  void  setSession(Session session, String message) {
       Session oldSession = getSession();
       tlSession.set(session);
       if (logger.isDebugEnabled()) {
@@ -26,9 +24,8 @@ public class SessionServiceImpl {
       }
    }
 
-   public Session getSession() {
-	   Session session = tlSession.get();
-      return session;
+   public  Session getSession() {
+      return  tlSession.get();
    }
    
    public <T> T runWithSession(Session session, String context, Executable<T> executable) {
@@ -39,10 +36,8 @@ public class SessionServiceImpl {
       }catch (Throwable t) {
          throw new CommonException("Session channged occurs error!",t);
       }finally {	 
-    	  if(oldSession == null)
-    		  setSession(null, "Session recovered: " + context);
-    	  else
+    	  if(oldSession != null)
     		  setSession(oldSession, "Session recovered: " + context);
-      }
+     }
    }
 }

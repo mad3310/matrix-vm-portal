@@ -1,14 +1,5 @@
 package com.letv.portal.filter;
 
-import java.io.IOException;
-
-import javax.annotation.Resource;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +18,7 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.clouddb.controller.LoginController;
 import com.letv.portal.model.UserLogin;
-import com.letv.portal.proxy.LoginProxy;
+import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 
 
@@ -41,7 +32,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 	private ILoginService loginService;
 	
 	@Autowired
-	private LoginProxy loginProxy;
+	private ILoginProxy loginProxy;
 	
 	private String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
 	
@@ -52,8 +43,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
-      Session userSession = (Session)session.getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+            HttpSession session = request.getSession();
+            Session userSession = (Session)session.getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 //        Session userSession  =  sessionService.getSession();   
     	if (null == userSession) {
     		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();

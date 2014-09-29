@@ -1,11 +1,15 @@
 package com.letv.portal.service.impl;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.QueryParam;
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbApplyStandardDao;
@@ -51,6 +55,14 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		host.setNodesNumber(number);
 		this.hostDao.updateNodesNumber(host);
 		
+	}
+
+	@Override
+	public Page findPagebyParams(Map<String, Object> params, Page page) {
+		QueryParam param = new QueryParam(params,page);
+		page.setData(this.hostDao.selectPageByMap(param));
+		page.setTotalRecords(this.hostDao.selectByMapCount(params));
+		return page;
 	}
 
 }

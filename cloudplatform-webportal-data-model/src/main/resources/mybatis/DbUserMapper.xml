@@ -22,7 +22,7 @@
 		<result column="MAX_USER_CONNECTIONS" property="maxUserConnections" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />

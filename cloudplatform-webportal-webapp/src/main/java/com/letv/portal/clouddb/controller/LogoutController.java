@@ -42,7 +42,7 @@ public class LogoutController{
 		Session session = (Session)request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 		
 		loginService.logout();
-		
+		request.getSession().invalidate();
 		sessionService.setSession(null,"logout");
 		
 //		String logoutAddress = PASSPORT_LOGOUT_ADDRESS + WEB_URL + DASHBORAD_ADDRESS;

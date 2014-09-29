@@ -11,7 +11,7 @@
 		<result column="STATUS" property="status" />
 		<result column="AUDIT_INFO" property="auditInfo" />
 		
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="IS_DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -75,16 +75,10 @@
 
 
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Db">
+	<insert id="insert" parameterType="Db" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_DB(ID,DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_DB(DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		<if test="id != null">
-			#{id},
-		</if>
-		<if test="id == null">
-			UUID(),
-		</if>
 		#{dbName},#{clusterId},'0','1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 
