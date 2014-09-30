@@ -45,7 +45,7 @@
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_CONTAINER
-		(ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,CLUSTER_NODE_NAME,ASSIGN_NAME,ORIGIN_NAME,TYPE,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{clusterNodeName},#{assignName},#{originName},
@@ -60,8 +60,8 @@
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="Container">
 		update WEBPORTAL_CONTAINER set
-		<if test="isDeleted != null  ">
-			IS_DELETED=#{isDeleted}
+		<if test="deleted != null  ">
+			IS_DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>

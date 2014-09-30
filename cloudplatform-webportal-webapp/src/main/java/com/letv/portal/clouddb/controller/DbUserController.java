@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
 
@@ -37,7 +36,7 @@ public class DbUserController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
-	@RequestMapping(value="/list/",method=RequestMethod.GET)
+	@RequestMapping(value="/",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/user_db_detail";
 	}
@@ -49,7 +48,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/list/{dbId}", method=RequestMethod.GET)   
+	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable String dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbUserService.selectByDbId(dbId));
@@ -63,7 +62,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/save",method=RequestMethod.POST)
+	@RequestMapping(value="/",method=RequestMethod.POST)
 	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
 		String dbId = dbUserModel.getDbId();
 		String[] ips = dbUserModel.getAcceptIp().split(",");
@@ -76,7 +75,7 @@ public class DbUserController {
 	}
 	
 	
-	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	@RequestMapping(value="/validate",method=RequestMethod.GET)
 	public @ResponseBody Map<String,Object> validate(DbUserModel dbUserModel,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<DbUserModel> list = this.dbUserService.selectByIpAndUsername(dbUserModel);

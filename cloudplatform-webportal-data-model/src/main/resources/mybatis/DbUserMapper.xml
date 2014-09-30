@@ -74,10 +74,10 @@
 	<insert id="insert" parameterType="DbUser">
 		insert into
 		WEBPORTAL_DB_USER
-		(ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
+		(DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
 		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(UUID(),#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
+		(#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
 		#{status},'1',now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
@@ -89,8 +89,8 @@
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="DbUser">
 		update WEBPORTAL_DB_USER set
-		<if test="isDeleted != null  ">
-			IS_DELETED=#{isDeleted}
+		<if test="deleted != null  ">
+			IS_DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>

@@ -64,7 +64,7 @@ public class DbController {
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
 	
-	@RequestMapping(value="/list",method=RequestMethod.GET)
+	@RequestMapping(value="/",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request){
 		return "/clouddb/mgr_db_list";
 	}
@@ -77,7 +77,7 @@ public class DbController {
 	 * @param dbName
 	 * @param request
 	 */
-	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
+	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -98,17 +98,17 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/detail/{dbId}",method=RequestMethod.GET)
-	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request){
-		DbModel dbModel = this.dbService.selectById(dbId);
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
-		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
-		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
-		mav.addObject("db", dbModel);
-		mav.setViewName("/clouddb/mgr_db_detail");
-		return mav;
-	}
+//	@RequestMapping(value="/detail/{dbId}",method=RequestMethod.GET)
+//	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request){
+//		DbModel dbModel = this.dbService.selectById(dbId);
+//		ModelAndView mav = new ModelAndView();
+//		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
+//		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
+//		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
+//		mav.addObject("db", dbModel);
+//		mav.setViewName("/clouddb/mgr_db_detail");
+//		return mav;
+//	}
 	
 	/**Methods Name: audit <br>
 	 * Description: 审批页面<br>
@@ -117,25 +117,60 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/audit/{dbId}",method=RequestMethod.GET)
-	public ModelAndView audit(@PathVariable String dbId,HttpServletRequest request){
+//	@RequestMapping(value="/audit/{dbId}",method=RequestMethod.GET)
+//	public ModelAndView audit(@PathVariable String dbId,HttpServletRequest request){
+//		ModelAndView mav = new ModelAndView();
+//		mav.addObject("hosts", this.hostService.selectByMap(null));
+//		Map<String,String> map = new HashMap<String,String>();
+//		map.put("status", Constant.STATUS_OK);
+//		mav.addObject("mclusters", this.mclusterService.selectByMap(map));
+//		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
+//		
+//		mav.setViewName("/clouddb/mgr_audit_db");
+//		return mav;
+//	}
+	/**
+	 * Methods Name: aduitOrDetail <br>
+	 * Description: <br>
+	 * @author name: wujun
+	 * @param status 1就是查看详情，2就是审批页面
+	 * @param dbId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/{status}/{dbId}",method=RequestMethod.GET)
+	public ModelAndView aduitOrDetail(@PathVariable String status,@PathVariable String dbId,HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("hosts", this.hostService.selectByMap(null));
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("status", Constant.STATUS_OK);
-		mav.addObject("mclusters", this.mclusterService.selectByMap(map));
-		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
-		
-		mav.setViewName("/clouddb/mgr_audit_db");
+		if(null!=status&&!" ".equals(status)){
+			if(status=="1"){
+				DbModel dbModel = this.dbService.selectById(dbId);
+				mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
+				mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
+				mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
+				mav.addObject("db", dbModel);
+				mav.setViewName("/clouddb/mgr_db_detail");
+			}if(status=="2"){
+				mav.addObject("hosts", this.hostService.selectByMap(null));
+				Map<String,String> map = new HashMap<String,String>();
+				map.put("status", Constant.STATUS_OK);
+				mav.addObject("mclusters", this.mclusterService.selectByMap(map));
+				mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));				
+				mav.setViewName("/clouddb/mgr_audit_db");
+			}
+		}
 		return mav;
 	}
+	
+	
+	
+	
 	/**Methods Name: save <br>
 	 * Description: 保存审批信息 //http://localhost:8080/api/db/audit/save<br>
 	 * @author name: liuhao1
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/audit/save",method=RequestMethod.POST)   
+	@RequestMapping(value="/",method=RequestMethod.POST)   
 	public void save(DbAuditView dav,HttpServletRequest request) {
 		String auditType = dav.getAuditType();
 		String auditInfo = dav.getAuditInfo();

@@ -40,7 +40,7 @@ public class DbUserController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
-	@RequestMapping(value="/list",method=RequestMethod.GET)
+	@RequestMapping(value="/",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/mgr_dbuser_list";
 	}
@@ -54,7 +54,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
+	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -67,7 +67,7 @@ public class DbUserController {
 		obj.setData(this.dbUserService.findPagebyParams(params, page));
 		return obj;
 	}
-	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
+	@RequestMapping(value="/{ids}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.buildTaskService.buildUser(ids);

@@ -1,4 +1,4 @@
-package com.letv.portal.service.impl;
+package com.letv.portal.proxy.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
@@ -22,14 +22,14 @@ import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.service.IDbService;
+import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.IMclusterService;
 
-@Service("dbService")
-public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
-		IDbService{
+@Component
+public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
+		IDbProxy{
 	
-	private final static Logger logger = LoggerFactory.getLogger(DbServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(DbProxyImpl.class);
 	
 	@Resource
 	private IDbDao dbDao;
@@ -49,7 +49,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	public DbServiceImpl() {
+	public DbProxyImpl() {
 		super(DbModel.class);
 	}
 

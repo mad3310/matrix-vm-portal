@@ -50,7 +50,7 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/list/{currentPage}/{recordsPerPage}/{mclusterName}", method=RequestMethod.GET)   
+	@RequestMapping(value = "/{currentPage}/{recordsPerPage}/{mclusterName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String mclusterName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -63,26 +63,7 @@ public class MclusterController {
 		obj.setData(this.mclusterService.findPagebyParams(params, page));
 		return obj;
 	}	
-	
-	/**Methods Name: save <br>
-	 * Description: 保存mcluster<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="save",method=RequestMethod.POST)   //http://localhost:8080/api/mcluster/save
-	public String save(MclusterModel mclusterModel, HttpServletRequest request) {
-		
-		if(null == mclusterModel.getId()) {
-			this.mclusterService.insert(mclusterModel);
-		} else {
-			this.mclusterService.updateBySelective(mclusterModel);
-		}
-		
-		return "redirect:/mcluster/list";
-	}
-	
+
 	/**Methods Name: detail <br>
 	 * Description: 根据id查找mcluster详情，获取container详情<br>
 	 * @author name: liuhao1
@@ -90,7 +71,7 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/detail/{clusterId}",method=RequestMethod.GET) //http://localhost:8080/api/mcluster/getById/{clusterId}
+	@RequestMapping(value="/{clusterId}",method=RequestMethod.GET) //http://localhost:8080/api/mcluster/getById/{clusterId}
 	public ModelAndView detail(@PathVariable String clusterId,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		List<ContainerModel> containers = this.containerService.selectByClusterId(clusterId);
@@ -99,7 +80,7 @@ public class MclusterController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/list",method=RequestMethod.GET)   //http://localhost:8080/mcluster/list
+	@RequestMapping(value="/",method=RequestMethod.GET)   //http://localhost:8080/mcluster/list
 	public String toMgrList(HttpServletRequest request,HttpServletResponse response) {
 		return "/clouddb/mgr_mcluster_list";
 	}
@@ -110,7 +91,7 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/build/status/{mclusterId}", method=RequestMethod.GET)   
+	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable String mclusterId,HttpServletRequest request) {
 		
 		ResultObject obj = new ResultObject();
@@ -118,7 +99,7 @@ public class MclusterController {
 		return obj;
 	}
 	
-	@RequestMapping(value = "/build", method=RequestMethod.POST)   
+	@RequestMapping(value = "/", method=RequestMethod.POST)   
 	public String build(MclusterModel mclusterModel,HttpServletRequest request) {
 		mclusterModel.setCreateUser(Long.parseLong(request.getSession().getAttribute("userId").toString()));
 //		mclusterModel.setId(Long.parseLong(UUID.randomUUID().toString()));
@@ -133,16 +114,16 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/build/status/{mclusterId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject buildStatuslist(@PathVariable String mclusterId,HttpServletRequest request) {
-		
-		ResultObject obj = new ResultObject();
-		obj.setData(this.buildService.selectByMclusterId(mclusterId));
-		return obj;
-	}
-	
-	@RequestMapping(value="/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> validate(String mclusterName,HttpServletRequest request) {
+//	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.GET)   
+//	public @ResponseBody ResultObject buildStatuslist(@PathVariable String mclusterId,HttpServletRequest request) {
+//		
+//		ResultObject obj = new ResultObject();
+//		obj.setData(this.buildService.selectByMclusterId(mclusterId));
+//		return obj;
+//	}
+//	
+	@RequestMapping(value="/validate/{mclusterName}",method=RequestMethod.GET)
+	public @ResponseBody Map<String,Object> validate(@PathVariable String mclusterName,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<DbModel> list = this.mclusterService.selectByClusterName(mclusterName);
 		if(list.size()>0) {

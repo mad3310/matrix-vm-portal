@@ -18,7 +18,7 @@ import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.IUserService;
 
 @Component
-public class LoginProxyImpl extends BaseProxyImpl<UserModel> implements ILoginProxy{
+public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginProxy{
 private final static Logger logger = LoggerFactory.getLogger(LoginProxyImpl.class);
 	
 	@Autowired
@@ -31,6 +31,7 @@ private final static Logger logger = LoggerFactory.getLogger(LoginProxyImpl.clas
 	private IUserLoginDao userLoginDao;
 	
 	public LoginProxyImpl() {
+		super(UserLogin.class);
 	}
 
 

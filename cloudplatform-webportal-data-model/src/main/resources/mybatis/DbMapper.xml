@@ -55,8 +55,8 @@
 			<if test="status != null  ">
 				and STATUS=#{status}
 			</if>
-			<if test="isDeleted != null  ">
-				and IS_DELETED=#{isDeleted}
+			<if test="deleted != null  ">
+				and IS_DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
 				and CREATE_TIME=#{createTime}
@@ -85,7 +85,7 @@
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Db">
 		update WEBPORTAL_DB set
-		ID=#{id},DB_NAME=#{dbName},CLUSTER_ID=#{clusterId},STATUS=#{status},IS_DELETED=#{isDeleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},DB_NAME=#{dbName},CLUSTER_ID=#{clusterId},STATUS=#{status},IS_DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -102,8 +102,8 @@
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
-			<if test="isDeleted != null  ">
-				IS_DELETED=#{isDeleted},
+			<if test="deleted != null  ">
+				IS_DELETED=#{deleted},
 			</if>
 			<if test="createTime != null  ">
 				CREATE_TIME=#{createTime},
@@ -132,8 +132,8 @@
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
-			<if test="isDeleted != null  ">
-				IS_DELETED=#{isDeleted},
+			<if test="deleted != null  ">
+				IS_DELETED=#{deleted},
 			</if>
 			<if test="createTime != null  ">
 				CREATE_TIME=#{createTime},
@@ -157,8 +157,8 @@
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="Db">
 		update WEBPORTAL_DB set
-		<if test="isDeleted != null  ">
-			IS_DELETED=#{isDeleted}
+		<if test="deleted != null  ">
+			IS_DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>
@@ -247,8 +247,8 @@
 			<if test="params != null and params.status != null  ">
 				and WEBPORTAL_DB.STATUS=#{params.status}
 			</if>
-			<if test="params != null and params.isDeleted != null  ">
-				and WEBPORTAL_DB.IS_DELETED=#{params.isDeleted}
+			<if test="params != null and params.deleted != null  ">
+				and WEBPORTAL_DB.IS_DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
 				and WEBPORTAL_DB.CREATE_TIME=#{params.createTime}

@@ -7,7 +7,7 @@ import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 
 
-public  interface ILoginProxy extends IBaseProxy<UserModel>{
+public  interface ILoginProxy extends IBaseProxy<UserLogin>{
 	public Session saveOrUpdateUserAndLogin(UserLogin userLogin);
 	public Session createUserSession(UserModel user);
 	public void logout();

@@ -56,7 +56,7 @@ public class DbController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
-	@RequestMapping(value="/list",method=RequestMethod.GET)
+	@RequestMapping(value="/",method=RequestMethod.GET)
 	public String toList(HttpServletRequest request,HttpServletResponse response){
 		return "/clouddb/user_db_list";
 	}
@@ -70,9 +70,8 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
+	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
-		sessionService.getSession();
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
@@ -93,15 +92,10 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/save",method=RequestMethod.POST)   
+	@RequestMapping(value="/",method=RequestMethod.POST)   
 	public String save(DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
-		
-//		if(0 == Long.parseLong(dbApplyStandardModel.getId())) {
 			dbApplyStandardModel.setStatus("1");
 			this.dbApplyStandardService.insert(dbApplyStandardModel);
-//		} else {
-//			this.dbApplyStandardService.updateBySelective(dbApplyStandardModel);
-//		}
 		return "redirect:/db/list";
 	}
 	
@@ -112,9 +106,8 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/detail/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
-	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request) {
-		
+	@RequestMapping(value="/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
+	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request) {		
 		DbModel dbModel = this.dbService.selectById(dbId);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
@@ -123,9 +116,9 @@ public class DbController {
 		mav.addObject("db", dbModel);
 		mav.setViewName("/clouddb/user_db_detail");
 		return mav;
-	}
-	@RequestMapping(value="/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> validate(String applyCode,HttpServletRequest request) {
+	}	
+	@RequestMapping(value="/validate/{applyCode}",method=RequestMethod.GET)
+	public @ResponseBody Map<String,Object> validate(@PathVariable String applyCode,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<DbModel> list = this.dbService.selectByDbName(applyCode);
 		if(list.size()>0) {

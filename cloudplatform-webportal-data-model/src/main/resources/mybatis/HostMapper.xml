@@ -47,7 +47,7 @@
 			<if test="status != null  ">
 				and STATUS=#{status}
 			</if>
-			<if test="isDeleted != null  ">
+			<if test="deleted != null  ">
 				and IS_DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
@@ -101,8 +101,8 @@
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="Host">
 		update WEBPORTAL_HOST set
-		<if test="isDeleted != null  ">
-			IS_DELETED=#{isDeleted}
+		<if test="deleted != null  ">
+			IS_DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>
