@@ -1,15 +1,19 @@
-package com.letv.portal.model;
+package com.letv.common.model;
 
 import java.sql.Timestamp;
 
+/**Program Name: BaseModel <br>
+ * Description:  <br>
+ * @author name: liuhao1 <br>
+ * Written Date: 2014年10月7日 <br>
+ * Modified By: <br>
+ * Modified Date: <br>
+ */
 public class BaseModel implements IEntity,ISoftDelete{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5822755615614280336L;
 	
-	private String id;
+	private Long id;
 	
 	private boolean deleted;
 	
@@ -28,15 +32,15 @@ public class BaseModel implements IEntity,ISoftDelete{
 		this.deleted = deleted;		
 	}
 
-	@Override
-	public String getId() {
+	
+	public Long getId() {
 		return id;
 	}
 
-	@Deprecated
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 	@Override
 	public Timestamp getCreateTime() {
 		return createTime;

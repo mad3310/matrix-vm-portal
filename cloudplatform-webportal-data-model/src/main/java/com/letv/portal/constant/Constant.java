@@ -18,11 +18,11 @@ public class Constant {
 	public static String IS_DELETE_FALSE="0";
 	public static String IS_DELETE_TRUE="1";
 	
-	public static String STATUS_DEFAULT="0"; 
-	public static String STATUS_OK= "1";
-	public static String STATUS_BUILDDING= "2";
-	public static String STATUS_BUILD_FAIL = "3"; 
-	public static String STATUS_AUDIT_FAIL = "4";  
+	public static Integer STATUS_DEFAULT=0; 
+	public static Integer STATUS_OK= 1;
+	public static Integer STATUS_BUILDDING= 2;
+	public static Integer STATUS_BUILD_FAIL = 3; 
+	public static Integer STATUS_AUDIT_FAIL = 4;  
 	
 	
 	public static String DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER="1";
@@ -30,7 +30,7 @@ public class Constant {
 	
 	public static int MCLUSTER_CONTAINERS_COUNT = 4;
 
-	public static String IPRESOURCE_STATUS_USERD= "1";
+	public static Integer IPRESOURCE_STATUS_USERD= 1;
 	
 	public static String PYTHON_API_RESPONSE_SUCCESS= "200";
 	

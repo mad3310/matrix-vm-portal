@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IUserLoginDao;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.model.UserLogin;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.service.ILoginService;
 import com.letv.portal.service.IUserService;
 

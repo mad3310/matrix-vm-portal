@@ -8,11 +8,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.dao.IMclusterDao;
@@ -73,9 +73,13 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public String insert(String mclusterId,String[] hostIds, String dbName, String createUser) {
+	public String insert(Long mclusterId,String[] hostIds, String dbName, String createUser) {
 		String mclusterName = LETV_MCLUSTER_NAME_PREFIX + dbName;
-		this.insert(new MclusterModel(mclusterName,Constant.STATUS_DEFAULT));
+		MclusterModel mclusterModel = new MclusterModel();
+		mclusterModel.setId(mclusterId);
+		mclusterModel.setStatus(Constant.STATUS_DEFAULT);
+		mclusterModel.setMclusterName(mclusterName);
+		this.insert(mclusterModel);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", Constant.STATUS_DEFAULT);
@@ -85,30 +89,28 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		
 		for (int i = 0; i < hostIds.length; i++) {
 			ContainerModel t = new ContainerModel();
-			t.setHostId(hostIds[i]);
+			t.setHostId(Long.valueOf(hostIds[i]));
 			t.setContainerName(mclusterName);
 			t.setMountDir(LETV_MCLUSTER_MOUNTDIRS_PREFIX + dbName + LETV_MCLUSTER_MOUNTDIRS_SUFFIX);
 			
 			if(i == 0) {
-				t.setClusterNodeName(LETV_MCLUSTER_NODENAME_PREFIX + dbName + LETV_MCLUSTER_NODENAME_SUFFIX + Constant.MCLUSTER_NODE_TYPE_VIP);
+//				t.setClusterNodeName(LETV_MCLUSTER_NODENAME_PREFIX + dbName + LETV_MCLUSTER_NODENAME_SUFFIX + Constant.MCLUSTER_NODE_TYPE_VIP);
 				t.setZookeeperId("");
 				t.setType(Constant.MCLUSTER_NODE_TYPE_VIP);
 			} else {
-				t.setClusterNodeName(LETV_MCLUSTER_NODENAME_PREFIX + dbName + LETV_MCLUSTER_NODENAME_SUFFIX + i);
+//				t.setClusterNodeName(LETV_MCLUSTER_NODENAME_PREFIX + dbName + LETV_MCLUSTER_NODENAME_SUFFIX + i);
 				t.setZookeeperId(i + "");
 				t.setType(Constant.MCLUSTER_NODE_TYPE_NORMAL);
 			}
-			t.setAssignName("");
-			t.setOriginName("");
 			
 			t.setIpAddr(ips.get(i).getIp());
 			t.setGateAddr(ips.get(i).getGateWay());
 			t.setIpMask(ips.get(i).getMask());
 			
 			
-			t.setClusterId(mclusterId);
+			t.setMclusterId(mclusterId);
 			this.containerDao.insert(t);
-			this.hostService.updateNodeCount(hostIds[i],"+");
+//			this.hostService.updateNodeCount(hostIds[i],"+");
 		}
 		//改变使用状态
 		for (IpResourceModel ipResourceModel : ips) {

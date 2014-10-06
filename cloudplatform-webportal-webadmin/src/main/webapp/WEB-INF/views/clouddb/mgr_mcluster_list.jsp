@@ -195,7 +195,7 @@ function queryByPage(currentPage,recordsPerPage) {
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	$.ajax({
 		type : "get",
-		url : "${ctx}/mcluster/list/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
+		url : "${ctx}/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			var array = data.data.data;
@@ -220,7 +220,7 @@ function queryByPage(currentPage,recordsPerPage) {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a href=\"${ctx}/mcluster/detail/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a href=\"${ctx}/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
 						+ array[i].createUser

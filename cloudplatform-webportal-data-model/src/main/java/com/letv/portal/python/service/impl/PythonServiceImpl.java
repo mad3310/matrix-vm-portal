@@ -139,7 +139,7 @@ public class PythonServiceImpl implements IPythonService{
 		
 				
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("role", dbUser.getType());
+		map.put("role", String.valueOf(dbUser.getType()));
 		map.put("dbName", dbName);
 		map.put("userName", dbUser.getUsername());
 		map.put("user_password", dbUser.getPassword());

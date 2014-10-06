@@ -19,7 +19,7 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 * @param mclusterModel
 	 */
-	public void buildMcluster(MclusterModel mclusterModel,String dbId);
+	public void buildMcluster(MclusterModel mclusterModel,Long dbId);
 
 	/**Methods Name: buildUser <br>
 	 * Description: 创建用户<br>
@@ -33,7 +33,7 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 * @param dbId
 	 */
-	public void buildDb(String dbId);
+	public void buildDb(Long dbId);
 	
 	/**Methods Name: createContainer <br>
 	 * Description: 创建container<br>
@@ -41,7 +41,7 @@ public interface IBuildTaskService {
 	 * @param mclusterModel
 	 * @return
 	 */
-	public boolean createContainer(MclusterModel mclusterModel,String dbId);
+	public boolean createContainer(MclusterModel mclusterModel,Long dbId);
 	
 	/**Methods Name: initContainer <br>
 	 * Description: 初始化contianer,组合各分步骤<br>
@@ -49,7 +49,7 @@ public interface IBuildTaskService {
 	 * @param params
 	 * @return
 	 */
-	public boolean initContainer(MclusterModel mclusterModel,String dbId);
+	public boolean initContainer(MclusterModel mclusterModel,Long dbId);
 	
 	/**Methods Name: buildResultToMgr <br>
 	 * Description: <br>

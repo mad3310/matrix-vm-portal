@@ -1,8 +1,8 @@
 package com.letv.portal.proxy;
 
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.Session;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
 

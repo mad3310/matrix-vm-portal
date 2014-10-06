@@ -53,7 +53,7 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
+	public Map<String,String> selectCreateParams(Long id);
 
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>

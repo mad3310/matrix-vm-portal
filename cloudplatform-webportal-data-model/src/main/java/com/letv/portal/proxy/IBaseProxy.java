@@ -3,12 +3,20 @@ package com.letv.portal.proxy;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.paging.impl.Page;
+
 public interface IBaseProxy<T> {
-	/**
-	 * 创建对象
+	
+	/**Methods Name: selectPageByParams <br>
+	 * Description:	根据查询条件查询分页数据<br>
+	 * Detail:根据传入的page（currentPage，recordsPerPage）及parmas查询相关数据。
+	 * @author name: liuhao1
+	 * @param page
+	 * @param params
 	 * @return
 	 */
-//	T create();
+	<K, V> Page selectPageByParams(int currentPage,int recordsPerPage,Map<K,V> params);
+	<K, V> Page selectPageByParams(int currentPage,int recordsPerPage,Map<K,V> params,String orderBy,Boolean isAsc);
 	
 	/**
 	 * 插入记录
@@ -43,7 +51,7 @@ public interface IBaseProxy<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	T selectById(String id);
+	T selectById(Long id);
 	
 	/**
 	 * 根据model查询总数
@@ -77,5 +85,4 @@ public interface IBaseProxy<T> {
 	 */
 	<K,V> List<T> selectByMap(Map<K,V>  map);
 	
-	public boolean hasSoftDelete();
 }

@@ -22,7 +22,7 @@ public interface IHostService extends IBaseService<HostModel> {
 	 * @param hostId
 	 * @param type  +增加  -减少    
 	 */
-	public void updateNodeCount(String hostId,String type); 
+	public void updateNodeCount(Long hostId,String type); 
 	
 	/**Methods Name: findPagebyParams <br>
 	 * Description: 根据查询条件查出分页数据<br>

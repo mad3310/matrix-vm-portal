@@ -49,7 +49,7 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable String dbId,HttpServletRequest request) {
+	public @ResponseBody ResultObject list(@PathVariable Long dbId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbUserService.selectByDbId(dbId));
 		return obj;
@@ -64,7 +64,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/",method=RequestMethod.POST)
 	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
-		String dbId = dbUserModel.getDbId();
+		Long dbId = dbUserModel.getDbId();
 		String[] ips = dbUserModel.getAcceptIp().split(",");
 		
 		for (String ip : ips) {

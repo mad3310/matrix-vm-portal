@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbApplyStandardModel;
-import com.letv.portal.model.DbModel;
 
 
 
@@ -34,7 +32,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectByClusterId(String clusterId);
+	public List<ContainerModel> selectByClusterId(Long mclusterId);
 	
 	/**Methods Name: selectByClusterId <br>
 	 * Description: 根据clusterId查出节点<br>
@@ -42,7 +40,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectNormalByClusterId(String clusterId);
+	public List<ContainerModel> selectNormalByClusterId(Long mclusterId);
 	
 	
 }

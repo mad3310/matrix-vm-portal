@@ -3,6 +3,8 @@ package com.letv.portal.service;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.paging.impl.Page;
+
 public interface IBaseService<T> {
 	
 	/**
@@ -44,7 +46,7 @@ public interface IBaseService<T> {
 	 * @return
 	 * @throws Exception
 	 */
-	T selectById(String id);
+	T selectById(Long id);
 	
 	/**
 	 * 根据model查询总数
@@ -79,5 +81,16 @@ public interface IBaseService<T> {
 	<K,V> List<T> selectByMap(Map<K,V>  map);
 	
 	public boolean hasSoftDelete();
+
+	/**Methods Name: selectPageByParams <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param page
+	 * @param params
+	 * @param orderBy
+	 * @param isAsc
+	 * @return
+	 */
+	<K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc);
 	
 }

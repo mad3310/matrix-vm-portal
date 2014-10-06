@@ -2,13 +2,11 @@ package com.letv.portal.model;
 
 import java.util.Date;
 
+import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.UserStatus;
    
 public class UserModel extends BaseModel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5336795056773086076L;
 
 	private UserStatus status; 

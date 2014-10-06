@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IDbUserDao;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
 

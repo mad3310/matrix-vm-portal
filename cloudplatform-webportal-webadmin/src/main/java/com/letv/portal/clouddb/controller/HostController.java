@@ -1,8 +1,5 @@
 	package com.letv.portal.clouddb.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.model.HostModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IHostService;
-import com.letv.portal.view.DbAuditView;
-import com.letv.portal.view.HostView;
-import com.mysql.jdbc.StringUtils;
 
 @Controller
 @RequestMapping("/host")
@@ -109,7 +101,7 @@ public class HostController {
     * @param request
     */
    @RequestMapping(value="/{id}",method=RequestMethod.DELETE)   
-   public void delteHostByID(@PathVariable String id,HttpServletRequest request) {
+   public void delteHostByID(@PathVariable Long id,HttpServletRequest request) {
 	HostModel hostModel = new HostModel();
 	try {
 		hostModel.setId(id);
@@ -127,7 +119,7 @@ public class HostController {
    * @param request
    */
   @RequestMapping(value="/{id}/{hostName}",method=RequestMethod.PUT)   
-  public void updateHost(@PathVariable String id,@PathVariable String hostName,HttpServletRequest request) {
+  public void updateHost(@PathVariable Long id,@PathVariable String hostName,HttpServletRequest request) {
 	  HostModel hostModel = new HostModel();
 	  hostModel.setId(id);
 	  hostModel.setHostName(hostName); 

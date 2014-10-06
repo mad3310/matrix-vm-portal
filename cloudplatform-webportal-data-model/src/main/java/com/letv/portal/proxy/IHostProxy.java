@@ -1,35 +1,14 @@
 package com.letv.portal.proxy;
 
-import java.util.Map;
-
-import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.HostModel;
 
-
-
-/**Program Name: IHostService <br>
+/**Program Name: IHostProxy <br>
  * Description:  <br>
  * @author name: liuhao1 <br>
- * Written Date: 2014年8月27日 <br>
+ * Written Date: 2014年10月7日 <br>
  * Modified By: <br>
  * Modified Date: <br>
  */
 public interface IHostProxy extends IBaseProxy<HostModel> {
 
-	/**Methods Name: updateNodeCount <br>
-	 * Description: 改变node数量<br>
-	 * @author name: liuhao1
-	 * @param hostId
-	 * @param type  +增加  -减少    
-	 */
-	public void updateNodeCount(String hostId,String type); 
-	
-	/**Methods Name: findPagebyParams <br>
-	 * Description: 根据查询条件查出分页数据<br>
-	 * @author name: liuhao1
-	 * @param params
-	 * @param page
-	 * @return
-	 */
-	public Page findPagebyParams(Map<String,Object> params,Page page);
 }

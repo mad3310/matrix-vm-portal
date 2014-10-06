@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import com.letv.common.model.BaseModel;
+
 
 /**Program Name: HostModel <br>
  * Description:  <br>
@@ -22,7 +24,7 @@ public class HostModel extends BaseModel {
 	private Integer diskSize; //磁盘大小
 	private Integer diskUsed; //磁盘使用量
 
-	private String status; //状态:0:关闭   1:正常
+	private Integer status; //状态:
 	
 	public String getHostName() {
 		return hostName;
@@ -79,10 +81,10 @@ public class HostModel extends BaseModel {
 	public void setDiskUsed(Integer diskUsed) {
 		this.diskUsed = diskUsed;
 	}
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	@Override

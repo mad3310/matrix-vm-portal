@@ -11,16 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
-import com.letv.portal.dao.IDbApplyStandardDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
-import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
@@ -33,8 +31,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	
 	@Resource
 	private IDbDao dbDao;
-	@Resource
-	private IDbApplyStandardDao dbApplyStandardDao;
 	
 	@Resource
 	private IContainerDao containerDao;
@@ -69,8 +65,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
-		this.dbDao.audit(new DbModel(status,mclusterId,auditInfo));
-		this.dbApplyStandardDao.audit(new DbApplyStandardModel(status,auditInfo));
+//		this.dbDao.updateBySelective(t);
 	}
 
 	@Override
@@ -84,7 +79,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public Map<String, String> selectCreateParams(String id) {
+	public Map<String, String> selectCreateParams(Long id) {
 		return this.dbDao.selectCreateParams(id);
 	}
 

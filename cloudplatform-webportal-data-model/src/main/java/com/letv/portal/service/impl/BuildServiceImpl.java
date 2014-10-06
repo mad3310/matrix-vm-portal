@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.portal.dao.IBaseDao;
+import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IBuildDao;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.service.IBuildService;
@@ -32,12 +32,12 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	}
 
 	@Override
-	public List<BuildModel> selectByMclusterId(String mclusterId) {
+	public List<BuildModel> selectByMclusterId(Long mclusterId) {
 		return this.buildDao.selectByMclusterId(mclusterId);
 	}
 
 	@Override
-	public void initStatus(String mclusterId) {
+	public void initStatus(Long mclusterId) {
 		
 		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点1信息","提交节点1信息","同步节点2信息","提交节点2信息 ","启动集群","检查集群状态"};
 		

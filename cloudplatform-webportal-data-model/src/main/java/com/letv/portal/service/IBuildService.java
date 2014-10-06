@@ -16,9 +16,9 @@ import com.letv.portal.model.BuildModel;
  */
 public interface IBuildService extends IBaseService<BuildModel> {
 
-	public List<BuildModel> selectByMclusterId(String mclusterId);
+	public List<BuildModel> selectByMclusterId(Long mclusterId);
 
-	public void initStatus(String mclusterId);
+	public void initStatus(Long mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);
 }

@@ -13,7 +13,7 @@ import com.mysql.jdbc.StringUtils;
 @RequestMapping("/account")
 public class AccountController {
 	
-	@RequestMapping("/login")   //http://localhost:8080/account/login
+	@RequestMapping("/login")
 	public String login(HttpServletRequest request,HttpServletResponse response) {
 		
 		String loginName=request.getParameter("loginName");
@@ -36,16 +36,13 @@ public class AccountController {
 		request.getSession().setAttribute("userId", loginName);
 		request.getSession().setAttribute("role", "sysadmin");
 		request.getSession().setMaxInactiveInterval(3600);//单位：秒
-		return "redirect:/mcluster/list";
+		return "redirect:/mcluster";
 		
-
 	}
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
-	
 		request.getSession().invalidate();
 		return "redirect:/account/login";
 	}
 	
-
 }

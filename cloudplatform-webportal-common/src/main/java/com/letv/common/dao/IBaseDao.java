@@ -1,4 +1,4 @@
-package com.letv.portal.dao;
+package com.letv.common.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -15,9 +15,9 @@ public interface IBaseDao<T> {
 	
 	public void delete(T t);
 	
-	public void deleteFlag(String id);
+	public void deleteFlag(Long id);
 	
-	public T selectById(String id);
+	public T selectById(Long id);
 	
 	public Integer selectByModelCount(T  t);
 	

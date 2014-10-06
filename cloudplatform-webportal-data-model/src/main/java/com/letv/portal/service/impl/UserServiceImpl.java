@@ -10,9 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IUserDao;
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
@@ -74,7 +74,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	
 	private UserModel getUserById(Long userid)
 	{
-		UserModel user = super.selectById(userid.toString());
+		UserModel user = super.selectById(userid);
 		if(null == user)
 			throw new CommonException("User不存在，user id："+userid);
 		return user;

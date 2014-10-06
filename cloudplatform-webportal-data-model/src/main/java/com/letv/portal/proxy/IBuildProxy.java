@@ -4,21 +4,18 @@ import java.util.List;
 
 import com.letv.portal.model.BuildModel;
 
-
-
-
-/**Program Name: IBuildService <br>
- * Description:  python api 创建mcluster及db等创建过程记录<br>
- * @author name: wujun <br>
- * Written Date: 2014年9月30日 <br>
+/**Program Name: IBuildProxy <br>
+ * Description:  <br>
+ * @author name: liuhao1 <br>
+ * Written Date: 2014年10月7日 <br>
  * Modified By: <br>
  * Modified Date: <br>
  */
 public interface IBuildProxy extends IBaseProxy<BuildModel> {
 
-	public List<BuildModel> selectByMclusterId(String mclusterId);
+	public List<BuildModel> selectByMclusterId(Long mclusterId);
 
-	public void initStatus(String mclusterId);
+	public void initStatus(Long mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);
 }

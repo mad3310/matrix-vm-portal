@@ -23,13 +23,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.letv.common.dao.IBaseDao;
+import com.letv.common.dao.QueryParam;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.model.ISoftDelete;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.BeanUtil;
-import com.letv.portal.dao.IBaseDao;
-import com.letv.portal.model.ISoftDelete;
 import com.letv.portal.service.IBaseService;
 
 /**
@@ -163,7 +165,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	}
 
 	@Override
-	public T selectById(String id) {
+	public T selectById(Long id) {
 		if (null == id) 
 			throw new ValidateException("select操作中，id不可为空！");
 		
@@ -214,6 +216,16 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	@Override
 	public final boolean hasSoftDelete() {
 		return isSoftDelete;
+	}
+	
+	@Override
+	public <K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc) {
+		QueryParam param = new QueryParam();
+		param.setPage(page);
+		param.setParams(params);
+		page.setData(getDao().selectPageByMap(param));
+		page.setTotalRecords(getDao().selectByMapCount(params));
+		return page;
 	}
 	
 	public abstract IBaseDao<T> getDao();

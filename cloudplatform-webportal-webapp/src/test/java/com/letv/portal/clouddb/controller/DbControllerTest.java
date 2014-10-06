@@ -11,12 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.common.util.HttpClient;
 import com.letv.portal.junitBase.AbstractTest;
-import com.letv.portal.model.DbApplyStandardModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
@@ -30,8 +27,6 @@ public class DbControllerTest extends AbstractTest{
 	private IMclusterService mclusterService;
 	@Resource
 	private IDbUserService dbUserService;
-	@Resource
-	private IDbApplyStandardService dbApplyStandardService;
 	
     @Test
 	public void toList(){
@@ -52,7 +47,7 @@ public class DbControllerTest extends AbstractTest{
 		obj.setData(this.dbService.findPagebyParams(params, page));
 		System.out.println(obj);
 	}
-    @Test
+    /*@Test
 	public void saveInsert(){
     	DbApplyStandardModel dbApplyStandardModel = new DbApplyStandardModel();
 //		dbApplyStandardModel.setCreateUser(123);
@@ -65,15 +60,14 @@ public class DbControllerTest extends AbstractTest{
 //    	dbApplyStandardModel1.setCreateUser("letvTest1");
     	dbApplyStandardModel1.setStatus("2");
 		this.dbApplyStandardService.updateBySelective(dbApplyStandardModel1);
-    }
+    }*/
     @Test
     public void detail(){
-    	String dbId="c06380c9-d94f-4c3a-80e5-800b92e0b4be";
+    	Long dbId=1L;
 		DbModel dbModel = this.dbService.selectById(dbId);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
+		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getMclusterId()));
 		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
-		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		mav.addObject("db", dbModel);
 		mav.setViewName("/clouddb/user_db_detail");
 		System.out.println(mav);

@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import com.letv.common.model.BaseModel;
+
 
 
 /**Program Name: IpResourceModel <br>
@@ -17,7 +19,7 @@ public class IpResourceModel extends BaseModel {
 	private String gateWay;
 	private String mask;
 	
-	private String status; //状态 0：未使用 1：已使用
+	private Integer status; //状态 0：未使用 1：已使用
 	public String getIp() {
 		return ip;
 	}
@@ -36,10 +38,15 @@ public class IpResourceModel extends BaseModel {
 	public void setMask(String mask) {
 		this.mask = mask;
 	}
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "IpResourceModel [ip=" + ip + ", gateWay=" + gateWay + ", mask="
+				+ mask + ", status=" + status + "]";
 	}
 }

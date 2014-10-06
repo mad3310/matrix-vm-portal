@@ -22,7 +22,7 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbId
 	 * @return
 	 */
-	public List<DbUserModel> selectByDbId(String dbId);
+	public List<DbUserModel> selectByDbId(Long dbId);
 	
 	/**Methods Name: findPagebyParams <br>
 	 * Description: dbUser列表<br>

@@ -8,13 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
-import com.letv.portal.dao.IDbApplyStandardDao;
 import com.letv.portal.dao.IHostDao;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
@@ -31,9 +29,6 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	@Resource
 	private IHostDao hostDao;
 	@Resource
-	private IDbApplyStandardDao dbApplyStandardDao;
-	
-	@Resource
 	private IContainerDao containerDao;
 	
 	@Resource
@@ -49,7 +44,7 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	}
 
 	@Override
-	public void updateNodeCount(String hostId,String type) {
+	public void updateNodeCount(Long hostId,String type) {
 		HostModel host = this.hostDao.selectById(hostId);
 		Integer number = "+".equals(type)?host.getNodesNumber()+1:host.getNodesNumber()-1;
 		host.setNodesNumber(number);

@@ -35,7 +35,7 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @param createUser
 	 * @return
 	 */
-	public String insert(String mclusterId,String[] hostIds,String dbName,String createUser);
+	public String insert(Long mclusterId,String[] hostIds,String dbName,String createUser);
 
 
 

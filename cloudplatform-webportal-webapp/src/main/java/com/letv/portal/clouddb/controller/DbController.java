@@ -21,10 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.model.DbApplyStandardModel;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
-import com.letv.portal.service.IDbApplyStandardService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
@@ -48,8 +47,6 @@ public class DbController {
 	private IMclusterService mclusterService;
 	@Resource
 	private IDbUserService dbUserService;
-	@Resource
-	private IDbApplyStandardService dbApplyStandardService;
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
@@ -93,9 +90,9 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/",method=RequestMethod.POST)   
-	public String save(DbApplyStandardModel dbApplyStandardModel, HttpServletRequest request) {
-			dbApplyStandardModel.setStatus("1");
-			this.dbApplyStandardService.insert(dbApplyStandardModel);
+	public String save(DbModel dbModel, HttpServletRequest request) {
+		dbModel.setStatus(Constant.STATUS_DEFAULT);
+		this.dbService.insert(dbModel);
 		return "redirect:/db/list";
 	}
 	
@@ -107,12 +104,12 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
-	public ModelAndView detail(@PathVariable String dbId,HttpServletRequest request) {		
+	public ModelAndView detail(@PathVariable Long dbId,HttpServletRequest request) {		
 		DbModel dbModel = this.dbService.selectById(dbId);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getClusterId()));
+		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getMclusterId()));
 		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
-		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
+//		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		mav.addObject("db", dbModel);
 		mav.setViewName("/clouddb/user_db_detail");
 		return mav;

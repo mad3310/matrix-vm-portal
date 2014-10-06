@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 
 import com.letv.common.paging.impl.Page;
@@ -13,7 +12,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHostService;
-import com.letv.portal.view.HostView;
 
 public class HostControllerTest extends AbstractTest{
 	@Resource
@@ -103,7 +101,7 @@ public class HostControllerTest extends AbstractTest{
 		try {
 			 HostModel hostModel = new HostModel();
 			 hostModel.setHostName("wujunSpeacil");
-			 hostModel.setId("3");
+			 hostModel.setId(3L);
 			 this.hostService.update(hostModel);
 		} catch (Exception e) {
 			e.printStackTrace();

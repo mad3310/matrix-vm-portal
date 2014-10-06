@@ -4,64 +4,23 @@ package com.letv.portal.view;
 public class DbAuditView {
 
 
-	private String auditType;
-	private String auditInfo;
-	private String mclusterId;
+	private Long mclusterId;
+	private Long dbId;
 	private String mclusterName;
-	private String dbId;
-	private String applyCode;
-	private String dbApplyStandardId;
-	private String hostIds;
-	private String createUser;
-	
-	public String getAuditType() {
-		return auditType;
-	}
-	public void setAuditType(String auditType) {
-		this.auditType = auditType;
-	}
-	public String getAuditInfo() {
-		return auditInfo;
-	}
-	public void setAuditInfo(String auditInfo) {
-		this.auditInfo = auditInfo;
-	}
-	public String getMclusterId() {
+	private String dbName;
+	private Integer status;
+	private String auditInfo;
+	public Long getMclusterId() {
 		return mclusterId;
 	}
-	public void setMclusterId(String mclusterId) {
+	public void setMclusterId(Long mclusterId) {
 		this.mclusterId = mclusterId;
 	}
-	public String getDbId() {
+	public Long getDbId() {
 		return dbId;
 	}
-	public void setDbId(String dbId) {
+	public void setDbId(Long dbId) {
 		this.dbId = dbId;
-	}
-	
-	public String getApplyCode() {
-		return applyCode;
-	}
-	public void setApplyCode(String applyCode) {
-		this.applyCode = applyCode;
-	}
-	public String getDbApplyStandardId() {
-		return dbApplyStandardId;
-	}
-	public void setDbApplyStandardId(String dbApplyStandardId) {
-		this.dbApplyStandardId = dbApplyStandardId;
-	}
-	public String getHostIds() {
-		return hostIds;
-	}
-	public void setHostIds(String hostIds) {
-		this.hostIds = hostIds;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
 	}
 	public String getMclusterName() {
 		return mclusterName;
@@ -69,5 +28,23 @@ public class DbAuditView {
 	public void setMclusterName(String mclusterName) {
 		this.mclusterName = mclusterName;
 	}
-	
+	public String getDbName() {
+		return dbName;
+	}
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public String getAuditInfo() {
+		return auditInfo;
+	}
+	public void setAuditInfo(String auditInfo) {
+		this.auditInfo = auditInfo;
+	}
+
 }

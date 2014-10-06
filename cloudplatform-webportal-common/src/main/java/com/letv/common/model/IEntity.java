@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.common.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

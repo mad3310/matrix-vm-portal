@@ -2,6 +2,7 @@ package com.letv.portal.dao;
 
 import java.util.List;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.BuildModel;
 
 /**Program Name: IBuildDao <br>
@@ -13,7 +14,7 @@ import com.letv.portal.model.BuildModel;
  */
 public interface IBuildDao extends IBaseDao<BuildModel> {
 	  
-	public List<BuildModel> selectByMclusterId(String mclusterId);
+	public List<BuildModel> selectByMclusterId(Long mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);
 }
