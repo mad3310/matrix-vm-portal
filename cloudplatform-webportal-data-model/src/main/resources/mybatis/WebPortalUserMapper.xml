@@ -76,21 +76,21 @@
 	</update>
 	
 	<!-- 根据id查询-->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from webportal_user where ID = #{id}
 	</select>
 	
 	<!-- 根据userName查询-->
-	<select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from webportal_user where USERNAME = #{userName}
 	</select>
 	
 	<!-- 根据userName查询用户是否存在-->
-	<select id="existByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="existByUserName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select count(1)
 		from webportal_user where USERNAME = #{userName}
 	</select>

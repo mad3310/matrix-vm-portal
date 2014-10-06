@@ -12,7 +12,6 @@
         <!-- webportal相关alias -->
         <typeAlias alias="Mcluster" type="com.letv.portal.model.MclusterModel" />
         <typeAlias alias="Db" type="com.letv.portal.model.DbModel" />
-        <typeAlias alias="DbStandard" type="com.letv.portal.model.DbApplyStandardModel" />
         <typeAlias alias="Container" type="com.letv.portal.model.ContainerModel" />
         <typeAlias alias="Host" type="com.letv.portal.model.HostModel" />
         <typeAlias alias="IpResource" type="com.letv.portal.model.IpResourceModel" />

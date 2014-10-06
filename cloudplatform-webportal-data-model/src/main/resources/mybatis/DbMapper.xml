@@ -181,19 +181,19 @@
 	</update>
 
 	<!-- 根据id查询-->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB where ID = #{id}
 	</select>
-	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_DB WHERE DB_NAME = #{dbName}
 	</select>
 
 	<!-- 查询创建用户所需参数-->
-	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.String">
+	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.Long">
 		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,DB.CREATE_USER
 		from WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
 		where

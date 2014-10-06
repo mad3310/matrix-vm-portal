@@ -118,7 +118,7 @@
 	</update>
 
 	<!-- 根据id查询-->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_HOST where ID = #{id}

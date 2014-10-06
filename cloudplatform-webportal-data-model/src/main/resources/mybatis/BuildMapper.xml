@@ -114,14 +114,14 @@
 	</update>
 	
 	<!-- 根据mclusterId查询-->
-	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Lang">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
 	</select>
 	
 	<!-- 根据dbId查询-->
-	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.Lang">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_BUILD where DB_ID = #{dbId} ORDER BY STEP
