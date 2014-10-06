@@ -220,7 +220,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
 			try {
-				Map<String,String> params = this.dbUserService.selectCreateParams(id);
+				Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";

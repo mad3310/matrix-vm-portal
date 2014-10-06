@@ -39,7 +39,7 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
+	public Map<String,String> selectCreateParams(Long id);
 	
 	/**Methods Name: updateStatus <br>
 	 * Description: 更新用户状态<br>

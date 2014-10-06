@@ -19,7 +19,6 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
@@ -50,7 +49,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	}
 	
 	@Override
-	public List<DbUserModel> selectByDbId(String dbId) {
+	public List<DbUserModel> selectByDbId(Long dbId) {
 		return this.dbUserDao.selectByDbId(dbId);
 	}
 
@@ -63,7 +62,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	}
 
 	@Override
-	public Map<String, String> selectCreateParams(String id) {
+	public Map<String, String> selectCreateParams(Long id) {
 		return this.dbUserDao.selectCreateParams(id);
 	}
 
@@ -89,12 +88,12 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		
 		int maxConcurrency = dbUserModel.getMaxConcurrency();
 		
-		if(!Constant.DB_USER_TYPE_MANAGER.equals(dbUserModel.getType())) {
-			maxUserConnections = maxConcurrency;
-			maxConnectionsPerHour = maxConcurrency*2*60*60;
-			maxQueriesPerHour = maxConcurrency*2*60*60;
-			maxUpdatesPerHour = maxConcurrency*60*60;
-		} 
+//		if(!Constant.DB_USER_TYPE_MANAGER.equals(dbUserModel.getType())) {
+//			maxUserConnections = maxConcurrency;
+//			maxConnectionsPerHour = maxConcurrency*2*60*60;
+//			maxQueriesPerHour = maxConcurrency*2*60*60;
+//			maxUpdatesPerHour = maxConcurrency*60*60;
+//		} 
 		dbUserModel.setMaxUserConnections(maxUserConnections);
 		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
 		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);

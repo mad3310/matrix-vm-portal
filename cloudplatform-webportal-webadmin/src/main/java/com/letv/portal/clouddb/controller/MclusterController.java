@@ -82,9 +82,9 @@ public class MclusterController {
 	 * @return
 	 */
 	@RequestMapping(value="/{clusterId}",method=RequestMethod.GET)
-	public ModelAndView getContainers(@PathVariable String clusterId,HttpServletRequest request) {
+	public ModelAndView getContainers(@PathVariable Long mclusterId,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
-		List<ContainerModel> containers = this.containerService.selectByClusterId(clusterId);
+		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterId);
 		mav.addObject("containers", containers);
 		mav.setViewName("/clouddb/mgr_mcluster_info");
 		return mav;

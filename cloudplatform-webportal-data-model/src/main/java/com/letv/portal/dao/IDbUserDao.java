@@ -21,7 +21,7 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param dbId
 	 * @return
 	 */
-	public List<DbUserModel> selectByDbId(String dbId);
+	public List<DbUserModel> selectByDbId(Long dbId);
 	
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建dbUser相关参数<br>
@@ -29,7 +29,7 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
+	public Map<String,String> selectCreateParams(Long id);
 	
 	/**Methods Name: updateStatus <br>
 	 * Description: 更新数据库用户状态<br>
