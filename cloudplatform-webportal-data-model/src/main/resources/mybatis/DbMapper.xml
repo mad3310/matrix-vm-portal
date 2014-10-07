@@ -7,11 +7,11 @@
 	<resultMap id="BaseResultMap" type="Db">
 		<result column="ID" property="id" />
 		<result column="DB_NAME" property="dbName" />
-		<result column="CLUSTER_ID" property="clusterId" />
+		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="STATUS" property="status" />
 		<result column="AUDIT_INFO" property="auditInfo" />
 		
-		<result column="IS_DELETED" property="deleted" />
+		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -32,10 +32,10 @@
 	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_NAME,CLUSTER_ID,STATUS,AUDIT_INFO,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,DB_NAME,MCLUSTER_ID,STATUS,AUDIT_INFO,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	<sql id="Base_Column_List_add_cluster">
-		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.CLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.IS_DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
+		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.MCLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
 	</sql>
 
 	
@@ -49,14 +49,14 @@
 			<if test="dbName != null  and dbName != ''  and dbName != 'null'">
 				and DB_NAME like CONCAT('%','${dbName}','%')
 			</if>
-			<if test="clusterId != null  ">
-				and CLUSTER_ID=#{clusterId}
+			<if test="mmclusterId != null  ">
+				and MCLUSTER_ID=#{mclusterId}
 			</if>
 			<if test="status != null  ">
 				and STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
-				and IS_DELETED=#{deleted}
+				and DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
 				and CREATE_TIME=#{createTime}
@@ -77,15 +77,15 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Db" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_DB(DB_NAME,CLUSTER_ID,STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{dbName},#{clusterId},'0','1',now(),#{createUser},now(),#{updateUser})
+		#{dbName},#{mclusterId},0,1,now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Db">
 		update WEBPORTAL_DB set
-		ID=#{id},DB_NAME=#{dbName},CLUSTER_ID=#{clusterId},STATUS=#{status},IS_DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},DB_NAME=#{dbName},MCLUSTER_ID=#{mclusterId},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -96,14 +96,14 @@
 			<if test="dbName != null  and dbName != '' ">
 				DB_NAME=#{dbName},
 			</if>
-			<if test="clusterId != null  ">
-				CLUSTER_ID=#{clusterId},
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
 			<if test="deleted != null  ">
-				IS_DELETED=#{deleted},
+				DELETED=#{deleted},
 			</if>
 			<if test="createTime != null  ">
 				CREATE_TIME=#{createTime},
@@ -126,14 +126,14 @@
 			<if test="dbName != null  and dbName != '' ">
 				DB_NAME=#{dbName},
 			</if>
-			<if test="clusterId != null  ">
-				CLUSTER_ID=#{clusterId},
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
 			<if test="deleted != null  ">
-				IS_DELETED=#{deleted},
+				DELETED=#{deleted},
 			</if>
 			<if test="createTime != null  ">
 				CREATE_TIME=#{createTime},
@@ -158,7 +158,7 @@
 	<update id="updateFlag" parameterType="Db">
 		update WEBPORTAL_DB set
 		<if test="deleted != null  ">
-			IS_DELETED=#{deleted}
+			DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>
@@ -173,8 +173,8 @@
 			<if test="auditInfo != null  ">
 				AUDIT_INFO=#{auditInfo},
 			</if>
-			<if test="clusterId != null  ">
-				CLUSTER_ID=#{clusterId}
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId}
 			</if>
 		</set>
 		where ID = #{id}
@@ -197,7 +197,7 @@
 		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,DB.CREATE_USER
 		from WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
 		where
-		DB.CLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.CLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND DB.ID=#{id}
+		DB.MCLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.MCLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND DB.ID=#{id}
 	</select>
 	<!-- 列表总数 -->
 	<select id="selectByModelCount" resultType="java.lang.Integer"
@@ -241,14 +241,14 @@
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
 				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
-			<if test="params != null and params.clusterId != null  ">
-				and WEBPORTAL_DB.CLUSTER_ID=#{params.clusterId}
+			<if test="params != null and params.mclusterId != null  ">
+				and WEBPORTAL_DB.MCLUSTER_ID=#{params.mclusterId}
 			</if>
 			<if test="params != null and params.status != null  ">
 				and WEBPORTAL_DB.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
-				and WEBPORTAL_DB.IS_DELETED=#{params.deleted}
+				and WEBPORTAL_DB.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
 				and WEBPORTAL_DB.CREATE_TIME=#{params.createTime}
@@ -271,7 +271,7 @@
 		select
 		<include refid="Base_Column_List_add_cluster" />
 		from WEBPORTAL_DB left join WEBPORTAL_MCLUSTER_INFO 
-		on WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.CLUSTER_ID
+		on WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.MCLUSTER_ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY WEBPORTAL_DB.CREATE_TIME DESC
 		<if test="page != null">

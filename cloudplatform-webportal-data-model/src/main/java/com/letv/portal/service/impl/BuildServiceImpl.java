@@ -45,7 +45,7 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 			BuildModel buildModel = new BuildModel();
 			buildModel.setStep(i+1);
 			buildModel.setStepMsg(stepMsgs[i]);
-			buildModel.setStatus("waitting");
+//			buildModel.setStatus("waitting");
 			buildModel.setMclusterId(mclusterId);
 			this.buildDao.insert(buildModel);
 		}

@@ -20,7 +20,7 @@ public class BuildModel extends BaseModel {
 	private Long dbId;
 	private Integer step;
 	private String stepMsg;
-	private String status;
+	private Integer status;
 	private String code;
 	private String msg;
 
@@ -50,10 +50,11 @@ public class BuildModel extends BaseModel {
 	public void setStepMsg(String stepMsg) {
 		this.stepMsg = stepMsg;
 	}
-	public String getStatus() {
+
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public String getCode() {

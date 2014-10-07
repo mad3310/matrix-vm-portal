@@ -5,7 +5,7 @@
 <mapper namespace="com.letv.portal.dao.IBuildDao">
 
 	<!-- Result Map -->
-	<resultMap id="BaseResultMap" type="build">
+	<resultMap id="BaseResultMap" type="Build">
 		<result column="ID" property="id" />
 		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="DB_ID" property="dbId" />
@@ -22,13 +22,13 @@
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
-			<if test="id != null  ">
+			<if test="id != null">
 				and ID=#{id}
 			</if>
-			<if test="mclusterId != null  and mclusterId != '' ">
+			<if test="mclusterId != null">
 				and MCLUSTER_ID=#{mclusterId}
 			</if>
-			<if test="dbId != null  and dbId != '' ">
+			<if test="dbId != null">
 				and DB_ID=#{dbId}
 			</if>
 			
@@ -41,7 +41,7 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="build" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="Build" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_BUILD
 		(MCLUSTER_ID,DB_ID,STEP,STEP_MSG,STATUS,CODE,MSG,START_TIME,END_TIME)
@@ -49,12 +49,12 @@
 		(#{mclusterId},#{dbId},#{step},#{stepMsg},#{status},#{code},#{msg},#{startTime},#{endTime})
 	</insert>
 	<!-- 根据id，修改记录 -->
-	<update id="update" parameterType="build">
+	<update id="update" parameterType="Build">
 		update WEBPORTAL_BUILD set
 		#{id},MCLUSTER_ID=#{mclusterId},DB_ID=#{dbId},STEP=#{step},STEP_MSG=#{stepMsg},STATUS=#{status},CODE=#{code},MSG=#{msg},START_TIME=#{startTime},END_TIME=#{endTime}
 		where MCLUSTER_ID=#{mclusterId} and STEP=#{step}
 	</update>
-	<update id="updateBySelective" parameterType="build">
+	<update id="updateBySelective" parameterType="Build">
 		update WEBPORTAL_BUILD
 		<set>
 			<if test="mclusterId != null  ">
@@ -87,7 +87,7 @@
 		</set>
 		where MCLUSTER_ID=#{mclusterId} and STEP=#{step}
 	</update>
-	<update id="updateStatusFail" parameterType="build">
+	<update id="updateStatusFail" parameterType="Build">
 		update WEBPORTAL_BUILD
 		<set>
 			<if test="status != null  ">
@@ -106,22 +106,22 @@
 				END_TIME=#{endTime},
 			</if>
 		</set>
-		where MCLUSTER_ID=#{mclusterId} and STATUS='building'
+		where MCLUSTER_ID=#{mclusterId} and STATUS='Building'
 	</update>
 	<!-- 物理删除 -->
-	<update id="delete" parameterType="build">
+	<update id="delete" parameterType="Build">
 		delete from WEBPORTAL_BUILD where ID = #{id}
 	</update>
 	
 	<!-- 根据mclusterId查询-->
-	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Lang">
+	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
 	</select>
 	
 	<!-- 根据dbId查询-->
-	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.Lang">
+	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_BUILD where DB_ID = #{dbId} ORDER BY STEP

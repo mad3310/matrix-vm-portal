@@ -18,7 +18,7 @@
 		<result column="DISK_USED" property="diskUsed" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="deleted" />
+		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -27,7 +27,7 @@
     <sql id="Base_Column_List_add_cluster">
 		webportal_host.id,webportal_host.host_name,webportal_host.host_ip,webportal_host.nodes_number,
 		webportal_host.cpu_model,webportal_host.cores_number,webportal_host.memory_size,webportal_host.disk_size,webportal_host.disk_used,
-		webportal_host.host_model,webportal_host.status,webportal_host.is_deleted,webportal_host.update_user,webportal_host.update_time,webportal_host.create_user,webportal_host.create_time
+		webportal_host.host_model,webportal_host.status,webportal_host.DELETED,webportal_host.update_user,webportal_host.update_time,webportal_host.create_user,webportal_host.create_time
 	</sql>
 	
 	
@@ -48,7 +48,7 @@
 				and STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
-				and IS_DELETED=#{deleted}
+				and DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
 				and CREATE_TIME=#{createTime}
@@ -79,7 +79,7 @@
 	<!-- WEBPORTAL_Host table all fields -->
 	<sql id="Base_Column_List">
 		ID,HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED
-		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
@@ -87,7 +87,7 @@
 		insert into
 		WEBPORTAL_HOST
 		(HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED,
-		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
 		#{status},'1',now(),#{createUser},now(),#{updateUser})
@@ -102,7 +102,7 @@
 	<update id="updateFlag" parameterType="Host">
 		update WEBPORTAL_HOST set
 		<if test="deleted != null  ">
-			IS_DELETED=#{deleted}
+			DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>

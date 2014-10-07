@@ -104,7 +104,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			BuildModel nextBuild = new BuildModel();
 			nextBuild.setMclusterId(mclusterModel.getId());
 			nextBuild.setStartTime(new Date());
-			nextBuild.setStatus("fail");
+//			nextBuild.setStatus("fail");
 			nextBuild.setMsg(e.getMessage());
 			this.buildService.updateStatusFail(nextBuild);
 			mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
@@ -151,7 +151,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
-					nextBuild.setStatus("fail");
+//					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
 					mclusterHashMap.put("id", mclusterModel.getId());
@@ -337,7 +337,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
-					nextBuild.setStatus("fail");
+//					nextBuild.setStatus("fail");
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
 					mclusterHashMap.put("id", mclusterModel.getId());
@@ -368,11 +368,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Map<String,Object> response = (Map)jsonResult.get("response");
 			buildModel.setCode((String)response.get("code"));
 			buildModel.setMsg((String) response.get("message"));
-			buildModel.setStatus("success");
+//			buildModel.setStatus("success");
 		} else {
 			buildModel.setCode(String.valueOf(meta.get("code")));
 			buildModel.setMsg((String)meta.get("errorDetail"));
-			buildModel.setStatus("fail");
+//			buildModel.setStatus("fail");
 			flag =  false;
 			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
 			mclusterHashMap.put("id", mclusterId);
@@ -385,7 +385,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			nextBuild.setMclusterId(mclusterId);
 			nextBuild.setStep(step+1);
 			nextBuild.setStartTime(new Date());
-			nextBuild.setStatus("building");
+//			nextBuild.setStatus("building");
 			this.buildService.updateBySelective(nextBuild);
 		}
 		return flag;
