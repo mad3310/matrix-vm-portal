@@ -24,12 +24,11 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 */
 	void audit(HashMap mclusterHashMap);
 
-	/**Methods Name: selectByClusterName <br>
+	/**Methods Name: selectByName <br>
 	 * Description: 根据mcluster名查询数据：用于验证mcluster名是否重复<br>
 	 * @author name: liuhao1
 	 * @param mclusterName
 	 * @return
 	 */
-	List<DbModel> selectByClusterName(String mclusterName);
-	
+	List<MclusterModel> selectByName(String mclusterName);
 }

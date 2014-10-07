@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 
-			<a href="${ctx}/mcluster/list">集群列表</a>
+			<a href="${ctx}/mcluster">集群列表</a>
 			<small> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 				${containers[0].containerName}

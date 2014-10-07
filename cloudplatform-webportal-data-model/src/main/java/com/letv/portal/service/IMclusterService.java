@@ -62,6 +62,6 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @param applyCode
 	 * @return
 	 */
-	public List<DbModel> selectByClusterName(String mclusterName);
-	
+	public List<MclusterModel> selectByName(String mclusterName);
+
 }

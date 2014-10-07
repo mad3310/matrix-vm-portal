@@ -161,8 +161,8 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public List<DbModel> selectByClusterName(String mclusterName) {
-		return this.mclusterDao.selectByClusterName(mclusterName);
+	public List<MclusterModel> selectByName(String mclusterName) {
+		return this.mclusterDao.selectByName(mclusterName);
 	}
 
 //	@Override

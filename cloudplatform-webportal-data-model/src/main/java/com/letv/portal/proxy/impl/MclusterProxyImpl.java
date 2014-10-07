@@ -1,10 +1,13 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IMclusterService;
 
@@ -21,9 +24,24 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	
 	@Autowired
 	private IMclusterService mclusterService;
-	
+	@Autowired
+	private IBuildTaskService buildTaskService;
 	@Override
 	public IBaseService<MclusterModel> getService() {
 		return mclusterService;
 	}	
+	
+	@Override
+	public void insert(MclusterModel mclusterModel) {
+		super.insert(mclusterModel);
+		System.out.println(mclusterModel);
+//		buildTaskService.buildMcluster(mclusterModel, null);
+	}
+
+	@Override
+	public Boolean isExistByName(String mclusterName) {
+		List<MclusterModel> mclusters = this.mclusterService.selectByName(mclusterName);
+		return mclusters.size() == 0?true:false;
+	}
+	
 }

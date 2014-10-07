@@ -56,10 +56,10 @@
 
 
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Mcluster">
+	<insert id="insert" parameterType="Mcluster" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},'1',now(),#{createUser},now(),#{updateUser})
+		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},1,now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
@@ -125,7 +125,7 @@
 		from WEBPORTAL_MCLUSTER_INFO where ID = #{id}
 	</select>
 	
-	<select id="selectByClusterName" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO WHERE MCLUSTER_NAME = #{mclusterName}

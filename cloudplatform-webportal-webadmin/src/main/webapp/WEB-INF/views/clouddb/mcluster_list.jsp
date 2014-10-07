@@ -211,7 +211,6 @@ function queryByPage(currentPage,recordsPerPage) {
 					return "创建失败";
 				}
 			}
-			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
@@ -469,7 +468,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 function createMcluster(){
 	$.ajax({
 		type : "post",
-		url : "${ctx}/mcluster/build",
+		url : "${ctx}/mcluster",
 		data :$('#create-mcluster-form').serialize()
 	});
 	$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");

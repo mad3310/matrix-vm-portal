@@ -1,5 +1,7 @@
 package com.letv.portal.proxy;
 
+import java.util.List;
+
 import com.letv.portal.model.MclusterModel;
 
 
@@ -11,5 +13,13 @@ import com.letv.portal.model.MclusterModel;
  * Modified Date: <br>
  */
 public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
+	
+	/**Methods Name: isUniqueByName <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	Boolean isExistByName(String mclusterName);
 	
 }
