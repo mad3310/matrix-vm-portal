@@ -19,12 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class SkipController {
 	
 	@RequestMapping(value ="/list/mcluster",method=RequestMethod.GET)
-	public String toList(HttpServletRequest request){
+	public String toMclusterList(HttpServletRequest request){
 		return "/clouddb/db_list";
 	}
 
 	@RequestMapping(value="/detail/mcluster/{mclusterId}", method=RequestMethod.GET)   
-	public ModelAndView detail(@PathVariable Long mclusterId,ModelAndView mav) {
+	public ModelAndView toMclusterDetail(@PathVariable Long mclusterId,ModelAndView mav) {
 		mav.addObject("mclusterId",mclusterId);
 		mav.setViewName("/clouddb/mcluster_detail");
 		return mav;
