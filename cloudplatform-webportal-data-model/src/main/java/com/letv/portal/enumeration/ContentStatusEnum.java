@@ -16,7 +16,7 @@ public enum ContentStatusEnum implements ByteEnum{
 		this.value = (byte)value;
 	}
 	@Override
-	public byte getDbValue() {
+	public byte getValue() {
 		 return value;
 	}
 

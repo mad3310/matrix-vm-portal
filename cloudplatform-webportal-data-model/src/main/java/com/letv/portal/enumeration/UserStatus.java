@@ -17,7 +17,7 @@ public enum UserStatus implements ByteEnum{
 	}
 	
 	@Override
-	public byte getDbValue() {
+	public byte getValue() {
 		return this.dbValue;
 	}
 }
