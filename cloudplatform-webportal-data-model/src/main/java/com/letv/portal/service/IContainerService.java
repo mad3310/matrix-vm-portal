@@ -26,13 +26,13 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	/**Methods Name: selectByClusterId <br>
+	/**Methods Name: selectByMclusterId <br>
 	 * Description: 根据clusterId查出节点<br>
 	 * @author name: liuhao1
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectByClusterId(Long mclusterId);
+	public List<ContainerModel> selectByMclusterId(Long mclusterId);
 	
 	/**Methods Name: selectByClusterId <br>
 	 * Description: 根据clusterId查出节点<br>

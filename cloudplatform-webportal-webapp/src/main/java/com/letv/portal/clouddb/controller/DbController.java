@@ -107,7 +107,7 @@ public class DbController {
 	public ModelAndView detail(@PathVariable Long dbId,HttpServletRequest request) {		
 		DbModel dbModel = this.dbService.selectById(dbId);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getMclusterId()));
+		mav.addObject("containers", this.containerService.selectByMclusterId(dbModel.getMclusterId()));
 		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
 //		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
 		mav.addObject("db", dbModel);

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -33,8 +34,13 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	
 	@Override
 	public void insert(MclusterModel mclusterModel) {
+		String mclusterName = mclusterModel.getMclusterName();
+		mclusterModel.setAdminUser(mclusterName);
+		mclusterModel.setAdminPassword(mclusterName);
+		mclusterModel.setDeleted(true);
+		mclusterModel.setStatus((int) MclusterStatus.DEFAULT.getValue());
 		super.insert(mclusterModel);
-		System.out.println(mclusterModel);
+		
 //		buildTaskService.buildMcluster(mclusterModel, null);
 	}
 

@@ -219,7 +219,7 @@ function queryByPage(currentPage,recordsPerPage) {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a href=\"${ctx}/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a href=\"${ctx}/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
 						+ array[i].createUser

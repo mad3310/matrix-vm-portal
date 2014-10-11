@@ -1,7 +1,6 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
+import com.letv.portal.python.service.IBuildTaskService;
 
 @Controller
 @RequestMapping("/mcluster")
@@ -27,26 +26,10 @@ public class MclusterController {
 	@Autowired
 	private IMclusterProxy mclusterProxy;
 	
+	@Autowired
+	private IBuildTaskService buildTaskService;
+	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
-	
-	
-	/**Methods Name: toList <br>
-	 * Description: page to mcluster list<br>
-	 * @author name: liuhao1
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView toList(ModelAndView mav) {
-		mav.setViewName("/clouddb/mcluster_list");
-		return mav;
-	}
-	@RequestMapping(value="/{mclusterId}", method=RequestMethod.GET)   
-	public ModelAndView detail(@PathVariable Long mclusterId,ModelAndView mav) {
-		mav.setViewName("/clouddb/mcluster_detail");
-		return mav;
-	}
 	
 	/**Methods Name: list <br>
 	 * Description: get mcluster list by page and params<br>
@@ -70,10 +53,16 @@ public class MclusterController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public void save(MclusterModel mclusterModel,HttpServletRequest request) {
-//		mclusterModel.setCreateUser(Long.parseLong(request.getSession().getAttribute("userId").toString()));
 		this.mclusterProxy.insert(mclusterModel);
 	}
 	
+	/**Methods Name: validate <br>
+	 * Description: 根据mclusterName验证重复性<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String mclusterName,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();

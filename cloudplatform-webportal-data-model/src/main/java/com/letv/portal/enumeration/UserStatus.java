@@ -9,15 +9,15 @@ public enum UserStatus implements ByteEnum{
 	ACTIVED(5);
 	
 	
-	private final byte dbValue;
+	private final Integer dbValue;
 	
-	private UserStatus(int dbValue)
+	private UserStatus(Integer dbValue)
 	{
-		this.dbValue = (byte)dbValue;
+		this.dbValue = dbValue;
 	}
 	
 	@Override
-	public byte getValue() {
+	public Integer getValue() {
 		return this.dbValue;
 	}
 }

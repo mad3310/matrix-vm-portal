@@ -7,15 +7,15 @@ public enum DbStatus implements ByteEnum{
 	BUILDFAIL(3),
 	AUDITFAIL(4);
 	
-	private final byte value;
+	private final Integer value;
 	
-	private DbStatus(int value)
+	private DbStatus(Integer value)
 	{
-		this.value = (byte)value;
+		this.value = value;
 	}
 	
 	@Override
-	public byte getValue() {
+	public Integer getValue() {
 		return this.value;
 	}
 }

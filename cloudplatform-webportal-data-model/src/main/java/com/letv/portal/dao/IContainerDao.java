@@ -22,5 +22,5 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectByClusterId(Long clusterId);
+	public List<ContainerModel> selectByMclusterId(Long clusterId);
 }

@@ -36,7 +36,7 @@ public class AccountController {
 		request.getSession().setAttribute("userId", loginName);
 		request.getSession().setAttribute("role", "sysadmin");
 		request.getSession().setMaxInactiveInterval(3600);//单位：秒
-		return "redirect:/mcluster";
+		return "redirect:/list/mcluster";
 		
 	}
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout

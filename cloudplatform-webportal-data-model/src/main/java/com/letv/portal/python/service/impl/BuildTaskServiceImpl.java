@@ -20,6 +20,10 @@ import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.BuildStatus;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.DbUserStatus;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
@@ -72,9 +76,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
-	HashMap mclusterHashMap = new HashMap();
-	HashMap DbHashMap = new HashMap();
-	
 	@Override
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
@@ -86,7 +87,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.mclusterService.insert(mclusterModel);
 		
 		this.buildService.initStatus(mclusterModel.getId());
-		mclusterHashMap.put("id", mclusterModel.getId());
+		
 		try {
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
@@ -97,31 +98,31 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				nextStep = initContainer(mclusterModel,dbId);
 			}
 			if(nextStep) {
-				mclusterHashMap.put("status", Constant.STATUS_OK);
-				this.mclusterService.audit(mclusterHashMap);
+				mclusterModel.setStatus(MclusterStatus.RUNNING.getValue());
+				this.mclusterService.audit(mclusterModel);
+				this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
 			}
 		} catch (Exception e) {
 			BuildModel nextBuild = new BuildModel();
 			nextBuild.setMclusterId(mclusterModel.getId());
 			nextBuild.setStartTime(new Date());
-//			nextBuild.setStatus("fail");
+			nextBuild.setStatus(BuildStatus.FAIL.getValue());
 			nextBuild.setMsg(e.getMessage());
 			this.buildService.updateStatusFail(nextBuild);
-			mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
-			this.mclusterService.audit(mclusterHashMap);
+			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+			this.mclusterService.audit(mclusterModel);
 			if(dbId!=null) {
 				DbModel dbModel = new DbModel();
 				dbModel.setId(dbId);
-				dbModel.setStatus(Constant.STATUS_BUILD_FAIL);
+				dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
 				this.dbService.updateBySelective(dbModel);
 			}
-			this.buildResultToMgr("mcluster集群", "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
 		if(nextStep && dbId != null) {
 			this.buildDb(dbId);
 		}
-		
 	}
 	@Override
 	public boolean createContainer(MclusterModel mclusterModel,Long dbId) {
@@ -151,13 +152,20 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
-//					nextBuild.setStatus("fail");
+					nextBuild.setStatus(BuildStatus.FAIL.getValue());
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
-					mclusterHashMap.put("id", mclusterModel.getId());
-					mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
-					this.mclusterService.audit(mclusterHashMap);
-					this.buildResultToMgr("mcluster集群", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
+					
+					if(dbId!=null) {
+						DbModel dbModel = new DbModel();
+						dbModel.setId(dbId);
+						dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
+						this.dbService.updateBySelective(dbModel);
+					}
+					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+					this.mclusterService.audit(mclusterModel);
+					
+					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -194,20 +202,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = Constant.STATUS_OK;
-				this.buildResultToUser("DB数据库", params.get("createUser"));
+				status = BuildStatus.SUCCESS.getValue();
+				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
 			} else {
 				resultMsg = "失败";
-				status = Constant.STATUS_BUILD_FAIL;
+				status = BuildStatus.FAIL.getValue();
 			}
 		} catch (Exception e) {
 			resultMsg = "失败";
-			status = Constant.STATUS_BUILD_FAIL;
+			status = BuildStatus.FAIL.getValue();
 		} finally {
-			this.buildResultToMgr("DB数据库", resultMsg, null, ERROR_MAIL_ADDRESS);
-			DbHashMap.put("id", dbId);
-			DbHashMap.put("status", status);
-			this.dbService.updateByMap(DbHashMap);
+			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, null, ERROR_MAIL_ADDRESS);
+			DbModel dbModel = new DbModel();
+			dbModel.setId(dbId);
+			dbModel.setStatus(status);
+			this.dbService.updateBySelective(dbModel);
 		}
 	}
 
@@ -219,22 +228,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+			Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 			try {
-				Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(Constant.STATUS_OK);
-					this.buildResultToUser("DB数据库用户", params.get("createUser"));
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
 				} else {
 					resultMsg="失败";
-					dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
+					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
 				}
 			} catch (Exception e) {
 				resultMsg="失败";
-				dbUserModel.setStatus(Constant.STATUS_BUILD_FAIL);
+				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
 			} finally {
-				this.buildResultToMgr("DB数据库用户", resultMsg, null, ERROR_MAIL_ADDRESS);
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
 				this.dbUserService.updateStatus(dbUserModel);
 			}
 		}
@@ -245,7 +254,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public boolean initContainer(MclusterModel mclusterModel,Long dbId) {
 		
 		boolean nextStep = true;
-		List<ContainerModel> containers = this.containerService.selectByClusterId(mclusterModel.getId());
+		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterModel.getId());
 		
 		int step = 2;
 		//假设数据
@@ -337,13 +346,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
-//					nextBuild.setStatus("fail");
+					nextBuild.setStatus(BuildStatus.FAIL.getValue());
 					nextBuild.setMsg("time over check");
 					this.buildService.updateBySelective(nextBuild);
-					mclusterHashMap.put("id", mclusterModel.getId());
-					mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
-					this.mclusterService.audit(mclusterHashMap);
-					this.buildResultToMgr("mcluster集群", "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
+					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+					this.mclusterService.audit(mclusterModel);
+					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerStatus(nodeIp1, username, password));
@@ -368,16 +376,17 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Map<String,Object> response = (Map)jsonResult.get("response");
 			buildModel.setCode((String)response.get("code"));
 			buildModel.setMsg((String) response.get("message"));
-//			buildModel.setStatus("success");
+			buildModel.setStatus(BuildStatus.SUCCESS.getValue());
 		} else {
 			buildModel.setCode(String.valueOf(meta.get("code")));
 			buildModel.setMsg((String)meta.get("errorDetail"));
-//			buildModel.setStatus("fail");
+			buildModel.setStatus(BuildStatus.FAIL.getValue());
 			flag =  false;
 			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
-			mclusterHashMap.put("id", mclusterId);
-			mclusterHashMap.put("status", Constant.STATUS_BUILD_FAIL);
-			this.mclusterService.audit(mclusterHashMap);
+			MclusterModel mclusterModel = new MclusterModel();
+			mclusterModel.setId(mclusterId);
+			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+			this.mclusterService.audit(mclusterModel);
 		}
 		this.buildService.updateBySelective(buildModel);
 		if(flag) {
@@ -385,7 +394,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			nextBuild.setMclusterId(mclusterId);
 			nextBuild.setStep(step+1);
 			nextBuild.setStartTime(new Date());
-//			nextBuild.setStatus("building");
+			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
 			this.buildService.updateBySelective(nextBuild);
 		}
 		return flag;
@@ -456,5 +465,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
+	}
+	@Override
+	public void removeMcluster(MclusterModel mcluster) {
+		this.mclusterService.delete(mcluster);
+//		this.containerService.deleteByCluster(mcluster.getId());
+//		this.buildService.deleteByCluster(mcluster.getId());
 	}
 }

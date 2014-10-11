@@ -20,7 +20,7 @@ public class SkipController {
 	
 	@RequestMapping(value ="/list/mcluster",method=RequestMethod.GET)
 	public String toMclusterList(HttpServletRequest request){
-		return "/clouddb/db_list";
+		return "/clouddb/mcluster_list";
 	}
 
 	@RequestMapping(value="/detail/mcluster/{mclusterId}", method=RequestMethod.GET)   

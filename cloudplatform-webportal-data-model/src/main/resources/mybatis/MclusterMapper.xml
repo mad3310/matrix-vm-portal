@@ -59,22 +59,28 @@
 	<insert id="insert" parameterType="Mcluster" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},1,now(),#{createUser},now(),#{updateUser})
+		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
-		ID=#{id},MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
-	<!-- -->
+	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO
 		<set>
 			<if test="mclusterName != null  and mclusterName != '' ">
 				MCLUSTER_NAME=#{mclusterName},
+			</if>
+			<if test="adminUser != null  ">
+				ADMIN_USER=#{adminUser},
+			</if>
+			<if test="adminPassword != null  ">
+				ADMIN_PASSWORD=#{adminPassword},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
@@ -102,22 +108,14 @@
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
-	<update id="updateFlag" parameterType="Mcluster">
+	<update id="deleteFlag" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}
 		</if>
 		where ID = #{id}
 	</update>
-	<!-- status状态修改 -->
-	<update id="audit" parameterType="java.util.Map">
-		update WEBPORTAL_MCLUSTER_INFO set
-		<if test="status != null  ">
-			STATUS=#{status}
-		</if>
-		where ID = #{id}
-	</update>
-
+	
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
@@ -132,8 +130,7 @@
 	</select>
 
 	<!-- 列表总数 -->
-	<select id="selectByModelCount" resultType="java.lang.Integer"
-		parameterType="Mcluster">
+	<select id="selectByModelCount" resultType="java.lang.Integer" parameterType="Mcluster">
 		select count(1) from WEBPORTAL_MCLUSTER_INFO
 		<include refid="Example_Where_Clause" />
 	</select>
@@ -149,14 +146,12 @@
 
 
 	<!-- 列表总数 -->
-	<select id="selectByMapCount" resultType="java.lang.Integer"
-		parameterType="java.util.Map">
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_MCLUSTER_INFO
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
-	<select id="selectByMap" resultMap="BaseResultMap"
-		parameterType="java.util.Map">
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO

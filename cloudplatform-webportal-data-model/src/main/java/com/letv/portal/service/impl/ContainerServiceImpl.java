@@ -51,8 +51,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 
 	@Override
-	public List<ContainerModel> selectByClusterId(Long mclusterId) {
-		return this.containerDao.selectByClusterId(mclusterId);
+	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
+		return this.containerDao.selectByMclusterId(mclusterId);
 	}
 
 	@Override
