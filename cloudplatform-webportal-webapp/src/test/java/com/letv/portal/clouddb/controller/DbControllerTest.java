@@ -2,21 +2,25 @@ package com.letv.portal.clouddb.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IMclusterService; 
+import com.letv.portal.service.IUserService;
 
 public class DbControllerTest extends AbstractTest{
 	@Resource
@@ -28,48 +32,75 @@ public class DbControllerTest extends AbstractTest{
 	@Resource
 	private IDbUserService dbUserService;
 	
-    @Test
-	public void toList(){
-    	dbService.hashCode();
-    	System.out.println(dbService.hashCode());
-	}
+	@Resource
+	private IUserService  userService;
+    /**
+     * Methods Name:/db/{currentPage}/{recordsPerPage}/{dbName}
+     * Description: <br>
+     * @author name: wujun
+     */
+    
     @Test
 	public void list(){
 		Page page = new Page();
 		page.setCurrentPage(1);
-		page.setRecordsPerPage(11);
+		page.setRecordsPerPage(10);
 	
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("dbName", "%");
-		params.put("createUser", "yaokuo@letv.com");
+		params.put("dbName", null);
+		params.put("createUser", "11");
 		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbService.findPagebyParams(params, page));
 		System.out.println(obj);
 	}
-    /*@Test
-	public void saveInsert(){
-    	DbApplyStandardModel dbApplyStandardModel = new DbApplyStandardModel();
-//		dbApplyStandardModel.setCreateUser(123);
-		dbApplyStandardModel.setStatus("1");
-		this.dbApplyStandardService.insert(dbApplyStandardModel);
-	}
-    @Test
-   	public void saveUpdate(){
-    	DbApplyStandardModel dbApplyStandardModel1 = new DbApplyStandardModel();
-//    	dbApplyStandardModel1.setCreateUser("letvTest1");
-    	dbApplyStandardModel1.setStatus("2");
-		this.dbApplyStandardService.updateBySelective(dbApplyStandardModel1);
-    }*/
+    /**
+     * Methods Name: detail <br>
+     * Description: /db/detail/{dbId}
+     * @author name: wujun
+     */
     @Test
     public void detail(){
-    	Long dbId=1L;
-		DbModel dbModel = this.dbService.selectById(dbId);
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByClusterId(dbModel.getMclusterId()));
-		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
-		mav.addObject("db", dbModel);
-		mav.setViewName("/clouddb/user_db_detail");
-		System.out.println(mav);
+    	Long dbId = 1L;
+		ResultObject obj = new ResultObject();
+		obj.setData(this.dbService.selectById(dbId));
+		System.out.println(obj);
     }
+    /**
+     * Methods Name: save <br>
+     * Description: /db
+     * @author name: wujun
+     */
+    @Test 
+	public void save() {
+    	DbModel dbModel = new DbModel();
+    	dbModel.setDbName("test12");
+    	dbModel.setLinkType(0);
+    	dbModel.setEngineType(1);
+    	dbModel.setCreateUser(1L);
+    	
+    	
+    	dbModel.setStatus(Constant.STATUS_DEFAULT);
+		this.dbService.insert(dbModel);
+	}
+    /**
+     * Methods Name: validate <br>
+     * Description: /validate/{dbName}
+     * @author name: wujun
+     */
+    @Test
+	public void validate() {
+		Map<String,Object> map = new HashMap<String,Object>();
+		String dbName ="test";
+		List<DbModel> list = this.dbService.selectByDbName(dbName);
+		map.put("valid", list.size()>0?false:true);
+		System.out.println(map.get("valid"));
+	}
+    @Test
+	public void  getUserById() {
+		Long userId =1L;
+		this.userService.getUserById(userId);
+        System.out.println(this.userService.getUserById(userId));
+	}
+	
 }

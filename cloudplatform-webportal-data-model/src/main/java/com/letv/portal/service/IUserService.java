@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import com.letv.common.exception.CommonException;
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
 
@@ -17,4 +18,6 @@ public interface IUserService extends IBaseService<UserModel>{
 	public void updateUserLoginInfo(UserModel user,String currentLoginIp);
 	
 	public boolean existUserByUserName(String userName);
+	
+	public UserModel getUserById(Long userId);
 }

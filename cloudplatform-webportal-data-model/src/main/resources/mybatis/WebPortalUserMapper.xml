@@ -20,7 +20,7 @@
 		<result column="SALT" property="salt" />
 		<result column="TYPE" property="type" />
 		
-		<result column="IS_DELETED" property="deleted" />
+		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -46,7 +46,7 @@
 	<sql id="Base_Column_List">
 		ID,USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP,
 		CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,
-		IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->

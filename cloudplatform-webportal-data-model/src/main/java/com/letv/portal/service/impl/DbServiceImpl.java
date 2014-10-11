@@ -16,12 +16,11 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
+import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
-import com.letv.portal.service.IMclusterService;
 
 @Service("dbService")
 public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
@@ -31,13 +30,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	
 	@Resource
 	private IDbDao dbDao;
-	
-	@Resource
-	private IContainerDao containerDao;
-	
-	@Resource
-	private IMclusterService mclusterService;
-	
 	@Resource
 	private IIpResourceDao ipResourceDao;
 	@Resource
@@ -45,6 +37,8 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	
+	
 	public DbServiceImpl() {
 		super(DbModel.class);
 	}
@@ -65,17 +59,11 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
-//		this.dbDao.updateBySelective(t);
 	}
 
 	@Override
 	public void buildNotice(String dbId,String buildFlag) {
-		/*buildFlag = "success".equals(buildFlag)?Constant.DB_AUDIT_STATUS_BUILD_SUCCESS:Constant.DB_AUDIT_STATUS_BUILD_FAIL;
-		DbModel dbModel = this.selectById(dbId);
-		if(Constant.DB_AUDIT_STATUS_TRUE_BUILD_NEW_MCLUSTER.equals(dbModel.getStatus())) {
-			this.mclusterService.buildNotice(dbModel.getClusterId(),Constant.DB_AUDIT_STATUS_BUILD_SUCCESS);
-		}
-		this.dbDao.audit(new DbModel(dbId,Constant.));*/
+
 	}
 
 	@Override

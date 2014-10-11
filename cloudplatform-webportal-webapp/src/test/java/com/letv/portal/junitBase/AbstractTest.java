@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath*:data-applicationContext.xml"})
 public abstract class AbstractTest{
 	
-	@Before 
+	@Before   
 	public void setup() throws  Exception {
 	}
     

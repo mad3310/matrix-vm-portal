@@ -72,7 +72,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		}
 	}
 	
-	private UserModel getUserById(Long userid)
+	public UserModel getUserById(Long userid)
 	{
 		UserModel user = super.selectById(userid);
 		if(null == user)
@@ -132,7 +132,5 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	public IBaseDao<UserModel> getDao() {
 		return userDao;
 	}
-
-	
-
+  
 }

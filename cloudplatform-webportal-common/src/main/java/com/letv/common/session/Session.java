@@ -12,17 +12,17 @@ public class Session implements Serializable{
 	
 	public static final String USER_SESSION_REQUEST_ATTRIBUTE = "userSession";
 
-	private String userId;
+	private Long userId;
 	
 	private String userName;
 	
 	private boolean passwordExpired = false;
 	
-	public String getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 	
-	public void setUserInfoId(String userId)
+	public void setUserInfoId(Long userId)
 	{
 		this.userId = userId;
 	}

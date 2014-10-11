@@ -6,10 +6,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
 
@@ -28,19 +29,17 @@ import com.letv.portal.service.IDbUserService;
  * Modified Date: <br>
  */
 @Controller
-@RequestMapping("/db/user")
+@RequestMapping("/dbUser")
 public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
 	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
+	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
-	
-	@RequestMapping(value="/",method=RequestMethod.GET)
-	public String toList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/user_db_detail";
-	}
-	
+		
 	/**Methods Name: list <br>
 	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
 	 * @author name: liuhao1
@@ -49,7 +48,7 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable Long dbId,HttpServletRequest request) {
+	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbUserService.selectByDbId(dbId));
 		return obj;
@@ -62,29 +61,22 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/",method=RequestMethod.POST)
-	public String save(DbUserModel dbUserModel, HttpServletRequest request) {
-		Long dbId = dbUserModel.getDbId();
-		String[] ips = dbUserModel.getAcceptIp().split(",");
-		
-		for (String ip : ips) {
-			dbUserModel.setAcceptIp(ip);
-			this.dbUserService.insert(dbUserModel);
-		}
-		return "redirect:/db/detail/" + dbId;
+	@RequestMapping(method=RequestMethod.POST)
+	public @ResponseBody ResultObject save(DbUserModel dbUserModel) {
+		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
+		dbUserService.insertDbUserAndAcceptIp(dbUserModel);
+		ResultObject obj = new ResultObject();
+		return obj;
 	}
 	
-	
-	@RequestMapping(value="/validate",method=RequestMethod.GET)
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(DbUserModel dbUserModel,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<DbUserModel> list = this.dbUserService.selectByIpAndUsername(dbUserModel);
-		if(list.size()>0) {
-			map.put("valid", false);
-		} else {
-			map.put("valid", true);
-		}
+		map.put("valid", list.size()>0?false:true);
 		return map;
 	}
+	
+	
 	
 }

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
@@ -53,11 +51,6 @@ public class DbController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 	
-	@RequestMapping(value="/",method=RequestMethod.GET)
-	public String toList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/user_db_list";
-	}
-	
 	/**Methods Name: list <br>
 	 * Description: http://localhost:8080/db/list/${currentPage}/${recordsPerPage}/${dbName}<br>
 	 * @author name: liuhao1
@@ -68,32 +61,33 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
+	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
 	
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("dbName", dbName);
-		params.put("createUser", request.getSession().getAttribute("userId"));
-		
+		params.put("dbName", dbName);		
+		params.put("createUser", sessionService.getSession().getUserId());		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbService.findPagebyParams(params, page));
 		return obj;
 	}
 	
 	/**Methods Name: save <br>
-	 * Description: 保存创建信息  http://localhost:8080/db/save<br>
+	 * Description: 保存创建信息  http://localhost:8080/db/<br>
 	 * @author name: liuhao1
 	 * @param dbApplyStandardModel
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/",method=RequestMethod.POST)   
-	public String save(DbModel dbModel, HttpServletRequest request) {
-		dbModel.setStatus(Constant.STATUS_DEFAULT);
+	@RequestMapping(method=RequestMethod.POST)   
+	public @ResponseBody ResultObject save(DbModel dbModel) {
+		dbModel.setCreateUser(sessionService.getSession().getUserId());
+		dbModel.setStatus(DbStatus.DEFAULT.getValue());
 		this.dbService.insert(dbModel);
-		return "redirect:/db/list";
+		ResultObject obj = new ResultObject();
+		return obj;
 	}
 	
 	/**Methods Name: detail <br>
@@ -104,25 +98,17 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
-	public ModelAndView detail(@PathVariable Long dbId,HttpServletRequest request) {		
-		DbModel dbModel = this.dbService.selectById(dbId);
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("containers", this.containerService.selectByMclusterId(dbModel.getMclusterId()));
-		mav.addObject("dbUsers", this.dbUserService.selectByDbId(dbId));
-//		mav.addObject("dbApplyStandard", this.dbApplyStandardService.selectByDbId(dbId));
-		mav.addObject("db", dbModel);
-		mav.setViewName("/clouddb/user_db_detail");
-		return mav;
+	public @ResponseBody ResultObject detail(@PathVariable Long dbId) {				
+		ResultObject obj = new ResultObject();
+		obj.setData(this.dbService.selectById(dbId));
+		return obj;
 	}	
-	@RequestMapping(value="/validate/{applyCode}",method=RequestMethod.GET)
-	public @ResponseBody Map<String,Object> validate(@PathVariable String applyCode,HttpServletRequest request) {
+	
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validate(String dbName,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<DbModel> list = this.dbService.selectByDbName(applyCode);
-		if(list.size()>0) {
-			map.put("valid", false);
-		} else {
-			map.put("valid", true);
-		}
+		List<DbModel> list = this.dbService.selectByDbName(dbName);
+		map.put("valid", list.size()>0?false:true);
 		return map;
 	}
 	

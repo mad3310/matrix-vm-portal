@@ -54,5 +54,12 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: insertAndAcceptIp <br>
+	 * Description: 插入dbUser对应Ip
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel);
 
 }

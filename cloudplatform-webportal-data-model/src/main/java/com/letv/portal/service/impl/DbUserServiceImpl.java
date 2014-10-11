@@ -116,5 +116,12 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 			logger.error(e.getMessage());
 		}
 	}
+	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel){
+		String[] ips = dbUserModel.getAcceptIp().split(",");		
+		for (String ip : ips) {
+			dbUserModel.setAcceptIp(ip);
+			this.dbUserDao.insert(dbUserModel);
+		}
+	}
 	
 }

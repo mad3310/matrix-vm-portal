@@ -43,9 +43,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-            HttpSession session = request.getSession();
-            Session userSession = (Session)session.getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-//        Session userSession  =  sessionService.getSession();   
+      //      HttpSession session = request.getSession();
+    //       Session userSession = (Session)session.getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+        Session userSession  =  sessionService.getSession();   
     	if (null == userSession) {
     		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
             String userName = principal.getName();
@@ -67,7 +67,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 					userLogin.setUserName(userNamePassport);
 					userLogin.setLoginIp(LoginController.getIp(request));
 					userSession = loginProxy.saveOrUpdateUserAndLogin(userLogin);				
-					session.setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE,userSession);
+	//				session.setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE,userSession);
 					if(logger.isInfoEnabled())
 						logger.info("checking session,passportUserName："+userNamePassport+",but UserSession is null,so restore UserSession,this process finished!");
 				}

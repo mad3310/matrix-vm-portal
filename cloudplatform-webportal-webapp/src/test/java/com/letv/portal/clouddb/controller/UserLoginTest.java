@@ -21,17 +21,25 @@ public class UserLoginTest extends AbstractTest{
 	public void testInsertUser()
 	{
 		try {  
-//			String userNamePassport ="lihanlin1@letv.com";
-			UserModel userModel = new UserModel();
-			userModel.setUserName("wujun");
-			userModel.setPassportId("22");
-			userService.insert(userModel);
 			
-			UserModel userModel1 = new UserModel();
-			userModel1.setUserName("wujun2");
-			userModel1.setPassportId("22");
-			userService.insert(userModel1);
-			System.out.print("xx");
+				String str1 = "1";
+				String Str2 = "1";
+				if(str1==Str2){
+					System.out.println("xxxxxx");
+				}
+//				
+//			}
+//			String userNamePassport ="lihanlin1@letv.com";
+//			UserModel userModel = new UserModel();
+//			userModel.setUserName("wujun");
+//			userModel.setPassportId("22");
+//			userService.insert(userModel);
+//			
+//			UserModel userModel1 = new UserModel();
+//			userModel1.setUserName("wujun2");
+//			userModel1.setPassportId("22");
+//			userService.insert(userModel1);
+//			System.out.print("xx");
 
 		} catch (Exception e) {
 			e.printStackTrace();

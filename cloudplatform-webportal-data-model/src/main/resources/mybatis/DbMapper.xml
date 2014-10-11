@@ -10,6 +10,8 @@
 		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="STATUS" property="status" />
 		<result column="AUDIT_INFO" property="auditInfo" />
+		<result column="ENGINE_TYPE" property="engineType" />
+		<result column="LINK_TYPE" property="linkType" />
 		
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -17,7 +19,7 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
-		<association property="cluster" javaType="Mcluster">
+		<association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
 		</association>
 		
@@ -77,9 +79,9 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Db" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE)
 		values(
-		#{dbName},#{mclusterId},0,1,now(),#{createUser},now(),#{updateUser})
+		#{dbName},#{mclusterId},0,1,now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
