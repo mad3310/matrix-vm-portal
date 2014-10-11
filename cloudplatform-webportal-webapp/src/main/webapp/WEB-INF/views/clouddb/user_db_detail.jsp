@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 
-			<a href="${ctx}/db/list">数据库列表</a>
+			<a href="${ctx}/list/db">数据库列表</a>
 			<small> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 				${db.dbName}
@@ -304,7 +304,7 @@ $(function(){
 			              	}, 
 			                remote: {
 		                        url: '${ctx}/db/user/validate',
-		                        // Send { username: 'its value', email: 'its value' } to the back-end
+		                        // Send { username: 'its value', dbId: 'its value', acceptIp: 'its value' } to the back-end
 		                        data: function(validator) {
 		                            return {
 		                                username: validator.getFieldElements('username').val(),

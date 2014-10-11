@@ -57,7 +57,7 @@
 	<div class="modal fade" id="apply-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db/save" method="post">
+				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db" method="post">
 				<div class="col-xs-12">
 					<h4 class="lighter">
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库 </a>
@@ -154,7 +154,7 @@ var currentSelectedLineDbName = 1;
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
 			type : "get",
-			url : "${ctx}/db/list/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
+			url : "${ctx}/db/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			success : function(data) {
 				var array = data.data.data;
@@ -177,7 +177,7 @@ var currentSelectedLineDbName = 1;
 					var td2;
 					if(array[i].status == 1){
 						td2 = $("<td>"
-								+ "<a href=\"${ctx}/db/detail/" + array[i].id+"\">"+array[i].dbName+"</a>"
+								+ "<a href=\"${ctx}/detail/db/" + array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}else{	
 						td2 = $("<td>"
