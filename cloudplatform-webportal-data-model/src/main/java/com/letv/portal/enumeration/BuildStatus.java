@@ -3,7 +3,8 @@ package com.letv.portal.enumeration;
 public enum BuildStatus implements ByteEnum{
 	SUCCESS(1),
 	FAIL(0),
-	WAITTING(2);
+	BUILDING(2),
+	WAITTING(3);
 	
 	private final Integer value;
 	

@@ -120,7 +120,7 @@
 		from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId} ORDER BY STEP
 	</select>
 	<!-- 物理删除 -->
-	<update id="deleteByMcluster" parameterType="java.lang.String">
+	<update id="deleteByMcluster" parameterType="java.lang.Long">
 		delete from WEBPORTAL_BUILD where MCLUSTER_ID = #{mclusterId}
 	</update>
 	

@@ -183,16 +183,6 @@
     <!-- end -->
     
 	<filter>
-        <filter-name>SessionFilter</filter-name>
-        <filter-class>com.letv.portal.filter.SessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-	
-	<filter>
 		<filter-name>sitemeshFilter</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>

@@ -469,7 +469,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public void removeMcluster(MclusterModel mcluster) {
 		this.mclusterService.delete(mcluster);
-//		this.containerService.deleteByCluster(mcluster.getId());
-//		this.buildService.deleteByCluster(mcluster.getId());
+		this.containerService.deleteByMcluster(mcluster.getId());
+		this.buildService.deleteByMcluster(mcluster.getId());
 	}
 }

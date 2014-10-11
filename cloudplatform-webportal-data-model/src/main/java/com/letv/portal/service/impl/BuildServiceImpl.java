@@ -60,7 +60,7 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	}
 
 	@Override
-	public void deleteByMcluster(String mclusterId) {
+	public void deleteByMcluster(Long mclusterId) {
 		this.buildDao.deleteByMcluster(mclusterId);
 	}
 
