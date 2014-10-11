@@ -17,4 +17,6 @@ public interface IBuildDao extends IBaseDao<BuildModel> {
 	public List<BuildModel> selectByMclusterId(Long mclusterId);
 	
 	public void updateStatusFail(BuildModel buildModel);
+
+	public void deleteByMcluster(String mclusterId);
 }

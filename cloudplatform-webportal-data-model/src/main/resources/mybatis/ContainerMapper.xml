@@ -72,5 +72,8 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId} ORDER BY TYPE,ZOOKEEPER_ID
 	</select>
-	
+	<!-- 物理删除 -->
+	<update id="deleteByMcluster" parameterType="java.lang.Long">
+		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
+	</update>	
 </mapper>   

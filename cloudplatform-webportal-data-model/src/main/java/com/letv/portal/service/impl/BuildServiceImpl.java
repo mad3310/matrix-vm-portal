@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IBuildDao;
+import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.service.IBuildService;
 
@@ -45,7 +46,7 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 			BuildModel buildModel = new BuildModel();
 			buildModel.setStep(i+1);
 			buildModel.setStepMsg(stepMsgs[i]);
-//			buildModel.setStatus("waitting");
+			buildModel.setStatus(BuildStatus.WAITTING.getValue());
 			buildModel.setMclusterId(mclusterId);
 			this.buildDao.insert(buildModel);
 		}
@@ -56,6 +57,11 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	public void updateStatusFail(BuildModel buildModel) {
 		this.buildDao.updateStatusFail(buildModel);
 		
+	}
+
+	@Override
+	public void deleteByMcluster(String mclusterId) {
+		this.buildDao.deleteByMcluster(mclusterId);
 	}
 
 

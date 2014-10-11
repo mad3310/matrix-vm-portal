@@ -1,6 +1,5 @@
 package com.letv.portal.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
-import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
 
@@ -74,16 +72,5 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Override
 	public List<DbModel> selectByDbName(String dbName) {
 		return this.dbDao.selectByDbName(dbName);
-	}
-
-	/**
-	 * Methods Name: updateByMap <br>
-	 * Description: 修改记录通过map
-	 * @author name: wujun
-	 * @param hashMap
-	 * @return
-	 */
-	public void updateByMap(HashMap hashMap){
-		 this.dbDao.updateByMap(hashMap);
 	}
 }
