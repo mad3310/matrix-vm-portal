@@ -57,7 +57,7 @@
 	<div class="modal fade" id="apply-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="${ctx}/db" method="post">
+				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form">
 				<div class="col-xs-12">
 					<h4 class="lighter">
 						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库 </a>
@@ -68,19 +68,19 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label" for="db_name">数据库名</label>
 									<div class="col-sm-8">
-										<input class="form-control" name="applyCode" id="applyCode" type="text" />
+										<input class="form-control" name="dbName" id="dbName" type="text" />
 									</div>
 									<label class="control-label" for="maximum_concurrency">
 										<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',数据库名不能以数字开头." style="cursor:pointer; text-decoration:none;">
 											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 										</a>
-									</label>
+									</label>  
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label" for="disk_engine">存储引擎</label>
 									<div class="col-sm-4">
 										<select class="form-control" name="engineType" id="engineType">
-											<option>InnoDB</option>
+											<option value="0">InnoDB</option>
 										</select>
 									</div>
 									<label class="control-label" for="maximum_concurrency">
@@ -93,8 +93,8 @@
 									<label class="col-sm-2 control-label" for="connection_type">链接类型</label>
 									<div class="col-sm-4">
 										<select class="form-control" name="linkType" id="linkType">
-											<option>长链接</option>
-											<option>短链接</option>
+											<option value="0">长链接</option>
+											<option value="1">短链接</option>
 										</select>
 									</div>
 									<label class="control-label" for="maximum_concurrency">
@@ -118,7 +118,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
+					<button id="create-db-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createDb()">创建</button>
 				</div>
 			</form>
 			</div>
@@ -126,10 +126,11 @@
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
-<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
 
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
+<script src="${ctx}/static/scripts/date-transform.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -185,7 +186,7 @@ var currentSelectedLineDbName = 1;
 								+ "</td>");
 					}
 					var td3 = $("<td>"
-							+ array[i].createTime
+							+ date('Y-m-d H:i:s',array[i].createTime)
 							+ "</td>");
 					if(array[i].status == 4){
 						var td4 = $("<td>"
@@ -318,7 +319,7 @@ var currentSelectedLineDbName = 1;
               validating: 'glyphicon glyphicon-refresh'
           },
           fields: {
-              applyCode: {
+              dbName: {
                   validMessage: '请按提示输入',
                   validators: {
                       notEmpty: {
@@ -332,12 +333,16 @@ var currentSelectedLineDbName = 1;
   		                  message: "请输入字母数字或'_',数据库名不能以数字开头."
                  	  },
 			          remote: {
-	                        message: '数据库名已存在!',
-	                        url: "${ctx}/db/validate"
-	                    }
+                        message: '数据库名已存在!',
+                        url: '${ctx}/db/validate',
+                    }
                   }
               }
           }
+      }).on('error.field.bv', function(e, data) {
+     	 $('#create-db-botton').addClass("disabled");
+      }).on('success.field.bv', function(e, data) {
+     	 $('#create-db-botton').removeClass("disabled");
       });
 	}
 	
@@ -348,6 +353,18 @@ var currentSelectedLineDbName = 1;
             	queryByPage(currentPage, recordsPerPage);
             }
         });
+	}
+	
+	function createDb(){
+		$.ajax({
+			url: '${ctx}/db',
+            type: 'post',
+            dataType: 'text',
+            data: $("#db_apply_form").serialize(),
+            success: function (data) {
+            	window.location.href='${ctx}/list/db';
+            }
+		});
 	}
 	
 	function page_init(){

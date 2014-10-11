@@ -6,7 +6,6 @@
 			<a href="${ctx}/list/db">数据库列表</a>
 			<small> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
-				${db.dbName}
 			</small>
 		</h1>
 	</div>
@@ -33,22 +32,16 @@
 								<table class="table table-bordered" id="db_detail_table">
 									<tr>
 										<td width="50%">数据库名</td>
-										<td width="50%">${db.dbName}</td>
+										<td width="50%" id="dbName"></td>
 									</tr>
 									<tr>
 										<td>所属用户</td>
-										<td>${db.createUser}</td>
+										<td></td>
 									</tr>
 									<tr>
 										<td>创建时间</td>
-										<td>${db.createTime}</td>
+										<td></td>
 									</tr>
-									<c:forEach items="${containers}" var="container">
-										<tr>
-											<td>${container.clusterNodeName}</td>
-											<td>${container.ipAddr}</td>
-										</tr>
-									</c:forEach>
 								</table>
 							</div>
 						</div>
@@ -85,29 +78,6 @@
 									</tr>
 								</thead>
 									<tbody id="tby">
-									<c:forEach items="${dbUsers}" var="dbUser">
-										<tr>
-											<td class="center">
-												<label class="position-relative">
-												<input type="checkbox" class="ace"/>
-												<span class="lbl"></span>
-												</label>
-											</td>
-											<td>${dbUser.username}</td>
-											<td>
-												<c:if test="${dbUser.type eq 'wr'}">读写</c:if>
-												<c:if test="${dbUser.type eq 'manager'}">管理员</c:if>
-											</td>
-											<td>${dbUser.acceptIp}</td>
-											<td>${dbUser.maxConcurrency}</td>
-											<td>
-												<c:if test="${dbUser.status eq 0}">未审核</c:if>
-												<c:if test="${dbUser.status eq 1}">正常</c:if>
-												<c:if test="${dbUser.status eq 3}">创建失败</c:if>
-												<c:if test="${dbUser.status eq 4}">未通过</c:if>
-											</td>
-										</tr>
-									</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -119,7 +89,7 @@
 		<div class="modal fade" id="create-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<form id="db_user_apply_form" name="db_user_apply_form" class="form-horizontal" role="form" action="${ctx}/db/user/save" method="post">
+					<form id="db_user_apply_form" name="db_user_apply_form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h4 class="lighter">
 							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库用户 </a>
@@ -128,7 +98,8 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<input class="hidden" value="${db.id}" name="dbId" id="dbId" type="text" />
+										<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+										<input class="hidden" value="${mclusterId}" name="mclusterId" id="mclusterId" type="text" />
 										<input class="hidden" value="0" name="status" id="status" type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
 										<div class="col-sm-5">
@@ -155,8 +126,8 @@
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="wr">读写用户</option>
-												<option value="manager">管理员</option>
+												<option value="3">读写用户</option>
+												<option value="1">管理员</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -219,7 +190,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
+						<button id="create-dbUser-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createDbUser()">创建</button>
 					</div>
 				</form>
 				</div>
@@ -229,7 +200,9 @@
 </div>
 <!-- /.page-content-area -->
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
-<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
+<script src="${ctx}/static/scripts/date-transform.js"></script>
+
 <script type="text/javascript">
 $(function(){
 	//隐藏搜索框
@@ -293,7 +266,7 @@ $(function(){
 	                        }
 	                    }
 	                },
-	                'acceptIp': {
+	                acceptIp: {
 	                    validators: {
 	                        notEmpty: {
 	                            message: '地址不能为空'
@@ -303,20 +276,15 @@ $(function(){
 			                  message: '请按提示格式输入'
 			              	}, 
 			                remote: {
-		                        url: '${ctx}/db/user/validate',
-		                        // Send { username: 'its value', dbId: 'its value', acceptIp: 'its value' } to the back-end
+		                        url: '${ctx}/dbUser/validate' ,
 		                        data: function(validator) {
 		                            return {
 		                                username: validator.getFieldElements('username').val(),
-		                                dbId:validator.getFieldElements('dbId').val()
+		                                dbId: validator.getFieldElements('dbId').val()
 		                            };
 		                        },
 		                        message: '该用户名此IP也存在!'
-		                    }/* , 
-		                    different: {
-		                        field: 'acceptIp',
-		                        message: '您已输入此IP地址!'
-		                    } */
+		                    }
 	                    }
 	                }
 	            }
@@ -348,8 +316,140 @@ $(function(){
 	            }
 	        }).on('keyup', '[name="username"]', function() {
 	                $('#db_user_apply_form').bootstrapValidator('revalidateField', 'acceptIp');
+	        }).on('error.field.bv', function(e, data) {
+	        	 $('#create-dbUser-botton').addClass("disabled");
+	        }).on('success.field.bv', function(e, data) {
+	       	 $('#create-dbUser-botton').removeClass("disabled");
 	        });
 });
+function translateStatus(status){
+	if(status == 0 || status == 2){
+		return "未审核";
+	}else if(status  == 1){
+		return "正常";
+	}else if(status  == 4){
+		return "未通过";
+	}else{
+		return "创建失败";
+	}
+}
+function queryDbUser(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/dbUser/"+$("#dbId").val(),
+		dataType : "json", /*这句可用可不用，没有影响*/
+		success : function(data) {
+			var array = data.data;
+			var tby = $("#tby");
+			
+			for (var i = 0, len = array.length; i < len; i++) {
+				var td1 = $("<td class=\"center\">"
+						    + "<label class=\"position-relative\">"
+						    + "<input type=\"checkbox\" class=\"ace\"/>"
+						    + "<span class=\"lbl\"></span>"
+						    + "</label>"
+					        + "</td>");
+				var	td2 = $("<td>"
+							+ array[i].username
+							+ "</td>");
+				var td3;
+				if(array[i].type == 3){
+					var td3 = $("<td>"
+							    + "管理员"
+							    + "</td>");
+				}else{
+					var td3 = $("<td>"
+							    + "读写用户"
+							    + "</td>");
+					
+				}
+				
+				var td4 = $("<td>"
+							+array[i].acceptIp
+							+ "</td>");
+				var td5 = $("<td>"
+							+array[i].maxConcurrency
+							+ "</td>");
+				var td6 = $("<td>"
+							+translateStatus(array[i].status)
+							+ "</td>");
+					
+				if(array[i].status == 0 ||array[i].status == 2){
+					var tr = $("<tr class=\"warning\"></tr>");
+				}else if(array[i].status == 3 ||array[i].status == 4){
+					var tr = $("<tr class=\"danger\"></tr>");
+					
+				}else{
+					var tr = $("<tr></tr>");
+				}
+				
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.appendTo(tby);
+				
+			/* 	var trdata = $("#db_detail_table").find("tr");
+				alert(trdata.children().html());
+				alert(trdata.next().next().html());
+				trdata.next().html()); */
+			}//循环json中的数据 
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
+		}
+	});
+}
+function queryDbInfo(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/db/"+$("#dbId").val(),
+		dataType : "json", 
+		success : function(data) {
+			var dbInfo = data.data;
+			$("#page-header-id").find('small').append(dbInfo.dbName);
+			$("#db_detail_table").find('tr:eq(0) td:eq(1)').text(dbInfo.dbName);
+			queryUser(dbInfo.createUser);
+			$("#db_detail_table").find('tr:eq(2) td:eq(1)').text(date('Y-m-d H:i:s',dbInfo.createTime));
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+			return false;
+		}
+	});
+}
+function queryUser(userId){
+	var userInfo;
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/user/"+ userId,
+		dataType : "json", 
+		success : function(data) {
+			$("#db_detail_table").find('tr:eq(1) td:eq(1)').text(data.data.userName);
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+			return false;
+		}
+	});
+}
 
 function checkboxControl(){
 	$('th input:checkbox').click(function(){
@@ -362,15 +462,21 @@ function checkboxControl(){
 	});
 }
 
-function translateStatus(status){
-	if(status = 1)
-	{
-		return "是";
-	}else{
-		return "否";
-	}
+function createDbUser(){
+	$.ajax({
+		url: '${ctx}/dbUser',
+        type: 'post',
+        dataType: 'text',
+        data: $("#db_user_apply_form").serialize(),
+        success: function (data) {
+        	window.location.href='${ctx}/detail/db/'+$("#dbId").val();
+        }
+	});
 }
+
 function pageinit(){
 	checkboxControl();
+	queryDbUser();
+	queryDbInfo();
 }
 </script>

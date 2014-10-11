@@ -56,7 +56,7 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 	@Override
 	public Session createUserSession(UserModel user) {
 		Session session = new Session();
-		session.setUserInfoId(user.getId().toString());
+		session.setUserInfoId(user.getId());
 		session.setUserName(user.getUserName());
 		
 		return session;
