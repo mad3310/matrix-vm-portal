@@ -57,49 +57,32 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     @Override
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
-		if (e instanceof ValidateException) {
-			responseJson(req, res, e.getMessage());
-            return null;
-		}
-//		else if(e instanceof NoSessionException)
-//		{
-//			String indexPageAddress = CAS_AUTH_HTTP + "?";
-//			String requestURL = req.getRequestURL().toString();
-//			String requestParams = req.getQueryString();
-//			String requestAttribute = getRequestValue(req);
-//			
-//			String encodedRequestParams = "";
-//			String paramOrAttr = requestAttribute;
-//			if(null != requestParams)
-//				paramOrAttr = requestParams;
-//			
-//			if(StringUtils.isNotEmpty(paramOrAttr))
-//			        encodedRequestParams = WebUtil.urlEncode(paramOrAttr);
-//			   
-//			String returnUrl = indexPageAddress + "retURL=" + requestURL;
-//			
-//			if(!encodedRequestParams.equals(""))
-//				returnUrl += "&requestQueryStr=" + encodedRequestParams;
-//			
-//			try {
-//				res.sendRedirect(returnUrl);
-//			} catch (IOException e1) {
-//				logger.error("登录跳转时出现异常！",e1);
-//			}
-//			return null;
-//		}
-		
-		if(Boolean.valueOf(ERROR_MAIL_ENABLED))
+    	if(Boolean.valueOf(ERROR_MAIL_ENABLED))
 		{
-//			String stackTraceStr = this.getStackTrace(e);
 			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
 			String exceptionMessage = e.getMessage();
 			sendErrorMail(req,exceptionMessage,stackTraceStr);
 		}
-		
-		responseJson(req, res, e.getMessage());
-		logger.error(ERROR_SYSTEM_ERROR, e);
-        return null;
+    	logger.error(ERROR_SYSTEM_ERROR, e);
+    	
+    	String viewName = determineViewName(e, req);
+		if (viewName != null) {
+			boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
+			if (isAjaxRequest) {
+				responseJson(req,res,e.getMessage());
+				return null;
+			} else {
+				Integer statusCode = determineStatusCode(req, viewName);
+				if (statusCode != null) {
+					applyStatusCodeIfPossible(req, res, statusCode);
+				}
+				ModelAndView mav =  getModelAndView(viewName, e, req);
+				mav.addObject("exception", ERROR_SYSTEM_ERROR);
+				return mav;
+			}
+		} else {
+			return null;
+		}
     }
 
 	/**
@@ -110,18 +93,17 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 	 * @param message
 	 */
 	private void responseJson(HttpServletRequest req, HttpServletResponse res, String message) {
-    	PrintWriter out = null;
+		PrintWriter out = null;
 		try {
 			res.setContentType("text/html;charset=UTF-8");
 			out = res.getWriter();
 		} catch (IOException e1) {
-			logger.error("在取得PrintWriter时出现异常",e1);
+			e1.printStackTrace();
 		}
 		ResultObject resultObject = new ResultObject(0);
-		resultObject.addMsg(message);
-		out.print(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
+		resultObject.addMsg(ERROR_SYSTEM_ERROR);
+		out.append(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
-		out.close();
 
 	}
 	
