@@ -13,7 +13,7 @@
 		<div class="widget-header">
 			<h5 class="widget-title">数据库列表</h5>
 			<div class="widget-toolbar no-border">
-				<button class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#apply-form">
+				<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#apply-form">
 					<i class="ace-icont fa fa-plus"></i>
 					 创建数据库
 				</button>
@@ -38,7 +38,10 @@
 			</div>
 		</div>
 	</div>
-	<div id="pageControlBar">
+	<div class="col-xs-3">
+	<small><font color="gray">*注：点击数据库名可查看数据库详情.</font></small>
+	</div>
+	<div id="pageControlBar" class="col-xs-6">
 		<input type="hidden" id="totalPage_input" />
 		<ul class="pager">
 			<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
@@ -158,6 +161,7 @@ var currentSelectedLineDbName = 1;
 			url : "${ctx}/db/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			success : function(data) {
+				error(data);
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;
@@ -239,17 +243,6 @@ var currentSelectedLineDbName = 1;
 					$("#totalRows").html(data.data.totalRecords);
 					$("#totalPage").html(totalPages);
 				}
-			},
-			error : function(XMLHttpRequest,textStatus, errorThrown) {
-				$.gritter.add({
-					title: '警告',
-					text: errorThrown,
-					sticky: false,
-					time: '5',
-					class_name: 'gritter-warning'
-				});
-		
-				return false;
 			}
 		});
     }
