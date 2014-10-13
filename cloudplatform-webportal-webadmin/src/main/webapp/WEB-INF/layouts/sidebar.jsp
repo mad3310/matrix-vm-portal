@@ -20,7 +20,7 @@
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-mcluster-list" class="">
-					<a href="${ctx}/mcluster"> 
+					<a href="${ctx}/list/mcluster"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						集群列表
 					</a>
@@ -44,7 +44,7 @@
 					<b class="arrow"></b>
 				</li>
 				<li id="sidebar-db-list" class="">
-					<a href="${ctx}/list/db/user"> 
+					<a href="${ctx}/list/dbUser"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库用户列表
 					</a>

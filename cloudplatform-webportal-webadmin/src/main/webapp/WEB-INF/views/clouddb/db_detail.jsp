@@ -11,6 +11,7 @@
 		</h1>
 	</div>
 	<!-- /.page-header -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<div class="row">
 		<div class="widget-box transparent ui-sortable-handle">
 			<div class="widget-header">
@@ -33,346 +34,49 @@
 								<table class="table table-bordered" id="db_detail_table">
 									<tr>
 										<td width="50%">数据库名</td>
-										<td width="50%">${db.dbName}</td>
+										<td width="50%"></td>
 									</tr>
 									<tr>
 										<td>所属用户</td>
-										<td>${db.createUser}</td>
+										<td></td>
 									</tr>
 									<tr>
 										<td>创建时间</td>
-										<td>${db.createTime}</td>
+										<td></td>
 									</tr>
-									<c:forEach items="${containers}" var="container">
-										<tr>
-											<td>${container.clusterNodeName}</td>
-											<td>${container.ipAddr}</td>
-										</tr>
-									</c:forEach>
 								</table>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane  active">
-							<!-- <div class="col-xs-10">
-								<div class=" pull-right">
-									<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
-										<i class="ace-icont fa fa-plus"></i>创建用户
-									</button>
-									<button type="button" class="btn btn-xs btn-danger bigger disabled">
-										<i class="ace-icont fa fa-trash-o"></i>删除用户
-									</button>
-								</div>
-							</div> -->
 							<div class="col-xs-10"><!--style="margin-top:8px"  -->
 								<table class="table table-bordered" id="db_detail_table" >
-								<thead>
-									<tr style="background-color: #307ECC;color:#FFFFFF;">
-										<th class="center">
-											<label class="position-relative">
-												<input type="checkbox" class="ace" />
-												<span class="lbl"></span>
-											</label>
-										</th>
-										<th>
-											用户名
-										</th>
-										<th>用户权限</th>
-										<th>ip地址</th>
-										<th>频次限制</th>
-										<th>
-											当前状态
-										</th>
-									</tr>
-								</thead>
-									<tbody id="tby">
-									<c:forEach items="${dbUsers}" var="dbUser">
-										<tr>
-											<td class="center">
+									<thead>
+										<tr style="background-color: #307ECC;color:#FFFFFF;">
+											<th class="center">
 												<label class="position-relative">
-												<input type="checkbox" class="ace"/>
-												<span class="lbl"></span>
+													<input type="checkbox" class="ace" />
+													<span class="lbl"></span>
 												</label>
-											</td>
-											<td>${dbUser.username}</td>
-											<td>
-												<c:if test="${dbUser.type eq 'wr'}">读写</c:if>
-												<c:if test="${dbUser.type eq 'manager'}">管理员</c:if>
-											</td>
-											<td>${dbUser.acceptIp}</td>
-											<td>${dbUser.maxConcurrency}</td>
-											<td>
-												<c:if test="${dbUser.status eq 0}">未审核</c:if>
-												<c:if test="${dbUser.status eq 1}">正常</c:if>
-												<c:if test="${dbUser.status eq 3}">创建失败</c:if>
-												<c:if test="${dbUser.status eq 4}">未通过</c:if>
-											</td>
+											</th>
+											<th>
+												用户名
+											</th>
+											<th>用户权限</th>
+											<th>ip地址</th>
+											<th>频次限制</th>
+											<th>
+												当前状态
+											</th>
 										</tr>
-									</c:forEach>
+									</thead>
+									<tbody id="tby">
 									</tbody>
+									<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 								</table>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="create-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="" method="post">
-					<div class="col-xs-12">
-						<h4 class="lighter">
-							<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
-							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库用户 </a>
-						</h4>
-						<div class="widget-box">
-							<div class="widget-body">
-								<div class="widget-main">
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="userName">用户名</label>
-										<div class="col-sm-8">
-											<input class="form-control" name="userName" id="userName" type="text" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="db_name">密码</label>
-										<div class="col-sm-8">
-											<input class="form-control" name="password" id="password" type="text" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="connection_type">用户类型</label>
-										<div class="col-sm-4">
-											<select class="form-control" name="userPrivilege" id="userPrivilege">
-												<option>管理员</option>
-												<option>读写</option>
-											</select>
-										</div>
-									</div>
-									 <div class="form-group">
-								        <label class="col-sm-2 control-label">IP地址</label>
-								        <div class="col-sm-4">
-								            <input type="text" class="form-control" name="Ip[]" />
-								        </div>
-								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-success addButton btn-sm">
-								                <i class="fa fa-plus"></i>
-								            </button>
-								        </div>
-								    </div>
-								    <div class="form-group hide" id="optionTemplate">
-								        <div class="col-sm-offset-2 col-sm-4">
-								            <input type="text" class="form-control" name="Ip[]" />
-								        </div>
-								        <div class="col-sm-4">
-								            <button type="button" class="btn btn-danger btn-sm removeButton">
-								                <i class="fa fa-minus"></i>
-								            </button>
-								        </div>
-								    </div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="read_write_ratio">读写比例</label>
-										<div class="col-sm-2">
-											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
-												placeholder="1:1" />
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
-										<div class="col-sm-2">
-											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
-												placeholder="100"/>
-										</div>
-										<label class="control-label" for="maximum_concurrency">/s</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
-					</div>
-				</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /.page-content-area -->
-<<<<<<< HEAD
-<div class="row">
-	<div class="widget-box transparent ui-sortable-handle">
-		<div class="widget-header">
-			<div class="widget-toolbar no-border pull-left">
-				<ul id="db-detail-tabs" class="nav nav-tabs" id="myTab2">
-					<li class="active">
-						<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
-					</li>
-					<li class="">
-						<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="widget-body">
-			<div class="widget-main padding-12 no-padding-left no-padding-right">
-				<div class="tab-content padding-4">
-					<div id="db-detail-info" class="tab-pane">
-						<div id="db-detail-table" class="col-xs-6">
-							<table class="table table-bordered" id="db_detail_table">
-								<tr>
-									<td width="50%">数据库名</td>
-									<td width="50%">${db.dbName}</td>
-								</tr>
-								
-								<c:forEach items="${containers}" var="container">
-									<tr>
-										<td>${container.type}</td>
-										<td>${container.ipAddr}</td>
-									</tr>
-								</c:forEach>
-							</table>
-						</div>
-					</div>
-					<div id="db-detail-user-mgr" class="tab-pane  active">
-						<!-- <div class="col-xs-10">
-							<div class=" pull-right">
-								<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
-									<i class="ace-icont fa fa-plus"></i>创建用户
-								</button>
-								<button type="button" class="btn btn-xs btn-danger bigger disabled">
-									<i class="ace-icont fa fa-trash-o"></i>删除用户
-								</button>
-							</div>
-						</div> -->
-						<div class="col-xs-10"><!--style="margin-top:8px"  -->
-							<table class="table table-bordered" id="db_detail_table" >
-							<thead>
-								<tr class="info">
-									<th class="center">
-										<label class="position-relative">
-											<input type="checkbox" class="ace" />
-											<span class="lbl"></span>
-										</label>
-									</th>
-									<th>
-										用户名
-									</th>
-									<th>用户权限</th>
-									<th>ip地址</th>
-									<th>频次限制</th>
-									<th>
-										当前状态
-									</th>
-								</tr>
-							</thead>
-								<tbody id="tby">
-								<c:forEach items="${dbUsers}" var="dbUser">
-									<tr>
-										<td class="center">
-											<label class="position-relative">
-											<input type="checkbox" class="ace"/>
-											<span class="lbl"></span>
-											</label>
-										</td>
-										<td>${dbUser.username}</td>
-										<td>${dbUser.type}</td>
-										<td>${dbUser.acceptIp}</td>
-										<td>${dbUser.maxConcurrency}</td>
-										<td>
-											<c:if test="${dbUser.status eq 0}">未审核</c:if>
-											<c:if test="${dbUser.status eq 1}">已创建</c:if>
-											<c:if test="${dbUser.status eq 2}">审核失败</c:if>
-										</td>
-									</tr>
-								</c:forEach>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="create-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form" action="" method="post">
-				<div class="col-xs-12">
-					<h4 class="lighter">
-						<i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
-						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库用户 </a>
-					</h4>
-					<div class="widget-box">
-						<div class="widget-body">
-							<div class="widget-main">
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="userName">用户名</label>
-									<div class="col-sm-8">
-										<input class="form-control" name="userName" id="userName" type="text" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="db_name">密码</label>
-									<div class="col-sm-8">
-										<input class="form-control" name="password" id="password" type="text" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="connection_type">用户类型</label>
-									<div class="col-sm-4">
-										<select class="form-control" name="userPrivilege" id="userPrivilege">
-											<option>管理员</option>
-											<option>读写</option>
-										</select>
-									</div>
-								</div>
-								 <div class="form-group">
-							        <label class="col-sm-2 control-label">IP地址</label>
-							        <div class="col-sm-4">
-							            <input type="text" class="form-control" name="Ip[]" />
-							        </div>
-							        <div class="col-sm-2">
-							            <button type="button" class="btn btn-success addButton btn-sm">
-							                <i class="fa fa-plus"></i>
-							            </button>
-							        </div>
-							    </div>
-							    <div class="form-group hide" id="optionTemplate">
-							        <div class="col-sm-offset-2 col-sm-4">
-							            <input type="text" class="form-control" name="Ip[]" />
-							        </div>
-							        <div class="col-sm-4">
-							            <button type="button" class="btn btn-danger btn-sm removeButton">
-							                <i class="fa fa-minus"></i>
-							            </button>
-							        </div>
-							    </div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="read_write_ratio">读写比例</label>
-									<div class="col-sm-2">
-										<input class="form-control" name="readWriterRate" id="readWriterRate" type="text"
-											placeholder="1:1" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
-									<div class="col-sm-2">
-										<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text"
-											placeholder="100"/>
-									</div>
-									<label class="control-label" for="maximum_concurrency">/s</label>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-					<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
-				</div>
-			</form>
 			</div>
 		</div>
 	</div>
@@ -380,6 +84,8 @@
 
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script src="${ctx}/static/scripts/date-transform.js"></script>
+
 <script type="text/javascript">
 $(function(){
 	//隐藏搜索框
@@ -489,7 +195,114 @@ function checkboxControl(){
 		});
 	});
 }
+function translateStatus(status){
+	if(status == 0 || status == 2){
+		return "未审核";
+	}else if(status  == 1){
+		return "正常";
+	}else if(status  == 4){
+		return "未通过";
+	}else{
+		return "创建失败";
+	}
+}
+function queryDbUser(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/dbUser/"+$("#dbId").val(),
+		dataType : "json", /*这句可用可不用，没有影响*/
+		success : function(data) {
+			var array = data.data;
+			var tby = $("#tby");
+			
+			for (var i = 0, len = array.length; i < len; i++) {
+				var td1 = $("<td class=\"center\">"
+						    + "<label class=\"position-relative\">"
+						    + "<input type=\"checkbox\" class=\"ace\"/>"
+						    + "<span class=\"lbl\"></span>"
+						    + "</label>"
+					        + "</td>");
+				var	td2 = $("<td>"
+							+ array[i].username
+							+ "</td>");
+				var td3;
+				if(array[i].type == 3){
+					var td3 = $("<td>"
+							    + "管理员"
+							    + "</td>");
+				}else{
+					var td3 = $("<td>"
+							    + "读写用户"
+							    + "</td>");
+				}
+				var td4 = $("<td>"
+							+array[i].acceptIp
+							+ "</td>");
+				var td5 = $("<td>"
+							+array[i].maxConcurrency
+							+ "</td>");
+				var td6 = $("<td>"
+							+translateStatus(array[i].status)
+							+ "</td>");
+					
+				if(array[i].status == 0 ||array[i].status == 2){
+					var tr = $("<tr class=\"warning\"></tr>");
+				}else if(array[i].status == 3 ||array[i].status == 4){
+					var tr = $("<tr class=\"danger\"></tr>");
+					
+				}else{
+					var tr = $("<tr></tr>");
+				}
+				
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.appendTo(tby);
+				
+			/* 	var trdata = $("#db_detail_table").find("tr");
+				alert(trdata.children().html());
+				alert(trdata.next().next().html());
+				trdata.next().html()); */
+			}//循环json中的数据 
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+	
+			return false;
+		}
+	});
+}
+function queryDbInfo(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/db/"+$("#dbId").val(),
+		dataType : "json", 
+		success : function(data) {
+			var dbInfo = data.data;
+			$("#page-header-id").find('small').append(dbInfo.dbName);
+			$("#db_detail_table").find('tr:eq(0) td:eq(1)').text(dbInfo.dbName);
+			$("#db_detail_table").find('tr:eq(2) td:eq(1)').text(date('Y-m-d H:i:s',dbInfo.createTime));
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			$.gritter.add({
+				title: '警告',
+				text: errorThrown,
+				sticky: false,
+				time: '5',
+				class_name: 'gritter-warning'
+			});
+			return false;
+		}
+	});
+}
+
 function pageinit(){
 	checkboxControl();
+	queryDbUser();
+	queryDbInfo();
 }
 </script>

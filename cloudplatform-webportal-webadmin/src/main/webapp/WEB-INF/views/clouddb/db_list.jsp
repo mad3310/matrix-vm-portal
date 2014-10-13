@@ -176,11 +176,11 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td2;
 				if(array[i].status == 1){
 					td2 = $("<td>"
-							+ "<a href=\"${ctx}/db/1/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a href=\"${ctx}/db/2/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else{
 					td2 = $("<td>"
@@ -189,7 +189,8 @@ function queryByPage(currentPage,recordsPerPage) {
 				}
 				if(array[i].cluster){
 					var td3 = $("<td>"
-							+ array[i].cluster.mclusterName
+							+ array[i].cluster
+/* 							+ array[i].cluster.mclusterName */
 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");
@@ -198,7 +199,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ array[i].createUser
 						+ "</td>");
 				var td5 = $("<td>"
-						+ array[i].createTime
+						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				if(array[i].status == 4){
 					var td6 = $("<td>"

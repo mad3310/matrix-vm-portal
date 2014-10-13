@@ -7,7 +7,6 @@
 			<a href="${ctx}/db/list">数据库列表</a>
 			<small> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
-				${dbApplyStandard.applyCode}
 			</small>
 		</h1>
 	</div>
@@ -20,30 +19,23 @@
 			<caption>用户申请单</caption>
 			<tr>
 				<td>数据库名</td>
-				<td>${dbApplyStandard.applyCode}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>所属用户</td>
-				<td>${dbApplyStandard.createUser}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>链接类型</td>
-				<td>${dbApplyStandard.linkType}</td>
+				<td></td>
 			</tr>
 			<tr>
 				<td>数据库引擎</td>
-				<td>${dbApplyStandard.engineType}</td>
+				<td></td>
 			</tr>
-			<%-- <tr>
-				<td>邮件通知</td>
-				<td>
-					<c:if test="${dbApplyStandard.isEmailNotice == '1'}">开启</c:if>
-					<c:if test="${dbApplyStandard.isEmailNotice != '1'}">关闭</c:if>
-				</td>
-			</tr> --%>
 			<tr>
 				<td>申请时间</td>
-				<td>${dbApplyStandard.createTime}</td>
+				<td></td>
 			</tr>
 			</table>
 			</div>
@@ -62,19 +54,16 @@
 			</ul>					
 			<div id="myTabContent" class="tab-content" >
 				<div class="tab-pane fade in active" id="create_on_cluster" style="margin-top: 45px;margin-bottom: 45px;">
-				<form id="create_on_old_cluster_form" class="form-horizontal" role="form" action="${ctx}/db/audit/save" method="post">
-					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode}" id="applyCode" name="applyCode"/>
-					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
+				<form id="create_on_old_cluster_form" class="form-horizontal" role="form">
+					<input type="text" class="form-control hide" value="" id="dbName" name="dbName"/>
+					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
-					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
+					<input type="text" class="form-control hide" value="${db.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 						<div class="form-group">
 							<label for="text" class="col-sm-2 control-label">选择集群</label>
 							<div class="col-sm-8">
 								<select id="mclusterOption" name="mclusterId" class="form-control">
 									<option value=""></option>
-									<c:forEach var="mcluster" items="${mclusters}">
-										<option value="${mcluster.id}">${mcluster.mclusterName}</option>
-									</c:forEach>
 								</select>
 							</div>
 							<div class="col-sm-2">
@@ -85,14 +74,14 @@
 			   </div>
 				<div class="tab-pane fade" id="create_on_new_cluster" style="margin-top: 45px;margin-bottom: 45px;">
 					<form class="form-horizontal" id="create_on_new_cluster_form" method="post" action="${ctx}/db/audit/save">
-					<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
+					<input type="text" class="form-control hide" value="${dbApplyStandard.dbName} id="dbName" name="dbName"/>
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
 					<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
 							<label for="text" class="control-label col-sm-2">集群名称</label>
 							<div class="col-sm-8">
-								<input class="form-control" name="mclusterName" id="mclusterName" type="text" value="${dbApplyStandard.applyCode}"/>
+								<input class="form-control" name="mclusterName" id="mclusterName" type="text" value="${dbApplyStandard.dbName}"/>
 							</div>
 							<div class="col-sm-2">
 								<button id="create-mcluster-botton" type="button" onclick="createDbOnNewMcluster()" class="btn btn-sm btn-primary">创建</button>
@@ -104,7 +93,7 @@
 				<div>
 				      <form class="form-horizontal" id="refuse_create_mcluster" role="form" method="post" action="${ctx}/db/audit/save">
 						  <input type="text" class="form-control hide" value="4" id="auditType" name="auditType"/>
-							<input type="text" class="form-control hide" value="${dbApplyStandard.applyCode} id="applyCode" name="applyCode"/>
+							<input type="text" class="form-control hide" value="${dbApplyStandard.dbName} id="dbName" name="dbName"/>
 							<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbApplyStandard.belongDb}"/>
 							<input type="text" class="form-control hide" value="${dbApplyStandard.id}" id="dbApplyStandardId" name="dbApplyStandardId"/>
 						  <div class="form-group">

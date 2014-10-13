@@ -248,21 +248,21 @@ function error(errorThrown,time) {
 	<!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
 	var path = window.location.pathname;
-	if(path.indexOf("/mcluster/list") >= 0||path.indexOf("/mcluster/detail") >= 0){
+	if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
 		$('#sidebar-mcluster-mgr').addClass("active open hsub");
 		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/mcluster/list").html("集群管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("集群管理");
 		$('#main-content-header li:eq(1)').html("集群列表");
-	}else if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/db/detail") >= 0){
+	}else if(path.indexOf("/list/dbUser") >= 0){
+		$('#sidebar-db-mgr').addClass("active open hsub");
+		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/dbUser").html("数据库用户管理");
+		$('#main-content-header li:eq(1)').html("数据库用户列表");
+	}else if(path.indexOf("/list/db") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/detail/db") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
 		$('#main-content-header li:eq(1)').html("数据库列表");
-	}else if(path.indexOf("/db/user/list") >= 0){
-		$('#sidebar-db-mgr').addClass("active open hsub");
-		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db/user/list").html("数据库用户管理");
-		$('#main-content-header li:eq(1)').html("数据库用户列表");
 	}
 </script>
 <!-- ace scripts -->

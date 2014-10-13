@@ -71,7 +71,7 @@
 		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form" action="${ctx}/mcluster/build" method="post">
+					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h4 class="lighter">
 							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
@@ -222,10 +222,11 @@ function queryByPage(currentPage,recordsPerPage) {
 						+  "<a href=\"${ctx}/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
-						+ array[i].createUser
+						+ array[i].creatUser
+/* 						+ array[i].creatUser.username */
 						+ "</td>");
 				var td4 = $("<td>"
-						+ array[i].createTime
+						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				if(array[i].status == 2){
 					var td5 = $("<td>"

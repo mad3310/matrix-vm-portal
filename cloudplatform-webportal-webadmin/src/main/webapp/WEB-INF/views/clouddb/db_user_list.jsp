@@ -87,60 +87,61 @@ var currentSelectedLineDbName = 1;
 	});
 });	
  
- 	function buildUser() {
- 		var ids = $("[name='db_user_id']:checked");
- 		var str="";
- 		var flag = 0; //0:无数据 -1:错误
- 		ids.each(function(){
- 			if($(this).closest("tr").children().last().html() == "正常"){
- 				$.gritter.add({
- 					title: '警告',
- 					text: '创建用户只能选择待审核数据!',
- 					sticky: false,
- 					time: '3000',
- 					class_name: 'gritter-warning'
- 				});
- 				flag = -1;
- 				return false;
- 			}else{
- 				str +=($(this).val())+",";
- 	 			flag += 1;
- 			}
- 		});
- 		
- 		if(flag > 0) {
-	 		$.ajax({ 
-				type : "get",
-				url : "${ctx}/db/user/"+ str,
-				dataType : "json",
-				success : function(data) {
-					if(data.result == 1) {
-						$("#titleCheckbox").attr("checked", false);
-						queryByPage(currentPage,recordsPerPage);
-					}
-				}
-	 		});
- 		} else if (flag == 0){
- 			$.gritter.add({
+function buildUser() {
+	var ids = $("[name='db_user_id']:checked");
+	var str="";
+	var flag = 0; //0:无数据 -1:错误
+	ids.each(function(){
+		if($(this).closest("tr").children().last().html() == "正常"){
+			$.gritter.add({
 				title: '警告',
-				text: '请选择数据！',
+				text: '创建用户只能选择待审核数据!',
 				sticky: false,
-				time: '5',
+				time: '3000',
 				class_name: 'gritter-warning'
 			});
-	
+			flag = -1;
 			return false;
- 		}else{
- 			return false;
- 		}
- 	}
+		}else{
+			str +=($(this).val())+",";
+ 			flag += 1;
+		}
+	});
+	
+	if(flag > 0) {
+		$.ajax({ 
+			type : "post",
+			url : "${ctx}/dbUser",
+			dataType : "json",
+			data : str,
+			success : function(data) {
+				if(data.result == 1) {
+					$("#titleCheckbox").attr("checked", false);
+					queryByPage(currentPage,recordsPerPage);
+				}
+			}
+		});
+	} else if (flag == 0){
+		$.gritter.add({
+		title: '警告',
+		text: '请选择数据！',
+		sticky: false,
+		time: '5',
+		class_name: 'gritter-warning'
+	});
+
+	return false;
+	}else{
+		return false;
+	}
+}
  
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
 			type : "get",
-			url : "${ctx}/db/user/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+			url : "${ctx}/dbUser/" + currentPage + "/" + recordsPerPage+"/" + dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
