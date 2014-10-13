@@ -15,6 +15,9 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		<association property="createUserModel" javaType="User">
+			<result column="USERNAME" property="userName" />
+		</association>
 	</resultMap>
 	
 	<!-- WEBPORTAL_MCLUSTER_INFO table all fields -->
@@ -22,7 +25,10 @@
 		ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 
-	
+
+	<sql id="Base_Column_List_add_createUser">
+		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
+	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
@@ -53,7 +59,6 @@
 			</if>
 		</trim>
 	</sql>
-
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster" useGeneratedKeys="true" keyProperty="id">
@@ -163,28 +168,28 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="params != null and params.id !=null  ">
-				and ID=#{params.id}
+				and M.ID=#{params.id}
 			</if>
 			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
-				and MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
+				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
 			</if>
 			<if test="params != null and params.status != null  ">
-				and STATUS=#{params.status}
+				and M.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
-				and DELETED=#{params.deleted}
+				and M.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
-				and CREATE_TIME=#{params.createTime}
+				and M.CREATE_TIME=#{params.createTime}
 			</if>
 			<if test="params != null and params.createUser != null  ">
-				and CREATE_USER=#{params.createUser}
+				and M.CREATE_USER=#{params.createUser}
 			</if>
 			<if test="params != null and params.updateTime != null  ">
-				and UPDATE_TIME=#{params.updateTime}
+				and M.UPDATE_TIME=#{params.updateTime}
 			</if>
 			<if test="params != null and params.updateUser != null  ">
-				and UPDATE_USER=#{params.updateUser}
+				and M.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>
@@ -193,10 +198,12 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO
+		<include refid="Base_Column_List_add_createUser" />
+		FROM  WEBPORTAL_MCLUSTER_INFO M left join WEBPORTAL_DB_USER U 
+		ON U.ID = M.CREATE_USER
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY CREATE_TIME DESC
+		
+		ORDER BY M.CREATE_TIME DESC	
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

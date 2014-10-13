@@ -27,20 +27,24 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="mcluster" javaType="Mcluster">
+			<result column="MCLUSTER_NAME" property="mclusterName" />
+		</association>
 	</resultMap>
 	
-	<!-- WEBPORTAL_CONTAINER table all fields -->
+	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
-		ID,CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
-		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,
+		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		WEBPORTAL_CONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
-		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_CONTAINER C
+		(C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,
+		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER)
 		values
 		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
 		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
@@ -48,32 +52,35 @@
 	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Container">
-		delete from WEBPORTAL_CONTAINER where ID = #{id}
+		delete from WEBPORTAL_CONTAINER C where C.ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="deleteFlag" parameterType="Container">
-		update WEBPORTAL_CONTAINER set
+		update WEBPORTAL_CONTAINER C set
 		<if test="deleted != null  ">
-			DELETED=#{deleted}
+			C.DELETED=#{deleted}
 		</if>
-		where ID = #{id}
+		where C.ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER where ID = #{id}
+		from WEBPORTAL_CONTAINER C where C.ID = #{id}
 	</select>
 	<!-- 根据db id查询-->
 	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId} ORDER BY TYPE,ZOOKEEPER_ID
+		,M.MCLUSTER_NAME 
+		from WEBPORTAL_CONTAINER C left join WEBPORTAL_MCLUSTER_INFO M
+		ON M.ID = C.MCLUSTER_ID
+		where C.MCLUSTER_ID = #{mclusterId} ORDER BY C.TYPE,C.ZOOKEEPER_ID
 	</select>
 	<!-- 物理删除 -->
 	<update id="deleteByMcluster" parameterType="java.lang.Long">
-		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
+		delete from WEBPORTAL_CONTAINER C where C.MCLUSTER_ID = #{mclusterId}
 	</update>	
 </mapper>   

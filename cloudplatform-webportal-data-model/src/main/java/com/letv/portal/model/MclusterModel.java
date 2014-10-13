@@ -18,6 +18,8 @@ public class MclusterModel extends BaseModel {
 	private String adminPassword;
 	private Integer status; //状态
 	
+	private UserModel createUserModel;
+	
 	public String getMclusterName() {
 		return mclusterName;
 	}
@@ -41,6 +43,13 @@ public class MclusterModel extends BaseModel {
 	}
 	public void setAdminPassword(String adminPassword) {
 		this.adminPassword = adminPassword;
+	}
+	
+	public UserModel getCreateUserModel() {
+		return createUserModel;
+	}
+	public void setCreateUserModel(UserModel createUserModel) {
+		this.createUserModel = createUserModel;
 	}
 	@Override
 	public String toString() {

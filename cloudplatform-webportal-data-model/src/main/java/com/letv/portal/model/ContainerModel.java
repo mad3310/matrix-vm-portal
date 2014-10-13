@@ -30,6 +30,8 @@ public class ContainerModel extends BaseModel {
 	private Long hostId;  //所属host
 	private Long mclusterId; //所属cluster
 	
+	private MclusterModel mcluster;
+	
 	public Integer getDiskSize() {
 		return diskSize;
 	}
@@ -114,6 +116,13 @@ public class ContainerModel extends BaseModel {
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	
+	public MclusterModel getMcluster() {
+		return mcluster;
+	}
+	public void setMcluster(MclusterModel mcluster) {
+		this.mcluster = mcluster;
 	}
 	@Override
 	public String toString() {
