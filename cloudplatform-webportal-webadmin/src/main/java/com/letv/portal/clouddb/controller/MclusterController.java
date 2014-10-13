@@ -3,8 +3,6 @@ package com.letv.portal.clouddb.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +59,9 @@ public class MclusterController {
 	 * @param request
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public void save(MclusterModel mclusterModel) {
+	public @ResponseBody ResultObject save(MclusterModel mclusterModel,ResultObject result) {
 		this.mclusterProxy.insert(mclusterModel);
+		return result;
 	}
 	
 	/**Methods Name: validate <br>
@@ -81,8 +80,9 @@ public class MclusterController {
 	}
 	
 	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
-	public void delete(@PathVariable Long  mclusterId,HttpServletRequest request) {
+	public @ResponseBody ResultObject delete(@PathVariable Long  mclusterId,ResultObject result) {
 		MclusterModel mclsuter = new MclusterModel();
 		mclsuter.setId(mclusterId);
+		return result;
 	}
 }

@@ -2,6 +2,8 @@ package com.letv.portal.proxy.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,8 @@ import com.letv.portal.service.IMclusterService;
 public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		IMclusterProxy{
 	
+	private final static Logger logger = LoggerFactory.getLogger(MclusterProxyImpl.class);
+	
 	@Autowired
 	private IMclusterService mclusterService;
 	@Autowired
@@ -41,7 +45,10 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setStatus((int) MclusterStatus.DEFAULT.getValue());
 		super.insert(mclusterModel);
 		
-//		buildTaskService.buildMcluster(mclusterModel, null);
+		buildTaskService.buildMcluster(mclusterModel, null);
+		
+		logger.debug("test Asyn");
+		logger.debug("test Asyn");
 	}
 
 	@Override

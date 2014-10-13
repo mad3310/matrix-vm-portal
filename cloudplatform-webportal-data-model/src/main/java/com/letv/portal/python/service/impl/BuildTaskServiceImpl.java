@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -77,6 +78,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
+	@Async
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
 		
