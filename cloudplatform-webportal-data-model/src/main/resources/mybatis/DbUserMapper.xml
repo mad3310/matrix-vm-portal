@@ -71,7 +71,7 @@
 	</sql>
 	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="DbUser">
+	<insert id="insert" parameterType="DbUser" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_DB_USER
 		(DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
@@ -91,15 +91,6 @@
 		update WEBPORTAL_DB_USER set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}
-		</if>
-		where ID = #{id}
-	</update>
-	
-	<!-- 更新status状态 -->
-	<update id="updateStatus" parameterType="DbUser">
-		update WEBPORTAL_DB_USER set
-		<if test="status != null  ">
-			STATUS=#{status}
 		</if>
 		where ID = #{id}
 	</update>
@@ -175,6 +166,17 @@
 			
 		</trim>
 	</sql>
+	
+	
+	    <!-- 可以删除 -->
+		<!-- 更新status状态 -->
+	<update id="updateStatus" parameterType="DbUser">
+		update WEBPORTAL_DB_USER set
+		<if test="status != null  ">
+			STATUS=#{status}
+		</if>
+		where ID = #{id}
+	</update>
 	
 	
 </mapper>   

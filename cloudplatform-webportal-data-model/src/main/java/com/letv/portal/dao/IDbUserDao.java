@@ -37,6 +37,12 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void updateStatus(DbUserModel dbUserModel);
-
+    /**
+     * Methods Name: selectByIpAndUsername <br>
+     * Description: 通过Ip和UserName判断是否存在该用户
+     * @author name: wujun
+     * @param dbUserModel
+     * @return
+     */
 	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IDbProxy;
@@ -43,7 +44,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		//执行创建mcluster操作
 		//执行创建db操作。
 		
-		if(Constant.STATUS_AUDIT_FAIL == (Integer)params.get("status")) {
+		if(MclusterStatus.AUDITFAIL.getValue() == (Integer)params.get("status")) {
 			
 		} else {
 			Boolean isNewMcluster = params.get("mclusterId") == null;

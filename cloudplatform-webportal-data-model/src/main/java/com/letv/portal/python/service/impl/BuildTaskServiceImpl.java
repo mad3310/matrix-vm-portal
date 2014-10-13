@@ -80,7 +80,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
 		
-		mclusterModel.setStatus(Constant.STATUS_BUILDDING);
+		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
 		mclusterModel.setAdminPassword(mclusterModel.getMclusterName());
 		

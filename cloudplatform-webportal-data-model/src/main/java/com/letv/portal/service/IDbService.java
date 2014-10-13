@@ -25,26 +25,6 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	/**Methods Name: audit <br>
-	 * Description: 审核db<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param dbApplyStandardId
-	 * @param status
-	 * @param mclusterId
-	 * @param auditInfo
-	 */
-	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
-
-	
-	/**Methods Name: buildNotice <br>
-	 * Description: 手动创建完成后，通知<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param buildFlag
-	 */
-	public void buildNotice(String dbId,String buildFlag);
-	
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建dbUser相关参数<br>
 	 * @author name: liuhao1

@@ -37,5 +37,4 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	 * @param dbName
 	 */
 	public List<DbModel> selectByDbName(String dbName);
-	
 }

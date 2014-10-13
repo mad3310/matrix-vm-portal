@@ -40,13 +40,6 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @return
 	 */
 	public Map<String,String> selectCreateParams(Long id);
-	
-	/**Methods Name: updateStatus <br>
-	 * Description: 更新用户状态<br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 */
-	public void updateStatus(DbUserModel dbUserModel);
 
 	/**Methods Name: updateStatus <br>
 	 * Description: 根据数据库用户名和ip查询数据：用于验证数据库用户名和ip是否重复<br>
@@ -61,5 +54,11 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel);
-
+    /**
+     * Methods Name: updateStatus <br>
+     * Description: 更新状态
+     * @author name: wujun
+     * @param dbUserModel
+     */
+	public void updateStatus(DbUserModel dbUserModel);
 }

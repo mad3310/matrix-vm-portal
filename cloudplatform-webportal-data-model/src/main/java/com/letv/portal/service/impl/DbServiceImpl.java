@@ -56,15 +56,6 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo) {
-	}
-
-	@Override
-	public void buildNotice(String dbId,String buildFlag) {
-
-	}
-
-	@Override
 	public Map<String, String> selectCreateParams(Long id) {
 		return this.dbDao.selectCreateParams(id);
 	}

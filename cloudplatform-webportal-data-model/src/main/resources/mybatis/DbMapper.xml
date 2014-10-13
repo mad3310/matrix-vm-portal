@@ -11,8 +11,15 @@
 		<result column="STATUS" property="status" />
 		<result column="AUDIT_INFO" property="auditInfo" />
 		<result column="ENGINE_TYPE" property="engineType" />
-		<result column="LINK_TYPE" property="linkType" />
+		<result column="LINK_TYPE" property="linkType" />		 
+		<result column="BACKUP_CYCLE" property="backupCycle" />
+		<result column="DESCN" property="descn" />
+		<result column="FROM_DB_IP" property="fromDbIp" />
+		<result column="FROM_DB_PORT" property="fromDbPort" />
+		<result column="FROM_DB_NAME" property="fromDbName" />
+		<result column="AUDIT_USER" property="auditUser" />
 		
+			
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -34,7 +41,8 @@
 	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_NAME,MCLUSTER_ID,STATUS,AUDIT_INFO,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		ID,MCLUSTER_ID,DB_NAME,STATUS,BACKUP_CYCLE,NOTICE_TYPE,DESCN,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
+		LINK_TYPE,AUDIT_INFO,AUDIT_TIME,AUDIT_USER,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	<sql id="Base_Column_List_add_cluster">
 		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.MCLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
@@ -81,7 +89,7 @@
 		insert into
 		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE)
 		values(
-		#{dbName},#{mclusterId},0,1,now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
+		#{dbName},#{mclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
@@ -116,6 +124,9 @@
 				UPDATE_TIME=now(),
 			<if test="updateUser != null  ">
 				UPDATE_USER=#{updateUser}
+			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo},
 			</if>
 		</set>
 		where ID=#{id}
@@ -154,32 +165,6 @@
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Db">
 		delete from WEBPORTAL_DB where ID = #{id}
-	</update>
-	
-	<!-- 逻辑删除，将deleted 改成 0或1 -->
-	<update id="updateFlag" parameterType="Db">
-		update WEBPORTAL_DB set
-		<if test="deleted != null  ">
-			DELETED=#{deleted}
-		</if>
-		where ID = #{id}
-	</update>
-	
-	<!--  审批状态 -->
-	<update id="audit" parameterType="Db">
-		update WEBPORTAL_DB
-		<set>
-			<if test="status != null  ">
-				STATUS=#{status},
-			</if>
-			<if test="auditInfo != null  ">
-				AUDIT_INFO=#{auditInfo},
-			</if>
-			<if test="mclusterId != null  ">
-				MCLUSTER_ID=#{mclusterId}
-			</if>
-		</set>
-		where ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
@@ -280,4 +265,33 @@
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
 	</select>
+	
+    <!-- 逻辑删除，将deleted 改成 0或1 -->
+	<update id="updateFlag" parameterType="Db">
+		update WEBPORTAL_DB set
+		<if test="deleted != null  ">
+			DELETED=#{deleted}
+		</if>
+		where ID = #{id}
+	</update>
+	
+	
+	
+    <!-- 可以删除 -->
+	<!--  审批状态 -->
+	<update id="audit" parameterType="Db">
+		update WEBPORTAL_DB
+		<set>
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="auditInfo != null  ">
+				AUDIT_INFO=#{auditInfo},
+			</if>
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId}
+			</if>
+		</set>
+		where ID = #{id}
+	</update>
 </mapper>   
