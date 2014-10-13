@@ -55,10 +55,13 @@ public class SessionInterceptor implements HandlerInterceptor {
             if(logger.isInfoEnabled())
 				logger.info("checking session,passportUserName:"+userNamePassport);
             
-            if(StringUtils.isEmpty(userNamePassport)) {
+            if(StringUtils.isEmpty(userNamePassport))
+			{
 				if(null == userSession)
 					throw new NoSessionException("请重新登录!");
-			} else {
+			}
+			else
+			{
 				if( null == userSession || (null!=userSession && !userSession.getUserName().equals(userNamePassport))) {
 					UserLogin userLogin = new UserLogin();
 					userLogin.setUserName(userNamePassport);
