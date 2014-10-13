@@ -30,6 +30,7 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_detail");
 		return mav;
 	}
+
 	/**
 	 * Methods Name: toList <br>
 	 * Description: db跳转
@@ -40,7 +41,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/list/db",method=RequestMethod.GET)
 	public ModelAndView toDbList(ModelAndView mav){
-		mav.setViewName("/clouddb/db_list");
+		mav.setViewName("/clouddb/user_db_list");
 		return mav;
 	}
 	
@@ -55,7 +56,7 @@ public class SkipController {
 	@RequestMapping(value ="/detail/db/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toDbDetail(@PathVariable Long dbId,ModelAndView mav){
 		mav.addObject("dbId",dbId);
-		mav.setViewName("/clouddb/db_detail");
+		mav.setViewName("/clouddb/user_db_detail");
 		return mav;
 	}
 }
