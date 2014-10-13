@@ -143,7 +143,7 @@ function queryByPage(currentPage,recordsPerPage) {
 	var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	$.ajax({ 
 		type : "get",
-		url : "${ctx}/db/list/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+		url : "${ctx}/db/" + currentPage + "/" + recordsPerPage+"/" + dbName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -176,11 +176,11 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td2;
 				if(array[i].status == 1){
 					td2 = $("<td>"
-							+ "<a href=\"${ctx}/db/detail/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/db/1/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a href=\"${ctx}/db/audit/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/db/2/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else{
 					td2 = $("<td>"

@@ -37,14 +37,14 @@
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-db-list" class="">
-					<a href="${ctx}/db"> 
+					<a href="${ctx}/list/db"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库列表
 					</a>
 					<b class="arrow"></b>
 				</li>
 				<li id="sidebar-db-list" class="">
-					<a href="${ctx}/db/user"> 
+					<a href="${ctx}/list/db/user"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库用户列表
 					</a>

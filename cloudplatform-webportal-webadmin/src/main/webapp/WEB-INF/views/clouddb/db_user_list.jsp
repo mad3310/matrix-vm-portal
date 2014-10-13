@@ -111,7 +111,7 @@ var currentSelectedLineDbName = 1;
  		if(flag > 0) {
 	 		$.ajax({ 
 				type : "get",
-				url : "${ctx}/db/user/build/"+ str,
+				url : "${ctx}/db/user/"+ str,
 				dataType : "json",
 				success : function(data) {
 					if(data.result == 1) {
@@ -140,7 +140,7 @@ var currentSelectedLineDbName = 1;
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
 			type : "get",
-			url : "${ctx}/db/user/list/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+			url : "${ctx}/db/user/" + currentPage + "/" + recordsPerPage+"/" + dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
@@ -171,7 +171,7 @@ var currentSelectedLineDbName = 1;
 							+ array[i].username
 							+ "</td>");
 					var td3 = $("<td>"
-							+ "<a href=\"${ctx}/db/detail/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
+							+ "<a href=\"${ctx}/db/1/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 							+ "</td>");
 					if(array[i].type == "wr")
 					{

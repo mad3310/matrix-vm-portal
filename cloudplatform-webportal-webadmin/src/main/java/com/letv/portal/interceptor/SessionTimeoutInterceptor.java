@@ -5,18 +5,28 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.letv.portal.clouddb.controller.ContainerController;
-import com.letv.portal.service.User;
+import com.letv.common.session.Executable;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.ILoginService;
 
 /**
  * 处理session超时的拦截器
  */
 public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private final static Logger logger = LoggerFactory.getLogger(SessionTimeoutInterceptor.class);
-    
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
+	
+	@Autowired(required=false)
+	private ILoginService loginService;
+	
+	
+	
 	public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
 	
 	public void setAllowUrls(String[] allowUrls) {
@@ -34,12 +44,15 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		
-		if(request.getSession().getAttribute("loginName") == null ) {
-			logger.debug("please login");
-			response.sendRedirect("/account/login");
-			return false;
-		}
-		return true;
+//		if(request.getSession().getAttribute("loginName") == null ) {
+//			logger.debug("please login");
+//			response.sendRedirect("/account/login");
+//			return false;
+//		}
+	    Session userSession  =  sessionService.getSession();   
+	     if(null == userSession)
+	    	 response.sendRedirect("/account/login");
+     return true;
 		
 	}
 	
@@ -47,6 +60,13 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	public void afterCompletion(HttpServletRequest arg0,
 			HttpServletResponse arg1, Object arg2, Exception arg3)
 			throws Exception {
+		
+		sessionService.runWithSession(null, "Usersession changed", new Executable<Session>(){
+            @Override
+            public Session execute() throws Throwable {
+               return null;
+            }
+         });
 	}
 
 	@Override

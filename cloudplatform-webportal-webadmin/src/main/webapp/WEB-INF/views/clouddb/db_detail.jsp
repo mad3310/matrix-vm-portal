@@ -377,8 +377,7 @@
 		</div>
 	</div>
 </div>
-=======
->>>>>>> refs/remotes/origin/develop
+
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script type="text/javascript">

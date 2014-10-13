@@ -137,15 +137,15 @@
 		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/mcluster").html("集群管理");
 		$('#main-content-header li:eq(1)').html("集群列表");
-	}else if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/db/detail") >= 0){
+	}else if(path.indexOf("/list/db") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/db/detail") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db").html("数据库管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
 		$('#main-content-header li:eq(1)').html("数据库列表");
-	}else if(path.indexOf("/db/user/list") >= 0){
+	}else if(path.indexOf("/list/db/user") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db/user").html("数据库用户管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/db/user").html("数据库用户管理");
 		$('#main-content-header li:eq(1)').html("数据库用户列表");
 	}
 </script>
