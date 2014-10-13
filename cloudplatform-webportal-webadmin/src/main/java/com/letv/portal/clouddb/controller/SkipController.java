@@ -47,7 +47,8 @@ public class SkipController {
 	 * @return
 	 */
 	@RequestMapping(value="/detail/db/{dbId}",method=RequestMethod.GET)
-	public ModelAndView toDbDetail(ModelAndView mav){
+	public ModelAndView toDbDetail(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId", dbId);
 		mav.setViewName("/clouddb/db_detail");
 		return mav;
 	}
@@ -70,21 +71,10 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/list/db/user/{ssd}",method=RequestMethod.GET)
-	public ModelAndView toHostList(ModelAndView mav){
+	@RequestMapping(value="/list/dbUser/{dbUserId}",method=RequestMethod.GET)
+	public ModelAndView toHostList(@PathVariable Long dbUserId,ModelAndView mav){
+		mav.addObject("dbUserId", dbUserId);
 		mav.setViewName("/clouddb/host_list");
-		return mav;
-	}
-	/**
-	 * Methods Name: toDbAudit <br>
-	 * Description: Db审批跳转
-	 * @author name: wujun
-	 * @param mav
-	 * @return
-	 */
-	@RequestMapping(value="/db/audit/dbId",method=RequestMethod.GET)
-	public ModelAndView toDbAudit(ModelAndView mav){
-		mav.setViewName("/clouddb/db_audit");
 		return mav;
 	}
 	
