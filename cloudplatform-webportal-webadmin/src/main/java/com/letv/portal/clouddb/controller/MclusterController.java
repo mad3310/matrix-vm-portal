@@ -79,4 +79,10 @@ public class MclusterController {
 		map.put("valid", isExist);
 		return map;
 	}
+	
+	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
+	public void delete(@PathVariable Long  mclusterId,HttpServletRequest request) {
+		MclusterModel mclsuter = new MclusterModel();
+		mclsuter.setId(mclusterId);
+	}
 }
