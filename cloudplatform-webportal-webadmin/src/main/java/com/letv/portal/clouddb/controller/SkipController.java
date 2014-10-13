@@ -29,4 +29,64 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_detail");
 		return mav;
 	}
+	/**Methods Name: toList <br>
+	 * Description: db页面跳转<br>
+	 * @author name: wujun
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/list/db",method=RequestMethod.GET)
+	public ModelAndView toDbList(ModelAndView mav){
+		mav.setViewName("/clouddb/db_list");
+		return mav;
+	}
+	/**
+	 * Methods Name: toDbDetail <br>
+	 * Description: toDbDetail跳转
+	 * @author name: wujun
+	 * @return
+	 */
+	@RequestMapping(value="/detail/db/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toDbDetail(ModelAndView mav){
+		mav.setViewName("/clouddb/db_detail");
+		return mav;
+	}
+	/**
+	 * Methods Name: toDbUserList <br>
+	 * Description: toDbUserList跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/list/dbUser",method=RequestMethod.GET)
+	public ModelAndView toDbUserList(ModelAndView mav){
+		mav.setViewName("/clouddb/db_user_list");
+		return mav;
+	}
+	/**
+	 * Methods Name: toHostList <br>
+	 * Description: toHostList跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/list/db/user/{ssd}",method=RequestMethod.GET)
+	public ModelAndView toHostList(ModelAndView mav){
+		mav.setViewName("/clouddb/host_list");
+		return mav;
+	}
+	/**
+	 * Methods Name: toDbAudit <br>
+	 * Description: Db审批跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/db/audit/dbId",method=RequestMethod.GET)
+	public ModelAndView toDbAudit(ModelAndView mav){
+		mav.setViewName("/clouddb/db_audit");
+		return mav;
+	}
+	
+	
 }
