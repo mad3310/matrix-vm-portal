@@ -48,7 +48,7 @@
 						<div id="db-detail-user-mgr" class="tab-pane active">
 							<div class="col-xs-10">
 								<div class=" pull-right">
-									<button type="button" class="btn btn-xs btn-success bigger" data-toggle="modal" data-target="#create-dbuser-form">
+									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
 										<i class="ace-icont fa fa-plus"></i>创建用户
 									</button>
 									<!-- <button type="button" class="btn btn-xs btn-danger bigger disabled">
@@ -143,7 +143,7 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-success addButton btn-sm">
+								            <button type="button" class="btn btn-white btn-primary addButton">
 								                <i class="fa fa-plus"></i>
 								            </button>
 								        </div>
@@ -158,7 +158,7 @@
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
 								        <div class="col-sm-2">
-								            <button type="button" class="btn btn-default btn-sm removeButton">
+								            <button type="button" class="btn btn-white btn-primary removeButton">
 								                <i class="fa fa-minus"></i>
 								            </button>
 								        </div>
@@ -166,7 +166,7 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" placeholder="" />
+											<input class="form-control" name="readWriterRate" id="readWriterRate" type="text" value="2:1" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入读写比例，建议值'2:1'" style="cursor:pointer; text-decoration:none;">
@@ -177,7 +177,7 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" placeholder=""/>
+											<input class="form-control" name="maxConcurrency" id="maxConcurrency" type="text" value="50"/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入每秒最大并发量.建议值'50'" style="cursor:pointer; text-decoration:none;">
