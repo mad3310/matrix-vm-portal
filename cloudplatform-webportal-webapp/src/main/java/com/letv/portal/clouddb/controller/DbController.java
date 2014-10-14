@@ -21,6 +21,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
@@ -46,6 +47,8 @@ public class DbController {
 	@Resource
 	private IDbUserService dbUserService;
 	
+	@Autowired
+	private IDbProxy dbProxy;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
 	
@@ -98,10 +101,10 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/{dbId}",method=RequestMethod.GET) //http://localhost:8080/db/detail/{dbId}
-	public @ResponseBody ResultObject detail(@PathVariable Long dbId) {				
-		ResultObject obj = new ResultObject();
-		obj.setData(this.dbService.selectById(dbId));
+	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
+		ResultObject obj = new ResultObject();	
+		obj.setData(this.dbProxy.dbList(dbId));
 		return obj;
 	}	
 	
