@@ -228,9 +228,19 @@ function queryDbById(){
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
 			$("#dbTableDbName").html(dbInfo.dbName);
-			$("#dbTableBelongUser").html(dbInfo.createUser);
-			$("#dbTableType").html(dbInfo.linkType);
-			$("#dbTableEngine").html(dbInfo.engineType);
+			$("#dbTableBelongUser").html(dbInfo.user.userName);
+			var linkType;
+			if(dbInfo.linkType == 0){
+				linkType = "长链接";
+			}else{
+				linkType = "短连接";
+			}
+			$("#dbTableType").html(linkType);
+			var engineType;
+			if(dbInfo.engineType == 0){
+				engineType = "InnoDB";
+			}
+			$("#dbTableEngine").html(engineType);
 			$("#dbTableApplyTime").html(date('Y-m-d H:i:s',dbInfo.createTime));
 			$("#mclusterName").val(dbInfo.dbName);
 		}
