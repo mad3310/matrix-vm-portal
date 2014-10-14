@@ -33,6 +33,8 @@
 		</association>
 	</resultMap>
 	
+	
+	
 	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
 		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,

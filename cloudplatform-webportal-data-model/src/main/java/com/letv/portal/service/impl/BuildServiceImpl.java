@@ -54,14 +54,25 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	}
 
 	@Override
-	public void updateStatusFail(BuildModel buildModel) {
-		this.buildDao.updateStatusFail(buildModel);
+	public void updateByStatus(BuildModel buildModel) {
+		this.buildDao.updateByStatus(buildModel);
 		
 	}
 
 	@Override
-	public void deleteByMcluster(Long mclusterId) {
-		this.buildDao.deleteByMcluster(mclusterId);
+	public void deleteByMclusterId(Long mclusterId) {
+		this.buildDao.deleteByMclusterId(mclusterId);
+	}
+
+	@Override
+	public List<BuildModel> selectByDbId(Long dbId) {
+		return this.buildDao.selectByDbId(dbId);
+	}
+
+	@Override
+	public void updateByStep(BuildModel nextBuild) {
+		this.buildDao.updateByStep(nextBuild);
+		
 	}
 
 

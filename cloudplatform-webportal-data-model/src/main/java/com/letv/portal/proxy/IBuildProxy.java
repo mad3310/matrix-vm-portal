@@ -17,5 +17,5 @@ public interface IBuildProxy extends IBaseProxy<BuildModel> {
 
 	public void initStatus(Long mclusterId);
 	
-	public void updateStatusFail(BuildModel buildModel);
+	public List<BuildModel> selectByDbId(Long dbId);
 }

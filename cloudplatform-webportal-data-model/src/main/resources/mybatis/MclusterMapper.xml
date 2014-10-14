@@ -20,13 +20,7 @@
 		</association>
 	</resultMap>
 	
-	<!-- WEBPORTAL_MCLUSTER_INFO table all fields -->
 	<sql id="Base_Column_List">
-		ID,MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
-	</sql>
-
-
-	<sql id="Base_Column_List_add_createUser">
 		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
@@ -34,28 +28,58 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and ID=#{id}
+				and M.ID=#{id}
 			</if>
 			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
-				and MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
+				and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
 			</if>
 			<if test="status != null  ">
-				and STATUS=#{status}
+				and M.STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
-				and DELETED=#{deleted}
+				and M.DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
-				and CREATE_TIME=#{createTime}
+				and M.CREATE_TIME=#{createTime}
 			</if>
 			<if test="createUser != null  ">
-				and CREATE_USER=#{createUser}
+				and M.CREATE_USER=#{createUser}
 			</if>
 			<if test="updateTime != null  ">
-				and UPDATE_TIME=#{updateTime}
+				and M.UPDATE_TIME=#{updateTime}
 			</if>
 			<if test="updateUser != null  ">
-				and UPDATE_USER=#{updateUser}
+				and M.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and M.ID=#{params.id}
+			</if>
+			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
+				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
+			</if>
+			<if test="params != null and params.status != null  ">
+				and M.STATUS=#{params.status}
+			</if>
+			<if test="params != null and params.deleted != null  ">
+				and M.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and M.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and M.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and M.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and M.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>
@@ -125,84 +149,36 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO where ID = #{id}
+		from WEBPORTAL_MCLUSTER_INFO M where M.ID = #{id}
 	</select>
 	
 	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO WHERE MCLUSTER_NAME = #{mclusterName}
+		from WEBPORTAL_MCLUSTER_INFO M WHERE M.MCLUSTER_NAME = #{mclusterName}
 	</select>
-
-	<!-- 列表总数 -->
-	<select id="selectByModelCount" resultType="java.lang.Integer" parameterType="Mcluster">
-		select count(1) from WEBPORTAL_MCLUSTER_INFO
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 根据条件查询 -->
-	<select id="selectByModel" resultMap="BaseResultMap"
-		parameterType="Mcluster">
-		select
-		<include refid="Base_Column_List" />
-		from DICTIONARY_INFO
-		<include refid="Example_Where_Clause" />
-	</select>
-
 
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_MCLUSTER_INFO
+		select count(1) from WEBPORTAL_MCLUSTER_INFO M
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO
+		from WEBPORTAL_MCLUSTER_INFO M
 		<include refid="Example_Where_Clause" />
 	</select>
-	
-	
-	<sql id="Example_Page_Where_Clause">
-		where 1=1
-		<trim suffixOverrides=",">
-			<if test="params != null and params.id !=null  ">
-				and M.ID=#{params.id}
-			</if>
-			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
-				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
-			</if>
-			<if test="params != null and params.status != null  ">
-				and M.STATUS=#{params.status}
-			</if>
-			<if test="params != null and params.deleted != null  ">
-				and M.DELETED=#{params.deleted}
-			</if>
-			<if test="params != null and params.createTime != null  ">
-				and M.CREATE_TIME=#{params.createTime}
-			</if>
-			<if test="params != null and params.createUser != null  ">
-				and M.CREATE_USER=#{params.createUser}
-			</if>
-			<if test="params != null and params.updateTime != null  ">
-				and M.UPDATE_TIME=#{params.updateTime}
-			</if>
-			<if test="params != null and params.updateUser != null  ">
-				and M.UPDATE_USER=#{params.updateUser}
-			</if>
-		</trim>
-	</sql>
 	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List_add_createUser" />
+		<include refid="Base_Column_List" />
 		FROM  WEBPORTAL_MCLUSTER_INFO M left join WEBPORTAL_DB_USER U 
 		ON U.ID = M.CREATE_USER
 		<include refid="Example_Page_Where_Clause" />
-		
 		ORDER BY M.CREATE_TIME DESC	
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

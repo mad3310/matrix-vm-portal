@@ -20,7 +20,11 @@ public interface IBuildService extends IBaseService<BuildModel> {
 
 	public void initStatus(Long mclusterId);
 	
-	public void updateStatusFail(BuildModel buildModel);
+	public void updateByStatus(BuildModel buildModel);
 
-	public void deleteByMcluster(Long mclsuterId);
+	public void deleteByMclusterId(Long mclsuterId);
+
+	public List<BuildModel> selectByDbId(Long dbId);
+
+	public void updateByStep(BuildModel nextBuild);
 }

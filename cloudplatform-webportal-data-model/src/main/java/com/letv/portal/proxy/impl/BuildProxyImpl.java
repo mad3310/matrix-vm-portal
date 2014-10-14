@@ -30,14 +30,13 @@ public class BuildProxyImpl extends  BaseProxyImpl<BuildModel> implements IBuild
 	}
 
 	@Override
-	public void updateStatusFail(BuildModel buildModel) {
-		this.buildService.updateStatusFail(buildModel);
-	}
-
-	@Override
 	public IBaseService<BuildModel> getService() {
 		return buildService;
 	}
 
+	@Override
+	public List<BuildModel> selectByDbId(Long dbId) {
+		return this.buildService.selectByDbId(dbId);
+	}
 
 }

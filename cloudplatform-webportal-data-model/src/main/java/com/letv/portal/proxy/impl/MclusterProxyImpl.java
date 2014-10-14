@@ -42,13 +42,10 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setAdminUser(mclusterName);
 		mclusterModel.setAdminPassword(mclusterName);
 		mclusterModel.setDeleted(true);
-		mclusterModel.setStatus((int) MclusterStatus.DEFAULT.getValue());
+		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		super.insert(mclusterModel);
 		
-		buildTaskService.buildMcluster(mclusterModel, null);
-		
-		logger.debug("test Asyn");
-		logger.debug("test Asyn");
+		buildTaskService.buildMcluster(mclusterModel);
 	}
 
 	@Override

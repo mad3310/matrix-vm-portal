@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
-import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
@@ -68,25 +67,18 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	
-	@Resource
-	private SimpleTextEmailSender simpleTextEmailSender;
-	
-	@Value("${error.email.enabled}")
-	private Boolean ERROR_MAIL_ENABLED;
-	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Override
+	public void buildMcluster(MclusterModel mclusterModel) {
+		this.buildMcluster(mclusterModel, null);
+	}
 	
 	@Override
 	@Async
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
-		
-		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
-		mclusterModel.setAdminUser(mclusterModel.getMclusterName());
-		mclusterModel.setAdminPassword(mclusterModel.getMclusterName());
-		
-		this.mclusterService.insert(mclusterModel);
 		
 		this.buildService.initStatus(mclusterModel.getId());
 		
@@ -94,8 +86,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
 			}
-			//remove python_create_interval_init_time
-//			Thread.sleep(PYTHON_CREATE_INTERVAL_INIT_TIME);
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
 			}
@@ -110,7 +100,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus(BuildStatus.FAIL.getValue());
 			nextBuild.setMsg(e.getMessage());
-			this.buildService.updateStatusFail(nextBuild);
+			this.buildService.updateByStatus(nextBuild);
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
 			if(dbId!=null) {
@@ -126,6 +116,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.buildDb(dbId);
 		}
 	}
+	
 	@Override
 	public boolean createContainer(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
@@ -156,7 +147,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus(BuildStatus.FAIL.getValue());
 					nextBuild.setMsg("time over check");
-					this.buildService.updateBySelective(nextBuild);
+					this.buildService.updateByStep(nextBuild);
 					
 					if(dbId!=null) {
 						DbModel dbModel = new DbModel();
@@ -350,7 +341,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus(BuildStatus.FAIL.getValue());
 					nextBuild.setMsg("time over check");
-					this.buildService.updateBySelective(nextBuild);
+					this.buildService.updateByStatus(nextBuild);
 					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 					this.mclusterService.audit(mclusterModel);
 					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
@@ -390,14 +381,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
 		}
-		this.buildService.updateBySelective(buildModel);
+		this.buildService.updateByStatus(buildModel);
 		if(flag) {
 			BuildModel nextBuild = new BuildModel();
 			nextBuild.setMclusterId(mclusterId);
 			nextBuild.setStep(step+1);
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
-			this.buildService.updateBySelective(nextBuild);
+			this.buildService.updateByStatus(nextBuild);
 		}
 		return flag;
 	}
@@ -472,6 +463,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void removeMcluster(MclusterModel mcluster) {
 		this.mclusterService.delete(mcluster);
 		this.containerService.deleteByMcluster(mcluster.getId());
-		this.buildService.deleteByMcluster(mcluster.getId());
+		this.buildService.deleteByMclusterId(mcluster.getId());
 	}
 }

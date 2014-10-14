@@ -44,6 +44,12 @@ public class MclusterController {
 		return result;
 	}	
 	
+	/**Methods Name: list <br>
+	 * Description: 获取mcluster列表<br>
+	 * @author name: liuhao1
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -79,6 +85,13 @@ public class MclusterController {
 		return map;
 	}
 	
+	/**Methods Name: delete <br>
+	 * Description: db 删除<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
 	public @ResponseBody ResultObject delete(@PathVariable Long  mclusterId,ResultObject result) {
 		MclusterModel mclsuter = new MclusterModel();
