@@ -45,13 +45,13 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and ID=#{id}
+				and m.ID=#{id}
 			</if>
 			<if test="username != null  and username != '' ">
-				and DBUSER_NAME like CONCAT('%','${username}','%')
+				and m.DBUSER_NAME like CONCAT('%','${username}','%')
 			</if>
 			<if test="DbUserIp != null  and DbUserIp != '' ">
-				and DBUSER_IP like CONCAT('%','${DbUserIp}','%')
+				and m.DBUSER_IP like CONCAT('%','${DbUserIp}','%')
 			</if>
 			
 		</trim>
@@ -59,15 +59,8 @@
 	
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
-		ID,DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
-		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
-	</sql>
-	
-	<sql id="Base_Column_List_add_db">
-		WEBPORTAL_DB_USER.ID,WEBPORTAL_DB.ID,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB_USER.DB_ID,WEBPORTAL_DB_USER.USERNAME,WEBPORTAL_DB_USER.PASSWORD,WEBPORTAL_DB_USER.SALT,WEBPORTAL_DB_USER.TYPE,WEBPORTAL_DB_USER.ACCEPT_IP,
-		WEBPORTAL_DB_USER.MAX_CONCURRENCY,WEBPORTAL_DB_USER.READ_WRITER_RATE,WEBPORTAL_DB_USER.MAX_QUERIES_PER_HOUR,WEBPORTAL_DB_USER.MAX_UPDATES_PER_HOUR,WEBPORTAL_DB_USER.MAX_CONNECTIONS_PER_HOUR,
-		WEBPORTAL_DB_USER.MAX_USER_CONNECTIONS,
-		WEBPORTAL_DB_USER.STATUS,WEBPORTAL_DB_USER.DELETED,WEBPORTAL_DB_USER.CREATE_TIME,WEBPORTAL_DB_USER.CREATE_USER,WEBPORTAL_DB_USER.UPDATE_TIME,WEBPORTAL_DB_USER.UPDATE_USER
+		m.ID,m.DB_ID,m.USERNAME,m.PASSWORD,m.SALT,m.TYPE,m.ACCEPT_IP,m.MAX_CONCURRENCY,m.READ_WRITER_RATE,m.MAX_QUERIES_PER_HOUR,m.MAX_UPDATES_PER_HOUR,m.MAX_CONNECTIONS_PER_HOUR,m.MAX_USER_CONNECTIONS,
+		m.STATUS,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
@@ -99,19 +92,19 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_USER where ID = #{id}
+		from WEBPORTAL_DB_USER m where m.ID = #{id}
 	</select>
 	<select id="selectByIpAndUsername" resultMap="BaseResultMap" parameterType="DbUser">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_USER WHERE USERNAME = #{username} and ACCEPT_IP=#{acceptIp} and DB_ID=#{dbId}
+		from WEBPORTAL_DB_USER m WHERE m.USERNAME = #{username} and m.ACCEPT_IP=#{acceptIp} and m.DB_ID=#{dbId}
 	</select>
 	
 	<!-- 根据dbId查询-->
 	<select id="selectByDbId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_USER where DB_ID = #{dbId}
+		from WEBPORTAL_DB_USER m where m.DB_ID = #{dbId}
 	</select>
 	<!-- 查询创建用户所需参数-->
 	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.Long">
@@ -126,7 +119,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_USER
+		from WEBPORTAL_DB_USER m
 		<include refid="Example_Where_Clause" />
 	</select>
 	
@@ -141,11 +134,12 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List_add_db" />
-		from WEBPORTAL_DB_USER left join WEBPORTAL_DB 
-		on WEBPORTAL_DB.ID = WEBPORTAL_DB_USER.DB_ID
+		<include refid="Base_Column_List" />
+		,n.DB_NAME
+	    from WEBPORTAL_DB_USER m left join WEBPORTAL_DB n  
+		on n.ID = m.DB_ID
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY WEBPORTAL_DB_USER.CREATE_TIME DESC
+		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
@@ -155,13 +149,13 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="params != null and params.id !=null  ">
-				and WEBPORTAL_DB_USER.ID=#{params.id}
+				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.username !=null  ">
-				and WEBPORTAL_DB_USER.ID=#{params.username}
+				and m.USERNAME=#{params.username}
 			</if>
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
-				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
+				and n.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
 			
 		</trim>

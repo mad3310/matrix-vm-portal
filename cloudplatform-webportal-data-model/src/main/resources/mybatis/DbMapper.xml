@@ -30,6 +30,9 @@
 			<result column="MCLUSTER_NAME" property="mclusterName" />
 		</association>
 		
+		<association property="user" javaType="User">
+			<result column="USERNAME" property="userName" />
+		</association>
 	</resultMap>
 	
 	<resultMap id="createParams" type="java.util.Map">
@@ -41,44 +44,40 @@
 	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		ID,MCLUSTER_ID,DB_NAME,STATUS,BACKUP_CYCLE,NOTICE_TYPE,DESCN,ENGINE_TYPE,FROM_DB_IP,FROM_DB_PORT,FROM_DB_NAME,
-		LINK_TYPE,AUDIT_INFO,AUDIT_TIME,AUDIT_USER,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		m.ID,m.MCLUSTER_ID,m.DB_NAME,m.STATUS,m.BACKUP_CYCLE,m.NOTICE_TYPE,m.DESCN,m.ENGINE_TYPE,m.FROM_DB_IP,m.FROM_DB_PORT,m.FROM_DB_NAME,
+		m.LINK_TYPE,m.AUDIT_INFO,m.AUDIT_TIME,m.AUDIT_USER,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER
 	</sql>
-	<sql id="Base_Column_List_add_cluster">
-		WEBPORTAL_DB.ID,WEBPORTAL_MCLUSTER_INFO.MCLUSTER_NAME,WEBPORTAL_DB.DB_NAME,WEBPORTAL_DB.MCLUSTER_ID,WEBPORTAL_DB.AUDIT_INFO,WEBPORTAL_DB.STATUS,WEBPORTAL_DB.DELETED,WEBPORTAL_DB.CREATE_TIME,WEBPORTAL_DB.CREATE_USER,WEBPORTAL_DB.UPDATE_TIME,WEBPORTAL_DB.UPDATE_USER
-	</sql>
-
 	
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and ID=#{id}
+				and m.ID=#{id}
 			</if>
 			<if test="dbName != null  and dbName != ''  and dbName != 'null'">
-				and DB_NAME like CONCAT('%','${dbName}','%')
+				and m.DB_NAME like CONCAT('%','${dbName}','%')
 			</if>
 			<if test="mmclusterId != null  ">
-				and MCLUSTER_ID=#{mclusterId}
+				and m.MCLUSTER_ID=#{mclusterId}
 			</if>
 			<if test="status != null  ">
-				and STATUS=#{status}
+				and m.STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
-				and DELETED=#{deleted}
+				and m.DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
-				and CREATE_TIME=#{createTime}
+				and m.CREATE_TIME=#{createTime}
 			</if>
 			<if test="createUser != null  ">
-				and CREATE_USER=#{createUser}
+				and m.CREATE_USER=#{createUser}
 			</if>
 			<if test="updateTime != null  ">
-				and UPDATE_TIME=#{updateTime}
+				and m.UPDATE_TIME=#{updateTime}
 			</if>
 			<if test="updateUser != null  ">
-				and UPDATE_USER=#{updateUser}
+				and m.UPDATE_USER=#{updateUser}
 			</if>
 		</trim>
 	</sql>
@@ -164,19 +163,23 @@
 
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Db">
-		delete from WEBPORTAL_DB where ID = #{id}
+		delete from WEBPORTAL_DB m where m.ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB where ID = #{id}
+	        select
+			<include refid="Base_Column_List" /> 
+			,x.username
+			from webportal_db m ,webportal_user x
+			where  m.CREATE_USER=x.id and m.ID = 1;
 	</select>
+	
+
 	<select id="selectByDbName" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB WHERE DB_NAME = #{dbName}
+		from WEBPORTAL_DB m WHERE m.DB_NAME = #{dbName}
 	</select>
 
 	<!-- 查询创建用户所需参数-->
@@ -189,16 +192,7 @@
 	<!-- 列表总数 -->
 	<select id="selectByModelCount" resultType="java.lang.Integer"
 		parameterType="Db">
-		select count(1) from WEBPORTAL_DB
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<!-- 根据条件查询 -->
-	<select id="selectByModel" resultMap="BaseResultMap"
-		parameterType="Db">
-		select
-		<include refid="Base_Column_List" />
-		from DICTIONARY_INFO
+		select count(1) from WEBPORTAL_DB m
 		<include refid="Example_Where_Clause" />
 	</select>
 
@@ -206,7 +200,7 @@
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_DB
+		select count(1) from WEBPORTAL_DB m
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
@@ -214,7 +208,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB
+		from WEBPORTAL_DB m
 		<include refid="Example_Where_Clause" />
 	</select>
 	
@@ -223,31 +217,31 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="params != null and params.id !=null  ">
-				and WEBPORTAL_DB.ID=#{params.id}
+				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
-				and WEBPORTAL_DB.DB_NAME like CONCAT('%','${params.dbName}','%')
+				and m.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
 			<if test="params != null and params.mclusterId != null  ">
-				and WEBPORTAL_DB.MCLUSTER_ID=#{params.mclusterId}
+				and m.MCLUSTER_ID=#{params.mclusterId}
 			</if>
 			<if test="params != null and params.status != null  ">
-				and WEBPORTAL_DB.STATUS=#{params.status}
+				and m.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
-				and WEBPORTAL_DB.DELETED=#{params.deleted}
+				and m.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
-				and WEBPORTAL_DB.CREATE_TIME=#{params.createTime}
+				and m.CREATE_TIME=#{params.createTime}
 			</if>
 			<if test="params != null and params.createUser != null  ">
-				and WEBPORTAL_DB.CREATE_USER=#{params.createUser}
+				and m.CREATE_USER=#{params.createUser}
 			</if>
 			<if test="params != null and params.updateTime != null  ">
-				and WEBPORTAL_DB.UPDATE_TIME=#{params.updateTime}
+				and m.UPDATE_TIME=#{params.updateTime}
 			</if>
 			<if test="params != null and params.updateUser != null  ">
-				and WEBPORTAL_DB.UPDATE_USER=#{params.updateUser}
+				and m.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>
@@ -256,11 +250,12 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List_add_cluster" />
-		from WEBPORTAL_DB left join WEBPORTAL_MCLUSTER_INFO 
-		on WEBPORTAL_MCLUSTER_INFO.ID = WEBPORTAL_DB.MCLUSTER_ID
+		<include refid="Base_Column_List" />
+		,n.MCLUSTER_NAME
+		from WEBPORTAL_DB m left join WEBPORTAL_MCLUSTER_INFO n
+		on n.ID = m.MCLUSTER_ID
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY WEBPORTAL_DB.CREATE_TIME DESC
+		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

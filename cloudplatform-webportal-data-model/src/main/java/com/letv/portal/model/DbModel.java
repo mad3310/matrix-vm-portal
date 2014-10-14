@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import java.util.List;
+
 import com.letv.common.model.BaseModel;
 
 
@@ -34,6 +36,23 @@ public class DbModel extends BaseModel {
 	
 	private String auditUser;   //审核人
 	private String auditInfo;
+	private UserModel user;
+	
+	private List<ContainerModel> containers;
+	
+
+	public UserModel getUser() {
+		return user;
+	}
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
+	public List<ContainerModel> getContainers() {
+		return containers;
+	}
+	public void setContainers(List<ContainerModel> containers) {
+		this.containers = containers;
+	}
 	public Long getMclusterId() {
 		return mclusterId;
 	}

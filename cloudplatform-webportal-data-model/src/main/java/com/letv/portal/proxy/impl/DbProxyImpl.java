@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -16,6 +15,7 @@ import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 
 @Component
@@ -27,6 +27,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	@Autowired
 	private IDbService dbService;
 	@Autowired
+	private IContainerService containerService;
+	@Autowired
 	private IMclusterProxy mclusterProxy;
 	@Autowired
 	private IBuildTaskService buildTaskService;
@@ -35,7 +37,11 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	public IBaseService<DbModel> getService() {
 		return dbService;
 	}
-
+	public DbModel dbList(Long dbId){
+		DbModel db = this.dbService.selectById(dbId);
+		db.setContainers(this.containerService.selectByMclusterId(db.getMclusterId()));
+		return db;
+	}
 	@Override
 	public void auditAndBuild(Map<String, Object> params) {
 		//判断审批类型 如果为不同过，保存审批结果，不通过。
