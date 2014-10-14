@@ -470,14 +470,16 @@ function createMcluster(){
 	$.ajax({
 		type : "post",
 		url : "${ctx}/mcluster",
-		data :$('#create-mcluster-form').serialize()
+		data :$('#create-mcluster-form').serialize(),
+		success:function (data){
+			$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
+			$('#create-mcluster-form').data('bootstrapValidator').resetForm();
+			$('#create-mcluster-botton').addClass('disabled');
+			$('#create-mcluster-modal').modal('hide');
+			//延时一秒刷新列表
+			setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
+		}
 	});
-	$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
-	$('#create-mcluster-form').data('bootstrapValidator').resetForm();
-	$('#create-mcluster-botton').addClass('disabled');
-	$('#create-mcluster-modal').modal('hide');
-	//延时一秒刷新列表
-	setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
 }
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);

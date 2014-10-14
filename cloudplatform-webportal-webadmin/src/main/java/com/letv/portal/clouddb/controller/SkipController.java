@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class SkipController {
 	
 	@RequestMapping(value ="/list/mcluster",method=RequestMethod.GET)
-	public String toMclusterList(HttpServletRequest request){
-		return "/clouddb/mcluster_list";
+	public ModelAndView toMclusterList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/mcluster_list");
+		return mav;
 	}
 
 	@RequestMapping(value="/detail/mcluster/{mclusterId}", method=RequestMethod.GET)   
@@ -48,7 +50,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value="/detail/db/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toDbDetail(@PathVariable Long dbId,ModelAndView mav){
-		mav.addObject("dbId", dbId);
+		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/db_detail");
 		return mav;
 	}
@@ -71,12 +73,23 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/list/dbUser/{dbUserId}",method=RequestMethod.GET)
-	public ModelAndView toHostList(@PathVariable Long dbUserId,ModelAndView mav){
-		mav.addObject("dbUserId", dbUserId);
+	@RequestMapping(value="/list/db/user/{ssd}",method=RequestMethod.GET)
+	public ModelAndView toHostList(ModelAndView mav){
 		mav.setViewName("/clouddb/host_list");
 		return mav;
 	}
-	
+	/**
+	 * Methods Name: toDbAudit <br>
+	 * Description: Db审批跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/audit/db/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toDbAudit(@PathVariable Long dbId, ModelAndView mav){
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/db_audit");
+		return mav;
+	}
 	
 }

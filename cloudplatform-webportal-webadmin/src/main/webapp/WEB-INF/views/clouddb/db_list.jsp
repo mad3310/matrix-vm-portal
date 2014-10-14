@@ -180,17 +180,16 @@ function queryByPage(currentPage,recordsPerPage) {
 							+ "</td>");
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a href=\"${ctx}/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a href=\"${ctx}/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else{
 					td2 = $("<td>"
 							+ "<a style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}
-				if(array[i].cluster){
+				if(array[i].mcluster){
 					var td3 = $("<td>"
-							+ array[i].cluster
-/* 							+ array[i].cluster.mclusterName */
+ 							+ array[i].mcluster.mclusterName
 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");

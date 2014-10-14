@@ -46,8 +46,7 @@ function queryContainer(){
 		success : function(data) {
 			var array = data.data;
 			var tby = $("#tby");
-/* 			$("#headerContainerName").append(array[0].mcluster.mclusterName);
- */			
+ 			$("#headerContainerName").append(array[0].mcluster.mclusterName);
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td>"
 					    + array[i].containerName

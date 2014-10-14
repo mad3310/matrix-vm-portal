@@ -172,7 +172,7 @@ function buildUser() {
 							+ array[i].username
 							+ "</td>");
 					var td3 = $("<td>"
-							+ "<a href=\"${ctx}/db/1/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
+							+ "<a href=\"${ctx}/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 							+ "</td>");
 					if(array[i].type == "wr")
 					{

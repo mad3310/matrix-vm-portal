@@ -65,8 +65,8 @@ public class DbController {
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
-		ResultObject obj = new ResultObject();
-		obj.setData(this.dbProxy.selectById(dbId));
+		ResultObject obj = new ResultObject();	
+		obj.setData(this.dbProxy.dbList(dbId));
 		return obj;
 	}
 	

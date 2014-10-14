@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.DbUserModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
@@ -63,6 +60,19 @@ public class DbUserController {
 		obj.setData(this.dbUserService.findPagebyParams(params, page));
 		return obj;
 	} 
+	/**Methods Name: list <br>
+	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
+		ResultObject obj = new ResultObject();
+		obj.setData(this.dbUserService.selectByDbId(dbId));
+		return obj;
+	}
 	/**
 	 * Methods Name: list <br>
 	 * Description: 审批DbUser
