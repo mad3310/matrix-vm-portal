@@ -389,7 +389,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	}
 	$.ajax({
 		type : "get",
-		url : "${ctx}/mcluster/build/status/"+mclusterId,
+		url : "${ctx}/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			var array = data.data;
