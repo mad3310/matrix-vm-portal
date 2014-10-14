@@ -71,6 +71,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
+	@Async
 	public void buildMcluster(MclusterModel mclusterModel) {
 		this.buildMcluster(mclusterModel, null);
 	}
