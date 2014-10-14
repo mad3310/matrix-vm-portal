@@ -198,6 +198,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		url : "${ctx}/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -392,6 +393,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 		url : "${ctx}/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
 			
@@ -427,15 +429,15 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 					var td5 = $("<td>\-</td>");
 				}
 				
-				if(array[i].status == "success"){
+				if(array[i].status == 1){
 					var td6 = $("<td>"
 							+"<a class=\"green\"><i class=\"ace-icon fa fa-check bigger-120\">成功</a>"
 							+ "</td>");
-				}else if(array[i].status == "fail"){
+				}else if(array[i].status == 0){
 					var td6 = $("<td>"
 							+"<a class=\"red\"><i class=\"ace-icon fa fa-times red bigger-120\">失败</a>"
 							+ "</td>");
-				}else if(array[i].status == "building"){
+				}else if(array[i].status == 2){
 					var td6 = $("<td>"
 							+"<a style=\"text-decoration:none;\" class=\"green\"><h5><i class=\"ace-icon fa fa-spinner fa-spin green bigger-120\"/>运行中</h5></a>"
 							+ "</td>");
@@ -445,7 +447,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 							+ "</td>");
 				}
 					
-				if(array[i].status == "fail"){
+				if(array[i].status == 0){
 					var tr = $("<tr class=\"danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
@@ -472,6 +474,7 @@ function createMcluster(){
 		url : "${ctx}/mcluster",
 		data :$('#create-mcluster-form').serialize(),
 		success:function (data){
+			error(data);
 			$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#create-mcluster-form').data('bootstrapValidator').resetForm();
 			$('#create-mcluster-botton').addClass('disabled');

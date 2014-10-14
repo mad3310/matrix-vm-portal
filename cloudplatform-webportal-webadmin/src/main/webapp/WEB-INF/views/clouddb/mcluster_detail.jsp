@@ -44,6 +44,7 @@ function queryContainer(){
 		url : "${ctx}/container/"+$("#mclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var tby = $("#tby");
  			$("#headerContainerName").append(array[0].mcluster.mclusterName);

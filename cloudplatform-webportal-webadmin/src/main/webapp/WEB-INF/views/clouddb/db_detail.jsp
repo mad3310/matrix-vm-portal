@@ -211,6 +211,7 @@ function queryDbUser(){
 		url : "${ctx}/dbUser/"+$("#dbId").val(),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var tby = $("#tby");
 			
@@ -281,6 +282,7 @@ function queryDbInfo(){
 		url : "${ctx}/db/"+$("#dbId").val(),
 		dataType : "json", 
 		success : function(data) {
+			error(data);
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
 			$("#db_detail_table_dbname").text(dbInfo.dbName);

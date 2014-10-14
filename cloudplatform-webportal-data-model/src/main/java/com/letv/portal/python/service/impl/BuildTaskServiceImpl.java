@@ -176,7 +176,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setMclusterId(mclusterModel.getId());
 					container.setIpMask((String) map.get("netMask"));
 					container.setContainerName((String) map.get("containerClusterName"));
-					container.setHostId((Long)map.get("hostIp"));
+					//物理机集群维护完成后，修改此处，需要关联物理机id
+//					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -342,7 +343,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus(BuildStatus.FAIL.getValue());
 					nextBuild.setMsg("time over check");
-					this.buildService.updateByStatus(nextBuild);
+					this.buildService.updateByStep(nextBuild);
 					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 					this.mclusterService.audit(mclusterModel);
 					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
@@ -382,14 +383,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
 		}
-		this.buildService.updateByStatus(buildModel);
+		this.buildService.updateByStep(buildModel);
 		if(flag) {
 			BuildModel nextBuild = new BuildModel();
 			nextBuild.setMclusterId(mclusterId);
 			nextBuild.setStep(step+1);
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
-			this.buildService.updateByStatus(nextBuild);
+			this.buildService.updateByStep(nextBuild);
 		}
 		return flag;
 	}

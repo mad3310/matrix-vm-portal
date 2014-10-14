@@ -99,7 +99,7 @@
 	<update id="updateByStatus" parameterType="Build">
 		update WEBPORTAL_BUILD
 		<include refid="update_by_seletive" />
-		where MCLUSTER_ID=#{mclusterId} and STATUS='2'
+		where MCLUSTER_ID=#{mclusterId} and STATUS=2
 	</update>
 	
 	<!-- 物理删除 -->

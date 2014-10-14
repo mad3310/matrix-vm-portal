@@ -123,6 +123,7 @@ function createDbOnOldMcluster(){
 		url : "${ctx}/db/audit",
 		data :$('#create_on_old_cluster_form').serialize(),
 		success : function (data){
+			error(data);
 			window.location = "${ctx}/list/db";
 		}
 	});
@@ -133,6 +134,7 @@ function createDbOnNewMcluster(){
 		url : "${ctx}/db/audit",
 		data :$('#create_on_new_cluster_form').serialize(),
 		success:function (data){
+			error(data);
 			window.location = "${ctx}/list/db";
 		}
 	});
@@ -143,6 +145,7 @@ function refuseCreateMcluster(){
 		url : "${ctx}/db/audit",
 		data :$('#refuse_create_mcluster').serialize(),
 		success:function (data){
+			error(data);
 			window.location = "${ctx}/list/db";
 		}
 	});
@@ -221,6 +224,7 @@ function queryDbById(){
 		url:"${ctx}/db/"+$("#dbId").val(),
 		dataType:"json",
 		success:function(data){
+			error(data);
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
 			$("#dbTableDbName").html(dbInfo.dbName);
@@ -238,6 +242,7 @@ function queryMcluserById(){
 		url:"${ctx}/mcluster",
 		dataType:"json",
 		success:function(data){
+			error(data);
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length; i < len ;i++)
 			{
