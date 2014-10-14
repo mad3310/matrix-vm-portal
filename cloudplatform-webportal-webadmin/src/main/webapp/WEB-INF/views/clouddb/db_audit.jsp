@@ -4,7 +4,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 
-			<a href="${ctx}/db/list">数据库列表</a>
+			<a href="${ctx}/list/db">数据库列表</a>
 			<small id="headerDbName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>

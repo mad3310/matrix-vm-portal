@@ -516,9 +516,9 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                 <cloudplatform.webportal.db.url>jdbc:mysql://localhost:3306/paascloud2?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>root</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password></cloudplatform.webportal.db.password>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.58.166.19:3306/paascloud2?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>yaokuo</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>000000</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
                 <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>

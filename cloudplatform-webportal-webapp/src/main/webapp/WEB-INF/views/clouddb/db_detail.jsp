@@ -4,7 +4,7 @@
 	<div id="page-header-id" class="page-header">
 		<h1> 
 			<a href="${ctx}/list/db">数据库列表</a>
-			<small> 
+			<small id="headerDbName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
 		</h1>
@@ -32,15 +32,15 @@
 								<table class="table table-bordered" id="db_detail_table">
 									<tr>
 										<td width="50%">数据库名</td>
-										<td width="50%" id="dbName"></td>
+										<td width="50%" id="db_detail_table_dbname"></td>
 									</tr>
 									<tr>
 										<td>所属用户</td>
-										<td></td>
+										<td id="db_detail_table_belongUser"></td>
 									</tr>
 									<tr>
 										<td>创建时间</td>
-										<td></td>
+										<td id="db_detail_table_createtime"></td>
 									</tr>
 								</table>
 							</div>
@@ -413,10 +413,22 @@ function queryDbInfo(){
 		dataType : "json", 
 		success : function(data) {
 			var dbInfo = data.data;
-			$("#page-header-id").find('small').append(dbInfo.dbName);
-			$("#db_detail_table").find('tr:eq(0) td:eq(1)').text(dbInfo.dbName);
-			queryUser(dbInfo.createUser);
-			$("#db_detail_table").find('tr:eq(2) td:eq(1)').text(date('Y-m-d H:i:s',dbInfo.createTime));
+			$("#headerDbName").append(dbInfo.dbName);
+			$("#db_detail_table_dbname").text(dbInfo.dbName);
+			$("#db_detail_table_belongUser").text(dbInfo.user.userName);
+			$("#db_detail_table_createtime").text(date('Y-m-d H:i:s',dbInfo.createTime));
+			for(var i=0,len = dbInfo.containers.length; i < len; i++)
+			{
+				var td1 = $("<td>"
+						+ dbInfo.containers[i].containerName
+						+"</td>");
+				var td2 =$("<td>"
+						+ dbInfo.containers[i].ipAddr
+						+"</td>");
+				var tr = $("<tr></tr>");
+				tr.append(td1).append(td2);
+				$("#db_detail_table").append(tr);
+			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$.gritter.add({
