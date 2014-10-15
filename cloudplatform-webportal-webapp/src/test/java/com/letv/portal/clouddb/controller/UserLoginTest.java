@@ -1,50 +1,39 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
 import org.junit.Test;
-
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.junitBase.AbstractTest;
-import com.letv.portal.model.UserModel;
-//import com.letv.portal.model.UserModel;
-import com.letv.portal.service.IUserService;
 
 
 public class UserLoginTest extends AbstractTest{
-
-	@Autowired
-	private IUserService userService;
+	
+	
+	@Resource
+	private IFixedPushService FixedPushService;
 	
 	@Test
-	public void testInsertUser()
-	{
-		try {  
-			
-				String str1 = "1";
-				String Str2 = "1";
-				if(str1==Str2){
-					System.out.println("xxxxxx");
-				}
-//				
-//			}
-//			String userNamePassport ="lihanlin1@letv.com";
-//			UserModel userModel = new UserModel();
-//			userModel.setUserName("wujun");
-//			userModel.setPassportId("22");
-//			userService.insert(userModel);
-//			
-//			UserModel userModel1 = new UserModel();
-//			userModel1.setUserName("wujun2");
-//			userModel1.setPassportId("22");
-//			userService.insert(userModel1);
-//			System.out.print("xx");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public void createContainerPushFixedInfoTest()
+	{   
+	   // String url = "http://localhost:8080/webTest2/";	
+		Map<String,String> map = new HashMap<String,String>();
+		List<String> xxList = new ArrayList<String>();
+		xxList.add("10.200.85.91");
+		xxList.add("10.200.85.92");
+		map.put("hostIp", "10.200.85.93");
+		map.put("code", "100");
+		map.put("rescode", "200");
+		map.put("containerIp", xxList.toString());	
+		map.put("resmsg", "webportalAPI");	
 		
+		Boolean result = FixedPushService.createContainerPushFixedInfo(map);
+		System.out.println(result);
 	}
+	
+	
 }
