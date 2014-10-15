@@ -356,12 +356,13 @@ function pageControl() {
 }
 //查询集群创建过程
 function queryBuildStatus(mclusterId,type) {	//type(update或new)
+	console.info(mclusterId);
 	if(type == "new"){
 		$("#build_status_tby tr").remove();
 	}
 	$.ajax({
 		type : "get",
-		url : "${ctx}/mcluster/build/status/"+mclusterId,
+		url : "${ctx}/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			error(data);
