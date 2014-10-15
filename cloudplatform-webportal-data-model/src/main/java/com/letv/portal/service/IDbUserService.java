@@ -61,4 +61,6 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
      * @param dbUserModel
      */
 	public void updateStatus(DbUserModel dbUserModel);
+	
+	
 }

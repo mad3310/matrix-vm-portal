@@ -68,7 +68,14 @@ public class DbUserController {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
-	
+	/**
+	 * Methods Name: validate <br>
+	 * Description: 校验dbUser用户是否存在
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(DbUserModel dbUserModel,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -76,7 +83,34 @@ public class DbUserController {
 		map.put("valid", list.size()>0?false:true);
 		return map;
 	}
-	
+	/**
+	 * Methods Name: deleteDbUserById <br>
+	 * Description: 删除dbUser用户
+	 * @author name: wujun
+	 * @param dbUserId
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(value="/{dbId}",method=RequestMethod.DELETE)
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbUserId,DbUserModel dbUserModel) {
+		dbUserModel.setId(dbUserId);
+		this.dbUserService.delete(dbUserModel);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改DbUser信息
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.PUT)
+	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
+		this.dbUserService.update(dbUserModel);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
 	
 	
 }

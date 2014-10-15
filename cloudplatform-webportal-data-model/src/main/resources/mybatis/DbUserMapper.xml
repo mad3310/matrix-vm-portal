@@ -57,6 +57,9 @@
 		</trim>
 	</sql>
 	
+	
+	
+	
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
 		m.ID,m.DB_ID,m.USERNAME,m.PASSWORD,m.SALT,m.TYPE,m.ACCEPT_IP,m.MAX_CONCURRENCY,m.READ_WRITER_RATE,m.MAX_QUERIES_PER_HOUR,m.MAX_UPDATES_PER_HOUR,m.MAX_CONNECTIONS_PER_HOUR,m.MAX_USER_CONNECTIONS,
@@ -160,17 +163,76 @@
 			
 		</trim>
 	</sql>
+  
 	
-	
-	    <!-- 可以删除 -->
-		<!-- 更新status状态 -->
-	<update id="updateStatus" parameterType="DbUser">
-		update WEBPORTAL_DB_USER set
-		<if test="status != null  ">
-			STATUS=#{status}
+    <!-- 更新DbUser -->
+	<update id="update" parameterType="DbUser">
+		update WEBPORTAL_DB_USER m 
+       <set>
+		<if test="dbId != null  ">
+			m.DB_ID=#{dbId},
 		</if>
-		where ID = #{id}
+		<if test="username != null  ">
+			m.USERNAME=#{username},
+		</if>
+		<if test="password != null  ">
+			m.PASSWORD=#{password},
+		</if>
+		<if test="salt != null  ">
+			m.SALT=#{salt},
+		</if>
+		<if test="type != null  ">
+			m.TYPE=#{type},
+		</if>
+		<if test="acceptIp != null  ">
+			m.ACCEPT_IP=#{acceptIp},
+		</if>
+		<if test="maxConcurrency != null  ">
+			m.MAX_CONCURRENCY=#{maxConcurrency},
+		</if>
+		<if test="readWriterRate != null  ">
+			m.READ_WRITER_RATE=#{readWriterRate},
+		</if>
+		<if test="maxQueriesPerHour != null  ">
+			m.MAX_QUERIES_PER_HOUR=#{maxQueriesPerHour},
+		</if>
+		<if test="maxUserConnections != null  ">
+			m.MAX_USER_CONNECTIONS=#{maxUserConnections},
+		</if>
+		<if test="status != null  ">
+			m.STATUS=#{status},
+		</if>		
+		<if test="deleted != null  ">
+			m.DELETED=#{deleted},
+		</if>				
+		<if test="createTime != null  ">
+		    m.CREATE_TIME=#{createTime},
+		</if>				
+		<if test="createUser != null  ">
+			m.CREATE_USER=#{createUser},
+		</if>		
+		<if test="updateTime != null  ">
+			m.UPDATE_TIME=#{updateTime},
+		</if>		
+		<if test="updateUser != null  ">
+			m.UPDATE_USER=#{updateUser},
+		</if>		
+		<if test="maxUpdatesPerHour != null  ">
+			m.MAX_UPDATES_PER_HOUR=#{maxUpdatesPerHour},
+		</if>		
+		<if test="maxConnectionsPerHour != null  ">
+			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour}
+		</if>	
+		</set>			
+		where m.ID = #{id}
 	</update>
 	
-	
+	  <!-- 可以删除 -->
+	<update id="updateStatus" parameterType="DbUser">
+	 update WEBPORTAL_DB_USER m set
+	 	<if test="status != null  ">
+			m.STATUS=#{status}
+		</if>
+		where m.ID = #{id}
+	</update>
 </mapper>   
