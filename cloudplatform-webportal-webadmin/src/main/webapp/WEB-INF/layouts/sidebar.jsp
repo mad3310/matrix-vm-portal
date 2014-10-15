@@ -22,7 +22,7 @@
 				<li id="sidebar-mcluster-list" class="">
 					<a href="${ctx}/list/mcluster"> 
 						<i class="menu-icon fa fa-caret-right"></i>
-						集群列表
+						Container集群列表
 					</a>
 					<b class="arrow"></b>
 				</li>

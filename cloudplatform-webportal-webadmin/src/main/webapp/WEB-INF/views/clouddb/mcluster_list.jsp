@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div class="page-header">
 		<h1> 
-			集群列表
+			Container集群列表
 			<!-- <small> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 				overview &amp; stats
@@ -14,11 +14,11 @@
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">集群列表</h5>
+				<h5 class="widget-title">Container集群列表</h5>
 				<div class="widget-toolbar no-border">
 					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#create-mcluster-modal">
 						<i class="ace-icont fa fa-plus"></i>
-						 创建集群
+						 创建Container集群
 					</button>
 				</div>
 			</div>
@@ -34,8 +34,8 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th>集群名称</th>
-								<th>集群所属用户</th>
+								<th>Container集群名称</th>
+								<th>Container集群所属用户</th>
 								<th>
 									创建时间 
 								</th>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="col-xs-3">
-			<small><font color="gray">*注：点击集群名可查看集群详情.</font></small>
+			<small><font color="gray">*注：点击Container集群名可查看详情.</font></small>
 		</div>
 		<div id="pageControlBar" class="col-xs-6">
 			<input type="hidden" id="totalPage_input" />
@@ -74,18 +74,18 @@
 					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h4 class="lighter">
-							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建集群 </a>
+							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建Container集群 </a>
 						</h4>
 						<div class="widget-box">
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<label class="col-sm-2 control-label" for="mcluster_name">集群名称</label>
+										<label class="col-sm-2 control-label" for="mcluster_name">Container集群名称</label>
 										<div class="col-sm-8">
 											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',集群名不能以数字开头." style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',Container集群名不能以数字开头." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -347,7 +347,7 @@ function pageControl() {
 	    });
 	}
 	
-//创建集群表单验证
+//创建Container集群表单验证
 function formValidate() {
 	$("#create-mcluster-form").bootstrapValidator({
 	  message: '无效的输入',
@@ -361,17 +361,17 @@ function formValidate() {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
-                         message: '集群名称不能为空!'
+                         message: 'Container集群名称不能为空!'
                      },
 			          stringLength: {
 			              max: 40,
-			              message: '集群名过长'
+			              message: 'Container集群名过长'
 			          },regexp: {
 		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-  		                  message: "请输入字母数字或'_',集群名不能以数字开头."
+  		                  message: "请输入字母数字或'_',Container集群名不能以数字开头."
                  	  },
                  	 remote: {
-	                        message: '集群名已存在!',
+	                        message: 'Container集群名已存在!',
 	                        url: "${ctx}/mcluster/validate"
 	                    }
 	             }
@@ -383,7 +383,7 @@ function formValidate() {
     	 $('#create-mcluster-botton').removeClass("disabled");
      });
 }
-//查询集群创建过程
+//查询Container集群创建过程
 function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	if(type == "new"){
 		$("#build_status_tby tr").remove();

@@ -43,10 +43,10 @@
 		<div class="col-md-7 column">
 			<ul id="myTab" class="nav nav-tabs">
 			   <li class="active">
-			      <a href="#create_on_cluster" data-toggle="tab">在已有集群创建</a>
+			      <a href="#create_on_cluster" data-toggle="tab">在已有Container集群创建</a>
 			   </li>
 			   <li>
-			   	  <a href="#create_on_new_cluster" data-toggle="tab">在新集群创建</a>
+			   	  <a href="#create_on_new_cluster" data-toggle="tab">在新Container集群创建</a>
 			   </li>
 			   <li>
 			   	  <a href="#disagree" data-toggle="tab">不同意</a>
@@ -58,7 +58,7 @@
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">选择集群</label>
+							<label for="text" class="col-sm-2 control-label">选择Container集群</label>
 							<div class="col-sm-8">
 								<select id="mclusterOption" name="mclusterId" class="form-control">
 									<option value=""></option>
@@ -75,7 +75,7 @@
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="control-label col-sm-2">集群名称</label>
+							<label for="text" class="control-label col-sm-2">Container集群名称</label>
 							<div class="col-sm-8">
 								<input class="form-control" name="mclusterName" id="mclusterName" type="text"/>
 							</div>
@@ -180,16 +180,16 @@ function formValidate() {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
-                         message: '集群名称不能为空!'
+                         message: 'Container集群名称不能为空!'
                      },
 			          stringLength: {
 			              max: 40,
-			              message: '集群名过长'
+			              message: 'Container集群名过长'
 			          },regexp: {
 		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-  		                  message: "请输入字母数字或'_',集群名不能以数字开头."
+  		                  message: "请输入字母数字或'_',Container集群名不能以数字开头."
                  	  },remote: {
-	                        message: '集群名已存在!',
+	                        message: 'Container集群名已存在!',
 	                        url: "${ctx}/mcluster/validate"
 	                    }
 	             }
@@ -208,7 +208,7 @@ function formValidate() {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
-                         message: '选择集群不能为空!'
+                         message: '选择Container集群不能为空!'
                      }
 	             }
          	}	

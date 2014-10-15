@@ -354,7 +354,7 @@ function pageControl() {
 		queryByPage(currentPage,recordsPerPage);
 	});
 }
-//查询集群创建过程
+//查询Container集群创建过程
 function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	console.info(mclusterId);
 	if(type == "new"){
