@@ -43,6 +43,7 @@
 										<td id="db_detail_table_createtime"></td>
 									</tr>
 								</table>
+								<!-- <small><font color="gray">*注:请用高亮IP连接数据库.</font></small> -->
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane active">
@@ -80,7 +81,6 @@
 									<tbody id="tby">
 									</tbody>
 								</table>
-								<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 					</div>
@@ -362,7 +362,6 @@ function queryDbUser(){
 					var td3 = $("<td>"
 							    + "读写用户"
 							    + "</td>");
-					
 				}
 				
 				var td4 = $("<td>"

@@ -167,8 +167,10 @@ var currentSelectedLineDbName = 1;
 				var totalPages = data.data.totalPages;
 				
 				function translateStatus(status){
-					if(status == 0 || status == 2){
+					if(status == 0){
 						return "未审核";
+					}else if(status  == 2){
+						return "创建中...";
 					}else if(status  == 1){
 						return "正常";
 					}else if(status  == 4){
@@ -197,6 +199,11 @@ var currentSelectedLineDbName = 1;
 								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' style=\"cursor:pointer; text-decoration:none;\" data-content=\""+ array[i].auditInfo+"\" >"
 								+ translateStatus(array[i].status)
 								+"</a>"
+								+ "</td>");
+					}else if(array[i].status == 2){
+						var td4 = $("<td>"
+								+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+								+"创建中..."
 								+ "</td>");
 					}else{
 						var td4 = $("<td>"
