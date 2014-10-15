@@ -12,7 +12,6 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 	
 	<!-- <import resource="classpath:converter-applicationContext.xml"/> -->
-	<import resource="classpath*:quartz-applicationContext.xml"/>
 	<import resource="classpath*:data-applicationContext.xml"/>
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 	    <property name="locations">
@@ -44,5 +43,34 @@
         		</list>
         	</property>
         </bean>
-	
+        
+          <!-- 要调用的工作类 -->
+	   <bean id="quartzJob" class="com.letv.portal.job.QuartzJob"></bean>
+	   
+	   <!-- 定义调用对象和调用对象的方法 -->
+	   <bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	       <!-- 调用的类 -->
+	       <property name="targetObject" ref="quartzJob"/>
+	       <!-- 调用类中的方法 -->
+	       <property name="targetMethod" >
+	           <value>work</value>
+	       </property>
+	   </bean>
+	   
+	   <!-- 定义触发时间 -->
+	   <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	       <property name="jobDetail" ref="jobtask"/>
+	       <!-- cron表达式 -->
+	       <property name="cronExpression">
+	           <value>0 0/1 * * * ?</value>
+	       </property>
+	   </bean>
+	   <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+	   <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	       <property name="triggers">
+	           <list>
+	               <ref bean="doTime"/>
+	           </list>
+	       </property>
+	   </bean>
 </beans>
