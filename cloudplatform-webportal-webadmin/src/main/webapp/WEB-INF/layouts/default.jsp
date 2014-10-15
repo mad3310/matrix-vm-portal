@@ -252,7 +252,7 @@ function error(errorThrown,time) {
 		$('#sidebar-mcluster-mgr').addClass("active open hsub");
 		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("集群管理");
-		$('#main-content-header li:eq(1)').html("集群列表");
+		$('#main-content-header li:eq(1)').html("Container集群列表");
 	}else if(path.indexOf("/list/dbUser") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
