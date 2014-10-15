@@ -97,7 +97,7 @@ public class DbUserController {
 	 * @param dbUserModel
 	 * @return
 	 */
-	@RequestMapping(value="/{dbId}",method=RequestMethod.DELETE)
+	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbUserId,DbUserModel dbUserModel) {
 		dbUserModel.setId(dbUserId);
 		this.dbUserService.delete(dbUserModel);
