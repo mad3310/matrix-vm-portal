@@ -36,7 +36,7 @@
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle"> 
 						<span class="user-info"> 
 							<small>欢迎会员,</small> 
-							${sessionScope.username}
+							${sessionScope.userSession.userName}
 						</span>
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>

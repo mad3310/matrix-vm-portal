@@ -22,6 +22,13 @@ import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 
 
+/**Program Name: SessionInterceptor <br>
+ * Description:  session拦截类，暂不处理<br>
+ * @author name: liuhao1 <br>
+ * Written Date: 2014年10月15日 <br>
+ * Modified By: <br>
+ * Modified Date: <br>
+ */
 public class SessionInterceptor implements HandlerInterceptor {
 	private final static Logger logger = LoggerFactory.getLogger(SessionInterceptor.class);
 	
@@ -41,45 +48,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 	}
 
 	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
-      //      HttpSession session = request.getSession();
-    //       Session userSession = (Session)session.getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-        Session userSession  =  sessionService.getSession();   
-    	if (null == userSession) {
-    		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
-            String userName = principal.getName();
-            
-            String userNamePassport = userName + "@letv.com";
-            
-            if(logger.isInfoEnabled())
-				logger.info("checking session,passportUserName:"+userNamePassport);
-            
-            if(StringUtils.isEmpty(userNamePassport))
-			{
-				if(null == userSession)
-					throw new NoSessionException("请重新登录!");
-			}
-			else
-			{
-				if( null == userSession || (null!=userSession && !userSession.getUserName().equals(userNamePassport))) {
-					UserLogin userLogin = new UserLogin();
-					userLogin.setUserName(userNamePassport);
-					userLogin.setLoginIp(LoginController.getIp(request));
-					userSession = loginProxy.saveOrUpdateUserAndLogin(userLogin);				
-	//				session.setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE,userSession);
-					if(logger.isInfoEnabled())
-						logger.info("checking session,passportUserName："+userNamePassport+",but UserSession is null,so restore UserSession,this process finished!");
-				}
-			}
-        }
-		
-		sessionService.runWithSession(userSession, "Usersession changed", new Executable<Session>(){
-            @Override
-            public Session execute() throws Throwable {
-               return null;
-            }
-         });
+	public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
 		return true;
 	}
 
@@ -96,13 +65,5 @@ public class SessionInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		
-		sessionService.runWithSession(null, "Usersession changed", new Executable<Session>(){
-            @Override
-            public Session execute() throws Throwable {
-               return null;
-            }
-         });
-		
 	}
 } 

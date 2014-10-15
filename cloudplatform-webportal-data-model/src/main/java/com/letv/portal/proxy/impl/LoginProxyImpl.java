@@ -39,15 +39,12 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 			throw new ValidateException("userNamePassort should be not null");
 			
 		UserModel user = userService.getUserByName(userNamePassport);
-		if(null == user)
+		if(null == user) {
 			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp);
-		
-		if(null == user)
-			throw new ValidateException("登陆用户不存在");
-		
-		userService.updateUserLoginInfo(user, loginIp);
-		UserModel userInsert = userService.getUserByName(userNamePassport);
-		final Session session = this.createUserSession(userInsert);
+		} else {
+			userService.updateUserLoginInfo(user, loginIp);
+		}
+		final Session session = this.createUserSession(user);
 		
 		logger.debug("logined successfully");
 		return session;

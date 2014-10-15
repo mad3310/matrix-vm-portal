@@ -17,6 +17,7 @@ import com.letv.common.util.ConfigUtil;
 import com.letv.portal.service.ILoginService;
 
 @Controller
+@RequestMapping(value="/account")
 public class LogoutController{
 
 	public static final String DASHBORAD_ADDRESS = "/dashboard";
@@ -38,20 +39,17 @@ public class LogoutController{
 	 * @return
 	 */
 	@RequestMapping(value="/logout",method=RequestMethod.GET)   //http://localhost:8080/account/logout
-	public String logout(HttpServletRequest request, HttpServletResponse response){
-		Session session = (Session)request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+	public void logout(HttpServletRequest request, HttpServletResponse response){
 		
 		loginService.logout();
 		request.getSession().invalidate();
 		sessionService.setSession(null,"logout");
 		
-//		String logoutAddress = PASSPORT_LOGOUT_ADDRESS + WEB_URL + DASHBORAD_ADDRESS;
 		String logoutAddress = CAS_AUTH_HTTP + "/cas/logout?service=" + CAS_LOCAL_HTTP;
 		try {
 			response.sendRedirect(logoutAddress);
 		} catch (IOException e) {
 			throw new CommonException("logout时出现异常！", e);
 		}
-		return null;
    }
 }
