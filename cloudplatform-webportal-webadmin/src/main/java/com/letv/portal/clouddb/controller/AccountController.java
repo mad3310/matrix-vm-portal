@@ -36,7 +36,7 @@ public class AccountController {
 		if(StringUtils.isNullOrEmpty(loginName)) {
 			return "/account/login";
 		} else {
-			if(!"sysadmin".equals(loginName) && !"000000".equals(password) ) {
+			if(!"sysadmin".equals(loginName) || !"000000".equals(password) ) {
 				request.setAttribute("error", "用户名或密码错误！");
 				return "/account/login";
 			}
