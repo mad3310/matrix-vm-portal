@@ -1,6 +1,5 @@
 package com.letv.portal.service;
 
-import com.letv.common.exception.CommonException;
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
 

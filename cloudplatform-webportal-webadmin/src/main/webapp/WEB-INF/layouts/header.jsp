@@ -37,7 +37,7 @@
 						<img class="nav-user-photo" src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" /> 
 						<span class="user-info"> 
 							<small>欢迎会员,</small> 
-							${sessionScope.loginName}
+							${sessionScope.userSession.userName}
 						</span>
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>

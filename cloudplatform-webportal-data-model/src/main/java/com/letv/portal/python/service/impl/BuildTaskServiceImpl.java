@@ -175,7 +175,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					BeanUtils.populate(container, map);
 					container.setMclusterId(mclusterModel.getId());
 					container.setIpMask((String) map.get("netMask"));
-					container.setContainerName((String) map.get("containerClusterName"));
+					container.setContainerName((String) map.get("containerName"));
 					//物理机集群维护完成后，修改此处，需要关联物理机id
 //					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {

@@ -50,7 +50,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		
-		if(request.getSession().getAttribute("loginName") == null ) {
+		if(request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE) == null ) {
 			logger.debug("please login");
 			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
 			
@@ -69,13 +69,6 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	public void afterCompletion(HttpServletRequest arg0,
 			HttpServletResponse arg1, Object arg2, Exception arg3)
 			throws Exception {
-		
-		sessionService.runWithSession(null, "Usersession changed", new Executable<Session>(){
-            @Override
-            public Session execute() throws Throwable {
-               return null;
-            }
-         });
 	}
 
 	@Override

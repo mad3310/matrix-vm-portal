@@ -21,7 +21,8 @@ import com.letv.portal.service.IUserService;
 
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUserService{
-
+	
+	private static String SUFFIX_EMAIL = "@letv.com";
 	@Autowired
 	private IUserDao userDao;
 	
@@ -53,7 +54,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		user.setLastLoginTime(date);
 		user.setLastLoginIp(user.getCurrentLoginIp());
 		user.setStatus(UserStatus.NORMAL);
-		
+		user.setDeleted(true);
 		//TODO re-factor
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		user.setCreateUser(Long.valueOf(0L));
@@ -96,8 +97,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp) {
 		UserModel user = new UserModel();
 		user.setUserName(userName);
-		user.setPassportId(userName);
 		user.setCurrentLoginIp(loginIp);
+		user.setEmail(userName + SUFFIX_EMAIL);
+		
+		
 		saveUserObject(user);
 		return user;
 	}

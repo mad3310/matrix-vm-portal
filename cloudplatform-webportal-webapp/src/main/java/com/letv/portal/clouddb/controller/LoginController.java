@@ -3,22 +3,33 @@ package com.letv.portal.clouddb.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.letv.common.exception.NoSessionException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.WebUtil;
+import com.letv.portal.filter.SessionInterceptor;
 import com.letv.portal.model.UserLogin;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 
 @Controller
+@RequestMapping(value="/account")
 public class LoginController{
 	
-	private String WEB_URL = "http://www.letv.com";
+	private static String WEB_URL = "http://www.letv.com";
+	
+	private final static Logger logger = LoggerFactory.getLogger(SessionInterceptor.class);
 	
 	@Autowired
 	private ILoginService loginManager;
@@ -30,8 +41,40 @@ public class LoginController{
 	private ILoginProxy loginProxy;
 
 	
+	/**Methods Name: login <br>
+	 * Description: cas登录完成后，跳转到本页面做相关用户记录，然后跳转到业务界面<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @param mav
+	 * @return
+	 */
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request){
+	public ModelAndView login(HttpServletRequest request,ModelAndView mav) {
+		
+		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
+		if(principal != null) {
+			UserLogin userLogin = new UserLogin();
+			userLogin.setUserName(principal.getName());
+			userLogin.setLoginIp(LoginController.getIp(request));
+			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+	            @Override
+	            public Session execute() throws Throwable {
+	               return null;
+	            }
+	         });
+			logger.info("User:"+principal.getName()+"login success!");
+		} else {
+			//重新登录
+			throw new NoSessionException("请重新登录!");
+		}
+        
+		mav.setViewName("redirect:/list/db");
+		return mav;
+	}
+	
+/*	public String login(HttpServletRequest request){
 		
 		String redirectUrl = WebUtil.getRequestUrl(request);
 		String requestQueryStr = WebUtil.getRequestUri(request);
@@ -51,8 +94,6 @@ public class LoginController{
 	    //loginProxy
 		Session userSession = loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		//设置全局的session
-//		sessionService.setSession(userSession, "login");
-//		
 		if (StringUtils.isEmpty(redirectUrl)) {
 			return LogoutController.DASHBORAD_ADDRESS;
 		}
@@ -64,7 +105,7 @@ public class LoginController{
 		}
 		
 		return "redirectUrl";
-   }
+   }*/
 	
 	
 	private void validateRetURL(String retURL)
