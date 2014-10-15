@@ -20,6 +20,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -58,6 +59,28 @@ public class HttpClient {
 		
 		httpclient.getConnectionManager().shutdown();
 		
+		return body;
+	}
+	
+	
+	public static String post(String url, Object obj) {
+		return post(url, obj, null, null);
+	}
+	
+	
+	public static String post(String url, Object obj, String username,
+			String password) {
+		DefaultHttpClient httpclient = getHttpclient(username, password);
+		String body = null;
+		logger.info("create httppost:" + url);
+		HttpPost httppost = new HttpPost(url);
+		try {
+			httppost.setEntity(new StringEntity(obj.toString()));
+			body = invoke(httpclient, httppost);
+			httpclient.getConnectionManager().shutdown();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		return body;
 	}
 	

@@ -1,5 +1,8 @@
 package com.letv.portal.clouddb.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,4 +90,15 @@ public class DbController {
 		return obj;
 		
 	}
+	
+	
+	@RequestMapping(value="/xx",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject testXx() {
+		ResultObject obj = new ResultObject();
+//		this.dbProxy.auditAndBuild(params);		
+		return obj;
+		
+	}
+	
+	
 }
