@@ -44,14 +44,18 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setDeleted(true);
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		super.insert(mclusterModel);
-		
-		buildTaskService.buildMcluster(mclusterModel);
 	}
 
 	@Override
 	public Boolean isExistByName(String mclusterName) {
 		List<MclusterModel> mclusters = this.mclusterService.selectByName(mclusterName);
 		return mclusters.size() == 0?true:false;
+	}
+
+	@Override
+	public void inertAndBuild(MclusterModel mclusterModel) {
+		this.insert(mclusterModel);
+		buildTaskService.buildMcluster(mclusterModel);
 	}
 	
 }

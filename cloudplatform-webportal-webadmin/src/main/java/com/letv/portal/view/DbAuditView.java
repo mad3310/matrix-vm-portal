@@ -7,9 +7,9 @@ public class DbAuditView {
 	private Long mclusterId;
 	private Long dbId;
 	private String mclusterName;
-	private String dbName;
-	private Integer status;
+	private Integer auditType;
 	private String auditInfo;
+	
 	public Long getMclusterId() {
 		return mclusterId;
 	}
@@ -28,17 +28,12 @@ public class DbAuditView {
 	public void setMclusterName(String mclusterName) {
 		this.mclusterName = mclusterName;
 	}
-	public String getDbName() {
-		return dbName;
+
+	public Integer getAuditType() {
+		return auditType;
 	}
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
-	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setAuditType(Integer auditType) {
+		this.auditType = auditType;
 	}
 	public String getAuditInfo() {
 		return auditInfo;

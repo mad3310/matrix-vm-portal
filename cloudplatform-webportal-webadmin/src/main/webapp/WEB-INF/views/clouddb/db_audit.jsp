@@ -89,6 +89,7 @@
 				<div>
 				      <form class="form-horizontal" id="refuse_create_mcluster" role="form">
 							<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
+							<input type="text" class="form-control hide" value="4" id="auditType" name="auditType"/>
 						  <div class="form-group">
 						  	<div class="col-sm-12">
 						      <textarea  id="auditInfo" name="auditInfo" class="form-control" rows="3" placeholder="请输入未通过原因"></textarea>

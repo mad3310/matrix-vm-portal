@@ -188,6 +188,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
+	@Async
 	public void buildDb(Long dbId) {
 		Integer status = null;
 		String resultMsg = "";
@@ -197,15 +198,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = BuildStatus.SUCCESS.getValue();
-				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
+				status = DbStatus.RUNNING.getValue();
+//				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
 			} else {
 				resultMsg = "失败";
-				status = BuildStatus.FAIL.getValue();
+				status = DbStatus.BUILDFAIL.getValue();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultMsg = "失败";
-			status = BuildStatus.FAIL.getValue();
+			status = DbStatus.BUILDFAIL.getValue();
 		} finally {
 			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, null, ERROR_MAIL_ADDRESS);
 			DbModel dbModel = new DbModel();
@@ -229,7 +231,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(Constant.STATUS_OK);
-					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
+//					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());

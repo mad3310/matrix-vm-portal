@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -17,6 +18,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.mysql.jdbc.StringUtils;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -44,38 +46,37 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	}
 	@Override
 	public void auditAndBuild(Map<String, Object> params) {
-		//判断审批类型 如果为不同过，保存审批结果，不通过。
-		//判断mclusterId是否为空，如果为空，新建mcluster
-		//保存审批结果
-		//执行创建mcluster操作
-		//执行创建db操作。
 		
-		if(MclusterStatus.AUDITFAIL.getValue() == (Integer)params.get("status")) {
-			
-		} else {
-			Boolean isNewMcluster = params.get("mclusterId") == null;
-			MclusterModel mcluster = new MclusterModel();
-			DbModel dbModel = new DbModel();
-			try {
-				BeanUtils.populate(mcluster, params);
-				BeanUtils.populate(dbModel, params);
-			} catch (Exception e) {
-			}
-			if(isNewMcluster) {
+		Integer status = (Integer) params.get("status");
+		Long mclusterId = (Long) params.get("mclusterId");
+		Long dbId = (Long) params.get("dbId");
+		String mclusterName = (String) params.get("mclusterName");		
+		String auditInfo = (String) params.get("auditInfo");
+		
+		DbModel dbModel = new DbModel();
+		dbModel.setId(dbId);
+		dbModel.setStatus(status);
+		
+		MclusterModel mcluster = new MclusterModel();
+		
+		if(DbStatus.BUILDDING.getValue() == status) {//审核成功
+			//判断mclsuterId是否为空
+			if(mclusterId == null) { //创建新的mcluster集群
+				mcluster.setMclusterName(mclusterName);
 				this.mclusterProxy.insert(mcluster);
-			}
-			
-			dbModel.setMclusterId(mcluster.getId());
-			dbModel.setId((Long) params.get("dbId"));
-			this.updateBySelective(dbModel);
-			
-			if(isNewMcluster) {
-				this.buildTaskService.buildMcluster(mcluster,dbModel.getId());
+				dbModel.setMclusterId(mcluster.getId());
+				this.dbService.updateBySelective(dbModel);
+				this.buildTaskService.buildMcluster(mcluster,dbId);
 			} else {
-				this.buildTaskService.buildDb(dbModel.getId());
+				dbModel.setMclusterId(mclusterId);
+				this.dbService.updateBySelective(dbModel);
+				this.buildTaskService.buildDb(dbId);
 			}
-			
+		} else { //审核失败
+			dbModel.setAuditInfo(auditInfo);
+			this.dbService.updateBySelective(dbModel);
 		}
+			
 		
 	}
 	
