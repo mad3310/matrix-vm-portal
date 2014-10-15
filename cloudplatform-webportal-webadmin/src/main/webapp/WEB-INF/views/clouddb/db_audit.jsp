@@ -58,8 +58,8 @@
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="col-sm-2 control-label">选择Container集群</label>
-							<div class="col-sm-8">
+							<label for="text" class="col-sm-3 control-label">选择Container集群</label>
+							<div class="col-sm-7">
 								<select id="mclusterOption" name="mclusterId" class="form-control">
 									<option value=""></option>
 								</select>
@@ -75,8 +75,8 @@
 					<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 					<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="control-label col-sm-2">Container集群名称</label>
-							<div class="col-sm-8">
+							<label for="text" class="control-label col-sm-3">Container集群名称</label>
+							<div class="col-sm-7">
 								<input class="form-control" name="mclusterName" id="mclusterName" type="text"/>
 							</div>
 							<div class="col-sm-2">
@@ -243,7 +243,7 @@ function queryDbById(){
 			}
 			$("#dbTableEngine").html(engineType);
 			$("#dbTableApplyTime").html(date('Y-m-d H:i:s',dbInfo.createTime));
-			$("#mclusterName").val(dbInfo.dbName);
+			$("#mclusterName").val(dbInfo.createUser+"_"+dbInfo.dbName);
 		}
 	});
 }

@@ -80,8 +80,8 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<label class="col-sm-2 control-label" for="mcluster_name">Container集群名称</label>
-										<div class="col-sm-8">
+										<label class="col-sm-4 control-label" for="mcluster_name">Container集群名称</label>
+										<div class="col-sm-6">
 											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 										</div>
 										<label class="control-label">
@@ -367,8 +367,8 @@ function formValidate() {
 			              max: 40,
 			              message: 'Container集群名过长'
 			          },regexp: {
-		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-  		                  message: "请输入字母数字或'_',Container集群名不能以数字开头."
+		                  regexp: /^([a-zA-Z_0-9]*)$/,
+  		                  message: "请输入字母数字或'_'"
                  	  },
                  	 remote: {
 	                        message: 'Container集群名已存在!',
