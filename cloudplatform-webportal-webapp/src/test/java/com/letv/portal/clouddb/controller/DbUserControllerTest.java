@@ -74,4 +74,33 @@ public class DbUserControllerTest extends AbstractTest{
 		map.put("valid", list.size()>0?false:true);
 		System.out.println(map.get("valid"));
 	}
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改dbUser信息
+	 * @author name: wujun
+	 */
+	@Test
+    public  void updateDbUser(){
+		try {
+			DbUserModel dbUserModel = new DbUserModel();
+			dbUserModel.setId(1L);
+			dbUserModel.setUsername("wujunTest1");
+			this.dbUserService.update(dbUserModel);
+		} catch (Exception e) {
+		System.out.print(e.getMessage());
+		}
+
+    }
+	/**
+	 * Methods Name: deleteDbUserById <br>
+	 * Description: 删除dbUser信息
+	 * @author name: wujun
+	 */
+	@Test
+    public  void deleteDbUserById(){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setId(1L);
+		this.dbUserService.delete(dbUserModel);
+    }
+	
 }

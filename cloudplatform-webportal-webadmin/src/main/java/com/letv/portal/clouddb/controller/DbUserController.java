@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
@@ -87,5 +88,35 @@ public class DbUserController {
 		this.buildTaskService.buildUser(dbUserId);
 		return obj;
 	}
+	
+	/**
+	 * Methods Name: deleteDbUserById <br>
+	 * Description: 删除dbUser用户
+	 * @author name: wujun
+	 * @param dbUserId
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbUserId,DbUserModel dbUserModel) {
+		dbUserModel.setId(dbUserId);
+		this.dbUserService.delete(dbUserModel);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改DbUser信息
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.PUT)
+	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
+		this.dbUserService.update(dbUserModel);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	
 	
 }
