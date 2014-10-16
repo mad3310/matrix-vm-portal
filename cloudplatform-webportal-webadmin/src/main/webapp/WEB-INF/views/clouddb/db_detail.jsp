@@ -256,11 +256,6 @@ function queryDbUser(){
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
-				
-			/* 	var trdata = $("#db_detail_table").find("tr");
-				alert(trdata.children().html());
-				alert(trdata.next().next().html());
-				trdata.next().html()); */
 			}//循环json中的数据 
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {

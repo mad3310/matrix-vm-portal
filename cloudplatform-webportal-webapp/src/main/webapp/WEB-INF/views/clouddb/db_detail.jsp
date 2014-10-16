@@ -67,15 +67,12 @@
 												<span class="lbl"></span>
 											</label>
 										</th>
-										<th>
-											用户名
-										</th>
+										<th>用户名</th>
 										<th>用户权限</th>
 										<th>ip地址</th>
 										<th>频次限制</th>
-										<th>
-											当前状态
-										</th>
+										<th>当前状态</th>
+										<th></th>
 									</tr>
 								</thead>
 									<tbody id="tby">
@@ -93,7 +90,7 @@
 					<form id="db_user_apply_form" name="db_user_apply_form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h4 class="lighter">
-							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库用户 </a>
+							<a href="#modal-wizard-create-db-user" data-toggle="modal" class="blue"> 创建数据库用户 </a>
 						</h4>
 						<div class="widget-box">
 							<div class="widget-body">
@@ -192,6 +189,104 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
 						<button id="create-dbUser-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createDbUser()">创建</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="edit-dbuser-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="db_user_edit_form" name="db_user_edit_form" class="form-horizontal" role="form">
+					<div class="col-xs-12">
+						<h4 class="lighter">
+							<a href="#modal-wizard-edit-db-user" data-toggle="modal" class="blue">编辑数据库用户 </a>
+						</h4>
+						<div class="widget-box">
+							<div class="widget-body">
+								<div class="widget-main">
+									<div class="form-group">
+										<input class="hidden" value="${dbId}" name="dbId" id="editDbId" type="text" />
+										<input class="hidden" value="${dbUserId}" name="dbUserId" id="editDbUserId" type="text" />
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="username" id="editUsername" type="text" />
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',用户名不能以数字开头." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
+										<div class="col-sm-5">
+											<select class="form-control" name="type" id="editType">
+												<option value="3">读写用户</option>
+												<option value="1">管理员</option>
+											</select>
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择创建的数据库用户类型." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									 <div class="form-group">
+								        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
+								        <div class="col-sm-5">
+								            <input type="text" class="form-control" name="acceptIp" id="editAcceptIp" type="text"/>
+								        </div>
+								        <label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+								    </div>
+									<div class="form-group">
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="maxConcurrency" id="editMaxConcurrency" type="text"/>
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入每秒最大并发量.建议值'50'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
+						<button id="edit-dbUser-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="editDbUserCmd()">保存</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="delete-dbuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="db_user_edit_form" name="db_user_edit_form" class="form-horizontal" role="form">
+					<div class="col-xs-12">
+						<h7 class="lighter">
+							<a href="#modal-wizard-edit-db-user" data-toggle="modal" class="blue">&nbsp</a>
+						</h7>
+						<div class="widget-box">
+							<div class="widget-body">
+								<div class="widget-main">
+									<div class="form-group">
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
+						<button id="edit-dbUser-botton" type="button" class="btn btn-sm btn-danger" >删除</button>
 					</div>
 				</form>
 				</div>
@@ -316,11 +411,71 @@ $(function(){
 	                }
 	            }
 	        }).on('keyup', '[name="username"]', function() {
-	                $('#db_user_apply_form').bootstrapValidator('revalidateField', 'acceptIp');
+	             $('#db_user_apply_form').bootstrapValidator('revalidateField', 'acceptIp');
 	        }).on('error.field.bv', function(e, data) {
 	        	 $('#create-dbUser-botton').addClass("disabled");
 	        }).on('success.field.bv', function(e, data) {
-	       	 $('#create-dbUser-botton').removeClass("disabled");
+	       	 	$('#create-dbUser-botton').removeClass("disabled");
+	        });
+	    $('#db_user_edit_form').bootstrapValidator({
+	            feedbackIcons: {
+	                valid: 'glyphicon glyphicon-ok',
+	                invalid: 'glyphicon glyphicon-remove',
+	                validating: 'glyphicon glyphicon-refresh'
+	            },
+	            fields: {
+	            	username: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: '用户名不能为空!'
+	                        },
+	  			          stringLength: {
+				              max: 16,
+				              message: '用户名过长!'
+				          }, regexp: {
+			                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+	  		                  message: "请输入字母数字或'_',用户名不能以数字开头."
+	                 	  }
+	                    }
+	                },
+	                maxConcurrency: {
+	                    validMessage: '请按提示输入',
+	                    validators: {
+	                        notEmpty: {
+	                            message: '最大并发量不能为空!'
+	                        },integer: {
+	                            message: '请输入数字'
+	                        }
+	                    }
+	                },
+	                acceptIp: {
+	                    validators: {
+	                        notEmpty: {
+	                            message: '地址不能为空'
+	                        },
+	  		                regexp: {
+			                  regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
+			                  message: '请按提示格式输入'
+			              	}, 
+			                remote: {
+		                        url: '${ctx}/dbUser/validate' ,
+		                        data: function(validator) {
+		                            return {
+		                                username: validator.getFieldElements('username').val(),
+		                                dbId: validator.getFieldElements('dbId').val()
+		                            };
+		                        },
+		                        message: '该用户名此IP也存在!'
+		                    }
+	                    }
+	                }
+	            }
+	        }).on('keyup', '[name="username"]', function() {
+	            $('#db_user_edit_form').bootstrapValidator('revalidateField', 'acceptIp');
+	        }).on('error.field.bv', function(e, data) {
+	        	$('#edit-dbUser-botton').addClass("disabled");
+	        }).on('success.field.bv', function(e, data) {
+	       	 	$('#edit-dbUser-botton').removeClass("disabled");
 	        });
 });
 function translateStatus(status){
@@ -335,6 +490,7 @@ function translateStatus(status){
 	}
 }
 function queryDbUser(){
+	$("#tby tr").remove();
 	$.ajax({ 
 		type : "get",
 		url : "${ctx}/dbUser/"+$("#dbId").val(),
@@ -346,50 +502,54 @@ function queryDbUser(){
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 						    + "<label class=\"position-relative\">"
-						    + "<input type=\"checkbox\" class=\"ace\"/>"
+						    + "<input name=\"db_user_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 						    + "<span class=\"lbl\"></span>"
 						    + "</label>"
 					        + "</td>");
-				var	td2 = $("<td>"
+				var	td2 = $("<td name=\"db_user_name\">"
 							+ array[i].username
 							+ "</td>");
 				var td3;
 				if(array[i].type == 3){
-					var td3 = $("<td>"
+					var td3 = $("<td name=\"db_user_type\">"
 							    + "管理员"
 							    + "</td>");
 				}else{
-					var td3 = $("<td>"
+					var td3 = $("<td name=\"db_user_type\">"
 							    + "读写用户"
 							    + "</td>");
 				}
 				
-				var td4 = $("<td>"
+				var td4 = $("<td name=\"db_user_accept_ip\">"
 							+array[i].acceptIp
 							+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td name=\"db_user_max_concurrency\">"
 							+array[i].maxConcurrency
 							+ "</td>");
 				var td6 = $("<td>"
 							+translateStatus(array[i].status)
+							+ "</td>");
+				var td7 = $("<td>"
+							+"<div class=\"hidden-sm hidden-xs btn-group\">"
+							+"<button class=\"btn btn-xs disabled btn-info\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
+								+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
+							+"</button>"
+							+"<button class=\"btn btn-xs disabled btn-danger\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
+								+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+							+"</button>"
+							+"</div>"
 							+ "</td>");
 					
 				if(array[i].status == 0 ||array[i].status == 2){
 					var tr = $("<tr class=\"warning\"></tr>");
 				}else if(array[i].status == 3 ||array[i].status == 4){
 					var tr = $("<tr class=\"danger\"></tr>");
-					
 				}else{
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
 				tr.appendTo(tby);
-				
-			/* 	var trdata = $("#db_detail_table").find("tr");
-				alert(trdata.children().html());
-				alert(trdata.next().next().html());
-				trdata.next().html()); */
 			}//循环json中的数据 
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
@@ -483,6 +643,42 @@ function createDbUser(){
         success: function (data) {
         	window.location.href='${ctx}/detail/db/'+$("#dbId").val();
         }
+	});
+}
+function editDbUserForm(obj){
+	var dbUserTr = $(obj).parents("tr");
+	$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
+	$('#editDbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
+	$('#editAcceptIp').val(dbUserTr.children('[name="db_user_accept_ip"]').html());
+	$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
+	if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
+		$('#editType').val('1');
+	}else{
+		$('#editType').val('3');
+	}
+}
+
+function editDbUserCmd(){
+	$.ajax({
+		url:'${ctx}/dbUser',
+		type:'put',
+		data:$("#db_user_edit_form").serialize(),
+		success:function(data){
+			$("#edit-dbuser-form").modal("hide");
+			queryDbUser();
+		}
+	});
+}
+function deleteDbUser(obj){
+	var dbUserId =$(obj).parents("tr").find('[name="db_user_id"]').val();
+}
+function deleteDbUserCmd(){
+	$.ajax({
+		url:'${ctx}/dbUser/'+dbUserId,
+		type:'delete',
+		success:function(data){
+			queryDbUser();
+		}
 	});
 }
 

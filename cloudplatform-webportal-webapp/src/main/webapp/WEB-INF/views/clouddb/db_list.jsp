@@ -106,15 +106,6 @@
 										</a>
 									</label>
 								</div>
-								<!-- <div class="form-group">
-									<label class="col-sm-2 control-label" for="email_notification">邮件通知</label>
-									<div class="col-sm-6">
-										<label class="inline" style="margin-top: 3px;">
-											<input name="isEmailNotice" id="isEmailNotice" checked="checked" type="checkbox" class="ace ace-switch ace-switch-5">
-											<span class="lbl middle"></span>
-										</label>
-									</div>
-								</div> -->
 							</div>
 						</div>
 					</div>
