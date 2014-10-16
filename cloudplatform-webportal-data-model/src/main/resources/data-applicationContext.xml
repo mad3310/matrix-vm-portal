@@ -28,4 +28,6 @@
         </property>
     </bean>
    
+    <!-- 配置spring quartz -->
+     <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
 </beans>

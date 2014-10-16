@@ -33,44 +33,15 @@
 	</bean>
     
 	<!-- 配置RestTemplate -->
-        <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
-        	<property name="messageConverters">
-        		<list>
-        			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
-					</bean>
-					<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
-					<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
-        		</list>
-        	</property>
-        </bean>
-        
-          <!-- 要调用的工作类 -->
-	   <bean id="quartzJob" class="com.letv.portal.job.QuartzJob"></bean>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
+       	<property name="messageConverters">
+       		<list>
+       			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+				</bean>
+				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+       		</list>
+       	</property>
+     </bean>
 	   
-	   <!-- 定义调用对象和调用对象的方法 -->
-	   <bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-	       <!-- 调用的类 -->
-	       <property name="targetObject" ref="quartzJob"/>
-	       <!-- 调用类中的方法 -->
-	       <property name="targetMethod" >
-	           <value>work</value>
-	       </property>
-	   </bean>
-	   
-	   <!-- 定义触发时间 -->
-	   <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	       <property name="jobDetail" ref="jobtask"/>
-	       <!-- cron表达式 -->
-	       <property name="cronExpression">
-	           <value>0 0/1 * * * ?</value>
-	       </property>
-	   </bean>
-	   <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
-	   <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-	       <property name="triggers">
-	           <list>
-	               <ref bean="doTime"/>
-	           </list>
-	       </property>
-	   </bean>
 </beans>
