@@ -19,7 +19,7 @@ public class ScheduleJobModel extends BaseModel {
 	private String cronExpression;
 	private String descn;
 	
-	private String jobBeanName;
+	private String jobClass;
 	private String jobMethod;
 	
 	public String getJobName() {
@@ -52,18 +52,17 @@ public class ScheduleJobModel extends BaseModel {
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
-	public String getJobBeanName() {
-		return jobBeanName;
-	}
-	public void setJobBeanName(String jobBeanName) {
-		this.jobBeanName = jobBeanName;
-	}
 	public String getJobMethod() {
 		return jobMethod;
 	}
 	public void setJobMethod(String jobMethod) {
 		this.jobMethod = jobMethod;
 	}
-	 
+	public String getJobClass() {
+		return jobClass;
+	}
+	public void setJobClass(String jobClass) {
+		this.jobClass = jobClass;
+	}
 
 }
