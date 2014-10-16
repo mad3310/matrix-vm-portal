@@ -60,5 +60,6 @@ public class DbUserControllerTest extends AbstractTest{
 	public void audit() {
 		String dbUserId = "1";
 		this.buildTaskService.buildUser(dbUserId);
+//		PasswordEncoder encoder = new StandardPasswordEncoder("xx");  
 	}
 }

@@ -27,15 +27,15 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);
 	
-	private final static String FIXEDPUSH_URL = "webTest2/";//"http://localhost:8080/webTest2/";
+	private final static String FIXEDPUSH_URL = "MmsContain/operator";//"http://localhost:8080/webTest2/";
 	private final static String FIXEDPUSH_CODE_CREATE = "100";//100代表创建
 	private final static String FIXEDPUSH_CODE_DELETE = "200";//200代表删除
 	private final static String FIXEDPUSH_RESCODE_SUCCESS = "200";//200代表录入成功
 	private final static String FIXEDPUSH_RESCODE_FAILURE= "400";//400代表录入失败
 	private final static String FIXEDPUSH_RESMSG = "webportalAPI";
 	private final static String URL_HEAD = "http://";	
-	private final static String URL_IP = "localhost";			
-	private final static String URL_PORT = ":8080";		
+	private final static String URL_IP = "t.oss.letv.cn";			
+	private final static String URL_PORT = ":29380";		
 	
 	/**
 	 * Methods Name: sendFixedInfo <br>
