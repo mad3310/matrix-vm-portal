@@ -15,7 +15,7 @@
         
          <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
          
-         <typeAlias alias="User" type="com.letv.portal.model.ScheduleJobModel" />
+         <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />
         
     </typeAliases>
 </configuration>
