@@ -47,21 +47,19 @@
     </bean>
     
     <!-- 拦截器配置    暂时不适用，使用cas统一拦截器-->
-	<!-- <mvc:interceptors>
-	  session超时
+	 <mvc:interceptors>
 	  <mvc:interceptor>
 	    <mvc:mapping path="/**"/>
-	    <bean class="com.letv.portal.filter.SessionInterceptor">
+	    <bean class="com.letv.portal.interceptor.SessionTimeoutInterceptor">
 	      <property name="allowUrls">
 	        <list>
-	          如果请求中包含以下路径，则不进行拦截
 	          <value>/login</value>
 	          <value>/static</value>
 	        </list>
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 
 </beans>
 

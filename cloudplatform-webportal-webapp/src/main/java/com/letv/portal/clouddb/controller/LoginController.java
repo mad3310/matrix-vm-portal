@@ -16,10 +16,7 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.WebUtil;
-import com.letv.portal.filter.SessionInterceptor;
 import com.letv.portal.model.UserLogin;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 
@@ -29,7 +26,7 @@ public class LoginController{
 	
 	private static String WEB_URL = "http://www.letv.com";
 	
-	private final static Logger logger = LoggerFactory.getLogger(SessionInterceptor.class);
+	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private ILoginService loginManager;
