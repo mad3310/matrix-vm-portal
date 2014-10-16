@@ -48,7 +48,8 @@ public class InitializingJob {
 		
 		//测试数据 start
 		ScheduleJobModel scheduleJob = new ScheduleJobModel();
-		scheduleJob.setJobName("testJob");
+		scheduleJob.setJobName("test");
+		scheduleJob.setJobMethod("test");
 		scheduleJob.setJobGroup("webportal");
 		scheduleJob.setJobStatus("1");
 		scheduleJob.setCronExpression("0 0/1 * * * ?");

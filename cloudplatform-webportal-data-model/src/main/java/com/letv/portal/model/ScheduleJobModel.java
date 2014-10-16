@@ -52,8 +52,18 @@ public class ScheduleJobModel extends BaseModel {
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
+	public String getJobBeanName() {
+		return jobBeanName;
+	}
+	public void setJobBeanName(String jobBeanName) {
+		this.jobBeanName = jobBeanName;
+	}
+	public String getJobMethod() {
+		return jobMethod;
+	}
+	public void setJobMethod(String jobMethod) {
+		this.jobMethod = jobMethod;
+	}
 	 
-	
-	
 
 }
