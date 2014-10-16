@@ -1,5 +1,6 @@
 package com.letv.portal.proxy;
 
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 
 /**Program Name: IDbUserProxy <br>
@@ -10,5 +11,5 @@ import com.letv.portal.model.DbUserModel;
  * Modified Date: <br>
  */
 public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
-	
+	public void saveAndBuild(DbUserModel dbUserModel);
 }

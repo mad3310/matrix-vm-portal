@@ -86,10 +86,7 @@ public class DbController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(DbModel dbModel) {
-		dbModel.setCreateUser(sessionService.getSession().getUserId());
-		dbModel.setStatus(DbStatus.DEFAULT.getValue());
-		dbModel.setDeleted(true);
-		this.dbService.insert(dbModel);
+		this.dbProxy.saveAndBuild(dbModel);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

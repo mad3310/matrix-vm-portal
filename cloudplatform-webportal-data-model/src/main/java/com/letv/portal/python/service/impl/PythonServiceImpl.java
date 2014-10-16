@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
+import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.python.service.IPythonService;
 
@@ -139,7 +140,15 @@ public class PythonServiceImpl implements IPythonService{
 		
 				
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("role", String.valueOf(dbUser.getType()));
+		if(DbUserRoleStatus.WR.getValue() == dbUser.getType()) {
+			map.put("role", "wr");
+		}
+		if(DbUserRoleStatus.MANAGER.getValue() == dbUser.getType()) {
+			map.put("role", "manager");
+		}
+		if(DbUserRoleStatus.RO.getValue() == dbUser.getType()) {
+			map.put("role", "ro");
+		}
 		map.put("dbName", dbName);
 		map.put("userName", dbUser.getUsername());
 		map.put("user_password", dbUser.getPassword());

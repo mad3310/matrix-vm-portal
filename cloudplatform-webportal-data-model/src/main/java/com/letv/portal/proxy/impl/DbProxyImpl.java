@@ -1,15 +1,15 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.DbStatus;
-import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IDbProxy;
@@ -18,7 +18,6 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
-import com.mysql.jdbc.StringUtils;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -34,6 +33,9 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	private IMclusterProxy mclusterProxy;
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	@Override
 	public IBaseService<DbModel> getService() {
@@ -78,6 +80,23 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		}
 			
 		
+	}
+	@Override
+	public void saveAndBuild(DbModel dbModel) {
+		Long userId = sessionService.getSession().getUserId();
+		dbModel.setCreateUser(userId);
+		dbModel.setStatus(DbStatus.DEFAULT.getValue());
+		dbModel.setDeleted(true);
+		this.dbService.insert(dbModel);
+		
+		//创建mcluster集群
+		Map<String,Object> params = new HashMap<String,Object>();
+		
+		params.put("dbId", dbModel.getId());
+		params.put("mclusterName", userId + "_" + dbModel.getDbName());
+		params.put("status", DbStatus.BUILDDING.getValue());
+		
+		this.auditAndBuild(params);
 	}
 	
 }

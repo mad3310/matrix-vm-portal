@@ -10,6 +10,7 @@ import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +28,7 @@ import com.letv.portal.proxy.ILoginProxy;
 /**
  * 处理session超时的拦截器
  */
+@Component
 public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private final static Logger logger = LoggerFactory.getLogger(SessionTimeoutInterceptor.class);
 	

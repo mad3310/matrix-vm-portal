@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
 
 /**Program Name: DbUserController <br>
@@ -34,6 +35,9 @@ public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
+	
+	@Resource
+	private IDbUserProxy dbUserProxy;
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
@@ -64,7 +68,7 @@ public class DbUserController {
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel) {
 		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
-		dbUserService.insertDbUserAndAcceptIp(dbUserModel);
+		this.dbUserProxy.saveAndBuild(dbUserModel);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
