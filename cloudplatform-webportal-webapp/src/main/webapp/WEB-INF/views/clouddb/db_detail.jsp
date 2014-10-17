@@ -43,7 +43,7 @@
 										<td id="db_detail_table_createtime"></td>
 									</tr>
 								</table>
-								<!-- <small><font color="gray">*注:请用高亮IP连接数据库.</font></small> -->
+								<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane">
@@ -500,13 +500,13 @@ function queryDbUser(){
 							+translateStatus(array[i].status)
 							+ "</td>");
 				var td8 = $("<td>"
-							+"<div class=\"hidden-sm hidden-xs btn-group\">"
-							+"<button class=\"btn btn-xs btn-info\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
+							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+							+"<a class=\"green\" href=\"#\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
 								+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
-							+"</button>"
-							+"<button class=\"btn btn-xs btn-danger\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
-								+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</button>"
+							+"</a>"
+							+"<a class=\"red\" href=\"#\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
+								+"<i class=\"ace-icon fa fa-trash-o bigger-130\"></i>"
+							+"</a>"
 							+"</div>"
 							+ "</td>");
 					
@@ -538,12 +538,25 @@ function queryDbInfo(){
 			$("#db_detail_table_createtime").text(date('Y-m-d H:i:s',dbInfo.createTime));
 			for(var i=0,len = dbInfo.containers.length; i < len; i++)
 			{
-				var td1 = $("<td>"
-						+ dbInfo.containers[i].containerName
+				var td1,td2;
+				if(dbInfo.containers[i].type == "mclusternode")
+				{
+					td1 = $("<td>"
+							+ "节点-"+i
+							+"</td>");
+					td2 =$("<td>"
+						+ "<b><font color=\"green\">"
+						+ dbInfo.containers[i].ipAddr
+						+ "</font></b>"
 						+"</td>");
-				var td2 =$("<td>"
+				}else{
+					td1 = $("<td>"
+							+ "VIP"
+							+"</td>");
+					td2 =$("<td>"
 						+ dbInfo.containers[i].ipAddr
 						+"</td>");
+				}
 				var tr = $("<tr></tr>");
 				tr.append(td1).append(td2);
 				$("#db_detail_table").append(tr);
