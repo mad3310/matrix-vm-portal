@@ -61,6 +61,19 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
      * @param dbUserModel
      */
 	public void updateStatus(DbUserModel dbUserModel);
-	
-	
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void updateDbUser(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @param dbUserId 
+	 */
+	 public void deleteDbUser(String dbUserId);
 }

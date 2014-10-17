@@ -95,7 +95,8 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_DB_USER m where m.ID = #{id}
+		from WEBPORTAL_DB_USER m ,WEBPORTAL_DB n where
+		m.DB_ID=n.ID and m.ID = #{id}		
 	</select>
 	<select id="selectByIpAndUsername" resultMap="BaseResultMap" parameterType="DbUser">
 		select

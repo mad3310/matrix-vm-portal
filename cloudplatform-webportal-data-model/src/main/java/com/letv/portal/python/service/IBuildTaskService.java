@@ -2,6 +2,8 @@ package com.letv.portal.python.service;
 
 import java.util.Map;
 
+import com.letv.portal.model.DbModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 
 
@@ -75,4 +77,12 @@ public interface IBuildTaskService {
 	public void buildResultToUser(String buildType,String to);
 	
 	public void removeMcluster(MclusterModel mcluster);
+	/**
+	 * Methods Name: deleteUser <br>
+	 * Description: 删除 DbUser<br>
+	 * @author name: wujun
+	 * @param ids 多个dbUserId
+	 */
+	public void deleteDbUser(String ids);
+	
 }

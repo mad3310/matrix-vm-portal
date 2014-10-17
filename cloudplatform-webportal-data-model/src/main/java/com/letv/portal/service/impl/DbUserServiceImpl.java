@@ -21,6 +21,7 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.python.service.impl.BuildTaskServiceImpl;
 import com.letv.portal.service.IDbUserService;
 
 
@@ -32,6 +33,9 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Resource
 	private IDbUserDao dbUserDao;
+	
+	@Resource
+	private BuildTaskServiceImpl buildTaskService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -123,5 +127,29 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 			this.dbUserDao.insert(dbUserModel);
 		}
 	}
-	
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void updateDbUser(DbUserModel dbUserModel){
+		this.dbUserDao.update(dbUserModel);
+		this.buildTaskService.buildUser(dbUserModel.getId().toString());
+	}
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void deleteDbUser(String dbUserId){
+		String[] ids = dbUserId.split(",");
+		for (String id : ids) {
+			DbUserModel dbUserModel = new DbUserModel();
+			dbUserModel.setId(Long.parseLong(id));
+			this.dbUserDao.delete(dbUserModel);
+		}	
+		this.buildTaskService.deleteDbUser(dbUserId);
+	}
 }
