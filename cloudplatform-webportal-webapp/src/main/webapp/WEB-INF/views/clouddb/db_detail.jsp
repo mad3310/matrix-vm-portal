@@ -140,7 +140,7 @@
 											</a>
 										</label>
 								    </div>
-								    <div class="form-group hide" id="optionTemplate" name="optionTemplate">
+								    <div class="form-group hide" id="optionTemplate">
 								        <div class="col-sm-offset-3 col-sm-5">
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
@@ -381,6 +381,7 @@ $(function(){
 	                                .clone()
 	                                .removeClass('hide')
 	                                .removeAttr('id')
+	                                .attr('name','optionTemplate')
 	                                .insertBefore($template),
 	                $option = $clone.find('[name="acceptIp"]');
 	            $('#db_user_apply_form').bootstrapValidator('addField', $option);
@@ -415,18 +416,16 @@ $(function(){
 	                validating: 'glyphicon glyphicon-refresh'
 	            },
 	            fields: {
-	            	username: {
+	                readWriterRate: {
+	                    validMessage: '请按提示输入',
 	                    validators: {
 	                        notEmpty: {
-	                            message: '用户名不能为空!'
+	                            message: '读写比例不能为空!'
 	                        },
-	  			          stringLength: {
-				              max: 16,
-				              message: '用户名过长!'
-				          }, regexp: {
-			                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-	  		                  message: "请输入字母数字或'_',用户名不能以数字开头."
-	                 	  }
+	                        regexp: {
+	  		                  regexp: /^((\d|\d\d|\d\d\d)(\:(\d|\d\d|\d\d\d))){1}$/,
+	  		                  message: '请按提示输入'
+	  		              }
 	                    }
 	                },
 	                maxConcurrency: {
@@ -439,30 +438,7 @@ $(function(){
 	                        }
 	                    }
 	                },
-	                acceptIp: {
-	                    validators: {
-	                        notEmpty: {
-	                            message: '地址不能为空'
-	                        },
-	  		                regexp: {
-			                  regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
-			                  message: '请按提示格式输入'
-			              	}, 
-			                remote: {
-		                        url: '${ctx}/dbUser/validate' ,
-		                        data: function(validator) {
-		                            return {
-		                                username: validator.getFieldElements('username').val(),
-		                                dbId: validator.getFieldElements('dbId').val()
-		                            };
-		                        },
-		                        message: '该用户名此IP也存在!'
-		                    }
-	                    }
-	                }
 	            }
-	        }).on('keyup', '[name="username"]', function() {
-	            $('#db_user_edit_form').bootstrapValidator('revalidateField', 'acceptIp');
 	        }).on('error.field.bv', function(e, data) {
 	        	$('#edit-dbUser-botton').addClass("disabled");
 	        }).on('success.field.bv', function(e, data) {
@@ -487,9 +463,9 @@ function queryDbUser(){
 		url : "${ctx}/dbUser/"+$("#dbId").val(),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			error(data);
 			var array = data.data;
 			var tby = $("#tby");
-			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 						    + "<label class=\"position-relative\">"
@@ -545,10 +521,6 @@ function queryDbUser(){
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}//循环json中的数据 
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(errorThrown);	
-			return false;
 		}
 	});
 }
@@ -558,6 +530,7 @@ function queryDbInfo(){
 		url : "${ctx}/db/"+$("#dbId").val(),
 		dataType : "json", 
 		success : function(data) {
+			error(data);
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
 			$("#db_detail_table_dbname").text(dbInfo.dbName);
@@ -575,10 +548,6 @@ function queryDbInfo(){
 				tr.append(td1).append(td2);
 				$("#db_detail_table").append(tr);
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(errorThrown);
-			return false;
 		}
 	});
 }
@@ -589,11 +558,8 @@ function queryUser(userId){
 		url : "${ctx}/user/"+ userId,
 		dataType : "json", 
 		success : function(data) {
+			error(data);
 			$("#db_detail_table").find('tr:eq(1) td:eq(1)').text(data.data.userName);
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(errorThrown);
-			return false;
 		}
 	});
 }
@@ -616,10 +582,16 @@ function createDbUser(){
         dataType: 'text',
         data: $("#db_user_apply_form").serialize(),
         success: function (data) {
-        	/* window.location.href='${ctx}/detail/db/'+$("#dbId").val(); */
+        	error(data);
         	$("#create-dbuser-form").modal("hide");
         	queryDbUser();
-        	/* $("#db_user_apply_form").() */
+			$('#db_user_apply_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
+			$('#db_user_apply_form').find('[name="optionTemplate"]').remove();
+			$('#db_user_apply_form').data('bootstrapValidator').resetForm();
+			$('#type').val(3);
+			$('#readWriterRate').val('2:1');
+			$('#maxConcurrency').val('50');
+			$('#create-dbUser-botton').addClass('disabled');
         }
 	});
 }
@@ -645,6 +617,7 @@ function editDbUserCmd(){
 		type:'post',
 		data:$("#db_user_edit_form").serialize(),
 		success:function(data){
+        	error(data);
 			$("#edit-dbuser-form").modal("hide");
 			queryDbUser();
 		}
