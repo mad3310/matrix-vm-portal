@@ -1,5 +1,6 @@
 package com.letv.portal.python.service.impl;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -189,7 +190,7 @@ public class PythonServiceImpl implements IPythonService{
 	 * @param password  用户名密码
 	 */
 	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
-		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/dbUser"+"/"+dbName+"/"+dbUserModel.getUsername()+"/"+dbUserModel.getAcceptIp();
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/dbUser"+"/"+dbName+"/"+dbUserModel.getUsername()+"/"+URLEncoder.encode(dbUserModel.getAcceptIp());
 		String result = HttpClient.detele(url, username, password);
 		return result;
 	}

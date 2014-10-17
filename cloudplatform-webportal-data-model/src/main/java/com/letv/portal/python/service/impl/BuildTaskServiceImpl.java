@@ -1,5 +1,6 @@
 package com.letv.portal.python.service.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -196,14 +197,15 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void buildDb(Long dbId) {
 		Integer status = null;
 		String resultMsg = "";
-		Map<String,String> params = this.dbService.selectCreateParams(dbId);
+		String detail = "";
+		Map<String,Object> params = this.dbService.selectCreateParams(dbId);
 		try {
-			String result = this.pythonService.createDb(params.get("nodeIp"), params.get("dbName"), params.get("dbName"), null, params.get("username"), params.get("password"));
+			String result = this.pythonService.createDb((String)params.get("nodeIp"), (String)params.get("dbName"), (String)params.get("dbName"), null, (String)params.get("username"), (String)params.get("password"));
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
 				status = DbStatus.RUNNING.getValue();
-				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建", Long.parseLong(params.get("createUser")));
+				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -211,9 +213,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultMsg = "失败";
+			detail = e.getMessage();
 			status = DbStatus.BUILDFAIL.getValue();
 		} finally {
-			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, null, ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, detail, ERROR_MAIL_ADDRESS);
 			DbModel dbModel = new DbModel();
 			dbModel.setId(dbId);
 			dbModel.setStatus(status);
@@ -226,25 +229,27 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
+		String detail = "";
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 			try {
-				String result = this.pythonService.createDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
+				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(Constant.STATUS_OK);
-					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username") + "创建", Long.parseLong(params.get("createUser")));
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
 				}
 			} catch (Exception e) {
 				resultMsg="失败";
+				detail = e.getMessage();
 				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
 			} finally {
-				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername(), resultMsg, detail, ERROR_MAIL_ADDRESS);
 				this.dbUserService.updateStatus(dbUserModel);
 			}
 		}
@@ -259,22 +264,26 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void deleteDbUser(String ids){
 		String[] str = ids.split(",");	
 		String resultMsg = "";
+		String detail = "";
 		for (String id : str) {
-	    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-	    Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
-	    try {
-		String result = this.pythonService.deleteDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
-		if(analysisResult(transResult(result))) {
-			resultMsg="用户删除成功";
-			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username") + "删除", Long.parseLong(params.get("createUser")));
-		} else {
-			resultMsg="用户删除失败";
-		}
-		} catch (Exception e) {
-			resultMsg="用户删除失败";
-		}finally{
-			this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
-		}
+		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
+		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+		    	try {
+		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
+		    		if(analysisResult(transResult(result))) {
+		    			resultMsg="用户删除成功";
+		    			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "删除",((BigInteger)params.get("createUser")).longValue());
+		    		} else {
+		    			resultMsg="用户删除失败";
+		    		}
+		    	} catch (Exception e) {
+		    		detail = e.getMessage();
+		    		resultMsg="用户删除失败";
+		    	}finally{
+		    		this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername(), resultMsg, detail, ERROR_MAIL_ADDRESS);
+		    	}
+		    }
 		}
 	}
 	

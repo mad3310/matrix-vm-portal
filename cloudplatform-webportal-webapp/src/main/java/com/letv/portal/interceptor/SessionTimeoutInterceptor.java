@@ -73,18 +73,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 					}
 				});
 			}
-		} else {
-			logger.debug("please login");
-			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
-			
-			if (isAjaxRequest) {
-				responseJson(request,response,"长时间未操作，请重新登录");
-			} else {
-				String logoutAddress = CAS_AUTH_HTTP + "/cas/login?service=" + CAS_LOCAL_HTTP;
-				response.sendRedirect(logoutAddress);
-			}
-			return false;
-		}
+		} 
 		return true;
 		
 	}

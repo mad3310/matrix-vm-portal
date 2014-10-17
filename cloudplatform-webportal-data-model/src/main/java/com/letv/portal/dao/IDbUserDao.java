@@ -29,7 +29,7 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Long id);
 	
 	/**Methods Name: updateStatus <br>
 	 * Description: 更新数据库用户状态<br>

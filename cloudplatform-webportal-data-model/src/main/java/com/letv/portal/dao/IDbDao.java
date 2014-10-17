@@ -29,7 +29,7 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Long id);
 
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>

@@ -39,7 +39,7 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Long id);
 
 	/**Methods Name: updateStatus <br>
 	 * Description: 根据数据库用户名和ip查询数据：用于验证数据库用户名和ip是否重复<br>

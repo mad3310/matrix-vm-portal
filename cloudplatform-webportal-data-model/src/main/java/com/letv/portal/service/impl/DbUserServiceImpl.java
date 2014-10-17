@@ -20,6 +20,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbUserDao;
+import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
@@ -66,7 +67,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	}
 
 	@Override
-	public Map<String, String> selectCreateParams(Long id) {
+	public Map<String, Object> selectCreateParams(Long id) {
 		return this.dbUserDao.selectCreateParams(id);
 	}
 
@@ -92,12 +93,12 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		
 		int maxConcurrency = dbUserModel.getMaxConcurrency();
 		
-//		if(!Constant.DB_USER_TYPE_MANAGER.equals(dbUserModel.getType())) {
-//			maxUserConnections = maxConcurrency;
-//			maxConnectionsPerHour = maxConcurrency*2*60*60;
-//			maxQueriesPerHour = maxConcurrency*2*60*60;
-//			maxUpdatesPerHour = maxConcurrency*60*60;
-//		} 
+		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
+			maxUserConnections = maxConcurrency;
+			maxConnectionsPerHour = maxConcurrency*2*60*60;
+			maxQueriesPerHour = maxConcurrency*2*60*60;
+			maxUpdatesPerHour = maxConcurrency*60*60;
+		} 
 		dbUserModel.setMaxUserConnections(maxUserConnections);
 		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
 		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);
@@ -111,14 +112,15 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		map.put("createUser", dbUserModel.getCreateUser());
 		map.put("createTime", sdf.format(new Date()));
 		map.put("dbUserName", dbUserModel.getUsername());
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDbUser.ftl",map);
-		
-		try {
-			defaultEmailSender.sendMessage(mailMessage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
+		//用户自动创建 ，无需审批
+//		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDbUser.ftl",map);
+//		
+//		try {
+//			defaultEmailSender.sendMessage(mailMessage);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(e.getMessage());
+//		}
 	}
 	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel){
 		String[] ips = dbUserModel.getAcceptIp().split(",");		
@@ -144,12 +146,12 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	 * @param dbUserModel
 	 */
 	public void deleteDbUser(String dbUserId){
+		this.buildTaskService.deleteDbUser(dbUserId);
 		String[] ids = dbUserId.split(",");
 		for (String id : ids) {
 			DbUserModel dbUserModel = new DbUserModel();
 			dbUserModel.setId(Long.parseLong(id));
 			this.dbUserDao.delete(dbUserModel);
 		}	
-		this.buildTaskService.deleteDbUser(dbUserId);
 	}
 }
