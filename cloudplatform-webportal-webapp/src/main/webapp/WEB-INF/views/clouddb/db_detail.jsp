@@ -16,10 +16,10 @@
 				<div class="widget-toolbar no-border pull-left">
 					<ul id="db-detail-tabs" class="nav nav-tabs" id="myTab2">
 						<li class="active">
-							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
+							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
+							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
 						</li>
 					</ul>
 				</div>
@@ -27,7 +27,7 @@
 			<div class="widget-body">
 				<div class="widget-main padding-12 no-padding-left no-padding-right">
 					<div class="tab-content padding-4">
-						<div id="db-detail-info" class="tab-pane">
+						<div id="db-detail-info" class="tab-pane active">
 							<div id="db-detail-table" class="col-xs-6">
 								<table class="table table-bordered" id="db_detail_table">
 									<tr>
@@ -46,7 +46,7 @@
 								<!-- <small><font color="gray">*注:请用高亮IP连接数据库.</font></small> -->
 							</div>
 						</div>
-						<div id="db-detail-user-mgr" class="tab-pane active">
+						<div id="db-detail-user-mgr" class="tab-pane">
 							<div class="col-xs-10">
 								<div class=" pull-right">
 									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
@@ -70,6 +70,7 @@
 										<th>用户名</th>
 										<th>用户权限</th>
 										<th>ip地址</th>
+										<th>读写比例</th>
 										<th>频次限制</th>
 										<th>当前状态</th>
 										<th></th>
@@ -110,17 +111,6 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="db_name">密码</label>
-										<div class="col-sm-5">
-											<input class="form-control" name="password" id="password" type="password" />
-										</div>
-										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="密码请妥善保管!" style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
-									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
@@ -134,7 +124,7 @@
 											</a>
 										</label>
 									</div>
-									 <div class="form-group">
+									 <div class="form-group" name="dynamic-ip-input-mod">
 								        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
 								        <div class="col-sm-5">
 								            <input type="text" class="form-control" name="acceptIp" />
@@ -150,7 +140,7 @@
 											</a>
 										</label>
 								    </div>
-								    <div class="form-group hide" id="optionTemplate">
+								    <div class="form-group hide" id="optionTemplate" name="optionTemplate">
 								        <div class="col-sm-offset-3 col-sm-5">
 								            <input type="text" class="form-control" name="acceptIp" />
 								        </div>
@@ -207,7 +197,7 @@
 								<div class="widget-main">
 									<div class="form-group">
 										<input class="hidden" value="${dbId}" name="dbId" id="editDbId" type="text" />
-										<input class="hidden" value="${dbUserId}" name="dbUserId" id="dbUserId" type="text" />
+										<input class="hidden" value="${id}" name="id" id="dbUserId" type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="username" id="editUsername" type="text" />
@@ -243,6 +233,17 @@
 											</a>
 										</label>
 								    </div>
+								    <div class="form-group">
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="read_write_ratio">读写比例</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="readWriterRate" id="editReadWriterRate"/>
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="readWriterRateHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入读写比例，建议值'2:1'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="maximum_concurrency">最大并发量</label>
 										<div class="col-sm-5">
@@ -325,17 +326,6 @@ $(function(){
 			                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
 	  		                  message: "请输入字母数字或'_',用户名不能以数字开头."
 	                 	  }
-	                    }
-	                },
-	                password: {
-	                    validators: {
-	                        notEmpty: {
-	                            message: '密码不能为空!'
-	                        },
-	  			          stringLength: {
-				              max: 20,
-				              message: '密码太长了!'
-				          }
 	                    }
 	                },
 	                readWriterRate: {
@@ -521,13 +511,16 @@ function queryDbUser(){
 				var td4 = $("<td name=\"db_user_accept_ip\">"
 							+array[i].acceptIp
 							+ "</td>");
-				var td5 = $("<td name=\"db_user_max_concurrency\">"
+				var td5 = $("<td name=\"db_user_read_writer\">"
+							+array[i].readWriterRate
+							+ "</td>");
+				var td6 = $("<td name=\"db_user_max_concurrency\">"
 							+array[i].maxConcurrency
 							+ "</td>");
-				var td6 = $("<td>"
+				var td7 = $("<td>"
 							+translateStatus(array[i].status)
 							+ "</td>");
-				var td7 = $("<td>"
+				var td8 = $("<td>"
 							+"<div class=\"hidden-sm hidden-xs btn-group\">"
 							+"<button class=\"btn btn-xs btn-info\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
 								+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
@@ -546,19 +539,12 @@ function queryDbUser(){
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
-	
+			error(errorThrown);	
 			return false;
 		}
 	});
@@ -588,13 +574,7 @@ function queryDbInfo(){
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
+			error(errorThrown);
 			return false;
 		}
 	});
@@ -609,13 +589,7 @@ function queryUser(userId){
 			$("#db_detail_table").find('tr:eq(1) td:eq(1)').text(data.data.userName);
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
+			error(errorThrown);
 			return false;
 		}
 	});
@@ -639,7 +613,9 @@ function createDbUser(){
         dataType: 'text',
         data: $("#db_user_apply_form").serialize(),
         success: function (data) {
-        	window.location.href='${ctx}/detail/db/'+$("#dbId").val();
+        	/* window.location.href='${ctx}/detail/db/'+$("#dbId").val(); */
+        	$("#create-dbuser-form").modal("hide");
+        	/* $("#db_user_apply_form").() */
         }
 	});
 }
@@ -648,6 +624,7 @@ function editDbUserForm(obj){
 	$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
 	$('#dbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
 	$('#editAcceptIp').val(dbUserTr.children('[name="db_user_accept_ip"]').html());
+	$('#editReadWriterRate').val(dbUserTr.children('[name="db_user_read_writer"]').html());
 	$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
 	if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
 		$('#editType').val('1');
