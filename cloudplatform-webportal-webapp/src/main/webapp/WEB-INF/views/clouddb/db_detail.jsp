@@ -200,7 +200,7 @@
 										<input class="hidden" value="${id}" name="id" id="dbUserId" type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="username" id="editUsername" type="text" />
+											<input class="form-control" name="username" id="editUsername" type="text" readonly="readonly"/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',用户名不能以数字开头." style="cursor:pointer; text-decoration:none;">
@@ -211,10 +211,13 @@
 									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">用户类型</label>
 										<div class="col-sm-5">
-											<select class="form-control" name="type" id="editType">
-												<option value="3">读写用户</option>
-												<option value="1">管理员</option>
-											</select>
+											<fieldset disabled>
+												<select class="form-control" name="type" id="editType">
+													<option value="3">读写用户</option>
+													<option value="1">管理员</option>
+												</select>
+											</fieldset>
+											<input class="hidden" name="type" id="editTypeInput" type="text"/>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择创建的数据库用户类型." style="cursor:pointer; text-decoration:none;">
@@ -225,7 +228,7 @@
 									 <div class="form-group">
 								        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
 								        <div class="col-sm-5">
-								            <input type="text" class="form-control" name="acceptIp" id="editAcceptIp" type="text"/>
+								            <input type="text" class="form-control" name="acceptIp" id="editAcceptIp" type="text" readonly="readonly"/>
 								        </div>
 								        <label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入数据库用户ip示例:192.168.33.12或192.168.33.%" style="cursor:pointer; text-decoration:none;">
@@ -628,8 +631,10 @@ function editDbUserForm(obj){
 	$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
 	if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
 		$('#editType').val('1');
+		$('#editTypeInput').val('1');
 	}else{
 		$('#editType').val('3');
+		$('#editTypeInput').val('3');
 	}
 }
 
