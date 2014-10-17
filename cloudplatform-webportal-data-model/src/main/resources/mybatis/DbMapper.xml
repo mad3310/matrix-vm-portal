@@ -251,9 +251,9 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		,n.MCLUSTER_NAME
+		,n.MCLUSTER_NAME,u.USERNAME
 		from WEBPORTAL_DB m left join WEBPORTAL_MCLUSTER_INFO n
-		on n.ID = m.MCLUSTER_ID
+		on n.ID = m.MCLUSTER_ID left join WEBPORTAL_USER u on m.CREATE_USER = u.ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">

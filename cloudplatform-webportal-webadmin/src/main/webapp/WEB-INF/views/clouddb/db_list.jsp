@@ -167,7 +167,7 @@ function queryByPage(currentPage,recordsPerPage) {
 			}
 			
 			for (var i = 0, len = array.length; i < len; i++) {
-				var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].clusterId+"\"\> ");
+				var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
 								+"<input type=\"checkbox\" class=\"ace\"/>"
@@ -196,7 +196,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var td3 = $("<td> </td>");
 				}
 				var td4 = $("<td>"
-						+ array[i].createUser
+						+ array[i].user.userName
 						+ "</td>");
 				var td5 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
@@ -356,7 +356,6 @@ function pageControl() {
 }
 //查询Container集群创建过程
 function queryBuildStatus(mclusterId,type) {	//type(update或new)
-	console.info(mclusterId);
 	if(type == "new"){
 		$("#build_status_tby tr").remove();
 	}
@@ -401,15 +400,15 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 					var td5 = $("<td>\-</td>");
 				}
 				
-				if(array[i].status == "success"){
+				if(array[i].status == 1){
 					var td6 = $("<td>"
 							+"<a class=\"green\"><i class=\"ace-icon fa fa-check bigger-120\">成功</a>"
 							+ "</td>");
-				}else if(array[i].status == "fail"){
+				}else if(array[i].status == 0){
 					var td6 = $("<td>"
 							+"<a class=\"red\"><i class=\"ace-icon fa fa-times red bigger-120\">失败</a>"
 							+ "</td>");
-				}else if(array[i].status == "building"){
+				}else if(array[i].status == 2){
 					var td6 = $("<td>"
 							+"<a style=\"text-decoration:none;\" class=\"green\"><h5><i class=\"ace-icon fa fa-spinner fa-spin green bigger-120\"/>运行中</h5></a>"
 							+ "</td>");
@@ -419,7 +418,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 							+ "</td>");
 				}
 					
-				if(array[i].status == "fail"){
+				if(array[i].status == 0){
 					var tr = $("<tr class=\"danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
@@ -434,13 +433,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			$.gritter.add({
-				title: '警告',
-				text: errorThrown,
-				sticky: false,
-				time: '5',
-				class_name: 'gritter-warning'
-			});
+			error(XMLHttpRequest);
 			return false;
 		}
 	});
