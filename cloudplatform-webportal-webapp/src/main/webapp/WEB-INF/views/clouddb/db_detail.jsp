@@ -545,7 +545,9 @@ function queryDbInfo(){
 							+ "节点-"+i
 							+"</td>");
 					td2 =$("<td>"
+						+ "<b><font color=\"green\">"
 						+ dbInfo.containers[i].ipAddr
+						+ "</font></b>"
 						+"</td>");
 				}else{
 					td1 = $("<td>"
