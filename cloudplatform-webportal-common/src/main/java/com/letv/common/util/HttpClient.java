@@ -17,6 +17,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -87,6 +88,7 @@ public class HttpClient {
 	public static String get(String url) {
 		return get(url, null, null);
 	}
+
 	
 	public static String get(String url,String username,String password) {
 		DefaultHttpClient httpclient = getHttpclient(username,password);
@@ -146,9 +148,19 @@ public class HttpClient {
 		}
 		return response;
 	}
-
+	
+	public static String detele(String url,String username,String password) {
+		DefaultHttpClient httpclient = getHttpclient(username,password);
+		String body = null;				
+		logger.info("create httpdelete:" + url);
+		HttpDelete delete = new HttpDelete(url);
+		body = invoke(httpclient, delete);		
+		httpclient.getConnectionManager().shutdown();		
+		return body;
+	}
+	
+	
 	private static HttpPost postForm(String url, Map<String, String> params){
-		
 		HttpPost httpost = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList <NameValuePair>();
 		

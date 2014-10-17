@@ -3,6 +3,7 @@ package com.letv.portal.python.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -168,5 +169,19 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(url, map,username,password);
 		return result;
 	}
-
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除DbUser<br>
+	 * @author name: wujun
+	 * @param dbUser Db用户对象
+	 * @param dbName Db用户名
+	 * @param nodeIp 节点IP
+	 * @param username  用户名
+	 * @param password  用户名密码
+	 */
+	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
+		String url = URL_HEAD  + nodeIp + this.URL_PORT + "/dbUser"+"/"+dbName+"/"+dbUserModel.getUsername()+"/"+dbUserModel.getAcceptIp();
+		String result = HttpClient.detele(url, username, password);
+		return result;
+	}
 }

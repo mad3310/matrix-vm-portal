@@ -212,7 +212,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.dbService.updateBySelective(dbModel);
 		}
 	}
-
+    
 
 	@Override
 	public void buildUser(String ids) {
@@ -241,6 +241,33 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 		}
 		
+	}
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除 DbUser<br>
+	 * @author name: wujun
+	 * @param dbUserId
+	 */
+	public void deleteDbUser(String ids){
+		String[] str = ids.split(",");	
+		String resultMsg = "";
+		for (String id : str) {
+	    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+	    Map<String,String> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+	    try {
+		String result = this.pythonService.deleteDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
+		if(analysisResult(transResult(result))) {
+			resultMsg="用户删除成功";
+			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
+		} else {
+			resultMsg="用户删除失败";
+		}
+		} catch (Exception e) {
+			resultMsg="用户删除失败";
+		}finally{
+			this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + params.get("username"), resultMsg, null, ERROR_MAIL_ADDRESS);
+		}
+		}
 	}
 	
 	@Override
