@@ -74,7 +74,7 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 * @param buildType
 	 */
-	public void buildResultToUser(String buildType,String to);
+	public void buildResultToUser(String buildType,Long to);
 	
 	public void removeMcluster(MclusterModel mcluster);
 	/**

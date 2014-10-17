@@ -29,6 +29,7 @@ import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
@@ -36,6 +37,7 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IUserService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
@@ -63,6 +65,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IContainerService containerService;
 	@Resource
 	private IBuildService buildService;
+	@Resource
+	private IUserService userService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -199,7 +203,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
 				status = DbStatus.RUNNING.getValue();
-//				this.buildResultToUser("DB数据库" + params.get("dbName"), params.get("createUser"));
+				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建", Long.parseLong(params.get("createUser")));
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -231,7 +235,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(Constant.STATUS_OK);
-//					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username") + "创建", Long.parseLong(params.get("createUser")));
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
@@ -262,7 +266,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String result = this.pythonService.deleteDbUser(dbUserModel, params.get("dbName"), params.get("nodeIp"), params.get("username"), params.get("password"));
 		if(analysisResult(transResult(result))) {
 			resultMsg="用户删除成功";
-			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username"), params.get("createUser"));
+			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + params.get("username") + "删除", Long.parseLong(params.get("createUser")));
 		} else {
 			resultMsg="用户删除失败";
 		}
@@ -479,15 +483,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@Override
-	public void buildResultToUser(String buildType,String to){
+	public void buildResultToUser(String buildType,Long to){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("buildType", buildType);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",to,"乐视云平台web-portal系统通知","buildForUser.ftl",map);
-		try {
-			defaultEmailSender.sendMessage(mailMessage);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage());
+		UserModel user = this.userService.selectById(to);
+		if(null != user) {
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知","buildForUser.ftl",map);
+			try {
+				defaultEmailSender.sendMessage(mailMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
+			
 		}
 	}
 	@Override
