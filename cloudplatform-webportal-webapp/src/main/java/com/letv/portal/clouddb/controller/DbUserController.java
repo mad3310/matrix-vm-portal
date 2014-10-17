@@ -96,9 +96,8 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
-	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbUserId,DbUserModel dbUserModel) {
-		dbUserModel.setId(dbUserId);
-		this.dbUserService.delete(dbUserModel);
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
+		this.dbUserService.deleteDbUser(dbUserId);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
@@ -109,9 +108,9 @@ public class DbUserController {
 	 * @param dbUserModel
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.PUT)
+	@RequestMapping(value="/{dbUserId}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
-		this.dbUserService.update(dbUserModel);
+		this.dbUserService.updateDbUser(dbUserModel);		
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
