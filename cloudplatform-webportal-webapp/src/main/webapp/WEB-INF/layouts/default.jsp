@@ -51,7 +51,7 @@
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
 <script type="text/javascript">
 function error(errorThrown,time) {
-	if(errorThrown.msgs !='') {
+	if(errorThrown.result == 0) {
 		if(!time){
 			time = 1000;
 		}
