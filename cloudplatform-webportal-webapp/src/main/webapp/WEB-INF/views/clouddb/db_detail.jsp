@@ -618,6 +618,7 @@ function createDbUser(){
         success: function (data) {
         	/* window.location.href='${ctx}/detail/db/'+$("#dbId").val(); */
         	$("#create-dbuser-form").modal("hide");
+        	queryDbUser();
         	/* $("#db_user_apply_form").() */
         }
 	});
