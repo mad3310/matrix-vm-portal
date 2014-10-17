@@ -35,7 +35,6 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		StringBuffer ids = new StringBuffer();
 		for (String ip : ips) {
 			dbUserModel.setAcceptIp(ip);
-			dbUserModel.setPassword("sdkfhkwebs1");
 			this.dbUserService.insert(dbUserModel);
 			ids.append(dbUserModel.getId()).append(",");
 		}
