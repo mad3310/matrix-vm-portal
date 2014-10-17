@@ -98,7 +98,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(nextStep) {
 				mclusterModel.setStatus(MclusterStatus.RUNNING.getValue());
 				this.mclusterService.audit(mclusterModel);
-				this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "成功","", ERROR_MAIL_ADDRESS);
+				this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() + "创建", "成功","", ERROR_MAIL_ADDRESS);
 			}
 		} catch (Exception e) {
 			BuildModel nextBuild = new BuildModel();
@@ -115,7 +115,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
 				this.dbService.updateBySelective(dbModel);
 			}
-			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() + "创建", "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
 		if(nextStep && dbId != null) {
@@ -164,7 +164,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 					this.mclusterService.audit(mclusterModel);
 					
-					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName(), "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() +"创建", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
@@ -216,7 +216,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			detail = e.getMessage();
 			status = DbStatus.BUILDFAIL.getValue();
 		} finally {
-			this.buildResultToMgr("DB数据库" + params.get("dbName"), resultMsg, detail, ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("DB数据库" + params.get("dbName") + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
 			DbModel dbModel = new DbModel();
 			dbModel.setId(dbId);
 			dbModel.setStatus(status);
@@ -239,7 +239,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
-					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", ((BigInteger)params.get("createUser")).longValue());
+					Map response = (Map) transResult(result).get("response");
+					String userPwd = (String) response.get("user_password");
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
@@ -249,7 +251,37 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				detail = e.getMessage();
 				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
 			} finally {
-				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername(), resultMsg, detail, ERROR_MAIL_ADDRESS);
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
+				this.dbUserService.updateStatus(dbUserModel);
+			}
+		}
+		
+	}
+	@Override
+	public void updateUser(String ids) {
+		String[] str = ids.split(",");
+		String resultMsg = "";
+		String detail = "";
+		for (String id : str) {
+			//查询所属db 所属mcluster 及container数据
+			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+			try {
+				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
+				if(analysisResult(transResult(result))) {
+					resultMsg="成功";
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
+				} else {
+					resultMsg="失败";
+					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
+				}
+			} catch (Exception e) {
+				resultMsg="失败";
+				detail = e.getMessage();
+				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
+			} finally {
+				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", resultMsg, detail, ERROR_MAIL_ADDRESS);
 				this.dbUserService.updateStatus(dbUserModel);
 			}
 		}
@@ -281,7 +313,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		    		detail = e.getMessage();
 		    		resultMsg="用户删除失败";
 		    	}finally{
-		    		this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername(), resultMsg, detail, ERROR_MAIL_ADDRESS);
+		    		this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "删除", resultMsg, detail, ERROR_MAIL_ADDRESS);
 		    	}
 		    }
 		}

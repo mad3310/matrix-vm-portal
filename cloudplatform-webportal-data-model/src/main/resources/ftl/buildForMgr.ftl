@@ -1,6 +1,6 @@
 您好：
 
-${buildType}创建${buildResult}，
+${buildType}${buildResult}，
 ${errorDetail}
 请登录系统查看。
 谢谢。

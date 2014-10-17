@@ -137,8 +137,8 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	 * @param dbUserModel
 	 */
 	public void updateDbUser(DbUserModel dbUserModel){
-		this.dbUserDao.updateBySelective(dbUserModel);
-		this.buildTaskService.buildUser(dbUserModel.getId().toString());
+		this.dbUserDao.update(dbUserModel);
+		this.buildTaskService.updateUser(dbUserModel.getId().toString());
 	}
 	/**
 	 * Methods Name: deleteDbUser <br>
