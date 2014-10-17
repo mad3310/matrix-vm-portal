@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
@@ -31,6 +32,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IMclusterService mclusterService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	@Override
 	public IBaseService<MclusterModel> getService() {
 		return mclusterService;
@@ -42,6 +45,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setAdminUser(mclusterName);
 		mclusterModel.setAdminPassword(mclusterName);
 		mclusterModel.setDeleted(true);
+		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		super.insert(mclusterModel);
 	}

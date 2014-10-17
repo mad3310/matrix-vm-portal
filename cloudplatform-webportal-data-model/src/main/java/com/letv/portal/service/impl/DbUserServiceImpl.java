@@ -19,6 +19,7 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
@@ -136,7 +137,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	 * @param dbUserModel
 	 */
 	public void updateDbUser(DbUserModel dbUserModel){
-		this.dbUserDao.update(dbUserModel);
+		this.dbUserDao.updateBySelective(dbUserModel);
 		this.buildTaskService.buildUser(dbUserModel.getId().toString());
 	}
 	/**
