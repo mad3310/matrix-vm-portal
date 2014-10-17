@@ -207,7 +207,7 @@
 								<div class="widget-main">
 									<div class="form-group">
 										<input class="hidden" value="${dbId}" name="dbId" id="editDbId" type="text" />
-										<input class="hidden" value="${dbUserId}" name="dbUserId" id="editDbUserId" type="text" />
+										<input class="hidden" value="${dbUserId}" name="dbUserId" id="dbUserId" type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">用户名</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="username" id="editUsername" type="text" />
@@ -267,28 +267,26 @@
 			</div>
 		</div>
 		<div class="modal fade" id="delete-dbuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
-					<form id="db_user_edit_form" name="db_user_edit_form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h7 class="lighter">
 							<a href="#modal-wizard-edit-db-user" data-toggle="modal" class="blue">&nbsp</a>
 						</h7>
 						<div class="widget-box">
 							<div class="widget-body">
-								<div class="widget-main">
-									<div class="form-group">
-										
-									</div>
+								<div class="widget-main" >
+									<h4 class="lighter" align="center">
+										确定要删除此用户?
+									</h4>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
-						<button id="edit-dbUser-botton" type="button" class="btn btn-sm btn-danger" >删除</button>
+						<button id="edit-dbUser-botton" type="button" onclick="deleteDbUserCmd()" class="btn btn-sm btn-danger" >删除</button>
 					</div>
-				</form>
 				</div>
 			</div>
 		</div>
@@ -531,10 +529,10 @@ function queryDbUser(){
 							+ "</td>");
 				var td7 = $("<td>"
 							+"<div class=\"hidden-sm hidden-xs btn-group\">"
-							+"<button class=\"btn btn-xs disabled btn-info\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
+							+"<button class=\"btn btn-xs btn-info\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
 								+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
 							+"</button>"
-							+"<button class=\"btn btn-xs disabled btn-danger\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
+							+"<button class=\"btn btn-xs btn-danger\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
 								+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 							+"</button>"
 							+"</div>"
@@ -648,7 +646,7 @@ function createDbUser(){
 function editDbUserForm(obj){
 	var dbUserTr = $(obj).parents("tr");
 	$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
-	$('#editDbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
+	$('#dbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
 	$('#editAcceptIp').val(dbUserTr.children('[name="db_user_accept_ip"]').html());
 	$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
 	if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
@@ -660,8 +658,8 @@ function editDbUserForm(obj){
 
 function editDbUserCmd(){
 	$.ajax({
-		url:'${ctx}/dbUser',
-		type:'put',
+		url:'${ctx}/dbUser/'+$('#dbUserId').val(),
+		type:'post',
 		data:$("#db_user_edit_form").serialize(),
 		success:function(data){
 			$("#edit-dbuser-form").modal("hide");
@@ -671,12 +669,14 @@ function editDbUserCmd(){
 }
 function deleteDbUser(obj){
 	var dbUserId =$(obj).parents("tr").find('[name="db_user_id"]').val();
+	$('#dbUserId').val(dbUserId);
 }
 function deleteDbUserCmd(){
 	$.ajax({
-		url:'${ctx}/dbUser/'+dbUserId,
+		url:'${ctx}/dbUser/'+$('#dbUserId').val(),
 		type:'delete',
 		success:function(data){
+			$("#delete-dbuser").modal("hide");
 			queryDbUser();
 		}
 	});
