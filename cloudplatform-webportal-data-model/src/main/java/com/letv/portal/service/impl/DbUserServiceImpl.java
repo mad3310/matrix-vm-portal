@@ -17,13 +17,10 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
-import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
-import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
-import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
 
@@ -36,8 +33,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	@Resource
 	private IDbUserDao dbUserDao;
 	
-	@Resource
-	private IBuildTaskService buildTaskService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -138,7 +133,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	 */
 	public void updateDbUser(DbUserModel dbUserModel){
 		this.dbUserDao.update(dbUserModel);
-		this.buildTaskService.updateUser(dbUserModel.getId().toString());
 	}
 	/**
 	 * Methods Name: deleteDbUser <br>
@@ -147,7 +141,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	 * @param dbUserModel
 	 */
 	public void deleteDbUser(String dbUserId){
-		this.buildTaskService.deleteDbUser(dbUserId);
 		String[] ids = dbUserId.split(",");
 		for (String id : ids) {
 			DbUserModel dbUserModel = new DbUserModel();

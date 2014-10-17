@@ -175,8 +175,8 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" />
-		FROM  WEBPORTAL_MCLUSTER_INFO M left join WEBPORTAL_DB_USER U 
+		<include refid="Base_Column_List" /> ,U.USERNAME 
+		FROM  WEBPORTAL_MCLUSTER_INFO M left join WEBPORTAL_USER U 
 		ON U.ID = M.CREATE_USER
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY M.CREATE_TIME DESC	

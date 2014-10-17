@@ -66,7 +66,7 @@ public class MclusterController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(MclusterModel mclusterModel,ResultObject result) {
-		this.mclusterProxy.insert(mclusterModel);
+		this.mclusterProxy.inertAndBuild(mclusterModel);
 		return result;
 	}
 	

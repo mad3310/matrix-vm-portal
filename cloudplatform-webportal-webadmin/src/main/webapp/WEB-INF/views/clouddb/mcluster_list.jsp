@@ -223,7 +223,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+  "<a href=\"${ctx}/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
-						+ array[i].creatUser
+						+ array[i].createUserModel.userName
 /* 						+ array[i].creatUser.username */
 						+ "</td>");
 				var td4 = $("<td>"

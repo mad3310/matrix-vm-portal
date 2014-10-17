@@ -41,4 +41,19 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}
 	
+	public void updateDbUser(DbUserModel dbUserModel){
+		this.dbUserService.update(dbUserModel);
+		this.buildTaskService.updateUser(dbUserModel.getId().toString());
+	}
+	
+	public void deleteDbUser(String dbUserId){
+		this.buildTaskService.deleteDbUser(dbUserId);
+		String[] ids = dbUserId.split(",");
+		for (String id : ids) {
+			DbUserModel dbUserModel = new DbUserModel();
+			dbUserModel.setId(Long.parseLong(id));
+			this.dbUserService.delete(dbUserModel);
+		}	
+	}
+	
 }

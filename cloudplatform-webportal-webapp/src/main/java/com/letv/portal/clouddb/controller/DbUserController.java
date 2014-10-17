@@ -97,7 +97,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
-		this.dbUserService.deleteDbUser(dbUserId);
+		this.dbUserProxy.deleteDbUser(dbUserId);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
@@ -110,7 +110,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
-		this.dbUserService.updateDbUser(dbUserModel);		
+		this.dbUserProxy.updateDbUser(dbUserModel);		
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
