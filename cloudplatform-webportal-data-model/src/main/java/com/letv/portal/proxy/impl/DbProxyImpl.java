@@ -1,6 +1,7 @@
 package com.letv.portal.proxy.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -89,14 +91,20 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		dbModel.setDeleted(true);
 		this.dbService.insert(dbModel);
 		
-		//创建mcluster集群
-		Map<String,Object> params = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("createUser", userId);
 		
-		params.put("dbId", dbModel.getId());
-		params.put("mclusterName", userId + "_" + dbModel.getDbName());
-		params.put("status", DbStatus.BUILDDING.getValue());
-		
-		this.auditAndBuild(params);
+		List<DbModel> list = this.dbService.selectByMap(map);
+		if(list.size() <= ConfigUtil.getint("db.auto.build.count")) {
+			//创建mcluster集群
+			Map<String,Object> params = new HashMap<String,Object>();
+			
+			params.put("dbId", dbModel.getId());
+			params.put("mclusterName", userId + "_" + dbModel.getDbName());
+			params.put("status", DbStatus.BUILDDING.getValue());
+			
+			this.auditAndBuild(params);
+		}
 	}
 	
 }
