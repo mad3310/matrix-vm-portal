@@ -2,6 +2,8 @@ package com.letv.portal.fixedPush;
 
 import java.util.Map;
 
+import com.letv.portal.model.FixedPushModel;
+
 
 /**Program Name: IFixedPushService <br>
  * Description:  与固资系统交互实现<br>
@@ -18,23 +20,24 @@ public interface IFixedPushService {
 	 * Description: 创建container的相关系统<br>
 	 * @author name: wujun
 	 */
-	public Boolean createContainerPushFixedInfo(Map<String, String> map);
+	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel);
 	/**
 	 * Methods Name: deleteContainerPushFixedInfo <br>
 	 * Description: 删除container的相关信息<br>
 	 * @author name: wujun
 	 */
-	public Boolean deleteContainerPushFixedInfo(Map<String, String> map);
+	public Boolean deleteContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception;
 	/**
 	 * Methods Name: sendFixedInfo <br>
 	 * Description: 向固资系统发送固资信息<br>
 	 * @author name: wujun
+	 * @throws Exception 
 	 */
-	public String sendFixedInfo(Map<String, String> map);
+	public String sendFixedInfo(FixedPushModel fixedPushModel) throws Exception;
 	/**
 	 * Methods Name: receviceFixedInfo <br>
 	 * Description: 接受固资系统的固资信息<br>
 	 * @author name: wujun
 	 */
-	public String receviceFixedInfo();
+	public String receviceFixedInfo(FixedPushModel fixedPushModel)throws Exception;
 }

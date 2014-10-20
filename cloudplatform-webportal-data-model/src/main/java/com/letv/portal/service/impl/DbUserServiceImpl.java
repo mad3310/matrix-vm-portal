@@ -21,6 +21,7 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.impl.BuildTaskServiceImpl;
 import com.letv.portal.service.IDbUserService;
 
@@ -35,7 +36,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	private IDbUserDao dbUserDao;
 	
 	@Resource
-	private BuildTaskServiceImpl buildTaskService;
+	private IBuildTaskService buildTaskService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;

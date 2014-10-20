@@ -1,5 +1,10 @@
 package com.letv.portal.fixedPush.impl;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,8 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.IFixedPushService;
+import com.letv.portal.model.FixedPushModel;
 
 
 
@@ -25,29 +33,28 @@ import com.letv.portal.fixedPush.IFixedPushService;
 public class FixedPushServiceImpl implements IFixedPushService{
 	
 	
-	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
+	private final static String FIXEDPUSH_GET=ConfigUtil.getString("fixedpush.url");
+	private final static String FIXEDPUSH_SOCKET_IP=ConfigUtil.getString("fixedpush.url.ip");
+	private final static int FIXEDPUSH_SOCKET_PORT=ConfigUtil.getint("fixedpush.url.port");
 	
-	private final static String FIXEDPUSH_URL = "webTest2/";//"http://localhost:8080/webTest2/";
-	private final static String FIXEDPUSH_CODE_CREATE = "100";//100代表创建
-	private final static String FIXEDPUSH_CODE_DELETE = "200";//200代表删除
-	private final static String FIXEDPUSH_RESCODE_SUCCESS = "200";//200代表录入成功
-	private final static String FIXEDPUSH_RESCODE_FAILURE= "400";//400代表录入失败
-	private final static String FIXEDPUSH_RESMSG = "webportalAPI";
-	private final static String URL_HEAD = "http://";	
-	private final static String URL_IP = "localhost";			
-	private final static String URL_PORT = ":8080";		
 	
 	/**
 	 * Methods Name: sendFixedInfo <br>
 	 * Description: 创建container的相关系统<br>
 	 * @author name: wujun
 	 */
-	public Boolean createContainerPushFixedInfo(Map<String, String> map){
-		Boolean flag = false;
-		map.put("code", FIXEDPUSH_CODE_CREATE);
-		String result = sendFixedInfo(map);
-		flag = analysisResult(transResult(result));
-		return flag;
+	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel){
+		try {
+			//map.put("code", FIXEDPUSH_CODE_CREATE);
+			String result = sendFixedInfo(fixedPushModel);
+//			flag = analysisResult(transResult(result));
+			logger.debug("固资推送成功");
+		} catch (Exception e) {
+			logger.debug("固资推送失败");
+		}
+
+		
 	}
 	
 	/**
@@ -55,52 +62,77 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	 * Description: 删除container的相关信息<br>
 	 * @author name: wujun
 	 */
-	public Boolean deleteContainerPushFixedInfo(Map<String, String> map){
-		Boolean flag = false;
-		map.put("code", FIXEDPUSH_CODE_DELETE);
-		String result = sendFixedInfo(map);
-		flag = analysisResult(transResult(result));
-		return flag;
+	public Boolean deleteContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception{
+//		Boolean flag = false;
+//		map.put("code", FIXEDPUSH_CODE_DELETE);
+		String result = sendFixedInfo(fixedPushModel);
+//		flag = analysisResult(transResult(result));
+		return null;
 	}	
 	
 	@Override
-	public String sendFixedInfo(Map<String, String> map) {	
-		String url=URL_HEAD+URL_IP+URL_PORT+"/"+FIXEDPUSH_URL;
-		map.put("rescode", FIXEDPUSH_RESCODE_SUCCESS);
-		map.put("resmsg", FIXEDPUSH_RESMSG);	
-		String fixedPushString =  JSON.toJSON(map).toString();
-		String result = HttpClient.post(url, fixedPushString,null,null);		
-		return result;
+	public String sendFixedInfo(FixedPushModel fixedPushModel)throws Exception{	
+	    String sn =	receviceFixedInfo(fixedPushModel);
+	    fixedPushModel.setServertag(sn);
+		//String url=URL_HEAD+FIXEDPUSH_URL_IP+FIXEDPUSH_URL_PORT;
+	    String pushString =  JSON.toJSONString(fixedPushModel);
+	    sendSocket(pushString);
+        return null;
 	}
 
 	@Override
-	public String receviceFixedInfo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String receviceFixedInfo(FixedPushModel fixedPushModel) throws Exception{
+		if(fixedPushModel!=null){
+			String hostIp = fixedPushModel.getServertag();
+			String url = FIXEDPUSH_GET+hostIp;
+			String sn=HttpClient.get(url);			
+			return sn;
+		}else {
+			return null;
+		}      
 	}
 
-	private Map<String,Object> transResult(String result){
-		Map<String,Object> jsonResult = new HashMap<String,Object>();
-		try {
-			jsonResult = JSON.parseObject(result, Map.class);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonResult;
+	public void sendSocket(String pushString) throws IOException{
+        Socket s1 = new Socket(FIXEDPUSH_SOCKET_IP, FIXEDPUSH_SOCKET_PORT);
+	    InputStream is = s1.getInputStream();
+	    DataInputStream dis = new DataInputStream(is);
+	    OutputStream os = s1.getOutputStream();	
+		try{
+			if(null == pushString ||"".equals(pushString)){
+			}else{
+			os.write(pushString.getBytes());
+			}
+            os.flush();            
+        } catch (Exception e) {
+           logger.debug("socket发送出错");
+        }finally{
+        	 dis.close();
+        	 s1.close();
+        };
 	}
 	
-	
-	private boolean analysisResult(Map result){
-		boolean flag = false;
-		String rescode = (String)result.get("rescode");
-		if(FIXEDPUSH_RESCODE_SUCCESS.equals(rescode)){
-			flag = true;
-			logger.debug("固资系统信息推送成功");
-			return flag;
-		}else{
-			logger.debug("固资系统信息推送失败");
-			return flag;
-		}
-		
-	}
+//	private Map<String,Object> transResult(String result)throws Exception{
+//		Map<String,Object> jsonResult = new HashMap<String,Object>();
+//		try {
+//			jsonResult = JSON.parseObject(result, Map.class);
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return jsonResult;
+//	}
+//	
+//	
+//	private boolean analysisResult(Map result)throws Exception{
+//		boolean flag = false;
+//		String rescode = (String)result.get("rescode");
+//		if(FIXEDPUSH_RESCODE_SUCCESS.equals(rescode)){
+//			flag = true;
+//			logger.debug("固资系统信息推送成功");
+//			return flag;
+//		}else{
+//			logger.debug("固资系统信息推送失败");
+//			return flag;
+//		}
+//		
+//	}
 }
