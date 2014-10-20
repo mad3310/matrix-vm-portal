@@ -22,8 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.letv.common.MyGroupUser;
-import com.letv.common.MyUser;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
@@ -92,33 +90,6 @@ public class UserLoginTest extends AbstractTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Test
-	public void aliTest() {
-		MyUser myUser1 = new MyUser();
-		myUser1.setUserid(1L);
-		myUser1.setUsername("shihuan1");
-		myUser1.setSex(true);
-		myUser1.setBirthday(new Date());
-		MyUser myUser2 = new MyUser();
-		myUser2.setUserid(2L);
-		myUser2.setUsername("shihuan2");
-		myUser2.setSex(false);
-		myUser2.setBirthday(new Date());
-
-		List<MyUser> listmyusers = new ArrayList<MyUser>();
-		listmyusers.add(myUser1);
-		listmyusers.add(myUser2);
-
-		MyGroupUser myGroupUser = new MyGroupUser();
-		myGroupUser.setGroupid(1L);
-		myGroupUser.setGroupname("gshihuan");
-		myGroupUser.setListuser(listmyusers);
-		String mygroupuserjson = JSON.toJSONString(myGroupUser,
-				SerializerFeature.WriteDateUseDateFormat);
-		System.out.println(mygroupuserjson);
-
 	}
 
 }
