@@ -13,7 +13,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 
-@Component
+@Component("containerProxy")
 public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 		IContainerProxy{
 
@@ -38,7 +38,7 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	@Override
 	public void stop(Long containerId) {
 		ContainerModel container = this.containerService.selectById(containerId);
-		container.setStatus(MclusterStatus.STOPING.getValue());
+		container.setStatus(MclusterStatus.STOPPING.getValue());
 		this.containerService.updateBySelective(container);
 		this.buildTaskService.stopContainer(container);
 		
@@ -54,6 +54,11 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	
 	private void checkStatus(ContainerModel container) {
 		this.buildTaskService.checkContainerStatus(container);
+	}
+
+	@Override
+	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
+		return this.containerService.selectByMclusterId(mclusterId);
 	}
 	
 }

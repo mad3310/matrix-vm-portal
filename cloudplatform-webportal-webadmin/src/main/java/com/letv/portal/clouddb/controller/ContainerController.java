@@ -19,8 +19,6 @@ import com.letv.portal.service.IContainerService;
 public class ContainerController {
 	
 	@Resource
-	private IContainerService containerService;
-	@Resource
 	private IContainerProxy containerProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(ContainerController.class);
@@ -34,7 +32,7 @@ public class ContainerController {
 	 */
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long mclusterId,ResultObject result) {
-		result.setData(this.containerService.selectByMclusterId(mclusterId));
+		result.setData(this.containerProxy.selectByMclusterId(mclusterId));
 		return result;
 	}
 	

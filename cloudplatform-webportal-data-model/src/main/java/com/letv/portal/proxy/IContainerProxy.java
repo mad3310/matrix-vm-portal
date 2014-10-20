@@ -1,5 +1,7 @@
 package com.letv.portal.proxy;
 
+import java.util.List;
+
 import com.letv.portal.model.ContainerModel;
 
 /**Program Name: IContainerProxy <br>
@@ -30,4 +32,12 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @author name: liuhao1
 	 */
 	public void checkStatus();
+
+	/**Methods Name: selectByMclusterId <br>
+	 * Description: 查询container集群数据<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @return
+	 */
+	public List<ContainerModel> selectByMclusterId(Long mclusterId);
 }

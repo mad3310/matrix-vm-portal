@@ -9,8 +9,11 @@ public enum MclusterStatus implements ByteEnum{
 	REMOVING(5),
 	REMOVED(6),
 	STARTING(7),
-	STOPING(8),
-	STOPED(9);
+	STOPPING(8),
+	STOPED(9),
+	DESTROYING(10),
+	DESTROYED(11),
+	NOTEXIT(12);
 	
 	private final Integer value;
 	

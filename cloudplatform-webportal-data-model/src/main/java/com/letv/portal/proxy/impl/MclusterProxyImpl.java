@@ -25,7 +25,7 @@ import com.letv.portal.service.IMclusterService;
  * Modified By: <br>
  * Modified Date: <br>
  */
-@Component
+@Component("mclusterProxy")
 public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		IMclusterProxy{
 	
@@ -93,7 +93,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	@Override
 	public void stop(Long mclusterId) {
 		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
-		mcluster.setStatus(MclusterStatus.STOPING.getValue());
+		mcluster.setStatus(MclusterStatus.STOPPING.getValue());
 		this.mclusterService.updateBySelective(mcluster);
 		this.buildTaskService.stopMcluster(mcluster);
 	}

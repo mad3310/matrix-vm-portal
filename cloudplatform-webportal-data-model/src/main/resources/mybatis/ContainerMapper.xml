@@ -52,6 +52,79 @@
 		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Container">
+		update WEBPORTAL_CONTAINER set
+		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
+		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},MCLUSTER_ID=#{mclusterId},
+		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="Container">
+		update WEBPORTAL_CONTAINER
+		<set>
+			<if test="containerName != null  and containerName != '' ">
+				CONTAINER_NAME=#{containerName},
+			</if>
+			<if test="mountDir != null  ">
+				MOUNT_DIR=#{mountDir},
+			</if>
+			<if test="zookeeperId != null  ">
+				ZOOKEEPER_ID=#{zookeeperId},
+			</if>
+			<if test="ipAddr != null  ">
+				IP_ADDR=#{ipAddr},
+			</if>
+			<if test="gateAddr != null  ">
+				GATE_ADDR=#{gateAddr},
+			</if>
+			<if test="ipMask != null  ">
+				IP_MASK=#{ipMask},
+			</if>
+			<if test="type != null  ">
+				TYPE=#{type},
+			</if>
+			<if test="diskSize != null  ">
+				DISK_SIZE=#{diskSize},
+			</if>
+			<if test="coresNumber != null  ">
+				CORES_NUMBER=#{coresNumber},
+			</if>
+			<if test="memorySize != null  ">
+				MEMORY_SIZE=#{memorySize},
+			</if>
+			<if test="cpuSpeed != null  ">
+				CPU_SPEED=#{cpuSpeed},
+			</if>
+			<if test="hostId != null  ">
+				HOST_ID=#{hostId},
+			</if>
+			<if test="mclusterId != null  ">
+				MCLUSTER_ID=#{mclusterId},
+			</if>
+			
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=now(),
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser}
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Container">
 		delete from WEBPORTAL_CONTAINER C where C.ID = #{id}

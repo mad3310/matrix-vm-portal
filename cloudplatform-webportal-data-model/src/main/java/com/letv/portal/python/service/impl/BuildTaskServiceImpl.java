@@ -54,19 +54,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private static long PYTHON_INIT_CHECK_TIME = ConfigUtil.getlong("python_init_check_time");//600000;//单位：ms
 	private static long PYTHON_INIT_CHECK_INTERVAL_TIME = ConfigUtil.getlong("python_init_check_interval_time");//5000;//单位：ms
 	
-	@Resource
+	@Autowired
 	private IMclusterService mclusterService;
-	@Resource
+	@Autowired
 	private IDbUserService dbUserService;
-	@Resource
+	@Autowired
 	private IPythonService pythonService;
-	@Resource
+	@Autowired
 	private IDbService dbService;
-	@Resource
+	@Autowired
 	private IContainerService containerService;
-	@Resource
+	@Autowired
 	private IBuildService buildService;
-	@Resource
+	@Autowired
 	private IUserService userService;
 	
 	@Value("${error.email.to}")
@@ -76,13 +76,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
-	@Async
+//	@Async
 	public void buildMcluster(MclusterModel mclusterModel) {
 		this.buildMcluster(mclusterModel, null);
 	}
 	
 	@Override
-	@Async
+//	@Async
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
 		
@@ -193,7 +193,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	@Async
+//	@Async
 	public void buildDb(Long dbId) {
 		Integer status = null;
 		String resultMsg = "";
@@ -293,6 +293,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	 * @author name: wujun
 	 * @param dbUserId
 	 */
+	@Override
 	public void deleteDbUser(String ids){
 		String[] str = ids.split(",");	
 		String resultMsg = "";
@@ -540,7 +541,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@Override
-	@Async
+//	@Async
 	public void removeMcluster(MclusterModel mcluster) {
 		String result = this.pythonService.removeMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
@@ -596,12 +597,40 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void checkMclusterStatus(MclusterModel mcluster) {
 		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName());
 		Map map = this.transResult(result);
-		
+		Integer status = (Integer) ((Map)map.get("response")).get("status");
+		mcluster.setStatus(status);
+		this.mclusterService.updateBySelective(mcluster);
 	}
 
 	@Override
 	public void checkContainerStatus(ContainerModel container) {
 		String result = this.pythonService.checkContainerStatus(container.getContainerName());
+		Map map = this.transResult(result);
+		Integer status = (Integer) ((Map)map.get("response")).get("status");
+		container.setStatus(status);
+		this.containerService.updateBySelective(container);
 		
+	}
+	
+	public Integer transStatus(String statusStr){
+		// { "meta": {"code": 200}, "response": {"status": " starting / started / stopping / stopped / destroying / destroyed / not exist / failed", "message": ""  } }
+		Integer status = null;
+		if("starting".equals(statusStr)) {
+			status = MclusterStatus.STARTING.getValue();
+		} else if("started".equals(statusStr)) {
+			status = MclusterStatus.RUNNING.getValue();
+		} else if("stopping".equals(statusStr)) {
+			status = MclusterStatus.STOPPING.getValue();
+		} else if("stopped".equals(statusStr)) {
+			status = MclusterStatus.STOPED.getValue();
+		} else if("destroying".equals(statusStr)) {
+			status = MclusterStatus.DESTROYING.getValue();
+		} else if("destroyed".equals(statusStr)) {
+			status = MclusterStatus.DESTROYED.getValue();
+		} else if("not exist".equals(statusStr)) {
+			status = MclusterStatus.NOTEXIT.getValue();
+		} else if("failed".equals(statusStr)) {
+		}
+		return status;
 	}
 }
