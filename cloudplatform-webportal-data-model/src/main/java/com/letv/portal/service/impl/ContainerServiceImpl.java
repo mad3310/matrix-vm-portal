@@ -62,8 +62,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 
 	@Override
-	public void deleteByMcluster(Long mclusterId) {
-		this.containerDao.deleteByMcluster(mclusterId);
+	public void deleteByMclusterId(Long mclusterId) {
+		this.containerDao.deleteByMclusterId(mclusterId);
 		
 	}
 }

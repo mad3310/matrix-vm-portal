@@ -42,7 +42,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public List<ContainerModel> selectNormalByClusterId(Long mclusterId);
 
-	public void deleteByMcluster(Long mclusterId);
+	public void deleteByMclusterId(Long mclusterId);
 	
 	
 }

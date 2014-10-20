@@ -24,5 +24,5 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	 */
 	public List<ContainerModel> selectByMclusterId(Long clusterId);
 
-	public void deleteByMcluster(Long mclusterId);
+	public void deleteByMclusterId(Long mclusterId);
 }

@@ -82,7 +82,7 @@
 		where C.MCLUSTER_ID = #{mclusterId} ORDER BY C.TYPE,C.ZOOKEEPER_ID
 	</select>
 	<!-- 物理删除 -->
-	<update id="deleteByMcluster" parameterType="java.lang.Long">
+	<update id="deleteByMclusterId" parameterType="java.lang.Long">
 		delete from WEBPORTAL_CONTAINER C where C.MCLUSTER_ID = #{mclusterId}
 	</update>	
 </mapper>   
