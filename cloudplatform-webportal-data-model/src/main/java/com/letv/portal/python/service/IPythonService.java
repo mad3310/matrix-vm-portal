@@ -183,7 +183,7 @@ public interface IPythonService {
 	public String stopMcluster(String mclusterName);
 	
 	/**Methods Name: startContainer <br>
-	 * Description: <br>
+	 * Description: 启动container<br>
 	 * @author name: liuhao1
 	 * @param containerName
 	 * @return
@@ -191,11 +191,27 @@ public interface IPythonService {
 	public String startContainer(String containerName);
 
 	/**Methods Name: stopContainer <br>
-	 * Description: <br>
+	 * Description: 停止container<br>
 	 * @author name: liuhao1
 	 * @param containerName
 	 * @return
 	 */
 	public String stopContainer(String containerName);
+
+	/**Methods Name: checkMclusterStatus <br>
+	 * Description: 检查container集群状态<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String checkMclusterStatus(String mclusterName);
+
+	/**Methods Name: checkContainerStatus <br>
+	 * Description: 检查container状态<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String checkContainerStatus(String containerName);
 	
 }

@@ -591,4 +591,17 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			logger.error("invoke start container api error");
 		}
 	}
+
+	@Override
+	public void checkMclusterStatus(MclusterModel mcluster) {
+		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName());
+		Map map = this.transResult(result);
+		
+	}
+
+	@Override
+	public void checkContainerStatus(ContainerModel container) {
+		String result = this.pythonService.checkContainerStatus(container.getContainerName());
+		
+	}
 }

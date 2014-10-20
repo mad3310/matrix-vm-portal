@@ -1,10 +1,6 @@
 package com.letv.portal.python.service;
 
-import java.util.Map;
-
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbModel;
-import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
 
 
@@ -119,5 +115,18 @@ public interface IBuildTaskService {
 	 * @param container
 	 */
 	public void stopContainer(ContainerModel container);
+
+	/**Methods Name: checkMclusterStatus <br>
+	 * Description: 检查container集群状态<br>
+	 * @author name: liuhao1
+	 * @param mcluster
+	 */
+	public void checkMclusterStatus(MclusterModel mcluster);
 	
+	/**Methods Name: checkContainerStatus <br>
+	 * Description: 检查container集群<br>
+	 * @author name: liuhao1
+	 * @param container
+	 */
+	public void checkContainerStatus(ContainerModel container);
 }

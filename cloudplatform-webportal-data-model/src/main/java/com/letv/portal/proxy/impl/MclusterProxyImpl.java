@@ -97,5 +97,16 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		this.mclusterService.updateBySelective(mcluster);
 		this.buildTaskService.stopMcluster(mcluster);
 	}
+
+	@Override
+	public void checkStatus() {
+		List<MclusterModel> list = this.mclusterService.selectByMap(null);
+		for (MclusterModel mcluster : list) {
+			this.checkStatus(mcluster);
+		}
+	}
 	
+	private void checkStatus(MclusterModel mcluster) {
+		this.buildTaskService.checkMclusterStatus(mcluster);
+	}
 }

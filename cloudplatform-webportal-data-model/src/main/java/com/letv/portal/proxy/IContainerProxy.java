@@ -24,4 +24,10 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @param containerId
 	 */
 	public void stop(Long containerId);
+
+	/**Methods Name: checkStatus <br>
+	 * Description: 检查container状态<br>
+	 * @author name: liuhao1
+	 */
+	public void checkStatus();
 }

@@ -1,5 +1,7 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,18 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 		this.containerService.updateBySelective(container);
 		this.buildTaskService.stopContainer(container);
 		
+	}
+	
+	@Override
+	public void checkStatus() {
+		List<ContainerModel> list = this.containerService.selectByMap(null);
+		for (ContainerModel container : list) {
+			this.checkStatus(container);
+		}
+	}
+	
+	private void checkStatus(ContainerModel container) {
+		this.buildTaskService.checkContainerStatus(container);
 	}
 	
 }

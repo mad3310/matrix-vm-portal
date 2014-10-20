@@ -37,24 +37,15 @@ public class InitializingJob {
 	@Autowired
 	private SchedulerFactoryBean schedulerFactoryBean;
 	
-//	@PostConstruct
+	@PostConstruct
 	public void initScheduler() throws  SchedulerException,ParseException,ClassNotFoundException {
 		
 		logger.info("initScheduler start....");
 		Scheduler scheduler = schedulerFactoryBean.getScheduler();
 		 
 		//这里获取任务信息数据
-		List<ScheduleJobModel> jobList = new ArrayList<ScheduleJobModel>(); //从数据库查出
+		List<ScheduleJobModel> jobList = getJobs();
 		
-		//测试数据 start
-		ScheduleJobModel scheduleJob = new ScheduleJobModel();
-		scheduleJob.setJobName("test");
-		scheduleJob.setJobMethod("test");
-		scheduleJob.setJobGroup("webportal");
-		scheduleJob.setJobStatus("1");
-		scheduleJob.setCronExpression("0 0/1 * * * ?");
-		scheduleJob.setDescn("数据导入任务");
-		jobList.add(scheduleJob);
 		//测试数据end
 		 
 		for (ScheduleJobModel job : jobList) {
@@ -88,6 +79,42 @@ public class InitializingJob {
 			}
 		}
 		logger.info("initScheduler success");
+	}
+	
+	public List<ScheduleJobModel> getJobs(){
+		List<ScheduleJobModel> jobs = new ArrayList<ScheduleJobModel>();
+		//测试数据 start
+		ScheduleJobModel scheduleJob = new ScheduleJobModel();
+		
+		scheduleJob.setJobName("test");
+		scheduleJob.setJobMethod("test");
+		scheduleJob.setJobGroup("webportal");
+		scheduleJob.setJobStatus("1");
+		scheduleJob.setCronExpression("0/30 * * * * ?");
+		scheduleJob.setDescn("测试job初始化");
+		jobs.add(scheduleJob);
+		
+		/*
+		 * 业务检查job
+		 */
+		/*scheduleJob.setJobName("checkMclusterStatus");
+		scheduleJob.setJobMethod("checkMclusterStatus");
+		scheduleJob.setJobGroup("webportal");
+		scheduleJob.setJobStatus("1");
+		scheduleJob.setCronExpression("0/30 * * * * ?");
+		scheduleJob.setDescn("检查container集群状态");
+		jobs.add(scheduleJob);
+		
+		scheduleJob.setJobName("checkContainerStatus");
+		scheduleJob.setJobMethod("checkContainerStatus");
+		scheduleJob.setJobGroup("webportal");
+		scheduleJob.setJobStatus("1");
+		scheduleJob.setCronExpression("0/30 * * * * ?");
+		scheduleJob.setDescn("检查container单节点状态");
+		jobs.add(scheduleJob);*/
+		
+		
+		return jobs;
 	}
        
 }

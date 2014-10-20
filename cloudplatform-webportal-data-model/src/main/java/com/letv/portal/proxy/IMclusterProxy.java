@@ -48,4 +48,10 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 */
 	public void stop(Long mclusterId);
 	
+	/**Methods Name: checkStatus <br>
+	 * Description: 检查所有container集群状态<br>
+	 * @author name: liuhao1
+	 */
+	public void checkStatus();
+	
 }

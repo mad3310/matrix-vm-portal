@@ -234,4 +234,18 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/container/stop", map,"root","root");
 		return result;
 	}
+
+	@Override
+	public String checkMclusterStatus(String mclusterName) {
+		String url = MCLUSTER_CREATE_URL  + "containerCluster/status/" + mclusterName;
+		String result = HttpClient.get(url,"root","root");
+		return result;
+	}
+
+	@Override
+	public String checkContainerStatus(String containerName) {
+		String url = MCLUSTER_CREATE_URL  + "container/status/" + containerName;
+		String result = HttpClient.get(url,"root","root");
+		return result;
+	}
 }
