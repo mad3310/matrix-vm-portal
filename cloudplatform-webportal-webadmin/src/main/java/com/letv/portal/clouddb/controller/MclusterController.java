@@ -66,7 +66,7 @@ public class MclusterController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(MclusterModel mclusterModel,ResultObject result) {
-		this.mclusterProxy.inertAndBuild(mclusterModel);
+		this.mclusterProxy.insertAndBuild(mclusterModel);
 		return result;
 	}
 	
@@ -86,16 +86,39 @@ public class MclusterController {
 	}
 	
 	/**Methods Name: delete <br>
-	 * Description: db 删除<br>
+	 * Description: contianer集群删除<br>
 	 * @author name: liuhao1
 	 * @param mclusterId
 	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
-	public @ResponseBody ResultObject delete(@PathVariable Long  mclusterId,ResultObject result) {
-		MclusterModel mclsuter = new MclusterModel();
-		mclsuter.setId(mclusterId);
+	public @ResponseBody ResultObject delete(@PathVariable Long mclusterId,ResultObject result) {
+		this.mclusterProxy.deleteAndRemove(mclusterId);
+		return result;
+	}
+	/**Methods Name: start <br>
+	 * Description: 启动container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value = "/start/{mclusterId}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject start(@PathVariable Long mclusterId,ResultObject result) {
+		this.mclusterProxy.start(mclusterId);
+		return result;
+	}
+	/**Methods Name: stop <br>
+	 * Description: 关闭container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value = "/stop/{mclusterId}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject stop(@PathVariable Long mclusterId,ResultObject result) {
+		this.mclusterProxy.stop(mclusterId);
 		return result;
 	}
 }

@@ -158,5 +158,44 @@ public interface IPythonService {
 	 * @param password
 	 */
 	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password);
+
+	/**Methods Name: removeMcluster <br>
+	 * Description: 删除container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 */
+	public String removeMcluster(String mclusterName);
+
+	/**Methods Name: startMcluster <br>
+	 * Description: 启动container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String startMcluster(String mclusterName);
+
+	/**Methods Name: stopMcluster <br>
+	 * Description: 停止container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String stopMcluster(String mclusterName);
+	
+	/**Methods Name: startContainer <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String startContainer(String containerName);
+
+	/**Methods Name: stopContainer <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String stopContainer(String containerName);
 	
 }

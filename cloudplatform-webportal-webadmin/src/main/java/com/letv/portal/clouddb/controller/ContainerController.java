@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.service.IContainerService;
 
 @Controller
@@ -19,6 +20,8 @@ public class ContainerController {
 	
 	@Resource
 	private IContainerService containerService;
+	@Resource
+	private IContainerProxy containerProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(ContainerController.class);
 	
@@ -32,6 +35,33 @@ public class ContainerController {
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long mclusterId,ResultObject result) {
 		result.setData(this.containerService.selectByMclusterId(mclusterId));
+		return result;
+	}
+	
+
+	/**Methods Name: start <br>
+	 * Description: 启动单个container<br>
+	 * @author name: liuhao1
+	 * @param containerId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value = "/start/{containerId}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject start(@PathVariable Long containerId,ResultObject result) {
+		this.containerProxy.start(containerId);
+		return result;
+	}
+	
+	/**Methods Name: stop <br>
+	 * Description: 关闭单个container<br>
+	 * @author name: liuhao1
+	 * @param containerId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value = "/stop/{containerId}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject stop(@PathVariable Long containerId,ResultObject result) {
+		this.containerProxy.stop(containerId);
 		return result;
 	}
 }

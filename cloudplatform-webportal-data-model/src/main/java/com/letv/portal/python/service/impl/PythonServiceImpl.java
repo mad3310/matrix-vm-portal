@@ -195,4 +195,43 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.detele(url, username, password);
 		return result;
 	}
+
+	@Override
+	public String removeMcluster(String mclusterName) {
+		String url = MCLUSTER_CREATE_URL + "/containerCluster/" + mclusterName;
+		String result = HttpClient.detele(url,"root","root");
+		return result;
+	}
+
+	@Override
+	public String startMcluster(String mclusterName) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("containerClusterName", mclusterName);
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster/start", map,"root","root");
+		return result;
+	}
+
+	@Override
+	public String stopMcluster(String mclusterName) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("containerClusterName", mclusterName);
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster/stop", map,"root","root");
+		return result;
+	}
+
+	@Override
+	public String startContainer(String containerName) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("containerName", containerName);
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/container/start", map,"root","root");
+		return result;
+	}
+
+	@Override
+	public String stopContainer(String containerName) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("containerName", containerName);
+		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/container/stop", map,"root","root");
+		return result;
+	}
 }

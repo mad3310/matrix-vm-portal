@@ -13,6 +13,9 @@ import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.IBuildService;
+import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
 
 /**Program Name: MclusterServiceImpl <br>
@@ -34,6 +37,13 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IBuildTaskService buildTaskService;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private IContainerService containerService;
+	@Autowired
+	private IDbService dbService;
+	@Autowired
+	private IBuildService buildService;
+	
 	@Override
 	public IBaseService<MclusterModel> getService() {
 		return mclusterService;
@@ -57,9 +67,35 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	}
 
 	@Override
-	public void inertAndBuild(MclusterModel mclusterModel) {
+	public void insertAndBuild(MclusterModel mclusterModel) {
 		this.insert(mclusterModel);
 		buildTaskService.buildMcluster(mclusterModel);
+	}
+
+	@Override
+	public void deleteAndRemove(Long mclusterId) {
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		this.mclusterService.delete(mcluster);
+		this.containerService.deleteByMclusterId(mclusterId);
+		this.buildService.deleteByMclusterId(mclusterId);
+//		this.dbService.deleteByMclusterId(mclusterId);
+		this.buildTaskService.removeMcluster(mcluster);
+	}
+
+	@Override
+	public void start(Long mclusterId) {
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.STARTING.getValue());
+		this.mclusterService.updateBySelective(mcluster);
+		this.buildTaskService.startMcluster(mcluster);
+	}
+
+	@Override
+	public void stop(Long mclusterId) {
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		mcluster.setStatus(MclusterStatus.STOPING.getValue());
+		this.mclusterService.updateBySelective(mcluster);
+		this.buildTaskService.stopMcluster(mcluster);
 	}
 	
 }

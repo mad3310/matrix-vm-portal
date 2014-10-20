@@ -540,9 +540,55 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@Override
+	@Async
 	public void removeMcluster(MclusterModel mcluster) {
-		this.mclusterService.delete(mcluster);
-		this.containerService.deleteByMcluster(mcluster.getId());
-		this.buildService.deleteByMclusterId(mcluster.getId());
+		String result = this.pythonService.removeMcluster(mcluster.getMclusterName());
+		if(analysisResult(transResult(result))) {
+			logger.info("invoke remove mcluster api success");
+		} else {
+			logger.info("invoke remove mcluster api error");
+		}
+	}
+
+	@Override
+	public void startMcluster(MclusterModel mcluster) {
+		String result = this.pythonService.startMcluster(mcluster.getMclusterName());
+		if(analysisResult(transResult(result))) {
+			logger.info("invoke start mcluster api success");
+		} else {
+			logger.error("invoke start mcluster api error");
+		}
+		
+	}
+
+	@Override
+	public void stopMcluster(MclusterModel mcluster) {
+		String result = this.pythonService.stopMcluster(mcluster.getMclusterName());
+		if(analysisResult(transResult(result))) {
+			logger.info("invoke stop mcluster api success");
+		} else {
+			logger.error("invoke stop mcluster api error");
+		}
+		
+	}
+
+	@Override
+	public void startContainer(ContainerModel container) {
+		String result = this.pythonService.startContainer(container.getContainerName());
+		if(analysisResult(transResult(result))) {
+			logger.info("invoke start container api success");
+		} else {
+			logger.error("invoke start container api error");
+		}
+	}
+
+	@Override
+	public void stopContainer(ContainerModel container) {
+		String result = this.pythonService.stopContainer(container.getContainerName());
+		if(analysisResult(transResult(result))) {
+			logger.info("invoke start container api success");
+		} else {
+			logger.error("invoke start container api error");
+		}
 	}
 }

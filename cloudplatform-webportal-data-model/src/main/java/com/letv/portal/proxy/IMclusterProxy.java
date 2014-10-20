@@ -25,6 +25,27 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 * @author name: liuhao1
 	 * @param mclusterModel
 	 */
-	public void inertAndBuild(MclusterModel mclusterModel);
+	public void insertAndBuild(MclusterModel mclusterModel);
+
+	/**Methods Name: deleteAndRemove <br>
+	 * Description:	删除container集群，并移除物理机上相应container <br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void deleteAndRemove(Long mclusterId);
+
+	/**Methods Name: start <br>
+	 * Description: 启动container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void start(Long mclusterId);
+
+	/**Methods Name: stop <br>
+	 * Description: 停止container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void stop(Long mclusterId);
 	
 }

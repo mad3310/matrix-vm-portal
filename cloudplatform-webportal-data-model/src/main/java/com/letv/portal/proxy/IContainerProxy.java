@@ -11,5 +11,17 @@ import com.letv.portal.model.ContainerModel;
  */
 public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	
-	
+	/**Methods Name: start <br>
+	 * Description: 启动container<br>
+	 * @author name: liuhao1
+	 * @param containerId
+	 */
+	public void start(Long containerId);
+
+	/**Methods Name: stop <br>
+	 * Description: 停止container<br>
+	 * @author name: liuhao1
+	 * @param containerId
+	 */
+	public void stop(Long containerId);
 }

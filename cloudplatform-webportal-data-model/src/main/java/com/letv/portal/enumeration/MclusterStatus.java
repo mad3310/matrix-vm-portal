@@ -5,7 +5,12 @@ public enum MclusterStatus implements ByteEnum{
 	RUNNING(1),  
 	BUILDDING(2),
 	BUILDFAIL(3),
-	AUDITFAIL(4);
+	AUDITFAIL(4),
+	REMOVING(5),
+	REMOVED(6),
+	STARTING(7),
+	STOPING(8),
+	STOPED(9);
 	
 	private final Integer value;
 	

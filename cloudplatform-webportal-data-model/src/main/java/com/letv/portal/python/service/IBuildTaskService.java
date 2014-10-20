@@ -2,6 +2,7 @@ package com.letv.portal.python.service;
 
 import java.util.Map;
 
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
@@ -90,5 +91,33 @@ public interface IBuildTaskService {
 	 * @param ids 多个dbUserId
 	 */
 	public void deleteDbUser(String ids);
+
+	/**Methods Name: startMcluster <br>
+	 * Description: 启动container集群<br>
+	 * @author name: liuhao1
+	 * @param mcluster
+	 */
+	public void startMcluster(MclusterModel mcluster);
+
+	/**Methods Name: stopMcluster <br>
+	 * Description: 停止container集群<br>
+	 * @author name: liuhao1
+	 * @param mcluster
+	 */
+	public void stopMcluster(MclusterModel mcluster);
+
+	/**Methods Name: startContainer <br>
+	 * Description: 启动单个container<br>
+	 * @author name: liuhao1
+	 * @param container
+	 */
+	public void startContainer(ContainerModel container);
+
+	/**Methods Name: stopContainer <br>
+	 * Description: 停止单个container<br>
+	 * @author name: liuhao1
+	 * @param container
+	 */
+	public void stopContainer(ContainerModel container);
 	
 }
