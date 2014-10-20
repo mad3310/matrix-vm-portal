@@ -73,7 +73,7 @@
 										<th>读写比例</th>
 										<th>频次限制</th>
 										<th>当前状态</th>
-										<th></th>
+										<th>操作</th>
 									</tr>
 								</thead>
 									<tbody id="tby">

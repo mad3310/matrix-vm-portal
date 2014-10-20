@@ -20,6 +20,7 @@
 <!-- bootstrap & fontawesome -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
 
 <!-- page specific plugin styles -->
 
@@ -45,6 +46,7 @@
 <script src="${ctx}/static/ace/js/jquery.min.js"></script>
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/ace/js/jquery-ui.min.js"></script>
 
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />

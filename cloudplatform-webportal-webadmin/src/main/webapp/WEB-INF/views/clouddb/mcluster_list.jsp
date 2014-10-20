@@ -40,7 +40,7 @@
 									创建时间 
 								</th>
 								<th class="hidden-480">当前状态</th>
-								<!-- <th></th> -->
+								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
@@ -68,6 +68,7 @@
 				</li>
 			</ul>
 		</div>
+		
 		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -131,6 +132,15 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
+		<div id="dialog-confirm" class="hide">
+			<div id="dialog-confirm-content" class="alert alert-info bigger-110">
+				删除container集群将不能恢复！
+			</div>
+			<div class="space-6"></div>
+			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
+				您确定要删除?
+			</p>
+		</div>
 	</div>
 </div>
 <!-- /.page-content-area -->
@@ -189,7 +199,8 @@ $(function(){
 		location.reload();
 	});
 	
-});	
+});
+
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
@@ -215,7 +226,7 @@ function queryByPage(currentPage,recordsPerPage) {
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
-								+"<input value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+								+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 								+"<span class=\"lbl\"></span>"
 								+"</label>"
 							+"</td>");
@@ -243,20 +254,20 @@ function queryByPage(currentPage,recordsPerPage) {
 							+ "</td>");
 				}
 					
-				/* var td6 = $("<td>"
-						+"<div class=\"hidden-sm hidden-xs btn-group\">"
-						+"<button class=\"btn disabled btn-xs btn-success\">"
-						+"<i class=\"ace-icon fa fa-play-circle-o bigger-120\"></i>"
-						+"</button>"
-						+"<button class=\"btn disabled btn-xs btn-info\">"
+				var td6 = $("<td>"
+						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\">"
+						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+						+"</a>"
+						+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-						+"</button>"
-						+"<button class=\"btn disabled btn-xs btn-danger\">"
+						+"</a>"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-						+"</button>"
+						+"</a>"
 						+"</div>"
 						+ "</td>"
-				); */
+				);
 					
 				if(array[i].status == 3){
 					var tr = $("<tr class=\"danger\"></tr>");
@@ -264,7 +275,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -484,12 +495,91 @@ function createMcluster(){
 		}
 	});
 }
+function confirmframe(title,content,question,ok,cancle){
+	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+		_title : function(title) {
+			var $title = this.options.title || '&nbsp;'
+			if (("title_html" in this.options)
+					&& this.options.title_html == true)
+				title.html($title);
+			else
+				title.text($title);
+		}
+	}));
+	
+	$('#dialog-confirm').removeClass('hide').dialog({
+		resizable : false,
+		modal : true,
+		title : "<div class='widget-header'><h4 class='smaller'>"+title,
+		title_html : true,
+		buttons : [
+				{
+					html : "确定",
+					"class" : "btn btn-primary  disabled btn-xs",
+					click : function() {
+						ok();
+						$(this).dialog("close");
+					}
+				},
+				{
+					html : "取消",
+					"class" : "btn btn-xs",
+					click : function() {
+						$(this).dialog("close");
+					}
+				} ]
+	});
+	$('#dialog-confirm-content').html(content);
+	$('#dialog-confirm-question').html(question);
+}
+function startMcluster(obj){
+	function startCmd(){
+		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		$.ajax({
+			url:'${ctx}/mcluster/start/'+mclusterId,
+			type:'delete',
+			success:function(data){
+				error(data);
+				queryByPage(currentPage, recordsPerPage)
+			}
+		});
+	}
+	confirmframe("启动container集群","启动集群大概需要几分钟时间!","请耐心等待...",startCmd);
+}
+function stopMcluster(obj){
+	function stopCmd(){
+		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		$.ajax({
+			url:'${ctx}/mcluster/stop/'+mclusterId,
+			type:'delete',
+			success:function(data){
+				error(data);
+				queryByPage(currentPage, recordsPerPage)
+			}
+		});
+	}
+	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要停止",stopCmd);
+}
+function deleteMcluster(obj){
+	function deleteCmd(){
+		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		$.ajax({
+			url:'${ctx}/mcluster/delete/'+mclusterId,
+			type:'delete',
+			success:function(data){
+				error(data);
+				queryByPage(currentPage, recordsPerPage)
+			}
+		});
+	}
+	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除",deleteCmd);
+}
+
 function page_init(){
 	queryByPage(currentPage, recordsPerPage);
 	searchAction();
 	formValidate();
 	pageControl();
 	$('[name = "popoverHelp"]').popover();
-
 }
 </script>

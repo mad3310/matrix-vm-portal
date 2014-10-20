@@ -23,6 +23,7 @@
 			         <th>挂载路径</th>
 			         <th>zookeepId</th>
 			         <th>状态</th>
+			         <th>操作</th>
 			      </tr>
 			   </thead>
 			   <tbody id="tby">
@@ -70,8 +71,19 @@ function queryContainer(){
 				var	td7 = $("<td>"
 						+ "正常"
 						+ "</td>");
+				var td8 = $("<td>"
+						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+						+"</a>"
+						+"<a class=\"blue\" href=\"#\" onclick=\"startMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
+							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+						+"</a>"
+						+"</div>"
+						+ "</td>"
+				);
 				var tr = $("<tr></tr>");;				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}
 		}
