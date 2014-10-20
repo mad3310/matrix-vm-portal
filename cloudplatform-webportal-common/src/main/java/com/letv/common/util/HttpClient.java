@@ -3,6 +3,7 @@ package com.letv.common.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,8 +77,9 @@ public class HttpClient {
 		logger.info("create httppost:" + url);
 		HttpPost httppost = new HttpPost(url);
 		try {
+			httppost.setHeader("Content-Type","application/json");
 			httppost.setEntity(new StringEntity(obj.toString()));
-			body = invoke(httpclient, httppost);
+			body = invoke(httpclient, httppost); 
 			httpclient.getConnectionManager().shutdown();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
