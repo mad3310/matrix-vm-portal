@@ -1,39 +1,95 @@
 package com.letv.portal.clouddb.controller;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
+import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.junitBase.AbstractTest;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerPush;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.FixedPushModel;
 
+public class UserLoginTest extends AbstractTest {
 
-public class UserLoginTest extends AbstractTest{
-	
-	
+	private final static Logger logger = LoggerFactory
+			.getLogger(UserLoginTest.class);
 	@Resource
 	private IFixedPushService FixedPushService;
-	
+
 	@Test
-	public void createContainerPushFixedInfoTest()
-	{   
-	   // String url = "http://localhost:8080/webTest2/";	
-		Map<String,String> map = new HashMap<String,String>();
-		List<String> xxList = new ArrayList<String>();
-		xxList.add("10.200.85.91");
-		xxList.add("10.200.85.92");
-		map.put("hostIp", "10.200.85.93");
-		map.put("code", "100");
-		map.put("rescode", "200");
-		map.put("containerIp", xxList.toString());	
-		map.put("resmsg", "webportalAPI");	
-		
-		Boolean result = FixedPushService.createContainerPushFixedInfo(map);
-		System.out.println(result);
+	public void createContainerPushFixedInfoTest() {
+
+		// get()获得snr号然后做拼接
+		// post()发送拼接好的信息
+		// String url = "http://localhost:8080/webTest2/";
+		ContainerPush containerMode1 = new ContainerPush();
+		ContainerPush containerMode2 = new ContainerPush();
+		containerMode1.setName("container");
+		containerMode2.setName("container");
+		containerMode1.setIp("10.19.18.73");
+		containerMode2.setIp("10.19.18.72");
+		List<ContainerPush> list = new ArrayList<ContainerPush>();
+		list.add(containerMode1);
+		list.add(containerMode2);
+		FixedPushModel fixedPushModel = new FixedPushModel();
+		fixedPushModel.setServertag("10.100.91.73");
+		fixedPushModel.setIpaddress(list);
+		try {
+			 FixedPushService.createContainerPushFixedInfo(fixedPushModel);
+		} catch (Exception e) {
+			logger.debug(e.getMessage());
+		}
+
 	}
-	
-	
+
+	@Test
+	public void tst() {
+		try {
+			// Socket s1 = new Socket("123.126.33.215", 29450);
+			Socket s1 = new Socket("123.126.32.147", 39450);
+
+			InputStream is = s1.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+
+			OutputStream os = s1.getOutputStream();
+
+			String sds2 = "{'hostname': 'Store1111-BJ-CTC-old-98', 'serverhardtype': 'HP ProLiant DL180 G6', 'factname': 'Store-BJ-CTC-old-98', 'os': {'osKernel': '2.6.32-letv.2.220.4.1.el6.x86_64', 'osBit': 'x86_64', 'osName': 'CentOS 6.2'}, 'servertag': 'CNG951S5YL', 'servertype': 'physical', 'gatewayIP': '220.181.117.97', 'manageip': {}, 'dns': [{'nameserver': '10.200.0.3'}, {'nameserver': '219.141.136.10'}, {'nameserver': '219.141.244.2'}], 'memory': [{'Serial Number': '7C072A4B', 'Manufacturer': 'Nanya', 'Speed': '800 MHz', 'Size': '2048 MB'}, {'Serial Number': '7C072A1D', 'Manufacturer': 'Nanya', 'Speed': '800 MHz', 'Size': '2048 MB'}, {'Serial Number': '7E072A59', 'Manufacturer': 'Nanya', 'Speed': '800 MHz', 'Size': '2048 MB'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer03', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '7B072A2B', 'Manufacturer': 'Nanya', 'Speed': '800 MHz', 'Size': '2048 MB'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer05', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer06', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer07', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer08', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer09', 'Speed': 'Unknown', 'Size': 'No Module Installed'}, {'Serial Number': '00000000', 'Manufacturer': 'Manufacturer10', 'Speed': 'Unknown', 'Size': 'No Module Installed'}], 'raid': [], 'serverproduct': 'HP', 'ipaddress': [{'ip': '220.181.117.98', 'mac': '18:A9:05:74:2B:64', 'name': 'eth0'}, {'ip': '', 'mac': '18:A9:05:74:2B:65', 'name': 'eth1'}], 'cpu': {'cpuCoreNum': '4', 'cpuBit': '64', 'cpuClockSpeed': '2.00GHz', 'cpupynum': '1', 'cpuName': 'Intel Xeon', 'band': 'Intel', 'model': 'E5504'}}";
+
+			if (null == sds2 || "".equals(sds2)) {
+				;
+			} else {
+				os.write(sds2.getBytes());
+			}
+			os.flush();
+
+			// 关闭输入流
+			dis.close();
+			// 关闭打开的socket对象
+			s1.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
