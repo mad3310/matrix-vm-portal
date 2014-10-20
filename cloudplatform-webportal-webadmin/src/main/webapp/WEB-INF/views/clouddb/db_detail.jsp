@@ -17,10 +17,10 @@
 				<div class="widget-toolbar no-border pull-left">
 					<ul id="db-detail-tabs" class="nav nav-tabs" id="myTab2">
 						<li class="active">
-							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
+							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
+							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
 						</li>
 					</ul>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="widget-body">
 				<div class="widget-main padding-12 no-padding-left no-padding-right">
 					<div class="tab-content padding-4">
-						<div id="db-detail-info" class="tab-pane">
+						<div id="db-detail-info" class="tab-pane  active">
 							<div id="db-detail-table" class="col-xs-6">
 								<table class="table table-bordered" id="db_detail_table">
 									<tr>
@@ -46,7 +46,7 @@
 								</table>
 							</div>
 						</div>
-						<div id="db-detail-user-mgr" class="tab-pane  active">
+						<div id="db-detail-user-mgr" class="tab-pane">
 							<div class="col-xs-10"><!--style="margin-top:8px"  -->
 								<table class="table table-bordered" id="db_detail_table" >
 									<thead>
