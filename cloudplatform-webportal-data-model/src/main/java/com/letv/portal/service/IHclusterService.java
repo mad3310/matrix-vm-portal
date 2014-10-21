@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
@@ -26,4 +27,5 @@ public interface IHclusterService extends IBaseService<HclusterModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	public List<HclusterModel> selectByHclusterId(Long hclusterId);
 }

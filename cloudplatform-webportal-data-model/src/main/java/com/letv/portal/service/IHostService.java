@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
@@ -32,4 +33,12 @@ public interface IHostService extends IBaseService<HostModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
+	/**
+	 * Methods Name: selectByHclusterId <br>
+	 * Description: <br>
+	 * @author name: wujun
+	 * @param hclusterId
+	 * @return
+	 */
+	public List<HostModel> selectByHclusterId(Long hclusterId);
 }
