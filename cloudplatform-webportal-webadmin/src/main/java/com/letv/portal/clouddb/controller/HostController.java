@@ -27,17 +27,7 @@ public class HostController {
 	private IHostService hostService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(HostController.class);
-	/**
-	 * Methods Name: toList <br>
-	 * Description: <br>
-	 * @author name: wujun
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/",method=RequestMethod.GET)
-	public String toList(HttpServletRequest request){
-		return "/clouddb/mgr_host_list";
-	}
+
 	/**
 	 * Methods Name: list <br>
 	 * Description: <br>
@@ -85,7 +75,7 @@ public class HostController {
 	 * @param dav
 	 * @param request
 	 */
-	@RequestMapping(value="/",method=RequestMethod.POST)   
+	@RequestMapping(method=RequestMethod.POST)   
 	public void saveHost(HostModel hostModel,HttpServletRequest request) {
 		try {
 			this.hostService.insert(hostModel);
@@ -100,11 +90,11 @@ public class HostController {
     * @param hv
     * @param request
     */
-   @RequestMapping(value="/{id}",method=RequestMethod.DELETE)   
-   public void delteHostByID(@PathVariable Long id,HttpServletRequest request) {
+   @RequestMapping(value="/{hostId}",method=RequestMethod.DELETE)   
+   public void delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
 	HostModel hostModel = new HostModel();
 	try {
-		hostModel.setId(id);
+		hostModel.setId(hostId);
 		this.hostService.delete(hostModel);
 	} catch (Exception e) {
 		logger.debug(e.getMessage());
@@ -118,11 +108,8 @@ public class HostController {
    * @param hv
    * @param request
    */
-  @RequestMapping(value="/{id}/{hostName}",method=RequestMethod.PUT)   
-  public void updateHost(@PathVariable Long id,@PathVariable String hostName,HttpServletRequest request) {
-	  HostModel hostModel = new HostModel();
-	  hostModel.setId(id);
-	  hostModel.setHostName(hostName); 
+  @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
+  public void updateHost(HostModel hostModel) {
 	try {
 		this.hostService.update(hostModel);
 	} catch (Exception e) {

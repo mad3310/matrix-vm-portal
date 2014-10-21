@@ -12,7 +12,7 @@
         <typeAlias alias="IpResource" type="com.letv.portal.model.IpResourceModel" />
         <typeAlias alias="DbUser" type="com.letv.portal.model.DbUserModel" />
         <typeAlias alias="Build" type="com.letv.portal.model.BuildModel" />
-        
+        <typeAlias alias="Hcluster" type="com.letv.portal.model.HclusterModel" />
          <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
          
          <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />

@@ -67,18 +67,6 @@ public class SkipController {
 		return mav;
 	}
 	/**
-	 * Methods Name: toHostList <br>
-	 * Description: toHostList跳转
-	 * @author name: wujun
-	 * @param mav
-	 * @return
-	 */
-	@RequestMapping(value="/list/db/user/{ssd}",method=RequestMethod.GET)
-	public ModelAndView toHostList(ModelAndView mav){
-		mav.setViewName("/clouddb/host_list");
-		return mav;
-	}
-	/**
 	 * Methods Name: toDbAudit <br>
 	 * Description: Db审批跳转
 	 * @author name: wujun
