@@ -51,10 +51,22 @@ public class HclusterController {
 		return obj;
 	}
 	
-	
+	/**Methods Name: list <br>
+	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
+	 * @author name: wujun
+	 * @param dbId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/{hclusterId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable Long hclusterId) {
+		ResultObject obj = new ResultObject();
+		obj.setData(this.hclusterService.selectByHclusterId(hclusterId));
+		return obj;
+	}
 	/**Methods Name: list <br>
 	 * Description: 根据查询条件及分页信息获取分页数据  http://localhost:8080/host/list<br>
-	 * @author name: liuhao1
+	 * @author name: wujun
 	 * @param request
 	 * @return
 	 */

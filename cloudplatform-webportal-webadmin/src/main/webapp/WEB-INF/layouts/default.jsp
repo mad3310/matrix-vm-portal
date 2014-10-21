@@ -251,10 +251,15 @@ function error(errorThrown,time) {
 <script type="text/javascript">
 	var path = window.location.pathname;
 	if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
-		$('#sidebar-mcluster-mgr').addClass("active open hsub");
-		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("集群管理");
+		$('#sidebar-cluster-mgr').addClass("active open hsub");
+		$('#sidebar-cluster-mgr ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("container集群管理");
 		$('#main-content-header li:eq(1)').html("Container集群列表");
+	}else if(path.indexOf("/list/hcluster") >= 0||path.indexOf("/detail/hcluster") >= 0){
+		$('#sidebar-cluster-mgr').addClass("active open hsub");
+		$('#sidebar-cluster-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/hcluster").html("物理机集群管理");
+		$('#main-content-header li:eq(1)').html("物理机集群列表");
 	}else if(path.indexOf("/list/dbUser") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");

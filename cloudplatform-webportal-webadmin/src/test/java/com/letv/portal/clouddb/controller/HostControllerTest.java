@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -91,7 +92,16 @@ public class HostControllerTest extends AbstractTest{
 			e.printStackTrace();
 		}
 	}
-	
+	@Test
+	public void selectByHclusterId(){
+		try {
+			 HostModel hostModel = new HostModel();
+			 Long hclusterId = 12L;
+			 List<HostModel>  list= this.hostService.selectByHclusterId(hclusterId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 }
