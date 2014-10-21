@@ -1,6 +1,7 @@
 package com.letv.portal.zabbixPush.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonAnyGetter;
@@ -131,8 +132,11 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 			    result = (String)map.get("error");
 			    result+="_error";
 			}else{
-				result=(String)JSON.toJSONString(resulteMap.get("hostids")) ;
-				result+="_succeess";
+				if(resulteMap.get("hostids")!=null){
+					String[] arg =	resulteMap.get("hostids").toString().split("\"");
+					result = arg[1];
+					result+="_succeess";
+				}		
 			}
 		}
 		return result;

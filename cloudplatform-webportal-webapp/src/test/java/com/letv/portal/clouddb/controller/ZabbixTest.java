@@ -84,10 +84,10 @@ public class ZabbixTest extends AbstractTest {
 			
 			
 			ZabbixParam params = new ZabbixParam();
-			params.setHost("container_webportal6");
+			params.setHost("container_webportal7");
 			
 			InterfacesModel interfacesModel = new InterfacesModel();
-			interfacesModel.setIp("192.168.1.6");
+			interfacesModel.setIp("192.168.1.7");
 			
 			List<InterfacesModel> list = new ArrayList<InterfacesModel>();
 			list.add(interfacesModel);
