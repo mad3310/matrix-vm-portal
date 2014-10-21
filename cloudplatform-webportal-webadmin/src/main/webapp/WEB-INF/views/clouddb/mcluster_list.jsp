@@ -200,7 +200,29 @@ $(function(){
 	});
 	
 });
-
+function translateStatus(status){
+	if(status == 1){
+		return "运行中...";
+	}else if(status == 2){
+		return "创建中...";
+	}else if(status == 3){
+		return "创建失败";
+	}else if(status == 4){
+		return "审核失败";
+	}else if(status == 7){
+		return "启动中...";
+	}else if(status == 8){
+		return "停止中...";
+	}else if(status == 9){
+		return "已停止";
+	}else if(status == 10){
+		return "删除中。。，";
+	}else if(status == 11){
+		return "已删除";
+	}else if(status == 12){
+		return "不存在";
+	}
+}
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
@@ -214,15 +236,6 @@ function queryByPage(currentPage,recordsPerPage) {
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
 			
-			function translateStatus(status){
-				if(status == 1){
-					return "正常";
-				}else if(status == 2){
-					return "创建中...";
-				}else{
-					return "创建失败";
-				}
-			}
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
@@ -538,10 +551,10 @@ function startMcluster(obj){
 		$.ajax({
 			url:'${ctx}/mcluster/start',
 			type:'post',
-			data:{id : mclusterId},
+			data:{mclusterId : mclusterId},
 			success:function(data){
 				error(data);
-				queryByPage(currentPage, recordsPerPage)
+				queryByPage(currentPage, recordsPerPage);
 			}
 		});
 	}
@@ -553,14 +566,14 @@ function stopMcluster(obj){
 		$.ajax({
 			url:'${ctx}/mcluster/stop',
 			type:'post',
-			data:{id : mclusterId},
+			data:{mclusterId : mclusterId},
 			success:function(data){
 				error(data);
-				queryByPage(currentPage, recordsPerPage)
+				queryByPage(currentPage, recordsPerPage);
 			}
 		});
 	}
-	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭",stopCmd);
+	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
 	function deleteCmd(){
@@ -570,11 +583,11 @@ function deleteMcluster(obj){
 			type:'delete',
 			success:function(data){
 				error(data);
-				queryByPage(currentPage, recordsPerPage)
+				queryByPage(currentPage, recordsPerPage);
 			}
 		});
 	}
-	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除",deleteCmd);
+	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除?",deleteCmd);
 }
 
 function page_init(){

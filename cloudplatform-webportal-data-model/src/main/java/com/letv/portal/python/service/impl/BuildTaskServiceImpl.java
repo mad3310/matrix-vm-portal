@@ -76,13 +76,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
-//	@Async
+	@Async
 	public void buildMcluster(MclusterModel mclusterModel) {
 		this.buildMcluster(mclusterModel, null);
 	}
 	
 	@Override
-//	@Async
+	@Async
 	public void buildMcluster(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
 		
@@ -193,7 +193,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-//	@Async
+	@Async
 	public void buildDb(Long dbId) {
 		Integer status = null;
 		String resultMsg = "";
@@ -541,7 +541,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@Override
-//	@Async
+	@Async
 	public void removeMcluster(MclusterModel mcluster) {
 		String result = this.pythonService.removeMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
@@ -552,6 +552,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
+	@Async
 	public void startMcluster(MclusterModel mcluster) {
 		String result = this.pythonService.startMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
@@ -563,6 +564,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
+	@Async
 	public void stopMcluster(MclusterModel mcluster) {
 		String result = this.pythonService.stopMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
@@ -574,6 +576,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
+	@Async
 	public void startContainer(ContainerModel container) {
 		String result = this.pythonService.startContainer(container.getContainerName());
 		if(analysisResult(transResult(result))) {
@@ -584,6 +587,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
+	@Async
 	public void stopContainer(ContainerModel container) {
 		String result = this.pythonService.stopContainer(container.getContainerName());
 		if(analysisResult(transResult(result))) {

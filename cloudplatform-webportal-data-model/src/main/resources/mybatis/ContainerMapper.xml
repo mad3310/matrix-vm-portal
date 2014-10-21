@@ -127,16 +127,16 @@
 	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Container">
-		delete from WEBPORTAL_CONTAINER C where C.ID = #{id}
+		delete from WEBPORTAL_CONTAINER where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="deleteFlag" parameterType="Container">
-		update WEBPORTAL_CONTAINER C set
+		update WEBPORTAL_CONTAINER set
 		<if test="deleted != null  ">
-			C.DELETED=#{deleted}
+			DELETED=#{deleted}
 		</if>
-		where C.ID = #{id}
+		where ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
@@ -156,6 +156,6 @@
 	</select>
 	<!-- 物理删除 -->
 	<update id="deleteByMclusterId" parameterType="java.lang.Long">
-		delete from WEBPORTAL_CONTAINER C where C.MCLUSTER_ID = #{mclusterId}
+		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
 	</update>	
 </mapper>   

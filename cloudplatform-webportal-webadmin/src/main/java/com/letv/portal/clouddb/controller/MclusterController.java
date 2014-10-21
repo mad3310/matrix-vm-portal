@@ -104,8 +104,8 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value = "/start/{mclusterId}", method=RequestMethod.GET) 
-	public @ResponseBody ResultObject start(@PathVariable Long mclusterId,ResultObject result) {
+	@RequestMapping(value = "/start", method=RequestMethod.POST) 
+	public @ResponseBody ResultObject start(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.start(mclusterId);
 		return result;
 	}
@@ -116,8 +116,8 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value = "/stop/{mclusterId}", method=RequestMethod.GET) 
-	public @ResponseBody ResultObject stop(@PathVariable Long mclusterId,ResultObject result) {
+	@RequestMapping(value = "/stop", method=RequestMethod.POST) 
+	public @ResponseBody ResultObject stop(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.stop(mclusterId);
 		return result;
 	}

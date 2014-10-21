@@ -75,9 +75,11 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	@Override
 	public void deleteAndRemove(Long mclusterId) {
 		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
-		this.mclusterService.delete(mcluster);
-		this.containerService.deleteByMclusterId(mclusterId);
-		this.buildService.deleteByMclusterId(mclusterId);
+		mcluster.setStatus(MclusterStatus.DESTROYING.getValue());
+		this.mclusterService.updateBySelective(mcluster);
+//		this.mclusterService.delete(mcluster);
+//		this.containerService.deleteByMclusterId(mclusterId);
+//		this.buildService.deleteByMclusterId(mclusterId);
 //		this.dbService.deleteByMclusterId(mclusterId);
 		this.buildTaskService.removeMcluster(mcluster);
 	}
