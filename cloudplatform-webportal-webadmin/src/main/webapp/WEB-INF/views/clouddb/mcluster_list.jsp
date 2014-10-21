@@ -221,7 +221,7 @@ function translateStatus(status){
 		return "已删除";
 	}else if(status == 12){
 		return "不存在";
-	} 
+	}
 }
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
