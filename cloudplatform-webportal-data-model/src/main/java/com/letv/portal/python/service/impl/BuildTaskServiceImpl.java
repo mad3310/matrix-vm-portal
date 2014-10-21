@@ -376,17 +376,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.initMcluster(nodeIp1, username, password)),step,startTime,mclusterId,dbId);
-		}
-		if(nextStep) {
-			step++;
-			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp2, username, password)),step,startTime,mclusterId,dbId);
-		} 
-		if(nextStep) {
-			step++;
-			startTime = new Date();
-			Map map = transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password));
+			Map map = transResult(this.pythonService.initMcluster(nodeIp1, username, password));
 			nextStep = analysis(map,step,startTime,mclusterId,dbId);
 			if(nextStep) {
 				//保存sstPwd，启动启动gbalancer时使用。
@@ -396,6 +386,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				mcluster.setSstPwd(sstPwd);
 				this.mclusterService.updateBySelective(mcluster);
 			}
+		}
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = analysis(transResult(this.pythonService.syncContainer(nodeIp2, username, password)),step,startTime,mclusterId,dbId);
+		} 
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password)),step,startTime,mclusterId,dbId);
 		} 
 		if(nextStep) {
 			step++;
@@ -434,6 +434,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					this.buildService.updateByStep(nextBuild);
 					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 					this.mclusterService.audit(mclusterModel);
+					if(dbId!=null) {
+						DbModel dbModel = new DbModel();
+						dbModel.setId(dbId);
+						dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
+						this.dbService.updateBySelective(dbModel);
+					}
 					this.buildResultToMgr("mcluster集群"+mclusterModel.getMclusterName(), "失败", "check init containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
