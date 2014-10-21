@@ -515,7 +515,7 @@ function confirmframe(title,content,question,ok,cancle){
 		buttons : [
 				{
 					html : "确定",
-					"class" : "btn btn-primary  disabled btn-xs",
+					"class" : "btn btn-primary btn-xs",
 					click : function() {
 						ok();
 						$(this).dialog("close");
@@ -536,8 +536,9 @@ function startMcluster(obj){
 	function startCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/start/'+mclusterId,
-			type:'delete',
+			url:'${ctx}/mcluster/start',
+			type:'post',
+			data:{id : mclusterId},
 			success:function(data){
 				error(data);
 				queryByPage(currentPage, recordsPerPage)
@@ -550,21 +551,22 @@ function stopMcluster(obj){
 	function stopCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/stop/'+mclusterId,
-			type:'delete',
+			url:'${ctx}/mcluster/stop',
+			type:'post',
+			data:{id : mclusterId},
 			success:function(data){
 				error(data);
 				queryByPage(currentPage, recordsPerPage)
 			}
 		});
 	}
-	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要停止",stopCmd);
+	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭",stopCmd);
 }
 function deleteMcluster(obj){
 	function deleteCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/delete/'+mclusterId,
+			url:'${ctx}/mcluster/'+mclusterId,
 			type:'delete',
 			success:function(data){
 				error(data);
