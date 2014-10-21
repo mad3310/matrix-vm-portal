@@ -560,7 +560,7 @@ function stopMcluster(obj){
 			}
 		});
 	}
-	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭",stopCmd);
+	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
 	function deleteCmd(){
@@ -574,7 +574,7 @@ function deleteMcluster(obj){
 			}
 		});
 	}
-	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除",deleteCmd);
+	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除?",deleteCmd);
 }
 
 function page_init(){
