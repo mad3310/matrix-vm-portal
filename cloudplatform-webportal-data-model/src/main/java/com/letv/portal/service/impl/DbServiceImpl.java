@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IDbUserService;
 
 @Service("dbService")
 public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
@@ -35,6 +37,8 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private IDbUserService dbUserService;
 	
 	
 	public DbServiceImpl() {
@@ -63,5 +67,16 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Override
 	public List<DbModel> selectByDbName(String dbName) {
 		return this.dbDao.selectByDbName(dbName);
+	}
+
+	@Override
+	public void deleteByMclusterId(Long mclusterId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		List<DbModel> dbs = this.dbDao.selectByMap(map);
+		for (DbModel dbModel : dbs) {
+			this.delete(dbModel);
+			this.dbUserService.deleteByDbId(dbModel.getId());
+		}
 	}
 }
