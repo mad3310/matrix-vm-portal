@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -45,6 +46,9 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		page.setData(this.hclusterDao.selectPageByMap(param));
 		page.setTotalRecords(this.hclusterDao.selectByMapCount(params));
 		return page;
+	}
+	public List<HclusterModel> selectByHclusterId(Long hclusterId){
+		return hclusterDao.selectByHclusterId(hclusterId);
 	}
 
 

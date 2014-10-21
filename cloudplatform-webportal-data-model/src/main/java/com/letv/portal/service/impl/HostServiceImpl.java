@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -58,6 +59,9 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		page.setData(this.hostDao.selectPageByMap(param));
 		page.setTotalRecords(this.hostDao.selectByMapCount(params));
 		return page;
+	}
+	public List<HostModel> selectByHclusterId(Long hclusterId){
+		return this.hostDao.selectByHclusterId(hclusterId);
 	}
 
 }
