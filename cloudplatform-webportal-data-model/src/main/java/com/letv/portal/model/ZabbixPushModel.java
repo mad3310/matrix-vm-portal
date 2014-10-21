@@ -7,10 +7,9 @@ public class ZabbixPushModel {
 	private String auth;
 	private int id;
 	public ZabbixPushModel(){
-		ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-		zabbixPushModel.setJsonrpc("2.0");
-		zabbixPushModel.setMethod("host.create");
-		zabbixPushModel.setId(1);
+		this.jsonrpc="2.0";
+		this.method="host.create";
+		this.id=1;
 	}
 
 	public String getJsonrpc() {

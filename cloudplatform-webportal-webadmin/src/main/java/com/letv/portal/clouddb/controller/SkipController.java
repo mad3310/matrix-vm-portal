@@ -91,5 +91,29 @@ public class SkipController {
 		mav.setViewName("/clouddb/db_audit");
 		return mav;
 	}
+	/**
+	 * Methods Name: toHcluster <br>
+	 * Description: Host集群跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/list/hcluster",method=RequestMethod.GET)
+	public ModelAndView toHcluster(ModelAndView mav){
+		mav.setViewName("/clouddb/hcluster_list");
+		return mav;
+	}
+	/**
+	 * Methods Name: toHclusterDetail <br>
+	 * Description: hcluster详情
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/hclusterDetail/hcluster",method=RequestMethod.GET)
+	public ModelAndView toHclusterDetail(ModelAndView mav){
+		mav.setViewName("/clouddb/hcluster_detail");
+		return mav;
+	}
 	
 }
