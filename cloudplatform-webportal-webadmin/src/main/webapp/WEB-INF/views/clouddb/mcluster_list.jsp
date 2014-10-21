@@ -221,6 +221,10 @@ function translateStatus(status){
 		return "已删除";
 	}else if(status == 12){
 		return "不存在";
+	}else if(status == 13){
+		return "危险";
+	}else if(status == 14){
+		return "严重危险";
 	}
 }
 function queryByPage(currentPage,recordsPerPage) {

@@ -139,7 +139,7 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_HOST m left join WEBPORTAL_MCLUSTER_INFO n 
+		from WEBPORTAL_HOST m left join WEBPORTAL_HCLUSTER n 
 		on n.ID = m.ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY m.CREATE_TIME DESC
