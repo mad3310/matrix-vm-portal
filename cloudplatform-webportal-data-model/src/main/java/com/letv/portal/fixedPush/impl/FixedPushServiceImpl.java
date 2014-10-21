@@ -76,7 +76,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	    sendSocket(pushString);
         return null;
 	}
-
+ 
 	@Override
 	public String receviceFixedInfo(FixedPushModel fixedPushModel) throws Exception{
 		if(fixedPushModel!=null){
