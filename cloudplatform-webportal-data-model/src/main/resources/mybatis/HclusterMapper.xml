@@ -65,7 +65,7 @@
 
 		</trim>
 	</sql>
-	
+
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Hcluster">

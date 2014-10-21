@@ -1,4 +1,4 @@
-	package com.letv.portal.clouddb.controller;
+package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +83,19 @@ public class HostController {
 			logger.debug(e.getMessage());
 		}	
 	}	
+	/**
+	 * Methods Name: list <br>
+	 * Description: <br>
+	 * @author name: wujun
+	 * @param hclusterId
+	 * @return
+	 */
+	@RequestMapping(value="/{hclusterId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable Long hclusterId) {
+		ResultObject obj = new ResultObject();
+		obj.setData(this.hostService.selectByHclusterId(hclusterId));
+		return obj;
+	}
    /**
     * Methods Name: delteHostByID <br>
     * Description: 删除host信息通过hostID
