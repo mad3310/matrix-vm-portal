@@ -3,7 +3,7 @@ package com.letv.portal.model;
 public class TemplatesModel {
   private String templateid;
   public TemplatesModel(){
-	  this.templateid ="23187"; 
+	  this.templateid ="10108"; 
   }
 public String getTemplateid() {
 	return templateid;
