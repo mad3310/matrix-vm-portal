@@ -76,4 +76,10 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserId 
 	 */
 	 public void deleteDbUser(String dbUserId);
+
+	/**Methods Name: deleteByDbId <br>
+	 * Description: 根据db删除用户<br>
+	 * @author name: liuhao1
+	 */
+	public void deleteByDbId(Long dbId);
 }

@@ -3,8 +3,7 @@ package com.letv.portal.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -12,6 +11,9 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IMclusterDao;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.service.IBuildService;
+import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
 
 /**Program Name: MclusterServiceImpl <br>
@@ -25,8 +27,15 @@ import com.letv.portal.service.IMclusterService;
 public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implements
 		IMclusterService{
 	
-	@Resource
+	@Autowired
 	private IMclusterDao mclusterDao;
+	
+	@Autowired
+	private IContainerService containerService;
+	@Autowired
+	private IBuildService buildService;
+	@Autowired
+	private IDbService dbService;
 	
 	public MclusterServiceImpl() {
 		super(MclusterModel.class);
@@ -55,6 +64,14 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	@Override
 	public List<MclusterModel> selectByName(String mclusterName) {
 		return this.mclusterDao.selectByName(mclusterName);
+	}
+	
+	@Override
+	public void delete(MclusterModel mcluster) {
+		this.containerService.deleteByMclusterId(mcluster.getId());
+		this.buildService.deleteByMclusterId(mcluster.getId());
+		this.dbService.deleteByMclusterId(mcluster.getId());
+		this.mclusterDao.delete(mcluster);
 	}
 
 }

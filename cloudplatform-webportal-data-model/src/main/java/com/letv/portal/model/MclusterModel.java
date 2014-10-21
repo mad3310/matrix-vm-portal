@@ -18,6 +18,8 @@ public class MclusterModel extends BaseModel {
 	private String adminPassword;
 	private Integer status; //状态
 	
+	private String sstPwd; //gbalancer监控密码
+	
 	private UserModel createUserModel;
 	
 	public String getMclusterName() {
@@ -50,6 +52,13 @@ public class MclusterModel extends BaseModel {
 	}
 	public void setCreateUserModel(UserModel createUserModel) {
 		this.createUserModel = createUserModel;
+	}
+	
+	public String getSstPwd() {
+		return sstPwd;
+	}
+	public void setSstPwd(String sstPwd) {
+		this.sstPwd = sstPwd;
 	}
 	@Override
 	public String toString() {

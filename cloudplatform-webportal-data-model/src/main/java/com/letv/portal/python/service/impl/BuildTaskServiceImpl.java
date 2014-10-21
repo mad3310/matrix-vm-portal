@@ -181,6 +181,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setMclusterId(mclusterModel.getId());
 					container.setIpMask((String) map.get("netMask"));
 					container.setContainerName((String) map.get("containerName"));
+					container.setStatus(MclusterStatus.RUNNING.getValue());
 					//物理机集群维护完成后，修改此处，需要关联物理机id
 //					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {
@@ -342,8 +343,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String nodeIp3 = containers.get(2).getIpAddr();
 		String nodeName3 = containers.get(2).getContainerName();
 		
-		Long mclusterId = mclusterModel.getId();
+		String vipNodeIp = containers.get(3).getIpAddr();
+		String vipNodeName = containers.get(3).getContainerName();
 		
+		Long mclusterId = mclusterModel.getId();
+		String sstPwd = "";
 		/*mcluster-manager测试用集群
 		
 		物理机
@@ -382,7 +386,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = analysis(transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password)),step,startTime,mclusterId,dbId);
+			Map map = transResult(this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password));
+			nextStep = analysis(map,step,startTime,mclusterId,dbId);
+			if(nextStep) {
+				//保存sstPwd，启动启动gbalancer时使用。
+				sstPwd = (String) ((Map)map.get("response")).get("sst_user_password");
+				MclusterModel mcluster = new MclusterModel();
+				mcluster.setId(mclusterId);
+				mcluster.setSstPwd(sstPwd);
+				this.mclusterService.updateBySelective(mcluster);
+			}
 		} 
 		if(nextStep) {
 			step++;
@@ -428,6 +441,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 			nextStep = analysis(result, step, startTime, mclusterModel.getId(), null);
 		}
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			StringBuffer ipListPort = new StringBuffer();
+			ipListPort.append(nodeIp1).append(":3306,").append(nodeIp2).append(":3306,").append(nodeIp3).append(":3306");
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "3306", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+		}
+		
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			StringBuffer ipListPort = new StringBuffer();
+			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+		}
+		
 		return nextStep;
 	}
 	
@@ -604,6 +633,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		mcluster.setStatus(status);
 		this.mclusterService.updateBySelective(mcluster);
+		if(status == MclusterStatus.NOTEXIT.getValue()) {
+			this.mclusterService.delete(mcluster);
+		}
 	}
 
 	@Override
@@ -634,6 +666,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} else if("not exist".equals(statusStr)) {
 			status = MclusterStatus.NOTEXIT.getValue();
 		} else if("failed".equals(statusStr)) {
+			
+		} else if("danger".equals(statusStr)) {
+			status = MclusterStatus.DANGER.getValue();
+		} else if("crisis".equals(statusStr)) {
+			status = MclusterStatus.CRISIS.getValue();
 		}
 		return status;
 	}

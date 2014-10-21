@@ -10,6 +10,7 @@
 		<result column="ADMIN_USER" property="adminUser" />
 		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="STATUS" property="status" />
+		<result column="SST_PASSWORD" property="sstPwd" />
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -21,7 +22,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
+		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.SST_PASSWORD,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -35,6 +36,9 @@
 			</if>
 			<if test="status != null  ">
 				and M.STATUS=#{status}
+			</if>
+			<if test="sstPwd != null  ">
+				and M.SST_PASSWORD=#{sstPwd}
 			</if>
 			<if test="deleted != null  ">
 				and M.DELETED=#{deleted}
@@ -69,6 +73,9 @@
 			<if test="params != null and params.deleted != null  ">
 				and M.DELETED=#{params.deleted}
 			</if>
+			<if test="params != null and params.sstPwd != null  ">
+				and M.SST_PASSWORD=#{params.sstPwd}
+			</if>
 			<if test="params != null and params.createTime != null  ">
 				and M.CREATE_TIME=#{params.createTime}
 			</if>
@@ -87,14 +94,14 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},#{deleted},now(),#{createUser},now(),#{updateUser})
+		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,SST_PASSWORD,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},#{sstPwd},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
-		MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},SST_PASSWORD=#{sstPwd},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -113,6 +120,9 @@
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
+			</if>
+			<if test="sstPwd != null  ">
+				SST_PASSWORD=#{sstPwd},
 			</if>
 			<if test="deleted != null  ">
 				DELETED=#{deleted},

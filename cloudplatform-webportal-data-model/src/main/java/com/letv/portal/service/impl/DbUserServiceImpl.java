@@ -147,4 +147,10 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 			this.dbUserDao.delete(dbUserModel);
 		}	
 	}
+
+	@Override
+	public void deleteByDbId(Long dbId) {
+		this.dbUserDao.deleteByDbId(dbId);
+		
+	}
 }

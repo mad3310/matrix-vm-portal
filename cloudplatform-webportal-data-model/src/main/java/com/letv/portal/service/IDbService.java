@@ -41,4 +41,11 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public List<DbModel> selectByDbName(String dbName);
 
+	/**Methods Name: deleteByMclusterId <br>
+	 * Description: 根据container集群id删除对应db<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void deleteByMclusterId(Long mclusterId);
+
 }

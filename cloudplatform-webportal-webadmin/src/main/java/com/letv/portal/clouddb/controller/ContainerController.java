@@ -44,8 +44,8 @@ public class ContainerController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value = "/start/{containerId}", method=RequestMethod.GET) 
-	public @ResponseBody ResultObject start(@PathVariable Long containerId,ResultObject result) {
+	@RequestMapping(value = "/start", method=RequestMethod.POST) 
+	public @ResponseBody ResultObject start(Long containerId,ResultObject result) {
 		this.containerProxy.start(containerId);
 		return result;
 	}
@@ -57,8 +57,8 @@ public class ContainerController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value = "/stop/{containerId}", method=RequestMethod.GET) 
-	public @ResponseBody ResultObject stop(@PathVariable Long containerId,ResultObject result) {
+	@RequestMapping(value = "/stop", method=RequestMethod.POST) 
+	public @ResponseBody ResultObject stop(Long containerId,ResultObject result) {
 		this.containerProxy.stop(containerId);
 		return result;
 	}

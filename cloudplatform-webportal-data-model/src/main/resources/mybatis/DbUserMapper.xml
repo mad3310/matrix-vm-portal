@@ -81,6 +81,9 @@
 	<update id="delete" parameterType="DbUser">
 		delete from WEBPORTAL_DB_USER where ID = #{id}
 	</update>
+	<update id="deleteByDbId" parameterType="DbUser">
+		delete from WEBPORTAL_DB_USER where DB_ID = #{dbId}
+	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="updateFlag" parameterType="DbUser">

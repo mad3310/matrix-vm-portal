@@ -45,7 +45,33 @@ $(function(){
 	$('#nav-search').addClass("hidden");
 	queryContainer();
 })
-
+function translateStatus(status){
+	if(status == 1){
+		return "运行中...";
+	}else if(status == 2){
+		return "创建中...";
+	}else if(status == 3){
+		return "创建失败";
+	}else if(status == 4){
+		return "审核失败";
+	}else if(status == 7){
+		return "启动中...";
+	}else if(status == 8){
+		return "停止中...";
+	}else if(status == 9){
+		return "已停止";
+	}else if(status == 10){
+		return "删除中。。，";
+	}else if(status == 11){
+		return "已删除";
+	}else if(status == 12){
+		return "不存在";
+	}else if(status == 13){
+		return "危险";
+	}else if(status == 14){
+		return "严重危险";
+	}
+}
 function queryContainer(){
 	$("#tby tr").remove();
 	$.ajax({ 
@@ -78,7 +104,7 @@ function queryContainer(){
 						+ array[i].zookeeperId
 						+ "</td>");
 				var	td7 = $("<td>"
-						+ "正常"
+						+ translateStatus(array[i].status)
 						+ "</td>");
 				var td8 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
@@ -140,9 +166,9 @@ function startContainer(obj){
 	function startCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/start',
+			url:'${ctx}/container/start',
 			type:'post',
-			data:{id : containerId},
+			data:{containerId : containerId},
 			success:function(data){
 				error(data);
 				queryContainer();
@@ -155,9 +181,9 @@ function stopContainer(obj){
 	function stopCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/stop',
+			url:'${ctx}/container/stop',
 			type:'post',
-			data:{id : containerId},
+			data:{containerId : containerId},
 			success:function(data){
 				error(data);
 				queryContainer();
