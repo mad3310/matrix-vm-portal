@@ -14,6 +14,7 @@ import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHostService;
 
 public class HostControllerTest extends AbstractTest{
+	  
 	@Resource
 	private IHostService hostService;
 	
@@ -49,26 +50,9 @@ public class HostControllerTest extends AbstractTest{
 	public void saveHost(){ 
 		try {    
 			HostModel hostModel = new HostModel();
-			hostModel.setHostName("wujun4");
+			hostModel.setHostName("wujun6");
 			hostModel.setHostIp("192.168.1.11");
 			hostService.insert(hostModel);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	/**
-	 * Methods Name: hostList <br>
-	 * Description:  列表展示
-	 * @author name: wujun
-	 */
-	@Test
-	public void hostList(){
-		try {
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("hostName", "wujun1");
-			ResultObject obj = new ResultObject();
-			obj.setData(this.hostService.selectByMap(map));
-			System.out.println(obj.getData());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,9 +67,9 @@ public class HostControllerTest extends AbstractTest{
 	@Test
 	public void deleteHost(){
 		try {
-            String id = "c5f72b50-3fc1-11e4-83a5-b82a72c38a8f";
+            Long id = 2L;
 			HostModel hostModel = new HostModel();
-//			hostModel.setId(id);
+			hostModel.setId(id);
            this.hostService.delete(hostModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +85,7 @@ public class HostControllerTest extends AbstractTest{
 		try {
 			 HostModel hostModel = new HostModel();
 			 hostModel.setHostName("wujunSpeacil");
-			 hostModel.setId(3L);
+			 hostModel.setId(2L);
 			 this.hostService.update(hostModel);
 		} catch (Exception e) {
 			e.printStackTrace();

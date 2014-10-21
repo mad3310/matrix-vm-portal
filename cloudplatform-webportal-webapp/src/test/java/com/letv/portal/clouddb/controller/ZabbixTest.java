@@ -74,7 +74,7 @@ public class ZabbixTest extends AbstractTest {
 		ZabbixParam params = new ZabbixParam();
 		System.out.println("xx");
 	}
-	
+	@Test
 	public void createSingleContainer(){
 		try {
 		ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
@@ -84,10 +84,10 @@ public class ZabbixTest extends AbstractTest {
 			
 			
 			ZabbixParam params = new ZabbixParam();
-			params.setHost("container_webportal");
+			params.setHost("container_webportal7");
 			
 			InterfacesModel interfacesModel = new InterfacesModel();
-			interfacesModel.setIp("1921.168.1.2");
+			interfacesModel.setIp("192.168.1.7");
 			
 			List<InterfacesModel> list = new ArrayList<InterfacesModel>();
 			list.add(interfacesModel);

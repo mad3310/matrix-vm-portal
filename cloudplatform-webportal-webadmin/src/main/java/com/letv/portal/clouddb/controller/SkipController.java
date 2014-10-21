@@ -67,18 +67,6 @@ public class SkipController {
 		return mav;
 	}
 	/**
-	 * Methods Name: toHostList <br>
-	 * Description: toHostList跳转
-	 * @author name: wujun
-	 * @param mav
-	 * @return
-	 */
-	@RequestMapping(value="/list/db/user/{ssd}",method=RequestMethod.GET)
-	public ModelAndView toHostList(ModelAndView mav){
-		mav.setViewName("/clouddb/host_list");
-		return mav;
-	}
-	/**
 	 * Methods Name: toDbAudit <br>
 	 * Description: Db审批跳转
 	 * @author name: wujun
@@ -89,6 +77,30 @@ public class SkipController {
 	public ModelAndView toDbAudit(@PathVariable Long dbId, ModelAndView mav){
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/db_audit");
+		return mav;
+	}
+	/**
+	 * Methods Name: toHcluster <br>
+	 * Description: Host集群跳转
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/list/hcluster",method=RequestMethod.GET)
+	public ModelAndView toHcluster(ModelAndView mav){
+		mav.setViewName("/clouddb/hcluster_list");
+		return mav;
+	}
+	/**
+	 * Methods Name: toHclusterDetail <br>
+	 * Description: hcluster详情
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/hclusterDetail/hcluster",method=RequestMethod.GET)
+	public ModelAndView toHclusterDetail(ModelAndView mav){
+		mav.setViewName("/clouddb/hcluster_detail");
 		return mav;
 	}
 	

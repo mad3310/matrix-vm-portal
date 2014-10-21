@@ -23,9 +23,27 @@ public class HostModel extends BaseModel {
 	private Integer memorySize; //内存大小
 	private Integer diskSize; //磁盘大小
 	private Integer diskUsed; //磁盘使用量
+	private String  type;     //主机类型
+	private HclusterModel hcluster; //物理机集群
+	
 
 	private Integer status; //状态:
 	
+	
+	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
+	}
 	public String getHostName() {
 		return hostName;
 	}

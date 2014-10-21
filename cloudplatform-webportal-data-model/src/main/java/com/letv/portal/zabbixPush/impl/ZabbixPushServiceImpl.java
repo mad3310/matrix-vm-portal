@@ -1,13 +1,16 @@
 package com.letv.portal.zabbixPush.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.impl.FixedPushServiceImpl;
@@ -59,7 +62,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				logger.debug("登陆zabbix系统成功");
 				try {
 					zabbixPushModel.setAuth(auth);
-					result = analysisResult(transResult(sendZabbixInfo(zabbixPushModel)));
+					result = analysisResultMap(transResult(sendZabbixInfo(zabbixPushModel)));
 					logger.debug("推送zabbix系统成功");
 				} catch (Exception e) {
 				  logger.debug("推送zabbix系统失败");
@@ -95,8 +98,8 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	};
 	
 	
-	private Map<String, String> transResult(String result)throws Exception{
-		Map<String, String> jsonResult = new HashMap<String, String>();
+	private Map<Object, Object> transResult(String result)throws Exception{
+		Map<Object, Object> jsonResult = new HashMap<Object, Object>();
 		try {
 			jsonResult = JSON.parseObject(result, Map.class);
 		}catch (Exception e) {
@@ -106,10 +109,10 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	}
 	
 	
-	private String analysisResult(Map<String, String> map)throws Exception{
-		String result =null;
+	private String analysisResult(Map<Object, Object> map)throws Exception{
+		String result = null;
 		if(map!=null){
-			result = (String)map.get("result");
+			result = (String) map.get("result");
 			if("".equals(result)||null==result){
 			    result = (String)map.get("error");
 			    result+="_error";
@@ -119,4 +122,24 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		}
 		return result;
 	}
+	
+	private String analysisResultMap(Map<Object, Object> map)throws Exception{
+		Map<Object, Object> resulteMap = new HashMap<Object, Object>();
+		String result = null; 
+		if(map!=null){
+			resulteMap = (Map<Object, Object>) map.get("result");
+			if("".equals(resulteMap)||null==resulteMap){
+			    result = (String)map.get("error");
+			    result+="_error";
+			}else{
+				if(resulteMap.get("hostids")!=null){
+					String[] arg =	resulteMap.get("hostids").toString().split("\"");
+					result = arg[1];
+					result+="_succeess";
+				}		
+			}
+		}
+		return result;
+	}
+	
 }

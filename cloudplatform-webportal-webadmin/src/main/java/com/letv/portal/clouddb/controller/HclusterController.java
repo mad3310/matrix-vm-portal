@@ -1,4 +1,4 @@
-	package com.letv.portal.clouddb.controller;
+package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,17 +16,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.HostModel;
-import com.letv.portal.service.IHostService;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.service.IHclusterService;
 
 @Controller
-@RequestMapping("/host")
-public class HostController {
-	
+@RequestMapping("/hcluster")
+public class HclusterController {
 	@Resource
-	private IHostService hostService;
+	private IHclusterService  hclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(HostController.class);
+	private final static Logger logger = LoggerFactory.getLogger(HclusterController.class);
 
 	/**
 	 * Methods Name: list <br>
@@ -38,17 +37,17 @@ public class HostController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{hostName}",method=RequestMethod.GET)  
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String hostName,HttpServletRequest request) {
+	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{hclusterName}",method=RequestMethod.GET)  
+	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String hclusterName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
 	
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("hostName", hostName);
+		params.put("hclusterName", hclusterName);
 		
 		ResultObject obj = new ResultObject();
-		obj.setData(this.hostService.findPagebyParams(params, page));
+		obj.setData(this.hclusterService.findPagebyParams(params, page));
 		return obj;
 	}
 	
@@ -59,13 +58,13 @@ public class HostController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value ="/{hostName}",method=RequestMethod.GET)   
+	@RequestMapping(value ="/{hclusterName}",method=RequestMethod.GET)   
 	
-	public @ResponseBody ResultObject list(@PathVariable String hostName,HttpServletRequest request) {
+	public @ResponseBody ResultObject list(@PathVariable String hclusterName,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("hostName", hostName);
+		map.put("hclusterName", hclusterName);
 		ResultObject obj = new ResultObject();
-		obj.setData(this.hostService.selectByMap(map));
+		obj.setData(this.hclusterService.selectByMap(map));
 		return obj;
 	}
 	/**
@@ -76,9 +75,9 @@ public class HostController {
 	 * @param request
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public void saveHost(HostModel hostModel,HttpServletRequest request) {
+	public void saveHost(HclusterModel hclusterModel,HttpServletRequest request) {
 		try {
-			this.hostService.insert(hostModel);
+			this.hclusterService.insert(hclusterModel);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	
@@ -90,12 +89,12 @@ public class HostController {
     * @param hv
     * @param request
     */
-   @RequestMapping(value="/{hostId}",method=RequestMethod.DELETE)   
-   public void delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
-	HostModel hostModel = new HostModel();
+   @RequestMapping(value="/{hclusterId}",method=RequestMethod.DELETE)   
+   public void delteHostByID(@PathVariable Long hclusterId,HttpServletRequest request) {
+	   HclusterModel hclusterModel = new HclusterModel();
 	try {
-		hostModel.setId(hostId);
-		this.hostService.delete(hostModel);
+		hclusterModel.setId(hclusterId);
+		this.hclusterService.delete(hclusterModel);
 	} catch (Exception e) {
 		logger.debug(e.getMessage());
 	}	
@@ -109,11 +108,8 @@ public class HostController {
    * @param request
    */
   @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
-  public void updateHost(HostModel hostModel) {
-	try {
-		this.hostService.update(hostModel);
-	} catch (Exception e) {
-		logger.debug(e.getMessage());
-	}	
+  public void updateHost(HclusterModel hclusterModel) {
+
 }	
+	
 }
