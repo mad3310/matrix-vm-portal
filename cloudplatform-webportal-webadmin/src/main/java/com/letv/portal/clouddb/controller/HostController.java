@@ -76,12 +76,14 @@ public class HostController {
 	 * @param request
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public void saveHost(HostModel hostModel,HttpServletRequest request) {
-		try {
-			this.hostService.insert(hostModel);
+	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		try {		
+			this.hostService.insert(hostModel);			
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	
+		return obj;
 	}	
 	/**
 	 * Methods Name: list <br>
@@ -104,7 +106,8 @@ public class HostController {
     * @param request
     */
    @RequestMapping(value="/{hostId}",method=RequestMethod.DELETE)   
-   public void delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
+   public @ResponseBody ResultObject delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
+	ResultObject obj = new ResultObject();
 	HostModel hostModel = new HostModel();
 	try {
 		hostModel.setId(hostId);
@@ -112,6 +115,7 @@ public class HostController {
 	} catch (Exception e) {
 		logger.debug(e.getMessage());
 	}	
+	return obj;
    }	
   
   /**
@@ -122,11 +126,13 @@ public class HostController {
    * @param request
    */
   @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
-  public void updateHost(HostModel hostModel) {
+  public @ResponseBody ResultObject updateHost(HostModel hostModel) {
+	ResultObject obj = new ResultObject();
 	try {
 		this.hostService.update(hostModel);
 	} catch (Exception e) {
 		logger.debug(e.getMessage());
 	}	
+	return obj;
 }	
 }
