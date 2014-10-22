@@ -145,6 +145,8 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
+	
+	
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">

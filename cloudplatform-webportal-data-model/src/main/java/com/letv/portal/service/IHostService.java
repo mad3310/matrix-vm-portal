@@ -48,5 +48,7 @@ public interface IHostService extends IBaseService<HostModel> {
 	 */
 	public void insertAndPhyhonApi(HostModel hostModel);
 	
+	public List<HostModel> selectByIpOrHostName(HostModel hostModel);
+	
 	
 }

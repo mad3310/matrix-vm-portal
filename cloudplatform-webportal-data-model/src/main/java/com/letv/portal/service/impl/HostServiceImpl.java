@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,5 +90,19 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
   		}
   		//buildTaskService.createHost(hostModel);
 	
+	}
+	
+	public List<HostModel> selectByIpOrHostName(HostModel hostModel){
+		Map<String, String> map = new HashMap<String, String>();
+		List<HostModel> list = new ArrayList<HostModel>();
+		if(hostModel!=null){
+			if(hostModel.getHostIp()!=null){
+				map.put("hostIp", hostModel.getHostIp());
+			}else {
+				map.put("hostName", hostModel.getHostName());			
+			}
+			list = this.hostDao.selectByMap(map);
+		}
+		return list;
 	}
 }

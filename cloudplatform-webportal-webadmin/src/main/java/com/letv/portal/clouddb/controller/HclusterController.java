@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHclusterService;
 
 @Controller
@@ -127,5 +129,23 @@ public class HclusterController {
   public void updateHost(HclusterModel hclusterModel) {
 
 }	
+  
+	
+	/**
+	 * Methods Name: validate <br>
+	 * Description: 校验hcluster是否存在
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validateIp(String hclusterName,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("hclusterName", hclusterName);
+		List<HclusterModel> list = this.hclusterService.selectByMap(map);
+		map.put("valid", list.size()>0?false:true);
+		return map;
+	}
 	
 }
