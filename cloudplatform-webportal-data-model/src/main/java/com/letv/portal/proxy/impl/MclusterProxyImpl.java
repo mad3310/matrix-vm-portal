@@ -1,5 +1,6 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -100,7 +101,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	public void checkStatus() {
 		List<MclusterModel> list = this.mclusterService.selectByMap(null);
 		for (MclusterModel mcluster : list) {
-			this.checkStatus(mcluster);
+//			this.checkStatus(mcluster);
 		}
 	}
 	

@@ -1,13 +1,15 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
@@ -17,6 +19,8 @@ import com.letv.portal.service.IContainerService;
 public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 		IContainerProxy{
 
+	private final static Logger logger = LoggerFactory.getLogger(ContainerProxyImpl.class);
+	
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
@@ -48,7 +52,7 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public void checkStatus() {
 		List<ContainerModel> list = this.containerService.selectByMap(null);
 		for (ContainerModel container : list) {
-			this.checkStatus(container);
+//			this.checkStatus(container);
 		}
 	}
 	

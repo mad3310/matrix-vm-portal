@@ -40,7 +40,18 @@
 		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,
 		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
-	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and C.ID=#{id}
+			</if>
+			<if test="containerName != null  and containerName != '' and containerName != 'null'">
+				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			</if>
+		</trim>
+	</sql>
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
@@ -158,4 +169,12 @@
 	<update id="deleteByMclusterId" parameterType="java.lang.Long">
 		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
 	</update>	
+	
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER C
+		<include refid="Example_Where_Clause" />
+	</select>
 </mapper>   

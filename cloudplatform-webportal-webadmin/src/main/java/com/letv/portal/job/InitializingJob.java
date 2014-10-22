@@ -84,34 +84,36 @@ public class InitializingJob {
 	public List<ScheduleJobModel> getJobs(){
 		List<ScheduleJobModel> jobs = new ArrayList<ScheduleJobModel>();
 		//测试数据 start
-		ScheduleJobModel scheduleJob = new ScheduleJobModel();
+		ScheduleJobModel testJob = new ScheduleJobModel();
 		
-		scheduleJob.setJobName("test");
-		scheduleJob.setJobMethod("test");
-		scheduleJob.setJobGroup("webportal");
-		scheduleJob.setJobStatus("1");
-		scheduleJob.setCronExpression("0/30 * * * * ?");
-		scheduleJob.setDescn("测试job初始化");
-		jobs.add(scheduleJob);
+		testJob.setJobName("test");
+		testJob.setJobMethod("test");
+		testJob.setJobGroup("webportal");
+		testJob.setJobStatus("1");
+		testJob.setCronExpression("0/30 * * * * ?");
+		testJob.setDescn("测试job初始化");
+		jobs.add(testJob);
 		
 		/*
 		 * 业务检查job
 		 */
-		/*scheduleJob.setJobName("checkMclusterStatus");
-		scheduleJob.setJobMethod("checkMclusterStatus");
-		scheduleJob.setJobGroup("webportal");
-		scheduleJob.setJobStatus("1");
-		scheduleJob.setCronExpression("0/30 * * * * ?");
-		scheduleJob.setDescn("检查container集群状态");
-		jobs.add(scheduleJob);
+		ScheduleJobModel mclusterJob = new ScheduleJobModel();
+		mclusterJob.setJobName("checkMclusterStatus");
+		mclusterJob.setJobMethod("checkMclusterStatus");
+		mclusterJob.setJobGroup("webportal");
+		mclusterJob.setJobStatus("1");
+		mclusterJob.setCronExpression("0/30 * * * * ?");
+		mclusterJob.setDescn("检查container集群状态");
+		jobs.add(mclusterJob);
 		
-		scheduleJob.setJobName("checkContainerStatus");
-		scheduleJob.setJobMethod("checkContainerStatus");
-		scheduleJob.setJobGroup("webportal");
-		scheduleJob.setJobStatus("1");
-		scheduleJob.setCronExpression("0/30 * * * * ?");
-		scheduleJob.setDescn("检查container单节点状态");
-		jobs.add(scheduleJob);*/
+		ScheduleJobModel containerJob = new ScheduleJobModel();
+		containerJob.setJobName("checkContainerStatus");
+		containerJob.setJobMethod("checkContainerStatus");
+		containerJob.setJobGroup("webportal");
+		containerJob.setJobStatus("1");
+		containerJob.setCronExpression("0/30 * * * * ?");
+		containerJob.setDescn("检查container单节点状态");
+		jobs.add(containerJob);
 		
 		
 		return jobs;
