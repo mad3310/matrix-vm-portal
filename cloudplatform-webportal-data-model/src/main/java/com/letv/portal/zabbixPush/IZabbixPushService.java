@@ -7,7 +7,7 @@ public interface IZabbixPushService{
 	/**
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>
-	 * @author name: wujun
+	 * @author name: wujun11
 	 * @param zabbixPushModel
 	 * @return
 	 */
