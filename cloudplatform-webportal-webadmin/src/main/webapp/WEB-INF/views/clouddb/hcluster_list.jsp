@@ -74,9 +74,9 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="mcluster_name">物理机集群名称</label>
+										<label class="col-sm-4 control-label" for="hcluster_name">物理机集群名称</label>
 										<div class="col-sm-6">
-											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 										</div>
 										<label class="control-label">
 											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',Container集群名不能以数字开头." style="cursor:pointer; text-decoration:none;">
@@ -90,7 +90,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-hcluster-botton" type="button" class="btn btn-sm btn-primary disabled" onclick="createMcluster()">创建</button>
+						<button id="create-hcluster-botton" type="button" class="btn btn-sm btn-primary" onclick="createHcluster()">创建</button>
 					</div>
 				</form>
 				</div>
@@ -159,7 +159,7 @@ function queryByPage(currentPage,recordsPerPage) {
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
-								+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+								+"<input name=\"hcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 								+"<span class=\"lbl\"></span>"
 								+"</label>"
 							+"</td>");
@@ -174,10 +174,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ "</td>");
 				var td5 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\">"
-						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-						+"</a>"
-						+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -278,7 +275,7 @@ function formValidate() {
              validating: 'glyphicon glyphicon-refresh'
          },
          fields: {
-       	  mclusterName: {
+       	  hclusterName: {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
@@ -320,6 +317,58 @@ function createHcluster(){
 			setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
 		}
 	});
+}
+
+function confirmframe(title,content,question,ok,cancle){
+	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+		_title : function(title) {
+			var $title = this.options.title || '&nbsp;'
+			if (("title_html" in this.options)
+					&& this.options.title_html == true)
+				title.html($title);
+			else
+				title.text($title);
+		}
+	}));
+	
+	$('#dialog-confirm').removeClass('hide').dialog({
+		resizable : false,
+		modal : true,
+		title : "<div class='widget-header'><h4 class='smaller'>"+title,
+		title_html : true,
+		buttons : [
+				{
+					html : "确定",
+					"class" : "btn btn-primary btn-xs",
+					click : function() {
+						ok();
+						$(this).dialog("close");
+					}
+				},
+				{
+					html : "取消",
+					"class" : "btn btn-xs",
+					click : function() {
+						$(this).dialog("close");
+					}
+				} ]
+	});
+	$('#dialog-confirm-content').html(content);
+	$('#dialog-confirm-question').html(question);
+}
+function deleteHcluster(obj){
+	function deleteCmd(){
+		var hclusterId =$(obj).parents("tr").find('[name="hcluster_id"]').val();
+		$.ajax({
+			url:'${ctx}/hcluster/'+hclusterId,
+			type:'delete',
+			success:function(data){
+				error(data);
+				queryByPage(currentPage, recordsPerPage);
+			}
+		});
+	}
+	confirmframe("删除物理机集群","删除物理机集群后将不能恢复!","您确定要删除?",deleteCmd);
 }
 
 function page_init(){
