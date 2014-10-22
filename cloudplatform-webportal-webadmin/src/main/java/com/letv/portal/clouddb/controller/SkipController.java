@@ -100,7 +100,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value="/detail/hcluster/{hclusterId}",method=RequestMethod.GET)
 	public ModelAndView toHclusterDetail(@PathVariable Long hclusterId,ModelAndView mav){
-		mav.addObject(hclusterId);
+		mav.addObject("hclusterId",hclusterId);
 		mav.setViewName("/clouddb/hcluster_detail");
 		return mav;
 	}

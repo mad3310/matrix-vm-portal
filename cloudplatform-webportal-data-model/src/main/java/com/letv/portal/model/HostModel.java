@@ -24,7 +24,12 @@ public class HostModel extends BaseModel {
 	private Integer diskSize; //磁盘大小
 	private Integer diskUsed; //磁盘使用量
 	private String  type;     //主机类型
+	private Long  hclusterId;     //主机类型
+	private String  descn;     //主机描述
 	private HclusterModel hcluster; //物理机集群
+	private String name; //用户名
+	private String password; //密码
+	
 	
 
 	private Integer status; //状态:
@@ -32,6 +37,30 @@ public class HostModel extends BaseModel {
 	
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
+	}
+	public String getDescn() {
+		return descn;
+	}
+	public void setDescn(String descn) {
+		this.descn = descn;
+	}
 	public String getType() {
 		return type;
 	}

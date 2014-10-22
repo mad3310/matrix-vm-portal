@@ -115,7 +115,6 @@ public class InitializingJob {
 		containerJob.setDescn("检查container单节点状态");
 		jobs.add(containerJob);
 		
-		
 		return jobs;
 	}
       

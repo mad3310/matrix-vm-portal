@@ -1,6 +1,7 @@
 package com.letv.portal.python.service;
 
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 
 
@@ -129,4 +130,13 @@ public interface IBuildTaskService {
 	 * @param container
 	 */
 	public void checkContainerStatus(ContainerModel container);
+	/**
+	 * Methods Name: createHost <br>
+	 * Description: 创建host<br>
+	 * @author name: wujun
+	 * @param hostModel
+	 * @return
+	 */
+	public void createHost(HostModel hostModel);
+	
 }

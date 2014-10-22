@@ -13,6 +13,7 @@ import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.python.service.IPythonService;
 
 @Service("pythonService")
@@ -21,6 +22,8 @@ public class PythonServiceImpl implements IPythonService{
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
 	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");//"http://10.200.91.142:8888"; //ConfigUtil.getString("mcluster_create_url");
+	private final static String HOST_CREATE_URL = ConfigUtil.getString("host_create_url");//"http://10.200.91.142:8888"; 
+	private final static String HOST_LOGIN_URL = ConfigUtil.getString("host_login_url");//"http://10.200.91.142:8888"; 
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
 	private final static String URL_IP = "";			//ConfigUtil.getString("");
 	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
@@ -246,6 +249,27 @@ public class PythonServiceImpl implements IPythonService{
 	public String checkContainerStatus(String containerName) {
 		String url = MCLUSTER_CREATE_URL  + "container/status/" + containerName;
 		String result = HttpClient.get(url,"root","root");
+		return result;
+	}
+
+	@Override
+	public String initHcluster(String hostIp) {
+		String url =URL_HEAD+ hostIp+URL_PORT+HOST_LOGIN_URL;
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("adminUser", "root");
+		map.put("adminPassword", "root");
+		String result = HttpClient.post(url, map);
+		return result;
+	}
+
+	@Override
+	public String createHost(HostModel hostModel) {
+		String url =URL_HEAD+ hostModel.getHostIp()+URL_PORT+HOST_CREATE_URL;
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("clusterName", hostModel.getHcluster().getHclusterName());
+		map.put("dataNodeIp", hostModel.getHostIp());
+		map.put("dataNodeName", hostModel.getHostName());
+		String result = HttpClient.post(url, map);	
 		return result;
 	}
 }

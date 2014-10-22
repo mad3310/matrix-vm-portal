@@ -8,7 +8,7 @@
 	<resultMap id="BaseResultMap" type="Hcluster">
 		<result column="ID" property="id" />
 		<result column="HCLUSTER_NAME" property="hclusterName" />
-		
+		<result column="DESCN" property="descn" />
 		
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
@@ -19,7 +19,7 @@
 	</resultMap>
   
 	<sql id="Base_Column_List">
-		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time
+		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn
 	</sql>
 	
 	
@@ -70,9 +70,9 @@
 	<insert id="insert" parameterType="Hcluster">
 		insert into
 		webportal_hcluster
-		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN)
 		values
-		(#{hclusterName},#{status},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
+		(#{hclusterName},#{status},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser},#{descn})
 	</insert>
 	
 	<!-- 物理删除 -->

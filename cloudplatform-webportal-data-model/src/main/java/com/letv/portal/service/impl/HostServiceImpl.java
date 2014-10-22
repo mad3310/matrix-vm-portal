@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,10 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IHostDao;
+import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
+import com.letv.portal.python.service.IBuildTaskService;
+import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
@@ -34,6 +38,10 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	
 	@Resource
 	private IMclusterService mclusterService;
+	@Resource
+	private IBuildTaskService buildTaskService;
+	@Resource
+	private IHclusterService hclusterService;
 
 	public HostServiceImpl() {
 		super(HostModel.class);
@@ -63,5 +71,23 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	public List<HostModel> selectByHclusterId(Long hclusterId){
 		return this.hostDao.selectByHclusterId(hclusterId);
 	}
-
+	/**
+	 * Methods Name: insertAndPhyhonApi <br>
+	 * Description: 创建host<br>
+	 * @author name: wujun
+	 */
+	public void insertAndPhyhonApi(HostModel hostModel){
+		hostModel.setName("root");
+		hostModel.setPassword("root");
+		this.hostDao.insert(hostModel);
+		Map<String, String>  map = new HashMap<String, String>();
+		map.put("id", hostModel.getHclusterId().toString());
+  		List<HclusterModel> list = (List<HclusterModel>)hclusterService.selectByMap(map);
+  		if(null!=list&&list.size()>0){
+  			HclusterModel hclusterModel = list.get(0);
+  			hostModel.setHcluster(hclusterModel);
+  		}
+  		//buildTaskService.createHost(hostModel);
+	
+	}
 }

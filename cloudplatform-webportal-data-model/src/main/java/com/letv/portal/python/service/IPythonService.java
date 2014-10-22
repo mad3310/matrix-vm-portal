@@ -1,6 +1,7 @@
 package com.letv.portal.python.service;
 
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HostModel;
 
 /**Program Name: IPythonService <br>
  * Description:  与底层python rest交互接口<br>
@@ -213,5 +214,18 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String checkContainerStatus(String containerName);
+	/**
+	 * Methods Name: initHcluster <br>
+	 * Description: 创建host之前做接口验证<br>
+	 * @author name: wujun
+	 * @return
+	 */
+	public String initHcluster(String hostIp);
+	/**
+	 * Methods Name: createHost <br>
+	 * Description: 创建host<br>
+	 * @author name: wujun
+	 */
+	public String createHost(HostModel hostModel);
 	
 }

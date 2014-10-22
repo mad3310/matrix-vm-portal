@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHclusterService;
 
 
@@ -64,8 +66,11 @@ public class HclusterControllerTest extends AbstractTest{
 
 	@Test
 	public void updateHost(){
+		Map<String,String> map  = new HashMap<String, String>();
+		map.put("id", "1");
 		try {
-//		
+			List<HclusterModel> list =  this.hclusterService.selectByMap(map);
+			  System.out.println(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

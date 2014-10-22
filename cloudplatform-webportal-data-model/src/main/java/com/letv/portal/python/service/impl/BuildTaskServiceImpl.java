@@ -29,6 +29,7 @@ import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.python.service.IBuildTaskService;

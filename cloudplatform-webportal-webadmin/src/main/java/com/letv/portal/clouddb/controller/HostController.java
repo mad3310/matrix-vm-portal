@@ -59,27 +59,27 @@ public class HostController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value ="/{hostName}",method=RequestMethod.GET)   
-	
-	public @ResponseBody ResultObject list(@PathVariable String hostName,HttpServletRequest request) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("hostName", hostName);
-		ResultObject obj = new ResultObject();
-		obj.setData(this.hostService.selectByMap(map));
-		return obj;
-	}
+//	@RequestMapping(value ="/{hostName}",method=RequestMethod.GET)   
+//	
+//	public @ResponseBody ResultObject list(@PathVariable String hostName,HttpServletRequest request) {
+//		Map<String,Object> map = new HashMap<String,Object>();
+//		map.put("hostName", hostName);
+//		ResultObject obj = new ResultObject();
+//		obj.setData(this.hostService.selectByMap(map));
+//		return obj;
+//	}
 	/**
 	 * Methods Name: save <br>
 	 * Description: 保存host信息
 	 * @author name: wujun
 	 * @param dav
-	 * @param request
+	 * @param request   descn
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		try {		
-			this.hostService.insert(hostModel);			
+			this.hostService.insertAndPhyhonApi(hostModel);			
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	

@@ -18,6 +18,9 @@
 		<result column="DISK_USED" property="diskUsed" /> 
 		<result column="TYPE" property="type" /> 
 		<result column="HCLUSTER_ID" property="type" /> 
+		<result column="NAME" property="name" /> 
+		<result column="PASSWORD" property="password" /> 
+		<result column="DESCN" property="descn" /> 
 		
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
@@ -33,7 +36,7 @@
     <sql id="Base_Column_List">
 		m.id,m.host_name,m.host_ip,m.nodes_number,
 		m.cpu_model,m.cores_number,m.memory_size,m.disk_size,m.disk_used,m.type,		
-		m.host_model,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time
+		m.host_model,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.NAME,m.PASSWORD,m.DESCN
 	</sql>
 	
 	
@@ -89,10 +92,10 @@
 		insert into
 		WEBPORTAL_HOST
 		(HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED,
-		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TYPE)
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TYPE,NAME,PASSWORD,DESCN)
 		values
 		(#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
-		#{status},'1',now(),#{createUser},now(),#{updateUser},#{type})
+		#{status},'1',now(),#{createUser},now(),#{updateUser},#{type},#{name},#{password},#{descn})
 	</insert>
 	
 	<!-- 物理删除 -->
