@@ -73,13 +73,13 @@ public class HostController {
 	 * Description: 保存host信息
 	 * @author name: wujun
 	 * @param dav
-	 * @param request
+	 * @param request   descn
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		try {		
-			this.hostService.insert(hostModel);			
+			this.hostService.insertAndPhyhonApi(hostModel);			
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	

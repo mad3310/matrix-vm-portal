@@ -6,11 +6,21 @@ import com.letv.portal.model.ZabbixPushModel;
  
 public interface IZabbixPushService{
 	
-	
+	/**
+	 * Methods Name: createMultiContainerPushZabbixInfo <br>
+	 * Description:创建多个container<br>
+	 * @author name: wujun
+	 * @param containerModels
+	 */
 	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels);
 	
-	
-	
+	/**
+	 * Methods Name: MultiContainerPushZabbixInfo <br>
+	 * Description:  删除单个container<br>
+	 * @author name: wujun
+	 * @param containerModels
+	 */
+	public void deleteSingleContainerPushZabbixInfo(ContainerModel containerModel);
 	/**
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>

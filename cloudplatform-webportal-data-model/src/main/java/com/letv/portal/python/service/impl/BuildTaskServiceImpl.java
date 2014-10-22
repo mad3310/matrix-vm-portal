@@ -29,6 +29,7 @@ import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -679,5 +680,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			status = MclusterStatus.CRISIS.getValue();
 		}
 		return status;
+	}
+
+	public void createHost(HostModel hostModel){
+		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
+			if(analysisResult(transResult(pythonService.createHost(hostModel))));
+			logger.debug("调用phyhonAPI创建host成功");
+		}
+
 	}
 }

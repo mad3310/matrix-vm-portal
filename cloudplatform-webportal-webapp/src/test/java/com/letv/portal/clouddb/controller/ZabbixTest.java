@@ -24,7 +24,7 @@ public class ZabbixTest extends AbstractTest {
 
    /**
     * Methods Name: createMultiContainerPushZabbixInfo <br>
-    * Description: 创建多个container，container不能重复<br>
+    * Description: 创建多个container，containerName不能重复<br>
     * @author name: wujun
     */
 	@Test
@@ -71,7 +71,7 @@ public class ZabbixTest extends AbstractTest {
 		}
 		
 	}
-
+   
 	@Test
     public void login(){
 	  try {

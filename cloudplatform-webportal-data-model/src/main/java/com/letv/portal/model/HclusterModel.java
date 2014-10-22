@@ -14,6 +14,15 @@ public class HclusterModel extends BaseModel{
 	
 	private String hclusterName; //集群名称
 	private Integer status; //状态:
+	private Integer descn; //描述:
+	
+	
+	public Integer getDescn() {
+		return descn;
+	}
+	public void setDescn(Integer descn) {
+		this.descn = descn;
+	}
 	public String getHclusterName() {
 		return hclusterName;
 	}

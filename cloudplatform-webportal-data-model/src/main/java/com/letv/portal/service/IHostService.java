@@ -41,4 +41,12 @@ public interface IHostService extends IBaseService<HostModel> {
 	 * @return
 	 */
 	public List<HostModel> selectByHclusterId(Long hclusterId);
+	/**
+	 * Methods Name: insertAndPhyhonApi <br>
+	 * Description: 创建host<br>
+	 * @author name: wujun
+	 */
+	public void insertAndPhyhonApi(HostModel hostModel);
+	
+	
 }
