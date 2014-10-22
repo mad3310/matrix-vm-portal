@@ -75,4 +75,14 @@ public class HclusterControllerTest extends AbstractTest{
 			e.printStackTrace();
 		}
 	}
+	@Test
+	public void hclusterValidate(){
+		Map<String,String> map  = new HashMap<String, String>();
+		map.put("id", "1");
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
