@@ -89,7 +89,12 @@
 		from webportal_hcluster m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+				<!-- 根据dbId查询-->
+	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_host m where m.HCLUSTER_ID = #{hclusterId}
+	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
