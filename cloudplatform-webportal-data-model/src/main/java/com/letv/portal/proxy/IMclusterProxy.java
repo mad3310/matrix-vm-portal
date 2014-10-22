@@ -54,4 +54,10 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 */
 	public void checkStatus();
 	
+	/**Methods Name: checkCount <br>
+	 * Description: 检查container集群数量<br>
+	 * @author name: liuhao1
+	 */
+	public void checkCount();
+	
 }

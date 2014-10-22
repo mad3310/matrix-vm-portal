@@ -60,19 +60,21 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		}
 		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
 		if(principal != null) {
-			if(sessionService.getSession() == null) {
+			Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+			if(session == null) {
 				UserLogin userLogin = new UserLogin();
 				userLogin.setUserName(principal.getName());
 				userLogin.setLoginIp(LoginController.getIp(request));
-				Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+				session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 				request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-				sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
-					@Override
-					public Session execute() throws Throwable {
-						return null;
-					}
-				});
-			}
+				
+			} 
+			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+				@Override
+				public Session execute() throws Throwable {
+					return null;
+				}
+			});
 		} 
 		return true;
 		

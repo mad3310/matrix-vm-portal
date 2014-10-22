@@ -107,4 +107,10 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private void checkStatus(MclusterModel mcluster) {
 		this.buildTaskService.checkMclusterStatus(mcluster);
 	}
+
+	@Override
+	public void checkCount() {
+		
+		
+	}
 }

@@ -10,7 +10,7 @@ import com.letv.common.exception.CommonException;
 @Component("sessionService")
 public class SessionServiceImpl {
    private static final Logger logger = LoggerFactory.getLogger(SessionServiceImpl.class);
-   private  NamedThreadLocal<Session>  tlSession = new NamedThreadLocal<Session>("store of request status");  
+   private NamedThreadLocal<Session>  tlSession = new NamedThreadLocal<Session>("store of request status");  
    
    public  void  setSession(Session session, String message) {
       Session oldSession = getSession();
@@ -29,15 +29,15 @@ public class SessionServiceImpl {
    }
    
    public <T> T runWithSession(Session session, String context, Executable<T> executable) {
-	  final Session oldSession = getSession();
+//	  final Session oldSession = getSession();
       try {
          setSession(session, "Session channged: " + context);
          return executable.execute();
       }catch (Throwable t) {
          throw new CommonException("Session channged occurs error!",t);
       }finally {	 
-    	  if(oldSession != null)
-    		  setSession(oldSession, "Session recovered: " + context);
+    	 /* if(oldSession != null)
+    		  setSession(oldSession, "Session recovered: " + context);*/
      }
    }
 }

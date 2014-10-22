@@ -18,6 +18,8 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.clouddb.controller.LoginController;
+import com.letv.portal.model.UserLogin;
 import com.letv.portal.service.ILoginService;
 
 /**
@@ -49,8 +51,8 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 					return true;  
 				}  
 			}
-		
-		if(request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE) == null ) {
+		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+		if(session == null ) {
 			logger.debug("please login");
 			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
 			
@@ -60,6 +62,13 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				response.sendRedirect("/account/login");
 			}
 			return false;
+		} else {
+			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+				@Override
+				public Session execute() throws Throwable {
+					return null;
+				}
+			});
 		}
 		return true;
 		
