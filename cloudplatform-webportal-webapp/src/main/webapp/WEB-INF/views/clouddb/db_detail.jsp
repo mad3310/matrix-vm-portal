@@ -52,9 +52,6 @@
 									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
 										<i class="ace-icont fa fa-plus"></i>创建用户
 									</button>
-									<!-- <button type="button" class="btn btn-xs btn-danger bigger disabled">
-										<i class="ace-icont fa fa-trash-o"></i>删除用户
-									</button> -->
 								</div>
 							</div>
 							<div class="col-xs-10" style="margin-top:8px">

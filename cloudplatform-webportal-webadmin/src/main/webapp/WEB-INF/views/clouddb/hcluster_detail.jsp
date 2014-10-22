@@ -12,20 +12,29 @@
 	<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
 	<!-- /.page-header -->
 	<div class="row">
-		<div  style="margin-top: 10px;">
-			<table class="table table-bordered" id="Mcluster_detail_table">
-				<thead>
-			      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
-			         <th>物理机名称</th>
-			         <th>类型</th>
-			         <th>ip</th>
-			         <th>状态</th>
-			         <th>操作</th>
-			      </tr>
-			   </thead>
-			   <tbody id="tby">
-				</tbody>
-			</table>
+		<div class="col-xs-12">
+			<div class=" pull-right">
+				<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add-host-form">
+					<i class="ace-icont fa fa-plus"></i>添加物理机
+				</button>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div style="margin-top: 8px;">
+				<table class="table table-bordered" id="Mcluster_detail_table">
+					<thead>
+				      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
+				         <th>物理机名称</th>
+				         <th>类型</th>
+				         <th>ip</th>
+				         <th>状态</th>
+				         <th>操作</th>
+				      </tr>
+				   </thead>
+				   <tbody id="tby">
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 	<div id="dialog-confirm" class="hide">
@@ -35,11 +44,84 @@
 		<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
 		</p>
 	</div>
+	<div class="modal fade" id="add-host-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form id="add_host_form" name="add_host_form" class="form-horizontal" role="form">
+					<div class="col-xs-12">
+						<h4 class="lighter">
+							<a href="#modal-wizard-create-db-user" data-toggle="modal" class="blue"> 创建数据库用户 </a>
+						</h4>
+						<div class="widget-box">
+							<div class="widget-body">
+								<div class="widget-main">
+									<div class="form-group">
+										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
+										<input class="hidden" value="0" name="status" id="status" type="text" />
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">物理机名</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="username" id="username" type="text" />
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">物理机类型</label>
+										<div class="col-sm-5">
+											<select class="form-control" name="type" id="type">
+												<option value="1">从机</option>
+												<option value="0">主机</option>
+											</select>
+										</div>
+										<label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="主机是收集所有从机信息的物理机." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									 <div class="form-group" name="dynamic-ip-input-mod">
+								        <label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
+								        <div class="col-sm-5">
+								            <input type="text" class="form-control" name="hostIp" />
+								        </div>
+								        <label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入物理机ip示例:192.168.33.12" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+								    </div>
+								   <!--  <div class="form-group">
+								    	<label class="col-sm-offset-1 col-sm-2 control-label">描述</label>
+									  	<div class="col-sm-5">
+									      <textarea  id="descn" name="descn" class="form-control" rows="3" placeholder=""></textarea>
+									  	</div>
+								        <label class="control-label" for="maximum_concurrency">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="关于物理机信息、状态等描述." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+								  </div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+						<button id="add_host_botton" type="button" class="btn btn-sm disabled btn-primary" onclick="addHost()">添加</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
 </div>
 <script type="text/javascript">
 $(function(){
 	//隐藏搜索框
 	$('#nav-search').addClass("hidden");
+	$('[name = "popoverHelp"]').popover();
 	queryHost();
 })
 
@@ -47,7 +129,7 @@ function queryHost(){
 	$("#tby tr").remove();
 	$.ajax({ 
 		type : "get",
-		url : "${ctx}/host/"+$("#hclusterId").val(),
+		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
 			error(data);
@@ -79,10 +161,7 @@ function queryHost(){
 						+ "</td>");
 				var td8 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startContainer(this)\" data-toggle=\"modal\" data-target=\"#\">"
-						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-						+"</a>"
-						+"<a class=\"blue\" href=\"#\" onclick=\"stopContainer(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"blue\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -133,34 +212,35 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-content').html(content);
 	$('#dialog-confirm-question').html(question);
 }
-function startContainer(obj){
-	function startCmd(){
-		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
+function deleteHost(obj){
+	function deleteCmd(){
+		var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
 		$.ajax({
-			url:'${ctx}/mcluster/start',
-			type:'post',
-			data:{id : containerId},
+			url:'${ctx}/host'+hostId,
+			type:'delete',
 			success:function(data){
 				error(data);
 				queryHost();
 			}
 		});
 	}
-	confirmframe("启动container","启动container大概需要几分钟时间!","请耐心等待...",startCmd);
+	confirmframe("删除物理机","","请耐心等待...",startCmd);
 }
-function stopContainer(obj){
-	function stopCmd(){
-		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
-		$.ajax({
-			url:'${ctx}/mcluster/stop',
-			type:'post',
-			data:{id : containerId},
-			success:function(data){
-				error(data);
-				queryHost();
-			}
-		});
-	}
-	confirmframe("关闭container","关闭container将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
+function addHost(){
+	$.ajax({
+		url: '${ctx}/host',
+        type: 'post',
+        dataType: 'text',
+        data: $("#add_host_form").serialize(),
+        success: function (data) {
+        	error(data);
+        	$("#create-dbuser-form").modal("hide");
+        	queryHost();
+			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
+			$('#add_host_form').data('bootstrapValidator').resetForm();
+			$('#type').val(3);
+			$('#add_host_botton').addClass('disabled');
+        }
+	});
 }
 </script>
