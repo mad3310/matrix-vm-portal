@@ -87,12 +87,14 @@ public class HclusterController {
 	 * @param request
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public void saveHost(HclusterModel hclusterModel,HttpServletRequest request) {
+	public @ResponseBody ResultObject saveHost(HclusterModel hclusterModel,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
 		try {
 			this.hclusterService.insert(hclusterModel);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	
+		return obj;
 	}	
    /**
     * Methods Name: delteHostByID <br>
@@ -102,7 +104,8 @@ public class HclusterController {
     * @param request
     */
    @RequestMapping(value="/{hclusterId}",method=RequestMethod.DELETE)   
-   public void delteHostByID(@PathVariable Long hclusterId,HttpServletRequest request) {
+   public @ResponseBody ResultObject delteHostByID(@PathVariable Long hclusterId,HttpServletRequest request) {
+	   ResultObject obj = new ResultObject();
 	   HclusterModel hclusterModel = new HclusterModel();
 	try {
 		hclusterModel.setId(hclusterId);
@@ -110,6 +113,7 @@ public class HclusterController {
 	} catch (Exception e) {
 		logger.debug(e.getMessage());
 	}	
+	return obj;
    }	
   
   /**
