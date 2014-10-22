@@ -682,4 +682,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		return status;
 	}
+
+	public void createHost(HostModel hostModel){
+		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
+			if(analysisResult(transResult(pythonService.createHost(hostModel))));
+			logger.debug("调用phyhonAPI创建host成功");
+		}
+
+	}
 }
