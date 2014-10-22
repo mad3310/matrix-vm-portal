@@ -123,7 +123,68 @@ $(function(){
 	$('#nav-search').addClass("hidden");
 	$('[name = "popoverHelp"]').popover();
 	queryHost();
+	queryHcluster();
 })
+
+$('#db_user_apply_form').bootstrapValidator({
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	hostName: {
+            validators: {
+                notEmpty: {
+                    message: '主机名不能为空!'
+                },
+	       stringLength: {
+		         max: 16,
+		         message: '主机名过长!'
+			}, 
+			regexp: {
+		         regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+		         message: "请输入字母数字或'_',主机名不能以数字开头."
+	        },
+	        remote: {
+                url: '${ctx}/hostName/validate',
+                message: '该主机名已存在!'
+            }
+	      }
+        },
+        hostIp: {
+            validators: {
+                notEmpty: {
+                    message: '地址不能为空'
+                },
+            regexp: {
+            regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
+            message: '请按提示格式输入'
+        	}, 
+          remote: {
+                 url: '${ctx}/hostIp/validate',
+                 message: '此IP已存在!'
+             }
+            }
+        }
+    }
+}).on('error.field.bv', function(e, data) {
+	 $('#create-dbUser-botton').addClass("disabled");
+}).on('success.field.bv', function(e, data) {
+ 	$('#create-dbUser-botton').removeClass("disabled");
+});
+function queryHcluster(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
+		dataType : "json", 
+		success : function(data) {
+			error(data);
+			alert(data.data.hclusterName);
+ 			$("#headerHostName").append(data.data.hclusterName);
+		}
+	});
+}
 
 function queryHost(){
 	$("#tby tr").remove();
@@ -135,31 +196,21 @@ function queryHost(){
 			error(data);
 			var array = data.data;
 			var tby = $("#tby");
- 			$("#headerHostName").append(array[0].hcluster.hclusterName);
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
 				var td1 = $("<td>"
-					    + array[i].containerName
+					    + array[i].hostName
 				        + "</td>");
 				var	td2 = $("<td>"
 						+ array[i].type
 						+ "</td>");
 				var	td3 = $("<td>"
-						+ array[i].hostId
+						+ array[i].hostIp
 						+ "</td>");
 				var	td4 = $("<td>"
-						+ array[i].ipAddr
+						+ array[i].status
 						+ "</td>");
-				var	td5 = $("<td>"
-						+ array[i].mountDir
-						+ "</td>");
-				var	td6 = $("<td>"
-						+ array[i].zookeeperId
-						+ "</td>");
-				var	td7 = $("<td>"
-						+ "正常"
-						+ "</td>");
-				var td8 = $("<td>"
+				var td5 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
 						+"<a class=\"blue\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
@@ -168,7 +219,7 @@ function queryHost(){
 						+ "</td>"
 				);
 				var tr = $("<tr></tr>");;				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
 			}
 		}
