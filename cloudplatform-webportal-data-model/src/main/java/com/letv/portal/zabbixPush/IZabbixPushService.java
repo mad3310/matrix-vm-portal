@@ -1,13 +1,20 @@
 package com.letv.portal.zabbixPush;
 
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ZabbixPushModel;
 
  
 public interface IZabbixPushService{
+	
+	
+	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels);
+	
+	
+	
 	/**
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>
-	 * @author name: wujun11
+	 * @author name: wujun
 	 * @param zabbixPushModel
 	 * @return
 	 */
@@ -19,7 +26,7 @@ public interface IZabbixPushService{
 	 * @param zabbixPushModel
 	 * @return
 	 */
-	public Boolean createContainerPushZabbixInfo(ZabbixPushModel zabbixPushModel); 
+	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel); 
 	
 	/**
 	 * Methods Name: sendFixedInfo <br>

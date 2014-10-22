@@ -1,5 +1,6 @@
 package com.letv.portal.zabbixPush.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +15,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.impl.FixedPushServiceImpl;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.InterfacesModel;
+import com.letv.portal.model.ZabbixParam;
 import com.letv.portal.model.ZabbixPushModel;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
-@Service("ZabbixPushService")
+@Service("zabbixPushService")
 public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
 	private final static String FIXEDPUSH_GET=ConfigUtil.getString("fixedpush.url");
@@ -52,7 +56,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * @param zabbixPushModel
 	 * @return
 	 */
-	public Boolean createContainerPushZabbixInfo(ZabbixPushModel zabbixPushModel){
+	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel){
 		Boolean flag = false;
 	    String result=loginZabbix();
 	    if(result!=null){
@@ -62,10 +66,20 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				logger.debug("登陆zabbix系统成功");
 				try {
 					zabbixPushModel.setAuth(auth);
-					result = analysisResultMap(transResult(sendZabbixInfo(zabbixPushModel)));
-					logger.debug("推送zabbix系统成功");
+					result = analysisResultMap(transResult(sendZabbixInfo(zabbixPushModel)));				
+					if(result.contains("_succeess")){
+						String[] rs = result.split("_");
+						result = rs[0];
+						flag = true;
+						logger.debug("推送zabbix系统成功"+result);
+					}else {			
+						String[] rs = result.split("_");
+						result = rs[0];
+						logger.debug("推送zabbix系统失败"+result);
+					}					
+					
 				} catch (Exception e) {
-				  logger.debug("推送zabbix系统失败");
+				  logger.debug("推送zabbix系统失败"+e.getMessage());
 				}
 			}else {
 				logger.debug("登陆zabbix系统失败");
@@ -78,7 +92,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	}; 
 	/**
 	 * Methods Name: sendFixedInfo <br>
-	 * Description: 向zabbix系统发送固资信息<br>
+	 * Description: 向zabbix系统发送信息<br>
 	 * @author name: wujun
 	 * @throws Exception 
 	 */ 
@@ -90,7 +104,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	};
 	/**
 	 * Methods Name: receviceFixedInfo <br>
-	 * Description: 接受zabbix系统的固资信息<br>
+	 * Description: 接受zabbix系统的信息<br>
 	 * @author name: wujun
 	 */
 	public String receviceZabbixInfo(ZabbixPushModel zabbixPushModel)throws Exception{
@@ -129,7 +143,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		if(map!=null){
 			resulteMap = (Map<Object, Object>) map.get("result");
 			if("".equals(resulteMap)||null==resulteMap){
-			    result = (String)map.get("error");
+			    result = ((Map<Object, Object>)map.get("error")).get("data").toString();
 			    result+="_error";
 			}else{
 				if(resulteMap.get("hostids")!=null){
@@ -141,5 +155,35 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		}
 		return result;
 	}
-	
+	@Override
+	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels) {
+		try {
+			if(containerModels!=null&&containerModels.length>0){
+				int count =0;
+			for(ContainerModel c:containerModels){
+				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
+							
+				ZabbixParam params = new ZabbixParam();
+				params.setHost(c.getContainerName());
+				
+				InterfacesModel interfacesModel = new InterfacesModel();
+				interfacesModel.setIp(c.getIpAddr());
+				
+				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
+				list.add(interfacesModel);
+				params.setInterfaces(list);
+				
+				zabbixPushModel.setParams(params);  
+				Boolean flag =	pushZabbixInfo(zabbixPushModel);
+				System.out.println(flag);
+				if(flag==true)
+				count++;		
+			}		
+			logger.debug("增加了"+count+"个container");
+			}
+			} catch (Exception e) {
+				logger.debug("zabbix");
+			}
+	}
 }
+

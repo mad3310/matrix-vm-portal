@@ -22,65 +22,35 @@ public class ZabbixTest extends AbstractTest {
 	@Resource
 	public IZabbixPushService zabbixPushService;
 
+   /**
+    * Methods Name: createMultiContainerPushZabbixInfo <br>
+    * Description: 创建多个container，container不能重复<br>
+    * @author name: wujun
+    */
 	@Test
-    public void login(){
-	  try {
-		  zabbixPushService.loginZabbix();
-	} catch (Exception e) {
-		logger.debug("zabbix");
-	}
-	}
-
-	@Test
-	public void createContainerPushZabbixInfo() {
+	public void createMultiContainerPushZabbixInfo() {
 		ContainerModel containerModel1 = new ContainerModel();
+		containerModel1.setContainerName("webportal_111");
+		containerModel1.setIpAddr("197.168.1.34");
 		ContainerModel containerModel2 = new ContainerModel();
+		containerModel2.setContainerName("webportal_222");
+		containerModel2.setIpAddr("197.168.1.34");
 		ContainerModel containerModel3 = new ContainerModel();
+		containerModel3.setContainerName("webportal_333");
+		containerModel3.setIpAddr("197.168.1.34");
 		ContainerModel containerModel4 = new ContainerModel();
+		containerModel4.setContainerName("webportal_444");
+		containerModel4.setIpAddr("197.168.1.34");
 		
 		ContainerModel[] containerModels =new ContainerModel[]{containerModel1,containerModel2,containerModel3,containerModel4};
-		int count  = 0;
-		
-	try {
-		for(ContainerModel c:containerModels){
-			ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-						
-			ZabbixParam params = new ZabbixParam();
-			params.setHost(c.getContainerName());
-			
-			InterfacesModel interfacesModel = new InterfacesModel();
-			interfacesModel.setIp(c.getIpAddr());
-			
-			List<InterfacesModel> list = new ArrayList<InterfacesModel>();
-			list.add(interfacesModel);
-			params.setInterfaces(list);
-			
-			zabbixPushModel.setParams(params);  
-			Boolean flag =	zabbixPushService.createContainerPushZabbixInfo(zabbixPushModel);
-			System.out.println(flag);
-			if(flag==true)
-			count++;
-			logger.debug("增加了"+count+"个container");
-		}		
+	
+		zabbixPushService.createMultiContainerPushZabbixInfo(containerModels);
+	}
 
-		
-		
-		} catch (Exception e) {
-			logger.debug("zabbix");
-		}
-	}
-	@Test
-	public void createContainer() {
-		ZabbixParam params = new ZabbixParam();
-		System.out.println("xx");
-	}
 	@Test
 	public void createSingleContainer(){
 		try {
 		ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-//			zabbixPushModel.setJsonrpc("2.0");
-//			zabbixPushModel.setMethod("host.create");
-//			zabbixPushModel.setId(1);
 			
 			
 			ZabbixParam params = new ZabbixParam();
@@ -94,12 +64,20 @@ public class ZabbixTest extends AbstractTest {
 			params.setInterfaces(list);
 			
 			zabbixPushModel.setParams(params);  
-			Boolean flag =	zabbixPushService.createContainerPushZabbixInfo(zabbixPushModel);
+			Boolean flag =	zabbixPushService.pushZabbixInfo(zabbixPushModel);
 			System.out.println(flag);
 		} catch (Exception e) {
 			logger.debug("zabbix创建成功");
 		}
 		
 	}
-	
+
+	@Test
+    public void login(){
+	  try {
+		  zabbixPushService.loginZabbix();
+	} catch (Exception e) {
+		logger.debug("zabbix");
+	}
+	}
 }
