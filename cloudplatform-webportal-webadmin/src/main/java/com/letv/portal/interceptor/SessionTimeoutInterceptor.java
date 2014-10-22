@@ -18,8 +18,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.clouddb.controller.LoginController;
-import com.letv.portal.model.UserLogin;
 import com.letv.portal.service.ILoginService;
 
 /**
