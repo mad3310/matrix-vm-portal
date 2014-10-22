@@ -129,7 +129,7 @@ function queryHost(){
 	$("#tby tr").remove();
 	$.ajax({ 
 		type : "get",
-		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
+		url : "${ctx}/host/"+$("#hclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
 			error(data);
