@@ -28,27 +28,61 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static String FIXEDPUSH_SOCKET_IP=ConfigUtil.getString("fixedpush.url.ip");
 	private final static int FIXEDPUSH_SOCKET_PORT=ConfigUtil.getint("fixedpush.url.port");
 	private final static String FIXEDPUSH_POST="http://10.200.90.51/zabbix_test/api_jsonrpc.php";
-	/**
-	 * Methods Name: loginZabbix <br>
-	 * Description:登陆zabbix系统<br>
-	 * @author name: wujun
-	 * @param zabbixPushModel
-	 * @return
-	 */
-	public String loginZabbix(){
-		String name = "cloude_api";
-		String password = "zabbix";
-		String loginResult = null;
-		String url=FIXEDPUSH_POST;	
-		String jsonString ="{\"jsonrpc\":\"2.0\",\"method\":\"user.login\",\"params\":{\"user\":\""+name+"\",\"password\":\""+password+"\"},\"id\":1}"; 
-		String result = HttpClient.post(url, jsonString,null,null);
+	
+	@Override
+	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels) {
 		try {
-			loginResult = analysisResult(transResult(result));
-		} catch (Exception e) {
-		logger.debug("登陆zabbix系统失败"+e.getMessage());
-		}
-		return loginResult;
-	}; 
+			if(containerModels!=null&&containerModels.length>0){
+				int count =0;
+			for(ContainerModel c:containerModels){
+				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
+							
+				ZabbixParam params = new ZabbixParam();
+				params.setHost(c.getContainerName());
+				
+				InterfacesModel interfacesModel = new InterfacesModel();
+				interfacesModel.setIp(c.getIpAddr());
+				
+				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
+				list.add(interfacesModel);
+				params.setInterfaces(list);
+				
+				zabbixPushModel.setParams(params);  
+				Boolean flag =	pushZabbixInfo(zabbixPushModel);
+				if(flag==true)
+				count++;		
+			}		
+			logger.debug("增加了"+count+"个container");
+			}
+			} catch (Exception e) {
+				logger.debug("zabbix");
+			}
+	}
+	@Override
+	public void deleteSingleContainerPushZabbixInfo(
+			ContainerModel containerModel) {
+		try {
+			if(containerModel!=null){
+				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
+							
+				ZabbixParam params = new ZabbixParam();
+				params.setHost(containerModel.getContainerName());
+				
+				InterfacesModel interfacesModel = new InterfacesModel();
+				interfacesModel.setIp(containerModel.getIpAddr());
+				
+				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
+				list.add(interfacesModel);
+				params.setInterfaces(list);
+				
+				zabbixPushModel.setParams(params);  
+				pushZabbixInfo(zabbixPushModel);	
+			}		
+			} catch (Exception e) {
+				logger.debug("zabbix删除失败");
+			}
+			}
+
 	/**
 	 * Methods Name: createContainerPushZabbixInfo <br>
 	 * Description: 创建container时向zabbix系统推送信息<br>
@@ -89,6 +123,27 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		//loginZabbix(name,password);//login
 		//sendZabbixInfo(object)//发送消息
 		return flag;
+	}; 
+	/**
+	 * Methods Name: loginZabbix <br>
+	 * Description:登陆zabbix系统<br>
+	 * @author name: wujun
+	 * @param zabbixPushModel
+	 * @return
+	 */
+	public String loginZabbix(){
+		String name = "cloude_api";
+		String password = "zabbix";
+		String loginResult = null;
+		String url=FIXEDPUSH_POST;	
+		String jsonString ="{\"jsonrpc\":\"2.0\",\"method\":\"user.login\",\"params\":{\"user\":\""+name+"\",\"password\":\""+password+"\"},\"id\":1}"; 
+		String result = HttpClient.post(url, jsonString,null,null);
+		try {
+			loginResult = analysisResult(transResult(result));
+		} catch (Exception e) {
+		logger.debug("登陆zabbix系统失败"+e.getMessage());
+		}
+		return loginResult;
 	}; 
 	/**
 	 * Methods Name: sendFixedInfo <br>
@@ -155,35 +210,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		}
 		return result;
 	}
-	@Override
-	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels) {
-		try {
-			if(containerModels!=null&&containerModels.length>0){
-				int count =0;
-			for(ContainerModel c:containerModels){
-				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-							
-				ZabbixParam params = new ZabbixParam();
-				params.setHost(c.getContainerName());
-				
-				InterfacesModel interfacesModel = new InterfacesModel();
-				interfacesModel.setIp(c.getIpAddr());
-				
-				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
-				list.add(interfacesModel);
-				params.setInterfaces(list);
-				
-				zabbixPushModel.setParams(params);  
-				Boolean flag =	pushZabbixInfo(zabbixPushModel);
-				System.out.println(flag);
-				if(flag==true)
-				count++;		
-			}		
-			logger.debug("增加了"+count+"个container");
-			}
-			} catch (Exception e) {
-				logger.debug("zabbix");
-			}
-	}
+
+	
 }
 
