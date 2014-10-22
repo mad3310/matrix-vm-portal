@@ -527,8 +527,8 @@
                 <cloudplatform.webportal.db.password>000000</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
-                <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
-                <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
+                <webportal.cas.local.http>http://10.58.166.19:8081</webportal.cas.local.http>
+                <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                  
                 <webportal.log.path>D:</webportal.log.path>
             </properties>
