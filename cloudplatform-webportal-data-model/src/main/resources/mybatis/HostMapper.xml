@@ -129,6 +129,12 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_HOST m where m.ID = #{id}
 	</select>
+	<!-- 根据id查询-->
+	<select id="selectByIp" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_HOST m where m.HOST_IP = #{hostIp}
+	</select>
 	
 	<!-- 根据dbId查询-->
 	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">

@@ -103,4 +103,9 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 		}
 		return list;
 	}
+
+	@Override
+	public HostModel selectByIp(String hostIp) {
+		return this.hostDao.selectByIp(hostIp);
+	}
 }

@@ -191,7 +191,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setContainerName((String) map.get("containerName"));
 					container.setStatus(MclusterStatus.RUNNING.getValue());
 					//物理机集群维护完成后，修改此处，需要关联物理机id
-//					container.setHostId((Long)map.get("hostIp"));
+					container.setHostIp((String) map.get("hostIp"));
+					HostModel hostModel = this.hostService.selectByIp((String) map.get("hostIp"));
+					container.setHostId(hostModel.getId());
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -643,7 +645,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void startContainer(ContainerModel container) {
-		String result = "";//this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		HostModel host = this.hostService.selectById(container.getHostId());
+		String result = this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -654,7 +657,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void stopContainer(ContainerModel container) {
-		String result = "";//this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		HostModel host = this.hostService.selectById(container.getHostId());
+		String result = this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -677,7 +681,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkContainerStatus(ContainerModel container) {
-		String result = "";//this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		HostModel host = this.hostService.selectById(container.getHostId());
+		String result = this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		container.setStatus(status);

@@ -19,4 +19,5 @@ public interface IHostDao extends IBaseDao<HostModel> {
 	public void updateNodesNumber(HostModel host);
 	public List<HostModel> selectByHclusterId(Long hclusterId);
 	public List<HostModel> selectByNameOrIp(Map<String,String> map);
+	public HostModel selectByIp(String hostIp);
 }
