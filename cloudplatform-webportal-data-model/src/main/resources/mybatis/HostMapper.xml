@@ -17,7 +17,7 @@
 		<result column="DISK_SIZE" property="diskSize" />
 		<result column="DISK_USED" property="diskUsed" /> 
 		<result column="TYPE" property="type" /> 
-		<result column="HCLUSTER_ID" property="type" /> 
+		<result column="HCLUSTER_ID" property="hclusterId" /> 
 		<result column="NAME" property="name" /> 
 		<result column="PASSWORD" property="password" /> 
 		<result column="DESCN" property="descn" /> 
@@ -92,10 +92,10 @@
 		insert into
 		WEBPORTAL_HOST
 		(HOST_NAME,HOST_IP,NODES_NUMBER,HOST_MODEL,CPU_MODEL,CORES_NUMBER,MEMORY_SIZE,DISK_SIZE,DISK_USED,
-		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TYPE,NAME,PASSWORD,DESCN)
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,TYPE,NAME,PASSWORD,DESCN,HCLUSTER_ID)
 		values
 		(#{hostName},#{hostIp},#{nodesNumber},#{hostModel},#{cpuModel},#{coresNumber},#{memorySize},#{diskSize},#{diskUsed},
-		#{status},'1',now(),#{createUser},now(),#{updateUser},#{type},#{name},#{password},#{descn})
+		#{status},'1',now(),#{createUser},now(),#{updateUser},#{type},#{name},#{password},#{descn},#{hclusterId})
 	</insert>
 	
 	<!-- 物理删除 -->
@@ -135,7 +135,6 @@
 		<include refid="Base_Column_List" />
 		from webportal_host m where m.HCLUSTER_ID = #{hclusterId}
 	</select>
-	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
@@ -144,7 +143,22 @@
 		from WEBPORTAL_HOST m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+		<!-- 根据条件查询 -->
+	<select id="selectByNameOrIp" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_HOST m
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="hostName != null  and hostName != '' ">
+				and m.HOST_NAME=#{hostName}
+			</if>
+			<if test="hostIp != null  and hostIp != '' ">
+				and m.HOST_IP=#{hostIp}
+			</if>
+		</trim>
+	</select>
 	
 	
 		<!-- 分页：根据条件查询 -->

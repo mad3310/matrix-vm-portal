@@ -75,10 +75,10 @@ public class HclusterController {
 	@RequestMapping(value ="/{hclusterName}",method=RequestMethod.GET)   
 	
 	public @ResponseBody ResultObject list(@PathVariable String hclusterName,HttpServletRequest request) {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,String> map = new HashMap<String,String>();
 		map.put("hclusterName", hclusterName);
 		ResultObject obj = new ResultObject();
-		obj.setData(this.hclusterService.selectByMap(map));
+		obj.setData(this.hclusterService.selectByName(map));
 		return obj;
 	}
 	/**

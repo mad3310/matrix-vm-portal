@@ -101,7 +101,7 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 			}else {
 				map.put("hostName", hostModel.getHostName());			
 			}
-			list = this.hostDao.selectByMap(map);
+			list = this.hostDao.selectByNameOrIp(map);
 		}
 		return list;
 	}

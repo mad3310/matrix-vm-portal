@@ -80,6 +80,18 @@
 		delete from webportal_hcluster  where ID = #{id}
 	</update>
 
+	<!-- 根据条件查询 -->
+	<select id="selectByName" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m
+		where 1=1
+		<if test="hclusterName != null  and hclusterName != '' ">
+				and m.HCLUSTER_NAME =#{hclusterName}
+		</if>		
+	</select>
+	
 	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -93,7 +105,7 @@
 	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_host m where m.HCLUSTER_ID = #{hclusterId}
+		from webportal_hcluster m where m.ID = #{hclusterId}
 	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
