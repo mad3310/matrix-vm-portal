@@ -75,8 +75,9 @@
 		values
 		(#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
 		#{status},1,now(),#{createUser},now(),#{updateUser})
-	</insert>
-	
+	    </insert>
+	    
+	    
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="DbUser">
 		delete from WEBPORTAL_DB_USER where ID = #{id}

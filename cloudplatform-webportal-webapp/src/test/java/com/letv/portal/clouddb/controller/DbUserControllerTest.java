@@ -5,13 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.junit.Test;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.junitBase.AbstractTest;
@@ -38,7 +33,16 @@ public class DbUserControllerTest extends AbstractTest{
 		obj.setData(this.dbUserService.selectByDbId(dbId));
 	    System.out.println(obj);
 	}
-	
+	@Test
+	public void InsertDbUser(){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setAcceptIp("%");
+		dbUserModel.setUsername("admin");
+		dbUserModel.setPassword("admin");
+		dbUserModel.setMaxConcurrency(1000);
+	    this.dbUserService.insert(dbUserModel);
+	    System.out.println(dbUserModel.getId());
+	}
 	/**Methods Name: save <br>
 	 * Description: 保存创建信息 
 	 * @author name: wujun

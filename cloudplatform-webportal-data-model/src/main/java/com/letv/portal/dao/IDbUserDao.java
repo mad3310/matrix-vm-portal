@@ -45,6 +45,11 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
      * @return
      */
 	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
-
+    /**
+     * Methods Name: deleteByDbId <br>
+     * Description: 删除DbUser通过DbId<br>
+     * @author name: wujun
+     * @param dbId
+     */
 	public void deleteByDbId(Long dbId);
 }
