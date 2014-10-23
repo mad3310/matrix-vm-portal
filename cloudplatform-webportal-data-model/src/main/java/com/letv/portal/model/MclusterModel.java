@@ -20,6 +20,9 @@ public class MclusterModel extends BaseModel {
 	
 	private String sstPwd; //gbalancer监控密码
 	
+	private Long hclusterId;
+	private HclusterModel hcluster;
+	
 	private UserModel createUserModel;
 	
 	public String getMclusterName() {
@@ -59,6 +62,19 @@ public class MclusterModel extends BaseModel {
 	}
 	public void setSstPwd(String sstPwd) {
 		this.sstPwd = sstPwd;
+	}
+	
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
 	}
 	@Override
 	public String toString() {

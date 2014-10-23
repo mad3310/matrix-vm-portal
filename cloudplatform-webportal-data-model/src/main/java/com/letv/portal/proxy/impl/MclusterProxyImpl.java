@@ -1,6 +1,5 @@
 package com.letv.portal.proxy.impl;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
@@ -58,6 +58,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setDeleted(true);
 		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
+		mclusterModel.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
 		super.insert(mclusterModel);
 	}
 

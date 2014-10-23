@@ -74,4 +74,9 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		this.mclusterDao.delete(mcluster);
 	}
 
+	@Override
+	public Map<String, Object> selectCreateParams(Long id) {
+		return this.mclusterDao.selectCreateParams(id);
+	}
+
 }

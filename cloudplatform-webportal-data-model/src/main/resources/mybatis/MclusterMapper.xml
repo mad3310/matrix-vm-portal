@@ -11,6 +11,7 @@
 		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="STATUS" property="status" />
 		<result column="SST_PASSWORD" property="sstPwd" />
+		<result column="HCLUSTER_ID" property="hclusterId" />
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
@@ -20,9 +21,16 @@
 			<result column="USERNAME" property="userName" />
 		</association>
 	</resultMap>
-	
+	<!-- other map -->
+	<resultMap id="createParams" type="java.util.Map">
+		<result column="DB_NAME" property="dbName" />
+		<result column="IP_ADDR" property="nodeIp" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="ADMIN_USER" property="username" />
+		<result column="ADMIN_PASSWORD" property="password" />
+	</resultMap>
 	<sql id="Base_Column_List">
-		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.SST_PASSWORD,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
+		M.ID,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,M.STATUS,M.SST_PASSWORD,M.HCLUSTER_ID,M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -39,6 +47,9 @@
 			</if>
 			<if test="sstPwd != null  ">
 				and M.SST_PASSWORD=#{sstPwd}
+			</if>
+			<if test="hclusterId != null  ">
+				and M.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="deleted != null  ">
 				and M.DELETED=#{deleted}
@@ -76,6 +87,9 @@
 			<if test="params != null and params.sstPwd != null  ">
 				and M.SST_PASSWORD=#{params.sstPwd}
 			</if>
+			<if test="params != null and params.hclusterId != null  ">
+				and M.HCLUSTER_ID=#{params.hclusterId}
+			</if>
 			<if test="params != null and params.createTime != null  ">
 				and M.CREATE_TIME=#{params.createTime}
 			</if>
@@ -94,14 +108,14 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Mcluster" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,SST_PASSWORD,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
-		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},#{sstPwd},#{deleted},now(),#{createUser},now(),#{updateUser})
+		WEBPORTAL_MCLUSTER_INFO(MCLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,SST_PASSWORD,HCLUSTER_ID,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(#{mclusterName},#{adminUser},#{adminPassword},#{status},#{sstPwd},#{hclusterId},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Mcluster">
 		update WEBPORTAL_MCLUSTER_INFO set
-		MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},SST_PASSWORD=#{sstPwd},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		MCLUSTER_NAME=#{mclusterName},ADMIN_USER=#{adminUser},ADMIN_PASSWORD=#{adminPassword},STATUS=#{status},SST_PASSWORD=#{sstPwd},HCLUSTER_ID=#{hclusterId},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -123,6 +137,9 @@
 			</if>
 			<if test="sstPwd != null  ">
 				SST_PASSWORD=#{sstPwd},
+			</if>
+			<if test="hclusterId != null  ">
+				HCLUSTER_ID=#{hclusterId},
 			</if>
 			<if test="deleted != null  ">
 				DELETED=#{deleted},
@@ -154,7 +171,13 @@
 		</if>
 		where ID = #{id}
 	</update>
-	
+	<!-- 查询创建用户所需参数-->
+	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.Long">
+		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,DB.CREATE_USER
+		from WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
+		where
+		DB.MCLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.MCLUSTER_ID AND CONTAINER.ZOOKEEPER_ID='1' AND DB.ID=#{id}
+	</select>
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
