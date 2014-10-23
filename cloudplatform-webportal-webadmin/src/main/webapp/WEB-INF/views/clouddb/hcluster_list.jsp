@@ -31,6 +31,7 @@
 									</label>
 								</th>
 								<th>物理机集群名称</th>
+								<th>别名</th>
 								<th>创建时间 </th>
 								<th class="hidden-480">当前状态</th>
 								<th>操作</th>
@@ -167,12 +168,15 @@ function queryByPage(currentPage,recordsPerPage) {
 						+  "<a href=\"${ctx}/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
-						+ date('Y-m-d H:i:s',array[i].createTime)
+						+ array[i].hclusterNameAlias
 						+ "</td>");
 				var td4 = $("<td>"
-						+ "正常"
+						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				var td5 = $("<td>"
+						+ "正常"
+						+ "</td>");
+				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
@@ -187,7 +191,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
