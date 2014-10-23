@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 
-			<a href="${ctx}/list/mcluster">物理机集群列表</a>
+			<a href="${ctx}/list/hcluster">物理机集群列表</a>
 			<small id="headerHostName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
@@ -72,8 +72,8 @@
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">物理机类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="1">从机</option>
 												<option value="0">主机</option>
+												<option value="1">从机</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -297,7 +297,7 @@ function addHost(){
         	queryHost();
 			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#add_host_form').data('bootstrapValidator').resetForm();
-			$('#type').val(3);
+			$('#type').val(0);
 			$('#add_host_botton').addClass('disabled');
         }
 	});
