@@ -9,6 +9,7 @@
 		<result column="ID" property="id" />
 		<result column="HCLUSTER_NAME" property="hclusterName" />
 		<result column="DESCN" property="descn" />
+		<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
 		
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
@@ -19,7 +20,7 @@
 	</resultMap>
   
 	<sql id="Base_Column_List">
-		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn
+		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn,m.HCLUSTER_NAME_ALIAS
 	</sql>
 	
 	
@@ -70,9 +71,9 @@
 	<insert id="insert" parameterType="Hcluster">
 		insert into
 		webportal_hcluster
-		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN)
+		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN,HCLUSTER_NAME_ALIAS)
 		values
-		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn})
+		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn},#{hclusterNameAlias})
 	</insert>
 	
 	<!-- 物理删除 -->
