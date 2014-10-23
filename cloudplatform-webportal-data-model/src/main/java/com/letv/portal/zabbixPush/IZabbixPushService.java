@@ -1,5 +1,7 @@
 package com.letv.portal.zabbixPush;
 
+import java.util.List;
+
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ZabbixPushModel;
 
@@ -12,7 +14,7 @@ public interface IZabbixPushService{
 	 * @author name: wujun
 	 * @param containerModels
 	 */
-	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels);
+	public Boolean createMultiContainerPushZabbixInfo(List<ContainerModel> containerModels);
 	
 	/**
 	 * Methods Name: MultiContainerPushZabbixInfo <br>

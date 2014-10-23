@@ -29,7 +29,7 @@ public class HostModel extends BaseModel {
 	private HclusterModel hcluster; //物理机集群
 	private String name; //用户名
 	private String password; //密码
-	
+	private String hostNameAlias; //别名
 	
 
 	private Integer status; //状态:
@@ -37,6 +37,12 @@ public class HostModel extends BaseModel {
 	
 	
 	
+	public String getHostNameAlias() {
+		return hostNameAlias;
+	}
+	public void setHostNameAlias(String hostNameAlias) {
+		this.hostNameAlias = hostNameAlias;
+	}
 	public String getName() {
 		return name;
 	}

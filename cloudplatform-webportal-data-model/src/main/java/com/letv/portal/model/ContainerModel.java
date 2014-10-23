@@ -33,6 +33,12 @@ public class ContainerModel extends BaseModel {
 	
 	private MclusterModel mcluster;
 	
+	public String getHostIp() {
+		return hostIp;
+	}
+	public void setHostIp(String hostIp) {
+		this.hostIp = hostIp;
+	}
 	public Integer getDiskSize() {
 		return diskSize;
 	}

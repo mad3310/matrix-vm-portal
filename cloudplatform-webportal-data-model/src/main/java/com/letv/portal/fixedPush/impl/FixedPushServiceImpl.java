@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import com.alibaba.fastjson.JSON;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.IFixedPushService;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerPush;
 import com.letv.portal.model.FixedPushModel;
 
 
@@ -26,7 +30,7 @@ import com.letv.portal.model.FixedPushModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
-@Service("FixedPushService")
+@Service("fixedPushService")
 public class FixedPushServiceImpl implements IFixedPushService{
 	
 	
@@ -35,23 +39,41 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	private final static String FIXEDPUSH_SOCKET_IP=ConfigUtil.getString("fixedpush.url.ip");
 	private final static int FIXEDPUSH_SOCKET_PORT=ConfigUtil.getint("fixedpush.url.port");
 	
-	
+	/**
+	 * Methods Name: createMutilContainerPushFixedInfo <br>
+	 * Description: 备案多个container<br>
+	 * @author name: wujun
+	 * @param fixedPushModel
+	 */
+	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers){
+		Boolean flag = false;
+		try {
+			String servertag = containers.get(0).getHostIp();
+			List<ContainerPush> list = new ArrayList<ContainerPush>();
+			FixedPushModel fixedPushModel = new FixedPushModel();
+			for(ContainerModel c:containers){
+				ContainerPush containerMode = new ContainerPush();
+				containerMode.setName(c.getContainerName());
+				containerMode.setIp(c.getIpAddr());
+				list.add(containerMode);
+			}
+			fixedPushModel.setIpaddress(list);
+			fixedPushModel.setServertag(servertag);			
+			createContainerPushFixedInfo(fixedPushModel);
+			flag = true;
+			logger.debug("固资推送成功");
+		} catch (Exception e) {
+			logger.debug("固资推送失败"+e.getMessage());
+		}
+         return flag;
+	}
 	/**
 	 * Methods Name: sendFixedInfo <br>
 	 * Description: 创建container的相关系统<br>
 	 * @author name: wujun
 	 */
-	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel){
-		try {
-			//map.put("code", FIXEDPUSH_CODE_CREATE);
-			String result = sendFixedInfo(fixedPushModel);
-//			flag = analysisResult(transResult(result));
-			logger.debug("固资推送成功");
-		} catch (Exception e) {
-			logger.debug("固资推送失败");
-		}
-
-		
+	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception{
+			String result = sendFixedInfo(fixedPushModel);		
 	}
 	
 	/**
@@ -60,10 +82,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	 * @author name: wujun
 	 */
 	public Boolean deleteContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception{
-//		Boolean flag = false;
-//		map.put("code", FIXEDPUSH_CODE_DELETE);
 		String result = sendFixedInfo(fixedPushModel);
-//		flag = analysisResult(transResult(result));
 		return null;
 	}	
 	
@@ -71,7 +90,6 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	public String sendFixedInfo(FixedPushModel fixedPushModel)throws Exception{	
 	    String sn =	receviceFixedInfo(fixedPushModel);
 	    fixedPushModel.setServertag(sn);
-		//String url=URL_HEAD+FIXEDPUSH_URL_IP+FIXEDPUSH_URL_PORT;
 	    String pushString =  JSON.toJSONString(fixedPushModel);
 	    sendSocket(pushString);
         return null;
@@ -107,29 +125,5 @@ public class FixedPushServiceImpl implements IFixedPushService{
         	 s1.close();
         };
 	}
-	
-//	private Map<String,Object> transResult(String result)throws Exception{
-//		Map<String,Object> jsonResult = new HashMap<String,Object>();
-//		try {
-//			jsonResult = JSON.parseObject(result, Map.class);
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return jsonResult;
-//	}
-//	
-//	
-//	private boolean analysisResult(Map result)throws Exception{
-//		boolean flag = false;
-//		String rescode = (String)result.get("rescode");
-//		if(FIXEDPUSH_RESCODE_SUCCESS.equals(rescode)){
-//			flag = true;
-//			logger.debug("固资系统信息推送成功");
-//			return flag;
-//		}else{
-//			logger.debug("固资系统信息推送失败");
-//			return flag;
-//		}
-//		
-//	}
+
 }

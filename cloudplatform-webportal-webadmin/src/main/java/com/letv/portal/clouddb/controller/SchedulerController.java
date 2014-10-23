@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SchedulerController {
 
 	@Autowired
-	public SchedulerFactoryBean schedulerFactoryBean;
+	private SchedulerFactoryBean schedulerFactoryBean;
 	
 	
 	@RequestMapping(value="/test",method=RequestMethod.GET)
