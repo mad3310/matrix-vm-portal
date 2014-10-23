@@ -5,7 +5,9 @@ public enum DbStatus implements ByteEnum{
 	RUNNING(1),  
 	BUILDDING(2),
 	BUILDFAIL(3),
-	AUDITFAIL(4);
+	AUDITFAIL(4),
+	ABNORMAL(5),
+	NORMAL(6);
 	
 	private final Integer value;
 	

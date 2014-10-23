@@ -88,7 +88,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		boolean nextStep = true;
 		
 		this.buildService.initStatus(mclusterModel.getId());
-		
+		Map<String,Object> params = this.mclusterService.selectCreateParams(mclusterModel.getId());
 		try {
 			if(nextStep) {
 				nextStep = createContainer(mclusterModel,dbId);
@@ -206,7 +206,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = DbStatus.RUNNING.getValue();
+				status = DbStatus.NORMAL.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
 			} else {
 				resultMsg = "失败";
@@ -240,7 +240,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
@@ -272,7 +272,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
@@ -302,7 +302,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String detail = "";
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
+		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
 		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
