@@ -33,106 +33,167 @@ public class ContainerModel extends BaseModel {
 	
 	private MclusterModel mcluster;
 	
-<<<<<<< HEAD
-	public Integer getDiskSize() {
-		return diskSize;
-	}
-	public void setDiskSize(Integer diskSize) {
-		this.diskSize = diskSize;
-	}
-	public Integer getCoresNumber() {
-		return coresNumber;
-	}
-	public void setCoresNumber(Integer coresNumber) {
-		this.coresNumber = coresNumber;
-	}
-	public Integer getCpuSpeed() {
-		return cpuSpeed;
-	}
-	public void setCpuSpeed(Integer cpuSpeed) {
-		this.cpuSpeed = cpuSpeed;
-	}
-	public Integer getMemorySize() {
-		return memorySize;
-	}
-	public void setMemorySize(Integer memorySize) {
-		this.memorySize = memorySize;
-	}
-	
+
 	public String getContainerName() {
 		return containerName;
 	}
+
+
 	public void setContainerName(String containerName) {
 		this.containerName = containerName;
 	}
+
+
 	public String getMountDir() {
 		return mountDir;
 	}
+
+
 	public void setMountDir(String mountDir) {
 		this.mountDir = mountDir;
 	}
+
+
 	public String getZookeeperId() {
 		return zookeeperId;
 	}
+
+
 	public void setZookeeperId(String zookeeperId) {
 		this.zookeeperId = zookeeperId;
 	}
+
+
 	public String getIpAddr() {
 		return ipAddr;
 	}
+
+
 	public void setIpAddr(String ipAddr) {
 		this.ipAddr = ipAddr;
 	}
+
+
 	public String getGateAddr() {
 		return gateAddr;
 	}
+
+
 	public void setGateAddr(String gateAddr) {
 		this.gateAddr = gateAddr;
 	}
+
+
 	public String getIpMask() {
 		return ipMask;
 	}
+
+
 	public void setIpMask(String ipMask) {
 		this.ipMask = ipMask;
 	}
+
+
 	public String getType() {
 		return type;
 	}
+
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Long getHostId() {
-		return hostId;
+
+
+	public Integer getDiskSize() {
+		return diskSize;
 	}
-	public void setHostId(Long hostId) {
-		this.hostId = hostId;
+
+
+	public void setDiskSize(Integer diskSize) {
+		this.diskSize = diskSize;
 	}
-	public Long getMclusterId() {
-		return mclusterId;
+
+
+	public Integer getCoresNumber() {
+		return coresNumber;
 	}
-	public void setMclusterId(Long mclusterId) {
-		this.mclusterId = mclusterId;
+
+
+	public void setCoresNumber(Integer coresNumber) {
+		this.coresNumber = coresNumber;
 	}
+
+
+	public Integer getCpuSpeed() {
+		return cpuSpeed;
+	}
+
+
+	public void setCpuSpeed(Integer cpuSpeed) {
+		this.cpuSpeed = cpuSpeed;
+	}
+
+
+	public Integer getMemorySize() {
+		return memorySize;
+	}
+
+
+	public void setMemorySize(Integer memorySize) {
+		this.memorySize = memorySize;
+	}
+
+
 	public Integer getStatus() {
 		return status;
 	}
+
+
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
-	public MclusterModel getMcluster() {
-		return mcluster;
+
+
+	public Long getHostId() {
+		return hostId;
 	}
-	public void setMcluster(MclusterModel mcluster) {
-		this.mcluster = mcluster;
+
+
+	public void setHostId(Long hostId) {
+		this.hostId = hostId;
 	}
-	
+
+
 	public String getHostIp() {
 		return hostIp;
 	}
+
+
 	public void setHostIp(String hostIp) {
 		this.hostIp = hostIp;
 	}
+
+
+	public Long getMclusterId() {
+		return mclusterId;
+	}
+
+
+	public void setMclusterId(Long mclusterId) {
+		this.mclusterId = mclusterId;
+	}
+
+
+	public MclusterModel getMcluster() {
+		return mcluster;
+	}
+
+
+	public void setMcluster(MclusterModel mcluster) {
+		this.mcluster = mcluster;
+	}
+
+
 	@Override
 	public String toString() {
 		return "ContainerModel [containerName=" + containerName + ", mountDir="
