@@ -25,6 +25,7 @@ import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
@@ -40,6 +41,7 @@ import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
@@ -69,6 +71,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IBuildService buildService;
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private IFixedPushService fixedPushService;
+	@Autowired 
+	private IZabbixPushService zabbixPushService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -206,7 +213,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = DbStatus.NORMAL.getValue();
+				status = DbStatus.RUNNING.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
                 buildUser(createDefalutAdmin(dbId).toString());
 			} else {
@@ -242,7 +249,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
@@ -275,7 +282,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
@@ -306,7 +313,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String detail = "";
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
+		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
 		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
@@ -467,7 +474,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
 			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
-		
+		/**
+		 * 固资备案
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = fixedPushService.createMutilContainerPushFixedInfo(containers);
+		}
+		/**
+		 * zabbix推送
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+		}
 		return nextStep;
 	}
 	

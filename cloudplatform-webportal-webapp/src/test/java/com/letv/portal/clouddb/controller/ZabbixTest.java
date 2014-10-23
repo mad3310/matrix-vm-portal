@@ -29,6 +29,7 @@ public class ZabbixTest extends AbstractTest {
     */
 	@Test
 	public void createMultiContainerPushZabbixInfo() {
+		List<ContainerModel> list  = new ArrayList<ContainerModel>();
 		ContainerModel containerModel1 = new ContainerModel();
 		containerModel1.setContainerName("webportal_111");
 		containerModel1.setIpAddr("197.168.1.34");
@@ -41,10 +42,12 @@ public class ZabbixTest extends AbstractTest {
 		ContainerModel containerModel4 = new ContainerModel();
 		containerModel4.setContainerName("webportal_444");
 		containerModel4.setIpAddr("197.168.1.34");
-		
-		ContainerModel[] containerModels =new ContainerModel[]{containerModel1,containerModel2,containerModel3,containerModel4};
+		list.add(containerModel1);
+		list.add(containerModel2);
+		list.add(containerModel3);
+		list.add(containerModel4);
 	
-		zabbixPushService.createMultiContainerPushZabbixInfo(containerModels);
+		zabbixPushService.createMultiContainerPushZabbixInfo(list);
 	}
 
 	@Test
