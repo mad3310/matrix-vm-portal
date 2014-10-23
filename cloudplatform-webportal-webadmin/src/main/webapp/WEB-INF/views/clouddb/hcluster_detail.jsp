@@ -93,7 +93,7 @@
 											</a>
 										</label>
 								    </div>
-								   <!--  <div class="form-group">
+								   <div class="form-group">
 								    	<label class="col-sm-offset-1 col-sm-2 control-label">描述</label>
 									  	<div class="col-sm-5">
 									      <textarea  id="descn" name="descn" class="form-control" rows="3" placeholder=""></textarea>
@@ -103,7 +103,7 @@
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
-								  </div> -->
+								  </div>
 								</div>
 							</div>
 						</div>
@@ -160,12 +160,12 @@ $('#add_host_form').bootstrapValidator({
                     message: '地址不能为空'
                 },
             regexp: {
-            regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
+            regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])(\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])){3}$/,
             message: '请按提示格式输入'
         	}, 
           remote: {
                  url: '${ctx}/host/hostIp/validate',
-                 message: '该用户名此IP也存在!'
+                 message: '此IP已存在!'
              }
             }
         }
