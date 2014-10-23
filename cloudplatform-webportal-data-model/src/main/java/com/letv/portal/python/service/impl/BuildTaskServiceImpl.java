@@ -184,7 +184,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setContainerName((String) map.get("containerName"));
 					container.setStatus(MclusterStatus.RUNNING.getValue());
 					//物理机集群维护完成后，修改此处，需要关联物理机id
-//					container.setHostId((Long)map.get("hostIp"));
+					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {
 					e.printStackTrace();
 				}

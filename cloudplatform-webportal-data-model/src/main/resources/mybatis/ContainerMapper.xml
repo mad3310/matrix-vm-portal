@@ -19,6 +19,7 @@
 		<result column="CPU_SPEED" property="cpuSpeed" />
 		<result column="MEMORY_SIZE" property="memorySize" />
 		<result column="HOST_ID" property="hostId" />
+		<result column="HOST_IP" property="hostIp" />
 		<result column="MCLUSTER_ID" property="mclusterId" />
 		
 		<result column="STATUS" property="status" />
@@ -38,7 +39,7 @@
 	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
 		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,
-		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
+		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.HOST_IP,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -57,17 +58,17 @@
 		insert into
 		WEBPORTAL_CONTAINER
 		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
-		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
-		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
+		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Container">
 		update WEBPORTAL_CONTAINER set
 		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
-		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},MCLUSTER_ID=#{mclusterId},
+		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},MCLUSTER_ID=#{mclusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
@@ -111,6 +112,9 @@
 			</if>
 			<if test="hostId != null  ">
 				HOST_ID=#{hostId},
+			</if>
+			<if test="hostIp != null  ">
+				HOST_IP=#{hostIp},
 			</if>
 			<if test="mclusterId != null  ">
 				MCLUSTER_ID=#{mclusterId},

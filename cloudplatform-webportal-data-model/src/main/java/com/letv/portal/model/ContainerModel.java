@@ -28,6 +28,7 @@ public class ContainerModel extends BaseModel {
 	private Integer status; //状态
 	
 	private Long hostId;  //所属host
+	private String hostIp; //ip
 	private Long mclusterId; //所属cluster
 	
 	private MclusterModel mcluster;
