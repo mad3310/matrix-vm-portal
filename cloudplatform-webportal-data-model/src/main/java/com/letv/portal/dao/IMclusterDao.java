@@ -2,6 +2,7 @@ package com.letv.portal.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.DbModel;
@@ -31,4 +32,12 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 * @return
 	 */
 	List<MclusterModel> selectByName(String mclusterName);
+
+	/**Methods Name: selectCreateParams <br>
+	 * Description: 查询创建container集群需要的参数<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	Map<String, Object> selectCreateParams(Long id);
 }

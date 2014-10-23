@@ -184,7 +184,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setContainerName((String) map.get("containerName"));
 					container.setStatus(MclusterStatus.RUNNING.getValue());
 					//物理机集群维护完成后，修改此处，需要关联物理机id
-					container.setHostId((Long)map.get("hostIp"));
+//					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -206,8 +206,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = DbStatus.RUNNING.getValue();
+				status = DbStatus.NORMAL.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
+                buildUser(createDefalutAdmin(dbId).toString());
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -228,6 +229,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     
 
 	@Override
+	@Async
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -240,7 +242,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
@@ -260,6 +262,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 	}
 	@Override
+	@Async
 	public void updateUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -272,7 +275,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
@@ -296,13 +299,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	 * @param dbUserId
 	 */
 	@Override
+	@Async
 	public void deleteDbUser(String ids){
 		String[] str = ids.split(",");	
 		String resultMsg = "";
 		String detail = "";
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
+		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
 		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
@@ -683,12 +687,29 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		return status;
 	}
- 
+
 	public void createHost(HostModel hostModel){
 		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
 			if(analysisResult(transResult(pythonService.createHost(hostModel))));
 			logger.debug("调用phyhonAPI创建host成功");
 		}
 
+	}
+	/**
+	 * Methods Name: createDefalutAmin <br>
+	 * Description: 创建默认管理员<br>
+	 * @author name: wujun
+	 * @return
+	 */
+	public Long createDefalutAdmin(Long dbId){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setDbId(dbId);
+		dbUserModel.setUsername("admin");
+		dbUserModel.setPassword("admin");
+		dbUserModel.setAcceptIp("%");
+		dbUserModel.setMaxConcurrency(1000);
+		dbUserService.insert(dbUserModel);
+		Long id = dbUserModel.getId();
+		return id;
 	}
 }
