@@ -1,6 +1,7 @@
 package com.letv.portal.python.service;
 
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 
@@ -138,5 +139,6 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public void createHost(HostModel hostModel);
+
 	
 }

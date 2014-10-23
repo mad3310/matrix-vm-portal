@@ -184,7 +184,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					container.setContainerName((String) map.get("containerName"));
 					container.setStatus(MclusterStatus.RUNNING.getValue());
 					//物理机集群维护完成后，修改此处，需要关联物理机id
-					container.setHostId((Long)map.get("hostIp"));
+//					container.setHostId((Long)map.get("hostIp"));
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -208,6 +208,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				resultMsg = "成功";
 				status = DbStatus.RUNNING.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
+                buildUser(createDefalutAdmin(dbId).toString());
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -228,6 +229,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     
 
 	@Override
+	@Async
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -260,6 +262,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 	}
 	@Override
+	@Async
 	public void updateUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -296,6 +299,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	 * @param dbUserId
 	 */
 	@Override
+	@Async
 	public void deleteDbUser(String ids){
 		String[] str = ids.split(",");	
 		String resultMsg = "";
@@ -683,12 +687,29 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		return status;
 	}
- 
+
 	public void createHost(HostModel hostModel){
 		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
 			if(analysisResult(transResult(pythonService.createHost(hostModel))));
 			logger.debug("调用phyhonAPI创建host成功");
 		}
 
+	}
+	/**
+	 * Methods Name: createDefalutAmin <br>
+	 * Description: 创建默认管理员<br>
+	 * @author name: wujun
+	 * @return
+	 */
+	public Long createDefalutAdmin(Long dbId){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setDbId(dbId);
+		dbUserModel.setUsername("admin");
+		dbUserModel.setPassword("admin");
+		dbUserModel.setAcceptIp("%");
+		dbUserModel.setMaxConcurrency(1000);
+		dbUserService.insert(dbUserModel);
+		Long id = dbUserModel.getId();
+		return id;
 	}
 }
