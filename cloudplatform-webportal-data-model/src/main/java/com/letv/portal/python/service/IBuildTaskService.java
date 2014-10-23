@@ -55,7 +55,7 @@ public interface IBuildTaskService {
 	 * @param mclusterModel
 	 * @return
 	 */
-	public boolean createContainer(MclusterModel mclusterModel,Long dbId);
+	public boolean createContainer(MclusterModel mclusterModel,Long dbId,HostModel host);
 	
 	/**Methods Name: initContainer <br>
 	 * Description: 初始化contianer,组合各分步骤<br>

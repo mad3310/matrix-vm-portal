@@ -35,7 +35,7 @@
 	</resultMap>
     <sql id="Base_Column_List">
 		m.id,m.host_name,m.host_ip,m.nodes_number,
-		m.cpu_model,m.cores_number,m.memory_size,m.disk_size,m.disk_used,m.type,		
+		m.cpu_model,m.cores_number,m.memory_size,m.disk_size,m.disk_used,m.type,m.HCLUSTER_ID		
 		m.host_model,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.NAME,m.PASSWORD,m.DESCN
 	</sql>
 	
@@ -55,6 +55,9 @@
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
+			</if>
+			<if test="hclusterId != null  ">
+				and m.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="deleted != null  ">
 				and m.DELETED=#{deleted}

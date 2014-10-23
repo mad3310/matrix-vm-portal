@@ -21,7 +21,6 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
-	private final static String MCLUSTER_CREATE_URL = ConfigUtil.getString("mcluster_create_url");//"http://10.200.91.142:8888"; //ConfigUtil.getString("mcluster_create_url");
 	private final static String HOST_CREATE_URL = ConfigUtil.getString("host_create_url");//"http://10.200.91.142:8888"; 
 	private final static String HOST_LOGIN_URL = ConfigUtil.getString("host_login_url");//"http://10.200.91.142:8888"; 
 	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
@@ -29,16 +28,18 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
 	
 	@Override
-	public String createContainer(String mclusterName) {
+	public String createContainer(String mclusterName,String ip,String username,String password) {
+		String url =  ip + "/containerCluster";
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster", map,"root","root");
+		String result = HttpClient.post(url, map,username,password);
 		return result;
 	}
 
 	@Override
-	public String checkContainerCreateStatus(String mclusterName) {
-		String result = HttpClient.get(MCLUSTER_CREATE_URL + "/containerCluster/status/" + mclusterName,"root","root");
+	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
+		String url = ip + "/containerCluster/status/" + mclusterName;
+		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
@@ -200,55 +201,55 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
-	public String removeMcluster(String mclusterName) {
-		String url = MCLUSTER_CREATE_URL + "/containerCluster/" + mclusterName;
-		String result = HttpClient.detele(url,"root","root");
+	public String removeMcluster(String mclusterName,String ip,String username,String password) {
+		String url = ip + "/containerCluster/" + mclusterName;
+		String result = HttpClient.detele(url,username,password);
 		return result;
 	}
 
 	@Override
-	public String startMcluster(String mclusterName) {
+	public String startMcluster(String mclusterName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster/start", map,"root","root");
+		String result = HttpClient.post(ip + "/containerCluster/start", map,username,password);
 		return result;
 	}
 
 	@Override
-	public String stopMcluster(String mclusterName) {
+	public String stopMcluster(String mclusterName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/containerCluster/stop", map,"root","root");
+		String result = HttpClient.post(ip + "/containerCluster/stop", map,username,password);
 		return result;
 	}
 
 	@Override
-	public String startContainer(String containerName) {
+	public String startContainer(String containerName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/container/start", map,"root","root");
+		String result = HttpClient.post(ip + "/container/start", map,username,password);
 		return result;
 	}
 
 	@Override
-	public String stopContainer(String containerName) {
+	public String stopContainer(String containerName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(MCLUSTER_CREATE_URL + "/container/stop", map,"root","root");
+		String result = HttpClient.post(ip + "/container/stop", map,username,password);
 		return result;
 	}
 
 	@Override
-	public String checkMclusterStatus(String mclusterName) {
-		String url = MCLUSTER_CREATE_URL  + "containerCluster/status/" + mclusterName;
-		String result = HttpClient.get(url,"root","root");
+	public String checkMclusterStatus(String mclusterName,String ip,String username,String password) {
+		String url = ip  + "containerCluster/status/" + mclusterName;
+		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
 	@Override
-	public String checkContainerStatus(String containerName) {
-		String url = MCLUSTER_CREATE_URL  + "container/status/" + containerName;
-		String result = HttpClient.get(url,"root","root");
+	public String checkContainerStatus(String containerName,String ip,String username,String password) {
+		String url = ip  + "container/status/" + containerName;
+		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 

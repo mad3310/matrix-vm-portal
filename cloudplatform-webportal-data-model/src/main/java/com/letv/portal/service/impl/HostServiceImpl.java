@@ -39,8 +39,7 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	
 	@Resource
 	private IMclusterService mclusterService;
-	@Resource
-	private IBuildTaskService buildTaskService;
+	
 	@Resource
 	private IHclusterService hclusterService;
 

@@ -39,13 +39,5 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public List<MclusterModel> selectByName(String mclusterName);
 
-	/**Methods Name: selectCreateParams <br>
-	 * Description: 查询创建container集群相关参数<br>
-	 * @author name: liuhao1
-	 * @param id
-	 * @return
-	 */
-	public Map<String, Object> selectCreateParams(Long id);
-	
 
 }

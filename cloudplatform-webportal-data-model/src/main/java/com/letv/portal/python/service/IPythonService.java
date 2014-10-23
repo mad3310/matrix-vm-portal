@@ -19,14 +19,14 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String createContainer(String mclusterName);
+	public String createContainer(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public String checkContainerCreateStatus(String mclusterName);
+	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>
@@ -165,7 +165,7 @@ public interface IPythonService {
 	 * @author name: liuhao1
 	 * @param mclusterName
 	 */
-	public String removeMcluster(String mclusterName);
+	public String removeMcluster(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: startMcluster <br>
 	 * Description: 启动container集群<br>
@@ -173,7 +173,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String startMcluster(String mclusterName);
+	public String startMcluster(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: stopMcluster <br>
 	 * Description: 停止container集群<br>
@@ -181,7 +181,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String stopMcluster(String mclusterName);
+	public String stopMcluster(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: startContainer <br>
 	 * Description: 启动container<br>
@@ -189,7 +189,7 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public String startContainer(String containerName);
+	public String startContainer(String containerName,String ip,String username,String password);
 
 	/**Methods Name: stopContainer <br>
 	 * Description: 停止container<br>
@@ -197,7 +197,7 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public String stopContainer(String containerName);
+	public String stopContainer(String containerName,String ip,String username,String password);
 
 	/**Methods Name: checkMclusterStatus <br>
 	 * Description: 检查container集群状态<br>
@@ -205,7 +205,7 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String checkMclusterStatus(String mclusterName);
+	public String checkMclusterStatus(String mclusterName,String ip,String username,String password);
 
 	/**Methods Name: checkContainerStatus <br>
 	 * Description: 检查container状态<br>
@@ -213,7 +213,7 @@ public interface IPythonService {
 	 * @param containerName
 	 * @return
 	 */
-	public String checkContainerStatus(String containerName);
+	public String checkContainerStatus(String containerName,String ip,String username,String password);
 	/**
 	 * Methods Name: initHcluster <br>
 	 * Description: 创建host之前做接口验证<br>

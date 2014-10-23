@@ -32,12 +32,4 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 * @return
 	 */
 	List<MclusterModel> selectByName(String mclusterName);
-
-	/**Methods Name: selectCreateParams <br>
-	 * Description: 查询创建container集群需要的参数<br>
-	 * @author name: liuhao1
-	 * @param id
-	 * @return
-	 */
-	Map<String, Object> selectCreateParams(Long id);
 }

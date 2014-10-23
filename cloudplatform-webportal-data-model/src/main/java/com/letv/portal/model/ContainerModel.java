@@ -125,6 +125,13 @@ public class ContainerModel extends BaseModel {
 	public void setMcluster(MclusterModel mcluster) {
 		this.mcluster = mcluster;
 	}
+	
+	public String getHostIp() {
+		return hostIp;
+	}
+	public void setHostIp(String hostIp) {
+		this.hostIp = hostIp;
+	}
 	@Override
 	public String toString() {
 		return "ContainerModel [containerName=" + containerName + ", mountDir="
