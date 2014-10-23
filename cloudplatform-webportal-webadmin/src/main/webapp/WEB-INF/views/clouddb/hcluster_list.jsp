@@ -31,6 +31,7 @@
 									</label>
 								</th>
 								<th>物理机集群名称</th>
+								<th>别名</th>
 								<th>创建时间 </th>
 								<th class="hidden-480">当前状态</th>
 								<th>操作</th>
@@ -79,7 +80,18 @@
 											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster_name">别名</label>
+										<div class="col-sm-6">
+											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+										</div>
+										<label class="control-label">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群别名应能概括此集群的信息." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -90,7 +102,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-hcluster-botton" type="button" class="btn btn-sm btn-primary" onclick="createHcluster()">创建</button>
+						<button id="create-hcluster-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createHcluster()">创建</button>
 					</div>
 				</form>
 				</div>
@@ -113,7 +125,6 @@
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
 
-<script src="${ctx}/static/scripts/date-transform.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -146,16 +157,6 @@ function queryByPage(currentPage,recordsPerPage) {
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
 			
-			function translateStatus(status){
-				if(status == 1){
-					return "正常";
-				}else if(status == 2){
-					return "创建中...";
-				}else{
-					return "创建失败";
-				}
-			}
-			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
@@ -167,12 +168,15 @@ function queryByPage(currentPage,recordsPerPage) {
 						+  "<a href=\"${ctx}/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
 						+ "</td>");
 				var td3 = $("<td>"
-						+ date('Y-m-d H:i:s',array[i].createTime)
+						+ array[i].hclusterNameAlias
 						+ "</td>");
 				var td4 = $("<td>"
-						+ "正常"
+						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				var td5 = $("<td>"
+						+ "正常"
+						+ "</td>");
+				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
@@ -187,7 +191,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -357,8 +361,13 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function deleteHcluster(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("正常")>=0){
+		alert("无法删除!");
+		return 0;
+	}
 	function deleteCmd(){
-		var hclusterId =$(obj).parents("tr").find('[name="hcluster_id"]').val();
+		var hclusterId =tr.find('[name="hcluster_id"]').val();
 		$.ajax({
 			url:'${ctx}/hcluster/'+hclusterId,
 			type:'delete',

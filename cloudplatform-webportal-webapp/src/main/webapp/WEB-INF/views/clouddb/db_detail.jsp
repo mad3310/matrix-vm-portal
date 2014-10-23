@@ -296,7 +296,6 @@
 <!-- /.page-content-area -->
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
-<script src="${ctx}/static/scripts/date-transform.js"></script>
 
 <script type="text/javascript">
 $(function(){
@@ -442,17 +441,6 @@ $(function(){
 	       	 	$('#edit-dbUser-botton').removeClass("disabled");
 	        });
 });
-function translateStatus(status){
-	if(status == 0 || status == 2){
-		return "未审核";
-	}else if(status  == 1){
-		return "正常";
-	}else if(status  == 4){
-		return "未通过";
-	}else{
-		return "创建失败";
-	}
-}
 function queryDbUser(){
 	$("#tby tr").remove();
 	$.ajax({ 

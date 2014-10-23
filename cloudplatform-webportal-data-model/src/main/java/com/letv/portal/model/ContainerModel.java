@@ -33,6 +33,7 @@ public class ContainerModel extends BaseModel {
 	
 	private MclusterModel mcluster;
 	
+<<<<<<< HEAD
 	public Integer getDiskSize() {
 		return diskSize;
 	}

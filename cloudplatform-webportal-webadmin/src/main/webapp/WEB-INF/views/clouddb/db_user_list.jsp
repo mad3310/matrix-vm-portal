@@ -151,18 +151,6 @@ function buildUser() {
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;
 				
-				function translateStatus(status){
-					if(status == 0){
-						return "待审核";
-					}else if(status  == 1){
-						return "正常";
-					}else if(status  == 4){
-						return "未通过";
-					}else{
-						return "创建失败";
-					}
-				}
-				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td1 = $("<td class=\"center\">"
 									+"<label class=\"position-relative\">"

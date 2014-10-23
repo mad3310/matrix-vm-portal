@@ -107,7 +107,6 @@
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
-<script src="${ctx}/static/scripts/date-transform.js"></script>
 
 <script type="text/javascript">
 $(function(){

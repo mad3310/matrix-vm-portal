@@ -9,7 +9,6 @@
 			</small>
 		</h1>
 	</div>
-	<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
 	<!-- /.page-header -->
 	<div class="row">
 		<div class="col-xs-12">
@@ -25,6 +24,7 @@
 					<thead>
 				      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
 				         <th>物理机名称</th>
+				         <th>别名</th>
 				         <th>类型</th>
 				         <th>ip</th>
 				         <th>状态</th>
@@ -57,13 +57,23 @@
 								<div class="widget-main">
 									<div class="form-group">
 										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
-										<input class="hidden" value="0" name="status" id="status" type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">物理机名</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="hostName" id="hostName" type="text" />
 										</div>
-										<label class="control-label" for="maximum_concurrency">
+										<label class="control-label" for="hostName">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostNameAlias">物理机别名</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="hostNameAlias" id="hostNameAlias" type="text" />
+										</div>
+										<label class="control-label" for="hostNameAlias">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此别名应能概括物理机信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -135,7 +145,7 @@ $('#add_host_form').bootstrapValidator({
         validating: 'glyphicon glyphicon-refresh'
     },
     fields: {
-    	hostName: {
+        hostName: {
             validators: {
                 notEmpty: {
                     message: '主机名不能为空!'
@@ -202,23 +212,26 @@ function queryHost(){
 				var td1 = $("<td>"
 					    + array[i].hostName
 				        + "</td>");
-				var td2;
+				var td2 = $("<td>"
+					    + array[i].hostNameAlias
+				        + "</td>");
+				var td3;
 				if(array[i].type == 0){
-					td2 = $("<td>"
+					td3 = $("<td>"
 						+ "主机"
 						+ "</td>");
 				}else{
-					td2 = $("<td>"
+					td3 = $("<td>"
 						+ "从机"
 						+ "</td>");
 				}
-				var	td3 = $("<td>"
+				var	td4 = $("<td>"
 						+ array[i].hostIp
 						+ "</td>");
-				var	td4 = $("<td>"
+				var	td5 = $("<td>"
 						+ "正常"
 						+ "</td>");
-				var td5 = $("<td>"
+				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
@@ -227,7 +240,7 @@ function queryHost(){
 						+ "</td>"
 				);
 				var tr = $("<tr></tr>");;				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}
 		}
