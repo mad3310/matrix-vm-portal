@@ -91,7 +91,6 @@
 </div>
 <!-- /.page-content-area -->
 
-<script src="${ctx}/static/scripts/date-transform.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -151,20 +150,6 @@ function queryByPage(currentPage,recordsPerPage) {
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
-			
-			function translateStatus(status){
-				if(status == 0){
-					return "待审核";
-				}else if(status  == 1){
-					return "正常";
-				}else if(status  == 2){
-					return "创建中...";
-				}else if(status  == 4){
-					return "未通过";
-				}else{
-					return "创建失败";
-				}
-			}
 			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
