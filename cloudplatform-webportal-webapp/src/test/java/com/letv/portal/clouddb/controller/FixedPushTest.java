@@ -23,7 +23,7 @@ public class FixedPushTest extends AbstractTest{
 	private final static Logger logger = LoggerFactory
 			.getLogger(UserLoginTest.class);
 	@Resource
-	private IFixedPushService FixedPushService;
+	private IFixedPushService fixedPushService;
 
 	@Test
 	public void createContainerPushFixedInfoTest() {
@@ -44,7 +44,7 @@ public class FixedPushTest extends AbstractTest{
 		fixedPushModel.setServertag("10.100.91.73");
 		fixedPushModel.setIpaddress(list);
 		try {
-			 FixedPushService.createContainerPushFixedInfo(fixedPushModel);
+			fixedPushService.createContainerPushFixedInfo(fixedPushModel);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}

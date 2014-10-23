@@ -1,10 +1,11 @@
 package com.letv.portal.python.service.impl;
-
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -22,8 +23,8 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
-import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
@@ -37,9 +38,9 @@ import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
-import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
@@ -69,8 +70,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IBuildService buildService;
 	@Autowired
 	private IUserService userService;
+	
 	@Autowired
-	private IHostService hostService;
+	private IFixedPushService fixedPushService;
+	@Autowired 
+	private IZabbixPushService zabbixPushService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -91,12 +95,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		this.buildService.initStatus(mclusterModel.getId());
 		
-		
-		HostModel host = getHostByHclusterId(mclusterModel.getHclusterId());
-		
 		try {
 			if(nextStep) {
-				nextStep = createContainer(mclusterModel,dbId,host);
+				nextStep = createContainer(mclusterModel,dbId);
 			}
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
@@ -130,7 +131,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	public boolean createContainer(MclusterModel mclusterModel,Long dbId,HostModel host) {
+	public boolean createContainer(MclusterModel mclusterModel,Long dbId) {
 		boolean nextStep = true;
 		
 		int step = 0;
@@ -138,11 +139,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		if(nextStep) {
 			step++;
-			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword())), step, startTime, mclusterModel.getId(), dbId);
+			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName())), step, startTime, mclusterModel.getId(), dbId);
 		}
 		if(nextStep) {
 			step++;
-			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
+			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			Date checkStartDate = new Date();
 			while(!analysisCheckCreateResult(result)) {
 				try {
@@ -173,7 +174,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() +"创建", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
-				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
+				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
 			}
 			nextStep = analysis(result, step, startTime, mclusterModel.getId(), dbId);
 			//保存container信息
@@ -211,7 +212,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = DbStatus.NORMAL.getValue();
+				status = DbStatus.RUNNING.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
                 buildUser(createDefalutAdmin(dbId).toString());
 			} else {
@@ -247,7 +248,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
@@ -280,7 +281,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
@@ -311,7 +312,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String detail = "";
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
+		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
 		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
@@ -472,7 +473,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
 			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
-		
+		/**
+		 * 固资备案
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = fixedPushService.createMutilContainerPushFixedInfo(containers);
+		}
+		/**
+		 * zabbix推送
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+		}
 		return nextStep;
 	}
 	
@@ -588,8 +604,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void removeMcluster(MclusterModel mcluster) {
-		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-		String result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.removeMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke remove mcluster api success");
 		} else {
@@ -600,8 +615,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void startMcluster(MclusterModel mcluster) {
-		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-		String result = this.pythonService.startMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.startMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start mcluster api success");
 		} else {
@@ -613,8 +627,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void stopMcluster(MclusterModel mcluster) {
-		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-		String result = this.pythonService.stopMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.stopMcluster(mcluster.getMclusterName());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke stop mcluster api success");
 		} else {
@@ -626,7 +639,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void startContainer(ContainerModel container) {
-		String result = "";//this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.startContainer(container.getContainerName());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -637,7 +650,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void stopContainer(ContainerModel container) {
-		String result = "";//this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.stopContainer(container.getContainerName());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -647,8 +660,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterStatus(MclusterModel mcluster) {
-		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName());
 		Map map = this.transResult(result);
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		mcluster.setStatus(status);
@@ -660,7 +672,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkContainerStatus(ContainerModel container) {
-		String result = "";//this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.pythonService.checkContainerStatus(container.getContainerName());
 		Map map = this.transResult(result);
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		container.setStatus(status);
@@ -670,7 +682,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	
-	private Integer transStatus(String statusStr){
+	public Integer transStatus(String statusStr){
 		// { "meta": {"code": 200}, "response": {"status": " starting / started / stopping / stopped / destroying / destroyed / not exist / failed", "message": ""  } }
 		Integer status = null;
 		if("starting".equals(statusStr)) {
@@ -720,13 +732,5 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
 		return id;
-	}
-	
-	
-	private HostModel getHostByHclusterId(Long hclusterId){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("hclusterId", hclusterId);
-		map.put("type", HostType.MASTER.getValue());
-		return this.hostService.selectByMap(map).get(0);
 	}
 }

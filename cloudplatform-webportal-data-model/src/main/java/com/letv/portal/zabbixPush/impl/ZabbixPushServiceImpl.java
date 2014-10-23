@@ -30,9 +30,10 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static String FIXEDPUSH_POST="http://10.200.90.51/zabbix_test/api_jsonrpc.php";
 	
 	@Override
-	public void createMultiContainerPushZabbixInfo(ContainerModel[] containerModels) {
+	public Boolean createMultiContainerPushZabbixInfo(List<ContainerModel> containerModels) {
+		Boolean rflag = false;
 		try {
-			if(containerModels!=null&&containerModels.length>0){
+			if(containerModels!=null&&containerModels.size()>0){
 				int count =0;
 			for(ContainerModel c:containerModels){
 				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
@@ -52,11 +53,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				if(flag==true)
 				count++;		
 			}		
-			logger.debug("增加了"+count+"个container");
+			    rflag=true;
+			    logger.debug("增加了"+count+"个container");
 			}
 			} catch (Exception e) {
-				logger.debug("zabbix");
+				logger.debug("zabbix推送失败"+" "+e.getMessage());
 			}
+		   return rflag;
 	}
 	@Override
 	public void deleteSingleContainerPushZabbixInfo(

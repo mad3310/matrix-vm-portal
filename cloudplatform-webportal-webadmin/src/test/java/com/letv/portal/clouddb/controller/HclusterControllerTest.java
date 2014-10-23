@@ -45,6 +45,7 @@ public class HclusterControllerTest extends AbstractTest{
 		try {    
 			HclusterModel hclusterModel = new HclusterModel();
 			hclusterModel.setHclusterName("wujun5");
+			hclusterModel.setHclusterNameAlias("帅");
 			hclusterService.insert(hclusterModel);
 		} catch (Exception e) {
 			e.printStackTrace();
