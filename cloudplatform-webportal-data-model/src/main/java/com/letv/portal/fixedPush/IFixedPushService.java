@@ -1,7 +1,9 @@
 package com.letv.portal.fixedPush;
 
+import java.util.List;
 import java.util.Map;
 
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.FixedPushModel;
 
 
@@ -14,13 +16,19 @@ import com.letv.portal.model.FixedPushModel;
  */
 
 public interface IFixedPushService {
-	
+	/**
+	 * Methods Name: createMutilContainerPushFixedInfo <br>
+	 * Description: 备案多个container<br>
+	 * @author name: wujun
+	 * @param fixedPushModel
+	 */
+	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers);
 	/**
 	 * Methods Name: createContainerPushFixedInfo <br>
 	 * Description: 创建container的相关系统<br>
 	 * @author name: wujun
 	 */
-	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel);
+	public void createContainerPushFixedInfo(FixedPushModel fixedPushModel)throws Exception;
 	/**
 	 * Methods Name: deleteContainerPushFixedInfo <br>
 	 * Description: 删除container的相关信息<br>

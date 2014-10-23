@@ -25,6 +25,7 @@ import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
@@ -40,6 +41,7 @@ import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("buildTaskService")
@@ -69,6 +71,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IBuildService buildService;
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private IFixedPushService fixedPushService;
+	@Autowired 
+	private IZabbixPushService zabbixPushService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -467,7 +474,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
 			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
-		
+		/**
+		 * 固资备案
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = fixedPushService.createMutilContainerPushFixedInfo(containers);
+		}
+		/**
+		 * zabbix推送
+		 */
+		if(nextStep) {
+			step++;
+			startTime = new Date();
+			nextStep = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+		}
 		return nextStep;
 	}
 	
