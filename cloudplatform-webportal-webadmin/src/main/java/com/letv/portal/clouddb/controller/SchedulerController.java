@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value="scheduler")
 public class SchedulerController {
 
-	@Autowired
+	@Autowired(required=false)
 	private SchedulerFactoryBean schedulerFactoryBean;
 	
 	
