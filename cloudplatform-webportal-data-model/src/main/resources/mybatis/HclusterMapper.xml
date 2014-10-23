@@ -60,7 +60,7 @@
 				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
-				and m.hclusterName like CONCAT('%','${params.hclusterName}','%')
+				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%')
 			</if>
 
 		</trim>
@@ -72,7 +72,7 @@
 		webportal_hcluster
 		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN)
 		values
-		(#{hclusterName},#{status},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser},#{descn})
+		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn})
 	</insert>
 	
 	<!-- 物理删除 -->

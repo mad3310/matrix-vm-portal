@@ -202,14 +202,21 @@ function queryHost(){
 				var td1 = $("<td>"
 					    + array[i].hostName
 				        + "</td>");
-				var	td2 = $("<td>"
-						+ array[i].type
+				var td2;
+				if(array[i].type == 0){
+					td2 = $("<td>"
+						+ "主机"
 						+ "</td>");
+				}else{
+					td2 = $("<td>"
+						+ "从机"
+						+ "</td>");
+				}
 				var	td3 = $("<td>"
 						+ array[i].hostIp
 						+ "</td>");
 				var	td4 = $("<td>"
-						+ array[i].status
+						+ "正常"
 						+ "</td>");
 				var td5 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
