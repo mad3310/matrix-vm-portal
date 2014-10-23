@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -23,6 +21,7 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
+import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
@@ -38,6 +37,7 @@ import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
+import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
@@ -70,7 +70,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IBuildService buildService;
 	@Autowired
 	private IUserService userService;
-	
+	@Autowired
+	private IHostService hostService;
 	@Autowired
 	private IFixedPushService fixedPushService;
 	@Autowired 
@@ -94,10 +95,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		boolean nextStep = true;
 		
 		this.buildService.initStatus(mclusterModel.getId());
-		
+		HostModel host = getHostByHclusterId(mclusterModel.getHclusterId());
 		try {
 			if(nextStep) {
-				nextStep = createContainer(mclusterModel,dbId);
+				nextStep = createContainer(mclusterModel,dbId,host);
 			}
 			if(nextStep) {
 				nextStep = initContainer(mclusterModel,dbId);
@@ -131,7 +132,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	public boolean createContainer(MclusterModel mclusterModel,Long dbId) {
+	public boolean createContainer(MclusterModel mclusterModel,Long dbId,HostModel host) {
 		boolean nextStep = true;
 		
 		int step = 0;
@@ -139,11 +140,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		if(nextStep) {
 			step++;
-			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName())), step, startTime, mclusterModel.getId(), dbId);
+			nextStep = this.analysis(transResult(this.pythonService.createContainer(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword())), step, startTime, mclusterModel.getId(), dbId);
 		}
 		if(nextStep) {
 			step++;
-			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
+			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
 			Date checkStartDate = new Date();
 			while(!analysisCheckCreateResult(result)) {
 				try {
@@ -174,7 +175,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() +"创建", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
 					return false;
 				}
-				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName()));
+				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
 			}
 			nextStep = analysis(result, step, startTime, mclusterModel.getId(), dbId);
 			//保存container信息
@@ -212,7 +213,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
-				status = DbStatus.RUNNING.getValue();
+				status = DbStatus.NORMAL.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
                 buildUser(createDefalutAdmin(dbId).toString());
 			} else {
@@ -248,7 +249,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
@@ -281,7 +282,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.RUNNING.getValue());
+					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
 				} else {
 					resultMsg="失败";
@@ -312,7 +313,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String detail = "";
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.RUNNING.getValue() == dbUserModel.getStatus()) {
+		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
 		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
@@ -604,7 +605,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void removeMcluster(MclusterModel mcluster) {
-		String result = this.pythonService.removeMcluster(mcluster.getMclusterName());
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke remove mcluster api success");
 		} else {
@@ -615,7 +617,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void startMcluster(MclusterModel mcluster) {
-		String result = this.pythonService.startMcluster(mcluster.getMclusterName());
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String result = this.pythonService.startMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start mcluster api success");
 		} else {
@@ -627,7 +630,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void stopMcluster(MclusterModel mcluster) {
-		String result = this.pythonService.stopMcluster(mcluster.getMclusterName());
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String result = this.pythonService.stopMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke stop mcluster api success");
 		} else {
@@ -639,7 +643,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void startContainer(ContainerModel container) {
-		String result = this.pythonService.startContainer(container.getContainerName());
+		String result = "";//this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -650,7 +654,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void stopContainer(ContainerModel container) {
-		String result = this.pythonService.stopContainer(container.getContainerName());
+		String result = "";//this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
 			logger.info("invoke start container api success");
 		} else {
@@ -660,7 +664,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterStatus(MclusterModel mcluster) {
-		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName());
+		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
+		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		mcluster.setStatus(status);
@@ -672,7 +677,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkContainerStatus(ContainerModel container) {
-		String result = this.pythonService.checkContainerStatus(container.getContainerName());
+		String result = "";//this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
 		Integer status = (Integer) ((Map)map.get("response")).get("status");
 		container.setStatus(status);
@@ -732,5 +737,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
 		return id;
+	}
+	
+	
+	private HostModel getHostByHclusterId(Long hclusterId){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("hclusterId", hclusterId);
+		map.put("type", HostType.MASTER.getValue());
+		return this.hostService.selectByMap(map).get(0);
 	}
 }
