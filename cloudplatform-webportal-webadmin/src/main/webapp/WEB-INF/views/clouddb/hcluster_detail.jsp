@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1> 
-			<a href="${ctx}/list/mcluster">物理机集群列表</a>
+			<a href="${ctx}/list/hcluster">物理机集群列表</a>
 			<small id="headerHostName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
@@ -14,7 +14,7 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class=" pull-right">
-				<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add-host-form">
+				<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#add-host-form-modal">
 					<i class="ace-icont fa fa-plus"></i>添加物理机
 				</button>
 			</div>
@@ -44,7 +44,7 @@
 		<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
 		</p>
 	</div>
-	<div class="modal fade" id="add-host-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="add-host-form-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<form id="add_host_form" name="add_host_form" class="form-horizontal" role="form">
@@ -58,9 +58,9 @@
 									<div class="form-group">
 										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
 										<input class="hidden" value="0" name="status" id="status" type="text" />
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="username">物理机名</label>
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">物理机名</label>
 										<div class="col-sm-5">
-											<input class="form-control" name="username" id="username" type="text" />
+											<input class="form-control" name="hostName" id="hostName" type="text" />
 										</div>
 										<label class="control-label" for="maximum_concurrency">
 											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
@@ -72,8 +72,8 @@
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">物理机类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="1">从机</option>
 												<option value="0">主机</option>
+												<option value="1">从机</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -117,13 +117,75 @@
 			</div>
 		</div>
 </div>
+<link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	//隐藏搜索框
 	$('#nav-search').addClass("hidden");
 	$('[name = "popoverHelp"]').popover();
 	queryHost();
+	queryHcluster();
 })
+
+$('#add_host_form').bootstrapValidator({
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	hostName: {
+            validators: {
+                notEmpty: {
+                    message: '主机名不能为空!'
+                },
+	       stringLength: {
+		         max: 16,
+		         message: '主机名过长!'
+			}, 
+			regexp: {
+		         regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+		         message: "请输入字母数字或'_',主机名不能以数字开头."
+	        },
+	        remote: {
+                url: '${ctx}/host/hostName/validate',
+                message: '该主机名已存在!'
+            }
+	      }
+        },
+        hostIp: {
+            validators: {
+                notEmpty: {
+                    message: '地址不能为空'
+                },
+            regexp: {
+            regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
+            message: '请按提示格式输入'
+        	}, 
+          remote: {
+                 url: '${ctx}/host/hostIp/validate',
+                 message: '该用户名此IP也存在!'
+             }
+            }
+        }
+    }
+}).on('error.field.bv', function(e, data) {
+	 $('#add_host_botton').addClass("disabled");
+}).on('success.field.bv', function(e, data) {
+ 	$('#add_host_botton').removeClass("disabled");
+});
+function queryHcluster(){
+	$.ajax({ 
+		type : "get",
+		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
+		dataType : "json", 
+		success : function(data) {
+			error(data);
+ 			$("#headerHostName").append(data.data[0].hclusterName);
+		}
+	});
+}
 
 function queryHost(){
 	$("#tby tr").remove();
@@ -135,40 +197,37 @@ function queryHost(){
 			error(data);
 			var array = data.data;
 			var tby = $("#tby");
- 			$("#headerHostName").append(array[0].hcluster.hclusterName);
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
 				var td1 = $("<td>"
-					    + array[i].containerName
+					    + array[i].hostName
 				        + "</td>");
-				var	td2 = $("<td>"
-						+ array[i].type
+				var td2;
+				if(array[i].type == 0){
+					td2 = $("<td>"
+						+ "主机"
 						+ "</td>");
+				}else{
+					td2 = $("<td>"
+						+ "从机"
+						+ "</td>");
+				}
 				var	td3 = $("<td>"
-						+ array[i].hostId
+						+ array[i].hostIp
 						+ "</td>");
 				var	td4 = $("<td>"
-						+ array[i].ipAddr
-						+ "</td>");
-				var	td5 = $("<td>"
-						+ array[i].mountDir
-						+ "</td>");
-				var	td6 = $("<td>"
-						+ array[i].zookeeperId
-						+ "</td>");
-				var	td7 = $("<td>"
 						+ "正常"
 						+ "</td>");
-				var td8 = $("<td>"
+				var td5 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"blue\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
+							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
 						+ "</td>"
 				);
 				var tr = $("<tr></tr>");;				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
 			}
 		}
@@ -216,7 +275,7 @@ function deleteHost(obj){
 	function deleteCmd(){
 		var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
 		$.ajax({
-			url:'${ctx}/host'+hostId,
+			url:'${ctx}/host/'+hostId,
 			type:'delete',
 			success:function(data){
 				error(data);
@@ -224,7 +283,7 @@ function deleteHost(obj){
 			}
 		});
 	}
-	confirmframe("删除物理机","","请耐心等待...",startCmd);
+	confirmframe("删除物理机","删除操作将丢失该物理机上的container!","您确定要删除?",deleteCmd);
 }
 function addHost(){
 	$.ajax({
@@ -234,11 +293,11 @@ function addHost(){
         data: $("#add_host_form").serialize(),
         success: function (data) {
         	error(data);
-        	$("#create-dbuser-form").modal("hide");
+        	$("#add-host-form-modal").modal("hide");
         	queryHost();
 			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#add_host_form').data('bootstrapValidator').resetForm();
-			$('#type').val(3);
+			$('#type').val(0);
 			$('#add_host_botton').addClass('disabled');
         }
 	});

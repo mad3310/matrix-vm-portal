@@ -1,6 +1,7 @@
 package com.letv.portal.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.DbUserModel;
@@ -16,4 +17,5 @@ import com.letv.portal.model.HostModel;
  */
 public interface IHclusterDao extends IBaseDao<HclusterModel> {
 	public List<HclusterModel> selectByHclusterId(Long hclusterId);
+	public List<HclusterModel> selectByName(Map<String,String> map);
 }

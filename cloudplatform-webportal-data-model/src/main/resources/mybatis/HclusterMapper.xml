@@ -60,7 +60,7 @@
 				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
-				and m.hclusterName like CONCAT('%','${params.hclusterName}','%')
+				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%')
 			</if>
 
 		</trim>
@@ -72,7 +72,7 @@
 		webportal_hcluster
 		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN)
 		values
-		(#{hclusterName},#{status},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser},#{descn})
+		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn})
 	</insert>
 	
 	<!-- 物理删除 -->
@@ -80,6 +80,18 @@
 		delete from webportal_hcluster  where ID = #{id}
 	</update>
 
+	<!-- 根据条件查询 -->
+	<select id="selectByName" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m
+		where 1=1
+		<if test="hclusterName != null  and hclusterName != '' ">
+				and m.HCLUSTER_NAME =#{hclusterName}
+		</if>		
+	</select>
+	
 	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -89,7 +101,12 @@
 		from webportal_hcluster m
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+				<!-- 根据dbId查询-->
+	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m where m.ID = #{hclusterId}
+	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">

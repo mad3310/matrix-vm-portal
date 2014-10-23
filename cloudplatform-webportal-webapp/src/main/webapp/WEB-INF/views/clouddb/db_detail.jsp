@@ -367,7 +367,7 @@ $(function(){
 		                                dbId: validator.getFieldElements('dbId').val()
 		                            };
 		                        },
-		                        message: '该用户名此IP也存在!'
+		                        message: '该用户名此IP已存在!'
 		                    }
 	                    }
 	                }

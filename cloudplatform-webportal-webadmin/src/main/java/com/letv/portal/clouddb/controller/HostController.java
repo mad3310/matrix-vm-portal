@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHostService;
 
@@ -52,22 +54,40 @@ public class HostController {
 		return obj;
 	}
 	
-	
-	/**Methods Name: list <br>
-	 * Description: 根据查询条件及分页信息获取分页数据  http://localhost:8080/host/list<br>
-	 * @author name: liuhao1
+	/**
+	 * Methods Name: validate <br>
+	 * Description: 校验hostName是否存在
+	 * @author name: wujun
+	 * @param dbUserModel
 	 * @param request
 	 * @return
 	 */
-//	@RequestMapping(value ="/{hostName}",method=RequestMethod.GET)   
-//	
-//	public @ResponseBody ResultObject list(@PathVariable String hostName,HttpServletRequest request) {
-//		Map<String,Object> map = new HashMap<String,Object>();
-//		map.put("hostName", hostName);
-//		ResultObject obj = new ResultObject();
-//		obj.setData(this.hostService.selectByMap(map));
-//		return obj;
-//	}
+	@RequestMapping(value="/hostName/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validateName(String hostName,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		HostModel hostModel = new HostModel();
+		hostModel.setHostName(hostName);
+		List<HostModel> list = this.hostService.selectByIpOrHostName(hostModel);
+		map.put("valid", list.size()>0?false:true);
+		return map;
+	}
+	/**
+	 * Methods Name: validate <br>
+	 * Description: 校验hostIp是否存在
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/hostIp/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validateIp(String hostIp,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		HostModel hostModel = new HostModel();
+		hostModel.setHostIp(hostIp);
+		List<HostModel> list = this.hostService.selectByIpOrHostName(hostModel);
+		map.put("valid", list.size()>0?false:true);
+		return map;
+	}
 	/**
 	 * Methods Name: save <br>
 	 * Description: 保存host信息

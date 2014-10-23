@@ -51,5 +51,11 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		return hclusterDao.selectByHclusterId(hclusterId);
 	}
 
+	@Override
+	public List<HclusterModel> selectByName(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return hclusterDao.selectByName(map);
+	}
+
 
 }

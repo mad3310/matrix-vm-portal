@@ -1,6 +1,7 @@
 package com.letv.portal.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.HclusterModel;
@@ -17,5 +18,5 @@ public interface IHostDao extends IBaseDao<HostModel> {
   
 	public void updateNodesNumber(HostModel host);
 	public List<HostModel> selectByHclusterId(Long hclusterId);
-	
+	public List<HostModel> selectByNameOrIp(Map<String,String> map);
 }

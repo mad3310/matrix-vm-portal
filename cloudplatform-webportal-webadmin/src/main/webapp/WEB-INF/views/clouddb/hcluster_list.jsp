@@ -79,7 +79,7 @@
 											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_',Container集群名不能以数字开头." style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -122,7 +122,7 @@ var queryBuildStatusrefresh;//刷新handler
 $(function(){
 	//初始化 
 	page_init();
-	
+	$('[name = "popoverHelp"]').popover();
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -170,7 +170,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				var td4 = $("<td>"
-						+ array[i].status
+						+ "正常"
 						+ "</td>");
 				var td5 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"

@@ -216,7 +216,7 @@ function translateStatus(status){
 	}else if(status == 9){
 		return "已停止";
 	}else if(status == 10){
-		return "删除中。。，";
+		return "删除中...";
 	}else if(status == 11){
 		return "已删除";
 	}else if(status == 12){

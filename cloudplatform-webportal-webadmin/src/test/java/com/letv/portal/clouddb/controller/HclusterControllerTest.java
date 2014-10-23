@@ -75,4 +75,15 @@ public class HclusterControllerTest extends AbstractTest{
 			e.printStackTrace();
 		}
 	}
+	@Test
+	public void hclusterValidate(){
+		try {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("hclusterName", "wujun5");
+			List<HclusterModel> list = this.hclusterService.selectByMap(map);
+			System.out.println("xxx");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

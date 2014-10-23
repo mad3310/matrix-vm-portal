@@ -51,8 +51,8 @@ public class HostControllerTest extends AbstractTest{
 	public void saveHost(){ 
 		try {    
 			HostModel hostModel = new HostModel();
-			hostModel.setHostName("wujun6");
-			hostModel.setHostIp("192.168.1.11");
+			hostModel.setHostName("wujun7");
+			hostModel.setHostIp("192.168.1.17");
 			hostService.insert(hostModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,6 +102,13 @@ public class HostControllerTest extends AbstractTest{
 			e.printStackTrace();
 		}
 	}
-	
+	@Test
+	public void validate(){
+		 HostModel hostModel = new HostModel();
+		 hostModel.setHostName("wujun7");
+		 //hostModel.setHostIp("192.168.1.11");
+		List<HostModel> list = this.hostService.selectByIpOrHostName(hostModel);
+		System.out.println("xxx");
+	}
 	
 }
