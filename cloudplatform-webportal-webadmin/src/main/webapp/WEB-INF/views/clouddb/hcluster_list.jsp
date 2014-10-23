@@ -79,7 +79,18 @@
 											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster_name">别名</label>
+										<div class="col-sm-6">
+											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+										</div>
+										<label class="control-label">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群别名应能概括此集群的信息." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -90,7 +101,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-hcluster-botton" type="button" class="btn btn-sm btn-primary" onclick="createHcluster()">创建</button>
+						<button id="create-hcluster-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createHcluster()">创建</button>
 					</div>
 				</form>
 				</div>
@@ -346,8 +357,13 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function deleteHcluster(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("正常")>=0){
+		alert("无法删除!");
+		return 0;
+	}
 	function deleteCmd(){
-		var hclusterId =$(obj).parents("tr").find('[name="hcluster_id"]').val();
+		var hclusterId =tr.find('[name="hcluster_id"]').val();
 		$.ajax({
 			url:'${ctx}/hcluster/'+hclusterId,
 			type:'delete',
