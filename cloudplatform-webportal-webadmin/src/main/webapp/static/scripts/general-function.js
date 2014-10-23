@@ -1,3 +1,4 @@
+/*翻译时间戳为时间格式*/
 function date(format, timestamp){
     var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
     var pad = function(n, c){
@@ -114,4 +115,38 @@ function date(format, timestamp){
         }
         return ret;
     });
+}
+/*翻译所有状态信息*/
+function translateStatus(status){
+	if (status == 0){
+		return "未审核";
+	}else if(status == 1){
+		return "运行中...";
+	}else if(status == 2){
+		return "创建中...";
+	}else if(status == 3){
+		return "创建失败";
+	}else if(status == 4){
+		return "审核失败";
+	}else if(status == 5){
+		return "异常";
+	}else if(status == 6){
+		return "正常";
+	}else if(status == 7){
+		return "启动中...";
+	}else if(status == 8){
+		return "停止中...";
+	}else if(status == 9){
+		return "已停止";
+	}else if(status == 10){
+		return "删除中...";
+	}else if(status == 11){
+		return "已删除";
+	}else if(status == 12){
+		return "不存在";
+	}else if(status == 13){
+		return "危险";
+	}else if(status == 14){
+		return "严重危险";
+	}
 }

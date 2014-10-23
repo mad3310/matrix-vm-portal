@@ -124,7 +124,6 @@
 
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
-<script src="${ctx}/static/scripts/date-transform.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
 var recordsPerPage = 10; //每页显示条数
@@ -156,20 +155,6 @@ var currentSelectedLineDbName = 1;
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;
-				
-				function translateStatus(status){
-					if(status == 0){
-						return "未审核";
-					}else if(status  == 2){
-						return "创建中...";
-					}else if(status  == 1){
-						return "正常";
-					}else if(status  == 4){
-						return "未通过";
-					}else{
-						return "创建失败";
-					}
-				}
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td2;

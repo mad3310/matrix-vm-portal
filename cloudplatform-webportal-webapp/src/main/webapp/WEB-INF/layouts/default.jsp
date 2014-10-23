@@ -49,6 +49,9 @@
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+
+<!-- 常用函数 -->
+<script src="${ctx}/static/scripts/general-function.js"></script>
 <script type="text/javascript">
 function error(errorThrown,time) {
 	if(errorThrown.result == 0) {
