@@ -8,6 +8,7 @@ import java.util.Map;
 import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -18,7 +19,9 @@ import com.letv.portal.fixedPush.impl.FixedPushServiceImpl;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.InterfacesModel;
 import com.letv.portal.model.ZabbixParam;
+import com.letv.portal.model.ZabbixPushDeleteModel;
 import com.letv.portal.model.ZabbixPushModel;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
 @Service("zabbixPushService")
@@ -29,6 +32,8 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static int FIXEDPUSH_SOCKET_PORT=ConfigUtil.getint("fixedpush.url.port");
 	private final static String FIXEDPUSH_POST="http://10.200.90.51/zabbix_test/api_jsonrpc.php";
 	
+	@Autowired
+	private IContainerService containerService;
 	@Override
 	public Boolean createMultiContainerPushZabbixInfo(List<ContainerModel> containerModels) {
 		Boolean rflag = false;
@@ -49,7 +54,8 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				params.setInterfaces(list);
 				
 				zabbixPushModel.setParams(params);  
-				Boolean flag =	pushZabbixInfo(zabbixPushModel);
+				Boolean flag =	pushZabbixInfo(zabbixPushModel,c.getId());
+				
 				if(flag==true)
 				count++;		
 			}		
@@ -62,28 +68,21 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		   return rflag;
 	}
 	@Override
-	public void deleteSingleContainerPushZabbixInfo(
+	public Boolean deleteSingleContainerPushZabbixInfo(
 			ContainerModel containerModel) {
-		try {
+		Boolean flag = false;
+		try {  
 			if(containerModel!=null){
-				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-							
-				ZabbixParam params = new ZabbixParam();
-				params.setHost(containerModel.getContainerName());
-				
-				InterfacesModel interfacesModel = new InterfacesModel();
-				interfacesModel.setIp(containerModel.getIpAddr());
-				
-				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
-				list.add(interfacesModel);
-				params.setInterfaces(list);
-				
-				zabbixPushModel.setParams(params);  
-				pushZabbixInfo(zabbixPushModel);	
+				ZabbixPushDeleteModel zabbixPushDeleteModel = new ZabbixPushDeleteModel();
+				List<String> list = new ArrayList<String>();
+				list.add(containerModel.getZabbixHosts());
+				zabbixPushDeleteModel.setParams(list);
+				flag  = pushDeleteZabbixInfo(zabbixPushDeleteModel);					
 			}		
 			} catch (Exception e) {
 				logger.debug("zabbix删除失败");
 			}
+		return flag;
 			}
 
 	/**
@@ -93,7 +92,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * @param zabbixPushModel
 	 * @return
 	 */
-	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel){
+	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel,Long containerId){
 		Boolean flag = false;
 	    String result=loginZabbix();
 	    if(result!=null){
@@ -104,6 +103,52 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				try {
 					zabbixPushModel.setAuth(auth);
 					result = analysisResultMap(transResult(sendZabbixInfo(zabbixPushModel)));				
+					if(result.contains("_succeess")){
+						String[] rs = result.split("_");
+						result = rs[0];
+						ContainerModel containerModel = new ContainerModel();
+						containerModel.setId(containerId);
+						containerModel.setZabbixHosts(result);
+						containerService.updateBySelective(containerModel);
+						flag = true;
+						logger.debug("推送zabbix系统成功"+result);
+					}else {			
+						String[] rs = result.split("_");
+						result = rs[0];
+						logger.debug("推送zabbix系统失败"+result);
+					}					
+					
+				} catch (Exception e) {
+				  logger.debug("推送zabbix系统失败"+e.getMessage());
+				}
+			}else {
+				logger.debug("登陆zabbix系统失败");
+			}	    	
+	    }
+
+		//loginZabbix(name,password);//login
+		//sendZabbixInfo(object)//发送消息
+		return flag;
+	}; 
+	
+	/**
+	 * Methods Name: createContainerPushZabbixInfo <br>
+	 * Description: 创建container时向zabbix系统推送信息<br>
+	 * @author name: wujun
+	 * @param zabbixPushModel
+	 * @return
+	 */
+	public Boolean pushDeleteZabbixInfo(ZabbixPushDeleteModel zabbixPushDeleteModel){
+		Boolean flag = false;
+	    String result=loginZabbix();
+	    if(result!=null){
+			if(result.contains("_succeess")){
+				String[] auths = result.split("_");
+				String auth = auths[0];
+				logger.debug("登陆zabbix系统成功");
+				try {
+					zabbixPushDeleteModel.setAuth(auth);
+					result = analysisResultMap(transResult(sendZabbixInfo(zabbixPushDeleteModel)));				
 					if(result.contains("_succeess")){
 						String[] rs = result.split("_");
 						result = rs[0];

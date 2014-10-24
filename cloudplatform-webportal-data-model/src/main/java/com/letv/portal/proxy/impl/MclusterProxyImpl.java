@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -53,9 +54,10 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	@Override
 	public void insert(MclusterModel mclusterModel) {
 		String mclusterName = mclusterModel.getMclusterName();
-		mclusterModel.setAdminUser(mclusterName);
+		mclusterModel.setAdminUser("root");
 		mclusterModel.setAdminPassword(mclusterName);
 		mclusterModel.setDeleted(true);
+		mclusterModel.setType(MclusterType.AUTO.getValue());
 		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		mclusterModel.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
@@ -102,7 +104,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	public void checkStatus() {
 		List<MclusterModel> list = this.mclusterService.selectByMap(null);
 		for (MclusterModel mcluster : list) {
-//			this.checkStatus(mcluster);
+			this.checkStatus(mcluster);
 		}
 	}
 	
@@ -112,7 +114,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 
 	@Override
 	public void checkCount() {
-		
+		this.buildTaskService.checkMclusterCount();
 		
 	}
 }

@@ -19,6 +19,7 @@ public class MclusterModel extends BaseModel {
 	private Integer status; //状态
 	
 	private String sstPwd; //gbalancer监控密码
+	private Integer type; //手动创建、自动创建
 	
 	private Long hclusterId;
 	private HclusterModel hcluster;
@@ -75,6 +76,13 @@ public class MclusterModel extends BaseModel {
 	}
 	public void setHcluster(HclusterModel hcluster) {
 		this.hcluster = hcluster;
+	}
+	
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	@Override
 	public String toString() {

@@ -16,7 +16,7 @@ import com.letv.portal.model.HostModel;
  * Modified Date: <br>
  */
 public interface IHclusterDao extends IBaseDao<HclusterModel> {
-	public List<HclusterModel> selectByHclusterId(Long hclusterId);
+	public List<Map<String, String>> selectByHclusterId(Long hclusterId);
 	public List<HclusterModel> selectByName(Map<String,String> map);
 	public List<HclusterModel> isExistHostOnHcluster(Map<String,Object> map);
 }

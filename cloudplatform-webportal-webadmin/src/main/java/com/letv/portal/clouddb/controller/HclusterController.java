@@ -18,142 +18,161 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.HclusterModel;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHclusterService;
 
 @Controller
 @RequestMapping("/hcluster")
 public class HclusterController {
 	@Resource
-	private IHclusterService  hclusterService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(HclusterController.class);
+	private IHclusterService hclusterService;
+
+	private final static Logger logger = LoggerFactory
+			.getLogger(HclusterController.class);
 
 	/**
 	 * Methods Name: list <br>
-	 * Description: <br>
+	 * Description: host分页<br>
 	 * @author name: wujun
 	 * @param currentPage
 	 * @param recordsPerPage
-	 * @param dbName
+	 * @param hclusterName
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{hclusterName}",method=RequestMethod.GET)  
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String hclusterName,HttpServletRequest request) {
+	@RequestMapping(value = "/{currentPage}/{recordsPerPage}/{hclusterName}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject list(@PathVariable int currentPage,
+			@PathVariable int recordsPerPage,
+			@PathVariable String hclusterName, HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
-	
-		Map<String,Object> params = new HashMap<String,Object>();
+
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("hclusterName", hclusterName);
-		
+
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.findPagebyParams(params, page));
 		return obj;
 	}
-	
-	/**Methods Name: list <br>
-	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
+
+	/**
+	 * Methods Name: list <br>
+	 * Description: 查找hcluster信息通过hclusterId<br>
 	 * @author name: wujun
-	 * @param dbId
+	 * @param hclusterId
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/{hclusterId}", method=RequestMethod.GET)   
+	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long hclusterId) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.selectByHclusterId(hclusterId));
 		return obj;
 	}
-	/**Methods Name: list <br>
-	 * Description: 根据查询条件及分页信息获取分页数据  http://localhost:8080/host/list<br>
+
+	/**
+	 * Methods Name: list <br>
+	 * Description: 根据查询条件查出数据<br>
 	 * @author name: wujun
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value ="/{hclusterName}",method=RequestMethod.GET)   
-	
-	public @ResponseBody ResultObject list(@PathVariable String hclusterName,HttpServletRequest request) {
-		Map<String,String> map = new HashMap<String,String>();
+	@RequestMapping(value = "/{hclusterName}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject list(@PathVariable String hclusterName,
+			HttpServletRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("hclusterName", hclusterName);
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.selectByName(map));
 		return obj;
 	}
+
 	/**
 	 * Methods Name: save <br>
-	 * Description: 保存host信息
+	 * Description: 保存host信息 
 	 * @author name: wujun
 	 * @param dav
 	 * @param request
 	 */
-	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject saveHost(HclusterModel hclusterModel,HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.POST)
+	public @ResponseBody ResultObject saveHost(HclusterModel hclusterModel,
+			HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		try {
 			this.hclusterService.insert(hclusterModel);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
-		}	
+		}
 		return obj;
-	}	
-   /**
-    * Methods Name: delteHostByID <br>
-    * Description: 删除host信息通过hostID
-    * @author name: wujun
-    * @param hv
-    * @param request
-    */
-   @RequestMapping(value="/{hclusterId}",method=RequestMethod.DELETE)   
-   public @ResponseBody ResultObject delteHostByID(@PathVariable Long hclusterId,HttpServletRequest request) {
-	   ResultObject obj = new ResultObject();
-	   HclusterModel hclusterModel = new HclusterModel();
-	try {
-		hclusterModel.setId(hclusterId);
-		this.hclusterService.delete(hclusterModel);
-	} catch (Exception e) {
-		logger.debug(e.getMessage());
-	}	
-	return obj;
-   }	
-  
-  /**
-   *  Methods Name: updateHost <br>
-   * Description: 修改host的相关信息
-   * @author name: wujun
-   * @param hv
-   * @param request
-   */
-  @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
-  public void updateHost(HclusterModel hclusterModel) {
+	}
 
-}	
-  
-	
+	/**
+	 * Methods Name: delteHostByID <br>
+	 * Description: 删除hcluster信息通过hclusterId
+	 * @author name: wujun
+	 * @param hclusterId
+	 * @param request
+	 */
+	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.DELETE)
+	public @ResponseBody ResultObject delteHostByID(
+			@PathVariable Long hclusterId, HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		HclusterModel hclusterModel = new HclusterModel();
+		try {
+			hclusterModel.setId(hclusterId);
+			this.hclusterService.delete(hclusterModel);
+		} catch (Exception e) {
+			logger.debug(e.getMessage());
+		}
+		return obj;
+	}
+
+	/**
+	 * Methods Name: HclusterId <br>
+	 * Description: 修改hcluster的相关信息
+	 * @author name: wujun
+	 * @param hclusterId
+	 * @param request
+	 */
+	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.POST)
+	public void updateHclusterId(HclusterModel hclusterModel) {
+
+	}
+
 	/**
 	 * Methods Name: validate <br>
-	 * Description: 校验hcluster是否存在
+	 * Description: 校验hcluster是否存在通过名字(模糊查询)
 	 * @author name: wujun
-	 * @param dbUserModel
+	 * @param hclusterName
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> validateIp(String hclusterName,HttpServletRequest request) {
-		Map<String,Object> map = new HashMap<String,Object>();
+	@RequestMapping(value = "/validate", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> validateIp(String hclusterName,
+			HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("hclusterName", hclusterName);
 		List<HclusterModel> list = this.hclusterService.selectByMap(map);
-		map.put("valid", list.size()>0?false:true);
+		map.put("valid", list.size() > 0 ? false : true);
 		return map;
 	}
-	@RequestMapping(value="/isExistHostOnHcluster/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> isExistHostOnHcluster(String hclusterId,HttpServletRequest request) {
-		Map<String,Object> map = new HashMap<String,Object>();
+    /**
+     * Methods Name: isExistHostOnHcluster <br>
+     * Description: 删除hcluster之前校验是否存在host<br>
+     * @author name: wujun
+     * @param hclusterId
+     * @param request
+     * @return
+     */
+	@RequestMapping(value = "/isExistHostOnHcluster/validate", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> isExistHostOnHcluster(
+			String hclusterId, HttpServletRequest request) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", hclusterId);
-		List<HclusterModel> list = this.hclusterService.isExistHostOnHcluster(map);
-		map.put("valid", list.size()>0?false:true);
+		List<HclusterModel> list = this.hclusterService
+				.isExistHostOnHcluster(map);
+		map.put("valid", list.size() > 0 ? false : true);
 		return map;
 	}
-	
+
 }

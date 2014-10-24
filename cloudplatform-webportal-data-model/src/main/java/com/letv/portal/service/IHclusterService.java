@@ -1,5 +1,6 @@
 package com.letv.portal.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public interface IHclusterService extends IBaseService<HclusterModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
-	public List<HclusterModel> selectByHclusterId(Long hclusterId);
+	public List<Map<String, String>> selectByHclusterId(Long hclusterId);
 	public List<HclusterModel> selectByName(Map<String,String> map);
 	public List<HclusterModel> isExistHostOnHcluster(Map<String,Object> map);
 }

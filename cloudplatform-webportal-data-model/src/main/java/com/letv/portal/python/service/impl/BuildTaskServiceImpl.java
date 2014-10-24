@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
@@ -23,6 +24,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
@@ -76,6 +78,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IFixedPushService fixedPushService;
 	@Autowired 
 	private IZabbixPushService zabbixPushService;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -193,7 +197,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					//物理机集群维护完成后，修改此处，需要关联物理机id
 					container.setHostIp((String) map.get("hostIp"));
 					HostModel hostModel = this.hostService.selectByIp((String) map.get("hostIp"));
-					container.setHostId(hostModel.getId());
+					if(null != hostModel) {
+						container.setHostId(hostModel.getId());
+					}
 				}catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -482,7 +488,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = fixedPushService.createMutilContainerPushFixedInfo(containers);
+			nextStep = analysisToFixedOrZabbix(fixedPushService.createMutilContainerPushFixedInfo(containers),step,startTime,mclusterId,dbId);
 		}
 		/**
 		 * zabbix推送
@@ -490,9 +496,41 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+			nextStep = analysisToFixedOrZabbix(zabbixPushService.createMultiContainerPushZabbixInfo(containers),step,startTime,mclusterId,dbId);
 		}
 		return nextStep;
+	}
+	
+	private boolean analysisToFixedOrZabbix(Boolean sendFlag,int step,Date startTime,Long mclusterId,Long dbId){
+		BuildModel buildModel = new BuildModel();
+		
+		buildModel.setMclusterId(mclusterId);
+		buildModel.setDbId(dbId);
+		buildModel.setStep(step);
+		buildModel.setStartTime(startTime);
+		buildModel.setEndTime(new Date());
+		boolean flag = true;
+		if(sendFlag){
+			buildModel.setStatus(BuildStatus.SUCCESS.getValue());
+		}else {
+			flag =  false;
+			buildModel.setStatus(BuildStatus.FAIL.getValue());
+			this.buildResultToMgr("mcluster集群", "失败", "固资或者zabbix", ERROR_MAIL_ADDRESS);
+			MclusterModel mclusterModel = new MclusterModel();
+			mclusterModel.setId(mclusterId);
+			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+			this.mclusterService.audit(mclusterModel);
+		}
+		this.buildService.updateByStep(buildModel);
+		if(flag) {
+			BuildModel nextBuild = new BuildModel();
+			nextBuild.setMclusterId(mclusterId);
+			nextBuild.setStep(step+1);
+			nextBuild.setStartTime(new Date());
+			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
+			this.buildService.updateByStep(nextBuild);
+		}
+		return flag;
 	}
 	
 	private boolean analysis(Map<String,Object> jsonResult,int step,Date startTime,Long mclusterId,Long dbId){
@@ -751,4 +789,68 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		map.put("type", HostType.MASTER.getValue());
 		return this.hostService.selectByMap(map).get(0);
 	}
+
+	@Override
+	public void checkMclusterCount() {
+		HostModel host = this.hostService.selectByMap(null).get(0);
+		String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
+		Map map = this.transResult(result);
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(((Map)map.get("meta")).get("code"))) {
+			List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
+			
+			for (Map mm : data) {
+				String mclusterName = (String) mm.get("clusterName");
+				List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
+				if(list.size() <= 0) {
+					this.addHandMcluster(mm);
+				} else {
+					
+					List<Map> cms = (List<Map>) mm.get("nodeInfo");
+					for (Map cm : cms) {
+						ContainerModel container = new ContainerModel();
+						container.setContainerName((String) cm.get("containerName"));
+						container.setHostIp((String) cm.get("hostIp"));
+						HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+						if(null != hostModel) {
+							container.setHostId(hostModel.getId());
+						}
+						this.containerService.updateHostIpByName(container);
+					}
+				}
+			}
+		}
+	}
+	
+	private void addHandMcluster(Map mm) {
+		MclusterModel mcluster = new MclusterModel();
+		mcluster.setMclusterName((String) mm.get("clusterName"));
+		mcluster.setStatus(MclusterStatus.DEFAULT.getValue());	
+		mcluster.setAdminUser("root");
+		mcluster.setAdminPassword((String) mm.get("clusterName"));
+		mcluster.setType(MclusterType.HAND.getValue());
+		mcluster.setCreateUser(sessionService.getSession().getUserId());
+		mcluster.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
+		mcluster.setDeleted(true);
+		this.mclusterService.insert(mcluster);
+		List<Map> cms = (List<Map>) mm.get("nodeInfo");
+		for (Map cm : cms) {
+			ContainerModel container = new ContainerModel();
+			try {
+				BeanUtils.populate(container, cm);
+				container.setMclusterId(mcluster.getId());
+				container.setIpMask((String) cm.get("netMask"));
+				container.setContainerName((String) cm.get("containerName"));
+				container.setStatus(MclusterStatus.RUNNING.getValue());
+				container.setHostIp((String) cm.get("hostIp"));
+				HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+				if(null != hostModel) {
+					container.setHostId(hostModel.getId());
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			this.containerService.insert(container);
+		}
+	}
+	
 }

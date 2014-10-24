@@ -1,5 +1,7 @@
 package com.letv.portal.proxy.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +9,11 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.DbStatus;
@@ -38,6 +43,12 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	
+	@Value("${error.email.to}")
+	private String ERROR_MAIL_ADDRESS;
+	
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
 	public IBaseService<DbModel> getService() {
@@ -104,6 +115,21 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			params.put("status", DbStatus.BUILDDING.getValue());
 			
 			this.auditAndBuild(params);
+		} else {
+			//邮件通知
+			Map<String,Object> emailParams = new HashMap<String,Object>();
+			//用户${createUser}于${createTime}申请数据库${dbName}，
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			emailParams.put("createUser", sessionService.getSession().getUserName());
+			emailParams.put("createTime", sdf.format(new Date()));
+			emailParams.put("dbName", dbModel.getDbName());
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDb.ftl",emailParams);
+			try {
+				defaultEmailSender.sendMessage(mailMessage);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(e.getMessage());
+			}
 		}
 	}
 	

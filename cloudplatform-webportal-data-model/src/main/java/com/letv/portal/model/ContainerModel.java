@@ -26,6 +26,7 @@ public class ContainerModel extends BaseModel {
 	private Integer cpuSpeed; //cpu速度 
 	private Integer memorySize; //内存大小
 	private Integer status; //状态
+	private String zabbixHosts;//对应zabbix删除container时候需要的标识
 	
 	private Long hostId;  //所属host
 	private String hostIp; //ip
@@ -33,6 +34,16 @@ public class ContainerModel extends BaseModel {
 	
 	private MclusterModel mcluster;
 	
+
+	public String getZabbixHosts() {
+		return zabbixHosts;
+	}
+
+
+	public void setZabbixHosts(String zabbixHosts) {
+		this.zabbixHosts = zabbixHosts;
+	}
+
 
 	public String getContainerName() {
 		return containerName;
