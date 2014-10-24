@@ -155,4 +155,21 @@ public class HostController {
 	}	
 	return obj;
 }	
+  /**
+   * Methods Name: validateIp <br>
+   * Description: 判断host上是否container存在<br>
+   * @author name: wujun
+   * @param hostIp
+   * @param request
+   * @return
+   */
+	@RequestMapping(value="/isExitContainerOnHost/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validateExitContainer(String hostId,HttpServletRequest request) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		HostModel hostModel = new HostModel();
+		hostModel.setId(Long.parseLong(hostId));
+		List<HostModel> list = this.hostService.isExitContainerOnHost(hostModel);
+		map.put("valid", list.size()>0?false:true);
+		return map;
+	}
 }

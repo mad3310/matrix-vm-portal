@@ -198,4 +198,14 @@
 		</if>
 		where m.ID = #{id}
 	</update>
+	
+	<!-- 校验container是否在host上面-->
+	<select id="isExitContainerOnHost" resultType="BaseResultMap"
+		parameterType="Host">
+		select 
+		<include refid="Base_Column_List" />
+		from webportal_host m, webportal_container n where m.host_ip=n.host_ip 
+		and m.id=#{id}
+	</select>
+	
 </mapper>   
