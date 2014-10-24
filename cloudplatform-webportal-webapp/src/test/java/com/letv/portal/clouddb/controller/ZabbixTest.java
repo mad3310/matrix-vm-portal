@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.annotations.Delete;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.InterfacesModel;
 import com.letv.portal.model.ZabbixParam;
+import com.letv.portal.model.ZabbixPushDeleteModel;
 import com.letv.portal.model.ZabbixPushModel;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
@@ -52,28 +54,37 @@ public class ZabbixTest extends AbstractTest {
 
 	@Test
 	public void createSingleContainer(){
+		Boolean flag  =false;
 		try {
-		ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-			
-			
-			ZabbixParam params = new ZabbixParam();
-			params.setHost("container_webportal7");
-			
-			InterfacesModel interfacesModel = new InterfacesModel();
-			interfacesModel.setIp("192.168.1.7");
-			
-			List<InterfacesModel> list = new ArrayList<InterfacesModel>();
-			list.add(interfacesModel);
-			params.setInterfaces(list);
-			
-			zabbixPushModel.setParams(params);  
-			Boolean flag =	zabbixPushService.pushZabbixInfo(zabbixPushModel);
+			List<ContainerModel> list  = new ArrayList<ContainerModel>();
+			ContainerModel containerModel1 = new ContainerModel();
+			containerModel1.setContainerName("www3");
+			containerModel1.setIpAddr("10.58.166.34");
+			containerModel1.setId(3L);
+			list.add(containerModel1);
+		
+			flag = zabbixPushService.createMultiContainerPushZabbixInfo(list);
 			System.out.println(flag);
 		} catch (Exception e) {
 			logger.debug("zabbix创建成功");
 		}
 		
 	}
+   @Test
+   public void deleContainer(){
+	   Boolean flag  =false;
+	  ContainerModel containerModel = new ContainerModel();
+	  containerModel.setId(3L);
+	  containerModel.setZabbixHosts("10209");
+		try {
+			
+	     flag =	zabbixPushService.deleteSingleContainerPushZabbixInfo(containerModel);
+	     System.out.println(flag);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   } 
    
 	@Test
     public void login(){

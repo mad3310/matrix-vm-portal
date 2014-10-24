@@ -21,6 +21,7 @@
 		<result column="HOST_ID" property="hostId" />
 		<result column="HOST_IP" property="hostIp" />
 		<result column="MCLUSTER_ID" property="mclusterId" />
+		<result column="ZABBIXHOSTS" property="zabbixHosts" />
 		
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
@@ -38,7 +39,7 @@
 	
 	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
-		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,
+		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,C.ZABBIXHOSTS,
 		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.HOST_IP,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
@@ -135,6 +136,9 @@
 				UPDATE_TIME=now(),
 			<if test="updateUser != null  ">
 				UPDATE_USER=#{updateUser}
+			</if>
+			<if test="zabbixHosts != null  ">
+				ZABBIXHOSTS=#{zabbixHosts}
 			</if>
 		</set>
 		where ID=#{id}
