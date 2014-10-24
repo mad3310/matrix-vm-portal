@@ -579,8 +579,8 @@ function createDbUser(){
 }
 function editDbUserForm(obj){
 	var dbUserTr = $(obj).parents("tr");
-	if (dbUserTr.html().indexOf("正常") < 0){
-		warn("只有状态为'正常'的用户才有修改权限!",3000);
+	if (dbUserTr.html().indexOf("正常") < 0 && dbUserTr.html().indexOf("危险") < 0 &&　dbUserTr.html().indexOf("严重危险") < 0){
+		warn("此状态数据库用户无法修改,请先修复数据库在执行此操作!",3000);
 		return 0;
 	}else{
 		$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
