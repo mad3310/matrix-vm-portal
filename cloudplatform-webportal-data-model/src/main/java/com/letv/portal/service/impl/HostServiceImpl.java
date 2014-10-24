@@ -108,4 +108,9 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	public HostModel selectByIp(String hostIp) {
 		return this.hostDao.selectByIp(hostIp);
 	}
+
+	@Override
+	public List<HostModel> isExitContainerOnHost(HostModel hostModel) {
+		return this.hostDao.isExitContainerOnHost(hostModel);
+	}
 }
