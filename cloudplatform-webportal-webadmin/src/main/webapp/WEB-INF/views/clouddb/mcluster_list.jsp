@@ -36,9 +36,7 @@
 								</th>
 								<th>Container集群名称</th>
 								<th>Container集群所属用户</th>
-								<th>
-									创建时间 
-								</th>
+								<th>创建时间 </th>
 								<th class="hidden-480">当前状态</th>
 								<th>操作</th>
 							</tr>
@@ -236,12 +234,17 @@ function queryByPage(currentPage,recordsPerPage) {
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"/>"
 							+"创建中...</a>"
 							+ "</td>");
-				}else{
+				}else if(array[i].status == 1||array[i].status == 3||array[i].status == 6){
 					var td5 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+translateStatus(array[i].status)
 							+"</a>"
 							+ "</td>");
+				}else{
+					var td5 = $("<td>"
+							+translateStatus(array[i].status)
+							+ "</td>");
+					
 				}
 					
 				var td6 = $("<td>"
@@ -259,8 +262,10 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ "</td>"
 				);
 					
-				if(array[i].status == 3){
+				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"danger\"></tr>");
+				}else if(array[i].status == 5||array[i].status == 13){
+					var tr = $("<tr class=\"warning\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
 				}
@@ -523,6 +528,11 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function startMcluster(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("已停止") < 0){
+		warn("当前状态无法执行启动操作!",3000);
+		return 0;
+	}
 	function startCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({
@@ -538,6 +548,11 @@ function startMcluster(obj){
 	confirmframe("启动container集群","启动集群大概需要几分钟时间!","请耐心等待...",startCmd);
 }
 function stopMcluster(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("运行中") < 0){
+		warn("当前状态无法执行关闭操作!",3000);
+		return 0;
+	}
 	function stopCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({
@@ -553,6 +568,11 @@ function stopMcluster(obj){
 	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("删除中") >= 0){
+		warn("正在删除集群,请耐心等待...",3000);
+		return 0;
+	}
 	function deleteCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 		$.ajax({

@@ -24,7 +24,7 @@
 					<thead>
 				      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
 				         <th>物理机名称</th>
-				         <th>别名</th>
+				         <th>编号</th>
 				         <th>类型</th>
 				         <th>ip</th>
 				         <th>状态</th>
@@ -56,19 +56,7 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">物理机名</label>
-										<div class="col-sm-5">
-											<input class="form-control" name="hostName" id="hostName" type="text" />
-										</div>
-										<label class="control-label" for="hostName">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostNameAlias">物理机别名</label>
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostNameAlias">物理机名称</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="hostNameAlias" id="hostNameAlias" type="text" />
 										</div>
@@ -79,11 +67,24 @@
 										</label>
 									</div>
 									<div class="form-group">
+										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
+										<input class="hidden" name="status" id="status" value="6"　type="text" />
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">编号</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="hostName" id="hostName" type="text" />
+										</div>
+										<label class="control-label" for="hostName">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">物理机类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="0">主机</option>
 												<option value="1">从机</option>
+												<option value="0">主机</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -210,10 +211,10 @@ function queryHost(){
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
 				var td1 = $("<td>"
-					    + array[i].hostName
+					    + array[i].hostNameAlias
 				        + "</td>");
 				var td2 = $("<td>"
-					    + array[i].hostNameAlias
+					    + array[i].hostName
 				        + "</td>");
 				var td3;
 				if(array[i].type == 0){
@@ -310,7 +311,7 @@ function addHost(){
         	queryHost();
 			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#add_host_form').data('bootstrapValidator').resetForm();
-			$('#type').val(0);
+			$('#type').val(1);
 			$('#add_host_botton').addClass('disabled');
         }
 	});

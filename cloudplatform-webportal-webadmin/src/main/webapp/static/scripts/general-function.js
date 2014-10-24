@@ -121,32 +121,62 @@ function translateStatus(status){
 	if (status == 0){
 		return "未审核";
 	}else if(status == 1){
-		return "运行中...";
+		return "运行中";
 	}else if(status == 2){
-		return "创建中...";
+		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...";
 	}else if(status == 3){
 		return "创建失败";
 	}else if(status == 4){
-		return "审核失败";
+		return "<font color=\"red\">审核失败</font>";
 	}else if(status == 5){
-		return "异常";
+		return "<font color=\"orange\">异常</font>";
 	}else if(status == 6){
 		return "正常";
 	}else if(status == 7){
-		return "启动中...";
+		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>启动中...";
 	}else if(status == 8){
-		return "停止中...";
+		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>停止中...";
 	}else if(status == 9){
 		return "已停止";
 	}else if(status == 10){
-		return "删除中...";
+		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>删除中...";
 	}else if(status == 11){
 		return "已删除";
 	}else if(status == 12){
 		return "不存在";
 	}else if(status == 13){
-		return "危险";
+		return "<font color=\"orange\">危险</font>";
 	}else if(status == 14){
-		return "严重危险";
+		return "<font color=\"red\">严重危险</font>";
 	}
+}
+/*错误提示框,一般在异步请求返回信息中用到*/
+function error(errorThrown,time) {
+	if(errorThrown.result == 0) {
+		if(!time){
+			time = 1000;
+		}
+		$.gritter.add({
+			title: '错误',
+			text: errorThrown.msgs,
+			sticky: false,
+			time: time,
+			class_name: 'gritter-error'
+		});
+		return;
+	}
+}
+/*警告提示框,一般在操作提示中用到*/
+function warn(warnMsg,time) {
+	if(!time){
+		time = 1000;
+	}
+	$.gritter.add({
+		title: '警告',
+		text: warnMsg,
+		sticky: false,
+		time: time,
+		class_name: 'gritter-error'
+	});
+	return;
 }
