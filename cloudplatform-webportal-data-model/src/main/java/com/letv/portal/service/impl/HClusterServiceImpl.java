@@ -47,7 +47,7 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		page.setTotalRecords(this.hclusterDao.selectByMapCount(params));
 		return page;
 	}
-	public List<HclusterModel> selectByHclusterId(Long hclusterId){
+	public List<Map<String, String>> selectByHclusterId(Long hclusterId){
 		return hclusterDao.selectByHclusterId(hclusterId);
 	}
 

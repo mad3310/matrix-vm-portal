@@ -19,6 +19,35 @@
 		<result column="UPDATE_USER" property="updateUser" />
 	</resultMap>
   
+  	<resultMap id="resultDetail" type="java.util.Map">
+		<result column="hclusterId" property="hclusterId" />
+		<result column="hclusterName" property="hclusterName" />
+		<result column="hclusterNameAlias" property="hclusterNameAlias" />
+		
+		<result column="hostId" property="hostId" />
+		<result column="hostName" property="hostName" />
+		<result column="hostIp" property="hostIp" />
+		<result column="nodesNumber" property="nodesNumber" />
+		<result column="hostModel" property="hostModel" />
+		<result column="cpuModel" property="cpuModel" />
+		<result column="coresNumber" property="coresNumber" />
+		<result column="memorySize" property="memorySize" />
+		<result column="diskSize" property="diskSize" />
+		<result column="diskUsed" property="diskUsed" /> 
+		<result column="type" property="type" /> 
+		<result column="name" property="name" /> 
+		<result column="password" property="password" /> 
+		<result column="descn" property="descn" /> 
+		<result column="hostNameAlias" property="hostNameAlias" /> 
+		
+		<result column="status" property="status" />
+		<result column="deleted" property="deleted" />
+		<result column="createTime" property="createTime" />
+		<result column="createUser" property="createUser" />
+		<result column="updateTime" property="updateTime" />
+		<result column="updateUser" property="updateUser" />
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn,m.HCLUSTER_NAME_ALIAS
 	</sql>
@@ -103,10 +132,32 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 				<!-- 根据dbId查询-->
-	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByHclusterId" resultMap="resultDetail" parameterType="java.lang.Long">
 		select
-		<include refid="Base_Column_List" />
-		from webportal_hcluster m , webportal_host n where m.ID=n.hcluster_id m.ID = #{hclusterId}
+		m.HCLUSTER_NAME hclusterName,
+		m.HCLUSTER_NAME_ALIAS hclusterNameAlias,
+		n.ID hostId,
+		n.HOST_NAME hostName,
+		n.HOST_IP hostIp,
+		n.NODES_NUMBER nodesNumber,
+		n.HOST_MODEL hostModel,
+		n.CPU_MODEL cpuModel,
+		n.CORES_NUMBER coresNumber,
+		n.MEMORY_SIZE memorySize,
+		n.DISK_SIZE diskSize,
+		n.DISK_USED diskUsed,
+		n.TYPE type,
+		n.NAME name,
+		n.PASSWORD password,
+		n.DESCN descn,
+		n.HOST_NAME_ALIAS hostNameAlias,
+		n.STATUS status,
+		n.DELETED deleted,
+		n.CREATE_TIME createTime,
+		n.CREATE_USER createUser,
+		n.UPDATE_TIME updateTime,
+		n.UPDATE_USER updateUser	
+		from webportal_hcluster m , webportal_host n where m.ID=n.hcluster_id and m.ID = #{hclusterId}
 	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"

@@ -67,11 +67,10 @@ public class HclusterControllerTest extends AbstractTest{
 
 	@Test
 	public void updateHost(){
-		Map<String,String> map  = new HashMap<String, String>();
-		map.put("id", "1");
+		Long hclusterId =4L;
 		try {
-			List<HclusterModel> list =  this.hclusterService.selectByMap(map);
-			  System.out.println(list);
+		this.hclusterService.selectByHclusterId(hclusterId);
+		System.out.println("xxx");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
