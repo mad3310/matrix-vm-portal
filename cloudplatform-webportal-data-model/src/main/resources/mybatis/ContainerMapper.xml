@@ -72,6 +72,19 @@
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
+	
+	<update id="updateHostIpByName" parameterType="Container">
+		update WEBPORTAL_CONTAINER
+		<set>
+			<if test="hostId != null  ">
+				HOST_ID=#{hostId},
+			</if>
+			<if test="hostIp != null  ">
+				HOST_IP=#{hostIp},
+			</if>
+		</set>
+		where CONTAINER_NAME=#{containerName}
+	</update>
 
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Container">

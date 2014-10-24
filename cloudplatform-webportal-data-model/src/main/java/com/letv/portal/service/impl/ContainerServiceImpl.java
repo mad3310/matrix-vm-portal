@@ -66,4 +66,9 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		this.containerDao.deleteByMclusterId(mclusterId);
 		
 	}
+
+	@Override
+	public void updateHostIpByName(ContainerModel container) {
+		this.containerDao.updateHostIpByName(container);
+	}
 }
