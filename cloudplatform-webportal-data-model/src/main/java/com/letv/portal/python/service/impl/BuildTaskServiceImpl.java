@@ -482,7 +482,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = fixedPushService.createMutilContainerPushFixedInfo(containers);
+			nextStep = analysisToFixedOrZabbix(fixedPushService.createMutilContainerPushFixedInfo(containers),step,startTime,mclusterId,dbId);
 		}
 		/**
 		 * zabbix推送
@@ -490,9 +490,41 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(nextStep) {
 			step++;
 			startTime = new Date();
-			nextStep = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+			nextStep = analysisToFixedOrZabbix(zabbixPushService.createMultiContainerPushZabbixInfo(containers),step,startTime,mclusterId,dbId);
 		}
 		return nextStep;
+	}
+	
+	private boolean analysisToFixedOrZabbix(Boolean sendFlag,int step,Date startTime,Long mclusterId,Long dbId){
+		BuildModel buildModel = new BuildModel();
+		
+		buildModel.setMclusterId(mclusterId);
+		buildModel.setDbId(dbId);
+		buildModel.setStep(step);
+		buildModel.setStartTime(startTime);
+		buildModel.setEndTime(new Date());
+		boolean flag = true;
+		if(sendFlag){
+			buildModel.setStatus(BuildStatus.SUCCESS.getValue());
+		}else {
+			flag =  false;
+			buildModel.setStatus(BuildStatus.FAIL.getValue());
+			this.buildResultToMgr("mcluster集群", "失败", "固资或者zabbix", ERROR_MAIL_ADDRESS);
+			MclusterModel mclusterModel = new MclusterModel();
+			mclusterModel.setId(mclusterId);
+			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
+			this.mclusterService.audit(mclusterModel);
+		}
+		this.buildService.updateByStep(buildModel);
+		if(flag) {
+			BuildModel nextBuild = new BuildModel();
+			nextBuild.setMclusterId(mclusterId);
+			nextBuild.setStep(step+1);
+			nextBuild.setStartTime(new Date());
+			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
+			this.buildService.updateByStep(nextBuild);
+		}
+		return flag;
 	}
 	
 	private boolean analysis(Map<String,Object> jsonResult,int step,Date startTime,Long mclusterId,Long dbId){

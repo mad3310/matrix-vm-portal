@@ -64,21 +64,11 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	@Override
 	public void deleteSingleContainerPushZabbixInfo(
 			ContainerModel containerModel) {
-		try {
+		try {  
 			if(containerModel!=null){
 				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-							
-				ZabbixParam params = new ZabbixParam();
-				params.setHost(containerModel.getContainerName());
-				
-				InterfacesModel interfacesModel = new InterfacesModel();
-				interfacesModel.setIp(containerModel.getIpAddr());
-				
-				List<InterfacesModel> list = new ArrayList<InterfacesModel>();
-				list.add(interfacesModel);
-				params.setInterfaces(list);
-				
-				zabbixPushModel.setParams(params);  
+//				containerModel.setId(""); 			
+			
 				pushZabbixInfo(zabbixPushModel);	
 			}		
 			} catch (Exception e) {
