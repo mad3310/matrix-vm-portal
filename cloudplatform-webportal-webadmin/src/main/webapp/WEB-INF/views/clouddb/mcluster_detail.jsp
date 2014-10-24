@@ -136,6 +136,11 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function startContainer(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("已停止") < 0){
+		warn("当前状态无法执行启动操作!",3000);
+		return 0;
+	}
 	function startCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
@@ -151,6 +156,11 @@ function startContainer(obj){
 	confirmframe("启动container","启动container大概需要几分钟时间!","请耐心等待...",startCmd);
 }
 function stopContainer(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("运行中") < 0){
+		warn("当前状态无法执行关闭操作!",3000);
+		return 0;
+	}
 	function stopCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
