@@ -363,12 +363,18 @@ function confirmframe(title,content,question,ok,cancle){
 }
 function deleteHcluster(obj){
 	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("正常")>=0){
-		alert("无法删除!");
-		return 0;
-	}
+	var hclusterId =tr.find('[name="hcluster_id"]').val();
+	var isExistHostOnHcluster;
+	$.ajax({
+		url:'${ctx}/hcluster/isExistHostOnHcluster/validate'+hclusterId,
+		type:'post',
+		data:{ 'hclusterId' : hclusterId },
+		success:function(data){
+			
+		}
+	});
+	return false;
 	function deleteCmd(){
-		var hclusterId =tr.find('[name="hcluster_id"]').val();
 		$.ajax({
 			url:'${ctx}/hcluster/'+hclusterId,
 			type:'delete',
