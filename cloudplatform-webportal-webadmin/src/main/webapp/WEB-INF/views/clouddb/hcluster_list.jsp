@@ -31,7 +31,7 @@
 									</label>
 								</th>
 								<th>物理机集群名称</th>
-								<th>别名</th>
+								<th>编号</th>
 								<th>创建时间 </th>
 								<th class="hidden-480">当前状态</th>
 								<th>操作</th>
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		<div class="col-xs-3">
-			<small><font color="gray">*注：点击物理机集群名可查看详情.</font></small>
+			<small><font color="gray">*注：点击编号可查看详情.</font></small>
 		</div>
 		<div id="pageControlBar" class="col-xs-6">
 			<input type="hidden" id="totalPage_input" />
@@ -75,23 +75,24 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
+										<input class="hidden" name="status" id="status" value="6"　type="text" />
 										<label class="col-sm-4 control-label" for="hcluster_name">物理机集群名称</label>
 										<div class="col-sm-6">
-											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
+											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群别名应能概括此集群的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster_name">别名</label>
+										<label class="col-sm-4 control-label" for="hcluster_name">编号</label>
 										<div class="col-sm-6">
-											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+											<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群别名应能概括此集群的信息." style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -165,16 +166,16 @@ function queryByPage(currentPage,recordsPerPage) {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a href=\"${ctx}/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
+						+ array[i].hclusterNameAlias
 						+ "</td>");
 				var td3 = $("<td>"
-						+ array[i].hclusterNameAlias
+						+  "<a href=\"${ctx}/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
 						+ "</td>");
 				var td4 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				var td5 = $("<td>"
-						+ "正常"
+						+ translateStatus(array[i].status)
 						+ "</td>");
 				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
