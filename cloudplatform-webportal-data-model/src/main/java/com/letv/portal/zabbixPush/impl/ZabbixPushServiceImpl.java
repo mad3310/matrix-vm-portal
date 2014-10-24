@@ -67,7 +67,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		try {  
 			if(containerModel!=null){
 				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
-//				containerModel.setId(""); 			
+				containerModel.setZabbixHosts("");			
 			
 				pushZabbixInfo(zabbixPushModel);	
 			}		
