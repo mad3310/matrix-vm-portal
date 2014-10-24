@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.junitBase.AbstractTest;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerPush;
 import com.letv.portal.model.FixedPushModel;
 
@@ -31,20 +32,31 @@ public class FixedPushTest extends AbstractTest{
 		// get()获得snr号然后做拼接
 		// post()发送拼接好的信息
 		// String url = "http://localhost:8080/webTest2/";
-		ContainerPush containerMode1 = new ContainerPush();
-		ContainerPush containerMode2 = new ContainerPush();
-		containerMode1.setName("container");
-		containerMode2.setName("container");
-		containerMode1.setIp("10.19.18.73");
-		containerMode2.setIp("10.19.18.72");
-		List<ContainerPush> list = new ArrayList<ContainerPush>();
-		list.add(containerMode1);
-		list.add(containerMode2);
-		FixedPushModel fixedPushModel = new FixedPushModel();
-		fixedPushModel.setServertag("10.100.91.73");
-		fixedPushModel.setIpaddress(list);
+//		ContainerPush containerMode1 = new ContainerPush();
+//		ContainerPush containerMode2 = new ContainerPush();
+//		containerMode1.setName("container");
+//		containerMode2.setName("container");
+//		containerMode1.setIp("10.19.18.73");
+//		containerMode2.setIp("10.19.18.72");
+//		List<ContainerPush> list = new ArrayList<ContainerPush>();
+//		list.add(containerMode1);
+//		list.add(containerMode2);
+//		FixedPushModel fixedPushModel1 = new FixedPushModel();
+//		fixedPushModel1.setServertag("10.100.91.73");
+//		fixedPushModel1.setIpaddress(list);
+  	    List<ContainerModel> containers = new ArrayList<ContainerModel>();
+  	    ContainerModel containerModel1 = new ContainerModel();
+  	    ContainerModel containerModel2 = new ContainerModel();
+  	    containerModel1.setContainerName("container1");
+  	    containerModel1.setHostIp("10.200.91.156");
+  	    containerModel1.setIpAddr("192.168.1.34");
+  	    containerModel2.setContainerName("container2");
+  	    containerModel2.setIpAddr("192.168.1.35");
+  	    containerModel2.setHostIp("10.200.91.157");
+  	    containers.add(containerModel1);  
+  	    containers.add(containerModel2);   
 		try {
-			fixedPushService.createContainerPushFixedInfo(fixedPushModel);
+			fixedPushService.createMutilContainerPushFixedInfo(containers);
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}

@@ -53,6 +53,7 @@ public class HostControllerTest extends AbstractTest{
 			HostModel hostModel = new HostModel();
 			hostModel.setHostName("wujun7");
 			hostModel.setHostIp("192.168.1.17");
+			hostModel.setHostNameAlias("酷");
 			hostService.insert(hostModel);
 		} catch (Exception e) {
 			e.printStackTrace();
