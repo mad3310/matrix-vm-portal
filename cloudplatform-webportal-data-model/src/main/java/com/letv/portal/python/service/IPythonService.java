@@ -227,5 +227,15 @@ public interface IPythonService {
 	 * @author name: wujun
 	 */
 	public String createHost(HostModel hostModel);
+
+	/**Methods Name: checkMclusterCount <br>
+	 * Description: 检查container集群一致性<br>
+	 * @author name: liuhao1
+	 * @param hostIp
+	 * @param name
+	 * @param password
+	 * @return
+	 */
+	public String checkMclusterCount(String hostIp, String name, String password);
 	
 }

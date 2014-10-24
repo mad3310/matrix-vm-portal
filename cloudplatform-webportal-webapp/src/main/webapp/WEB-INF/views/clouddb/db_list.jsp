@@ -158,7 +158,7 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td2;
-					if(array[i].status == 1){
+					if(array[i].status == 6){
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/detail/db/" + array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");
@@ -201,11 +201,10 @@ var currentSelectedLineDbName = 1;
 								+ "</td>"
 						);	 */
 						
-					if(array[i].status == 0 ||array[i].status == 2){
+					if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 						var tr = $("<tr class=\"warning\"></tr>");
-					}else if(array[i].status == 3 ||array[i].status == 4){
+					}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
 						var tr = $("<tr class=\"danger\"></tr>");
-						
 					}else{
 						var tr = $("<tr></tr>");
 					}

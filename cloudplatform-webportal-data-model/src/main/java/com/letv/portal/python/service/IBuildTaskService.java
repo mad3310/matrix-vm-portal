@@ -140,5 +140,11 @@ public interface IBuildTaskService {
 	 */
 	public void createHost(HostModel hostModel);
 
+	/**Methods Name: checkMclusterCount <br>
+	 * Description: 检查container集群数量一致性<br>
+	 * @author name: liuhao1
+	 */
+	public void checkMclusterCount();
+
 	
 }
