@@ -479,7 +479,7 @@ function queryDbUser(){
 							+"</div>"
 							+ "</td>");
 					
-				if(array[i].status == 0 ||array[i].status == 2||array[i].status == 13){
+				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
 				}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"danger\"></tr>");

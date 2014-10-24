@@ -180,9 +180,9 @@ function buildUser() {
 							+ translateStatus(array[i].status)
 							+ "</td>"); 
 						
-					if(array[i].status == 0){
+					if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 						var tr = $("<tr class=\"warning\"></tr>");
-					}else if(array[i].status == 3||array[i].status == 4){
+					}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
 						var tr = $("<tr class=\"danger\"></tr>");
 					}else{
 						var tr = $("<tr></tr>");
