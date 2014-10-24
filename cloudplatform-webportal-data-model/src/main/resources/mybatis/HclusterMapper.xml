@@ -106,7 +106,7 @@
 	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m where m.ID = #{hclusterId}
+		from webportal_hcluster m , webportal_host n where m.ID=n.hcluster_id m.ID = #{hclusterId}
 	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
