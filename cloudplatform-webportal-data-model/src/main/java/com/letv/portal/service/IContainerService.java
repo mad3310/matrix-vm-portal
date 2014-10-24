@@ -43,6 +43,13 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	public List<ContainerModel> selectNormalByClusterId(Long mclusterId);
 
 	public void deleteByMclusterId(Long mclusterId);
+
+	/**Methods Name: updateHostIpByName <br>
+	 * Description: 根据名称修改宿主机ip<br>
+	 * @author name: liuhao1
+	 * @param container
+	 */
+	public void updateHostIpByName(ContainerModel container);
 	
 	
 }

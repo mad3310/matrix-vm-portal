@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.client.methods.HttpDelete;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class PythonServiceImpl implements IPythonService{
 	
 	@Override
 	public String createContainer(String mclusterName,String ip,String username,String password) {
-		String url =  ip + "/containerCluster";
+		String url =  URL_HEAD  + ip + this.URL_PORT + "/containerCluster";
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
 		String result = HttpClient.post(url, map,username,password);
@@ -38,7 +37,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
-		String url = ip + "/containerCluster/status/" + mclusterName;
+		String url = URL_HEAD  + ip + this.URL_PORT + "/containerCluster/status/" + mclusterName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
@@ -202,7 +201,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String removeMcluster(String mclusterName,String ip,String username,String password) {
-		String url = ip + "/containerCluster/" + mclusterName;
+		String url = URL_HEAD  + ip + this.URL_PORT  + "/containerCluster/" + mclusterName;
 		String result = HttpClient.detele(url,username,password);
 		return result;
 	}
@@ -211,7 +210,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String startMcluster(String mclusterName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(ip + "/containerCluster/start", map,username,password);
+		String result = HttpClient.post(URL_HEAD  + ip + this.URL_PORT  + "/containerCluster/start", map,username,password);
 		return result;
 	}
 
@@ -219,7 +218,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String stopMcluster(String mclusterName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(ip + "/containerCluster/stop", map,username,password);
+		String result = HttpClient.post(URL_HEAD  + ip + this.URL_PORT  + "/containerCluster/stop", map,username,password);
 		return result;
 	}
 
@@ -227,7 +226,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String startContainer(String containerName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(ip + "/container/start", map,username,password);
+		String result = HttpClient.post(URL_HEAD  + ip + this.URL_PORT + "/container/start", map,username,password);
 		return result;
 	}
 
@@ -235,20 +234,20 @@ public class PythonServiceImpl implements IPythonService{
 	public String stopContainer(String containerName,String ip,String username,String password) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(ip + "/container/stop", map,username,password);
+		String result = HttpClient.post(URL_HEAD  + ip + this.URL_PORT + "/container/stop", map,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkMclusterStatus(String mclusterName,String ip,String username,String password) {
-		String url = ip  + "containerCluster/status/" + mclusterName;
+		String url = URL_HEAD  + ip + this.URL_PORT  + "containerCluster/status/" + mclusterName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkContainerStatus(String containerName,String ip,String username,String password) {
-		String url = ip  + "container/status/" + containerName;
+		String url = URL_HEAD  + ip + this.URL_PORT  + "container/status/" + containerName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
@@ -265,12 +264,19 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createHost(HostModel hostModel) {
-		String url =URL_HEAD+ hostModel.getHostIp()+URL_PORT+HOST_CREATE_URL;
+		String url = URL_HEAD+ hostModel.getHostIp()+URL_PORT+HOST_CREATE_URL;
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
 		String result = HttpClient.post(url, map);	
+		return result;
+	}
+
+	@Override
+	public String checkMclusterCount(String hostIp, String name, String password) {
+		String url = URL_HEAD  + hostIp + this.URL_PORT  + "/containerCluster/verify";
+		String result = HttpClient.get(url,name,password);
 		return result;
 	}
 }
