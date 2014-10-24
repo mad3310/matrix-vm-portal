@@ -194,8 +194,8 @@ function queryHost(){
 		dataType : "json", 
 		success : function(data) {
 			error(data);
- 			$("#headerHostName").append(data.data.hclusterName);
 			var array = data.data;
+ 			$("#headerHostName").append(array[0].hclusterName);
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
