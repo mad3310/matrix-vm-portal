@@ -362,29 +362,30 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function deleteHcluster(obj){
-	var tr = $(obj).parents("tr").html();
+	var tr = $(obj).parents("tr");
 	var hclusterId =tr.find('[name="hcluster_id"]').val();
-	var isExistHostOnHcluster;
 	$.ajax({
-		url:'${ctx}/hcluster/isExistHostOnHcluster/validate'+hclusterId,
+		url:'${ctx}/hcluster/isExistHostOnHcluster/validate',
 		type:'post',
 		data:{ 'hclusterId' : hclusterId },
 		success:function(data){
-			
+			if(data.valid){  //data.valid为true时可删除
+				function deleteCmd(){
+					$.ajax({
+						url:'${ctx}/hcluster/'+hclusterId,
+						type:'delete',
+						success:function(data){
+							error(data);
+							queryByPage(currentPage, recordsPerPage);
+						}
+					});
+				}
+				confirmframe("删除物理机集群","删除物理机集群后将不能恢复!","您确定要删除?",deleteCmd);
+			}else{
+				warn("该集群中含有物理机,删除完物理机后,才能执行此操作!",3000);
+			}
 		}
 	});
-	return false;
-	function deleteCmd(){
-		$.ajax({
-			url:'${ctx}/hcluster/'+hclusterId,
-			type:'delete',
-			success:function(data){
-				error(data);
-				queryByPage(currentPage, recordsPerPage);
-			}
-		});
-	}
-	confirmframe("删除物理机集群","删除物理机集群后将不能恢复!","您确定要删除?",deleteCmd);
 }
 
 function page_init(){

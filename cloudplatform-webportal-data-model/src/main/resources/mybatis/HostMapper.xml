@@ -204,7 +204,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from webportal_hcluster m ,webportal_host n
-		m.HOST_IP=n.HOST_IP
+		where m.HOST_IP=n.HOST_IP
 	    and m.ID =#{id}	
 	</select>
 	

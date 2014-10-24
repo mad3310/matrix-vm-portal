@@ -144,7 +144,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from webportal_hcluster m ,webportal_host n
-		m.ID=n.HCLUSTER_ID
+		where m.ID=n.HCLUSTER_ID
 	    and m.ID =#{id}	
 	</select>
 

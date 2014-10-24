@@ -286,18 +286,31 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-question').html(question);
 }
 function deleteHost(obj){
-	function deleteCmd(){
-		var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
-		$.ajax({
-			url:'${ctx}/host/'+hostId,
-			type:'delete',
-			success:function(data){
-				error(data);
-				queryHost();
+	var tr = $(obj).parents("tr");
+	var hclusterId =tr.find('[name="hcluster_id"]').val();
+	$.ajax({
+		url:'${ctx}/hcluster/isExistHostOnHcluster/validate',
+		type:'post',
+		data:{ 'hclusterId' : hclusterId },
+		success:function(data){
+			if(data.valid){ //data.valid为true时可删除
+				function deleteCmd(){
+					var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
+					$.ajax({
+						url:'${ctx}/host/'+hostId,
+						type:'delete',
+						success:function(data){
+							error(data);
+							queryHost();
+						}
+					});
+				}
+				confirmframe("删除物理机","删除操作将丢失该物理机上的container!","您确定要删除?",deleteCmd);
+			}else{
+				warn("该物理机中含有container,删除完container后,才能执行此操作!",3000);
 			}
-		});
-	}
-	confirmframe("删除物理机","删除操作将丢失该物理机上的container!","您确定要删除?",deleteCmd);
+		}
+	});
 }
 function addHost(){
 	$.ajax({
