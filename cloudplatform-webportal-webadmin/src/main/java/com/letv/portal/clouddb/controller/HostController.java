@@ -32,11 +32,11 @@ public class HostController {
 
 	/**
 	 * Methods Name: list <br>
-	 * Description: <br>
+	 * Description: 分页<br>
 	 * @author name: wujun
 	 * @param currentPage
 	 * @param recordsPerPage
-	 * @param dbName
+	 * @param hostName
 	 * @param request
 	 * @return
 	 */

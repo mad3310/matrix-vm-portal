@@ -120,7 +120,7 @@ function startContainer(obj){
 }
 function stopContainer(obj){
 	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("运行中") < 0){
+	if (tr.indexOf("运行中") < 0 && tr.indexOf("异常") < 0){
 		warn("当前状态无法执行关闭操作!",3000);
 		return 0;
 	}
