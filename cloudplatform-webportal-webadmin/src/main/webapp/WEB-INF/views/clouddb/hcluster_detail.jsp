@@ -136,7 +136,6 @@ $(function(){
 	$('#nav-search').addClass("hidden");
 	$('[name = "popoverHelp"]').popover();
 	queryHost();
-	queryHcluster();
 })
 
 $('#add_host_form').bootstrapValidator({
@@ -186,26 +185,16 @@ $('#add_host_form').bootstrapValidator({
 }).on('success.field.bv', function(e, data) {
  	$('#add_host_botton').removeClass("disabled");
 });
-function queryHcluster(){
+
+function queryHost(){
+	$("#tby tr").remove();
 	$.ajax({ 
 		type : "get",
 		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
 			error(data);
- 			$("#headerHostName").append(data.data[0].hclusterName);
-		}
-	});
-}
-
-function queryHost(){
-	$("#tby tr").remove();
-	$.ajax({ 
-		type : "get",
-		url : "${ctx}/host/"+$("#hclusterId").val(),
-		dataType : "json", 
-		success : function(data) {
-			error(data);
+ 			$("#headerHostName").append(data.data.hclusterName);
 			var array = data.data;
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
