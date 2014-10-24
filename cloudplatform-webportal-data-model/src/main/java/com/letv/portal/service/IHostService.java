@@ -58,6 +58,6 @@ public interface IHostService extends IBaseService<HostModel> {
 	 * @param hostModel
 	 * @return
 	 */
-	public List<HostModel> isExitContainerOnHost(HostModel hostModel);
+	public List<HostModel> isExistContainerOnHost(HostModel hostModel);
 	
 }

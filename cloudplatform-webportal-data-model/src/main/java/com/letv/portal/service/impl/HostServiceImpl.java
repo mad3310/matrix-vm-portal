@@ -110,7 +110,7 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	}
 
 	@Override
-	public List<HostModel> isExitContainerOnHost(HostModel hostModel) {
-		return this.hostDao.isExitContainerOnHost(hostModel);
+	public List<HostModel> isExistContainerOnHost(HostModel hostModel) {
+		return this.hostDao.isExistContainerOnHost(hostModel);
 	}
 }

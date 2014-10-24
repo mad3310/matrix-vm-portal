@@ -138,7 +138,7 @@
 		where m.ID = #{id}
 	</update>
 		<!-- 校验host是否在hcluster上面-->
-	<select id="isExitHostOnHcluster" resultType="BaseResultMap"
+	<select id="isExistHostOnHcluster" resultType="BaseResultMap"
 		parameterType="java.util.map">
 		select 
 		<include refid="Base_Column_List" />

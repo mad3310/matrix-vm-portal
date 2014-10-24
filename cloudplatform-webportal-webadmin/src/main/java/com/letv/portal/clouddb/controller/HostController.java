@@ -163,12 +163,12 @@ public class HostController {
    * @param request
    * @return
    */
-	@RequestMapping(value="/isExitContainerOnHost/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> validateExitContainer(String hostId,HttpServletRequest request) {
+	@RequestMapping(value="/isExistContainerOnHost/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validateExistContainer(String hostId,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		HostModel hostModel = new HostModel();
 		hostModel.setId(Long.parseLong(hostId));
-		List<HostModel> list = this.hostService.isExitContainerOnHost(hostModel);
+		List<HostModel> list = this.hostService.isExistContainerOnHost(hostModel);
 		map.put("valid", list.size()>0?false:true);
 		return map;
 	}

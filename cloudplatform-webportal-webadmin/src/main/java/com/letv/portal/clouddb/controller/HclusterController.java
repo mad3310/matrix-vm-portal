@@ -147,11 +147,11 @@ public class HclusterController {
 		map.put("valid", list.size()>0?false:true);
 		return map;
 	}
-	@RequestMapping(value="/isExitHostOnHcluster/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> isExitHostOnHcluster(String hclusterId,HttpServletRequest request) {
+	@RequestMapping(value="/isExistHostOnHcluster/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> isExistHostOnHcluster(String hclusterId,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", hclusterId);
-		List<HclusterModel> list = this.hclusterService.isExitHostOnHcluster(map);
+		List<HclusterModel> list = this.hclusterService.isExistHostOnHcluster(map);
 		map.put("valid", list.size()>0?false:true);
 		return map;
 	}

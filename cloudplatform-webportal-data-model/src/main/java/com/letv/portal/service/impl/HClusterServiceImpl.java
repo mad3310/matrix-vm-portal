@@ -58,9 +58,9 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 	}
 
 	@Override
-	public List<HclusterModel> isExitHostOnHcluster(Map<String, Object> map) {
+	public List<HclusterModel> isExistHostOnHcluster(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return this.hclusterDao.isExitHostOnHcluster(map);
+		return this.hclusterDao.isExistHostOnHcluster(map);
 	}
 
 

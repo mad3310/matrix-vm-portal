@@ -200,7 +200,7 @@
 	</update>
 	
 	<!-- 校验container是否在host上面-->
-	<select id="isExitContainerOnHost" resultType="BaseResultMap"
+	<select id="isExistContainerOnHost" resultType="BaseResultMap"
 		parameterType="Host">
 		select 
 		<include refid="Base_Column_List" />
