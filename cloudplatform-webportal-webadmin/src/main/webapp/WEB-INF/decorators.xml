@@ -6,10 +6,12 @@
 		
 		<!-- 异步请求 -->
 		<pattern>/mcluster/*</pattern>
+		<pattern>/container/*</pattern>
 		<pattern>/db/*</pattern>
 		<pattern>/dbUser/*</pattern>
 		<pattern>/build/*</pattern>
 		<pattern>/hcluster/*</pattern>
+		<pattern>/host/*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

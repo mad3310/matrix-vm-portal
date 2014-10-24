@@ -22,7 +22,7 @@ public interface IZabbixPushService{
 	 * @author name: wujun
 	 * @param containerModels
 	 */
-	public void deleteSingleContainerPushZabbixInfo(ContainerModel containerModel);
+	public Boolean deleteSingleContainerPushZabbixInfo(ContainerModel containerModel);
 	/**
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>
@@ -38,7 +38,7 @@ public interface IZabbixPushService{
 	 * @param zabbixPushModel
 	 * @return
 	 */
-	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel); 
+	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel,Long containerId); 
 	
 	/**
 	 * Methods Name: sendFixedInfo <br>
