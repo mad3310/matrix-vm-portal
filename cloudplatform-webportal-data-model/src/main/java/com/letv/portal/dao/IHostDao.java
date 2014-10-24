@@ -20,4 +20,5 @@ public interface IHostDao extends IBaseDao<HostModel> {
 	public List<HostModel> selectByHclusterId(Long hclusterId);
 	public List<HostModel> selectByNameOrIp(Map<String,String> map);
 	public HostModel selectByIp(String hostIp);
+	public List<HostModel> isExitContainerOnHost(HostModel hostModel);
 }

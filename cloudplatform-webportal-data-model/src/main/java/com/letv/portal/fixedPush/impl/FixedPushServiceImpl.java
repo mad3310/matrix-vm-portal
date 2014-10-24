@@ -60,9 +60,6 @@ public class FixedPushServiceImpl implements IFixedPushService{
 				fixedPushModel.setIpaddress(list);
 				createContainerPushFixedInfo(fixedPushModel);
 			}
-		//	fixedPushModel.setIpaddress(list);
-		//	fixedPushModel.setServertag(servertag);			
-	//		createContainerPushFixedInfo(fixedPushModel);
 			flag = true;
 			logger.debug("固资推送成功");
 		} catch (Exception e) {
