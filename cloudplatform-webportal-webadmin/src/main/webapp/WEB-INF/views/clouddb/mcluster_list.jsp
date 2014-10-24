@@ -512,7 +512,7 @@ function startMcluster(obj){
 }
 function stopMcluster(obj){
 	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("运行中") < 0){
+	if (tr.indexOf("运行中") < 0 &&tr.indexOf("异常") < 0&&tr.indexOf("危险") < 0&&tr.indexOf("严重危险") < 0 ){
 		warn("当前状态无法执行关闭操作!",3000);
 		return 0;
 	}
