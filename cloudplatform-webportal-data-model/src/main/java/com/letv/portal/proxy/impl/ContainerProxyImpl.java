@@ -52,7 +52,7 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public void checkStatus() {
 		List<ContainerModel> list = this.containerService.selectByMap(null);
 		for (ContainerModel container : list) {
-//			this.checkStatus(container);
+			this.checkStatus(container);
 		}
 	}
 	

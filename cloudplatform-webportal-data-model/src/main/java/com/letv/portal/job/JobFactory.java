@@ -41,6 +41,10 @@ public class JobFactory implements Job {
         	logger.info("check container status");
         	this.containerProxy.checkStatus();
         }
+        if("checkMclusterCount".equals(method)) {
+        	logger.info("check Mcluster Count");
+        	this.mclusterProxy.checkCount();
+        }
 	}
 
 }
