@@ -24,7 +24,7 @@
 					<thead>
 				      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
 				         <th>物理机名称</th>
-				         <th>别名</th>
+				         <th>编号</th>
 				         <th>类型</th>
 				         <th>ip</th>
 				         <th>状态</th>
@@ -56,19 +56,7 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">物理机名</label>
-										<div class="col-sm-5">
-											<input class="form-control" name="hostName" id="hostName" type="text" />
-										</div>
-										<label class="control-label" for="hostName">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostNameAlias">物理机别名</label>
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostNameAlias">物理机名称</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="hostNameAlias" id="hostNameAlias" type="text" />
 										</div>
@@ -79,11 +67,24 @@
 										</label>
 									</div>
 									<div class="form-group">
+										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
+										<input class="hidden" name="status" id="status" value="6"　type="text" />
+										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">编号</label>
+										<div class="col-sm-5">
+											<input class="form-control" name="hostName" id="hostName" type="text" />
+										</div>
+										<label class="control-label" for="hostName">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="connection_type">物理机类型</label>
 										<div class="col-sm-5">
 											<select class="form-control" name="type" id="type">
-												<option value="0">主机</option>
 												<option value="1">从机</option>
+												<option value="0">主机</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
@@ -210,10 +211,10 @@ function queryHost(){
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
 				var td1 = $("<td>"
-					    + array[i].hostName
+					    + array[i].hostNameAlias
 				        + "</td>");
 				var td2 = $("<td>"
-					    + array[i].hostNameAlias
+					    + array[i].hostName
 				        + "</td>");
 				var td3;
 				if(array[i].type == 0){
@@ -247,56 +248,32 @@ function queryHost(){
 	});
 }
 
-function confirmframe(title,content,question,ok,cancle){
-	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-		_title : function(title) {
-			var $title = this.options.title || '&nbsp;'
-			if (("title_html" in this.options)
-					&& this.options.title_html == true)
-				title.html($title);
-			else
-				title.text($title);
-		}
-	}));
-	
-	$('#dialog-confirm').removeClass('hide').dialog({
-		resizable : false,
-		modal : true,
-		title : "<div class='widget-header'><h4 class='smaller'>"+title,
-		title_html : true,
-		buttons : [
-				{
-					html : "确定",
-					"class" : "btn btn-primary btn-xs",
-					click : function() {
-						ok();
-						$(this).dialog("close");
-					}
-				},
-				{
-					html : "取消",
-					"class" : "btn btn-xs",
-					click : function() {
-						$(this).dialog("close");
-					}
-				} ]
-	});
-	$('#dialog-confirm-content').html(content);
-	$('#dialog-confirm-question').html(question);
-}
 function deleteHost(obj){
-	function deleteCmd(){
-		var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
-		$.ajax({
-			url:'${ctx}/host/'+hostId,
-			type:'delete',
-			success:function(data){
-				error(data);
-				queryHost();
+	var tr = $(obj).parents("tr");
+	var hclusterId =tr.find('[name="hcluster_id"]').val();
+	$.ajax({
+		url:'${ctx}/hcluster/isExistHostOnHcluster/validate',
+		type:'post',
+		data:{ 'hclusterId' : hclusterId },
+		success:function(data){
+			if(data.valid){ //data.valid为true时可删除
+				function deleteCmd(){
+					var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
+					$.ajax({
+						url:'${ctx}/host/'+hostId,
+						type:'delete',
+						success:function(data){
+							error(data);
+							queryHost();
+						}
+					});
+				}
+				confirmframe("删除物理机","删除操作将丢失该物理机上的container!","您确定要删除?",deleteCmd);
+			}else{
+				warn("该物理机中含有container,删除完container后,才能执行此操作!",3000);
 			}
-		});
-	}
-	confirmframe("删除物理机","删除操作将丢失该物理机上的container!","您确定要删除?",deleteCmd);
+		}
+	});
 }
 function addHost(){
 	$.ajax({
@@ -310,7 +287,7 @@ function addHost(){
         	queryHost();
 			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#add_host_form').data('bootstrapValidator').resetForm();
-			$('#type').val(0);
+			$('#type').val(1);
 			$('#add_host_botton').addClass('disabled');
         }
 	});

@@ -51,5 +51,13 @@ public interface IHostService extends IBaseService<HostModel> {
 	public List<HostModel> selectByIpOrHostName(HostModel hostModel);
 
 	public HostModel selectByIp(String hostIp);
+	/**
+	 * Methods Name: isExitContainerOnHost <br>
+	 * Description: host上是否存在container<br>
+	 * @author name: wujun
+	 * @param hostModel
+	 * @return
+	 */
+	public List<HostModel> isExistContainerOnHost(HostModel hostModel);
 	
 }

@@ -198,4 +198,14 @@
 		</if>
 		where m.ID = #{id}
 	</update>
+	
+	<select id="isExistContainerOnHost" resultMap="BaseResultMap"
+		parameterType="Host">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m ,webportal_host n
+		where m.HOST_IP=n.HOST_IP
+	    and m.ID =#{id}	
+	</select>
+	
 </mapper>   

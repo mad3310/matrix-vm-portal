@@ -47,19 +47,19 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	 */
 	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers){
 		Boolean flag = false;
-		try {
-			String servertag = containers.get(0).getHostIp();
-			List<ContainerPush> list = new ArrayList<ContainerPush>();
-			FixedPushModel fixedPushModel = new FixedPushModel();
+		try {					
 			for(ContainerModel c:containers){
+				String servertag = c.getHostIp();
+				List<ContainerPush> list = new ArrayList<ContainerPush>();	
+				FixedPushModel fixedPushModel = new FixedPushModel();
 				ContainerPush containerMode = new ContainerPush();
 				containerMode.setName(c.getContainerName());
 				containerMode.setIp(c.getIpAddr());
 				list.add(containerMode);
+				fixedPushModel.setServertag(servertag);	
+				fixedPushModel.setIpaddress(list);
+				createContainerPushFixedInfo(fixedPushModel);
 			}
-			fixedPushModel.setIpaddress(list);
-			fixedPushModel.setServertag(servertag);			
-			createContainerPushFixedInfo(fixedPushModel);
 			flag = true;
 			logger.debug("固资推送成功");
 		} catch (Exception e) {

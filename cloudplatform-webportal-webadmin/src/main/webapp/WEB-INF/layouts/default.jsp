@@ -54,23 +54,6 @@
 
 <!-- 常用函数 -->
 <script src="${ctx}/static/scripts/general-function.js"></script>
-<script type="text/javascript">
-function error(errorThrown,time) {
-	if(errorThrown.result == 0) {
-		if(!time){
-			time = 1000;
-		}
-		$.gritter.add({
-			title: '错误',
-			text: errorThrown.msgs,
-			sticky: false,
-			time: time,
-			class_name: 'gritter-error'
-		});
-		return;
-	}
-}
-</script>
 
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 

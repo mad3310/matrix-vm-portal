@@ -793,7 +793,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	public void checkMclusterCount() {
 		HostModel host = this.hostService.selectByMap(null).get(0);
-		
 		String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
 		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(((Map)map.get("meta")).get("code"))) {
