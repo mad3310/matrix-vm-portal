@@ -199,13 +199,13 @@
 		where m.ID = #{id}
 	</update>
 	
-	<!-- 校验container是否在host上面-->
-	<select id="isExistContainerOnHost" resultType="BaseResultMap"
+	<select id="isExistContainerOnHost" resultMap="BaseResultMap"
 		parameterType="Host">
-		select 
+		select
 		<include refid="Base_Column_List" />
-		from webportal_host m, webportal_container n where m.host_ip=n.host_ip 
-		and m.id=#{id}
+		from webportal_hcluster m ,webportal_host n
+		m.HOST_IP=n.HOST_IP
+	    and m.ID =#{id}	
 	</select>
 	
 </mapper>   
