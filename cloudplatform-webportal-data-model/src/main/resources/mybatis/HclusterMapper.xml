@@ -137,12 +137,15 @@
 		</if>
 		where m.ID = #{id}
 	</update>
-		<!-- 校验host是否在hcluster上面-->
-	<select id="isExistHostOnHcluster" resultType="BaseResultMap"
-		parameterType="java.util.map">
-		select 
+
+	
+	<select id="isExistHostOnHcluster" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m, webportal_host n where m.id=n.hcluster_id 
-		and m.id=#{id}
+		from webportal_hcluster m ,webportal_host n
+		m.ID=n.HCLUSTER_ID
+	    and m.ID =#{id}	
 	</select>
+
 </mapper>   
