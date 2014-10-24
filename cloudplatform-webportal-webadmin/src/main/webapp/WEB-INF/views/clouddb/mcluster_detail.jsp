@@ -98,44 +98,12 @@ function queryContainer(){
 	});
 }
 
-function confirmframe(title,content,question,ok,cancle){
-	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-		_title : function(title) {
-			var $title = this.options.title || '&nbsp;'
-			if (("title_html" in this.options)
-					&& this.options.title_html == true)
-				title.html($title);
-			else
-				title.text($title);
-		}
-	}));
-	
-	$('#dialog-confirm').removeClass('hide').dialog({
-		resizable : false,
-		modal : true,
-		title : "<div class='widget-header'><h4 class='smaller'>"+title,
-		title_html : true,
-		buttons : [
-				{
-					html : "确定",
-					"class" : "btn btn-primary btn-xs",
-					click : function() {
-						ok();
-						$(this).dialog("close");
-					}
-				},
-				{
-					html : "取消",
-					"class" : "btn btn-xs",
-					click : function() {
-						$(this).dialog("close");
-					}
-				} ]
-	});
-	$('#dialog-confirm-content').html(content);
-	$('#dialog-confirm-question').html(question);
-}
 function startContainer(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("已停止") < 0){
+		warn("当前状态无法执行启动操作!",3000);
+		return 0;
+	}
 	function startCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
@@ -151,6 +119,11 @@ function startContainer(obj){
 	confirmframe("启动container","启动container大概需要几分钟时间!","请耐心等待...",startCmd);
 }
 function stopContainer(obj){
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("运行中") < 0){
+		warn("当前状态无法执行关闭操作!",3000);
+		return 0;
+	}
 	function stopCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({

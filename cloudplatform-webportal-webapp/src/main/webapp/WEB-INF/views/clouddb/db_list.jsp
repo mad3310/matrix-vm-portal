@@ -158,7 +158,7 @@ var currentSelectedLineDbName = 1;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
 					var td2;
-					if(array[i].status == 1){
+					if(array[i].status == 6){
 						td2 = $("<td>"
 								+ "<a href=\"${ctx}/detail/db/" + array[i].id+"\">"+array[i].dbName+"</a>"
 								+ "</td>");

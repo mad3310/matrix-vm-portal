@@ -267,29 +267,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="delete-dbuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="col-xs-12">
-						<h7 class="lighter">
-							<a href="#modal-wizard-edit-db-user" data-toggle="modal" class="blue">&nbsp</a>
-						</h7>
-						<div class="widget-box">
-							<div class="widget-body">
-								<div class="widget-main" >
-									<h4 class="lighter" align="center">
-										确定要删除此用户?
-									</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取消</button>
-						<button id="edit-dbUser-botton" type="button" onclick="deleteDbUserCmd()" class="btn btn-sm btn-danger" >删除</button>
-					</div>
-				</div>
+		<!-- 确认框模块 -->
+		<div id="dialog-confirm" class="hide">
+			<div id="dialog-confirm-content" class="alert alert-info bigger-110">
 			</div>
+			<div class="space-6"></div>
+			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
+			</p>
 		</div>
 	</div>
 </div>
@@ -486,18 +470,18 @@ function queryDbUser(){
 							+ "</td>");
 				var td8 = $("<td>"
 							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-							+"<a class=\"green\" href=\"#\" onclick=\"editDbUserForm(this)\" data-toggle=\"modal\" data-target=\"#edit-dbuser-form\">"
+							+"<a class=\"green\" href=\"#\" onclick=\"editDbUserForm(this)\">"
 								+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
 							+"</a>"
-							+"<a class=\"red\" href=\"#\" onclick=\"deleteDbUser(this)\" data-toggle=\"modal\" data-target=\"#delete-dbuser\">"
+							+"<a class=\"red\" href=\"#\" onclick=\"deleteDbUser(this)\">"
 								+"<i class=\"ace-icon fa fa-trash-o bigger-130\"></i>"
 							+"</a>"
 							+"</div>"
 							+ "</td>");
 					
-				if(array[i].status == 0 ||array[i].status == 2){
+				if(array[i].status == 0 ||array[i].status == 2||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
-				}else if(array[i].status == 3 ||array[i].status == 4){
+				}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
@@ -595,17 +579,23 @@ function createDbUser(){
 }
 function editDbUserForm(obj){
 	var dbUserTr = $(obj).parents("tr");
-	$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
-	$('#dbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
-	$('#editAcceptIp').val(dbUserTr.children('[name="db_user_accept_ip"]').html());
-	$('#editReadWriterRate').val(dbUserTr.children('[name="db_user_read_writer"]').html());
-	$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
-	if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
-		$('#editType').val('1');
-		$('#editTypeInput').val('1');
+	if (dbUserTr.html().indexOf("正常") < 0){
+		warn("只有状态为'正常'的用户才有修改权限!",3000);
+		return 0;
 	}else{
-		$('#editType').val('3');
-		$('#editTypeInput').val('3');
+		$('#editUsername').val(dbUserTr.children('[name="db_user_name"]').html());
+		$('#dbUserId').val(dbUserTr.find('[name="db_user_id"]').val());
+		$('#editAcceptIp').val(dbUserTr.children('[name="db_user_accept_ip"]').html());
+		$('#editReadWriterRate').val(dbUserTr.children('[name="db_user_read_writer"]').html());
+		$('#editMaxConcurrency').val(dbUserTr.children('[name="db_user_max_concurrency"]').html());
+		if(dbUserTr.children('[name="db_user_type"]').html() == "管理员"){
+			$('#editType').val('1');
+			$('#editTypeInput').val('1');
+		}else{
+			$('#editType').val('3');
+			$('#editTypeInput').val('3');
+		}
+		$("#edit-dbuser-form").modal("show");
 	}
 }
 
@@ -622,20 +612,24 @@ function editDbUserCmd(){
 	});
 }
 function deleteDbUser(obj){
-	var dbUserId =$(obj).parents("tr").find('[name="db_user_id"]').val();
-	$('#dbUserId').val(dbUserId);
+	tr = $(obj).parents("tr");
+	if (tr.html().indexOf("停止中") >= 0 || tr.html().indexOf("启动中")>=0 || tr.html().indexOf("异常")>=0 || tr.html().indexOf("已停止")>=0  ){
+		warn("此数据库用户当前状态无法执行删除操作!",3000);
+		return 0;
+	}
+	var dbUserId =tr.find('[name="db_user_id"]').val();
+	function deleteDbUserCmd(){
+		$.ajax({
+			url:'${ctx}/dbUser/'+dbUserId,
+			type:'delete',
+			success:function(data){
+				error(data);
+				queryDbUser();
+			}
+		});
+	}
+	confirmframe("删除数据库用户","删除该用户后,用该用户连接数据库的用户,将无法使用数据库!","您确定要删除此用户?",deleteDbUserCmd);
 }
-function deleteDbUserCmd(){
-	$.ajax({
-		url:'${ctx}/dbUser/'+$('#dbUserId').val(),
-		type:'delete',
-		success:function(data){
-			$("#delete-dbuser").modal("hide");
-			queryDbUser();
-		}
-	});
-}
-
 function pageinit(){
 	checkboxControl();
 	queryDbUser();

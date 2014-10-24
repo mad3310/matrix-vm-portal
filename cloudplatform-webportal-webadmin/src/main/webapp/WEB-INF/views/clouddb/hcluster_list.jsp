@@ -324,43 +324,6 @@ function createHcluster(){
 	});
 }
 
-function confirmframe(title,content,question,ok,cancle){
-	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-		_title : function(title) {
-			var $title = this.options.title || '&nbsp;'
-			if (("title_html" in this.options)
-					&& this.options.title_html == true)
-				title.html($title);
-			else
-				title.text($title);
-		}
-	}));
-	
-	$('#dialog-confirm').removeClass('hide').dialog({
-		resizable : false,
-		modal : true,
-		title : "<div class='widget-header'><h4 class='smaller'>"+title,
-		title_html : true,
-		buttons : [
-				{
-					html : "确定",
-					"class" : "btn btn-primary btn-xs",
-					click : function() {
-						ok();
-						$(this).dialog("close");
-					}
-				},
-				{
-					html : "取消",
-					"class" : "btn btn-xs",
-					click : function() {
-						$(this).dialog("close");
-					}
-				} ]
-	});
-	$('#dialog-confirm-content').html(content);
-	$('#dialog-confirm-question').html(question);
-}
 function deleteHcluster(obj){
 	var tr = $(obj).parents("tr");
 	var hclusterId =tr.find('[name="hcluster_id"]').val();
