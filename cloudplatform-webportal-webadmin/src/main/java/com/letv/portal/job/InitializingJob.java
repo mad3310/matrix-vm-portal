@@ -37,7 +37,8 @@ public class InitializingJob {
 	@Autowired(required=false)
 	private SchedulerFactoryBean schedulerFactoryBean;
 	
-	@PostConstruct
+	//测试关闭job
+//	@PostConstruct
 	public void initScheduler() throws  SchedulerException,ParseException,ClassNotFoundException {
 		
 		logger.info("initScheduler start....");
