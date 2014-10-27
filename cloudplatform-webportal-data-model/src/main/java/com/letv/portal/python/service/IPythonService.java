@@ -146,7 +146,7 @@ public interface IPythonService {
 	 * @param password
 	 * @return
 	 */
-	public String startGbalancer(String nodeIp,String user,String pwd,String ipListPort,String port,String args,String username,String password);
+	public String startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password);
 	/**
 	 * Methods Name: deleteDbUser <br>
 	 * Description: 删除DbUser<br>

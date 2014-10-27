@@ -470,7 +470,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			startTime = new Date();
 			StringBuffer ipListPort = new StringBuffer();
 			ipListPort.append(nodeIp1).append(":3306,").append(nodeIp2).append(":3306,").append(nodeIp3).append(":3306");
-			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "3306", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"mysql", ipListPort.toString(), "3306", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
 		
 		if(nextStep) {
@@ -478,7 +478,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			startTime = new Date();
 			StringBuffer ipListPort = new StringBuffer();
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
-			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"http", ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
 		/**
 
@@ -704,11 +704,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
-		Integer status = transStatus((String)((Map)map.get("response")).get("status"));
-		mcluster.setStatus(status);
-		this.mclusterService.updateBySelective(mcluster);
-		if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
-			this.mclusterService.delete(mcluster);
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
+			mcluster.setStatus(status);
+			this.mclusterService.updateBySelective(mcluster);
+			if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
+				this.mclusterService.delete(mcluster);
+			}
 		}
 	}
 
@@ -717,11 +719,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = this.hostService.selectById(container.getHostId());
 		String result = this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
-		Integer status = transStatus((String)((Map)map.get("response")).get("status"));
-		container.setStatus(status);
-		this.containerService.updateBySelective(container);
-		if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
-			this.containerService.delete(container);
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
+			container.setStatus(status);
+			this.containerService.updateBySelective(container);
+			if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
+				this.containerService.delete(container);
+			}
 		}
 	}
 	
