@@ -708,7 +708,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			mcluster.setStatus(status);
 			this.mclusterService.updateBySelective(mcluster);
-			if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
+			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(mcluster);
 			}
 		}
@@ -723,7 +723,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			container.setStatus(status);
 			this.containerService.updateBySelective(container);
-			if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
+			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.containerService.delete(container);
 			}
 		}
