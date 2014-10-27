@@ -11,4 +11,5 @@ import com.letv.portal.model.HostModel;
  */
 public interface IHostProxy extends IBaseProxy<HostModel> {
 
+	public void insertAndPhyhonApi(HostModel hostModel);
 }

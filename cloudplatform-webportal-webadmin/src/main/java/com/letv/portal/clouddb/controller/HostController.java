@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
+import com.letv.portal.proxy.IHostProxy;
 import com.letv.portal.service.IHostService;
 
 @Controller
@@ -27,6 +27,8 @@ public class HostController {
 	
 	@Resource
 	private IHostService hostService;
+	@Resource
+	private IHostProxy hostProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(HostController.class);
 
@@ -99,7 +101,7 @@ public class HostController {
 	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		try {		
-			this.hostService.insertAndPhyhonApi(hostModel);			
+			this.hostProxy.insertAndPhyhonApi(hostModel);			
 		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}	

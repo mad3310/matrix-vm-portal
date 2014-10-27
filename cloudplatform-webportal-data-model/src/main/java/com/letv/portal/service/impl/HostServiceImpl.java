@@ -70,26 +70,6 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	public List<HostModel> selectByHclusterId(Long hclusterId){
 		return this.hostDao.selectByHclusterId(hclusterId);
 	}
-	/**
-	 * Methods Name: insertAndPhyhonApi <br>
-	 * Description: 创建host<br>
-	 * @author name: wujun
-	 */
-	public void insertAndPhyhonApi(HostModel hostModel){
-		hostModel.setName("root");
-		hostModel.setPassword("root");
-		this.hostDao.insert(hostModel);
-		Map<String, String>  map = new HashMap<String, String>();
-		map.put("id", hostModel.getHclusterId().toString());
-  		List<HclusterModel> list = (List<HclusterModel>)hclusterService.selectByMap(map);
-  		if(null!=list&&list.size()>0){
-  			HclusterModel hclusterModel = list.get(0);
-  			hostModel.setHcluster(hclusterModel);
-  		}
-  		//buildTaskService.createHost(hostModel);
-	
-	}
-	
 	public List<HostModel> selectByIpOrHostName(HostModel hostModel){
 		Map<String, String> map = new HashMap<String, String>();
 		List<HostModel> list = new ArrayList<HostModel>();
