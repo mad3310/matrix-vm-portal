@@ -153,4 +153,15 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		this.dbUserDao.deleteByDbId(dbId);
 		
 	}
+	/**
+	 * Methods Name: buildDbUser <br>
+	 * Description: 审批DbUser<br>
+	 * @author name: wujun
+	 * @param dbUserId
+	 */
+	public void buildDbUser(String dbUserId){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setId(Long.parseLong(dbUserId));
+		this.dbUserDao.update(dbUserModel);
+	}
 }

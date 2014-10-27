@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -55,5 +56,11 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			this.dbUserService.delete(dbUserModel);
 		}	
 	}
-	
+	public void buildDbUser(String DbUserId){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setId(Long.parseLong(DbUserId));
+		dbUserModel.setStatus(DbStatus.NORMAL.getValue());
+		this.dbUserService.updateDbUser(dbUserModel);
+		this.buildTaskService.buildUser(DbUserId);
+	}
 }

@@ -82,4 +82,11 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @author name: liuhao1
 	 */
 	public void deleteByDbId(Long dbId);
+	/**
+	 * Methods Name: buildDbUser <br>
+	 * Description: 审批DbUser<br>
+	 * @author name: wujun
+	 * @param dbUserId
+	 */
+	public void buildDbUser(String dbUserId);
 }

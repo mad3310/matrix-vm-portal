@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
@@ -33,6 +34,8 @@ public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
+	@Resource
+	private IDbUserProxy dbUserProxy;
 	@Resource
 	private IBuildTaskService buildTaskService;
 	
@@ -82,10 +85,10 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/audit",method=RequestMethod.POST)  
+	@RequestMapping(method=RequestMethod.POST)  
 	public @ResponseBody ResultObject list(String dbUserId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		this.buildTaskService.buildUser(dbUserId);
+		this.dbUserProxy.buildDbUser(dbUserId);
 		return obj;
 	}
 	

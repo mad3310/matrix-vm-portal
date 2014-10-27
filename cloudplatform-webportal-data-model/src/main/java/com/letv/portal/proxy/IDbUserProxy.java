@@ -28,4 +28,11 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void updateDbUser(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: buildDbUser <br>
+	 * Description: 审批创建DbUser<br>
+	 * @author name: wujun
+	 * @param DbUserId
+	 */
+	public void buildDbUser(String DbUserId);
 }
