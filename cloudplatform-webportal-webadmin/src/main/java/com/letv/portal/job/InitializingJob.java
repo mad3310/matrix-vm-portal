@@ -102,7 +102,7 @@ public class InitializingJob {
 		mclusterJob.setJobMethod("checkMclusterStatus");
 		mclusterJob.setJobGroup("webportal");
 		mclusterJob.setJobStatus("1");
-		mclusterJob.setCronExpression("0 0/2 * * * ?");
+		mclusterJob.setCronExpression("0/30 * * * * ?");
 		mclusterJob.setDescn("检查container集群状态");
 		jobs.add(mclusterJob);
 		
@@ -111,7 +111,7 @@ public class InitializingJob {
 		containerJob.setJobMethod("checkContainerStatus");
 		containerJob.setJobGroup("webportal");
 		containerJob.setJobStatus("1");
-		containerJob.setCronExpression("0 0/2 * * * ?");
+		containerJob.setCronExpression("0/30 * * * * ?");
 		containerJob.setDescn("检查container单节点状态");
 		jobs.add(containerJob);
 		
@@ -120,7 +120,7 @@ public class InitializingJob {
 		checkMclusterCount.setJobMethod("checkMclusterCount");
 		checkMclusterCount.setJobGroup("webportal");
 		checkMclusterCount.setJobStatus("1");
-		checkMclusterCount.setCronExpression("0 0/2 * * * ?");
+		checkMclusterCount.setCronExpression("0/30 * * * * ?");
 		checkMclusterCount.setDescn("检查container单节点状态");
 		jobs.add(checkMclusterCount);
 		
