@@ -60,7 +60,7 @@
 			<if test="id != null  ">
 				and m.ID=#{id}
 			</if>
-			<if test="hclusterName != null  and hclusterName != '' ">
+			<if test="hclusterName != null  and hclusterName != '' and hclusterName != 'null'">
 				and m.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%')
 			</if>
 			<if test="status != null  ">
