@@ -464,6 +464,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 			nextStep = analysis(result, step, startTime, mclusterModel.getId(), null);
 		}
+		
 		if(nextStep) {
 			step++;
 			startTime = new Date();
@@ -480,21 +481,18 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd, ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
 		/**
-		 * 固资备案
-		 */
+
 		if(nextStep) {
 			step++;
 			startTime = new Date();
 			nextStep = analysisToFixedOrZabbix(fixedPushService.createMutilContainerPushFixedInfo(containers),step,startTime,mclusterId,dbId);
 		}
-		/**
-		 * zabbix推送
-		 */
 		if(nextStep) {
 			step++;
 			startTime = new Date();
 			nextStep = analysisToFixedOrZabbix(zabbixPushService.createMultiContainerPushZabbixInfo(containers),step,startTime,mclusterId,dbId);
 		}
+	*/	
 		return nextStep;
 	}
 	
