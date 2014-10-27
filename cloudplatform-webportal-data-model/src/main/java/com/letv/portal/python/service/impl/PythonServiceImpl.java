@@ -38,7 +38,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT + "/containerCluster/status/" + mclusterName;
+		String url = URL_HEAD  + ip + URL_PORT + "/containerCluster/createStatus/" + mclusterName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
@@ -202,7 +202,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String removeMcluster(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT  + "/containerCluster/" + mclusterName;
+		String url = URL_HEAD  + ip + URL_PORT  + "/containerCluster?containerClusterName=" + mclusterName;
 		String result = HttpClient.detele(url,username,password);
 		return result;
 	}
@@ -270,7 +270,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
-		String result = HttpClient.post(url, map);	
+		String result = HttpClient.post(url, map,hostModel.getName(),hostModel.getPassword());	
 		return result;
 	}
 

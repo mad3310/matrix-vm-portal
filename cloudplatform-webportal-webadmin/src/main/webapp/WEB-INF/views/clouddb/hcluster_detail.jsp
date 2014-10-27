@@ -198,7 +198,7 @@ function queryHost(){
  			$("#headerHostName").append(array[0].hclusterName);
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
-				var td0 = $("<input name=\"host_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
+				var td0 = $("<input name=\"host_id\" value= \""+array[i].hostId+"\" type=\"hidden\"/>");
 				var td1 = $("<td>"
 					    + array[i].hostNameAlias
 				        + "</td>");
