@@ -240,14 +240,14 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String checkMclusterStatus(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + this.URL_PORT  + "containerCluster/status/" + mclusterName;
+		String url = URL_HEAD  + ip + this.URL_PORT  + "/containerCluster/status/" + mclusterName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkContainerStatus(String containerName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + this.URL_PORT  + "container/status/" + containerName;
+		String url = URL_HEAD  + ip + this.URL_PORT  + "/container/status/" + containerName;
 		String result = HttpClient.get(url,username,password);
 		return result;
 	}
@@ -275,7 +275,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String checkMclusterCount(String hostIp, String name, String password) {
-		String url = URL_HEAD  + hostIp + this.URL_PORT  + "/containerCluster/verify";
+		String url = URL_HEAD  + hostIp + this.URL_PORT  + "/containerCluster/sync";
 		String result = HttpClient.get(url,name,password);
 		return result;
 	}

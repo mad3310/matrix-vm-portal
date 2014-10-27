@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
@@ -78,8 +77,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IFixedPushService fixedPushService;
 	@Autowired 
 	private IZabbixPushService zabbixPushService;
-	@Autowired(required=false)
-	private SessionServiceImpl sessionService;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -709,7 +706,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		String result = this.pythonService.checkMclusterStatus(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
-		Integer status = (Integer) ((Map)map.get("response")).get("status");
+		Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 		mcluster.setStatus(status);
 		this.mclusterService.updateBySelective(mcluster);
 		if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
@@ -722,7 +719,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = this.hostService.selectById(container.getHostId());
 		String result = this.pythonService.checkContainerStatus(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
-		Integer status = (Integer) ((Map)map.get("response")).get("status");
+		Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 		container.setStatus(status);
 		this.containerService.updateBySelective(container);
 		if(status == MclusterStatus.NOTEXIT.getValue() && status == MclusterStatus.DESTROYED.getValue()) {
@@ -795,7 +792,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = this.hostService.selectByMap(null).get(0);
 		String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
 		Map map = this.transResult(result);
-		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(((Map)map.get("meta")).get("code"))) {
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
 			List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
 			
 			for (Map mm : data) {
@@ -828,7 +825,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		mcluster.setAdminUser("root");
 		mcluster.setAdminPassword((String) mm.get("clusterName"));
 		mcluster.setType(MclusterType.HAND.getValue());
-		mcluster.setCreateUser(sessionService.getSession().getUserId());
 		mcluster.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
 		mcluster.setDeleted(true);
 		this.mclusterService.insert(mcluster);

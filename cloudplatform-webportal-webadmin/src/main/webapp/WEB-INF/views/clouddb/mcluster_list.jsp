@@ -221,9 +221,12 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td2 = $("<td>"
 						+  "<a href=\"${ctx}/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
+				var userName=' ';
+				if(array[i].createUser) {
+					userName = array[i].createUserModel.userName;
+				}
 				var td3 = $("<td>"
-						+ array[i].createUserModel.userName
-/* 						+ array[i].creatUser.username */
+						+ userName
 						+ "</td>");
 				var td4 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
