@@ -29,6 +29,7 @@ import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.UserModel;
@@ -38,6 +39,7 @@ import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
+import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IUserService;
@@ -73,6 +75,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IUserService userService;
 	@Autowired
 	private IHostService hostService;
+	@Autowired
+	private IHclusterService hclusterService;
 	@Autowired
 	private IFixedPushService fixedPushService;
 	@Autowired 
@@ -792,35 +796,38 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterCount() {
-		List<HostModel> hosts = this.hostService.selectByMap(null);
-		if(hosts.size()>0) {
-			HostModel host = hosts.get(0);
-			String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
-			Map map = this.transResult(result);
-			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
-				List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
-				
-				for (Map mm : data) {
-					String mclusterName = (String) mm.get("clusterName");
-					List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
-					if(list.size() <= 0) {
-						this.addHandMcluster(mm);
-					} else {
-						MclusterModel mcluster = list.get(0);
-						if(MclusterStatus.BUILDDING.equals(mcluster.getStatus()) || MclusterStatus.BUILDFAIL.equals(mcluster.getStatus()) || MclusterStatus.DEFAULT.equals(mcluster.getStatus())|| MclusterStatus.AUDITFAIL.equals(mcluster.getStatus())) {
+		List<HclusterModel> hclusters = this.hclusterService.selectByMap(null);
+		for (HclusterModel hcluster : hclusters) {
+			List<HostModel> hosts = this.hostService.selectByHclusterId(hcluster.getId());
+			if(hosts.size()>0) {
+				HostModel host = hosts.get(0);
+				String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
+				Map map = this.transResult(result);
+				if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+					List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
+					
+					for (Map mm : data) {
+						String mclusterName = (String) mm.get("clusterName");
+						List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
+						if(list.size() <= 0) {
+							this.addHandMcluster(mm);
 						} else {
-							List<Map> cms = (List<Map>) mm.get("nodeInfo");
-							for (Map cm : cms) {
-								ContainerModel container = new ContainerModel();
-								container.setContainerName((String) cm.get("containerName"));
-								container.setHostIp((String) cm.get("hostIp"));
-								HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-								if(null != hostModel) {
-									container.setHostId(hostModel.getId());
+							MclusterModel mcluster = list.get(0);
+							if(MclusterStatus.BUILDDING.equals(mcluster.getStatus()) || MclusterStatus.BUILDFAIL.equals(mcluster.getStatus()) || MclusterStatus.DEFAULT.equals(mcluster.getStatus())|| MclusterStatus.AUDITFAIL.equals(mcluster.getStatus())) {
+							} else {
+								List<Map> cms = (List<Map>) mm.get("nodeInfo");
+								for (Map cm : cms) {
+									ContainerModel container = new ContainerModel();
+									container.setContainerName((String) cm.get("containerName"));
+									container.setHostIp((String) cm.get("hostIp"));
+									HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+									if(null != hostModel) {
+										container.setHostId(hostModel.getId());
+									}
+									this.containerService.updateHostIpByName(container);
 								}
-								this.containerService.updateHostIpByName(container);
+								
 							}
-							
 						}
 					}
 				}

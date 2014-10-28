@@ -129,7 +129,10 @@
 		select
 		<include refid="Base_Column_List" />
 		from webportal_hcluster m
-		where m.HCLUSTER_NAME=#{hclusterName}
+		where 1=1
+		<if test="hclusterName != null  and hclusterName != '' ">
+			and m.HCLUSTER_NAME =#{hclusterName}
+		</if>
 	</select>
 				<!-- 根据dbId查询-->
 	<select id="selectByHclusterId" resultMap="resultDetail" parameterType="java.lang.Long">
