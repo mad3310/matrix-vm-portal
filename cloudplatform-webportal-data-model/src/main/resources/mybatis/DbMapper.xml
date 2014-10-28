@@ -8,6 +8,7 @@
 		<result column="ID" property="id" />
 		<result column="DB_NAME" property="dbName" />
 		<result column="MCLUSTER_ID" property="mclusterId" />
+		<result column="HCLUSTER_ID" property="hclusterId" />
 		<result column="STATUS" property="status" />
 		<result column="AUDIT_INFO" property="auditInfo" />
 		<result column="ENGINE_TYPE" property="engineType" />
@@ -44,7 +45,7 @@
 	</resultMap>
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		m.ID,m.MCLUSTER_ID,m.DB_NAME,m.STATUS,m.BACKUP_CYCLE,m.NOTICE_TYPE,m.DESCN,m.ENGINE_TYPE,m.FROM_DB_IP,m.FROM_DB_PORT,m.FROM_DB_NAME,
+		m.ID,m.MCLUSTER_ID,m.HCLUSTER_ID,m.DB_NAME,m.STATUS,m.BACKUP_CYCLE,m.NOTICE_TYPE,m.DESCN,m.ENGINE_TYPE,m.FROM_DB_IP,m.FROM_DB_PORT,m.FROM_DB_NAME,
 		m.LINK_TYPE,m.AUDIT_INFO,m.AUDIT_TIME,m.AUDIT_USER,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER
 	</sql>
 	
@@ -58,8 +59,11 @@
 			<if test="dbName != null  and dbName != ''  and dbName != 'null'">
 				and m.DB_NAME like CONCAT('%','${dbName}','%')
 			</if>
-			<if test="mmclusterId != null  ">
+			<if test="mclusterId != null  ">
 				and m.MCLUSTER_ID=#{mclusterId}
+			</if>
+			<if test="hclusterId != null  ">
+				and m.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
@@ -86,15 +90,15 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Db" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE)
+		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,HCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE)
 		values(
-		#{dbName},#{mclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
+		#{dbName},#{mclusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Db">
 		update WEBPORTAL_DB set
-		ID=#{id},DB_NAME=#{dbName},MCLUSTER_ID=#{mclusterId},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},DB_NAME=#{dbName},MCLUSTER_ID=#{mclusterId},HCLUSTER_ID=#{hclusterId},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -107,6 +111,9 @@
 			</if>
 			<if test="mclusterId != null  ">
 				MCLUSTER_ID=#{mclusterId},
+			</if>
+			<if test="hclusterId != null  ">
+				HCLUSTER_ID=#{hclusterId},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
@@ -140,6 +147,9 @@
 			</if>
 			<if test="mclusterId != null  ">
 				MCLUSTER_ID=#{mclusterId},
+			</if>
+			<if test="hclusterId != null  ">
+				HCLUSTER_ID=#{hclusterId},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},

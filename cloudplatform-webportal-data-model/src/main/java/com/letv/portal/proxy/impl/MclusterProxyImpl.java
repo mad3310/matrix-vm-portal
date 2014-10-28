@@ -60,7 +60,6 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setType(MclusterType.AUTO.getValue());
 		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
-		mclusterModel.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
 		super.insert(mclusterModel);
 	}
 

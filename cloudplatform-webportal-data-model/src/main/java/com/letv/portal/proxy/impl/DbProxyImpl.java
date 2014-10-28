@@ -67,6 +67,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		Long dbId = (Long) params.get("dbId");
 		String mclusterName = (String) params.get("mclusterName");		
 		String auditInfo = (String) params.get("auditInfo");
+		Long hclusterId = (Long) params.get("hclusterId");
 		
 		DbModel dbModel = new DbModel();
 		dbModel.setId(dbId);
@@ -78,6 +79,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
 				mcluster.setMclusterName(mclusterName);
+				mcluster.setHclusterId(hclusterId);
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);
@@ -113,6 +115,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			params.put("dbId", dbModel.getId());
 			params.put("mclusterName", userId + "_" + dbModel.getDbName());
 			params.put("status", DbStatus.BUILDDING.getValue());
+			params.put("hclusterId", dbModel.getHclusterId());
 			
 			this.auditAndBuild(params);
 		} else {
