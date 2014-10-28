@@ -747,6 +747,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} else if("not exist".equals(statusStr)) {
 			status = MclusterStatus.NOTEXIT.getValue();
 		} else if("failed".equals(statusStr)) {
+			
 		} else if("danger".equals(statusStr)) {
 			status = MclusterStatus.DANGER.getValue();
 		} else if("crisis".equals(statusStr)) {
@@ -774,6 +775,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserModel.setUsername("admin");
 		dbUserModel.setPassword("admin");
 		dbUserModel.setAcceptIp("%");
+     	dbUserModel.setType(1);
 		dbUserModel.setMaxConcurrency(1000);
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
@@ -797,6 +799,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Map map = this.transResult(result);
 			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
 				List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
+				
 				for (Map mm : data) {
 					String mclusterName = (String) mm.get("clusterName");
 					List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
