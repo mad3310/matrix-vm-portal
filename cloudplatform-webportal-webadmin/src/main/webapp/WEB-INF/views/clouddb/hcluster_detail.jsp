@@ -193,7 +193,10 @@ function queryHost(){
 		dataType : "json", 
 		success : function(data) {
 			error(data);
- 			$("#headerHostName").append(data.data.hcluster);
+			var headerName = data.data.hcluster;
+			if($('#headerHostName').html().indexOf(data.data.hcluster) < 0){
+ 				$("#headerHostName").append(data.data.hcluster);
+			}
 			var array = data.data.hclusterDetail;
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
