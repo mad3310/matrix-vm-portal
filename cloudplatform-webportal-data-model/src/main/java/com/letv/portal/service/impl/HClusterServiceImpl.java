@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,8 +48,11 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		page.setTotalRecords(this.hclusterDao.selectByMapCount(params));
 		return page;
 	}
-	public List<Map<String, String>> selectByHclusterId(Long hclusterId){
-		return hclusterDao.selectByHclusterId(hclusterId);
+	public Map<String, Object> selectByHclusterId(Long hclusterId){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("hcluster", hclusterDao.selectHclusterById(hclusterId).getHclusterName());
+		map.put("hclusterDetail", hclusterDao.selectByHclusterId(hclusterId));
+		return map;
 	}
 
 	@Override
@@ -62,6 +66,10 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		// TODO Auto-generated method stub
 		return this.hclusterDao.isExistHostOnHcluster(map);
 	}
-
-
+	public List<HclusterModel> selectHclusterByStatus(HclusterModel hclusterModel){
+		return this.hclusterDao.selectHclusterByStatus(hclusterModel);
+	}
+	public void updateStatus(HclusterModel hclusterModel){
+		this.hclusterDao.update(hclusterModel);
+	}
 }

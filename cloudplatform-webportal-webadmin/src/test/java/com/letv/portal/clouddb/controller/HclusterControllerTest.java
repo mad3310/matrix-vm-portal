@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
@@ -46,6 +47,7 @@ public class HclusterControllerTest extends AbstractTest{
 			HclusterModel hclusterModel = new HclusterModel();
 			hclusterModel.setHclusterName("wujun5");
 			hclusterModel.setHclusterNameAlias("帅");
+			hclusterModel.setStatus(1);
 			hclusterService.insert(hclusterModel);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,5 +87,12 @@ public class HclusterControllerTest extends AbstractTest{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	@Test
+	public void selecthclusterByStatus(){
+     HclusterModel hclusterModel = new HclusterModel();
+	 hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
+	 this.hclusterService.selectHclusterByStatus(hclusterModel);
+	 System.out.println("xxx");
 	}
 }
