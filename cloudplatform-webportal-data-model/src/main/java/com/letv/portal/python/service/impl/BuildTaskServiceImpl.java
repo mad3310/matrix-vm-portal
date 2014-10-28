@@ -810,7 +810,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 						String mclusterName = (String) mm.get("clusterName");
 						List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
 						if(list.size() <= 0) {
-							this.addHandMcluster(mm);
+							this.addHandMcluster(mm,hcluster.getId());
 						} else {
 							MclusterModel mcluster = list.get(0);
 							if(MclusterStatus.BUILDDING.equals(mcluster.getStatus()) || MclusterStatus.BUILDFAIL.equals(mcluster.getStatus()) || MclusterStatus.DEFAULT.equals(mcluster.getStatus())|| MclusterStatus.AUDITFAIL.equals(mcluster.getStatus())) {
@@ -835,14 +835,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	
-	private void addHandMcluster(Map mm) {
+	private void addHandMcluster(Map mm,Long hclusterId) {
 		MclusterModel mcluster = new MclusterModel();
 		mcluster.setMclusterName((String) mm.get("clusterName"));
 		mcluster.setStatus(MclusterStatus.DEFAULT.getValue());	
 		mcluster.setAdminUser("root");
 		mcluster.setAdminPassword((String) mm.get("clusterName"));
 		mcluster.setType(MclusterType.HAND.getValue());
-		mcluster.setHclusterId(ConfigUtil.getlong("default.hcluster.id"));
+		mcluster.setHclusterId(hclusterId);
 		mcluster.setDeleted(true);
 		this.mclusterService.insert(mcluster);
 		List<Map> cms = (List<Map>) mm.get("nodeInfo");
