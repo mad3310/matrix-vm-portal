@@ -180,6 +180,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("iplist_port",ipListPort);
 		map.put("port", port);
 		map.put("args",args);
+		map.put("service",server);
 		
 		String result = HttpClient.post(url, map,username,password);
 		return result;
