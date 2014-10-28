@@ -66,6 +66,10 @@ public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implemen
 		// TODO Auto-generated method stub
 		return this.hclusterDao.isExistHostOnHcluster(map);
 	}
-
-
+	public List<HclusterModel> selectHclusterByStatus(HclusterModel hclusterModel){
+		return this.hclusterDao.selectHclusterByStatus(hclusterModel);
+	}
+	public void updateStatus(HclusterModel hclusterModel){
+		this.hclusterDao.update(hclusterModel);
+	}
 }

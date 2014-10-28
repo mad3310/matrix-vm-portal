@@ -208,5 +208,21 @@
 		from webportal_hcluster m 
 	    where m.ID =#{id}	
 	</select>
+	<!--通过状态过滤所有有的物理机集群 -->
+	<select id="selectHclusterByStatus" resultMap="BaseResultMap"
+		parameterType="Hcluster">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m 
+		<include refid="Example_Where_Clause" />		
+	</select>
+	<!--禁用某些物理机集群 -->
+	<update id="updateStatus" parameterType="hcluster">
+	 update webportal_hcluster m set
+	 	<if test="status != null  ">
+			m.STATUS=#{status}
+		</if>
+		where m.ID = #{id}
+	</update>
 
 </mapper>   

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.service.IHclusterService;
 
@@ -97,6 +98,7 @@ public class HclusterController {
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveHost(HclusterModel hclusterModel,
 			HttpServletRequest request) {
+		hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
 		ResultObject obj = new ResultObject();
 		try {
 			this.hclusterService.insert(hclusterModel);
@@ -174,5 +176,30 @@ public class HclusterController {
 		map.put("valid", list.size() > 0 ? false : true);
 		return map;
 	}
-
+	/**
+	 * Methods Name: selectHclusterByStatus <br>
+	 * Description: 查询出所有状态为1即运行的hcluster<br>
+	 * @author name: wujun
+	 * @param hclusterModel
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET)
+    public  @ResponseBody ResultObject selectHclusterByStatus(HclusterModel hclusterModel){
+    	ResultObject obj = new ResultObject();
+    	hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
+    	obj.setData(this.hclusterService.selectHclusterByStatus(hclusterModel));
+    	return obj;
+    }
+	/**
+	 * Methods Name: forbidHcluster <br>
+	 * Description: 禁用hcluster集群<br>
+	 * @author name: wujun
+	 */
+	@RequestMapping(value = "/forbid", method = RequestMethod.POST)
+	public @ResponseBody ResultObject  forbidHcluster(HclusterModel hclusterModel){
+		ResultObject obj = new ResultObject();
+		hclusterModel.setStatus(HclusterStatus.FORBID.getValue());
+		this.hclusterService.update(hclusterModel);
+		return obj;
+	}
 }
