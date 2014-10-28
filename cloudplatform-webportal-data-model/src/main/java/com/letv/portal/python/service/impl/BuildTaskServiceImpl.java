@@ -747,7 +747,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		} else if("not exist".equals(statusStr)) {
 			status = MclusterStatus.NOTEXIT.getValue();
 		} else if("failed".equals(statusStr)) {
-			
 		} else if("danger".equals(statusStr)) {
 			status = MclusterStatus.DANGER.getValue();
 		} else if("crisis".equals(statusStr)) {
@@ -791,29 +790,31 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterCount() {
-		HostModel host = this.hostService.selectByMap(null).get(0);
-		String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
-		Map map = this.transResult(result);
-		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
-			List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
-			
-			for (Map mm : data) {
-				String mclusterName = (String) mm.get("clusterName");
-				List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
-				if(list.size() <= 0) {
-					this.addHandMcluster(mm);
-				} else {
-					
-					List<Map> cms = (List<Map>) mm.get("nodeInfo");
-					for (Map cm : cms) {
-						ContainerModel container = new ContainerModel();
-						container.setContainerName((String) cm.get("containerName"));
-						container.setHostIp((String) cm.get("hostIp"));
-						HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-						if(null != hostModel) {
-							container.setHostId(hostModel.getId());
+		List<HostModel> hosts = this.hostService.selectByMap(null);
+		if(hosts.size()>0) {
+			HostModel host = hosts.get(0);
+			String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
+			Map map = this.transResult(result);
+			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
+				List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
+				for (Map mm : data) {
+					String mclusterName = (String) mm.get("clusterName");
+					List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
+					if(list.size() <= 0) {
+						this.addHandMcluster(mm);
+					} else {
+						
+						List<Map> cms = (List<Map>) mm.get("nodeInfo");
+						for (Map cm : cms) {
+							ContainerModel container = new ContainerModel();
+							container.setContainerName((String) cm.get("containerName"));
+							container.setHostIp((String) cm.get("hostIp"));
+							HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+							if(null != hostModel) {
+								container.setHostId(hostModel.getId());
+							}
+							this.containerService.updateHostIpByName(container);
 						}
-						this.containerService.updateHostIpByName(container);
 					}
 				}
 			}
