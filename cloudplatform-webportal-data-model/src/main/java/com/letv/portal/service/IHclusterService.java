@@ -28,7 +28,7 @@ public interface IHclusterService extends IBaseService<HclusterModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
-	public List<Map<String, String>> selectByHclusterId(Long hclusterId);
+	public Map<String, Object> selectByHclusterId(Long hclusterId);
 	public List<HclusterModel> selectByName(Map<String,String> map);
 	public List<HclusterModel> isExistHostOnHcluster(Map<String,Object> map);
 }
