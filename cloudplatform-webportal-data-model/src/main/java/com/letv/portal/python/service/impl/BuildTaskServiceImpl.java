@@ -474,7 +474,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			startTime = new Date();
 			StringBuffer ipListPort = new StringBuffer();
 			ipListPort.append(nodeIp1).append(":3306,").append(nodeIp2).append(":3306,").append(nodeIp3).append(":3306");
-			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"mysql", ipListPort.toString(), "3306", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"mysql", ipListPort.toString(), "3306", "-daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
 		
 		if(nextStep) {
@@ -482,7 +482,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			startTime = new Date();
 			StringBuffer ipListPort = new StringBuffer();
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
-			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"http", ipListPort.toString(), "8888", "–daemon", username, password)),step,startTime,mclusterId,dbId);
+			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"http", ipListPort.toString(), "8888", "-daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
 		/**
 
