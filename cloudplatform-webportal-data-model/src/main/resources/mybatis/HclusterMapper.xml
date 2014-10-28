@@ -129,7 +129,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from webportal_hcluster m
-		<include refid="Example_Where_Clause" />
+		where m.HCLUSTER_NAME=#{hclusterName}
 	</select>
 				<!-- 根据dbId查询-->
 	<select id="selectByHclusterId" resultMap="resultDetail" parameterType="java.lang.Long">
@@ -197,6 +197,16 @@
 		from webportal_hcluster m ,webportal_host n
 		where m.ID=n.HCLUSTER_ID
 	    and m.ID =#{id}	
+	</select>
+	
+	
+	<!-- 查询hcluster的相关信息 -->
+	<select id="selectHclusterById" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from webportal_hcluster m 
+	    where m.ID =#{id}	
 	</select>
 
 </mapper>   
