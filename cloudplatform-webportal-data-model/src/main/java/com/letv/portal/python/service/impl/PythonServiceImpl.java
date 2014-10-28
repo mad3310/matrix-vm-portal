@@ -102,7 +102,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String syncContainer(String nodeIp,String username,String password) {
 		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/sync";
-		String result = HttpClient.get(url,username,password);
+		String result = HttpClient.get(url);
 		return result;
 	}
 

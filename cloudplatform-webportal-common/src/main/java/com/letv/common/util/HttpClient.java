@@ -65,12 +65,12 @@ public class HttpClient {
 	}
 	
 	
-	public static String post(String url, Object obj) {
-		return post(url, obj, null, null);
+	public static String postObject(String url, Object obj) {
+		return postObject(url, obj, null, null);
 	}
 	
 	
-	public static String post(String url, Object obj, String username,
+	public static String postObject(String url, Object obj, String username,
 			String password) {
 		DefaultHttpClient httpclient = getHttpclient(username, password);
 		String body = null;
