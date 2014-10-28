@@ -93,7 +93,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label" for="hcluster">物理机集群</label>
 										<div class="col-sm-6">
-											<select class="form-control" name="hcluster" id="hcluster_select">
+											<select class="form-control" name="hclusterId" id="hcluster_select">
 											</select>
 										</div>
 										<label class="control-label" for="hcluster">
@@ -296,7 +296,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td6);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			

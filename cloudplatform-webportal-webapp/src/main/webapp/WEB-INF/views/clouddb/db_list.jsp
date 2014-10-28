@@ -109,7 +109,7 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label" for="hcluster">物理机集群</label>
 									<div class="col-sm-4">
-										<select class="form-control" name="hcluster" id="hcluster_select">
+										<select class="form-control" name="hclusterId" id="hcluster_select">
 										</select>
 									</div>
 									<label class="control-label" for="hcluster">
