@@ -30,16 +30,16 @@ public class HclusterController {
 	private final static Logger logger = LoggerFactory
 			.getLogger(HclusterController.class);
 
-	/**
-	 * Methods Name: list <br>
-	 * Description: host分页<br>
-	 * @author name: wujun
-	 * @param currentPage
-	 * @param recordsPerPage
-	 * @param hclusterName
-	 * @param request
-	 * @return
-	 */
+    /**
+     * Methods Name: list <br>
+     * Description: 展示hcluster的分页<br>
+     * @author name: wujun
+     * @param currentPage
+     * @param recordsPerPage
+     * @param hclusterName
+     * @param request
+     * @return
+     */
 	@RequestMapping(value = "/{currentPage}/{recordsPerPage}/{hclusterName}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,
 			@PathVariable int recordsPerPage,
@@ -88,15 +88,16 @@ public class HclusterController {
 		return obj;
 	}
 
-	/**
-	 * Methods Name: save <br>
-	 * Description: 保存host信息 
-	 * @author name: wujun
-	 * @param dav
-	 * @param request
-	 */
+    /**
+     * Methods Name: saveHcluster <br>
+     * Description: 保存hcluster信息<br>
+     * @author name: wujun
+     * @param hclusterModel
+     * @param request
+     * @return
+     */
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody ResultObject saveHost(HclusterModel hclusterModel,
+	public @ResponseBody ResultObject saveHcluster(HclusterModel hclusterModel,
 			HttpServletRequest request) {
 		hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
 		ResultObject obj = new ResultObject();
@@ -116,7 +117,7 @@ public class HclusterController {
 	 * @param request
 	 */
 	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.DELETE)
-	public @ResponseBody ResultObject delteHostByID(
+	public @ResponseBody ResultObject delteHclusterByID(
 			@PathVariable Long hclusterId, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		HclusterModel hclusterModel = new HclusterModel();
