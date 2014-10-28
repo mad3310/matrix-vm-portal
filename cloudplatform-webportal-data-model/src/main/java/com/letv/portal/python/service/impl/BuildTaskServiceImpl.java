@@ -775,6 +775,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserModel.setUsername("admin");
 		dbUserModel.setPassword("admin");
 		dbUserModel.setAcceptIp("%");
+     	dbUserModel.setType(1);
 		dbUserModel.setMaxConcurrency(1000);
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
