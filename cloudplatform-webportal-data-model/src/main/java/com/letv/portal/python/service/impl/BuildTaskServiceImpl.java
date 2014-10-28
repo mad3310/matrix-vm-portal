@@ -806,17 +806,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					if(list.size() <= 0) {
 						this.addHandMcluster(mm);
 					} else {
-						
-						List<Map> cms = (List<Map>) mm.get("nodeInfo");
-						for (Map cm : cms) {
-							ContainerModel container = new ContainerModel();
-							container.setContainerName((String) cm.get("containerName"));
-							container.setHostIp((String) cm.get("hostIp"));
-							HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-							if(null != hostModel) {
-								container.setHostId(hostModel.getId());
+						MclusterModel mcluster = list.get(0);
+						if(MclusterStatus.BUILDDING.equals(mcluster.getStatus()) || MclusterStatus.BUILDFAIL.equals(mcluster.getStatus()) || MclusterStatus.DEFAULT.equals(mcluster.getStatus())|| MclusterStatus.AUDITFAIL.equals(mcluster.getStatus())) {
+						} else {
+							List<Map> cms = (List<Map>) mm.get("nodeInfo");
+							for (Map cm : cms) {
+								ContainerModel container = new ContainerModel();
+								container.setContainerName((String) cm.get("containerName"));
+								container.setHostIp((String) cm.get("hostIp"));
+								HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+								if(null != hostModel) {
+									container.setHostId(hostModel.getId());
+								}
+								this.containerService.updateHostIpByName(container);
 							}
-							this.containerService.updateHostIpByName(container);
+							
 						}
 					}
 				}

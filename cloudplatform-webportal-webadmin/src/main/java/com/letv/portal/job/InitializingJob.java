@@ -37,7 +37,7 @@ public class InitializingJob {
 	@Autowired(required=false)
 	private SchedulerFactoryBean schedulerFactoryBean;
 	
-	//@PostConstruct
+	@PostConstruct
 	public void initScheduler() throws  SchedulerException,ParseException,ClassNotFoundException {
 		
 		logger.info("initScheduler start....");
@@ -121,7 +121,7 @@ public class InitializingJob {
 		checkMclusterCount.setJobGroup("webportal");
 		checkMclusterCount.setJobStatus("1");
 //		checkMclusterCount.setCronExpression("0/30 * * * * ?");
-		checkMclusterCount.setCronExpression("* 0/2 * * * ?");
+		checkMclusterCount.setCronExpression("0 0/2 * * * ?");
 		checkMclusterCount.setDescn("检查container单节点状态");
 		jobs.add(checkMclusterCount);
 		

@@ -78,7 +78,7 @@ public class HclusterController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/{hclusterName}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/{hclusterName}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable String hclusterName,
 			HttpServletRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
@@ -86,7 +86,7 @@ public class HclusterController {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.selectByName(map));
 		return obj;
-	}
+	}*/
 
     /**
      * Methods Name: saveHcluster <br>
