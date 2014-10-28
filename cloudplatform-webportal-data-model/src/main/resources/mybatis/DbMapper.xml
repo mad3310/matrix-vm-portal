@@ -163,7 +163,7 @@
 
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Db">
-		delete from WEBPORTAL_DB m where m.ID = #{id}
+		delete from WEBPORTAL_DB where ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
