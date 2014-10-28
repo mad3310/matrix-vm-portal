@@ -106,5 +106,22 @@ public class DbUserControllerTest extends AbstractTest{
 		dbUserModel.setId(1L);
 		this.dbUserService.delete(dbUserModel);
     }
+	/**
+	 * Methods Name: deleteDbUserById <br>
+	 * Description: 删除dbUser信息
+	 * @author name: wujun
+	 */
+	/**
+	 * Methods Name: test <br>
+	 * Description: <br>
+	 * @author name: wujun
+	 */
+	@Test
+    public  void testStringArgs(){
+		String id = "29,";
+		String tg[]=id.split(",");
+	    System.out.print(tg.length);
+    }
+	
 	
 }
