@@ -13,7 +13,7 @@
 		<div class="widget-header">
 			<h5 class="widget-title">数据库列表</h5>
 			<div class="widget-toolbar no-border">
-				<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#apply-form">
+				<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#apply-form">
 					<i class="ace-icont fa fa-plus"></i>
 					 创建数据库
 				</button>
@@ -106,19 +106,18 @@
 										</a>
 									</label>
 								</div>
-								<!-- <div class="form-group">
+								<div class="form-group">
 									<label class="col-sm-2 control-label" for="hcluster">物理机集群</label>
 									<div class="col-sm-4">
-										<select class="form-control" name="hcluster" id="hcluster">
-											<option value="0"></option>
+										<select class="form-control" name="hcluster" id="hcluster_select">
 										</select>
 									</div>
 									<label class="control-label" for="hcluster">
-										<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以提高连接速度." style="cursor:pointer; text-decoration:none;">
+										<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
 											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 										</a>
 									</label>
-								</div> -->
+								</div>
 							</div>
 						</div>
 					</div>
@@ -355,10 +354,25 @@ var currentSelectedLineDbName = 1;
 		});
 	}
 	
-	/* function queryHcluster(){
-		
+	function queryHcluster(){
+		var options = $('#hcluster_select');
+		$.ajax({
+			url:'${ctx}/hcluster',
+			type:'get',
+			dataType:'json',
+			success:function(data){
+				var array = data.data;
+				for(var i = 0, len = array.length; i < len; i++){
+					
+					var option = $("<option value=\""+array[i].id+"\">"
+									+array[i].hclusterNameAlias
+									+"</option>");
+					options.append(option);
+				}
+			}
+		});
 	}
-	 */
+	
 	function page_init(){
 		searchAction();
 		formValidate();

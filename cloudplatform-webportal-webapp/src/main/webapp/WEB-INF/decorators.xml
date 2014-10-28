@@ -11,6 +11,7 @@
 		<pattern>/dbUser/*</pattern>
 		<pattern>/build/*</pattern>
 		<pattern>/hcluster/*</pattern>
+		<pattern>/hcluster</pattern>
 		<pattern>/host/*</pattern>
 	</excludes>
 	

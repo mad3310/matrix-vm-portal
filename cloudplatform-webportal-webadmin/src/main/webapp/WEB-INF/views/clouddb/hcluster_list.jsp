@@ -75,7 +75,6 @@
 							<div class="widget-body">
 								<div class="widget-main">
 									<div class="form-group">
-										<input class="hidden" name="status" id="status" value="6"　type="text" />
 										<label class="col-sm-4 control-label" for="hcluster_name">物理机集群名称</label>
 										<div class="col-sm-6">
 											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />

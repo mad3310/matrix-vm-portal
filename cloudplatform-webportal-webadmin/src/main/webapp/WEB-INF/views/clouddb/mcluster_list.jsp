@@ -16,7 +16,7 @@
 			<div class="widget-header">
 				<h5 class="widget-title">Container集群列表</h5>
 				<div class="widget-toolbar no-border">
-					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#create-mcluster-modal">
+					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
 						<i class="ace-icont fa fa-plus"></i>
 						 创建Container集群
 					</button>
@@ -85,6 +85,18 @@
 										</div>
 										<label class="control-label">
 											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">物理机集群</label>
+										<div class="col-sm-6">
+											<select class="form-control" name="hcluster" id="hcluster_select">
+											</select>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -551,6 +563,25 @@ function deleteMcluster(obj){
 		});
 	}
 	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除?",deleteCmd);
+}
+
+function queryHcluster(){
+	var options = $('#hcluster_select');
+	$.ajax({
+		url:'${ctx}/hcluster',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			var array = data.data;
+			for(var i = 0, len = array.length; i < len; i++){
+				
+				var option = $("<option value=\""+array[i].id+"\">"
+								+array[i].hclusterNameAlias
+								+"</option>");
+				options.append(option);
+			}
+		}
+	});
 }
 
 function page_init(){

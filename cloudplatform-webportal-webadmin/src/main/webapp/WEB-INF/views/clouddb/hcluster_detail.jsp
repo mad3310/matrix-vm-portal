@@ -68,7 +68,6 @@
 									</div>
 									<div class="form-group">
 										<input class="hidden" value="${hclusterId}" name="hclusterId" id="hclusterId" type="text" />
-										<input class="hidden" name="status" id="status" value="6"　type="text" />
 										<label class="col-sm-offset-1 col-sm-2 control-label" for="hostName">编号</label>
 										<div class="col-sm-5">
 											<input class="form-control" name="hostName" id="hostName" type="text" />
@@ -194,8 +193,8 @@ function queryHost(){
 		dataType : "json", 
 		success : function(data) {
 			error(data);
-			var array = data.data;
- 			$("#headerHostName").append(array[0].hclusterName);
+ 			$("#headerHostName").append(data.data.hcluster);
+			var array = data.data.hclusterDetail;
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"host_id\" value= \""+array[i].hostId+"\" type=\"hidden\"/>");
