@@ -106,6 +106,19 @@
 										</a>
 									</label>
 								</div>
+								<!-- <div class="form-group">
+									<label class="col-sm-2 control-label" for="hcluster">物理机集群</label>
+									<div class="col-sm-4">
+										<select class="form-control" name="hcluster" id="hcluster">
+											<option value="0"></option>
+										</select>
+									</div>
+									<label class="control-label" for="hcluster">
+										<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以提高连接速度." style="cursor:pointer; text-decoration:none;">
+											<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+										</a>
+									</label>
+								</div> -->
 							</div>
 						</div>
 					</div>
@@ -342,6 +355,10 @@ var currentSelectedLineDbName = 1;
 		});
 	}
 	
+	/* function queryHcluster(){
+		
+	}
+	 */
 	function page_init(){
 		searchAction();
 		formValidate();
