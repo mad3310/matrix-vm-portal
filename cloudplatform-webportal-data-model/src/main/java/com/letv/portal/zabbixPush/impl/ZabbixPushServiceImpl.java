@@ -182,7 +182,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		String loginResult = null;
 		String url=ZABBIX_POST;	
 		String jsonString ="{\"jsonrpc\":\"2.0\",\"method\":\"user.login\",\"params\":{\"user\":\""+name+"\",\"password\":\""+password+"\"},\"id\":1}"; 
-		String result = HttpClient.post(url, jsonString,null,null);
+		String result = HttpClient.postObject(url, jsonString,null,null);
 		try {
 			loginResult = analysisResult(transResult(result));
 		} catch (Exception e) {
@@ -199,7 +199,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	public String sendZabbixInfo(Object object) throws Exception{
 		String url=ZABBIX_POST;			
 		String fixedPushString =  JSON.toJSON(object).toString();
-		String result = HttpClient.post(url, fixedPushString,null,null);		
+		String result = HttpClient.postObject(url, fixedPushString,null,null);		
 		return result;
 	};
 	/**

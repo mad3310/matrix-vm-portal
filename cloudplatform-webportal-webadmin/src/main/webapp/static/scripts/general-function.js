@@ -148,6 +148,8 @@ function translateStatus(status){
 		return "<font color=\"orange\">危险</font>";
 	}else if(status == 14){
 		return "<font color=\"red\">严重危险</font>";
+	}else if(status == 15){
+		return "禁用";
 	}
 }
 /*错误提示框,一般在异步请求返回信息中用到*/

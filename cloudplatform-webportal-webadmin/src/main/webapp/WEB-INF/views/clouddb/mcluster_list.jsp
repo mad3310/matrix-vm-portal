@@ -35,7 +35,8 @@
 									</label>
 								</th>
 								<th>Container集群名称</th>
-								<th>Container集群所属用户</th>
+								<th>类型</th>
+								<th>所属用户</th>
 								<th>创建时间 </th>
 								<th class="hidden-480">当前状态</th>
 								<th>操作</th>
@@ -92,7 +93,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label" for="hcluster">物理机集群</label>
 										<div class="col-sm-6">
-											<select class="form-control" name="hcluster" id="hcluster_select">
+											<select class="form-control" name="hclusterId" id="hcluster_select">
 											</select>
 										</div>
 										<label class="control-label" for="hcluster">
@@ -233,36 +234,46 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td2 = $("<td>"
 						+  "<a href=\"${ctx}/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
-				var userName=' ';
+				var type = "";
+				if(array[i].type) {
+					type="后台创建";
+				} else {
+					type = "系统创建";
+				}
+				var td3 = $("<td>"
+						+ type
+						+ "</td>");
+				
+				var userName='system';
 				if(array[i].createUser) {
 					userName = array[i].createUserModel.userName;
 				}
-				var td3 = $("<td>"
+				var td4 = $("<td>"
 						+ userName
 						+ "</td>");
-				var td4 = $("<td>"
+				var td5 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				if(array[i].status == 2){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"/>"
 							+"创建中...</a>"
 							+ "</td>");
 				}else if(array[i].status == 1||array[i].status == 3||array[i].status == 6){
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+translateStatus(array[i].status)
 							+"</a>"
 							+ "</td>");
 				}else{
-					var td5 = $("<td>"
+					var td6 = $("<td>"
 							+translateStatus(array[i].status)
 							+ "</td>");
 					
 				}
 					
-				var td6 = $("<td>"
+				var td7 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\">"
 						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
@@ -285,7 +296,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
