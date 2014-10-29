@@ -57,13 +57,6 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}	
 	}
 	public void buildDbUser(String DbUserId){
-		String dbUserIdArgs[] = DbUserId.split(",");
-		for(String id :dbUserIdArgs){
-			DbUserModel dbUserModel = new DbUserModel();
-			dbUserModel.setId(Long.parseLong(id));
-			dbUserModel.setStatus(DbStatus.NORMAL.getValue());
-			this.dbUserService.updateDbUser(dbUserModel);
-		}	
 		this.buildTaskService.buildUser(DbUserId);
 	}
 }

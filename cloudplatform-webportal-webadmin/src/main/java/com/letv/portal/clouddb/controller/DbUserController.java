@@ -86,7 +86,7 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)  
-	public @ResponseBody ResultObject list(String dbUserId,HttpServletRequest request) {
+	public @ResponseBody ResultObject auditDbUser(String dbUserId,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.dbUserProxy.buildDbUser(dbUserId);
 		return obj;
