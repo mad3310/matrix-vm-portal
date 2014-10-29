@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
@@ -81,7 +83,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IFixedPushService fixedPushService;
 	@Autowired 
 	private IZabbixPushService zabbixPushService;
-	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	
@@ -780,8 +781,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserModel.setUsername("admin");
 		dbUserModel.setPassword("admin");
 		dbUserModel.setAcceptIp("%");
-     	dbUserModel.setType(DbUserStatus.DEFAULT.getValue());
+     	dbUserModel.setType(DbUserRoleStatus.MANAGER.getValue());
 		dbUserModel.setMaxConcurrency(1000);
+		dbUserModel.setCreateUser(this.dbService.selectById(dbId).getCreateUser());
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
 		return id;
