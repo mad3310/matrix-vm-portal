@@ -26,6 +26,7 @@
 					<thead>
 						<tr>
 							<th>数据库名称</th>
+							<th>所属物理机集群</th>
 							<th>
 								创建时间 
 							</th>
@@ -179,22 +180,31 @@ var currentSelectedLineDbName = 1;
 								+ "<a style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 								+ "</td>");
 					}
+					var hclusterNameAlias = " ";
+					if(array[i].hcluster) {
+						hclusterNameAlias = array[i].hcluster.hclusterNameAlias;
+					}
+					
 					var td3 = $("<td>"
+							+ hclusterNameAlias
+							+ "</td>");
+					
+					var td4 = $("<td>"
 							+ date('Y-m-d H:i:s',array[i].createTime)
 							+ "</td>");
 					if(array[i].status == 4){
-						var td4 = $("<td>"
+						var td5 = $("<td>"
 								+"<a href=\"#\" name=\"dbRefuseStatus\" rel=\"popover\" data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger='hover' style=\"cursor:pointer; text-decoration:none;\" data-content=\""+ array[i].auditInfo+"\" >"
 								+ translateStatus(array[i].status)
 								+"</a>"
 								+ "</td>");
 					}else if(array[i].status == 2){
-						var td4 = $("<td>"
+						var td5 = $("<td>"
 								+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
 								+"创建中..."
 								+ "</td>");
 					}else{
-						var td4 = $("<td>"
+						var td5 = $("<td>"
 								+ translateStatus(array[i].status)
 								+ "</td>");
 					}
@@ -221,7 +231,7 @@ var currentSelectedLineDbName = 1;
 						var tr = $("<tr></tr>");
 					}
 					
-					tr.append(td2).append(td3).append(td4);
+					tr.append(td2).append(td3).append(td4).append(td5);
 					tr.appendTo(tby);
 					
 					//初始化鼠标事件悬浮框

@@ -71,4 +71,9 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public void updateHostIpByName(ContainerModel container) {
 		this.containerDao.updateHostIpByName(container);
 	}
+
+	@Override
+	public ContainerModel selectByName(String containerName) {
+		return this.containerDao.selectByName(containerName);
+	}
 }

@@ -39,6 +39,7 @@ public class DbModel extends BaseModel {
 	private UserModel user;
 	
 	private Long hclusterId;
+	private HclusterModel hcluster;
 	
 	private List<ContainerModel> containers;
 	
@@ -155,6 +156,12 @@ public class DbModel extends BaseModel {
 	}
 	public void setAuditInfo(String auditInfo) {
 		this.auditInfo = auditInfo;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
 	}
 	@Override
 	public String toString() {

@@ -177,6 +177,12 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CONTAINER C where C.ID = #{id}
 	</select>
+	<!-- 根据id查询-->
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER C where C.CONTAINER_NAME = #{containerName}
+	</select>
 	<!-- 根据db id查询-->
 	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select

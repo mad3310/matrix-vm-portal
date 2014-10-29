@@ -224,7 +224,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				resultMsg = "成功";
 				status = DbStatus.NORMAL.getValue();
 				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
-                buildUser(createDefalutAdmin(dbId).toString());
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -240,6 +239,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			dbModel.setId(dbId);
 			dbModel.setStatus(status);
 			this.dbService.updateBySelective(dbModel);
+			if(DbStatus.NORMAL.getValue() == status) {
+				buildUser(createDefalutAdmin(dbId).toString());
+			}
 		}
 	}
     
@@ -818,14 +820,18 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 							} else {
 								List<Map> cms = (List<Map>) mm.get("nodeInfo");
 								for (Map cm : cms) {
-									ContainerModel container = new ContainerModel();
-									container.setContainerName((String) cm.get("containerName"));
-									container.setHostIp((String) cm.get("hostIp"));
-									HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-									if(null != hostModel) {
-										container.setHostId(hostModel.getId());
+									ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
+									if(null == container) {
+										this.addHandContainer(cm, mcluster.getId());
+									} else {
+										container.setContainerName((String) cm.get("containerName"));
+										container.setHostIp((String) cm.get("hostIp"));
+										HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+										if(null != hostModel) {
+											container.setHostId(hostModel.getId());
+										}
+										this.containerService.updateHostIpByName(container);
 									}
-									this.containerService.updateHostIpByName(container);
 								}
 								
 							}
@@ -848,23 +854,26 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.mclusterService.insert(mcluster);
 		List<Map> cms = (List<Map>) mm.get("nodeInfo");
 		for (Map cm : cms) {
-			ContainerModel container = new ContainerModel();
-			try {
-				BeanUtils.populate(container, cm);
-				container.setMclusterId(mcluster.getId());
-				container.setIpMask((String) cm.get("netMask"));
-				container.setContainerName((String) cm.get("containerName"));
-				container.setStatus(MclusterStatus.RUNNING.getValue());
-				container.setHostIp((String) cm.get("hostIp"));
-				HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-				if(null != hostModel) {
-					container.setHostId(hostModel.getId());
-				}
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			this.containerService.insert(container);
+			this.addHandContainer(cm,mcluster.getId());
 		}
+	}
+	private void addHandContainer(Map cm,Long mclusterId) {
+		ContainerModel container = new ContainerModel();
+		try {
+			BeanUtils.populate(container, cm);
+			container.setMclusterId(mclusterId);
+			container.setIpMask((String) cm.get("netMask"));
+			container.setContainerName((String) cm.get("containerName"));
+			container.setStatus(MclusterStatus.RUNNING.getValue());
+			container.setHostIp((String) cm.get("hostIp"));
+			HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+			if(null != hostModel) {
+				container.setHostId(hostModel.getId());
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.containerService.insert(container);
 	}
 	
 }

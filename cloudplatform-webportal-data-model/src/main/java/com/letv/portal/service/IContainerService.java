@@ -50,6 +50,14 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @param container
 	 */
 	public void updateHostIpByName(ContainerModel container);
+
+	/**Methods Name: selectByName <br>
+	 * Description: 根据container名称查询container信息<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public ContainerModel selectByName(String containerName);
 	
 	
 }

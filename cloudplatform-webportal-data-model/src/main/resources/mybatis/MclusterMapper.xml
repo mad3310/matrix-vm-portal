@@ -21,6 +21,9 @@
 		<association property="createUserModel" javaType="User">
 			<result column="USERNAME" property="userName" />
 		</association>
+		<association property="hcluster" javaType="Hcluster">
+			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+		</association>
 	</resultMap>
 	<!-- other map -->
 	<resultMap id="createParams" type="java.util.Map">
@@ -211,9 +214,10 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" /> ,U.USERNAME 
-		FROM  WEBPORTAL_MCLUSTER_INFO M left join WEBPORTAL_USER U 
-		ON U.ID = M.CREATE_USER
+		<include refid="Base_Column_List" /> ,U.USERNAME,h.HCLUSTER_NAME_ALIAS
+		FROM  WEBPORTAL_MCLUSTER_INFO M 
+		left join WEBPORTAL_USER U ON U.ID = M.CREATE_USER
+		left join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY M.CREATE_TIME DESC	
 		<if test="page != null">
