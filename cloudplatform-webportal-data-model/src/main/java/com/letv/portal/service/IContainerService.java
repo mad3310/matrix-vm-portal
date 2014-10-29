@@ -59,5 +59,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public ContainerModel selectByName(String containerName);
 	
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
+	
 	
 }
