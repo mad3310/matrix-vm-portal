@@ -113,7 +113,7 @@ function buildUser() {
 			type : "post",
 			url : "${ctx}/dbUser",
 			dataType : "json",
-			data : str,
+			data : {'dbUserId':str},
 			success : function(data) {
 				error(data);
 				if(data.result == 1) {
