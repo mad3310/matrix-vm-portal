@@ -779,7 +779,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserModel.setUsername("admin");
 		dbUserModel.setPassword("admin");
 		dbUserModel.setAcceptIp("%");
-     	dbUserModel.setType(1);
+     	dbUserModel.setType(DbUserStatus.DEFAULT.getValue());
 		dbUserModel.setMaxConcurrency(1000);
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
@@ -813,7 +813,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 							this.addHandMcluster(mm,hcluster.getId());
 						} else {
 							MclusterModel mcluster = list.get(0);
-							if(MclusterStatus.BUILDDING.equals(mcluster.getStatus()) || MclusterStatus.BUILDFAIL.equals(mcluster.getStatus()) || MclusterStatus.DEFAULT.equals(mcluster.getStatus())|| MclusterStatus.AUDITFAIL.equals(mcluster.getStatus())) {
+							if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()
+									|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus()) {
 							} else {
 								List<Map> cms = (List<Map>) mm.get("nodeInfo");
 								for (Map cm : cms) {
@@ -838,7 +839,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private void addHandMcluster(Map mm,Long hclusterId) {
 		MclusterModel mcluster = new MclusterModel();
 		mcluster.setMclusterName((String) mm.get("clusterName"));
-		mcluster.setStatus(MclusterStatus.DEFAULT.getValue());	
+		mcluster.setStatus(MclusterStatus.RUNNING.getValue());	
 		mcluster.setAdminUser("root");
 		mcluster.setAdminPassword((String) mm.get("clusterName"));
 		mcluster.setType(MclusterType.HAND.getValue());
