@@ -241,7 +241,7 @@ function queryByPage(currentPage,recordsPerPage) {
 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");
-				}
+				} 
 				var type = "";
 				if(array[i].type) {
 					type="后台创建";

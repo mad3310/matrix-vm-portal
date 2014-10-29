@@ -61,9 +61,9 @@ public class FixedPushServiceImpl implements IFixedPushService{
 				createContainerPushFixedInfo(fixedPushModel);
 			}
 			flag = true;
-			logger.debug("固资推送成功");
+			logger.debug("fixed success");
 		} catch (Exception e) {
-			logger.debug("固资推送失败"+e.getMessage());
+			logger.debug("fixed failure"+e.getMessage());
 		}
          return flag;
 	}

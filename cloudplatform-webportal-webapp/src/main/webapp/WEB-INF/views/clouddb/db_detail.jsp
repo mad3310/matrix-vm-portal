@@ -43,7 +43,7 @@
 										<td id="db_detail_table_createtime"></td>
 									</tr>
 								</table>
-								<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
+								<small><font color="gray">*注:请用绿色高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane">
@@ -513,11 +513,19 @@ function queryDbInfo(){
 					td1 = $("<td>"
 							+ "节点-"+i
 							+"</td>");
-					td2 =$("<td>"
-						+ "<b><font color=\"green\">"
-						+ dbInfo.containers[i].ipAddr
-						+ "</font></b>"
-						+"</td>");
+					if(dbInfo.containers[i].status == "1"){
+						td2 =$("<td>"
+							+ "<b><font color=\"green\">"
+							+ dbInfo.containers[i].ipAddr
+							+ "</font></b>"
+							+"</td>");
+					}else{
+						td2 =$("<td>"
+								+ "<b><font color=\"red\">"
+								+ dbInfo.containers[i].ipAddr
+								+ "</font></b>"
+								+"</td>");
+					}
 				}else{
 					td1 = $("<td>"
 							+ "VIP"
