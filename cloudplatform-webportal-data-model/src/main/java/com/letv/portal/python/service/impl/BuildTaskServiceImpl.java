@@ -484,8 +484,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
 			nextStep = analysis(transResult(this.pythonService.startGbalancer(vipNodeIp, "monitor", sstPwd,"http", ipListPort.toString(), "8888", "-daemon", username, password)),step,startTime,mclusterId,dbId);
 		}
-		/**
-
+	
 		if(nextStep) {
 			step++;
 			startTime = new Date();
@@ -495,8 +494,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			step++;
 			startTime = new Date();
 			nextStep = analysisToFixedOrZabbix(zabbixPushService.createMultiContainerPushZabbixInfo(containers),step,startTime,mclusterId,dbId);
-		}
-	*/	
+		}	
 		return nextStep;
 	}
 	

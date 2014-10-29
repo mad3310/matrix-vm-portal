@@ -36,7 +36,7 @@ public class HostProxyImpl extends BaseProxyImpl<HostModel> implements
 		return hostService;
 	}
 	@Override
-	public void insertAndPhyhonApi(HostModel hostModel) {
+	public void insertAndPhyhonApi(HostModel hostModel) {		
 		hostModel.setName("root");
 		hostModel.setPassword("root");
 		this.hostService.insert(hostModel);
@@ -47,7 +47,13 @@ public class HostProxyImpl extends BaseProxyImpl<HostModel> implements
   			HclusterModel hclusterModel = list.get(0);
   			hostModel.setHcluster(hclusterModel);
   		}
-		this.buildTaskService.createHost(hostModel);
+  		try {
+  			this.buildTaskService.createHost(hostModel);
+		} catch (Exception e)  {
+			this.hostService.delete(hostModel);
+			throw new RuntimeException("host ip not exist!");
+		}
+	
 	}
 	
 

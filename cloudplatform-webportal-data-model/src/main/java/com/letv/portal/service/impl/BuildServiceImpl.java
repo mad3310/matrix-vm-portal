@@ -39,8 +39,8 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 
 	@Override
 	public void initStatus(Long mclusterId) {
-		//,"固资系统推送","zabbix系统监控推送"
-		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点1信息","提交节点1信息","同步节点2信息","提交节点2信息 ","启动集群","检查集群状态","启动gbalancer:8888","启动gbalancer:3306"};
+		//
+		String[] stepMsgs = new String[]{"创建Mcluster节点","检查Mcluster节点状态","初始化Zookeeper节点","初始化mcluster管理用户名密码","提交mcluster集群信息","初始化集群","同步节点1信息","提交节点1信息","同步节点2信息","提交节点2信息 ","启动集群","检查集群状态","启动gbalancer:8888","启动gbalancer:3306","固资系统推送","zabbix系统监控推送"};
 		
 		for (int i = 0; i < stepMsgs.length; i++) {
 			BuildModel buildModel = new BuildModel();
