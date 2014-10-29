@@ -30,11 +30,11 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th>物理机集群名称</th>
-								<th>编号</th>
-								<th>创建时间 </th>
-								<th class="hidden-480">当前状态</th>
-								<th>操作</th>
+								<th width="19%">物理机集群名称</th>
+								<th width="19%">编号</th>
+								<th width="19%">创建时间 </th>
+								<th width="19%" class="hidden-480">当前状态</th>
+								<th width="19%">操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
