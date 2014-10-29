@@ -191,7 +191,7 @@ var currentSelectedLineDbName = 1;
 					}else if(array[i].status == 2){
 						var td4 = $("<td>"
 								+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
-								+"创建中..."
+								+" 创建中..."
 								+ "</td>");
 					}else{
 						var td4 = $("<td>"

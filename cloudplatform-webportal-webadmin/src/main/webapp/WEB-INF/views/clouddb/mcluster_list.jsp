@@ -34,12 +34,12 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th>Container集群名称</th>
-								<th>类型</th>
-								<th>所属用户</th>
-								<th>创建时间 </th>
-								<th class="hidden-480">当前状态</th>
-								<th>操作</th>
+								<th width="16%">Container集群名称</th>
+								<th width="16%">类型</th>
+								<th width="16%">所属用户</th>
+								<th width="16%">创建时间 </th>
+								<th width="16%" class="hidden-480">当前状态</th>
+								<th width="16%">操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
