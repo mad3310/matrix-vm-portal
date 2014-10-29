@@ -24,6 +24,14 @@ public interface IZabbixPushService{
 	 */
 	public Boolean deleteSingleContainerPushZabbixInfo(ContainerModel containerModel);
 	/**
+	 * Methods Name: deleteMutilContainerPushZabbixInfo <br>
+	 * Description: 删除多个container信息<br>
+	 * @author name: wujun
+	 * @param containerModel
+	 * @return
+	 */
+	public Boolean deleteMutilContainerPushZabbixInfo(List<ContainerModel> list);
+	/**
 	 * Methods Name: loginZabbix <br>
 	 * Description:登陆zabbix系统<br>
 	 * @author name: wujun

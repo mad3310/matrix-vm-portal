@@ -643,9 +643,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Async
 	public void removeMcluster(MclusterModel mcluster) {
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
-		String result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		List<ContainerModel> list = this.containerService.selectContainerByMclusterId(mcluster.getId());
+		String result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());		
 		if(analysisResult(transResult(result))) {
-			logger.info("invoke remove mcluster api success");
+			if(this.zabbixPushService.deleteMutilContainerPushZabbixInfo(list)){
+				logger.info("invoke remove mcluster api success");
+			}		
 		} else {
 			logger.info("invoke remove mcluster api error");
 		}

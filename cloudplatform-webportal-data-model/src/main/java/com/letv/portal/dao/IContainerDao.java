@@ -27,4 +27,6 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	public void deleteByMclusterId(Long mclusterId);
 
 	public void updateHostIpByName(ContainerModel container);
+	
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 }

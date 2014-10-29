@@ -81,6 +81,30 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 			}
 		return flag;
 			}
+	/**
+	 * Methods Name: deleteMutilContainerPushZabbixInfo <br>
+	 * Description: 删除多个zabbix信息<br>
+	 * @author name: wujun
+	 * @param containerModel
+	 * @return
+	 */
+	@Override
+	public Boolean deleteMutilContainerPushZabbixInfo(
+			List<ContainerModel> list) {
+		Boolean flag = false;
+		int count =0;
+		try {  			
+			for(ContainerModel c:list){
+				flag = deleteSingleContainerPushZabbixInfo(c);	
+				if(flag)
+				count++;
+			}		
+			logger.debug("zabbix成功删除了"+count+"个container");
+			} catch (Exception e) {
+		    logger.debug("zabbix删除失败");
+			}
+		     return flag;
+			}
 
 	/**
 	 * Methods Name: createContainerPushZabbixInfo <br>

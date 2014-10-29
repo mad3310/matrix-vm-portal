@@ -198,4 +198,12 @@
 		from WEBPORTAL_CONTAINER C
 		<include refid="Example_Where_Clause" />
 	</select>
+	
+		<!--查询集群下container的信息-->
+	<select id="selectContainerByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER C ,WEBPORTAL_MCLUSTER_INFO M 
+		where C.MCLUSTER_ID=M.ID and M.ID=#{mclusterId}
+	</select>
 </mapper>   

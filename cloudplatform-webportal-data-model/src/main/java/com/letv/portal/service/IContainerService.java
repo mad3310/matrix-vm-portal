@@ -51,5 +51,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public void updateHostIpByName(ContainerModel container);
 	
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
+	
 	
 }

@@ -71,4 +71,7 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public void updateHostIpByName(ContainerModel container) {
 		this.containerDao.updateHostIpByName(container);
 	}
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
+		return this.containerDao.selectContainerByMclusterId(clusterId);
+	}
 }
