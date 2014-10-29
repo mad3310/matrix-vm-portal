@@ -61,5 +61,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 	
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
+	
 	
 }

@@ -242,7 +242,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.dbService.updateBySelective(dbModel);
 			if(DbStatus.NORMAL.getValue() == status) {
 				buildUser(createDefalutAdmin(dbId).toString());
-			}
+			} 
 		}
 	}
     

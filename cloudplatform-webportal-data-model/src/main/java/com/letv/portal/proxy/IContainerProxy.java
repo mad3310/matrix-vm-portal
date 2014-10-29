@@ -40,4 +40,5 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerModel> selectByMclusterId(Long mclusterId);
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 }

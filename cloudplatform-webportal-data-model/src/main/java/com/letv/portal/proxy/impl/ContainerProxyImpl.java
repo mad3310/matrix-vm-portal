@@ -64,5 +64,8 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
 		return this.containerService.selectByMclusterId(mclusterId);
 	}
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
+		return this.containerService.selectContainerByMclusterId(clusterId);
+	}
 	
 }
