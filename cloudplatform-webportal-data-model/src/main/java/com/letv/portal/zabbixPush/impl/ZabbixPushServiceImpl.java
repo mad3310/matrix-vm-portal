@@ -191,7 +191,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 		return loginResult;
 	}; 
 	/**
-	 * Methods Name: sendFixedInfo <br>
+	 * Methods Name: sendZabbixInfo <br>
 	 * Description: 向zabbix系统发送信息<br>
 	 * @author name: wujun
 	 * @throws Exception 
