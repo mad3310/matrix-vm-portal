@@ -529,6 +529,7 @@
                 
                 <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
+                <start.timing.jobs>N</start.timing.jobs>
                  
                 <webportal.log.path>D:</webportal.log.path>
             </properties>
@@ -552,6 +553,7 @@
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;wujun@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
+                <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>
@@ -567,14 +569,15 @@
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
                 <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.username>paascloud_wr</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
                  <webportal.cas.local.http>http://rds.et.letv.com:18081</webportal.cas.local.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;wujun@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
+                <start.timing.jobs>Y</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>
