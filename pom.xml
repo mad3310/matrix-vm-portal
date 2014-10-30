@@ -567,8 +567,8 @@
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
                 <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.username>paascloud_wr</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
                  <webportal.cas.local.http>http://rds.et.letv.com:18081</webportal.cas.local.http>
