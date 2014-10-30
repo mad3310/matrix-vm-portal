@@ -160,7 +160,7 @@
 		n.CREATE_USER createUser,
 		n.UPDATE_TIME updateTime,
 		n.UPDATE_USER updateUser	
-		from WEBPORTAL_HCLUSTER m , webportal_host n where m.ID=n.hcluster_id and m.ID = #{hclusterId}
+		from WEBPORTAL_HCLUSTER m , WEBPORTAL_HOST n where m.ID=n.hcluster_id and m.ID = #{hclusterId}
 	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
@@ -197,7 +197,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_HCLUSTER m ,webportal_host n
+		from WEBPORTAL_HCLUSTER m ,WEBPORTAL_HOST n
 		where m.ID=n.HCLUSTER_ID
 	    and m.ID =#{id}	
 	</select>

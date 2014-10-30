@@ -209,7 +209,7 @@
 		parameterType="Host">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m ,WEBPORTAL_HOST n
+		from WEBPORTAL_HCLUSTER m ,WEBPORTAL_HOST n
 		where m.HOST_IP=n.HOST_IP
 	    and m.ID =#{id}	
 	</select>
