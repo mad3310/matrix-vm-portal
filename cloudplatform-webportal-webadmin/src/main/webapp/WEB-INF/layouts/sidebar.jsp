@@ -11,7 +11,7 @@
 	<!-- /.sidebar-shortcuts -->
 
 	<ul id="sidebar-list" class="nav nav-list">
-		<li id="sidebar-mcluster-mgr" class="">
+		<li id="sidebar-cluster-mgr" class="">
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> 
 				<span class="menu-text"> 集群管理 </span> 
@@ -20,9 +20,16 @@
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-mcluster-list" class="">
-					<a href="${ctx}/mcluster/list"> 
+					<a href="${ctx}/list/mcluster"> 
 						<i class="menu-icon fa fa-caret-right"></i>
-						集群列表
+						Container集群列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-hcluster-list" class="">
+					<a href="${ctx}/list/hcluster"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						物理机集群列表
 					</a>
 					<b class="arrow"></b>
 				</li>
@@ -37,14 +44,14 @@
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-db-list" class="">
-					<a href="${ctx}/db/list"> 
+					<a href="${ctx}/list/db"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库列表
 					</a>
 					<b class="arrow"></b>
 				</li>
 				<li id="sidebar-db-list" class="">
-					<a href="${ctx}/db/user/list"> 
+					<a href="${ctx}/list/dbUser"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库用户列表
 					</a>

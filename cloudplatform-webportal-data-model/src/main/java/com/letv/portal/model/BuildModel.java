@@ -1,7 +1,8 @@
 package com.letv.portal.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
+
+import com.letv.common.model.BaseModel;
 
 
 /**Program Name: BuildModel <br>
@@ -15,124 +16,77 @@ public class BuildModel extends BaseModel {
 	
 	private static final long serialVersionUID = 3290439855942720161L;
 	
-	private String id;   //主键ID
-	private String mclusterId;
-	private String dbId;
-	private int step;
+	private Long mclusterId;
+	private Long dbId;
+	private Integer step;
 	private String stepMsg;
-	private String status;
+	private Integer status;
 	private String code;
 	private String msg;
-	
 
 	private Date startTime;
 	private Date endTime;
-
-
-	public String getId() {
-		return id;
-	}
-
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-
-	public String getMclusterId() {
+	public Long getMclusterId() {
 		return mclusterId;
 	}
-
-
-	public void setMclusterId(String mclusterId) {
+	public void setMclusterId(Long mclusterId) {
 		this.mclusterId = mclusterId;
 	}
-
-
-	public String getDbId() {
+	public Long getDbId() {
 		return dbId;
 	}
-
-
-	public void setDbId(String dbId) {
+	public void setDbId(Long dbId) {
 		this.dbId = dbId;
 	}
-
-	
-	public int getStep() {
+	public Integer getStep() {
 		return step;
 	}
-
-
-	public void setStep(int step) {
+	public void setStep(Integer step) {
 		this.step = step;
 	}
-
-
 	public String getStepMsg() {
 		return stepMsg;
 	}
-
-
 	public void setStepMsg(String stepMsg) {
 		this.stepMsg = stepMsg;
 	}
 
-
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-
-
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
-
 	public String getCode() {
 		return code;
 	}
-
-
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-
 	public String getMsg() {
 		return msg;
 	}
-
-
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-
 	public Date getStartTime() {
 		return startTime;
 	}
-
-
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-
-
 	public Date getEndTime() {
 		return endTime;
 	}
-
-
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
-
 	@Override
 	public String toString() {
-		return "BuildModel [id=" + id + ", mclusterId=" + mclusterId
-				+ ", dbId=" + dbId + ", step=" + step + ", status=" + status
-				+ ", code=" + code + ", msg=" + msg + ", startTime="
+		return "BuildModel [mclusterId=" + mclusterId + ", dbId=" + dbId
+				+ ", step=" + step + ", stepMsg=" + stepMsg + ", status="
+				+ status + ", code=" + code + ", msg=" + msg + ", startTime="
 				+ startTime + ", endTime=" + endTime + "]";
 	}
+
 }

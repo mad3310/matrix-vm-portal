@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="Star" type="com.letv.portal.model.StarModel" />
+        <typeAlias alias="Dictionary" type="com.letv.portal.model.DictionaryModel" />
+        <typeAlias alias="DictionaryType" type="com.letv.portal.model.DictionaryTypeModel" />
+        
+        <!-- webportal相关alias -->
+        <typeAlias alias="Mcluster" type="com.letv.portal.model.MclusterModel" />
+        <typeAlias alias="Db" type="com.letv.portal.model.DbModel" />
+        <typeAlias alias="DbStandard" type="com.letv.portal.model.DbApplyStandardModel" />
+        <typeAlias alias="Container" type="com.letv.portal.model.ContainerModel" />
+        <typeAlias alias="Host" type="com.letv.portal.model.HostModel" />
+        <typeAlias alias="IpResource" type="com.letv.portal.model.IpResourceModel" />
+        <typeAlias alias="DbUser" type="com.letv.portal.model.DbUserModel" />
+        <typeAlias alias="build" type="com.letv.portal.model.BuildModel" />
+        <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
+        
+    </typeAliases>
+</configuration>

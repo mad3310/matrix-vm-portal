@@ -20,7 +20,7 @@
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li class="">
-					<a href="${ctx}/db/list"> 
+					<a href="${ctx}/list/db"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						数据库列表
 					</a>

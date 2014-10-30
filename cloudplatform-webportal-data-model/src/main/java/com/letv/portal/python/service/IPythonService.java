@@ -1,6 +1,7 @@
 package com.letv.portal.python.service;
 
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.HostModel;
 
 /**Program Name: IPythonService <br>
  * Description:  与底层python rest交互接口<br>
@@ -18,14 +19,14 @@ public interface IPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String createContainer(String mclusterName);
+	public String createContainer(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public String checkContainerCreateStatus(String mclusterName);
+	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>
@@ -145,6 +146,96 @@ public interface IPythonService {
 	 * @param password
 	 * @return
 	 */
-	public String startGbalancer(String nodeIp,String user,String pwd,String ipListPort,String port,String args,String username,String password);
+	public String startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password);
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除DbUser<br>
+	 * @author name: wujun
+	 * @param userName
+	 * @param dbNameip
+	 * @param ipAddress
+	 * @param nodeIp
+	 * @param username
+	 * @param password
+	 */
+	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password);
+
+	/**Methods Name: removeMcluster <br>
+	 * Description: 删除container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 */
+	public String removeMcluster(String mclusterName,String ip,String username,String password);
+
+	/**Methods Name: startMcluster <br>
+	 * Description: 启动container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String startMcluster(String mclusterName,String ip,String username,String password);
+
+	/**Methods Name: stopMcluster <br>
+	 * Description: 停止container集群<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String stopMcluster(String mclusterName,String ip,String username,String password);
+	
+	/**Methods Name: startContainer <br>
+	 * Description: 启动container<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String startContainer(String containerName,String ip,String username,String password);
+
+	/**Methods Name: stopContainer <br>
+	 * Description: 停止container<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String stopContainer(String containerName,String ip,String username,String password);
+
+	/**Methods Name: checkMclusterStatus <br>
+	 * Description: 检查container集群状态<br>
+	 * @author name: liuhao1
+	 * @param mclusterName
+	 * @return
+	 */
+	public String checkMclusterStatus(String mclusterName,String ip,String username,String password);
+
+	/**Methods Name: checkContainerStatus <br>
+	 * Description: 检查container状态<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public String checkContainerStatus(String containerName,String ip,String username,String password);
+	/**
+	 * Methods Name: initHcluster <br>
+	 * Description: 创建host之前做接口验证<br>
+	 * @author name: wujun
+	 * @return
+	 */
+	public String initHcluster(String hostIp);
+	/**
+	 * Methods Name: createHost <br>
+	 * Description: 创建host<br>
+	 * @author name: wujun
+	 */
+	public String createHost(HostModel hostModel);
+
+	/**Methods Name: checkMclusterCount <br>
+	 * Description: 检查container集群一致性<br>
+	 * @author name: liuhao1
+	 * @param hostIp
+	 * @param name
+	 * @param password
+	 * @return
+	 */
+	public String checkMclusterCount(String hostIp, String name, String password);
 	
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 
 
@@ -26,40 +25,27 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	/**Methods Name: audit <br>
-	 * Description: 审核db<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param dbApplyStandardId
-	 * @param status
-	 * @param mclusterId
-	 * @param auditInfo
-	 */
-	public void audit(String dbId,String dbApplyStandardId,String status,String mclusterId,String auditInfo);
-
-	
-	/**Methods Name: buildNotice <br>
-	 * Description: 手动创建完成后，通知<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param buildFlag
-	 */
-	public void buildNotice(String dbId,String buildFlag);
-	
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建dbUser相关参数<br>
 	 * @author name: liuhao1
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
+	public Map<String,Object> selectCreateParams(Long id);
 
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
 	 * @author name: liuhao1
-	 * @param applyCode
+	 * @param dbName
 	 * @return
 	 */
 	public List<DbModel> selectByDbName(String dbName);
+
+	/**Methods Name: deleteByMclusterId <br>
+	 * Description: 根据container集群id删除对应db<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void deleteByMclusterId(Long mclusterId);
 
 }

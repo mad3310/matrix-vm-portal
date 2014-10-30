@@ -3,6 +3,7 @@ package com.letv.portal.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.DbUserModel;
 
 /**Program Name: IDbUserDao <br>
@@ -20,7 +21,7 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param dbId
 	 * @return
 	 */
-	public List<DbUserModel> selectByDbId(String dbId);
+	public List<DbUserModel> selectByDbId(Long dbId);
 	
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建dbUser相关参数<br>
@@ -28,7 +29,7 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
+	public Map<String,Object> selectCreateParams(Long id);
 	
 	/**Methods Name: updateStatus <br>
 	 * Description: 更新数据库用户状态<br>
@@ -36,6 +37,19 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public void updateStatus(DbUserModel dbUserModel);
-
+    /**
+     * Methods Name: selectByIpAndUsername <br>
+     * Description: 通过Ip和UserName判断是否存在该用户
+     * @author name: wujun
+     * @param dbUserModel
+     * @return
+     */
 	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
+    /**
+     * Methods Name: deleteByDbId <br>
+     * Description: 删除DbUser通过DbId<br>
+     * @author name: wujun
+     * @param dbId
+     */
+	public void deleteByDbId(Long dbId);
 }

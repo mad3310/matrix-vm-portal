@@ -1,30 +1,29 @@
 package com.letv.common.dao;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
 
-public class QueryParam {
+public class QueryParam<K, V> {
 	
 	private Limit limit;
 	private Page page;
 	
-	private Map<String,Object> params = new HashMap<String,Object>();
+	private Map<K, V> params;
 	
 	
 	public QueryParam(){};
 	
-	public QueryParam(Map<String,Object> params,Page page){
+	public QueryParam(Map<K,V> params,Page page){
 		this.page = page;
 		this.params = params;
 	};
 	
-	public Map<String,Object> getParams() {
+	public Map<K, V> getParams() {
 		return params;
 	}
 
-	public void setParams(Map<String,Object> params) {
+	public void setParams(Map<K, V> params) {
 		this.params = params;
 	}
 

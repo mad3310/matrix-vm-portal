@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import com.letv.common.model.BaseModel;
+
 
 /**Program Name: HostModel <br>
  * Description:  <br>
@@ -12,7 +14,6 @@ public class HostModel extends BaseModel {
 	
 	private static final long serialVersionUID = 3497965985607790962L;
 	
-	private String id;   //主键ID
 	private String hostName; //主机名称
 	private String hostIp; //主机ip
 	private Integer nodesNumber; //节点个数
@@ -22,19 +23,61 @@ public class HostModel extends BaseModel {
 	private Integer memorySize; //内存大小
 	private Integer diskSize; //磁盘大小
 	private Integer diskUsed; //磁盘使用量
-
-	private String status; //状态:0:关闭   1:正常
-	private String isDeleted; //是否删除   0:无效 1:有效
-	private String createTime;
-	private String createUser;
-	private String updateTime;
-	private String updateUser;
+	private String  type;     //主机类型
+	private Long  hclusterId;     //主机类型
+	private String  descn;     //主机描述
+	private HclusterModel hcluster; //物理机集群
+	private String name; //用户名
+	private String password; //密码
+	private String hostNameAlias; //别名
 	
-	public String getId() {
-		return id;
+
+	private Integer status; //状态:
+	
+	
+	
+	
+	public String getHostNameAlias() {
+		return hostNameAlias;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setHostNameAlias(String hostNameAlias) {
+		this.hostNameAlias = hostNameAlias;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
+	}
+	public String getDescn() {
+		return descn;
+	}
+	public void setDescn(String descn) {
+		this.descn = descn;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
 	}
 	public String getHostName() {
 		return hostName;
@@ -91,52 +134,20 @@ public class HostModel extends BaseModel {
 	public void setDiskUsed(Integer diskUsed) {
 		this.diskUsed = diskUsed;
 	}
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
-	}
-	public String getIsDeleted() {
-		return isDeleted;
-	}
-	public void setIsDeleted(String isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getCreateUser() {
-		return createUser;
-	}
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
 	}
 	@Override
 	public String toString() {
-		return "HostModel [id=" + id + ", hostName=" + hostName + ", hostIp="
+		return "HostModel [hostName=" + hostName + ", hostIp="
 				+ hostIp + ", nodesNumber=" + nodesNumber + ", hostModel="
 				+ hostModel + ", cpuModel=" + cpuModel + ", coresNumber="
 				+ coresNumber + ", memorySize=" + memorySize + ", diskSize="
 				+ diskSize + ", diskUsed=" + diskUsed + ", status=" + status
-				+ ", isDeleted=" + isDeleted + ", createTime=" + createTime
-				+ ", createUser=" + createUser + ", updateTime=" + updateTime
-				+ ", updateUser=" + updateUser + "]";
+				+ "]";
 	}
 	
 	

@@ -93,7 +93,7 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:applicationContext.xml</param-value>
+			<param-value>classpath:dispatcher-servlet.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -114,4 +114,9 @@
 		<url-pattern>/webapp1/*</url-pattern>
 	</filter-mapping>
  -->
+ 	<!-- 出错页面定义 -->
+	 <error-page>
+		<error-code>404</error-code>
+		<location>/404</location>
+	</error-page>
 </web-app>   

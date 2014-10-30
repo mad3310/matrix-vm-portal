@@ -346,6 +346,12 @@
             	<type>jar</type>
             	<scope>compile</scope>
             </dependency>
+            <!-- quartz -->
+            <dependency>
+	            <groupId>org.quartz-scheduler</groupId>
+	            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
       </dependencies>
   </dependencyManagement>
   
@@ -516,15 +522,14 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                 <cloudplatform.webportal.db.url>jdbc:mysql://10.58.166.19:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>yaokuo</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>000000</cloudplatform.webportal.db.password>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
-                <webportal.cas.local.http>http://127.0.0.1:8081</webportal.cas.local.http>
-                
+                <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
-
+                 
                 <webportal.log.path>D:</webportal.log.path>
             </properties>
         </profile>
@@ -538,14 +543,15 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
                  <webportal.cas.local.http>http://10.200.94.203:8081</webportal.cas.local.http>
-                
-                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;wujun@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>
@@ -560,14 +566,15 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/lecl_pf_web?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>test</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>test</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.200.94.203:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
                 
-                 <webportal.cas.local.http>http://127.0.0.1:8081</webportal.cas.local.http>
-                
-                <webportal.errormail.to>zhoubingzheng@letv.com</webportal.errormail.to>
+                 <webportal.cas.local.http>http://rds.et.letv.com:18081</webportal.cas.local.http>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;wujun@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
             </properties>

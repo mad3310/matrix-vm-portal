@@ -10,13 +10,13 @@ public enum ContentStatusEnum implements ByteEnum{
 	/**审核预通过*/
 	PRE_APPROVED(3);
 
-	private byte value;
+	private Integer value;
 
-	private ContentStatusEnum(int value) {
-		this.value = (byte)value;
+	private ContentStatusEnum(Integer value) {
+		this.value = value;
 	}
 	@Override
-	public byte getDbValue() {
+	public Integer getValue() {
 		 return value;
 	}
 

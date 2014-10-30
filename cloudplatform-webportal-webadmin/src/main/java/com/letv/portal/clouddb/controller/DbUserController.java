@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
 
@@ -30,21 +29,19 @@ import com.letv.portal.service.IDbUserService;
  * Modified Date: <br>
  */
 @Controller
-@RequestMapping("/db/user")
+@RequestMapping("/dbUser")
 public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
 	@Resource
+	private IDbUserProxy dbUserProxy;
+	@Resource
 	private IBuildTaskService buildTaskService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 	
-	@RequestMapping(value="/list",method=RequestMethod.GET)
-	public String toList(HttpServletRequest request,HttpServletResponse response){
-		return "/clouddb/mgr_dbuser_list";
-	}
-	
+
 	/**Methods Name: list <br>
 	 * Description: 根据dbName查询相关dbUser分页数据<br>
 	 * @author name: liuhao1
@@ -54,7 +51,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/list/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
+	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -66,12 +63,62 @@ public class DbUserController {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbUserService.findPagebyParams(params, page));
 		return obj;
-	}
-	@RequestMapping(value="/build/{ids}",method=RequestMethod.GET)  
-	public @ResponseBody ResultObject list(@PathVariable String ids,HttpServletRequest request) {
+	} 
+	/**Methods Name: list <br>
+	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
 		ResultObject obj = new ResultObject();
-		this.buildTaskService.buildUser(ids);
+		obj.setData(this.dbUserService.selectByDbId(dbId));
 		return obj;
 	}
+	/**
+	 * Methods Name: list <br>
+	 * Description: 审批DbUser
+	 * @author name: wujun
+	 * @param ids
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.POST)  
+	public @ResponseBody ResultObject auditDbUser(String dbUserId,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		this.dbUserProxy.buildDbUser(dbUserId);
+		return obj;
+	}
+	
+	/**
+	 * Methods Name: deleteDbUserById <br>
+	 * Description: 删除dbUser用户
+	 * @author name: wujun
+	 * @param dbUserId
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId) {
+		this.dbUserService.deleteDbUser(dbUserId);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改DbUser信息
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(value="/{dbUserId}", method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
+		this.dbUserService.updateDbUser(dbUserModel);		
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	
 	
 }

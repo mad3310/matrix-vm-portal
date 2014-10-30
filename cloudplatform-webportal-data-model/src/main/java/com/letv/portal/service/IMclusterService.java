@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 
 /**Program Name: IMclusterService <br>
@@ -25,47 +24,6 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	
-	
-	/**Methods Name: build <br>
-	 * Description: 创建mcluster<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 * @return
-	 */
-	public String build(MclusterModel mclusterModel);
-	
-	
-	/**Methods Name: initContainer <br>
-	 * Description: 初始化mcluster的container<br>
-	 * @author name: liuhao1
-	 * @param mclusterId
-	 * @return
-	 */
-	public String initContainer(String mclusterId);
-	
-
-	/**Methods Name: insert <br>
-	 * Description: 创建完整mcluster<br>
-	 * @author name: liuhao1
-	 * @param mclusterId
-	 * @param hostIds
-	 * @param dbName
-	 * @param createUser
-	 * @return
-	 */
-	public String insert(String mclusterId,String[] hostIds,String dbName,String createUser);
-
-
-
-	/**Methods Name: buildNotice <br>
-	 * Description: 手动创建 通知<br>
-	 * @author name: liuhao1
-	 * @param clusterId
-	 * @param flag
-	 */
-	public void buildNotice(String clusterId,String flag);
-	
 	/**Methods Name: audit <br>
 	 * Description: 改变status状态<br>
 	 * @author name: liuhao1
@@ -73,14 +31,13 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	void audit(MclusterModel mclusterModel);
 
-
-
 	/**Methods Name: selectByClusterName <br>
 	 * Description: 根据mcluster名称查询数据：用于验证mcluster名是否重复<br>
 	 * @author name: liuhao1
 	 * @param applyCode
 	 * @return
 	 */
-	public List<DbModel> selectByClusterName(String mclusterName);
-	
+	public List<MclusterModel> selectByName(String mclusterName);
+
+
 }

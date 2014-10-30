@@ -1,5 +1,10 @@
 package com.letv.portal.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.letv.common.dao.IBaseDao;
+import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 
 /**Program Name: IHostDao <br>
@@ -10,6 +15,10 @@ import com.letv.portal.model.HostModel;
  * Modified Date: <br>
  */
 public interface IHostDao extends IBaseDao<HostModel> {
-
+  
 	public void updateNodesNumber(HostModel host);
+	public List<HostModel> selectByHclusterId(Long hclusterId);
+	public List<HostModel> selectByNameOrIp(Map<String,String> map);
+	public HostModel selectByIp(String hostIp);
+	public List<HostModel> isExistContainerOnHost(HostModel hostModel);
 }

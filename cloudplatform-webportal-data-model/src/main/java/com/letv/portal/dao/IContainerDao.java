@@ -2,6 +2,7 @@ package com.letv.portal.dao;
 
 import java.util.List;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.ContainerModel;
 
 /**Program Name: IContainerDao <br>
@@ -21,5 +22,9 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectByClusterId(String clusterId);
+	public List<ContainerModel> selectByMclusterId(Long clusterId);
+	public void deleteByMclusterId(Long mclusterId);
+	public void updateHostIpByName(ContainerModel container);
+	public ContainerModel selectByName(String containerName);
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 }

@@ -13,8 +13,6 @@
 	
 	<!-- <import resource="classpath:converter-applicationContext.xml"/> -->
 	<import resource="classpath*:data-applicationContext.xml"/>
-	<!-- <context:annotation-config /> -->
-	<context:component-scan base-package="com.letv" />
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 	    <property name="locations">
 		    <list> 
@@ -23,71 +21,29 @@
 		    </list> 
 	    </property>
     </bean>
-  <!--  <mvc:annotation-driven /> -->
 	
 	 <!-- 异常处理 -->
-    <bean id="exceptionResolver" class="com.letv.common.spring.DefaultMappingExceptionResolver" />
+    <bean id="exceptionResolver"
+		class="com.letv.common.spring.DefaultMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">error/500</prop>
+			</props>
+		</property>
+	</bean>
     
-    <!-- 拦截器配置 -->
-	<mvc:interceptors>
-	  <!-- session超时 -->
-	  <mvc:interceptor>
-	    <mvc:mapping path="/**"/>
-	    <bean class="com.letv.portal.interceptor.SessionTimeoutInterceptor">
-	      <property name="allowUrls">
-	        <list>
-	          <!-- 如果请求中包含以下路径，则不进行拦截 -->
-	          <value>/login</value>
-	          <value>/static</value>
-	        </list>
-	      </property>
-	    </bean>
-	  </mvc:interceptor>
-	</mvc:interceptors>
-	
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>  
-	
-	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-	
-	<bean id="jsonView"
-	    class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" >
-	    <property name="contentType" value="application/json;charset=UTF-8"/>
-	</bean>
-	
-	<!-- Register JSON Converter for RESTful Web Service -->
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-	    <property name="messageConverters">
-		    <list>
-			    <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-			        <property name="supportedMediaTypes">
-			            <list>
-			            <value>text/plain;charset=GBK</value>
-			            </list>
-			        </property>
-		        </bean>
-		        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		        </bean>
-	        </list>
-	    </property>
-	</bean>
-	
-	<mvc:view-controller path="/" view-name="redirect:/account/login"/>
-	
-	
-	
 	<!-- 配置RestTemplate -->
-        <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
-        	<property name="messageConverters">
-        		<list>
-        			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
-					</bean>
-					<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
-					<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
-        		</list>
-        	</property>
-        </bean>
-	
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
+       	<property name="messageConverters">
+       		<list>
+       			<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+				</bean>
+				<bean id="formHttpMessageConverter" class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+       		</list>
+       	</property>
+     </bean>
+	   
+	   <!-- 配置spring quartz -->
+     <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
 </beans>

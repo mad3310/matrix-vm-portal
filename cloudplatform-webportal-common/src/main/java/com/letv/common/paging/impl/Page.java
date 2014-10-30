@@ -26,6 +26,10 @@ public class Page implements IPage {
     public Page(){
     	
     }
+    public Page(int currentPage,int recordsPerPage) {
+    	this.currentPage = currentPage;
+    	this.recordsPerPage = recordsPerPage;
+    }
 
 	public int getStartRowPosition() {
     	if(recordsPerPage >= 0)

@@ -3,6 +3,7 @@ package com.letv.common.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,14 +16,18 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +43,7 @@ import com.mysql.jdbc.StringUtils;
  */
 @SuppressWarnings("deprecation")
 public class HttpClient {
-	private static Logger logger = LoggerFactory.getLogger(HttpClient.class);
+	private final static Logger logger = LoggerFactory.getLogger(HttpClient.class);
 	
 	public static String post(String url, Map<String, String> params) {
 		return post(url, params, null, null);
@@ -59,9 +64,33 @@ public class HttpClient {
 		return body;
 	}
 	
+	
+	public static String postObject(String url, Object obj) {
+		return postObject(url, obj, null, null);
+	}
+	
+	
+	public static String postObject(String url, Object obj, String username,
+			String password) {
+		DefaultHttpClient httpclient = getHttpclient(username, password);
+		String body = null;
+		logger.info("create httppost:" + url);
+		HttpPost httppost = new HttpPost(url);
+		try {
+			httppost.setHeader("Content-Type","application/json");
+			httppost.setEntity(new StringEntity(obj.toString()));
+			body = invoke(httpclient, httppost); 
+			httpclient.getConnectionManager().shutdown();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return body;
+	}
+	
 	public static String get(String url) {
 		return get(url, null, null);
 	}
+
 	
 	public static String get(String url,String username,String password) {
 		DefaultHttpClient httpclient = getHttpclient(username,password);
@@ -121,15 +150,26 @@ public class HttpClient {
 		}
 		return response;
 	}
-
+	
+	public static String detele(String url,String username,String password) {
+		DefaultHttpClient httpclient = getHttpclient(username,password);
+		String body = null;				
+		logger.info("create httpdelete:" + url);
+		HttpDelete delete = new HttpDelete(url);
+		body = invoke(httpclient, delete);		
+		httpclient.getConnectionManager().shutdown();		
+		return body;
+	}
+	
+	
 	private static HttpPost postForm(String url, Map<String, String> params){
-		
 		HttpPost httpost = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList <NameValuePair>();
 		
 		Set<String> keySet = params.keySet();
 		for(String key : keySet) {
 			nvps.add(new BasicNameValuePair(key, params.get(key)));
+			logger.info("param-->" + key + ":" + params.get(key));
 		}
 		
 		try {
@@ -150,6 +190,46 @@ public class HttpClient {
 			credsProvider.setCredentials(AuthScope.ANY, usernamePassword);
 			httpclient.setCredentialsProvider(credsProvider);
 		}
+		/*
+		 * 设置超时时间
+		 */
+//		HttpParams params = httpclient.getParams();  
+//      HttpConnectionParams.setConnectionTimeout(params, 10000);  
+//      HttpConnectionParams.setSoTimeout(params, 600000);
+        
+		/*
+		 * 设置重试策略
+		 */
+		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
+			public boolean retryRequest(IOException exception,
+					int executionCount, HttpContext context) {
+				/*
+				 * 不进行重试
+				 */
+				/*if (executionCount >= 5) {
+					// 如果超过最大重试次数，那么就不要继续了
+					return false;
+				}
+				if (exception instanceof NoHttpResponseException) {
+					// 如果服务器丢掉了连接，那么就重试
+					return true;
+				}
+				if (exception instanceof SSLHandshakeException) {
+					// 不要重试SSL握手异常
+					return false;
+				}
+				HttpRequest request = (HttpRequest) context
+						.getAttribute(ExecutionContext.HTTP_REQUEST);
+				boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
+				if (idempotent) {
+					// 如果请求被认为是幂等的，那么就重试
+					return true;
+				}*/
+				return false;
+			}
+		};
+		httpclient.setHttpRequestRetryHandler(myRetryHandler);
+
 	    return httpclient;
 	}
 }

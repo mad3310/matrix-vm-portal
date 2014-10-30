@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbApplyStandardModel;
-import com.letv.portal.model.DbModel;
 
 
 
@@ -28,13 +26,13 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public Page findPagebyParams(Map<String,Object> params,Page page);
 	
-	/**Methods Name: selectByClusterId <br>
+	/**Methods Name: selectByMclusterId <br>
 	 * Description: 根据clusterId查出节点<br>
 	 * @author name: liuhao1
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectByClusterId(String clusterId);
+	public List<ContainerModel> selectByMclusterId(Long mclusterId);
 	
 	/**Methods Name: selectByClusterId <br>
 	 * Description: 根据clusterId查出节点<br>
@@ -42,7 +40,25 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @param clusterId
 	 * @return
 	 */
-	public List<ContainerModel> selectNormalByClusterId(String clusterId);
+	public List<ContainerModel> selectNormalByClusterId(Long mclusterId);
+
+	public void deleteByMclusterId(Long mclusterId);
+
+	/**Methods Name: updateHostIpByName <br>
+	 * Description: 根据名称修改宿主机ip<br>
+	 * @author name: liuhao1
+	 * @param container
+	 */
+	public void updateHostIpByName(ContainerModel container);
+
+	/**Methods Name: selectByName <br>
+	 * Description: 根据container名称查询container信息<br>
+	 * @author name: liuhao1
+	 * @param containerName
+	 * @return
+	 */
+	public ContainerModel selectByName(String containerName);
 	
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 	
 }

@@ -1,24 +1,47 @@
 package com.letv.common.session;
 
-public class Session {
+import java.io.Serializable;
+
+public class Session implements Serializable{
 	
-	private long beginTime;
+		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8540774365214309089L;
 	
-	private long seqNum;
+	public static final String USER_SESSION_REQUEST_ATTRIBUTE = "userSession";
 
-	public long getSeqNum() {
-		return seqNum;
+	private Long userId;
+	
+	private String userName;
+	
+	private boolean passwordExpired = false;
+	
+	public Long getUserId() {
+		return userId;
+	}
+	
+	public void setUserInfoId(Long userId)
+	{
+		this.userId = userId;
 	}
 
-	public void setSeqNum(long seqNum) {
-		this.seqNum = seqNum;
+	public boolean isPasswordExpired() {
+		return passwordExpired;
+	}
+	
+	public void setPasswordExpired(boolean passwordExpired)
+	{
+		this.passwordExpired = passwordExpired;
 	}
 
-	public long getBeginTime() {
-		return beginTime;
+	public String getUserName() {
+		return this.userName;
 	}
-
-	public void setBeginTime(long beginTime) {
-		this.beginTime = beginTime;
+	
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
 	}
 }

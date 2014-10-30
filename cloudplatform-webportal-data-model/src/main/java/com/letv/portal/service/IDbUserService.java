@@ -22,7 +22,7 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbId
 	 * @return
 	 */
-	public List<DbUserModel> selectByDbId(String dbId);
+	public List<DbUserModel> selectByDbId(Long dbId);
 	
 	/**Methods Name: findPagebyParams <br>
 	 * Description: dbUser列表<br>
@@ -39,14 +39,7 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param id
 	 * @return
 	 */
-	public Map<String,String> selectCreateParams(String id);
-	
-	/**Methods Name: updateStatus <br>
-	 * Description: 更新用户状态<br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 */
-	public void updateStatus(DbUserModel dbUserModel);
+	public Map<String,Object> selectCreateParams(Long id);
 
 	/**Methods Name: updateStatus <br>
 	 * Description: 根据数据库用户名和ip查询数据：用于验证数据库用户名和ip是否重复<br>
@@ -54,5 +47,46 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserModel
 	 */
 	public List<DbUserModel> selectByIpAndUsername(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: insertAndAcceptIp <br>
+	 * Description: 插入dbUser对应Ip
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel);
+    /**
+     * Methods Name: updateStatus <br>
+     * Description: 更新状态
+     * @author name: wujun
+     * @param dbUserModel
+     */
+	public void updateStatus(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: updateDbUser <br>
+	 * Description: 修改dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 */
+	public void updateDbUser(DbUserModel dbUserModel);
+	/**
+	 * Methods Name: deleteDbUser <br>
+	 * Description: 删除dbUser信息<br>
+	 * @author name: wujun
+	 * @param dbUserModel
+	 * @param dbUserId 
+	 */
+	 public void deleteDbUser(String dbUserId);
 
+	/**Methods Name: deleteByDbId <br>
+	 * Description: 根据db删除用户<br>
+	 * @author name: liuhao1
+	 */
+	public void deleteByDbId(Long dbId);
+	/**
+	 * Methods Name: buildDbUser <br>
+	 * Description: 审批DbUser<br>
+	 * @author name: wujun
+	 * @param dbUserId
+	 */
+	public void buildDbUser(String dbUserId);
 }

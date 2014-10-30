@@ -2,23 +2,18 @@ package com.letv.portal.service.impl;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.dao.IBaseDao;
 import com.letv.portal.dao.IContainerDao;
-import com.letv.portal.dao.IDbApplyStandardDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbApplyStandardModel;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IContainerService;
-import com.mysql.jdbc.StringUtils;
 
 @Service("containerService")
 public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implements
@@ -56,13 +51,31 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 
 	@Override
-	public List<ContainerModel> selectByClusterId(String clusterId) {
-		return this.containerDao.selectByClusterId(clusterId);
+	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
+		return this.containerDao.selectByMclusterId(mclusterId);
 	}
 
 	@Override
-	public List<ContainerModel> selectNormalByClusterId(String clusterId) {
+	public List<ContainerModel> selectNormalByClusterId(Long mclusterId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void deleteByMclusterId(Long mclusterId) {
+		this.containerDao.deleteByMclusterId(mclusterId);
+		
+	}
+
+	@Override
+	public void updateHostIpByName(ContainerModel container) {
+		this.containerDao.updateHostIpByName(container);
+	}
+	@Override
+	public ContainerModel selectByName(String containerName) {
+		return this.containerDao.selectByName(containerName);
+	}
+	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
+		return this.containerDao.selectContainerByMclusterId(clusterId);
 	}
 }

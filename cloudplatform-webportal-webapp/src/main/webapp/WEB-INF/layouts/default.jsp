@@ -20,6 +20,7 @@
 <!-- bootstrap & fontawesome -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
 
 <!-- page specific plugin styles -->
 
@@ -45,6 +46,14 @@
 <script src="${ctx}/static/ace/js/jquery.min.js"></script>
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/ace/js/jquery-ui.min.js"></script>
+
+<!-- warning box -->
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
+<script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+
+<!-- 常用函数 -->
+<script src="${ctx}/static/scripts/general-function.js"></script>
 
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
@@ -229,9 +238,9 @@
 <!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
 		var path = window.location.pathname;
-		if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/detail") >= 0){
+		if(path.indexOf("/list/db") >= 0 ||path.indexOf("/detail/db") >= 0){
 			$('#sidebar-list ul li:first').addClass("active");
-			$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
+			$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
 			$('#main-content-header li:eq(1)').html("数据库列表");
 		}
 	</script>

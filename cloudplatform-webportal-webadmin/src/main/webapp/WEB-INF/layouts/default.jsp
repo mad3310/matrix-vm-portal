@@ -20,6 +20,7 @@
 <!-- bootstrap & fontawesome -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
 
 <!-- page specific plugin styles -->
 
@@ -45,10 +46,14 @@
 <script src="${ctx}/static/ace/js/jquery.min.js"></script>
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/ace/js/jquery-ui.min.js"></script>
 
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+
+<!-- 常用函数 -->
+<script src="${ctx}/static/scripts/general-function.js"></script>
 
 <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
 
@@ -231,21 +236,26 @@
 	<!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
 	var path = window.location.pathname;
-	if(path.indexOf("/mcluster/list") >= 0||path.indexOf("/mcluster/detail") >= 0){
-		$('#sidebar-mcluster-mgr').addClass("active open hsub");
-		$('#sidebar-mcluster-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/mcluster/list").html("集群管理");
-		$('#main-content-header li:eq(1)').html("集群列表");
-	}else if(path.indexOf("/db/list") >= 0 ||path.indexOf("/db/audit") >= 0||path.indexOf("/db/detail") >= 0){
-		$('#sidebar-db-mgr').addClass("active open hsub");
-		$('#sidebar-db-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db/list").html("数据库管理");
-		$('#main-content-header li:eq(1)').html("数据库列表");
-	}else if(path.indexOf("/db/user/list") >= 0){
+	if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
+		$('#sidebar-cluster-mgr').addClass("active open hsub");
+		$('#sidebar-cluster-mgr ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster").html("container集群管理");
+		$('#main-content-header li:eq(1)').html("Container集群列表");
+	}else if(path.indexOf("/list/hcluster") >= 0||path.indexOf("/detail/hcluster") >= 0){
+		$('#sidebar-cluster-mgr').addClass("active open hsub");
+		$('#sidebar-cluster-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/hcluster").html("物理机集群管理");
+		$('#main-content-header li:eq(1)').html("物理机集群列表");
+	}else if(path.indexOf("/list/dbUser") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/db/user/list").html("数据库用户管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/dbUser").html("数据库用户管理");
 		$('#main-content-header li:eq(1)').html("数据库用户列表");
+	}else if(path.indexOf("/list/db") >= 0 ||path.indexOf("/audit/db") >= 0||path.indexOf("/detail/db") >= 0){
+		$('#sidebar-db-mgr').addClass("active open hsub");
+		$('#sidebar-db-mgr ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
+		$('#main-content-header li:eq(1)').html("数据库列表");
 	}
 </script>
 <!-- ace scripts -->
