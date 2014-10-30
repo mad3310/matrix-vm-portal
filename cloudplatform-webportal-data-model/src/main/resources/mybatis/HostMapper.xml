@@ -146,7 +146,7 @@
 	<select id="selectByHclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_host m where m.HCLUSTER_ID = #{hclusterId}
+		from WEBPORTAL_HOST m where m.HCLUSTER_ID = #{hclusterId}
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -209,7 +209,7 @@
 		parameterType="Host">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m ,webportal_host n
+		from webportal_hcluster m ,WEBPORTAL_HOST n
 		where m.HOST_IP=n.HOST_IP
 	    and m.ID =#{id}	
 	</select>
