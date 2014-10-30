@@ -184,7 +184,7 @@
 	        select
 			<include refid="Base_Column_List" /> 
 			,x.username
-			from webportal_db m ,webportal_user x
+			from WEBPORTAL_DB m ,WEBPORTAL_USER x
 			where  m.CREATE_USER=x.id and m.ID = #{id};
 	</select>
 	
