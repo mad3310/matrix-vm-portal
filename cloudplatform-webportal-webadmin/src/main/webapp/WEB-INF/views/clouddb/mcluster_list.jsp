@@ -34,13 +34,13 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width="16%">Container集群名称</th>
+								<th width="13%">Container集群名称</th>
 								<th width="16%">所属物理机集群</th>
-								<th width="16%">类型</th>
-								<th width="16%">所属用户</th>
-								<th width="16%">创建时间 </th>
-								<th width="16%" class="hidden-480">当前状态</th>
-								<th width="16%">操作</th>
+								<th width="13%">类型</th>
+								<th width="13%">所属用户</th>
+								<th width="13%">创建时间 </th>
+								<th width="13%" class="hidden-480">当前状态</th>
+								<th width="13%">操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
