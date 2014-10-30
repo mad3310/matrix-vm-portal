@@ -99,7 +99,7 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Hcluster">
 		insert into
-		webportal_hcluster
+		WEBPORTAL_HCLUSTER
 		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN,HCLUSTER_NAME_ALIAS)
 		values
 		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn},#{hclusterNameAlias})
@@ -107,7 +107,7 @@
 	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Hcluster">
-		delete from webportal_hcluster  where ID = #{id}
+		delete from WEBPORTAL_HCLUSTER  where ID = #{id}
 	</update>
 
 	<!-- 根据条件查询 -->
@@ -115,7 +115,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m
+		from WEBPORTAL_HCLUSTER m
 		where 1=1
 		<if test="hclusterName != null  and hclusterName != '' ">
 				and m.HCLUSTER_NAME =#{hclusterName}
@@ -128,7 +128,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m
+		from WEBPORTAL_HCLUSTER m
 		where 1=1
 		<if test="hclusterName != null  and hclusterName != '' ">
 			and m.HCLUSTER_NAME =#{hclusterName}
@@ -160,14 +160,14 @@
 		n.CREATE_USER createUser,
 		n.UPDATE_TIME updateTime,
 		n.UPDATE_USER updateUser	
-		from webportal_hcluster m , webportal_host n where m.ID=n.hcluster_id and m.ID = #{hclusterId}
+		from WEBPORTAL_HCLUSTER m , webportal_host n where m.ID=n.hcluster_id and m.ID = #{hclusterId}
 	</select>
 		<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m
+		from WEBPORTAL_HCLUSTER m
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">
@@ -179,13 +179,13 @@
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1) from webportal_hcluster m
+		select count(1) from WEBPORTAL_HCLUSTER m
 		<include refid="Example_Where_Clause" />
 	</select>
 	
    <!-- 修改 -->
 	<update id="update" parameterType="Hcluster">
-		update webportal_hcluster m set
+		update WEBPORTAL_HCLUSTER m set
 		<if test="hclusterName != null  ">
 			m.hclusterName=#{hclusterName}
 		</if>
@@ -197,7 +197,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m ,webportal_host n
+		from WEBPORTAL_HCLUSTER m ,webportal_host n
 		where m.ID=n.HCLUSTER_ID
 	    and m.ID =#{id}	
 	</select>
@@ -208,7 +208,7 @@
 		parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m 
+		from WEBPORTAL_HCLUSTER m 
 	    where m.ID =#{id}	
 	</select>
 	<!--通过状态过滤所有有的物理机集群 -->
@@ -216,12 +216,12 @@
 		parameterType="Hcluster">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_hcluster m 
+		from WEBPORTAL_HCLUSTER m 
 		<include refid="Example_Where_Clause" />		
 	</select>
 	<!--禁用某些物理机集群 -->
 	<update id="updateStatus" parameterType="hcluster">
-	 update webportal_hcluster m set
+	 update WEBPORTAL_HCLUSTER m set
 	 	<if test="status != null  ">
 			m.STATUS=#{status}
 		</if>
