@@ -520,6 +520,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			mclusterModel.setId(mclusterId);
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
+			if(dbId!=null) {
+				DbModel dbModel = new DbModel();
+				dbModel.setId(dbId);
+				dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
+				this.dbService.updateBySelective(dbModel);
+			}
 		}
 		this.buildService.updateByStep(buildModel);
 		if(flag) {
@@ -559,6 +565,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			mclusterModel.setId(mclusterId);
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
+			if(dbId!=null) {
+				DbModel dbModel = new DbModel();
+				dbModel.setId(dbId);
+				dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
+				this.dbService.updateBySelective(dbModel);
+			}
 		}
 		this.buildService.updateByStep(buildModel);
 		if(flag) {

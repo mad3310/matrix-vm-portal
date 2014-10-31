@@ -166,10 +166,10 @@ public class HostController {
    * @return
    */
 	@RequestMapping(value="/isExistContainerOnHost/validate",method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> validateExistContainer(String hostId,HttpServletRequest request) {
+	public @ResponseBody Map<String,Object> validateExistContainer(Long id,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		HostModel hostModel = new HostModel();
-		hostModel.setId(Long.parseLong(hostId));
+		hostModel.setId(id);
 		List<HostModel> list = this.hostService.isExistContainerOnHost(hostModel);
 		map.put("valid", list.size()>0?false:true);
 		return map;

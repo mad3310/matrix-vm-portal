@@ -209,9 +209,9 @@
 		parameterType="Host">
 		select
 		<include refid="Base_Column_List" />
-		from webportal_container m ,webportal_host n
-		where m.HOST_ID=n.ID
-	    and n.ID =#{id}	
+		from WEBPORTAL_CONTAINER n ,WEBPORTAL_HOST m
+		where n.HOST_ID=m.ID
+	    and m.ID =#{id}	
 	</select>
 	
 </mapper>   

@@ -241,11 +241,11 @@ function queryHost(){
 
 function deleteHost(obj){
 	var tr = $(obj).parents("tr");
-	var hclusterId =tr.find('[name="hcluster_id"]').val();
+	var id =tr.find('[name="host_id"]').val();
 	$.ajax({
-		url:'${ctx}/hcluster/isExistHostOnHcluster/validate',
+		url:'${ctx}/host/isExistContainerOnHost/validate',
 		type:'post',
-		data:{ 'hclusterId' : hclusterId },
+		data:{ 'id' : id },
 		success:function(data){
 			if(data.valid){ //data.valid为true时可删除
 				function deleteCmd(){
