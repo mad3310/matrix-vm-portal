@@ -310,6 +310,11 @@ var currentSelectedLineDbName = 1;
 	function formValidate() {
 		$("#db_apply_form").bootstrapValidator({
 		  message: 'This value is not valid',
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
           fields: {
               dbName: {
                   validMessage: '请按提示输入',

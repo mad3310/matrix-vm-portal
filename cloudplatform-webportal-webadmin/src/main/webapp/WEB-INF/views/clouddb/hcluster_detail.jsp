@@ -61,7 +61,7 @@
 											<input class="form-control" name="hostNameAlias" id="hostNameAlias" type="text" />
 										</div>
 										<label class="control-label" for="hostNameAlias">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此别名应能概括物理机信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此名称应能概括物理机信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
