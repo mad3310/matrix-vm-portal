@@ -740,9 +740,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			container.setStatus(status);
 			this.containerService.updateBySelective(container);
-			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
+			//container单节点丢失，数据库不删除。等待整个集群一块删除
+			/*if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.containerService.delete(container);
-			}
+			}*/
 		}
 	}
 	
@@ -811,7 +812,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterCount() {
-		List<HclusterModel> hclusters = this.hclusterService.selectByMap(null);
+		Map map = new HashMap();
+		map.put("type", "0");
+		List<HclusterModel> hclusters = this.hclusterService.selectByMap(map);
 		for (HclusterModel hcluster : hclusters) {
 			List<HostModel> hosts = this.hostService.selectByHclusterId(hcluster.getId());
 			if(hosts.size()>0) {
