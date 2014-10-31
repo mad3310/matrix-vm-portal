@@ -27,7 +27,7 @@ import com.letv.portal.zabbixPush.IZabbixPushService;
 @Service("zabbixPushService")
 public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
-	private final static String ZABBIX_POST_URL= ConfigUtil.getString("zabbix.post.url ");
+	private final static String ZABBIX_POST_URL= ConfigUtil.getString("zabbix.post.url");
 	private final static String ZABBIX_NAME= ConfigUtil.getString("zabbix.name");
 	private final static String ZABBIX_PWD= ConfigUtil.getString("zabbix.pwd");
 	
