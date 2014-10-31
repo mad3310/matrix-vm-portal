@@ -812,9 +812,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void checkMclusterCount() {
-		Map map = new HashMap();
-		map.put("type", "0");
-		List<HclusterModel> hclusters = this.hclusterService.selectByMap(map);
+		Map params = new HashMap();
+		params.put("type", "0");
+		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
 		for (HclusterModel hcluster : hclusters) {
 			List<HostModel> hosts = this.hostService.selectByHclusterId(hcluster.getId());
 			if(hosts.size()>0) {
