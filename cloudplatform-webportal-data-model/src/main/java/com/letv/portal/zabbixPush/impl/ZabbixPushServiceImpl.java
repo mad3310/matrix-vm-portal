@@ -27,7 +27,9 @@ import com.letv.portal.zabbixPush.IZabbixPushService;
 @Service("zabbixPushService")
 public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
-	private final static String ZABBIX_POST="http://10.200.90.51/zabbix_test/api_jsonrpc.php";
+	private final static String ZABBIX_POST_URL= ConfigUtil.getString("zabbix.post.url ");
+	private final static String ZABBIX_NAME= ConfigUtil.getString("zabbix.name");
+	private final static String ZABBIX_PWD= ConfigUtil.getString("zabbix.pwd");
 	
 	@Autowired
 	private IContainerService containerService;
@@ -201,11 +203,9 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * @return
 	 */
 	public String loginZabbix(){
-		String name = "cloude_api";
-		String password = "zabbix";
 		String loginResult = null;
-		String url=ZABBIX_POST;	
-		String jsonString ="{\"jsonrpc\":\"2.0\",\"method\":\"user.login\",\"params\":{\"user\":\""+name+"\",\"password\":\""+password+"\"},\"id\":1}"; 
+		String url=ZABBIX_POST_URL;	
+		String jsonString ="{\"jsonrpc\":\"2.0\",\"method\":\"user.login\",\"params\":{\"user\":\""+ZABBIX_NAME+"\",\"password\":\""+ZABBIX_PWD+"\"},\"id\":1}"; 
 		String result = HttpClient.postObject(url, jsonString,null,null);
 		try {
 			loginResult = analysisResult(transResult(result));
@@ -221,7 +221,7 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	 * @throws Exception 
 	 */ 
 	public String sendZabbixInfo(Object object) throws Exception{
-		String url=ZABBIX_POST;			
+		String url=ZABBIX_POST_URL;			
 		String fixedPushString =  JSON.toJSON(object).toString();
 		String result = HttpClient.postObject(url, fixedPushString,null,null);		
 		return result;
