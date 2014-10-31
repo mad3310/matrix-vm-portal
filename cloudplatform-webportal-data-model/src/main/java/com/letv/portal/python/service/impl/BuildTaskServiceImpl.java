@@ -212,6 +212,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
+	@Async
 	public void buildDb(Long dbId) {
 		Integer status = null;
 		String resultMsg = "";
