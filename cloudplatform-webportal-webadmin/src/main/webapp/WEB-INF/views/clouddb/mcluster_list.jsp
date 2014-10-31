@@ -186,7 +186,7 @@ $(function(){
 	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
 		mclusterId = $(this).closest('tr').find('td:first input').val();
 		
-		if($(this).html().indexOf("正常")>=0){
+		if($(this).html().indexOf("运行中")>=0){
 			$('#buildStatusHeader').html("创建成功");
 			status = "1";
 		}else if($(this).html().indexOf("创建中")>=0){
@@ -268,7 +268,7 @@ function queryByPage(currentPage,recordsPerPage) {
 							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"/>"
 							+"创建中...</a>"
 							+ "</td>");
-				}else if(array[i].status == 1||array[i].status == 3||array[i].status == 6){
+				}else if(array[i].status == 3){
 					var td7 = $("<td>"
 							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
 							+translateStatus(array[i].status)

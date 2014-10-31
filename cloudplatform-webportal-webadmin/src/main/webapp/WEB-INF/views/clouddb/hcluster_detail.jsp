@@ -50,7 +50,7 @@
 					<form id="add_host_form" name="add_host_form" class="form-horizontal" role="form">
 					<div class="col-xs-12">
 						<h4 class="lighter">
-							<a href="#modal-wizard-create-db-user" data-toggle="modal" class="blue"> 创建数据库用户 </a>
+							<a href="#modal-wizard-create-db-user" data-toggle="modal" class="blue"> 添加物理机 </a>
 						</h4>
 						<div class="widget-box">
 							<div class="widget-body">
@@ -87,7 +87,7 @@
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">
-											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="主机是收集所有从机信息的物理机." style="cursor:pointer; text-decoration:none;">
+											<a id="maxConcurrencyHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="主机是收集所有从机信息的物理机,第一个添加物理机必须为主机" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
@@ -130,6 +130,7 @@
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script type="text/javascript">
+var numberOfHost = 0;
 $(function(){
 	//隐藏搜索框
 	$('#nav-search').addClass("hidden");
@@ -231,9 +232,10 @@ function queryHost(){
 						+"</div>"
 						+ "</td>"
 				);
-				var tr = $("<tr></tr>");;				
+				var tr = $("<tr></tr>");				
 				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
+				numberOfHost++;
 			}
 		}
 	});
