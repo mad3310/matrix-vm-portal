@@ -446,7 +446,7 @@ function queryDbUser(){
 							+ array[i].username
 							+ "</td>");
 				var td3;
-				if(array[i].type == 3){
+				if(array[i].type == 1){
 					var td3 = $("<td name=\"db_user_type\">"
 							    + "管理员"
 							    + "</td>");

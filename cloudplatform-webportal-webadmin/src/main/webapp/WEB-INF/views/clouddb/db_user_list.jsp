@@ -164,7 +164,7 @@ function buildUser() {
 					var td3 = $("<td>"
 							+ "<a href=\"${ctx}/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 							+ "</td>");
-					if(array[i].type == "wr")
+					if(array[i].type == "3")
 					{
 						var td4 = $("<td>读写</td>");
 					}else{
