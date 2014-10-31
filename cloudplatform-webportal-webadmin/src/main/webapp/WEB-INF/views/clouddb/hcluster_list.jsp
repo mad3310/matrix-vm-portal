@@ -80,7 +80,7 @@
 											<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
 										</div>
 										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群别名应能概括此集群的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群名称应能概括此集群的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>
