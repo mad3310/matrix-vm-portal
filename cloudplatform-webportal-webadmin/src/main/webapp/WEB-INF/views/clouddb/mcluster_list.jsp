@@ -253,7 +253,7 @@ function queryByPage(currentPage,recordsPerPage) {
 						+ "</td>");
 				
 				var userName='system';
-				if(array[i].createUser) {
+				if(array[i].createUserModel) {
 					userName = array[i].createUserModel.userName;
 				}
 				var td5 = $("<td>"
