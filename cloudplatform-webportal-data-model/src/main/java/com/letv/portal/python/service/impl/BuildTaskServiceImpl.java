@@ -248,7 +248,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
     
 
 	@Override
-	@Async
 	public void buildUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -281,7 +280,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 	}
 	@Override
-	@Async
 	public void updateUser(String ids) {
 		String[] str = ids.split(",");
 		String resultMsg = "";
@@ -318,7 +316,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	 * @param dbUserId
 	 */
 	@Override
-	@Async
 	public void deleteDbUser(String ids){
 		String[] str = ids.split(",");	
 		String resultMsg = "";
@@ -796,7 +793,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		dbUserModel.setPassword("admin");
 		dbUserModel.setAcceptIp("%");
      	dbUserModel.setType(DbUserRoleStatus.MANAGER.getValue());
-		dbUserModel.setMaxConcurrency(1000);
+		dbUserModel.setMaxConcurrency(50);
+		dbUserModel.setReadWriterRate("2:1");
 		dbUserModel.setCreateUser(this.dbService.selectById(dbId).getCreateUser());
 		dbUserService.insert(dbUserModel);
 		Long id = dbUserModel.getId();
