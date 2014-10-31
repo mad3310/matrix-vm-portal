@@ -204,7 +204,7 @@ function formValidate() {
 	  message: '无效的输入',
          fields: {
         	 mclusterId: {
-                 validMessage: '请按提示输入',
+                 validMessage: '请按提示选择',
                  validators: {
                      notEmpty: {
                          message: '选择Container集群不能为空!'

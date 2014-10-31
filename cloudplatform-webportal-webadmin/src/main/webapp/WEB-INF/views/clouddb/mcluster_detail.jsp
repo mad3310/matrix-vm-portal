@@ -18,7 +18,7 @@
 			      <tr style="background-image:none;background-color:#307ECC;color:#FFFFFF;">
 			         <th>container名称</th>
 			         <th>类型</th>
-			         <th>宿主机</th>
+			         <th>宿主机ip</th>
 			         <th>ip</th>
 			         <th>挂载路径</th>
 			         <th>zookeepId</th>
@@ -65,17 +65,29 @@ function queryContainer(){
 						+ array[i].type
 						+ "</td>");
 				var	td3 = $("<td>"
-						+ array[i].hostId
+						+ array[i].hostIp
 						+ "</td>");
 				var	td4 = $("<td>"
 						+ array[i].ipAddr
 						+ "</td>");
-				var	td5 = $("<td>"
-						+ array[i].mountDir
-						+ "</td>");
-				var	td6 = $("<td>"
-						+ array[i].zookeeperId
-						+ "</td>");
+				if(array[i].mountDir != null){
+					var	td5 = $("<td>"
+							+ array[i].mountDir
+							+ "</td>");
+				}else{
+					var	td5 = $("<td>"
+							+ '-'
+							+ "</td>");
+				}
+				if(array[i].zookeeperId != null){
+					var	td6 = $("<td>"
+							+ array[i].zookeeperId
+							+ "</td>");
+				}else{
+					var	td6 = $("<td>"
+							+ '-'
+							+ "</td>");
+				}
 				var	td7 = $("<td>"
 						+ translateStatus(array[i].status)
 						+ "</td>");

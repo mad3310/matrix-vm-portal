@@ -310,11 +310,6 @@ var currentSelectedLineDbName = 1;
 	function formValidate() {
 		$("#db_apply_form").bootstrapValidator({
 		  message: 'This value is not valid',
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
           fields: {
               dbName: {
                   validMessage: '请按提示输入',
@@ -333,6 +328,14 @@ var currentSelectedLineDbName = 1;
                         message: '数据库名已存在!',
                         url: '${ctx}/db/validate',
                     }
+                  }
+              },
+              hclusterId:{
+            	  validMessage: '请按提示输入',
+                  validators: {
+                      notEmpty: {
+                          message: '物理机集群不能为空!'
+                      }
                   }
               }
           }
