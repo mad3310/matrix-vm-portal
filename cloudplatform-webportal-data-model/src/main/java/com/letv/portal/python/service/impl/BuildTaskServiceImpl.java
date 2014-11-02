@@ -1,4 +1,5 @@
 package com.letv.portal.python.service.impl;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
@@ -119,7 +119,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			nextBuild.setMclusterId(mclusterModel.getId());
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus(BuildStatus.FAIL.getValue());
-			nextBuild.setMsg(e.getMessage());
+			if(e instanceof IOException) {
+				nextBuild.setMsg("connect to python api error");
+			} else {
+				nextBuild.setMsg(e.getMessage());
+			}
 			this.buildService.updateByStatus(nextBuild);
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			this.mclusterService.audit(mclusterModel);
@@ -152,6 +156,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			step++;
 			Map<String,Object> result =  transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
 			Date checkStartDate = new Date();
+			
 			while(!analysisCheckCreateResult(result)) {
 				try {
 					Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
@@ -160,13 +165,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}
 				Date checkDate = new Date();
 				long  diff = checkDate.getTime() - checkStartDate.getTime();
-				if(diff >PYTHON_CREATE_CHECK_TIME) {
+				Map meta = (Map) result.get("meta");
+				if(diff >PYTHON_CREATE_CHECK_TIME || !Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
 					BuildModel nextBuild = new BuildModel();
 					nextBuild.setMclusterId(mclusterModel.getId());
 					nextBuild.setStep(step);
 					nextBuild.setStartTime(new Date());
 					nextBuild.setStatus(BuildStatus.FAIL.getValue());
-					nextBuild.setMsg("time over check");
+					String errorDetail = (String) meta.get("errorDetail");
+					if(StringUtils.isNullOrEmpty(errorDetail)) {
+						nextBuild.setMsg("time over check");
+					} else {
+						nextBuild.setMsg(errorDetail);
+					}
 					this.buildService.updateByStep(nextBuild);
 					
 					if(dbId!=null) {
