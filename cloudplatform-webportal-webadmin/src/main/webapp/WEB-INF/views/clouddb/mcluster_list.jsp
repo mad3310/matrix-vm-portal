@@ -565,6 +565,10 @@ function stopMcluster(obj){
 	confirmframe("关闭container集群","关闭container集群将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
 }
 function deleteMcluster(obj){
+	
+	warn("危险操作，本版本不启用...",3000);
+	return;
+	
 	var tr = $(obj).parents("tr").html();
 	if (tr.indexOf("删除中") >= 0){
 		warn("正在删除集群,请耐心等待...",3000);
