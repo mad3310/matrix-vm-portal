@@ -521,7 +521,7 @@ function queryDbInfo(){
 							+"</td>");
 					}else{
 						td2 =$("<td>"
-								+ "<b><font color=\"red\">"
+								+ "<b><font color=\"red\" style=\"text-decoration:line-through\">"
 								+ dbInfo.containers[i].ipAddr
 								+ "</font></b>"
 								+"</td>");
