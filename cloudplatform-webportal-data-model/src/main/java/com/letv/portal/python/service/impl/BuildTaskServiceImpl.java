@@ -189,7 +189,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
 					this.mclusterService.audit(mclusterModel);
 					
-					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() +"创建", "失败", "check create containers time out", ERROR_MAIL_ADDRESS);
+					this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() +"创建", "失败", StringUtils.isNullOrEmpty(errorDetail)?"check create containers time out":errorDetail, ERROR_MAIL_ADDRESS);
 					return false;
 				}
 				result = transResult(pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword()));
