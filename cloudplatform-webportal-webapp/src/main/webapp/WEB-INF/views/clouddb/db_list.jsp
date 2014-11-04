@@ -334,14 +334,6 @@ var currentSelectedLineDbName = 1;
                         url: '${ctx}/db/validate',
                     }
                   }
-              },
-              hclusterId:{
-            	  validMessage: '请按提示输入',
-                  validators: {
-                      notEmpty: {
-                          message: '物理机集群不能为空!'
-                      }
-                  }
               }
           }
       }).on('error.field.bv', function(e, data) {
@@ -373,6 +365,7 @@ var currentSelectedLineDbName = 1;
 	}
 	
 	function queryHcluster(){
+		$('#hcluster_select option').remove();
 		var options = $('#hcluster_select');
 		$.ajax({
 			url:'${ctx}/hcluster',
