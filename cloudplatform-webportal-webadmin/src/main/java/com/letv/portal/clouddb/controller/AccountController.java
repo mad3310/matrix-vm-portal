@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.PasswordEncoder;
 import com.letv.portal.model.UserLogin;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
+import com.letv.portal.service.IUserService;
 import com.mysql.jdbc.StringUtils;
 
 
@@ -21,7 +24,8 @@ public class AccountController {
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	
+	@Autowired
+	private IUserService userService;
 	
 	@Autowired
 	private ILoginProxy loginProxy;
@@ -36,6 +40,24 @@ public class AccountController {
 		if(StringUtils.isNullOrEmpty(loginName)) {
 			return "/account/login";
 		} else {
+			
+			/*UserModel user = this.userService.getUserByName(loginName);
+			
+			if(null == user) {
+				request.setAttribute("error", "用户名或密码错误！");
+				return "/account/login";
+			}
+			if(1 != user.getType()) {
+				request.setAttribute("error", "用户无权限！");
+				return "/account/login";
+			}
+			Boolean validate = PasswordEncoder.isPasswordValid4MD5(user.getPassword(), password, "webportal");
+			
+			if(!validate) {
+				request.setAttribute("error", "用户名或密码错误！");
+				return "/account/login";
+			}*/
+			
 			if(!"sysadmin".equals(loginName) || !"000000".equals(password) ) {
 				request.setAttribute("error", "用户名或密码错误！");
 				return "/account/login";
@@ -70,6 +92,8 @@ public class AccountController {
 		
 		return "redirect:/account/login";
 	}
+	
+	
 	
 	/**
      * 从HttpServletRequest实例中获取IP地址

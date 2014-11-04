@@ -8,9 +8,8 @@ import com.letv.portal.enumeration.UserStatus;
 public class UserModel extends BaseModel{
 
 	private static final long serialVersionUID = 5336795056773086076L;
-
-	private UserStatus status; 
 	
+	private UserStatus status;
 	private String email;
 	
 	private String userName;
@@ -28,6 +27,10 @@ public class UserModel extends BaseModel{
 	private String currentLoginIp;
 	
 	private Date registerDate;
+	
+	private String password;
+	private String salt;
+	private Integer type;
 	
 	public UserModel() {
 	}
@@ -111,6 +114,30 @@ public class UserModel extends BaseModel{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

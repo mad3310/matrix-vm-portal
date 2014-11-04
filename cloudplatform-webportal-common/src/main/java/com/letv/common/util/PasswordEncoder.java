@@ -110,5 +110,9 @@ public class PasswordEncoder {
 		return isPasswordValid(encPass, rawPass, salt,"SHA");
 
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(md5Encode("000000", "webportal"));
+	}
 
 }

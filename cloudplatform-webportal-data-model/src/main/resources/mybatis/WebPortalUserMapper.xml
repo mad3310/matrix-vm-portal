@@ -74,6 +74,11 @@
 		update WEBPORTAL_USER set LAST_LOGIN_TIME=#{lastLoginTime}, LASTLOGIN_IP=#{lastLoginIp}, CURRENT_LOGIN_TIME=#{currentLoginTime}, CURRENT_LOGIN_IP=#{currentLoginIp} 
 		where ID = #{id}
 	</update>
+
+	<update id="updatePassword" parameterType="User">
+		update WEBPORTAL_USER set PASSWORD=#{password} 
+		where USERNAME = #{userName}
+	</update>
 	
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
