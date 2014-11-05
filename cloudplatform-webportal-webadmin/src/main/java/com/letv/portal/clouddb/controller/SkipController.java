@@ -106,15 +106,27 @@ public class SkipController {
 	}
 	/**
 	 * Methods Name: toMonitorCotainer <br>
-	 * Description: container监控详情
+	 * Description: container集群监控
 	 * @author name: wujun
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/monitor/mcluster",method=RequestMethod.GET)
+	@RequestMapping(value="/list/mcluster/monitor",method=RequestMethod.GET)
 	public ModelAndView toMonitorCotainer(ModelAndView mav){
 		mav.setViewName("/clouddb/mcluster_monitor_list");
 		return mav;
 	}
-	
+
+	/**
+	 * Methods Name: toMonitorCotainerDetail <br>
+	 * Description: container集群监控详情
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/detail/mcluster/monitor",method=RequestMethod.GET)
+	public ModelAndView toMonitorCotainerDetail(ModelAndView mav){
+		mav.setViewName("/clouddb/mcluster_monitor_detail");
+		return mav;
+	}
 }
