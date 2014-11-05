@@ -281,4 +281,29 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.get(url,name,password);
 		return result;
 	}
+	/**
+	 * Methods Name: MonitorMclusterStatus <br>
+	 * Description: 通过vip结点Ip抓取集群状态<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public String getMclusterStatus(String ip){
+		String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/status";
+		String result = HttpClient.get(url);
+		return result;
+		
+	}
+    /**
+     * Methods Name: getMclusterMonitor <br>
+     * Description: 通过vip结点ip抓取集群数据库状态<br>
+     * @author name: wujun
+     * @param ip
+     * @return
+     */
+	public String getMclusterMonitor(String ip){
+	    String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/monitor";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
 }

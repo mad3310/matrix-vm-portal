@@ -1,6 +1,7 @@
 package com.letv.portal.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.ContainerModel;
@@ -27,4 +28,5 @@ public interface IContainerDao extends IBaseDao<ContainerModel> {
 	public void updateHostIpByName(ContainerModel container);
 	public ContainerModel selectByName(String containerName);
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
+	public  List<ContainerModel> selectAllByMap(Map map);
 }

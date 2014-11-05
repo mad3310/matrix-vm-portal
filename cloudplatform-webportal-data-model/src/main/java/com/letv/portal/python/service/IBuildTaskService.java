@@ -1,6 +1,9 @@
 package com.letv.portal.python.service;
 
+import java.util.List;
+
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
@@ -145,6 +148,12 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 */
 	public void checkMclusterCount();
-
-	
+    /**
+     * Methods Name: getMonitorData <br>
+     * Description: 获得集群的监控数据<br>
+     * @author name: wujun
+     * @param ips
+     * @return
+     */
+	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels);
 }

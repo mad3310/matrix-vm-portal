@@ -237,5 +237,21 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String checkMclusterCount(String hostIp, String name, String password);
+	/**
+	 * Methods Name: MonitorMclusterStatus <br>
+	 * Description: 通过vip结点Ip抓取集群状态<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public String getMclusterStatus(String ip);
+    /**
+     * Methods Name: getMclusterMonitor <br>
+     * Description: 通过vip结点ip抓取集群数据库状态<br>
+     * @author name: wujun
+     * @param ip
+     * @return
+     */
+	public String getMclusterMonitor(String ip);
 	
 }

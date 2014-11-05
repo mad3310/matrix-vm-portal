@@ -104,5 +104,17 @@ public class SkipController {
 		mav.setViewName("/clouddb/hcluster_detail");
 		return mav;
 	}
+	/**
+	 * Methods Name: toMonitorCotainer <br>
+	 * Description: container监控详情
+	 * @author name: wujun
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/monitor/container",method=RequestMethod.GET)
+	public ModelAndView toMonitorCotainer(ModelAndView mav){
+		mav.setViewName("/clouddb/hcluster_detail");
+		return mav;
+	}
 	
 }

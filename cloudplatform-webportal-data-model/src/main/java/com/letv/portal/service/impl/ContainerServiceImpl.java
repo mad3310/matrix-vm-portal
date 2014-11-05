@@ -78,4 +78,7 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
 		return this.containerDao.selectContainerByMclusterId(clusterId);
 	}
+	public  List<ContainerModel> selectAllByMap(Map map){
+		return this.containerDao.selectAllByMap(map);	
+	}
 }

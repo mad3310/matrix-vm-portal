@@ -52,6 +52,9 @@
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
 				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
 			</if>
+			<if test="type != null ">
+				and C.TYPE=#{type}
+			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
@@ -203,6 +206,16 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CONTAINER C
 		<include refid="Example_Where_Clause" />
+	</select>
+	
+	
+	<!-- 根据条件查询 -->
+	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />,M.MCLUSTER_NAME
+		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M
+		<include refid="Example_Where_Clause" />
+		and C.MCLUSTER_ID=M.Id
 	</select>
 	
 		<!--查询集群下container的信息-->
