@@ -89,7 +89,7 @@ public class InitializingJob {
 	public List<ScheduleJobModel> getJobs(){
 		List<ScheduleJobModel> jobs = new ArrayList<ScheduleJobModel>();
 		//测试数据 start
-		ScheduleJobModel testJob = new ScheduleJobModel();
+		/*ScheduleJobModel testJob = new ScheduleJobModel();
 		
 		testJob.setJobName("test");
 		testJob.setJobMethod("test");
@@ -98,7 +98,7 @@ public class InitializingJob {
 		testJob.setCronExpression("0/30 * * * * ?");
 		testJob.setDescn("测试job初始化");
 		jobs.add(testJob);
-		
+		*/
 		/*
 		 * 业务检查job
 		 */
@@ -107,7 +107,7 @@ public class InitializingJob {
 		mclusterJob.setJobMethod("checkMclusterStatus");
 		mclusterJob.setJobGroup("webportal");
 		mclusterJob.setJobStatus("1");
-		mclusterJob.setCronExpression("0/30 * * * * ?");
+		mclusterJob.setCronExpression("0 0/5 * * * ?");
 		mclusterJob.setDescn("检查container集群状态");
 		jobs.add(mclusterJob);
 		
@@ -116,7 +116,7 @@ public class InitializingJob {
 		containerJob.setJobMethod("checkContainerStatus");
 		containerJob.setJobGroup("webportal");
 		containerJob.setJobStatus("1");
-		containerJob.setCronExpression("0/30 * * * * ?");
+		containerJob.setCronExpression("0 0/5 * * * ?");
 		containerJob.setDescn("检查container单节点状态");
 		jobs.add(containerJob);
 		
@@ -126,7 +126,7 @@ public class InitializingJob {
 		checkMclusterCount.setJobGroup("webportal");
 		checkMclusterCount.setJobStatus("1");
 //		checkMclusterCount.setCronExpression("0/30 * * * * ?");
-		checkMclusterCount.setCronExpression("0 0/2 * * * ?");
+		checkMclusterCount.setCronExpression("0 0/10 * * * ?");
 		checkMclusterCount.setDescn("检查container单节点状态");
 		jobs.add(checkMclusterCount);
 		
