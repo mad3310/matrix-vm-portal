@@ -59,7 +59,23 @@
 				</li>
 			</ul>
 		</li>
-		
+		<li id="sidebar-monitor-mgr" class="">
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-tachometer"></i> 
+				<span class="menu-text"> 监控管理 </span> 
+				<b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-db-list" class="">
+					<a href="${ctx}/list/mcluster/monitor"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						container集群监控列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+			</ul>
+		</li>
 	</ul>
 	<!-- /.nav-list -->
 
