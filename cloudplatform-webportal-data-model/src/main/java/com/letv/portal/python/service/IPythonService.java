@@ -1,5 +1,6 @@
 package com.letv.portal.python.service;
 
+import com.letv.common.util.HttpClient;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 
@@ -244,7 +245,7 @@ public interface IPythonService {
 	 * @param ip
 	 * @return
 	 */
-	public String getMclusterStatus(String ip);
+	public String getMclusterStatus(String ip)throws Exception;
     /**
      * Methods Name: getMclusterMonitor <br>
      * Description: 通过vip结点ip抓取集群数据库状态<br>
@@ -252,6 +253,21 @@ public interface IPythonService {
      * @param ip
      * @return
      */
-	public String getMclusterMonitor(String ip);
+	public String getMclusterMonitor(String ip)throws Exception;
+	public String getDbInnodbBufferMemalloc(String ip)throws Exception;
+	public String getDbInnodbBufferPage(String ip)throws Exception;
+	public String getDbInnodbBufferPool(String ip)throws Exception;
+    public String getDbVariableStatusPs(String ip)throws Exception;
+	public String getDbVariableStatusRation(String ip)throws Exception;
+	public String getDbVariableStatusUsed(String ip)throws Exception;
+	public String getDbRowOpersPs(String ip)throws Exception;
+	public String getDbRowOpersTotal(String ip)throws Exception;
+	public String getWsrepStatusFlowControlPaused(String ip)throws Exception;
+	public String getWsrepStatusSlowestNodeParam(String ip)throws Exception;
+	public String getWsrepStatusSlowestNetworkParam(String ip)throws Exception;
 	
+	public String getNodeMemorySize(String ip)throws Exception;
+    public String getNodeDatadirSize(String ip)throws Exception;
+	public String getMysqlCpuPartion(String ip)throws Exception;
+	public String getMysqlMemoryPartion(String ip)throws Exception;
 }
