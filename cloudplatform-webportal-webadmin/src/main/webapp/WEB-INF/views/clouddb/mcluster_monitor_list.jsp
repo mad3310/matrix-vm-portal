@@ -9,7 +9,7 @@
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">container集群列表</h5>
+				<h5 class="widget-title">container集群监控列表</h5>
 			</div>
 			<div class="widget-body">
 				<div class="widget-main no-padding">
