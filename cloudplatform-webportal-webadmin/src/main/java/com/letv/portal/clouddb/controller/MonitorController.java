@@ -16,7 +16,14 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
-
+/**
+ * Program Name: MonitorController <br>
+ * Description:  监控<br>
+ * @author name: wujun <br>
+ * Written Date: 2014年11月6日 <br>
+ * Modified By: <br>
+ * Modified Date: <br>
+ */
 @Controller
 @RequestMapping("/monitor")
 public class MonitorController {
@@ -26,17 +33,30 @@ public class MonitorController {
 	
 	@Resource
 	private IBuildTaskService buildTaskService;
-	
+	/**
+	 * Methods Name: containerMonitorList <br>
+	 * Description: 展示mcluster集群监控列表<br>
+	 * @author name: wujun
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value="/mcluster",method=RequestMethod.GET)
 	public @ResponseBody ResultObject containerMonitorList(ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("type", "mclustervip");
 		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
 		result.setData(this.buildTaskService.getMonitorData(cModels));
-		return result;
+		return result;  
 	}
-	
-	@RequestMapping(value="/mcluster/{ip}",method=RequestMethod.GET)
+	/**
+	 * Methods Name: containerMonitorDetail <br>
+	 * Description: 展示mcluster集群监控详情<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/{ip}/mcluster",method=RequestMethod.GET)
 	public @ResponseBody ResultObject containerMonitorDetail(@PathVariable String ip,ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("ipAddr", ip);
