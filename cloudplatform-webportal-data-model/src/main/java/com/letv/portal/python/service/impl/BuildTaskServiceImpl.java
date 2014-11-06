@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -23,6 +24,7 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
+import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.enumeration.DbUserStatus;
@@ -620,8 +622,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	private ContainerMonitorModel analysisResultMonitor(Map result){
-		String type="6";
-		boolean flag = false;
+		String type=ContainerMonitorStatus.DEFAULT.getValue().toString();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
 		Map<String, Object>  listNode= (Map<String, Object>) ((Map) result.get("response")).get("node");
 		Map<String, Object>  listDb= (Map<String, Object>) ((Map) result.get("response")).get("db");
@@ -629,14 +630,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		List<DbMonitorModel> dbMoList = new ArrayList<DbMonitorModel>();	
 		for(Iterator it =  listNode.keySet().iterator();it.hasNext();){
 			 Object keString = it.next();
-			 System.out.println(keString);
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listNode.get(keString);
 			 NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
 		     nodeMonitorModel.setNodeMonitorName(keString.toString());
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){
-				 type="5";
+				 type=ContainerMonitorStatus.ABNORMAL.getValue().toString();
 			 }
 			 nodeMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
 			 nodeMonitorModel.setCtime(listsHashMap.get("ctime")!=null?listsHashMap.get("ctime").toString():"");
@@ -644,14 +644,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}	
 		for(Iterator it =  listDb.keySet().iterator();it.hasNext();){
 			 Object keString = it.next();
-			 System.out.println(keString);
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listDb.get(keString);
 			 DbMonitorModel dbMonitorModel = new DbMonitorModel();
 			 dbMonitorModel.setNodeMonitorName(keString.toString());
 			 dbMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 dbMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
              if(!"nothing".equals(listsHashMap.get("alarm").toString())){
-            	 type="5";
+            	 type=ContainerMonitorStatus.ABNORMAL.getValue().toString();
 			 }
 			 dbMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
 			 dbMonitorModel.setCtime(listsHashMap.get("ctime")!=null?listsHashMap.get("ctime").toString():"");
@@ -664,7 +663,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	private ContainerMonitorModel analysisResultMonitorC(Map result){
-		String type="6";
+		String type=ContainerMonitorStatus.DEFAULT.getValue().toString();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
 		Map<String, Object>  listNode= (Map<String, Object>) ((Map) result.get("response")).get("node");
 		Map<String, Object>  listCluster= (Map<String, Object>) ((Map) result.get("response")).get("cluster");
@@ -672,27 +671,25 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		List<ClusterMonitorModel> clMoList = new ArrayList<ClusterMonitorModel>();	
 		for(Iterator it =  listNode.keySet().iterator();it.hasNext();){
 			 Object keString = it.next();
-			 System.out.println(keString);
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listNode.get(keString);
 			 NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
 		     nodeMonitorModel.setNodeMonitorName(keString.toString());
 		     nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){
-				 type="5";
+				 type=ContainerMonitorStatus.ABNORMAL.getValue().toString();
 			 }
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMoList.add(nodeMonitorModel);
 		}	
 		for(Iterator it =  listCluster.keySet().iterator();it.hasNext();){
 			 Object keString = it.next();
-			 System.out.println(keString);
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listCluster.get(keString);
 			 ClusterMonitorModel clusterMonitorModel = new ClusterMonitorModel();
 			 clusterMonitorModel.setClusterMonitorName(keString.toString());
 			 clusterMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 clusterMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){
-				 type="5";
+				 type=ContainerMonitorStatus.ABNORMAL.getValue().toString();
 			 }
 			 clMoList.add(clusterMonitorModel);
 		}	
@@ -1002,24 +999,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
      */
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels){
 		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
-//		String[] ipArs = ips.split(","); 
 		for(ContainerModel c:containerModels){
 			String ip = c.getIpAddr();
 			ContainerMonitorModel containerMonitorModel = null;
 			ContainerMonitorModel containerMonitorModelC = null;
 			containerMonitorModel  = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
 			containerMonitorModelC = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
-			if(containerMonitorModel.getStatus().equals("5")||containerMonitorModelC.getStatus().equals("5")){
-				containerMonitorModel.setStatus("5");
+			if(containerMonitorModel.getStatus().equals(ContainerMonitorStatus.ABNORMAL.getValue().toString())||containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.ABNORMAL.getValue().toString())){
+				containerMonitorModel.setStatus(ContainerMonitorStatus.ABNORMAL.getValue().toString());
 			}
 			containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
 			containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
 			containerMonitorModel.setIp(ip);
 			containerMonitorModel.setMclusterName(c.getMcluster().getMclusterName());
 			containerMonitorModels.add(containerMonitorModel);
-		}
-	//	List<ContainerMonitorModel> list = new ArrayList<ContainerMonitorModel>();
-	
+		}	
 		return  containerMonitorModels;
 	}
 	

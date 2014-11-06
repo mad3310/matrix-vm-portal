@@ -30,15 +30,8 @@ public class MonitorControllerTest extends AbstractTest{
 			Map map = new HashMap<String, String>();
 			map.put("type", "mclustervip");
 			List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
-//			for(ContainerModel c:cModels){
-//				ip +=c.getIpAddr()+",";
-//				}
-//			List
 			List<ContainerMonitorModel> list = new ArrayList<ContainerMonitorModel>();
 			list =	buildTaskService.getMonitorData(cModels);
-//			for(ContainerMonitorModel c:list){
-//				c.setHclusterName(hclusterName);
-//			}
 			System.out.println("xx");
 		} catch (Exception e) {
 			e.printStackTrace();
