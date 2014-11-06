@@ -33,7 +33,18 @@ public class ContainerModel extends BaseModel {
 	private Long mclusterId; //所属cluster
 	
 	private MclusterModel mcluster;
+	private HostModel host;
 	
+    
+	public HostModel getHost() {
+		return host;
+	}
+
+
+	public void setHost(HostModel host) {
+		this.host = host;
+	}
+
 
 	public String getZabbixHosts() {
 		return zabbixHosts;

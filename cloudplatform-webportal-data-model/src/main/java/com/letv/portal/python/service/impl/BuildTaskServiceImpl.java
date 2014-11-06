@@ -1012,6 +1012,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
 			containerMonitorModel.setIp(ip);
 			containerMonitorModel.setMclusterName(c.getMcluster().getMclusterName());
+			containerMonitorModel.setHclusterName(c.getHost().getHostNameAlias());
 			containerMonitorModels.add(containerMonitorModel);
 		}	
 		return  containerMonitorModels;

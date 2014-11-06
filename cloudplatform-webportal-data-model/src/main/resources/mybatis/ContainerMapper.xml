@@ -30,7 +30,12 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
-		<association property="mcluster" javaType="Mcluster">
+		<association property="host" javaType="Host">
+			<result column="HOST_NAME" property="hostName" />
+			<result column="HOST_NAME_ALIAS" property="hostNameAlias" />
+		</association>
+		
+	    <association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
 		</association>
 	</resultMap>
@@ -212,10 +217,10 @@
 	<!-- 根据条件查询 -->
 	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />,M.MCLUSTER_NAME
-		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M
+		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HOST_NAME,H.HOST_NAME_ALIAS
+		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H
 		<include refid="Example_Where_Clause" />
-		and C.MCLUSTER_ID=M.Id
+		and C.MCLUSTER_ID=M.Id and C.HOST_ID=H.ID
 	</select>
 	
 		<!--查询集群下container的信息-->
