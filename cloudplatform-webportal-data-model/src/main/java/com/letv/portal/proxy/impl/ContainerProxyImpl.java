@@ -2,6 +2,7 @@ package com.letv.portal.proxy.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
@@ -64,8 +66,14 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
 		return this.containerService.selectByMclusterId(mclusterId);
 	}
+
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
 		return this.containerService.selectContainerByMclusterId(clusterId);
+	}
+
+	public List<ContainerMonitorModel> selectMonitorMclusterDetailOrList(Map map){
+		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
+		return  this.buildTaskService.getMonitorData(cModels);
 	}
 	
 }

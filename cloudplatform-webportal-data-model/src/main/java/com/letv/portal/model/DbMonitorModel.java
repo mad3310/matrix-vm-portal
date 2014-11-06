@@ -2,8 +2,7 @@ package com.letv.portal.model;
 
 public class DbMonitorModel {
 	private Long id; 
-	private String dbMonitorName; 
-	private String nodeMonitorName; 
+	private String monitorName; 
 	private String alarm; 
 	private String message; 
 	private String ctime;
@@ -14,17 +13,12 @@ public class DbMonitorModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getDbMonitorName() {
-		return dbMonitorName;
+   
+	public String getMonitorName() {
+		return monitorName;
 	}
-	public void setDbMonitorName(String dbMonitorName) {
-		this.dbMonitorName = dbMonitorName;
-	}
-	public String getNodeMonitorName() {
-		return nodeMonitorName;
-	}
-	public void setNodeMonitorName(String nodeMonitorName) {
-		this.nodeMonitorName = nodeMonitorName;
+	public void setMonitorName(String monitorName) {
+		this.monitorName = monitorName;
 	}
 	public String getAlarm() {
 		return alarm;

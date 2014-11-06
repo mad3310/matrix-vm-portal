@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 /**
@@ -32,7 +33,7 @@ public class MonitorController {
 	private IContainerService containerService;
 	
 	@Resource
-	private IBuildTaskService buildTaskService;
+	private IContainerProxy containerProxy;
 	/**
 	 * Methods Name: containerMonitorList <br>
 	 * Description: 展示mcluster集群监控列表<br>
@@ -44,8 +45,7 @@ public class MonitorController {
 	public @ResponseBody ResultObject containerMonitorList(ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("type", "mclustervip");
-		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
-		result.setData(this.buildTaskService.getMonitorData(cModels));
+		result.setData(this.containerProxy.selectMonitorMclusterDetailOrList(map));
 		return result;  
 	}
 	/**
@@ -60,8 +60,7 @@ public class MonitorController {
 	public @ResponseBody ResultObject containerMonitorDetail(@PathVariable String ip,ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("ipAddr", ip);
-		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
-		result.setData(this.buildTaskService.getMonitorData(cModels));
+		result.setData(this.containerProxy.selectMonitorMclusterDetailOrList(map));
 		return result;
 	}
 }

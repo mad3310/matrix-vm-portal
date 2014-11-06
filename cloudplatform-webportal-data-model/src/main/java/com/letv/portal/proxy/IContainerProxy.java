@@ -1,8 +1,10 @@
 package com.letv.portal.proxy;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerMonitorModel;
 
 /**Program Name: IContainerProxy <br>
  * Description:  <br>
@@ -40,5 +42,22 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerModel> selectByMclusterId(Long mclusterId);
+	/**
+	 * Methods Name: selectContainerByMclusterId <br>
+	 * Description: 查询container信息通过集群id<br>
+	 * @author name: wujun
+	 * @param clusterId
+	 * @return
+	 */
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
+	/**
+	 * Methods Name: selectMonitorMclusterDetail <br>
+	 * Description: 查询集群的详细监控信息或者列表<br>
+	 * @author name: wujun
+	 * @param map
+	 * @return
+	 */
+	public List<ContainerMonitorModel> selectMonitorMclusterDetailOrList(Map map);
+
+	
 }

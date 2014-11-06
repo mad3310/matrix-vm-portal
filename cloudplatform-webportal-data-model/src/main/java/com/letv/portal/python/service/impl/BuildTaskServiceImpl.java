@@ -632,7 +632,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 Object keString = it.next();
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listNode.get(keString);
 			 NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
-		     nodeMonitorModel.setNodeMonitorName(keString.toString());
+		     nodeMonitorModel.setMonitorName(keString.toString());
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){
@@ -646,7 +646,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 Object keString = it.next();
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listDb.get(keString);
 			 DbMonitorModel dbMonitorModel = new DbMonitorModel();
-			 dbMonitorModel.setNodeMonitorName(keString.toString());
+			 dbMonitorModel.setMonitorName(keString.toString());
 			 dbMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 dbMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
              if(!"nothing".equals(listsHashMap.get("alarm").toString())){
@@ -673,7 +673,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 Object keString = it.next();
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listNode.get(keString);
 			 NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
-		     nodeMonitorModel.setNodeMonitorName(keString.toString());
+		     nodeMonitorModel.setMonitorName(keString.toString());
 		     nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.ABNORMAL.getValue().toString();
@@ -685,7 +685,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 Object keString = it.next();
 			 Map<String, Object>  listsHashMap = (Map<String, Object>)listCluster.get(keString);
 			 ClusterMonitorModel clusterMonitorModel = new ClusterMonitorModel();
-			 clusterMonitorModel.setClusterMonitorName(keString.toString());
+			 clusterMonitorModel.setMonitorName(keString.toString());
 			 clusterMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 clusterMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if(!"nothing".equals(listsHashMap.get("alarm").toString())){

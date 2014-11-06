@@ -2,7 +2,7 @@ package com.letv.portal.model;
 
 public class NodeMonitorModel {
 	private Long id; 
-	private String nodeMonitorName ; 
+	private String monitorName; 
 	private String alarm; 
 	private String message;
 	private String errorRecord; 
@@ -13,11 +13,12 @@ public class NodeMonitorModel {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNodeMonitorName() {
-		return nodeMonitorName;
+    
+	public String getMonitorName() {
+		return monitorName;
 	}
-	public void setNodeMonitorName(String nodeMonitorName) {
-		this.nodeMonitorName = nodeMonitorName;
+	public void setMonitorName(String monitorName) {
+		this.monitorName = monitorName;
 	}
 	public String getAlarm() {
 		return alarm;
