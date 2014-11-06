@@ -40,6 +40,7 @@
 											<th width="30%">message</th>
 											<th width="40%">error_record</th>
 											<th width="20%">ctime</th>
+											<th width="10%">alarm</th>
 										</tr>
 									</thead>
 									<tbody id="tby-cluster-info"></tbody>
@@ -55,6 +56,7 @@
 											<th width="30%">message</th>
 											<th width="40%">error_record</th>
 											<th width="20%">ctime</th>
+											<th width="10%">alarm</th>
 										</tr>
 									</thead>
 									<tbody id="tby-node-info"></tbody>
@@ -70,6 +72,7 @@
 											<th width="30%">message</th>
 											<th width="40%">error_record</th>
 											<th width="20%">ctime</th>
+											<th width="10%">alarm</th>
 										</tr>
 									</thead>
 									<tbody id="tby-db-info"></tbody>
@@ -106,8 +109,13 @@ function addDataToTable(data,tby){
 		var td2 = createTd(data[i].message);
 		var td3 = createTd(data[i].errorRecord);
 		var td4 = createTd(data[i].ctime);
-		var tr = $("<tr></tr>");
-		tr.append(td1).append(td2).append(td3).append(td4);
+		var td5 = createTd(data[i].alarm);
+		if(data[i].alarm == "nothing"){
+			var tr = $("<tr></tr>");
+		}else{
+			var tr = $("<tr class=\"danger\"></tr>");
+		}
+		tr.append(td1).append(td2).append(td3).append(td4).append(td5);
 		tr.appendTo(tby);
 	}
 }
@@ -135,6 +143,7 @@ function queryMonitorDetail(){
 	});
 }
 function initPage(){
-	queryMonitorDetail();
+	$('#nav-search').addClass("hidden");
+ 	queryMonitorDetail();
 }
 </script>

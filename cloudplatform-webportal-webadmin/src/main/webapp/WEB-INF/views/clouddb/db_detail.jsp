@@ -71,7 +71,6 @@
 									<tbody id="tby">
 									</tbody>
 								</table>
-									<small><font color="gray">*注:请用高亮IP连接数据库.</font></small>
 							</div>
 						</div>
 					</div>

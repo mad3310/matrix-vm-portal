@@ -87,6 +87,7 @@ function queryMclusterMonitor() {
 	});
 }
 function page_init(){
- queryMclusterMonitor();
+	$('#nav-search').addClass("hidden");
+	queryMclusterMonitor();
 }
 </script>
