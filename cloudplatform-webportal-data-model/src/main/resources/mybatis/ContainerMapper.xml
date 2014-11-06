@@ -60,6 +60,9 @@
 			<if test="type != null ">
 				and C.TYPE=#{type}
 			</if>
+			<if test="ipAddr != null ">
+				and C.IP_ADDR=#{ipAddr}
+			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,10 +27,19 @@ public class MonitorController {
 	@Resource
 	private IBuildTaskService buildTaskService;
 	
-	@RequestMapping(value="/container",method=RequestMethod.GET)
+	@RequestMapping(value="/mcluster",method=RequestMethod.GET)
 	public @ResponseBody ResultObject containerMonitorList(ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("type", "mclustervip");
+		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
+		result.setData(this.buildTaskService.getMonitorData(cModels));
+		return result;
+	}
+	
+	@RequestMapping(value="/mcluster/{ip}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject containerMonitorDetail(@PathVariable String ip,ResultObject result) {
+		Map map = new HashMap<String, String>();
+		map.put("ipAddr", ip);
 		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
 		result.setData(this.buildTaskService.getMonitorData(cModels));
 		return result;

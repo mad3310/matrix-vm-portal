@@ -28,7 +28,7 @@ public class MonitorControllerTest extends AbstractTest{
 	public void list(){
 		try {
 			Map map = new HashMap<String, String>();
-			map.put("type", "mclustervip");
+			map.put("ipAddr", "10.200.85.48");
 			List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
 			List<ContainerMonitorModel> list = new ArrayList<ContainerMonitorModel>();
 			list =	buildTaskService.getMonitorData(cModels);
