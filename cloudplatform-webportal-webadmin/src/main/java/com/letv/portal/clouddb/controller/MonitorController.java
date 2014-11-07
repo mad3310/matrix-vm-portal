@@ -63,10 +63,10 @@ public class MonitorController {
 	@RequestMapping(value="/{ip}/mcluster/status",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorList(@PathVariable String ip,ResultObject result) {
 		Map map = new HashMap<String, String>();
-		map.put("ipAddr", ip);
+		map.put("ipAddr",ip);
 		List<ContainerMonitorModel> list =this.containerProxy.selectMonitorMclusterDetailOrList(map);
-		if(list.size()==0)
-	    result.setCallback("error");
+		if((list.get(0).getClMoList())==null)
+	    result.addMsg(list.get(0).getMclusterName()+"集群信息抓取失败，请重新刷新");
 		result.setData(list);
 		return result;  
 	}

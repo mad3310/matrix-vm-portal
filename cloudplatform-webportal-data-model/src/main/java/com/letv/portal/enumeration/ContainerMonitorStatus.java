@@ -2,8 +2,9 @@ package com.letv.portal.enumeration;
 
 public enum ContainerMonitorStatus implements ByteEnum{
 	
-	ABNORMAL(5),//异常
-	DEFAULT(6);	//正常 
+	NORMAL(6),//正常
+	GENERAL(5),	//异常 
+	SERIOUS(13);//危险 
 	private final Integer value;
 
 	private ContainerMonitorStatus(Integer value) {
