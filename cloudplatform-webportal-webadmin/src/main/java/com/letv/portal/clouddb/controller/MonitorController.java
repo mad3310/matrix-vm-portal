@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
@@ -34,33 +35,67 @@ public class MonitorController {
 	
 	@Resource
 	private IContainerProxy containerProxy;
+	
+	
+	
 	/**
-	 * Methods Name: containerMonitorList <br>
-	 * Description: 展示mcluster集群监控列表<br>
-	 * @author name: wujun
-	 * @param result
-	 * @return
-	 */
-	@RequestMapping(value="/mcluster",method=RequestMethod.GET)
-	public @ResponseBody ResultObject containerMonitorList(ResultObject result) {
-		Map map = new HashMap<String, String>();
-		map.put("type", "mclustervip");
-		result.setData(this.containerProxy.selectMonitorMclusterDetailOrList(map));
-		return result;  
-	}
-	/**
-	 * Methods Name: containerMonitorDetail <br>
-	 * Description: 展示mcluster集群监控详情<br>
+	 * Methods Name: mclusterList <br>
+	 * Description: 集群列表展示<br>
 	 * @author name: wujun
 	 * @param ip
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/{ip}/mcluster",method=RequestMethod.GET)
-	public @ResponseBody ResultObject containerMonitorDetail(@PathVariable String ip,ResultObject result) {
+	@RequestMapping(value="/mcluster/list",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterList(ResultObject result) {
+		Map map = new HashMap<String, String>();
+		map.put("type", "mclustervip");
+		result.setData(this.containerProxy.selectMonitorMclusterList(map));
+		return result; 
+	} 
+	/**
+	 * Methods Name: mclusterMonitorList <br>
+	 * Description: 集群状态是否正常<br>
+	 * @author name: wujun
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/{ip}/mcluster/status",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorList(@PathVariable String ip,ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("ipAddr", ip);
-		result.setData(this.containerProxy.selectMonitorMclusterDetailOrList(map));
+		List<ContainerMonitorModel> list =this.containerProxy.selectMonitorMclusterDetailOrList(map);
+		if(list.size()==0)
+	    result.setCallback("error");
+		result.setData(list);
+		return result;  
+	}
+    /**
+     * Methods Name: mclusterMonitorNodeAndDbDetail <br>
+     * Description: 集群节点详情展示<br>
+     * @author name: wujun
+     * @param ip
+     * @param result
+     * @return
+     */
+	@RequestMapping(value="/{ip}/mcluster/nodeAndDb",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorNodeAndDbDetail(@PathVariable String ip,ResultObject result) {
+		result.setData(this.containerProxy.selectMonitorDetailNodeAndDbData(ip));
 		return result;
 	}
+	/**
+	 * Methods Name: mclusterMonitorClusterDetail <br>
+	 * Description: 集群cluster信息展示<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/{ip}/mcluster/cluster",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorClusterDetail(@PathVariable String ip,ResultObject result) {
+		result.setData(this.containerProxy.selectMonitorDetailClusterData(ip));
+		return result;
+	}
+	
+
 }

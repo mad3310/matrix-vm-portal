@@ -58,6 +58,29 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerMonitorModel> selectMonitorMclusterDetailOrList(Map map);
-
+	/**
+	 * Methods Name: selectMonitorMclusterList <br>
+	 * Description: 查询监控详情信息<br>
+	 * @author name: wujun
+	 * @param map
+	 * @return
+	 */
+	public List<ContainerModel> selectMonitorMclusterList(Map map);
+	/**
+	 * Methods Name: getMonitorDetailNodeAndDbData <br>
+	 * Description: 集群监控详细信息展示<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public ContainerMonitorModel selectMonitorDetailNodeAndDbData(String ip);	
+	/**
+	 * Methods Name: getMonitorDetailClusterData <br>
+	 * Description: 集群监控主要信息展示<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public ContainerMonitorModel selectMonitorDetailClusterData(String ip);
 	
 }

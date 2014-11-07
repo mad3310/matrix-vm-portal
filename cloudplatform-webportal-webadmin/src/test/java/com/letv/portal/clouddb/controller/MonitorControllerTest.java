@@ -28,9 +28,45 @@ public class MonitorControllerTest extends AbstractTest{
 	public void list(){
 		try {
 			Map map = new HashMap<String, String>();
-			map.put("ipAddr", "10.200.85.48");
+			map.put("ipAddr", "10.154.238.25");
 			List<ContainerMonitorModel> list = new ArrayList<ContainerMonitorModel>();
 			list =	containerProxy.selectMonitorMclusterDetailOrList(map);
+			System.out.println("xx");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void list1(){
+		try {
+			String ip = "10.200.85.48";
+			ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
+			containerMonitorModel =	this.containerProxy.selectMonitorDetailNodeAndDbData(ip);
+			System.out.println("xx");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void list2(){
+		try {
+			String ip = "10.200.85.48";
+			ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
+			containerMonitorModel =	this.containerProxy.selectMonitorDetailClusterData(ip);
+			System.out.println("xx");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void list3(){
+		try {
+			Map map = new HashMap<String, String>();
+			map.put("type", "mclustervip");
+			List<ContainerModel> list = new ArrayList<ContainerModel>();
+			list =	this.containerProxy.selectMonitorMclusterList(map);
 			System.out.println("xx");
 		} catch (Exception e) {
 			e.printStackTrace();

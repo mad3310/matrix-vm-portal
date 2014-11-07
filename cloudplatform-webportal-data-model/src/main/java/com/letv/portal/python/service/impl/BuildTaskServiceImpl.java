@@ -990,13 +990,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		this.containerService.insert(container);
 	}
-	  /**
-     * Methods Name: getMonitorData <br>
-     * Description: 获得集群的监控数据<br>
-     * @author name: wujun
-     * @param ips
-     * @return
-     */
+
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels){
 		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
 		try {
@@ -1021,6 +1015,30 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		logger.debug("获得集群监控数据");
 		return  containerMonitorModels;
+	}
+	
+	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip){		
+		ContainerMonitorModel containerMonitorModel = null;
+		try {
+				containerMonitorModel = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
+		} catch (Exception e) {
+			logger.debug("无法获得集群监控数据"+e.getMessage());
+		}
+		
+		logger.debug("获得集群监控数据");
+		return  containerMonitorModel;
+
+	}	
+	public ContainerMonitorModel getMonitorDetailClusterData(String ip){
+		ContainerMonitorModel containerMonitorModel = null;
+		try {
+				containerMonitorModel = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
+		} catch (Exception e) {
+			logger.debug("无法获得集群监控数据"+e.getMessage());
+		}
+		
+		logger.debug("获得集群监控数据");
+		return  containerMonitorModel;
 	}
 	
 }

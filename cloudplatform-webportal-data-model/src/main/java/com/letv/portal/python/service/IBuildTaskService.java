@@ -1,5 +1,6 @@
 package com.letv.portal.python.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.letv.portal.model.ContainerModel;
@@ -156,4 +157,20 @@ public interface IBuildTaskService {
      * @return
      */
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels);
+	/**
+	 * Methods Name: getMonitorDetailNodeAndDbData <br>
+	 * Description: 集群监控详细信息展示<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip);	
+	/**
+	 * Methods Name: getMonitorDetailClusterData <br>
+	 * Description: 集群监控主要信息展示<br>
+	 * @author name: wujun
+	 * @param ip
+	 * @return
+	 */
+	public ContainerMonitorModel getMonitorDetailClusterData(String ip);
 }

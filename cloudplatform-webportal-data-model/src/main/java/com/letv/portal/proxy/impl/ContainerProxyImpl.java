@@ -76,4 +76,16 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 		return  this.buildTaskService.getMonitorData(cModels);
 	}
 	
+	public List<ContainerModel> selectMonitorMclusterList(Map map){
+		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
+		return  cModels;
+	}	
+	public ContainerMonitorModel selectMonitorDetailNodeAndDbData(String ip){
+		return this.buildTaskService.getMonitorDetailNodeAndDbData(ip);
+	}
+
+	public ContainerMonitorModel selectMonitorDetailClusterData(String ip){
+		return this.buildTaskService.getMonitorDetailClusterData(ip);
+	}
+	
 }
