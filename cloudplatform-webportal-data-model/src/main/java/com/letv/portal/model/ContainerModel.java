@@ -34,8 +34,19 @@ public class ContainerModel extends BaseModel {
 	
 	private MclusterModel mcluster;
 	private HostModel host;
+	private HclusterModel hcluster;
 	
     
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+
+
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
+	}
+
+
 	public HostModel getHost() {
 		return host;
 	}
