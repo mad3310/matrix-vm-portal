@@ -65,8 +65,10 @@ public class MonitorController {
 		Map map = new HashMap<String, String>();
 		map.put("ipAddr",ip);
 		List<ContainerMonitorModel> list =this.containerProxy.selectMonitorMclusterDetailOrList(map);
-		if((list.get(0).getClMoList())==null)
-	    result.addMsg(list.get(0).getMclusterName()+"集群信息抓取失败，请重新刷新");
+		if((list.get(0).getClMoList())==null){
+			result.addMsg(list.get(0).getMclusterName()+"集群信息抓取失败，请重新刷新");
+			result.setResult(0);
+		}
 		result.setData(list);
 		return result;  
 	}
