@@ -164,7 +164,7 @@ public interface IBuildTaskService {
 	 * @param ip
 	 * @return
 	 */
-	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip);	
+	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip,String mclusterName);	
 	/**
 	 * Methods Name: getMonitorDetailClusterData <br>
 	 * Description: 集群监控主要信息展示<br>
