@@ -185,16 +185,7 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(url, map,username,password);
 		return result;
 	}
-	/**
-	 * Methods Name: deleteDbUser <br>
-	 * Description: 删除DbUser<br>
-	 * @author name: wujun
-	 * @param dbUser Db用户对象
-	 * @param dbName Db用户名
-	 * @param nodeIp 节点IP
-	 * @param username  用户名
-	 * @param password  用户名密码
-	 */
+
 	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
 		String url = URL_HEAD  + nodeIp + URL_PORT + "/dbUser"+"/"+dbName+"/"+dbUserModel.getUsername()+"/"+URLEncoder.encode(dbUserModel.getAcceptIp());
 		String result = HttpClient.detele(url, username, password);
@@ -281,29 +272,100 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.get(url,name,password);
 		return result;
 	}
-	/**
-	 * Methods Name: MonitorMclusterStatus <br>
-	 * Description: 通过vip结点Ip抓取集群状态<br>
-	 * @author name: wujun
-	 * @param ip
-	 * @return
-	 */
-	public String getMclusterStatus(String ip){
+
+	public String getMclusterStatus(String ip)throws Exception{
 		String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/status";
 		String result = HttpClient.get(url);
 		return result;
 		
 	}
-    /**
-     * Methods Name: getMclusterMonitor <br>
-     * Description: 通过vip结点ip抓取集群数据库状态<br>
-     * @author name: wujun
-     * @param ip
-     * @return
-     */
-	public String getMclusterMonitor(String ip){
+	public String getMclusterMonitor(String ip)throws Exception{
 	    String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/monitor";
 	    String result = HttpClient.get(url);
 	    return result;
 	}
+	
+	
+	public String getDbInnodbBufferMemalloc(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/memallco";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	
+	
+	public String getDbInnodbBufferPage(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/page";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getDbInnodbBufferPool(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/pool";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	
+	public String getDbVariableStatusPs(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/ps";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getDbVariableStatusRation(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/ration";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getDbVariableStatusUsed(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/used";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getDbRowOpersPs(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/rowsoper/ps";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getDbRowOpersTotal(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/rowsoper/total";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getWsrepStatusFlowControlPaused(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/flow_control_paused";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getWsrepStatusSlowestNodeParam(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/slowest_node_param";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getWsrepStatusSlowestNetworkParam(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/slowest_network_param";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getNodeMemorySize(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/memory/size";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	
+	public String getNodeDatadirSize(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/datadir/size";
+	    String result = HttpClient.get(url);
+	    return result;
+	}
+	public String getMysqlCpuPartion(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/mysqlcpu/partion";
+	    String result = HttpClient.get(url);
+	    return result;
+	
+	} 
+	public String getMysqlMemoryPartion(String ip)throws Exception{
+	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/mysqlmemory/partion";
+	    String result = HttpClient.get(url);
+	    return result;
+	
+	}    
+	
 }
