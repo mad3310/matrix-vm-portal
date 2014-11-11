@@ -81,7 +81,11 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 		return  cModels;
 	}	
 	public ContainerMonitorModel selectMonitorDetailNodeAndDbData(String ip){
-		return this.buildTaskService.getMonitorDetailNodeAndDbData(ip);
+		Map map = new HashMap<String, Object>();
+		map.put("ipAddr", ip);
+		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
+		String mclusterName = cModels.get(0).getMcluster().getMclusterName();
+		return this.buildTaskService.getMonitorDetailNodeAndDbData(ip,mclusterName);
 	}
 
 	public ContainerMonitorModel selectMonitorDetailClusterData(String ip){

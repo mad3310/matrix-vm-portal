@@ -93,12 +93,18 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			var status = data.data[0].status;
-			var ip = $(obj).find('[name="mclusterStatus"]').html(translateStatus(status));
-			if(status == "13"){
-				$(obj).addClass("warning");		
-			}else if(status == "14"){
+			error(data);
+			if(data.result == 0){
+				$(obj).find('[name="mclusterStatus"]').html("<font color=\"red\">获取数据失败</font>");
 				$(obj).addClass("danger");		
+			}else{
+				var status = data.data[0].status;
+				$(obj).find('[name="mclusterStatus"]').html(translateStatus(status));
+				if(status == "13"){
+					$(obj).addClass("warning");		
+				}else if(status == "14"){
+					$(obj).addClass("danger");		
+				}
 			}
 		}	
 	});
@@ -114,5 +120,8 @@ function updateMclusterStatus(){
 function page_init(){
 	$('#nav-search').addClass("hidden");
 	queryMclusterMonitor();
+	setInterval(function() {
+		updateMclusterStatus();
+		},60000);
 }
 </script>

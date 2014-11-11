@@ -13,90 +13,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Highcharts Example</title>
 <script src="${ctx}/static/ace/js/jquery.min.js"></script>
-<link href="${ctx}/static/styles/chart-demo.css" rel="stylesheet" />
 <script type="text/javascript">
-$(function () {
-    $(document).ready(function() {
-        Highcharts.setOptions({
-            global: {
-                useUTC: false
-            }
-        });
-    
-        var chart;
-        $('#container').highcharts({
-            chart: {
-                type: 'spline',
-                animation: Highcharts.svg, // don't animate in old IE
-                marginRight: 10,
-                events: {
-                    load: function() {
-    
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function() {
-                            var x = (new Date()).getTime(), // current time
-                                y = Math.random();
-                            series.addPoint([x, y], true, true);
-                        }, 1000);
-                    }
-                }
-            },
+function drawChart(obj,title,ip,ytitle,unit,xdata,ydata){
+    $(obj).highcharts({
+        title: {
+            text: title
+      
+        },
+        subtitle: {
+            text: ip
+         
+        },
+        xAxis: {
+            categories: xdata 
+        },
+        yAxis: {
             title: {
-                text: 'Live random data'
-            },
-            xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: 'Value'
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: '#808080'
-                }]
-            },
-            tooltip: {
-                formatter: function() {
-                        return '<b>'+ this.series.name +'</b><br/>'+
-                        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) +'<br/>'+
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: 'Random data',
-                data: (function() {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime(),
-                        i;
-    
-                    for (i = -19; i <= 0; i++) {
-                        data.push({
-                            x: time + i * 1000,
-                            y: Math.random()
-                        });
-                    }
-                    return data;
-                })()
-            }]
-        });
+                text: ytitle 
+            }
+        },
+        tooltip: {
+            valueSuffix: unit
+        },
+        series: ydata
     });
-    
+
+} 
+var xdata =['2014-11-10 17:33:00', '2014-11-10 17:33:00', '2014-11-10 17:34:00', '2014-11-10 17:35:00', '2014-11-10 17:36:00', '2014-11-10 17:37:00','2014-11-10 17:38:00', '2014-11-10 17:39:00', '2014-11-10 17:40:00', '2014-11-10 17:41:00', '2014-11-10 17:42:00', '2014-11-10 17:43:00'];
+var ydata = [{type: 'spline',name: '德国机房',data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]},{type: 'line',name: '美国机房',data: [9.0, 6.9, 9.5, 14.5, 24.2, 21.5, 25.2, 26.5, 12.3, 10.3, 1.9, 19.6]}];
+var title = "测试";
+var unit = "M/S";
+var ytitle = "网速(M/S)";
+$(function(){
+	drawChart($('#container'),title,"192.168.30.49",ytitle,unit,xdata,ydata);
+	drawChart($('#container1'),title,"192.168.30.49",ytitle,unit,xdata,ydata);
 });
 </script>
 </head>
 <body>
 	<script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
-	<script src="${ctx}/static/scripts/highcharts/modules/exporting.js"></script>
+	<script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script>
 	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </body>

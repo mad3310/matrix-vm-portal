@@ -1032,7 +1032,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return  containerMonitorModels;
 	}
 	
-	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip){		
+	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip,String mclusterName){		
 		ContainerMonitorModel containerMonitorModel = null;
 		try {
 				containerMonitorModel = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
@@ -1041,6 +1041,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		
 		logger.debug("获得集群监控数据");
+		containerMonitorModel.setMclusterName(mclusterName);
 		return  containerMonitorModel;
 
 	}	
