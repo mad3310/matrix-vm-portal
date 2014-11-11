@@ -540,6 +540,7 @@
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 
+                <admin.pwd>000000</admin.pwd>
             </properties>
         </profile>
 
@@ -567,6 +568,7 @@
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 
+                <admin.pwd>000000</admin.pwd>
             </properties>
         </profile>
         
@@ -595,6 +597,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                
+                <admin.pwd>000000</admin.pwd>
                 
             </properties>
         </profile>
@@ -625,6 +629,7 @@
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 
+                <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>
         </profile>
 
