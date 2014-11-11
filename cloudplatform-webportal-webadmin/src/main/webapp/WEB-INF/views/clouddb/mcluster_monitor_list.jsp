@@ -28,6 +28,10 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-xs-3">
+			<small><font color="gray">*注：监控数据每分钟刷新一次.</font></small>
+		</div>
+
 	</div>
 </div>
 <!-- /.page-content-area -->
