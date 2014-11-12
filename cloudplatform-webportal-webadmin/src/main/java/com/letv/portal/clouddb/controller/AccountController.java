@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordEncoder;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.model.UserModel;
@@ -58,7 +59,7 @@ public class AccountController {
 				return "/account/login";
 			}*/
 			
-			if(!"sysadmin".equals(loginName) || !"000000".equals(password) ) {
+			if(!"sysadmin".equals(loginName) || !ConfigUtil.getString("admin.pwd").equals(password) ) {
 				request.setAttribute("error", "用户名或密码错误！");
 				return "/account/login";
 			}
