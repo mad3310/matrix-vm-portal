@@ -286,6 +286,8 @@ public class PythonServiceImpl implements IPythonService{
 	}
 	
 	
+	
+	
 	public String getDbInnodbBufferMemalloc(String ip)throws Exception{
 	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/memallco";
 	    String result = HttpClient.get(url);

@@ -18,6 +18,7 @@ import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -32,7 +33,8 @@ public class MonitorController {
 	
 	@Resource
 	private IContainerService containerService;
-	
+	@Resource
+	private IMonitorService monitorService;
 	@Resource
 	private IContainerProxy containerProxy;
 	
@@ -97,5 +99,10 @@ public class MonitorController {
 		return result;
 	}
 	
+	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorClusterDetail(@PathVariable Long mclusterId,ResultObject result) {
+		result.setData(this.monitorService.getMonitorViewData(mclusterId));
+		return result;
+	}
 
 }

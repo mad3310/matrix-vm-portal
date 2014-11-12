@@ -67,6 +67,9 @@
 			<if test="ipAddr != null ">
 				and C.IP_ADDR=#{ipAddr}
 			</if>
+			<if test="mclusterId != null ">
+				and C.MCLUSTER_ID=#{mclusterId}
+			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IMonitorViewDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="MonitorView">
+		<result column="ID" property="id" />
+		<result column="TITLE_TEXT" property="titleText" />
+		<result column="SUB_TITLE_TEXT" property="subTitleText" />
+        <result column="Y_AXIS_TEXT" property="yAxisText" />
+        <result column="TOOLTIP_SUFFIX" property="tooltipSuffix" />
+        <result column="FLUSH_TIME" property="flushTime" />
+        <result column="DETAIL_TABLE" property="detailTable" />
+        <result column="STATUS" property="status" />
+
+	</resultMap>
+	
+
+	<!-- WEBPORTAL_DB table all fields -->
+	<sql id="Base_Column_List">
+		m.ID,m.TITLE_TEXT,m.SUB_TITLE_TEXT,m.Y_AXIS_TEXT,m.TOOLTIP_SUFFIX,m.FLUSH_TIME,m.DETAIL_TABLE,m.STATUS
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and m.ID=#{id}
+			</if>
+			<if test="titleText != null  ">
+				and m.TITLE_TEXT=#{titleText}
+			</if>
+			<if test="subTitleText != null  ">
+				and m.SUB_TITLE_TEXT=#{subTitleText}
+			</if>
+			<if test="yAxisText != null  ">
+				and m.Y_AXIS_TEXT=#{yAxisText}
+			</if>
+			<if test="tooltipSuffix != null  ">
+				and m.TOOLTIP_SUFFIX=#{tooltipSuffix}
+			</if>
+			<if test="flushTime != null  ">
+				and m.FLUSH_TIME=#{flushTime}
+			</if>
+			<if test="detailTable != null  ">
+				and m.DETAIL_TABLE=#{detailTable}
+			</if>	
+			<if test="status != null  ">
+				and m.STATUS=#{status}
+			</if>					
+		</trim>
+	</sql>
+
+
+	<select id="selectById" resultMap="BaseResultMap"
+		parameterType="Long">
+		select
+		<include refid="Base_Column_List" /> 
+		from WEBPORTAL_MONITOR_INDEX m
+		where 1=1
+	    and m.ID=#{id}
+	</select>
+
+</mapper>   
