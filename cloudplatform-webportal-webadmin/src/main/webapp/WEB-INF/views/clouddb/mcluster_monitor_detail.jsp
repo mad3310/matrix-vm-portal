@@ -131,9 +131,9 @@ function queryNodeMonitorDetail(){
 		success : function(data) {
 			error(data);
 			var array = data.data;
-			// if($('#header_mcluster_name').html().indexOf(array[0].mclusterName) < 0){
-			// 	$("#header_mcluster_name").append(array[0].mclusterName);
-			// }
+			if($('#header_mcluster_name').html().indexOf(array.mclusterName) < 0){
+				$("#header_mcluster_name").append(array.mclusterName);
+			}
 
 			$("#tby-node-info tr").remove();
 			$("#tby-db-info tr").remove();
@@ -152,9 +152,6 @@ function queryClusterMonitorDetail(){
 		success : function(data) {
 			error(data);
 			var array = data.data;
-			// if($('#header_mcluster_name').html().indexOf(array[0].mclusterName) < 0){
-			// 	$("#header_mcluster_name").append(array[0].mclusterName);
-			// }
 
 			$("#tby-cluster-info tr").remove();
 			addDataToTable(array.clMoList,$("#tby-cluster-info"),"cluster");
