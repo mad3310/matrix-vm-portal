@@ -6,7 +6,7 @@ import java.util.List;
 public class MonitorViewYModel {
 	private String type;
 	private String name;
-	private List<String> data =new ArrayList<String>();
+	private List<Integer> data =new ArrayList<Integer>();
 	public String getType() {
 		return type;
 	}
@@ -19,12 +19,13 @@ public class MonitorViewYModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<String> getData() {
+	public List<Integer> getData() {
 		return data;
 	}
-	public void setData(List<String> data) {
+	public void setData(List<Integer> data) {
 		this.data = data;
 	}
+    
 
    
 	

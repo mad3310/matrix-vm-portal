@@ -92,7 +92,8 @@ public class MonitorControllerTest extends AbstractTest{
 	@Test
 	public void monitorView(){
 //		String ip ="10.200.85.48";
-       while(true){
+		boolean flag = true;
+       while(flag){
     	   try {			
 			this.monitorProxy.collectMclusterServiceData();
 		} catch (Exception e) {
@@ -101,7 +102,7 @@ public class MonitorControllerTest extends AbstractTest{
 		}
     		
        }
-	
+       System.out.println("xx");
 	}
 
 	@Test
@@ -114,7 +115,7 @@ public class MonitorControllerTest extends AbstractTest{
 	}
 	@Test
 	public void monitorView2(){
-		this.monitorService.getMonitorViewData(338L);
+		this.monitorService.getMonitorViewData(2144L);
 		System.out.println(this.monitorService.getMonitorViewData(338L));
 	}
 	
