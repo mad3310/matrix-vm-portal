@@ -10,8 +10,8 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
-public class ContainerModel extends BaseModel {
 	
+public class ContainerModel extends BaseModel {
 	private static final long serialVersionUID = 4029730587083735122L;
 	
 	private String containerName; //节点名称  

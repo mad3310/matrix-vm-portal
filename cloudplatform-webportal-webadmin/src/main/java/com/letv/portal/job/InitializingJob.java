@@ -43,7 +43,7 @@ public class InitializingJob {
 	@PostConstruct
 	public void initScheduler() throws  SchedulerException,ParseException,ClassNotFoundException {
 		
-		if("Y".equals(START_TIMING_JOBS)) {
+		
 			logger.info("initScheduler start....");
 			Scheduler scheduler = schedulerFactoryBean.getScheduler();
 			
@@ -84,12 +84,12 @@ public class InitializingJob {
 			}
 			logger.info("initScheduler success");
 		}
-	}
+	
 	
 	public List<ScheduleJobModel> getJobs(){
 		List<ScheduleJobModel> jobs = new ArrayList<ScheduleJobModel>();
 		//测试数据 start
-		/*ScheduleJobModel testJob = new ScheduleJobModel();
+		ScheduleJobModel testJob = new ScheduleJobModel();
 		
 		testJob.setJobName("test");
 		testJob.setJobMethod("test");
@@ -98,38 +98,38 @@ public class InitializingJob {
 		testJob.setCronExpression("0/30 * * * * ?");
 		testJob.setDescn("测试job初始化");
 		jobs.add(testJob);
-		*/
+		
 		/*
 		 * 业务检查job
 		 */
-		ScheduleJobModel mclusterJob = new ScheduleJobModel();
-		mclusterJob.setJobName("checkMclusterStatus");
-		mclusterJob.setJobMethod("checkMclusterStatus");
-		mclusterJob.setJobGroup("webportal");
-		mclusterJob.setJobStatus("1");
-		mclusterJob.setCronExpression("0 0/5 * * * ?");
-		mclusterJob.setDescn("检查container集群状态");
-		jobs.add(mclusterJob);
-		
-		ScheduleJobModel containerJob = new ScheduleJobModel();
-		containerJob.setJobName("checkContainerStatus");
-		containerJob.setJobMethod("checkContainerStatus");
-		containerJob.setJobGroup("webportal");
-		containerJob.setJobStatus("1");
-		containerJob.setCronExpression("0 0/5 * * * ?");
-		containerJob.setDescn("检查container单节点状态");
-		jobs.add(containerJob);
-		
-		ScheduleJobModel checkMclusterCount = new ScheduleJobModel();
-		checkMclusterCount.setJobName("checkMclusterCount");
-		checkMclusterCount.setJobMethod("checkMclusterCount");
-		checkMclusterCount.setJobGroup("webportal");
-		checkMclusterCount.setJobStatus("1");
-//		checkMclusterCount.setCronExpression("0/30 * * * * ?");
-		checkMclusterCount.setCronExpression("0 0/10 * * * ?");
-		checkMclusterCount.setDescn("检查container单节点状态");
-		jobs.add(checkMclusterCount);
-		
+		if("Y".equals(START_TIMING_JOBS)) {
+			ScheduleJobModel mclusterJob = new ScheduleJobModel();
+			mclusterJob.setJobName("checkMclusterStatus");
+			mclusterJob.setJobMethod("checkMclusterStatus");
+			mclusterJob.setJobGroup("webportal");
+			mclusterJob.setJobStatus("1");
+			mclusterJob.setCronExpression("0 0/5 * * * ?");
+			mclusterJob.setDescn("检查container集群状态");
+			jobs.add(mclusterJob);
+			
+			ScheduleJobModel containerJob = new ScheduleJobModel();
+			containerJob.setJobName("checkContainerStatus");
+			containerJob.setJobMethod("checkContainerStatus");
+			containerJob.setJobGroup("webportal");
+			containerJob.setJobStatus("1");
+			containerJob.setCronExpression("0 0/5 * * * ?");
+			containerJob.setDescn("检查container单节点状态");
+			jobs.add(containerJob);
+			
+			ScheduleJobModel checkMclusterCount = new ScheduleJobModel();
+			checkMclusterCount.setJobName("checkMclusterCount");
+			checkMclusterCount.setJobMethod("checkMclusterCount");
+			checkMclusterCount.setJobGroup("webportal");
+			checkMclusterCount.setJobStatus("1");
+			checkMclusterCount.setCronExpression("0 0/10 * * * ?");
+			checkMclusterCount.setDescn("检查container单节点状态");
+			jobs.add(checkMclusterCount);
+		}
 		return jobs;
 	}
       

@@ -90,7 +90,7 @@ public class DefaultEmailSender implements ITemplateMessageSender {
         }
         if (mail.getText() != null) {
             if (mail.getText().endsWith(".ftl")) {
-                helper.setText(getMailText(mail.getText(), mail.getModel()));
+                helper.setText(getMailText(mail.getText(), mail.getModel()),mail.isHtml());
             } else {
                 helper.setText(mail.getText(), mail.isHtml());
             }

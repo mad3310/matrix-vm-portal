@@ -574,6 +574,7 @@ function createDbUser(){
         success: function (data) {
         	error(data);
         	$("#create-dbuser-form").modal("hide");
+        	success("数据库用户创建成功,请查收邮件获取用户相关信息!",3000);
         	queryDbUser();
 			$('#db_user_apply_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#db_user_apply_form').find('[name="optionTemplate"]').remove();
@@ -615,6 +616,7 @@ function editDbUserCmd(){
 		success:function(data){
         	error(data);
 			$("#edit-dbuser-form").modal("hide");
+			success("数据库用户修改成功,请查收邮件获取用户相关信息!",3000);
 			queryDbUser();
 		}
 	});
@@ -632,6 +634,7 @@ function deleteDbUser(obj){
 			type:'delete',
 			success:function(data){
 				error(data);
+				success("数据库用户删除成功!");
 				queryDbUser();
 			}
 		});

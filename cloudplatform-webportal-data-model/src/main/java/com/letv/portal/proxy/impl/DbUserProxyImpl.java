@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
@@ -34,8 +35,10 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		
 		String[] ips = dbUserModel.getAcceptIp().split(",");	
 		StringBuffer ids = new StringBuffer();
+		String password = PasswordRandom.genStr();
 		for (String ip : ips) {
 			dbUserModel.setAcceptIp(ip);
+			dbUserModel.setPassword(password);
 			this.dbUserService.insert(dbUserModel);
 			ids.append(dbUserModel.getId()).append(",");
 		}

@@ -1,11 +1,10 @@
 package com.letv.portal.python.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
-import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 
@@ -69,22 +68,11 @@ public interface IBuildTaskService {
 	 */
 	public boolean initContainer(MclusterModel mclusterModel,Long dbId);
 	
-	/**Methods Name: buildResultToMgr <br>
+	/**Methods Name: removeMcluster <br>
 	 * Description: <br>
 	 * @author name: liuhao1
-	 * @param buildType
-	 * @param result
-	 * @param detail
+	 * @param mcluster
 	 */
-	public void buildResultToMgr(String buildType,String result,String detail,String to);
-	
-	/**Methods Name: buildResultToUser <br>
-	 * Description: <br>
-	 * @author name: liuhao1
-	 * @param buildType
-	 */
-	public void buildResultToUser(String buildType,Long to);
-	
 	public void removeMcluster(MclusterModel mcluster);
 	/**
 	 * Methods Name: deleteUser <br>

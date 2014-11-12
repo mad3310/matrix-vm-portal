@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -22,6 +20,8 @@ import org.springframework.stereotype.Service;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.JsonUtils;
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.ContainerMonitorStatus;
@@ -244,7 +244,24 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(analysisResult(transResult(result))) {
 				resultMsg = "成功";
 				status = DbStatus.NORMAL.getValue();
-				this.buildResultToUser("DB数据库" + params.get("dbName") + "创建",((BigInteger)params.get("createUser")).longValue());
+				List<ContainerModel> containers = this.containerService.selectByMclusterId(((BigInteger)params.get("mclusterId")).longValue());
+				Map<String,Object> glbParams = new HashMap<String,Object>();
+				List<String> urlPorts = new ArrayList<String>();
+				for (ContainerModel container : containers) {
+					if("mclusternode".equals(container.getType())) {
+						urlPorts.add(container.getIpAddr() + ":3306");
+					}
+				}
+				glbParams.put("User", "monitor");
+				glbParams.put("Pass", params.get("sstPwd"));
+				glbParams.put("Addr", "0.0.0.0");
+				glbParams.put("Port", "3306");
+				glbParams.put("Backend", urlPorts);
+				
+				Map<String,Object> emailParams = new HashMap<String,Object>();
+				emailParams.put("dbName", params.get("dbName"));
+				emailParams.put("glbStr", JsonUtils.writeObject(glbParams));
+				this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDb.ftl");
 			} else {
 				resultMsg = "失败";
 				status = DbStatus.BUILDFAIL.getValue();
@@ -283,7 +300,15 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					Map response = (Map) transResult(result).get("response");
 					String userPwd = (String) response.get("user_password");
-					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "(密码:"+userPwd+")创建", ((BigInteger)params.get("createUser")).longValue());
+					
+					Map<String,Object> emailParams = new HashMap<String,Object>();
+					emailParams.put("dbUserName", dbUserModel.getUsername());
+					emailParams.put("dbUserPassword", dbUserModel.getPassword());
+					emailParams.put("ip", dbUserModel.getAcceptIp());
+					emailParams.put("dbName", params.get("dbName"));
+					emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
+					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
+					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDbUser.ftl");
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
@@ -313,7 +338,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				if(analysisResult(transResult(result))) {
 					resultMsg="成功";
 					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
-					this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", ((BigInteger)params.get("createUser")).longValue());
+					Map<String,Object> emailParams = new HashMap<String,Object>();
+					emailParams.put("dbUserName", dbUserModel.getUsername());
+					emailParams.put("dbUserPassword", "-");
+					emailParams.put("ip", dbUserModel.getAcceptIp());
+					emailParams.put("dbName", params.get("dbName"));
+					emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
+					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
+					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"updateDbUser.ftl");
 				} else {
 					resultMsg="失败";
 					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
@@ -348,7 +380,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 		    		if(analysisResult(transResult(result))) {
 		    			resultMsg="用户删除成功";
-		    			this.buildResultToUser("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "删除",((BigInteger)params.get("createUser")).longValue());
+		    			Map<String,Object> emailParams = new HashMap<String,Object>();
+						emailParams.put("dbUserName", dbUserModel.getUsername());
+						emailParams.put("dbUserPassword", "-");
+						emailParams.put("ip", dbUserModel.getAcceptIp());
+						emailParams.put("dbName", params.get("dbName"));
+						emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
+						emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
+						this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"deleteDbUser.ftl");
 		    		} else {
 		    			resultMsg="用户删除失败";
 		    		}
@@ -728,7 +767,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return flag;
 	}
 	
-	@Override
 	public void buildResultToMgr(String buildType,String result,String detail,String to){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("buildType", buildType);
@@ -742,13 +780,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			logger.error(e.getMessage());
 		}
 	}
-	@Override
-	public void buildResultToUser(String buildType,Long to){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("buildType", buildType);
+
+	public void email4User(Map<String,Object> params,Long to,String ftlName){
 		UserModel user = this.userService.selectById(to);
 		if(null != user) {
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知","buildForUser.ftl",map);
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知",ftlName,params);
+			mailMessage.setHtml(true);
 			try {
 				defaultEmailSender.sendMessage(mailMessage);
 			} catch (Exception e) {
@@ -758,6 +795,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			
 		}
 	}
+	
 	@Override
 	@Async
 	public void removeMcluster(MclusterModel mcluster) {
@@ -898,7 +936,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		DbUserModel dbUserModel = new DbUserModel();
 		dbUserModel.setDbId(dbId);
 		dbUserModel.setUsername("admin");
-		dbUserModel.setPassword("admin");
+		dbUserModel.setPassword(PasswordRandom.genStr());
 		dbUserModel.setAcceptIp("%");
      	dbUserModel.setType(DbUserRoleStatus.MANAGER.getValue());
 		dbUserModel.setMaxConcurrency(50);
