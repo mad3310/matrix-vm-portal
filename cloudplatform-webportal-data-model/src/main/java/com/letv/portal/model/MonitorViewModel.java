@@ -8,7 +8,7 @@ public class MonitorViewModel {
 	private String ytitle;
 	private String unit;
 	private List<String> xdata =new ArrayList<String>();
-	private List<MonitorViewYModel> monitorViewYModels;
+	private List<MonitorViewYModel> ydata;
 	public String getTitle() {
 		return title;
 	}
@@ -34,12 +34,13 @@ public class MonitorViewModel {
 	public void setXdata(List<String> xdata) {
 		this.xdata = xdata;
 	}
-	public List<MonitorViewYModel> getMonitorViewYModels() {
-		return monitorViewYModels;
+	public List<MonitorViewYModel> getYdata() {
+		return ydata;
 	}
-	public void setMonitorViewYModels(List<MonitorViewYModel> monitorViewYModels) {
-		this.monitorViewYModels = monitorViewYModels;
+	public void setYdata(List<MonitorViewYModel> ydata) {
+		this.ydata = ydata;
 	}
+
 	
 	
 }

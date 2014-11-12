@@ -105,11 +105,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    monitorViewModel.setTitle(monitorIndexModel.getTitleText());
 	    monitorViewModel.setYtitle(monitorIndexModel.getyAxisText());
 	    monitorViewModel.setUnit(monitorIndexModel.getTooltipSuffix());
-	    monitorViewModel.setMonitorViewYModels(monitorViewYModel);//y
-	 
-	    String result =  (JSONObject.toJSON(monitorViewModel)).toString().replace("monitorViewYModels", "ydata");
-	    MonitorViewModel mViewModel = JSONObject.parseObject(result, MonitorViewModel.class);
-		return mViewModel;
+	    monitorViewModel.setYdata(monitorViewYModel);//y
+
+		return monitorViewModel;
 	}
 	public List<MonitorDetailModel> selectDateTime(Map map){
 		return  this.monitorDao.selectDateTime(map);
