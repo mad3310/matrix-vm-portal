@@ -51,19 +51,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 					intoMclusterServiceDataDb(map);
 				}					
 			} catch (Exception e) {	
-				if(i==cSize-1){
-					logger.debug("集群出现错误，ip为"+ipAddr+" "+e.getMessage())	; 
-				}else {
-					for(int j=i+1;j<cSize;j++){		
-						ipAddr = cModels.get(j).getIpAddr();
-						try {
-							map =  this.buildService.getContainerServiceData(ipAddr);
-							intoMclusterServiceDataDb(map);
-						} catch (Exception ex) {
-							logger.debug("集群又出现错误，ip为"+ipAddr+" "+ex.getMessage()); 
-						}			
-					}
-				}
+				
 				
 			}
 		}

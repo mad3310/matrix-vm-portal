@@ -60,18 +60,14 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	}
 
 	@Override
-	public String getMonitorViewData(Long mclusterId) {
+	public MonitorViewModel getMonitorViewData(Long mclusterId) {
 	    Map map = new HashMap<String, Object>();
 	    Map mapMonitor = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
 	    map.put("type", "mclusternode");
 	    String detailValue = null;
-	    List<ContainerModel> list = this.containerService.selectByMap(map);
-	    
-	    
-	    
-	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(1L);
-	   
+	    List<ContainerModel> list = this.containerService.selectByMap(map);	    
+	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(1L);	   
 	    Map mapIndex = new HashMap<String, Object>();
 	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
 	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
@@ -110,8 +106,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    monitorViewModel.setYtitle(monitorIndexModel.getyAxisText());
 	    monitorViewModel.setUnit(monitorIndexModel.getTooltipSuffix());
 	    monitorViewModel.setMonitorViewYModels(monitorViewYModel);//y
-	    String result =  (JSONObject.toJSON(monitorViewModel)).toString().replace("monitorViewYModels", "ydata");
-		return result;
+//	    String result =  (JSONObject.toJSON(monitorViewModel)).toString().replace("monitorViewYModels", "ydata");
+	    
+		return monitorViewModel;
 	}
 	public List<MonitorDetailModel> selectDateTime(Map map){
 		return  this.monitorDao.selectDateTime(map);

@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.servlet.ModelAndView;
+
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorViewModel;
 
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 
-	public String getMonitorViewData(Long MclusterId);
+	public MonitorViewModel getMonitorViewData(Long MclusterId);
 	
 	public List<String> selectDistinct(Map map);
 	
