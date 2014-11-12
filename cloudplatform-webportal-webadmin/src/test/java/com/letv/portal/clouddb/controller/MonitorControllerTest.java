@@ -129,7 +129,7 @@ public class MonitorControllerTest extends AbstractTest{
 	
 	@Test
 	public void monitorView4(){
-    	System.out.println(this.monitorService.selectMonitorDetailData());
+//    	System.out.println(this.monitorService.selectMonitorDetailData());
     	System.out.println("xx");
 	}
 }
