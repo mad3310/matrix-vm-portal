@@ -100,9 +100,16 @@ public class MonitorController {
 		result.setData(this.containerProxy.selectMonitorDetailClusterData(ip));
 		return result;
 	}
-	
+	/**
+	 * Methods Name: mclusterMonitorCharts <br>
+	 * Description: 监控视图<br>
+	 * @author name: wujun
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorClusterDetail(@PathVariable Long mclusterId,ResultObject result) {
+	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,ResultObject result) {
 		result.setData(this.monitorService.getMonitorViewData(mclusterId));
 		return result;
 	}
