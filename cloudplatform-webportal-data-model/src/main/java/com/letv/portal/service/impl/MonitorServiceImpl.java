@@ -73,9 +73,13 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    Map mapIndex = new HashMap<String, Object>();
 	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
 	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
-		List<String> dateList = anaysiDate(monitorTimeModel);
-		Collections.reverse(dateList);
-		List<String> xdateList =   new ArrayList<String>(dateList);
+//	    List<String> dateList
+	    Map<String, Object> dateMap = anaysiDate(monitorTimeModel);
+	    List<String> dateXList =(List<String>) dateMap.get("x");
+	    List<String> dateYList =(List<String>) dateMap.get("y");
+		Collections.reverse(dateXList);
+		Collections.reverse(dateYList);
+		List<String> xdateList = new ArrayList<String>(dateXList);
 		xdateList.remove(xdateList.size()-1);
 		List<MonitorViewYModel> monitorViewYModel = new ArrayList<MonitorViewYModel>();
 		MonitorViewModel monitorViewModel =  new MonitorViewModel();
@@ -85,7 +89,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    	    	mapMonitor.put("detailName", s);
 	    	    	mapMonitor.put("dbName", monitorIndexModel.getDetailTable());
 	    	    	
-	    	    	List<MonitorDetailModel> listMonitorDetailModels =  selectMonitorDetailData(dateList,mapMonitor);
+	    	    	List<MonitorDetailModel> listMonitorDetailModels =  selectMonitorDetailData(dateYList,mapMonitor);
 	    	    	
 	    	    	List<Float> listStrings = new ArrayList<Float>();
 	    	    	for(MonitorDetailModel m:listMonitorDetailModels){	
@@ -121,43 +125,49 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
      * @author name: wujun
      * @return
      */
-    public List<String> anaysiDate(MonitorTimeModel monitorTimeModel){
+    public Map anaysiDate(MonitorTimeModel monitorTimeModel){
            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");  
+           SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
     	   Date d = new Date();       	   
            Calendar now = Calendar.getInstance();  
-           now.setTime(d);  
-           List<String> list = new ArrayList<String>();
-
+           now.setTime(d); 
+           HashMap<String, Object> map = new HashMap<String, Object>();
+           List<String> listx = new ArrayList<String>();
+           List<String> listy = new ArrayList<String>();
         	   switch (monitorTimeModel.getStrategy()) {
 			    case 1:
 			           for(int i=0;i<31;i++){
 				          now.add(Calendar.MINUTE, -2);
-				          list.add(sdf.format(now.getTime()));
+				          listx.add(sdf.format(now.getTime()));
+				          listy.add(sdf1.format(now.getTime()));
 			           }
 				break;
 			    case 2:
 			           for(int i=0;i<31;i++){
 			        	   now.add(Calendar.MINUTE, -6);
-			        	   list.add(sdf.format(now.getTime()));
+			        	   listx.add(sdf.format(now.getTime()));
+			        	   listy.add(sdf1.format(now.getTime()));
 			           }				  
 				break;
 			    case 3:
 			           for(int i=0;i<31;i++){
 			        	   now.add(Calendar.MINUTE, -48);
-			        	   list.add(sdf.format(now.getTime()));
+			        	   listx.add(sdf.format(now.getTime()));
+			        	   listy.add(sdf1.format(now.getTime()));
 			           }				   
 				break;
 			    default:
 			           for(int i=0;i<31;i++){
 				          now.add(Calendar.MINUTE, -2);
-				          list.add(sdf.format(now.getTime()));
+				          listx.add(sdf.format(now.getTime()));
+				          listy.add(sdf1.format(now.getTime()));
 			           }
 				break;
 			   }
-        	
-        	   
+        	   map.put("x", listx);
+        	   map.put("y", listy);
                        
-           return list; 
+           return map; 
     } 
    
     
@@ -166,8 +176,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     	List<MonitorDetailModel> listMDetailModels = new ArrayList<MonitorDetailModel>(); 	
      		for(int i=0;i<list.size();i++){             	
              	if(i!=list.size()-1){
-             		map.put("end", list.get(i));
-             		map.put("start", list.get(i+1)); 
+             		map.put("end", list.get(i+1));
+             		map.put("start", list.get(i)); 
              	    List<MonitorDetailModel> listMDetailModel = this.monitorDao.selectDateTime(map);
              	   if(listMDetailModel!=null&&listMDetailModel.size()!=0){
              	    listMDetailModels.add(listMDetailModel.get(0));
