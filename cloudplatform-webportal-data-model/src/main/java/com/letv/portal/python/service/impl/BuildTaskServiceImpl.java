@@ -1077,7 +1077,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					 MonitorDetailModel monitorDetailModel = new MonitorDetailModel();
 					 monitorDetailModel.setDbName(monitorIndexModel.getDetailTable());
 					 monitorDetailModel.setDetailName(keString.toString());
-					 monitorDetailModel.setDetailValue(listResponse.get(keString).toString());  
+					 monitorDetailModel.setDetailValue(Float.parseFloat(listResponse.get(keString).toString()));  
 					 monitorDetailModel.setContainerIp(containerIp);
 					 monitorDetailModels.add(monitorDetailModel);
 				}	

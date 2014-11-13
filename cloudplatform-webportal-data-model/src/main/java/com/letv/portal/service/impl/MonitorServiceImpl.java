@@ -156,6 +156,13 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			        	   listy.add(sdf1.format(now.getTime()));
 			           }				   
 				break;
+			    case 4:
+			           for(int i=0;i<31;i++){
+			        	   now.add(Calendar.MINUTE, -336);
+			        	   listx.add(sdf.format(now.getTime()));
+			        	   listy.add(sdf1.format(now.getTime()));
+			           }				   
+				break;
 			    default:
 			           for(int i=0;i<31;i++){
 				          now.add(Calendar.MINUTE, -2);
