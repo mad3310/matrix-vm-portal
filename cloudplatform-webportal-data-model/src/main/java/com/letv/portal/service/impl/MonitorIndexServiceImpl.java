@@ -25,7 +25,9 @@ public class MonitorIndexServiceImpl extends BaseServiceImpl<MonitorIndexModel> 
 		return this.monitorIndexDao;
 	}
 
-
+	public Long selectMonitorCount(){
+		return this.monitorIndexDao.selectMonitorCount();
+	}
 
 
 

@@ -60,14 +60,14 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	}
 
 	@Override
-	public MonitorViewModel getMonitorViewData(Long mclusterId) {
+	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId) {
 	    Map map = new HashMap<String, Object>();
 	    Map mapMonitor = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
 	    map.put("type", "mclusternode");
 	    String detailValue = null;
 	    List<ContainerModel> list = this.containerService.selectByMap(map);	    
-	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(1L);	   
+	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
 	    Map mapIndex = new HashMap<String, Object>();
 	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
 	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
@@ -153,7 +153,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     	return listMDetailModels;
     }
 
-
+    public Long selectMonitorCount(){
+    	return this.monitorIndexService.selectMonitorCount();
+    }
 
 
 }

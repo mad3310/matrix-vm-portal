@@ -4,5 +4,5 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.MonitorIndexModel;
 
 public interface IMonitorIndexDao extends IBaseDao<MonitorIndexModel>{
-
+	public Long selectMonitorCount();
 }

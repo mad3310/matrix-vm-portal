@@ -108,9 +108,23 @@ public class MonitorController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,ResultObject result) {
-		result.setData(this.monitorService.getMonitorViewData(mclusterId));
+	@RequestMapping(value="/{mclusterId}/{chartId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,ResultObject result) {
+		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId));
+		return result;
+	}
+	
+	/**
+	 * Methods Name: mclusterMonitorCharts <br>
+	 * Description: 监控视图数目<br>
+	 * @author name: wujun
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/mclusterChartsCount",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorChartsCount(@PathVariable Long mclusterId,ResultObject result) {
+		result.setData(this.monitorService.selectMonitorCount());
 		return result;
 	}
 
