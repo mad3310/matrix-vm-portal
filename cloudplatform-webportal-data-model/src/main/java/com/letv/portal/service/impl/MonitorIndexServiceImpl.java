@@ -1,6 +1,8 @@
 package com.letv.portal.service.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class MonitorIndexServiceImpl extends BaseServiceImpl<MonitorIndexModel> 
 		return this.monitorIndexDao;
 	}
 
-	public Long selectMonitorCount(){
+	public List<MonitorIndexModel> selectMonitorCount(){
 		return this.monitorIndexDao.selectMonitorCount();
 	}
 

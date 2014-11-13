@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.MonitorViewModel;
 
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
@@ -25,6 +26,6 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	public List<MonitorDetailModel> selectDateTime(Map map);
 	
-	public Long selectMonitorCount();
+	public List<MonitorIndexModel> selectMonitorCount();
 	
 }

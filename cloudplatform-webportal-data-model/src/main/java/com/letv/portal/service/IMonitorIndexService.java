@@ -1,5 +1,7 @@
 package com.letv.portal.service;
 
+import java.util.List;
+
 import com.letv.portal.model.MonitorIndexModel;
 
 public interface IMonitorIndexService extends IBaseService<MonitorIndexModel>{
@@ -9,5 +11,5 @@ public interface IMonitorIndexService extends IBaseService<MonitorIndexModel>{
 	 * @author name: wujun
 	 * @return
 	 */
-	public Long selectMonitorCount();
+	public List<MonitorIndexModel> selectMonitorCount();
 }

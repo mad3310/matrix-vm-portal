@@ -71,8 +71,8 @@
 	    and m.ID=#{id}
 	</select>
     
-    <select id="selectMonitorCount" resultType="Long">
-		select count(*) 
+    <select id="selectMonitorCount" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> 
 		from WEBPORTAL_MONITOR_INDEX m
 		where 1=1
 	</select>

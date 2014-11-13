@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
@@ -123,7 +124,7 @@ public class MonitorController {
 	 * @return
 	 */
 	@RequestMapping(value="/mclusterChartsCount",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorChartsCount(@PathVariable Long mclusterId,ResultObject result) {
+	public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
 		result.setData(this.monitorService.selectMonitorCount());
 		return result;
 	}

@@ -153,7 +153,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     	return listMDetailModels;
     }
 
-    public Long selectMonitorCount(){
+    public List<MonitorIndexModel> selectMonitorCount(){
     	return this.monitorIndexService.selectMonitorCount();
     }
 
