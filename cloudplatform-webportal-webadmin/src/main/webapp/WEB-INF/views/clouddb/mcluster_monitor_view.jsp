@@ -7,6 +7,17 @@
 	</div>
 	<!-- /.page-header -->
 	<div class="row">
+		<div id="monitor-option" class="col-xs-12"> 
+			<div class="col-xs-3">
+				<select id="mclusterOption" name="mclusterId" class="form-control">
+				</select>
+			</div>
+			<div id="monitor-point-option" class="col-xs-3">
+				<select id="monitorPointOption" name="monitorPoint" class="form-control">
+					<option value=""></option>
+				</select>
+			</div>
+		</div>
 		<div id="monitor-view" class="col-xs-12"> 
 		</div>
 	</div>
@@ -68,17 +79,45 @@ function queryAllChart(clusterId){
 	});
 }
 
+function queryMcluster(){
+	$.ajax({
+		type:"get",		
+		url:"${ctx}/mcluster",
+		dataType:"json",
+		success:function(data){
+			error(data);
+			var mclustersInfo = data.data;
+			for(var i=0,len=mclustersInfo.length;i<len;i++)
+			{
+				var option = $("<option value=\""+mclustersInfo[i].id+"\">"
+								+mclustersInfo[i].mclusterName
+								+"</option>");
+				$("#mclusterOption").append(option);
+			}
+			queryAllChart(mclustersInfo[0].id);
+		}
+	});	
+}
+function queryMonitorPoint(){
+	$.ajax({
+		type:"get",		
+		url : "${ctx}/monitor/mclusterChartsCount",
+		dataType:"json",
+		success:function(data){
+			error(data);
+			var monitorPoint = data.data;
+			for(var i=0,len=monitorPoint.length;i<len;i++)
+			{
+				var option = $("<option value=\""+monitorPoint[i].id+"\">"
+								+monitorPoint[i].titleText
+								+"</option>");
+				$("#monitorPointOption").append(option);
+			}
+		}
+	});	
+}
 $(function(){
-	// $.ajax({
-	// 	type : "get",
-	// 	url : "${ctx}/monitor/2144",
-	// 	dataType : "json", 
-	// 	contentType : "application/json; charset=utf-8",
-	// 	success : function(data) {
-	// 		error(data);
-	// 		addChart("1",data.data)
-	// 	}	
-	// });
-	queryAllChart("2144");
+	queryMonitorPoint();
+	queryMcluster();
 });
 </script>
