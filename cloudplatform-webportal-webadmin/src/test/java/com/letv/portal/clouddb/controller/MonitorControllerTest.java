@@ -85,7 +85,7 @@ public class MonitorControllerTest extends AbstractTest{
 	public void insertMonitorDetail(){
 		MonitorDetailModel monitorDetailModel = new MonitorDetailModel();
 		monitorDetailModel.setDetailName("monitor");
-		monitorDetailModel.setDetailValue("test1");
+		monitorDetailModel.setDetailValue(111);
 		monitorDetailModel.setDbName("WEBPORTAL_MONITOR_DETAIL_XX");
 //		this.monitorService.insert(monitorDetailModel);
 	}

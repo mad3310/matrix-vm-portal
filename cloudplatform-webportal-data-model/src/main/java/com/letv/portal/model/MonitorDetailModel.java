@@ -17,7 +17,7 @@ public class MonitorDetailModel extends BaseModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String detailName;
-	private String detailValue;
+	private float detailValue;
 	private String dbName;
 	private Timestamp monitorDate;
 	private String containerIp;
@@ -48,11 +48,12 @@ public class MonitorDetailModel extends BaseModel {
 		this.detailName = detailName;
 	}
 
-	public String getDetailValue() {
+
+	public float getDetailValue() {
 		return detailValue;
 	}
 
-	public void setDetailValue(String detailValue) {
+	public void setDetailValue(float detailValue) {
 		this.detailValue = detailValue;
 	}
 

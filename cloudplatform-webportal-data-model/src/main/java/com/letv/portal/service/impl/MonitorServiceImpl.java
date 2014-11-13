@@ -94,9 +94,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    	    	List<Float> listStrings = new ArrayList<Float>();
 	    	    	for(MonitorDetailModel m:listMonitorDetailModels){	
 	    	    		if(m==null){
-	    	    			listStrings.add(Float.parseFloat("0"));
+	    	    			listStrings.add((float) 0);
 	    	    		}else {
-		    	    		listStrings.add(Float.parseFloat((m.getDetailValue())));	
+		    	    		listStrings.add(m.getDetailValue());	
 						}
 	    	    	}	    	    
     	    	  	MonitorViewYModel Y = new MonitorViewYModel();
