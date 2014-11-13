@@ -68,7 +68,7 @@
 		select 
         <include refid="Base_Column_List" /> 
 	   	from ${dbName} m
-        where m.MONITOR_DATE between #{start} and #{end} 
+        where m.DETAIL_NAME=#{detailName} and m.MONITOR_DATE between #{start} and #{end} 
 	</select>
 
 

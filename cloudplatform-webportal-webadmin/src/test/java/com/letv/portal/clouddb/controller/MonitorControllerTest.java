@@ -117,7 +117,7 @@ public class MonitorControllerTest extends AbstractTest{
 	@Test
 	public void monitorView2(){
 		MonitorTimeModel monitorTimeModel = new MonitorTimeModel();
-		monitorTimeModel.setStrategy(2);
+		monitorTimeModel.setStrategy(1);
 		this.monitorService.getMonitorViewData(2144L,1L,monitorTimeModel);
 		System.out.println();
 	}
