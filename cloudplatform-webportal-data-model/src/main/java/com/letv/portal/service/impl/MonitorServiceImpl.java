@@ -4,6 +4,7 @@ package com.letv.portal.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +74,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
 	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
 		List<String> dateList = anaysiDate(monitorTimeModel);
+		Collections.reverse(dateList);
 		List<String> xdateList =   new ArrayList<String>(dateList);
 		xdateList.remove(xdateList.size()-1);
 		List<MonitorViewYModel> monitorViewYModel = new ArrayList<MonitorViewYModel>();
@@ -95,7 +97,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    	    	}	    	    
     	    	  	MonitorViewYModel Y = new MonitorViewYModel();
     	    	 	Y.setData(listStrings);  
-	    	       	Y.setName(s+"-"+c.getIpAddr());
+	    	       	Y.setName(c.getIpAddr()+"-"+s);
 	    	       	Y.setType("spline");
 	 	    	   
 	    	     	monitorViewYModel.add(Y);
@@ -120,7 +122,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
      * @return
      */
     public List<String> anaysiDate(MonitorTimeModel monitorTimeModel){
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+           SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");  
     	   Date d = new Date();       	   
            Calendar now = Calendar.getInstance();  
            now.setTime(d);  
