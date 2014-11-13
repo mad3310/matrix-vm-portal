@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.model.MonitorViewModel;
 
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
@@ -20,7 +21,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
      * @param MclusterId
      * @return
      */
-	public MonitorViewModel getMonitorViewData(Long MclusterId,Long chartId);
+	public MonitorViewModel getMonitorViewData(Long MclusterId,Long chartId,MonitorTimeModel monitorTimeModel);
 	
 	public List<String> selectDistinct(Map map);
 	

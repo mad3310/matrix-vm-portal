@@ -19,6 +19,7 @@ import com.letv.portal.dao.IMonitorViewDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.model.MonitorViewModel;
 import com.letv.portal.model.MonitorViewYModel;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -60,7 +61,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	}
 
 	@Override
-	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId) {
+	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId,MonitorTimeModel monitorTimeModel) {
 	    Map map = new HashMap<String, Object>();
 	    Map mapMonitor = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
@@ -71,7 +72,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    Map mapIndex = new HashMap<String, Object>();
 	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
 	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
-		List<String> dateList = anaysiDate(map);
+		List<String> dateList = anaysiDate(monitorTimeModel);
 		List<String> xdateList =   new ArrayList<String>(dateList);
 		xdateList.remove(xdateList.size()-1);
 		List<MonitorViewYModel> monitorViewYModel = new ArrayList<MonitorViewYModel>();
@@ -118,17 +119,42 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
      * @author name: wujun
      * @return
      */
-    public List<String> anaysiDate(Map map){
+    public List<String> anaysiDate(MonitorTimeModel monitorTimeModel){
            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-    	   Date d = new Date();   
-    	   
+    	   Date d = new Date();       	   
            Calendar now = Calendar.getInstance();  
            now.setTime(d);  
            List<String> list = new ArrayList<String>();
-           for(int i=0;i<31;i++){
-        	   now.add(Calendar.MINUTE, -10);
-        	   list.add(sdf.format(now.getTime()));
-           }              
+
+        	   switch (monitorTimeModel.getStrategy()) {
+			    case 1:
+			           for(int i=0;i<31;i++){
+				          now.add(Calendar.MINUTE, -2);
+				          list.add(sdf.format(now.getTime()));
+			           }
+				break;
+			    case 2:
+			           for(int i=0;i<31;i++){
+			        	   now.add(Calendar.MINUTE, -6);
+			        	   list.add(sdf.format(now.getTime()));
+			           }				  
+				break;
+			    case 3:
+			           for(int i=0;i<31;i++){
+			        	   now.add(Calendar.MINUTE, -48);
+			        	   list.add(sdf.format(now.getTime()));
+			           }				   
+				break;
+			    default:
+			           for(int i=0;i<31;i++){
+				          now.add(Calendar.MINUTE, -2);
+				          list.add(sdf.format(now.getTime()));
+			           }
+				break;
+			   }
+        	
+        	   
+                       
            return list; 
     } 
    

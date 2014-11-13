@@ -15,6 +15,7 @@ import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -115,8 +116,10 @@ public class MonitorControllerTest extends AbstractTest{
 	}
 	@Test
 	public void monitorView2(){
-		this.monitorService.getMonitorViewData(2144L);
-		System.out.println(this.monitorService.getMonitorViewData(338L));
+		MonitorTimeModel monitorTimeModel = new MonitorTimeModel();
+		monitorTimeModel.setStrategy(2);
+		this.monitorService.getMonitorViewData(2144L,1L,monitorTimeModel);
+		System.out.println();
 	}
 	
 	@Test
@@ -130,7 +133,7 @@ public class MonitorControllerTest extends AbstractTest{
 	
 	@Test
 	public void monitorView4(){
-//    	System.out.println(this.monitorService.selectMonitorDetailData());
+   	    this.monitorService.selectMonitorCount();
     	System.out.println("xx");
 	}
 }

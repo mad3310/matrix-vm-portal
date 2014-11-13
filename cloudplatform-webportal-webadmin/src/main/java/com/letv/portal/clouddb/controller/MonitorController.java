@@ -16,6 +16,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
@@ -109,9 +110,11 @@ public class MonitorController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/{mclusterId}/{chartId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,ResultObject result) {
-		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId));
+	@RequestMapping(value="/{mclusterId}/{chartId}/{strategy}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
+		MonitorTimeModel monitorTimeModel = new MonitorTimeModel();
+		monitorTimeModel.setStrategy(strategy);
+		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,monitorTimeModel));
 		return result;
 	}
 	
