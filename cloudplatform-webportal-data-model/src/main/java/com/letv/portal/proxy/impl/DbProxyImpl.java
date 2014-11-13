@@ -75,7 +75,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		
 		MclusterModel mcluster = new MclusterModel();
 		
-		if(DbStatus.BUILDDING.getValue() == status) {//审核成功
+		if(DbStatus.BUILDDING.getValue().equals(status)) {//审核成功
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
 				mcluster.setMclusterName(mclusterName);
