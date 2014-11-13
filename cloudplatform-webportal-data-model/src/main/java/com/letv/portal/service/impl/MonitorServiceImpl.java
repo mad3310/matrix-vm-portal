@@ -84,12 +84,12 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    	    	
 	    	    	List<MonitorDetailModel> listMonitorDetailModels =  selectMonitorDetailData(dateList,mapMonitor);
 	    	    	
-	    	    	List<Integer> listStrings = new ArrayList<Integer>();
+	    	    	List<Float> listStrings = new ArrayList<Float>();
 	    	    	for(MonitorDetailModel m:listMonitorDetailModels){	
 	    	    		if(m==null){
-	    	    			listStrings.add(0);
+	    	    			listStrings.add(Float.parseFloat("0"));
 	    	    		}else {
-		    	    		listStrings.add(Integer.parseInt(m.getDetailValue()));	
+		    	    		listStrings.add(Float.parseFloat((m.getDetailValue())));	
 						}
 	    	    	}	    	    
     	    	  	MonitorViewYModel Y = new MonitorViewYModel();
@@ -125,7 +125,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
            Calendar now = Calendar.getInstance();  
            now.setTime(d);  
            List<String> list = new ArrayList<String>();
-           for(int i=0;i<61;i++){
+           for(int i=0;i<31;i++){
         	   now.add(Calendar.MINUTE, -10);
         	   list.add(sdf.format(now.getTime()));
            }              
