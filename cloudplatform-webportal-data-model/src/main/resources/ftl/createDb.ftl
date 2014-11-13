@@ -44,6 +44,7 @@ p {
 		<td>${dbName}</td>
 	</tr>
 </table>
+<br/>
 <table class="gridtable" style="margin: 20px">
 	<tr>
 		<th width="100px">glbance配置文件</th>
