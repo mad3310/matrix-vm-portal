@@ -7,23 +7,75 @@
 	</div>
 	<!-- /.page-header -->
 	<div class="row">
-		<div id="monitor-option" class="col-xs-12"> 
-			<div class="col-xs-3">
-				<select id="mclusterOption" name="mclusterId" class="form-control">
-				</select>
+		<div id="monitor-option" class="col-sm-12"> 
+			<div class="clearfix form-actions">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-1 control-label no-padding-right">Container集群</label>
+						<div class="col-sm-1">
+							<select id="mclusterOption" name="mclusterId" class="form-control">
+							</select>					
+						</div>
+						<label class="col-sm-1 control-label">监控点</label>
+						<div class="col-sm-2">
+							<select id="monitorPointOption" name="monitorPoint" class="form-control">
+								<option value=""></option>
+							</select>
+						</div>
+						<!-- <label class="col-sm-1 control-label">多选</label>
+						<div class="col-sm-1">
+							 <select multiple="multiple" class="multiselect form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+						</div> -->
+						
+						<label class="col-sm-1 control-label">时间</label>
+						<div class="col-sm-1">
+							<select id="queryTime" name="queryTime" class="form-control">
+								<option value="1">一小时</option>
+								<option value="2">三小时</option>
+								<option value="3">一天</option>
+								<option value="4">一周</option>
+							</select>
+						</div>
+						<div class="col-sm-1">
+							<button id="refresh-data" type="button" onclick="refreshChartForSelect()" class="btn btn-sm btn-primary">刷新</button>
+						</div>
+					</div>
+				</form>
 			</div>
-			<div id="monitor-point-option" class="col-xs-3">
-				<select id="monitorPointOption" name="monitorPoint" class="form-control">
-					<option value=""></option>
-				</select>
+		<div id="monitor-view" class="row">
+		</div>
+		<!-- <div class="space-24"></div> -->
+			<div id="monitor-view-demo" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide">
+				<div class="widget-box transparent ui-sortable-handle">
+					<div class="widget-header">
+						<h4 class="widget-title lighter">监控图</h4>
+						<div class="widget-toolbar no-border">
+							<a href="#" data-action="fullscreen" class="orange2">
+								<i class="ace-icon fa fa-expand"></i>
+							</a>
+							<a href="#" data-action="close">
+								<i class="ace-icon fa fa-times"></i>
+							</a>
+						</div>
+					</div>
+					<div class="widget-body">
+						<div name="monitor-view-demo-data" class="widget-main padding-6 no-padding-left no-padding-right">
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div id="monitor-view" class="col-xs-12"> 
-		</div>
 	</div>
 </div>
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
 <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script>
+
+<%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
 <script type="text/javascript">
 function drawChart(obj,title,ytitle,unit,xdata,ydata){
     $(obj).highcharts({
@@ -32,8 +84,10 @@ function drawChart(obj,title,ytitle,unit,xdata,ydata){
       
         },
         xAxis: {
+			type: 'datetime',                       
             categories: xdata 
         },
+        
         yAxis: {
             title: {
                 text: ytitle 
@@ -48,13 +102,15 @@ function drawChart(obj,title,ytitle,unit,xdata,ydata){
 } 
 
 function addChart(data){
-	var view = $('#monitor-view');
-	var div = $("<div name=\"data-chart\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div>");
-	div.appendTo(view);
+	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').removeAttr('id').appendTo($('#monitor-view'));
+	var div = $("<div name=\"data-chart\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
+	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
 	drawChart(div,data.title,data.ytitle,data.unit,data.xdata,data.ydata);
+	//draggable(viewDemo);
 }
 
 function queryAllChart(clusterId){
+	//$('#monitor-view div').remove();
 	$.ajax({
 		type : "get",
 		url : "${ctx}/monitor/mclusterChartsCount",
@@ -66,7 +122,7 @@ function queryAllChart(clusterId){
 			for (var i=0,len = array.length;i < len; i ++){
 				$.ajax({
 					type : "get",
-					url : "${ctx}/monitor/"+clusterId+"/"+array[i].id,
+					url : "${ctx}/monitor/"+clusterId+"/"+array[i].id+"/"+$('#queryTime').val(),
 					dataType : "json", 
 					contentType : "application/json; charset=utf-8",
 					success:function(data){
@@ -98,6 +154,7 @@ function queryMcluster(){
 		}
 	});	
 }
+
 function queryMonitorPoint(){
 	$.ajax({
 		type:"get",		
@@ -116,8 +173,54 @@ function queryMonitorPoint(){
 		}
 	});	
 }
+
+function refreshChartForSelect(){
+	var monitorPoint = $('#monitorPointOption').val();
+	var mclusterId= $('#mclusterOption').val();
+	var queryTime= $('#queryTime').val();
+	
+	if (monitorPoint != '')
+	{
+		$('#monitor-view div').remove();
+		$.ajax({
+			type : "get",
+			url : "${ctx}/monitor/"+mclusterId+"/"+monitorPoint+"/"+queryTime,
+			dataType : "json", 
+			contentType : "application/json; charset=utf-8",
+			success:function(data){
+		 		error(data);
+		 		addChart(data.data);
+			}
+		});
+	}else{
+		queryAllChart(mclusterId);
+	}
+}
+
+function draggable(obj){
+	 $(obj).sortable({
+	        connectWith: '.widget-container-col',
+			items:'> .widget-box',
+			handle: ace.vars['touch'] ? '.widget-header' : false,
+			cancel: '.fullscreen',
+			opacity:0.8,
+			revert:true,
+			forceHelperSize:true,
+			placeholder: 'widget-placeholder',
+			forcePlaceholderSize:true,
+			tolerance:'pointer',
+			start: function(event, ui) {
+				ui.item.parent().css({'min-height':ui.item.height()})
+			},
+			update: function(event, ui) {
+				ui.item.parent({'min-height':''})
+			}
+	    });
+}
+
 $(function(){
 	queryMonitorPoint();
 	queryMcluster();
+	$('.multiselect').multiselect();
 });
 </script>
