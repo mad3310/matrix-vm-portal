@@ -93,8 +93,7 @@ public class MonitorControllerTest extends AbstractTest{
 	@Test
 	public void monitorView(){
 //		String ip ="10.200.85.48";
-		boolean flag = true;
-       while(flag){
+		
     	   try {			
 			this.monitorProxy.collectMclusterServiceData();
 		} catch (Exception e) {
@@ -102,7 +101,6 @@ public class MonitorControllerTest extends AbstractTest{
 			e.printStackTrace();
 		}
     		
-       }
        System.out.println("xx");
 	}
 
@@ -130,10 +128,23 @@ public class MonitorControllerTest extends AbstractTest{
     	map.put("start", "2014-11-11"); 
     	System.out.println(this.monitorService.selectDateTime(map));
 	}
-	
 	@Test
 	public void monitorView4(){
-   	    this.monitorService.selectMonitorCount();
-    	System.out.println("xx");
+		for(int i=0;i<10;i++){
+			try {
+				System.out.println(i);
+				if(i==5){
+					System.out.println("Exception");
+					throw new Exception();
+				}				
+			} catch (Exception e) {
+				System.out.println(i);
+				if(i<10){
+					continue;
+				}
+			}
+			System.out.println(i);
 	}
+	}
+		
 }
