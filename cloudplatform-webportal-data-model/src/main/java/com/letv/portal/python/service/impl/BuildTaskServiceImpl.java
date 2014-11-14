@@ -1125,8 +1125,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	  return monitorDetailModels;
 	}
     
-
-	public Map getContainerServiceData(String ip)throws Exception{
+	@Override
+	public Map getContainerServiceData(String ip,String index)throws Exception{
 		Map map = new HashMap<String, Object>();
 		List<MonitorDetailModel> monitorDetailModels = new LinkedList<MonitorDetailModel>();
 		monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbInnodbBufferMemalloc(ip)),1L,ip);
@@ -1159,6 +1159,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	    map.put(14, monitorDetailModels);
 	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getWsrepStatusSlowestNetworkParam(ip)),15L,ip);
 	    map.put(15, monitorDetailModels);
+	    
+	    
+	    
 
 		return map;
 	}

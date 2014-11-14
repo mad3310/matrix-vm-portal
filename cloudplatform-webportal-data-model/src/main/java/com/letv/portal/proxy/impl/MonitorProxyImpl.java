@@ -36,27 +36,18 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	
 	@Override
 	public void collectMclusterServiceData() {
-		String ipAddr=null;
-		Map mapKey = new  HashMap<String,String>();
-		mapKey.put("type", "mclusternode");
-		int i=0;
-		Map map  = new HashMap<String, Object>();
-		List<ContainerModel> cModels = this.containerService.selectAllByMap(mapKey);
-		if(cModels!=null&&!"".equals(cModels)){
-			int cSize = cModels.size();	
-				for(i=0;i<cSize;i++){	
-					try {
-						ipAddr = cModels.get(i).getIpAddr();
-						map =  this.buildService.getContainerServiceData(ipAddr);
-						intoMclusterServiceDataDb(map);
-					} catch (Exception e) {
-						logger.debug("收集集群信息监控数据出现异常"+e.getMessage());
-						if(i<cSize){
-							continue;
-						}
-					}
-				}								
+		Map<String,String> map = new  HashMap<String,String>();
+		map.put("type", "mclusternode");
+		List<ContainerModel> contianers = this.containerService.selectAllByMap(map);
+		for (ContainerModel container : contianers) {
+			try {
+				intoMclusterServiceDataDb(this.buildService.getContainerServiceData(container.getIpAddr()));
+			} catch (Exception e) {
+				//报警邮件
+				logger.error("获取数据失败");
+			}
 		}
+		
 	
 	}
 

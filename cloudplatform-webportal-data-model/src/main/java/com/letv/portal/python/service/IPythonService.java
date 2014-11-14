@@ -256,20 +256,15 @@ public interface IPythonService {
 	public String getMclusterMonitor(String ip)throws Exception;
 	
 	
-	public String getDbInnodbBufferMemalloc(String ip)throws Exception;
-	public String getDbInnodbBufferPage(String ip)throws Exception;
-	public String getDbInnodbBufferPool(String ip)throws Exception;
-    public String getDbVariableStatusPs(String ip)throws Exception;
-	public String getDbVariableStatusRation(String ip)throws Exception;
-	public String getDbVariableStatusUsed(String ip)throws Exception;
-	public String getDbRowOpersPs(String ip)throws Exception;
-	public String getDbRowOpersTotal(String ip)throws Exception;
-	public String getWsrepStatusFlowControlPaused(String ip)throws Exception;
-	public String getWsrepStatusSlowestNodeParam(String ip)throws Exception;
-	public String getWsrepStatusSlowestNetworkParam(String ip)throws Exception;
+	/**Methods Name: getMonitorData <br>
+	 * Description: 常规数据记录：供图表展示使用<br>
+	 * @author name: liuhao1
+	 * @param ip
+	 * @param index
+	 * @return
+	 */
+	public String getMonitorData(String ip,String index);
 	
-	public String getNodeMemorySize(String ip)throws Exception;
-    public String getNodeDatadirSize(String ip)throws Exception;
-	public String getMysqlCpuPartion(String ip)throws Exception;
-	public String getMysqlMemoryPartion(String ip)throws Exception;
+	
+	
 }

@@ -285,89 +285,11 @@ public class PythonServiceImpl implements IPythonService{
 	    return result;
 	}
 	
-	
-	
-	
-	public String getDbInnodbBufferMemalloc(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/memallco";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	
-	
-	public String getDbInnodbBufferPage(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/page";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getDbInnodbBufferPool(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/innobuffer/pool";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	
-	public String getDbVariableStatusPs(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/ps";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getDbVariableStatusRation(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/ration";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getDbVariableStatusUsed(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/variablestatus/used";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getDbRowOpersPs(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/rowsoper/ps";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getDbRowOpersTotal(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/rowsoper/total";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getWsrepStatusFlowControlPaused(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/flow_control_paused";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getWsrepStatusSlowestNodeParam(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/slowest_node_param";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getWsrepStatusSlowestNetworkParam(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/db/all/stat/wsrepstatus/slowest_network_param";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getNodeMemorySize(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/memory/size";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	
-	public String getNodeDatadirSize(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/datadir/size";
-	    String result = HttpClient.get(url);
-	    return result;
-	}
-	public String getMysqlCpuPartion(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/mysqlcpu/partion";
-	    String result = HttpClient.get(url);
-	    return result;
-	
-	} 
-	public String getMysqlMemoryPartion(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/node/stat/mysqlmemory/partion";
-	    String result = HttpClient.get(url);
-	    return result;
-	
+	@Override
+	public String getMonitorData(String ip, String index) {
+		String url = URL_HEAD  + ip + URL_PORT  + index;
+		String result = HttpClient.get(url);
+		return result;
 	}    
 	
 }

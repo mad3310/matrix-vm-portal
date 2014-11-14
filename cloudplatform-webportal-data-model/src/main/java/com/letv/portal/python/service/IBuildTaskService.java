@@ -162,11 +162,6 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public ContainerMonitorModel getMonitorDetailClusterData(String ip);
-	/**
-	 * Methods Name: getContainerServiceData <br>
-	 * Description: 获取集群服务信息数据入库<br>
-	 * @author name: wujun
-	 * @return
-	 */
-    public  Map getContainerServiceData(String ip)throws Exception;
+    
+    public  Map getContainerServiceData(String ip,String index)throws Exception;
 }
