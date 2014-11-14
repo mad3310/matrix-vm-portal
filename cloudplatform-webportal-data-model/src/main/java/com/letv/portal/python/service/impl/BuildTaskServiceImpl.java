@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -42,6 +45,8 @@ import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.NodeMonitorModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -53,6 +58,7 @@ import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 import com.mysql.jdbc.StringUtils;
@@ -92,6 +98,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IFixedPushService fixedPushService;
 	@Autowired 
 	private IZabbixPushService zabbixPushService;
+	@Autowired 
+	private IMonitorIndexService monitorIndexService;
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	
@@ -1093,6 +1101,66 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		
 		logger.debug("获得集群监控数据");
 		return  containerMonitorModel;
+	}
+	
+	private List<MonitorDetailModel> analysisMonitorResult(Map result,Long dbIndex,String containerIp){
+		boolean flag = false;
+		Map meta = (Map) result.get("meta");
+		Map map = new HashMap<String, Object>();
+		List<MonitorDetailModel> monitorDetailModels = new LinkedList<MonitorDetailModel>();
+	     MonitorIndexModel monitorIndexModel = this.monitorIndexService.selectById(dbIndex);
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+				flag = true;
+				Map<String, Object>  listResponse= (Map<String, Object>) ((Map) result.get("response"));						
+				for(Iterator it =  listResponse.keySet().iterator();it.hasNext();){
+					 Object keString = it.next();
+					 MonitorDetailModel monitorDetailModel = new MonitorDetailModel();
+					 monitorDetailModel.setDbName(monitorIndexModel.getDetailTable());
+					 monitorDetailModel.setDetailName(keString.toString());
+					 monitorDetailModel.setDetailValue(Float.parseFloat(listResponse.get(keString).toString()));  
+					 monitorDetailModel.setContainerIp(containerIp);
+					 monitorDetailModels.add(monitorDetailModel);
+				}	
+		} 
+	  return monitorDetailModels;
+	}
+    
+
+	public Map getContainerServiceData(String ip)throws Exception{
+		Map map = new HashMap<String, Object>();
+		List<MonitorDetailModel> monitorDetailModels = new LinkedList<MonitorDetailModel>();
+		monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbInnodbBufferMemalloc(ip)),1L,ip);
+		map.put(1, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbInnodbBufferPage(ip)),2L,ip);
+	    map.put(2, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbInnodbBufferPool(ip)),3L,ip);
+	    map.put(3, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbRowOpersPs(ip)),4L,ip);
+	    map.put(4, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbRowOpersTotal(ip)),5L,ip);
+	    map.put(5, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbVariableStatusPs(ip)),6L,ip);
+	    map.put(6, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbVariableStatusRation(ip)),7L,ip);
+	    map.put(7, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getDbVariableStatusUsed(ip)),8L,ip);
+	    map.put(8, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getMysqlCpuPartion(ip)),9L,ip);
+	    map.put(9, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getMysqlMemoryPartion(ip)),10L,ip);
+	    map.put(10, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getNodeDatadirSize(ip)),11L,ip);
+	    map.put(11, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getNodeMemorySize(ip)),12L,ip);
+	    map.put(12, monitorDetailModels);	    
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getWsrepStatusFlowControlPaused(ip)),13L,ip);	 
+	    map.put(13, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getWsrepStatusSlowestNodeParam(ip)),14L,ip);
+	    map.put(14, monitorDetailModels);
+	    monitorDetailModels = analysisMonitorResult(transResult(this.pythonService.getWsrepStatusSlowestNetworkParam(ip)),15L,ip);
+	    map.put(15, monitorDetailModels);
+
+		return map;
 	}
 	
 }
