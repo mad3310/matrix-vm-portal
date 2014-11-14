@@ -13,9 +13,11 @@
         <typeAlias alias="DbUser" type="com.letv.portal.model.DbUserModel" />
         <typeAlias alias="Build" type="com.letv.portal.model.BuildModel" />
         <typeAlias alias="Hcluster" type="com.letv.portal.model.HclusterModel" />
-         <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
-         
-         <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />
+        <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
+        <typeAlias alias="MonitorDetail" type="com.letv.portal.model.MonitorDetailModel" />        
+        <typeAlias alias="MonitorIndex" type="com.letv.portal.model.MonitorIndexModel" />
+        <typeAlias alias="MonitorView" type="com.letv.portal.model.MonitorViewModel" />
+        <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />
         
     </typeAliases>
 </configuration>

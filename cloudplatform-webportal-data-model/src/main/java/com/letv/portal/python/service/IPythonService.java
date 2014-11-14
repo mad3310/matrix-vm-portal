@@ -254,6 +254,8 @@ public interface IPythonService {
      * @return
      */
 	public String getMclusterMonitor(String ip)throws Exception;
+	
+	
 	public String getDbInnodbBufferMemalloc(String ip)throws Exception;
 	public String getDbInnodbBufferPage(String ip)throws Exception;
 	public String getDbInnodbBufferPool(String ip)throws Exception;

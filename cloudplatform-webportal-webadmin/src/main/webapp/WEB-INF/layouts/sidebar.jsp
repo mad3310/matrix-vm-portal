@@ -67,10 +67,17 @@
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
-				<li id="sidebar-db-list" class="hover">
+				<li id="sidebar-monitor-list" class="hover">
 					<a href="${ctx}/list/mcluster/monitor"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						container集群监控列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-monitor-view" class="hover">
+					<a href="${ctx}/view/mcluster/monitor"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						container集群监控视图
 					</a>
 					<b class="arrow"></b>
 				</li>

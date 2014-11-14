@@ -1162,5 +1162,4 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 		return map;
 	}
-	
 }

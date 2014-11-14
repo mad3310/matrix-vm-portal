@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -32,7 +35,8 @@ public class MonitorController {
 	
 	@Resource
 	private IContainerService containerService;
-	
+	@Resource
+	private IMonitorService monitorService;
 	@Resource
 	private IContainerProxy containerProxy;
 	
@@ -98,6 +102,34 @@ public class MonitorController {
 		result.setData(this.containerProxy.selectMonitorDetailClusterData(ip));
 		return result;
 	}
+	/**
+	 * Methods Name: mclusterMonitorCharts <br>
+	 * Description: 监控视图<br>
+	 * @author name: wujun
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/{mclusterId}/{chartId}/{strategy}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
+		MonitorTimeModel monitorTimeModel = new MonitorTimeModel();
+		monitorTimeModel.setStrategy(strategy);
+		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,monitorTimeModel));
+		return result;
+	}
 	
+	/**
+	 * Methods Name: mclusterMonitorCharts <br>
+	 * Description: 监控视图数目<br>
+	 * @author name: wujun
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value="/mclusterChartsCount",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
+		result.setData(this.monitorService.selectMonitorCount());
+		return result;
+	}
 
 }

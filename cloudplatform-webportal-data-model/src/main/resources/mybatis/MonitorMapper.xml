@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.IMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="MonitorDetail">
+		<result column="ID" property="id" />
+		<result column="DETAIL_NAME" property="detailName" />
+		<result column="DETAIL_VALUE" property="detailValue" />
+        <result column="MONITOR_DATE" property="monitorDate" />
+        <result column="CONTAINER_IP" property="containerIp" />
+        <result column="DB_NAME" property="dbName" /> 
+	</resultMap>
+	
+	
+
+	<!-- WEBPORTAL_DB table all fields -->
+	<sql id="Base_Column_List">
+		m.ID,m.DETAIL_NAME,m.DETAIL_VALUE,m.MONITOR_DATE,m.CONTAINER_IP
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and m.ID=#{id}
+			</if>
+			<if test="detailName != null  ">
+				and m.DETAIL_NAME=#{detailName}
+			</if>
+			<if test="detailValue != null  ">
+				and m.DETAIL_VALUE=#{detailValue}
+			</if>
+			<if test="containerIp != null  ">
+				and m.CONTAINER_IP=#{containerIp}
+			</if>
+			<if test="monitorDate != null  and monitorDate != '' and monitorDate != 'null'">
+				and m.MONITOR_DATE like CONCAT('%','${monitorDate}','%')
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MonitorDetail" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		${dbName}(DETAIL_NAME,DETAIL_VALUE,MONITOR_DATE,CONTAINER_IP)
+		values(
+		#{detailName},#{detailValue},now(),#{containerIp})
+	</insert>
+	
+
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" /> 
+		from ${dbName} m
+		<include refid="Example_Where_Clause" /> 
+	</select>
+	
+	<select id="selectDistinct" resultType="String" parameterType="java.util.Map">
+	    select distinct DETAIL_NAME from ${dbName}
+	</select>
+	
+	<select id="selectDateTime" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+        <include refid="Base_Column_List" /> 
+	   	from ${dbName} m
+        where m.DETAIL_NAME=#{detailName} and m.MONITOR_DATE between #{start} and #{end} 
+	</select>
+
+
+</mapper>   

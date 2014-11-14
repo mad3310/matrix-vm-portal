@@ -39,7 +39,7 @@ public interface IBuildTaskService {
 	 * @param ids
 	 */
 	public void buildUser(String ids);
-	/**Methods Name: updateUser <br>
+	/**Methods Name: updateUser <br> 
 	 * Description: 修改用户<br>
 	 * @author name: liuhao1
 	 * @param ids
