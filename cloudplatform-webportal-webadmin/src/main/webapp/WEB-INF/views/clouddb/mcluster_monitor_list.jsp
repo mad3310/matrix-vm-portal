@@ -97,7 +97,6 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
 			if(data.result == 0){
 				$(obj).find('[name="mclusterStatus"]').html("<font color=\"red\">获取数据失败</font>");
 				$(obj).addClass("danger");		
