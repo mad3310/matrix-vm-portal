@@ -9,7 +9,7 @@
 		<result column="DETAIL_NAME" property="detailName" />
 		<result column="DETAIL_VALUE" property="detailValue" />
         <result column="MONITOR_DATE" property="monitorDate" />
-        <result column="CONTAINER_IP" property="containerIp" />
+        <result column="IP" property="ip" />
         <result column="DB_NAME" property="dbName" /> 
 	</resultMap>
 	
@@ -17,7 +17,7 @@
 
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
-		m.ID,m.DETAIL_NAME,m.DETAIL_VALUE,m.MONITOR_DATE,m.CONTAINER_IP
+		m.ID,m.DETAIL_NAME,m.DETAIL_VALUE,m.MONITOR_DATE,m.IP
 	</sql>
 	
 	<!-- 查询条件 -->
@@ -33,8 +33,8 @@
 			<if test="detailValue != null  ">
 				and m.DETAIL_VALUE=#{detailValue}
 			</if>
-			<if test="containerIp != null  ">
-				and m.CONTAINER_IP=#{containerIp}
+			<if test="ip != null  ">
+				and m.IP=#{ip}
 			</if>
 			<if test="monitorDate != null  and monitorDate != '' and monitorDate != 'null'">
 				and m.MONITOR_DATE like CONCAT('%','${monitorDate}','%')
@@ -46,9 +46,9 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="MonitorDetail" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		${dbName}(DETAIL_NAME,DETAIL_VALUE,MONITOR_DATE,CONTAINER_IP)
+		${dbName}(DETAIL_NAME,DETAIL_VALUE,MONITOR_DATE,IP)
 		values(
-		#{detailName},#{detailValue},now(),#{containerIp})
+		#{detailName},#{detailValue},now(),#{ip})
 	</insert>
 	
 

@@ -6,8 +6,8 @@ import com.letv.common.model.BaseModel;
  * Description: 监控索引表 <br>
  * @author name: wujun <br>
  * Written Date: 2014年11月11日 <br>
- * Modified By: <br>
- * Modified Date: <br>
+ * Modified By: liuhao1<br>
+ * Modified Date: 2014年11月15日 <br>
  */
 public class MonitorIndexModel extends BaseModel{
 
@@ -18,7 +18,13 @@ public class MonitorIndexModel extends BaseModel{
 	private String tooltipSuffix;
 	private int  flushTime;
 	private String  detailTable;
+	private String  dataFromApi;
 	private int  status;
+	
+	private String yAxisText1;
+	private String yAxisText2;
+	private String yAxisText3;
+	
 	public String getTitleText() {
 		return titleText;
 	}
@@ -55,14 +61,35 @@ public class MonitorIndexModel extends BaseModel{
 	public void setDetailTable(String detailTable) {
 		this.detailTable = detailTable;
 	}
+	public String getDataFromApi() {
+		return dataFromApi;
+	}
+	public void setDataFromApi(String dataFromApi) {
+		this.dataFromApi = dataFromApi;
+	}
 	public int getStatus() {
 		return status;
 	}
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
-	
+	public String getyAxisText1() {
+		return yAxisText1;
+	}
+	public void setyAxisText1(String yAxisText1) {
+		this.yAxisText1 = yAxisText1;
+	}
+	public String getyAxisText2() {
+		return yAxisText2;
+	}
+	public void setyAxisText2(String yAxisText2) {
+		this.yAxisText2 = yAxisText2;
+	}
+	public String getyAxisText3() {
+		return yAxisText3;
+	}
+	public void setyAxisText3(String yAxisText3) {
+		this.yAxisText3 = yAxisText3;
+	}
 
 }

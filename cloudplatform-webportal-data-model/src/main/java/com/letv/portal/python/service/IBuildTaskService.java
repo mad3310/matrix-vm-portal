@@ -8,6 +8,7 @@ import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.MonitorIndexModel;
 
 
 /**Program Name: IBuildTaskService <br>
@@ -163,5 +164,12 @@ public interface IBuildTaskService {
 	 */
 	public ContainerMonitorModel getMonitorDetailClusterData(String ip);
     
-    public  Map getContainerServiceData(String ip,String index)throws Exception;
+	/**Methods Name: getContainerServiceData <br>
+	 * Description: 动态获取监控数据，入库<br>
+	 * @author name: liuhao1
+	 * @param container
+	 * @param index
+	 * @return
+	 */
+	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index);
 }

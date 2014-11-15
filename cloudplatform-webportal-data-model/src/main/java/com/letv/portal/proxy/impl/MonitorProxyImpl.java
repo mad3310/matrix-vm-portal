@@ -26,39 +26,34 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private IMonitorService monitorService;
 	
 	@Autowired
-	private IBuildTaskService buildService;
+	private IBuildTaskService buildTaskService;
 	
 	@Autowired
 	private IContainerService containerService;
 	
 	@Autowired
-	private IMonitorIndexService moniIndexService;
+	private IMonitorIndexService monitorIndexService;
 	
 	@Override
 	public void collectMclusterServiceData() {
 		Map<String,String> map = new  HashMap<String,String>();
 		map.put("type", "mclusternode");
 		List<ContainerModel> contianers = this.containerService.selectAllByMap(map);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 1);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		
 		for (ContainerModel container : contianers) {
-			try {
-				intoMclusterServiceDataDb(this.buildService.getContainerServiceData(container.getIpAddr()));
-			} catch (Exception e) {
-				//报警邮件
-				logger.error("获取数据失败");
+			for (MonitorIndexModel index : indexs) {
+				try {
+					 this.buildTaskService.getContainerServiceData(container, index);
+				} catch (Exception e) {
+					logger.debug("collectMclusterServiceData error:" + container.getIpAddr() + "--" + index.getDataFromApi());
+					logger.debug("collectMclusterServiceData errorDetail:" + e.getMessage());
+				}
 			}
 		}
-		
-	
-	}
-
-	private void intoMclusterServiceDataDb(Map map) throws Exception{
-		for(Iterator it =  map.keySet().iterator();it.hasNext();){
-			 Object keString = it.next();	
-			 List<MonitorDetailModel> list  = (List<MonitorDetailModel>) map.get(keString);
-			 for(MonitorDetailModel m:list){
-               this.monitorService.insert(m);
-			 }
-		}	
 	}
 
 }

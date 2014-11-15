@@ -23,7 +23,6 @@ import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.model.MonitorViewModel;
 import com.letv.portal.model.MonitorViewYModel;
-import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IMonitorIndexService;
@@ -43,9 +42,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	
 	@Autowired
 	private IContainerService containerService;
-	
-	@Autowired
-	private IBuildTaskService buildTaskService;
 	
 	public MonitorServiceImpl() {
 		super(MonitorDetailModel.class);

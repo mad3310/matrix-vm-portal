@@ -20,16 +20,14 @@ public class MonitorDetailModel extends BaseModel {
 	private float detailValue;
 	private String dbName;
 	private Timestamp monitorDate;
-	private String containerIp;
+	private String ip;
 
-	
-		
-	public String getContainerIp() {
-		return containerIp;
+	public String getIp() {
+		return ip;
 	}
 
-	public void setContainerIp(String containerIp) {
-		this.containerIp = containerIp;
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public String getDetailName() {
