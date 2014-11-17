@@ -65,6 +65,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 </div>
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
