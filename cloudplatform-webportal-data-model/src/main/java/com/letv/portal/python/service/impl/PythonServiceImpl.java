@@ -288,7 +288,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String getMonitorData(String ip, String index) {
 		String url = URL_HEAD  + ip + URL_PORT  + index;
-		String result = HttpClient.get(url);
+		String result = HttpClient.get(url,true);
 		return result;
 	}    
 	

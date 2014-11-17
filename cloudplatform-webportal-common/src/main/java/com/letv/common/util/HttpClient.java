@@ -97,7 +97,6 @@ public class HttpClient {
 	public static String get(String url) {
 		return get(url, null, null);
 	}
-
 	
 	public static String get(String url,String username,String password) {
 		DefaultHttpClient httpclient = getHttpclient(username,password);
@@ -188,7 +187,23 @@ public class HttpClient {
 		
 		return httpost;
 	}
-	private static DefaultHttpClient getHttpclient(String username,String password){
+	public static String get(String url,boolean isMonitor) {
+		return get(url, isMonitor,null, null);
+	}
+
+	public static String get(String url,boolean isMonitor,String username,String password) {
+		DefaultHttpClient httpclient = getHttpclient(isMonitor,username,password);
+		String body = null;
+		
+		logger.info("create httpget:" + url);
+		HttpGet get = new HttpGet(url);
+		body = invoke(httpclient, get);
+		
+		httpclient.getConnectionManager().shutdown();
+		
+		return body;
+	}
+	private static DefaultHttpClient getHttpclient(Boolean isMonitor,String username,String password){
 		
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		if(!StringUtils.isNullOrEmpty(username)) {
@@ -201,8 +216,60 @@ public class HttpClient {
 		 * 设置超时时间
 		 */
 		HttpParams params = httpclient.getParams();  
+		HttpConnectionParams.setConnectionTimeout(params, 1000);  
+		HttpConnectionParams.setSoTimeout(params, 1000);
+        
+		/*
+		 * 设置重试策略
+		 */
+		HttpRequestRetryHandler myRetryHandler = new HttpRequestRetryHandler() {
+			public boolean retryRequest(IOException exception,
+					int executionCount, HttpContext context) {
+				/*
+				 * 不进行重试
+				 */
+				if (executionCount >= 2) {
+					// 如果超过最大重试次数，那么就不要继续了
+					return false;
+				}
+				if (exception instanceof NoHttpResponseException) {
+					// 如果服务器丢掉了连接，那么就重试
+					return true;
+				}
+				if (exception instanceof SSLHandshakeException) {
+					// 不要重试SSL握手异常
+					return false;
+				}
+				HttpRequest request = (HttpRequest) context
+						.getAttribute(ExecutionContext.HTTP_REQUEST);
+				boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
+				if (idempotent) {
+					// 如果请求被认为是幂等的，那么就重试
+					return true;
+				}
+				return false;
+			}
+		};
+		httpclient.setHttpRequestRetryHandler(myRetryHandler);
+
+	    return httpclient;
+	}
+
+	private static DefaultHttpClient getHttpclient(String username,String password){
+		
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		if(!StringUtils.isNullOrEmpty(username)) {
+			CredentialsProvider credsProvider = new BasicCredentialsProvider();
+			UsernamePasswordCredentials usernamePassword = new UsernamePasswordCredentials(username, password);
+			credsProvider.setCredentials(AuthScope.ANY, usernamePassword);
+			httpclient.setCredentialsProvider(credsProvider);
+		}
+		/*
+		 * 设置超时时间
+		 */
+		/*HttpParams params = httpclient.getParams();  
 		HttpConnectionParams.setConnectionTimeout(params, 30000);  
-		HttpConnectionParams.setSoTimeout(params, 50000);
+		HttpConnectionParams.setSoTimeout(params, 50000);*/
         
 		/*
 		 * 设置重试策略
