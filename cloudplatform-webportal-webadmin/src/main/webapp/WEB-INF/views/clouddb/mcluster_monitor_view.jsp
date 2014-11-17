@@ -12,7 +12,7 @@
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
 						<label class="col-sm-1 control-label no-padding-right">Container集群</label>
-						<div class="col-sm-1">
+						<div class="col-sm-2">
 							<select id="mclusterOption" name="mclusterId" class="form-control">
 							</select>					
 						</div>
@@ -24,7 +24,7 @@
 						</div> -->
 						<label class="col-sm-1 control-label">监控点</label>
 						<div class="col-sm-3">
-							<select multiple="" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="Choose a State...">
+							<select multiple="multiple" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="空为显示所有.">
 							</select>
 						</div>
 						
@@ -171,7 +171,7 @@ function queryMonitorPoint(){
 								+"</option>");
 				$("#monitorPointOption").append(option);
 			}
-			
+			initMultiple();
 		}
 	});	
 }
@@ -181,19 +181,21 @@ function refreshChartForSelect(){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
 	
-	if (monitorPoint != '')
+	if (monitorPoint != null)
 	{
 		$('#monitor-view div').remove();
-		$.ajax({
-			type : "get",
-			url : "${ctx}/monitor/"+mclusterId+"/"+monitorPoint+"/"+queryTime,
-			dataType : "json", 
-			contentType : "application/json; charset=utf-8",
-			success:function(data){
-		 		error(data);
-		 		addChart(data.data);
-			}
-		});
+		for (var i = 0,len = monitorPoint.length; i < len ; i++){
+			$.ajax({
+				type : "get",
+				url : "${ctx}/monitor/"+mclusterId+"/"+monitorPoint[i]+"/"+queryTime,
+				dataType : "json", 
+				contentType : "application/json; charset=utf-8",
+				success:function(data){
+			 		error(data);
+			 		addChart(data.data);
+				}
+			});
+		}
 	}else{
 		queryAllChart(mclusterId);
 	}
@@ -231,6 +233,5 @@ function initMultiple(){
 $(function(){
 	queryMonitorPoint();
 	queryMcluster();
-
 });
 </script>
