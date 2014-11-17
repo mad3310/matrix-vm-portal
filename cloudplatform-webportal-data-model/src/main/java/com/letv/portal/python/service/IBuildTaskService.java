@@ -1,13 +1,12 @@
 package com.letv.portal.python.service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
 
 
@@ -169,7 +168,8 @@ public interface IBuildTaskService {
 	 * @author name: liuhao1
 	 * @param container
 	 * @param index
+	 * @param date
 	 * @return
 	 */
-	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index);
+	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
 }

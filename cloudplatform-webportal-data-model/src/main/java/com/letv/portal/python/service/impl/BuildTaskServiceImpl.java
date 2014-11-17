@@ -1105,7 +1105,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index) {
+	@Async
+	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date) {
 		Map result = transResult(this.pythonService.getMonitorData(container.getIpAddr(), index.getDataFromApi()));
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String, Object>) result.get("response");
@@ -1114,10 +1115,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 MonitorDetailModel monitorDetail = new MonitorDetailModel();
 				 monitorDetail.setDbName(index.getDetailTable());
 				 monitorDetail.setDetailName(key);
-				 monitorDetail.setDetailValue((Float) data.get(key));  
+				 monitorDetail.setMonitorDate(date);
+				 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
 				 monitorDetail.setIp(container.getIpAddr());
 				 this.monitorService.insert(monitorDetail);
-			}	
+			}
 		}
 	}
 }

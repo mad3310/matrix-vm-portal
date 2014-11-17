@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
-import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.proxy.IContainerProxy;
-import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
@@ -37,6 +35,8 @@ public class MonitorController {
 	private IContainerService containerService;
 	@Resource
 	private IMonitorService monitorService;
+	@Resource
+	private IMonitorIndexService monitorIndexService;
 	@Resource
 	private IContainerProxy containerProxy;
 	
@@ -117,6 +117,11 @@ public class MonitorController {
 		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,monitorTimeModel));
 		return result;
 	}
+	@RequestMapping(value="/xData/{strategy}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Integer strategy,ResultObject result) {
+		result.setData(this.monitorService.getMonitorXData(strategy));
+		return result;
+	}
 	
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>
@@ -126,9 +131,11 @@ public class MonitorController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/mclusterChartsCount",method=RequestMethod.GET)
+	@RequestMapping(value="/index",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
-		result.setData(this.monitorService.selectMonitorCount());
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("status", 1);
+		result.setData(this.monitorIndexService.selectByMap(null));
 		return result;
 	}
 

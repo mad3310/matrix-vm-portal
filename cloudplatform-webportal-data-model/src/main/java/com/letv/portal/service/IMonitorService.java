@@ -23,6 +23,8 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
      */
 	public MonitorViewModel getMonitorViewData(Long MclusterId,Long chartId,MonitorTimeModel monitorTimeModel);
 	
+	public List<String> getMonitorXData(Integer strategy);
+	
 	public List<String> selectDistinct(Map map);
 	
 	public List<MonitorDetailModel> selectDateTime(Map map);

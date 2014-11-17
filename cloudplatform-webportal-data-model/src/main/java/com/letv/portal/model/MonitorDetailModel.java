@@ -1,6 +1,6 @@
 package com.letv.portal.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import com.letv.common.model.BaseModel;
 /**
@@ -19,7 +19,7 @@ public class MonitorDetailModel extends BaseModel {
 	private String detailName;
 	private float detailValue;
 	private String dbName;
-	private Timestamp monitorDate;
+	private Date monitorDate;
 	private String ip;
 
 	public String getIp() {
@@ -55,12 +55,11 @@ public class MonitorDetailModel extends BaseModel {
 		this.detailValue = detailValue;
 	}
 
-	public Timestamp getMonitorDate() {
+	public Date getMonitorDate() {
 		return monitorDate;
 	}
 
-	public void setMonitorDate(Timestamp monitorDate) {
+	public void setMonitorDate(Date monitorDate) {
 		this.monitorDate = monitorDate;
 	}
-    
 }

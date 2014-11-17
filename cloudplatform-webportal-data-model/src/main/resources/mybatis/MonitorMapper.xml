@@ -48,7 +48,7 @@
 		insert into
 		${dbName}(DETAIL_NAME,DETAIL_VALUE,MONITOR_DATE,IP)
 		values(
-		#{detailName},#{detailValue},now(),#{ip})
+		#{detailName},#{detailValue},#{monitorDate},#{ip})
 	</insert>
 	
 

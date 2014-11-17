@@ -63,7 +63,7 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="MonitorIndex" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_MONITOR_INDEX(TITLE_TEXT,SUB_TITLE_TEXT,Y_AXIS_TEXT,TOOLTIP_SUFFIX,FLUSH_TIME,DETAIL_TABLE,DATA_FROM_API,STATUS,Y_AXIS_TEXT_1,Y_AXIS_TEXT_2,Y_AXIS_TEXT_3)
+		WEBPORTAL_INDEX_MONITOR(TITLE_TEXT,SUB_TITLE_TEXT,Y_AXIS_TEXT,TOOLTIP_SUFFIX,FLUSH_TIME,DETAIL_TABLE,DATA_FROM_API,STATUS,Y_AXIS_TEXT_1,Y_AXIS_TEXT_2,Y_AXIS_TEXT_3)
 		values(
 		#{titleText},#{subTitleText},#{yAxisText},#{tooltipSuffix},#{flushTime},#{detailTable},#{dataFromApi},#{status},#{yAxisText1},#{yAxisText2},#{yAxisText3})
 	</insert>
@@ -72,7 +72,7 @@
 		parameterType="Long">
 		select
 		<include refid="Base_Column_List" /> 
-		from WEBPORTAL_MONITOR_INDEX m
+		from WEBPORTAL_INDEX_MONITOR m
 		where 1=1
 	    and m.ID=#{id}
 	</select>
@@ -81,13 +81,13 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" /> 
-		from WEBPORTAL_MONITOR_INDEX m
+		from WEBPORTAL_INDEX_MONITOR m
 		<include refid="Example_Where_Clause" /> 
 	</select>
 	
     <select id="selectMonitorCount" resultMap="BaseResultMap">
 		select <include refid="Base_Column_List" /> 
-		from WEBPORTAL_MONITOR_INDEX m
+		from WEBPORTAL_INDEX_MONITOR m
 		where 1=1
 	</select>
 

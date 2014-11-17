@@ -3,14 +3,18 @@ package com.letv.common.util;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.NoHttpResponseException;
 import org.apache.http.ParseException;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -26,6 +30,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -193,9 +200,9 @@ public class HttpClient {
 		/*
 		 * 设置超时时间
 		 */
-//		HttpParams params = httpclient.getParams();  
-//      HttpConnectionParams.setConnectionTimeout(params, 10000);  
-//      HttpConnectionParams.setSoTimeout(params, 600000);
+		HttpParams params = httpclient.getParams();  
+		HttpConnectionParams.setConnectionTimeout(params, 30000);  
+		HttpConnectionParams.setSoTimeout(params, 50000);
         
 		/*
 		 * 设置重试策略
@@ -232,4 +239,5 @@ public class HttpClient {
 
 	    return httpclient;
 	}
+	
 }

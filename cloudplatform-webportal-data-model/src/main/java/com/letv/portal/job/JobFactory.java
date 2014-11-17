@@ -11,7 +11,7 @@ import com.letv.common.util.SpringContextUtil;
 import com.letv.portal.model.ScheduleJobModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMclusterProxy;
-import com.letv.portal.proxy.impl.ContainerProxyImpl;
+import com.letv.portal.proxy.IMonitorProxy;
 
 @Component
 public class JobFactory implements Job {
@@ -21,6 +21,7 @@ public class JobFactory implements Job {
 	private IJobExecute jobExecute = (IJobExecute) SpringContextUtil.getBean("jobExecute");
 	private IMclusterProxy mclusterProxy = (IMclusterProxy) SpringContextUtil.getBean("mclusterProxy");
 	private IContainerProxy containerProxy = (IContainerProxy) SpringContextUtil.getBean("containerProxy");
+	private IMonitorProxy monitorProxy = (IMonitorProxy) SpringContextUtil.getBean("monitorProxy");
 	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -44,6 +45,11 @@ public class JobFactory implements Job {
         if("checkMclusterCount".equals(method)) {
         	logger.info("check Mcluster Count");
         	this.mclusterProxy.checkCount();
+        }
+        
+        if("collectMclusterServiceData".equals(method)) {
+        	logger.info("collectMclusterServiceData");
+        	this.monitorProxy.collectMclusterServiceData();
         }
 	}
 

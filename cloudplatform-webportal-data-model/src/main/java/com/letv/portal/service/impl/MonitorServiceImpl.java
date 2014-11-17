@@ -56,21 +56,35 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	public List<String> selectDistinct(Map map){
 		return this.monitorDao.selectDistinct(map);
 	}
+	
+	
 
 	@Override
 	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId,MonitorTimeModel monitorTimeModel) {
-	    Map map = new HashMap<String, Object>();
-	    Map mapMonitor = new HashMap<String, Object>();
+	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
 	    map.put("type", "mclusternode");
-	    String detailValue = null;
-	    List<ContainerModel> list = this.containerService.selectByMap(map);	    
+	    List<ContainerModel> containers = this.containerService.selectByMap(map);	  
+	    
 	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-	    Map mapIndex = new HashMap<String, Object>();
-	    mapIndex.put("dbName",monitorIndexModel.getDetailTable());
-	    List<String> dbAttrList =  this.monitorDao.selectDistinct(mapIndex);
-//	    List<String> dateList
-	    Map<String, Object> dateMap = anaysiDate(monitorTimeModel);
+	    String dataTable = monitorIndexModel.getDetailTable();
+
+	    
+	    
+	    /*
+	     * 1、获取初始化数据 ，传给前台
+	     */
+	    
+	    Map<String, Object> indexParams = new HashMap<String, Object>();
+	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
+	    
+	    
+	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+	    
+	    
+	    
+	    
+	    Map<String, Object> dateMap = anaysiDate(monitorTimeModel.getStrategy());
 	    List<String> dateXList =(List<String>) dateMap.get("x");
 	    List<String> dateYList =(List<String>) dateMap.get("y");
 		Collections.reverse(dateXList);
@@ -79,8 +93,10 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		xdateList.remove(xdateList.size()-1);
 		List<MonitorViewYModel> monitorViewYModel = new ArrayList<MonitorViewYModel>();
 		MonitorViewModel monitorViewModel =  new MonitorViewModel();
-	    for(ContainerModel c:list){	    		
-	    	 for(String s:dbAttrList){		    	
+		Map<String, Object> mapMonitor = new HashMap<String, Object>();
+		
+	    for(ContainerModel c:containers){	    		
+	    	 for(String s:detailNames){		    	
 	    	    	mapMonitor.put("containerIp", c.getIpAddr());
 	    	    	mapMonitor.put("detailName", s);
 	    	    	mapMonitor.put("dbName", monitorIndexModel.getDetailTable());
@@ -121,7 +137,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
      * @author name: wujun
      * @return
      */
-    public Map anaysiDate(MonitorTimeModel monitorTimeModel){
+    public Map anaysiDate(Integer strategy){
            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");  
            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
     	   Date d = new Date();       	   
@@ -130,7 +146,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
            HashMap<String, Object> map = new HashMap<String, Object>();
            List<String> listx = new ArrayList<String>();
            List<String> listy = new ArrayList<String>();
-        	   switch (monitorTimeModel.getStrategy()) {
+        	   switch (strategy) {
 			    case 1:
 			           for(int i=0;i<31;i++){
 				          now.add(Calendar.MINUTE, -2);
@@ -197,6 +213,15 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     public List<MonitorIndexModel> selectMonitorCount(){
     	return this.monitorIndexService.selectMonitorCount();
     }
+
+
+	@Override
+	public List<String> getMonitorXData(Integer strategy) {
+		Map<String, Object> dateMap = anaysiDate(strategy);
+	    List<String> xData =(List<String>) dateMap.get("x");
+		Collections.reverse(xData);
+		return xData;
+	}
 
 
 }

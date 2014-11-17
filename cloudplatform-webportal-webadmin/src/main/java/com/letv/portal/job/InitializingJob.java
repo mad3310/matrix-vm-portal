@@ -89,7 +89,7 @@ public class InitializingJob {
 	public List<ScheduleJobModel> getJobs(){
 		List<ScheduleJobModel> jobs = new ArrayList<ScheduleJobModel>();
 		//测试数据 start
-		ScheduleJobModel testJob = new ScheduleJobModel();
+		/*ScheduleJobModel testJob = new ScheduleJobModel();
 		
 		testJob.setJobName("test");
 		testJob.setJobMethod("test");
@@ -97,7 +97,7 @@ public class InitializingJob {
 		testJob.setJobStatus("1");
 		testJob.setCronExpression("0/30 * * * * ?");
 		testJob.setDescn("测试job初始化");
-		jobs.add(testJob);
+		jobs.add(testJob);*/
 		
 		/*
 		 * 业务检查job
@@ -130,6 +130,14 @@ public class InitializingJob {
 			checkMclusterCount.setDescn("检查container单节点状态");
 			jobs.add(checkMclusterCount);
 		}
+		/*ScheduleJobModel mclusterJob = new ScheduleJobModel();
+		mclusterJob.setJobName("collectMclusterServiceData");
+		mclusterJob.setJobMethod("collectMclusterServiceData");
+		mclusterJob.setJobGroup("webportal");
+		mclusterJob.setJobStatus("1");
+		mclusterJob.setCronExpression("0 0/1 * * * ?");
+		mclusterJob.setDescn("获取监控数据");
+		jobs.add(mclusterJob);*/
 		return jobs;
 	}
       
