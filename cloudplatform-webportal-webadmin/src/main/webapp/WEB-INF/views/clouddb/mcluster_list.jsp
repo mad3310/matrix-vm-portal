@@ -566,8 +566,8 @@ function stopMcluster(obj){
 }
 function deleteMcluster(obj){
 	
-	/* warn("危险操作，本版本不启用...",3000);
-	return; */
+	warn("危险操作，本版本不启用...",3000);
+	return;
 	
 	var tr = $(obj).parents("tr").html();
 	if (tr.indexOf("删除中") >= 0){
