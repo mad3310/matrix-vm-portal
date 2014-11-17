@@ -106,7 +106,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    	    	List<Float> listStrings = new ArrayList<Float>();
 	    	    	for(MonitorDetailModel m:listMonitorDetailModels){	
 	    	    		if(m==null){
-	    	    			listStrings.add((float) 0);
+	    	    			listStrings.add(null);
 	    	    		}else {
 		    	    		listStrings.add(m.getDetailValue());	
 						}
