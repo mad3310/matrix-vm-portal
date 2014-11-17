@@ -135,7 +135,7 @@ public class MonitorController {
 	public @ResponseBody ResultObject mclusterMonitorChartsCount(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", 1);
-		result.setData(this.monitorIndexService.selectByMap(null));
+		result.setData(this.monitorIndexService.selectByMap(map));
 		return result;
 	}
 

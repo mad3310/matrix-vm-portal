@@ -65,6 +65,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 </div>
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
@@ -72,68 +73,22 @@
 
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
 <script type="text/javascript">
-function drawChart(obj,title,ytitle,unit,xdata,ydata){
-    $(obj).highcharts({
-        title: {
-            text: title
-      
-        },
-        xAxis: {
-			type: 'datetime',
-            categories: xdata,
-            labels:{
-            	rotation:-90,
-            	align:'right',
-            }
-        },
-        credits:{
-        	enabled: false
-        },
-        yAxis: {
-            title: {
-                text: ytitle 
-            }
-        },
-        tooltip: {
-            valueSuffix: unit
-        },
-        series: ydata
-    });
 
-} 
-
-function addChart(data){
-	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').removeAttr('id').appendTo($('#monitor-view'));
-	var div = $("<div name=\"data-chart\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
-	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
-	drawChart(div,data.title,data.ytitle,data.unit,data.xdata,data.ydata);
-	draggable(viewDemo);
-}
-
-function queryAllChart(clusterId){
-	$('#monitor-view div').remove();
-	$.ajax({
-		type : "get",
-		url : "${ctx}/monitor/index",
-		dataType : "json", 
-		contentType : "application/json; charset=utf-8",
-		success : function(data) {
-			error(data);
-			var array = data.data;
-			for (var i=0,len = array.length;i < len; i ++){
-				$.ajax({
-					type : "get",
-					url : "${ctx}/monitor/"+clusterId+"/"+array[i].id+"/"+$('#queryTime').val(),
-					dataType : "json", 
-					contentType : "application/json; charset=utf-8",
-					success:function(data){
-				 		error(data);
-				 		addChart(data.data);
-					}
-				});
-			}
-		}	
-	});
+function refreshChartForSelect(){
+	var monitorPoint = $('#monitorPointOption').val();
+	
+	//获取所有chart div
+	//显示选择的div
+	//隐藏其他div
+	//update 数据
+	
+	
+	if (monitorPoint != null){
+		for (var i = 0,len = monitorPoint.length; i < len ; i++){
+			var chart = $("#"+monitorPoint).highcharts();
+			setChartData(monitorPoint[i],chart);
+		}
+	}
 }
 
 function queryMcluster(){
@@ -144,14 +99,11 @@ function queryMcluster(){
 		success:function(data){
 			error(data);
 			var mclustersInfo = data.data;
-			for(var i=0,len=mclustersInfo.length;i<len;i++)
-			{
-				var option = $("<option value=\""+mclustersInfo[i].id+"\">"
-								+mclustersInfo[i].mclusterName
-								+"</option>");
+			for(var i=0,len=mclustersInfo.length;i<len;i++){
+				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
 				$("#mclusterOption").append(option);
 			}
-			queryAllChart(mclustersInfo[0].id);
+			queryMonitorPoint();
 		}
 	});	
 }
@@ -164,41 +116,80 @@ function queryMonitorPoint(){
 		success:function(data){
 			error(data);
 			var monitorPoint = data.data;
-			for(var i=0,len=monitorPoint.length;i<len;i++)
-			{
-				var option = $("<option value=\""+monitorPoint[i].id+"\">"
-								+monitorPoint[i].titleText
-								+"</option>");
+			for(var i=0,len=monitorPoint.length;i<len;i++){
+				var option = $("<option value=\""+monitorPoint[i].id+"\">"+monitorPoint[i].titleText+"</option>");
 				$("#monitorPointOption").append(option);
+				//init all charts
+				initCharts(monitorPoint[i]);
 			}
 			initMultiple();
 		}
 	});	
 }
 
-function refreshChartForSelect(){
-	var monitorPoint = $('#monitorPointOption').val();
+function initCharts(data){
+	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').removeAttr('id').appendTo($('#monitor-view'));
+	var div = $("<div name=\"data-chart\" id=\""+data.id+"\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
+	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
+	//init div to chart
+	initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
+	
+	var chart = $(div).highcharts();
+	setChartData(data.id,chart);
+	
+	draggable(viewDemo);
+}
+
+function initChart(obj,title,ytitle,unit){
+    $(obj).highcharts({
+        title: {
+            text: title
+        },
+        xAxis: {
+			type: 'datetime',
+            labels:{
+            	rotation:-90,
+            	align:'right'
+            }
+        },
+        credits:{
+        	enabled: false
+        },
+        yAxis: {
+            title: {
+                text: ytitle 
+            }
+        },
+        tooltip: {
+            valueSuffix: unit
+        }
+    });
+
+} 
+
+function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
-	
-	if (monitorPoint != null)
-	{
-		$('#monitor-view div').remove();
-		for (var i = 0,len = monitorPoint.length; i < len ; i++){
-			$.ajax({
-				type : "get",
-				url : "${ctx}/monitor/"+mclusterId+"/"+monitorPoint[i]+"/"+queryTime,
-				dataType : "json", 
-				contentType : "application/json; charset=utf-8",
-				success:function(data){
-			 		error(data);
-			 		addChart(data.data);
-				}
-			});
+	$.ajax({
+		type : "get",
+		url : "${ctx}/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
+		dataType : "json", 
+		contentType : "application/json; charset=utf-8",
+		success:function(data){
+	 		error(data);
+	 		var xdata = data.data.xdata;
+	 		var ydata = data.data.ydata;
+	 		for(var i=chart.series.length-1;i>=0;i--){
+	 			chart.series[i].remove(false);
+ 			}
+	 		chart.xAxis[0].setCategories(xdata,false);
+	 		for(var i=0;i<ydata.length;i++){
+	 			chart.addSeries(ydata[i],false);
+ 			}
+	 		chart.redraw();
 		}
-	}else{
-		queryAllChart(mclusterId);
-	}
+	});
+
 }
 
 function draggable(obj){
@@ -231,7 +222,6 @@ function initMultiple(){
 	}).trigger('resize.chosen');
 }
 $(function(){
-	queryMonitorPoint();
 	queryMcluster();
 });
 </script>
