@@ -16,22 +16,17 @@
 							<select id="mclusterOption" name="mclusterId" class="form-control">
 							</select>					
 						</div>
-						<label class="col-sm-1 control-label">监控点</label>
+					<!-- 	<label class="col-sm-1 control-label">监控点</label>
 						<div class="col-sm-2">
 							<select id="monitorPointOption" name="monitorPoint" class="form-control">
 								<option value=""></option>
 							</select>
-						</div>
-						<!-- <label class="col-sm-1 control-label">多选</label>
-						<div class="col-sm-1">
-							 <select multiple="multiple" class="multiselect form-control">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
 						</div> -->
+						<label class="col-sm-1 control-label">监控点</label>
+						<div class="col-sm-3">
+							<select multiple="" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="Choose a State...">
+							</select>
+						</div>
 						
 						<label class="col-sm-1 control-label">时间</label>
 						<div class="col-sm-1">
@@ -84,10 +79,16 @@ function drawChart(obj,title,ytitle,unit,xdata,ydata){
       
         },
         xAxis: {
-			type: 'datetime',                       
-            categories: xdata 
+			type: 'datetime',
+            categories: xdata,
+            labels:{
+            	rotation:-90,
+            	align:'right',
+            }
         },
-        
+        credits:{
+        	enabled: false
+        },
         yAxis: {
             title: {
                 text: ytitle 
@@ -106,11 +107,11 @@ function addChart(data){
 	var div = $("<div name=\"data-chart\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
 	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
 	drawChart(div,data.title,data.ytitle,data.unit,data.xdata,data.ydata);
-	//draggable(viewDemo);
+	draggable(viewDemo);
 }
 
 function queryAllChart(clusterId){
-	//$('#monitor-view div').remove();
+	$('#monitor-view div').remove();
 	$.ajax({
 		type : "get",
 		url : "${ctx}/monitor/mclusterChartsCount",
@@ -170,6 +171,7 @@ function queryMonitorPoint(){
 								+"</option>");
 				$("#monitorPointOption").append(option);
 			}
+			
 		}
 	});	
 }
@@ -217,10 +219,18 @@ function draggable(obj){
 			}
 	    });
 }
-
+function initMultiple(){
+	$('.chosen-select').chosen({allow_single_deselect:true}); 
+	$(window).off('resize.chosen').on('resize.chosen', function() {
+		$('.chosen-select').each(function() {
+			 var $this = $(this);
+			 $this.next().css({'width': $this.parent().width()});
+		})
+	}).trigger('resize.chosen');
+}
 $(function(){
 	queryMonitorPoint();
 	queryMcluster();
-	$('.multiselect').multiselect();
+
 });
 </script>

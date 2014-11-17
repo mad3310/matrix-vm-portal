@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
 
 <!-- page specific plugin styles -->
 
@@ -47,6 +48,7 @@
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery-ui.min.js"></script>
+<script src="${ctx}/static/ace/js/chosen.jquery.min.js"></script>
 
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
@@ -65,7 +67,7 @@
 <sitemesh:head/>
 </head>
 
-<body class="no-skin">
+<body class="skin-1">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="main-container" id="main-container">
 		<script type="text/javascript">
