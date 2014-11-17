@@ -114,7 +114,7 @@ function queryAllChart(clusterId){
 	$('#monitor-view div').remove();
 	$.ajax({
 		type : "get",
-		url : "${ctx}/monitor/mclusterChartsCount",
+		url : "${ctx}/monitor/index",
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -159,7 +159,7 @@ function queryMcluster(){
 function queryMonitorPoint(){
 	$.ajax({
 		type:"get",		
-		url : "${ctx}/monitor/mclusterChartsCount",
+		url : "${ctx}/monitor/index",
 		dataType:"json",
 		success:function(data){
 			error(data);
