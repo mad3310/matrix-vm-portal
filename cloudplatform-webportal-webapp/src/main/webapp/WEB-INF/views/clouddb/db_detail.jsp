@@ -19,10 +19,10 @@
 							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
+							<a data-toggle="tab" href="#db-detail-user-mgr">&nbsp用户管理&nbsp</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-monitor">监控</a>
+							<a data-toggle="tab" href="#db-monitor">&nbsp&nbsp&nbsp监控&nbsp&nbsp&nbsp</a>
 						</li>
 					</ul>
 				</div>

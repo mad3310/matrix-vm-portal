@@ -230,6 +230,7 @@ function initMultiple(){
 	}).trigger('resize.chosen');
 }
 $(function(){
+	$('#nav-search').addClass("hidden");
 	queryMcluster();
 });
 </script>
