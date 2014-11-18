@@ -21,6 +21,9 @@
 						<li class="">
 							<a data-toggle="tab" href="#db-detail-user-mgr">用户管理</a>
 						</li>
+						<li class="">
+							<a data-toggle="tab" href="#db-monitor">监控</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -76,6 +79,28 @@
 									<tbody id="tby">
 									</tbody>
 								</table>
+							</div>
+						</div>
+						<div id="db-monitor" class="tab-pane">
+							<div id="db-detail-table" class="col-xs-12">
+								<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
+								<div class="btn-group btn-corner col-sm-2 pull-right">
+									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(1)">一小时</button>
+									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(2)">三小时</button>
+									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(3)">一天</button>
+									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(4)">一周</button>
+								</div>
+									
+								<div id="monitor-view" class="row">
+								</div>
+								<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-12 widget-container-col ui-sortable hide">
+									<div class="widget-box transparent ui-sortable-handle">
+										<div class="widget-body">
+											<div name="monitor-view-demo-data" class="widget-main padding-6 no-padding-left no-padding-right">
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -280,6 +305,8 @@
 <!-- /.page-content-area -->
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
+<script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
+<%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
 
 <script type="text/javascript">
 $(function(){
@@ -641,9 +668,98 @@ function deleteDbUser(obj){
 	}
 	confirmframe("删除数据库用户","删除该用户后,用该用户连接数据库的用户,将无法使用数据库!","您确定要删除此用户?",deleteDbUserCmd);
 }
+
+function initChart(obj,title,ytitle,unit){
+    $(obj).highcharts({
+        title: {
+            text: title
+        },
+        xAxis: {
+			type: 'datetime',
+            labels:{
+            	rotation:-90,
+            	align:'right'
+            }
+        },
+        credits:{
+        	enabled: false
+        },
+        yAxis: {
+            title: {
+                text: ytitle 
+            }
+        },
+        tooltip: {
+            valueSuffix: unit
+        }
+    });
+} 
+
+function setChartData(chart){
+	var dbId= $('#dbId').val();
+	var strategy= $('#strategy').val();
+	$.ajax({
+		type : "get",
+		url : "${ctx}/monitor/"+dbId+"/22/"+strategy,
+		dataType : "json", 
+		contentType : "application/json; charset=utf-8",
+		success:function(data){
+			console.log(data);
+	 		error(data);
+	 		var xdata = data.data.xdata;
+	 		var ydata = data.data.ydata;
+	 		for(var i=chart.series.length-1;i>=0;i--){
+	 			chart.series[i].remove(false);
+ 			}
+	 		chart.xAxis[0].setCategories(xdata,false);
+	 		for(var i=0;i<ydata.length;i++){
+	 			chart.addSeries(ydata[i],false);
+ 			}
+	 		chart.redraw();
+		}
+	});
+}
+
+function initDbMonitorChart(){
+	var dbId= $('#dbId').val();
+	var strategy= $('#strategy').val();
+	$.ajax({
+		type : "get",
+		url : "${ctx}/monitor/"+dbId+"/22/"+strategy,
+		dataType : "json", 
+		contentType : "application/json; charset=utf-8",
+		success:function(data){
+	 		error(data);
+	 		var xdata = data.data.xdata;
+	 		var ydata = data.data.ydata;
+	 		var titleText = data.data.titleText;
+	 		var yAxisText = data.data.yAxisText;
+	 		var tooltipSuffix = data.data.tooltipSuffix;
+	 		var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","22-monitor-view").appendTo($('#monitor-view'));
+	 		var div = $("<div name=\"data-chart\" id=\"22\" class=\"col-sm-12\" style=\"min-width: 310px; height: 654px\"></div>");
+	 		div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
+	 		initChart(div,titleText,yAxisText,tooltipSuffix);
+	 		var chart = $(div).highcharts();
+	 		
+	 		chart.xAxis[0].setCategories(xdata,false);
+	 		for(var i=0;i<ydata.length;i++){
+	 			chart.addSeries(ydata[i],false);
+ 			}
+	 		chart.redraw();
+		}
+	});
+}
+
+function updateDbMonitorChart(strategy){
+	$('#strategy').val(strategy);
+	var chart = $('#22').highcharts();
+	setChartData(chart);
+}
+
 function pageinit(){
 	checkboxControl();
 	queryDbUser();
 	queryDbInfo();
+	initDbMonitorChart();
 }
 </script>
