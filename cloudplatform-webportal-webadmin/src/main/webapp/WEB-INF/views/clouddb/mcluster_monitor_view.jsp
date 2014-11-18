@@ -11,7 +11,7 @@
 			<div class="clearfix form-actions">
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
-						<label class="col-sm-1 control-label no-padding-right">Container集群</label>
+						<label class="col-sm-2 control-label no-padding-right">Container集群</label>
 						<div class="col-sm-2">
 							<select id="mclusterOption" name="mclusterId" class="form-control">
 							</select>					
@@ -29,7 +29,7 @@
 						</div>
 						
 						<label class="col-sm-1 control-label">时间</label>
-						<div class="col-sm-1">
+						<div class="col-sm-2">
 							<select id="queryTime" name="queryTime" class="form-control">
 								<option value="1">一小时</option>
 								<option value="2">三小时</option>
@@ -46,7 +46,7 @@
 		<div id="monitor-view" class="row">
 		</div>
 		<!-- <div class="space-24"></div> -->
-			<div id="monitor-view-demo" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide">
+			<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide">
 				<div class="widget-box transparent ui-sortable-handle">
 					<div class="widget-header">
 						<h4 class="widget-title lighter">监控图</h4>
@@ -76,19 +76,27 @@
 
 function refreshChartForSelect(){
 	var monitorPoint = $('#monitorPointOption').val();
-	
+	$('#monitor-view [name="monitor-view"]').each(function(){
+		if (monitorPoint != null){
+			for (var i = 0,len = monitorPoint.length; i < len ; i++){
+				if($(this).attr('id') == (monitorPoint[i]+"-monitor-view")){
+					$(this).removeClass('hide');
+					var chart = $("#"+monitorPoint[i]).highcharts();
+					setChartData(monitorPoint[i],chart);
+					break
+				}
+				$(this).addClass('hide');
+			}
+		}else{
+			monitorPointId=$(this).find('[name="data-chart"]').attr('id');
+			var chart = $("#"+monitorPointId).highcharts();
+			setChartData(monitorPointId,chart);
+		}
+	});
 	//获取所有chart div
 	//显示选择的div
 	//隐藏其他div
 	//update 数据
-	
-	
-	if (monitorPoint != null){
-		for (var i = 0,len = monitorPoint.length; i < len ; i++){
-			var chart = $("#"+monitorPoint).highcharts();
-			setChartData(monitorPoint[i],chart);
-		}
-	}
 }
 
 function queryMcluster(){
@@ -128,7 +136,7 @@ function queryMonitorPoint(){
 }
 
 function initCharts(data){
-	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').removeAttr('id').appendTo($('#monitor-view'));
+	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id",data.id+"-monitor-view").appendTo($('#monitor-view'));
 	var div = $("<div name=\"data-chart\" id=\""+data.id+"\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
 	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
 	//init div to chart
