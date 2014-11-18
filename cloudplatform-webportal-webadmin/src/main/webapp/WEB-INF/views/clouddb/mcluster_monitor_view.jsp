@@ -54,9 +54,6 @@
 							<a href="#" data-action="fullscreen" class="orange2">
 								<i class="ace-icon fa fa-expand"></i>
 							</a>
-							<a href="#" data-action="close">
-								<i class="ace-icon fa fa-times"></i>
-							</a>
 						</div>
 					</div>
 					<div class="widget-body">
@@ -93,10 +90,6 @@ function refreshChartForSelect(){
 			setChartData(monitorPointId,chart);
 		}
 	});
-	//获取所有chart div
-	//显示选择的div
-	//隐藏其他div
-	//update 数据
 }
 
 function queryMcluster(){

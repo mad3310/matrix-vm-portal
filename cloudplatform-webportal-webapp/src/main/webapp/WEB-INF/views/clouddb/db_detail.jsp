@@ -84,11 +84,16 @@
 						<div id="db-monitor" class="tab-pane">
 							<div id="db-detail-table" class="col-xs-12">
 								<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
-								<div class="btn-group btn-corner col-sm-2 pull-right">
-									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(1)">一小时</button>
-									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(2)">三小时</button>
-									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(3)">一天</button>
-									<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(4)">一周</button>
+								<div class="col-sm-2 pull-right">
+									<div class="btn-group btn-corner">
+										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(1)">一小时</button>
+										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(2)">三小时</button>
+										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(3)">一天</button>
+										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart(4)">一周</button>
+									</div>
+									<div class="btn-group btn-corner">
+										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart()"><i class="ace-icon fa fa-refresh white"></i></button>
+									</div>
 								</div>
 									
 								<div id="monitor-view" class="row">
@@ -704,7 +709,6 @@ function setChartData(chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
-			console.log(data);
 	 		error(data);
 	 		var xdata = data.data.xdata;
 	 		var ydata = data.data.ydata;
@@ -751,7 +755,9 @@ function initDbMonitorChart(){
 }
 
 function updateDbMonitorChart(strategy){
-	$('#strategy').val(strategy);
+	if(strategy){
+		$('#strategy').val(strategy);
+	}
 	var chart = $('#22').highcharts();
 	setChartData(chart);
 }
