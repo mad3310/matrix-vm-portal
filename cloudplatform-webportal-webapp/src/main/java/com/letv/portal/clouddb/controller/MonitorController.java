@@ -28,16 +28,9 @@ import com.letv.portal.service.IMonitorService;
 public class MonitorController {
 	
 	@Resource
-	private IContainerService containerService;
-	@Resource
 	private IMonitorService monitorService;
 	@Resource
-	private IMonitorIndexService monitorIndexService;
-	@Resource
-	private IContainerProxy containerProxy;
-	@Resource
 	private IDbService dbService;
-	
 	
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>
@@ -49,10 +42,8 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/{dbId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
-		MonitorTimeModel monitorTimeModel = new MonitorTimeModel();
-		monitorTimeModel.setStrategy(strategy);
 		Long mclusterId = this.dbService.selectById(dbId).getMclusterId();
-		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,monitorTimeModel));
+		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,strategy));
 		return result;
 	}
 

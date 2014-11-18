@@ -57,10 +57,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.selectDistinct(map);
 	}
 	
-	
 
 	@Override
-	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId,MonitorTimeModel monitorTimeModel) {
+	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
 	    map.put("type", "mclusternode");
@@ -84,7 +83,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    
 	    
 	    
-	    Map<String, Object> dateMap = anaysiDate(monitorTimeModel.getStrategy());
+	    Map<String, Object> dateMap = anaysiDate(strategy);
 	    List<String> dateXList =(List<String>) dateMap.get("x");
 	    List<String> dateYList =(List<String>) dateMap.get("y");
 		Collections.reverse(dateXList);
