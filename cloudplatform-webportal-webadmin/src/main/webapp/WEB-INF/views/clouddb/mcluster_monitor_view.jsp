@@ -50,7 +50,7 @@
 				<div class="widget-box transparent ui-sortable-handle">
 					<div class="widget-header">
 						<h4 class="widget-title lighter">监控图</h4>
-						<div class="widget-toolbar no-border">
+						<div class="widget-toolbar">
 							<a href="#" data-action="fullscreen" class="orange2">
 								<i class="ace-icon fa fa-expand"></i>
 							</a>
