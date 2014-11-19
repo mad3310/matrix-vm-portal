@@ -114,11 +114,6 @@ public class MonitorController {
 		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,strategy));
 		return result;
 	}
-	@RequestMapping(value="/xData/{strategy}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Integer strategy,ResultObject result) {
-		result.setData(this.monitorService.getMonitorXData(strategy));
-		return result;
-	}
 	
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>

@@ -1116,7 +1116,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 monitorDetail.setDbName(index.getDetailTable());
 				 monitorDetail.setDetailName(key);
 				 monitorDetail.setMonitorDate(date);
-				 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
+				 if(null == data.get(key)) {
+					 monitorDetail.setDetailValue(null);  
+				 } else {
+					 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
+				 }
 				 monitorDetail.setIp(container.getIpAddr());
 				 this.monitorService.insert(monitorDetail);
 			}

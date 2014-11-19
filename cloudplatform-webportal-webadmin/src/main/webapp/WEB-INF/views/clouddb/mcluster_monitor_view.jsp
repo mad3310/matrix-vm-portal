@@ -139,7 +139,7 @@ function initCharts(data){
 	var chart = $(div).highcharts();
 	setChartData(data.id,chart);
 	
-	draggable(viewDemo);
+//	draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
@@ -155,7 +155,17 @@ function initChart(obj,title,ytitle,unit){
             labels:{
             	rotation:-90,
             	align:'right'
-            }
+            },
+        	dateTimeLabelFormats:{
+        		millisecond: '%H:%M:%S.%L',
+        		second: '%H:%M:%S',
+        		minute: '%H:%M',
+        		hour: '%H:%M',
+        		day: '%e. %b',
+        		week: '%e. %b',
+        		month: '%b \'%y',
+        		year: '%Y'
+	        }
         },
         credits:{
         	enabled: false
