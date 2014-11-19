@@ -1,12 +1,11 @@
 package com.letv.portal.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MonitorViewYModel {
 	private String type;
 	private String name;
-	private List<Float>data =new ArrayList<Float>();
+	private List<List<Object>>data;
 	public String getType() {
 		return type;
 	}
@@ -19,17 +18,10 @@ public class MonitorViewYModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Float> getData() {
+	public List<List<Object>> getData() {
 		return data;
 	}
-	public void setData(List<Float> data) {
+	public void setData(List<List<Object>> data) {
 		this.data = data;
 	}
-   
-    
-
-   
-	
-	
-	
 }

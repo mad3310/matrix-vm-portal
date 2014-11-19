@@ -85,6 +85,7 @@ function refreshChartForSelect(){
 				$(this).addClass('hide');
 			}
 		}else{
+			$(this).removeClass('hide');
 			monitorPointId=$(this).find('[name="data-chart"]').attr('id');
 			var chart = $("#"+monitorPointId).highcharts();
 			setChartData(monitorPointId,chart);
@@ -138,11 +139,14 @@ function initCharts(data){
 	var chart = $(div).highcharts();
 	setChartData(data.id,chart);
 	
-	draggable(viewDemo);
+	//draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
     $(obj).highcharts({
+    	chart:{
+    		zoomType: 'x'
+    	},
         title: {
             text: title
         },
@@ -178,12 +182,20 @@ function setChartData(indexId,chart){
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
 	 		error(data);
-	 		var xdata = data.data.xdata;
+	 		/* var xdata = data.data.xdata;
 	 		var ydata = data.data.ydata;
 	 		for(var i=chart.series.length-1;i>=0;i--){
 	 			chart.series[i].remove(false);
  			}
 	 		chart.xAxis[0].setCategories(xdata,false);
+	 		for(var i=0;i<ydata.length;i++){
+	 			chart.addSeries(ydata[i],false);
+ 			}
+	 		chart.redraw(); */
+	 		var ydata = data.data;
+	 		for(var i=chart.series.length-1;i>=0;i--){
+	 			chart.series[i].remove(false);
+ 			}
 	 		for(var i=0;i<ydata.length;i++){
 	 			chart.addSeries(ydata[i],false);
  			}

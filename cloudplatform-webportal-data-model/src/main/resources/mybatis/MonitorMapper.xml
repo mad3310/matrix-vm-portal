@@ -12,6 +12,10 @@
         <result column="IP" property="ip" />
         <result column="DB_NAME" property="dbName" /> 
 	</resultMap>
+	<resultMap id="dataMap" type="java.util.Map">
+        <result column="MONITOR_DATE" property="monitorDate" />
+		<result column="DETAIL_VALUE" property="detailValue" />
+	</resultMap>
 	
 	
 
@@ -57,7 +61,7 @@
 		select
 		<include refid="Base_Column_List" /> 
 		from ${dbName} m
-		<include refid="Example_Where_Clause" /> 
+		
 	</select>
 	
 	<select id="selectDistinct" resultType="String" parameterType="java.util.Map">
@@ -68,7 +72,7 @@
 		select 
         <include refid="Base_Column_List" /> 
 	   	from ${dbName} m
-        where m.DETAIL_NAME=#{detailName} and m.MONITOR_DATE between #{start} and #{end} 
+        <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
 	</select>
 
 

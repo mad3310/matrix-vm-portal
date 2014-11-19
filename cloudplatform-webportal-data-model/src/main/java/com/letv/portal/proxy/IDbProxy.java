@@ -22,5 +22,6 @@ public interface IDbProxy extends IBaseProxy<DbModel> {
 	 */
 	public void saveAndBuild(DbModel dbModel);
 	public DbModel dbList(Long dbId);
+	public DbModel monitor4conn(Long dbId,Long chartId,Long strategy);
 	
 }

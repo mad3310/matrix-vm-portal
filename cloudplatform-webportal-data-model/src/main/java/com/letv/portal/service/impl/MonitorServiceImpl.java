@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +60,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	
 
 	@Override
-	public MonitorViewModel getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
 	    map.put("type", "mclusternode");
@@ -67,69 +69,51 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    
 	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
 	    String dataTable = monitorIndexModel.getDetailTable();
-
-	    
-	    
-	    /*
-	     * 1、获取初始化数据 ，传给前台
-	     */
 	    
 	    Map<String, Object> indexParams = new HashMap<String, Object>();
 	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
 	    
+	    Date startDate = new Date();
+	    Calendar now = Calendar.getInstance();  
+        now.setTime(startDate);
+        now.add(Calendar.MINUTE, -60);
+        Date endDate = now.getTime();
 	    
 	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
 	    
-	    
-	    
-	    
-	    Map<String, Object> dateMap = anaysiDate(strategy);
-	    List<String> dateXList =(List<String>) dateMap.get("x");
-	    List<String> dateYList =(List<String>) dateMap.get("y");
-		Collections.reverse(dateXList);
-		Collections.reverse(dateYList);
-		List<String> xdateList = new ArrayList<String>(dateXList);
-		xdateList.remove(xdateList.size()-1);
-		List<MonitorViewYModel> monitorViewYModel = new ArrayList<MonitorViewYModel>();
-		MonitorViewModel monitorViewModel =  new MonitorViewModel();
-		Map<String, Object> mapMonitor = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		
-	    for(ContainerModel c:containers){	    		
-	    	 for(String s:detailNames){		    	
-	    	    	mapMonitor.put("containerIp", c.getIpAddr());
-	    	    	mapMonitor.put("detailName", s);
-	    	    	mapMonitor.put("dbName", monitorIndexModel.getDetailTable());
-	    	    	
-	    	    	List<MonitorDetailModel> listMonitorDetailModels =  selectMonitorDetailData(dateYList,mapMonitor);
-	    	    	
-	    	    	List<Float> listStrings = new ArrayList<Float>();
-	    	    	for(MonitorDetailModel m:listMonitorDetailModels){	
-	    	    		if(m==null){
-	    	    			listStrings.add(null);
-	    	    		}else {
-		    	    		listStrings.add(m.getDetailValue());	
-						}
-	    	    	}	    	    
-    	    	  	MonitorViewYModel Y = new MonitorViewYModel();
-    	    	 	Y.setData(listStrings);  
-	    	       	Y.setName(c.getIpAddr()+"-"+s);
-	    	       	Y.setType("spline");
-	 	    	   
-	    	     	monitorViewYModel.add(Y);
-	    	 }
- 	    	
- 	    	monitorViewModel.setXdata(xdateList);//x
-	    }
-	    monitorViewModel.setTitle(monitorIndexModel.getTitleText());
-	    monitorViewModel.setYtitle(monitorIndexModel.getyAxisText());
-	    monitorViewModel.setUnit(monitorIndexModel.getTooltipSuffix());
-	    monitorViewModel.setYdata(monitorViewYModel);//y
+		params.put("dbName", monitorIndexModel.getDetailTable());
+		params.put("start", "2014-11-19 12:00:00");
+		params.put("end", "2014-11-19 13:00:00");
+		
+		for (ContainerModel c : containers) {
+			for (String s : detailNames) {
+				MonitorViewYModel ydata = new MonitorViewYModel();
+				params.put("ip", c.getIpAddr());
+				params.put("detailName", s);
 
-		return monitorViewModel;
+				List<MonitorDetailModel> list = this.monitorDao.selectDateTime(params);
+				List<List<Object>> datas = new ArrayList<List<Object>>();
+				for (MonitorDetailModel monitorDetail : list) {
+					List<Object> point = new ArrayList<Object>();
+					point.add(monitorDetail.getMonitorDate());
+					point.add(monitorDetail.getDetailValue());
+					datas.add(point);
+				}
+				ydata.setName(c.getIpAddr() +":"+s);
+				ydata.setType("spline");
+				ydata.setData(datas);
+				ydatas.add(ydata);
+			}
+		}
+
+		return ydatas;
 	}
 	public List<MonitorDetailModel> selectDateTime(Map map){
 		return  this.monitorDao.selectDateTime(map);
 	}
+	
     /**
      * Methods Name: selectData <br>
      * Description: 查询时间段的数据<br>

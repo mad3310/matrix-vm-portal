@@ -135,5 +135,12 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			}
 		}
 	}
+	@Override
+	public DbModel monitor4conn(Long dbId, Long chartId, Long strategy) {
+		// TODO Auto-generated method stub
+		Long mclusterId = this.dbService.selectById(dbId).getMclusterId();
+		
+		return null;
+	}
 	
 }

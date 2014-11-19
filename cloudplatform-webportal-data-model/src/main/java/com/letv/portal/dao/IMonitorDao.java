@@ -17,5 +17,4 @@ import com.letv.portal.model.MonitorDetailModel;
 public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public List<String> selectDistinct(Map map);
 	public List<MonitorDetailModel> selectDateTime(Map map);
-	
 }
