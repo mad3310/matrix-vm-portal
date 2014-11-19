@@ -50,7 +50,7 @@
 				<div class="widget-box transparent ui-sortable-handle">
 					<div class="widget-header">
 						<h4 class="widget-title lighter">监控图</h4>
-						<div class="widget-toolbar no-border">
+						<div class="widget-toolbar">
 							<a href="#" data-action="fullscreen" class="orange2">
 								<i class="ace-icon fa fa-expand"></i>
 							</a>
@@ -139,7 +139,7 @@ function initCharts(data){
 	var chart = $(div).highcharts();
 	setChartData(data.id,chart);
 	
-	//draggable(viewDemo);
+	draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
@@ -182,16 +182,6 @@ function setChartData(indexId,chart){
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
 	 		error(data);
-	 		/* var xdata = data.data.xdata;
-	 		var ydata = data.data.ydata;
-	 		for(var i=chart.series.length-1;i>=0;i--){
-	 			chart.series[i].remove(false);
- 			}
-	 		chart.xAxis[0].setCategories(xdata,false);
-	 		for(var i=0;i<ydata.length;i++){
-	 			chart.addSeries(ydata[i],false);
- 			}
-	 		chart.redraw(); */
 	 		var ydata = data.data;
 	 		for(var i=chart.series.length-1;i>=0;i--){
 	 			chart.series[i].remove(false);
