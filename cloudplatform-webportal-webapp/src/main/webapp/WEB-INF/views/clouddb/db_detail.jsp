@@ -705,7 +705,7 @@ function setChartData(chart){
 	var strategy= $('#strategy').val();
 	$.ajax({
 		type : "get",
-		url : "${ctx}/monitor/"+dbId+"/22/"+strategy,
+		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
@@ -729,7 +729,7 @@ function initDbMonitorChart(){
 	var strategy= $('#strategy').val();
 	$.ajax({
 		type : "get",
-		url : "${ctx}/monitor/"+dbId+"/22/"+strategy,
+		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
@@ -739,8 +739,8 @@ function initDbMonitorChart(){
 	 		var titleText = data.data.titleText;
 	 		var yAxisText = data.data.yAxisText;
 	 		var tooltipSuffix = data.data.tooltipSuffix;
-	 		var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","22-monitor-view").appendTo($('#monitor-view'));
-	 		var div = $("<div name=\"data-chart\" id=\"22\" class=\"col-sm-12\" style=\"min-width: 310px; height: 654px\"></div>");
+	 		var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","23-monitor-view").appendTo($('#monitor-view'));
+	 		var div = $("<div name=\"data-chart\" id=\"23\" class=\"col-sm-12\" style=\"min-width: 310px; height: 654px\"></div>");
 	 		div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
 	 		initChart(div,titleText,yAxisText,tooltipSuffix);
 	 		var chart = $(div).highcharts();
@@ -758,7 +758,7 @@ function updateDbMonitorChart(strategy){
 	if(strategy){
 		$('#strategy').val(strategy);
 	}
-	var chart = $('#22').highcharts();
+	var chart = $('#23').highcharts();
 	setChartData(chart);
 }
 
