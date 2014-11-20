@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IDbService;
-import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -24,7 +25,7 @@ import com.letv.portal.service.IMonitorService;
 public class MonitorController {
 	
 	@Resource
-	private IMonitorService monitorService;
+	private IMonitorProxy monitorProxy;
 	@Resource
 	private IDbService dbService;
 	
@@ -38,7 +39,8 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/{dbId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
-		result.setData(this.monitorService.getMonitorViewData(dbId,chartId,strategy));
+		DbModel dbModel = this.dbService.selectById(dbId);
+		result.setData(this.monitorProxy.getMonitorViewData(dbModel.getMclusterId(),chartId,strategy));
 		return result;
 	}
 
