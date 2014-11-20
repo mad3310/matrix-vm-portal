@@ -102,7 +102,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	private Date getStartDate(Date end, Integer strategy) {
 		Calendar now = Calendar.getInstance();
 		now.setTime(end);
-		
 		switch (strategy) {
 		case 1:
 			now.add(Calendar.HOUR, -1); //one hour ago
@@ -115,6 +114,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			break;
 		case 4:
 			now.add(Calendar.HOUR, -168); // one week ago
+			break;
+		case 5:
+			now.add(Calendar.MONTH, -1); // one month ago
 			break;
 		default:
 			now.add(Calendar.HOUR, -1);

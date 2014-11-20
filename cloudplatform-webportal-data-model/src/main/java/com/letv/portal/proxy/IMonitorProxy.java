@@ -1,5 +1,9 @@
 package com.letv.portal.proxy;
 
+import java.util.List;
+
+import com.letv.portal.model.MonitorViewYModel;
+
 
 
 public interface IMonitorProxy {
@@ -12,6 +16,8 @@ public interface IMonitorProxy {
 	 * @return
 	 */
 	public void collectMclusterServiceData();
+
+	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId, Long chartId,Integer strategy);
 
 	
 }

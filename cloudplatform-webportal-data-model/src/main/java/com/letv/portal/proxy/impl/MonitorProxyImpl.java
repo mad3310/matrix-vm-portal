@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.MonitorViewYModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
@@ -50,6 +51,11 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			}
 		}
 		logger.info("collectMclusterServiceData end");
+	}
+
+	@Override
+	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId, Integer strategy) {
+		return this.monitorService.getMonitorViewData(mclusterId, chartId, strategy);
 	}
 
 }

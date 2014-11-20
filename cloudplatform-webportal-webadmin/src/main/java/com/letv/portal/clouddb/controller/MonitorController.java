@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
+import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
@@ -34,6 +35,8 @@ public class MonitorController {
 	private IContainerService containerService;
 	@Resource
 	private IMonitorService monitorService;
+	@Resource
+	private IMonitorProxy monitorProxy;
 	@Resource
 	private IMonitorIndexService monitorIndexService;
 	@Resource
@@ -111,7 +114,7 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/{mclusterId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
-		result.setData(this.monitorService.getMonitorViewData(mclusterId,chartId,strategy));
+		result.setData(this.monitorProxy.getMonitorViewData(mclusterId,chartId,strategy));
 		return result;
 	}
 	
