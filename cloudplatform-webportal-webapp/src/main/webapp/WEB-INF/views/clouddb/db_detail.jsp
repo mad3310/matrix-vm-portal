@@ -101,7 +101,8 @@
 								<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-12 widget-container-col ui-sortable hide">
 									<div class="widget-box transparent ui-sortable-handle">
 										<div class="widget-body">
-											<div name="monitor-view-demo-data" class="widget-main padding-6 no-padding-left no-padding-right">
+											<div class="widget-main">
+												<div name="data-chart"></div>
 											</div>
 										</div>
 									</div>
@@ -676,6 +677,9 @@ function deleteDbUser(obj){
 
 function initChart(obj,title,ytitle,unit){
     $(obj).highcharts({
+    	chart:{
+    		zoomType: 'x'
+    	},
         title: {
             text: title
         },
@@ -684,7 +688,17 @@ function initChart(obj,title,ytitle,unit){
             labels:{
             	rotation:-90,
             	align:'right'
-            }
+            },
+        	dateTimeLabelFormats:{
+        		millisecond: '%H:%M:%S.%L',
+        		second: '%H:%M:%S',
+        		minute: '%H:%M',
+        		hour: '%H:%M',
+        		day: '%e. %b',
+        		week: '%e. %b',
+        		month: '%b \'%y',
+        		year: '%Y'
+	        }
         },
         credits:{
         	enabled: false
@@ -701,6 +715,27 @@ function initChart(obj,title,ytitle,unit){
 } 
 
 function setChartData(chart){
+	var mclusterId= $('#mclusterOption').val();
+	var queryTime= $('#queryTime').val();
+	$.ajax({
+		type : "get",
+		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
+		dataType : "json", 
+		contentType : "application/json; charset=utf-8",
+		success:function(data){
+	 		error(data);
+	 		var ydata = data.data;
+	 		for(var i=chart.series.length-1;i>=0;i--){
+	 			chart.series[i].remove(false);
+ 			}
+	 		for(var i=0;i<ydata.length;i++){
+	 			chart.addSeries(ydata[i],false);
+ 			}
+	 		chart.redraw();
+		}
+	});
+}
+/* function setChartData(chart){
 	var dbId= $('#dbId').val();
 	var strategy= $('#strategy').val();
 	$.ajax({
@@ -722,7 +757,7 @@ function setChartData(chart){
 	 		chart.redraw();
 		}
 	});
-}
+} */
 
 function initDbMonitorChart(){
 	var dbId= $('#dbId').val();
@@ -734,22 +769,16 @@ function initDbMonitorChart(){
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
 	 		error(data);
-	 		var xdata = data.data.xdata;
 	 		var ydata = data.data.ydata;
 	 		var titleText = data.data.titleText;
 	 		var yAxisText = data.data.yAxisText;
 	 		var tooltipSuffix = data.data.tooltipSuffix;
 	 		var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","23-monitor-view").appendTo($('#monitor-view'));
-	 		var div = $("<div name=\"data-chart\" id=\"23\" class=\"col-sm-12\" style=\"min-width: 310px; height: 654px\"></div>");
-	 		div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
+	 		var div = $(viewDemo).find('[name="data-chart"]');
+	 		$(div).attr("id","23");
+	 		//init div to chart
 	 		initChart(div,titleText,yAxisText,tooltipSuffix);
 	 		var chart = $(div).highcharts();
-	 		
-	 		chart.xAxis[0].setCategories(xdata,false);
-	 		for(var i=0;i<ydata.length;i++){
-	 			chart.addSeries(ydata[i],false);
- 			}
-	 		chart.redraw();
 		}
 	});
 }
