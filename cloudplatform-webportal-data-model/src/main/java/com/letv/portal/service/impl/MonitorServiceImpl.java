@@ -66,6 +66,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
 	    
 	    Date end = new Date();
+	   
 	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
 	    
 		Map<String, Object> params = new HashMap<String, Object>();

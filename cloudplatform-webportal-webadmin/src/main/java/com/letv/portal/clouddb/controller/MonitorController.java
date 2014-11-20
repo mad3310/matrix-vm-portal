@@ -116,12 +116,12 @@ public class MonitorController {
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long mclusterId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
 		result.setData(this.monitorProxy.getMonitorViewData(mclusterId,chartId,strategy));
 		return result;
-	} 
+	}
 	
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>
 	 * Description: 监控视图数目<br>
-	 * @author name: wujun
+	 * @author name: wujun 
 	 * @param mclusterId
 	 * @param result
 	 * @return

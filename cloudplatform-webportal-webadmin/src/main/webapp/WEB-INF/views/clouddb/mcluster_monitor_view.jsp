@@ -49,10 +49,14 @@
 			<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide">
 				<div class="widget-box transparent ui-sortable-handle">
 					<div class="widget-header">
-						<h4 class="widget-title lighter">监控图</h4>
+						<!-- <h4 class="widget-title lighter">监控图</h4> -->
 						<div class="widget-toolbar">
 							<a href="#" data-action="fullscreen" class="orange2">
 								<i class="ace-icon fa fa-expand"></i>
+							</a>
+							<a href="#" class="orange2" data-action="settings" onclick="changeDraggable($(this))">
+								<input type="text" name="draggable" value="1" class="hidden" />
+								<i class="ace-icon fa fa-thumb-tack" style="-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);"></i>
 							</a>
 						</div>
 					</div>
@@ -139,7 +143,7 @@ function initCharts(data){
 	var chart = $(div).highcharts();
 	setChartData(data.id,chart);
 	
-//	draggable(viewDemo);
+	draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
@@ -202,7 +206,6 @@ function setChartData(indexId,chart){
 	 		chart.redraw();
 		}
 	});
-
 }
 
 function draggable(obj){
@@ -217,6 +220,7 @@ function draggable(obj){
 			placeholder: 'widget-placeholder',
 			forcePlaceholderSize:true,
 			tolerance:'pointer',
+			delay:1000,
 			start: function(event, ui) {
 				ui.item.parent().css({'min-height':ui.item.height()})
 			},
@@ -225,6 +229,19 @@ function draggable(obj){
 			}
 	    });
 }
+function changeDraggable(obj){
+	var dgable = $(obj).find('input').val();
+	if(dgable == '1'){
+		$(obj).closest('[name="monitor-view"]').sortable('disable');
+		$(obj).find('input').val(0);
+		$(obj).find('i').attr("style","-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-o-transform:rotate(90deg);");
+	}else{
+		$(obj).closest('[name="monitor-view"]').sortable('enable');
+		$(obj).find('input').val(1);
+		$(obj).find('i').attr("style","-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);");
+	}
+}
+
 function initMultiple(){
 	$('.chosen-select').chosen({allow_single_deselect:true}); 
 	$(window).off('resize.chosen').on('resize.chosen', function() {

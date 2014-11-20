@@ -12,6 +12,8 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	public List<MonitorViewYModel> getMonitorViewData(Long MclusterId,Long chartId,Integer strategy);
 	
+	public List<String> getMonitorXData(Integer strategy);
+	
 	public List<String> selectDistinct(Map map);
 	
 	public List<MonitorDetailModel> selectDateTime(Map map);
