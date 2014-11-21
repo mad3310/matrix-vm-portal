@@ -50,35 +50,39 @@
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane">
-							<div class="col-xs-10">
-								<div class=" pull-right">
-									<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
-										<i class="ace-icont fa fa-plus"></i>创建用户
-									</button>
+							<div class="widget-box widget-color-blue ui-sortable-handle col-xs-10">
+								<div class="widget-header">
+									<div class="widget-toolbar no-border pull-right">
+										<button type="button" class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#create-dbuser-form">
+											<i class="ace-icont fa fa-plus"></i>创建用户
+										</button>
+									</div>
 								</div>
-							</div>
-							<div class="col-xs-10" style="margin-top:8px">
-								<table class="table table-bordered" id="db_detail_table" >
-								<thead>
-									<tr style="background-color: #307ECC;color:#FFFFFF;">
-										<th class="center">
-											<label class="position-relative">
-												<input type="checkbox" class="ace" />
-												<span class="lbl"></span>
-											</label>
-										</th>
-										<th>用户名</th>
-										<th>用户权限</th>
-										<th>ip地址</th>
-										<th>读写比例</th>
-										<th>频次限制</th>
-										<th>当前状态</th>
-										<th>操作</th>
-									</tr>
-								</thead>
-									<tbody id="tby">
-									</tbody>
-								</table>
+								<div class="widget-body">
+									<div class="widget-main no-padding">
+										<table class="table table-bordered" id="db_detail_table" >
+									<thead>
+										<tr>
+											<th class="center">
+												<label class="position-relative">
+													<input type="checkbox" class="ace" />
+													<span class="lbl"></span>
+												</label>
+											</th>
+											<th>用户名</th>
+											<th>用户权限</th>
+											<th>ip地址</th>
+											<th>读写比例</th>
+											<th>频次限制</th>
+											<th>当前状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+										<tbody id="tby">
+										</tbody>
+									</table>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="db-monitor" class="tab-pane">
@@ -306,6 +310,8 @@
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.js"></script>
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
+<%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
+<script src="${ctx}/static/scripts/highcharts/themes/grid-light.js"></script>
 
 <script type="text/javascript">
 $(function(){
@@ -678,6 +684,7 @@ function initChart(obj,title,ytitle,unit){
         },
         xAxis: {
 			type: 'datetime',
+			tickPixelInterval:30,
             labels:{
             	rotation:-90,
             	align:'right'
@@ -693,6 +700,22 @@ function initChart(obj,title,ytitle,unit){
         		year: '%Y'
 	        }
         },
+        plotOptions: {  
+            spline: {  
+                lineWidth: 1.5,  
+                fillOpacity: 0.1,  
+                 marker: {  
+                    enabled: false,  
+                    states: {  
+                        hover: {  
+                            enabled: true,  
+                            radius: 2  
+                        }  
+                    }  
+                },  
+                shadow: false  
+            }  
+        },  
         credits:{
         	enabled: false
         },
