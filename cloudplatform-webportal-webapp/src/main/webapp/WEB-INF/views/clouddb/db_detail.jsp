@@ -22,7 +22,7 @@
 							<a data-toggle="tab" href="#db-detail-user-mgr">&nbsp用户管理&nbsp</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-monitor">&nbsp&nbsp&nbsp监控&nbsp&nbsp&nbsp</a>
+							<a data-toggle="tab" href="#db-monitor" onclick="fitChartSize()">&nbsp&nbsp&nbsp监控&nbsp&nbsp&nbsp</a>
 						</li>
 					</ul>
 				</div>
@@ -95,17 +95,10 @@
 										<button class="btn btn-xs btn-primary" onclick="updateDbMonitorChart()"><i class="ace-icon fa fa-refresh white"></i></button>
 									</div>
 								</div>
-									
 								<div id="monitor-view" class="row">
 								</div>
-								<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-12 widget-container-col ui-sortable hide">
-									<div class="widget-box transparent ui-sortable-handle">
-										<div class="widget-body">
-											<div class="widget-main">
-												<div name="data-chart"></div>
-											</div>
-										</div>
-									</div>
+								<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 widget-container-col ui-sortable hide ui-sortable-disabled">
+									<div name="data-chart" class="col-sm-12" style="height: 654px";></div>
 								</div>
 							</div>
 						</div>
@@ -715,8 +708,8 @@ function initChart(obj,title,ytitle,unit){
 } 
 
 function setChartData(chart){
-	var mclusterId= $('#mclusterOption').val();
-	var queryTime= $('#queryTime').val();
+	var dbId= $('#dbId').val();
+	var strategy= $('#strategy').val();
 	$.ajax({
 		type : "get",
 		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
@@ -735,50 +728,28 @@ function setChartData(chart){
 		}
 	});
 }
-/* function setChartData(chart){
-	var dbId= $('#dbId').val();
-	var strategy= $('#strategy').val();
-	$.ajax({
-		type : "get",
-		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
-		dataType : "json", 
-		contentType : "application/json; charset=utf-8",
-		success:function(data){
-	 		error(data);
-	 		var xdata = data.data.xdata;
-	 		var ydata = data.data.ydata;
-	 		for(var i=chart.series.length-1;i>=0;i--){
-	 			chart.series[i].remove(false);
- 			}
-	 		chart.xAxis[0].setCategories(xdata,false);
-	 		for(var i=0;i<ydata.length;i++){
-	 			chart.addSeries(ydata[i],false);
- 			}
-	 		chart.redraw();
-		}
-	});
-} */
 
-function initDbMonitorChart(){
+function initCharts(data){
+	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","23-monitor-view").appendTo($('#monitor-view'));
+	var div = $(viewDemo).find('[name="data-chart"]');
+	$(div).attr("id","23");
+	//init div to chart
+	initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
+	var chart = $(div).highcharts();
+	setChartData(chart);
+}
+
+function dbMonitorChart(){
 	var dbId= $('#dbId').val();
 	var strategy= $('#strategy').val();
 	$.ajax({
 		type : "get",
-		url : "${ctx}/monitor/"+dbId+"/23/"+strategy,
+		url : "${ctx}/monitor/index/23",
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
 	 		error(data);
-	 		var ydata = data.data.ydata;
-	 		var titleText = data.data.titleText;
-	 		var yAxisText = data.data.yAxisText;
-	 		var tooltipSuffix = data.data.tooltipSuffix;
-	 		var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id","23-monitor-view").appendTo($('#monitor-view'));
-	 		var div = $(viewDemo).find('[name="data-chart"]');
-	 		$(div).attr("id","23");
-	 		//init div to chart
-	 		initChart(div,titleText,yAxisText,tooltipSuffix);
-	 		var chart = $(div).highcharts();
+	 		initCharts(data.data[0]);
 		}
 	});
 }
@@ -791,10 +762,16 @@ function updateDbMonitorChart(strategy){
 	setChartData(chart);
 }
 
+function fitChartSize(){
+	 setTimeout(function () { 
+		$('#23').highcharts().reflow();
+	    }, 1);
+}
+
 function pageinit(){
 	checkboxControl();
 	queryDbUser();
 	queryDbInfo();
-	initDbMonitorChart();
+	dbMonitorChart();
 }
 </script>

@@ -46,22 +46,23 @@
 		<div id="monitor-view" class="row">
 		</div>
 		<!-- <div class="space-24"></div> -->
-			<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide">
+			<div id="monitor-view-demo" name="monitor-view" class="col-xs-12 col-sm-6 widget-container-col ui-sortable hide ui-sortable-disabled">
 				<div class="widget-box transparent ui-sortable-handle">
 					<div class="widget-header">
 						<!-- <h4 class="widget-title lighter">监控图</h4> -->
 						<div class="widget-toolbar">
-							<a href="#" data-action="fullscreen" class="orange2">
+							<a href="#" data-action="fullscreen" class="orange2" onclick="updateChartSize($(this))">
 								<i class="ace-icon fa fa-expand"></i>
 							</a>
 							<a href="#" class="orange2" data-action="settings" onclick="changeDraggable($(this))">
-								<input type="text" name="draggable" value="1" class="hidden" />
+								<input type="text" name="draggable" value="0" class="hidden" />
 								<i class="ace-icon fa fa-thumb-tack" style="-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);"></i>
 							</a>
 						</div>
 					</div>
 					<div class="widget-body">
-						<div name="monitor-view-demo-data" class="widget-main padding-6 no-padding-left no-padding-right">
+						<div class="widget-main">
+							<div name="data-chart"></div>
 						</div>
 					</div>
 				</div>
@@ -129,14 +130,19 @@ function queryMonitorPoint(){
 				initCharts(monitorPoint[i]);
 			}
 			initMultiple();
+		/* 	$('.widget-box').each(function(){
+				$(this).resize(function(){
+					alert($(this).width());
+				});
+			  }); */
 		}
 	});	
 }
 
 function initCharts(data){
 	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id",data.id+"-monitor-view").appendTo($('#monitor-view'));
-	var div = $("<div name=\"data-chart\" id=\""+data.id+"\" class=\"col-sm-12\" style=\"min-width: 310px; height: 400px\"></div>");
-	div.appendTo(viewDemo.find('[name="monitor-view-demo-data"]'));
+	var div = $(viewDemo).find('[name="data-chart"]');
+	$(div).attr("id",data.id);
 	//init div to chart
 	initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
 	
@@ -220,7 +226,7 @@ function draggable(obj){
 			placeholder: 'widget-placeholder',
 			forcePlaceholderSize:true,
 			tolerance:'pointer',
-			delay:1000,
+			disabled:true,
 			start: function(event, ui) {
 				ui.item.parent().css({'min-height':ui.item.height()})
 			},
@@ -229,16 +235,23 @@ function draggable(obj){
 			}
 	    });
 }
+/* function updateChartSize(obj) {
+	var width= $(obj).width();
+	alert(width);
+	$('[name="data-chart"]').width(width);
+} */
+
+
 function changeDraggable(obj){
 	var dgable = $(obj).find('input').val();
 	if(dgable == '1'){
 		$(obj).closest('[name="monitor-view"]').sortable('disable');
 		$(obj).find('input').val(0);
-		$(obj).find('i').attr("style","-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-o-transform:rotate(90deg);");
+		$(obj).find('i').attr("style","-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);");
 	}else{
 		$(obj).closest('[name="monitor-view"]').sortable('enable');
 		$(obj).find('input').val(1);
-		$(obj).find('i').attr("style","-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);");
+		$(obj).find('i').attr("style","-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-o-transform:rotate(90deg);");
 	}
 }
 
@@ -251,8 +264,16 @@ function initMultiple(){
 		})
 	}).trigger('resize.chosen');
 }
+
+function updateChartSize(obj){
+	 setTimeout(function () { 
+		 $(obj).closest('.widget-box').find('[name="data-chart"]').highcharts().reflow();
+	    }, 1);
+}
+
 $(function(){
 	$('#nav-search').addClass("hidden");
 	queryMcluster();
+
 });
 </script>
