@@ -222,6 +222,10 @@
 		$('#sidebar-monitor-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("container集群监控列表");
+	}else if(path.indexOf("/dashboard") >= 0){
+		$('#sidebar-dashboard').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
+		$('#main-content-header li:eq(1)').html("Dashboard");
 	}else if(path.indexOf("/view/mcluster/monitor") >= 0){
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr ul li:eq(1)').addClass("active");

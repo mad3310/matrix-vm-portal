@@ -1,5 +1,8 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IMonitorIndexService;
+import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -28,6 +33,8 @@ public class MonitorController {
 	private IMonitorProxy monitorProxy;
 	@Resource
 	private IDbService dbService;
+	@Resource
+	private IMonitorIndexService monitorIndexService;
 	
 	/**
 	 * Methods Name: mclusterMonitorCharts <br>
@@ -41,6 +48,15 @@ public class MonitorController {
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
 		DbModel dbModel = this.dbService.selectById(dbId);
 		result.setData(this.monitorProxy.getMonitorViewData(dbModel.getMclusterId(),chartId,strategy));
+		return result;
+	}
+	
+	@RequestMapping(value="/index/{indexId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitorChartsCount(@PathVariable Long indexId,ResultObject result) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("status", 1);
+		map.put("id", indexId);
+		result.setData(this.monitorIndexService.selectByMap(map));
 		return result;
 	}
 

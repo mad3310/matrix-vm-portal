@@ -11,6 +11,12 @@
 	<!-- /.sidebar-shortcuts -->
 
 	<ul id="sidebar-list" class="nav nav-list">
+		<li id="sidebar-dashboard" >
+			<a href="${ctx}/dashboard">
+				<i class="menu-icon fa fa-tachometer"></i> 
+				<span class="menu-text">Dashboard</span> 
+			</a>
+		</li>
 		<li id="sidebar-cluster-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> 
@@ -61,7 +67,7 @@
 		</li>
 		<li id="sidebar-monitor-mgr" >
 			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-tachometer"></i> 
+				<i class="menu-icon fa fa-bar-chart-o"></i> 
 				<span class="menu-text"> 监控管理 </span> 
 				<b class="arrow fa fa-angle-down"></b>
 			</a>
