@@ -71,9 +71,9 @@
 	</div>
 </div>
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
-<script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script>
+<%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
 
-<%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
+<script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script>
 <script type="text/javascript">
 
 function refreshChartForSelect(){
@@ -162,6 +162,7 @@ function initChart(obj,title,ytitle,unit){
         },
         xAxis: {
 			type: 'datetime',
+			tickPixelInterval:30,
             labels:{
             	rotation:-90,
             	align:'right'
@@ -177,6 +178,22 @@ function initChart(obj,title,ytitle,unit){
         		year: '%Y'
 	        }
         },
+        plotOptions: {  
+            spline: {  
+                lineWidth: 1.5,  
+                fillOpacity: 0.1,  
+                 marker: {  
+                    enabled: false,  
+                    states: {  
+                        hover: {  
+                            enabled: true,  
+                            radius: 2  
+                        }  
+                    }  
+                },  
+                shadow: false  
+            }  
+        },  
         credits:{
         	enabled: false
         },
@@ -235,12 +252,6 @@ function draggable(obj){
 			}
 	    });
 }
-/* function updateChartSize(obj) {
-	var width= $(obj).width();
-	alert(width);
-	$('[name="data-chart"]').width(width);
-} */
-
 
 function changeDraggable(obj){
 	var dgable = $(obj).find('input').val();

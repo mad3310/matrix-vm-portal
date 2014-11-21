@@ -20,7 +20,7 @@
 							<i class="ace-icon fa fa-database"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="dbSum">32</span>
+							<span class="infobox-data-number" id="dbSum">0</span>
 							<div class="infobox-content">数据库数</div>
 						</div>
 					</div>
@@ -29,7 +29,7 @@
 							<i class="ace-icon fa fa-users"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="dbUserSum">32</span>
+							<span class="infobox-data-number" id="dbUserSum">0</span>
 							<div class="infobox-content">数据库用户数</div>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 							<i class="ace-icon fa fa-cubes"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="mclusterSum">32</span>
+							<span class="infobox-data-number" id="mclusterSum">0</span>
 							<div class="infobox-content">container集群数</div>
 						</div>
 					</div>	
@@ -48,7 +48,7 @@
 							<i class="ace-icon fa fa-cubes"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="hclusterSum">32</span>
+							<span class="infobox-data-number" id="hclusterSum">0</span>
 							<div class="infobox-content">物理机集群数</div>
 						</div>
 					</div>
@@ -57,31 +57,60 @@
 							<i class="ace-icon fa fa-cube"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="hostSum">32</span>
+							<span class="infobox-data-number" id="hostSum">0</span>
 							<div class="infobox-content">物理机节点数</div>
 						</div>
 					</div>
+					
 					<div class="space-6"></div>
-					<div class="infobox infobox-orange"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
+					<div class="infobox infobox-orange infobox-dark"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
 						<div class="infobox-icon">
 							<i class="ace-icon fa fa-database"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="unauditeDbSum">32</span>
+							<span class="infobox-data-number" id="unauditeDbSum">0</span>
 							<div class="infobox-content">待审核数据库</div>
 						</div>
 					</div>
 	
-					<div class="infobox infobox-orange"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/dbUser';">
+					<div class="infobox infobox-orange infobox-dark"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/dbUser';">
 						<div class="infobox-icon">
 							<i class="ace-icon fa fa-user"></i>
 						</div>
 						<div class="infobox-data">
-							<span class="infobox-data-number" id="unauditeDbUserSum">32</span>
+							<span class="infobox-data-number" id="unauditeDbUserSum">0</span>
 							<div class="infobox-content">待审核数据库用户</div>
 						</div>
 					</div>
-
+					<div class="space-6"></div>
+					<div class="infobox infobox-green"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-database"></i>
+						</div>
+						<div class="infobox-data">
+							<span class="infobox-data-number" id="onCreateDbSum">0</span>
+							<div class="infobox-content">正在创建数据库</div>
+						</div>
+					</div>
+	
+					<div class="infobox infobox-red"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-database"></i>
+						</div>
+						<div class="infobox-data">
+							<span class="infobox-data-number" id="createFailDbSum">0</span>
+							<div class="infobox-content">数据库创建失败数</div>
+						</div>
+					</div>
+					<div class="infobox infobox-red"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/dbUser';">
+						<div class="infobox-icon">
+							<i class="ace-icon fa fa-user"></i>
+						</div>
+						<div class="infobox-data">
+							<span class="infobox-data-number" id="createFailDbUserSum">0</span>
+							<div class="infobox-content">数据库用户创建失败数</div>
+						</div>
+					</div>
 				</div>
 	
 				<div class="vspace-12-sm"></div>
@@ -127,7 +156,7 @@
 									<div class="grid4">
 										<span class="grey">
 											<i class="ace-icon fa fa-wrench fa-2x red"></i>
-											&nbsp; 异常
+											&nbsp; 当机
 										</span>
 										<h4 class="bigger pull-right">50</h4>
 									</div>
@@ -149,7 +178,7 @@ $(function () {
 	                ['健康', 1],
 	                ['一般', 2],
 	                ['危险', 3],
-	                ['异常', 4],
+	                ['当机', 4],
 	            ];
 	initPieChart(pieChartData);
 	getMclusterData();
@@ -272,12 +301,15 @@ function getOverview(){
 		success : function(data) {
 			var view = data.data;
 			$('#dbSum').html(view.db);
-			$('#dbUserSum').html(view.db);
+			$('#dbUserSum').html(view.dbUser);
 			$('#mclusterSum').html(view.mcluster);
-			$('#unauditeDbSum').html(view.dbUserAudit);
-			$('#unauditeDbUserSum').html(view.db);
+			$('#unauditeDbSum').html(view.dbAudit);
+			$('#unauditeDbUserSum').html(view.dbUserAudit);
 			$('#hclusterSum').html(view.hcluster);
-			$('#hostSum').html(view.db);
+			$('#hostSum').html(view.host);
+			$('#onCreateDbSum').html(view.dbBuilding);
+			$('#createFailDbSum').html(view.dbFaild);
+			$('#createFailDbUserSum').html(view.dbUserFaild);
 		}
 	});
 }
