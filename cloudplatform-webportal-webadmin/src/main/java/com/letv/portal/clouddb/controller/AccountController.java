@@ -75,7 +75,7 @@ public class AccountController {
 	               return null;
 	            }
 	         });
-			return "redirect:/list/mcluster";
+			return "redirect:/dashboard";
 		}
 		
 	}

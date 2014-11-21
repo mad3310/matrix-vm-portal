@@ -24,15 +24,19 @@ public class DashBoardController {
 	private final static Logger logger = LoggerFactory.getLogger(DashBoardController.class);
 	
 	/**Methods Name: list <br>
-	 * Description: 根据mclusterId获取相关container列表<br>
+	 * Description: dashboard资源统计<br>
 	 * @author name: liuhao1
-	 * @param mclusterId
 	 * @param result
 	 * @return
 	 */
 	@RequestMapping(value="/statistics",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(ResultObject result) {
 		result.setData(this.dashBoardProxy.selectManagerResource());
+		return result;
+	}
+	@RequestMapping(value="/monitor/mcluster",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitor(ResultObject result) {
+		result.setData(this.dashBoardProxy.selectMclusterMonitor());
 		return result;
 	}
 }
