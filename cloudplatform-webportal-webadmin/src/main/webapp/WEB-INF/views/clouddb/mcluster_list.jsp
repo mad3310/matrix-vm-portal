@@ -165,7 +165,7 @@
 
 <script type="text/javascript">
 var currentPage = 1; //第几页 
-var recordsPerPage = 10; //每页显示条数
+var recordsPerPage = 15; //每页显示条数
 var queryBuildStatusrefresh;//刷新handler
 	
 $(function(){

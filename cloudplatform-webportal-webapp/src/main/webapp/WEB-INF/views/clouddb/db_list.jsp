@@ -139,7 +139,7 @@
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
 <script type="text/javascript">
 var currentPage = 1; //第几页 
-var recordsPerPage = 10; //每页显示条数
+var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
  $(function(){
@@ -250,6 +250,12 @@ var currentSelectedLineDbName = 1;
 			}
 		});
     }
+	
+	function autoRefresh(){
+		setInterval(function() {
+			queryByPage(currentPage,recordsPerPage);
+			},60000);
+	}
 	
 	function pageControl() {
 		// 首页
@@ -390,5 +396,6 @@ var currentSelectedLineDbName = 1;
 		queryByPage(currentPage, recordsPerPage);
 		pageControl();
 		$('[name = "popoverHelp"]').popover();
+		autoRefresh();
 	}
 </script>
