@@ -72,32 +72,30 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 
 	@Override
 	public Map<String,Integer> selectMclusterMonitor() {
-		/*Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("type", "mclustervip");
 		List<ContainerModel> containers = this.containerService.selectAllByMap(map);
 		
-		int normal = 0;
+		int nothing = 0;
 		int general = 0;
 		int serious = 0;
+		int crash = 0;
 		
 		for (ContainerModel containerModel : containers) {
-			List<ContainerMonitorModel> monitors =  this.buildTaskService.getMonitorData(containers); 
-			
-			//NORMAL(6),//正常
-			//GENERAL(5),	//异常 
-			//SERIOUS(13);//危险 
-			for (ContainerMonitorModel monitor : monitors) {
-				if(ContainerMonitorStatus.NORMAL.getValue() == Integer.parseInt(monitor.getStatus())) {
-					normal++;
-				}
-				if(ContainerMonitorStatus.GENERAL.getValue() == Integer.parseInt(monitor.getStatus())) {
-					general++;
-				}
-				if(ContainerMonitorStatus.SERIOUS.getValue() == Integer.parseInt(monitor.getStatus())) {
-					serious++;
-				}
+			ContainerMonitorModel monitor = this.buildTaskService.getMonitorData(containerModel); 
+			if(ContainerMonitorStatus.NORMAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+				nothing++;
 			}
-		}*/
+			if(ContainerMonitorStatus.GENERAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+				general++;
+			}
+			if(ContainerMonitorStatus.SERIOUS.getValue() == Integer.parseInt(monitor.getStatus())) {
+				serious++;
+			}
+			if(ContainerMonitorStatus.CRASH.getValue() == Integer.parseInt(monitor.getStatus())) {
+				crash++;
+			}
+		}
 		Map<String,Integer> data = new HashMap<String,Integer>();
 		/*
 		 *  nothing 
@@ -105,10 +103,10 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 			sms:email
 			刘浩 json中不能有特殊字符，我在在这改了，你回来看看。
 		 */
-		data.put("nothing", 5);
-		data.put("serious", 3);
-		data.put("general", 2);
-		data.put("crash", 0);
+		data.put("nothing", nothing);
+		data.put("serious", general);
+		data.put("general", serious);
+		data.put("crash", crash);
 		return data;
 	}
 }

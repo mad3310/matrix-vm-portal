@@ -146,7 +146,7 @@ public interface IBuildTaskService {
      * @return
      */
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels);
-	public List<ContainerMonitorModel> getMonitorData(ContainerModel containerModels);
+	public ContainerMonitorModel getMonitorData(ContainerModel containerModel);
 	/**
 	 * Methods Name: getMonitorDetailNodeAndDbData <br>
 	 * Description: 集群监控详细信息展示<br>
@@ -173,4 +173,5 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
+	
 }

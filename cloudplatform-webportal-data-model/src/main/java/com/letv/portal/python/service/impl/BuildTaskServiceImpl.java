@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -1046,35 +1045,22 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.containerService.insert(container);
 	}
 
-	public List<ContainerMonitorModel> getMonitorData(ContainerModel containerModel){
-		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
-		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
-		ContainerMonitorModel containerMonitorModelC = new ContainerMonitorModel();
+	@Override
+	public ContainerMonitorModel getMonitorData(ContainerModel container){
+		ContainerMonitorModel containerMonitor = new ContainerMonitorModel();
 		String mclusterName = null;
+		String ip = container.getIpAddr();	
+		mclusterName = container.getMcluster().getMclusterName();
 		try {
-			String ip = containerModel.getIpAddr();	
-			mclusterName = containerModel.getMcluster().getMclusterName();
-			containerMonitorModel  = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
-			containerMonitorModelC = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
-			if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.GENERAL.getValue().toString())){
-				containerMonitorModel.setStatus(ContainerMonitorStatus.GENERAL.getValue().toString());
-			}if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.SERIOUS.getValue().toString())){
-				containerMonitorModel.setStatus(ContainerMonitorStatus.SERIOUS.getValue().toString());
-			}
-			containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
-			containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
-			containerMonitorModel.setIp(ip);
-			containerMonitorModel.setMclusterName(containerModel.getMcluster().getMclusterName());
-			containerMonitorModel.setHclusterName(containerModel.getHost().getHostNameAlias());			
-			containerMonitorModels.add(containerMonitorModel);				
-			logger.debug("获得集群监控数据");
+			containerMonitor = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
 		} catch (Exception e) {
-			logger.debug("无法获得集群监控数据"+e.getMessage());
-			containerMonitorModel.setMclusterName(mclusterName);
-			containerMonitorModels.add(containerMonitorModel);
+			containerMonitor.setStatus(String.valueOf(ContainerMonitorStatus.CRASH.getValue()));
+		} finally {
+			containerMonitor.setIp(ip);
+			containerMonitor.setMclusterName(container.getMcluster().getMclusterName());
+			containerMonitor.setHclusterName(container.getHost().getHostNameAlias());			
+			return containerMonitor;
 		}
-		
-		return  containerMonitorModels;
 	}
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels){
 		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
