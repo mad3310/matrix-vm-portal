@@ -1,5 +1,6 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -70,10 +71,38 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	}
 
 	@Override
-	public List<ContainerMonitorModel> selectMclusterMonitor() {
+	public Map<Integer,Integer> selectMclusterMonitor() {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("type", "mclustervip");
 		List<ContainerModel> containers = this.containerService.selectAllByMap(map);
-		return this.buildTaskService.getMonitorData(containers);
+		
+		int normal = 0;
+		int general = 0;
+		int serious = 0;
+		
+		for (ContainerModel containerModel : containers) {
+			List<ContainerMonitorModel> monitors =  this.buildTaskService.getMonitorData(containers); 
+			
+			//NORMAL(6),//正常
+			//GENERAL(5),	//异常 
+			//SERIOUS(13);//危险 
+			for (ContainerMonitorModel monitor : monitors) {
+				if(ContainerMonitorStatus.NORMAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+					normal++;
+				}
+				if(ContainerMonitorStatus.GENERAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+					general++;
+				}
+				if(ContainerMonitorStatus.SERIOUS.getValue() == Integer.parseInt(monitor.getStatus())) {
+					serious++;
+				}
+			}
+		}
+		Map<Integer,Integer> data = new HashMap<Integer,Integer>();
+		data.put(ContainerMonitorStatus.NORMAL.getValue(), normal);
+		data.put(ContainerMonitorStatus.GENERAL.getValue(), general);
+		data.put(ContainerMonitorStatus.SERIOUS.getValue(), serious);
+		
+		return data;
 	}
 }

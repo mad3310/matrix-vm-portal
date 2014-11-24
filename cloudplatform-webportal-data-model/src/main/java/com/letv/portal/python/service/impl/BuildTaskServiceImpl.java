@@ -1046,6 +1046,36 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.containerService.insert(container);
 	}
 
+	public List<ContainerMonitorModel> getMonitorData(ContainerModel containerModel){
+		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
+		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
+		ContainerMonitorModel containerMonitorModelC = new ContainerMonitorModel();
+		String mclusterName = null;
+		try {
+			String ip = containerModel.getIpAddr();	
+			mclusterName = containerModel.getMcluster().getMclusterName();
+			containerMonitorModel  = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
+			containerMonitorModelC = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
+			if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.GENERAL.getValue().toString())){
+				containerMonitorModel.setStatus(ContainerMonitorStatus.GENERAL.getValue().toString());
+			}if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.SERIOUS.getValue().toString())){
+				containerMonitorModel.setStatus(ContainerMonitorStatus.SERIOUS.getValue().toString());
+			}
+			containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
+			containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
+			containerMonitorModel.setIp(ip);
+			containerMonitorModel.setMclusterName(containerModel.getMcluster().getMclusterName());
+			containerMonitorModel.setHclusterName(containerModel.getHost().getHostNameAlias());			
+			containerMonitorModels.add(containerMonitorModel);				
+			logger.debug("获得集群监控数据");
+		} catch (Exception e) {
+			logger.debug("无法获得集群监控数据"+e.getMessage());
+			containerMonitorModel.setMclusterName(mclusterName);
+			containerMonitorModels.add(containerMonitorModel);
+		}
+		
+		return  containerMonitorModels;
+	}
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels){
 		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
