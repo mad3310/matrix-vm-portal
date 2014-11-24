@@ -71,8 +71,8 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	}
 
 	@Override
-	public Map<Integer,Integer> selectMclusterMonitor() {
-		Map<String,Object> map = new HashMap<String,Object>();
+	public Map<String,Integer> selectMclusterMonitor() {
+		/*Map<String,Object> map = new HashMap<String,Object>();
 		map.put("type", "mclustervip");
 		List<ContainerModel> containers = this.containerService.selectAllByMap(map);
 		
@@ -97,12 +97,17 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 					serious++;
 				}
 			}
-		}
-		Map<Integer,Integer> data = new HashMap<Integer,Integer>();
-		data.put(ContainerMonitorStatus.NORMAL.getValue(), normal);
-		data.put(ContainerMonitorStatus.GENERAL.getValue(), general);
-		data.put(ContainerMonitorStatus.SERIOUS.getValue(), serious);
-		
+		}*/
+		Map<String,Integer> data = new HashMap<String,Integer>();
+		/*
+		 *  nothing 
+			tel:sms:email
+			sms:email
+		 */
+		data.put("nothing", 5);
+		data.put("tel:sms:email", 3);
+		data.put("sms:email", 2);
+		data.put("timeOut", 0);
 		return data;
 	}
 }

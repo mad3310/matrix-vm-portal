@@ -524,6 +524,16 @@
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
@@ -552,6 +562,17 @@
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.cas.local.http>http://10.58.166.19:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
@@ -580,6 +601,17 @@
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                  <webportal.cas.local.http>http://rds2.et.letv.com</webportal.cas.local.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
@@ -611,6 +643,17 @@
                 <cloudplatform.webportal.db.username>paascloud_wr</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                  <webportal.cas.local.http>http://rds.et.letv.com</webportal.cas.local.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
