@@ -117,7 +117,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		params.put("start", getStartDate(end,strategy));
 		params.put("end", end);
 		
-		
+		Long time = (end.getTime() - getStartDate(end,strategy).getTime())/60000;
+		time = time ==0?1:time;
 		/*
 		 * 1、按照detailNames进行查询，将contianer数据获取到。
 		 * 2、存储到两个list，进行减法计算，除以频次。
@@ -137,7 +138,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				point.add(beforData.get(i+1).getMonitorDate());
 				float diff = beforData.get(i+1).getDetailValue()-beforData.get(i).getDetailValue();
 				
-				point.add(diff>0?diff/60:0);
+				point.add(diff>0?diff/time:0);
 				datas.add(point);
 			}
 			

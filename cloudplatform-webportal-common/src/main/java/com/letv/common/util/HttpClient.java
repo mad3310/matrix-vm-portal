@@ -228,7 +228,7 @@ public class HttpClient {
 				/*
 				 * 不进行重试
 				 */
-				if (executionCount >= 2) {
+				/*if (executionCount >= 2) {
 					// 如果超过最大重试次数，那么就不要继续了
 					return false;
 				}
@@ -246,7 +246,7 @@ public class HttpClient {
 				if (idempotent) {
 					// 如果请求被认为是幂等的，那么就重试
 					return true;
-				}
+				}*/
 				return false;
 			}
 		};
