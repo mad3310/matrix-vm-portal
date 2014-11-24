@@ -103,11 +103,12 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		 *  nothing 
 			tel:sms:email
 			sms:email
+			刘浩 json中不能有特殊字符，我在在这改了，你回来看看。
 		 */
 		data.put("nothing", 5);
-		data.put("tel:sms:email", 3);
-		data.put("sms:email", 2);
-		data.put("timeOut", 0);
+		data.put("serious", 3);
+		data.put("general", 2);
+		data.put("crash", 0);
 		return data;
 	}
 }

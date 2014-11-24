@@ -134,9 +134,9 @@
 									<div class="grid4">
 										<span class="grey">
 											<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
-											&nbsp; 健康
+											&nbsp; 正常
 										</span>
-										<h4 class="bigger pull-right">1,255</h4>
+										<h4 id="nothing" class="bigger pull-right">0</h4>
 									</div>
 	
 									<div class="grid4">
@@ -144,21 +144,21 @@
 											<i class="ace-icon fa fa-warning fa-2x orange"></i>
 											&nbsp; 一般
 										</span>
-										<h4 class="bigger pull-right">941</h4>
+										<h4 id="general" class="bigger pull-right">0</h4>
 									</div>
 									<div class="grid4">
 										<span class="grey">
 											<i class="ace-icon fa  fa-bolt fa-2x red"></i>
 											&nbsp; 危险
 										</span>
-										<h4 class="bigger pull-right">100</h4>
+										<h4 id="serious" class="bigger pull-right">0</h4>
 									</div>
 									<div class="grid4">
 										<span class="grey">
 											<i class="ace-icon fa fa-wrench fa-2x red"></i>
-											&nbsp; 当机
+											&nbsp; 宕机
 										</span>
-										<h4 class="bigger pull-right">50</h4>
+										<h4 id="crash" class="bigger pull-right">0</h4>
 									</div>
 								</div>
 							</div>
@@ -174,15 +174,8 @@
 
 <script type="text/javascript">
 $(function () {
-	pieChartData=[
-	                ['健康', 1],
-	                ['一般', 2],
-	                ['危险', 3],
-	                ['当机', 4],
-	            ];
-	initPieChart(pieChartData);
-	getMclusterData();
 	getOverview();
+	checkMclusterStatus();
 });
 
 function initPieChart(data){
@@ -217,16 +210,20 @@ function initPieChart(data){
                     enabled: true,
                     format: '{point.name}'
                 }
+            },
+            series: {
+                cursor: 'pointer',
+                events: {
+                    click: function(e) {
+		                location.href = e.point.url;
+					}
+				}
             }
         },
         credits:{
         	enabled: false
         },
-        series: [{
-            type: 'pie',
-            name: 'container集群',
-            data: data
-        }]
+        series: data
     });
 }
 
@@ -235,60 +232,34 @@ function initPieChart(data){
 	
 }
  */
-function checkMclusterStatus(vips){
-	var nothing=0,normal=0,serious=0,crash=0;
-	var pieChartData = {};
-	for (var i = 0; vips[i] != null; i++){
-		/*  $.ajax({ 
-			type : "get",
-			async:false,
-			url : "${ctx}/monitor/"+vips[i]+"/mcluster/status",
-			dataType : "json", 
-			contentType : "application/json; charset=utf-8",
-			success : function(data) {
-				if(data.result == 0){
-					crash++;
-				}else{
-					var status = data.data[0].status;
-					if(status==0){
-						nothing++;
-					}else if(status==13){
-						normal++;
-					}else if(status==14){
-						serious++;
-					}else{
-						crash++;
-					}
-				}
-			}
-		}); */
-		pieChartData=[
-		                ['健康', nothing],
-		                ['一般', normal],
-		                ['危险', serious],
-		                ['异常', crash],
-		            ]; 
-		/* initPieChart(pieChartData); */
-	}
-	
-		console.log(pieChartData);
-				/* updateMclusterChart(); */
-}
-
-function getMclusterData(){
-	var vips = {};
+function checkMclusterStatus(){
 	$.ajax({ 
 		type : "get",
-		url : "${ctx}/monitor/mcluster/list",
+		url : "${ctx}/dashboard/monitor/mcluster",
+		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
-			var array = data.data;
-			
-			for (var i = 0, len = array.length; i < len; i++) {
-				vips[i] = array[i].ipAddr;
+			var status = data.data;
+			var pieChartData=[{
+				data: []
+	           }];
+			if(status.nothing != 0){
+				pieChartData[0].data.push({name:'正常',y:status.nothing,url:'${ctx}/list/mcluster/monitor'});
+				$('#nothing').html(status.nothing);
+			};
+			if(status.general != 0){
+				pieChartData[0].data.push({name:'一般',y:status.general,url:'${ctx}/list/mcluster/monitor'});
+				$('#general').html(status.general);
+			};
+			if(status.serious != 0){
+				pieChartData[0].data.push({name:'危险',y:status.serious,url:'${ctx}/list/mcluster/monitor'});
+				$('#serious').html(status.serious);
+			};
+			if(status.crash != 0){
+				pieChartData[0].data.push({name:'宕机',y:status.crash,url:'${ctx}/list/mcluster/monitor'});
+				$('#crash').html(status.crash);
 			}
-			checkMclusterStatus(vips);
+			initPieChart(pieChartData);
 		}
 	});
 }
