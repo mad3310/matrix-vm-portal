@@ -47,7 +47,7 @@ public class MonitorController {
 	@RequestMapping(value="/{dbId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
 		DbModel dbModel = this.dbService.selectById(dbId);
-		result.setData(this.monitorProxy.getMonitorViewData(dbModel.getMclusterId(),chartId,strategy));
+		result.setData(this.monitorProxy.getDbConnMonitor(dbModel.getMclusterId(), chartId, strategy));
 		return result;
 	}
 	

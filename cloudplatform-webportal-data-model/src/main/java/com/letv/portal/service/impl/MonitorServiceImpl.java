@@ -90,12 +90,61 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					datas.add(point);
 				}
 				ydata.setName(c.getIpAddr() +":"+s);
-				ydata.setType("spline");
 				ydata.setData(datas);
 				ydatas.add(ydata);
 			}
 		}
 
+		return ydatas;
+	}
+	@Override
+	public List<MonitorViewYModel> getDbConnMonitor(String ip,Long chartId,Integer strategy) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+		
+		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
+		String dataTable = monitorIndexModel.getDetailTable();
+		
+		Map<String, Object> indexParams = new HashMap<String, Object>();
+		indexParams.put("dbName",monitorIndexModel.getDetailTable());
+		
+		Date end = new Date();
+		
+		List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		params.put("dbName", monitorIndexModel.getDetailTable());
+		params.put("start", getStartDate(end,strategy));
+		params.put("end", end);
+		
+		
+		/*
+		 * 1、按照detailNames进行查询，将contianer数据获取到。
+		 * 2、存储到两个list，进行减法计算，除以频次。
+		 */
+		List<MonitorDetailModel> beforData = new ArrayList<MonitorDetailModel>();
+		for (String s : detailNames) {
+			MonitorViewYModel ydata = new MonitorViewYModel();
+			params.put("ip", ip);
+			params.put("detailName", s);
+			
+			beforData = this.monitorDao.selectDateTime(params); 
+			
+			List<List<Object>> datas = new ArrayList<List<Object>>();
+			
+			for (int i = 0; i < beforData.size()-1; i++) {
+				List<Object> point = new ArrayList<Object>();
+				point.add(beforData.get(i+1).getMonitorDate());
+				float diff = beforData.get(i+1).getDetailValue()-beforData.get(i).getDetailValue();
+				
+				point.add(diff>0?diff/60:0);
+				datas.add(point);
+			}
+			
+			ydata.setName(s);
+			ydata.setData(datas);
+			ydatas.add(ydata);
+		}
 		return ydatas;
 	}
 	
@@ -124,6 +173,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		}
 		return now.getTime();
 	}
+	
 	public List<MonitorDetailModel> selectDateTime(Map map){
 		return  this.monitorDao.selectDateTime(map);
 	}

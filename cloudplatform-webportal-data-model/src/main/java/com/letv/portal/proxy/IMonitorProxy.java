@@ -18,6 +18,7 @@ public interface IMonitorProxy {
 	public void collectMclusterServiceData();
 
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId, Long chartId,Integer strategy);
+	public List<MonitorViewYModel> getDbConnMonitor(Long mclusterId,Long chartId, Integer strategy);
 
 	
 }

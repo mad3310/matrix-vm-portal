@@ -11,6 +11,7 @@ import com.letv.portal.model.MonitorViewYModel;
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	public List<MonitorViewYModel> getMonitorViewData(Long MclusterId,Long chartId,Integer strategy);
+	public List<MonitorViewYModel> getDbConnMonitor(String ip,Long chartId,Integer strategy);
 	
 	public List<String> selectDistinct(Map map);
 	
