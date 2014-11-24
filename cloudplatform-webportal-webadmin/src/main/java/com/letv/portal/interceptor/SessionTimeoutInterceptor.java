@@ -50,6 +50,13 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+		if(requestUrl.contains("login")){
+			if(session == null){
+				return true;
+			}else {
+				response.sendRedirect("/dashboard");
+			}
+		}
 		if(session == null ) {
 			logger.debug("please login");
 			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
