@@ -993,13 +993,15 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 									if(null == container) {
 										this.addHandContainer(cm, mcluster.getId());
 									} else {
-										container.setContainerName((String) cm.get("containerName"));
-										container.setHostIp((String) cm.get("hostIp"));
-										HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-										if(null != hostModel) {
-											container.setHostId(hostModel.getId());
+										if(!cm.get("hostIp").equals(container.getHostIp())) {
+											container.setContainerName((String) cm.get("containerName"));
+											container.setHostIp((String) cm.get("hostIp"));
+											HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+											if(null != hostModel) {
+												container.setHostId(hostModel.getId());
+											}
+											this.containerService.updateHostIpByName(container);
 										}
-										this.containerService.updateHostIpByName(container);
 									}
 								}
 								
