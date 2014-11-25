@@ -122,7 +122,9 @@
 								container集群监控图
 							</h5>
 							<div class="widget-toolbar no-border">
+							<a class="blue" href="#" onclick="updateMclusterChart()" data-toggle="modal" data-target="#">
 								<i class="ace-icon fa fa-refresh icon-on-right bigger-110"></i>
+							</a>	
 							</div>
 						</div>
 						<div class="widget-body">
@@ -131,7 +133,7 @@
 								<div class="hr hr8 hr-double"></div>
 	
 								<div class="clearfix">
-									<div class="grid4">
+									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
 											&nbsp; 正常
@@ -139,21 +141,21 @@
 										<h4 id="nothing" class="bigger pull-right">0</h4>
 									</div>
 	
-									<div class="grid4">
+									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-warning fa-2x orange"></i>
 											&nbsp; 一般
 										</span>
 										<h4 id="general" class="bigger pull-right">0</h4>
 									</div>
-									<div class="grid4">
+									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa  fa-bolt fa-2x red"></i>
 											&nbsp; 危险
 										</span>
 										<h4 id="serious" class="bigger pull-right">0</h4>
 									</div>
-									<div class="grid4">
+									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-wrench fa-2x red"></i>
 											&nbsp; 宕机
@@ -188,18 +190,13 @@ function initPieChart(){
                 beta: 0
             }
         },
-        colors:[
-        	'green',
-        	'#FDC43E',
-        	'#D15A06',
-        	'red'
-        ],
-        
         title: {
             text: '当前状态'
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	        formatter: function() {
+	            return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
+	        }
         },
         plotOptions: {
             pie: {
@@ -239,36 +236,34 @@ function setPieChartData(chart){
 				data: []
 	           }];
 			if(status.nothing != 0){
-				pieChartData[0].data.push({name:'正常',y:status.nothing,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'正常',color:'green',y:status.nothing,url:'${ctx}/list/mcluster/monitor'});
 				$('#nothing').html(status.nothing);
 			};
 			if(status.general != 0){
-				pieChartData[0].data.push({name:'一般',y:status.general,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'一般',color:'#FDC43E',y:status.general,url:'${ctx}/list/mcluster/monitor'});
 				$('#general').html(status.general);
 			};
 			if(status.serious != 0){
-				pieChartData[0].data.push({name:'危险',y:status.serious,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'危险',color:'#D15A06',y:status.serious,url:'${ctx}/list/mcluster/monitor'});
 				$('#serious').html(status.serious);
 			};
 			if(status.crash != 0){
-				pieChartData[0].data.push({name:'宕机',y:status.crash,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'宕机',color:'red',y:status.crash,url:'${ctx}/list/mcluster/monitor'});
 				$('#crash').html(status.crash);
 			}
 			
-			chart.series[i].remove(false);
-			chart.addSeries(pieChartData,false);
+			if(chart.series.length != 0){
+				chart.series[0].remove(false);
+			}
+			chart.addSeries(pieChartData[0],false);
 			chart.redraw();
 		}
 	});
 }
 
 
-/* updateMclusterChart(){
-	
-}
- */
-function checkMclusterStatus(){
-
+function updateMclusterChart(){
+	setPieChartData($('#pie-chart-container').highcharts());
 }
 
 function getOverview(){
