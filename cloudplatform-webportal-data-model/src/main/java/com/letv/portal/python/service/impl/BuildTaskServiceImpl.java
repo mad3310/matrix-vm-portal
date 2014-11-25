@@ -682,9 +682,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		     nodeMonitorModel.setMonitorName(keString.toString());
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
-			 if("general".equals(listsHashMap.get("alarm").toString())){
+			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
-			 }if("serious".equals(listsHashMap.get("alarm").toString())){
+			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 nodeMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
@@ -698,9 +698,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 dbMonitorModel.setMonitorName(keString.toString());
 			 dbMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 dbMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
-			 if("general".equals(listsHashMap.get("alarm").toString())){
+			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
-			 }if("serious".equals(listsHashMap.get("alarm").toString())){
+			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 dbMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
@@ -726,9 +726,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 NodeMonitorModel nodeMonitorModel = new NodeMonitorModel();
 		     nodeMonitorModel.setMonitorName(keString.toString());
 		     nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
-			 if("general".equals(listsHashMap.get("alarm").toString())){
+			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
-			 }if("serious".equals(listsHashMap.get("alarm").toString())){
+			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
@@ -741,9 +741,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 clusterMonitorModel.setMonitorName(keString.toString());
 			 clusterMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 clusterMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
-			 if("general".equals(listsHashMap.get("alarm").toString())){
+			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
-			 }if("serious".equals(listsHashMap.get("alarm").toString())){
+			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
 				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 clMoList.add(clusterMonitorModel);

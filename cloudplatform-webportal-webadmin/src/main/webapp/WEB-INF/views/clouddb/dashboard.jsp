@@ -114,7 +114,7 @@
 				</div>
 	
 				<div class="vspace-12-sm"></div>
-	
+				
 				<div class="col-sm-4">
 					<div class="widget-box">
 						<div class="widget-header widget-header-flat widget-header-small">
@@ -129,14 +129,15 @@
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
-								<div id="pie-chart-container" style="height: 400px"></div>	
+								<div id="pie-chart-container" style="height: 300px"></div>	
 								<div class="hr hr8 hr-double"></div>
 	
 								<div class="clearfix">
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
-											&nbsp; 正常
+											&nbsp; 正常<br/>
+											nothing
 										</span>
 										<h4 id="nothing" class="bigger pull-right">0</h4>
 									</div>
@@ -144,21 +145,24 @@
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-warning fa-2x orange"></i>
-											&nbsp; 一般
+											&nbsp; 一般<br/>
+											sms:email
 										</span>
 										<h4 id="general" class="bigger pull-right">0</h4>
 									</div>
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa  fa-bolt fa-2x red"></i>
-											&nbsp; 危险
+											&nbsp; 危险<br/>
+											tel:sms:email
 										</span>
 										<h4 id="serious" class="bigger pull-right">0</h4>
 									</div>
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-wrench fa-2x red"></i>
-											&nbsp; 宕机
+											&nbsp; 宕机<br/>
+											time out
 										</span>
 										<h4 id="crash" class="bigger pull-right">0</h4>
 									</div>
@@ -209,12 +213,12 @@ function initPieChart(){
                 }
             },
             series: {
-                cursor: 'pointer',
-                events: {
+                cursor: 'pointer'
+               /*  events: {
                     click: function(e) {
 		                location.href = e.point.url;
 					}
-				}
+				} */
             }
         },
         credits:{
@@ -225,12 +229,14 @@ function initPieChart(){
 }
 
 function setPieChartData(chart){
+	chart.showLoading();
 	$.ajax({ 
 		type : "get",
 		url : "${ctx}/dashboard/monitor/mcluster",
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			error(data);
 			var status = data.data;
 			var pieChartData=[{
 				data: []
@@ -255,6 +261,7 @@ function setPieChartData(chart){
 			if(chart.series.length != 0){
 				chart.series[0].remove(false);
 			}
+			chart.hideLoading();
 			chart.addSeries(pieChartData[0],false);
 			chart.redraw();
 		}
@@ -272,6 +279,7 @@ function getOverview(){
 		url : "${ctx}/dashboard/statistics",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			error(data);
 			var view = data.data;
 			$('#dbSum').html(view.db);
 			$('#dbUserSum').html(view.dbUser);

@@ -104,8 +104,8 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 			刘浩 json中不能有特殊字符，我在在这改了，你回来看看。
 		 */
 		data.put("nothing", nothing);
-		data.put("serious", general);
-		data.put("general", serious);
+		data.put("general", general);
+		data.put("serious", serious);
 		data.put("crash", crash);
 		return data;
 	}
