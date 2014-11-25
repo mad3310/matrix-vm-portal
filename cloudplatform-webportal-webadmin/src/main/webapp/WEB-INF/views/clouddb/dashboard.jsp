@@ -127,7 +127,7 @@
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
-								<div id="container" style="height: 400px"></div>	
+								<div id="pie-chart-container" style="height: 400px"></div>	
 								<div class="hr hr8 hr-double"></div>
 	
 								<div class="clearfix">
@@ -175,11 +175,11 @@
 <script type="text/javascript">
 $(function () {
 	getOverview();
-	checkMclusterStatus();
+	initPieChart();
 });
 
-function initPieChart(data){
-    $('#container').highcharts({
+function initPieChart(){
+    $('#pie-chart-container').highcharts({
         chart: {
             type: 'pie',
             options3d: {
@@ -222,17 +222,12 @@ function initPieChart(data){
         },
         credits:{
         	enabled: false
-        },
-        series: data
+        }
     });
+    setPieChartData($('#pie-chart-container').highcharts());
 }
 
-
-/* updateMclusterChart(){
-	
-}
- */
-function checkMclusterStatus(){
+function setPieChartData(chart){
 	$.ajax({ 
 		type : "get",
 		url : "${ctx}/dashboard/monitor/mcluster",
@@ -259,9 +254,21 @@ function checkMclusterStatus(){
 				pieChartData[0].data.push({name:'宕机',y:status.crash,url:'${ctx}/list/mcluster/monitor'});
 				$('#crash').html(status.crash);
 			}
-			initPieChart(pieChartData);
+			
+			chart.series[i].remove(false);
+			chart.addSeries(pieChartData,false);
+			chart.redraw();
 		}
 	});
+}
+
+
+/* updateMclusterChart(){
+	
+}
+ */
+function checkMclusterStatus(){
+
 }
 
 function getOverview(){
