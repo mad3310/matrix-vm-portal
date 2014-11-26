@@ -129,15 +129,16 @@ public class InitializingJob {
 			checkMclusterCount.setCronExpression("0 0/10 * * * ?");
 			checkMclusterCount.setDescn("检查container单节点状态");
 			jobs.add(checkMclusterCount);
+			
+			ScheduleJobModel collectMclusterServiceData = new ScheduleJobModel();
+			collectMclusterServiceData.setJobName("collectMclusterServiceData");
+			collectMclusterServiceData.setJobMethod("collectMclusterServiceData");
+			collectMclusterServiceData.setJobGroup("webportal");
+			collectMclusterServiceData.setJobStatus("1");
+			collectMclusterServiceData.setCronExpression("0 0/1 * * * ?");
+			collectMclusterServiceData.setDescn("获取监控数据");
+			jobs.add(collectMclusterServiceData);
 		}
-		/*ScheduleJobModel mclusterJob = new ScheduleJobModel();
-		mclusterJob.setJobName("collectMclusterServiceData");
-		mclusterJob.setJobMethod("collectMclusterServiceData");
-		mclusterJob.setJobGroup("webportal");
-		mclusterJob.setJobStatus("1");
-		mclusterJob.setCronExpression("0 0/1 * * * ?");
-		mclusterJob.setDescn("获取监控数据");
-		jobs.add(mclusterJob);*/
 		return jobs;
 	}
       
