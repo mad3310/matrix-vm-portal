@@ -97,17 +97,23 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			if(data.result == 0){
-				$(obj).find('[name="mclusterStatus"]').html("<font color=\"red\">获取数据失败</font>");
-				$(obj).addClass("danger");		
-			}else{
-				var status = data.data[0].status;
+			error(data);
+			var status = data.data[0].status;
+			if(status == "6"){
+				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html(translateStatus(status));
-				if(status == "13"){
-					$(obj).addClass("warning");		
-				}else if(status == "14"){
-					$(obj).addClass("danger");		
-				}
+			}else if(status == "5"){
+				$(obj).removeClass();
+				$(obj).find('[name="mclusterStatus"]').html("<font color=\"red\">宕机</font>");
+				$(obj).addClass("danger");		
+			}else if(status == "13"){
+				$(obj).removeClass();
+				$(obj).find('[name="mclusterStatus"]').html(translateStatus(status));
+				$(obj).addClass("warning");		
+			}else if(status == "14"){
+				$(obj).removeClass();
+				$(obj).find('[name="mclusterStatus"]').html(translateStatus(status));
+				$(obj).addClass("danger");		
 			}
 		}	
 	});
