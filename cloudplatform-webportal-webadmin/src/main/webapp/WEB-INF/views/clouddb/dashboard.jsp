@@ -182,6 +182,7 @@
 $(function () {
 	getOverview();
 	initPieChart();
+	$('#nav-search').addClass("hidden");
 });
 
 function initPieChart(){
