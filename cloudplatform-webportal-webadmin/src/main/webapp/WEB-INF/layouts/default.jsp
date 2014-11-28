@@ -67,7 +67,7 @@
 <sitemesh:head/>
 </head>
 
-<body class="skin-1">
+<body class="no-skin">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="main-container" id="main-container">
 		<script type="text/javascript">
