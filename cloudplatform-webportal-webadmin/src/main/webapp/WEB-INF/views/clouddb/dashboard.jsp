@@ -145,7 +145,7 @@
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa fa-warning fa-2x orange"></i>
-											&nbsp; 一般<br/>
+											&nbsp; 危险<br/>
 											sms:email
 										</span>
 										<h4 id="general" class="bigger pull-right">0</h4>
@@ -153,7 +153,7 @@
 									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
 										<span class="grey">
 											<i class="ace-icon fa  fa-bolt fa-2x red"></i>
-											&nbsp; 危险<br/>
+											&nbsp; 严重危险<br/>
 											tel:sms:email
 										</span>
 										<h4 id="serious" class="bigger pull-right">0</h4>
@@ -247,11 +247,11 @@ function setPieChartData(chart){
 				$('#nothing').html(status.nothing);
 			};
 			if(status.general != 0){
-				pieChartData[0].data.push({name:'一般',color:'#FDC43E',y:status.general,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'危险',color:'#FDC43E',y:status.general,url:'${ctx}/list/mcluster/monitor'});
 				$('#general').html(status.general);
 			};
 			if(status.serious != 0){
-				pieChartData[0].data.push({name:'危险',color:'#D15A06',y:status.serious,url:'${ctx}/list/mcluster/monitor'});
+				pieChartData[0].data.push({name:'严重危险',color:'#D15A06',y:status.serious,url:'${ctx}/list/mcluster/monitor'});
 				$('#serious').html(status.serious);
 			};
 			if(status.crash != 0){
