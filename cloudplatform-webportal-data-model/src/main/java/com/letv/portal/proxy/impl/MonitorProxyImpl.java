@@ -45,8 +45,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
 		Date data = new Date();
 		logger.info("collectMclusterServiceData start");
-		for (ContainerModel container : contianers) {
-			for (MonitorIndexModel index : indexs) {
+		for (MonitorIndexModel index : indexs) {
+			for (ContainerModel container : contianers) {
 				this.buildTaskService.getContainerServiceData(container, index,data);
 			}
 		}

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.JsonUtils;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
@@ -105,6 +107,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	
+	@Autowired 
+	private IMonitorDao monitorDao;
 	
 	@Override
 	@Async
@@ -1072,6 +1078,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		try {
 			for(ContainerModel c:containerModels){
 				String ip = c.getIpAddr();	
+				containerMonitorModel.setIp(ip);
+				containerMonitorModel.setMclusterName(c.getMcluster().getMclusterName());
+				containerMonitorModel.setHclusterName(c.getHost().getHostNameAlias());
+				
 				mclusterName = c.getMcluster().getMclusterName();
 				containerMonitorModel  = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
 				containerMonitorModelC = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
@@ -1080,21 +1090,18 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.SERIOUS.getValue().toString())){
 					containerMonitorModel.setStatus(ContainerMonitorStatus.SERIOUS.getValue().toString());
 				}
-				containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
 				containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
-				containerMonitorModel.setIp(ip);
-				containerMonitorModel.setMclusterName(c.getMcluster().getMclusterName());
-				containerMonitorModel.setHclusterName(c.getHost().getHostNameAlias());			
-				containerMonitorModels.add(containerMonitorModel);				
+				containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
 			}	
 			logger.debug("获得集群监控数据");
 		} catch (Exception e) {
 			logger.debug("无法获得集群监控数据"+e.getMessage());
-			containerMonitorModel.setMclusterName(mclusterName);
+			containerMonitorModel.setStatus(ContainerMonitorStatus.CRASH.getValue().toString());
+		} finally {
 			containerMonitorModels.add(containerMonitorModel);
+			return  containerMonitorModels;
 		}
 		
-		return  containerMonitorModels;
 	}
 	
 	public ContainerMonitorModel getMonitorDetailNodeAndDbData(String ip,String mclusterName){		
@@ -1136,7 +1143,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 monitorDetail.setMonitorDate(date);
 				 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
 				 monitorDetail.setIp(container.getIpAddr());
-				 this.monitorService.insert(monitorDetail);
 			}
 		}
 	}

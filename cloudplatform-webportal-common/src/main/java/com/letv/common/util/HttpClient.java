@@ -217,7 +217,7 @@ public class HttpClient {
 		 */
 		HttpParams params = httpclient.getParams();  
 		HttpConnectionParams.setConnectionTimeout(params, 1000);  
-		HttpConnectionParams.setSoTimeout(params, 1000);
+		HttpConnectionParams.setSoTimeout(params, 5000);
         
 		/*
 		 * 设置重试策略
