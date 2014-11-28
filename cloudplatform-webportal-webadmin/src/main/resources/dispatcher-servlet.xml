@@ -57,13 +57,14 @@
 	      <property name="allowUrls">
 	        <list>
 	          <!-- 如果请求中包含以下路径，则不进行拦截 -->
+	          <value>/login</value>
 	          <value>/static</value>
 	        </list>
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
 	</mvc:interceptors>
-	<mvc:view-controller path="/" view-name="redirect:/account/login"/>
+	<mvc:view-controller path="/" view-name="redirect:/dashboard"/>
 </beans>
 
 
