@@ -1108,12 +1108,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		ContainerMonitorModel containerMonitorModel = null;
 		try {
 				containerMonitorModel = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
+				containerMonitorModel.setMclusterName(mclusterName);
 		} catch (Exception e) {
 			logger.debug("无法获得集群监控数据"+e.getMessage());
 		}
 		
 		logger.debug("获得集群监控数据");
-		containerMonitorModel.setMclusterName(mclusterName);
 		return  containerMonitorModel;
 
 	}	
@@ -1143,6 +1143,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 monitorDetail.setMonitorDate(date);
 				 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
 				 monitorDetail.setIp(container.getIpAddr());
+				 this.monitorService.insert(monitorDetail);
 			}
 		}
 	}
