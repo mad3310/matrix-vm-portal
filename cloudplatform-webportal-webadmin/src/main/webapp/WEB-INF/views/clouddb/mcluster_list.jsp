@@ -220,7 +220,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		url : "${ctx}/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -433,7 +433,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 		url : "${ctx}/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
 			
@@ -514,7 +514,7 @@ function createMcluster(){
 		url : "${ctx}/mcluster",
 		data :$('#create-mcluster-form').serialize(),
 		success:function (data){
-			error(data);
+			if(error(data)) return;
 			$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#create-mcluster-form').data('bootstrapValidator').resetForm();
 			$('#create-mcluster-botton').addClass('disabled');
@@ -537,7 +537,7 @@ function startMcluster(obj){
 			type:'post',
 			data:{mclusterId : mclusterId},
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
 		});
@@ -557,7 +557,7 @@ function stopMcluster(obj){
 			type:'post',
 			data:{mclusterId : mclusterId},
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
 		});
@@ -580,7 +580,7 @@ function deleteMcluster(obj){
 			url:'${ctx}/mcluster/'+mclusterId,
 			type:'delete',
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
 		});

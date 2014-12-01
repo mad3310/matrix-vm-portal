@@ -49,7 +49,7 @@ function queryMclusterMonitor() {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
 			
@@ -97,7 +97,7 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var status = data.data[0].status;
 			if(status == "6"){
 				$(obj).removeClass();

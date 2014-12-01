@@ -52,7 +52,7 @@ function queryContainer(){
 		url : "${ctx}/container/"+$("#mclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
  			$("#headerContainerName").append(array[0].mcluster.mclusterName);
@@ -123,7 +123,7 @@ function startContainer(obj){
 			type:'post',
 			data:{containerId : containerId},
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				queryContainer();
 			}
 		});
@@ -143,7 +143,7 @@ function stopContainer(obj){
 			type:'post',
 			data:{containerId : containerId},
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				queryContainer();
 			}
 		});

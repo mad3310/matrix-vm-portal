@@ -129,7 +129,7 @@ function queryNodeMonitorDetail(){
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 			if($('#header_mcluster_name').html().indexOf(array.mclusterName) < 0){
 				$("#header_mcluster_name").append(array.mclusterName);
@@ -150,7 +150,7 @@ function queryClusterMonitorDetail(){
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 
 			$("#tby-cluster-info tr").remove();

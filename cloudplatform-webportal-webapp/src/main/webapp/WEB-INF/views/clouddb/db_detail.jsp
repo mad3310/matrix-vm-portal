@@ -464,7 +464,7 @@ function queryDbUser(){
 		url : "${ctx}/dbUser/"+$("#dbId").val(),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
 			for (var i = 0, len = array.length; i < len; i++) {
@@ -531,7 +531,7 @@ function queryDbInfo(){
 		url : "${ctx}/db/"+$("#dbId").val(),
 		dataType : "json", 
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
 			$("#db_detail_table_dbname").text(dbInfo.dbName);
@@ -585,7 +585,7 @@ function queryUser(userId){
 		url : "${ctx}/user/"+ userId,
 		dataType : "json", 
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			$("#db_detail_table").find('tr:eq(1) td:eq(1)').text(data.data.userName);
 		}
 	});
@@ -609,7 +609,7 @@ function createDbUser(){
         dataType: 'text',
         data: $("#db_user_apply_form").serialize(),
         success: function (data) {
-        	error(data);
+        	if(error(data)) return;
         	$("#create-dbuser-form").modal("hide");
         	success("数据库用户创建成功,请查收邮件获取用户相关信息!",3000);
         	queryDbUser();
@@ -651,7 +651,7 @@ function editDbUserCmd(){
 		type:'post',
 		data:$("#db_user_edit_form").serialize(),
 		success:function(data){
-        	error(data);
+        	if(error(data)) return;
 			$("#edit-dbuser-form").modal("hide");
 			success("数据库用户修改成功,请查收邮件获取用户相关信息!",3000);
 			queryDbUser();
@@ -670,7 +670,7 @@ function deleteDbUser(obj){
 			url:'${ctx}/dbUser/'+dbUserId,
 			type:'delete',
 			success:function(data){
-				error(data);
+				if(error(data)) return;
 				success("数据库用户删除成功!");
 				queryDbUser();
 			}
@@ -744,7 +744,7 @@ function setChartData(chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
-	 		error(data);
+	 		if(error(data)) return;
 	 		var ydata = data.data;
 	 		for(var i=chart.series.length-1;i>=0;i--){
 	 			chart.series[i].remove(false);
@@ -776,7 +776,7 @@ function dbMonitorChart(){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
-	 		error(data);
+	 		if(error(data)) return;
 	 		initCharts(data.data[0]);
 		}
 	});

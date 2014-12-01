@@ -105,7 +105,7 @@ function queryMcluster(){
 		url:"${ctx}/mcluster",
 		dataType:"json",
 		success:function(data){
-			error(data);
+			if(error(data)) return;
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
 				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
@@ -122,7 +122,7 @@ function queryMonitorPoint(){
 		url : "${ctx}/monitor/index",
 		dataType:"json",
 		success:function(data){
-			error(data);
+			if(error(data)) return;
 			var monitorPoint = data.data;
 			for(var i=0,len=monitorPoint.length;i<len;i++){
 				var option = $("<option value=\""+monitorPoint[i].id+"\">"+monitorPoint[i].titleText+"</option>");
@@ -219,7 +219,7 @@ function setChartData(indexId,chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
-	 		error(data);
+	 		if(error(data)) return;
 	 		var ydata = data.data;
 	 		for(var i=chart.series.length-1;i>=0;i--){
 	 			chart.series[i].remove(false);

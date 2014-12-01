@@ -237,7 +237,7 @@ function setPieChartData(chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var status = data.data;
 			var pieChartData=[{
 				data: []
@@ -280,7 +280,7 @@ function getOverview(){
 		url : "${ctx}/dashboard/statistics",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var view = data.data;
 			$('#dbSum').html(view.db);
 			$('#dbUserSum').html(view.dbUser);

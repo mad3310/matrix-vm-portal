@@ -163,8 +163,9 @@ function error(errorThrown,time) {
 			time: time,
 			class_name: 'gritter-error'
 		});
-		return;
+		return true;
 	}
+	return false;
 }
 /*警告提示框,一般在操作提示中用到*/
 function warn(warnMsg,time) {

@@ -115,7 +115,7 @@ function buildUser() {
 			dataType : "json",
 			data : {'dbUserId':str},
 			success : function(data) {
-				error(data);
+				if(error(data)) return;
 				if(data.result == 1) {
 					$("#titleCheckbox").attr("checked", false);
 					queryByPage(currentPage,recordsPerPage);
@@ -146,7 +146,7 @@ function buildUser() {
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
-				error(data);
+				if(error(data)) return;
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;

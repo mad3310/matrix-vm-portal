@@ -193,7 +193,7 @@ function queryHost(){
 		url : "${ctx}/hcluster/"+$("#hclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var headerName = data.data.hcluster;
 			if($('#headerHostName').html().indexOf(data.data.hcluster) < 0){
  				$("#headerHostName").append(data.data.hcluster);
@@ -256,7 +256,7 @@ function deleteHost(obj){
 						url:'${ctx}/host/'+hostId,
 						type:'delete',
 						success:function(data){
-							error(data);
+							if(error(data)) return;
 							queryHost();
 						}
 					});
@@ -275,7 +275,7 @@ function addHost(){
         dataType: 'text',
         data: $("#add_host_form").serialize(),
         success: function (data) {
-        	error(data);
+        	if(error(data)) return;
         	$("#add-host-form-modal").modal("hide");
         	queryHost();
 			$('#add_host_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");

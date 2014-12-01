@@ -164,7 +164,7 @@ var currentSelectedLineDbName = 1;
 			url : "${ctx}/db/"+ currentPage+ "/"+ recordsPerPage+ "/"+ dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/
 			success : function(data) {
-				error(data);
+				if(error(data)) return;
 				var array = data.data.data;
 				var tby = $("#tby");
 				var totalPages = data.data.totalPages;

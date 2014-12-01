@@ -13,6 +13,8 @@
 		<pattern>/hcluster/*</pattern>
 		<pattern>/hcluster</pattern>
 		<pattern>/host/*</pattern>
+		<pattern>/monitor/*</pattern>
+		<pattern>/dashboard/*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">

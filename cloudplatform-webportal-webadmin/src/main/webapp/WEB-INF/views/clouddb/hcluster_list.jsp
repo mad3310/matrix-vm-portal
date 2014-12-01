@@ -152,7 +152,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		url : "${ctx}/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			error(data);
+			if(error(data)) return;
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -312,7 +312,7 @@ function createHcluster(){
 		url : "${ctx}/hcluster",
 		data :$('#create-hcluster-form').serialize(),
 		success:function (data){
-			error(data);
+			if(error(data)) return;
 			$('#create-hcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#create-hcluster-form').data('bootstrapValidator').resetForm();
 			$('#create-hcluster-botton').addClass('disabled');
@@ -337,7 +337,7 @@ function deleteHcluster(obj){
 						url:'${ctx}/hcluster/'+hclusterId,
 						type:'delete',
 						success:function(data){
-							error(data);
+							if(error(data)) return;
 							queryByPage(currentPage, recordsPerPage);
 						}
 					});
