@@ -100,22 +100,28 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		dbUserModel.setMaxUpdatesPerHour(maxUpdatesPerHour);
 		
 		super.insert(dbUserModel);
-		//邮件通知
-		Map<String,Object> map = new HashMap<String,Object>();
-		//用户${createUser}于${createTime}申请数据库${dbName}，
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		map.put("createUser", dbUserModel.getCreateUser());
-		map.put("createTime", sdf.format(new Date()));
-		map.put("dbUserName", dbUserModel.getUsername());
-		//用户自动创建 ，无需审批
-//		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDbUser.ftl",map);
-//		
-//		try {
-//			defaultEmailSender.sendMessage(mailMessage);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			logger.error(e.getMessage());
-//		}
+	}
+	@Override
+	public void update(DbUserModel dbUserModel) {
+		//计算相关参数
+		int maxQueriesPerHour = 1000;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
+		int maxUpdatesPerHour=1000;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
+		int maxConnectionsPerHour=100;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
+		int maxUserConnections=10;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
+		
+		int maxConcurrency = dbUserModel.getMaxConcurrency();
+		
+		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
+			maxUserConnections = maxConcurrency;
+			maxConnectionsPerHour = maxConcurrency*2*60*60;
+			maxQueriesPerHour = maxConcurrency*2*60*60;
+			maxUpdatesPerHour = maxConcurrency*60*60;
+		} 
+		dbUserModel.setMaxUserConnections(maxUserConnections);
+		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
+		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);
+		dbUserModel.setMaxUpdatesPerHour(maxUpdatesPerHour);
+		super.update(dbUserModel);
 	}
 	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel){
 		String[] ips = dbUserModel.getAcceptIp().split(",");		

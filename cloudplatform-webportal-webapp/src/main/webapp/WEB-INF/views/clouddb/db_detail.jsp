@@ -545,7 +545,12 @@ function queryDbInfo(){
 					td1 = $("<td>"
 							+ "节点-"+i
 							+"</td>");
-					if(dbInfo.containers[i].status == "1"){
+					td2 =$("<td>"
+							+ "<b><font color=\"green\">"
+							+ dbInfo.containers[i].ipAddr
+							+ "</font></b>"
+							+"</td>");
+					/* if(dbInfo.containers[i].status == "1"){
 						td2 =$("<td>"
 							+ "<b><font color=\"green\">"
 							+ dbInfo.containers[i].ipAddr
@@ -557,7 +562,7 @@ function queryDbInfo(){
 								+ dbInfo.containers[i].ipAddr
 								+ "</font></b>"
 								+"</td>");
-					}
+					} */
 				}else{
 					td1 = $("<td>"
 							+ "VIP"
@@ -725,7 +730,7 @@ function initChart(obj,title,ytitle,unit){
             }
         },
         tooltip: {
-            valueSuffix: unit
+            valueSuffix: "/s"
         }
     });
 } 
