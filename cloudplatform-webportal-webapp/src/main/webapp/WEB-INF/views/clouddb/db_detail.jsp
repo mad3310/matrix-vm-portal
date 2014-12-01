@@ -611,7 +611,7 @@ function createDbUser(){
         success: function (data) {
         	if(error(data)) return;
         	$("#create-dbuser-form").modal("hide");
-        	success("数据库用户正在创建,请注意查收邮件,获取用户相关信息!",3000);
+        	success("数据库用户创建成功,请查收邮件获取用户相关信息!",3000);
         	queryDbUser();
 			$('#db_user_apply_form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#db_user_apply_form').find('[name="optionTemplate"]').remove();
