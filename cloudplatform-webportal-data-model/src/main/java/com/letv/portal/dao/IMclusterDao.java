@@ -32,4 +32,6 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 * @return
 	 */
 	List<MclusterModel> selectByName(String mclusterName);
+
+	List<MclusterModel> select4Run();
 }

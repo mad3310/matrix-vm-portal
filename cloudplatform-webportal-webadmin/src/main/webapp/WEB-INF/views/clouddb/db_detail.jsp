@@ -224,6 +224,10 @@ function queryDbUser(){
 					var td3 = $("<td>"
 							    + "管理员"
 							    + "</td>");
+				}else if(array[i].type == 2){
+					var td3 = $("<td>"
+						    + "读用户"
+						    + "</td>");
 				}else{
 					var td3 = $("<td>"
 							    + "读写用户"

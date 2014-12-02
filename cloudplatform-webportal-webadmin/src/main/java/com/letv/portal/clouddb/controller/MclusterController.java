@@ -50,11 +50,17 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.GET)   
+	/*@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("status", MclusterStatus.RUNNING.getValue());
 		result.setData(this.mclusterProxy.selectByMap(map));
+		return result;
+	}*/	
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(ResultObject result) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		result.setData(this.mclusterProxy.select4Run());
 		return result;
 	}	
 

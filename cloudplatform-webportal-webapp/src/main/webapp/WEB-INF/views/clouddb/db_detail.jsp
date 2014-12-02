@@ -482,6 +482,10 @@ function queryDbUser(){
 					var td3 = $("<td name=\"db_user_type\">"
 							    + "管理员"
 							    + "</td>");
+				}else if(array[i].type == 2){
+					var td3 = $("<td name=\"db_user_type\">"
+						    + "读用户"
+						    + "</td>");
 				}else{
 					var td3 = $("<td name=\"db_user_type\">"
 							    + "读写用户"
