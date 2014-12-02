@@ -120,4 +120,9 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		this.buildTaskService.checkMclusterCount();
 		
 	}
+
+	@Override
+	public List<MclusterModel> select4Run() {
+		return this.mclusterService.select4Run();
+	}
 }

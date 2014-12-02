@@ -1,5 +1,7 @@
 package com.letv.portal.proxy;
 
+import java.util.List;
+
 import com.letv.portal.model.MclusterModel;
 
 
@@ -59,5 +61,7 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 * @author name: liuhao1
 	 */
 	public void checkCount();
+
+	public List<MclusterModel> select4Run();
 	
 }

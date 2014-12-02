@@ -209,6 +209,12 @@
 		from WEBPORTAL_MCLUSTER_INFO M
 		<include refid="Example_Where_Clause" />
 	</select>
+	<select id="select4Run" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_CONTAINER C
+		where M.ID = C.MCLUSTER_ID
+	</select>
 	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"

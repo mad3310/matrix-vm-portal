@@ -74,4 +74,9 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		this.mclusterDao.delete(mcluster);
 	}
 
+	@Override
+	public List<MclusterModel> select4Run() {
+		return this.mclusterDao.select4Run();
+	}
+
 }
