@@ -40,7 +40,7 @@ public class LoginServiceImpl extends BaseServiceImpl<UserLogin> implements ILog
 	public Session saveOrUpdateUserAndLogin(UserLogin userLogin) {
 		Assert.notNull(userLogin);
 		
-		String userNamePassport = userLogin.getUserName();
+		String userNamePassport = userLogin.getLoginName();
 		String loginIp = userLogin.getLoginIp();
 		
 		if(userNamePassport == null || "".equals(userNamePassport))

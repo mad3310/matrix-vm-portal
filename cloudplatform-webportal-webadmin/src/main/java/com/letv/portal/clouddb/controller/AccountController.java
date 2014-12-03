@@ -34,17 +34,12 @@ public class AccountController {
 	private final String ADMIN_PWD = ConfigUtil.getString("admin.pwd");
 	
 	@RequestMapping("/login")
-	public String login(HttpServletRequest request,HttpServletResponse response) {
+	public String login(UserLogin userLogin,HttpServletRequest request,HttpServletResponse response) {
 		
-		String loginName=request.getParameter("loginName");
-		String password=request.getParameter("password");
-		
-		if(!"sysadmin".equals(loginName) || !ADMIN_PWD.equals(password) ) {
+		if(!"sysadmin".equals(userLogin.getLoginName()) || !ADMIN_PWD.equals(userLogin.getPassword()) ) {
 			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
 		}
-		UserLogin userLogin = new UserLogin();
-		userLogin.setUserName(loginName);
 		userLogin.setLoginIp(getIp(request));
 		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);

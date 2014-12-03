@@ -63,7 +63,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 			if(session == null) {
 				UserLogin userLogin = new UserLogin();
-				userLogin.setUserName(principal.getName());
+				userLogin.setLoginName(principal.getName());
 				userLogin.setLoginIp(LoginController.getIp(request));
 				session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 				request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);

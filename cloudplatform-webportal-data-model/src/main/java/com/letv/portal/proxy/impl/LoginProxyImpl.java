@@ -32,7 +32,7 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 	public Session saveOrUpdateUserAndLogin(UserLogin userLogin) {
 		Assert.notNull(userLogin);
 		
-		String userNamePassport = userLogin.getUserName();
+		String userNamePassport = userLogin.getLoginName();
 		String loginIp = userLogin.getLoginIp();
 		
 		if(userNamePassport == null || "".equals(userNamePassport))

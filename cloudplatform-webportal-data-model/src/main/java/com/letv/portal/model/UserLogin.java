@@ -2,7 +2,7 @@ package com.letv.portal.model;
 
 public class UserLogin {
 	
-	private String userName;
+	private String loginName;
 	
 	private String password;
 	
@@ -10,13 +10,15 @@ public class UserLogin {
 	
 	public UserLogin(){}
 	
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public String getUserName() {
-		return userName;
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
+
 
 	public String getPassword() {
 		return password;
