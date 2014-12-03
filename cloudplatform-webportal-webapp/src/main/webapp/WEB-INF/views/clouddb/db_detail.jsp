@@ -802,8 +802,8 @@ function fitChartSize(){
 
 function pageinit(){
 	checkboxControl();
-	queryDbUser();
 	queryDbInfo();
+	queryDbUser();
 	dbMonitorChart();
 }
 </script>
