@@ -125,7 +125,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		Integer db = this.dbService.selectByMapCount(map);
 		Integer dbFree = ConfigUtil.getint("db.auto.build.count") - db;
 		statistics.put("db",db);
-		statistics.put("dbUserAudit", dbFree>0?dbFree:0);
+		statistics.put("dbFree", dbFree>0?dbFree:0);
 		statistics.put("dbUser", this.dbUserService.selectByMapCount(map));
 		return statistics;
 	}
