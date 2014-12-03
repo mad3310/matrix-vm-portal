@@ -31,6 +31,7 @@ public class AccountController {
 	@Autowired
 	private ILoginProxy loginProxy;
 
+	private final String ADMIN_PWD = ConfigUtil.getString("admin.pwd");
 	
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request,HttpServletResponse response) {
@@ -41,25 +42,7 @@ public class AccountController {
 		if(StringUtils.isNullOrEmpty(loginName)) {
 			return "/account/login";
 		} else {
-			
-			/*UserModel user = this.userService.getUserByName(loginName);
-			
-			if(null == user) {
-				request.setAttribute("error", "用户名或密码错误！");
-				return "/account/login";
-			}
-			if(1 != user.getType()) {
-				request.setAttribute("error", "用户无权限！");
-				return "/account/login";
-			}
-			Boolean validate = PasswordEncoder.isPasswordValid4MD5(user.getPassword(), password, "webportal");
-			
-			if(!validate) {
-				request.setAttribute("error", "用户名或密码错误！");
-				return "/account/login";
-			}*/
-			
-			if(!"sysadmin".equals(loginName) || !ConfigUtil.getString("admin.pwd").equals(password) ) {
+			if(!"sysadmin".equals(loginName) || !ADMIN_PWD.equals(password) ) {
 				request.setAttribute("error", "用户名或密码错误！");
 				return "/account/login";
 			}
