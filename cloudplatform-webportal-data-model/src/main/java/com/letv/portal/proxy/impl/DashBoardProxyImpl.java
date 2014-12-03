@@ -1,6 +1,5 @@
 package com.letv.portal.proxy.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -47,6 +49,9 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	
 	@Autowired
 	private IContainerProxy containerProxy;
+	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	@Override
 	public Map<String, Integer> selectManagerResource() {
@@ -108,5 +113,33 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		data.put("serious", serious);
 		data.put("crash", crash);
 		return data;
+	}
+
+	@Override
+	public Map<String, Integer> selectAppResource() {
+		Map<String,Integer> statistics = new HashMap<String,Integer>();
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("createUser", sessionService.getSession().getUserId());
+		
+		Integer db = this.dbService.selectByMapCount(map);
+		Integer dbFree = ConfigUtil.getint("db.auto.build.count") - db;
+		statistics.put("db",db);
+		statistics.put("dbUserAudit", dbFree>0?dbFree:0);
+		statistics.put("dbUser", this.dbUserService.selectByMapCount(map));
+		return statistics;
+	}
+
+	@Override
+	public Map<String, Float> selectDbStorage() {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<DbModel> dbs = this.dbService.selectByMap(map);
+		Map<String,Float> storage = new HashMap<String,Float>();
+		for (DbModel db : dbs) {
+			//依次查询使用量。
+			storage.put(db.getDbName(), (float) 33.64);
+		}
+		return storage;
 	}
 }

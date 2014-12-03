@@ -4,7 +4,7 @@ public class UserLogin {
 	
 	private String userName;
 	
-	private String userPassword;
+	private String password;
 	
 	private String loginIp;
 	
@@ -18,12 +18,12 @@ public class UserLogin {
 		return userName;
 	}
 
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+	public String getPassword() {
+		return password;
 	}
 
-	public String getUserPassword() {
-		return userPassword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setLoginIp(String loginIp) {

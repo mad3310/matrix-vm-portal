@@ -39,27 +39,23 @@ public class AccountController {
 		String loginName=request.getParameter("loginName");
 		String password=request.getParameter("password");
 		
-		if(StringUtils.isNullOrEmpty(loginName)) {
+		if(!"sysadmin".equals(loginName) || !ADMIN_PWD.equals(password) ) {
+			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
-		} else {
-			if(!"sysadmin".equals(loginName) || !ADMIN_PWD.equals(password) ) {
-				request.setAttribute("error", "用户名或密码错误！");
-				return "/account/login";
-			}
-			UserLogin userLogin = new UserLogin();
-			userLogin.setUserName(loginName);
-			userLogin.setLoginIp(getIp(request));
-			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-			
-			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
-	            @Override
-	            public Session execute() throws Throwable {
-	               return null;
-	            }
-	         });
-			return "redirect:/dashboard";
 		}
+		UserLogin userLogin = new UserLogin();
+		userLogin.setUserName(loginName);
+		userLogin.setLoginIp(getIp(request));
+		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+		
+		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+            @Override
+            public Session execute() throws Throwable {
+               return null;
+            }
+         });
+		return "redirect:/dashboard";
 		
 	}
 	
