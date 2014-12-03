@@ -16,10 +16,10 @@
 				<div class="widget-toolbar no-border pull-left">
 					<ul id="db-detail-tabs" class="nav nav-tabs" id="myTab2">
 						<li class="active">
-							<a data-toggle="tab" href="#db-detail-info">数据库信息</a>
+							<a data-toggle="tab" href="#db-detail-info" onclick="">数据库信息</a>
 						</li>
 						<li class="">
-							<a data-toggle="tab" href="#db-detail-user-mgr">&nbsp用户管理&nbsp</a>
+							<a data-toggle="tab" href="#db-detail-user-mgr" onclick="queryDbUser()">&nbsp用户管理&nbsp</a>
 						</li>
 						<li class="">
 							<a data-toggle="tab" href="#db-monitor" onclick="fitChartSize()">&nbsp&nbsp&nbsp监控&nbsp&nbsp&nbsp</a>
@@ -688,6 +688,7 @@ function initChart(obj,title,ytitle,unit){
     	chart:{
     		zoomType: 'x'
     	},
+    	colors: ['#4572A7', '#AA4643', '#80699B', '#89A54E'],
         title: {
             text: title
         },
@@ -802,8 +803,8 @@ function fitChartSize(){
 
 function pageinit(){
 	checkboxControl();
-	queryDbUser();
 	queryDbInfo();
+	queryDbUser();
 	dbMonitorChart();
 }
 </script>
