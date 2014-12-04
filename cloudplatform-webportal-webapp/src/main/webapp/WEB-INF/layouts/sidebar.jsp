@@ -11,7 +11,13 @@
 	<!-- /.sidebar-shortcuts -->
 
 	<ul id="sidebar-list" class="nav nav-list">
-		<li class="active open hsub">
+		<li id="sidebar-dashboard">
+			<a href="${ctx}/dashboard">
+				<i class="menu-icon fa fa-tachometer"></i> 
+				<span class="menu-text">Dashboard</span> 
+			</a>
+		</li>
+		<li id="sidebar-db-mgr">
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-database"></i> 
 				<span class="menu-text">数据库管理</span> 
