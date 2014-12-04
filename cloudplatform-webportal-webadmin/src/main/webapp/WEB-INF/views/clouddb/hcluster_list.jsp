@@ -2,11 +2,86 @@
 <!-- /section:settings.box -->
 <div class="page-content-area">
 	<div class="page-header">
-		<h1> 
-			物理机集群列表
-		</h1>
+		<h3> 物理机集群列表 </h3>
+		<div class="input-group pull-right">
+		<form class="form-inline">
+			<div class="form-group">
+				<select class="form-control">
+					<option value="0">请选择查询条件</option>
+					<option value="1">按集群名称查询</option>
+					<option value="2">按编号查询</option>
+					<option value="3">按当前状态查询</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="请输入关键字">
+			</div>
+			<div class="form-group">
+				<input type="date" class="form-control" placeholder="yyyy-MM-dd">
+			</div>
+			<button class="btn btn-sm btn-default" type="button"><i class="icon-search"></i>搜索</button>
+			<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#hclusteradvancedSearch">高级搜索</button>
+		</form>
+		
+	</div>
 	</div>
 	<!-- /.page-header -->
+	
+
+    <div class="modal fade" id="hclusteradvancedSearch">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">
+    					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+    					<span class="sr-only">关闭</span>
+    				</button>
+    				<h4 class="modal-title">高级搜索</h4>
+    			</div>
+    			<div class="modal-body">
+    				<form class="form-horizontal" role="form">          					
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="PhysicalMechine"><b>物理集群名称</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="PhysicalMechine" placeholder="物理集群名称">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="PhyMechineNum"><b>编号</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="PhyMechineNum" placeholder="编号">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-tag blue bigger-125"></i></label>
+    					</div>
+    					
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="PhyMechineDate"><b>创建时间</b></lable>
+    						<div class="col-sm-7">
+    							<input type="date" class="form-control" id="PhyMechineDate" placeholder="创建时间">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-calendar blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="PhyMechineRunState"><b>运行状态</b></lable>
+    						<div class="col-sm-7">
+    							<select class="form-control" id="PhyMechineRunState">
+    								<option value="">运行中</option>
+    								<option value="">未审核</option>
+    								<option value="">。。。</option>
+    							</select>
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-cog blue bigger-125"></i></label>
+    					</div>
+    				</form>
+    			</div>
+    			<div class="modal-footer">
+    			<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取 消 </button>
+    			<button type="button" class="btn btn-sm btn-info">搜索</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
@@ -18,7 +93,6 @@
 					</button>
 				</div>
 			</div>
-		
 			<div class="widget-body">
 				<div class="widget-main no-padding">
 					<table id="hcluster_list" class="table table-striped table-bordered table-hover">
@@ -54,11 +128,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li>共<lable id="totalPage"></lable>页
+				<li><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li>第<lable id="currentPage"></lable>页
+				<li><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li>共<lable id="totalRows"></lable>条记录
+				<li><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -66,8 +140,39 @@
 		<div class="modal fade" id="create-hcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
+					<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal">
+            					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+            					<span class="sr-only">关闭</span>
+            				</button>
+            				<h4 class="modal-title">创建物理机集群 </h4>
+            		</div>
 					<form id="create-hcluster-form" name="create-hcluster-form" class="form-horizontal" role="form">
-					<div class="col-xs-12">
+						<div class="modal-body">            				
+            				<div class="form-group">
+								<label class="col-sm-4 control-label" for="hcluster_name">物理机集群名称</label>
+								<div class="col-sm-6">
+									<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群名称应能概括此集群的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="hcluster_name">编号</label>
+								<div class="col-sm-6">
+									<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
+								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
+            			</div>
+					<!-- <div class="col-xs-12">
 						<h4 class="lighter">
 							<a href="#modal-wizard" data-toggle="modal" class="blue">创建物理机集群 </a>
 						</h4>
@@ -99,7 +204,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
 						<button id="create-hcluster-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createHcluster()">创建</button>
@@ -109,11 +214,9 @@
 			</div>
 		</div>
 		<div id="dialog-confirm" class="hide">
-			<div id="dialog-confirm-content" class="alert alert-info bigger-110">
-			</div>
+			<div id="dialog-confirm-content" class="alert alert-info bigger-110"></div>
 			<div class="space-6"></div>
-			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
-			</p>
+			<p id="dialog-confirm-question" class="bigger-110 bolder center grey"></p>
 		</div>
 	</div>
 </div>
@@ -173,9 +276,9 @@ function queryByPage(currentPage,recordsPerPage) {
 				var td4 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td><a>"
 						+ translateStatus(array[i].status)
-						+ "</td>");
+						+ "</a></td>");
 				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
@@ -186,7 +289,7 @@ function queryByPage(currentPage,recordsPerPage) {
 				);
 					
 				if(array[i].status == 3){
-					var tr = $("<tr class=\"danger\"></tr>");
+					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else{
 					var tr = $("<tr></tr>");
 				}

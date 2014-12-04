@@ -239,9 +239,14 @@
 <script type="text/javascript">
 		var path = window.location.pathname;
 		if(path.indexOf("/list/db") >= 0 ||path.indexOf("/detail/db") >= 0){
-			$('#sidebar-list ul li:first').addClass("active");
+			$('#sidebar-db-mgr').addClass("active open hsub");
+			$('#sidebar-db-mgr ul li:first').addClass("active");
 			$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
 			$('#main-content-header li:eq(1)').html("数据库列表");
+		}else if(path.indexOf("/dashboard") >= 0){
+			$('#sidebar-dashboard').addClass("active");
+			$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
+			$('#main-content-header li:eq(1)').html("Dashboard");
 		}
 	</script>
 <!-- ace scripts -->

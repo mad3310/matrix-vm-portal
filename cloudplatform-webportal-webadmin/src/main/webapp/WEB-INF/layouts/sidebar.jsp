@@ -1,15 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!-- #section:basics/sidebar -->
-<div id="sidebar" class="sidebar responsive">
-	<script type="text/javascript">
+<script type="text/javascript">
 		try {
 			ace.settings.check('sidebar', 'fixed')
 		} catch (e) {
 		}
-	</script>
-	<!-- /.sidebar-shortcuts -->
+</script>
 
+<div id="sidebar" class="sidebar responsive">
 	<ul id="sidebar-list" class="nav nav-list">
 		<li id="sidebar-dashboard" >
 			<a href="${ctx}/dashboard">
@@ -90,7 +88,6 @@
 			</ul>
 		</li>
 	</ul>
-	<!-- /.nav-list -->
 
 	<!-- #section:basics/sidebar.layout.minimize -->
 	<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
