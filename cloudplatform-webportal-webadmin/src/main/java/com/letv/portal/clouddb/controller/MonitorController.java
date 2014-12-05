@@ -16,9 +16,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
-import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
-import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -32,17 +30,11 @@ import com.letv.portal.service.IMonitorService;
 public class MonitorController {
 	
 	@Resource
-	private IContainerService containerService;
-	@Resource
-	private IMonitorService monitorService;
-	@Resource
 	private IMonitorProxy monitorProxy;
 	@Resource
 	private IMonitorIndexService monitorIndexService;
 	@Resource
 	private IContainerProxy containerProxy;
-	
-	
 	
 	/**
 	 * Methods Name: mclusterList <br>
