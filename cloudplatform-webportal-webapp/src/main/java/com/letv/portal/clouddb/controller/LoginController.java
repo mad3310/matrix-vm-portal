@@ -67,7 +67,7 @@ public class LoginController{
 			throw new NoSessionException("请重新登录!");
 		}
         
-		mav.setViewName("redirect:/list/db");
+		mav.setViewName("redirect:/dashboard");
 		return mav;
 	}
 	
