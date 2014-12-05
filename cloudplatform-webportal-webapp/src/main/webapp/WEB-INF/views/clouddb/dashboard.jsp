@@ -76,9 +76,9 @@
 
 <script type="text/javascript">
 $(function () {
-	demoData();
 	getDbStatistics();
 	initBarChart();
+	initPieChart();
 });
 
 function setBarChartData(chart){
@@ -100,7 +100,7 @@ function setBarChartData(chart){
 	});
 }
 
-function initBarChart(){
+function initBarChart(chart){
 	$('#con-container').highcharts({
 		chart: {
             type: 'bar'
@@ -141,6 +141,52 @@ function initBarChart(){
 	setBarChartData($('#con-container').highcharts());
 }
 
+function initPieChart(chart){
+	$('#column-container').highcharts({
+	    chart: {
+	        type: 'pie'
+	    },
+	    title: {
+	        text: '数据库使用比例'
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'Total percent market share'
+	        }
+	    },
+	    plotOptions: {
+	        pie: {
+	            shadow: false,
+	            center: ['50%', '50%']
+	        }
+	    },
+	    credits:{
+        	enabled: false
+        },
+	    series: [{
+	        name: 'total',
+	        size: '60%',
+	        dataLabels: {
+	            formatter: function() {
+	                return this.y > 5 ? this.point.name : null;
+	            },
+	            color: 'white',
+	            distance: -30
+	        }
+	    }, {
+	        name: 'detail',
+	        size: '80%',
+	        innerSize: '60%',
+	        dataLabels: {
+	            formatter: function() {
+	                return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y  : null;
+	            }
+	        }
+	    }]
+	});
+	setPieChartData($('#column-container').highcharts());
+}
+
 function getDbStatistics(){
 	$.ajax({
 		type : "get",
@@ -156,130 +202,36 @@ function getDbStatistics(){
 	});
 }
 
-function demoData(){
-	var colors = Highcharts.getOptions().colors,
-    categories = ['db1', 'db2', 'db3', 'db4', 'db5'],
-    name = 'Browser brands',
-    data = [{
-            y: 55.11,
-            color: colors[0],
-            drilldown: {
-                name: 'db1',
-                categories: ['db1-admin', 'db1-user1', 'db1-user2', 'db1-user3'],
-                data: [10.85, 7.35, 33.06, 2.81],
-                color: colors[0]
-            }
-        }, {
-            y: 21.63,
-            color: colors[1],
-            drilldown: {
-                name: 'db2',
-                categories: ['db2', 'db2', 'db2', 'db2', 'db2'],
-                data: [0.20, 0.83, 1.58, 13.12, 5.43],
-                color: colors[1]
-            }
-        }, {
-            y: 11.94,
-            color: colors[2],
-            drilldown: {
-                name: 'db3',
-                categories: ['db3', 'db3', 'db3', 'db3', 'db3',
-                    'db3', 'db3', 'db3'],
-                data: [0.12, 0.19, 0.12, 0.36, 0.32, 9.91, 0.50, 0.22],
-                color: colors[2]
-            }
-        }, {
-            y: 7.15,
-            color: colors[3],
-            drilldown: {
-                name: 'db4',
-                categories: ['db4', 'db4', 'db4', 'db4', 'db4',
-                    'db4', 'db4'],
-                data: [4.55, 1.42, 0.23, 0.21, 0.20, 0.19, 0.14],
-                color: colors[3]
-            }
-        }, {
-            y: 2.14,
-            color: colors[4],
-            drilldown: {
-                name: 'db5',
-                categories: ['db5', 'db5', 'db5'],
-                data: [ 0.12, 0.37, 1.65],
-                color: colors[4]
-            }
-        }];
-
-
-// Build the data arrays
-var browserData = [];
-var versionsData = [];
-for (var i = 0; i < data.length; i++) {
-
-    // add browser data
-    browserData.push({
-        name: categories[i],
-        y: data[i].y,
-        color: data[i].color
-    });
-
-    // add version data
-    for (var j = 0; j < data[i].drilldown.data.length; j++) {
-        var brightness = 0.2 - (j / data[i].drilldown.data.length) / 5 ;
-        versionsData.push({
-            name: data[i].drilldown.categories[j],
-            y: data[i].drilldown.data[j],
-            color: Highcharts.Color(data[i].color).brighten(brightness).get()
-        });
-    }
-}
-
-// Create the chart
-$('#column-container').highcharts({
-    chart: {
-        type: 'pie'
-    },
-    title: {
-        text: '数据库使用比例'
-    },
-    yAxis: {
-        title: {
-            text: 'Total percent market share'
-        }
-    },
-    plotOptions: {
-        pie: {
-            shadow: false,
-            center: ['50%', '50%']
-        }
-    },
-    tooltip: {
-	    valueSuffix: '%'
-    },
-    series: [{
-        name: 'Browsers',
-        data: browserData,
-        size: '60%',
-        dataLabels: {
-            formatter: function() {
-                return this.y > 5 ? this.point.name : null;
-            },
-            color: 'white',
-            distance: -30
-        }
-    }, {
-        name: 'Versions',
-        data: versionsData,
-        size: '80%',
-        innerSize: '60%',
-        dataLabels: {
-            formatter: function() {
-                // display only if larger than 1
-                return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y +'%'  : null;
-            }
-        }
-    }]
-});
-
+function setPieChartData(chart){
+    var connectTotal = [];
+    var connectDetail = [];
+	$.ajax({
+		type : "get",
+		url : "${ctx}/dashboard/monitor/db/connect",
+		contentType : "application/json; charset=utf-8",
+		success : function(data) {
+			if(error(data)) return;
+			var view = data.data;
+			var colors = ['#6fb3e0', '#8bbc21', '#1aadce', '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a','#0d233a', '#910000',];
+			for(var i=0,len=view.length;i<len;i++){
+				connectTotal.push({
+					name: view[i].dbName,
+		            y: view[i].total,
+		            color: colors[i],
+				});
+				for (var j = 0,len2= view[i].value.length; j < len2; j++) {
+		            var brightness = 0.2 - (j / view[i].value.length) / 5 ;
+		            connectDetail.push({
+		                name: view[i].value[j].detailName,
+		                y: view[i].value[j].detailValue ,
+		                color: Highcharts.Color(colors[i]).brighten(brightness).get()
+		            });
+		        }
+			}
+			chart.series[0].setData(connectTotal);
+			chart.series[1].setData(connectDetail);
+		}
+	});
 }
 
 </script>
