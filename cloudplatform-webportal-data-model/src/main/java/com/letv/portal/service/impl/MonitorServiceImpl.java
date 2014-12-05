@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IMonitorDao;
-import com.letv.portal.dao.IMonitorViewDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
@@ -27,9 +26,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 	@Autowired
 	private IMonitorDao monitorDao;
-	
-	@Autowired
-	private IMonitorViewDao monitorViewDao;
 	
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
@@ -181,5 +177,33 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     public List<MonitorIndexModel> selectMonitorCount(){
     	return this.monitorIndexService.selectMonitorCount();
     }
+
+
+	@Override
+	public Float selectDbStorage(Long mclusterId) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("mclusterId", mclusterId);
+	    map.put("type", "mclusternode");
+	    List<ContainerModel> containers = this.containerService.selectByMap(map);
+	    if(containers.size()<0) {
+	    	return 0F;
+	    }
+		return this.monitorDao.selectDbStorage(containers.get(0).getIpAddr());
+	}
+
+
+	@Override
+	public List<Map<String,Object>> selectDbConnect(Long mclusterId) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("mclusterId", mclusterId);
+	    map.put("type", "mclusternode");
+	    List<ContainerModel> containers = this.containerService.selectByMap(map);
+	    if(containers.size()<0) {
+	    	return null;
+	    }
+		return this.monitorDao.selectDbConnect(containers.get(0).getIpAddr());
+	}
 
 }

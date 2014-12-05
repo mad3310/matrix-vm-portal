@@ -57,6 +57,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId, Integer strategy) {
 		return this.monitorService.getMonitorViewData(mclusterId, chartId, strategy);
 	}
+	
 	@Override
 	public List<MonitorViewYModel> getDbConnMonitor(Long mclusterId,Long chartId, Integer strategy) {
 		Map<String, Object> map = new HashMap<String, Object>();

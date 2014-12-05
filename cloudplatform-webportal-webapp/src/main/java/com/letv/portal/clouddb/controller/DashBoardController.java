@@ -33,4 +33,9 @@ public class DashBoardController {
 		result.setData(this.dashBoardProxy.selectDbStorage());
 		return result;
 	}
+	@RequestMapping(value="/monitor/db/connect",method=RequestMethod.GET)
+	public @ResponseBody ResultObject dbConnect(ResultObject result) {
+		result.setData(this.dashBoardProxy.selectDbConnect());
+		return result;
+	}
 }

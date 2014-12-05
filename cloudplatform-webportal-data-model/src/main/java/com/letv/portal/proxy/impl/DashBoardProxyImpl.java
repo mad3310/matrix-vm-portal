@@ -1,6 +1,8 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -25,6 +28,7 @@ import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.IMonitorService;
 
 @Component
 public class DashBoardProxyImpl implements IDashBoardProxy{
@@ -46,9 +50,10 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	private IHostService hostService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
-	
 	@Autowired
 	private IContainerProxy containerProxy;
+	@Autowired
+	private IMonitorService monitorService;
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
@@ -134,12 +139,35 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	public Map<String, Float> selectDbStorage() {
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("createUser", sessionService.getSession().getUserId());
+		map.put("status", DbStatus.NORMAL.getValue());
 		List<DbModel> dbs = this.dbService.selectByMap(map);
 		Map<String,Float> storage = new HashMap<String,Float>();
 		for (DbModel db : dbs) {
 			//依次查询使用量。
-			storage.put(db.getDbName(), (float) 33.64);
+			storage.put(db.getDbName(), this.monitorService.selectDbStorage(db.getMclusterId()));
 		}
 		return storage;
+	}
+
+	@Override
+	public List<Map<String,Object>> selectDbConnect() {
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("createUser", sessionService.getSession().getUserId());
+		map.put("status", DbStatus.NORMAL.getValue());
+		List<DbModel> dbs = this.dbService.selectByMap(map);
+		List<Map<String,Object>> connect = new ArrayList<Map<String,Object>>();
+		for (DbModel db : dbs) {
+			HashMap<String, Object> data = new HashMap<String,Object>();
+			data.put("dbName", db.getDbName());
+			List<Map<String, Object>> selectDbConnect = this.monitorService.selectDbConnect(db.getMclusterId());
+			float total = 0F;
+			for (Map<String, Object> value : selectDbConnect) {
+				total +=  (Float) value.get("detailValue");
+			}
+			data.put("value", selectDbConnect);
+			data.put("total", total);
+			connect.add(data);
+		}
+		return connect;
 	}
 }

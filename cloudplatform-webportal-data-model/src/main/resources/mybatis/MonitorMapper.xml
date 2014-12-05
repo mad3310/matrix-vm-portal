@@ -15,8 +15,8 @@
 	<resultMap id="dataMap" type="java.util.Map">
         <result column="MONITOR_DATE" property="monitorDate" />
 		<result column="DETAIL_VALUE" property="detailValue" />
+		<result column="DETAIL_NAME" property="detailName" />
 	</resultMap>
-	
 	
 
 	<!-- WEBPORTAL_DB table all fields -->
@@ -73,6 +73,15 @@
         <include refid="Base_Column_List" /> 
 	   	from ${dbName} m
         <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
+	</select>
+	
+	<select id="selectDbStorage" resultType="java.lang.Float" parameterType="java.lang.String">
+		select detail_value,monitor_date from WEBPORTAL_MONITOR_NODE_DATADIRSIZE 
+		where ip= #{ipAddr} and detail_name = '/srv/mcluster' order by monitor_date desc limit 0,1 
+	</select>
+	<select id="selectDbConnect" resultMap="dataMap" parameterType="java.lang.String">
+		select MONITOR_DATE,DETAIL_NAME,DETAIL_VALUE from WEBPORTAL_MONITOR_DB_ROWOPERS_TOTAL 
+		where ip=#{ipAddr} order by monitor_date desc limit 0,4
 	</select>
 
 

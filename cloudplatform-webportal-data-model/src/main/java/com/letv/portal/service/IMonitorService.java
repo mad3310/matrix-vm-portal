@@ -18,5 +18,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	public List<MonitorDetailModel> selectDateTime(Map map);
 	
 	public List<MonitorIndexModel> selectMonitorCount();
+	public Float selectDbStorage(Long mclusterId);
+	public List<Map<String,Object>> selectDbConnect(Long mclusterId);
 	
 }
