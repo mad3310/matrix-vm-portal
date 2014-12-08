@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="${ctx}/static/styles/ui-css/style.css"/>
 <div class="page-content-area">
 	<div class="page-header">
 		<h1>
@@ -13,55 +14,62 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="row">
-				<div class="space-6"></div>
-				<div class="col-sm-7 infobox-container">
-					<div class="infobox infobox-green" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
-						<div class="infobox-icon">
-							<i class="ace-icon fa fa-database"></i>
-						</div>
-						<div class="infobox-data">
-							<span class="infobox-data-number" id="dbSum">0</span>
-							<div class="infobox-content">数据库数</div>
+				<div class="col-sm-6 infobox-container">
+					<div class="col-md-12 col-xs-12">
+						<div class=" logo-label mt10">
+							<div class="width-100  center padding-tb-5">
+								<a class="dash-a"><h4><b>集群概览</b></h4></a>
+							</div>
 						</div>
 					</div>
-					<div class="infobox infobox-green"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/dbUser';">
-						<div class="infobox-icon">
-							<i class="ace-icon fa fa-users"></i>
+					<div id="statistics" class="col-md-12 col-xs-12 mt10">
+						<div class="infobox infobox-green" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
+							<div class="infobox-icon">
+								<i class="ace-icon fa fa-database"></i>
+							</div>
+							<div class="infobox-data">
+								<span class="infobox-data-number" id="dbSum">0</span>
+								<div class="infobox-content">数据库数</div>
+							</div>
 						</div>
-						<div class="infobox-data">
-							<span class="infobox-data-number" id="dbUserSum">0</span>
-							<div class="infobox-content">数据库用户数</div>
+						<div class="infobox infobox-green"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/dbUser';">
+							<div class="infobox-icon">
+								<i class="ace-icon fa fa-users"></i>
+							</div>
+							<div class="infobox-data">
+								<span class="infobox-data-number" id="dbUserSum">0</span>
+								<div class="infobox-content">数据库用户数</div>
+							</div>
+						</div>
+						<div class="infobox infobox-green"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster';">
+							<div class="infobox-icon">
+								<i class="ace-icon fa fa-cubes"></i>
+							</div>
+							<div class="infobox-data">
+								<span class="infobox-data-number" id="mclusterSum">0</span>
+								<div class="infobox-content">container集群数</div>
+							</div>
+						</div>	
+						<div class="space-6"></div>
+						<div class="infobox infobox-blue"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/hcluster';">
+							<div class="infobox-icon">
+								<i class="ace-icon fa fa-cubes"></i>
+							</div>
+							<div class="infobox-data">
+								<span class="infobox-data-number" id="hclusterSum">0</span>
+								<div class="infobox-content">物理机集群数</div>
+							</div>
+						</div>
+						<div class="infobox infobox-blue"  onmouseover="this.style.cursor='pointer'">
+							<div class="infobox-icon">
+								<i class="ace-icon fa fa-cube"></i>
+							</div>
+							<div class="infobox-data">
+								<span class="infobox-data-number" id="hostSum">0</span>
+								<div class="infobox-content">物理机节点数</div>
+							</div>
 						</div>
 					</div>
-					<div class="infobox infobox-green"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster';">
-						<div class="infobox-icon">
-							<i class="ace-icon fa fa-cubes"></i>
-						</div>
-						<div class="infobox-data">
-							<span class="infobox-data-number" id="mclusterSum">0</span>
-							<div class="infobox-content">container集群数</div>
-						</div>
-					</div>	
-					<div class="space-6"></div>
-					<div class="infobox infobox-blue"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/hcluster';">
-						<div class="infobox-icon">
-							<i class="ace-icon fa fa-cubes"></i>
-						</div>
-						<div class="infobox-data">
-							<span class="infobox-data-number" id="hclusterSum">0</span>
-							<div class="infobox-content">物理机集群数</div>
-						</div>
-					</div>
-					<div class="infobox infobox-blue"  onmouseover="this.style.cursor='pointer'">
-						<div class="infobox-icon">
-							<i class="ace-icon fa fa-cube"></i>
-						</div>
-						<div class="infobox-data">
-							<span class="infobox-data-number" id="hostSum">0</span>
-							<div class="infobox-content">物理机节点数</div>
-						</div>
-					</div>
-					
 					<div class="space-6"></div>
 					<div class="infobox infobox-orange infobox-dark"  onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/db';">
 						<div class="infobox-icon">
@@ -113,60 +121,163 @@
 					</div>
 				</div>
 	
-				<div class="vspace-12-sm"></div>
-				
-				<div class="col-sm-4">
-					<div class="widget-box">
-						<div class="widget-header widget-header-flat widget-header-small">
-							<h5 class="widget-title">
-								container集群监控图
-							</h5>
-							<div class="widget-toolbar no-border">
-							<a class="blue" href="#" onclick="updateMclusterChart()" data-toggle="modal" data-target="#">
-								<i class="ace-icon fa fa-refresh icon-on-right bigger-110"></i>
-							</a>	
+				<div class="col-sm-6">
+					<div class="col-md-12 col-xs-12">
+						<div class=" logo-label mt10">
+							<div class="width-100  center padding-tb-5">
+								<a class="dash-a"><h4><b>cluster状态</b></h4></a>
 							</div>
 						</div>
-						<div class="widget-body">
-							<div class="widget-main">
-								<div id="pie-chart-container" style="height: 300px"></div>	
-								<div class="hr hr8 hr-double"></div>
-	
-								<div class="clearfix">
-									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
-										<span class="grey">
-											<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
-											&nbsp; 正常<br/>
-											nothing
-										</span>
-										<h4 id="nothing" class="bigger pull-right">0</h4>
-									</div>
-	
-									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
-										<span class="grey">
-											<i class="ace-icon fa fa-warning fa-2x orange"></i>
-											&nbsp; 危险<br/>
-											sms:email
-										</span>
-										<h4 id="general" class="bigger pull-right">0</h4>
-									</div>
-									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
-										<span class="grey">
-											<i class="ace-icon fa  fa-bolt fa-2x red"></i>
-											&nbsp; 严重危险<br/>
-											tel:sms:email
-										</span>
-										<h4 id="serious" class="bigger pull-right">0</h4>
-									</div>
-									<div class="grid4" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
-										<span class="grey">
-											<i class="ace-icon fa fa-wrench fa-2x red"></i>
-											&nbsp; 宕机<br/>
-											time out
-										</span>
-										<h4 id="crash" class="bigger pull-right">0</h4>
-									</div>
-								</div>
+					</div>
+					<div id="statistics" class="col-md-12 col-xs-12 mt10">
+						<div id="pie-chart-container" style="height: 300px"></div>	
+						<div class="hr hr8 hr-double"></div>
+
+						<div class="clearfix">
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
+									&nbsp; 正常<br/>
+								</span>
+								<h4 id="nothing" class="bigger pull-right">0</h4>
+							</div>
+
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-warning fa-2x orange"></i>
+									&nbsp; 危险<br/>
+								</span>
+								<h4 id="general" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa  fa-bolt fa-2x red"></i>
+									&nbsp; 严重危险<br/>
+								</span>
+								<h4 id="serious" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 集群不可用<br/>
+								</span>
+								<h4 id="crash" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 获取数据超时<br/>
+								</span>
+								<h4 id="timeout" class="bigger pull-right">0</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+			<div class="hr hr32 hr-dotted"></div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="col-md-12 col-xs-12">
+						<div class=" logo-label mt10">
+							<div class="width-100  center padding-tb-5">
+								<a class="dash-a"><h4><b>node状态</b></h4></a>
+							</div>
+						</div>
+					</div>
+					<div id="statistics" class="col-md-12 col-xs-12 mt10">
+						<div id="pie-chart-container" style="height: 300px"></div>	
+						<div class="hr hr8 hr-double"></div>
+
+						<div class="clearfix">
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
+									&nbsp; 正常<br/>
+								</span>
+								<h4 id="nothing" class="bigger pull-right">0</h4>
+							</div>
+
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-warning fa-2x orange"></i>
+									&nbsp; 危险<br/>
+								</span>
+								<h4 id="general" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa  fa-bolt fa-2x red"></i>
+									&nbsp; 严重危险<br/>
+								</span>
+								<h4 id="serious" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 集群不可用<br/>
+								</span>
+								<h4 id="crash" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 获取数据超时<br/>
+								</span>
+								<h4 id="timeout" class="bigger pull-right">0</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="col-md-12 col-xs-12">
+						<div class=" logo-label mt10">
+							<div class="width-100  center padding-tb-5">
+								<a class="dash-a"><h4><b>db状态</b></h4></a>
+							</div>
+						</div>
+					</div>
+					<div id="statistics" class="col-md-12 col-xs-12 mt10">
+						<div id="pie-chart-container" style="height: 300px"></div>	
+						<div class="hr hr8 hr-double"></div>
+
+						<div class="clearfix">
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
+									&nbsp; 正常<br/>
+								</span>
+								<h4 id="nothing" class="bigger pull-right">0</h4>
+							</div>
+
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-warning fa-2x orange"></i>
+									&nbsp; 危险<br/>
+								</span>
+								<h4 id="general" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa  fa-bolt fa-2x red"></i>
+									&nbsp; 严重危险<br/>
+								</span>
+								<h4 id="serious" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 集群不可用<br/>
+								</span>
+								<h4 id="crash" class="bigger pull-right">0</h4>
+							</div>
+							<div class="grid5" onmouseover="this.style.cursor='pointer'" onclick="document.location='${ctx}/list/mcluster/monitor';">
+								<span class="grey">
+									<i class="ace-icon fa fa-wrench fa-2x red"></i>
+									&nbsp; 获取数据超时<br/>
+								</span>
+								<h4 id="timeout" class="bigger pull-right">0</h4>
 							</div>
 						</div>
 					</div>
@@ -196,7 +307,7 @@ function initPieChart(){
             }
         },
         title: {
-            text: '当前状态'
+            text: ''
         },
         tooltip: {
 	        formatter: function() {

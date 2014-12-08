@@ -167,9 +167,6 @@ function initPieChart(chart){
 	        name: 'total',
 	        size: '60%',
 	        dataLabels: {
-	            formatter: function() {
-	                return this.y > 5 ? this.point.name : null;
-	            },
 	            color: 'white',
 	            distance: -30
 	        }
@@ -179,7 +176,7 @@ function initPieChart(chart){
 	        innerSize: '60%',
 	        dataLabels: {
 	            formatter: function() {
-	                return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y  : null;
+	                return this.y > 1 ? '<b>'+ this.point.name +':</b> '+ this.y : null;
 	            }
 	        }
 	    }]
