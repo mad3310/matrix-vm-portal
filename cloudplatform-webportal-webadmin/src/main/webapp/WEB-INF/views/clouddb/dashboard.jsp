@@ -177,7 +177,7 @@
 				
 			</div>
 			<div class="hr hr32 hr-dotted"></div>
-			<div class="row">
+<%-- 			<div class="row">
 				<div class="col-sm-6">
 					<div class="col-md-12 col-xs-12">
 						<div class=" logo-label mt10">
@@ -282,7 +282,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> --%>
 		</div>
 	</div>
 </div>
