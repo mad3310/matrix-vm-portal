@@ -2,12 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h1> 
+		<h3> 
 			<a href="${ctx}/list/db">数据库列表</a>
 			<small id="headerDbName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
-		</h1>
+		</h3>
 	</div>
 	<!-- /.page-header -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
@@ -30,17 +30,17 @@
 					<div class="tab-content padding-4">
 						<div id="db-detail-info" class="tab-pane  active">
 							<div id="db-detail-table" class="col-xs-6">
-								<table class="table table-bordered" id="db_detail_table">
+								<table class="table table-bordered table-striped table-hover" id="db_detail_table">
 									<tr>
-										<td width="50%">数据库名</td>
+										<th width="50%">数据库名</th>
 										<td width="50%" id="db_detail_table_dbname"></td>
 									</tr>
 									<tr>
-										<td>所属用户</td>
+										<th>所属用户</th>
 										<td id="db_detail_table_belongUser"></td>
 									</tr>
 									<tr>
-										<td>创建时间</td>
+										<th>创建时间</th>
 										<td id="db_detail_table_createtime"></td>
 									</tr>
 								</table>
@@ -57,7 +57,7 @@
 								</div>
 								<div class="widget-body">
 									<div class="widget-main no-padding">
-										<table class="table table-bordered" id="db_detail_table" >
+										<table class="table table-bordered  table-striped table-hover" id="db_detail_table" >
 									<thead>
 										<tr>
 											<th class="center">
@@ -226,7 +226,7 @@ function queryDbUser(){
 							    + "</td>");
 				}else if(array[i].type == 2){
 					var td3 = $("<td>"
-						    + "读用户"
+						    + "只读用户"
 						    + "</td>");
 				}else{
 					var td3 = $("<td>"
@@ -282,9 +282,9 @@ function queryDbInfo(){
 			$("#db_detail_table_createtime").text(date('Y-m-d H:i:s',dbInfo.createTime));
 			for(var i=0,len = dbInfo.containers.length; i < len; i++)
 			{
-				var td1 = $("<td>"
+				var td1 = $("<th>"
 						+ dbInfo.containers[i].containerName
-						+"</td>");
+						+"</th>");
 				var td2 =$("<td>"
 						+ dbInfo.containers[i].ipAddr
 						+"</td>");
