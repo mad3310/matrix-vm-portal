@@ -673,11 +673,11 @@
   color: #7bb7e5; 
   color:#009900; !important;
 }
-  .skin-custom .sidebar.responsive-min .nav-list > li.active > a,
-  .skin-custom .sidebar.responsive-min .nav-list > li.active > a:hover {
+.skin-custom .sidebar.responsive-min .nav-list > li.active > a,
+.skin-custom .sidebar.responsive-min .nav-list > li.active > a:hover {
     background-color: #141a1b;
     color:#009900; !important;
-  } 
+ } 
 /* sidebar end */
 /**********************************************************************************************************/
 /* modal dialog begin*/
