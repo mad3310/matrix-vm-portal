@@ -2,12 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h1> 
+		<h3> 
 			<a href="${ctx}/list/mcluster/monitor">container集群监控列表</a>
 			<small id="header_mcluster_name"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
-		</h1>
+		</h3>
 	</div>
 	<!-- /.page-header -->
 	<input class="hidden" value="${ip}" name="ip" id="ip" type="text" />

@@ -2,15 +2,98 @@
 <!-- /section:settings.box -->
 <div class="page-content-area">
 	<div class="page-header">
-		<h1> 
-			Container集群列表
-			<!-- <small> 
-				<i class="ace-icon fa fa-angle-double-right"></i> 
-				overview &amp; stats
-			</small> -->
-		</h1>
+		<h3>Container集群列表</h3>
+		<div class="input-group pull-right">
+		<form class="form-inline">
+			<div class="form-group">
+				<select class="form-control">
+					<option value="0">请选择查询条件</option>
+					<option value="1">按集群名称查询</option>
+					<option value="2">按类型查询</option>
+					<option value="3">按当前状态查询</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="请输入关键字">
+			</div>
+			<div class="form-group">
+				<input type="date" class="form-control" placeholder="yyyy-MM-dd">
+			</div>
+			<button class="btn btn-sm btn-default" type="button"><i class="icon-search"></i>搜索</button>
+			<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#mclusteradvancedSearch">高级搜索</button>
+		</form>
+	</div>
 	</div>
 	<!-- /.page-header -->
+	
+
+    <div class="modal fade" id="mclusteradvancedSearch">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">
+    					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+    					<span class="sr-only">关闭</span>
+    				</button>
+    				<h4 class="modal-title">高级搜索</h4>
+    			</div>
+    			<div class="modal-body">
+    				<form class="form-horizontal" role="form">
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="containerName"><b>container集群名称</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="containerName" placeholder="container集群名称">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="Physicalcluster"><b>所属物理集群</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理集群">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="containerType"><b>类型</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="containerType" placeholder="类型">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="containeruser"><b>所属用户</b></lable>
+    						<div class="col-sm-7">
+    							<input type="text" class="form-control" id="containeruser" placeholder="所属用户">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-user blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="containerDate"><b>创建时间</b></lable>
+    						<div class="col-sm-7">
+    							<input type="date" class="form-control" id="containerDate" placeholder="创建时间">
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-calendar blue bigger-125"></i></label>
+    					</div>
+    					<div class="form-group">
+    						<lable class="col-sm-4 control-label" for="containerRunState"><b>运行状态</b></lable>
+    						<div class="col-sm-7">
+    							<select class="form-control" id="containerRunState">
+    								<option value="">运行中</option>
+    								<option value="">危险</option>
+    								<option value="">创建失败</option>
+    							</select>
+    						</div>
+    						<label class="control-label"><i class="ace-icon fa fa-cog blue bigger-125"></i></label>
+    					</div>
+    				</form>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取 消 </button>
+    				<button type="button" class="btn btn-sm btn-info">搜索</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
@@ -55,25 +138,28 @@
 		<div id="pageControlBar" class="col-xs-6">
 			<input type="hidden" id="totalPage_input" />
 			<ul class="pager">
-				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+				<li><a href="javascript:void(0);" id="firstPage">&laquo&nbsp;首页</a></li>
+				<li><a href="javascript:void(0);" id="prevPage" >上一页</a></li>
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-	
-				<li>共<lable id="totalPage"></lable>页
-				</li>
-				<li>第<lable id="currentPage"></lable>页
-				</li>
-				<li>共<lable id="totalRows"></lable>条记录
-				</li>
+				<li><a href="javascript:void(0);" id="lastPage">末页&nbsp;&raquo</a></li>
+				<li><a>共<lable id="totalPage"></lable>页</a></li>
+				<li><a>第<lable id="currentPage"></lable>页</a></li>
+				<li><a>共<lable id="totalRows"></lable>条记录</a></li>
 			</ul>
 		</div>
 		
 		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
+					<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal">
+            					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+            					<span class="sr-only">关闭</span>
+            				</button>
+            				<h4 class="modal-title">创建Container集群</h4>
+            		</div>
 					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form">
-					<div class="col-xs-12">
+					<!-- <div class="col-xs-12">
 						<h4 class="lighter">
 							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建Container集群 </a>
 						</h4>
@@ -106,7 +192,32 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
+					<div class="modal-body">            				
+            					<div class="form-group">
+										<label class="col-sm-4 control-label" for="mcluster_name">Container集群名称</label>
+										<div class="col-sm-6">
+											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
+										</div>
+										<label class="control-label">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">物理机集群</label>
+										<div class="col-sm-6">
+											<select class="form-control" name="hclusterId" id="hcluster_select">
+											</select>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+            			</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
 						<button id="create-mcluster-botton" type="button" class="btn btn-sm btn-primary disabled" onclick="createMcluster()">创建</button>
@@ -193,7 +304,8 @@ $(function(){
 			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
 			status = "2";
 		}else if($(this).html().indexOf("创建失败")>=0){
-			$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			//$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			$('#buildStatusHeader').html("创建失败");
 			status = "3";
 		}
 		queryBuildStatus(mclusterId,"new");
@@ -297,7 +409,7 @@ function queryByPage(currentPage,recordsPerPage) {
 				);
 					
 				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
-					var tr = $("<tr class=\"danger\"></tr>");
+					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else if(array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
 				}else{

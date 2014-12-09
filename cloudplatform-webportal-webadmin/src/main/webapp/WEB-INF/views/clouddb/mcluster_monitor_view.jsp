@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="page-content-area">
 	<div class="page-header">
-		<h1> 
+		<h3> 
 			container集群监控视图
-		</h1>
+		</h3>
 	</div>
 	<!-- /.page-header -->
 	<div class="row">
@@ -11,10 +11,11 @@
 			<div class="clearfix form-actions">
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right">Container集群</label>
+						<label class="col-sm-2 control-label no-padding-right text-info">Container集群</label>
 						<div class="col-sm-2">
 							<select id="mclusterOption" name="mclusterId" class="form-control">
-							</select>					
+							</select>
+												
 						</div>
 					<!-- 	<label class="col-sm-1 control-label">监控点</label>
 						<div class="col-sm-2">
@@ -22,13 +23,13 @@
 								<option value=""></option>
 							</select>
 						</div> -->
-						<label class="col-sm-1 control-label">监控点</label>
+						<label class="col-sm-1 control-label text-info">监控点</label>
 						<div class="col-sm-3">
 							<select multiple="multiple" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="空为显示所有.">
 							</select>
 						</div>
 						
-						<label class="col-sm-1 control-label">时间</label>
+						<label class="col-sm-1 control-label text-info">时间</label>
 						<div class="col-sm-2">
 							<select id="queryTime" name="queryTime" class="form-control">
 								<option value="1">一小时</option>
@@ -38,7 +39,7 @@
 							</select>
 						</div>
 						<div class="col-sm-1">
-							<button id="refresh-data" type="button" onclick="refreshChartForSelect()" class="btn btn-sm btn-primary">刷新</button>
+							<button id="refresh-data" type="button" onclick="refreshChartForSelect()" class="btn btn-sm btn-info">刷新</button>
 						</div>
 					</div>
 				</form>
@@ -286,6 +287,5 @@ function updateChartSize(obj){
 $(function(){
 	$('#nav-search').addClass("hidden");
 	queryMcluster();
-
 });
 </script>
