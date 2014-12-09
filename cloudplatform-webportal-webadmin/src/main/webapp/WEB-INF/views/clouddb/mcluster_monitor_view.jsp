@@ -12,7 +12,7 @@
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
 						<label class="col-sm-2 control-label no-padding-right text-info">Container集群</label>
-						<div class="col-sm-2">
+						<div class="col-sm-4">
 							<select id="mclusterOption" name="mclusterId" class="form-control">
 							</select>
 												
@@ -22,27 +22,29 @@
 							<select id="monitorPointOption" name="monitorPoint" class="form-control">
 								<option value=""></option>
 							</select>
-						</div> -->
-						<label class="col-sm-1 control-label text-info">监控点</label>
-						<div class="col-sm-3">
-							<select multiple="multiple" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="空为显示所有.">
-							</select>
-						</div>
+						</div> -->					
 						
-						<label class="col-sm-1 control-label text-info">时间</label>
-						<div class="col-sm-2">
+						<label class="col-sm-2 control-label text-info">时间</label>
+						<div class="col-sm-3">
 							<select id="queryTime" name="queryTime" class="form-control">
 								<option value="1">一小时</option>
 								<option value="2">三小时</option>
 								<option value="3">一天</option>
 								<option value="4">一周</option>
 							</select>
-						</div>
-						<div class="col-sm-1">
-							<button id="refresh-data" type="button" onclick="refreshChartForSelect()" class="btn btn-sm btn-info">刷新</button>
-						</div>
+						</div>						
 					</div>
-				</form>
+					<div class="form-group">
+						<label class="col-sm-2 control-label no-padding-right text-info" >监控点</label>
+						<div class="col-sm-9">
+							<select multiple="multiple" class="chosen-select form-control" name="monitorPoint" id="monitorPointOption" data-placeholder="空为显示所有.">
+							</select>	
+					 	</div>
+					 	<div class="col-sm-1">
+							<button id="refresh-data" type="button" onclick="refreshChartForSelect()" class="btn btn-sm btn-info">刷新</button>
+						</div>	
+					</div>						
+				</form>			
 			</div>
 		<div id="monitor-view" class="row">
 		</div>
