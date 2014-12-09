@@ -2,9 +2,9 @@
 <link rel="stylesheet" href="${ctx}/static/styles/ui-css/style.css"/>
 <div class="page-content-area">
 	<div class="page-header">
-		<h1>
+		<h3>
 			Dashboard
-		</h1>
+		</h3>
 	</div>
 	
 	<div class="row">
