@@ -36,6 +36,9 @@
 <link rel="stylesheet" href="${ctx}/static/ace/css/ace-skins.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/ace-rtl.min.css" />
 
+<!-- skins -->
+<link rel="stylesheet" href="${ctx}/static/styles/ui-css/skin-custom.css" />
+
 <!--[if lte IE 9]>
 	<link rel="stylesheet" href="${ctx}/static/ace/css/ace-ie.min.css" />
 <![endif]-->
@@ -65,7 +68,7 @@
 <sitemesh:head/>
 </head>
 
-<body class="no-skin">
+<body class="skin-custom">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="main-container" id="main-container">
 		<script type="text/javascript">

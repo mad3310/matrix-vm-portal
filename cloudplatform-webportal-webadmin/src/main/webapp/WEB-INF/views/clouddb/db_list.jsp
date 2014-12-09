@@ -232,7 +232,7 @@
 
 <script type="text/javascript">
 var currentPage = 1; //第几页 
-var recordsPerPage = 15; //每页显示条数
+var recordsPerPage = 10; //每页显示条数
 var currentSelectedLineDbName = 1;
 	
  $(function(){
@@ -285,7 +285,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			if(error(data)) return;
+			error(data);
 			var array = data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
@@ -397,6 +397,7 @@ function queryByPage(currentPage,recordsPerPage) {
 					
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
+					
 				}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"default-danger\"></tr>");
 					
@@ -495,7 +496,7 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 		url : "${ctx}/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			if(error(data)) return;
+			error(data);
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
 			
