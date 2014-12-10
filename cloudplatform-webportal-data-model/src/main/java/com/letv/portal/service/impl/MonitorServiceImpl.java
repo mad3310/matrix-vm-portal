@@ -56,14 +56,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    List<ContainerModel> containers = this.containerService.selectByMap(map);	  
 	    
 	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-	    String dataTable = monitorIndexModel.getDetailTable();
-	    
-	    Map<String, Object> indexParams = new HashMap<String, Object>();
-	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
-	    
 	    Date end = new Date();
-	   
-	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+	    String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 	    
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -90,7 +84,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				ydatas.add(ydata);
 			}
 		}
-
 		return ydatas;
 	}
 	@Override
@@ -98,14 +91,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
 		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-		String dataTable = monitorIndexModel.getDetailTable();
-		
-		Map<String, Object> indexParams = new HashMap<String, Object>();
-		indexParams.put("dbName",monitorIndexModel.getDetailTable());
-		
 		Date end = new Date();
-		
-		List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+		String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
