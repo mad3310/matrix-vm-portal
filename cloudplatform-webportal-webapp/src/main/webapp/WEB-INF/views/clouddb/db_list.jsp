@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h1> 
+		<h3> 
 			数据库列表
-		</h1>
+		</h3>
 	</div>
 	<!-- /.page-header -->
 </div>
@@ -14,7 +14,7 @@
 			<h5 class="widget-title">数据库列表</h5>
 			<div class="widget-toolbar no-border">
 				<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#apply-form">
-					<i class="ace-icont fa fa-plus"></i>
+					<i class="ace-icont fa fa-plus"></i>					
 					 创建数据库
 				</button>
 			</div>
@@ -61,11 +61,17 @@
 	<div class="modal fade" id="apply-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form">
-				<div class="col-xs-12">
-					<h4 class="lighter">
-						<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建数据库 </a>
-					</h4>
+			    <div class="modal-header">
+		        	<button type="button" class="close" data-dismiss="modal">
+		        	<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+		        	<span class="sr-only">Close</span>		        	
+		        	</button>
+		        	<h4 class="modal-title" id="buildStatusHeader">		        		
+		        		创建数据库
+		        	</h4>
+		        </div>
+		        <div class="modal-body">
+				<form id="db_apply_form" name="db_apply_form" class="form-horizontal" role="form">		
 					<div class="widget-box">
 						<div class="widget-body">
 							<div class="widget-main">
@@ -121,13 +127,13 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
+					</div>			
+			</form>
+		    </div>
+		    <div class="modal-footer">
 					<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
 					<button id="create-db-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="createDb()">创建</button>
 				</div>
-			</form>
 			</div>
 		</div>
 	</div>

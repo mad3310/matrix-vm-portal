@@ -21,8 +21,8 @@
 .infobox-orange2{border-top:2px solid #f79263 !important;/*border-bottom:2px solid #f79263 !important;*/}
 .x-overflow{overflow-x:auto;}
 /*Ãÿ ‚*/
-.dash-a{color:#fff;}
-.dash-a:hover{text-decoration: none;color:#5C6166;}
+.dash-a{color:#fff !important;}
+.dash-a:hover{text-decoration: none;color:#5C6166 !important;}
 .logo-label{background-color: #00B5AD;height:100%;color:#fff;font-size:20px;letter-spacing:2px;}
 .middleBand{background-color: #8bbc21;overflow: hidden;}
 

@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html> 
 <head>
-<title>Letv CloudPlateform WebPortal<sitemesh:title/></title>
+<title>Letv CloudPlatform WebPortal<sitemesh:title/></title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta http-equiv="Cache-Control" content="no-store" />

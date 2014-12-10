@@ -1,12 +1,24 @@
-/* ºÚÉ«Æ¤·ô 
-edit by jinglinlin@letv.com 
-*/
-.skin-custom {
-  background-color: #4a4f56;
+
+.skin-custom .breadcrumbs {
+  border-width: 0;
+  background-color: #f0f0f0;
 }
-.skin-custom .navbar {
-  background: #333333 !important;
+@media (min-width: 992px) {
+  .skin-custom .breadcrumbs.breadcrumbs-fixed {
+    border-bottom-width: 1px;
+  }
 }
+@media only screen and (max-width: 991px) {
+  .skin-custom .sidebar {
+    border-width: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .skin-custom .nav-list li.active > a:after {
+    display: none;
+  }
+}
+
 .skin-custom .sidebar {
   background-color: #222a2d;
   border-right-width: 0;
@@ -14,39 +26,11 @@ edit by jinglinlin@letv.com
 .skin-custom .nav-list > li {
   border-color: #3f4e54;
 }
-.skin-custom .nav-list > li > a {
-   background-color: #222a2d;
- /*  color: #b1bac1; */
-   color: #FFFFFF;
-}
-.skin-custom .ace-nav > li.light-blue > a {
-	background-color:#333333 !important;
-}
+
 .skin-custom .nav-list > li:hover > a {
   background-color: #414b51;
-/*   color: #FFFFFF; */
-}
-.skin-custom .nav-list > li.open > a,
-.skin-custom .nav-list > li.open:hover > a {
- /*  color: #85c0ec;
-  background-color: #222a2d; */
-  color:#FFFFFF;
-  background-color: #222a2d; 
-}
-.skin-custom .nav-list > li.active > a,
-.skin-custom .nav-list > li.active:hover > a {
-  background-color: #141a1b;
-  color: #FFFFFF;
-}
+} 
 
-.skin-custom .nav-list > li:hover:before {
-  background-color: #009900;;
-}
-.skin-custom .nav-list > li.active:before {
-  display: block;
-/*background-color: #4d96c6;*/
-  background-color:#009900;;
-}
 .skin-custom .nav-list li.active > a:after {
   border-width: 16px 10px;
   border-right-color: #FFF;
@@ -88,15 +72,7 @@ edit by jinglinlin@letv.com
 .skin-custom .nav-list > li > .submenu > li > a {
   color: #d9dfe6;
 }
-.skin-custom .nav-list > li > .submenu > li:hover > a {
-/*   color: #8ab4de; */
-    color:#009900; !important;
-}
-.skin-custom .nav-list > li > .submenu > li.active > a {
- /*  color: #7bb7e5 !important; */
-  color: #009900; !important;
-  background-color: #161b1d;
-}
+
 .skin-custom .nav-list > li > .submenu:before,
 .skin-custom .nav-list > li > .submenu > li:before {
   border-color: #646c70;
@@ -107,15 +83,6 @@ edit by jinglinlin@letv.com
 }
 .skin-custom .nav-list > li .submenu li > .submenu li > a {
   color: #d9dfe6;
-}
-.skin-custom .nav-list > li .submenu li > .submenu li:hover > a {
-/*   color: #8ab4de; */
-	color:#009900; !important;
-}
-.skin-custom .nav-list > li .submenu li.open > a,
-.skin-custom .nav-list > li .submenu li > .submenu > li.open > a {
-  /* color: #85c0ec; */
-  color:#009900;;
 }
 
 .skin-custom .nav-list > li .submenu li > .submenu li.active > a {
@@ -151,34 +118,13 @@ edit by jinglinlin@letv.com
   background-color: #222a2d;
   border-color: #3f4e54;
 }
-.skin-custom .sidebar-toggle {
-  background-color: #181e21;
-  border-color: #3f4e54;
-}
+
 .skin-custom .sidebar-toggle > .ace-icon {
   background-color: #222a2d;
   color: #aaaaaa;
   border-color: #aaaaaa;
 }
-.skin-custom .breadcrumbs {
-  border-width: 0;
-  background-color: #f0f0f0;
-}
-@media (min-width: 992px) {
-  .skin-custom .breadcrumbs.breadcrumbs-fixed {
-    border-bottom-width: 1px;
-  }
-}
-@media only screen and (max-width: 991px) {
-  .skin-custom .sidebar {
-    border-width: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-  .skin-custom .nav-list li.active > a:after {
-    display: none;
-  }
-}
+
 .skin-custom .sidebar.menu-min .nav-list > li.open > a {
   background-color: #222a2d;
   color: #b1bac1;
@@ -190,12 +136,7 @@ edit by jinglinlin@letv.com
 .skin-custom .sidebar.menu-min .nav-list > li.active:hover > a:after {
   border-right-color: #242a2b;
 }
-.skin-custom .sidebar.menu-min .nav-list > li.active > a,
-.skin-custom .sidebar.menu-min .nav-list > li.active > a:hover {
-  background-color: #141a1b;
-/*   color: #7bb7e5;  */
-  color:#009900; !important;
-}
+
 .skin-custom .sidebar.menu-min .nav-list > li:hover > a {
   color: #e1eaf1;
 }
@@ -272,12 +213,6 @@ edit by jinglinlin@letv.com
   }
   .skin-custom .sidebar.responsive-min .nav-list > li.active:hover > a:after {
     border-right-color: #242a2b;
-  }
-  .skin-custom .sidebar.responsive-min .nav-list > li.active > a,
-  .skin-custom .sidebar.responsive-min .nav-list > li.active > a:hover {
-    background-color: #141a1b;
-/*     color: #7bb7e5; */
-    color:#009900; !important;
   }
   .skin-custom .sidebar.responsive-min .nav-list > li:hover > a {
     color: #e1eaf1;
@@ -671,57 +606,81 @@ edit by jinglinlin@letv.com
 .skin-custom .nav-list > li.disabled .submenu > li > a {
   border-top-color: #505050;
 }
-
+/**********************************************************************************************************/
+/* skin-grey */
+/**********************************************************************************************************/
 /* Customized css. BEGIN*/
-.skin-custom .nav>i .ace-icon .fa .fa-circle .darkGreen {
-	color: #00B5AD;
+
+/* navbar begin */
+.skin-custom .navbar {
+  background: #333333 !important;
 }
-
-.skin-custom .btn-darkGreen, .btn-darkGreen:focus {
-	background-color: #00B5AD !important;
-	border-color: #00B5AD;
-	outline: 1px solid #fff;
-}
-
-.skin-custom .btn-darkGreen:hover {
-	background-color: #009A93 !important;
-	border-color: #00B5AD;
-}
-
-.skin-custom .btn-dark, .btn-dark:focus {
-	background-color: #5C6166 !important;
-	border-color: #5C6166;
-	outline: 1px solid #fff;
-}
-
-.skin-custom .btn-dark:hover {
-	background-color: #333 !important;
-	border-color: #5C6166;
-}
-
-
 .skin-custom .navbar .navbar-container .navbar-buttons .nav .blue> a{
 	background-color:#333333;
 }
-.skin-custom .widget-color-blue>.widget-header {
-	background-color: #333333!important;
+.skin-custom .ace-nav > li.light-blue > a {
+	background-color:#333333 !important;
+}
+.skin-custom .nav .user-menu a:hover{
+	color:#fcfcfc;
+	background-color:#808080 !important;
+}
+/* navbar end */
+/**********************************************************************************************************/
+/* sidebar begin */
+.skin-custom .nav-list > li > a {
+   background-color: #222a2d;
+   color: #FFFFFF;
+}
+.skin-custom .nav-list> li.active > a{
+	color:#009900;
+}
+.skin-custom .nav-list > li.open > a, 
+.skin-custom .nav-list > li.open:hover > a {
+  color:#009900;
+  background-color: #222a2d; 
+}
+.skin-custom .nav-list > li:hover:before {
+  background-color: #009900;
+}
+.skin-custom .nav-list > li.active:before {
+  display: block;
+  background-color:#009900;;
+} 
+.skin-custom .nav-list > li > .submenu > li:hover > a {
+    color:#009900; !important;
+}
+.skin-custom .nav-list > li > .submenu > li.active > a {
+  color: #009900; !important;
+  background-color: #161b1d;
 }
 
-.skin-custom .widget-box .widget-header {
-	background-color: #DDDDDD;
-	text-align:center;
-	font-weight:bolder;
+.skin-custom .nav-list > li .submenu li > .submenu li:hover > a {
+	color:#009900; !important;
 }
+.skin-custom .nav-list > li .submenu li.open > a,
+.skin-custom .nav-list > li .submenu li > .submenu > li.open > a {
+  color:#009900;;
+} 
 
-
-.skin-custom .widget-toolbar .btn{
-	border-radius:3px;
+.skin-custom .sidebar-toggle {
+  background-color: #181e21;
+  border-color: #3f4e54;
 }
-
-.skin-custom .widget-toolbar .btn:focus{
-	border-color:#6F9A37;
+.skin-custom .sidebar.menu-min .nav-list > li.active > a,
+.skin-custom .sidebar.menu-min .nav-list > li.active > a:hover {
+  background-color: #141a1b;
+  color: #7bb7e5; 
+  color:#009900; !important;
 }
-
+.skin-custom .sidebar.responsive-min .nav-list > li.active > a,
+.skin-custom .sidebar.responsive-min .nav-list > li.active > a:hover {
+    background-color: #141a1b;
+    color:#009900; !important;
+ } 
+/* sidebar end */
+/**********************************************************************************************************/
+/* modal dialog begin*/
 .skin-custom .modal-dialog .widget-main{
 	padding:10px;
 }
@@ -735,20 +694,9 @@ edit by jinglinlin@letv.com
 	margin-right:10px;
 	border:none;
 }
-
 .skin-custom .modal-dialog .modal-footer .btn{
 	border-radius:3px;
 }
-
-.skin-custom .footer .footer-content >span{
-	color:#333333 !important;
-	font-weight:bolder;
-}
-.skin-custom .footer .footer-content .blue{
-	color:#333333 !important;
-	font-weight:bolder;
-}
-
 .skin-custom .modal-dialog .modal-header >h4{
     text-align:center;
 	font-weight:bold;
@@ -761,6 +709,22 @@ edit by jinglinlin@letv.com
 	background-color:#F1F1F1;
 }
 
+/* modal dialog end*/
+
+/**********************************************************************************************************/
+/* footer begin */
+.skin-custom .footer .footer-content >span{
+	color:#333333 !important;
+	font-weight:bolder;
+}
+.skin-custom .footer .footer-content .blue{
+	color:#333333 !important;
+	font-weight:bolder;
+}
+/* footer end */
+
+/**********************************************************************************************************/
+/* table begin*/
 .skin-custom table thead th{
 	background-image:none; 
 	background-color:#DDDDDD;	
@@ -773,17 +737,33 @@ edit by jinglinlin@letv.com
 .skin-custom .default-danger a{
 	color:#D95C5C;
 }
+/* table  end*/
+
+/**********************************************************************************************************/
+/* page content area begin */
 .skin-custom .breadcrumb > li > a {
 	color:#000000;
 	font-weight:bolder;
-	font-size:15px;
-}
-.skin-custom .page-header >h3{
-	color:#333333;
+} 
+.skin-custom .widget-color-blue>.widget-header {
+	background-color: #333333!important;
 }
 
-.skin-custom .page-header >h3 >a{
-	color:#333333;
+.skin-custom .widget-box .widget-header {
+	background-color: #DDDDDD;
+	font-weight:bolder;
+}
+
+.skin-custom .widget-toolbar .btn{
+	border-radius:3px;
+}
+
+.skin-custom .widget-toolbar .btn:focus{
+	border-color:#6F9A37;
+}
+
+.skin-custom .page-header h3{
+    color:#333333;
 }
 
 .skin-custom .page-header >h1 >a,
@@ -791,10 +771,6 @@ edit by jinglinlin@letv.com
 	color:#000000 !important;
 }
 
-.skin-custom .nav .user-menu a:hover{
-	color:#fcfcfc;
-	background-color:#808080 !important;
-}
 .skin-custom .btn-info, 
 .skin-custom .btn-info:focus {
     background-color: #009900 !important;
@@ -811,71 +787,13 @@ edit by jinglinlin@letv.com
 	border-color:#009900;
 }
 
-.skin-custom .pager>li>a, 
-.skin-custom .pagination>li>a{
-	color:#69aa46;
+/**********************************************************************************************************/
+/* dashboard Begin*/
+.skin-custom .logo-label {
+background-color: #cccccc;
+height: 100%;
+color: #fff;
+font-size: 20px;
+letter-spacing: 2px;
 }
-
-.skin-custom .text-info{
-	color:#00cc00;
-	font-weight:bolder;
-}
-.skin-custom .form-horizontal .form-group>label[class*=col-] {
-	padding-top:7px !important;
-    margin-bottom: 4px;
-}
-
-.skin-custom .form-horizontal {
-	background: honeydew;
-	padding-bottom: 2px;
-	padding-top: 15px;
-}
-
-.skin-custom h4.lighter{
-	color:#333333;
-	font-weight: bolder;
-}
-/* .skin-custom .page-header{
-	min-height:105px;
-	height:auto;
-} */
-
-.skin-custom .form-actions {
-/* 	background: honeydew; */
-	background-color: #fcfcfc;
-/* 	border-bottom: 1px solid #e5e5e5; */
-	padding:0px !important;
-}
-.skin-custom .form-actions .form-group{
-	margin-bottom:15px;
-}
-
-.skin-custom .chosen-container-multi .chosen-choices li.search-field input{
-    height: 30px !important;
-}
-
-.skin-custom .chosen-container-multi .chosen-choices li.search-choice {
-	line-height : 20px;
-}
-.skin-custom .chosen-container-multi ul.chosen-choices {
-/* 	margin: 0 0 2px 25px; */
-    padding: 0;
-}
-
-.skin-custom .page-header {
-    overflow: hidden;
-    height: auto;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-.skin-custom .page-header .input-group {
-	margin-top:20px;
-	margin-bottom:10px;
-}
-.skin-custom .page-header h3{
-	float:left;
-}
-
-.skin-custom .nextrow{
-	margin-top:10px;
-}
+/* dashboard end */

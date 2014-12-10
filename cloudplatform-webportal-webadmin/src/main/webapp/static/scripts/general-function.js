@@ -223,3 +223,11 @@ function confirmframe(title,content,question,ok,cancle){
 	$('#dialog-confirm-content').html(content);
 	$('#dialog-confirm-question').html(question);
 }
+/*高级搜索toggle效果*/
+function bt_toggle(containerId){
+	$('#'+containerId).click(function(event){
+		var temp=$(this).attr("id");
+		$('#'+temp+"-div").slideToggle();
+	});
+}
+
