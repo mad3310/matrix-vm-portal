@@ -73,109 +73,11 @@
     					</div>
             				</form>
 	</div>
-
-            <!-- <div class="modal fade" id="dbuseradvancedSearch">
-            	<div class="modal-dialog">
-            		<div class="modal-content">
-            			<div class="modal-header">
-            				<button type="button" class="close" data-dismiss="modal">
-            					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
-            					<span class="sr-only">关闭</span>
-            				</button>
-            				<h4 class="modal-title">高级搜索</h4>
-            			</div>
-            			<div class="modal-body">
-            				<form class="form-horizontal" role="form">
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="monitorContainer"><b>container集群名称</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="monitorContainer" placeholder="container集群名称">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
-            					</div>
-            					
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="VipAddress"><b>Vip节点地址</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="VipAddress" placeholder="Vip节点地址">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
-            					</div>
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="monitorPhyM"><b>所属物理机集群</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="monitorPhyM" placeholder="所属物理机集群">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-question-circle blue bigger-125"></i></label>
-            					</div>
-            					
-            					
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="PhyMechineRunState"><b>当前状态</b></lable>
-            						<div class="col-sm-7">
-            							<select class="form-control" id="PhyMechineRunState">
-            								<option value="">创建失败</option>
-            								<option value="">未审核</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-cogs blue bigger-125"></i></label>
-            					</div>
-            				</form>
-            			</div>
-            			<div class="modal-footer">
-            			<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取 消 </button>
-            			<button type="button" class="btn btn-sm btn-info">搜索</button>
-            			</div>
-            		</div>
-            	</div>
-            </div> -->
-	<div id="monitorAdvancedSearch-div" style="display:none;overflow:hidden;">
-		<form class="form-horizontal" role="form">
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="monitorContainer"><b>container集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="monitorContainer" placeholder="container集群名称">
-            						</div>
-            						
-            					</div>
-            					
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="VipAddress"><b>Vip节点地址</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="VipAddress" placeholder="Vip节点地址">
-            						</div>
-            						
-            					</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="monitorPhyM"><b>所属物理机集群</b> <i class="ace-icon fa fa-question-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="monitorPhyM" placeholder="所属物理机集群">
-            						</div>
-            						
-            					</div>
-            					
-            					
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>当前状态</b> <i class="ace-icon fa fa-cogs blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<select class="form-control" id="PhyMechineRunState">
-            								<option value="">创建失败</option>
-            								<option value="">未审核</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						
-            					</div>
-            					<div class="form-group">
-    						<div class="col-sm-offset-2 col-sm-10">
-    							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
-    							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
-    							
-    						</div>
-    					</div>
-            				</form>
-	</div>
+	<script type="text/javascript">
+		$(function(){
+			bt_toggle('monitorAdvancedSearch');
+		})
+	</script>
 
             <!-- <div class="modal fade" id="dbuseradvancedSearch">
             	<div class="modal-dialog">

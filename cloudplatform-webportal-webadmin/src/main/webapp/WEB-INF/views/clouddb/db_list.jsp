@@ -78,7 +78,11 @@
     					</div>
             				</form>
 	</div>
-
+<script type="text/javascript">
+		$(function(){
+			bt_toggle('dbadvancedSearch');
+		})
+	</script>
             <!-- <div class="modal fade" id="dbadvancedSearch">
             	<div class="modal-dialog">
             		<div class="modal-content">

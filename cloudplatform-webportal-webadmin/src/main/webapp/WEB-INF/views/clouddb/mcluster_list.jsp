@@ -5,29 +5,87 @@
 		<h3>Container集群列表</h3>
 		<div class="input-group pull-right">
 		<form class="form-inline">
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<select class="form-control">
 					<option value="0">请选择查询条件</option>
 					<option value="1">按集群名称查询</option>
 					<option value="2">按类型查询</option>
 					<option value="3">按当前状态查询</option>
 				</select>
-			</div>
+			</div> -->
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="请输入关键字">
 			</div>
 			<div class="form-group">
 				<input type="date" class="form-control" placeholder="yyyy-MM-dd">
 			</div>
-			<button class="btn btn-sm btn-default" type="button"><i class="icon-search"></i>搜索</button>
-			<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#mclusteradvancedSearch">高级搜索</button>
+			<button class="btn btn-sm btn-default" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+			<!-- <button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#mclusteradvancedSearch">高级搜索</button> -->
+			<button class="btn btn-sm btn-info" type="button" id="mclusteradvancedSearch">高级搜索</button>
 		</form>
 	</div>
 	</div>
 	<!-- /.page-header -->
+<div id="mclusteradvancedSearch-div" style="display:none;overflow:hidden;">
+		<form class="form-horizontal" role="form">
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerName"><b>container集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="containerName" placeholder="container集群名称">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="Physicalcluster"><b>所属物理集群</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理集群">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerType"><b>类型</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="containerType" placeholder="类型">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containeruser"><b>所属用户</b> <i class="ace-icon fa fa-user blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="containeruser" placeholder="所属用户">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="date" class="form-control" id="containerDate" placeholder="创建时间">
+    						</div>
+    						
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerRunState"><b>运行状态</b> <i class="ace-icon fa fa-cog blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<select class="form-control" id="containerRunState">
+    								<option value="">运行中</option>
+    								<option value="">危险</option>
+    								<option value="">创建失败</option>
+    							</select>
+    						</div>
+    					</div>
+    					<div class="form-group">
+    						<div class="col-sm-offset-2 col-sm-10">
+    							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
+    							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
+    							
+    						</div>
+    					</div>	
+    				</form>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			bt_toggle('mclusteradvancedSearch');
+		})
+	</script>
 	
 
-    <div class="modal fade" id="mclusteradvancedSearch">
+    <!-- <div class="modal fade" id="mclusteradvancedSearch">
     	<div class="modal-dialog">
     		<div class="modal-content">
     			<div class="modal-header">
@@ -93,7 +151,7 @@
     			</div>
     		</div>
     	</div>
-    </div>
+    </div> -->
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">

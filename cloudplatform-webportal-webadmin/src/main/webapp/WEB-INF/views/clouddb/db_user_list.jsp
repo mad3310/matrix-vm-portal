@@ -93,6 +93,11 @@
     						
             				</form>
 	</div>
+     <script type="text/javascript">
+		$(function(){
+			bt_toggle('dbuseradvancedSearch');
+		})
+	</script>
             <!-- <div class="modal fade" id="dbuseradvancedSearch">
             	<div class="modal-dialog">
             		<div class="modal-content">
