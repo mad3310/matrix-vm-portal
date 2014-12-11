@@ -141,6 +141,7 @@
 											<select class="form-control" name="type" id="type">
 												<option value="3">读写用户</option>
 												<option value="1">管理员</option>
+												<option value="2">管理员</option>
 											</select>
 										</div>
 										<label class="control-label" for="maximum_concurrency">

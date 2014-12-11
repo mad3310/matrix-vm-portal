@@ -535,7 +535,7 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
-                <webportal.cas.local.http>http://10.58.164.24:8081</webportal.cas.local.http>
+                <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
@@ -574,7 +574,7 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
-                <webportal.cas.local.http>http://10.58.166.19:8081</webportal.cas.local.http>
+                <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
