@@ -1,13 +1,20 @@
 package com.letv.portal.clouddb.controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.letv.common.exception.ValidateException;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.service.IDbService;
 
 /**Program Name: SkipController <br>
  * Description:  用于页面跳转       list、detail、form、……<br>
@@ -18,6 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class SkipController {
+	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
+	@Autowired
+	private IDbService dbService;
+	
 	@RequestMapping(value ="/dashboard",method=RequestMethod.GET)
 	public ModelAndView toDashboard(ModelAndView mav,HttpServletRequest request){
 		mav.setViewName("/clouddb/dashboard");
@@ -60,8 +73,14 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/detail/db/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toDbDetail(@PathVariable Long dbId,ModelAndView mav){
-		mav.addObject("dbId",dbId);
-		mav.setViewName("/clouddb/db_detail");
+		DbModel db = this.dbService.selectById(dbId);
+		if(db!=null && db.getCreateUser() == sessionService.getSession().getUserId()) {
+			mav.addObject("dbId",dbId);
+			mav.setViewName("/clouddb/db_detail");
+		} else {
+			throw new ValidateException("用户无相关数据");
+		}
 		return mav;
 	}
+	
 }

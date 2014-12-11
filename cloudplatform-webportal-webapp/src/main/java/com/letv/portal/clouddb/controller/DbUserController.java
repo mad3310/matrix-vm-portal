@@ -54,7 +54,16 @@ public class DbUserController {
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
 		ResultObject obj = new ResultObject();
-		obj.setData(this.dbUserService.selectByDbId(dbId));
+		List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId); 
+		if(dbUsers.size()>0) {
+			if(dbUsers.get(0).getCreateUser() == sessionService.getSession().getUserId()) {
+				obj.setData(dbUsers);
+			} else {
+				obj.setResult(0);
+			}
+		} else {
+			obj.setData(dbUsers);
+		}
 		return obj;
 	}
 	
@@ -97,8 +106,17 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
-		this.dbUserProxy.deleteDbUser(dbUserId);
+		DbUserModel dbUser = this.dbUserProxy.selectById(Long.parseLong(dbUserId));
 		ResultObject obj = new ResultObject();
+		if(dbUser!= null) {
+			if(dbUser.getCreateUser() == sessionService.getSession().getUserId()) {
+				this.dbUserProxy.deleteDbUser(dbUserId);
+			} else {
+				obj.setResult(0);
+			}
+		} else {
+			obj.setResult(0);
+		}
 		return obj;
 	}
 	/**
@@ -110,8 +128,17 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
-		this.dbUserProxy.updateDbUser(dbUserModel);		
 		ResultObject obj = new ResultObject();
+		DbUserModel dbUser = this.dbUserProxy.selectById(dbUserModel.getId());
+		if(dbUser!= null) {
+			if(dbUserModel.getId() == sessionService.getSession().getUserId()) {
+				this.dbUserProxy.updateDbUser(dbUserModel);		
+			} else {
+				obj.setResult(0);
+			}
+		} else {
+			obj.setResult(0);
+		}
 		return obj;
 	}
 	
