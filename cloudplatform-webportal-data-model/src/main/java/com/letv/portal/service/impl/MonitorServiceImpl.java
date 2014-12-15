@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.MonitorViewYModel;
+import com.letv.portal.proxy.impl.MonitorProxyImpl;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
@@ -24,6 +27,8 @@ import com.letv.portal.service.IMonitorService;
 @Service("monitorService")
 public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> implements IMonitorService {
 
+	private final static Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
+	
 	@Autowired
 	private IMonitorDao monitorDao;
 	
@@ -49,6 +54,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+		logger.info("get Data-------start");
+		Date start = new Date();
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
@@ -64,6 +71,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		params.put("dbName", monitorIndexModel.getDetailTable());
 		params.put("start", getStartDate(end,strategy));
 		params.put("end", end);
+		Date prepare = new Date();
+		logger.info("get Data-------prepare" + (prepare.getTime()-start.getTime())/1000);
 		
 		for (ContainerModel c : containers) {
 			for (String s : detailNames) {
@@ -84,6 +93,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				ydatas.add(ydata);
 			}
 		}
+		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
 	@Override
