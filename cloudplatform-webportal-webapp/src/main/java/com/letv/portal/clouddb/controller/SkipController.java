@@ -1,17 +1,17 @@
 package com.letv.portal.clouddb.controller;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
@@ -83,4 +83,8 @@ public class SkipController {
 		return mav;
 	}
 	
+	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
+	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
+		return obj;
+	}
 }
