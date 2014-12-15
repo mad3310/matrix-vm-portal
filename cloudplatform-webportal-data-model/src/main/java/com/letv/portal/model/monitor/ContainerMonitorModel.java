@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.portal.model.monitor;
 
 import java.util.List;
 

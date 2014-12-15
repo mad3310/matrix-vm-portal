@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.monitor.ContainerMonitorModel;
 
 
 /**Program Name: IBuildTaskService <br>
@@ -146,7 +146,6 @@ public interface IBuildTaskService {
      * @return
      */
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels);
-	public ContainerMonitorModel getMonitorData(ContainerModel containerModel);
 	/**
 	 * Methods Name: getMonitorDetailNodeAndDbData <br>
 	 * Description: 集群监控详细信息展示<br>
@@ -173,5 +172,7 @@ public interface IBuildTaskService {
 	 * @return
 	 */
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
+
+	public ContainerMonitorModel getMonitorData(String ip, Long monitorType);
 	
 }

@@ -81,4 +81,9 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public  List<ContainerModel> selectAllByMap(Map map){
 		return this.containerDao.selectAllByMap(map);	
 	}
+
+	@Override
+	public List<String> selectVipIps4Monitor() {
+		return this.containerDao.selectVipIps4Monitor();
+	}
 }

@@ -35,19 +35,19 @@ import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
-import com.letv.portal.model.ClusterMonitorModel;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.DbMonitorModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
-import com.letv.portal.model.NodeMonitorModel;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.monitor.ClusterMonitorModel;
+import com.letv.portal.model.monitor.ContainerMonitorModel;
+import com.letv.portal.model.monitor.DbMonitorModel;
+import com.letv.portal.model.monitor.NodeMonitorModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
@@ -1053,7 +1053,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.containerService.insert(container);
 	}
 
-	@Override
 	public ContainerMonitorModel getMonitorData(ContainerModel container){
 		ContainerMonitorModel containerMonitor = new ContainerMonitorModel();
 		String mclusterName = null;
@@ -1067,6 +1066,19 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			containerMonitor.setIp(ip);
 			containerMonitor.setMclusterName(container.getMcluster().getMclusterName());
 			containerMonitor.setHclusterName(container.getHost().getHostNameAlias());			
+			return containerMonitor;
+		}
+	}
+	
+	@Override
+	public ContainerMonitorModel getMonitorData(String ip, Long monitorType) {
+		ContainerMonitorModel containerMonitor = new ContainerMonitorModel();
+		String mclusterName = null;
+		try {
+			containerMonitor = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
+		} catch (Exception e) {
+			containerMonitor.setStatus(String.valueOf(ContainerMonitorStatus.CRASH.getValue()));
+		} finally {
 			return containerMonitor;
 		}
 	}
@@ -1149,4 +1161,5 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 	}
+
 }

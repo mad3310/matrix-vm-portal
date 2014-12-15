@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.portal.model.zabbix;
 
 public class InventoryModel {
 	private String macaddress_a;

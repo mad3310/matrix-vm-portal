@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.portal.model.zabbix;
 
 import java.util.List;
 

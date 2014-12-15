@@ -18,7 +18,7 @@ import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerPush;
-import com.letv.portal.model.FixedPushModel;
+import com.letv.portal.model.fixed.FixedPushModel;
 
 
 

@@ -34,9 +34,9 @@ public class DashBoardController {
 		result.setData(this.dashBoardProxy.selectManagerResource());
 		return result;
 	}
-	@RequestMapping(value="/monitor/mcluster",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitor(ResultObject result) {
-		result.setData(this.dashBoardProxy.selectMclusterMonitor());
+	@RequestMapping(value="/monitor/{monitorType}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject mclusterMonitor(@PathVariable Long monitorType, ResultObject result) {
+		result.setData(this.dashBoardProxy.selectMonitorAlert(monitorType));
 		return result;
 	}
 }

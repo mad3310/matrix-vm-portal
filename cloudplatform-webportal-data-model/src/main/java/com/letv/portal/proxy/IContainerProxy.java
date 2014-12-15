@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.monitor.ContainerMonitorModel;
 
 /**Program Name: IContainerProxy <br>
  * Description:  <br>

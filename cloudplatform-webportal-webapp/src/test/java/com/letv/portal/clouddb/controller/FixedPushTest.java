@@ -18,7 +18,7 @@ import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerPush;
-import com.letv.portal.model.FixedPushModel;
+import com.letv.portal.model.fixed.FixedPushModel;
 
 public class FixedPushTest extends AbstractTest{
 	private final static Logger logger = LoggerFactory

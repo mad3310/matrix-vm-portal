@@ -16,9 +16,9 @@ import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ContainerMonitorModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -81,18 +81,16 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	}
 
 	@Override
-	public Map<String,Integer> selectMclusterMonitor() {
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("type", "mclustervip");
-		List<ContainerModel> containers = this.containerService.selectAllByMap(map);
+	public Map<String, Integer> selectMonitorAlert(Long monitorType) {
+		List<String> ips = this.containerService.selectVipIps4Monitor();
 		
 		int nothing = 0;
 		int general = 0;
 		int serious = 0;
 		int crash = 0;
 		
-		for (ContainerModel containerModel : containers) {
-			ContainerMonitorModel monitor = this.buildTaskService.getMonitorData(containerModel); 
+		for (String ip : ips) {
+			ContainerMonitorModel monitor = this.buildTaskService.getMonitorData(ip,monitorType); 
 			if(ContainerMonitorStatus.NORMAL.getValue() == Integer.parseInt(monitor.getStatus())) {
 				nothing++;
 			}
@@ -111,7 +109,6 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		 *  nothing 
 			tel:sms:email
 			sms:email
-			刘浩 json中不能有特殊字符，我在在这改了，你回来看看。
 		 */
 		data.put("nothing", nothing);
 		data.put("general", general);
@@ -170,4 +167,5 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		}
 		return connect;
 	}
+
 }

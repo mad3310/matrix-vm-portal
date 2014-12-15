@@ -1,7 +1,9 @@
-package com.letv.portal.model;
+package com.letv.portal.model.fixed;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.letv.portal.model.ContainerPush;
 /**
  * Program Name: FixedPushModel <br>
  * Description:  <br>

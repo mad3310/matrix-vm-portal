@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorIndexModel;
-import com.letv.portal.model.MonitorViewYModel;
+import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;

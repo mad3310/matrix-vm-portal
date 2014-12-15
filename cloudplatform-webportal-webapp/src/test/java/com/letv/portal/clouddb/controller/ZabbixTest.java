@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.InterfacesModel;
-import com.letv.portal.model.ZabbixParam;
-import com.letv.portal.model.ZabbixPushDeleteModel;
-import com.letv.portal.model.ZabbixPushModel;
+import com.letv.portal.model.zabbix.InterfacesModel;
+import com.letv.portal.model.zabbix.ZabbixParam;
+import com.letv.portal.model.zabbix.ZabbixPushDeleteModel;
+import com.letv.portal.model.zabbix.ZabbixPushModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 

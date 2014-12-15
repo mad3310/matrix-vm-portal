@@ -3,7 +3,7 @@ package com.letv.portal.zabbixPush;
 import java.util.List;
 
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ZabbixPushModel;
+import com.letv.portal.model.zabbix.ZabbixPushModel;
 
  
 public interface IZabbixPushService{
