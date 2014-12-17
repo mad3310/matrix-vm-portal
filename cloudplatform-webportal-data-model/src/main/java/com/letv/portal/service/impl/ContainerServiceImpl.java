@@ -83,7 +83,7 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 
 	@Override
-	public List<String> selectVipIps4Monitor() {
+	public List<ContainerModel> selectVipIps4Monitor() {
 		return this.containerDao.selectVipIps4Monitor();
 	}
 }

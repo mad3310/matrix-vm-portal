@@ -67,6 +67,6 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public List<String> selectVipIps4Monitor();
+	public List<ContainerModel> selectVipIps4Monitor();
 	
 }

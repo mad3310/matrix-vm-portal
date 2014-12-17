@@ -7,6 +7,7 @@ import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.monitor.BaseMonitor;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 
 
@@ -173,6 +174,6 @@ public interface IBuildTaskService {
 	 */
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
 
-	public ContainerMonitorModel getMonitorData(String ip, Long monitorType);
+	public BaseMonitor getMonitorData(String ip, Long monitorType);
 	
 }

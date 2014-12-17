@@ -1,58 +1,63 @@
 $(function () {
 	getOverview();
-	initPieChart();
+	initPieChart('monitorCluster',1);
+	initPieChart('monitorNode',2);
+	initPieChart('monitorDb',3);
 	$('#nav-search').addClass("hidden");
 });
 
-function initPieChart(){
-    $('#pie-chart-container').highcharts({
+function initPieChart(divName,type){
+    $('#' + divName).highcharts({
         chart: {
             type: 'pie',
-            options3d: {
-                enabled: true,
-                alpha: 45,
-                beta: 0
-            }
-        },
-        title: {
-            text: ''
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
         },
         tooltip: {
 	        formatter: function() {
 	            return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
-	        }
+	        } 
+        },
+        title: {
+       	 	text:''
         },
         plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                depth: 35,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}'
-                }
-            },
+        	 pie: {
+                 allowPointSelect: true,
+                 cursor: 'pointer',
+                 dataLabels: {
+                     enabled: false
+                 },
+                 showInLegend: true,
+                 dataLabels: {
+                     enabled: true,
+                     format: '{point.name}:{point.y}'
+                 }
+             },
             series: {
-                cursor: 'pointer'
-               /*  events: {
+                cursor: 'pointer',
+                events: {
                     click: function(e) {
 		                location.href = e.point.url;
 					}
-				} */
+				}
             }
         },
         credits:{
         	enabled: false
         }
     });
-    setPieChartData($('#pie-chart-container').highcharts());
+    setPieChartData(divName,type);
 }
 
-function setPieChartData(chart){
+function setPieChartData(divName,type){
+	var chart = $('#' + divName).highcharts();
+	var url = "/list/mcluster/monitor/" + type
 	chart.showLoading();
 	$.ajax({ 
 		type : "get",
-		url : "/dashboard/monitor/mcluster",
+		url : "/dashboard/monitor/" + type,
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -61,22 +66,18 @@ function setPieChartData(chart){
 			var pieChartData=[{
 				data: []
 	           }];
-			if(status.nothing != 0){
-				pieChartData[0].data.push({name:'正常',color:'green',y:status.nothing,url:'/list/mcluster/monitor'});
-				$('#nothing').html(status.nothing);
-			};
-			if(status.general != 0){
-				pieChartData[0].data.push({name:'危险',color:'#FDC43E',y:status.general,url:'/list/mcluster/monitor'});
-				$('#general').html(status.general);
-			};
-			if(status.serious != 0){
-				pieChartData[0].data.push({name:'严重危险',color:'#D15A06',y:status.serious,url:'/list/mcluster/monitor'});
-				$('#serious').html(status.serious);
-			};
-			if(status.crash != 0){
-				pieChartData[0].data.push({name:'宕机',color:'red',y:status.crash,url:'/list/mcluster/monitor'});
-				$('#crash').html(status.crash);
-			}
+			
+			pieChartData[0].data.push({name:'正常',color:'green',y:status.nothing,url:url});
+			pieChartData[0].data.push({name:'危险',color:'#19A2A2',y:status.general,url:url});
+			pieChartData[0].data.push({name:'严重危险',color:'#FDC43E',y:status.serious,url:url});
+			pieChartData[0].data.push({name:'宕机',color:'#D15A06',y:status.crash,url:url});
+			pieChartData[0].data.push({name:'超时',color:'#CC0032',y:status.timeout,url:url});
+			
+			$('#'+divName+'-nothing').html(status.nothing);
+			$('#'+divName+'-general').html(status.general);
+			$('#'+divName+'-serious').html(status.serious);
+			$('#'+divName+'-crash').html(status.crash);
+			$('#'+divName+'-timeout').html(status.timeout);
 			
 			if(chart.series.length != 0){
 				chart.series[0].remove(false);
@@ -89,8 +90,8 @@ function setPieChartData(chart){
 }
 
 
-function updateMclusterChart(){
-	setPieChartData($('#pie-chart-container').highcharts());
+function updateMclusterChart(divName,type){
+	setPieChartData(divName,type);
 }
 
 function getOverview(){

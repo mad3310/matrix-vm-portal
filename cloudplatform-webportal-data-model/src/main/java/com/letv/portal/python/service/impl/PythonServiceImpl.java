@@ -275,13 +275,13 @@ public class PythonServiceImpl implements IPythonService{
 
 	public String getMclusterStatus(String ip)throws Exception{
 		String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/status";
-		String result = HttpClient.get(url,1000,2000);
+		String result = HttpClient.get(url,1000,1000);
 		return result;
 		
 	}
 	public String getMclusterMonitor(String ip)throws Exception{
 	    String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/monitor";
-	    String result = HttpClient.get(url,1000,2000);
+	    String result = HttpClient.get(url,1000,1000);
 	    return result;
 	}
 	

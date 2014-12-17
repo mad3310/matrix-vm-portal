@@ -238,7 +238,7 @@
 		C.IP_ADDR
 		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M
 		where 
-		and C.MCLUSTER_ID=M.Id and C.TYPE='mclustervip'
+		C.MCLUSTER_ID=M.Id and C.TYPE='mclustervip'
 	</select>
 	
 		<!--查询集群下container的信息-->

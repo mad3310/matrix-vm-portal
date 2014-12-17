@@ -1,6 +1,8 @@
 package com.letv.portal.python.service.impl;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.http.impl.client.SystemDefaultCredentialsProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +27,13 @@ import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.BuildStatus;
-import com.letv.portal.enumeration.ContainerMonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
+import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.ContainerModel;
@@ -44,9 +45,13 @@ import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.monitor.BaseMonitor;
+import com.letv.portal.model.monitor.ClusterModel;
 import com.letv.portal.model.monitor.ClusterMonitorModel;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.model.monitor.DbMonitorModel;
+import com.letv.portal.model.monitor.NodeModel;
+import com.letv.portal.model.monitor.NodeModel.DetailModel;
 import com.letv.portal.model.monitor.NodeMonitorModel;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
@@ -675,7 +680,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	private ContainerMonitorModel analysisResultMonitor(Map result){
-		String type=ContainerMonitorStatus.NORMAL.getValue().toString();
+		String type=MonitorStatus.NORMAL.getValue().toString();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
 		Map<String, Object>  listNode= (Map<String, Object>) ((Map) result.get("response")).get("node");
 		Map<String, Object>  listDb= (Map<String, Object>) ((Map) result.get("response")).get("db");
@@ -689,9 +694,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
+				 type=MonitorStatus.GENERAL.getValue().toString();
 			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
+				 type=MonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 nodeMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
 			 nodeMonitorModel.setCtime(listsHashMap.get("ctime")!=null?listsHashMap.get("ctime").toString():"");
@@ -705,9 +710,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 dbMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 dbMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
+				 type=MonitorStatus.GENERAL.getValue().toString();
 			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
+				 type=MonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 dbMonitorModel.setErrorRecord(listsHashMap.get("error_record")!=null?listsHashMap.get("error_record").toString():"");
 			 dbMonitorModel.setCtime(listsHashMap.get("ctime")!=null?listsHashMap.get("ctime").toString():"");
@@ -720,7 +725,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	private ContainerMonitorModel analysisResultMonitorC(Map result){
-		String type=ContainerMonitorStatus.NORMAL.getValue().toString();
+		String type=MonitorStatus.NORMAL.getValue().toString();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
 		Map<String, Object>  listNode= (Map<String, Object>) ((Map) result.get("response")).get("node");
 		Map<String, Object>  listCluster= (Map<String, Object>) ((Map) result.get("response")).get("cluster");
@@ -733,9 +738,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		     nodeMonitorModel.setMonitorName(keString.toString());
 		     nodeMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
+				 type=MonitorStatus.GENERAL.getValue().toString();
 			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
+				 type=MonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 nodeMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 nodeMoList.add(nodeMonitorModel);
@@ -748,9 +753,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			 clusterMonitorModel.setMessage(listsHashMap.get("message")!=null?listsHashMap.get("message").toString():"");
 			 clusterMonitorModel.setAlarm(listsHashMap.get("alarm")!=null?listsHashMap.get("alarm").toString():"");
 			 if("sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.GENERAL.getValue().toString();
+				 type=MonitorStatus.GENERAL.getValue().toString();
 			 }if("tel:sms:email".equals(listsHashMap.get("alarm").toString())){
-				 type=ContainerMonitorStatus.SERIOUS.getValue().toString(); 
+				 type=MonitorStatus.SERIOUS.getValue().toString(); 
 			 }
 			 clMoList.add(clusterMonitorModel);
 		}	
@@ -1053,6 +1058,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		this.containerService.insert(container);
 	}
 
+	@SuppressWarnings("finally")
 	public ContainerMonitorModel getMonitorData(ContainerModel container){
 		ContainerMonitorModel containerMonitor = new ContainerMonitorModel();
 		String mclusterName = null;
@@ -1061,7 +1067,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		try {
 			containerMonitor = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
 		} catch (Exception e) {
-			containerMonitor.setStatus(String.valueOf(ContainerMonitorStatus.CRASH.getValue()));
+			containerMonitor.setStatus(String.valueOf(MonitorStatus.CRASH.getValue()));
 		} finally {
 			containerMonitor.setIp(ip);
 			containerMonitor.setMclusterName(container.getMcluster().getMclusterName());
@@ -1070,18 +1076,144 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	
+	@SuppressWarnings("finally")
 	@Override
-	public ContainerMonitorModel getMonitorData(String ip, Long monitorType) {
-		ContainerMonitorModel containerMonitor = new ContainerMonitorModel();
-		String mclusterName = null;
+	public BaseMonitor getMonitorData(String ip, Long monitorType) {
+		BaseMonitor monitor = new BaseMonitor();
 		try {
-			containerMonitor = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
+			String result = "";
+			if(monitorType == 1) {
+				result = this.pythonService.getMclusterMonitor(ip);
+				monitor = analysisClusterData(result);
+			} else if(monitorType == 2) {
+				result = this.pythonService.getMclusterStatus(ip);
+				monitor = analysisNodeData(result);
+			} else if(monitorType == 3) {
+				result = this.pythonService.getMclusterStatus(ip);
+				monitor = analysisDbData(result);
+			}
 		} catch (Exception e) {
-			containerMonitor.setStatus(String.valueOf(ContainerMonitorStatus.CRASH.getValue()));
 		} finally {
-			return containerMonitor;
+			return monitor;
 		}
 	}
+	
+	@SuppressWarnings("finally")
+	private BaseMonitor analysisClusterData(String result){
+		Map<String,Object> data = transResult(result);
+		ClusterModel monitor = new ClusterModel();
+		try {
+			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
+				ObjectMapper resultMapper = new ObjectMapper();
+				monitor = resultMapper.readValue(result, ClusterModel.class);
+				String[] lostIp = monitor.getResponse().getNode().getNode_size().getLost_ip();
+				if(lostIp == null) {
+					monitor.setResult(MonitorStatus.CRASH.getValue());
+					if("nothing".equals(monitor.getResponse().getNode().getNode_size().getAlarm())) {
+						monitor.setResult(MonitorStatus.NORMAL.getValue());
+					}
+				} else {
+					monitor.setResult(lostIp.length);
+				}
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("解析api参数出错");
+		} finally {
+			return monitor;
+		}
+	}
+	@SuppressWarnings("finally")
+	private BaseMonitor analysisNodeData(String result){
+		Map<String,Object> data = transResult(result);
+		NodeModel monitor = new NodeModel();
+		try {
+			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
+				ObjectMapper resultMapper = new ObjectMapper();
+				monitor = resultMapper.readValue(result, NodeModel.class);
+				Date now = new Date();
+				//处理
+				boolean timeout = false;
+				int failCount = 0;
+				
+				DetailModel detailModel = monitor.getResponse().getDb().getCur_conns();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getDb().getExisted_db_anti_item();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getDb().getWrite_read_avaliable();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getDb().getWsrep_status();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				monitor.setResult(failCount);
+				if(timeout) {
+					monitor.setResult(MonitorStatus.CRASH.getValue());
+				}
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("解析api参数出错");
+		} finally {
+			return monitor;
+		}
+	}
+	@SuppressWarnings("finally")
+	private BaseMonitor analysisDbData(String result){
+		Map<String,Object> data = transResult(result);
+		NodeModel monitor = new NodeModel();
+		try {
+			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
+				ObjectMapper resultMapper = new ObjectMapper();
+				monitor = resultMapper.readValue(result, NodeModel.class);
+				Date now = new Date();
+				//处理
+				boolean timeout = false;
+				int failCount = 0;
+				
+				DetailModel detailModel = monitor.getResponse().getNode().getLog_warning();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getNode().getLog_health();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getNode().getLog_error();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				detailModel = monitor.getResponse().getNode().getStarted();
+				failCount = compareFailCount(failCount,detailModel);
+				timeout = isTimeout(now, detailModel);
+				monitor.setResult(failCount);
+				if(timeout) {
+					monitor.setResult(MonitorStatus.CRASH.getValue());
+				}
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("解析api参数出错");
+		} finally {
+			return monitor;
+		}
+	}
+	public boolean isTimeout(Date now,DetailModel detailModel) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		long diff = 0;
+		try {
+			diff = (now.getTime() - simpleDateFormat.parse(detailModel.getCtime()).getTime())/1000;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		if(diff > 60) {
+			return true;
+		}
+		return false;
+	}
+	public int compareFailCount(int failCount,DetailModel detailModel) {
+		String message = detailModel.getMessage();
+		int next = Integer.parseInt(message.substring(message.length()-1, message.length()));
+		failCount = next - failCount>0?next:failCount;
+		return failCount;
+	}
+	
 	public List<ContainerMonitorModel> getMonitorData(List<ContainerModel> containerModels){
 		List<ContainerMonitorModel> containerMonitorModels = new ArrayList<ContainerMonitorModel>();
 		ContainerMonitorModel containerMonitorModel = new ContainerMonitorModel();
@@ -1097,10 +1229,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				mclusterName = c.getMcluster().getMclusterName();
 				containerMonitorModel  = analysisResultMonitor(transResult(this.pythonService.getMclusterStatus(ip)));
 				containerMonitorModelC = analysisResultMonitorC(transResult(this.pythonService.getMclusterMonitor(ip)));
-				if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.GENERAL.getValue().toString())){
-					containerMonitorModel.setStatus(ContainerMonitorStatus.GENERAL.getValue().toString());
-				}if(containerMonitorModelC.getStatus().equals(ContainerMonitorStatus.SERIOUS.getValue().toString())){
-					containerMonitorModel.setStatus(ContainerMonitorStatus.SERIOUS.getValue().toString());
+				if(containerMonitorModelC.getStatus().equals(MonitorStatus.GENERAL.getValue().toString())){
+					containerMonitorModel.setStatus(MonitorStatus.GENERAL.getValue().toString());
+				}if(containerMonitorModelC.getStatus().equals(MonitorStatus.SERIOUS.getValue().toString())){
+					containerMonitorModel.setStatus(MonitorStatus.SERIOUS.getValue().toString());
 				}
 				containerMonitorModel.getNodeMoList().add(containerMonitorModelC.getNodeMoList().get(0));	
 				containerMonitorModel.setClMoList(containerMonitorModelC.getClMoList());
@@ -1108,7 +1240,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			logger.debug("获得集群监控数据");
 		} catch (Exception e) {
 			logger.debug("无法获得集群监控数据"+e.getMessage());
-			containerMonitorModel.setStatus(ContainerMonitorStatus.CRASH.getValue().toString());
+			containerMonitorModel.setStatus(MonitorStatus.CRASH.getValue().toString());
 		} finally {
 			containerMonitorModels.add(containerMonitorModel);
 			return  containerMonitorModels;

@@ -2,7 +2,6 @@ package com.letv.portal.proxy.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +12,11 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
-import com.letv.portal.enumeration.ContainerMonitorStatus;
+import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.MonitorDetailModel;
-import com.letv.portal.model.monitor.ContainerMonitorModel;
+import com.letv.portal.model.monitor.BaseMonitor;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -82,26 +80,30 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 
 	@Override
 	public Map<String, Integer> selectMonitorAlert(Long monitorType) {
-		List<String> ips = this.containerService.selectVipIps4Monitor();
+		List<ContainerModel> containers = this.containerService.selectVipIps4Monitor();
 		
 		int nothing = 0;
 		int general = 0;
 		int serious = 0;
 		int crash = 0;
+		int timeout = 0;
 		
-		for (String ip : ips) {
-			ContainerMonitorModel monitor = this.buildTaskService.getMonitorData(ip,monitorType); 
-			if(ContainerMonitorStatus.NORMAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+		for (ContainerModel container : containers) {
+			BaseMonitor monitor = this.buildTaskService.getMonitorData(container.getIpAddr(),monitorType); 
+			if(MonitorStatus.NORMAL.getValue() == monitor.getResult()) {
 				nothing++;
 			}
-			if(ContainerMonitorStatus.GENERAL.getValue() == Integer.parseInt(monitor.getStatus())) {
+			if(MonitorStatus.GENERAL.getValue() == monitor.getResult()) {
 				general++;
 			}
-			if(ContainerMonitorStatus.SERIOUS.getValue() == Integer.parseInt(monitor.getStatus())) {
+			if(MonitorStatus.SERIOUS.getValue() == monitor.getResult()) {
 				serious++;
 			}
-			if(ContainerMonitorStatus.CRASH.getValue() == Integer.parseInt(monitor.getStatus())) {
+			if(MonitorStatus.CRASH.getValue() == monitor.getResult()) {
 				crash++;
+			}
+			if(MonitorStatus.TIMEOUT.getValue() == monitor.getResult()) {
+				timeout++;
 			}
 		}
 		Map<String,Integer> data = new HashMap<String,Integer>();
@@ -114,6 +116,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		data.put("general", general);
 		data.put("serious", serious);
 		data.put("crash", crash);
+		data.put("timeout", timeout);
 		return data;
 	}
 
