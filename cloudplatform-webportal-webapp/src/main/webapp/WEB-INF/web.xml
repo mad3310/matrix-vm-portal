@@ -16,6 +16,10 @@
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
     
     
    	 <context-param>  
@@ -65,6 +69,14 @@
 	<servlet-mapping>        
 	    <servlet-name>default</servlet-name>       
 	    <url-pattern>*.woff</url-pattern>      
+	</servlet-mapping>
+	<servlet-mapping>        
+	    <servlet-name>default</servlet-name>       
+	    <url-pattern>*.ico</url-pattern>      
+	</servlet-mapping>
+	<servlet-mapping>        
+	    <servlet-name>default</servlet-name>       
+	    <url-pattern>*.json</url-pattern>      
 	</servlet-mapping>
 
 	<!-- apache shiro for security -->
@@ -182,14 +194,14 @@
     </filter-mapping>
     <!-- end -->
     
-	<filter>
+	<!-- <filter>
 		<filter-name>sitemeshFilter</filter-name>
 		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
 	
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
