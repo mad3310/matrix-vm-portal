@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IDashBoardProxy;
+import com.letv.portal.service.IContainerService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -20,6 +22,11 @@ public class DashBoardController {
 	@Resource
 	private IDashBoardProxy dashBoardProxy;
 
+	@Resource
+	public IZabbixPushService zabbixPushService;
+	
+	@Resource
+	public IContainerService containerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DashBoardController.class);
 	
