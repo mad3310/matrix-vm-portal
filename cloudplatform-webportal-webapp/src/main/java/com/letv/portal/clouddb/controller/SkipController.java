@@ -31,55 +31,31 @@ public class SkipController {
 	@Autowired
 	private IDbService dbService;
 	
-	@RequestMapping(value ="/dashboard",method=RequestMethod.GET)
-	public ModelAndView toDashboard(ModelAndView mav,HttpServletRequest request){
-		mav.setViewName("/clouddb/dashboard");
-		return mav;
-	}
-	
-	@RequestMapping(value ="/list/mcluster",method=RequestMethod.GET)
-	public String toMclusterList(HttpServletRequest request){
-		return "/clouddb/mclsuter_list";
-	}
-
-	@RequestMapping(value="/detail/mcluster/{mclusterId}", method=RequestMethod.GET)   
-	public ModelAndView toMclusterDetail(@PathVariable Long mclusterId,ModelAndView mav) {
-		mav.addObject("mclusterId",mclusterId);
-		mav.setViewName("/clouddb/mcluster_detail");
+	/**
+	 * Methods Name: dbInfo<br>
+	 * Description: 跳转基本信息页面
+	 * @author name: 姚阔
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/baseInfo",method=RequestMethod.GET)
+	public ModelAndView tobaseInfo(ModelAndView mav){
+		mav.setViewName("/clouddb/baseInfo");
 		return mav;
 	}
 
 	/**
-	 * Methods Name: toList <br>
-	 * Description: db跳转
-	 * @author name: wujun
+	 * Methods Name: dbInfo<br>
+	 * Description: 跳转数据库列表
+	 * @author name: 姚阔
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value ="/list/db",method=RequestMethod.GET)
 	public ModelAndView toDbList(ModelAndView mav){
-		mav.setViewName("/clouddb/db_list");
-		return mav;
-	}
-	
-	/**
-	 * Methods Name: toList <br>
-	 * Description: dbDetail跳转
-	 * @author name: wujun
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value ="/detail/db/{dbId}",method=RequestMethod.GET)
-	public ModelAndView toDbDetail(@PathVariable Long dbId,ModelAndView mav){
-		DbModel db = this.dbService.selectById(dbId);
-		if(db!=null && db.getCreateUser() == sessionService.getSession().getUserId()) {
-			mav.addObject("dbId",dbId);
-			mav.setViewName("/clouddb/db_detail");
-		} else {
-			throw new ValidateException("用户无相关数据");
-		}
+		mav.setViewName("/clouddb/dbList");
 		return mav;
 	}
 	
