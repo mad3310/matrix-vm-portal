@@ -549,6 +549,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -588,6 +590,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -629,6 +633,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>abc123</admin.pwd>
                 
@@ -671,6 +677,8 @@
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
                 
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>
