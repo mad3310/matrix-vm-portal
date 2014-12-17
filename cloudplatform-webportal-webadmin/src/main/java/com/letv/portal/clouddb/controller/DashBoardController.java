@@ -1,8 +1,5 @@
 package com.letv.portal.clouddb.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -47,31 +44,6 @@ public class DashBoardController {
 	@RequestMapping(value="/monitor/{monitorType}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitor(@PathVariable Long monitorType, ResultObject result) {
 		result.setData(this.dashBoardProxy.selectMonitorAlert(monitorType));
-		return result; 
-	}
-	
-	@RequestMapping(value="/zabbix/add",method=RequestMethod.GET)
-	public @ResponseBody ResultObject add(ResultObject result) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("mclusterId", 17);
-		zabbixPushService.createMultiContainerPushZabbixInfo(this.containerService.selectByMap(map));
-		return result; 
-	}
-	@RequestMapping(value="/zabbix/remove",method=RequestMethod.GET)
-	public @ResponseBody ResultObject remove(ResultObject result) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		   map.put("mclusterId", 17);
-			
-		   Boolean flag  =false;
-
-			try {
-				
-		     flag =	zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
-		     System.out.println(flag);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		return result; 
 	}
 }
