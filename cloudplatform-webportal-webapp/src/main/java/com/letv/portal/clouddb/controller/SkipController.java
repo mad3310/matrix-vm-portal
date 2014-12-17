@@ -34,7 +34,7 @@ public class SkipController {
 	/**
 	 * Methods Name: dbInfo<br>
 	 * Description: 跳转基本信息页面
-	 * @author name: 姚阔
+	 * @author name: yaokuo
 	 * @param request
 	 * @param response
 	 * @return
@@ -48,7 +48,7 @@ public class SkipController {
 	/**
 	 * Methods Name: dbInfo<br>
 	 * Description: 跳转数据库列表
-	 * @author name: 姚阔
+	 * @author name: yaokuo
 	 * @param request
 	 * @param response
 	 * @return
@@ -56,6 +56,45 @@ public class SkipController {
 	@RequestMapping(value ="/list/db",method=RequestMethod.GET)
 	public ModelAndView toDbList(ModelAndView mav){
 		mav.setViewName("/clouddb/dbList");
+		return mav;
+	}
+	/**
+	 * Methods Name: dashBoard<br>
+	 * Description: 跳转dashBoard
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/dashboard",method=RequestMethod.GET)
+	public ModelAndView toDashBoard(ModelAndView mav){
+		mav.setViewName("/clouddb/dashBoard");
+		return mav;
+	}
+	/**
+	 * Methods Name: accountManager<br>
+	 * Description: 跳转用户管理
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/account",method=RequestMethod.GET)
+	public ModelAndView toAccountManager(ModelAndView mav){
+		mav.setViewName("/clouddb/accountManager");
+		return mav;
+	}
+	/**
+	 * Methods Name: securityManager<br>
+	 * Description: 跳转安全管理
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/security",method=RequestMethod.GET)
+	public ModelAndView toSecurityManager(ModelAndView mav){
+		mav.setViewName("/clouddb/securityManager");
 		return mav;
 	}
 	
