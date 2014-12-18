@@ -7,20 +7,16 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="css/ui-css/common.css"/>
-	<!-- js -->
-	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/ui-js/common.js"></script>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>app-dashboard</title>
 </head>
 <body> 
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- top bar begin -->
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><img src="img/cloud.ico"/></a>
+          <a class="navbar-brand" href="#"><img src="${ctx}/static/img/cloud.ico"/></a>
         </div>
         <div class="navbar-header">
           <a class="navbar-brand active" href="#"><span class="glyphicon glyphicon-home"></span></a>
@@ -76,7 +72,7 @@
 								<div class="mlt-4 pull-left">
 									<p class="balance-title">账户余额:</p>
 									<p class="balance-num ellipsis" >
-										<span>5</span>
+										<span>500</span>
 										<span class="balance-after-point">.00</span>
 										<span class="balance-unit">元</span>
 									</p>
@@ -138,7 +134,7 @@
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
 								</a>
 								<p class="item-title">
-									<a href="#">关系型数据库&nbsp;<span class="item-title-short">RDS</span>
+									<a href="${ctx}/list/db">关系型数据库&nbsp;<span class="item-title-short">RDS</span>
 									</a>
 								</p>
 							</div>
@@ -146,7 +142,7 @@
 								<span class="item-record-num">
 									<!-- <span size="14" class="item-record-loading hide"></span>  -->
 									<!-- <a class="glyphicon glyphicon-refresh item-record-reload"></a>  -->
-									<a class="item-record-num-count" href="#"><span>1</span></a>
+									<a class="item-record-num-count" href="${ctx}/list/db"><span>1</span></a>
 								</span>
 								<span class="item-record-unit">个</span> 
 								<span class="glyphicon glyphicon-question-sign text-muted"></span>
@@ -201,9 +197,6 @@
 												<a href="#" target="_blank" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
-												<script type="text/javascript">
-												buyTooltip();
-												</script>
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_blank" class="product-opt">
@@ -565,7 +558,19 @@
 		</div>
 	</div><!-- main-content end-->
 </body>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">
-tooltip("home-cash");
+
+// Set configuration
+seajs.config({
+base: "${ctx}/static/modules/",
+alias: {
+"jquery": "jquery/2.0.3/jquery.min.js",
+"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+}
+});
+
+seajs.use("${ctx}/static/page-js/dashboard/main");
 </script>
 </html>

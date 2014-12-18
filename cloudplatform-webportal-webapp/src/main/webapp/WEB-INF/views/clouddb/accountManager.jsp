@@ -4,17 +4,13 @@
 <html lang="zh">
 
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1" />
-	<meta name="viewpoint" content="width=device-width,initial-scale=1" />
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="css/ui-css/common.css" />
-	<!-- js -->
-	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/ui-js/common.js"></script>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>account</title>
 </head>
 
@@ -24,7 +20,7 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">
-					<img src="img/cloud.ico" />
+					<img src="${ctx}/static/img/cloud.ico" />
 				</a>
 			</div>
 			<div class="navbar-header">
@@ -159,42 +155,42 @@
 		<!-- main-content-header end-->
 		<div class="row">
 			<!-- main-content-center-begin -->
-			<div class="col-sm-2 col-md-2">
-				<div class="sidebar">
+			<nav class="col-sm-2 col-md-2">
+				<div class="sidebar sidebar-line sidebar-selector">
 					<ul class="nav nav-sidebar li-underline">
-						<li class="active">
-							<a class="text-sm" href="#">基本信息</a>
+			            <li><a class="text-sm" href="${ctx}/detail/baseInfo">基本信息</a></li>
+			            <li><a  class="text-sm" href="${ctx}/detail/account">账号管理</a></li>
+			            <li><a  class="text-sm" href="#">
+								<span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+								系统资源监控
+							</a>
+							<ul class="nav hide">
+								<li><a  class="text-sm" href="#">磁盘空间</a></li>
+								<li><a  class="text-sm" href="#">IOPS</a></li>
+								<li><a  class="text-sm" href="#">连接数</a></li>
+								<li><a  class="text-sm" href="#">CPU利用率</a></li>
+								<li><a  class="text-sm" href="#">网络流量</a></li>
+								<li><a  class="text-sm" href="#">QPS/TPS</a></li>
+								<li><a  class="text-sm" href="#">InnoDB缓冲池</a></li>
+								<li><a  class="text-sm" href="#">InnoDB读写量</a></li>
+								<li><a  class="text-sm" href="#">InnoDB读写次数</a></li>
+								<li><a  class="text-sm" href="#">InnoDB日志</a></li>
+								<li><a  class="text-sm" href="#">临时表</a></li>
+								<li><a  class="text-sm" href="#">MyISAM key Buffer</a></li>
+								<li><a  class="text-sm" href="#">MyISAM读写次数</a></li>
+								<li><a  class="text-sm" href="#">COMDML</a></li>
+								<li><a  class="text-sm" href="#">ROWDML</a></li>
+							</ul>
 						</li>
-						<li>
-							<a class="text-sm" href="#">账号管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">数据库管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">系统资源监控</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">备份与恢复</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">参数设置</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">日志管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">性能优化</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">阈值报警</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">安全控制</a>
-						</li>
-					</ul>
+			            <li><a  class="text-sm" href="#">备份与恢复</a></li>
+			            <li><a  class="text-sm" href="#">参数设置</a></li>
+			            <li><a class="text-sm" href="#">日志管理</a></li>
+			            <li><a  class="text-sm" href="#">性能优化</a></li>
+			            <li><a class="text-sm" href="#">阈值报警</a></li>
+			            <li><a class="text-sm" href="${ctx}/detail/security">安全控制</a></li>
+			        </ul>
 				</div>
-			</div>
+			</nav>
 			<div class="col-sm-10 col-md-10">
 				<!-- 账号管理主界面div -->
 				<div id="accountList" class="" role="tablist" aria-multiselectable="true">
@@ -455,5 +451,20 @@
 		</div>
 	</div>
 </body>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+<script type="text/javascript">
+
+// Set configuration
+seajs.config({
+	base: "${ctx}/static/modules/",
+	alias: {
+		"jquery": "jquery/2.0.3/jquery.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+	}
+});
+
+seajs.use("${ctx}/static/page-js/accountManager/main");
+</script>
 
 </html>

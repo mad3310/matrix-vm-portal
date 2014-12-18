@@ -9,7 +9,7 @@ define(function(require){
     cn.Tooltip('#serviceName');
 
 /*初始化侧边栏菜单*/
-    var index = [5,1];
+    var index = [0,0];
     cn.Sidebar(index);//index为菜单中的排序(1-12)
 
 /*加载数据*/

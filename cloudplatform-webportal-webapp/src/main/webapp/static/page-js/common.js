@@ -44,8 +44,8 @@ define(function(require,exports,module){
             });
 
             /*跳转界面处理*/
-            $('#sidebar').find(".active").removeClass("active");
-            var $obj = $('#sidebar').children("ul").children("li:eq("+index[0]+")");
+            $('.sidebar-selector').find(".active").removeClass("active");
+            var $obj = $('.sidebar-selector').children("ul").children("li:eq("+index[0]+")");
             if($obj.find("ul").length > 0){
                 extended($obj);
                 $obj.find("li:eq("+index[1]+")").addClass("active");

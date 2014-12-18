@@ -112,13 +112,13 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .se-heading a{
 	margin-top:8px;
 }
-/*start 自定义table样式,基本信息*/
+/*start 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
 .table-bi{
 	margin-bottom:0px !important;
 }
-/*end 自定义table样式,基本信息*/
+/*end 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
 
-/*自定义table样式 账号管理界面*/
+/*鑷畾涔塼able鏍峰紡 璐﹀彿绠＄悊鐣岄潰*/
 .panel-table{
 	margin-top:20px !important;
 	border:0px;
@@ -257,11 +257,11 @@ right: 15px;
 top: 0;
 z-index: -1;
 background-repeat: no-repeat;
-background-image: url(img/yundun-1x.png);
-background-image: -webkit-image-set(url(img/yundun-1x.png) 1x, url(img/yundun-2x.png) 2x);
-background-image: -moz-image-set(url(img/yundun-1x.png) 1x, url(img/yundun-2x.png) 2x);
-background-image: -ms-image-set(url(img/yundun-1x.png) 1x, url(img/yundun-2x.png) 2x);
-background-image: -o-image-set(url(img/yundun-1x.png) 1x, url(img/yundun-2x.png) 2x);
+background-image: url(/static/img/yundun-1x.png);
+background-image: -webkit-image-set(url(/static/img/yundun-1x.png) 1x, url(/static/img/yundun-2x.png) 2x);
+background-image: -moz-image-set(url(/static/img/yundun-1x.png) 1x, url(/static/img/yundun-2x.png) 2x);
+background-image: -ms-image-set(url(/static/img/yundun-1x.png) 1x, url(/static/img/yundun-2x.png) 2x);
+background-image: -o-image-set(url(/static/img/yundun-1x.png) 1x, url(/static/img/yundun-2x.png) 2x);
 }
 .home .user-profile .yundun-bg.yundun-bg-notopen {
 background-position: 0 -165px;
@@ -278,11 +278,11 @@ border-left: 1px solid #cfd6da;
 .product-icons-48 {
 width: 48px;
 height: 48px;
-background-image: url(img/icons-48.png);
-background-image: -webkit-image-set(url(img/icons-48.png) 1x, url(img/icons-96.png) 2x);
-background-image: -moz-image-set(url(img/icons-48.png) 1x, url(img/icons-96.png) 2x);
-background-image: -ms-image-set(url(img/icons-48.png) 1x, url(img/icons-96.png) 2x);
-background-image: -o-image-set(url(img/icons-48.png) 1x, url(img/icons-96.png) 2x);
+background-image: url(/static/img/icons-48.png);
+background-image: -webkit-image-set(url(/static/img/icons-48.png) 1x, url(/static/img/icons-96.png) 2x);
+background-image: -moz-image-set(url(/static/img/icons-48.png) 1x, url(/static/img/icons-96.png) 2x);
+background-image: -ms-image-set(url(/static/img/icons-48.png) 1x, url(/static/img/icons-96.png) 2x);
+background-image: -o-image-set(url(/static/img/icons-48.png) 1x, url(/static/img/icons-96.png) 2x);
 }
 .product-icons-32, .product-icons-48, .product-icons-64, .product-icons-96, .product-icons-128 {
 background-repeat: no-repeat;
@@ -322,7 +322,7 @@ vertical-align: top;
 line-height: 20px;
 }
 /*cloud right end*/
-/*产品begin*/
+/*浜у搧begin*/
 .home .product-list {
 background: #fff;
 border: 1px solid #e9edee;
@@ -452,10 +452,10 @@ width: 30px;
 .home .product-list-notopen .product-col .product-category ul>li:hover .category-icon{color:#333}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt{border:1px solid #ccc;background:#f9f9f9}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt .product-opt-icon{color:#333}
-/*产品 end*/
+/*浜у搧 end*/
 
-/*账户管理页css*/
-/*创建用户页列表框*/
+/*璐︽埛绠＄悊椤礳ss*/
+/*鍒涘缓鐢ㄦ埛椤靛垪琛ㄦ*/
 .select {
 	width: 100%;
 	height: 140px;
@@ -538,16 +538,16 @@ width: 30px;
 	height: 32px;
 	margin:0px;
 }
-/*账户管理页end*/
+/*璐︽埛绠＄悊椤礶nd*/
 
-/*输入提示信息格式*/
+/*杈撳叆鎻愮ず淇℃伅鏍煎紡*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
     color: #AAA;
 }
 
-/*disable按钮样式*/
+/*disable鎸夐挳鏍峰紡*/
 .btn-disable{
    	color: #AAA;
 	text-shadow: none;
@@ -562,7 +562,7 @@ width: 30px;
 	background: linear-gradient(top, #f3f3f3,#f3f3f3);
 }
 
-/*基本信息页面下拉箭头位置*/
+/*鍩烘湰淇℃伅椤甸潰涓嬫媺绠ご浣嶇疆*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;

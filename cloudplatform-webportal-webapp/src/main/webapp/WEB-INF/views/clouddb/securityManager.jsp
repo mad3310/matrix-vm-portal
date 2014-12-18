@@ -7,13 +7,9 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="css/ui-css/common.css"/>
-	<!-- js -->
-	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/ui-js/common.js"></script>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>app-dashboard</title>
 </head>
 <body>
@@ -22,7 +18,7 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><img src="img/cloud.ico"/></a>
+          <a class="navbar-brand" href="#"><img src="/static/img/cloud.ico"/></a>
         </div>
         <div class="navbar-header">
           <a class="navbar-brand active" href="#"><span class="glyphicon glyphicon-home"></span></a>
@@ -62,7 +58,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+              <li><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
             </ul>
           </div>
         </div>
@@ -98,22 +94,42 @@
 	</div><!-- main-content-header end-->
 
 	<div class="row"><!-- main-content-center-begin -->
-		<div class="col-sm-2 col-md-2">
-			<div class="sidebar sidebar-line">
-				<ul class="nav nav-sidebar nav-space li-underline">
-		            <li class="active"><a class="text-sm" href="#">基本信息</a></li>
-		            <li><a  class="text-sm" href="#">账号管理</a></li>
-		            <li><a  class="text-sm" href="#">数据库管理</a></li>
-		            <li><a  class="text-sm" href="#">系统资源监控</a></li>
+		<nav class="col-sm-2 col-md-2">
+			<div class="sidebar sidebar-line sidebar-selector">
+				<ul class="nav nav-sidebar li-underline">
+		            <li class="active"><a class="text-sm" href="${ctx}/detail/baseInfo">基本信息</a></li>
+		            <li><a  class="text-sm" href="${ctx}/detail/account">账号管理</a></li>
+		            <li><a  class="text-sm" href="#">
+							<span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+							系统资源监控
+						</a>
+						<ul class="nav hide">
+							<li><a  class="text-sm" href="#">磁盘空间</a></li>
+							<li><a  class="text-sm" href="#">IOPS</a></li>
+							<li><a  class="text-sm" href="#">连接数</a></li>
+							<li><a  class="text-sm" href="#">CPU利用率</a></li>
+							<li><a  class="text-sm" href="#">网络流量</a></li>
+							<li><a  class="text-sm" href="#">QPS/TPS</a></li>
+							<li><a  class="text-sm" href="#">InnoDB缓冲池</a></li>
+							<li><a  class="text-sm" href="#">InnoDB读写量</a></li>
+							<li><a  class="text-sm" href="#">InnoDB读写次数</a></li>
+							<li><a  class="text-sm" href="#">InnoDB日志</a></li>
+							<li><a  class="text-sm" href="#">临时表</a></li>
+							<li><a  class="text-sm" href="#">MyISAM key Buffer</a></li>
+							<li><a  class="text-sm" href="#">MyISAM读写次数</a></li>
+							<li><a  class="text-sm" href="#">COMDML</a></li>
+							<li><a  class="text-sm" href="#">ROWDML</a></li>
+						</ul>
+					</li>
 		            <li><a  class="text-sm" href="#">备份与恢复</a></li>
 		            <li><a  class="text-sm" href="#">参数设置</a></li>
 		            <li><a class="text-sm" href="#">日志管理</a></li>
 		            <li><a  class="text-sm" href="#">性能优化</a></li>
 		            <li><a class="text-sm" href="#">阈值报警</a></li>
-		            <li><a class="text-sm" href="#">安全控制</a></li>
+		            <li><a class="text-sm" href="${ctx}/detail/security">安全控制</a></li>
 		        </ul>
 			</div>
-		</div>
+		</nav>
 		<div class="col-sm-10 col-md-10">
 			<div class="panel-group pd10"  role="tablist" aria-multiselectable="true">
 			    <div class="se-heading" id="headingOne" >
@@ -136,93 +152,93 @@
                     <a data-toggle="tab" href="#sqlInject">SQL注入警告</a></li> 	
 			    </ul>
 				<!-- <div class="panel-body pd0" id="whitelist"> -->
-			<div class="tab-content">				
-				<div id="whitelist" role="tabpanel" class="tab-pane fade active"  aria-labelledby="whitelist-tab">
-				        <table class="table table-hover">
-				        	<thead>				        	
-				        	<tr>
-				        		<th colspan="4">
-				        			允许访问IP名单
-				        		</th>				        		
-				        	</tr>
-				        	</thead>
-				        	<tbody>
-				        		<tr >				        			
-				        			<td width="25%" >10.23.12.24/22
-				        			</td>				        			
-				        			<td width="25%" >0.0.0.0/0
-				        			</td>				        			
-				        			<td width="25%" >33.22.11.44
-				        			</td>
-				        			
-				        			<td width="25%" >10.23.12.24/21
-				        			</td>
-				        			
-				        		</tr>
-				        		<tr>				        			
-				        			<td width="25%" >10.23.12.24/22
-				        			</td>				        			
-				        			<td width="25%" >0.0.0.0/0
-				        			</td>				        			
-				        			<td width="25%" >33.22.11.44
-				        			</td>	
-				        			<td width="25%" >
-				        			</td>	
-				        		</tr>
-				        	</tbody> 				        	
-				        </table>			        			  	
-			  		<div class="has-warning help-block">
-			  			您已添加<span class="">7</span>个IP，还能添加<span class="ng-binding">93</span>个。
-			  		</div>
-			  		<div class="" style="margin-bottom: 40px">
-			  			<button class="btn btn-primary">手动修改</button> 
-			  			<span style="padding:8px">或</span> 
-			  			<button class="btn btn-primary">加载ECS内网IP添加
-			  			</button> 
-			  			<button class="btn btn-primary">将白名单复制至其他实例
-			  			</button>
-			  		</div>
-			  	</div>			
-			    <div id="sqlInject" role="tabpanel" class="tab-pane fade" aria-labelledby="sqlInject-tab">
-			    	<div class="time-range-unit-header">
-			    		<span class="time-range-title">选择时间范围：</span>
-			    		<div class="date-unit">
-			    			<input type="date" class="form-control date-picker-unit" value="2014/12/15">
-			    		</div>
-			    		<span class="date-step-span">至</span>
-			    		<div class="date-unit">
-			    		     <input type="date" class="form-control date-picker-unit" value="2014/12/15">
-			    	    </div>		    
-			    	     <button class="btn btn-primary btn-search">查询</button>	
-			    	</div>	
-			    	<table class="table table-hover">
-			    			<thead>
-			    				<tr>
-			    					<th>时间</th>
-			    					<th>执行帐号</th>
-			    					<th>sql语句</th>
-			    				</tr>
-			    			</thead>
-			    	</table>			    		    		    	
-			    </div>			   
-			</div>
-			<script>
-					$('#setab a').click(function (e) {
-  					e.preventDefault()
-  					$(this).tab('show')
-					})
-			</script>
-			<script>
-			       $("#sqlInject-tab").click(function() {
-                      $("#refresh").hide();
-					}); 
-			       $("#whitelist-tab").click(function() {
-                      $("#refresh").show();
-					}); 
-			</script>
+				<div class="tab-content">				
+					<div id="whitelist" role="tabpanel" class="tab-pane fade active"  aria-labelledby="whitelist-tab">
+					        <table class="table table-hover">
+					        	<thead>				        	
+					        	<tr>
+					        		<th colspan="4">
+					        			允许访问IP名单
+					        		</th>				        		
+					        	</tr>
+					        	</thead>
+					        	<tbody>
+					        		<tr >				        			
+					        			<td width="25%" >10.23.12.24/22
+					        			</td>				        			
+					        			<td width="25%" >0.0.0.0/0
+					        			</td>				        			
+					        			<td width="25%" >33.22.11.44
+					        			</td>
+					        			
+					        			<td width="25%" >10.23.12.24/21
+					        			</td>
+					        			
+					        		</tr>
+					        		<tr>				        			
+					        			<td width="25%" >10.23.12.24/22
+					        			</td>				        			
+					        			<td width="25%" >0.0.0.0/0
+					        			</td>				        			
+					        			<td width="25%" >33.22.11.44
+					        			</td>	
+					        			<td width="25%" >
+					        			</td>	
+					        		</tr>
+					        	</tbody> 				        	
+					        </table>			        			  	
+				  		<div class="has-warning help-block">
+				  			您已添加<span class="">7</span>个IP，还能添加<span class="ng-binding">93</span>个。
+				  		</div>
+				  		<div class="" style="margin-bottom: 40px">
+				  			<button class="btn btn-primary">手动修改</button> 
+				  			<span style="padding:8px">或</span> 
+				  			<button class="btn btn-primary">加载ECS内网IP添加
+				  			</button> 
+				  			<button class="btn btn-primary">将白名单复制至其他实例
+				  			</button>
+				  		</div>
+				  	</div>			
+				    <div id="sqlInject" role="tabpanel" class="tab-pane fade" aria-labelledby="sqlInject-tab">
+				    	<div class="time-range-unit-header">
+				    		<span class="time-range-title">选择时间范围：</span>
+				    		<div class="date-unit">
+				    			<input type="date" class="form-control date-picker-unit" value="2014/12/15">
+				    		</div>
+				    		<span class="date-step-span">至</span>
+				    		<div class="date-unit">
+				    		     <input type="date" class="form-control date-picker-unit" value="2014/12/15">
+				    	    </div>		    
+				    	     <button class="btn btn-primary btn-search">查询</button>	
+				    	</div>	
+				    	<table class="table table-hover">
+				    			<thead>
+				    				<tr>
+				    					<th>时间</th>
+				    					<th>执行帐号</th>
+				    					<th>sql语句</th>
+				    				</tr>
+				    			</thead>
+				    	</table>			    		    		    	
+				    </div>			   
+				</div>
 		    </div>				
 	    </div>
    </div><!-- main-content-center-end -->
 </div>
 </body>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+<script type="text/javascript">
+// Set configuration
+seajs.config({
+	base: "${ctx}/static/modules/",
+	alias: {
+		"jquery": "jquery/2.0.3/jquery.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+	}
+});
+
+seajs.use("${ctx}/static/page-js/securityManager/main");
+</script>
 </html>
