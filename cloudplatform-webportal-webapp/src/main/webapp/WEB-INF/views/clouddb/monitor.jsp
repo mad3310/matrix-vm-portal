@@ -126,14 +126,14 @@
 			<nav class="col-sm-2 col-md-2">
 			<div class="sidebar sidebar-line sidebar-selector">
 				<ul class="nav nav-sidebar li-underline">
-		            <li><a class="text-sm" href="${ctx}/detail/baseInfo">基本信息</a></li>
-		            <li><a  class="text-sm" href="${ctx}/detail/account">账号管理</a></li>
+		            <li><a class="text-sm" href="${ctx}/detail/baseInfo/${dbId}">基本信息</a></li>
+		            <li><a  class="text-sm" href="${ctx}/detail/account/${dbId}">账号管理</a></li>
 		            <li><a  class="text-sm" href="#">
 							<span class="glyphicon glyphicon glyphicon-chevron-right"></span>
 							系统资源监控
 						</a>
 						<ul class="nav hide">
-							<li><a  class="text-sm" href="#">磁盘空间</a></li>
+							<li><a  class="text-sm" href="${ctx}/detail/monitor/${dbId}">磁盘空间</a></li>
 							<li><a  class="text-sm" href="#">IOPS</a></li>
 							<li><a  class="text-sm" href="#">连接数</a></li>
 							<li><a  class="text-sm" href="#">CPU利用率</a></li>
@@ -155,7 +155,7 @@
 		            <li><a class="text-sm" href="#">日志管理</a></li>
 		            <li><a  class="text-sm" href="#">性能优化</a></li>
 		            <li><a class="text-sm" href="#">阈值报警</a></li>
-		            <li><a class="text-sm" href="${ctx}/detail/security">安全控制</a></li>
+		            <li><a class="text-sm" href="${ctx}/detail/security/${dbId}">安全控制</a></li>
 		        </ul>
 			</div>
 		</nav>

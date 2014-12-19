@@ -45,7 +45,7 @@
         </entry>
       </file>
       <file leaf-file-name="baseInfo.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo/${dbId}.jsp">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-67.03571" vertical-offset="1581" max-vertical-offset="7543">
               <caret line="182" column="129" selection-start-line="182" selection-start-column="129" selection-end-line="182" selection-end-column="129" />
@@ -71,7 +71,7 @@
       <list>
         <option value="$PROJECT_DIR$/static/page-js/dashboard/main.js" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/dashBoard.jsp" />
-        <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp" />
+        <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo/${dbId}.jsp" />
         <option value="$PROJECT_DIR$/static/css/ui-css/common.css" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/monitor.jsp" />
         <option value="$PROJECT_DIR$/static/modules/highcharts/highcharts.src.js" />
@@ -801,7 +801,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp">
+    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo/${dbId}.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-67.03571" vertical-offset="1581" max-vertical-offset="7543">
           <caret line="182" column="129" selection-start-line="182" selection-start-column="129" selection-end-line="182" selection-end-column="129" />
