@@ -170,7 +170,7 @@
 								<span class="glyphicon glyphicon-refresh"></span>
 								刷新
 							</button>
-							<button class="btn btn-primary">创建帐号</button>
+							<button id="createAccount" class="btn btn-primary" onclick="createAccount()">创建帐号</button>
 						</div>
 					</div>
 					<div class="table-responsive">
@@ -405,8 +405,8 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"></label>
 								<div class="col-sm-4">
-									<button disabled="disabled" type="button" class="btn btn-success btn-disable">提交</button>
-									<button type="button" class="btn btn-default" ui-sref="rdsDetail.account.list()">返回</button>
+									<button disabled="disabled" type="button" class="btn btn-success btn-disable" onclick="newAccountSubmit()">提交</button>
+									<button type="button" class="btn btn-default" ui-sref="rdsDetail.account.list()" onclick="newAccountCancel()">返回</button>
 								</div>
 							</div>
 							<!-- 按钮模块end -->
@@ -414,6 +414,20 @@
 					</div>
 				</div>
 				<!-- main-content-center-end -->
+				<script>
+				    function createAccount(){				    
+				    	$("#accountList").addClass("mc-hide");
+				        $("#newAccountTab").removeClass("mc-hide");
+				    };
+				    function newAccountSubmit(){
+				    	$("#accountList").addClass("mc-hide");
+				        $("#newAccountTab").removeClass("mc-hide");
+				    };
+				    function newAccountCancel(){
+				    	$("#accountList").removeClass("mc-hide");
+				        $("#newAccountTab").addClass("mc-hide");
+				    };
+				</script>
 			</div>
 		</div>
 	</div>

@@ -113,13 +113,13 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .se-heading a{
 	margin-top:8px;
 }
-/*start 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
+/*start 自定义table样式,基本信息*/
 .table-bi{
 	margin-bottom:0px !important;
 }
-/*end 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
+/*end 自定义table样式,基本信息*/
 
-/*鑷畾涔塼able鏍峰紡 璐﹀彿绠＄悊鐣岄潰*/
+/*自定义table样式 账号管理界面*/
 .panel-table{
 	margin-top:20px !important;
 	border:0px;
@@ -323,7 +323,7 @@ vertical-align: top;
 line-height: 20px;
 }
 /*cloud right end*/
-/*浜у搧begin*/
+/*产品begin*/
 .home .product-list {
 background: #fff;
 border: 1px solid #e9edee;
@@ -453,10 +453,10 @@ width: 30px;
 .home .product-list-notopen .product-col .product-category ul>li:hover .category-icon{color:#333}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt{border:1px solid #ccc;background:#f9f9f9}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt .product-opt-icon{color:#333}
-/*浜у搧 end*/
+/*产品 end*/
 
-/*璐︽埛绠＄悊椤礳ss*/
-/*鍒涘缓鏁版嵁搴撶敤鎴烽〉鍒楄〃妗�/
+/*账户管理页css*/
+/*创建数据库用户页列表框*/
 .select {
 	width: 100%;
 	height: 140px;
@@ -539,16 +539,16 @@ width: 30px;
 	height: 32px;
 	margin:0px;
 }
-/*璐︽埛绠＄悊椤礶nd*/
+/*账户管理页end*/
 
-/*杈撳叆鎻愮ず淇℃伅鏍煎紡*/
+/*输入提示信息格式*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
     color: #AAA;
 }
 
-/*disable鎸夐挳鏍峰紡*/
+/*disable按钮样式*/
 .btn-disable{
    	color: #AAA;
 	text-shadow: none;
@@ -966,7 +966,7 @@ border: solid 3px transparent;
 border-top-color: #aaa;
 }
 /*2014-12-18 by gm progressbar-------end*/
-/*2014-12-19 by gm 鏁板瓧妗�--begin*/
+/*2014-12-19 by gm 数字框---begin*/
 .bk-number {
 display: inline-block;
 position: relative;
@@ -1052,9 +1052,9 @@ width: 56px;
 position: relative;
 }
 
-/*2014-12-19 by gm 鏁板瓧妗�--end*/
+/*2014-12-19 by gm 数字框---end*/
 
-/*鍩烘湰淇℃伅椤甸潰涓嬫媺绠ご浣嶇疆*/
+/*基本信息页面下拉箭头位置*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;
@@ -1093,7 +1093,7 @@ position: relative;
     color:#000;
 }
 
-/*鐩戞帶鐣岄潰css*/
+/*监控界面css*/
 .se-heading .nav-pills {
     display: inline-block;
     vertical-align: middle;
@@ -1136,8 +1136,6 @@ position: relative;
 	color: #FFFFFF;
 	box-shadow: inset 0px 1px 2px rgba(0,0,0,0.3)
 }
-
-
 .chart-content,
 .chart-container {
 	position: relative;
@@ -1152,7 +1150,7 @@ position: relative;
 	left: 0.166672px;
 	top: 0.600006px;
 }
-
+/* 监控界面css end */
 /* dblist页分页按钮 */
 .pagination{
 	vertical-align:middle;
@@ -1170,3 +1168,4 @@ position: relative;
     border-bottom: 1px solid #DDD;
     vertical-align: middle;
 }
+/* dblist页分页按钮  end*/
