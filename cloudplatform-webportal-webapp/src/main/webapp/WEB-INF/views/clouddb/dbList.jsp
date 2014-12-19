@@ -81,7 +81,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md">刷新</button>
-				<button class="btn-primary btn btn-md" >新建实例</button>
+				<button class="btn-primary btn btn-md" herf="${ctx}/detail/dbCreate">新建数据库</button>
 				</h5>
 			</div>
 		</div>

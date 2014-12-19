@@ -3,8 +3,6 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
-    var common = require('../common');
-    var cn = new common();
 
     var DataHandler = function(){
     };
@@ -30,12 +28,12 @@ define(function(require,exports,module){
                         +"</div>"
                         +"</td>");
                 var td3 = $("<td>"
-                        + "<span tooltip=\"\" class=\"text-success\">"+cn.TranslateStatus(array[i].status)+"</span>"
+                        + "<span tooltip=\"\" class=\"text-success\">"+array[i].status+"</span>"
                         +"</td>");
                 var td4 = $("<td>"
                         + "<span>专享</span>"
                         + "</td>");
-                var td5 = $("<td><span>"+"MySQL5.5"+"</span></td>");
+                var td5 = $("<td><span>"+array[i].engineType+"</span></td>");
                 var td6 = $("<td><span >单可用区</span></td>");
                 var td7 = $("<td>北京<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
                 var td8 = $("<td><span><span>包月</span><span class=\"text-success\">365</span><span> 天后到期</span></span></td>");

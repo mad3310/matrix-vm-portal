@@ -12,7 +12,7 @@ define(function(require){
     cn.Sidebar(index);//index为菜单中的排序(1-12)
    
     /*初始化监控数据*/
-    /*加载数据*/
+    /*加载数据demo --start*/
 	var cType = "area";
 	var cTitle = "Mcluster Chart Demo";
 	var cSubtitle = "cpu usage";
@@ -43,6 +43,7 @@ define(function(require){
 		}];
 
 	cn.Charts(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData);
+	/*加载数据demo --end*/
 
     var dataHandler = require('./dataHandler');
     //var basicInfoHandler = new dataHandler();

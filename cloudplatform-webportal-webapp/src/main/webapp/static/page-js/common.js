@@ -26,7 +26,42 @@ define(function(require,exports,module){
             	}
             });
         },
-
+        TranslateStatus : function (status){
+        	if (status == 0){
+        		return "未审核";
+        	}else if(status == 1){
+        		return "运行中";
+        	}else if(status == 2){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...";
+        	}else if(status == 3){
+        		return "创建失败";
+        	}else if(status == 4){
+        		return "<font color=\"red\">审核失败</font>";
+        	}else if(status == 5){
+        		return "<font color=\"orange\">异常</font>";
+        	}else if(status == 6){
+        		return "运行中";
+        	}else if(status == 7){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>启动中...";
+        	}else if(status == 8){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>停止中...";
+        	}else if(status == 9){
+        		return "已停止";
+        	}else if(status == 10){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>删除中...";
+        	}else if(status == 11){
+        		return "已删除";
+        	}else if(status == 12){
+        		return "不存在";
+        	}else if(status == 13){
+        		return "<font color=\"orange\">危险</font>";
+        	}else if(status == 14){
+        		return "<font color=\"red\">严重危险</font>";
+        	}else if(status == 15){
+        		return "禁用";
+        	}
+        },
+        
         Sidebar : function(index){
             var extended = function(obj){   //obj为有二级菜单的li
                 $(obj).removeClass("active");
