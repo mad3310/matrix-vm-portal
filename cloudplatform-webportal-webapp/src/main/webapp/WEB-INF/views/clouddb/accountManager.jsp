@@ -276,10 +276,10 @@
 								<div class="inline-block mcluster-select" style="width:380px;height:100%">
 									<div class="select-head clearfix">
 										<p class="pull-left">已授权数据</p>
-										<div class="pull-right">
+										<p class="pull-right">
 											<span style="padding-right: 5px;color:#bbb">权限</span>
 											<a class="">全部设读写</a>
-										</div>
+										</p>
 									</div>
 									<div class="select rds-select select-status-empty">
 										<div class="select-wrap">
