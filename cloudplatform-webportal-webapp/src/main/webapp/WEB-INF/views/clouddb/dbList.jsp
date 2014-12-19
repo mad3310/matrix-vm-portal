@@ -104,7 +104,7 @@
 
 	<div class="row"><!-- main-content-center-begin -->
 		<div class="col-sm-12 col-md-12">
-			<table class="table table-hover">
+			<table class="table table-hover table-se">
 				<thead>
 					<tr>
 						<th width="10">
@@ -123,22 +123,36 @@
 				<tbody id="tby">
 				</tbody>
 				<tfoot>
-					<tr>
+					<tr class="tfoot" >
 						<td width="10">
 							<input type="checkbox">
 						</td>
 						<td colspan=" 8">
 							<div class="pull-left">
-								<div pagination-info="paginationInfo">
-									<div>
-										<button class="btn btn-default" disabled="disabled">批量续费</button>
+									<div pagination-info="paginationInfo">
+										<div class="pull-left">
+											<button class="btn btn-default" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
+										</div>
 									</div>
-								</div>
 							</div>
-						</td>
+							<div class="pull-right">
+									<div class="pagination-info">
+										<span class="ng-binding">共有1条</span>， <span class="ng-binding">每页显示：20条</span>
+									</div>
+									<ul class="pagination pagination-sm">
+										<li><a href="#">&laquo;</a></li>
+										 <li><a href="#">&lt;</a></li>
+										<li class="active"><a href="#">1</a></li>	
+										<li><a href="#">&gt;</a></li>																		
+										<li><a href="#">&raquo;</a></li>
+									</ul>
+
+								</div>
+							</td>
 					</tr>
 				</tfoot>
 			</table>
+		    
 		</div>
 	</div><!-- main-content-center-end -->
 </div>

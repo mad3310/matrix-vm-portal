@@ -113,13 +113,13 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .se-heading a{
 	margin-top:8px;
 }
-/*start 自定义table样式,基本信息*/
+/*start 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
 .table-bi{
 	margin-bottom:0px !important;
 }
-/*end 自定义table样式,基本信息*/
+/*end 鑷畾涔塼able鏍峰紡,鍩烘湰淇℃伅*/
 
-/*自定义table样式 账号管理界面*/
+/*鑷畾涔塼able鏍峰紡 璐﹀彿绠＄悊鐣岄潰*/
 .panel-table{
 	margin-top:20px !important;
 	border:0px;
@@ -323,7 +323,7 @@ vertical-align: top;
 line-height: 20px;
 }
 /*cloud right end*/
-/*产品begin*/
+/*浜у搧begin*/
 .home .product-list {
 background: #fff;
 border: 1px solid #e9edee;
@@ -453,10 +453,10 @@ width: 30px;
 .home .product-list-notopen .product-col .product-category ul>li:hover .category-icon{color:#333}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt{border:1px solid #ccc;background:#f9f9f9}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt .product-opt-icon{color:#333}
-/*产品 end*/
+/*浜у搧 end*/
 
-/*账户管理页css*/
-/*创建数据库用户页列表框*/
+/*璐︽埛绠＄悊椤礳ss*/
+/*鍒涘缓鏁版嵁搴撶敤鎴烽〉鍒楄〃妗�/
 .select {
 	width: 100%;
 	height: 140px;
@@ -539,16 +539,16 @@ width: 30px;
 	height: 32px;
 	margin:0px;
 }
-/*账户管理页end*/
+/*璐︽埛绠＄悊椤礶nd*/
 
-/*输入提示信息格式*/
+/*杈撳叆鎻愮ず淇℃伅鏍煎紡*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
     color: #AAA;
 }
 
-/*disable按钮样式*/
+/*disable鎸夐挳鏍峰紡*/
 .btn-disable{
    	color: #AAA;
 	text-shadow: none;
@@ -966,7 +966,7 @@ border: solid 3px transparent;
 border-top-color: #aaa;
 }
 /*2014-12-18 by gm progressbar-------end*/
-/*2014-12-19 by gm 数字框---begin*/
+/*2014-12-19 by gm 鏁板瓧妗�--begin*/
 .bk-number {
 display: inline-block;
 position: relative;
@@ -1052,9 +1052,9 @@ width: 56px;
 position: relative;
 }
 
-/*2014-12-19 by gm 数字框---end*/
+/*2014-12-19 by gm 鏁板瓧妗�--end*/
 
-/*基本信息页面下拉箭头位置*/
+/*鍩烘湰淇℃伅椤甸潰涓嬫媺绠ご浣嶇疆*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;
@@ -1093,7 +1093,7 @@ position: relative;
     color:#000;
 }
 
-/*监控界面css*/
+/*鐩戞帶鐣岄潰css*/
 .se-heading .nav-pills {
     display: inline-block;
     vertical-align: middle;
@@ -1151,4 +1151,22 @@ position: relative;
 	font-size: 12px;
 	left: 0.166672px;
 	top: 0.600006px;
+}
+
+/* dblist页分页按钮 */
+.pagination{
+	vertical-align:middle;
+	margin:0px !important;
+}
+.pagination-info {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0px 16px;
+    color: #888;
+    margin:0px;
+}
+.table .tfoot{
+    padding: 12px 12px;
+    border-bottom: 1px solid #DDD;
+    vertical-align: middle;
 }
