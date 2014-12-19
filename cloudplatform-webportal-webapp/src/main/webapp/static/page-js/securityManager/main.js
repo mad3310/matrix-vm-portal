@@ -2,6 +2,7 @@
  * Created by yaokuo on 2014/12/12.
  */
 define(function(require){
+	var $ = require('jquery');
     var common = require('../common');
     var cn = new common();
     

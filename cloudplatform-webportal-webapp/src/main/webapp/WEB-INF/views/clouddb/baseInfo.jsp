@@ -14,15 +14,17 @@
 	<title>app-dashboard</title>
 </head>
 <body> 
+<!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+<!-- 全局参数 end -->
 <!-- top bar begin -->
-
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><img src="${ctx}/static/img/cloud.ico"/></a>
+          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
         </div>
         <div class="navbar-header">
-          <a class="navbar-brand active" href="#"><span class="glyphicon glyphicon-home"></span></a>
+          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
         	<form class="navbar-form navbar-right pull-left" role="form">
@@ -53,19 +55,17 @@
 
 <!-- navbar begin -->
 <div class="navbar navbar-default mt50"> 
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Le云控制台首页</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse pull-right">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-	
-
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 <!-- navbar end -->
 <!-- main-content begin-->
 <div class="container-fluid">
@@ -142,7 +142,7 @@
 							<a class="btn btn-xs btn-primary" target="_blank" href="#">只读实例文档</a>
 							<a class="btn btn-xs btn-primary" target="_blank" href="#" data-toggle="modal" data-target="#myModalbuyCase">购买只读实例</a>
 						</div>
-						<a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						<a class="collapse-selector" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						<span class="toggle-drop-down-icon" toggle-show="toggleShow">
 							<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
 						</span>
@@ -153,21 +153,17 @@
 				        <table class="table table-bordered table-bi">
 				        	<tbody>
 				        	<tr>
-				        		<td width="50%"><span class="text-muted pd-r8">实例ID:</span><span>rdsenn6ryenn6ry</span></td>
+				        		<td id="db_info_db_id" width="50%"></td>
 				        		<td width="50%"><span class="text-muted" style="padding-right:8px">地域:</span><span>北京</span></td>
 				        	</tr> 
 				        	<tr>
-					        	<td width="50%">
-					        		<span class="text-muted pd-r8">名称:</span><span text-length="26">rdsenn6ryenn6ry</span>&nbsp;<a class="btn btn-default btn-xs glyphicon glyphicon-pencil" href="#"></a>
-					        	</td> 
+					        	<td id="db_info_db_name" width="50%"></td> 
 					        	<td width="50%">
 					        		<span class="text-muted pd-r8">可用区:</span>可用区A<a class="margin-left-5" data-toggle="modal" data-target="#myModalMoveAvaiable">[迁移可用区]</a><a href="#" target="_blank" class="glyphicon glyphicon-question-sign text-muted margin-left-5"></a>
 					        	</td>
 				        	</tr>
 				        	<tr>
-					        	<td width="50%">
-					        		<span class="text-muted pd-r8">内网地址:</span><span text-length="26">rdsenn6ryenn6ry.mysql.rds.aliyuncs.com</span>
-					        	</td> 
+					        	<td id="db_info_net_addr" width="50%"></td> 
 					        	<td width="50%">
 					        		<span class="text-muted pd-r8">端口:</span>3306<a class="margin-left-5">如何连接RDS</a><a href="#" target="_blank" class=" margin-left-5">如何设置白名单</a>
 					        	</td>
@@ -182,7 +178,7 @@
 				        <span class="panel-title">
 				          		运行状态
 						</span>
-						<a data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
+						<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
 						<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
 							<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
 						</span>

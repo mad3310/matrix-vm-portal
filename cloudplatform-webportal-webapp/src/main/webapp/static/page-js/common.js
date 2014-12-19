@@ -16,6 +16,16 @@ define(function(require,exports,module){
                 $(this).tooltip('hide');
             });
         },
+        
+        Collapse : function(id){
+            $(id).click(function(){
+            	if($(this).find(".glyphicon-chevron-down").length>0){
+            		$(this).find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+            	}else{
+            		$(this).find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+            	}
+            });
+        },
 
         Sidebar : function(index){
             var extended = function(obj){   //obj为有二级菜单的li
@@ -77,8 +87,42 @@ define(function(require,exports,module){
                     handler(data);
                 }
             });
+        },
+        
+       Charts : function(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData){
+        	Highcharts.setOptions({ 
+            colors: ['#ff66cc','#66ff66','#66ffff'] 
+        });
+            $('#chart-container').highcharts({
+                chart: {
+                    zoomType: 'x',
+                    spacingRight: 20            
+                },
+                title: {
+                    text: cTitle
+                },
+                subtitle: {
+                    text: cSubtitle
+                },
+                xAxis: {
+                    type: 'datetime',
+                    maxZoom: 14 * 24 * 3600000, 
+                    title: {
+                        text: null
+                    }
+                },        
+                yAxis: {
+                    title: {
+                        text: 'Exchange rate'
+                    }
+                },
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f} millions)<br/>',
+                    shared: true
+                },        
+                series:  seriesData
+            });
         }
-
         /*add new common function*/
     }
 });

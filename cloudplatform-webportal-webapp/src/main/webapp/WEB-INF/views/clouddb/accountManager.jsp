@@ -17,86 +17,53 @@
 <body>
 	<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
-					<img src="${ctx}/static/img/cloud.ico" />
-				</a>
-			</div>
-			<div class="navbar-header">
-				<a class="navbar-brand active" href="#">
-					<span class="glyphicon glyphicon-home"></span>
-				</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse pull-right">
-				<form class="navbar-form navbar-right pull-left" role="form">
-					<div class="form-group">
-						<input type="text" placeholder="Search" class="form-control"></div>
-					<button type="submit" class="btn btn-success">
-						<span class="glyphicon glyphicon-search"></span>
-					</button>
-				</form>
-				<ul class="nav navbar-nav">
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-bell"></span>
-						</a>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							userName
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li>
-								<a href="#">用户中心</a>
-							</li>
-							<li>
-								<a href="#">我的订单</a>
-							</li>
-							<li>
-								<a href="#">账户管理</a>
-							</li>
-							<li class="divider"></li>
-							<li class="dropdown-header">
-								<a href="#">退出</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-lock"></span>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-pencil"></span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</nav>
-	<!-- top bar end -->
-	<!-- navbar begin -->
-	<div class="navbar navbar-default mt50">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Le云控制台首页</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse pull-right">
-				<ul class="nav navbar-nav">
-					<li class="active">
-						<a href="#">
-							<span class="glyphicon glyphicon-phone"></span>
-							扫描二维码
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
+        </div>
+        <div class="navbar-header">
+          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse pull-right">
+        	<form class="navbar-form navbar-right pull-left" role="form">
+	            <div class="form-group">
+	              <input type="text" placeholder="Search" class="form-control">
+	            </div>
+	            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+	        </form>
+            <ul class="nav navbar-nav">
+	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li class="dropdown">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">userName <span class="caret"></span></a>
+	              <ul class="dropdown-menu" role="menu">
+	                <li><a href="#">用户中心</a></li>
+	                <li><a href="#">我的订单</a></li>
+	                <li><a href="#">账户管理</a></li>
+	                <li class="divider"></li>
+	                <li class="dropdown-header"><a href="#">退出</a></li>
+	              </ul>
+	            </li>
+	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<!-- top bar end -->
+
+<!-- navbar begin -->
+<div class="navbar navbar-default mt50"> 
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 	<!-- navbar end -->
 	<!-- main-content begin-->
 	<div class="container-fluid">

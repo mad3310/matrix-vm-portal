@@ -21,7 +21,7 @@ define(function(require,exports,module){
                 var td2 = $("<td class=\"padding-left-32\">"
                         + "<div>"
                         + "<div>"
-                        + "<a href=\"/detail/baseInfo/"+array[i].id+"\">" + array[i].dbName + "</a><br>"
+                        + "<a href=\"/detail/baseInfo\">" + array[i].dbName + "</a><br>"
                         + "<span text-length=\"26\">" + array[i].dbName + "</span>"
                         + "<a class=\"btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>"
                         +"</div>"
@@ -38,6 +38,7 @@ define(function(require,exports,module){
                 var td7 = $("<td>北京<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
                 var td8 = $("<td><span><span>包月</span><span class=\"text-success\">365</span><span> 天后到期</span></span></td>");
                 var td9 = $("<td class=\"text-right\"> <div><a href=\"/detail/baseInfo\">管理</a><span class=\"text-explode\">|</span><a href=\"#\" target=\"_blank\">续费</a><span class=\"text-explode\">|</span><a href=\"#\">升级</a> </div></td>");
+
                 var tr = $("<tr></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                 tr.appendTo($tby);

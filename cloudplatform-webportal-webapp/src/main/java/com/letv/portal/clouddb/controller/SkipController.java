@@ -39,8 +39,9 @@ public class SkipController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value ="/detail/baseInfo",method=RequestMethod.GET)
-	public ModelAndView tobaseInfo(ModelAndView mav){
+	@RequestMapping(value ="/detail/baseInfo/{dbId}",method=RequestMethod.GET)
+	public ModelAndView tobaseInfo(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/baseInfo");
 		return mav;
 	}
@@ -79,8 +80,9 @@ public class SkipController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value ="/detail/account",method=RequestMethod.GET)
-	public ModelAndView toAccountManager(ModelAndView mav){
+	@RequestMapping(value ="/detail/account/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toAccountManager(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/accountManager");
 		return mav;
 	}
@@ -92,9 +94,37 @@ public class SkipController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value ="/detail/security",method=RequestMethod.GET)
-	public ModelAndView toSecurityManager(ModelAndView mav){
+	@RequestMapping(value ="/detail/security/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toSecurityManager(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/securityManager");
+		return mav;
+	}
+	/**
+	 * Methods Name: monitor<br>
+	 * Description: 跳转监控
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/monitor/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toMonitor(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/monitor");
+		return mav;
+	}
+	/**
+	 * Methods Name: dbCreate<br>
+	 * Description: 跳转数据库创建页面
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/dbCreate",method=RequestMethod.GET)
+	public ModelAndView toDbCreate(ModelAndView mav){
+		mav.setViewName("/clouddb/dbCreate");
 		return mav;
 	}
 	

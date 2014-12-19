@@ -14,14 +14,14 @@
 </head>
 <body>
 <!-- top bar begin -->
-
+<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><img src="/static/img/cloud.ico"/></a>
+          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
         </div>
         <div class="navbar-header">
-          <a class="navbar-brand active" href="#"><span class="glyphicon glyphicon-home"></span></a>
+          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
         	<form class="navbar-form navbar-right pull-left" role="form">
@@ -52,19 +52,17 @@
 
 <!-- navbar begin -->
 <div class="navbar navbar-default mt50"> 
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Le云控制台首页</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse pull-right">
-            <ul class="nav navbar-nav">
-              <li><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-	
-
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 <!-- navbar end -->
 <!-- main-content begin-->
 <div class="container-fluid">
