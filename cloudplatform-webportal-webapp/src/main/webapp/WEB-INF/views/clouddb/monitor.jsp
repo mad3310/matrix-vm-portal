@@ -194,8 +194,7 @@
 						<div id="chart-container" class="chart-container">							
 						</div>
 					</div>
-					<div class="footer" style="width:100%;height:200px;">
-						
+					<div class="footer" style="width:100%;height:200px;">						
 					</div>
 				</div>
 				<!-- main-content-center-end -->			

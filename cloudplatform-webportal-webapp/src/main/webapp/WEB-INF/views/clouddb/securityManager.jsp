@@ -151,7 +151,7 @@
 			    </ul>
 				<!-- <div class="panel-body pd0" id="whitelist"> -->
 				<div class="tab-content">				
-					<div id="whitelist" role="tabpanel" class="tab-pane fade active"  aria-labelledby="whitelist-tab">
+					<div id="whitelist" role="tabpanel" class="tab-pane fade active in"  aria-labelledby="whitelist-tab">
 					        <table class="table table-hover">
 					        	<thead>				        	
 					        	<tr>
