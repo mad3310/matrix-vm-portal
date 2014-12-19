@@ -77,7 +77,7 @@
 						<span style="display: inline-block;vertical-align:super;">
 							<small class="text-success text-xs">(运行中...)</small>
 						</span>
-						<a class="btn btn-default btn-xs" href="RDSlist.html">
+						<a class="btn btn-default btn-xs" href="${ctx}/list/db">
 							<span class="glyphicon glyphicon-step-backward"></span>
 							返回实例列表
 						</a>
