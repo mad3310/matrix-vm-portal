@@ -49,11 +49,6 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse pull-right">
-      <ul class="nav navbar-nav hide">
-        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-      </ul>
-    </div>
   </div>
 </div>
     <!-- navbar end -->
