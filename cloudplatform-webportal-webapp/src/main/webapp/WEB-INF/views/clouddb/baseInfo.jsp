@@ -205,6 +205,102 @@
 				      </div>
 				    </div>
 			  	</div>
+			  	<div class="panel panel-default panel-table">
+			        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+				        <span class="panel-title">
+				          		配置信息
+						</span>
+						<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
+						<span class="toggle-drop-down-icon" toggle-show="toggleShow">
+							<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
+						</span>
+						</a>
+			    	</div>
+				    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+				      <div class="panel-body pd0">
+				        <table class="table table-bordered table-bi">
+				        	<tbody>
+				        	<tr>
+				        		<td width="50%"><span class="text-muted pd-r8">运行状态:</span><span class="text-success">运行中</span></td>
+				        		<td width="50%"><span class="text-muted" style="padding-right:8px">锁定模式:</span><span>正常</span></td>
+				        	</tr>
+				        	<tr>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">可用性:</span><span text-length="26">100.0%</span>
+					        	</td>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">已用空间:</span><span>501M</span>
+					        	</td>
+				        	</tr>
+				        	</tbody>
+				        </table>
+				      </div>
+				    </div>
+			  	</div>
+			  	<div class="panel panel-default panel-table">
+			        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+				        <span class="panel-title">
+				          		运行周期
+						</span>
+						<a class="collapse-selector" data-toggle="collapse" href="#collapseFour"  aria-expanded="true" aria-controls="collapseFour">
+						<span class="toggle-drop-down-icon" toggle-show="toggleShow">
+							<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
+						</span>
+						</a>
+			    	</div>
+				    <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+				      <div class="panel-body pd0">
+				        <table class="table table-bordered table-bi">
+				        	<tbody>
+				        	<tr>
+				        		<td width="50%"><span class="text-muted pd-r8">运行状态:</span><span class="text-success">运行中</span></td>
+				        		<td width="50%"><span class="text-muted" style="padding-right:8px">锁定模式:</span><span>正常</span></td>
+				        	</tr>
+				        	<tr>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">可用性:</span><span text-length="26">100.0%</span>
+					        	</td>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">已用空间:</span><span>501M</span>
+					        	</td>
+				        	</tr>
+				        	</tbody>
+				        </table>
+				      </div>
+				    </div>
+			  	</div>
+			  	<div class="panel panel-default panel-table">
+			        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+				        <span class="panel-title">
+							可维护的时间段
+						</span>
+						<a class="collapse-selector" data-toggle="collapse" href="#collapseFive"  aria-expanded="true" aria-controls="collapseFive">
+						<span class="toggle-drop-down-icon" toggle-show="toggleShow">
+							<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
+						</span>
+						</a>
+			    	</div>
+				    <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+				      <div class="panel-body pd0">
+				        <table class="table table-bordered table-bi">
+				        	<tbody>
+				        	<tr>
+				        		<td width="50%"><span class="text-muted pd-r8">运行状态:</span><span class="text-success">运行中</span></td>
+				        		<td width="50%"><span class="text-muted" style="padding-right:8px">锁定模式:</span><span>正常</span></td>
+				        	</tr>
+				        	<tr>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">可用性:</span><span text-length="26">100.0%</span>
+					        	</td>
+					        	<td width="50%">
+					        		<span class="text-muted pd-r8">已用空间:</span><span>501M</span>
+					        	</td>
+				        	</tr>
+				        	</tbody>
+				        </table>
+				      </div>
+				    </div>
+			  	</div>
 			</div>
 		</div>
 	</div><!-- main-content-center-end -->
