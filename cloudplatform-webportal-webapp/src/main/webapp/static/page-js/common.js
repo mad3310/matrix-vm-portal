@@ -38,7 +38,7 @@ define(function(require,exports,module){
         	}else if(status == 4){
         		return "<font color=\"red\">审核失败</font>";
         	}else if(status == 5){
-        		return "<font color=\"orange\">异常</font>";
+        		return "<span class=\"text-danger\">异常</span>";
         	}else if(status == 6){
         		return "<span class=\"text-success\">运行中<span>";
         	}else if(status == 7){
@@ -174,7 +174,7 @@ define(function(require,exports,module){
     		        tooltip: {
     		                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f} millions)<br/>',
     		                    shared: true
-    		                },  
+    		        },
     		        plotOptions: {
     		            area: {                
     		                marker: {
