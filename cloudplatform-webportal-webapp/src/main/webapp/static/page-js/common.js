@@ -10,13 +10,15 @@ define(function(require,exports,module){
 
     Common.prototype = {
         Tooltip : function (id){
+        	if(!id) {
+        		id = "[data-toggle='tooltip']";
+        	}
             $(id).hover(function() {
                 $(this).tooltip('show');
             }, function() {
                 $(this).tooltip('hide');
             });
         },
-        
         Collapse : function(id){
             $(id).click(function(){
             	if($(this).find(".glyphicon-chevron-down").length>0){
@@ -38,9 +40,9 @@ define(function(require,exports,module){
         	}else if(status == 4){
         		return "<font color=\"red\">审核失败</font>";
         	}else if(status == 5){
-        		return "<font color=\"orange\">异常</font>";
+        		return "<span class=\"text-danger\">异常</span>";
         	}else if(status == 6){
-        		return "运行中";
+        		return "<span class=\"text-success\">运行中<span>";
         	}else if(status == 7){
         		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>启动中...";
         	}else if(status == 8){
@@ -174,7 +176,7 @@ define(function(require,exports,module){
     		        tooltip: {
     		                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f} millions)<br/>',
     		                    shared: true
-    		                },  
+    		        },
     		        plotOptions: {
     		            area: {                
     		                marker: {

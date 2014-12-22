@@ -15,6 +15,9 @@
 </head>
 
 <body>
+	<!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<!-- 全局参数 end -->
 	<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -177,23 +180,16 @@
 						<table class="table table-hover table-se">
 							<thead>
 								<tr>
-									<th width="220px">帐号</th>
-									<th width="80px">状态</th>
-									<th width="200px">所属数据库</th>
-									<th>帐号描述</th>
-									<th class="text-right" width="260px">
+									<th width="25%">帐号</th>
+									<th width="15%">状态</th>
+									<th width="15%">读写比例</th>
+									<th>频次限制</th>
+									<th class="text-right" width="30%">
 										<span style="padding-left:8px">操作</span>
 									</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td width="220px"></td>
-									<td width="80px"></td>
-									<td width="200px"></td>
-									<td></td>
-									<td width="260px"></td>
-								</tr>
+							<tbody id="tby">
 							</tbody>
 						</table>
 					</div>
