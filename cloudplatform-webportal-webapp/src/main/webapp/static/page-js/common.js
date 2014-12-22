@@ -10,13 +10,15 @@ define(function(require,exports,module){
 
     Common.prototype = {
         Tooltip : function (id){
+        	if(!id) {
+        		id = "[data-toggle='tooltip']";
+        	}
             $(id).hover(function() {
                 $(this).tooltip('show');
             }, function() {
                 $(this).tooltip('hide');
             });
         },
-        
         Collapse : function(id){
             $(id).click(function(){
             	if($(this).find(".glyphicon-chevron-down").length>0){
