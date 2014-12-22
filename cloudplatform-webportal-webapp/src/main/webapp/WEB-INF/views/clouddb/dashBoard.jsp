@@ -7,23 +7,20 @@
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="css/ui-css/common.css"/>
-	<!-- js -->
-	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/ui-js/common.js"></script>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>app-dashboard</title>
 </head>
 <body> 
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- top bar begin -->
+	<!-- top bar begin -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><img src="img/cloud.ico"/></a>
+          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
         </div>
         <div class="navbar-header">
-          <a class="navbar-brand active" href="#"><span class="glyphicon glyphicon-home"></span></a>
+          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
         	<form class="navbar-form navbar-right pull-left" role="form">
@@ -35,13 +32,13 @@
             <ul class="nav navbar-nav">
 	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">userName <span class="caret"></span></a>
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                <li><a href="#">用户中心</a></li>
 	                <li><a href="#">我的订单</a></li>
 	                <li><a href="#">账户管理</a></li>
 	                <li class="divider"></li>
-	                <li class="dropdown-header"><a href="#">退出</a></li>
+	                <li class="dropdown-header"><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
 	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
@@ -49,19 +46,23 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-    </nav><!-- top bar end -->
-	<div class="navbar navbar-default mt50 navAdjust"> <!-- navbar begin -->
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="#">Le云控制台首页</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse pull-right">
-            <ul class="nav navbar-nav">
-              <li><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-            </ul>
-          </div>
-        </div>
-    </div><!-- navbar end -->
+    </nav>
+<!-- top bar end -->
+
+<!-- navbar begin -->
+<div class="navbar navbar-default mt50"> 
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+    <!-- navbar end -->
 	<div class="container-fluid bodycolor"><!-- main-content begin-->
 		<div class="home">
 			<div class="home-content">
@@ -76,7 +77,7 @@
 								<div class="mlt-4 pull-left">
 									<p class="balance-title">账户余额:</p>
 									<p class="balance-num ellipsis" >
-										<span>5</span>
+										<span>500</span>
 										<span class="balance-after-point">.00</span>
 										<span class="balance-unit">元</span>
 									</p>
@@ -138,7 +139,7 @@
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
 								</a>
 								<p class="item-title">
-									<a href="#">关系型数据库&nbsp;<span class="item-title-short">RDS</span>
+									<a href="${ctx}/list/db">关系型数据库&nbsp;<span class="item-title-short">RDS</span>
 									</a>
 								</p>
 							</div>
@@ -146,7 +147,7 @@
 								<span class="item-record-num">
 									<!-- <span size="14" class="item-record-loading hide"></span>  -->
 									<!-- <a class="glyphicon glyphicon-refresh item-record-reload"></a>  -->
-									<a class="item-record-num-count" href="#"><span>1</span></a>
+									<a class="item-record-num-count" href="${ctx}/list/db"><span>1</span></a>
 								</span>
 								<span class="item-record-unit">个</span> 
 								<span class="glyphicon glyphicon-question-sign text-muted"></span>
@@ -201,9 +202,6 @@
 												<a href="#" target="_blank" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
-												<script type="text/javascript">
-												buyTooltip();
-												</script>
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_blank" class="product-opt">
@@ -565,7 +563,19 @@
 		</div>
 	</div><!-- main-content end-->
 </body>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">
-tooltip("home-cash");
+
+// Set configuration
+seajs.config({
+base: "${ctx}/static/modules/",
+alias: {
+"jquery": "jquery/2.0.3/jquery.min.js",
+"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+}
+});
+
+seajs.use("${ctx}/static/page-js/dashboard/main");
 </script>
 </html>

@@ -16,7 +16,52 @@ define(function(require,exports,module){
                 $(this).tooltip('hide');
             });
         },
-
+        
+        Collapse : function(id){
+            $(id).click(function(){
+            	if($(this).find(".glyphicon-chevron-down").length>0){
+            		$(this).find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+            	}else{
+            		$(this).find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+            	}
+            });
+        },
+        TranslateStatus : function (status){
+        	if (status == 0){
+        		return "未审核";
+        	}else if(status == 1){
+        		return "运行中";
+        	}else if(status == 2){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...";
+        	}else if(status == 3){
+        		return "创建失败";
+        	}else if(status == 4){
+        		return "<font color=\"red\">审核失败</font>";
+        	}else if(status == 5){
+        		return "<font color=\"orange\">异常</font>";
+        	}else if(status == 6){
+        		return "运行中";
+        	}else if(status == 7){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>启动中...";
+        	}else if(status == 8){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>停止中...";
+        	}else if(status == 9){
+        		return "已停止";
+        	}else if(status == 10){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>删除中...";
+        	}else if(status == 11){
+        		return "已删除";
+        	}else if(status == 12){
+        		return "不存在";
+        	}else if(status == 13){
+        		return "<font color=\"orange\">危险</font>";
+        	}else if(status == 14){
+        		return "<font color=\"red\">严重危险</font>";
+        	}else if(status == 15){
+        		return "禁用";
+        	}
+        },
+        
         Sidebar : function(index){
             var extended = function(obj){   //obj为有二级菜单的li
                 $(obj).removeClass("active");
@@ -44,8 +89,8 @@ define(function(require,exports,module){
             });
 
             /*跳转界面处理*/
-            $('#sidebar').find(".active").removeClass("active");
-            var $obj = $('#sidebar').children("ul").children("li:eq("+index[0]+")");
+            $('.sidebar-selector').find(".active").removeClass("active");
+            var $obj = $('.sidebar-selector').children("ul").children("li:eq("+index[0]+")");
             if($obj.find("ul").length > 0){
                 extended($obj);
                 $obj.find("li:eq("+index[1]+")").addClass("active");
@@ -77,8 +122,76 @@ define(function(require,exports,module){
                     handler(data);
                 }
             });
+        },
+        
+       Charts : function(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData){
+    	   //legend颜色控制
+    	   Highcharts.setOptions({ 
+    		    colors: ['#ff66cc','#66ff66','#66ffff'] 
+    		});
+    		    $('#chart-container').highcharts({
+    		        chart: {
+    		            type: cType ,          
+    		            zoomType: 'x',
+    		            spacingRight: 20            
+    		        },        
+    		        title: {
+    		            text: cTitle
+    		        },
+    		        subtitle: {
+    		            text: cSubtitle
+    		        },
+    		        xAxis: {
+    		            type: 'datetime',
+    		            maxZoom: 14 * 24 * 3600000, 
+    		            title: {
+    		                text: null
+    		            }
+    		        },        
+    		        yAxis: {
+    		            title: {
+    		                text: 'Exchange rate'
+    		            }
+    		        },
+    		        credits: {
+    		            enabled: false
+    		        },
+    		        legend :{
+    		            borderColor: '#000000',
+    		            backgroundColor: '#f9f9f9',
+    		            /*shadow: true,*/
+    		            /*itemwidth: 300,*/
+    		            /*margin:30,*/
+    		            symbolRadius: '2px',
+    		            borderRadius: '5px',
+    		            /*itemHiddenStyle: {
+    		                Color: '#333333'
+    		                },*/
+    		            itemHoverStyle: {
+    		                Color: '#000000'
+    		                }
+    		        },
+    		        tooltip: {
+    		                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f} millions)<br/>',
+    		                    shared: true
+    		                },  
+    		        plotOptions: {
+    		            area: {                
+    		                marker: {
+    		                    enabled: false,
+    		                    symbol: 'circle',
+    		                    radius: 2,
+    		                    states: {
+    		                        hover: {
+    		                            enabled: true
+    		                        }
+    		                    }
+    		                }
+    		            }
+    		        },
+    		        series:  seriesData
+    		    });
         }
-
         /*add new common function*/
     }
 });

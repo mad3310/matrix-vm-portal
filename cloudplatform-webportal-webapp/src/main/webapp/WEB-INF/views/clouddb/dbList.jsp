@@ -32,13 +32,13 @@
             <ul class="nav navbar-nav">
 	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">userName <span class="caret"></span></a>
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                <li><a href="#">用户中心</a></li>
 	                <li><a href="#">我的订单</a></li>
 	                <li><a href="#">账户管理</a></li>
 	                <li class="divider"></li>
-	                <li class="dropdown-header"><a href="#">退出</a></li>
+	                <li class="dropdown-header"><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
 	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
@@ -51,17 +51,17 @@
 
 <!-- navbar begin -->
 <div class="navbar navbar-default mt50"> 
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse pull-right">
-            <ul class="nav navbar-nav hide">
-              <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 	
 
 <!-- navbar end -->
@@ -81,7 +81,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md">刷新</button>
-				<button class="btn-primary btn btn-md" >新建实例</button>
+				<button class="btn-primary btn btn-md" herf="${ctx}/detail/dbCreate">新建数据库</button>
 				</h5>
 			</div>
 		</div>
@@ -104,7 +104,7 @@
 
 	<div class="row"><!-- main-content-center-begin -->
 		<div class="col-sm-12 col-md-12">
-			<table class="table table-hover">
+			<table class="table table-hover table-se">
 				<thead>
 					<tr>
 						<th width="10">
@@ -123,22 +123,36 @@
 				<tbody id="tby">
 				</tbody>
 				<tfoot>
-					<tr>
+					<tr class="tfoot" >
 						<td width="10">
 							<input type="checkbox">
 						</td>
 						<td colspan=" 8">
 							<div class="pull-left">
-								<div pagination-info="paginationInfo">
-									<div>
-										<button class="btn btn-default" disabled="disabled">批量续费</button>
+									<div pagination-info="paginationInfo">
+										<div class="pull-left">
+											<button class="btn btn-default" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
+										</div>
 									</div>
-								</div>
 							</div>
-						</td>
+							<div class="pull-right">
+									<div class="pagination-info">
+										<span class="ng-binding">共有1条</span>， <span class="ng-binding">每页显示：20条</span>
+									</div>
+									<ul class="pagination pagination-sm">
+										<li><a href="#">&laquo;</a></li>
+										 <li><a href="#">&lt;</a></li>
+										<li class="active"><a href="#">1</a></li>	
+										<li><a href="#">&gt;</a></li>																		
+										<li><a href="#">&raquo;</a></li>
+									</ul>
+
+								</div>
+							</td>
 					</tr>
 				</tfoot>
 			</table>
+		    
 		</div>
 	</div><!-- main-content-center-end -->
 </div>

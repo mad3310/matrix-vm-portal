@@ -10,16 +10,11 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-        BasicInfoHandler : function(data){
-          /*将ajax获取的data格式化,并用回调函数添加到页面*/
-            var ret = data;
-            console.log(ret);
-        },
-
-        StatusActionHandler : function(data){
-            /*将ajax获取的data格式化,并返回*/
-            var ret = data;
-            console.log(ret);
+    		DbInfoHandler : function(data){
+    			var dbInfo = data.data;
+    			$("#db_info_db_id").html("<span class=\"text-muted pd-r8\">数据库ID:</span><span>"+dbInfo.dbName+"</span>");
+    			$("#db_info_db_name").html("<span class=\"text-muted pd-r8\">名称:</span><span text-length=\"26\">"+dbInfo.dbName+"</span>&nbsp;<a class=\"btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>");
+    			$("#db_info_net_addr").html("<span class=\"text-muted pd-r8\">内网地址:</span><span text-length=\"26\">"+dbInfo.containers[0].ipAddr+"</span>");
         }
     }
 });

@@ -4,103 +4,66 @@
 <html lang="zh">
 
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1" />
-	<meta name="viewpoint" content="width=device-width,initial-scale=1" />
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="css/ui-css/common.css" />
-	<!-- js -->
-	<script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/ui-js/common.js"></script>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>account</title>
 </head>
 
 <body>
 	<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">
-					<img src="img/cloud.ico" />
-				</a>
-			</div>
-			<div class="navbar-header">
-				<a class="navbar-brand active" href="#">
-					<span class="glyphicon glyphicon-home"></span>
-				</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse pull-right">
-				<form class="navbar-form navbar-right pull-left" role="form">
-					<div class="form-group">
-						<input type="text" placeholder="Search" class="form-control"></div>
-					<button type="submit" class="btn btn-success">
-						<span class="glyphicon glyphicon-search"></span>
-					</button>
-				</form>
-				<ul class="nav navbar-nav">
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-bell"></span>
-						</a>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							userName
-							<span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu" role="menu">
-							<li>
-								<a href="#">用户中心</a>
-							</li>
-							<li>
-								<a href="#">我的订单</a>
-							</li>
-							<li>
-								<a href="#">账户管理</a>
-							</li>
-							<li class="divider"></li>
-							<li class="dropdown-header">
-								<a href="#">退出</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-lock"></span>
-						</a>
-					</li>
-					<li>
-						<a href="#">
-							<span class="glyphicon glyphicon-pencil"></span>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</nav>
-	<!-- top bar end -->
-	<!-- navbar begin -->
-	<div class="navbar navbar-default mt50">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Le云控制台首页</a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse pull-right">
-				<ul class="nav navbar-nav">
-					<li class="active">
-						<a href="#">
-							<span class="glyphicon glyphicon-phone"></span>
-							扫描二维码
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
+        </div>
+        <div class="navbar-header">
+          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse pull-right">
+        	<form class="navbar-form navbar-right pull-left" role="form">
+	            <div class="form-group">
+	              <input type="text" placeholder="Search" class="form-control">
+	            </div>
+	            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+	        </form>
+            <ul class="nav navbar-nav">
+	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li class="dropdown">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <ul class="dropdown-menu" role="menu">
+	                <li><a href="#">用户中心</a></li>
+	                <li><a href="#">我的订单</a></li>
+	                <li><a href="#">账户管理</a></li>
+	                <li class="divider"></li>
+	                <li class="dropdown-header"><a href="${ctx}/account/logout">退出</a></li>
+	              </ul>
+	            </li>
+	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+<!-- top bar end -->
+
+<!-- navbar begin -->
+<div class="navbar navbar-default mt50"> 
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse pull-right">
+      <ul class="nav navbar-nav hide">
+        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
 	<!-- navbar end -->
 	<!-- main-content begin-->
 	<div class="container-fluid">
@@ -159,42 +122,42 @@
 		<!-- main-content-header end-->
 		<div class="row">
 			<!-- main-content-center-begin -->
-			<div class="col-sm-2 col-md-2">
-				<div class="sidebar">
+			<nav class="col-sm-2 col-md-2">
+				<div class="sidebar sidebar-line sidebar-selector">
 					<ul class="nav nav-sidebar li-underline">
-						<li class="active">
-							<a class="text-sm" href="#">基本信息</a>
+			            <li><a class="text-sm" href="${ctx}/detail/baseInfo/${dbId}">基本信息</a></li>
+			            <li><a  class="text-sm" href="${ctx}/detail/account/${dbId}">账号管理</a></li>
+			            <li><a  class="text-sm" href="#">
+								<span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+								系统资源监控
+							</a>
+							<ul class="nav hide">
+								<li><a  class="text-sm" href="${ctx}/detail/monitor/${dbId}">磁盘空间</a></li>
+								<li><a  class="text-sm" href="#">IOPS</a></li>
+								<li><a  class="text-sm" href="#">连接数</a></li>
+								<li><a  class="text-sm" href="#">CPU利用率</a></li>
+								<li><a  class="text-sm" href="#">网络流量</a></li>
+								<li><a  class="text-sm" href="#">QPS/TPS</a></li>
+								<li><a  class="text-sm" href="#">InnoDB缓冲池</a></li>
+								<li><a  class="text-sm" href="#">InnoDB读写量</a></li>
+								<li><a  class="text-sm" href="#">InnoDB读写次数</a></li>
+								<li><a  class="text-sm" href="#">InnoDB日志</a></li>
+								<li><a  class="text-sm" href="#">临时表</a></li>
+								<li><a  class="text-sm" href="#">MyISAM key Buffer</a></li>
+								<li><a  class="text-sm" href="#">MyISAM读写次数</a></li>
+								<li><a  class="text-sm" href="#">COMDML</a></li>
+								<li><a  class="text-sm" href="#">ROWDML</a></li>
+							</ul>
 						</li>
-						<li>
-							<a class="text-sm" href="#">账号管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">数据库管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">系统资源监控</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">备份与恢复</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">参数设置</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">日志管理</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">性能优化</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">阈值报警</a>
-						</li>
-						<li>
-							<a class="text-sm" href="#">安全控制</a>
-						</li>
-					</ul>
+			            <li><a  class="text-sm" href="#">备份与恢复</a></li>
+			            <li><a  class="text-sm" href="#">参数设置</a></li>
+			            <li><a class="text-sm" href="#">日志管理</a></li>
+			            <li><a  class="text-sm" href="#">性能优化</a></li>
+			            <li><a class="text-sm" href="#">阈值报警</a></li>
+			            <li><a class="text-sm" href="${ctx}/detail/security/${dbId}">安全控制</a></li>
+			        </ul>
 				</div>
-			</div>
+			</nav>
 			<div class="col-sm-10 col-md-10">
 				<!-- 账号管理主界面div -->
 				<div id="accountList" class="" role="tablist" aria-multiselectable="true">
@@ -207,7 +170,7 @@
 								<span class="glyphicon glyphicon-refresh"></span>
 								刷新
 							</button>
-							<button class="btn btn-primary">创建帐号</button>
+							<button id="createAccount" class="btn btn-primary" onclick="createAccount()">创建帐号</button>
 						</div>
 					</div>
 					<div class="table-responsive">
@@ -313,10 +276,10 @@
 								<div class="inline-block mcluster-select" style="width:380px;height:100%">
 									<div class="select-head clearfix">
 										<p class="pull-left">已授权数据</p>
-										<div class="pull-right">
+										<p class="pull-right">
 											<span style="padding-right: 5px;color:#bbb">权限</span>
 											<a class="">全部设读写</a>
-										</div>
+										</p>
 									</div>
 									<div class="select rds-select select-status-empty">
 										<div class="select-wrap">
@@ -442,8 +405,8 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label"></label>
 								<div class="col-sm-4">
-									<button disabled="disabled" type="button" class="btn btn-success btn-disable">提交</button>
-									<button type="button" class="btn btn-default" ui-sref="rdsDetail.account.list()">返回</button>
+									<button disabled="disabled" type="button" class="btn btn-success btn-disable" onclick="newAccountSubmit()">提交</button>
+									<button type="button" class="btn btn-default" ui-sref="rdsDetail.account.list()" onclick="newAccountCancel()">返回</button>
 								</div>
 							</div>
 							<!-- 按钮模块end -->
@@ -451,9 +414,38 @@
 					</div>
 				</div>
 				<!-- main-content-center-end -->
+				<script>
+				    function createAccount(){				    
+				    	$("#accountList").addClass("mc-hide");
+				        $("#newAccountTab").removeClass("mc-hide");
+				    };
+				    function newAccountSubmit(){
+				    	$("#accountList").addClass("mc-hide");
+				        $("#newAccountTab").removeClass("mc-hide");
+				    };
+				    function newAccountCancel(){
+				    	$("#accountList").removeClass("mc-hide");
+				        $("#newAccountTab").addClass("mc-hide");
+				    };
+				</script>
 			</div>
 		</div>
 	</div>
 </body>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+<script type="text/javascript">
+
+// Set configuration
+seajs.config({
+	base: "${ctx}/static/modules/",
+	alias: {
+		"jquery": "jquery/2.0.3/jquery.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+	}
+});
+
+seajs.use("${ctx}/static/page-js/accountManager/main");
+</script>
 
 </html>
