@@ -89,11 +89,11 @@
 	<div class="row"><!-- main-content-center-begin -->
 		<div class="col-sm-12 col-md-12">
 			<ul class="nav nav-tabs RDSCreateUl" role="tablist" id="RDSCreateTab">
-  				<li role="presentation" ><a href="#year" role="tab" data-toggle="tab" style="">包年包月</a></li>
+  				<li role="presentation" class="active" ><a href="#year" role="tab" data-toggle="tab" style="">包年包月</a></li>
   				<li role="presentation"><a href="#dosage" role="tab" data-toggle="tab">按量付费</a></li>
 			</ul>
 			<div class="tab-content mt20">
-  				<div role="tabpanel" class="tab-pane" id="year">
+  				<div role="tabpanel" class="tab-pane active in" id="year">
   					<div class="col-sm-12 col-md-9">
 	  					<dl class="bk-group">
 	  						<dt class="bk-group-title">基本配置</dt>

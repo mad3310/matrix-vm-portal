@@ -40,7 +40,7 @@ define(function(require,exports,module){
         	}else if(status == 5){
         		return "<font color=\"orange\">异常</font>";
         	}else if(status == 6){
-        		return "运行中";
+        		return "<span class=\"text-success\">运行中<span>";
         	}else if(status == 7){
         		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>启动中...";
         	}else if(status == 8){
