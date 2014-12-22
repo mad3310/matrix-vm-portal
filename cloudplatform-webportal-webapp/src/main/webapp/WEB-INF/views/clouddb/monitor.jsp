@@ -132,7 +132,7 @@
 							<span class="glyphicon glyphicon glyphicon-chevron-right"></span>
 							系统资源监控
 						</a>
-						<ul class="nav hide">
+						<ul class="nav">
 							<li><a  class="text-sm" href="${ctx}/detail/monitor/${dbId}">磁盘空间</a></li>
 							<li><a  class="text-sm" href="#">IOPS</a></li>
 							<li><a  class="text-sm" href="#">连接数</a></li>
