@@ -1199,3 +1199,8 @@ position: relative;
 .bk-slider span:hover{
 	color:#fff;
 }
+/* 去掉IP授权部分a标签下划线 */
+#newAccountTab a:hover {
+	cursor:pointer;
+	text-decoration:none
+	}
