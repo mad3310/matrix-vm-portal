@@ -113,13 +113,13 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .se-heading a{
 	margin-top:8px;
 }
-/*start ×Ô¶¨ÒåtableÑùÊ½,»ù±¾ÐÅÏ¢*/
+/*start è‡ªå®šä¹‰tableæ ·å¼,åŸºæœ¬ä¿¡æ¯*/
 .table-bi{
 	margin-bottom:0px !important;
 }
-/*end ×Ô¶¨ÒåtableÑùÊ½,»ù±¾ÐÅÏ¢*/
+/*end è‡ªå®šä¹‰tableæ ·å¼,åŸºæœ¬ä¿¡æ¯*/
 
-/*×Ô¶¨ÒåtableÑùÊ½ ÕËºÅ¹ÜÀí½çÃæ*/
+/*è‡ªå®šä¹‰tableæ ·å¼ è´¦å·ç®¡ç†ç•Œé¢*/
 .panel-table{
 	margin-top:20px !important;
 	border:0px;
@@ -323,7 +323,7 @@ vertical-align: top;
 line-height: 20px;
 }
 /*cloud right end*/
-/*²úÆ·begin*/
+/*äº§å“begin*/
 .home .product-list {
 background: #fff;
 border: 1px solid #e9edee;
@@ -453,10 +453,10 @@ width: 30px;
 .home .product-list-notopen .product-col .product-category ul>li:hover .category-icon{color:#333}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt{border:1px solid #ccc;background:#f9f9f9}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt .product-opt-icon{color:#333}
-/*²úÆ· end*/
+/*äº§å“ end*/
 
-/*ÕË»§¹ÜÀíÒ³css*/
-/*´´½¨Êý¾Ý¿âÓÃ»§Ò³ÁÐ±í¿ò*/
+/*è´¦æˆ·ç®¡ç†é¡µcss*/
+/*åˆ›å»ºæ•°æ®åº“ç”¨æˆ·é¡µåˆ—è¡¨æ¡†*/
 .select {
 	width: 100%;
 	height: 140px;
@@ -539,16 +539,16 @@ width: 30px;
 	height: 32px;
 	margin:0px;
 }
-/*ÕË»§¹ÜÀíÒ³end*/
+/*è´¦æˆ·ç®¡ç†é¡µend*/
 
-/*ÊäÈëÌáÊ¾ÐÅÏ¢¸ñÊ½*/
+/*è¾“å…¥æç¤ºä¿¡æ¯æ ¼å¼*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
     color: #AAA;
 }
 
-/*disable°´Å¥ÑùÊ½*/
+/*disableæŒ‰é’®æ ·å¼*/
 .btn-disable{
    	color: #AAA;
 	text-shadow: none;
@@ -966,7 +966,7 @@ border: solid 3px transparent;
 border-top-color: #aaa;
 }
 /*2014-12-18 by gm progressbar-------end*/
-/*2014-12-19 by gm Êý×Ö¿ò---begin*/
+/*2014-12-19 by gm æ•°å­—æ¡†---begin*/
 .bk-number {
 display: inline-block;
 position: relative;
@@ -1052,9 +1052,9 @@ width: 56px;
 position: relative;
 }
 
-/*2014-12-19 by gm Êý×Ö¿ò---end*/
+/*2014-12-19 by gm æ•°å­—æ¡†---end*/
 
-/*»ù±¾ÐÅÏ¢Ò³ÃæÏÂÀ­¼ýÍ·Î»ÖÃ*/
+/*åŸºæœ¬ä¿¡æ¯é¡µé¢ä¸‹æ‹‰ç®­å¤´ä½ç½®*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;
@@ -1093,7 +1093,7 @@ position: relative;
     color:#000;
 }
 
-/*¼à¿Ø½çÃæcss*/
+/*ç›‘æŽ§ç•Œé¢css*/
 .se-heading .nav-pills {
     display: inline-block;
     vertical-align: middle;
@@ -1150,8 +1150,8 @@ position: relative;
 	left: 0.166672px;
 	top: 0.600006px;
 }
-/* ¼à¿Ø½çÃæcss end */
-/* dblistÒ³·ÖÒ³°´Å¥ */
+/* ç›‘æŽ§ç•Œé¢css end */
+/* dblisté¡µåˆ†é¡µæŒ‰é’® */
 .pagination{
 	vertical-align:middle;
 	margin:0px !important;
@@ -1168,7 +1168,7 @@ position: relative;
     border-bottom: 1px solid #DDD;
     vertical-align: middle;
 }
-/* dblistÒ³·ÖÒ³°´Å¥  end*/
+/* dblisté¡µåˆ†é¡µæŒ‰é’®  end*/
 
 .bk-slider-range{
 	width: inherit;
@@ -1199,11 +1199,12 @@ position: relative;
 .bk-slider span:hover{
 	color:#fff;
 }
-/* È¥µôIPÊÚÈ¨²¿·Öa±êÇ©ÏÂ»®Ïß */
+/* åŽ»æŽ‰IPæŽˆæƒéƒ¨åˆ†aæ ‡ç­¾ä¸‹åˆ’çº¿ */
 #newAccountTab a:hover {
 	cursor:pointer;
 	text-decoration:none
 	}
+
 /* åˆ†é¡µæ¡activeé¢œè‰² */
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
 	background-color: #697485;
