@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IDbProxy;
@@ -63,6 +65,14 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("createUser", sessionService.getSession().getUserId());	
+		obj.setData(this.dbService.findPagebyParams(params, page));
+		return obj;
+	}
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName) {
 		Page page = new Page();
@@ -70,7 +80,7 @@ public class DbController {
 		page.setRecordsPerPage(recordsPerPage);
 	
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("dbName", dbName);		
+		params.put("dbName", dbName);
 		params.put("createUser", sessionService.getSession().getUserId());		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbService.findPagebyParams(params, page));
