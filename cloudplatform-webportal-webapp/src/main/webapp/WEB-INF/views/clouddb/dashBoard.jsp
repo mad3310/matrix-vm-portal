@@ -137,7 +137,7 @@
 									<a class="item-record-num-count" href="${ctx}/list/db"><span id="dbCount">0</span></a>
 								</span>
 								<span class="item-record-unit">个</span>
-								<a data-toggle="tooltip" data-placement="top" title="aaaaaaaaaaaaaaaaaaaaa sdds">
+								<a data-toggle="tooltip" data-placement="top" title="数据库数">
 									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 								</a>
 							</div>
