@@ -19,6 +19,10 @@ define(function(require){
 	$("#refresh").click(function() {
 		asyncData();
 	});
+	/*
+	 * 可封装公共方法 begin
+	 */
+	//初始化分页组件
 	$('#paginator').bootstrapPaginator({
 		size:"small",
     	alignment:'right',
@@ -28,6 +32,28 @@ define(function(require){
         	asyncData(page);
         }
 	});
+	//初始化checkbox
+	$(document).on('click', 'th input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	$(document).on('click', 'tfoot input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	/*
+	 * 可封装公共方法 end
+	 */
+	
+	//加载列表数据
     function asyncData(page) {
         var dbName = $("#dbName").val(),location = $("#location").val();
     	if(!page) page = cn.currentPage;

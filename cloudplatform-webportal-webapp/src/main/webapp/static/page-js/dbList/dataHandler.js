@@ -26,13 +26,12 @@ define(function(require,exports,module){
 
             for(var i= 0, len= array.length;i<len;i++){
                 var td1 = $("<td width=\"10\">"
-                        + "<input type=\"checkbox\">"
+                        + "<input type=\"checkbox\" name=\"mcluster_id\" value= \""+array[i].id+"\">"
                         + "</td>");
                 var td2 = $("<td class=\"padding-left-32\">"
                         + "<div>"
                         + "<div>"
                         + "<a href=\"/detail/baseInfo/"+array[i].id+"\">" + array[i].dbName + "</a><br>"
-                        + "<span text-length=\"26\">" + array[i].dbName + "</span>"
                         + "<a class=\"hide btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>"
                         +"</div>"
                         +"</div>"
