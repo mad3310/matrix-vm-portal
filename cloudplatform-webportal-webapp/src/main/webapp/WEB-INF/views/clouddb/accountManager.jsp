@@ -15,6 +15,9 @@
 </head>
 
 <body>
+	<!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<!-- 全局参数 end -->
 	<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -177,23 +180,16 @@
 						<table class="table table-hover table-se">
 							<thead>
 								<tr>
-									<th width="220px">帐号</th>
-									<th width="80px">状态</th>
-									<th width="200px">所属数据库</th>
-									<th>帐号描述</th>
-									<th class="text-right" width="260px">
+									<th width="25%">帐号</th>
+									<th width="15%">状态</th>
+									<th width="15%">读写比例</th>
+									<th>频次限制</th>
+									<th class="text-right" width="30%">
 										<span style="padding-left:8px">操作</span>
 									</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td width="220px"></td>
-									<td width="80px"></td>
-									<td width="200px"></td>
-									<td></td>
-									<td width="260px"></td>
-								</tr>
+							<tbody id="tby">
 							</tbody>
 						</table>
 					</div>
@@ -249,10 +245,10 @@
 							<!-- 数据库账号模块end -->
 							<!-- 授权数据库模块 -->
 							<div class="form-group">
-								<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权数据库：</label>
+								<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
 								<div class="inline-block mcluster-select" style="width:180px">
 									<div class="select-head clearfix">
-										<p class="pull-left">未授权数据库</p>
+										<p class="pull-left">未授权IP</p>
 									</div>
 									<div class="select" value="account.unbindListSelected">
 										<ul class="select-list">
@@ -275,7 +271,7 @@
 								</div>
 								<div class="inline-block mcluster-select" style="width:380px;height:100%">
 									<div class="select-head clearfix">
-										<p class="pull-left">已授权数据</p>
+										<p class="pull-left">已授权IP</p>
 										<p class="pull-right">
 											<span style="padding-right: 5px;color:#bbb">权限</span>
 											<a class="">全部设读写</a>
@@ -311,6 +307,30 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">
 									<span class="text-danger">*</span>
+									读写比例：
+								</label>
+								<div class="col-sm-8 row">
+									<!-- 密码输入框 -->
+									<div class="col-sm-4">
+										<input required="required" name="newPwd" class="form-control" type="password">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">
+									<span class="text-danger">*</span>
+									最大并发量：
+								</label>
+								<div class="col-sm-8 row">
+									<!-- 密码输入框 -->
+									<div class="col-sm-4">
+										<input required="required" name="newPwd" class="form-control" type="password">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">
+									<span class="text-danger">*</span>
 									密码：
 								</label>
 								<div class="col-sm-8 row">
@@ -323,7 +343,7 @@
 										<small class="text-danger">
 											<span class="glyphicon glyphicon-remove-sign"></span>
 											密码格式错误
-										</small> 
+										</small>
 										<small class="text-danger">
 											<span class="glyphicon glyphicon-remove-sign"></span>密码不能为空
 										</small>

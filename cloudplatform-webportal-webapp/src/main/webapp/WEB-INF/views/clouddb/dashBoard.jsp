@@ -10,7 +10,7 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>app-dashboard</title>
+	<title>Le云控制台首页</title>
 </head>
 <body> 
 	<!-- top bar begin -->
@@ -23,12 +23,6 @@
           <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
-        	<form class="navbar-form navbar-right pull-left" role="form">
-	            <div class="form-group">
-	              <input type="text" placeholder="Search" class="form-control">
-	            </div>
-	            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
-	        </form>
             <ul class="nav navbar-nav">
 	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
@@ -38,7 +32,7 @@
 	                <li><a href="#">我的订单</a></li>
 	                <li><a href="#">账户管理</a></li>
 	                <li class="divider"></li>
-	                <li class="dropdown-header"><a href="${ctx}/account/logout">退出</a></li>
+	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
 	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
@@ -55,11 +49,6 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
     </div>
-    <div id="navbar" class="navbar-collapse collapse pull-right">
-      <ul class="nav navbar-nav hide">
-        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-      </ul>
-    </div>
   </div>
 </div>
     <!-- navbar end -->
@@ -70,27 +59,27 @@
 					<div class="col-xs-6 col-md-6"><!-- begin userinfo left-->
 						<div class="info clearfix">
 							<div class="user-info pull-left">
-								<p class="text-muted user-name ellipsis">Hi,<a href="#" target="_blank" class="home-orange" text-length="8">姚阔</a></p>
-								<p class="user-email ellipsis">yaokuo1209</p>
+								<p class="text-muted user-name ellipsis">Hi,<a href="#" target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</a></p>
+								<p class="user-email ellipsis">${sessionScope.userSession.userName}</p>
 							</div>
 							<div class="account pull-left">
 								<div class="mlt-4 pull-left">
 									<p class="balance-title">账户余额:</p>
 									<p class="balance-num ellipsis" >
-										<span>500</span>
+										<span>0</span>
 										<span class="balance-after-point">.00</span>
 										<span class="balance-unit">元</span>
 									</p>
 								</div>
 								<div class="account-opt pull-left">
 									<div class="account-opt-row">
-										<a href="#" target="_blank" class="btn btn-default btn-sm">充值</a>
-										<a href="#" target="_blank" class="btn btn-default btn-sm">提现</a>
-										<a href="#" target="_blank" class="btn btn-default btn-sm">索取发票</a>
+										<a href="#" target="_self" class="btn btn-default btn-sm disabled disabled">充值</a>
+										<a href="#" target="_self" class="btn btn-default btn-sm disabled">提现</a>
+										<a href="#" target="_self" class="btn btn-default btn-sm disabled">索取发票</a>
 									</div>
 									<div>
-										<a href="#" target="_blank" class="btn btn-default btn-sm">订单管理</a>
-										<a target="_blank" class="withholding" id="home-cash" href="#" data-toggle="tooltip" data-placement="top" title="您还未签约支付宝代扣服务，点击查看详情">
+										<a href="#" target="_self" class="btn btn-default btn-sm disabled">订单管理</a>
+										<a target="_self" class="withholding" id="home-cash" href="#" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务，点击查看详情">
 											<span class="glyphicon glyphicon-shopping-cart text-warning"></span> <span >未签约</span>
 										</a>
 									</div>
@@ -145,12 +134,10 @@
 							</div>
 							<div class="item-record">
 								<span class="item-record-num">
-									<!-- <span size="14" class="item-record-loading hide"></span>  -->
-									<!-- <a class="glyphicon glyphicon-refresh item-record-reload"></a>  -->
-									<a class="item-record-num-count" href="${ctx}/list/db"><span>1</span></a>
+									<a class="item-record-num-count" href="${ctx}/list/db"><span id="dbCount">0</span></a>
 								</span>
 								<span class="item-record-unit">个</span> 
-								<span class="glyphicon glyphicon-question-sign text-muted"></span>
+								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="使用量"></span>
 							</div>
 						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -167,7 +154,7 @@
 									<a class="item-record-num-count" href="#"><span>0</span></a>
 								</span> 
 								<span class="item-record-unit">个</span> 
-								<span class="glyphicon glyphicon-question-sign text-muted"></span>
+								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="监控点"></span>
 							</div>
 						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -199,17 +186,17 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-tags product-opt-icon"></span>
 												</a>
 											</div>
@@ -223,12 +210,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -242,12 +229,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -266,12 +253,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -285,12 +272,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -304,12 +291,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -330,12 +317,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -349,12 +336,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -368,7 +355,7 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -387,12 +374,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -406,12 +393,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -425,12 +412,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -451,12 +438,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -470,12 +457,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -489,12 +476,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -507,12 +494,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -525,12 +512,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>
@@ -543,12 +530,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_blank" class="product-opt">
+												<a href="#" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
 												</a>
 											</div>

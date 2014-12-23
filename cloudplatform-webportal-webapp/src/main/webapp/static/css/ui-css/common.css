@@ -846,9 +846,9 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
-width: 412px;
+width: 448px;
 background: #e8e8e8;
-padding: 0 0px;
+padding: 0 8px;
 margin: 0 0 1px 0;
 vertical-align: top;
 }
@@ -869,7 +869,7 @@ height: 36px;
 display: block;
 border-right: solid 1px #ddd;
 height: 36px;
-padding: 0 12px 0 0;
+padding: 0 10px 0 0;
 text-align: right;
 }
 .bk-slider .bk-slider-block .bk-slider-txt {
@@ -1041,7 +1041,7 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
-width: 528px;
+width: 591px;
 }
 .bk-slider .bk-slider-mm {
 width: 40px;
@@ -1169,30 +1169,3 @@ position: relative;
     vertical-align: middle;
 }
 /* dblist页分页按钮  end*/
-
-.bk-slider-range{
-	width: inherit;
-	height:36px;
-	float:left;/* margin:7px 10px auto 10px; */
-	position:relative;
-	background:#d8d8d8 0 0 no-repeat;}
-
-.bk-slider-range #flag{
-	display: block;
-    height: 36px;
-    overflow: hidden;
- /*    width: 448px; */
-    background: none repeat scroll 0% 0% #43BFE3;
-    white-space: nowrap;
-}
-.bk-slider-range button{
-	position: absolute;
-    left: -8px;
-    top: -2px;
-    display: block;
-    width: 11px;
-    height: 40px;
-    padding: 14px 0px 0px 5px;
-    background: none repeat scroll 0% 0% #2DACD1;
-    cursor: default;
-}

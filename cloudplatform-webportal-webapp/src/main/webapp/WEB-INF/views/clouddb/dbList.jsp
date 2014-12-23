@@ -10,7 +10,7 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>app-dashboard</title>
+	<title>RDS管理控制台</title>
 </head>
 <body>
 <!-- top bar begin -->
@@ -22,13 +22,10 @@
         <div class="navbar-header">
           <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
         </div>
+        <div class="navbar-header">
+          <a class="navbar-brand active" href="${ctx}/list/db"><span class="glyphicon glyphicon-th-large">关系型数据库 RDS</span></a>
+        </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
-        	<form class="navbar-form navbar-right pull-left" role="form">
-	            <div class="form-group">
-	              <input type="text" placeholder="Search" class="form-control">
-	            </div>
-	            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
-	        </form>
             <ul class="nav navbar-nav">
 	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
@@ -38,7 +35,7 @@
 	                <li><a href="#">我的订单</a></li>
 	                <li><a href="#">账户管理</a></li>
 	                <li class="divider"></li>
-	                <li class="dropdown-header"><a href="${ctx}/account/logout">退出</a></li>
+	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
 	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
@@ -53,12 +50,7 @@
 <div class="navbar navbar-default mt50"> 
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse pull-right">
-      <ul class="nav navbar-nav hide">
-        <li class="active"><a href="#"><span class="glyphicon glyphicon-phone"></span> 扫描二维码</a></li>
-      </ul>
+      <a class="navbar-brand" href="#">RDS管理控制台</a>
     </div>
   </div>
 </div>
@@ -80,8 +72,8 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="pull-right">
 				<h5 class="bdl-0">
-				<button class="btn-default btn btn-md">刷新</button>
-				<button class="btn-primary btn btn-md" onclick="location='${ctx}/detail/dbCreate'">新建数据库</button>
+				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
+				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/dbCreate')">新建数据库</button>
 				</h5>
 			</div>
 		</div>
@@ -89,14 +81,9 @@
 			<div class="pull-left">
 				<form class="form-inline" role="form">
 					<div class="form-group">
-						<select class="form-control">
-							<option value="0" selected="selected">常规实例</option>
-						</select>
+						<input id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
-					<div class="form-group">
-						<input type="text" class="form-control" size="48" placeholder="请输入实例名称或实例ID进行搜索">
-					</div>
-					<button type="submit" class="btn btn-default">搜索</button>
+					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
 			</div>
 		</div>
@@ -137,14 +124,18 @@
 							</div>
 							<div class="pull-right">
 									<div class="pagination-info">
-										<span class="ng-binding">共有1条</span>， <span class="ng-binding">每页显示：20条</span>
+										<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
+										<span class="ng-binding">每页显示<span id="recordsPerPage"></span>条</span>
+										<span class="hidden">当前<span id="currentPage"></span>页</span>
+										<span class="hidden">共有<span id="totalPages"></span>页</span>
+										
 									</div>
 									<ul class="pagination pagination-sm">
-										<li><a href="#">&laquo;</a></li>
-										 <li><a href="#">&lt;</a></li>
+										<li><a href="javascript:void(0);" id="firstPage">&laquo;</a></li>
+										<li><a href="javascript:void(0);" id="prevPage">&lt;</a></li>
 										<li class="active"><a href="#">1</a></li>	
-										<li><a href="#">&gt;</a></li>																		
-										<li><a href="#">&raquo;</a></li>
+										<li><a href="javascript:void(0);" id="nextPage">&gt;</a></li>
+										<li><a href="javascript:void(0);" id="lastPage">&raquo;</a></li>
 									</ul>
 
 								</div>

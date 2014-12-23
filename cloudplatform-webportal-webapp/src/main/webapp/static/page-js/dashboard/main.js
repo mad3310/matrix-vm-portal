@@ -6,11 +6,14 @@ define(function(require){
     var cn = new common();
 
     /*初始化工具提示*/
-    cn.Tooltip('#home-cash');
+    cn.Tooltip();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();
-
-   // cn.GetData("/static/page-js/basicInfo/analogData/dblist.json",basicInfoHandler.BasicInfoHandler);
+    
+    /*
+     * 加载资源数量：rds数
+     */
+    cn.GetData("/dashboard/statistics",basicInfoHandler.resCountHandler);
 });

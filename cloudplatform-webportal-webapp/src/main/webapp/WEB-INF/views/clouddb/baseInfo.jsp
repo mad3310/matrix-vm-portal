@@ -74,7 +74,7 @@
 			<div class="pull-left">
 				<h3>
 				<span class="text-success glyphicon glyphicon-phone"></span>
-				<span id="serviceName" data-toggle="tooltip" data-placement="bottom" title="rdsenn6ryenn6r">rdsenn6ryenn6r...</span>
+				<span id="serviceName" data-toggle="tooltip" data-placement="bottom" title=""></span>
 				<span style="display: inline-block;vertical-align:super;">
 				<small class="text-success text-xs">(运行中...)</small></span>
 				<a class="btn btn-default btn-xs" href="${ctx}/list/db"><span class="glyphicon glyphicon-step-backward"></span> 返回实例列表</a>
@@ -139,8 +139,8 @@
 				          		基本信息
 				        </span>						
 						<div class="pull-right table-viewer-topbar-content">
-							<a class="btn btn-xs btn-primary" target="_blank" href="#">只读实例文档</a>
-							<a class="btn btn-xs btn-primary" target="_blank" href="#" data-toggle="modal" data-target="#myModalbuyCase">购买只读实例</a>
+							<a class="hide btn btn-xs btn-primary" target="_blank" href="#">只读实例文档</a>
+							<a class="hide btn btn-xs btn-primary" target="_blank" href="#" data-toggle="modal" data-target="#myModalbuyCase">购买只读实例</a>
 						</div>
 						<a class="collapse-selector" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 						<span class="toggle-drop-down-icon" toggle-show="toggleShow">
@@ -158,15 +158,11 @@
 				        	</tr> 
 				        	<tr>
 					        	<td id="db_info_db_name" width="50%"></td> 
-					        	<td width="50%">
-					        		<span class="text-muted pd-r8">可用区:</span>可用区A<a class="margin-left-5" data-toggle="modal" data-target="#myModalMoveAvaiable">[迁移可用区]</a><a href="#" target="_blank" class="glyphicon glyphicon-question-sign text-muted margin-left-5"></a>
-					        	</td>
+					        	<td id="db_info_available_region" width="50%"></td>
 				        	</tr>
 				        	<tr>
 					        	<td id="db_info_net_addr" width="50%"></td> 
-					        	<td width="50%">
-					        		<span class="text-muted pd-r8">端口:</span>3306<a class="margin-left-5">如何连接RDS</a><a href="#" target="_blank" class=" margin-left-5">如何设置白名单</a>
-					        	</td>
+					        	<td id="db_info_db_port" width="50%"></td>
 				        	</tr>
 				        	</tbody>
 				        </table>
@@ -189,7 +185,7 @@
 				        <table class="table table-bordered table-bi">
 				        	<tbody>
 				        	<tr>
-				        		<td width="50%"><span class="text-muted pd-r8">运行状态:</span><span class="text-success">运行中</span></td>
+				        		<td id="db_info_running_state" width="50%"></td>
 				        		<td width="50%"><span class="text-muted" style="padding-right:8px">锁定模式:</span><span>正常</span></td>
 				        	</tr> 
 				        	<tr>
