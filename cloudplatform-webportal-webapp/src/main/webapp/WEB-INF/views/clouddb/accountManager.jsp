@@ -244,15 +244,15 @@
 							</div>
 							<!-- 数据库账号模块end -->
 							<!-- 授权数据库模块 -->
-							<div class="form-group">
+							<div class="form-group multi-select">
 								<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
 								<div class="inline-block mcluster-select" style="width:180px">
 									<div class="select-head clearfix">
 										<p class="pull-left">未授权IP</p>
 									</div>
-									<div class="select" value="account.unbindListSelected">
-										<ul class="select-list">
-											<li class="select-item">jll</li>
+									<div class="select">
+										<ul class="select-list select-list-left">
+											<li class="select-item active">jll</li>
 											<li class="select-item">gm_test</li>
 										</ul>
 										<!-- 没有数据记录时显示暂无数据 -->
@@ -277,19 +277,19 @@
 											<a class="">全部设读写</a>
 										</p>
 									</div>
-									<div class="select rds-select select-status-empty">
+									<div class="select">
 										<div class="select-wrap">
-											<ul class="select-list">
+											<ul class="select-list select-list-right">
 												<li class="select-item clearfix active" tooltip="">
 													<p class="pull-left">gm_test</p>
 													<p class="pull-right" style="margin-right:5px">
-														<span class="ng-scope">
-															<input type="radio" name="gm_test">
+														<span class="">
+															<input type="radio" name="gm_test" value="">
 															<label class="">读写</label>
 														</span>
-														<span class="ng-scope">
-															<input type="radio" name="gm_test">
-															<label class="ng-binding">只读</label>
+														<span class="">
+															<input type="radio" name="gm_test" value="">
+															<label class="">只读</label>
 														</span>
 													</p>
 												</li>

@@ -63,7 +63,6 @@ define(function(require,exports,module){
         		return "禁用";
         	}
         },
-        
         Sidebar : function(index){
             var extended = function(obj){   //obj为有二级菜单的li
                 $(obj).removeClass("active");
@@ -100,7 +99,6 @@ define(function(require,exports,module){
                 $obj.addClass("active");
             }
         },
-
         GetData : function(url,handler){  //异步获取数据,将数据交给handler处理
             $.ajax({
                 url:url,
@@ -112,7 +110,6 @@ define(function(require,exports,module){
                 }
             });
         },
-
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
             $.ajax({
                 url:url,
@@ -125,8 +122,7 @@ define(function(require,exports,module){
                 }
             });
         },
-        
-       Charts : function(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData){
+        Charts : function(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData){
     	   //legend颜色控制
     	   Highcharts.setOptions({ 
     		    colors: ['#ff66cc','#66ff66','#66ffff'] 
@@ -193,7 +189,11 @@ define(function(require,exports,module){
     		        },
     		        series:  seriesData
     		    });
-        }
+        },
+		DoubleFrame:function(){
+
+		}
+
         /*add new common function*/
     }
 });
