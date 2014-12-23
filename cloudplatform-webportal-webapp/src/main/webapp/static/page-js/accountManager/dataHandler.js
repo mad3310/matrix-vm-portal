@@ -26,7 +26,6 @@ define(function(require,exports,module){
                 tr.appendTo($tby);
             }
         },
-
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
         }
@@ -69,9 +68,27 @@ define(function(require,exports,module){
             SelectToggle($d);
         });
         /*全选按钮*/
+        var i = 0;  //循环选项
+        $d.find(".select-all-rw").click(function(){
+            var arr = [{selectContent:"管理",displayContent:"全部设读写"},
+                       {selectContent:"读写",displayContent:"全部设只读"},
+                       {selectContent:"只读",displayContent:"全部设管理"}];
+            $sr.find("li").each(function(){
+                $(this).find("input").each(function(){
+                    $(this).attr("checked"," ");
+                   if($(this).closest("lable").html() == arr[i].selectContent){
+                       $(this).attr("checked","checked");
+                   }
+                })
+            });
+            if(i<arr.length-1){
+                i +=1;
+            }else{
+                i=0;
+            }
+        });
 
     };
-
     function AddToLeftFrame($sl,data){
         var $li = $("<li value=\""+data.id+"\" class=\"select-item\">"+data.addr+"</li>");
         $li.appendTo($sl);
@@ -81,7 +98,11 @@ define(function(require,exports,module){
             + "<p class=\"pull-left\">"+data.addr+"</p>"
             + "<p class=\"pull-right\" style=\"margin-right:5px\">"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\">"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"\">"
+            + "<label class=\"\">管理</label>"
+            + "</span>"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"\">"
             + "<label class=\"\">读写</label>"
             + "</span>"
             + "<span>"
