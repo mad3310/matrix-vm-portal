@@ -9,6 +9,8 @@ define(function(require,exports,module){
     module.exports = Common;
 
     Common.prototype = {
+    	currentPage:1,
+    	recordsPerPage:20,
         Tooltip : function (id){
         	if(!id) {
         		id = "[data-toggle='tooltip']";
