@@ -113,13 +113,13 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 .se-heading a{
 	margin-top:8px;
 }
-/*start è‡ªå®šä¹‰tableæ ·å¼,åŸºæœ¬ä¿¡æ¯*/
+/*start ×Ô¶¨ÒåtableÑùÊ½,»ù±¾ÐÅÏ¢*/
 .table-bi{
 	margin-bottom:0px !important;
 }
-/*end è‡ªå®šä¹‰tableæ ·å¼,åŸºæœ¬ä¿¡æ¯*/
+/*end ×Ô¶¨ÒåtableÑùÊ½,»ù±¾ÐÅÏ¢*/
 
-/*è‡ªå®šä¹‰tableæ ·å¼ è´¦å·ç®¡ç†ç•Œé¢*/
+/*×Ô¶¨ÒåtableÑùÊ½ ÕËºÅ¹ÜÀí½çÃæ*/
 .panel-table{
 	margin-top:20px !important;
 	border:0px;
@@ -323,7 +323,7 @@ vertical-align: top;
 line-height: 20px;
 }
 /*cloud right end*/
-/*äº§å“begin*/
+/*²úÆ·begin*/
 .home .product-list {
 background: #fff;
 border: 1px solid #e9edee;
@@ -453,10 +453,10 @@ width: 30px;
 .home .product-list-notopen .product-col .product-category ul>li:hover .category-icon{color:#333}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt{border:1px solid #ccc;background:#f9f9f9}
 .home .product-list-notopen .product-col .product-category ul>li:hover .product-opt .product-opt-icon{color:#333}
-/*äº§å“ end*/
+/*²úÆ· end*/
 
-/*è´¦æˆ·ç®¡ç†é¡µcss*/
-/*åˆ›å»ºæ•°æ®åº“ç”¨æˆ·é¡µåˆ—è¡¨æ¡†*/
+/*ÕË»§¹ÜÀíÒ³css*/
+/*´´½¨Êý¾Ý¿âÓÃ»§Ò³ÁÐ±í¿ò*/
 .select {
 	width: 100%;
 	height: 140px;
@@ -539,16 +539,16 @@ width: 30px;
 	height: 32px;
 	margin:0px;
 }
-/*è´¦æˆ·ç®¡ç†é¡µend*/
+/*ÕË»§¹ÜÀíÒ³end*/
 
-/*è¾“å…¥æç¤ºä¿¡æ¯æ ¼å¼*/
+/*ÊäÈëÌáÊ¾ÐÅÏ¢¸ñÊ½*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
     color: #AAA;
 }
 
-/*disableæŒ‰é’®æ ·å¼*/
+/*disable°´Å¥ÑùÊ½*/
 .btn-disable{
    	color: #AAA;
 	text-shadow: none;
@@ -846,9 +846,9 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
-width: 448px;
+width: 412px;
 background: #e8e8e8;
-padding: 0 8px;
+padding: 0 0px;
 margin: 0 0 1px 0;
 vertical-align: top;
 }
@@ -869,7 +869,7 @@ height: 36px;
 display: block;
 border-right: solid 1px #ddd;
 height: 36px;
-padding: 0 10px 0 0;
+padding: 0 12px 0 0;
 text-align: right;
 }
 .bk-slider .bk-slider-block .bk-slider-txt {
@@ -966,7 +966,7 @@ border: solid 3px transparent;
 border-top-color: #aaa;
 }
 /*2014-12-18 by gm progressbar-------end*/
-/*2014-12-19 by gm æ•°å­—æ¡†---begin*/
+/*2014-12-19 by gm Êý×Ö¿ò---begin*/
 .bk-number {
 display: inline-block;
 position: relative;
@@ -1041,7 +1041,7 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
-width: 591px;
+width: 528px;
 }
 .bk-slider .bk-slider-mm {
 width: 40px;
@@ -1052,9 +1052,9 @@ width: 56px;
 position: relative;
 }
 
-/*2014-12-19 by gm æ•°å­—æ¡†---end*/
+/*2014-12-19 by gm Êý×Ö¿ò---end*/
 
-/*åŸºæœ¬ä¿¡æ¯é¡µé¢ä¸‹æ‹‰ç®­å¤´ä½ç½®*/
+/*»ù±¾ÐÅÏ¢Ò³ÃæÏÂÀ­¼ýÍ·Î»ÖÃ*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;
@@ -1093,7 +1093,7 @@ position: relative;
     color:#000;
 }
 
-/*ç›‘æŽ§ç•Œé¢css*/
+/*¼à¿Ø½çÃæcss*/
 .se-heading .nav-pills {
     display: inline-block;
     vertical-align: middle;
@@ -1150,8 +1150,8 @@ position: relative;
 	left: 0.166672px;
 	top: 0.600006px;
 }
-/* ç›‘æŽ§ç•Œé¢css end */
-/* dblisté¡µåˆ†é¡µæŒ‰é’® */
+/* ¼à¿Ø½çÃæcss end */
+/* dblistÒ³·ÖÒ³°´Å¥ */
 .pagination{
 	vertical-align:middle;
 	margin:0px !important;
@@ -1168,9 +1168,42 @@ position: relative;
     border-bottom: 1px solid #DDD;
     vertical-align: middle;
 }
-/* dblisté¡µåˆ†é¡µæŒ‰é’®  end*/
+/* dblistÒ³·ÖÒ³°´Å¥  end*/
 
+.bk-slider-range{
+	width: inherit;
+	height:36px;
+	float:left;/* margin:7px 10px auto 10px; */
+	position:relative;
+	background:#d8d8d8 0 0 no-repeat;}
 
+.bk-slider-range #flag{
+	display: block;
+    height: 36px;
+    overflow: hidden;
+ /*    width: 448px; */
+    background: none repeat scroll 0% 0% #43BFE3;
+    white-space: nowrap;
+}
+.bk-slider-range button{
+	position: absolute;
+    left: -8px;
+    top: -2px;
+    display: block;
+    width: 11px;
+    height: 40px;
+    padding: 14px 0px 0px 5px;
+    background: none repeat scroll 0% 0% #2DACD1;
+    cursor: default;
+}
+.bk-slider span:hover{
+	color:#fff;
+}
+/* È¥µôIPÊÚÈ¨²¿·Öa±êÇ©ÏÂ»®Ïß */
+#newAccountTab a:hover {
+	cursor:pointer;
+	text-decoration:none
+	}
 /* åˆ†é¡µæ¡activeé¢œè‰² */
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
 	background-color: #697485;

@@ -136,8 +136,10 @@
 								<span class="item-record-num">
 									<a class="item-record-num-count" href="${ctx}/list/db"><span id="dbCount">0</span></a>
 								</span>
-								<span class="item-record-unit">个</span> 
-								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="使用量"></span>
+								<span class="item-record-unit">个</span>
+								<a data-toggle="tooltip" data-placement="top" title="aaaaaaaaaaaaaaaaaaaaa sdds">
+									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+								</a>
 							</div>
 						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
