@@ -13,7 +13,8 @@ define(function(require){
     
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbUserListHandler = new dataHandler();
+    var dbUser = new dataHandler();
 
-    cn.GetData("/dbUser/"+$("#dbId").val(),dbUserListHandler.DbUserListHandler);
+    cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+    cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
 })
