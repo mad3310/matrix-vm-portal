@@ -1169,3 +1169,10 @@ position: relative;
     vertical-align: middle;
 }
 /* dblist页分页按钮  end*/
+
+
+/* 分页条active颜色 */
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+	background-color: #697485;
+	boder-color: #697485;
+}

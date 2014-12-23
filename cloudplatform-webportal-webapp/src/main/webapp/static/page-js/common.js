@@ -10,7 +10,7 @@ define(function(require,exports,module){
 
     Common.prototype = {
     	currentPage:1,
-    	recordsPerPage:20,
+    	recordsPerPage:10,
         Tooltip : function (id){
         	if(!id) {
         		id = "[data-toggle='tooltip']";
