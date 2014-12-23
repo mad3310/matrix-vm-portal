@@ -191,10 +191,7 @@ define(function(require,exports,module){
     		        },
     		        series:  seriesData
     		    });
-        },
-		DoubleFrame:function(){
-
-		}
+        }
 
         /*add new common function*/
     }

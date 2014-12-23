@@ -252,8 +252,6 @@
 									</div>
 									<div class="select">
 										<ul class="select-list select-list-left">
-											<li class="select-item active">jll</li>
-											<li class="select-item">gm_test</li>
 										</ul>
 										<!-- 没有数据记录时显示暂无数据 -->
 										<div class="select-msg mc-hide">
@@ -274,25 +272,12 @@
 										<p class="pull-left">已授权IP</p>
 										<p class="pull-right">
 											<span style="padding-right: 5px;color:#bbb">权限</span>
-											<a class="">全部设读写</a>
+											<a class="select-all-rw">全部设读写</a>
 										</p>
 									</div>
 									<div class="select">
 										<div class="select-wrap">
 											<ul class="select-list select-list-right">
-												<li class="select-item clearfix active" tooltip="">
-													<p class="pull-left">gm_test</p>
-													<p class="pull-right" style="margin-right:5px">
-														<span class="">
-															<input type="radio" name="gm_test" value="">
-															<label class="">读写</label>
-														</span>
-														<span class="">
-															<input type="radio" name="gm_test" value="">
-															<label class="">只读</label>
-														</span>
-													</p>
-												</li>
 											</ul>
 											<!--无数据时显示暂无数据 -->
 											<div class="select-msg mc-hide">

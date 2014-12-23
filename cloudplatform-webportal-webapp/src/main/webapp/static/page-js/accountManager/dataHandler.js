@@ -25,6 +25,90 @@ define(function(require,exports,module){
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5);
                 tr.appendTo($tby);
             }
+        },
+
+        DbUserIpHandler: function(data){
+            InitDoubleFrame(".multi-select",data.data);
         }
+    }
+    function InitDoubleFrame(id,data){
+        var $d = $(id);		//双选框div
+        $sl = $d.find(".select-list-left");		//左选框ul
+        $sr = $d.find(".select-list-right");	//右选框ul
+        for(var i= 0,len=data.length;i<len;i++){
+            if(data[i].used == 0){
+                AddToLeftFrame($sl,data[i]);
+            }else{
+                AddToRightFrame($sr,data[i]);
+            }
+        };
+        /*初始化选中操作*/
+        SelectToggle($d);
+
+        /*添加选中内容*/
+        $d.find(".btn_db_add").click(function(){
+            var selected= [];
+            $sl.find(".active").each(function (i,val) {
+                selected.push({addr:$(val).html(),id:$(val).val()});
+            });
+            $sl.find(".active").remove();
+            for(var i= 0,len=selected.length;i<len;i++){
+                AddToRightFrame($sr,selected[i]);
+            }
+            SelectToggle($d);
+        });
+        $d.find(".btn_db_remove").click(function(){
+            var selected= [];
+            $sr.find(".active").each(function (i,val) {
+                selected.push({addr:$(val).find("p:first").html(),id:$(val).val()});
+            });
+            $sr.find(".active").remove();
+            for(var i= 0,len=selected.length;i<len;i++){
+                AddToLeftFrame($sl,selected[i]);
+            }
+            SelectToggle($d);
+        });
+        /*全选按钮*/
+
+    };
+
+    function AddToLeftFrame($sl,data){
+        var $li = $("<li value=\""+data.id+"\" class=\"select-item\">"+data.addr+"</li>");
+        $li.appendTo($sl);
+    };
+    function AddToRightFrame($sr,data){
+        var $li = $("<li value=\""+data.id+"\"  class=\"select-item\"> "
+            + "<p class=\"pull-left\">"+data.addr+"</p>"
+            + "<p class=\"pull-right\" style=\"margin-right:5px\">"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\">"
+            + "<label class=\"\">读写</label>"
+            + "</span>"
+            + "<span>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"checked\">"
+            + "<label class=\"\">只读</label>"
+            + "</span>"
+            + "</p>"
+            + "</li>");
+        $li.appendTo($sr);
+    };
+
+    function SelectToggle($d){
+        $d.find("li").each(function() {
+            if ($(this).find("p").length == 0) {
+                $(this).unbind("click");
+                $(this).click(function () {
+                    $(this).toggleClass("active");
+                });
+            } else {
+                $(this).find("p:first").unbind("click");
+                $(this).find("p:first").click(function () {
+                    $(this).closest("li").toggleClass("active");
+                });
+            }
+        })
+    };
+    function GetDoubleValue(id){
+        var s = $(id);
     }
 });
