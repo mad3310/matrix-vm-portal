@@ -23,8 +23,8 @@
 		          		基本信息
 		        </span>						
 				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void()">只读实例文档</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void()">购买只读实例</a>
+					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">只读实例文档</a>
+					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">购买只读实例</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
@@ -50,7 +50,7 @@
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">名称:</span>
 		        			<span id="db_info_db_name"></span>
-		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void()"></a>
+		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 			        	</td> 
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">可用区:</span>
@@ -119,8 +119,8 @@
 		          		配置信息
 				</span>
 				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void()">续费</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void()">变更配置</a>
+					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
+					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">

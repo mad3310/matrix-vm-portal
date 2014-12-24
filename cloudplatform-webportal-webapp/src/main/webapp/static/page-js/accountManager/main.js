@@ -11,6 +11,13 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
-    cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
-    cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
+    asyncData();
+    
+	$("#refresh").click(function() {
+		asyncData();
+	});
+    function asyncData() {
+    	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+    }
+    //cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
 })

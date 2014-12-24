@@ -30,19 +30,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <a href="javascript:void(0)" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="#">用户中心</a></li>
-	                <li><a href="#">我的订单</a></li>
-	                <li><a href="#">账户管理</a></li>
+	                <li><a href="javascript:void(0)">用户中心</a></li>
+	                <li><a href="javascript:void(0)">我的订单</a></li>
+	                <li><a href="javascript:void(0)">账户管理</a></li>
 	                <li class="divider"></li>
 	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -53,7 +53,7 @@
 	<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;"> 
 	  <div class="container-fluid">
 	    <div class="navbar-header">
-	      <a class="navbar-brand" href="#">关系型数据库<font color="#FF9C17">RDS</font></a>
+	      <a class="navbar-brand" href="javascript:void(0)">关系型数据库<font color="#FF9C17">RDS</font></a>
 	    </div>
 	  </div>
 	</div>
@@ -119,33 +119,33 @@
 			<nav class="col-sm-2 col-md-2">
 				<div class="sidebar sidebar-line sidebar-selector">
 					<ul class="nav nav-sidebar li-underline">
-			            <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${dbId}">基本信息</a></li>
-			            <li><a  class="text-sm" src="${ctx}/detail/account/${dbId}">账号管理</a></li>
-			            <li><a  class="text-sm" href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
+			            <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${dbId}" href="javascript:void(0)">基本信息</a></li>
+			            <li><a  class="text-sm" src="${ctx}/detail/account/${dbId}" href="javascript:void(0)">账号管理</a></li>
+			            <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
 							<ul class="nav hide">
-								<li><a  class="text-sm" src="${ctx}/monitor/dbLink/${dbId}">连接数</a></li>
-								<li><a  class="text-sm" href="#">磁盘空间</a></li>
-								<li><a  class="text-sm" href="#">IOPS</a></li>
-								<li><a  class="text-sm" href="#">CPU利用率</a></li>
-								<li><a  class="text-sm" href="#">网络流量</a></li>
-								<li><a  class="text-sm" href="#">QPS/TPS</a></li>
-								<li><a  class="text-sm" href="#">InnoDB缓冲池</a></li>
-								<li><a  class="text-sm" href="#">InnoDB读写量</a></li>
-								<li><a  class="text-sm" href="#">InnoDB读写次数</a></li>
-								<li><a  class="text-sm" href="#">InnoDB日志</a></li>
-								<li><a  class="text-sm" href="#">临时表</a></li>
-								<li><a  class="text-sm" href="#">MyISAM key Buffer</a></li>
-								<li><a  class="text-sm" href="#">MyISAM读写次数</a></li>
-								<li><a  class="text-sm" href="#">COMDML</a></li>
-								<li><a  class="text-sm" href="#">ROWDML</a></li>
+								<li><a  class="text-sm" src="${ctx}/monitor/dbLink/${dbId}" href="javascript:void(0)">连接数</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">网络流量</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">QPS/TPS</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">InnoDB缓冲池</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">InnoDB读写量</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">InnoDB读写次数</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">InnoDB日志</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">临时表</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">MyISAM key Buffer</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">MyISAM读写次数</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">COMDML</a></li>
+								<li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li>
 							</ul>
 						</li>
-			            <li><a  class="text-sm" href="#">备份与恢复</a></li>
-			            <li><a  class="text-sm" href="#">参数设置</a></li>
-			            <li><a class="text-sm" href="#">日志管理</a></li>
-			            <li><a  class="text-sm" href="#">性能优化</a></li>
-			            <li><a class="text-sm" href="#">阈值报警</a></li>
-			            <li><a class="text-sm" src="${ctx}/detail/security/${dbId}">安全控制</a></li>
+			            <li><a  class="text-sm" href="javascript:void(0)">备份与恢复</a></li>
+			            <li><a  class="text-sm" href="javascript:void(0)">参数设置</a></li>
+			            <li><a class="text-sm" href="javascript:void(0)">日志管理</a></li>
+			            <li><a  class="text-sm" href="javascript:void(0)">性能优化</a></li>
+			            <li><a class="text-sm" href="javascript:void(0)">阈值报警</a></li>
+			            <li><a class="text-sm" src="${ctx}/detail/security/${dbId}" href="javascript:void(0)">安全控制</a></li>
 			        </ul>
 				</div>
 			</nav>

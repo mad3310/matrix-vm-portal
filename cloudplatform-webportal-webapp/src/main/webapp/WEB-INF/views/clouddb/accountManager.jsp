@@ -28,10 +28,7 @@
 				<h4>账号管理</h4>
 			</div>
 			<div class="pull-right">
-				<button id="refresh" class="btn btn-default">
-					<span class="glyphicon glyphicon-refresh"></span>
-					刷新
-				</button>
+				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
 				<button id="createAccount" class="btn btn-primary" onclick="createAccount()">创建帐号</button>
 			</div>
 		</div>
