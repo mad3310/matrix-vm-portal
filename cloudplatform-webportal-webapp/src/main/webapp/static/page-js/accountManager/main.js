@@ -11,7 +11,6 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
-<<<<<<< HEAD
     /*页面按钮初始化*/
     $(".toCreateAccount").click(function () {         //切换到创建账户
         $("#accountList").addClass("mc-hide");
@@ -41,10 +40,6 @@ define(function(require){
         $("#ipList").removeClass("hide");
     })
 
-
-    cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
-    cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
-=======
     asyncData();
     
 	$("#refresh").click(function() {
@@ -53,6 +48,5 @@ define(function(require){
     function asyncData() {
     	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
     }
-    //cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
->>>>>>> branch 'develop' of git@git.letv.cn:liuhao1/letv_mcluster_webportal.git
+    cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
 })
