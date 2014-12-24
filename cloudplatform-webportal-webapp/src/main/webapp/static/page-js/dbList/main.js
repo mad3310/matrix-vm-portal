@@ -12,72 +12,52 @@ define(function(require){
     /*
      * 初始化数据
      */
-	asynData();
-	pageControl();
+	asyncData();
 	$("#search").click(function() {
-		asynData();
+		asyncData();
 	});
 	$("#refresh").click(function() {
-		asynData();
+		asyncData();
 	});
+	/*
+	 * 可封装公共方法 begin
+	 */
+	//初始化分页组件
+	$('#paginator').bootstrapPaginator({
+		size:"small",
+    	alignment:'right',
+		bootstrapMajorVersion:3,
+		numberOfPages: 5,
+		onPageClicked: function(e,originalEvent,type,page){
+        	asyncData(page);
+        }
+	});
+	//初始化checkbox
+	$(document).on('click', 'th input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	$(document).on('click', 'tfoot input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	/*
+	 * 可封装公共方法 end
+	 */
 	
-    function asynData() {
-        var dbName = $("#dbName").val(),location = $("#location").val(),currentPage = $("#currentPage").val();
-    	if(!currentPage) currentPage = cn.currentPage;
-    	var url = "/db?currentPage=" + currentPage +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
+	//加载列表数据
+    function asyncData(page) {
+        var dbName = $("#dbName").val(),location = $("#location").val();
+    	if(!page) page = cn.currentPage;
+    	var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
     	cn.GetData(url,dbListHandler.DbListHandler);
-    }
-    
-
-    function pageControl() {
-    	// 首页
-    	$("#firstPage").bind("click", function() {
-    		currentPage = 1;
-    		asynData(currentPage,recordsPerPage);
-    	});
-
-    	// 上一页
-    	$("#prevPage").click(function() {
-    		if (currentPage == 1) {
-    			$.gritter.add({
-    				title: '警告',
-    				text: '已到达首页',
-    				sticky: false,
-    				time: '5',
-    				class_name: 'gritter-warning'
-    			});
-    	
-    			return false;
-    			
-    		} else {
-    			currentPage--;
-    			asynData(currentPage,recordsPerPage);
-    		}
-    	});
-
-    	// 下一页
-    	$("#nextPage").click(function() {
-    		if (currentPage == $("#totalPage_input").val()) {
-    			$.gritter.add({
-    				title: '警告',
-    				text: '已到达末页',
-    				sticky: false,
-    				time: '5',
-    				class_name: 'gritter-warning'
-    			});
-    	
-    			return false;
-    			
-    		} else {
-    			currentPage++;
-    			asynData(currentPage,recordsPerPage);
-    		}
-    	});
-
-    	// 末页
-    	$("#lastPage").bind("click", function() {
-    		currentPage = $("#totalPage_input").val();
-    		asynData(currentPage,recordsPerPage);
-    	});
     }
 });

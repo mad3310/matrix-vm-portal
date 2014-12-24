@@ -44,29 +44,6 @@ define(function(require,exports,module){
         /*初始化选中操作*/
         SelectToggle($d);
 
-        /*双击移动操作*/
-        $sl.find("li").each(function(){
-            $(this).ondblclick(function(){
-                var selected= [];
-                selected.push({addr:$(this).html(),id:$(this).val()});
-                $(this).remove();
-                AddToRightFrame($sr,selected[0]);
-                SelectToggle($d);
-            })
-        });
-
-        $sr.find("li").each(function(){
-            var selected= [];
-            $(this).ondblclick(function(){
-                var selected= [];
-                selected.push({addr:$(this).html(),id:$(this).val()});
-                $(this).remove();
-                AddToLeftFrame($sl,selected[0]);
-                SelectToggle($d);
-            })
-        });
-
-
         /*添加选中内容*/
         $d.find(".btn_db_add").click(function(){
             var selected= [];

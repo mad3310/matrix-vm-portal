@@ -10,7 +10,7 @@ define(function(require,exports,module){
 
     Common.prototype = {
     	currentPage:1,
-    	recordsPerPage:20,
+    	recordsPerPage:10,
         Tooltip : function (id){
         	if(!id) {
         		id = "[data-toggle='tooltip']";
@@ -82,13 +82,17 @@ define(function(require,exports,module){
                 $(obj).find("span").addClass("glyphicon glyphicon-chevron-right");
             }
 
+            /*菜单点击处理事件*/
+            $('.text-sm').click(function(){
+            	$("#frame-content").attr("src",$(this).attr("src"));
+            });
             /*二级菜单点击事件处理*/
             $('.sidebar-selector').find("ul ul").closest("li").click(function(){
                 if( $(this).find("ul").hasClass("hide")){
                     extended(this);
-               }else{
+                }else{
                     stacked(this);
-               }
+                }
             });
 
             /*跳转界面处理*/

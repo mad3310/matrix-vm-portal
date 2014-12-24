@@ -8,25 +8,28 @@
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
+	<!-- fontawesome css -->
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>Le云控制台首页</title>
 </head>
 <body> 
 	<!-- top bar begin -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
+          <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
+          <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a>
         </div>
-        <div class="navbar-header">
+        <%-- <div class="navbar-header">
           <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
-        </div>
+        </div> --%>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <a href="#" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                <li><a href="#">用户中心</a></li>
 	                <li><a href="#">我的订单</a></li>
@@ -35,8 +38,8 @@
 	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
-	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -44,7 +47,7 @@
 <!-- top bar end -->
 
 <!-- navbar begin -->
-<div class="navbar navbar-default mt50"> 
+<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;"> 
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
@@ -79,7 +82,7 @@
 									</div>
 									<div>
 										<a href="#" target="_self" class="btn btn-default btn-sm disabled">订单管理</a>
-										<a target="_self" class="withholding" id="home-cash" href="#" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务，点击查看详情">
+										<a target="_self" class="withholding" id="home-cash" href="#" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务,点击查看详情">
 											<span class="glyphicon glyphicon-shopping-cart text-warning"></span> <span >未签约</span>
 										</a>
 									</div>
@@ -137,7 +140,7 @@
 									<a class="item-record-num-count" href="${ctx}/list/db"><span id="dbCount">0</span></a>
 								</span>
 								<span class="item-record-unit">个</span>
-								<a data-toggle="tooltip" data-placement="top" title="aaaaaaaaaaaaaaaaaaaaa sdds">
+								<a data-toggle="tooltip" data-placement="top" title="数据库数">
 									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 								</a>
 							</div>
@@ -194,7 +197,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
@@ -218,7 +221,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -236,8 +239,8 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+												<a href="#" target="_self" class="product-opt"> 
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -261,7 +264,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -280,7 +283,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -298,8 +301,8 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+												<a href="#" target="_self" class="product-opt"> 
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -324,8 +327,8 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+												<a href="#" target="_self" class="product-opt"> 
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -344,7 +347,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -357,8 +360,8 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+												<a href="#" target="_self" class="product-opt"> 
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -382,7 +385,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -401,7 +404,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -420,7 +423,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -446,7 +449,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -465,7 +468,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -484,7 +487,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -502,7 +505,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -520,7 +523,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>
@@ -538,7 +541,7 @@
 											</div>
 											<div class="pull-left product-opt-wrap">
 												<a href="#" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-collapse-up product-opt-icon"></span>
+													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 										</div>

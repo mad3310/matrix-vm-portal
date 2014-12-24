@@ -50,7 +50,7 @@
 <div class="navbar navbar-default mt50"> 
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">RDS管理控制台</a>
+      <a class="navbar-brand" href="#">关系型数据库<font color="#FF9C17">RDS</font></a>
     </div>
   </div>
 </div>
@@ -123,23 +123,13 @@
 									</div>
 							</div>
 							<div class="pull-right">
-									<div class="pagination-info">
-										<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
-										<span class="ng-binding">每页显示<span id="recordsPerPage"></span>条</span>
-										<span class="hidden">当前<span id="currentPage"></span>页</span>
-										<span class="hidden">共有<span id="totalPages"></span>页</span>
-										
-									</div>
-									<ul class="pagination pagination-sm">
-										<li><a href="javascript:void(0);" id="firstPage">&laquo;</a></li>
-										<li><a href="javascript:void(0);" id="prevPage">&lt;</a></li>
-										<li class="active"><a href="#">1</a></li>	
-										<li><a href="javascript:void(0);" id="nextPage">&gt;</a></li>
-										<li><a href="javascript:void(0);" id="lastPage">&raquo;</a></li>
-									</ul>
-
+								<div class="pagination-info">
+									<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
+									<span class="ng-binding">每页显示：<span id="recordsPerPage"></span>条</span>&nbsp;
+								    <ul id='paginator'></ul>
 								</div>
-							</td>
+							</div>
+						</td>
 					</tr>
 				</tfoot>
 			</table>
@@ -158,7 +148,8 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
 	}
 });
 
