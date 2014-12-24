@@ -220,26 +220,6 @@
 									<div class="col-sm-4">
 										<!-- ngIf: newAccount && !isJst -->
 										<input required="required" name="accountNumber" class="form-control" type="text"></div>
-									<!-- 输入错误校验 -->
-									<div class="col-sm-8 help-info mc-hide">
-										<small class="text-danger">
-											<span class="glyphicon glyphicon-remove-sign"></span>
-											帐号格式错误
-										</small>
-										<small class="text-danger">
-											<span class="glyphicon glyphicon-remove-sign"></span>
-											帐号不能为空
-										</small>
-										<small class="text-danger">
-											<span class="glyphicon glyphicon-remove-sign"></span>
-										</small>
-									</div>
-									<!-- 输入成功提示  可以给div添加mc-hide类隐藏-->
-									<div class="col-sm-8 help-info">
-										<small class="text-success">
-											<span class="glyphicon glyphicon-ok-sign"></span>
-										</small>
-									</div>
 									<div class="col-sm-12 notice-block">
 										<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
 									</div>
@@ -326,22 +306,6 @@
 									<div class="col-sm-4">
 										<input required="required" name="newPwd" class="form-control" type="password">
 									</div>
-									<!-- 密码格式错误提示 -->
-									<div class="help-info col-sm-8 mc-hide" >
-										<small class="text-danger">
-											<span class="glyphicon glyphicon-remove-sign"></span>
-											密码格式错误
-										</small>
-										<small class="text-danger">
-											<span class="glyphicon glyphicon-remove-sign"></span>密码不能为空
-										</small>
-									</div>
-									<!-- 密码正确图标提示 可以在class加mc-hide隐藏该div-->
-									<div class="help-info col-sm-8" >
-										<small class="text-success">
-											<span class="glyphicon glyphicon-ok-sign"></span>
-										</small>
-									</div>
 									<!-- 密码规则提示 -->
 									<div class="notice-block col-sm-12">
 										<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
@@ -354,61 +318,14 @@
 								<label class="col-sm-2 control-label">
 									<span class="text-danger">*</span>
 									确认密码：
-								</label>								
+								</label>
 								<div class="col-sm-8 row">
-									<!-- 确认密码输入框 -->
+								<!-- 密码输入框 -->
 									<div class="col-sm-4">
-										<input required="required" name="newPwd2" class="form-control" type="password">
+										<input required="required" name="newPwd" class="form-control" type="password">
 									</div>
-									<!-- 密码确认输入错误提示 -->
-								<div class="help-info col-sm-8 mc-hide" >
-									<small class="text-danger">
-										<span class="glyphicon glyphicon-remove-sign">
-										</span>密码错误
-									</small> 
-									<small class="text-danger" >
-										<span class="glyphicon glyphicon-remove-sign">
-										</span>密码不能为空
-									</small>
 								</div>
-								<!-- 密码确认正确提示图标 -->
-								<div class="help-info col-sm-8">
-									<small class="text-success">
-										<span class="glyphicon glyphicon-ok-sign">
-										</span>
-									</small>
-								</div>
-								</div>								
 							</div>
-							<!-- 密码确认模块end -->
-							<!-- 备注说明模块 -->
-							<div class="form-group">
-								<label class="col-sm-2 control-label">备注说明：</label>
-								<!-- 备注输入框 -->
-								<div class="col-sm-10 row">
-									<div class="col-sm-4">
-										<textarea name="accountDesc" class="form-control" style="width:100%;height:90px"></textarea>
-									</div>
-									<!-- 备注输入超过长度限制提示 -->							
-									<div class="col-sm-8 help-info mc-hide">
-										<small class="text-danger" >
-											<span class="glyphicon glyphicon-remove-sign"></span>
-											备注说明最多256个字符
-										</small>
-									</div>
-									<!-- 输入成功提示图标 -->
-									<div class="help-info col-sm-8" >
-										<small class="text-success">
-											<span class="glyphicon glyphicon-ok-sign"></span>
-										</small>
-									</div>
-									<!-- 备注信息规则静态提示 -->
-									<div class="col-sm-12 notice-block">
-										<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
-									</div>
-								</div>								
-							</div>
-							<!-- 备注说明模块end -->
 							<!-- 按钮模块 -->
 							<div class="form-group">
 								<label class="col-sm-2 control-label"></label>
