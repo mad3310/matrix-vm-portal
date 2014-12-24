@@ -15,6 +15,36 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
+    /*页面按钮初始化*/
+    $(".toCreateAccount").click(function () {         //切换到创建账户
+        $("#accountList").addClass("mc-hide");
+        $("#ipListTab").addClass("mc-hide");
+        $("#newAccountTab").removeClass("mc-hide");
+    })
+
+    $(".toAccountList").click(function () {         //切换到创建账户
+        $("#newAccountTab").addClass("mc-hide");
+        $("#ipListTab").addClass("mc-hide");
+        $("#accountList").removeClass("mc-hide");
+    })
+
+    $(".toIpList").click(function () {         //切换到IP列表
+        $("#newAccountTab").addClass("mc-hide");
+        $("#accountList").addClass("mc-hide");
+        $("#ipListTab").removeClass("mc-hide");
+    })
+
+    $("#modifyIpList").click(function () {
+        $("#ipList").addClass("hide");
+        $("#ipForm").removeClass("hide");
+    })
+
+    $(".ipFromBotton").click(function () {
+        $("#ipForm").addClass("hide");
+        $("#ipList").removeClass("hide");
+    })
+
+
     cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
     cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
 })

@@ -37,50 +37,50 @@
 		<div class="tab-content">				
 			<div id="whitelist" role="tabpanel" class="tab-pane fade active in"  aria-labelledby="whitelist-tab">
 			        <table class="table table-hover">
-			        	<thead>				        	
+			        	<thead>
 			        	<tr>
 			        		<th colspan="4">
 			        			允许访问IP名单
-			        		</th>				        		
+			        		</th>
 			        	</tr>
 			        	</thead>
 			        	<tbody>
-			        		<tr >				        			
+			        		<tr >
 			        			<td width="25%" >10.23.12.24/22
-			        			</td>				        			
+			        			</td>
 			        			<td width="25%" >0.0.0.0/0
-			        			</td>				        			
+			        			</td>
 			        			<td width="25%" >33.22.11.44
 			        			</td>
-			        			
+
 			        			<td width="25%" >10.23.12.24/21
 			        			</td>
-			        			
+
 			        		</tr>
-			        		<tr>				        			
+			        		<tr>
 			        			<td width="25%" >10.23.12.24/22
-			        			</td>				        			
+			        			</td>
 			        			<td width="25%" >0.0.0.0/0
-			        			</td>				        			
+			        			</td>
 			        			<td width="25%" >33.22.11.44
-			        			</td>	
+			        			</td>
 			        			<td width="25%" >
-			        			</td>	
+			        			</td>
 			        		</tr>
-			        	</tbody> 				        	
-			        </table>			        			  	
+			        	</tbody>
+			        </table>
 		  		<div class="has-warning help-block">
 		  			您已添加<span class="">7</span>个IP，还能添加<span class="ng-binding">93</span>个。
 		  		</div>
 		  		<div class="" style="margin-bottom: 40px">
-		  			<button class="btn btn-primary">手动修改</button> 
-		  			<span style="padding:8px">或</span> 
+		  			<button class="btn btn-primary">手动修改</button>
+		  			<span style="padding:8px">或</span>
 		  			<button class="btn btn-primary">加载ECS内网IP添加
-		  			</button> 
+		  			</button>
 		  			<button class="btn btn-primary">将白名单复制至其他实例
 		  			</button>
 		  		</div>
-		  	</div>			
+		  	</div>
 		    <div id="sqlInject" role="tabpanel" class="tab-pane fade" aria-labelledby="sqlInject-tab">
 		    	<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
