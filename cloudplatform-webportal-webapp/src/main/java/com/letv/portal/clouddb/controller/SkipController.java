@@ -1,7 +1,5 @@
 package com.letv.portal.clouddb.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
 
 /**Program Name: SkipController <br>
@@ -43,6 +39,19 @@ public class SkipController {
 	public ModelAndView tobaseInfo(@PathVariable Long dbId,ModelAndView mav){
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/baseInfo");
+		return mav;
+	}
+	/**Methods Name: dbDetail <br>
+	 * Description: 跳转至db详情<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value ="/detail/db/{dbId}",method=RequestMethod.GET)
+	public ModelAndView dbDetail(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/layout");
 		return mav;
 	}
 
