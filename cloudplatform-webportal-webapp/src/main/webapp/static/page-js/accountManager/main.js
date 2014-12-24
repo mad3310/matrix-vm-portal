@@ -6,6 +6,7 @@ define(function(require){
     var cn = new common();
 
     var $ = require("jquery");
+    require('bootstrapValidator')($);
 
     /*初始化侧边栏菜单*/
     var index = [1,0];
@@ -17,4 +18,7 @@ define(function(require){
 
     cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
     cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
+
+    
+
 })
