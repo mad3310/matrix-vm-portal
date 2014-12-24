@@ -1,6 +1,7 @@
 body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
 	font-size: 12px;}
 .mt50{margin-top:50px;}
+.mt40{margin-top:40px;}
 .mt20{margin-top: 20px;}
 .pd0{padding: 0px; border-top: 0px !important;}
 .pd10{padding-top: 0px;}
@@ -22,12 +23,11 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 	overflow: hidden;
 }
 .navbar-brand img{
-		width: 22px;
-		height: 22px;
+		width: 35px;
+		height: 35px;
 		display: block;
 		margin: 0px
 	}
-
 .main-header{
 	padding: 8px 0px;
 	border-bottom: 1px solid #DDD;
@@ -846,9 +846,11 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
-width: 448px;
+/**width: 448px;**/
+width:412px;
 background: #e8e8e8;
-padding: 0 8px;
+/**padding: 0 8px;**/
+padding:0px;
 margin: 0 0 1px 0;
 vertical-align: top;
 }
@@ -869,7 +871,8 @@ height: 36px;
 display: block;
 border-right: solid 1px #ddd;
 height: 36px;
-padding: 0 10px 0 0;
+/**padding: 0 10px 0 0;**/
+padding:0 12px 0 0;
 text-align: right;
 }
 .bk-slider .bk-slider-block .bk-slider-txt {
@@ -1041,7 +1044,8 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
-width: 591px;
+/**width: 591px;**/
+width:528px;
 }
 .bk-slider .bk-slider-mm {
 width: 40px;
@@ -1169,3 +1173,61 @@ position: relative;
     vertical-align: middle;
 }
 /* dblist页分页按钮  end*/
+.bk-slider-range{
+	width: inherit;
+	height:36px;
+	float:left;/* margin:7px 10px auto 10px; */
+	position:relative;
+	background:#d8d8d8 0 0 no-repeat;}
+
+.bk-slider-range #flag{
+	display: block;
+    height: 36px;
+    overflow: hidden;
+ /*    width: 448px; */
+    background: none repeat scroll 0% 0% #43BFE3;
+    white-space: nowrap;
+}
+.bk-slider-range button{
+	position: absolute;
+    left: -8px;
+    top: -2px;
+    display: block;
+    width: 11px;
+    height: 40px;
+    padding: 14px 0px 0px 5px;
+    background: none repeat scroll 0% 0% #2DACD1;
+    cursor: default;
+}
+.bk-slider span:hover{
+	color:#fff;
+}
+/* 去掉IP授权部分a标签下划线 */
+#newAccountTab a:hover {
+	cursor:pointer;
+	text-decoration:none
+	}
+
+/* 分页条active颜色 */
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
+	background-color: #697485;
+	boder-color: #697485;
+}
+
+/* navbar-brand&nav ul color 覆盖&tip nowrap------2014-12-23--begin */
+.navbar .color{color:#fff !important;padding-top:10px; padding-bottom:0px !important;}
+.navbar-inverse .navbar-nav>li>a.hlight{color:#fff !important;padding-top:10px; padding-bottom:10px !important;}
+.navbar .color:hover,.navbar-inverse .navbar-nav>li>a.hlight:hover{
+	background-color:#9d9d9d;
+	filter:alpha(opacity=50);  
+    -moz-opacity:0.5;  
+    -khtml-opacity: 0.5;  
+    opacity: 0.5;
+}
+.text-20{
+	font-size:20px;
+}
+.tooltip-inner{
+	min-width:60px;
+}
+/* navbar-brand&nav ul color 覆盖------2014-12-23--end*/
