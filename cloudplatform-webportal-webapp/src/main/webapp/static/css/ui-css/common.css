@@ -1230,3 +1230,8 @@ position: relative;
 	background-color: #697485;
 	boder-color: #697485;
 }
+
+/* 字体置灰 */
+.font-disabled{
+	color:#999;
+}

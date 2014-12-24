@@ -9,9 +9,11 @@
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
+	<!-- fontawesome css -->
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>account</title>
+	<title>关系型数据库RDS</title>
 </head>
 
 <body>
@@ -19,22 +21,18 @@
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
 	<!-- top bar begin -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="${ctx}/dashboard"><img src="${ctx}/static/img/cloud.ico"/></a>
-        </div>
-        <div class="navbar-header">
-          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
-        </div>
-        <div class="navbar-header">
-          <a class="navbar-brand active" href="${ctx}/list/db"><span class="glyphicon glyphicon-th-large">关系型数据库 RDS</span></a>
+          <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
+          <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a>
+          <a class="navbar-brand color" href="${ctx}/list/db" style="margin-left:10px;height:40px !important; font-size:15px"><i class="fa fa-database text-10"></i>&nbsp;关系型数据库RDS</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-	            <li><a href="#"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <a href="#" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
 	                <li><a href="#">用户中心</a></li>
 	                <li><a href="#">我的订单</a></li>
@@ -43,8 +41,8 @@
 	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
-	            <li><a href="#"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

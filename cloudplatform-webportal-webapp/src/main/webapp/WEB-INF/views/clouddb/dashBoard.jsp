@@ -22,24 +22,21 @@
           <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
           <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a>
         </div>
-        <%-- <div class="navbar-header">
-          <a class="navbar-brand active" href="${ctx}/dashboard"><span class="glyphicon glyphicon-home"></span></a>
-        </div> --%>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="#" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <a href="javascript:void()" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="#">用户中心</a></li>
-	                <li><a href="#">我的订单</a></li>
-	                <li><a href="#">账户管理</a></li>
+	                <li><a href="javascript:void()">用户中心</a></li>
+	                <li><a href="javascript:void()">我的订单</a></li>
+	                <li><a href="javascript:void()">账户管理</a></li>
 	                <li class="divider"></li>
 	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="#" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -62,7 +59,7 @@
 					<div class="col-xs-6 col-md-6"><!-- begin userinfo left-->
 						<div class="info clearfix">
 							<div class="user-info pull-left">
-								<p class="text-muted user-name ellipsis">Hi,<a href="#" target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</a></p>
+								<p class="text-muted user-name ellipsis">Hi,<a href="javascript:void()" target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</a></p>
 								<p class="user-email ellipsis">${sessionScope.userSession.userName}</p>
 							</div>
 							<div class="account pull-left">
@@ -76,13 +73,13 @@
 								</div>
 								<div class="account-opt pull-left">
 									<div class="account-opt-row">
-										<a href="#" target="_self" class="btn btn-default btn-sm disabled disabled">充值</a>
-										<a href="#" target="_self" class="btn btn-default btn-sm disabled">提现</a>
-										<a href="#" target="_self" class="btn btn-default btn-sm disabled">索取发票</a>
+										<a href="javascript:void()" target="_self" class="btn btn-default btn-sm disabled disabled">充值</a>
+										<a href="javascript:void()" target="_self" class="btn btn-default btn-sm disabled">提现</a>
+										<a href="javascript:void()" target="_self" class="btn btn-default btn-sm disabled">索取发票</a>
 									</div>
 									<div>
-										<a href="#" target="_self" class="btn btn-default btn-sm disabled">订单管理</a>
-										<a target="_self" class="withholding" id="home-cash" href="#" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务,点击查看详情">
+										<a href="javascript:void()" target="_self" class="btn btn-default btn-sm disabled">订单管理</a>
+										<a target="_self" class="withholding" id="home-cash" href="javascript:void()" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务,点击查看详情">
 											<span class="glyphicon glyphicon-shopping-cart text-warning"></span> <span >未签约</span>
 										</a>
 									</div>
@@ -95,11 +92,11 @@
 						<div class="yundun">
 							<div class="yundun-inner clearfix">
 								<div class="pull-left">
-									<a class="product-icons-48 product-icons-yundun-grey" href="#"></a>
+									<a class="product-icons-48 product-icons-yundun-grey" href="javascript:void()"></a>
 								</div>
 								<div class="yundun-content pull-left">
 									<div class="yundun-title">
-										<a href="#">云盾</a>
+										<a href="javascript:void()">云盾</a>
 										<div class="yundun-title-tips">
 											<span class="glyphicon glyphicon-info-sign text-warning"></span>
 											<span class="text-danger">您尚未购买云服务器或负载均衡,在您购买后会自动开启云盾服务</span>
@@ -109,7 +106,7 @@
 										<div class="yundun-actions clearfix">
 											<div class="clearfix">
 												<div class="yundun-action yundun-action-status">
-													<a href="#"><span class="glyphicon glyphicon-cloud text-muted"></span> <span class="text-muted">未开通</span>
+													<a href="javascript:void()"><span class="glyphicon glyphicon-cloud text-muted"></span> <span class="text-muted">未开通</span>
 													</a>
 												</div>
 											</div>
@@ -127,7 +124,7 @@
 					<ul class="row">
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
-								<a href="#" class="pull-left">
+								<a href="javascript:void()" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
 								</a>
 								<p class="item-title">
@@ -147,16 +144,16 @@
 						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
-								<a href="#" class="pull-left">
+								<a href="javascript:void()" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-jiankong"></span>
 								</a>
 								<p class="item-title">
-									<a href="#">云监控&nbsp;<span class="item-title-short"></span></a>
+									<a href="javascript:void()">云监控&nbsp;<span class="item-title-short"></span></a>
 								</p>
 							</div>
 							<div class="item-record">
 								<span class="item-record-num">
-									<a class="item-record-num-count" href="#"><span>0</span></a>
+									<span class="font-disabled">0</span>
 								</span> 
 								<span class="item-record-unit">个</span> 
 								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="监控点"></span>
@@ -164,11 +161,11 @@
 						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
-								<a href="#" class="pull-left">
+								<a href="javascript:void()" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-toolsimage"></span>
 								</a>
 								<p class="item-title">
-									<a href="#">工具与镜像&nbsp;<span class="item-title-short"></span></a>
+									<a href="javascript:void()">工具与镜像&nbsp;<span class="item-title-short"></span></a>
 								</p>
 							</div>
 						</li>
@@ -191,17 +188,17 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-tags product-opt-icon"></span>
 												</a>
 											</div>
@@ -215,12 +212,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -234,12 +231,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt"> 
+												<a href="javascript:void()" target="_self" class="product-opt"> 
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -258,12 +255,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -277,12 +274,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -296,12 +293,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt"> 
+												<a href="javascript:void()" target="_self" class="product-opt"> 
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -322,12 +319,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt"> 
+												<a href="javascript:void()" target="_self" class="product-opt"> 
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -341,12 +338,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -360,7 +357,7 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt"> 
+												<a href="javascript:void()" target="_self" class="product-opt"> 
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -379,12 +376,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -398,12 +395,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -417,12 +414,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -443,12 +440,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -462,12 +459,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -481,12 +478,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -499,12 +496,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -517,12 +514,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
@@ -535,12 +532,12 @@
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="#" target="_self" class="product-opt">
+												<a href="javascript:void()" target="_self" class="product-opt">
 													<i class="fa fa-desktop product-opt-icon"></i>
 												</a>
 											</div>
