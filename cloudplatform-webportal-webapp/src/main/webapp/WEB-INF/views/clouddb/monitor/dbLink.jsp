@@ -11,34 +11,28 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>RDS监控项</title>
+	<title>数据库连接数</title>
 </head>
 
 <body>
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">Monitor Chart Demo</h5>
+			<h5 class="">数据库连接数</h5>
 		</div>
 		<div class="pull-right">
 			<span class="monitor-date-block">
 				<ul class="nav nav-pills">
 					<li class="time-block active" >
+						<a>1小时</a>
+					</li>
+					<li class="time-block" >
+						<a>3小时</a>
+					</li>
+					<li class="time-block" >
 						<a>1天</a>
 					</li>
 					<li class="time-block" >
 						<a>7天</a>
-					</li>
-					<li class="time-block" >
-						<a>1个月</a>
-					</li>
-					<li class="time-block" >
-						<a>3个月</a>
-					</li>
-					<li class="time-block" >
-						<a>6个月</a>
-					</li>
-					<li class="time-block" >
-						<a>1年</a>
 					</li>
 				</ul>
 			</span>
@@ -68,7 +62,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/monitor/main");
+seajs.use("${ctx}/static/page-js/monitor/dbLink/main");
 
 </script>
 </html>

@@ -50,7 +50,7 @@
 	<!-- top bar end -->
 
 	<!-- navbar begin -->
-	<div class="navbar navbar-default mt50"> 
+	<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;"> 
 	  <div class="container-fluid">
 	    <div class="navbar-header">
 	      <a class="navbar-brand" href="#">关系型数据库<font color="#FF9C17">RDS</font></a>
@@ -66,10 +66,10 @@
 			<div class="col-sm-12 col-md-6">
 				<div class="pull-left">
 					<h3>
-						<span class="text-success glyphicon glyphicon-phone"></span>
-						<span id="serviceName" data-toggle="tooltip" data-placement="bottom" title="rdsenn6ryenn6r">rdsenn6ryenn6r...</span>
+						<span class="fa  fa-cubes"></span>
+						<span id="dbName"></span>
 						<span style="display: inline-block;vertical-align:super;">
-							<small class="text-success text-xs">(运行中...)</small>
+							<small id="dbStatus" class="text-success text-xs"></small>
 						</span>
 						<a class="btn btn-default btn-xs" href="${ctx}/list/db">
 							<span class="glyphicon glyphicon-step-backward"></span>
@@ -82,31 +82,31 @@
 				<div class="pull-right">
 					<h3>
 						<small>
-							<span>
-								<a>功能指南</a>
-								<button class="btn btn-default btn-xs">
+							<span class="pd-r8">
+								<span class="font-disabled">功能指南</span>
+								<button class="btn btn-default btn-xs disabled">
 									<span class="glyphicon glyphicon-eject" id="rds-icon-guide"></span>
 								</button>
 							</span>
 						</small>
 						<small>
 							<span>
-								<button class="btn-warning btn btn-sm" data-toggle="modal" data-target="#myModalNetchange">内外网切换</button>
+								<button class="btn-warning btn btn-sm disabled">内外网切换</button>
 							</span>
 						</small>
 						<small>
 							<span>
-								<button class="btn-danger btn btn-sm" data-toggle="modal" data-target="#myModalCaseRestart">重启实例</button>
+								<button class="btn-danger btn btn-sm disabled">重启实例</button>
 							</span>
 						</small>
 						<small>
 							<span>
-								<button class="btn-default btn btn-sm" data-toggle="modal" data-target="#myModalBackCase">备份实例</button>
+								<button class="btn-default btn btn-sm disabled">备份实例</button>
 							</span>
 						</small>
 						<small>
 							<span>
-								<button class="btn-default btn btn-sm glyphicon glyphicon-list"></button>
+								<button class="btn-default btn btn-sm glyphicon glyphicon-list disabled"></button>
 							</span>
 						</small>
 					</h3>
@@ -123,9 +123,9 @@
 			            <li><a  class="text-sm" src="${ctx}/detail/account/${dbId}">账号管理</a></li>
 			            <li><a  class="text-sm" href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
 							<ul class="nav hide">
-								<li><a  class="text-sm" src="${ctx}/detail/monitor/${dbId}">磁盘空间</a></li>
+								<li><a  class="text-sm" src="${ctx}/monitor/dbLink/${dbId}">连接数</a></li>
+								<li><a  class="text-sm" href="#">磁盘空间</a></li>
 								<li><a  class="text-sm" href="#">IOPS</a></li>
-								<li><a  class="text-sm" href="#">连接数</a></li>
 								<li><a  class="text-sm" href="#">CPU利用率</a></li>
 								<li><a  class="text-sm" href="#">网络流量</a></li>
 								<li><a  class="text-sm" href="#">QPS/TPS</a></li>
@@ -170,7 +170,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/accountManager/main");
+seajs.use("${ctx}/static/page-js/layout/main");
 </script>
 
 </html>

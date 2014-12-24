@@ -45,7 +45,7 @@
 <!-- top bar end -->
 
 <!-- navbar begin -->
-<div class="navbar navbar-default mt50"> 
+<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="javascript:void()">关系型数据库<font color="#FF9C17">RDS</font></a>

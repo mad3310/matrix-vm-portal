@@ -6,10 +6,6 @@ define(function(require){
     var common = require('../common');
     var cn = new common();
     
-    /*初始化侧边栏菜单*/
-    var index = [8,0];
-    cn.Sidebar(index);//index为菜单中的排序(1-12)
-   
     /*初始化标签页*/
 	$('#setab a').click(function (e) {
 		e.preventDefault()

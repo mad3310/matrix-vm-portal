@@ -124,7 +124,7 @@
 					<ul class="row">
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
-								<a href="javascript:void()" class="pull-left">
+								<a href="${ctx}/list/db" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
 								</a>
 								<p class="item-title">
