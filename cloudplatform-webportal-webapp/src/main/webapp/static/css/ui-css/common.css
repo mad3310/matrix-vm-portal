@@ -1,6 +1,7 @@
 body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
 	font-size: 12px;}
 .mt50{margin-top:50px;}
+.mt40{margin-top:40px;}
 .mt20{margin-top: 20px;}
 .pd0{padding: 0px; border-top: 0px !important;}
 .pd10{padding-top: 0px;}
@@ -22,12 +23,11 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 	overflow: hidden;
 }
 .navbar-brand img{
-		width: 22px;
-		height: 22px;
+		width: 35px;
+		height: 35px;
 		display: block;
 		margin: 0px
 	}
-
 .main-header{
 	padding: 8px 0px;
 	border-bottom: 1px solid #DDD;
@@ -846,8 +846,10 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
+/**width: 448px;**/
 width: 412px;
 background: #e8e8e8;
+/**padding: 0 8px;**/
 padding: 0 0px;
 margin: 0 0 1px 0;
 vertical-align: top;
@@ -869,6 +871,7 @@ height: 36px;
 display: block;
 border-right: solid 1px #ddd;
 height: 36px;
+/**padding: 0 10px 0 0;**/
 padding: 0 12px 0 0;
 text-align: right;
 }
@@ -1041,6 +1044,7 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
+/**width: 591px;**/
 width: 528px;
 }
 .bk-slider .bk-slider-mm {
@@ -1169,7 +1173,23 @@ position: relative;
     vertical-align: middle;
 }
 /* dblist页分页按钮  end*/
-
+/* navbar-brand&nav ul color 覆盖&tip nowrap------2014-12-23--begin */
+.navbar .color{color:#fff !important;padding-top:10px; padding-bottom:0px !important;}
+.navbar-inverse .navbar-nav>li>a.hlight{color:#fff !important;padding-top:10px; padding-bottom:10px !important;}
+.navbar .color:hover,.navbar-inverse .navbar-nav>li>a.hlight:hover{
+	background-color:#9d9d9d;
+	filter:alpha(opacity=50);  
+    -moz-opacity:0.5;  
+    -khtml-opacity: 0.5;  
+    opacity: 0.5;
+}
+.text-20{
+	font-size:20px;
+}
+.tooltip-inner{
+	min-width:65px;
+}
+/* navbar-brand&nav ul color 覆盖------2014-12-23--end*/
 .bk-slider-range{
 	width: inherit;
 	height:36px;
