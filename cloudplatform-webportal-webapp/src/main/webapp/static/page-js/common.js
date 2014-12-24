@@ -81,29 +81,27 @@ define(function(require,exports,module){
                 $(obj).find("span").removeClass("glyphicon glyphicon-chevron-down");
                 $(obj).find("span").addClass("glyphicon glyphicon-chevron-right");
             }
-
             /*菜单点击处理事件*/
-            $('.text-sm').click(function(){
-            	$("#frame-content").attr("src",$(this).attr("src"));
+            $('.sidebar-selector').find("a").click(function(){
+            	var $parent = $(this).closest("li");
+            	var str = $(this).attr("src");
+        		//判断src是否有值，若有值，则为有业务的菜单，若无值，判断parent是否为父菜单，若为父菜单，执行菜单收缩展开操作
+        		if(str) {
+	    			$("#frame-content").attr("src",str);
+	    			$('.sidebar-selector').find(".active").removeClass("active");
+	    			$parent.addClass("active");
+        		}else {
+        			if($parent.children("ul")){
+        				//判断菜单是否展开
+		        		if($parent.children("ul").hasClass("hide")){
+		        			extended($parent);
+		                }else{
+		                	stacked($parent);
+		                }
+	        		}
+        		}
+        		
             });
-            /*二级菜单点击事件处理*/
-            $('.sidebar-selector').find("ul ul").closest("li").click(function(){
-                if( $(this).find("ul").hasClass("hide")){
-                    extended(this);
-                }else{
-                    stacked(this);
-                }
-            });
-
-            /*跳转界面处理*/
-            $('.sidebar-selector').find(".active").removeClass("active");
-            var $obj = $('.sidebar-selector').children("ul").children("li:eq("+index[0]+")");
-            if($obj.find("ul").length > 0){
-                extended($obj);
-                $obj.find("li:eq("+index[1]+")").addClass("active");
-            }else{
-                $obj.addClass("active");
-            }
         },
         GetData : function(url,handler){  //异步获取数据,将数据交给handler处理
             $.ajax({

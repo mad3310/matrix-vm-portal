@@ -121,7 +121,7 @@
 			<nav class="col-sm-2 col-md-2">
 				<div class="sidebar sidebar-line sidebar-selector">
 					<ul class="nav nav-sidebar li-underline">
-			            <li><a  class="text-sm" src="${ctx}/detail/baseInfo/${dbId}">基本信息</a></li>
+			            <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${dbId}">基本信息</a></li>
 			            <li><a  class="text-sm" src="${ctx}/detail/account/${dbId}">账号管理</a></li>
 			            <li><a  class="text-sm" href="#"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
 							<ul class="nav hide">
