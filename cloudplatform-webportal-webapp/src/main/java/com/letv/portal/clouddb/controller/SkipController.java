@@ -109,18 +109,11 @@ public class SkipController {
 		mav.setViewName("/clouddb/securityManager");
 		return mav;
 	}
-	/**
-	 * Methods Name: monitor<br>
-	 * Description: 跳转监控
-	 * @author name: yaokuo
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value ="/detail/monitor/{dbId}",method=RequestMethod.GET)
+	
+	@RequestMapping(value ="/monitor/dbLink/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toMonitor(@PathVariable Long dbId,ModelAndView mav){
 		mav.addObject("dbId",dbId);
-		mav.setViewName("/clouddb/monitor");
+		mav.setViewName("/clouddb/monitor/dbLink");
 		return mav;
 	}
 	/**

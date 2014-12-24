@@ -7,14 +7,11 @@ define(function(require){
 
     var $ = require("jquery");
 
-    /*初始化侧边栏菜单*/
-    var index = [1,0];
-    cn.Sidebar(index);//index为菜单中的排序(1-12)
-    
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
+<<<<<<< HEAD
     /*页面按钮初始化*/
     $(".toCreateAccount").click(function () {         //切换到创建账户
         $("#accountList").addClass("mc-hide");
@@ -47,4 +44,15 @@ define(function(require){
 
     cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
     cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
+=======
+    asyncData();
+    
+	$("#refresh").click(function() {
+		asyncData();
+	});
+    function asyncData() {
+    	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+    }
+    //cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
+>>>>>>> branch 'develop' of git@git.letv.cn:liuhao1/letv_mcluster_webportal.git
 })

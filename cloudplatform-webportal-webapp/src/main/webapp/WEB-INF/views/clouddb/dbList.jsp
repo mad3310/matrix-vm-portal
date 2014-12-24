@@ -25,19 +25,19 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
 	            <li class="dropdown">
-	              <a href="javascript:void()" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
+	              <a href="javascript:void(0)" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
 	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="javascript:void()">用户中心</a></li>
-	                <li><a href="javascript:void()">我的订单</a></li>
-	                <li><a href="javascript:void()">账户管理</a></li>
+	                <li><a href="javascript:void(0)">用户中心</a></li>
+	                <li><a href="javascript:void(0)">我的订单</a></li>
+	                <li><a href="javascript:void(0)">账户管理</a></li>
 	                <li class="divider"></li>
 	                <li><a href="${ctx}/account/logout">退出</a></li>
 	              </ul>
 	            </li>
-	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="javascript:void()" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
+	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -45,10 +45,10 @@
 <!-- top bar end -->
 
 <!-- navbar begin -->
-<div class="navbar navbar-default mt50"> 
+<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void()">关系型数据库<font color="#FF9C17">RDS</font></a>
+      <a class="navbar-brand" href="javascript:void(0)">关系型数据库<font color="#FF9C17">RDS</font></a>
     </div>
   </div>
 </div>。
