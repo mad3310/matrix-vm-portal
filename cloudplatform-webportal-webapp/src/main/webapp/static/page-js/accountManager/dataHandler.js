@@ -70,8 +70,7 @@ define(function(require,exports,module){
             }
             SelectToggle($d);
         });
-        /*全选按钮*/
-        var i = 0;  //循环选项
+        /*全选按钮初始化*/
         $d.find(".select-all-rw").click(function(){
             var $sr = $(this).closest(".mcluster-select");
             $sr.find("[type='radio']").attr("checked",false);
@@ -134,16 +133,16 @@ define(function(require,exports,module){
 
     function DoubleClickToggle($d){
         $d.find("li").unbind("dblclick");
-        $sl = $d.find(".select-list-left");		//左选框ul
-        $sr = $d.find(".select-list-right");	//右选框ul
+        $sl = $d.find(".select-list-left");		    //左选框ul
+        $sr = $d.find(".select-list-right");	    //右选框ul
         $sl.find("li").each(function(){
             $(this).dblclick(function(){
                 var selected= [];
                 selected.push({addr:$(this).html(),id:$(this).val()});
                 $(this).remove();
                 AddToRightFrame($sr,selected[0]);
-                SelectToggle($d);
-                DoubleClickToggle($d);
+                SelectToggle($d);                //重新初始化单机事件
+                DoubleClickToggle($d);           //重新初始化双击事件
             })
         });
         $sr.find("li").each(function(){
@@ -152,8 +151,8 @@ define(function(require,exports,module){
                 selected.push({addr:$(this).find("p:first").html(),id:$(this).val()});
                 $(this).remove();
                 AddToLeftFrame($sl,selected[0]);
-                SelectToggle($d);
-                DoubleClickToggle($d);
+                SelectToggle($d);               //重新初始化单机事件
+                DoubleClickToggle($d);          //重新初始化双击事件
             })
         });
     }
