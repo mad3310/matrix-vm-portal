@@ -151,12 +151,15 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-														<select class="form-control bk-button bk-button-primary bk-button-current">
-															<option >a</option>
-															<option >b</option>
-															<option >c</option>
-															<option >d</option>
-														</select>
+														<span class="sleBG">   
+                                                        <span class="sleHid">
+                                                            <select class="form-control w217 wcolor">
+																<option >单可用区域</option>
+																<option >多可用区</option>
+														    </select>
+                                                        </span>   
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>														
 													</div>
 												</div>
 											</div>
@@ -166,12 +169,17 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-														<select class="form-control bk-button bk-button-primary bk-button-current">
-															<option>a</option>
-															<option>b</option>
-															<option>c</option>
-															<option>d</option>
-														</select>
+														<span class="sleBG">   
+                                                        <span class="sleHid">
+                                                            <select class="form-control w217 wcolor">
+																<option >MySQL</option>
+																<option >MySQLServer</option>
+																<option >mcluster</option>
+																<option >fortest</option>
+														    </select>
+                                                        </span>   
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>														
 													</div>
 												</div>
 											</div>
@@ -613,19 +621,18 @@
 											<label class="bk-form-row-name">数据库类型：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
-													<div class="dropdown pull-left">
-														<button
-															class="btn btn-default dropdown-toggle w217 wcolor"
-															type="button" id="singleUseable" data-toggle="dropdown">
-															MySQL<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu w217" role="menu"
-															aria-labelledby="singleUseable">
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">MySQL</a></li>
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">MS SQLServer</a></li>
-														</ul>
+													<div class="pull-left">
+														<span class="sleBG">   
+                                                        <span class="sleHid">
+                                                            <select class="form-control w217 wcolor">
+																<option >MySQL</option>
+																<option >MySQLServer</option>
+																<option >mcluster</option>
+																<option >fortest</option>
+														    </select>
+                                                        </span>   
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>														
 													</div>
 												</div>
 											</div>
