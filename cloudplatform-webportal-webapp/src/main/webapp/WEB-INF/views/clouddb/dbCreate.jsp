@@ -152,8 +152,14 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-														<select name="hclusterId" class="form-control bk-button bk-button-primary bk-button-current">
-														</select>
+														<span class="sleBG">   
+                                                       	 	<span class="sleHid">
+                                                            	<select name="hclusterId" class="form-control bk-button bk-button-primary bk-button-current">
+																</select>
+                                                       	 	</span>   
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>	
+														
 													</div>
 												</div>
 											</div>
@@ -163,12 +169,14 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-														<select class="form-control bk-button bk-button-primary bk-button-current">
-															<option>a</option>
-															<option>b</option>
-															<option>c</option>
-															<option>d</option>
-														</select>
+														<span class="sleBG">   
+                                                        <span class="sleHid">
+                                                            <select class="form-control w217 wcolor">
+																<option >MySQL</option>
+														    </select>
+                                                        </span>   
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>	
 													</div>
 												</div>
 											</div>
