@@ -19,6 +19,7 @@ import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IDbUserService;
+import com.mysql.jdbc.StringUtils;
 
 
 @Component
@@ -77,7 +78,10 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("dbId", dbId);
 		params.put("username", DEFAULT_DB_RO_NAME);
-		
+		return this.getIpsFromUserByParams(params);
+	}
+	
+	private List<String> getIpsFromUserByParams(Map<String,Object> params) {
 		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
 		List<String> ips = new ArrayList<String>();
 		for (DbUserModel dbUser : dbUsers) {
@@ -124,4 +128,38 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		
 	}
+
+	@Override
+	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username) {
+		List<String> all =  this.selectIpsFromUser(dbId);
+		
+		List<Map<String,Object>> selected = new ArrayList<Map<String,Object>>();
+		
+		if(!StringUtils.isNullOrEmpty(username)) {
+			Map<String, Object> params = new HashMap<String,Object>();
+			params.put("dbId", dbId);
+			params.put("username", username);
+			List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
+			for (DbUserModel dbUser : dbUsers) {
+				Map<String,Object> data = new HashMap<String,Object>();
+				String ip = dbUser.getAcceptIp();
+				data.put("addr",ip);
+				data.put("type", dbUser.getType());
+				data.put("userd", 1);
+				selected.add(data);
+				
+				if(all.contains(ip)) {
+					all.remove(ip);
+				}
+			}
+		}
+		for (String ip : all) { //未使用ip
+			Map<String,Object> data = new HashMap<String,Object>();
+			data.put("addr",ip);
+			data.put("userd", 0);
+			selected.add(data);
+		}
+		return selected;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package com.letv.portal.proxy;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.portal.model.DbUserModel;
 
@@ -53,4 +54,13 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @param ips
 	 */
 	public void saveOrUpdateIps(Long dbId, String ips);
+	
+	/**Methods Name: selectMarkIps4dbUser <br>
+	 * Description: 新增及修改用户时，ip选择数据，包括未选择数据和已选择数据<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param username
+	 * @return
+	 */
+	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username);
 }

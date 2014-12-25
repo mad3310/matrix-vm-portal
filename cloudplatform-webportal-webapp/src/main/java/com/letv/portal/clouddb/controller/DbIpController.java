@@ -45,4 +45,13 @@ public class DbIpController {
 		return obj;
 	}
 	
+	@RequestMapping(value="/{dbId}/{username}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject ips4dbUser(@PathVariable Long dbId,@PathVariable String username,ResultObject obj) {
+		if(null == dbId) {
+			throw new ValidateException("参数不能为空");
+		} else {
+			obj.setData(this.dbUserProxy.selectMarkIps4dbUser(dbId,username));
+			return obj;
+		}
+	}
 }
