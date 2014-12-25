@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
+import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbUserController <br>
  * Description:  db用户<br>
@@ -51,7 +53,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
+	/*@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
 		ResultObject obj = new ResultObject();
 		List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId); 
@@ -62,6 +64,26 @@ public class DbUserController {
 				obj.setResult(0);
 			}
 		} else {
+			obj.setData(dbUsers);
+		}
+		return obj;
+	}*/
+	
+	/**Methods Name: list <br>
+	 * Description: dbUser列表<br>
+	 * @author name: liuhao1 20141225
+	 * @param dbId
+	 * @return
+	 */
+	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(@PathVariable Long dbId,ResultObject obj) {
+		if(null == dbId) {
+			throw new ValidateException("参数不能为空");
+		} else {
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("dbId", dbId);
+			params.put("deleted", false);
+			List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
 			obj.setData(dbUsers);
 		}
 		return obj;

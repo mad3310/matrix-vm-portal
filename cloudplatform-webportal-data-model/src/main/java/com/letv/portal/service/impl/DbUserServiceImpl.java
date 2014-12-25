@@ -172,4 +172,9 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		dbUserModel.setId(Long.parseLong(dbUserId));
 		this.dbUserDao.update(dbUserModel);
 	}
+
+	@Override
+	public List<DbUserModel> selectGroupByName(Map<String, Object> params) {
+		return this.dbUserDao.selectGroupByName(params);
+	}
 }

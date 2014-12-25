@@ -89,4 +89,12 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * @param dbUserId
 	 */
 	public void buildDbUser(String dbUserId);
+
+	/**Methods Name: selectGroupByName <br>
+	 * Description: 按照参数查出用户，并按照用户名分组<br>
+	 * @author name: liuhao1
+	 * @param params
+	 * @return
+	 */
+	public List<DbUserModel> selectGroupByName(Map<String, Object> params);
 }
