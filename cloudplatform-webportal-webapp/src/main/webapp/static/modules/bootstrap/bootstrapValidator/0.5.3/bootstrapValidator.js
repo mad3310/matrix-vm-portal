@@ -6023,7 +6023,7 @@ define(function(require, exports, module){
                     var name = $field.attr('data-bv-field'),
                         data = options.data || {},
                         url = options.url,
-                        type = options.type || 'GET',
+                        type = options.type || 'POST',
                         headers = options.headers || {};
 
                     // Support dynamic data

@@ -90,6 +90,7 @@
 						data-toggle="tab">按量付费</a></li>
 				</ul>
 				<div class="tab-content mt20">
+					<form id="monthPurchaseForm">
 					<div role="tabpanel" class="tab-pane fade active in" id="year">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
@@ -103,7 +104,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-buttontab">
-														<input id=""  class="form-control"　name="dbname" type="text">
+														<input id="dbName"  class="form-control" name="dbName" type="text">
 													</div>
 												</div>
 											</div>
@@ -151,11 +152,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-														<select class="form-control bk-button bk-button-primary bk-button-current">
-															<option >a</option>
-															<option >b</option>
-															<option >c</option>
-															<option >d</option>
+														<select name="hclusterId" class="form-control bk-button bk-button-primary bk-button-current">
 														</select>
 													</div>
 												</div>
@@ -177,12 +174,34 @@
 											</div>
 										</div>
 										<div class="bk-form-row">
-											<label class="bk-form-row-name">存储引擎：</label>
+											<label class="bk-form-row-name">版本：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-buttontab">
 														<button
 															class=" bk-button bk-button-primary bk-button-current">
+															<div>
+																<span>5.5</span>
+															</div>
+														</button>
+														<button
+															class=" bk-button bk-button-primary">
+															<div>
+																<span>5.6</span>
+															</div>
+														</button>
+													</div>
+													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">存储引擎：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="engineType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
 															<div>
 																<span>InnDB</span>
 															</div>
@@ -196,30 +215,15 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-buttontab">
-														<button
-															class=" bk-button bk-button-primary bk-button-current">
+														<input name="linkType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
 															<div>
 																<span>长链接</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary" value="1">
 															<div>
 																<span>短链接</span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">版本：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<button
-															class=" bk-button bk-button-primary bk-button-current">
-															<div>
-																<span>5.5</span>
 															</div>
 														</button>
 													</div>
@@ -511,7 +515,7 @@
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button class="bk-button bk-button-primary">
+									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
@@ -526,7 +530,7 @@
 							</div>
 						</div>
 					</div>
-
+					</form>
 					<div role="tabpanel" class="tab-pane fade" id="dosage">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
@@ -848,11 +852,13 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/dbCreate/main");
 </script>
+
 <script type="text/javascript">
 scale = function (btn, bar,layer,value,stepLen) {
 	this.btn = document.getElementById(btn);
