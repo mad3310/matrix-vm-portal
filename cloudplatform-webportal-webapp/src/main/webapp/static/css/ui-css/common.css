@@ -519,6 +519,7 @@ width: 30px;
 }
 .select .select-list .select-item .pull-right label{
 	font-size:10px;	
+	font-weight:100;
 }
 .mcluster-select{
 	border-top: none;
