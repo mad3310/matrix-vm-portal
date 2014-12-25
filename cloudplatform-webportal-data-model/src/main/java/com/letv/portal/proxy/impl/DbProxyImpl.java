@@ -127,7 +127,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			emailParams.put("createUser", sessionService.getSession().getUserName());
 			emailParams.put("createTime", sdf.format(new Date()));
 			emailParams.put("dbName", dbModel.getDbName());
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDb.ftl",emailParams);
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","auditDbNotice.ftl",emailParams);
 			try {
 				defaultEmailSender.sendMessage(mailMessage);
 			} catch (Exception e) {
