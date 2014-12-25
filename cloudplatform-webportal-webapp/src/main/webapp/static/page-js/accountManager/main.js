@@ -7,14 +7,46 @@ define(function(require){
 
     var $ = require("jquery");
 
-    /*初始化侧边栏菜单*/
-    var index = [1,0];
-    cn.Sidebar(index);//index为菜单中的排序(1-12)
-    
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
-    cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+    /*页面按钮初始化*/
+    $(".toCreateAccount").click(function () {         //切换到创建账户
+        $("#accountList").addClass("mc-hide");
+        $("#ipListTab").addClass("mc-hide");
+        $("#newAccountTab").removeClass("mc-hide");
+    })
+
+    $(".toAccountList").click(function () {         //切换到创建账户
+        $("#newAccountTab").addClass("mc-hide");
+        $("#ipListTab").addClass("mc-hide");
+        $("#accountList").removeClass("mc-hide");
+    })
+
+    $(".toIpList").click(function () {         //切换到IP列表
+        $("#newAccountTab").addClass("mc-hide");
+        $("#accountList").addClass("mc-hide");
+        $("#ipListTab").removeClass("mc-hide");
+    })
+
+    $("#modifyIpList").click(function () {
+        $("#ipList").addClass("hide");
+        $("#ipForm").removeClass("hide");
+    })
+
+    $(".ipFromBotton").click(function () {
+        $("#ipForm").addClass("hide");
+        $("#ipList").removeClass("hide");
+    })
+
+    asyncData();
+    
+	$("#refresh").click(function() {
+		asyncData();
+	});
+    function asyncData() {
+    	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+    }
     cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
 })

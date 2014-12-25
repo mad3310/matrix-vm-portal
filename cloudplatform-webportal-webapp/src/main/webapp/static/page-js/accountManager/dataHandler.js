@@ -13,6 +13,7 @@ define(function(require,exports,module){
 
     DataHandler.prototype = {
         DbUserListHandler : function(data){
+        	$(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data;
             for(var i= 0, len= array.length;i<len;i++){
@@ -21,7 +22,7 @@ define(function(require,exports,module){
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">|</span><a href=\"#\">删除</a> </div></td>");
-                var tr = $("<tr></tr>");
+                var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5);
                 tr.appendTo($tby);
             }
@@ -43,6 +44,8 @@ define(function(require,exports,module){
         };
         /*初始化选中操作*/
         SelectToggle($d);
+        /*双击移动操作*/
+        DoubleClickToggle($d);
 
         /*添加选中内容*/
         $d.find(".btn_db_add").click(function(){
@@ -67,24 +70,20 @@ define(function(require,exports,module){
             }
             SelectToggle($d);
         });
-        /*全选按钮*/
-        var i = 0;  //循环选项
+        /*全选按钮初始化*/
         $d.find(".select-all-rw").click(function(){
-            var arr = [{selectContent:"管理",displayContent:"全部设读写"},
-                       {selectContent:"读写",displayContent:"全部设只读"},
-                       {selectContent:"只读",displayContent:"全部设管理"}];
-            $sr.find("li").each(function(){
-                $(this).find("input").each(function(){
-                    $(this).attr("checked"," ");
-                   if($(this).closest("lable").html() == arr[i].selectContent){
-                       $(this).attr("checked","checked");
-                   }
-                })
-            });
-            if(i<arr.length-1){
-                i +=1;
+            var $sr = $(this).closest(".mcluster-select");
+            $sr.find("[type='radio']").attr("checked",false);
+            var displayContent = $(this).html();
+            if(displayContent == "全部设管理"){
+                $(this).html("全部设读写");
+                $sr.find(".mgr").prev().attr("checked",true);
+            }else if (displayContent == "全部设读写"){
+                $(this).html("全部设只读");
+                $sr.find(".rw").prev().attr("checked",true);
             }else{
-                i=0;
+                $(this).html("全部设管理");
+                $sr.find(".ro").prev().attr("checked",true);
             }
         });
 
@@ -98,16 +97,16 @@ define(function(require,exports,module){
             + "<p class=\"pull-left\">"+data.addr+"</p>"
             + "<p class=\"pull-right\" style=\"margin-right:5px\">"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"\">"
-            + "<label class=\"\">管理</label>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" checked=\"checked\">"
+            + "<label class=\"mgr\">管理</label>"
             + "</span>"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"\">"
-            + "<label class=\"\">读写</label>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\">"
+            + "<label class=\"ro\">只读</label>"
             + "</span>"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"\" checked=\"checked\">"
-            + "<label class=\"\">只读</label>"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"3\">"
+            + "<label class=\"rw\">读写</label>"
             + "</span>"
             + "</p>"
             + "</li>");
@@ -127,8 +126,36 @@ define(function(require,exports,module){
                     $(this).closest("li").toggleClass("active");
                 });
             }
+
+
         })
     };
+
+    function DoubleClickToggle($d){
+        $d.find("li").unbind("dblclick");
+        $sl = $d.find(".select-list-left");		    //左选框ul
+        $sr = $d.find(".select-list-right");	    //右选框ul
+        $sl.find("li").each(function(){
+            $(this).dblclick(function(){
+                var selected= [];
+                selected.push({addr:$(this).html(),id:$(this).val()});
+                $(this).remove();
+                AddToRightFrame($sr,selected[0]);
+                SelectToggle($d);                //重新初始化单机事件
+                DoubleClickToggle($d);           //重新初始化双击事件
+            })
+        });
+        $sr.find("li").each(function(){
+            $(this).dblclick(function(){
+                var selected= [];
+                selected.push({addr:$(this).find("p:first").html(),id:$(this).val()});
+                $(this).remove();
+                AddToLeftFrame($sl,selected[0]);
+                SelectToggle($d);               //重新初始化单机事件
+                DoubleClickToggle($d);          //重新初始化双击事件
+            })
+        });
+    }
     function GetDoubleValue(id){
         var s = $(id);
     }

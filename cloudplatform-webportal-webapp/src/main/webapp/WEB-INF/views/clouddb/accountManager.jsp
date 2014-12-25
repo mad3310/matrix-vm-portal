@@ -11,7 +11,10 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>account</title>
+	<!-- bootstrapValidator-->
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrapValidator.css"/>
+
+	<title>RDS账户管理</title>
 </head>
 
 <body>
@@ -29,7 +32,7 @@
 					<span class="glyphicon glyphicon-refresh"></span>
 					刷新
 				</button>
-				<button id="createAccount" class="btn btn-primary" onclick="createAccount()">创建帐号</button>
+				<button class="btn btn-primary toCreateAccount">创建帐号</button>
 			</div>
 		</div>
 		<div class="table-responsive">
@@ -50,14 +53,75 @@
 			</table>
 		</div>
 	</div>
-	<!-- 点击“创建账号”后加载的div 去掉mc-hide既可以显示此div-->
-	<div id="newAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
+	<div id="ipListTab" class="mc-hide" role="tablist" aria-multiselectable="true">
 		<!-- heading部分 -->
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
+				<h4>IP列表</h4>
+			</div>
+			<a class="pull-left toCreateAccount">返回创建新账号</a>
+		</div>
+		<div id="ipList" role="tabpanel" class="tab-pane fade active in"
+			aria-labelledby="whitelist-tab">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th colspan="4">允许访问IP名单</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td width="25%">10.23.12.24/22</td>
+						<td width="25%">0.0.0.0/0</td>
+						<td width="25%">33.22.11.44</td>
+
+						<td width="25%">10.23.12.24/21</td>
+
+					</tr>
+				</tbody>
+			</table>
+			<div class="has-warning help-block">
+				您已添加<span class="">7</span>个IP，还能添加<span class="ng-binding">93</span>个。
+			</div>
+			<div class="" style="margin-bottom: 40px">
+				<button id="modifyIpList" class="btn btn-primary">手动修改</button>
+			</div>
+		</div>
+		<form id="ipForm" class="form-horizontal ng-pristine ng-valid ng-scope hide" role="form" novalidate="" name="security_form" security-list-man="">
+			<div class="form-group">
+				<label class="col-sm-2">允许访问IP名单：</label>
+			</div>
+			<div ng-hide="!loadingState" aliyun-loading="" size="48" style="margin-top: 10px" class="ng-hide">
+			</div>
+			<div class="form-group">
+				<div class="col-sm-4">
+					<textarea name="iplist" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="help-block ng-hide" style="padding-top: 30px"></div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-10">
+					<span class="help-block">请以逗号隔开，不可重复，最多100个。</span>
+                    <span class="help-block">支持格式如：0.0.0.0/0，10.23.12.24（IP），10.23.12.24/24（CIDR模式，无类域间路由，/24表示了地址中前缀的长度，范围[1,32]）。</span>
+					<span class="help-block">0.0.0.0/0和空代表不设IP访问的限制，数据库将会有高安全风险。建议仅将您的WEB服务器外网IP/IP段设为可访问权限。</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-4">
+					<button  class="btn btn-primary ipFromBotton">确定</button>
+					<button  class="btn btn-default ipFromBotton">取消</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- 点击“创建账号”后加载的div 去掉mc-hide既可以显示此div-->
+	<div id="newAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
+		<!-- heading部分 -->
+		<div class="se-heading">
+			<div class="pull-left">
 				<h4>创建新账号</h4>
 			</div>
-			<a href="#accountList" class="pull-left">返回帐号管理</a>
+			<a class="pull-left toAccountList">返回帐号管理</a>
 		</div>
 		<!-- 内容部分，由一个form承载 -->
 		<div style="width:auto;height:auto;">
@@ -105,6 +169,9 @@
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
+                            <p class="pull-right">
+                                <a class="toIpList">管理IP列表</a>
+                            </p>
 						</div>
 						<div class="select">
 							<ul class="select-list select-list-left">
@@ -207,7 +274,7 @@
 					<label class="col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						确认密码：
-					</label>								
+					</label>
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
@@ -218,7 +285,7 @@
 						<small class="text-danger">
 							<span class="glyphicon glyphicon-remove-sign">
 							</span>密码错误
-						</small> 
+						</small>
 						<small class="text-danger" >
 							<span class="glyphicon glyphicon-remove-sign">
 							</span>密码不能为空
@@ -231,7 +298,7 @@
 							</span>
 						</small>
 					</div>
-					</div>								
+					</div>
 				</div>
 				<!-- 密码确认模块end -->
 				<!-- 备注说明模块 -->
@@ -242,7 +309,7 @@
 						<div class="col-sm-4">
 							<textarea name="accountDesc" class="form-control" style="width:100%;height:90px"></textarea>
 						</div>
-						<!-- 备注输入超过长度限制提示 -->							
+						<!-- 备注输入超过长度限制提示 -->
 						<div class="col-sm-8 help-info mc-hide">
 							<small class="text-danger" >
 								<span class="glyphicon glyphicon-remove-sign"></span>
@@ -259,36 +326,22 @@
 						<div class="col-sm-12 notice-block">
 							<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
 						</div>
-					</div>								
+					</div>
 				</div>
 				<!-- 备注说明模块end -->
 				<!-- 按钮模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<button disabled="disabled" type="button" class="btn btn-success btn-disable" onclick="newAccountSubmit()">提交</button>
-						<button type="button" class="btn btn-default" ui-sref="rdsDetail.account.list()" onclick="newAccountCancel()">返回</button>
+						<button disabled="disabled" type="button" class="btn btn-success btn-disable">提交</button>
+						<button type="button" class="btn btn-default">返回</button>
 					</div>
 				</div>
 				<!-- 按钮模块end -->
 			</form>
 		</div>
 	</div>
-	<!-- main-content-center-end -->
-	<script>
-	    function createAccount(){				    
-	    	$("#accountList").addClass("mc-hide");
-	        $("#newAccountTab").removeClass("mc-hide");
-	    };
-	    function newAccountSubmit(){
-	    	$("#accountList").addClass("mc-hide");
-	        $("#newAccountTab").removeClass("mc-hide");
-	    };
-	    function newAccountCancel(){
-	    	$("#accountList").removeClass("mc-hide");
-	        $("#newAccountTab").addClass("mc-hide");
-	    };
-	</script>
+
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
@@ -299,7 +352,8 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 

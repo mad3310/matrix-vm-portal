@@ -9,10 +9,6 @@ define(function(require){
 /*初始化工具提示*/
     cn.Tooltip('#serviceName');
 
-/*初始化侧边栏菜单*/
-    var index = [0,0];
-    cn.Sidebar(index);//index为菜单中的排序(1-12)
-    
 /*手风琴收放效果箭头变化*/
     cn.Collapse(".collapse-selector");
 

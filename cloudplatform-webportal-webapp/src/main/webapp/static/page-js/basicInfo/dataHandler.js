@@ -27,13 +27,12 @@ define(function(require,exports,module){
                     return ips;
                 }
 
-    			$("#db_info_db_id").html("<span class=\"text-muted pd-r8\">数据库ID:</span><span>"+dbInfo.dbName+"</span>");
-    			$("#db_info_db_name").html("<span class=\"text-muted pd-r8\">名称:</span><span text-length=\"26\">"+dbInfo.dbName+"</span>&nbsp;<a class=\"hide btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>");
-    			$("#db_info_net_addr").html("<span class=\"text-muted pd-r8\">内网地址:</span><span text-length=\"26\">"+GetNetAddr(dbInfo.containers)+"</span>");
-                $("#db_info_available_region").html("<span class=\"text-muted pd-r8\">可用区:</span>"+"TEST_15X接口待完善");
-                $("#db_info_db_port").html(" <span class=\"text-muted pd-r8\">端口:</span>3306");
-
-                $("#db_info_running_state").html("<span class=\"text-muted pd-r8\">运行状态:</span>"+cn.TranslateStatus(dbInfo.status));
+    			$("#db_info_db_id").html(dbInfo.dbName);
+    			$("#db_info_db_name").html(dbInfo.dbName);
+    			$("#db_info_available_region").html("酒仙桥机房");
+    			$("#db_info_net_addr").html(GetNetAddr(dbInfo.containers));
+                $("#db_info_running_state").html(cn.TranslateStatus(dbInfo.status));
+                $("#db_info_create_time").html(cn.TransDate('Y-m-d H:i:s',dbInfo.createTime));
         }
     }
 });
