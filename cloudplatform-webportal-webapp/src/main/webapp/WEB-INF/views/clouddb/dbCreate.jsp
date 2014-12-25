@@ -103,7 +103,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-buttontab">
-														<input id=""  name="dbname" type="text"/>
+														<input id=""  class="form-control"　name="dbname" type="text">
 													</div>
 												</div>
 											</div>
@@ -120,7 +120,7 @@
 														</button>
 														<button class="bk-button bk-button-primary">
 															<div>
-																<span>杭州</span>
+																<span>成都</span>
 															</div>
 														</button>
 														<button class="bk-button bk-button-primary">
@@ -139,11 +139,10 @@
 															</div>
 														</button>
 													</div>
-													<span><a class="bk-lnk bk-ml2">查看我的产品地域</a></span>
+													<span><a class="bk-lnk bk-ml2">暂时只有北京可用,其他地域陆续开通</a></span>
 												</div>
 												<div class="bk-form-row-txt">
-													不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择 <a href="#" target="_blank"
-														class="bk-lnk">教我选择&gt;&gt;</a>
+													不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择
 												</div>
 											</div>
 										</div>
@@ -151,18 +150,14 @@
 											<label class="bk-form-row-name">可用区：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
-													<div class="dropdown pull-left">
-														<button
-															class="btn btn-default dropdown-toggle w217 wcolor mgl-r" type="button" id="singleUseable" data-toggle="dropdown">
-															酒仙桥<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu w217" role="menu" aria-labelledby="singleUseable">
-															<li role="presentation">
-																<a role="menuitem" tabindex="-1" href="#">酒仙桥</a>
-															</li>
-														</ul>
+													<div class="pull-left">
+														<select class="form-control bk-button bk-button-primary bk-button-current">
+															<option >a</option>
+															<option >b</option>
+															<option >c</option>
+															<option >d</option>
+														</select>
 													</div>
-													<span class="glyphicon glyphicon-question-sign margin-left-5" style="margin-top: 8px;"></span>
 												</div>
 											</div>
 										</div>
@@ -170,18 +165,13 @@
 											<label class="bk-form-row-name">数据库类型：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
-													<div class="dropdown pull-left">
-														<button
-															class="btn btn-default dropdown-toggle w217 wcolor"
-															type="button" id="singleUseable" data-toggle="dropdown">
-															MySQL<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu w217" role="menu"
-															aria-labelledby="singleUseable">
-															<li role="presentation">
-																<a role="menuitem" tabindex="-1" href="#">MySQL</a>
-															</li>
-														</ul>
+													<div class="pull-left">
+														<select class="form-control bk-button bk-button-primary bk-button-current">
+															<option>a</option>
+															<option>b</option>
+															<option>c</option>
+															<option>d</option>
+														</select>
 													</div>
 												</div>
 											</div>
