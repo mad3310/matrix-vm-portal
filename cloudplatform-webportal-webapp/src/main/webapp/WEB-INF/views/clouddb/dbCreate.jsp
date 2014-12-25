@@ -119,22 +119,22 @@
 																<span>北京</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>成都</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>青岛</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>香港</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>深圳</span>
 															</div>
@@ -154,7 +154,7 @@
 													<div class="pull-left">
 														<span class="sleBG"> 
                                                        	 	<span class="sleHid">
-                                                            	<select name="hclusterId" class="form-control bk-button bk-button-primary bk-button-current">
+                                                            	<select name="hclusterId" class="form-control w217 wcolor">
 																</select>
                                                        	 	</span>   
                                                         </span>  
@@ -192,7 +192,7 @@
 															</div>
 														</button>
 														<button
-															class=" bk-button bk-button-primary">
+															class=" bk-button bk-button-primary disabled">
 															<div>
 																<span>5.6</span>
 															</div>
@@ -310,25 +310,17 @@
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">内存：</label>
 											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="dropdown">
-														<button
-															class="btn btn-default dropdown-toggle w217 wcolor"
-															type="button" id="UseableB" data-toggle="dropdown">
-															240MB<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu w217 h216" role="menu"
-															aria-labelledby="UseableB">
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">240MB</a></li>
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">600MB</a></li>
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">1200MB</a></li>
-														</ul>
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid">
+																	<select class="form-control w217 wcolor">
+																		<option>2G</option>
+																</select>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
 													</div>
-												</div>
-												<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
+													<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
 											</div>
 										</div>
 									</div>

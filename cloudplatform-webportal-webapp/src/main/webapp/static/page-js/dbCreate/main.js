@@ -9,11 +9,13 @@ define(function(require){
 
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
-        $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
-        $(this).addClass("bk-button-current");
-        if($(this).parent().find(".hide").length > 0 ){
-            var val = $(this).val();
-            $(this).parent().find(".hide").val(val);
+        if(!$(this).hasClass("disabled")){
+            $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
+            $(this).addClass("bk-button-current");
+            if($(this).parent().find(".hide").length > 0 ){
+                var val = $(this).val();
+                $(this).parent().find(".hide").val(val);
+            }
         }
     })
     $("#monthPurchaseBotton").click(function () {
