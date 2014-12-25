@@ -95,7 +95,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<textarea name="iplist" class="form-control" rows="4"></textarea>
+					<textarea name="iplist" class="form-control" rows="4" id="iplist"></textarea>
 				</div>
 				<div class="help-block ng-hide" style="padding-top: 30px"></div>
 			</div>
@@ -108,8 +108,8 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<button  class="btn btn-primary ipFromBotton">确定</button>
-					<button  class="btn btn-default ipFromBotton">取消</button>
+					<button  class="btn btn-primary ipFromBotton" id="saveIp">确定</button>
+					<button  class="btn btn-default ipFromBotton" id="cancel">取消</button>
 				</div>
 			</div>
 		</form>

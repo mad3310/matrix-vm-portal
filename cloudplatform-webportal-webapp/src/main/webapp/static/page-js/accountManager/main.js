@@ -11,6 +11,8 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
+    asyncData();
+    
     /*页面按钮初始化*/
     $(".toCreateAccount").click(function () {         //切换到创建账户
         $("#accountList").addClass("mc-hide");
@@ -35,16 +37,26 @@ define(function(require){
         $("#ipForm").removeClass("hide");
     })
 
-    $(".ipFromBotton").click(function () {
+    /*$(".ipFromBotton").click(function () {
         $("#ipForm").addClass("hide");
         $("#ipList").removeClass("hide");
-    })
+    })*/
 
-    asyncData();
-    
 	$("#refresh").click(function() {
 		asyncData();
 	});
+    
+    $("#saveIp").click(function() {
+    	var dbId = $("#dbId").val();
+    	var ips = $("#iplist").val();
+    	cn.PostData(
+			"/dbIp",
+			{
+	    		dbId:dbId,
+	    		ips:ips
+    		}
+    	);
+    });
     function asyncData() {
     	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
     }

@@ -48,10 +48,13 @@
 				and m.ID=#{id}
 			</if>
 			<if test="username != null  and username != '' ">
-				and m.DBUSER_NAME like CONCAT('%','${username}','%')
+				and m.USERNAME like CONCAT('%','${username}','%')
 			</if>
-			<if test="DbUserIp != null  and DbUserIp != '' ">
-				and m.DBUSER_IP like CONCAT('%','${DbUserIp}','%')
+			<if test="acceptIp != null  and acceptIp != '' ">
+				and m.ACCEPT_IP like CONCAT('%','${acceptIp}','%')
+			</if>
+			<if test="dbId != null  ">
+				and m.DB_ID=#{dbId}
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
@@ -76,7 +79,7 @@
 		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
-		#{status},1,now(),#{createUser},now(),#{updateUser})
+		#{status},#{deleted},now(),#{createUser},now(),#{updateUser})
 	    </insert>
 	    
 	    
