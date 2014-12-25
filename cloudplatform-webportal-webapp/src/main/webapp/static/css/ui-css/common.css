@@ -499,7 +499,27 @@ width: 30px;
 	cursor: not-allowed;
 	background-color: #FAFAFA
 }
-
+.select .select-list .select-item .pull-left{
+	margin:0px;
+	padding:0px;
+	width:50%;
+}
+.select .select-list .select-item .pull-right{
+	padding:0px;
+	margin:0px;
+	width:auto;
+}
+.select .select-list .select-item .pull-right span{
+	padding-right:10px;
+}
+.select .select-list .select-item .pull-right span input{
+	vertical-align: middle;
+    padding: 0px;
+    margin: 0px;
+}
+.select .select-list .select-item .pull-right label{
+	font-size:10px;	
+}
 .mcluster-select{
 	border-top: none;
 	margin-bottom:10px
@@ -1249,3 +1269,5 @@ position: relative;
 .font-disabled{
 	color:#999;
 }
+
+
