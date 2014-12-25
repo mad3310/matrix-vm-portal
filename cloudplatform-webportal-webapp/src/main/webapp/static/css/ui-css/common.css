@@ -519,6 +519,7 @@ width: 30px;
 }
 .select .select-list .select-item .pull-right label{
 	font-size:10px;	
+	font-weight:100;
 }
 .mcluster-select{
 	border-top: none;
@@ -1270,4 +1271,48 @@ position: relative;
 	color:#999;
 }
 
+/* 创建数据库页面下拉列表框样式 */
+.bk-form-row select option{
+	padding:5px 5px 5px 5px;
+	color:#333;
+	background:#fff;
+	border-top:1px solid #e8e8e8;
+}
+.bk-form-row select{
+	border:0px;
+}
+.bk-form-row .pull-left .bk-select-arrow {
+	position: relative;
+	left: -10px;
+	top: -35px;
+	float: right;
+	display: inline;
+	width: 0;
+	height: 0;
+	border: solid 5px transparent;	
+	border-top-color: #fff;
+	margin: 15px 0 0 10px;
+	-webkit-transform-origin: 50% 20% 0;
+	-moz-transform-origin: 50% 20% 0;
+	-ms-transform-origin: 50% 20% 0;
+	-o-transform-origin: 50% 20% 0;
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+}
+   
+.bk-form-row .pull-left .sleHid { 
+	display:block; 
+	width:200px; 
+	overflow:hidden; 
+}    
+.bk-form-row .pull-left .sleBG { 
+	width:226px; 
+	height:36px; 
+	border:#43bfe3 1px solid; 
+	border-right:none; 
+	background:#43bfe3 no-repeat 62px 1px; 
+	display:block;
+}
 
