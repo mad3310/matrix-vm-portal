@@ -846,8 +846,7 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
-/**width: 448px;**/
-width: 412px;
+width:448px;
 background: #e8e8e8;
 /**padding: 0 8px;**/
 padding: 0 0px;
@@ -862,6 +861,7 @@ background-color: #e8e8e8;
 }
 .bk-slider .bk-slider-l2 {
 width: 206px;
+position:relative;
 }
 .bk-slider .bk-slider-block {
 display: inline-block;
@@ -884,6 +884,7 @@ color: #999;
 }
 .bk-slider .bk-slider-l1 {
 width: 103px;
+position:relative;
 }
  .bk-slider .bk-slider-block .bk-slider-block-box-last {
 border-width: 0;
@@ -929,7 +930,7 @@ background: #43bfe3;
 display: block;
 height: 36px;
 overflow: hidden;
-width: 412px;
+width: 448px;
 background: #43bfe3;
 white-space: nowrap;
 }
@@ -944,7 +945,7 @@ left: -8px;
 top: -2px;
 display: block;
 width: 11px;
-height: 26px;
+height: 40px;
 padding: 14px 0 0 5px;
 background: #2dacd1;
 cursor: default;
@@ -966,7 +967,7 @@ left: 15px;
 width: 0;
 height: 0;
 border: solid 3px transparent;
-border-top-color: #aaa;
+border-top-color: #000;
 }
 /*2014-12-18 by gm progressbar-------end*/
 /*2014-12-19 by gm 数字框---begin*/
@@ -1044,8 +1045,7 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
-/**width: 591px;**/
-width: 528px;
+width: 591px;
 }
 .bk-slider .bk-slider-mm {
 width: 40px;
@@ -1193,32 +1193,46 @@ position: relative;
 .bk-slider-range{
 	width: inherit;
 	height:36px;
-	float:left;/* margin:7px 10px auto 10px; */
+	float:left;
+	/* margin:7px 10px auto 10px; */
 	position:relative;
-	background:#d8d8d8 0 0 no-repeat;}
-
-.bk-slider-range #flag{
-	display: block;
-    height: 36px;
-    overflow: hidden;
- /*    width: 448px; */
-    background: none repeat scroll 0% 0% #43BFE3;
-    white-space: nowrap;
+	background:#d8d8d8;
 }
-.bk-slider-range button{
+.bk-slider-range #flag{	
+    height: 36px;
+    width:0px;
+    position:absolute;
+	width:0;
+	left:0;
+    background: #43BFE3;
+}
+
+.bk-slider-range .bk-tip-arrow-new{
+	width: 11px;
+    height: 40px;
 	position: absolute;
     left: -8px;
     top: -2px;
     display: block;
-    width: 11px;
-    height: 40px;
+    cursor: pointer;
     padding: 14px 0px 0px 5px;
-    background: none repeat scroll 0% 0% #2DACD1;
-    cursor: default;
+    background: #2DACD1;
 }
-.bk-slider span:hover{
-	color:#fff;
+.bk-slider-drag .bk-tip-arrow {
+	position: absolute;
+	/* top: 20px; */
+	left: 3px;
+	width: 5px;
+	height: 10px;
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
+	z-index:1000;
+	cursor:pointer;
+	/* border: #000 solid 3px transparent; */
+	/* border-top-color: #000; */
 }
+
+
 /* 去掉IP授权部分a标签下划线 */
 #newAccountTab a:hover {
 	cursor:pointer;

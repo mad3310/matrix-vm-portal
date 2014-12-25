@@ -192,30 +192,52 @@
 	  									<label class="bk-form-row-name">存储空间：</label>
 	  									<div class="bk-form-row-cell">
 	  										<div class="bk-form-row-li">
-	  											  <div 	class="bk-slider">
+	  										    <div class="bk-slider">
 	  											      <div class="bk-slider-range" id="bar0" >
 	  											        <div id="flag"></div>
-	  											        <span class="bk-slider-block bk-slider-l2" style="position: absolute;top: 0px;width: 206px;">
+	  											        <span class="bk-slider-block bk-slider-l2">
 						                                     <span class="bk-slider-block-box">
-																<span class="bk-slider-txt">250GB</span>
+																<span class="bk-slider-txt" id="half">250GB</span>
 															</span>
 														</span> 
-														<span class="bk-slider-block bk-slider-l1" style="position: absolute;top: 0px;left:206px;width: 103px;">
+														<span class="bk-slider-block bk-slider-l1">
 															<span class="bk-slider-block-box">
 																<span class="bk-slider-txt">500GB</span>
 															</span>
 														</span>
-														<span class="bk-slider-block bk-slider-l1" style="position: absolute;top: 0px;right:0px;width: 103px;">
+														<span class="bk-slider-block bk-slider-l1">
 															<span class="bk-slider-block-box bk-slider-block-box-last bk-select-action">
 																<span class="bk-slider-txt">1000GB</span>
 															</span>
 														</span>
+													<span class="bk-slider-container bk-slider-transition" id="layer0" style="width: 11.88px;">
+															<span class="bk-slider-current">
+																<span class="bk-slider-unit bk-slider-l2">
+																	<span class="bk-slider-unit-box bk-select-action">
+																		<span class="bk-slider-txt">250GB</span></span>
+																</span>
+																<span class="bk-slider-unit bk-slider-l1">
+																		<span class="bk-slider-unit-box">
+																			<span class="bk-slider-txt">500GB</span>
+																		</span>
+																</span>
+																<span class="bk-slider-unit bk-slider-l1">
+																		<span class="bk-slider-unit-box bk-slider-unit-box-last">
+																			<span class="bk-slider-txt">1000GB</span>
+																		</span>
+																</span>
+																</span>
+															</span>
 														<!-- <span>15</span> -->													
-														<button id="btn0">-</button>
+														<!-- <button id="btn0"></button> -->
+														<span class="bk-slider-drag" id="btn0">
+															 <i></i> <i></i>
+														     <span class="bk-tip-arrow"></span>														
+														</span>
 													  </div>
-												</div>
+												</div>	  			
 	  											<span class="bk-number bk-ml2">
-	  												<input type="text" class="bk-number-input" value="5"> 
+	  												<input type="text" class="bk-number-input" id="value0" value="5"> 
 	  												<span class="bk-number-unit">GB</span><span class="bk-number-control">
 	  													<span class="bk-number-up bk-number-disabled hide">
 	  														<i class="bk-number-arrow"></i>
@@ -271,69 +293,74 @@
 	  											<div class="bk-slider bk-slider-duration">
 	  												<div class="bk-slider-range" id="bar1">
 	  												    <div id="flag"></div>
-	  												    <button id="btn1"></button>
-														<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:0px;width: 40px;">
-	  													<span class="bk-slider-block-box bk-select-action">
+	  												    <!-- <button id="btn1"></button> -->
+	  												    <!-- 拖动按钮 -->
+	  												    <span class="bk-slider-drag" id="btn1">
+															 <i></i> <i></i>
+														     <span class="bk-tip-arrow"></span>														
+														</span>
+														<span class="bk-slider-block bk-slider-mm">
+	  													     <span class="bk-slider-block-box bk-select-action">
 	  															<span class="bk-slider-txt">1</span>
+	  													     </span>
 	  													</span>
-	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:40px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">2</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:80px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">3</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:120px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">4</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:160px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">5</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:200px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">6</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:240px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">7</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:280px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">8</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-mm" style="position: absolute;top: 0px;left:320px;width: 40px;">
+	  													<span class="bk-slider-block bk-slider-mm" >
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt">9</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-yy" style="position: absolute;top: 0px;left:360px;width: 56px;">
+	  													<span class="bk-slider-block bk-slider-yy">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt glyphicon glyphicon-gift">1年</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-yy" style="position: absolute;top: 0px;left:416px;width: 56px;">
+	  													<span class="bk-slider-block bk-slider-yy">
 	  														<span class="bk-slider-block-box">
 	  															<span class="bk-slider-txt glyphicon glyphicon-gift">2年</span>
 	  														</span>
 	  													</span>
-	  													<span class="bk-slider-block bk-slider-yy" style="position: absolute;top: 0px;left:472px;width: 56px;">
+	  													<span class="bk-slider-block bk-slider-yy">
 	  														<span class="bk-slider-block-box bk-slider-block-box-last" >
 	  															<span class="bk-slider-txt glyphicon glyphicon-gift">3年</span>
 	  														</span>
 	  													</span>
-	  													<!-- <span class="bk-slider-container bk-slider-transition" style="width: 40px;"> -->
-	  													<!-- <span class="bk-slider-current">
+	  													<span class="bk-slider-container bk-slider-transition" id="layer1" style="width: 40px;">
+	  													<span class="bk-slider-current">
 	  															<span class="bk-slider-unit bk-slider-mm">
 	  																<span class="bk-slider-unit-box bk-select-action">
 	  																	<span class="bk-slider-txt">1</span>
@@ -394,7 +421,8 @@
 	  																	<span class="bk-slider-txt ">3年</span>
 	  																</span>
 	  															</span>
-	  														</span> -->
+	  														</span>
+	  													</span>
 	  												</div>
 	  											</div>	
 	  										</div>	
@@ -586,27 +614,49 @@
 	  											  <div 	class="bk-slider">
 	  											      <div class="bk-slider-range" id="bar2" >
 	  											        <div id="flag"></div>
-	  											        <span class="bk-slider-block bk-slider-l2" style="position: absolute;top: 0px;width: 206px;">
+	  											        <span class="bk-slider-block bk-slider-l2">
 						                                     <span class="bk-slider-block-box">
 																<span class="bk-slider-txt">250GB</span>
 															</span>
 														</span> 
-														<span class="bk-slider-block bk-slider-l1" style="position: absolute;top: 0px;left:206px;width: 103px;">
+														<span class="bk-slider-block bk-slider-l1" >
 															<span class="bk-slider-block-box">
 																<span class="bk-slider-txt">500GB</span>
 															</span>
 														</span>
-														<span class="bk-slider-block bk-slider-l1" style="position: absolute;top: 0px;right:0px;width: 103px;">
+														<span class="bk-slider-block bk-slider-l1">
 															<span class="bk-slider-block-box bk-slider-block-box-last bk-select-action">
 																<span class="bk-slider-txt">1000GB</span>
 															</span>
 														</span>
+														<span class="bk-slider-container bk-slider-transition" id="layer2" style="width: 11.88px;">
+															<span class="bk-slider-current">
+																<span class="bk-slider-unit bk-slider-l2">
+																	<span class="bk-slider-unit-box">
+																		<span class="bk-slider-txt">250GB</span></span>
+																</span>
+																<span class="bk-slider-unit bk-slider-l1">
+																		<span class="bk-slider-unit-box">
+																			<span class="bk-slider-txt">500GB</span>
+																		</span>
+																</span>
+																<span class="bk-slider-unit bk-slider-l1">
+																		<span class="bk-slider-unit-box bk-slider-unit-box-last">
+																			<span class="bk-slider-txt">1000GB</span>
+																		</span>
+																</span>
+																</span>
+															</span>
 														<!-- <span>15</span> -->													
-														<button id="btn2"></button>
+														<!-- <button id="btn2"></button> -->
+														<span class="bk-slider-drag" id="btn2">
+															 <i></i> <i></i>
+														     <span class="bk-tip-arrow"></span>														
+														</span>
 													  </div>
 												</div>
 	  											<span class="bk-number bk-ml2">
-	  												<input type="text" class="bk-number-input" value="5"> 
+	  												<input type="text" class="bk-number-input" id="value2" value="5"> 
 	  												<span class="bk-number-unit">GB</span><span class="bk-number-control">
 	  													<span class="bk-number-up bk-number-disabled hide">
 	  														<i class="bk-number-arrow"></i>
@@ -758,11 +808,14 @@ seajs.config({
 seajs.use("${ctx}/static/page-js/dbCreate/main");
 </script>
 <script type="text/javascript">
-scale = function (btn, bar, title) {
+scale = function (btn, bar,layer,value,stepLen) {
 	this.btn = document.getElementById(btn);
 	this.bar = document.getElementById(bar);
-	this.title = document.getElementById(title);
+	this.layer = document.getElementById(layer);
+	this.value = document.getElementById(value);
+	/* this.title = document.getElementById(title); */
 	this.step = this.bar.getElementsByTagName("DIV")[0];
+	this.stepLen = stepLen
 	this.init();
 };
 scale.prototype = {
@@ -775,20 +828,33 @@ scale.prototype = {
 			g.onmousemove = function (e) {
 				var thisX = (e || b.event).clientX;
 				var to = m.min(max, m.max(-2, l + (thisX - x)));
-				f.btn.style.left = to + 'px';
-				f.ondrag(m.round(m.max(0, to / max) * 100), to);
+				f.btn.style.left = to +'px';				
+				f.ondrag(m.round(m.max(0, to / max) * 100), to);				
 				b.getSelection ? b.getSelection().removeAllRanges() : g.selection.empty();
 			};
 			g.onmouseup = new Function('this.onmousemove=null');
 		};
 	},
 	ondrag: function (pos, x) {
+		/* 此处数值5为步长 */
+		if ( x % this.stepLen != 0){
+			x = x + this.stepLen - (x % this.stepLen);
+		};
+		console.log(x);
 		this.step.style.width = Math.max(0, x) + 'px';
-		this.title.innerHTML = pos / 10 + '';
+		this.btn.style.left = Math.max(0, x) + 'px';
+		this.layer.style.width = Math.max(0, x) + 'px';
+		this.value.value = x + ' ';
+		
+		
+		/* this.title.innerHTML = pos / 10 + ''; */
 	}
 }
-new scale('btn0', 'bar0', 'title0');
-new scale('btn1', 'bar1', 'title1');
-new scale('btn2', 'bar2', 'title2');
+var stepLen0=5;
+var stepLen1=40;
+var stepLen2=5;
+new scale('btn0', 'bar0','layer0','value0',stepLen0);
+new scale('btn1', 'bar1','layer1','value1',stepLen1);
+new scale('btn2', 'bar2','layer2','value2',stepLen2);
 </script>
 </html>
