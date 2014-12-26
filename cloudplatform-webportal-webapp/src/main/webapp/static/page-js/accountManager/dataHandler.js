@@ -73,7 +73,7 @@ define(function(require,exports,module){
             var ips = [];
             $(".select-list-right").find("li").each(function () {
                 var addr = $(this).find("p:first").html();
-                var type = $(this).find("[checked='checked']").val();
+                var type = $(this).find(":checked").val();
                 ips.push({"addr":addr,"tpye":type});
             })
 
@@ -158,11 +158,11 @@ define(function(require,exports,module){
             + "<p class=\"pull-left\">"+data.addr+"</p>"
             + "<p class=\"pull-right\" style=\"margin-right:5px\">"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" checked=\"checked\">"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" >"
             + "<label class=\"mgr\">管理</label>"
             + "</span>"
             + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\">"
+            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\" checked>"
             + "<label class=\"ro\">只读</label>"
             + "</span>"
             + "<span>"
