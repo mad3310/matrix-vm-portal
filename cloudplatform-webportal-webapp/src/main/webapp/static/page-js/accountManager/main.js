@@ -6,9 +6,6 @@ define(function(require){
     var cn = new common();
     var $ = require("jquery");
     require("bootstrapValidator")($);
-    /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var dbUser = new dataHandler();
 
     /*页面按钮初始化 --start*/
     $(".toCreateAccount").click(function () {           //切换到创建账户
@@ -34,10 +31,29 @@ define(function(require){
         $("#ipForm").removeClass("hide");
     })
 
-    $(".ipFromBotton").click(function () {
+    $("[name = 'submitIpForm']").click(function () {
+        asyncModifyIpData();
+        $("#ipForm").addClass("hide");
+        $("#ipList").removeClass("hide");
+        var dbId = $("#dbId").val();
+        var ips = $("#iplist-textarea").val();
+        cn.PostData(
+            "/dbIp",
+            {
+                dbId:dbId,
+                ips:ips
+            }
+        );
+    })
+    $("[name = 'cancleIpForm']").click(function () {
+        asyncModifyIpData();
         $("#ipForm").addClass("hide");
         $("#ipList").removeClass("hide");
     })
+
+    $("#refresh").click(function() {
+        asyncData();
+    });
     /*页面按钮初始化 --end*/
 
 
@@ -143,12 +159,22 @@ define(function(require){
         $('#edit-dbUser-botton').removeClass("disabled");
     });*/
 
+    /*加载数据*/
+    var dataHandler = require('./dataHandler');
+    var dbUser = new dataHandler();
+
     asyncData();
-	$("#refresh").click(function() {
-		asyncData();
-	});
+    asyncCreateData();
+    asyncModifyIpData();
+
     function asyncData() {
-    	cn.GetData("/dbUser/"+$("#dbId").val(),dbUser.DbUserListHandler);
+        var dbUserListUrl = "/dbUser/"+$("#dbId").val();
+    	cn.GetData(dbUserListUrl,dbUser.DbUserListHandler);
     }
-    cn.GetData("/static/page-js/accountManager/analogData/ipdata.json",dbUser.DbUserIpHandler);
+    function asyncCreateData(){
+        cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.CreateDbUserIpHandler);   //创建用户加载IP
+    }
+    function asyncModifyIpData(){
+        cn.GetData("/dbIp/"+$("#dbId").val(),dbUser.DbUserIpListHandler);   //获取IP列表信息
+    }
 })

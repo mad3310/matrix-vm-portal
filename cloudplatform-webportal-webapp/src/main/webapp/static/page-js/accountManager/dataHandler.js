@@ -27,8 +27,34 @@ define(function(require,exports,module){
                 tr.appendTo($tby);
             }
         },
-        DbUserIpHandler: function(data){
+        CreateDbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
+        },
+        DbUserIpListHandler: function(data){
+            var $tby = $("#ipList-tby");
+            $tby.find("tr").remove();
+            var array = data.data;
+
+            var rank = 0;
+            var ips = '';
+            var tr =$("<tr></tr>");
+            for(var i= 0, len= array.length;i<len;i++){
+                var td = $("<td width=\"25%\">"+array[i]+"</td>");
+                td.appendTo(tr);
+                ips = ips+array[i]+",";
+                if(rank < 3){
+                    rank++;
+                }else{
+                    tr.appendTo($tby);
+                    tr =$("<tr></tr>");
+                    rank = 0;
+                }
+            }
+            if(tr.length>0){
+                tr.appendTo($tby);
+            }
+
+            $("#iplist-textarea").val(ips);
         }
     }
 
@@ -90,6 +116,7 @@ define(function(require,exports,module){
         });
 
     };
+
     function AddToLeftFrame($sl,data){
         var $li = $("<li value=\""+data.id+"\" class=\"select-item\">"+data.addr+"</li>");
         $li.appendTo($sl);

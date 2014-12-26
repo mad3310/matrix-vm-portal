@@ -69,15 +69,8 @@
 						<th colspan="4">允许访问IP名单</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td width="25%">10.23.12.24/22</td>
-						<td width="25%">0.0.0.0/0</td>
-						<td width="25%">33.22.11.44</td>
+				<tbody id="ipList-tby">
 
-						<td width="25%">10.23.12.24/21</td>
-
-					</tr>
 				</tbody>
 			</table>
 			<div class="has-warning help-block">
@@ -95,7 +88,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<textarea name="iplist" class="form-control" rows="4"></textarea>
+					<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="4"></textarea>
 				</div>
 				<div class="help-block ng-hide" style="padding-top: 30px"></div>
 			</div>
@@ -108,8 +101,8 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<button  class="btn btn-primary ipFromBotton">确定</button>
-					<button  class="btn btn-default ipFromBotton">取消</button>
+					<input name="submitIpForm" type="button"  value="确定" class="btn btn-primary ipFromBotton"/>
+					<input type="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton"/>
 				</div>
 			</div>
 		</form>
@@ -136,7 +129,7 @@
 						<!-- ngIf: !newAccount -->
 						<div class="col-sm-4">
 							<!-- ngIf: newAccount && !isJst -->
-							<input name="username" class="form-control" type="text"></div>
+							<input name="username" class="form-control input-radius-2" type="text"></div>
 						<div class="col-sm-12 notice-block">
 							<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
 						</div>
@@ -200,7 +193,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="readWriterRate" class="form-control" type="password">
+							<input name="readWriterRate" class="form-control input-radius-2" type="password">
 						</div>
 					</div>
 				</div>
@@ -212,7 +205,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="maxConcurrency" class="form-control" type="password">
+							<input name="maxConcurrency" class="form-control input-radius-2" type="password">
 						</div>
 					</div>
 				</div>
@@ -224,7 +217,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control" type="password">
+							<input name="newPwd2" class="form-control input-radius-2" type="password">
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="notice-block col-sm-12">
@@ -253,7 +246,7 @@
 					<!-- 备注输入框 -->
 					<div class="col-sm-10 row">
 						<div class="col-sm-4">
-							<textarea name="accountDesc" class="form-control" style="width:100%;height:90px"></textarea>
+							<textarea name="accountDesc" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
 						</div>
 						<!-- 备注输入超过长度限制提示 -->
 						<div class="col-sm-8 help-info mc-hide">
