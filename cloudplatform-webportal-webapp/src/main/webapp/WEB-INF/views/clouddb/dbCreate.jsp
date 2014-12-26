@@ -149,21 +149,11 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
-<<<<<<< HEAD
-														<span class="sleBG">   
-                                                        <span class="sleHid">
-                                                            <select name="hclusterId" class="form-control w217 wcolor">
-																<option >单可用区域</option>
-																<option >多可用区</option>
-														    </select>
-                                                        </span>   
-=======
 														<span class="sleBG"> 
                                                        	 	<span class="sleHid">
                                                             	<select name="hclusterId" class="form-control w217 wcolor">
 																</select>
-                                                       	 	</span>   
->>>>>>> branch 'develop' of git@git.letv.cn:liuhao1/letv_mcluster_webportal.git
+                                                       	 	</span> 
                                                         </span>  
                                                         <span class="bk-select-arrow"></span>	
 													</div>
@@ -314,7 +304,7 @@
 																	<span class="bk-slider-txt">1000GB</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer0" style="width: 11.88px;"> <span
+																id="layer0" style="width: 5px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-l2"> <span
 																		class="bk-slider-unit-box bk-select-action"> <span
@@ -332,7 +322,7 @@
 															</span>
 															<!-- <span>15</span> -->
 															<!-- <button id="btn0"></button> -->
-															<span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
+															<span class="bk-slider-drag"  style="left:5px;" id="btn0"> <i></i> <i></i>
 																<span class="bk-tip-arrow"></span>
 															</span>
 														</div>
@@ -389,10 +379,10 @@
 															<div id="flag"></div>
 															<!-- <button id="btn1"></button> -->
 															<!-- 拖动按钮 -->
-															<span class="bk-slider-drag" id="btn1"> <i></i> <i></i>
-																<span class="bk-tip-arrow"></span>
+															<span class="bk-slider-drag" style="left:40px;" id="btn1"> <i></i> <i></i>
+																<span class="bk-tip-arrow" ></span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
-																class="bk-slider-block-box bk-select-action"> <span
+																class="bk-slider-block-box"> <span
 																	class="bk-slider-txt">1</span>
 															</span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
@@ -440,7 +430,7 @@
 																	<span class="bk-slider-txt glyphicon glyphicon-gift">3年</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer1" style="width: 40px;"> <span
+																id="layer1" style="width: 56px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-mm"> <span
 																		class="bk-slider-unit-box bk-select-action"> <span

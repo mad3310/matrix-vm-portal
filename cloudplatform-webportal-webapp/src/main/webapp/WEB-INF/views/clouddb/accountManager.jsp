@@ -95,7 +95,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<textarea name="iplist" class="form-control" rows="4"></textarea>
+					<textarea name="iplist" class="form-control" rows="4"></textarea>				
 				</div>
 				<div class="help-block ng-hide" style="padding-top: 30px"></div>
 			</div>
@@ -136,7 +136,8 @@
 						<!-- ngIf: !newAccount -->
 						<div class="col-sm-4">
 							<!-- ngIf: newAccount && !isJst -->
-							<input name="username" class="form-control" type="text"></div>
+								<input name="username" class="form-control input-radius-2" type="text">
+						</div>
 						<div class="col-sm-12 notice-block">
 							<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
 						</div>
@@ -200,8 +201,8 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="readWriterRate" class="form-control" type="password">
-						</div>
+							<input name="readWriterRate" class="form-control input-radius-2" type="password">
+					    </div>
 					</div>
 				</div>
 				<div class="form-group">
@@ -212,7 +213,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="maxConcurrency" class="form-control" type="password">
+							<input name="maxConcurrency" class="form-control input-radius-2" type="password">
 						</div>
 					</div>
 				</div>
@@ -224,7 +225,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control" type="password">
+							<input name="newPwd2" class="form-control input-radius-2" type="password">
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="notice-block col-sm-12">
@@ -242,7 +243,7 @@
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control" type="password">
+							<input name="newPwd2" class="form-control input-radius-2" type="password">
 						</div>
 					</div>
 				</div>

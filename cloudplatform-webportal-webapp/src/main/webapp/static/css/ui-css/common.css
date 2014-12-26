@@ -871,7 +871,7 @@ width:448px;
 background: #e8e8e8;
 /**padding: 0 8px;**/
 padding: 0 0px;
-margin: 0 0 1px 0;
+margin: 0 0 1px 10px;
 vertical-align: top;
 }
  .bk-slider .bk-slider-range {
@@ -970,26 +970,9 @@ height: 40px;
 padding: 14px 0 0 5px;
 background: #2dacd1;
 cursor: default;
+z-index:10;
 }
-.bk-tip-gray {
-position: absolute;
-width: 36px;
-height: 20px;
-background: #aaa;
-text-align: center;
-line-height: 20px;
-font-size: 12px;
-color: #fff;
-}
-.bk-tip-gray .bk-tip-arrow {
-position: absolute;
-top: 20px;
-left: 15px;
-width: 0;
-height: 0;
-border: solid 3px transparent;
-border-top-color: #000;
-}
+
 /*2014-12-18 by gm progressbar-------end*/
 /*2014-12-19 by gm 数字框---begin*/
 .bk-number {
@@ -1228,17 +1211,6 @@ position: relative;
     background: #43BFE3;
 }
 
-.bk-slider-range .bk-tip-arrow-new{
-	width: 11px;
-    height: 40px;
-	position: absolute;
-    left: -8px;
-    top: -2px;
-    display: block;
-    cursor: pointer;
-    padding: 14px 0px 0px 5px;
-    background: #2DACD1;
-}
 .bk-slider-drag .bk-tip-arrow {
 	position: absolute;
 	/* top: 20px; */
@@ -1247,7 +1219,7 @@ position: relative;
 	height: 10px;
 	border-left: 1px solid #eee;
 	border-right: 1px solid #eee;
-	z-index:10;
+	z-index: inherit;
 	cursor:pointer;
 	/* border: #000 solid 3px transparent; */
 	/* border-top-color: #000; */
@@ -1325,4 +1297,10 @@ position: relative;
     -khtml-opacity: 0.5;   
     opacity: 0.5;  */
      FILTER: gray;
+}
+
+/* 各个界面input的radius */
+.input-radius-2{
+	border-radius:2px;
+	box-shadow:none;
 }
