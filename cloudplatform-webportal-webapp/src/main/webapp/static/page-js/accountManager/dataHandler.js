@@ -31,8 +31,10 @@ define(function(require,exports,module){
             InitDoubleFrame(".multi-select",data.data);
         }
     }
+
+    /*双选框初始化 --begin*/
     function InitDoubleFrame(id,data){
-        var $d = $(id);		//双选框div
+        var $d = $(id);		                    //双选框div
         $sl = $d.find(".select-list-left");		//左选框ul
         $sr = $d.find(".select-list-right");	//右选框ul
         for(var i= 0,len=data.length;i<len;i++){
@@ -112,7 +114,6 @@ define(function(require,exports,module){
             + "</li>");
         $li.appendTo($sr);
     };
-
     function SelectToggle($d){
         $d.find("li").each(function() {
             if ($(this).find("p").length == 0) {
@@ -130,7 +131,6 @@ define(function(require,exports,module){
 
         })
     };
-
     function DoubleClickToggle($d){
         $d.find("li").unbind("dblclick");
         $sl = $d.find(".select-list-left");		    //左选框ul
@@ -159,4 +159,5 @@ define(function(require,exports,module){
     function GetDoubleValue(id){
         var s = $(id);
     }
+    /*双选框初始化 --end*/
 });

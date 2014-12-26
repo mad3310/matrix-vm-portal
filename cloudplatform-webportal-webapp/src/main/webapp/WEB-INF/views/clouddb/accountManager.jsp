@@ -95,7 +95,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<textarea name="iplist" class="form-control" rows="4" id="iplist"></textarea>
+					<textarea name="iplist" class="form-control" rows="4"></textarea>
 				</div>
 				<div class="help-block ng-hide" style="padding-top: 30px"></div>
 			</div>
@@ -108,8 +108,8 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
-					<button  class="btn btn-primary ipFromBotton" id="saveIp">确定</button>
-					<button  class="btn btn-default ipFromBotton" id="cancel">取消</button>
+					<button  class="btn btn-primary ipFromBotton">确定</button>
+					<button  class="btn btn-default ipFromBotton">取消</button>
 				</div>
 			</div>
 		</form>
@@ -125,7 +125,7 @@
 		</div>
 		<!-- 内容部分，由一个form承载 -->
 		<div style="width:auto;height:auto;">
-			<form role="form" class="form-horizontal" name="account_modify_form">
+			<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
 				<!-- 数据库账号模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">
@@ -136,27 +136,7 @@
 						<!-- ngIf: !newAccount -->
 						<div class="col-sm-4">
 							<!-- ngIf: newAccount && !isJst -->
-							<input required="required" name="accountNumber" class="form-control" type="text"></div>
-						<!-- 输入错误校验 -->
-						<div class="col-sm-8 help-info mc-hide">
-							<small class="text-danger">
-								<span class="glyphicon glyphicon-remove-sign"></span>
-								帐号格式错误
-							</small>
-							<small class="text-danger">
-								<span class="glyphicon glyphicon-remove-sign"></span>
-								帐号不能为空
-							</small>
-							<small class="text-danger">
-								<span class="glyphicon glyphicon-remove-sign"></span>
-							</small>
-						</div>
-						<!-- 输入成功提示  可以给div添加mc-hide类隐藏-->
-						<div class="col-sm-8 help-info">
-							<small class="text-success">
-								<span class="glyphicon glyphicon-ok-sign"></span>
-							</small>
-						</div>
+							<input name="username" class="form-control" type="text"></div>
 						<div class="col-sm-12 notice-block">
 							<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
 						</div>
@@ -220,7 +200,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input required="required" name="newPwd" class="form-control" type="password">
+							<input name="readWriterRate" class="form-control" type="password">
 						</div>
 					</div>
 				</div>
@@ -232,7 +212,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input required="required" name="newPwd" class="form-control" type="password">
+							<input name="maxConcurrency" class="form-control" type="password">
 						</div>
 					</div>
 				</div>
@@ -244,23 +224,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input required="required" name="newPwd" class="form-control" type="password">
-						</div>
-						<!-- 密码格式错误提示 -->
-						<div class="help-info col-sm-8 mc-hide" >
-							<small class="text-danger">
-								<span class="glyphicon glyphicon-remove-sign"></span>
-								密码格式错误
-							</small>
-							<small class="text-danger">
-								<span class="glyphicon glyphicon-remove-sign"></span>密码不能为空
-							</small>
-						</div>
-						<!-- 密码正确图标提示 可以在class加mc-hide隐藏该div-->
-						<div class="help-info col-sm-8" >
-							<small class="text-success">
-								<span class="glyphicon glyphicon-ok-sign"></span>
-							</small>
+							<input name="newPwd2" class="form-control" type="password">
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="notice-block col-sm-12">
@@ -278,26 +242,8 @@
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
-							<input required="required" name="newPwd2" class="form-control" type="password">
+							<input name="newPwd2" class="form-control" type="password">
 						</div>
-						<!-- 密码确认输入错误提示 -->
-					<div class="help-info col-sm-8 mc-hide" >
-						<small class="text-danger">
-							<span class="glyphicon glyphicon-remove-sign">
-							</span>密码错误
-						</small>
-						<small class="text-danger" >
-							<span class="glyphicon glyphicon-remove-sign">
-							</span>密码不能为空
-						</small>
-					</div>
-					<!-- 密码确认正确提示图标 -->
-					<div class="help-info col-sm-8">
-						<small class="text-success">
-							<span class="glyphicon glyphicon-ok-sign">
-							</span>
-						</small>
-					</div>
 					</div>
 				</div>
 				<!-- 密码确认模块end -->
@@ -314,12 +260,6 @@
 							<small class="text-danger" >
 								<span class="glyphicon glyphicon-remove-sign"></span>
 								备注说明最多256个字符
-							</small>
-						</div>
-						<!-- 输入成功提示图标 -->
-						<div class="help-info col-sm-8" >
-							<small class="text-success">
-								<span class="glyphicon glyphicon-ok-sign"></span>
 							</small>
 						</div>
 						<!-- 备注信息规则静态提示 -->

@@ -239,7 +239,9 @@ define(function(require,exports,module){
                 data:data,
                 success:function(data){
                     /*添加当handler为空时的异常处理*/
-                    handler(data);
+					if(handler){
+						handler(data);
+					}
                 }
             });
         },
