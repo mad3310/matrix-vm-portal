@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.enumeration.DbStatus;
@@ -34,6 +35,8 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	private IDbUserService dbUserService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	@Override
 	public IBaseService<DbUserModel> getService() {
@@ -51,6 +54,17 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			dbUserModel.setPassword(password);
 			this.dbUserService.insert(dbUserModel);
 			ids.append(dbUserModel.getId()).append(",");
+		}
+		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
+	}
+	
+	@Override
+	public void saveAndBuild(List<DbUserModel> users) {
+		StringBuffer ids = new StringBuffer();
+		for (DbUserModel dbUser : users) {
+			dbUser.setCreateUser(sessionService.getSession().getUserId());
+			this.dbUserService.insert(dbUser);
+			ids.append(dbUser.getId()).append(",");
 		}
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}

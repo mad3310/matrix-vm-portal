@@ -18,7 +18,16 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @author name: liuhao1
 	 * @param dbUserModel
 	 */
+	@Deprecated
 	public void saveAndBuild(DbUserModel dbUserModel);
+	
+	/**Methods Name: saveAndBuild <br>
+	 * Description: webapp改版后保存方法<br>
+	 * @author name: liuhao1
+	 * @param users
+	 */
+	public void saveAndBuild(List<DbUserModel> users);
+	
 	/**Methods Name: deleteDbUser <br>
 	 * Description: <br>
 	 * @author name: liuhao1
