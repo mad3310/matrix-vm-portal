@@ -2,14 +2,17 @@ package com.letv.portal.proxy.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.enumeration.DbStatus;
@@ -34,6 +37,8 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	private IDbUserService dbUserService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	@Override
 	public IBaseService<DbUserModel> getService() {
@@ -51,6 +56,17 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			dbUserModel.setPassword(password);
 			this.dbUserService.insert(dbUserModel);
 			ids.append(dbUserModel.getId()).append(",");
+		}
+		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
+	}
+	
+	@Override
+	public void saveAndBuild(List<DbUserModel> users) {
+		StringBuffer ids = new StringBuffer();
+		for (DbUserModel dbUser : users) {
+			dbUser.setCreateUser(sessionService.getSession().getUserId());
+			this.dbUserService.insert(dbUser);
+			ids.append(dbUser.getId()).append(",");
 		}
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}
@@ -94,9 +110,12 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	public void saveOrUpdateIps(Long dbId, String ips) {
 		String[] arrs = ips.split(",");
 		List<String> newIps = new ArrayList<String>();
+		Set<String> tempSet = new HashSet<String>(); //使用set去重
 		for (String ip : arrs) {
-			newIps.add(ip);
+			tempSet.add(ip);
 		}
+		newIps.addAll(tempSet);
+		
 		List<String> oldIps = this.selectIpsFromUser(dbId);
 		
 		List<String> temp = new ArrayList<String>(newIps);
@@ -145,7 +164,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 				String ip = dbUser.getAcceptIp();
 				data.put("addr",ip);
 				data.put("type", dbUser.getType());
-				data.put("userd", 1);
+				data.put("used", 1);
 				selected.add(data);
 				
 				if(all.contains(ip)) {
@@ -156,7 +175,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		for (String ip : all) { //未使用ip
 			Map<String,Object> data = new HashMap<String,Object>();
 			data.put("addr",ip);
-			data.put("userd", 0);
+			data.put("used", 0);
 			selected.add(data);
 		}
 		return selected;

@@ -235,7 +235,7 @@
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control" type="password">
+							<input name="newPwd2" class="form-control input-radius-2" type="password">
 						</div>
 					</div>
 				</div>

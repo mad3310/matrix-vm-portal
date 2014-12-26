@@ -1,5 +1,6 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
-import com.mysql.jdbc.StringUtils;
+import com.letv.portal.view.IpView;
 
 /**Program Name: DbUserController <br>
  * Description:  db用户<br>
@@ -96,11 +97,30 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.POST)
+	/*@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel) {
 		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
 		this.dbUserProxy.saveAndBuild(dbUserModel);
 		ResultObject obj = new ResultObject();
+		return obj;
+	}*/
+	
+	/**Methods Name: save <br>
+	 * Description: 用户保存<br>
+	 * @author name: liuhao1 20141226
+	 * @param dbUserModel
+	 * @return
+	 */
+	@RequestMapping(method=RequestMethod.POST)
+	public @ResponseBody ResultObject save(DbUserModel dbUserModel,List<IpView> ips,ResultObject obj) {
+		List<DbUserModel> users = new ArrayList<DbUserModel>();
+		for (IpView ipView : ips) {
+			DbUserModel dbUser = dbUserModel;
+			dbUser.setAcceptIp(ipView.getAddr());
+			dbUser.setType(ipView.getType());
+			users.add(dbUser);
+		}
+		this.dbUserProxy.saveAndBuild(users);
 		return obj;
 	}
 	/**
