@@ -12,27 +12,23 @@ define(function(require){
         $("#accountList").addClass("mc-hide");
         $("#ipListTab").addClass("mc-hide");
         $("#newAccountTab").removeClass("mc-hide");
+        asyncCreateData();
     })
-
     $(".toAccountList").click(function () {             //切换到创建账户
         $("#newAccountTab").addClass("mc-hide");
         $("#ipListTab").addClass("mc-hide");
         $("#accountList").removeClass("mc-hide");
     })
-
     $(".toIpList").click(function () {                   //切换到IP列表
         $("#newAccountTab").addClass("mc-hide");
         $("#accountList").addClass("mc-hide");
         $("#ipListTab").removeClass("mc-hide");
     })
-
     $("#modifyIpList").click(function () {
         $("#ipList").addClass("hide");
         $("#ipForm").removeClass("hide");
     })
-
     $("[name = 'submitIpForm']").click(function () {
-        asyncModifyIpData();
         $("#ipForm").addClass("hide");
         $("#ipList").removeClass("hide");
         var dbId = $("#dbId").val();
@@ -44,18 +40,16 @@ define(function(require){
                 ips:ips
             }
         );
+        asyncModifyIpData();
     })
     $("[name = 'cancleIpForm']").click(function () {
-        asyncModifyIpData();
         $("#ipForm").addClass("hide");
         $("#ipList").removeClass("hide");
     })
-
     $("#refresh").click(function() {
         asyncData();
     });
     /*页面按钮初始化 --end*/
-
 
     $('#db_user_create_form').bootstrapValidator({
         feedbackIcons: {
@@ -97,6 +91,32 @@ define(function(require){
                         message: '最大并发量不能为空!'
                     },integer: {
                         message: '请输入数字'
+                    }
+                }
+            },
+            newPwd1: {
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },
+                    identical: {
+                        field: 'newPwd2',
+                        message: '两次输入密码不同'
+                    },
+                    different: {
+                        field: 'username',
+                        message: '密码不能与账户名相同'
+                    }
+                }
+            },
+            newPwd2: {
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },
+                    identical: {
+                        field: 'newPwd1',
+                        message: '两次输入密码不同'
                     }
                 }
             }
@@ -175,6 +195,20 @@ define(function(require){
         cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.CreateDbUserIpHandler);   //创建用户加载IP
     }
     function asyncModifyIpData(){
-        cn.GetData("/dbIp/"+$("#dbId").val(),dbUser.DbUserIpListHandler);   //获取IP列表信息
+        window.setTimeout(function () {
+            cn.GetData("/dbIp/"+$("#dbId").val(),dbUser.DbUserIpListHandler);   //获取IP列表信息
+        },1000);
     }
+
+    /*创建dbuser*/
+    $("#submitCreateUserForm").click(function () {
+        if(!$("#submitCreateUserForm").hasClass("disabled")){
+            $("#submitCreateUserForm").addClass("disabled");
+            var createUserData = dbUser.GetCreateDbUserData();
+            var url = "/dbUser";
+            cn.PostData(url,createUserData);
+           // var $thisIframe =  $(this).closest("iframe");
+           // $thisIframe.attr("src",$thisIframe.attr("src"));
+        }
+    })
 })

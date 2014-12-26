@@ -95,14 +95,13 @@
 			<div class="form-group">
 				<div class="col-sm-10">
 					<span class="help-block">请以逗号隔开，不可重复，最多100个。</span>
-                    <span class="help-block">支持格式如：0.0.0.0/0，10.23.12.24（IP），10.23.12.24/24（CIDR模式，无类域间路由，/24表示了地址中前缀的长度，范围[1,32]）。</span>
-					<span class="help-block">0.0.0.0/0和空代表不设IP访问的限制，数据库将会有高安全风险。建议仅将您的WEB服务器外网IP/IP段设为可访问权限。</span>
+                    <span class="help-block">支持格式如：10.23.12.24,10.23.34.%</span>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-4">
 					<input name="submitIpForm" type="button"  value="确定" class="btn btn-primary ipFromBotton"/>
-					<input type="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton"/>
+					<input name="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton"/>
 				</div>
 			</div>
 		</form>
@@ -193,7 +192,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="readWriterRate" class="form-control input-radius-2" type="password">
+							<input name="readWriterRate" class="form-control input-radius-2"/>
 						</div>
 					</div>
 				</div>
@@ -205,7 +204,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="maxConcurrency" class="form-control input-radius-2" type="password">
+							<input name="maxConcurrency" class="form-control input-radius-2"/>
 						</div>
 					</div>
 				</div>
@@ -217,7 +216,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control input-radius-2" type="password">
+							<input name="newPwd1" class="form-control input-radius-2" type="password"/>
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="notice-block col-sm-12">
@@ -235,7 +234,7 @@
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
-							<input name="newPwd2" class="form-control input-radius-2" type="password">
+							<input name="newPwd2" class="form-control input-radius-2" type="password"/>
 						</div>
 					</div>
 				</div>
@@ -266,7 +265,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<button disabled="disabled" type="button" class="btn btn-success btn-disable">提交</button>
+						<input type="button" id="submitCreateUserForm" value="提交" class="btn btn-primary"/>
 						<button type="button" class="btn btn-default">返回</button>
 					</div>
 				</div>

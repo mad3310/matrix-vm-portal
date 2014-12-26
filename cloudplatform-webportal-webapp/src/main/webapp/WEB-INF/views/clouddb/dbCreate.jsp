@@ -230,48 +230,6 @@
 																<span>短链接</span>
 															</div>
 														</button>
-														<button
-															class=" bk-button bk-button-primary disabled">
-															<div>
-																<span>5.6</span>
-															</div>
-														</button>
-													</div>
-													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">存储引擎：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<input name="engineType" type="text" class="hide" value="0">
-														<button class=" bk-button bk-button-primary bk-button-current" value="0">
-															<div>
-																<span>InnDB</span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">链接类型：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<input name="linkType" type="text" class="hide" value="0">
-														<button class=" bk-button bk-button-primary bk-button-current" value="0">
-															<div>
-																<span>长链接</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary" value="1">
-															<div>
-																<span>短链接</span>
-															</div>
-														</button>
 													</div>
 												</div>
 											</div>
@@ -517,7 +475,7 @@
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-orders-menu  bk-mb4">
 								<span class="bk-orders-menu-name">购买清单</span> <span
-									class="bk-orders-menu-quantity bk-pale">0台</span>
+									class="bk-orders-menu-quantity bk-pale">1台</span>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">当前配置</div>
@@ -525,9 +483,9 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span
-												class="bk-items-item-value">青岛（可用区B）</span></li>
+												class="bk-items-item-value">北京</span></li>
 											<li><span class="bk-items-item-name">配置：</span> <span
-												class="bk-items-item-value">5GB存储空间、240MB内存、MySQL 5.5</span>
+												class="bk-items-item-value">20GB存储空间、2G内存、MySQL 5.5</span>
 											</li>
 											<li><span class="bk-items-item-name">购买量：</span> <span
 												class="bk-items-item-value">1个月 x 1台</span></li>

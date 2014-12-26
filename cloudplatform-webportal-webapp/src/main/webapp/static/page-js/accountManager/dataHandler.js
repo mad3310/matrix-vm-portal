@@ -21,7 +21,10 @@ define(function(require,exports,module){
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">|</span><a href=\"#\">删除</a> </div></td>");
+                var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
+                        + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
+                        + "|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">"
+                        + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5);
                 tr.appendTo($tby);
@@ -50,17 +53,46 @@ define(function(require,exports,module){
                     rank = 0;
                 }
             }
-            if(tr.length>0){
+            if(tr.length>0){                    //填充空余行
+                for(var i=rank;i<4;i++){
+                    var td = $("<td width=\"25%\"></td>");
+                    td.appendTo(tr);
+                }
                 tr.appendTo($tby);
             }
 
             $("#iplist-textarea").val(ips);
+        },
+        GetCreateDbUserData: function(){
+            var username = $("[name = 'username']").val();
+            var readWriterRate = $("[name = 'readWriterRate']").val();
+            var maxConcurrency = $("[name = 'maxConcurrency']").val();
+            var newPwd1 = $("[name = 'newPwd1']").val();
+            var accountDesc = $("[name = 'accountDesc']").val();
+
+            var ips = [];
+            $(".select-list-right").find("li").each(function () {
+                var addr = $(this).find("p:first").html();
+                var type = $(this).find("[checked='checked']").val();
+                ips.push({"addr":addr,"tpye":type});
+            })
+
+            var data = {
+                "username":username,
+                "readWriterRate":readWriterRate,
+                "maxConcurrency":maxConcurrency,
+                "password":newPwd1,
+                "accountDesc":accountDesc,
+                "ips":ips
+            }
+            return data;
         }
     }
 
     /*双选框初始化 --begin*/
     function InitDoubleFrame(id,data){
         var $d = $(id);		                    //双选框div
+        $d.find("li").remove();
         $sl = $d.find(".select-list-left");		//左选框ul
         $sr = $d.find(".select-list-right");	//右选框ul
         for(var i= 0,len=data.length;i<len;i++){
@@ -79,7 +111,7 @@ define(function(require,exports,module){
         $d.find(".btn_db_add").click(function(){
             var selected= [];
             $sl.find(".active").each(function (i,val) {
-                selected.push({addr:$(val).html(),id:$(val).val()});
+                selected.push({addr:$(val).html()});
             });
             $sl.find(".active").remove();
             for(var i= 0,len=selected.length;i<len;i++){
@@ -90,7 +122,7 @@ define(function(require,exports,module){
         $d.find(".btn_db_remove").click(function(){
             var selected= [];
             $sr.find(".active").each(function (i,val) {
-                selected.push({addr:$(val).find("p:first").html(),id:$(val).val()});
+                selected.push({addr:$(val).find("p:first").html()});
             });
             $sr.find(".active").remove();
             for(var i= 0,len=selected.length;i<len;i++){
@@ -118,11 +150,11 @@ define(function(require,exports,module){
     };
 
     function AddToLeftFrame($sl,data){
-        var $li = $("<li value=\""+data.id+"\" class=\"select-item\">"+data.addr+"</li>");
+        var $li = $("<li class=\"select-item\">"+data.addr+"</li>");
         $li.appendTo($sl);
     };
     function AddToRightFrame($sr,data){
-        var $li = $("<li value=\""+data.id+"\"  class=\"select-item\"> "
+        var $li = $("<li class=\"select-item\"> "
             + "<p class=\"pull-left\">"+data.addr+"</p>"
             + "<p class=\"pull-right\" style=\"margin-right:5px\">"
             + "<span>"
@@ -165,7 +197,7 @@ define(function(require,exports,module){
         $sl.find("li").each(function(){
             $(this).dblclick(function(){
                 var selected= [];
-                selected.push({addr:$(this).html(),id:$(this).val()});
+                selected.push({addr:$(this).html()});
                 $(this).remove();
                 AddToRightFrame($sr,selected[0]);
                 SelectToggle($d);                //重新初始化单机事件
@@ -175,16 +207,13 @@ define(function(require,exports,module){
         $sr.find("li").each(function(){
             $(this).dblclick(function(){
                 var selected= [];
-                selected.push({addr:$(this).find("p:first").html(),id:$(this).val()});
+                selected.push({addr:$(this).find("p:first").html()});
                 $(this).remove();
                 AddToLeftFrame($sl,selected[0]);
                 SelectToggle($d);               //重新初始化单机事件
                 DoubleClickToggle($d);          //重新初始化双击事件
             })
         });
-    }
-    function GetDoubleValue(id){
-        var s = $(id);
     }
     /*双选框初始化 --end*/
 });
