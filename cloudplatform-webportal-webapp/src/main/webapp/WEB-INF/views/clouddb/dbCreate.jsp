@@ -82,14 +82,12 @@
 		<div class="row">
 			<!-- main-content-center-begin -->
 			<div class="col-sm-12 col-md-12">
-				<ul class="nav nav-tabs RDSCreateUl" role="tablist"
-					id="RDSCreateTab">
-					<li role="presentation" class="active"><a href="#year"
-						role="tab" data-toggle="tab" style="">包年包月</a></li>
-					<li role="presentation"><a href="#dosage" role="tab"
-						data-toggle="tab">按量付费</a></li>
+				<ul class="nav nav-tabs RDSCreateUl" role="tablist" id="RDSCreateTab">
+					<li role="presentation" class="active"><a href="#year" role="tab" data-toggle="tab" style="">包年包月</a></li>
+					<!--<li role="presentation"><a href="#dosage" role="tab" data-toggle="tab">按量付费</a></li>-->
 				</ul>
 				<div class="tab-content mt20">
+					<form id="monthPurchaseForm">
 					<div role="tabpanel" class="tab-pane fade active in" id="year">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
@@ -103,7 +101,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-buttontab">
-														<input id=""  class="form-control"　name="dbname" type="text">
+														<input id="dbName"  class="form-control" name="dbName" type="text">
 													</div>
 												</div>
 											</div>
@@ -118,22 +116,22 @@
 																<span>北京</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>成都</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>青岛</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>香港</span>
 															</div>
 														</button>
-														<button class="bk-button bk-button-primary">
+														<button class="bk-button bk-button-primary disabled">
 															<div>
 																<span>深圳</span>
 															</div>
@@ -153,7 +151,7 @@
 													<div class="pull-left">
 														<span class="sleBG">   
                                                         <span class="sleHid">
-                                                            <select class="form-control w217 wcolor">
+                                                            <select name="hclusterId" class="form-control w217 wcolor">
 																<option >单可用区域</option>
 																<option >多可用区</option>
 														    </select>
@@ -173,48 +171,10 @@
                                                         <span class="sleHid">
                                                             <select class="form-control w217 wcolor">
 																<option >MySQL</option>
-																<option >MySQLServer</option>
-																<option >mcluster</option>
-																<option >fortest</option>
 														    </select>
                                                         </span>   
                                                         </span>  
-                                                        <span class="bk-select-arrow"></span>														
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">存储引擎：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<button
-															class=" bk-button bk-button-primary bk-button-current">
-															<div>
-																<span>InnDB</span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">链接类型：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<button
-															class=" bk-button bk-button-primary bk-button-current">
-															<div>
-																<span>长链接</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary">
-															<div>
-																<span>短链接</span>
-															</div>
-														</button>
+                                                        <span class="bk-select-arrow"></span>	
 													</div>
 												</div>
 											</div>
@@ -230,6 +190,48 @@
 																<span>5.5</span>
 															</div>
 														</button>
+														<button
+															class=" bk-button bk-button-primary disabled">
+															<div>
+																<span>5.6</span>
+															</div>
+														</button>
+													</div>
+													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">存储引擎：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="engineType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>InnDB</span>
+															</div>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">链接类型：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="linkType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>长链接</span>
+															</div>
+														</button>
+														<button class="bk-button bk-button-primary" value="1">
+															<div>
+																<span>短链接</span>
+															</div>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -237,7 +239,7 @@
 									</div>
 								</dd>
 							</dl>
-							<dl class="bk-group">
+							<dl class="bk-group css-gray">
 								<dt class="bk-group-title">存储</dt>
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
@@ -307,25 +309,17 @@
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">内存：</label>
 											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="dropdown">
-														<button
-															class="btn btn-default dropdown-toggle w217 wcolor"
-															type="button" id="UseableB" data-toggle="dropdown">
-															240MB<span class="caret"></span>
-														</button>
-														<ul class="dropdown-menu w217 h216" role="menu"
-															aria-labelledby="UseableB">
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">240MB</a></li>
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">600MB</a></li>
-															<li role="presentation"><a role="menuitem"
-																tabindex="-1" href="#">1200MB</a></li>
-														</ul>
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid">
+																	<select class="form-control w217 wcolor">
+																		<option>2G</option>
+																</select>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
 													</div>
-												</div>
-												<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
+													<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
 											</div>
 										</div>
 									</div>
@@ -519,7 +513,7 @@
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button class="bk-button bk-button-primary">
+									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
@@ -534,7 +528,7 @@
 							</div>
 						</div>
 					</div>
-
+					</form>
 					<div role="tabpanel" class="tab-pane fade" id="dosage">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
@@ -855,11 +849,13 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/dbCreate/main");
 </script>
+
 <script type="text/javascript">
 scale = function (btn, bar,layer,value,stepLen) {
 	this.btn = document.getElementById(btn);

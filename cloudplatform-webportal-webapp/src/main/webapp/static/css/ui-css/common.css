@@ -1247,7 +1247,7 @@ position: relative;
 	height: 10px;
 	border-left: 1px solid #eee;
 	border-right: 1px solid #eee;
-	z-index:1000;
+	z-index:10;
 	cursor:pointer;
 	/* border: #000 solid 3px transparent; */
 	/* border-top-color: #000; */
@@ -1316,3 +1316,13 @@ position: relative;
 	display:block;
 }
 
+/* 不可用功能置灰 */
+.css-gray{
+	/* background-color:#ddd;
+	z-index:100;
+    filter:alpha(opacity=50);   
+    -moz-opacity:0.5;   
+    -khtml-opacity: 0.5;   
+    opacity: 0.5;  */
+     FILTER: gray;
+}
