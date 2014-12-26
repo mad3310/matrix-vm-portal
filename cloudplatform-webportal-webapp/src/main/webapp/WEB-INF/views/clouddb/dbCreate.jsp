@@ -153,7 +153,7 @@
                                                        	 	<span class="sleHid">
                                                             	<select name="hclusterId" class="form-control w217 wcolor">
 																</select>
-                                                       	 	</span>   
+                                                       	 	</span> 
                                                         </span>  
                                                         <span class="bk-select-arrow"></span>	
 													</div>
@@ -230,6 +230,48 @@
 																<span>短链接</span>
 															</div>
 														</button>
+														<button
+															class=" bk-button bk-button-primary disabled">
+															<div>
+																<span>5.6</span>
+															</div>
+														</button>
+													</div>
+													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">存储引擎：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="engineType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>InnDB</span>
+															</div>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">链接类型：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="linkType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>长链接</span>
+															</div>
+														</button>
+														<button class="bk-button bk-button-primary" value="1">
+															<div>
+																<span>短链接</span>
+															</div>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -237,7 +279,7 @@
 									</div>
 								</dd>
 							</dl>
-							<dl class="bk-group">
+							<dl class="bk-group css-gray">
 								<dt class="bk-group-title">存储</dt>
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
@@ -262,7 +304,7 @@
 																	<span class="bk-slider-txt">1000GB</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer0" style="width: 11.88px;"> <span
+																id="layer0" style="width: 5px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-l2"> <span
 																		class="bk-slider-unit-box bk-select-action"> <span
@@ -280,7 +322,7 @@
 															</span>
 															<!-- <span>15</span> -->
 															<!-- <button id="btn0"></button> -->
-															<span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
+															<span class="bk-slider-drag"  style="left:5px;" id="btn0"> <i></i> <i></i>
 																<span class="bk-tip-arrow"></span>
 															</span>
 														</div>
@@ -337,10 +379,10 @@
 															<div id="flag"></div>
 															<!-- <button id="btn1"></button> -->
 															<!-- 拖动按钮 -->
-															<span class="bk-slider-drag" id="btn1"> <i></i> <i></i>
-																<span class="bk-tip-arrow"></span>
+															<span class="bk-slider-drag" style="left:40px;" id="btn1"> <i></i> <i></i>
+																<span class="bk-tip-arrow" ></span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
-																class="bk-slider-block-box bk-select-action"> <span
+																class="bk-slider-block-box"> <span
 																	class="bk-slider-txt">1</span>
 															</span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
@@ -388,7 +430,7 @@
 																	<span class="bk-slider-txt glyphicon glyphicon-gift">3年</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer1" style="width: 40px;"> <span
+																id="layer1" style="width: 56px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-mm"> <span
 																		class="bk-slider-unit-box bk-select-action"> <span
