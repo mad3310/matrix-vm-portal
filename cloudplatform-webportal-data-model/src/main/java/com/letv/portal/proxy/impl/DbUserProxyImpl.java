@@ -2,8 +2,10 @@ package com.letv.portal.proxy.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,9 +110,12 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	public void saveOrUpdateIps(Long dbId, String ips) {
 		String[] arrs = ips.split(",");
 		List<String> newIps = new ArrayList<String>();
+		Set<String> tempSet = new HashSet<String>(); //使用set去重
 		for (String ip : arrs) {
-			newIps.add(ip);
+			tempSet.add(ip);
 		}
+		newIps.addAll(tempSet);
+		
 		List<String> oldIps = this.selectIpsFromUser(dbId);
 		
 		List<String> temp = new ArrayList<String>(newIps);
@@ -159,7 +164,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 				String ip = dbUser.getAcceptIp();
 				data.put("addr",ip);
 				data.put("type", dbUser.getType());
-				data.put("userd", 1);
+				data.put("used", 1);
 				selected.add(data);
 				
 				if(all.contains(ip)) {
@@ -170,7 +175,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		for (String ip : all) { //未使用ip
 			Map<String,Object> data = new HashMap<String,Object>();
 			data.put("addr",ip);
-			data.put("userd", 0);
+			data.put("used", 0);
 			selected.add(data);
 		}
 		return selected;
