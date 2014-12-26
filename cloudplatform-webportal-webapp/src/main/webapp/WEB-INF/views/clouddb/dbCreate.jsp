@@ -149,6 +149,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
+<<<<<<< HEAD
 														<span class="sleBG">   
                                                         <span class="sleHid">
                                                             <select name="hclusterId" class="form-control w217 wcolor">
@@ -156,8 +157,15 @@
 																<option >多可用区</option>
 														    </select>
                                                         </span>   
+=======
+														<span class="sleBG"> 
+                                                       	 	<span class="sleHid">
+                                                            	<select name="hclusterId" class="form-control w217 wcolor">
+																</select>
+                                                       	 	</span>   
+>>>>>>> branch 'develop' of git@git.letv.cn:liuhao1/letv_mcluster_webportal.git
                                                         </span>  
-                                                        <span class="bk-select-arrow"></span>														
+                                                        <span class="bk-select-arrow"></span>	
 													</div>
 												</div>
 											</div>
@@ -188,6 +196,48 @@
 															class=" bk-button bk-button-primary bk-button-current">
 															<div>
 																<span>5.5</span>
+															</div>
+														</button>
+														<button
+															class=" bk-button bk-button-primary disabled">
+															<div>
+																<span>5.6</span>
+															</div>
+														</button>
+													</div>
+													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">存储引擎：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="engineType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>InnDB</span>
+															</div>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">链接类型：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li">
+													<div class="bk-buttontab">
+														<input name="linkType" type="text" class="hide" value="0">
+														<button class=" bk-button bk-button-primary bk-button-current" value="0">
+															<div>
+																<span>长链接</span>
+															</div>
+														</button>
+														<button class="bk-button bk-button-primary" value="1">
+															<div>
+																<span>短链接</span>
 															</div>
 														</button>
 														<button
