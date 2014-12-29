@@ -210,11 +210,13 @@ define(function(require){
             var createUserData = dbUser.GetCreateDbUserData();
             var url = "/dbUser";
             cn.PostData(url,createUserData);
+            /*后期改为刷新iframe --begin*/
             $("#newAccountTab").addClass("mc-hide");
             $("#accountList").addClass("mc-hide");
             $("#modifyAccountTab").addClass("mc-hide");
             $("#ipListTab").removeClass("mc-hide");
             asyncData();
+            /*后期改为刷新iframe --end*/
         }
     })
 
@@ -222,14 +224,18 @@ define(function(require){
     $("#submitModifyUserForm").click(function () {
         if(!$("#submitModifyUserForm").hasClass("disabled")){
             $("#submitModifyUserForm").addClass("disabled");
-            var createUserData = dbUser.GetCreateDbUserData();
-            var url = "/dbUser";
-            cn.PostData(url,createUserData);
+            var modifyUserData = dbUser.GetModifyDbUserData();
+            var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+
+            cn.PostData(url,modifyUserData);
+
+            /*后期改为刷新iframe --begin*/
             $("#newAccountTab").addClass("mc-hide");
             $("#modifyAccountTab").addClass("mc-hide");
             $("#ipListTab").addClass("mc-hide");
             $("#accountList").removeClass("mc-hide");
             asyncData();
+            /*后期改为刷新iframe --end*/
         }
     })
 

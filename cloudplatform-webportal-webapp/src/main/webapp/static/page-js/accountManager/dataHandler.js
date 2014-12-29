@@ -104,7 +104,7 @@ define(function(require,exports,module){
                 "readWriterRate":readWriterRate,
                 "maxConcurrency":maxConcurrency,
                 "password":newPwd1,
-                "accountDesc":accountDesc,
+                "descn":accountDesc,
                 "ips":ips,
                 "types":types
             }
@@ -112,8 +112,7 @@ define(function(require,exports,module){
         },
         GetModifyDbUserData: function(){
             var dbId = $("#dbId").val();
-            var username = $("[name = 'username']").val();
-            var accountDesc = $("[name = 'modifyAccountDesc']").val();
+            var username =$("#modifyFormDbUsername").html();
 
             var ips = "";
             var types = "";
@@ -127,7 +126,6 @@ define(function(require,exports,module){
             var data = {
                 "dbId" : dbId,
                 "username":username,
-                "accountDesc":accountDesc,
                 "ips":ips,
                 "types":types
             }
