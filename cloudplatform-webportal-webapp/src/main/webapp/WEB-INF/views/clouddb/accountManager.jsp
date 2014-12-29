@@ -43,6 +43,7 @@
 						<th width="15%">状态</th>
 						<th width="15%">读写比例</th>
 						<th>频次限制</th>
+						<th>备注说明</th>
 						<th class="text-right" width="30%">
 							<span style="padding-left:8px">操作</span>
 						</th>
@@ -245,7 +246,7 @@
 					<!-- 备注输入框 -->
 					<div class="col-sm-10 row">
 						<div class="col-sm-4">
-							<textarea name="accountDesc" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
+							<textarea name="descn" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
 						</div>
 						<!-- 备注输入超过长度限制提示 -->
 						<div class="col-sm-8 help-info mc-hide">

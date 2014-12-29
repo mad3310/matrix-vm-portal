@@ -21,12 +21,13 @@ define(function(require,exports,module){
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
+                var td5 = $("<td><span>"+array[i].descn+"</span></td>");
+                var td6 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
-                tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
         },
@@ -68,7 +69,7 @@ define(function(require,exports,module){
             var readWriterRate = $("[name = 'readWriterRate']").val();
             var maxConcurrency = $("[name = 'maxConcurrency']").val();
             var newPwd1 = $("[name = 'newPwd1']").val();
-            var accountDesc = $("[name = 'accountDesc']").val();
+            var accountDesc = $("[name = 'descn']").val();
 
             var ips = [];
             $(".select-list-right").find("li").each(function () {
@@ -82,7 +83,7 @@ define(function(require,exports,module){
                 "readWriterRate":readWriterRate,
                 "maxConcurrency":maxConcurrency,
                 "password":newPwd1,
-                "accountDesc":accountDesc,
+                "descn":descn,
                 "ips":ips
             }
             return data;
