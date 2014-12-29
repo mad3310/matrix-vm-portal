@@ -137,9 +137,15 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
 		
 		//分别操作 新增、修改、删除。
-		this.saveAndBuild(adds);
-		this.updateDbUser(updates);
-		this.deleteAndBuild(removes);
+		if(!adds.isEmpty()) {
+			this.saveAndBuild(adds);
+		}
+		if(!updates.isEmpty()) {
+			this.updateDbUser(updates);
+		}
+		if(!removes.isEmpty()) {
+			this.deleteAndBuild(removes);
+		}
 	}
 	
 	@Override
