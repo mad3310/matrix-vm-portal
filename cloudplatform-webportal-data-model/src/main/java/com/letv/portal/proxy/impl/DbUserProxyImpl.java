@@ -76,6 +76,29 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		this.buildTaskService.updateUser(dbUserModel.getId().toString());
 	}
 	
+
+	@Override
+	public void updateDbUser(List<DbUserModel> users) {
+		if(users.isEmpty()) {
+			return;
+		}
+		List<DbUserModel> oldUsers = this.selectByDbIdAndUsername(users.get(0).getDbId(), users.get(0).getUsername());
+		
+		/*
+		 * 判断新用户、老用户、删除用户。
+		 * 判断model的ip和type，如果都相同，不变。
+		 * 如果ip是新的 新增
+		 * 如果已删除 删除
+		 * 如果ip一样 type不一样 更新。
+		 */
+		
+		
+			
+			
+			
+		
+	}
+	
 	public void deleteDbUser(String dbUserId){
 		this.buildTaskService.deleteDbUser(dbUserId);
 		String[] ids = dbUserId.split(",");
@@ -91,14 +114,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	
 	@Override
 	public List<String> selectIpsFromUser(Long dbId) {
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("dbId", dbId);
-		params.put("username", DEFAULT_DB_RO_NAME);
-		return this.getIpsFromUserByParams(params);
-	}
-	
-	private List<String> getIpsFromUserByParams(Map<String,Object> params) {
-		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
+		List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
 		List<String> ips = new ArrayList<String>();
 		for (DbUserModel dbUser : dbUsers) {
 			ips.add(dbUser.getAcceptIp());
@@ -155,10 +171,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<Map<String,Object>> selected = new ArrayList<Map<String,Object>>();
 		
 		if(!StringUtils.isNullOrEmpty(username)) {
-			Map<String, Object> params = new HashMap<String,Object>();
-			params.put("dbId", dbId);
-			params.put("username", username);
-			List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
+			List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, username);
 			for (DbUserModel dbUser : dbUsers) {
 				Map<String,Object> data = new HashMap<String,Object>();
 				String ip = dbUser.getAcceptIp();
@@ -179,6 +192,15 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			selected.add(data);
 		}
 		return selected;
+	}
+
+	@Override
+	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("username", username);
+		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
+		return dbUsers;
 	}
 	
 }

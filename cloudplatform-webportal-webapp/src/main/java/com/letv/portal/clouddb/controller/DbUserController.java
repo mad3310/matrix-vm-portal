@@ -23,7 +23,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
-import com.letv.portal.view.IpView;
+import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbUserController <br>
  * Description:  db用户<br>
@@ -48,29 +48,6 @@ public class DbUserController {
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 		
 	/**Methods Name: list <br>
-	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param request
-	 * @return
-	 */
-	/*@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
-		ResultObject obj = new ResultObject();
-		List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId); 
-		if(dbUsers.size()>0) {
-			if(dbUsers.get(0).getCreateUser() == sessionService.getSession().getUserId()) {
-				obj.setData(dbUsers);
-			} else {
-				obj.setResult(0);
-			}
-		} else {
-			obj.setData(dbUsers);
-		}
-		return obj;
-	}*/
-	
-	/**Methods Name: list <br>
 	 * Description: dbUser列表<br>
 	 * @author name: liuhao1 20141225
 	 * @param dbId
@@ -91,35 +68,14 @@ public class DbUserController {
 	}
 	
 	/**Methods Name: save <br>
-	 * Description: 保存创建信息  http://localhost:8080/db/user/save<br>
-	 * @author name: liuhao1
-	 * @param dbApplyStandardModel
-	 * @param request
-	 * @return
-	 */
-	/*@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ResultObject save(DbUserModel dbUserModel) {
-		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
-		this.dbUserProxy.saveAndBuild(dbUserModel);
-		ResultObject obj = new ResultObject();
-		return obj;
-	}*/
-	
-	/**Methods Name: save <br>
 	 * Description: 用户保存<br>
 	 * @author name: liuhao1 20141226
 	 * @param dbUserModel
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ResultObject save(DbUserModel dbUserModel,List<IpView> ips,ResultObject obj) {
-		List<DbUserModel> users = new ArrayList<DbUserModel>();
-		for (IpView ipView : ips) {
-			DbUserModel dbUser = dbUserModel;
-			dbUser.setAcceptIp(ipView.getAddr());
-			dbUser.setType(ipView.getType());
-			users.add(dbUser);
-		}
+	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		List<DbUserModel> users = transToDbUser(dbUserModel,ips,types);
 		this.dbUserProxy.saveAndBuild(users);
 		return obj;
 	}
@@ -161,28 +117,39 @@ public class DbUserController {
 		}
 		return obj;
 	}
-	/**
-	 * Methods Name: updateDbUser <br>
-	 * Description: 修改DbUser信息
-	 * @author name: wujun
+
+	
+	/**Methods Name: updateDbUser <br>
+	 * Description: 用户账户更新<br>
+	 * @author name: liuhao1
 	 * @param dbUserModel
+	 * @param types
+	 * @param ips
+	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/{dbUserId}",method=RequestMethod.POST)
-	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
-		ResultObject obj = new ResultObject();
-		DbUserModel dbUser = this.dbUserProxy.selectById(dbUserModel.getId());
-		if(dbUser!= null) {
-			if(dbUserModel.getId() == sessionService.getSession().getUserId()) {
-				this.dbUserProxy.updateDbUser(dbUserModel);		
-			} else {
-				obj.setResult(0);
-			}
-		} else {
-			obj.setResult(0);
-		}
+	@RequestMapping(value="/{dbUserName}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		List<DbUserModel> users = transToDbUser(dbUserModel,ips,types);
+		this.dbUserProxy.updateDbUser(users);
 		return obj;
 	}
 	
+	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String ips,String types) {
+		List<DbUserModel> users = new ArrayList<DbUserModel>();
+		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types)) {
+			return users;
+		}
+		String[] arryIps = ips.split(",");
+		String[] arryTypes = types.split(",");
+		for (int i = 0; i < arryIps.length; i++) {
+			DbUserModel dbUser = dbUserModel;
+			dbUser.setAcceptIp(arryIps[i]);
+			dbUser.setType(Integer.parseInt(arryTypes[i]));
+			users.add(dbUser);
+			
+		}
+		return users;
+	}
 	
 }
