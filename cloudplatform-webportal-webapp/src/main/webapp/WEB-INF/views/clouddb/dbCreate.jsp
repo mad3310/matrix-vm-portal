@@ -237,7 +237,7 @@
 									</div>
 								</dd>
 							</dl>
-							<dl class="bk-group css-gray">
+							<dl class="bk-group">
 								<dt class="bk-group-title">存储</dt>
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
@@ -247,7 +247,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-slider">
-														<div class="bk-slider-range" id="bar0">
+														<div class="bk-slider-range disabled" id="bar0">
 															<div id="flag"></div>
 															<span class="bk-slider-block bk-slider-l2"> <span
 																class="bk-slider-block-box"> <span
@@ -281,7 +281,7 @@
 															<!-- <span>15</span> -->
 															<!-- <button id="btn0"></button> -->
 															<span class="bk-slider-drag"  style="left:5px;" id="btn0"> <i></i> <i></i>
-																<span class="bk-tip-arrow"></span>
+																<span class="bk-tip-arrow" ></span>
 															</span>
 														</div>
 													</div>
@@ -309,10 +309,11 @@
 											<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left">
-															<span class="sleBG"> <span class="sleHid">
-																	<select class="form-control w217 wcolor">
+															<span class="sleBG"> 
+															<span class="sleHid">
+																	<select class="form-control w217 wcolor disabled">
 																		<option>2G</option>
-																</select>
+																   </select>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
 														</div>
@@ -333,7 +334,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-slider bk-slider-duration">
-														<div class="bk-slider-range" id="bar1">
+														<div class="bk-slider-range disabled" id="bar1">
 															<div id="flag"></div>
 															<!-- <button id="btn1"></button> -->
 															<!-- 拖动按钮 -->
@@ -887,14 +888,10 @@ scale.prototype = {
 		if ( x % this.stepLen != 0){
 			x = x + this.stepLen - (x % this.stepLen);
 		};
-		console.log(x);
 		this.step.style.width = Math.max(0, x) + 'px';
 		this.btn.style.left = Math.max(0, x) + 'px';
 		this.layer.style.width = Math.max(0, x) + 'px';
 		this.value.value = x + ' ';
-		
-		
-		/* this.title.innerHTML = pos / 10 + ''; */
 	}
 }
 var stepLen0=5;
@@ -904,4 +901,5 @@ new scale('btn0', 'bar0','layer0','value0',stepLen0);
 new scale('btn1', 'bar1','layer1','value1',stepLen1);
 new scale('btn2', 'bar2','layer2','value2',stepLen2);
 </script>
+
 </html>

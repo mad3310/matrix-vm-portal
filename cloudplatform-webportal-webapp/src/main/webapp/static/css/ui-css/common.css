@@ -1230,8 +1230,21 @@ position: relative;
 	/* border: #000 solid 3px transparent; */
 	/* border-top-color: #000; */
 }
-
-
+/* 暂不提供的功能设置disable类  该disable类可以 加在bk-slider-range等外层div上*/
+.bk-group .disabled .bk-slider-drag{
+	background:#84b4dc;
+	background-color:#84b4dc;
+	border:1px solid #84b4dc;
+}
+.bk-group .disabled .bk-slider-transition,
+.bk-group .disabled .bk-slider-current,
+.bk-group .disabled .bk-slider-container{
+	background:#84b4dc;
+	
+}
+.bk-group .disabled .bk-slider-unit-box {
+     border-right: solid 1px #84b4dc;
+}
 /* 去掉IP授权部分a标签下划线 */
 #newAccountTab a:hover {
 	cursor:pointer;
