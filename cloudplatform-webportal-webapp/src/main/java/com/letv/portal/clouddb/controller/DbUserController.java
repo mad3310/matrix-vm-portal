@@ -57,13 +57,12 @@ public class DbUserController {
 	public @ResponseBody ResultObject list(@PathVariable Long dbId,ResultObject obj) {
 		if(null == dbId) {
 			throw new ValidateException("参数不能为空");
-		} else {
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("dbId", dbId);
-			params.put("deleted", false);
-			List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
-			obj.setData(dbUsers);
 		}
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("deleted", false);
+		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
+		obj.setData(dbUsers);
 		return obj;
 	}
 	
@@ -75,8 +74,10 @@ public class DbUserController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
-		List<DbUserModel> users = transToDbUser(dbUserModel,ips,types);
-		this.dbUserProxy.saveAndBuild(users);
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.saveAndBuild(dbUserModel,ips,types);
 		return obj;
 	}
 	/**
@@ -128,28 +129,13 @@ public class DbUserController {
 	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/{dbUserName}",method=RequestMethod.POST)
-	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
-		List<DbUserModel> users = transToDbUser(dbUserModel,ips,types);
-		this.dbUserProxy.updateDbUser(users);
+	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
 		return obj;
-	}
-	
-	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String ips,String types) {
-		List<DbUserModel> users = new ArrayList<DbUserModel>();
-		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types)) {
-			return users;
-		}
-		String[] arryIps = ips.split(",");
-		String[] arryTypes = types.split(",");
-		for (int i = 0; i < arryIps.length; i++) {
-			DbUserModel dbUser = dbUserModel;
-			dbUser.setAcceptIp(arryIps[i]);
-			dbUser.setType(Integer.parseInt(arryTypes[i]));
-			users.add(dbUser);
-			
-		}
-		return users;
 	}
 	
 }
