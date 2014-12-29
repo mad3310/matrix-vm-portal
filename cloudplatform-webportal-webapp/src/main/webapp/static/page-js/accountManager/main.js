@@ -217,8 +217,24 @@ define(function(require){
             asyncData();
         }
     })
-    $('#showDbuserIpPrivilege').modal({
+
+    /*修改dbuser权限*/
+    $("#submitModifyUserForm").click(function () {
+        if(!$("#submitModifyUserForm").hasClass("disabled")){
+            $("#submitModifyUserForm").addClass("disabled");
+            var createUserData = dbUser.GetCreateDbUserData();
+            var url = "/dbUser";
+            cn.PostData(url,createUserData);
+            $("#newAccountTab").addClass("mc-hide");
+            $("#modifyAccountTab").addClass("mc-hide");
+            $("#ipListTab").addClass("mc-hide");
+            $("#accountList").removeClass("mc-hide");
+            asyncData();
+        }
+    })
+
+   /* $('#showDbuserIpPrivilege').modal({
         backdrop:false,
         show:true
-    });
+    });*/
 })
