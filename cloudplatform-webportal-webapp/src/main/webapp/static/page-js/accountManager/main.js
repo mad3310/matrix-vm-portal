@@ -11,17 +11,20 @@ define(function(require){
     $(".toCreateAccount").click(function () {           //切换到创建账户
         $("#accountList").addClass("mc-hide");
         $("#ipListTab").addClass("mc-hide");
+        $("#modifyAccountTab").addClass("mc-hide");
         $("#newAccountTab").removeClass("mc-hide");
-        asyncCreateData();
+        asyncDbUserIpData();
     })
     $(".toAccountList").click(function () {             //切换到创建账户
         $("#newAccountTab").addClass("mc-hide");
         $("#ipListTab").addClass("mc-hide");
+        $("#modifyAccountTab").addClass("mc-hide");
         $("#accountList").removeClass("mc-hide");
     })
     $(".toIpList").click(function () {                   //切换到IP列表
         $("#newAccountTab").addClass("mc-hide");
         $("#accountList").addClass("mc-hide");
+        $("#modifyAccountTab").addClass("mc-hide");
         $("#ipListTab").removeClass("mc-hide");
     })
     $("#modifyIpList").click(function () {
@@ -184,15 +187,15 @@ define(function(require){
     var dbUser = new dataHandler();
 
     asyncData();
-    asyncCreateData();
+    asyncDbUserIpData();
     asyncModifyIpData();
 
     function asyncData() {
         var dbUserListUrl = "/dbUser/"+$("#dbId").val();
     	cn.GetData(dbUserListUrl,dbUser.DbUserListHandler);
     }
-    function asyncCreateData(){
-        cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.CreateDbUserIpHandler);   //创建用户加载IP
+    function asyncDbUserIpData(){
+        cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.DbUserIpHandler);   //创建用户加载IP
     }
     function asyncModifyIpData(){
         window.setTimeout(function () {
@@ -207,8 +210,15 @@ define(function(require){
             var createUserData = dbUser.GetCreateDbUserData();
             var url = "/dbUser";
             cn.PostData(url,createUserData);
-           // var $thisIframe =  $(this).closest("iframe");
-           // $thisIframe.attr("src",$thisIframe.attr("src"));
+            $("#newAccountTab").addClass("mc-hide");
+            $("#accountList").addClass("mc-hide");
+            $("#modifyAccountTab").addClass("mc-hide");
+            $("#ipListTab").removeClass("mc-hide");
+            asyncData();
         }
     })
+    $('#showDbuserIpPrivilege').modal({
+        backdrop:false,
+        show:true
+    });
 })

@@ -266,13 +266,169 @@
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
 						<input type="button" id="submitCreateUserForm" value="提交" class="btn btn-primary"/>
-						<button type="button" class="btn btn-default">返回</button>
+						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
 				</div>
 				<!-- 按钮模块end -->
 			</form>
 		</div>
 	</div>
+	<div id="modifyAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
+		<!-- heading部分 -->
+		<div class="se-heading">
+			<div class="pull-left">
+				<h4>编辑账号</h4>
+			</div>
+			<a class="pull-left toAccountList">返回帐号管理</a>
+		</div>
+		<!-- 内容部分，由一个form承载 -->
+		<div style="width:auto;height:auto;">
+			<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
+				<!-- 数据库账号模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">
+						数据库帐号：
+					</label>
+					<div class="col-sm-8 row">
+						<!-- ngIf: !newAccount -->
+						<div class="col-sm-4">
+							<!-- ngIf: newAccount && !isJst -->
+							<label id="modifyFormDbUsername" class="col-sm-2 control-label"></label>
+						</div>
+					</div>
+				</div>
+				<!-- 数据库账号模块end -->
+				<!-- 授权数据库模块 -->
+				<div class="form-group modify-multi-select">
+					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
+					<div class="inline-block mcluster-select" style="width:180px">
+						<div class="select-head clearfix">
+							<p class="pull-left">未授权IP</p>
+                            <p class="pull-right">
+                                <a class="toIpList">管理IP列表</a>
+                            </p>
+						</div>
+						<div class="select">
+							<ul class="select-list select-list-left">
+							</ul>
+							<!-- 没有数据记录时显示暂无数据 -->
+							<div class="select-msg mc-hide">
+								<span class="text-muted">暂无数据</span>
+							</div>
+						</div>
+					</div>
+					<div class="inline-block" style="width: 60px;text-align:center;height:183px;padding-top:60px">
+						<div style="margin-bottom:5px">
+							<a class="btn_db_add">授权&nbsp;&gt;</a>
+						</div>
+						<div>
+							<a class="btn_db_remove">&lt;&nbsp;移除</a>
+						</div>
+					</div>
+					<div class="inline-block mcluster-select" style="width:380px;height:100%">
+						<div class="select-head clearfix">
+							<p class="pull-left">已授权IP</p>
+							<p class="pull-right">
+								<span style="padding-right: 5px;color:#bbb">权限</span>
+								<a class="select-all-rw">全部设读写</a>
+							</p>
+						</div>
+						<div class="select">
+							<div class="select-wrap">
+								<ul class="select-list select-list-right">
+								</ul>
+								<!--无数据时显示暂无数据 -->
+								<div class="select-msg mc-hide">
+									<span class="text-muted">暂无数据</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 备注说明模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">备注说明：</label>
+					<!-- 备注输入框 -->
+					<div class="col-sm-10 row">
+						<div class="col-sm-4">
+							<textarea name="modifyAccountDesc" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
+						</div>
+						<!-- 备注输入超过长度限制提示 -->
+						<div class="col-sm-8 help-info mc-hide">
+							<small class="text-danger" >
+								<span class="glyphicon glyphicon-remove-sign"></span>
+								备注说明最多256个字符
+							</small>
+						</div>
+						<!-- 备注信息规则静态提示 -->
+						<div class="col-sm-12 notice-block">
+							<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
+						</div>
+					</div>
+				</div>
+				<!-- 备注说明模块end -->
+				<!-- 按钮模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-4">
+						<input type="button" id="submitModifyUserForm" value="提交" class="btn btn-primary"/>
+						<button type="button" class="btn btn-default toAccountList">返回</button>
+					</div>
+				</div>
+				<!-- 按钮模块end -->
+			</form>
+		</div>
+	</div>
+	<div id="showDbuserIpPrivilege" class="modal fade">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h5 id="showDbuserIpPrivilegeTile" class="modal-title">yaokuo</h5>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>IP
+									</td>
+									<th>权限
+									</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>192.168.3.1</td>
+									<td>管理</td>
+								</tr>
+								<tr>
+									<td>192.168.3.2</td>
+									<td>只读</td>
+								</tr>
+								<tr>
+									<td>192.168.3.2</td>
+									<td>只读</td>
+								</tr>
+								<tr>
+									<td>192.168.3.2</td>
+									<td>只读</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 
 </body>
 <!-- js -->

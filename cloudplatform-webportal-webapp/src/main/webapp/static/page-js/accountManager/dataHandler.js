@@ -21,17 +21,35 @@ define(function(require,exports,module){
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
+                var td5 = $("<td><span>"+array[i].descn+"</span></td>");
+                var td6 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
-                + "|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-modify-dbuser\">修改权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
-                tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
+            var  dbUser = new DataHandler();
+            $(".dbuser-list-modify-dbuser").click(function(){
+                $("#newAccountTab").addClass("mc-hide");
+                $("#ipListTab").addClass("mc-hide");
+                $("#accountList").addClass("mc-hide");
+                $("#modifyAccountTab").removeClass("mc-hide");
+
+                var $thisLine = $(this).closest("tr");
+                var $thisUsername = $thisLine.find("td:first").html();
+                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.ModifyDbUserIpHandler);
+
+                $("#modifyFormDbUsername").html($thisUsername);
+                $("[name= 'modifyAccountDesc']").val($thisUsername);
+            })
         },
-        CreateDbUserIpHandler: function(data){
+        DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
+        },
+        ModifyDbUserIpHandler: function(data){
+            InitDoubleFrame(".modify-multi-select",data.data);
         },
         DbUserIpListHandler: function(data){
             var $tby = $("#ipList-tby");
@@ -64,26 +82,54 @@ define(function(require,exports,module){
             $("#iplist-textarea").val(ips);
         },
         GetCreateDbUserData: function(){
+            var dbId = $("#dbId").val();
             var username = $("[name = 'username']").val();
             var readWriterRate = $("[name = 'readWriterRate']").val();
             var maxConcurrency = $("[name = 'maxConcurrency']").val();
             var newPwd1 = $("[name = 'newPwd1']").val();
             var accountDesc = $("[name = 'accountDesc']").val();
 
-            var ips = [];
-            $(".select-list-right").find("li").each(function () {
+            var ips = "";
+            var types = "";
+            $(".multi-select .select-list-right").find("li").each(function () {
                 var addr = $(this).find("p:first").html();
                 var type = $(this).find(":checked").val();
-                ips.push({"addr":addr,"tpye":type});
+                ips += addr + ",";
+                types += type + ",";
             })
 
             var data = {
+                "dbId" : dbId,
                 "username":username,
                 "readWriterRate":readWriterRate,
                 "maxConcurrency":maxConcurrency,
                 "password":newPwd1,
                 "accountDesc":accountDesc,
-                "ips":ips
+                "ips":ips,
+                "types":types
+            }
+            return data;
+        },
+        GetModifyDbUserData: function(){
+            var dbId = $("#dbId").val();
+            var username = $("[name = 'username']").val();
+            var accountDesc = $("[name = 'modifyAccountDesc']").val();
+
+            var ips = "";
+            var types = "";
+            $(".modify-multi-select .select-list-right").find("li").each(function () {
+                var addr = $(this).find("p:first").html();
+                var type = $(this).find(":checked").val();
+                ips += addr + ",";
+                types += type + ",";
+            })
+
+            var data = {
+                "dbId" : dbId,
+                "username":username,
+                "accountDesc":accountDesc,
+                "ips":ips,
+                "types":types
             }
             return data;
         }
@@ -108,7 +154,7 @@ define(function(require,exports,module){
         DoubleClickToggle($d);
 
         /*添加选中内容*/
-        $d.find(".btn_db_add").click(function(){
+        $d.find(".btn_db_add").unbind('click').click(function(){
             var selected= [];
             $sl.find(".active").each(function (i,val) {
                 selected.push({addr:$(val).html()});
@@ -118,8 +164,9 @@ define(function(require,exports,module){
                 AddToRightFrame($sr,selected[i]);
             }
             SelectToggle($d);
+            DoubleClickToggle($d);
         });
-        $d.find(".btn_db_remove").click(function(){
+        $d.find(".btn_db_remove").unbind('click').click(function(){
             var selected= [];
             $sr.find(".active").each(function (i,val) {
                 selected.push({addr:$(val).find("p:first").html()});
@@ -129,15 +176,15 @@ define(function(require,exports,module){
                 AddToLeftFrame($sl,selected[i]);
             }
             SelectToggle($d);
+            DoubleClickToggle($d);
         });
         /*全选按钮初始化*/
-        $d.find(".select-all-rw").click(function(){
+        $d.find(".select-all-rw").unbind('click').click(function(){
             var $sr = $(this).closest(".mcluster-select");
-            var displayContent = $(this).html();
-            if(displayContent == "全部设管理"){
+            if($(this).html() == "全部设管理"){
                 $(this).html("全部设读写");
                 $sr.find(".mgr").prev().click();
-            }else if (displayContent == "全部设读写"){
+            }else if ($(this).html() == "全部设读写"){
                 $(this).html("全部设只读");
                 $sr.find(".rw").prev().click();
             }else{
@@ -161,7 +208,7 @@ define(function(require,exports,module){
         + "<label class=\"mgr\">管理</label>"
         + "</span>"
         + "<span>"
-        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\" checked>"
+        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\">"
         + "<label class=\"ro\">只读</label>"
         + "</span>"
         + "<span>"
@@ -170,6 +217,13 @@ define(function(require,exports,module){
         + "</span>"
         + "</p>"
         + "</li>");
+        if(data.type == 1){
+            $li.find("input:first").click();
+        }else if(data.type == 2){
+            $li.find("input:eq(1)").click();
+        }else{
+            $li.find("input:eq(2)").click();
+        }
         $li.appendTo($sr);
     };
     function SelectToggle($d){
@@ -185,8 +239,6 @@ define(function(require,exports,module){
                     $(this).closest("li").toggleClass("active");
                 });
             }
-
-
         })
     };
     function DoubleClickToggle($d){
