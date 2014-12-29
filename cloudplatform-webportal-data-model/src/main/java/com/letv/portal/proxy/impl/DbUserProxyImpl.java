@@ -1,6 +1,7 @@
 package com.letv.portal.proxy.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,9 +10,11 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordRandom;
@@ -62,6 +65,9 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	
 	@Override
 	public void saveAndBuild(List<DbUserModel> users) {
+		if(users.isEmpty()) {
+			throw new ValidateException("参数不能为空：users is null");
+		}
 		StringBuffer ids = new StringBuffer();
 		for (DbUserModel dbUser : users) {
 			dbUser.setCreateUser(sessionService.getSession().getUserId());
@@ -76,27 +82,103 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		this.buildTaskService.updateUser(dbUserModel.getId().toString());
 	}
 	
-
+	@Override
+	public void saveAndBuild(DbUserModel dbUserModel, String ips, String types) {
+		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types) || null == dbUserModel) {
+			throw new ValidateException("参数不能为空");
+		}
+		List<DbUserModel> users = this.transToDbUser(dbUserModel, ips, types);
+		this.saveAndBuild(users);
+	}
+	
+	@Override
+	public void updateUserAuthority(DbUserModel dbUserModel, String ips, String types) {
+		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types) || null == dbUserModel) {
+			throw new ValidateException("参数不能为空");
+		}
+		List<String> arryIps = Arrays.asList(ips.split(","));
+		List<String> arryTypes = Arrays.asList(types.split(","));
+		List<String> formIps = new ArrayList<String>(arryIps);
+		List<String> formTypes = new ArrayList<String>(arryTypes);
+		
+		List<DbUserModel> adds = new ArrayList<DbUserModel>();
+		List<DbUserModel> removes = new ArrayList<DbUserModel>();
+		List<DbUserModel> updates = new ArrayList<DbUserModel>();
+		
+		List<DbUserModel> oldUsers = this.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
+		boolean flag = true;
+		for (DbUserModel dbUser : oldUsers) {
+			String ip = dbUser.getAcceptIp();
+			int type = dbUser.getType();
+			
+			for (int i = 0; i < arryIps.size(); i++) {
+				if(ip.equals(arryIps.get(i))) {
+					int formType = Integer.parseInt(arryTypes.get(i));
+					if(type != formType) {
+						//修改
+						dbUser.setType(formType);
+						updates.add(dbUser);
+					}
+					//相同，不修改，继续遍历
+					formIps.remove(arryIps.get(i));
+					formTypes.remove(arryTypes.get(i));
+					flag = false;
+					break;
+				}
+			}
+			if(flag) {
+				//都不相同，删除。继续遍历
+				removes.add(dbUser);
+			}
+			flag = true;
+		}
+		dbUserModel.setPassword(oldUsers.get(0).getPassword());
+		//剩余的，新增。
+		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
+		
+		//分别操作 新增、修改、删除。
+		this.saveAndBuild(adds);
+		this.updateDbUser(updates);
+		this.deleteAndBuild(removes);
+	}
+	
 	@Override
 	public void updateDbUser(List<DbUserModel> users) {
-		if(users.isEmpty()) {
-			return;
+		for (DbUserModel dbUser : users) {
+			this.updateDbUser(dbUser);
 		}
-		List<DbUserModel> oldUsers = this.selectByDbIdAndUsername(users.get(0).getDbId(), users.get(0).getUsername());
-		
-		/*
-		 * 判断新用户、老用户、删除用户。
-		 * 判断model的ip和type，如果都相同，不变。
-		 * 如果ip是新的 新增
-		 * 如果已删除 删除
-		 * 如果ip一样 type不一样 更新。
-		 */
-		
-		
-			
-			
-			
-		
+	}
+	
+	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String ips,String types) {
+		List<DbUserModel> users = new ArrayList<DbUserModel>();
+		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types)) {
+			return users;
+		}
+		String[] arryIps = ips.split(",");
+		String[] arryTypes = types.split(",");
+		return this.transToDbUser(dbUserModel, arryIps, arryTypes);
+	}
+	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String[] ips,String[] types) {
+		List<DbUserModel> users = new ArrayList<DbUserModel>();
+		for (int i = 0; i < ips.length; i++) {
+			DbUserModel dbUser = new DbUserModel();
+			BeanUtils.copyProperties(dbUserModel, dbUser);
+			dbUser.setAcceptIp(ips[i]);
+			dbUser.setType(Integer.parseInt(types[i]));
+			users.add(dbUser);
+		}
+		return users;
+	}
+	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,List<String> ips,List<String> types) {
+		List<DbUserModel> users = new ArrayList<DbUserModel>();
+		for (int i = 0; i < ips.size(); i++) {
+			DbUserModel dbUser = new DbUserModel();
+			BeanUtils.copyProperties(dbUserModel, dbUser);
+			dbUser.setAcceptIp(ips.get(i));
+			dbUser.setType(Integer.parseInt(types.get(i)));
+			users.add(dbUser);
+		}
+		return users;
 	}
 	
 	public void deleteDbUser(String dbUserId){
@@ -108,6 +190,20 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			this.dbUserService.delete(dbUserModel);
 		}	
 	}
+	
+	@Override
+	public void deleteAndBuild(List<DbUserModel> users) {
+		if(users.isEmpty()) {
+			throw new ValidateException("参数不能为空：users is null");
+		}
+		StringBuffer ids = new StringBuffer();
+		for (DbUserModel dbUserModel : users) {
+			ids.append(dbUserModel.getId()).append(",");
+		}
+		this.deleteDbUser(ids.substring(0, ids.length()-1));
+		
+	}
+	
 	public void buildDbUser(String DbUserId){
 		this.buildTaskService.buildUser(DbUserId);
 	}
@@ -202,5 +298,4 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
 		return dbUsers;
 	}
-	
 }

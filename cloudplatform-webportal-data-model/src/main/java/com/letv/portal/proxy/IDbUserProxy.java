@@ -28,19 +28,19 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 */
 	public void saveAndBuild(List<DbUserModel> users);
 	
+	/**Methods Name: deleteAndBuild <br>
+	 * Description: 删除并删除用户<br>
+	 * @author name: liuhao1
+	 * @param users
+	 */
+	public void deleteAndBuild(List<DbUserModel> users);
+	
 	/**Methods Name: deleteDbUser <br>
 	 * Description: <br>
 	 * @author name: liuhao1
 	 * @param dbUserId
 	 */
 	public void deleteDbUser(String dbUserId);
-	/**Methods Name: updateDbUser <br>
-	 * Description: <br>
-	 * @author name: liuhao1
-	 * @param dbUserModel
-	 */
-	@Deprecated
-	public void updateDbUser(DbUserModel dbUserModel);
 	
 	/**Methods Name: updateDbUser <br>
 	 * Description: webapp改版后更新方法<br>
@@ -89,5 +89,16 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @return
 	 */
 	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username);
+
+	/**Methods Name: updateUserAuthority <br>
+	 * Description: 修改用户权限<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 * @param ips
+	 * @param types
+	 */
+	public void updateUserAuthority(DbUserModel dbUserModel, String ips,String types);
+
+	public void saveAndBuild(DbUserModel dbUserModel, String ips, String types);
 
 }

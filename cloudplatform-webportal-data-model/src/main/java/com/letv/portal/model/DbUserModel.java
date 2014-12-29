@@ -25,6 +25,7 @@ public class DbUserModel extends BaseModel {
 	private String readWriterRate;   // 读写比例(1:2)
 	private Integer maxConcurrency;   //最大并发量(100/s)
 	private Integer status; 
+	private String descn; 
 	
 	private Integer maxQueriesPerHour;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
 	private Integer maxUpdatesPerHour;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
@@ -143,6 +144,14 @@ public class DbUserModel extends BaseModel {
 
 	public void setDb(DbModel db) {
 		this.db = db;
+	}
+
+	public String getDescn() {
+		return descn;
+	}
+
+	public void setDescn(String descn) {
+		this.descn = descn;
 	}
 
 	@Override

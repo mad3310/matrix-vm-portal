@@ -87,7 +87,7 @@ define(function(require,exports,module){
             var readWriterRate = $("[name = 'readWriterRate']").val();
             var maxConcurrency = $("[name = 'maxConcurrency']").val();
             var newPwd1 = $("[name = 'newPwd1']").val();
-            var accountDesc = $("[name = 'accountDesc']").val();
+            var accountDesc = $("[name = 'descn']").val();
 
             var ips = "";
             var types = "";
@@ -104,6 +104,7 @@ define(function(require,exports,module){
                 "readWriterRate":readWriterRate,
                 "maxConcurrency":maxConcurrency,
                 "password":newPwd1,
+<<<<<<< HEAD
                 "accountDesc":accountDesc,
                 "ips":ips,
                 "types":types
@@ -130,6 +131,10 @@ define(function(require,exports,module){
                 "accountDesc":accountDesc,
                 "ips":ips,
                 "types":types
+=======
+                "descn":descn,
+                "ips":ips
+>>>>>>> branch 'develop' of git@git.letv.cn:liuhao1/letv_mcluster_webportal.git
             }
             return data;
         }
