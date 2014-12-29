@@ -70,7 +70,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		StringBuffer ids = new StringBuffer();
 		for (DbUserModel dbUser : users) {
-//			dbUser.setCreateUser(sessionService.getSession().getUserId());
+			dbUser.setCreateUser(sessionService.getSession().getUserId());
 			this.dbUserService.insert(dbUser);
 			ids.append(dbUser.getId()).append(",");
 		}
