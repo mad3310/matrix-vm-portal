@@ -555,10 +555,16 @@ width: 30px;
 .mc-hide{
 	display: none;
 }
-.help-info{
+/* .help-info{
 	line-height: 28px;
 	height: 32px;
 	margin:0px;
+} */
+.has-feedback .form-control {
+	width:90%;	
+}
+.form-horizontal .has-feedback .form-control-feedback {
+     right: 0px;
 }
 /*账户管理页end*/
 
@@ -1288,19 +1294,14 @@ position: relative;
 	display:block;
 }
 
-/* 不可用功能置灰 */
-.css-gray{
-	/* background-color:#ddd;
-	z-index:100;
-    filter:alpha(opacity=50);   
-    -moz-opacity:0.5;   
-    -khtml-opacity: 0.5;   
-    opacity: 0.5;  */
-     FILTER: gray;
-}
-
 /* 各个界面input的radius */
 .input-radius-2{
 	border-radius:2px;
 	box-shadow:none;
+}
+
+/* 创建实例界面input和i标签位置 */
+.bk-buttontab .form-control-feedback{
+	top:18px;
+	left:350px;
 }
