@@ -39,7 +39,15 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @author name: liuhao1
 	 * @param dbUserModel
 	 */
+	@Deprecated
 	public void updateDbUser(DbUserModel dbUserModel);
+	
+	/**Methods Name: updateDbUser <br>
+	 * Description: webapp改版后更新方法<br>
+	 * @author name: liuhao1
+	 * @param users
+	 */
+	public void updateDbUser(List<DbUserModel> users);
 	/**
 	 * Methods Name: buildDbUser <br>
 	 * Description: 审批创建DbUser<br>
@@ -72,4 +80,14 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @return
 	 */
 	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username);
+
+	/**Methods Name: selectByDbIdAndUsername <br>
+	 * Description: 根据用户名和dbId查出dbUser列表<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param username
+	 * @return
+	 */
+	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username);
+
 }
