@@ -244,7 +244,7 @@
 			m.MAX_UPDATES_PER_HOUR=#{maxUpdatesPerHour},
 		</if>		
 		<if test="maxConnectionsPerHour != null  ">
-			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour}
+			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour},
 		</if>	
 		<if test="descn != null  ">
 			m.DESCN=#{descn}
