@@ -149,10 +149,8 @@
 			        </ul>
 				</div>
 			</nav>
-			<div class="col-sm-10 col-md-10">
-				<div class="embed-responsive embed-responsive-16by9">
-				  <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe>
-				</div>
+			<div class="embed-responsive embed-responsive-16by9">
+			  <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe>
 			</div>
 				
 		</div>
