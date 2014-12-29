@@ -13,7 +13,7 @@ define(function(require,exports,module){
 
     DataHandler.prototype = {
         DbUserListHandler : function(data){
-        	$(".data-tr").remove();
+            $(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data;
             for(var i= 0, len= array.length;i<len;i++){
@@ -22,9 +22,9 @@ define(function(require,exports,module){
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
-                        + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
-                        + "|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">"
-                        + "|</span><a href=\"#\">删除</a> </div></td>");
+                + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
+                + "|</span><a href=\"#\">修改权限</a><span class=\"text-explode\">"
+                + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5);
                 tr.appendTo($tby);
@@ -133,17 +133,16 @@ define(function(require,exports,module){
         /*全选按钮初始化*/
         $d.find(".select-all-rw").click(function(){
             var $sr = $(this).closest(".mcluster-select");
-            $sr.find("[type='radio']").attr("checked",false);
             var displayContent = $(this).html();
             if(displayContent == "全部设管理"){
                 $(this).html("全部设读写");
-                $sr.find(".mgr").prev().attr("checked",true);
+                $sr.find(".mgr").prev().click();
             }else if (displayContent == "全部设读写"){
                 $(this).html("全部设只读");
-                $sr.find(".rw").prev().attr("checked",true);
+                $sr.find(".rw").prev().click();
             }else{
                 $(this).html("全部设管理");
-                $sr.find(".ro").prev().attr("checked",true);
+                $sr.find(".ro").prev().click();
             }
         });
 
@@ -155,22 +154,22 @@ define(function(require,exports,module){
     };
     function AddToRightFrame($sr,data){
         var $li = $("<li class=\"select-item\"> "
-            + "<p class=\"pull-left\">"+data.addr+"</p>"
-            + "<p class=\"pull-right\" style=\"margin-right:5px\">"
-            + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" >"
-            + "<label class=\"mgr\">管理</label>"
-            + "</span>"
-            + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\" checked>"
-            + "<label class=\"ro\">只读</label>"
-            + "</span>"
-            + "<span>"
-            + "<input type=\"radio\" name=\""+data.addr+"\" value=\"3\">"
-            + "<label class=\"rw\">读写</label>"
-            + "</span>"
-            + "</p>"
-            + "</li>");
+        + "<p class=\"pull-left\">"+data.addr+"</p>"
+        + "<p class=\"pull-right\" style=\"margin-right:5px\">"
+        + "<span>"
+        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" >"
+        + "<label class=\"mgr\">管理</label>"
+        + "</span>"
+        + "<span>"
+        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\" checked>"
+        + "<label class=\"ro\">只读</label>"
+        + "</span>"
+        + "<span>"
+        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"3\">"
+        + "<label class=\"rw\">读写</label>"
+        + "</span>"
+        + "</p>"
+        + "</li>");
         $li.appendTo($sr);
     };
     function SelectToggle($d){
