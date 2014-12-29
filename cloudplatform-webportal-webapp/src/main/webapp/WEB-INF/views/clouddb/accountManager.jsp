@@ -285,6 +285,8 @@
 		<!-- 内容部分，由一个form承载 -->
 		<div style="width:auto;height:auto;">
 			<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
+				<input class="hidden" id="modifydbUserReadWriterRate" type="text" />
+				<input class="hidden" id="modifydbUserMaxConcurrency" type="text" />
 				<!-- 数据库账号模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">
@@ -346,28 +348,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- 备注说明模块 -->
-				<div class="form-group">
-					<label class="col-sm-2 control-label">备注说明：</label>
-					<!-- 备注输入框 -->
-					<div class="col-sm-10 row">
-						<div class="col-sm-4">
-							<textarea name="modifyAccountDesc" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
-						</div>
-						<!-- 备注输入超过长度限制提示 -->
-						<div class="col-sm-8 help-info mc-hide">
-							<small class="text-danger" >
-								<span class="glyphicon glyphicon-remove-sign"></span>
-								备注说明最多256个字符
-							</small>
-						</div>
-						<!-- 备注信息规则静态提示 -->
-						<div class="col-sm-12 notice-block">
-							<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
-						</div>
-					</div>
-				</div>
-				<!-- 备注说明模块end -->
 				<!-- 按钮模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>

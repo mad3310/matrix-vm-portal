@@ -39,10 +39,16 @@ define(function(require,exports,module){
 
                 var $thisLine = $(this).closest("tr");
                 var $thisUsername = $thisLine.find("td:first").html();
+                var $readWriterRate = $thisLine.find("td:eq(2)").html();
+                var $maxConcurrency = $thisLine.find("td:eq(3) span").html();
+
                 cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.ModifyDbUserIpHandler);
 
                 $("#modifyFormDbUsername").html($thisUsername);
-                $("[name= 'modifyAccountDesc']").val($thisUsername);
+                $("#modifydbUserMaxConcurrency").val($maxConcurrency);
+                $("#modifydbUserReadWriterRate").val($readWriterRate);
+                console.log( $("#modifydbUserMaxConcurrency").val() );
+                console.log( $("#modifydbUserReadWriterRate").val() );
             })
         },
         DbUserIpHandler: function(data){
@@ -113,6 +119,8 @@ define(function(require,exports,module){
         GetModifyDbUserData: function(){
             var dbId = $("#dbId").val();
             var username =$("#modifyFormDbUsername").html();
+            var readWriterRate = $("#modifydbUserReadWriterRate").val();
+            var maxConcurrency = $("#modifydbUserMaxConcurrency").val();
 
             var ips = "";
             var types = "";
@@ -126,6 +134,8 @@ define(function(require,exports,module){
             var data = {
                 "dbId" : dbId,
                 "username":username,
+                "maxConcurrency": maxConcurrency,
+                "readWriterRate": readWriterRate,
                 "ips":ips,
                 "types":types
             }
