@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
@@ -33,10 +34,10 @@ public class AccountController {
 
 	private final String ADMIN_PWD = ConfigUtil.getString("admin.pwd");
 	
-	@RequestMapping("/login")
+	@RequestMapping(value = "/login",method=RequestMethod.POST)
 	public String login(UserLogin userLogin,HttpServletRequest request,HttpServletResponse response) {
 		
-		if(!"sysadmin".equals(userLogin.getLoginName()) || !ADMIN_PWD.equals(userLogin.getPassword()) ) {
+		if(!"sysadmin".equals(userLogin.getLoginName()) || !PasswordEncoder.md5Encode(ADMIN_PWD,null).equals(userLogin.getPassword()) ) {
 			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
 		}
@@ -52,6 +53,10 @@ public class AccountController {
          });
 		return "redirect:/dashboard";
 		
+	}
+	@RequestMapping(value = "/login",method=RequestMethod.GET)
+	public String toLogin() {
+		return "/account/login";
 	}
 	
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
