@@ -63,6 +63,12 @@
 			<if test="deleted != null  ">
 				and m.DELETED=#{deleted}
 			</if>
+			<if test="name4Ip == null  ">
+				and m.USERNAME != '#$*defaultRO'
+			</if>
+			<if test="name4Ip != null  ">
+				and m.USERNAME = #{name4Ip}
+			</if>
 		</trim>
 	</sql>
 	
@@ -183,7 +189,12 @@
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
 				and n.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
-			
+			<if test="params != null and params.name4Ip == null  ">
+				and m.USERNAME != '#$*defaultRO'
+			</if>
+			<if test="params != null and params.name4Ip != null  ">
+				and m.USERNAME = #{name4Ip}
+			</if>
 		</trim>
 	</sql>
   

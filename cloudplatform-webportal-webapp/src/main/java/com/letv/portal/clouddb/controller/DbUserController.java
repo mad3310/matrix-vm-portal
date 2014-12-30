@@ -59,7 +59,6 @@ public class DbUserController {
 		}
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbId", dbId);
-		params.put("deleted", false);
 		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
 		obj.setData(dbUsers);
 		return obj;

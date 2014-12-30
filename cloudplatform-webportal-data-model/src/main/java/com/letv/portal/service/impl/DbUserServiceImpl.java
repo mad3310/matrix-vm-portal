@@ -184,7 +184,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Override
 	public List<String> selectIpsFromUser(Long dbId) {
-		List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
+		List<DbUserModel> dbUsers = this.selectIpsByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
 		List<String> ips = new ArrayList<String>();
 		for (DbUserModel dbUser : dbUsers) {
 			ips.add(dbUser.getAcceptIp());
@@ -215,7 +215,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 			dbUser.setUsername(DEFAULT_DB_RO_NAME);
 			dbUser.setAcceptIp(newIp);
 			dbUser.setType(DbUserRoleStatus.RO.getValue());
-			dbUser.setDeleted(true);
 			dbUser.setMaxConcurrency(50);
 			dbUser.setReadWriterRate("2:1");
 			dbUser.setStatus(DbStatus.NORMAL.getValue());
@@ -231,7 +230,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 				this.delete(dbUser);
 			}
 		}
-		
 	}
 
 	@Override
@@ -269,6 +267,14 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("dbId", dbId);
 		params.put("username", username);
+		List<DbUserModel> dbUsers = this.selectByMap(params);
+		return dbUsers;
+	}
+	
+	private List<DbUserModel> selectIpsByDbIdAndUsername(Long dbId, String name4Ip) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("name4Ip",DEFAULT_DB_RO_NAME);
 		List<DbUserModel> dbUsers = this.selectByMap(params);
 		return dbUsers;
 	}

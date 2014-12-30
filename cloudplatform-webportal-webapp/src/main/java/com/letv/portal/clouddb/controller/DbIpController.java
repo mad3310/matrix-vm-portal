@@ -36,7 +36,7 @@ public class DbIpController {
 		return obj;
 	}
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject list(Long dbId,String ips,ResultObject obj) {
+	public @ResponseBody ResultObject save(Long dbId,String ips,ResultObject obj) {
 		if(null == dbId || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		} else {

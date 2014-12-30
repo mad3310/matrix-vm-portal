@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.letv.common.model.BaseModel;
 
 
@@ -31,6 +33,9 @@ public class DbUserModel extends BaseModel {
 	private Integer maxUpdatesPerHour;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
 	private Integer maxConnectionsPerHour;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
 	private Integer maxUserConnections;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
+	
+	@Value("${default.db.ro.name}")
+	private String name4Ip; //ip维护name
 	
 	private DbModel db;
 
@@ -152,6 +157,14 @@ public class DbUserModel extends BaseModel {
 
 	public void setDescn(String descn) {
 		this.descn = descn;
+	}
+
+	public String getName4Ip() {
+		return name4Ip;
+	}
+
+	public void setName4Ip(String name4Ip) {
+		this.name4Ip = name4Ip;
 	}
 
 	@Override
