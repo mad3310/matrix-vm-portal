@@ -193,47 +193,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	}
 
 	@Override
-	public void saveOrUpdateIps(Long dbId, String ips) {
-		String[] arrs = ips.split(",");
-		List<String> newIps = new ArrayList<String>();
-		Set<String> tempSet = new HashSet<String>(); //使用set去重
-		for (String ip : arrs) {
-			tempSet.add(ip);
-		}
-		newIps.addAll(tempSet);
-		
-		List<String> oldIps = this.selectIpsFromUser(dbId);
-		
-		List<String> temp = new ArrayList<String>(newIps);
-		newIps.removeAll(oldIps); //add ips
-		oldIps.removeAll(temp); //remove ips
-		
-		//add new ips in dbUser
-		for (String newIp : newIps) {
-			DbUserModel dbUser = new DbUserModel();
-			dbUser.setDbId(dbId);
-			dbUser.setUsername(DEFAULT_DB_RO_NAME);
-			dbUser.setAcceptIp(newIp);
-			dbUser.setType(DbUserRoleStatus.RO.getValue());
-			dbUser.setMaxConcurrency(50);
-			dbUser.setReadWriterRate("2:1");
-			dbUser.setStatus(DbStatus.NORMAL.getValue());
-			this.insert(dbUser);
-		}
-		//remove ips in dbUser
-		Map<String, Object> params = new HashMap<String,Object>();
-		for (String oldIp : oldIps) {
-			params.put("dbId", dbId);
-			params.put("acceptIp", oldIp);
-			params.put("name4Ip", DEFAULT_DB_RO_NAME);
-			List<DbUserModel> dbUsers = this.selectByMap(params);
-			for (DbUserModel dbUser : dbUsers) {
-				this.delete(dbUser);
-			}
-		}
-	}
-
-	@Override
 	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username) {
 		List<String> all =  this.selectIpsFromUser(dbId);
 		

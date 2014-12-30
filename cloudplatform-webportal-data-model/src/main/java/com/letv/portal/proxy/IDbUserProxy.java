@@ -67,4 +67,11 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 
 	public void saveAndBuild(DbUserModel dbUserModel, String ips, String types);
 
+	/**Methods Name: saveOrUpdateIps <br>
+	 * Description: ip维护：虚拟为特殊用户的存储<br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @param ips
+	 */
+	public void saveOrUpdateIps(Long dbId, String ips);
 }

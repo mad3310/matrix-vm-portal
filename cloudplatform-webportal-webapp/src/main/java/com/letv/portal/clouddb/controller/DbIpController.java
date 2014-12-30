@@ -40,7 +40,7 @@ public class DbIpController {
 		if(null == dbId || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		} else {
-			this.dbUserService.saveOrUpdateIps(dbId,ips);
+			this.dbUserProxy.saveOrUpdateIps(dbId,ips);
 		}
 		return obj;
 	}

@@ -123,11 +123,4 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 */
 	public List<String> selectIpsFromUser(Long dbId);
 	
-	/**Methods Name: saveOrUpdateIps <br>
-	 * Description: ip维护：虚拟为特殊用户的存储<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param ips
-	 */
-	public void saveOrUpdateIps(Long dbId, String ips);
 }
