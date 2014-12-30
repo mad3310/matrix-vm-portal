@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IContainerProxy;
-import com.letv.portal.service.IContainerService;
 
 @Controller
 @RequestMapping("/container")

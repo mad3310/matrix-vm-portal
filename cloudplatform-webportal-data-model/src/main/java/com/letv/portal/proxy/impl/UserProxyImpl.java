@@ -1,18 +1,7 @@
 package com.letv.portal.proxy.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.letv.common.exception.CommonException;
-import com.letv.common.exception.ValidateException;
-import com.letv.portal.dao.IUserDao;
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.IUserProxy;

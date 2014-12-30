@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 
 /**Program Name: IHostDao <br>

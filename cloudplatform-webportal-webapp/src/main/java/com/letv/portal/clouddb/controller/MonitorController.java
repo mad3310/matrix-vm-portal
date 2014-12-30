@@ -16,7 +16,6 @@ import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMonitorIndexService;
-import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>

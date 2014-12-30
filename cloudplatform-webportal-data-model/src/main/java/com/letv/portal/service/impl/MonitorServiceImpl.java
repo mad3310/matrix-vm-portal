@@ -19,7 +19,6 @@ import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.monitor.MonitorViewYModel;
-import com.letv.portal.proxy.impl.MonitorProxyImpl;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;

@@ -14,10 +14,8 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordEncoder;
 import com.letv.portal.model.UserLogin;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.IUserService;
-import com.mysql.jdbc.StringUtils;
 
 
 @Controller

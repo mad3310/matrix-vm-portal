@@ -1,9 +1,5 @@
 package com.letv.portal.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +15,6 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.paging.impl.Page;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;

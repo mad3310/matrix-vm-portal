@@ -25,7 +25,6 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
-import com.mysql.jdbc.StringUtils;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements

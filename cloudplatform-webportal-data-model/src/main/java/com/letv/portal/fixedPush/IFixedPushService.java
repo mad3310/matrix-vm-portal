@@ -1,7 +1,6 @@
 package com.letv.portal.fixedPush;
 
 import java.util.List;
-import java.util.Map;
 
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.fixed.FixedPushModel;

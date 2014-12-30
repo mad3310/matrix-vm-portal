@@ -2,10 +2,8 @@ package com.letv.portal.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 
 

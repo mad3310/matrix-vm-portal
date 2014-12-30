@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.model.MclusterModel;

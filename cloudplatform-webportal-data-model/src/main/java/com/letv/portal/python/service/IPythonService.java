@@ -1,6 +1,5 @@
 package com.letv.portal.python.service;
 
-import com.letv.common.util.HttpClient;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 
