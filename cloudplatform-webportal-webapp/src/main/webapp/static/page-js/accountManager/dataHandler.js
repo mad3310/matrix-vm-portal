@@ -22,16 +22,18 @@ define(function(require,exports,module){
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td><span>"+array[i].descn+"</span></td>");
-                var td6 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
+                var td6 = $("<td class=\"text-right\"> <div>"
+                + "<a class=\"dbuser-list-ip-privilege\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-modify-dbuser\">修改权限</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-modify-privilege\">修改权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
             var  dbUser = new DataHandler();
-            $(".dbuser-list-modify-dbuser").click(function(){
+            /*初始化修改用户权限按钮*/
+            $(".dbuser-list-modify-privilege").click(function(){
                 $("#newAccountTab").addClass("mc-hide");
                 $("#ipListTab").addClass("mc-hide");
                 $("#accountList").addClass("mc-hide");
@@ -39,16 +41,25 @@ define(function(require,exports,module){
 
                 var $thisLine = $(this).closest("tr");
                 var $thisUsername = $thisLine.find("td:first").html();
-                var $readWriterRate = $thisLine.find("td:eq(2)").html();
-                var $maxConcurrency = $thisLine.find("td:eq(3) span").html();
+                var $thisReadWriterRate = $thisLine.find("td:eq(2)").html();
+                var $thisMaxConcurrency = $thisLine.find("td:eq(3) span").html();
+                var $thisDesc = $thisLine.find("td:eq(4) span").html();
 
                 cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.ModifyDbUserIpHandler);
 
                 $("#modifyFormDbUsername").html($thisUsername);
-                $("#modifydbUserMaxConcurrency").val($maxConcurrency);
-                $("#modifydbUserReadWriterRate").val($readWriterRate);
-                console.log( $("#modifydbUserMaxConcurrency").val() );
-                console.log( $("#modifydbUserReadWriterRate").val() );
+                $("#modifydbUserMaxConcurrency").val($thisMaxConcurrency);
+                $("#modifydbUserReadWriterRate").val($thisReadWriterRate);
+                $("#modifyFormDbDesc").html($thisDesc);
+            })
+
+            /*初始化查看用户权限按钮*/
+            $(".dbuser-list-ip-privilege").click(function () {
+                var $thisLine = $(this).closest("tr");
+                var $thisUsername = $thisLine.find("td:first").html();
+                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.GetDbUserPrivilege);
+
+                $("#showDbuserIpPrivilegeTitle").html($thisUsername);
             })
         },
         DbUserIpHandler: function(data){
@@ -57,35 +68,29 @@ define(function(require,exports,module){
         ModifyDbUserIpHandler: function(data){
             InitDoubleFrame(".modify-multi-select",data.data);
         },
-        DbUserIpListHandler: function(data){
-            var $tby = $("#ipList-tby");
+        GetDbUserPrivilege: function(data){
+            var $tby = $("#ip-privilege-tby");
             $tby.find("tr").remove();
+
+            $('#showDbuserIpPrivilege').modal({
+                backdrop:false,
+                show:true
+            });
+
             var array = data.data;
-
-            var rank = 0;
-            var ips = '';
-            var tr =$("<tr></tr>");
-            for(var i= 0, len= array.length;i<len;i++){
-                var td = $("<td width=\"25%\">"+array[i]+"</td>");
-                td.appendTo(tr);
-                ips = ips+array[i]+",";
-                if(rank < 3){
-                    rank++;
-                }else{
+            for(var i= 0,len=array.length;i<len;i++){
+                if(array[i].used == 1){
+                    var td1 =  $("<td>"
+                    + array[i].addr
+                    + "</td>");
+                    var td2 =  $("<td>"
+                    + cn.TranslateDbUserType(array[i].type)
+                    + "</td>");
+                    var tr =$("<tr></tr>");
+                    tr.append(td1).append(td2);
                     tr.appendTo($tby);
-                    tr =$("<tr></tr>");
-                    rank = 0;
                 }
             }
-            if(tr.length>0){                    //填充空余行
-                for(var i=rank;i<4;i++){
-                    var td = $("<td width=\"25%\"></td>");
-                    td.appendTo(tr);
-                }
-                tr.appendTo($tby);
-            }
-
-            $("#iplist-textarea").val(ips);
         },
         GetCreateDbUserData: function(){
             var dbId = $("#dbId").val();

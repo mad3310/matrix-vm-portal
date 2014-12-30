@@ -247,7 +247,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-slider">
-														<div class="bk-slider-range disabled" id="bar0">
+														<div class="bk-slider-range" id="bar0">
 															<div id="flag"></div>
 															<span class="bk-slider-block bk-slider-l2"> <span
 																class="bk-slider-block-box"> <span
@@ -334,11 +334,11 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<div class="bk-slider bk-slider-duration">
-														<div class="bk-slider-range disabled" id="bar1">
+														<div class="bk-slider-range" id="bar1">
 															<div id="flag"></div>
 															<!-- <button id="btn1"></button> -->
 															<!-- 拖动按钮 -->
-															<span class="bk-slider-drag" style="left:40px;" id="btn1"> <i></i> <i></i>
+															<span class="bk-slider-drag" style="left:48px;" id="btn1"> <i></i> <i></i>
 																<span class="bk-tip-arrow" ></span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
 																class="bk-slider-block-box"> <span
@@ -389,7 +389,7 @@
 																	<span class="bk-slider-txt glyphicon glyphicon-gift">3年</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer1" style="width: 56px;"> <span
+																id="layer1" style="width: 48px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-mm"> <span
 																		class="bk-slider-unit-box bk-select-action"> <span
@@ -884,7 +884,7 @@ scale.prototype = {
 		};
 	},
 	ondrag: function (pos, x) {
-		/* 此处数值5为步长 */
+		/* 此处设置步长 */
 		if ( x % this.stepLen != 0){
 			x = x + this.stepLen - (x % this.stepLen);
 		};
@@ -901,5 +901,4 @@ new scale('btn0', 'bar0','layer0','value0',stepLen0);
 new scale('btn1', 'bar1','layer1','value1',stepLen1);
 new scale('btn2', 'bar2','layer2','value2',stepLen2);
 </script>
-
 </html>
