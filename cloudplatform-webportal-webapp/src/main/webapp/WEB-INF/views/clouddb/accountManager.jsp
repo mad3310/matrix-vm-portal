@@ -39,10 +39,12 @@
 			<table class="table table-hover table-se">
 				<thead>
 					<tr>
-						<th width="25%">帐号</th>
+						<th width="15%">帐号</th>
 						<th width="15%">状态</th>
-						<th width="15%">读写比例</th>
-						<th>频次限制</th>
+						<th width="15%">读写比例
+							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
+						</th>
+						<th width="10%">频次限制</th>
 						<th>备注说明</th>
 						<th class="text-right" width="30%">
 							<span style="padding-left:8px">操作</span>
@@ -348,6 +350,16 @@
 	</div>
 	<!-- /.modal -->
 
+	<div class="edit-text-box hide">
+		<form role="form">
+			<p>
+				<input type="email" class="form-control input-radius-2">
+			</p>
+			<p style="color:#999">输入范围：最多256个字</p>
+		</form>
+		<button class="btn btn-primary" href="#">提交</button>
+		<button id="editBoxCancel" class="btn btn-default" href="#">取消</button>
+	</div>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
