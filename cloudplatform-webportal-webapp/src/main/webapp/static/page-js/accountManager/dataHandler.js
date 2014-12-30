@@ -22,16 +22,18 @@ define(function(require,exports,module){
                 var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td><span>"+array[i].descn+"</span></td>");
-                var td6 = $("<td class=\"text-right\"> <div><a href=\"#\">ip访问权限</a><span class=\"text-explode\">"
+                var td6 = $("<td class=\"text-right\"> <div>"
+                + "<a class=\"dbuser-list-ip-privilege\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-modify-dbuser\">修改权限</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-modify-privilege\">修改权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
             var  dbUser = new DataHandler();
-            $(".dbuser-list-modify-dbuser").click(function(){
+            /*初始化修改用户权限按钮*/
+            $(".dbuser-list-modify-privilege").click(function(){
                 $("#newAccountTab").addClass("mc-hide");
                 $("#ipListTab").addClass("mc-hide");
                 $("#accountList").addClass("mc-hide");
@@ -50,12 +52,45 @@ define(function(require,exports,module){
                 $("#modifydbUserReadWriterRate").val($thisReadWriterRate);
                 $("#modifyFormDbDesc").html($thisDesc);
             })
+
+            /*初始化查看用户权限按钮*/
+            $(".dbuser-list-ip-privilege").click(function () {
+                var $thisLine = $(this).closest("tr");
+                var $thisUsername = $thisLine.find("td:first").html();
+                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.GetDbUserPrivilege);
+
+                $("#showDbuserIpPrivilegeTitle").html($thisUsername);
+            })
         },
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
         },
         ModifyDbUserIpHandler: function(data){
             InitDoubleFrame(".modify-multi-select",data.data);
+        },
+        GetDbUserPrivilege: function(data){
+            var $tby = $("#ip-privilege-tby");
+            $tby.find("tr").remove();
+
+            $('#showDbuserIpPrivilege').modal({
+                backdrop:false,
+                show:true
+            });
+
+            var array = data.data;
+            for(var i= 0,len=array.length;i<len;i++){
+                if(array[i].used == 1){
+                    var td1 =  $("<td>"
+                    + array[i].addr
+                    + "</td>");
+                    var td2 =  $("<td>"
+                    + cn.TranslateDbUserType(array[i].type)
+                    + "</td>");
+                    var tr =$("<tr></tr>");
+                    tr.append(td1).append(td2);
+                    tr.appendTo($tby);
+                }
+            }
         },
         GetCreateDbUserData: function(){
             var dbId = $("#dbId").val();

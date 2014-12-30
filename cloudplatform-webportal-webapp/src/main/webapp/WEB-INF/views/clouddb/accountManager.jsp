@@ -320,11 +320,11 @@
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h5 id="showDbuserIpPrivilegeTile" class="modal-title">yaokuo</h5>
+					<h5 id="showDbuserIpPrivilegeTitle" class="modal-title"></h5>
 				</div>
 				<div class="modal-body">
 					<div class="table-responsive">
-						<table class="table table-bordered table-striped">
+						<table id="dbuser-list-ip-privilege-table" class="table table-bordered table-striped">
 							<thead>
 								<tr>
 									<th>IP
@@ -333,23 +333,7 @@
 									</td>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>192.168.3.1</td>
-									<td>管理</td>
-								</tr>
-								<tr>
-									<td>192.168.3.2</td>
-									<td>只读</td>
-								</tr>
-								<tr>
-									<td>192.168.3.2</td>
-									<td>只读</td>
-								</tr>
-								<tr>
-									<td>192.168.3.2</td>
-									<td>只读</td>
-								</tr>
+							<tbody id="ip-privilege-tby">
 							</tbody>
 						</table>
 					</div>

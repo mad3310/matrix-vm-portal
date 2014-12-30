@@ -30,6 +30,15 @@ define(function(require,exports,module){
             	}
             });
         },
+		TranslateDbUserType: function(type){
+			if(type == 1){
+				return "管理";
+			}else if(type == 2){
+				return "只读"
+			}else{
+				return "读写"
+			}
+		},
         TranslateStatus : function (status){
         	if (status == 0){
         		return "未审核";

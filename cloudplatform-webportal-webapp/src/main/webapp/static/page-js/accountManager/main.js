@@ -199,9 +199,4 @@ define(function(require){
             /*后期改为刷新iframe --end*/
         }
     })
-
-   /* $('#showDbuserIpPrivilege').modal({
-        backdrop:false,
-        show:true
-    });*/
 })
