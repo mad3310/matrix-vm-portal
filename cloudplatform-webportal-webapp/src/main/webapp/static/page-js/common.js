@@ -321,7 +321,20 @@ define(function(require,exports,module){
     		        },
     		        series:  seriesData
     		    });
-        }
+        },
+		EditBoxInit: function(obj){
+			var offset = $(obj).offset();
+			var left = offset.left-35;
+			var top = offset.top+$(obj).height()+5;
+
+			$(".edit-text-box").css('left',left+"px");
+			$(".edit-text-box").css('top',top+"px");
+			$(".edit-text-box").removeClass("hide");
+
+			$("#editBoxCancel").unbind("click").click(function(){
+				$(".edit-text-box").addClass("hide");
+			})
+		}
 
         /*add new common function*/
     }

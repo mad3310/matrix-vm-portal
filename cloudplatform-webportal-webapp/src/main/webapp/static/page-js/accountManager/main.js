@@ -7,6 +7,10 @@ define(function(require){
     var $ = require("jquery");
     require("bootstrapValidator")($);
 
+    $(".glyphicon-pencil").click(function(){
+        cn.EditBoxInit(this);
+    })
+
     /*页面按钮初始化 --start*/
     $(".toCreateAccount").click(function () {           //切换到创建账户
         $("#accountList").addClass("mc-hide");
@@ -19,6 +23,10 @@ define(function(require){
         $("#modifyAccountTab").addClass("mc-hide");
         $("#accountList").removeClass("mc-hide");
     })
+
+    $("#refresh").click(function() {
+        asyncData();
+    });
     /*页面按钮初始化 --end*/
 
     $('#db_user_create_form').bootstrapValidator({
@@ -171,13 +179,10 @@ define(function(require){
             var createUserData = dbUser.GetCreateDbUserData();
             var url = "/dbUser";
             cn.PostData(url,createUserData);
-            /*后期改为刷新iframe --begin*/
-            $("#newAccountTab").addClass("mc-hide");
-            $("#modifyAccountTab").addClass("mc-hide");
-            $("#ipListTab").addClass("mc-hide");
-            $("#accountList").removeClass("mc-hide");
-            asyncData();
-            /*后期改为刷新iframe --end*/
+
+            /*刷新本身ifame*/
+            var $iframe = $("body",parent.document).find("iframe");
+            $iframe.attr("src",$iframe.attr("src"));
         }
     })
 
@@ -190,13 +195,9 @@ define(function(require){
 
             cn.PostData(url,modifyUserData);
 
-            /*后期改为刷新iframe --begin*/
-            $("#newAccountTab").addClass("mc-hide");
-            $("#modifyAccountTab").addClass("mc-hide");
-            $("#ipListTab").addClass("mc-hide");
-            $("#accountList").removeClass("mc-hide");
-            asyncData();
-            /*后期改为刷新iframe --end*/
+            /*刷新本身ifame*/
+            var $iframe = $("body",parent.document).find("iframe");
+            $iframe.attr("src",$iframe.attr("src"));
         }
     })
 })
