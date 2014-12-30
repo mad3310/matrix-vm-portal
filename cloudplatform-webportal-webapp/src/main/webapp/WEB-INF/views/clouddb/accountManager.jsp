@@ -54,59 +54,6 @@
 			</table>
 		</div>
 	</div>
-	<div id="ipListTab" class="mc-hide" role="tablist" aria-multiselectable="true">
-		<!-- heading部分 -->
-		<div class="se-heading" id="headingOne">
-			<div class="pull-left">
-				<h4>IP列表</h4>
-			</div>
-			<a class="pull-left toCreateAccount">返回创建新账号</a>
-		</div>
-		<div id="ipList" role="tabpanel" class="tab-pane fade active in"
-			aria-labelledby="whitelist-tab">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th colspan="4">允许访问IP名单</th>
-					</tr>
-				</thead>
-				<tbody id="ipList-tby">
-
-				</tbody>
-			</table>
-			<div class="has-warning help-block">
-				您已添加<span class="">7</span>个IP，还能添加<span class="ng-binding">93</span>个。
-			</div>
-			<div class="" style="margin-bottom: 40px">
-				<button id="modifyIpList" class="btn btn-primary">手动修改</button>
-			</div>
-		</div>
-		<form id="ipForm" class="form-horizontal ng-pristine ng-valid ng-scope hide" role="form" novalidate="" name="security_form" security-list-man="">
-			<div class="form-group">
-				<label class="col-sm-2">允许访问IP名单：</label>
-			</div>
-			<div ng-hide="!loadingState" aliyun-loading="" size="48" style="margin-top: 10px" class="ng-hide">
-			</div>
-			<div class="form-group">
-				<div class="col-sm-4">
-					<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="4"></textarea>
-				</div>
-				<div class="help-block ng-hide" style="padding-top: 30px"></div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-10">
-					<span class="help-block">请以逗号隔开，不可重复，最多100个。</span>
-                    <span class="help-block">支持格式如：10.23.12.24,10.23.34.%</span>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-4">
-					<input name="submitIpForm" type="button"  value="确定" class="btn btn-primary ipFromBotton"/>
-					<input name="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton"/>
-				</div>
-			</div>
-		</form>
-	</div>
 	<!-- 点击“创建账号”后加载的div 去掉mc-hide既可以显示此div-->
 	<div id="newAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
 		<!-- heading部分 -->
@@ -142,9 +89,6 @@
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
-                            <p class="pull-right">
-                                <a class="toIpList">管理IP列表</a>
-                            </p>
 						</div>
 						<div class="select">
 							<ul class="select-list select-list-left">
@@ -293,9 +237,7 @@
 						数据库帐号：
 					</label>
 					<div class="col-sm-8 row">
-						<!-- ngIf: !newAccount -->
 						<div class="col-sm-4">
-							<!-- ngIf: newAccount && !isJst -->
 							<label id="modifyFormDbUsername" class="col-sm-2 control-label"></label>
 						</div>
 					</div>
@@ -348,6 +290,17 @@
 						</div>
 					</div>
 				</div>
+				<!-- 备注说明模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label">备注说明：</label>
+					<!-- 备注输入框 -->
+					<div class="col-sm-10 row">
+						<div class="col-sm-4">
+							<label id="modifyFormDbDesc" class="col-sm-2 control-label"></label>
+						</div>
+					</div>
+				</div>
+				<!-- 备注说明模块end -->
 				<!-- 按钮模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>

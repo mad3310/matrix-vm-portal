@@ -39,16 +39,16 @@ define(function(require,exports,module){
 
                 var $thisLine = $(this).closest("tr");
                 var $thisUsername = $thisLine.find("td:first").html();
-                var $readWriterRate = $thisLine.find("td:eq(2)").html();
-                var $maxConcurrency = $thisLine.find("td:eq(3) span").html();
+                var $thisReadWriterRate = $thisLine.find("td:eq(2)").html();
+                var $thisMaxConcurrency = $thisLine.find("td:eq(3) span").html();
+                var $thisDesc = $thisLine.find("td:eq(4) span").html();
 
                 cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.ModifyDbUserIpHandler);
 
                 $("#modifyFormDbUsername").html($thisUsername);
-                $("#modifydbUserMaxConcurrency").val($maxConcurrency);
-                $("#modifydbUserReadWriterRate").val($readWriterRate);
-                console.log( $("#modifydbUserMaxConcurrency").val() );
-                console.log( $("#modifydbUserReadWriterRate").val() );
+                $("#modifydbUserMaxConcurrency").val($thisMaxConcurrency);
+                $("#modifydbUserReadWriterRate").val($thisReadWriterRate);
+                $("#modifyFormDbDesc").html($thisDesc);
             })
         },
         DbUserIpHandler: function(data){
@@ -56,36 +56,6 @@ define(function(require,exports,module){
         },
         ModifyDbUserIpHandler: function(data){
             InitDoubleFrame(".modify-multi-select",data.data);
-        },
-        DbUserIpListHandler: function(data){
-            var $tby = $("#ipList-tby");
-            $tby.find("tr").remove();
-            var array = data.data;
-
-            var rank = 0;
-            var ips = '';
-            var tr =$("<tr></tr>");
-            for(var i= 0, len= array.length;i<len;i++){
-                var td = $("<td width=\"25%\">"+array[i]+"</td>");
-                td.appendTo(tr);
-                ips = ips+array[i]+",";
-                if(rank < 3){
-                    rank++;
-                }else{
-                    tr.appendTo($tby);
-                    tr =$("<tr></tr>");
-                    rank = 0;
-                }
-            }
-            if(tr.length>0){                    //填充空余行
-                for(var i=rank;i<4;i++){
-                    var td = $("<td width=\"25%\"></td>");
-                    td.appendTo(tr);
-                }
-                tr.appendTo($tby);
-            }
-
-            $("#iplist-textarea").val(ips);
         },
         GetCreateDbUserData: function(){
             var dbId = $("#dbId").val();
