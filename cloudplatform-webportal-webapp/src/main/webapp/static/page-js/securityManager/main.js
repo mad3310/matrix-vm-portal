@@ -16,11 +16,44 @@ define(function(require){
 	}); 
    $("#whitelist-tab").click(function() {
       $("#refresh").show();
-	}); 
-   
+	});
+
+    /*初始化按钮 --begin*/
+    $("#modifyIpList").click(function () {
+        $("#ipList").addClass("hide");
+        $("#ipForm").removeClass("hide");
+    })
+    $("[name = 'submitIpForm']").click(function () {
+        $("#ipForm").addClass("hide");
+        $("#ipList").removeClass("hide");
+        var dbId = $("#dbId").val();
+        var ips = $("#iplist-textarea").val();
+        cn.PostData(
+            "/dbIp",
+            {
+                dbId:dbId,
+                ips:ips
+            }
+        );
+        asyncModifyIpData();
+    })
+    $("[name = 'cancleIpForm']").click(function () {
+        $("#ipForm").addClass("hide");
+        $("#ipList").removeClass("hide");
+    })
+    $("#refresh").click(function() {
+        asyncModifyIpData();
+    });
+   /*初始化按钮 --end*/
+
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var basicInfoHandler = new dataHandler();
+    var securityDataHandler = new dataHandler();
 
-   // cn.GetData("/static/page-js/basicInfo/analogData/dblist.json",basicInfoHandler.BasicInfoHandler);
+    asyncModifyIpData();
+    function asyncModifyIpData(){
+        window.setTimeout(function () {
+            cn.GetData("/dbIp/"+$("#dbId").val(),securityDataHandler.DbUserIpListHandler);   //获取IP列表信息
+        },500);
+    }
 });
