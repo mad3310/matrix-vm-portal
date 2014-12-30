@@ -41,5 +41,7 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 
 	public List<MclusterModel> select4Run();
 
+	public boolean isExistByName(String mclusterName);
+
 
 }

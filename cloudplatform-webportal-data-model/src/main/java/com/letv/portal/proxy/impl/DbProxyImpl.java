@@ -54,11 +54,6 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	public IBaseService<DbModel> getService() {
 		return dbService;
 	}
-	public DbModel dbList(Long dbId){
-		DbModel db = this.dbService.selectById(dbId);
-		db.setContainers(this.containerService.selectByMclusterId(db.getMclusterId()));
-		return db;
-	}
 	@Override
 	public void auditAndBuild(Map<String, Object> params) {
 		
@@ -134,13 +129,6 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 				logger.error(e.getMessage());
 			}
 		}
-	}
-	@Override
-	public DbModel monitor4conn(Long dbId, Long chartId, Long strategy) {
-		// TODO Auto-generated method stub
-		Long mclusterId = this.dbService.selectById(dbId).getMclusterId();
-		
-		return null;
 	}
 	
 }

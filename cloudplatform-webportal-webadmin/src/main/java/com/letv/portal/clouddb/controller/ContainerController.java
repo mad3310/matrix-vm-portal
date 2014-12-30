@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IContainerProxy;
+import com.letv.portal.service.IContainerService;
 
 @Controller
 @RequestMapping("/container")
@@ -19,6 +20,8 @@ public class ContainerController {
 	
 	@Resource
 	private IContainerProxy containerProxy;
+	@Resource
+	private IContainerService containerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(ContainerController.class);
 	
@@ -31,7 +34,7 @@ public class ContainerController {
 	 */
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long mclusterId,ResultObject result) {
-		result.setData(this.containerProxy.selectByMclusterId(mclusterId));
+		result.setData(this.containerService.selectByMclusterId(mclusterId));
 		return result;
 	}
 	

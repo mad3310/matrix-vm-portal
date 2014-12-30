@@ -1,7 +1,5 @@
 package com.letv.portal.proxy.impl;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +17,11 @@ public class BuildProxyImpl extends  BaseProxyImpl<BuildModel> implements IBuild
 
 	@Autowired
 	private IBuildService buildService;
-	@Override
-	public List<BuildModel> selectByMclusterId(Long mclusterId) {
-		return this.buildService.selectByMclusterId(mclusterId);
-	}
-
-	@Override
-	public void initStatus(Long mclusterId) {
-		this.buildService.initStatus(mclusterId);
-	}
 
 	@Override
 	public IBaseService<BuildModel> getService() {
 		return buildService;
 	}
 
-	@Override
-	public List<BuildModel> selectByDbId(Long dbId) {
-		return this.buildService.selectByDbId(dbId);
-	}
 
 }

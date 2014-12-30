@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.exception.ValidateException;
@@ -34,14 +35,15 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserProxyImpl.class);
 
-	private final static String DEFAULT_DB_RO_NAME = ConfigUtil.getString("default.db.ro.name");
-	
 	@Autowired
-	private IDbUserService dbUserService;
+	private IDbUserService dbUserService; 
 	@Autowired
 	private IBuildTaskService buildTaskService;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	
+	@Value("${default.db.ro.name}")
+	private String DEFAULT_DB_RO_NAME;
 	
 	@Override
 	public IBaseService<DbUserModel> getService() {
@@ -105,7 +107,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<DbUserModel> removes = new ArrayList<DbUserModel>();
 		List<DbUserModel> updates = new ArrayList<DbUserModel>();
 		
-		List<DbUserModel> oldUsers = this.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
+		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();
@@ -155,6 +157,33 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 	}
 	
+	public void deleteDbUser(String dbUserId){
+		this.buildTaskService.deleteDbUser(dbUserId);
+		String[] ids = dbUserId.split(",");
+		for (String id : ids) {
+			DbUserModel dbUserModel = new DbUserModel();
+			dbUserModel.setId(Long.parseLong(id));
+			this.dbUserService.delete(dbUserModel);
+		}	
+	}
+	
+	@Override
+	public void deleteAndBuild(List<DbUserModel> users) {
+		if(users.isEmpty()) {
+			throw new ValidateException("参数不能为空：users is null");
+		}
+		StringBuffer ids = new StringBuffer();
+		for (DbUserModel dbUserModel : users) {
+			ids.append(dbUserModel.getId()).append(",");
+		}
+		this.deleteDbUser(ids.substring(0, ids.length()-1));
+		
+	}
+	
+	public void buildDbUser(String DbUserId){
+		this.buildTaskService.buildUser(DbUserId);
+	}
+	
 	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String ips,String types) {
 		List<DbUserModel> users = new ArrayList<DbUserModel>();
 		if(StringUtils.isNullOrEmpty(ips) || StringUtils.isNullOrEmpty(types)) {
@@ -187,121 +216,5 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		return users;
 	}
 	
-	public void deleteDbUser(String dbUserId){
-		this.buildTaskService.deleteDbUser(dbUserId);
-		String[] ids = dbUserId.split(",");
-		for (String id : ids) {
-			DbUserModel dbUserModel = new DbUserModel();
-			dbUserModel.setId(Long.parseLong(id));
-			this.dbUserService.delete(dbUserModel);
-		}	
-	}
 	
-	@Override
-	public void deleteAndBuild(List<DbUserModel> users) {
-		if(users.isEmpty()) {
-			throw new ValidateException("参数不能为空：users is null");
-		}
-		StringBuffer ids = new StringBuffer();
-		for (DbUserModel dbUserModel : users) {
-			ids.append(dbUserModel.getId()).append(",");
-		}
-		this.deleteDbUser(ids.substring(0, ids.length()-1));
-		
-	}
-	
-	public void buildDbUser(String DbUserId){
-		this.buildTaskService.buildUser(DbUserId);
-	}
-	
-	@Override
-	public List<String> selectIpsFromUser(Long dbId) {
-		List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
-		List<String> ips = new ArrayList<String>();
-		for (DbUserModel dbUser : dbUsers) {
-			ips.add(dbUser.getAcceptIp());
-		}
-		return ips;
-	}
-
-	@Override
-	public void saveOrUpdateIps(Long dbId, String ips) {
-		String[] arrs = ips.split(",");
-		List<String> newIps = new ArrayList<String>();
-		Set<String> tempSet = new HashSet<String>(); //使用set去重
-		for (String ip : arrs) {
-			tempSet.add(ip);
-		}
-		newIps.addAll(tempSet);
-		
-		List<String> oldIps = this.selectIpsFromUser(dbId);
-		
-		List<String> temp = new ArrayList<String>(newIps);
-		newIps.removeAll(oldIps); //add ips
-		oldIps.removeAll(temp); //remove ips
-		
-		//add new ips in dbUser
-		for (String newIp : newIps) {
-			DbUserModel dbUser = new DbUserModel();
-			dbUser.setDbId(dbId);
-			dbUser.setUsername(DEFAULT_DB_RO_NAME);
-			dbUser.setAcceptIp(newIp);
-			dbUser.setType(DbUserRoleStatus.RO.getValue());
-			dbUser.setDeleted(true);
-			dbUser.setMaxConcurrency(50);
-			dbUser.setReadWriterRate("2:1");
-			dbUser.setStatus(DbStatus.NORMAL.getValue());
-			this.dbUserService.insert(dbUser);
-		}
-		//remove ips in dbUser
-		Map<String, Object> params = new HashMap<String,Object>();
-		for (String oldIp : oldIps) {
-			params.put("dbId", dbId);
-			params.put("acceptIp", oldIp);
-			List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
-			for (DbUserModel dbUser : dbUsers) {
-				this.dbUserService.delete(dbUser);
-			}
-		}
-		
-	}
-
-	@Override
-	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username) {
-		List<String> all =  this.selectIpsFromUser(dbId);
-		
-		List<Map<String,Object>> selected = new ArrayList<Map<String,Object>>();
-		
-		if(!StringUtils.isNullOrEmpty(username)) {
-			List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, username);
-			for (DbUserModel dbUser : dbUsers) {
-				Map<String,Object> data = new HashMap<String,Object>();
-				String ip = dbUser.getAcceptIp();
-				data.put("addr",ip);
-				data.put("type", dbUser.getType());
-				data.put("used", 1);
-				selected.add(data);
-				
-				if(all.contains(ip)) {
-					all.remove(ip);
-				}
-			}
-		}
-		for (String ip : all) { //未使用ip
-			Map<String,Object> data = new HashMap<String,Object>();
-			data.put("addr",ip);
-			data.put("used", 0);
-			selected.add(data);
-		}
-		return selected;
-	}
-
-	@Override
-	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username) {
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("dbId", dbId);
-		params.put("username", username);
-		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(params);
-		return dbUsers;
-	}
 }

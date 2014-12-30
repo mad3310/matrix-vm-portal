@@ -16,6 +16,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 /**
  * Program Name: MonitorController <br>
@@ -35,6 +36,8 @@ public class MonitorController {
 	private IMonitorIndexService monitorIndexService;
 	@Resource
 	private IContainerProxy containerProxy;
+	@Resource
+	private IContainerService containerService;
 	
 	/**
 	 * Methods Name: mclusterList <br>
@@ -48,7 +51,7 @@ public class MonitorController {
 	public @ResponseBody ResultObject mclusterList(ResultObject result) {
 		Map map = new HashMap<String, String>();
 		map.put("type", "mclustervip");
-		result.setData(this.containerProxy.selectMonitorMclusterList(map));
+		result.setData(this.containerService.selectAllByMap(map));
 		return result; 
 	} 
 	/**

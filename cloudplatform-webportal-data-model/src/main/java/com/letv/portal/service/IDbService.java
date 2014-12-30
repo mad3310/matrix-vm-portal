@@ -47,5 +47,7 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * @param mclusterId
 	 */
 	public void deleteByMclusterId(Long mclusterId);
+	
+	public DbModel dbList(Long dbId);
 
 }

@@ -32,7 +32,7 @@ public class DbIpController {
 		if(null == dbId) {
 			throw new ValidateException("参数不能为空");
 		}
-		obj.setData(this.dbUserProxy.selectIpsFromUser(dbId));
+		obj.setData(this.dbUserService.selectIpsFromUser(dbId));
 		return obj;
 	}
 	@RequestMapping(method=RequestMethod.POST)   
@@ -40,7 +40,7 @@ public class DbIpController {
 		if(null == dbId || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		} else {
-			this.dbUserProxy.saveOrUpdateIps(dbId,ips);
+			this.dbUserService.saveOrUpdateIps(dbId,ips);
 		}
 		return obj;
 	}
@@ -50,7 +50,7 @@ public class DbIpController {
 		if(null == dbId) {
 			throw new ValidateException("参数不能为空");
 		} else {
-			obj.setData(this.dbUserProxy.selectMarkIps4dbUser(dbId,username));
+			obj.setData(this.dbUserService.selectMarkIps4dbUser(dbId,username));
 			return obj;
 		}
 	}

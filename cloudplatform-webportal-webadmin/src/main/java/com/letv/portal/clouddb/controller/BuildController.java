@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.proxy.IBuildProxy;
+import com.letv.portal.service.IBuildService;
 
 @Controller
 @RequestMapping("/build")
 public class BuildController {
 	
 	@Autowired
-	private IBuildProxy buildProxy;
+	private IBuildService buildService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildController.class);
 	
@@ -30,7 +30,7 @@ public class BuildController {
 	 */
 	@RequestMapping(value="/mcluster/{mclusterId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list4Mcluster(@PathVariable Long mclusterId,ResultObject result) {
-		result.setData(this.buildProxy.selectByMclusterId(mclusterId));
+		result.setData(this.buildService.selectByMclusterId(mclusterId));
 		return result;
 	}	
 	/**Methods Name: list4Db <br>
@@ -42,7 +42,7 @@ public class BuildController {
 	 */
 	@RequestMapping(value="/db/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list4Db(@PathVariable Long dbId,ResultObject result) {
-		result.setData(this.buildProxy.selectByDbId(dbId));
+		result.setData(this.buildService.selectByDbId(dbId));
 		return result;
 	}	
 }

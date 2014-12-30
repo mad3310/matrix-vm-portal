@@ -79,4 +79,10 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		return this.mclusterDao.select4Run();
 	}
 
+	@Override
+	public boolean isExistByName(String mclusterName) {
+		List<MclusterModel> mclusters = this.selectByName(mclusterName);
+		return mclusters.size() == 0?true:false;
+	}
+
 }

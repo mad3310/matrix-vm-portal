@@ -56,40 +56,6 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 */
 	public void buildDbUser(String DbUserId);
 	
-	/**Methods Name: selectIpsFromUser <br>
-	 * Description: 根据dbId和默认只读用户名获取ip列表<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @return
-	 */
-	public List<String> selectIpsFromUser(Long dbId);
-
-	/**Methods Name: saveOrUpdateIps <br>
-	 * Description: ip维护：虚拟为特殊用户的存储<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param ips
-	 */
-	public void saveOrUpdateIps(Long dbId, String ips);
-	
-	/**Methods Name: selectMarkIps4dbUser <br>
-	 * Description: 新增及修改用户时，ip选择数据，包括未选择数据和已选择数据<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param username
-	 * @return
-	 */
-	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username);
-
-	/**Methods Name: selectByDbIdAndUsername <br>
-	 * Description: 根据用户名和dbId查出dbUser列表<br>
-	 * @author name: liuhao1
-	 * @param dbId
-	 * @param username
-	 * @return
-	 */
-	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username);
-
 	/**Methods Name: updateUserAuthority <br>
 	 * Description: 修改用户权限<br>
 	 * @author name: liuhao1

@@ -16,6 +16,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
+import com.letv.portal.service.IMclusterService;
 
 @Controller
 @RequestMapping("/mcluster")
@@ -23,6 +24,8 @@ public class MclusterController {
 	
 	@Autowired
 	private IMclusterProxy mclusterProxy;
+	@Autowired
+	private IMclusterService mclusterService;
 	
 	@Autowired
 	private IBuildTaskService buildTaskService;
@@ -59,7 +62,7 @@ public class MclusterController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		result.setData(this.mclusterProxy.select4Run());
+		result.setData(this.mclusterService.select4Run());
 		return result;
 	}	
 
@@ -85,7 +88,7 @@ public class MclusterController {
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String mclusterName) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		Boolean isExist= this.mclusterProxy.isExistByName(mclusterName);
+		Boolean isExist= this.mclusterService.isExistByName(mclusterName);
 		map.put("valid", isExist);
 		return map;
 	}

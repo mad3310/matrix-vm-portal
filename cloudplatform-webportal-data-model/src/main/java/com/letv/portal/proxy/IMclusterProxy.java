@@ -14,14 +14,6 @@ import com.letv.portal.model.MclusterModel;
  */
 public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	
-	/**Methods Name: isUniqueByName <br>
-	 * Description: <br>
-	 * @author name: liuhao1
-	 * @param mclusterName
-	 * @return
-	 */
-	public Boolean isExistByName(String mclusterName);
-	
 	/**Methods Name: inertAndBuild <br>
 	 * Description: 保存mcluster 并创建container集群 <br>
 	 * @author name: liuhao1
@@ -62,6 +54,4 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 */
 	public void checkCount();
 
-	public List<MclusterModel> select4Run();
-	
 }

@@ -1,7 +1,11 @@
 package com.letv.portal.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -16,9 +20,11 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbUserDao;
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
+import com.mysql.jdbc.StringUtils;
 
 
 @Service("dbUserService")
@@ -35,6 +41,9 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Value("${default.db.ro.name}")
+	private String DEFAULT_DB_RO_NAME;
 	
 	public DbUserServiceImpl() {
 		super(DbUserModel.class);
@@ -171,5 +180,96 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	@Override
 	public List<DbUserModel> selectGroupByName(Map<String, Object> params) {
 		return this.dbUserDao.selectGroupByName(params);
+	}
+	
+	@Override
+	public List<String> selectIpsFromUser(Long dbId) {
+		List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
+		List<String> ips = new ArrayList<String>();
+		for (DbUserModel dbUser : dbUsers) {
+			ips.add(dbUser.getAcceptIp());
+		}
+		return ips;
+	}
+
+	@Override
+	public void saveOrUpdateIps(Long dbId, String ips) {
+		String[] arrs = ips.split(",");
+		List<String> newIps = new ArrayList<String>();
+		Set<String> tempSet = new HashSet<String>(); //使用set去重
+		for (String ip : arrs) {
+			tempSet.add(ip);
+		}
+		newIps.addAll(tempSet);
+		
+		List<String> oldIps = this.selectIpsFromUser(dbId);
+		
+		List<String> temp = new ArrayList<String>(newIps);
+		newIps.removeAll(oldIps); //add ips
+		oldIps.removeAll(temp); //remove ips
+		
+		//add new ips in dbUser
+		for (String newIp : newIps) {
+			DbUserModel dbUser = new DbUserModel();
+			dbUser.setDbId(dbId);
+			dbUser.setUsername(DEFAULT_DB_RO_NAME);
+			dbUser.setAcceptIp(newIp);
+			dbUser.setType(DbUserRoleStatus.RO.getValue());
+			dbUser.setDeleted(true);
+			dbUser.setMaxConcurrency(50);
+			dbUser.setReadWriterRate("2:1");
+			dbUser.setStatus(DbStatus.NORMAL.getValue());
+			this.insert(dbUser);
+		}
+		//remove ips in dbUser
+		Map<String, Object> params = new HashMap<String,Object>();
+		for (String oldIp : oldIps) {
+			params.put("dbId", dbId);
+			params.put("acceptIp", oldIp);
+			List<DbUserModel> dbUsers = this.selectByMap(params);
+			for (DbUserModel dbUser : dbUsers) {
+				this.delete(dbUser);
+			}
+		}
+		
+	}
+
+	@Override
+	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username) {
+		List<String> all =  this.selectIpsFromUser(dbId);
+		
+		List<Map<String,Object>> selected = new ArrayList<Map<String,Object>>();
+		
+		if(!StringUtils.isNullOrEmpty(username)) {
+			List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, username);
+			for (DbUserModel dbUser : dbUsers) {
+				Map<String,Object> data = new HashMap<String,Object>();
+				String ip = dbUser.getAcceptIp();
+				data.put("addr",ip);
+				data.put("type", dbUser.getType());
+				data.put("used", 1);
+				selected.add(data);
+				
+				if(all.contains(ip)) {
+					all.remove(ip);
+				}
+			}
+		}
+		for (String ip : all) { //未使用ip
+			Map<String,Object> data = new HashMap<String,Object>();
+			data.put("addr",ip);
+			data.put("used", 0);
+			selected.add(data);
+		}
+		return selected;
+	}
+
+	@Override
+	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("username", username);
+		List<DbUserModel> dbUsers = this.selectByMap(params);
+		return dbUsers;
 	}
 }

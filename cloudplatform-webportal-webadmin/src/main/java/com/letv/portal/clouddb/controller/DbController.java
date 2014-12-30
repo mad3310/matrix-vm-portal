@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.view.DbAuditView;
 
 /**Program Name: DbController <br>
@@ -30,6 +31,8 @@ public class DbController {
 	
 	@Autowired
 	private IDbProxy dbProxy;
+	@Autowired
+	private IDbService dbService;
 	@Autowired
 	private IMclusterProxy mclusterProxy;
 	
@@ -62,7 +65,7 @@ public class DbController {
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
 		ResultObject obj = new ResultObject();	
-		obj.setData(this.dbProxy.dbList(dbId));
+		obj.setData(this.dbService.dbList(dbId));
 		return obj;
 	}
 	

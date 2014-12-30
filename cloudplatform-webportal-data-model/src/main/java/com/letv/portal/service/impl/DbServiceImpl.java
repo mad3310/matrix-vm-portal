@@ -16,6 +16,7 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbModel;
@@ -39,6 +40,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IDbUserService dbUserService;
+	
+	@Resource
+	private IContainerDao containerDao;
 	
 	
 	public DbServiceImpl() {
@@ -78,5 +82,11 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 			this.delete(dbModel);
 			this.dbUserService.deleteByDbId(dbModel.getId());
 		}
+	}
+	@Override
+	public DbModel dbList(Long dbId){
+		DbModel db = this.selectById(dbId);
+		db.setContainers(this.containerDao.selectByMclusterId(db.getMclusterId()));
+		return db;
 	}
 }

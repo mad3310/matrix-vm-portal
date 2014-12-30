@@ -35,21 +35,6 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 */
 	public void checkStatus();
 
-	/**Methods Name: selectByMclusterId <br>
-	 * Description: 查询container集群数据<br>
-	 * @author name: liuhao1
-	 * @param mclusterId
-	 * @return
-	 */
-	public List<ContainerModel> selectByMclusterId(Long mclusterId);
-	/**
-	 * Methods Name: selectContainerByMclusterId <br>
-	 * Description: 查询container信息通过集群id<br>
-	 * @author name: wujun
-	 * @param clusterId
-	 * @return
-	 */
-	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 	/**
 	 * Methods Name: selectMonitorMclusterDetail <br>
 	 * Description: 查询集群的详细监控信息或者列表<br>
@@ -58,14 +43,6 @@ public interface IContainerProxy extends IBaseProxy<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerMonitorModel> selectMonitorMclusterDetailOrList(Map map);
-	/**
-	 * Methods Name: selectMonitorMclusterList <br>
-	 * Description: 查询监控详情信息<br>
-	 * @author name: wujun
-	 * @param map
-	 * @return
-	 */
-	public List<ContainerModel> selectMonitorMclusterList(Map map);
 	/**
 	 * Methods Name: getMonitorDetailNodeAndDbData <br>
 	 * Description: 集群监控详细信息展示<br>

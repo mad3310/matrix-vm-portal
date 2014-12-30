@@ -109,7 +109,7 @@ public class DbController {
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
 		ResultObject obj = new ResultObject();
-		DbModel db = this.dbProxy.dbList(dbId);
+		DbModel db = this.dbService.dbList(dbId);
 		if(db.getCreateUser() == sessionService.getSession().getUserId()) {
 			obj.setData(db);
 		} else {
