@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
@@ -20,12 +19,9 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(PythonServiceImpl.class);
 	
-	private final static String HOST_CREATE_URL = ConfigUtil.getString("host_create_url");//"http://10.200.91.142:8888"; 
-	private final static String HOST_LOGIN_URL = ConfigUtil.getString("host_login_url");//"http://10.200.91.142:8888"; 
-	private final static String URL_HEAD = "http://";	//ConfigUtil.getString("http://");
-	private final static String URL_IP = "";			//ConfigUtil.getString("");
-	private final static String URL_PORT = ":8888";		//ConfigUtil.getString("8888");
-	private final static String GBALANCER_PORT = ":9888";		//ConfigUtil.getString("8888");
+	private final static String URL_HEAD = "http://";
+	private final static String URL_PORT = ":8888";	
+	private final static String GBALANCER_PORT = ":9888";	
 	
 	@Override
 	public String createContainer(String mclusterName,String ip,String username,String password) {
@@ -247,7 +243,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String initHcluster(String hostIp) {
-		String url =URL_HEAD+ hostIp+URL_PORT+HOST_LOGIN_URL;
+		String url =URL_HEAD+ hostIp+URL_PORT+"/admin/user";
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("adminUser", "root");
 		map.put("adminPassword", "root");
@@ -257,7 +253,7 @@ public class PythonServiceImpl implements IPythonService{
 
 	@Override
 	public String createHost(HostModel hostModel) {
-		String url = URL_HEAD+ hostModel.getHostIp()+URL_PORT+HOST_CREATE_URL;
+		String url = URL_HEAD+ hostModel.getHostIp()+URL_PORT+"/serverCluster";
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());

@@ -20,7 +20,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.clouddb.controller.LoginController;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.proxy.ILoginProxy;
@@ -31,9 +30,6 @@ import com.letv.portal.proxy.ILoginProxy;
 @Component
 public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private final static Logger logger = LoggerFactory.getLogger(SessionTimeoutInterceptor.class);
-	
-	private final static String CAS_AUTH_HTTP = ConfigUtil.getString("cas.auth.http");
-	private final static String CAS_LOCAL_HTTP = ConfigUtil.getString("cas.local.http");
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -49,6 +48,9 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Value("${db.auto.build.count}")
+	private int DB_AUTO_BUILD_COUNT;
 	
 	@Override
 	public IBaseService<DbModel> getService() {
@@ -103,7 +105,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		map.put("createUser", userId);
 		
 		List<DbModel> list = this.dbService.selectByMap(map);
-		if(list.size() <= ConfigUtil.getint("db.auto.build.count")) {
+		if(list.size() <= DB_AUTO_BUILD_COUNT) {
 			//创建mcluster集群
 			Map<String,Object> params = new HashMap<String,Object>();
 			

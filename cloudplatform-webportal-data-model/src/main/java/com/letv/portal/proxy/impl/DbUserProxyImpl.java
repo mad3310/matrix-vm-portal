@@ -2,11 +2,7 @@ package com.letv.portal.proxy.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordRandom;
-import com.letv.portal.enumeration.DbStatus;
-import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;

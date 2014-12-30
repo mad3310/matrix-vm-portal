@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.JsonUtils;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
@@ -73,13 +72,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildTaskServiceImpl.class);
 	
-	private static long PYTHON_CREATE_CHECK_TIME = ConfigUtil.getlong("python_create_check_time"); //300000;//单位：ms
-	private static long PYTHON_CHECK_INTERVAL_TIME = ConfigUtil.getlong("python_check_interval_time");// 2000;//单位：ms
-	
-	private static long PYTHON_CREATE_INTERVAL_INIT_TIME = ConfigUtil.getlong("python_create_interval_init_time");//60000;//单位：ms
-	
-	private static long PYTHON_INIT_CHECK_TIME = ConfigUtil.getlong("python_init_check_time");//600000;//单位：ms
-	private static long PYTHON_INIT_CHECK_INTERVAL_TIME = ConfigUtil.getlong("python_init_check_interval_time");//5000;//单位：ms
+	@Value("${python_create_check_time}")
+	private long PYTHON_CREATE_CHECK_TIME;
+	@Value("${python_check_interval_time}")
+	private long PYTHON_CHECK_INTERVAL_TIME;
+	@Value("${python_create_interval_init_time}")
+	private long PYTHON_CREATE_INTERVAL_INIT_TIME;
+	@Value("${python_init_check_time}")
+	private long PYTHON_INIT_CHECK_TIME;
+	@Value("${python_init_check_interval_time}")
+	private long PYTHON_INIT_CHECK_INTERVAL_TIME;
 	
 	@Autowired
 	private IMclusterService mclusterService;

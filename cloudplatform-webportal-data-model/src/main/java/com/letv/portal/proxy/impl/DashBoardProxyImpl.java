@@ -8,12 +8,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
-import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.monitor.BaseMonitor;
@@ -55,6 +55,9 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	
+	@Value("${db.auto.build.count}")
+	private int DB_AUTO_BUILD_COUNT;
 	
 	@Override
 	public Map<String, Integer> selectManagerResource() {
@@ -128,7 +131,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		map.put("createUser", sessionService.getSession().getUserId());
 		
 		Integer db = this.dbService.selectByMapCount(map);
-		Integer dbFree = ConfigUtil.getint("db.auto.build.count") - db;
+		Integer dbFree = DB_AUTO_BUILD_COUNT - db;
 		statistics.put("db",db);
 		statistics.put("dbFree", dbFree>0?dbFree:0);
 		statistics.put("dbUser", this.dbUserService.selectByMapCount(map));
