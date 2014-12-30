@@ -29,7 +29,7 @@ define(function(require){
             CreateDb(formData);
         }
     })
-
+    
     /*按钮组件封装 --end*/
 
     /*表单验证 --begin*/

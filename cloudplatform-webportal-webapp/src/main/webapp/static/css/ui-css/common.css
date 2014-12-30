@@ -424,10 +424,10 @@ font-weight: 600;
 padding-left: 15px;
 height: 40px;
 line-height: 40px;
--o-transition: all 0.3s, 0.3s;
--ms-transition: all 0.3s, 0.3s;
--moz-transition: all 0.3s, 0.3s;
--webkit-transition: all 0.3s, 0.3s;
+-o-transition: all 0.1s;
+-ms-transition: all 0.1s;
+-moz-transition: all 0.1s;
+-webkit-transition: all 0.1s;
 }
 .home .product-list-notopen .product-col .product-category ul>li .product-opt-wrap {
 position: relative;
@@ -695,10 +695,10 @@ font-size: 18px;
 line-height: 2;
 outline: none;
 cursor: pointer;
--webkit-transition: all .3s;
--moz-transition: all .3s;
--ms-transition: all .3s;
--o-transition: all .3s;
+-webkit-transition: all .1s;
+-moz-transition: all .1s;
+-ms-transition: all .1s;
+-o-transition: all .1s;
 -webkit-user-select: none;
 -moz-user-select: none;
 -ms-user-select: none;
@@ -733,10 +733,10 @@ margin-left: 10px !important;
 color: #666;
 text-decoration: none;
 cursor: pointer;
--webkit-transition: all .3s;
--moz-transition: all .3s;
--ms-transition: all .3s;
--o-transition: all .3s;
+-webkit-transition: all .1s;
+-moz-transition: all .1s;
+-ms-transition: all .1s;
+-o-transition: all .1s;
 }
 .bk-form-row-txt {
 padding: 0 0 4px;
@@ -873,11 +873,11 @@ color: #f60;
 position: relative;
 display: inline-block;
 height: 36px;
-width:448px;
+width:auto;
 background: #e8e8e8;
 /**padding: 0 8px;**/
 padding: 0 0px;
-margin: 0 0 1px 10px;
+/* margin: 0 0 1px 10px; */
 vertical-align: top;
 }
  .bk-slider .bk-slider-range {
@@ -885,6 +885,7 @@ position: relative;
 display: block;
 height: 36px;
 background-color: #e8e8e8;
+padding-right:11px;/* 添加padding，预留拖动按钮的占位 */
 }
 .bk-slider .bk-slider-l2 {
 width: 206px;
@@ -938,7 +939,7 @@ color: #fff;
 }
 .bk-slider .bk-slider-container {
 position: absolute;
-left: -8px;
+/* left: -8px; */
 top: 0;
 display: block;
 width: 0;
@@ -948,16 +949,16 @@ overflow: hidden;
 background: #43bfe3;
 }
 .bk-slider-transition {
--webkit-transition: all .3s;
--moz-transition: all .3s;
--ms-transition: all .3s;
--o-transition: all .3s;
+-webkit-transition: all .1s;
+-moz-transition: all .1s;
+-ms-transition: all .1s;
+-o-transition: all .1s;
 }
 .bk-slider .bk-slider-container .bk-slider-current {
 display: block;
 height: 36px;
 overflow: hidden;
-width: 448px;
+width: 412px;
 background: #43bfe3;
 white-space: nowrap;
 }
@@ -989,10 +990,10 @@ margin: 0 0 1px 0;
 vertical-align: top;
 }
 .bk-number .bk-number-input,.bk-number .bk-number-up,.bk-number .bk-number-down,.bk-number .bk-number-arrow {
--webkit-transition: all .3s;
--moz-transition: all .3s;
--ms-transition: all .3s;
--o-transition: all .3s;
+-webkit-transition: all .1s;
+-moz-transition: all .1s;
+-ms-transition: all .1s;
+-o-transition: all .1s;
 }
 .bk-number .bk-number-input {
 float: left;
@@ -1055,7 +1056,7 @@ border: solid 5px transparent;
 border-top-color: #b9b9b9;
 }
 .bk-slider-duration,.bk-slider-duration .bk-slider-container .bk-slider-current {
-width: 591px;
+width: auto;
 }
 .bk-slider .bk-slider-mm {
 width: 40px;
@@ -1245,6 +1246,8 @@ position: relative;
 .bk-group .disabled .bk-slider-unit-box {
      border-right: solid 1px #84b4dc;
 }
+
+
 /* 去掉IP授权部分a标签下划线 */
 #newAccountTab a:hover {
 	cursor:pointer;
