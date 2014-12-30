@@ -102,21 +102,19 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		
 		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
+		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?PasswordRandom.genStr():dbUserModel.getPassword();
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();
-			int type = dbUser.getType();
-			
 			for (int i = 0; i < arryIps.size(); i++) {
 				if(ip.equals(arryIps.get(i))) {
 					int formType = Integer.parseInt(arryTypes.get(i));
-					if(type != formType) {
-						//修改
-						dbUser.setType(formType);
-						updates.add(dbUser);
-					}
-					//相同，不修改，继续遍历
+					//fix password reset start
+					dbUser.setType(formType);
+					dbUser.setPassword(pwd);
+					updates.add(dbUser);
 					formIps.remove(arryIps.get(i));
 					formTypes.remove(arryTypes.get(i));
+					//fix password reset end
 					flag = false;
 					break;
 				}
@@ -127,7 +125,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			}
 			flag = true;
 		}
-		dbUserModel.setPassword(oldUsers.get(0).getPassword());
+		dbUserModel.setPassword(pwd);
 		//剩余的，新增。
 		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
 		
