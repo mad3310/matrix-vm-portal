@@ -225,6 +225,7 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		for (String oldIp : oldIps) {
 			params.put("dbId", dbId);
 			params.put("acceptIp", oldIp);
+			params.put("name4Ip", DEFAULT_DB_RO_NAME);
 			List<DbUserModel> dbUsers = this.selectByMap(params);
 			for (DbUserModel dbUser : dbUsers) {
 				this.delete(dbUser);
