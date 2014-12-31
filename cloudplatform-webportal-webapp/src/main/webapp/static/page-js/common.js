@@ -350,7 +350,7 @@ define(function(require,exports,module){
 		},
 		DialogBoxInit:function(title,text,handler,args){
 			$("#dialog-box").find("#dialog-box-title").html(title);
-			$("#dialog-box").find("#dialog-box-text").html(text);
+			$("#dialog-box").find("#dialog-box-text").html("<h5 style='text-align: center; '>"+text+"</h5>");
 			$("#dialogBoxSubmit").unbind("click").click(function(){
 				handler(args);
 			})

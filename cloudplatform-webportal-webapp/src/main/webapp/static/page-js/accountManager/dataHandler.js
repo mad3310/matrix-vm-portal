@@ -24,52 +24,57 @@ define(function(require,exports,module){
                 var td5 = $("<td><span>"+array[i].descn+"</span></td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
                 + "<a class=\"dbuser-list-ip-privilege\">ip访问权限</a><span class=\"text-explode\">"
-                + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-reset-password\">重置密码</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-modify-privilege\">修改权限</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-delete\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
+            /*获取行信息*/
+            function getLineData(obj){
+                var line = {
+                    "username":$(obj).closest("tr").find("td:first").html(),
+                    "readWriterRate":$(obj).closest("tr").find("td:eq(2)").html(),
+                    "maxConcurrency":$(obj).closest("tr").find("td:eq(3) span").html(),
+                    "descn":$(obj).closest("tr").find("td:eq(4) span").html()
+                }
+                return line;
+            }
+
             var  dbUser = new DataHandler();
             /*初始化修改用户权限按钮*/
             $(".dbuser-list-modify-privilege").click(function(){
                 $("#newAccountTab").addClass("mc-hide");
-                $("#ipListTab").addClass("mc-hide");
                 $("#accountList").addClass("mc-hide");
                 $("#modifyAccountTab").removeClass("mc-hide");
 
-                var $thisLine = $(this).closest("tr");
-                var $thisUsername = $thisLine.find("td:first").html();
-                var $thisReadWriterRate = $thisLine.find("td:eq(2)").html();
-                var $thisMaxConcurrency = $thisLine.find("td:eq(3) span").html();
-                var $thisDesc = $thisLine.find("td:eq(4) span").html();
+                var lineData = getLineData(this);
+                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+lineData.username,dbUser.ModifyDbUserIpHandler);
 
-                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.ModifyDbUserIpHandler);
-
-                $("#modifyFormDbUsername").html($thisUsername);
-                $("#modifydbUserMaxConcurrency").val($thisMaxConcurrency);
-                $("#modifydbUserReadWriterRate").val($thisReadWriterRate);
-                $("#modifyFormDbDesc").html($thisDesc);
+                $("#modifyFormDbUsername").html(lineData.username);
+                $("#modifydbUserMaxConcurrency").val(lineData.maxConcurrency);
+                $("#modifydbUserReadWriterRate").val(lineData.readWriterRate);
+                $("#modifyFormDbDesc").html(lineData.descn);
             })
 
             /*初始化查看用户权限按钮*/
             $(".dbuser-list-ip-privilege").click(function () {
-                var $thisLine = $(this).closest("tr");
-                var $thisUsername = $thisLine.find("td:first").html();
-                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+$thisUsername,dbUser.GetDbUserPrivilege);
-
-                $("#showDbuserIpPrivilegeTitle").html($thisUsername);
+                var lineData = getLineData(this);
+                cn.GetData("/dbIp/"+$("#dbId").val()+"/"+lineData.username,dbUser.GetDbUserPrivilege);
+                $("#showDbuserIpPrivilegeTitle").html(lineData.username);
             })
             /*初始化删除按钮*/
             $(".dbuser-list-delete").click(function () {
-                var $thisLine = $(this).closest("tr");
-                var $thisUsername = $thisLine.find("td:first").html();
-
-                var title = $thisUsername;
-                var text = "您确定要删除"+$thisUsername+"账户";
-                var args = $thisUsername;
+                var lineData = getLineData(this);
+                var title = lineData.username;
+                var text = "您确定要删除"+lineData.username+"账户";
+                var args = lineData.username;
                 cn.DialogBoxInit(title,text,dbUser.DeleteDbUser,args);
+            })
+            /*初始化重置密码*/
+            $(".dbuser-list-reset-password").click(function () {
+                var lineData = getLineData(this);
             })
         },
         DbUserIpHandler: function(data){
