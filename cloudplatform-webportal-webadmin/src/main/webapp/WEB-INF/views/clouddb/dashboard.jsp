@@ -64,7 +64,7 @@
 				</div>
 				
 				<div class="col-sm-4">
-					<div class="col-md-12 col-xs-12">
+					<div class="col-md-12 col-xs-12" style="padding:0px;">
 						<div class=" logo-label mt10">
 							<div class="width-100  center padding-tb-5">
 								<h4>
@@ -100,7 +100,7 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
-					<div class="col-md-12 col-xs-12">
+					<div class="col-md-12 col-xs-12" style="padding:0px;">
 						<div class=" logo-label mt10">
 							<div class="width-100  center padding-tb-5">
 								<h4>

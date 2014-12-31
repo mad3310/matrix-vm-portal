@@ -826,11 +826,22 @@ edit by jinglinlin@letv.com
 }
 
 .skin-custom .form-horizontal {
-	background: honeydew;
-	padding-bottom: 2px;
-	padding-top: 15px;
+	background: #f9f9f9;
+	/* padding-bottom: 10px; */
+	padding-top: 5px;
+	margin-bottom:0px;
 }
-
+.skin-custom .form-horizontal .form-group{
+	margin-bottom:5px;
+}
+.skin-custom .form-horizontal .form-group input,
+.skin-custom .form-horizontal .form-group select{
+	font-size:8px;
+	height:34px;
+}
+/* .skin-custom .form-horizontal .form-group button{
+	height:34px;
+} */
 .skin-custom h4.lighter{
 	color:#333333;
 	font-weight: bolder;
@@ -878,4 +889,21 @@ edit by jinglinlin@letv.com
 
 .skin-custom .nextrow{
 	margin-top:10px;
+}
+
+/* dashboard“≥√Êcss */
+.skin-custom .infobox{
+	margin:15px 0 15px 0;
+	width:20%;
+}
+.skin-custom .logo-label{
+	background-color:#4a4f56;
+	height:42px;
+	border-radius:1px;
+}
+.skin-custom .padding-tb-5{
+	padding:1px 0 5px 0;
+}
+.skin-custom .dash-a:hover {
+    color: #009900 !important;
 }

@@ -888,9 +888,9 @@ scale.prototype = {
 		if ( x % this.stepLen != 0){
 			x = x + this.stepLen - (x % this.stepLen);
 		};
-		this.step.style.width = Math.max(0, x) + 'px';
-		this.btn.style.left = Math.max(0, x) + 'px';
+		this.step.style.width = Math.max(0, x) + 'px'; 
 		this.layer.style.width = Math.max(0, x) + 'px';
+		this.btn.style.left = Math.max(0, x) + 'px';
 		this.value.value = x + ' ';
 	}
 }

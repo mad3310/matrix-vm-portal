@@ -28,22 +28,16 @@
 	<!-- /.page-header -->
 <div id="mclusteradvancedSearch-div" style="display:none;overflow:hidden;">
 		<form class="form-horizontal" role="form">
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-    						<lable class="col-md-6 control-label" for="containerName"><b>container集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-    						<div class="col-md-6">
-    							<input type="text" class="form-control" id="containerName" placeholder="container集群名称">
-    						</div>
-    					</div>
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-    						<lable class="col-md-6 control-label" for="Physicalcluster"><b>所属物理集群</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-    						<div class="col-md-6">
-    							<input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理集群">
-    						</div>
-    					</div>
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    					<div class="form-group col-md-3 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="containerType"><b>类型</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
     						<div class="col-md-6">
     							<input type="text" class="form-control" id="containerType" placeholder="类型">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="date" class="form-control" id="containerDate" placeholder="创建时间">
     						</div>
     					</div>
     					<div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -52,12 +46,22 @@
     							<input type="text" class="form-control" id="containeruser" placeholder="所属用户">
     						</div>
     					</div>
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-    						<lable class="col-md-6 control-label" for="containerDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
-    						<div class="col-md-6">
-    							<input type="date" class="form-control" id="containerDate" placeholder="创建时间">
+    					<div class="form-group">
+    						<div class="col-sm-1" style="position：absolute;	right:-60px;">
+    							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
     						</div>
-    						
+    					</div>	
+    					<div class="form-group col-md-3 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="Physicalcluster"><b>所属物理集群</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理集群">
+    						</div>
+    					</div>
+    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    						<lable class="col-md-6 control-label" for="containerName"><b>container集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+    						<div class="col-md-6">
+    							<input type="text" class="form-control" id="containerName" placeholder="container集群名称">
+    						</div>
     					</div>
     					<div class="form-group col-md-4 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="containerRunState"><b>运行状态</b> <i class="ace-icon fa fa-cog blue bigger-125"></i></lable>
@@ -70,10 +74,8 @@
     						</div>
     					</div>
     					<div class="form-group">
-    						<div class="col-sm-offset-2 col-sm-10">
-    							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
+    						<div class="col-sm-1" style="position：absolute;	right:-60px;">
     							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
-    							
     						</div>
     					</div>	
     				</form>

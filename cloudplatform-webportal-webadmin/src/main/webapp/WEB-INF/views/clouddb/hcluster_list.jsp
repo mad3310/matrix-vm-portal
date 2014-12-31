@@ -27,14 +27,14 @@
 	<!-- /.page-header -->
 	<div id="hclusteradvancedSearch-div" style="display:none;overflow:hidden;">
 		<form class="form-horizontal" role="form">          					
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    					<div class="form-group col-md-3 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="PhysicalMechine"><b>物理集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
     						<div class="col-md-6">
     							<input type="text" class="form-control" id="PhysicalMechine" placeholder="物理集群名称">
     						</div>
     					
     					</div>
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    					<div class="form-group col-md-2 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="PhyMechineNum"><b>编号</b> <i class="ace-icon fa fa-tag blue bigger-125"></i></lable>
     						<div class="col-md-6">
     							<input type="text" class="form-control" id="PhyMechineNum" placeholder="编号">
@@ -42,14 +42,14 @@
     						
     					</div>
     					
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    					<div class="form-group col-md-3 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="PhyMechineDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
     						<div class="col-md-6">
     							<input type="date" class="form-control" id="PhyMechineDate" placeholder="创建时间">
     						</div>
     						
     					</div>
-    					<div class="form-group col-md-4 col-sm-6 col-xs-12">
+    					<div class="form-group col-md-3 col-sm-6 col-xs-12">
     						<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>运行状态</b> <i class="ace-icon fa fa-cog blue bigger-125"></i></lable>
     						<div class="col-md-6">
     							<select class="form-control" id="PhyMechineRunState">
@@ -61,7 +61,7 @@
     					
     					</div>
     					<div class="form-group">
-    					<div class="col-sm-offset-2 col-sm-10">
+    					<div class=" col-sm-2">
     							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
     							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
     							

@@ -35,12 +35,12 @@
 						</li>
 					</ul>
 				</li>
-				<li>
+				<!-- <li>
 					 &nbsp;&nbsp;<button class="btn btn-dark btn-minier" id="skin-custom" onclick="changeSkin('skin-custom')">
 								 <i class="ace-icon fa fa-check  bigger-90 icon-only"></i></button>
 					 &nbsp;<button class="btn btn-darkGreen btn-minier" id="skin-darkGreen" onclick="changeSkin('skin-default')">
 								 <i class="ace-icon fa fa-check  bigger-90 icon-only"></i></button>
-				</li>
+				</li> -->
 			</ul>
 		</div>	
 	</div>

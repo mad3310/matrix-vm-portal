@@ -44,6 +44,11 @@
             						</div>
             						
             					</div>
+            					<div class="form-group">
+    								 <div class="col-sm-4">
+    										<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
+    								</div>
+    							</div>
             					<div class="form-group col-md-4 col-sm-6 col-xs-12">
             						<lable class="col-md-6 control-label" for="monitorPhyM"><b>所属物理机集群</b> <i class="ace-icon fa fa-question-circle blue bigger-125"></i></lable>
             						<div class="col-md-6">
@@ -51,8 +56,6 @@
             						</div>
             						
             					</div>
-            					
-            					
             					<div class="form-group col-md-4 col-sm-6 col-xs-12">
             						<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>当前状态</b> <i class="ace-icon fa fa-cogs blue bigger-125"></i></lable>
             						<div class="col-md-6">
@@ -64,11 +67,9 @@
             						</div>
             						
             					</div>
-            					<div class="form-group">
-    						<div class="col-sm-offset-2 col-sm-10">
-    							<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
+            			<div class="form-group">
+    						<div class="col-sm-4">	
     							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
-    							
     						</div>
     					</div>
             				</form>
