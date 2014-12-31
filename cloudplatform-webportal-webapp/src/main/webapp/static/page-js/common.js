@@ -254,6 +254,19 @@ define(function(require,exports,module){
                 }
             });
         },
+        DeleteData : function (url,handler){ //异步提交数据,将返回数据交给handler处理
+            $.ajax({
+                url:url,
+                type:"delete",
+                dataType:'json',
+                success:function(data){
+                    /*添加当handler为空时的异常处理*/
+					if(handler){
+						handler(data);
+					}
+                }
+            });
+        },
         Charts : function(cType,cTitle,cSubtitle,cxAxis,cyAxis,seriesData){
     	   //legend颜色控制
     	   Highcharts.setOptions({ 
@@ -334,6 +347,17 @@ define(function(require,exports,module){
 			$("#editBoxCancel").unbind("click").click(function(){
 				$(".edit-text-box").addClass("hide");
 			})
+		},
+		DialogBoxInit:function(title,text,handler,args){
+			$("#dialog-box").find("#dialog-box-title").html(title);
+			$("#dialog-box").find("#dialog-box-text").html(text);
+			$("#dialogBoxSubmit").unbind("click").click(function(){
+				handler(args);
+			})
+			$('#dialog-box').modal({
+				backdrop:false,
+				show:true
+			});
 		}
 
         /*add new common function*/

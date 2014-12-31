@@ -26,7 +26,7 @@ define(function(require,exports,module){
                 + "<a class=\"dbuser-list-ip-privilege\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a href=\"#\">重置密码</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-modify-privilege\">修改权限</a><span class=\"text-explode\">"
-                + "|</span><a href=\"#\">删除</a> </div></td>");
+                + "|</span><a class=\"dbuser-list-delete\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
@@ -61,12 +61,27 @@ define(function(require,exports,module){
 
                 $("#showDbuserIpPrivilegeTitle").html($thisUsername);
             })
+            /*初始化删除按钮*/
+            $(".dbuser-list-delete").click(function () {
+                var $thisLine = $(this).closest("tr");
+                var $thisUsername = $thisLine.find("td:first").html();
+
+                var title = $thisUsername;
+                var text = "您确定要删除"+$thisUsername+"账户";
+                var args = $thisUsername;
+                cn.DialogBoxInit(title,text,dbUser.DeleteDbUser,args);
+            })
         },
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
         },
         ModifyDbUserIpHandler: function(data){
             InitDoubleFrame(".modify-multi-select",data.data);
+        },
+        DeleteDbUser:function(data){
+            var dbuser = data;
+            var url = "/dbuser/"+$("#dbId").val()+"/"+dbuser;
+            cn.DeleteData(url);
         },
         GetDbUserPrivilege: function(data){
             var $tby = $("#ip-privilege-tby");
