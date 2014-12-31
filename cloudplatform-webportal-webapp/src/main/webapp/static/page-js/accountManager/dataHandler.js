@@ -75,6 +75,24 @@ define(function(require,exports,module){
             /*初始化重置密码*/
             $(".dbuser-list-reset-password").click(function () {
                 var lineData = getLineData(this);
+                $("#reset-password-box-title").html("重置账户"+lineData.username+"密码");
+                $("#reset-password-box").modal({
+                    backdrop:false,
+                    show:true
+                });
+
+                $("#resetPasswordBoxSubmit").unbind("click").click(function(){
+                    if(!$("#resetPasswordBoxSubmit").hasClass("disabled")){
+                        $("#resetPasswordBoxSubmit").addClass("disabled");
+                        var data = {
+                            "username":lineData.username,
+                            "password":$("[name = 'reset-password']").val(),
+                            "dbId":$("#dbId").val()
+                        }
+                        var url = "/dbuser/security";
+                        cn.PostData(url,data);
+                    }
+                })
             })
         },
         DbUserIpHandler: function(data){
@@ -84,8 +102,8 @@ define(function(require,exports,module){
             InitDoubleFrame(".modify-multi-select",data.data);
         },
         DeleteDbUser:function(data){
-            var dbuser = data;
-            var url = "/dbuser/"+$("#dbId").val()+"/"+dbuser;
+            var username = data;
+            var url = "/dbuser/"+$("#dbId").val()+"/"+username;
             cn.DeleteData(url);
         },
         GetDbUserPrivilege: function(data){
@@ -146,6 +164,7 @@ define(function(require,exports,module){
             var username =$("#modifyFormDbUsername").html();
             var readWriterRate = $("#modifydbUserReadWriterRate").val();
             var maxConcurrency = $("#modifydbUserMaxConcurrency").val();
+            var password = $("#modifyFormNewPwd1").val();
 
             var ips = "";
             var types = "";
@@ -161,6 +180,7 @@ define(function(require,exports,module){
                 "username":username,
                 "maxConcurrency": maxConcurrency,
                 "readWriterRate": readWriterRate,
+                "password":password,
                 "ips":ips,
                 "types":types
             }

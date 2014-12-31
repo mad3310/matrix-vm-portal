@@ -212,7 +212,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<input type="button" id="submitCreateUserForm" value="提交" class="btn btn-primary"/>
+						<input type="button" id="submitCreateUserForm" value="提交" class="disabled btn btn-primary"/>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
 				</div>
@@ -230,7 +230,7 @@
 		</div>
 		<!-- 内容部分，由一个form承载 -->
 		<div style="width:auto;height:auto;">
-			<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
+			<form id="db_user_modify_form" role="form" class="form-horizontal" name="account_modify_form">
 				<input class="hidden" id="modifydbUserReadWriterRate" type="text" />
 				<input class="hidden" id="modifydbUserMaxConcurrency" type="text" />
 				<!-- 数据库账号模块 -->
@@ -289,17 +289,40 @@
 						</div>
 					</div>
 				</div>
-				<!-- 备注说明模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
+					</label>
+					<div class="col-sm-8 row">
+						<!-- 密码输入框 -->
+						<div class="col-sm-4">
+							<input name="modifyFormNewPwd1" class="form-control input-radius-2" type="password" />
+						</div>
+						<!-- 密码规则提示 -->
+						<div class="notice-block col-sm-12">
+							<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
+						</div>
+					</div>
+				</div>
+				<!-- 密码输入模块end -->
+				<!-- 确认密码模块 -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 确认密码：
+					</label>
+					<div class="col-sm-8 row">
+						<!-- 确认密码输入框 -->
+						<div class="col-sm-4">
+							<input name="modifyFormNewPwd2" class="form-control input-radius-2" type="password" />
+						</div>
+					</div>
+				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">备注说明：</label>
-					<!-- 备注输入框 -->
 					<div class="col-sm-10 row">
 						<div class="col-sm-4">
 							<label id="modifyFormDbDesc" class="col-sm-2 control-label"></label>
 						</div>
 					</div>
 				</div>
-				<!-- 备注说明模块end -->
 				<!-- 按钮模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
@@ -350,7 +373,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
 					</button>
 					<h5 id="dialog-box-title" class="modal-title"></h5>
 				</div>
@@ -361,6 +384,47 @@
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
 					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--重置密码-->
+	<div id="reset-password-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h5 id="reset-password-box-title" class="modal-title"></h5>
+				</div>
+				<div class="modal-body">
+					<div id="reset-password-box-text">
+						<form id="reset-password-form" role="form" class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">密码：
+								</label>
+								<div class="col-sm-8 row">
+									<div class="col-sm-12">
+										<input name="reset-password" class="form-control input-radius-2" type="password" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">确认密码：
+								</label>
+								<div class="col-sm-8 row">
+									<div class="col-sm-12">
+										<input name="reset-password-repeat" class="form-control input-radius-2" type="password" />
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="resetPasswordBoxSubmit" type="button" class="disabled btn btn-primary" data-dismiss="modal">确定</button>
+					<button id="resetPasswordBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
 			</div>
 		</div>

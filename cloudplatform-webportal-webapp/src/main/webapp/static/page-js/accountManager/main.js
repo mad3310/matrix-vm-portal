@@ -99,63 +99,82 @@ define(function(require){
                 }
             }
         }
+    }).on('error.field.bv', function(e, data) {
+        $("#submitCreateUserForm").addClass("disabled");
+    }).on('success.field.bv', function(e, data) {
+        $("#submitCreateUserForm").removeClass("disabled");
     });
-  /*  $('#db_user_edit_form').bootstrapValidator({
+
+    $('#db_user_modify_form').bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            readWriterRate: {
-                validMessage: '请按提示输入',
+            modifyFormNewPwd1: {
                 validators: {
                     notEmpty: {
-                        message: '读写比例不能为空!'
+                        message:'密码不能为空'
                     },
-                    regexp: {
-                        regexp: /^((\d|\d\d|\d\d\d)(\:(\d|\d\d|\d\d\d))){1}$/,
-                        message: '请按提示输入'
+                    identical: {
+                        field: 'modifyFormNewPwd2',
+                        message: '两次输入密码不同'
                     }
                 }
             },
-            maxConcurrency: {
-                validMessage: '请按提示输入',
+            modifyFormNewPwd2: {
                 validators: {
                     notEmpty: {
-                        message: '最大并发量不能为空!'
-                    },integer: {
-                        message: '请输入数字'
-                    }
-                }
-            },
-        acceptIp: {
-            validators: {
-                notEmpty: {
-                    message: '地址不能为空'
-                },
-                regexp: {
-                    regexp: /^(\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}$/,
-                    message: '请按提示格式输入'
-                },
-                remote: {
-                    url: '${ctx}/dbUser/validate' ,
-                    data: function(validator) {
-                        return {
-                            username: validator.getFieldElements('username').val(),
-                            dbId: validator.getFieldElements('dbId').val()
-                        };
+                        message:'密码不能为空'
                     },
-                    message: '该用户名此IP已存在!'
+                    identical: {
+                        field: 'modifyFormNewPwd1',
+                        message: '两次输入密码不同'
+                    }
                 }
             }
         }
+    }).on('error.field.bv', function(e, data) {
+        $("#submitModifyUserForm").addClass("disabled");
+    }).on('success.field.bv', function(e, data) {
+        $("#submitModifyUserForm").removeClass("disabled");
+    });
+    $('#reset-password-form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            'reset-password': {
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },
+                    identical: {
+                        field: 'reset-password-repeat',
+                        message: '两次输入密码不同'
+                    }
+                }
+            },
+            'reset-password-repeat': {
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },
+                    identical: {
+                        field: 'reset-password',
+                        message: '两次输入密码不同'
+                    }
+                }
+            }
         }
     }).on('error.field.bv', function(e, data) {
-        $('#edit-dbUser-botton').addClass("disabled");
+        $("#resetPasswordBoxSubmit").addClass("disabled");
     }).on('success.field.bv', function(e, data) {
-        $('#edit-dbUser-botton').removeClass("disabled");
-    });*/
+        $("#resetPasswordBoxSubmit").removeClass("disabled");
+    });
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
