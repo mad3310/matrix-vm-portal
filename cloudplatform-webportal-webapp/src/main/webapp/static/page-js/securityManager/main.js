@@ -2,9 +2,10 @@
  * Created by yaokuo on 2014/12/12.
  */
 define(function(require){
-	var $ = require('jquery');
     var common = require('../common');
     var cn = new common();
+    var $ = require("jquery");
+    require("bootstrapValidator")($);
     
     /*初始化标签页*/
 	$('#setab a').click(function (e) {
@@ -46,6 +47,26 @@ define(function(require){
     });
    /*初始化按钮 --end*/
 
+    $('#ipForm').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            'iplist-textarea': {
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },
+                }
+            }
+        }
+    }).on('error.field.bv', function(e, data) {
+        $("[name = 'submitIpForm']").addClass("disabled");
+    }).on('success.field.bv', function(e, data) {
+        $("[name = 'submitIpForm']").removeClass("disabled");
+    });
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var securityDataHandler = new dataHandler();

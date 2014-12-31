@@ -67,7 +67,8 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-4">
-							<input name="submitIpForm" type="button" value="确定" class="btn btn-primary ipFromBotton" /> <input name="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton" />
+							<input name="submitIpForm" type="button" value="确定" class="disabled btn btn-primary ipFromBotton" />
+							<input name="cancleIpForm" type="button" value="取消" class="btn btn-default ipFromBotton" />
 						</div>
 					</div>
 				</form>
@@ -105,7 +106,8 @@
 		base : "${ctx}/static/modules/",
 		alias : {
 			"jquery" : "jquery/2.0.3/jquery.min.js",
-			"bootstrap" : "bootstrap/bootstrap/3.3.0/bootstrap.js"
+			"bootstrap" : "bootstrap/bootstrap/3.3.0/bootstrap.js",
+			"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 		}
 	});
 
