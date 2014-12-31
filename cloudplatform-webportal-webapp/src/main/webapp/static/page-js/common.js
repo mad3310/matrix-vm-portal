@@ -74,6 +74,11 @@ define(function(require,exports,module){
         		return "禁用";
         	}
         },
+		Displayable : function (status) {
+			if(status == 6){
+				return true;
+			}
+		},
         TransDate : function (format, timestamp){
         	var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
     	    var pad = function(n, c){

@@ -28,10 +28,17 @@ define(function(require,exports,module){
                 var td1 = $("<td width=\"10\">"
                         + "<input type=\"checkbox\" name=\"mcluster_id\" value= \""+array[i].id+"\">"
                         + "</td>");
+                var dbName = "";
+
+                if(cn.Displayable(array[i].status)){
+                    dbName = "<a href=\"/detail/db/"+array[i].id+"\">" + array[i].dbName + "</a><br>"
+                }else{
+                    dbName = "<a href=\"#\">" + array[i].dbName + "</a><br>"
+                }
                 var td2 = $("<td class=\"padding-left-32\">"
                         + "<div>"
                         + "<div>"
-                        + "<a href=\"/detail/db/"+array[i].id+"\">" + array[i].dbName + "</a><br>"
+                        + dbName
                         + "<a class=\"hide btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>"
                         +"</div>"
                         +"</div>"

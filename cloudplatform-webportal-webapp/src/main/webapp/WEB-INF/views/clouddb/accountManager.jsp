@@ -327,7 +327,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<input type="button" id="submitModifyUserForm" value="提交" class="btn btn-primary"/>
+						<input type="button" id="submitModifyUserForm" value="提交" class="disabled btn btn-primary"/>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
 				</div>
