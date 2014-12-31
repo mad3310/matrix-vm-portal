@@ -251,9 +251,6 @@
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
-                            <p class="pull-right">
-                                <a class="toIpList">管理IP列表</a>
-                            </p>
 						</div>
 						<div class="select">
 							<ul class="select-list select-list-left">
@@ -344,20 +341,40 @@
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal -->
 
+	<!--确认对话框-->
+	<div id="dialog-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h5 id="dialog-box-title" class="modal-title"></h5>
+				</div>
+				<div class="modal-body">
+					<div id="dialog-box-text" class="table-responsive">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--内容编辑框-->
 	<div class="edit-text-box hide">
 		<form role="form">
 			<p>
-				<input type="email" class="form-control input-radius-2">
+				<input type="text" class="form-control input-radius-2">
 			</p>
 			<p style="color:#999">输入范围：最多256个字</p>
 		</form>
-		<button class="btn btn-primary" href="#">提交</button>
+		<button id="editBoxSubmit" class="btn btn-primary" href="#">提交</button>
 		<button id="editBoxCancel" class="btn btn-default" href="#">取消</button>
 	</div>
 </body>
