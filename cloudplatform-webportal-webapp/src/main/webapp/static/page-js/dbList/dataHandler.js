@@ -31,17 +31,12 @@ define(function(require,exports,module){
                 var dbName = "";
 
                 if(cn.Displayable(array[i].status)){
-                    dbName = "<a href=\"/detail/db/"+array[i].id+"\">" + array[i].dbName + "</a><br>"
+                    dbName = "<a href=\"/detail/db/"+array[i].id+"\">" + array[i].dbName + "</a>"
                 }else{
-                    dbName = "<a href=\"#\">" + array[i].dbName + "</a><br>"
+                    dbName = "<span class=\"text-explode font-disabled\">"+array[i].dbName+"</span>"
                 }
                 var td2 = $("<td class=\"padding-left-32\">"
-                        + "<div>"
-                        + "<div>"
                         + dbName
-                        + "<a class=\"hide btn btn-default btn-xs glyphicon glyphicon-pencil\" href=\"#\"></a>"
-                        +"</div>"
-                        +"</div>"
                         +"</td>");
                 var td3 = $("<td>"
                         + cn.TranslateStatus(array[i].status)
@@ -53,7 +48,11 @@ define(function(require,exports,module){
                 var td6 = $("<td><span >单可用区</span></td>");
                 var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
                 var td8 = $("<td><span><span>包年</span><span class=\"text-success\">36500</span><span> 天后到期</span></span></td>");
-                var td9 = $("<td class=\"text-right\"> <div class=\"disabled\"><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></div></td>");
+                if(cn.Displayable(array[i].status)){
+                	var td9 = $("<td class=\"text-right\"><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                }else{
+                	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                }
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                 tr.appendTo($tby);

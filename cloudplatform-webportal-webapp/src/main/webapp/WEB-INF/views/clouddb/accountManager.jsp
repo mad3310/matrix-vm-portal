@@ -295,7 +295,7 @@
 					<div class="col-sm-8 row">
 						<!-- 密码输入框 -->
 						<div class="col-sm-4">
-							<input name="modifyFormNewPwd1" class="form-control input-radius-2" type="password" />
+							<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="password" />
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="notice-block col-sm-12">
@@ -311,7 +311,7 @@
 					<div class="col-sm-8 row">
 						<!-- 确认密码输入框 -->
 						<div class="col-sm-4">
-							<input name="modifyFormNewPwd2" class="form-control input-radius-2" type="password" />
+							<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="password" />
 						</div>
 					</div>
 				</div>

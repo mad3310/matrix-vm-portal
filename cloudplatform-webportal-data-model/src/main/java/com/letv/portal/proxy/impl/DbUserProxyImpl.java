@@ -259,5 +259,25 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			
 		}
 	}
+
+	@Override
+	public void updateSecurity(Long dbId, String username, String password) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("dbId", dbId);
+		map.put("username", username);
+		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(map);
+		for (DbUserModel dbUserModel : dbUsers) {
+			dbUserModel.setPassword(password);
+		}
+		this.updateDbUser(dbUsers);
+	}
+
+	@Override
+	public void deleteAndBuild(Long dbId, String username) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("dbId", dbId);
+		map.put("username", username);
+		this.deleteAndBuild(this.dbUserService.selectByMap(map));
+	}
 	
 }

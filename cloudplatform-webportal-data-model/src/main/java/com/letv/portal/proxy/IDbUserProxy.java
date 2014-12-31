@@ -74,4 +74,8 @@ public interface IDbUserProxy extends IBaseProxy<DbUserModel> {
 	 * @param ips
 	 */
 	public void saveOrUpdateIps(Long dbId, String ips);
+
+	public void updateSecurity(Long dbId, String username, String password);
+
+	public void deleteAndBuild(Long dbId, String username);
 }

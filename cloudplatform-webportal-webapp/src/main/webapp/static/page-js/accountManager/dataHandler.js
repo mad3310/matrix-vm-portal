@@ -23,10 +23,10 @@ define(function(require,exports,module){
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td><span>"+array[i].descn+"</span></td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
-                + "<a class=\"dbuser-list-ip-privilege\">ip访问权限</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-reset-password\">重置密码</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-modify-privilege\">修改权限</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-delete\">删除</a> </div></td>");
+                + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
+                + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
@@ -89,8 +89,11 @@ define(function(require,exports,module){
                             "password":$("[name = 'reset-password']").val(),
                             "dbId":$("#dbId").val()
                         }
-                        var url = "/dbuser/security";
+                        var url = "/dbUser/security/" + $("[name = 'reset-password']").val();
                         cn.PostData(url,data);
+                        /*刷新本身ifame*/
+                        var $iframe = $("body",parent.document).find("iframe");
+                        $iframe.attr("src",$iframe.attr("src"));
                     }
                 })
             })
@@ -103,8 +106,11 @@ define(function(require,exports,module){
         },
         DeleteDbUser:function(data){
             var username = data;
-            var url = "/dbuser/"+$("#dbId").val()+"/"+username;
+            var url = "/dbUser/"+$("#dbId").val()+"/"+username;
             cn.DeleteData(url);
+            /*刷新本身ifame*/
+            var $iframe = $("body",parent.document).find("iframe");
+            $iframe.attr("src",$iframe.attr("src"));
         },
         GetDbUserPrivilege: function(data){
             var $tby = $("#ip-privilege-tby");

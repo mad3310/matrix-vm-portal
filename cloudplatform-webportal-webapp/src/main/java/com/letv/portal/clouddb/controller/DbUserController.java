@@ -116,6 +116,25 @@ public class DbUserController {
 		}
 		return obj;
 	}
+	@RequestMapping(value="/{dbId}/{username}",method=RequestMethod.DELETE)
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbId,@PathVariable String username,ResultObject obj) {
+		if(null == dbId || StringUtils.isNullOrEmpty(username)) {
+			throw new ValidateException("参数不能为空");
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("dbId", dbId);
+		map.put("username", username);
+		this.dbUserProxy.deleteAndBuild(dbId,username);
+		return obj;
+	}
+	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
+	public  @ResponseBody ResultObject deleteDbUserById(Long dbId,String username,String password,ResultObject obj) {
+		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.updateSecurity(dbId,username,password);
+		return obj;
+	}
 
 	
 	/**Methods Name: updateDbUser <br>
