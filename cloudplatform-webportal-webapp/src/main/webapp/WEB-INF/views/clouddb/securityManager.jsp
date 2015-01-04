@@ -85,7 +85,7 @@
 					</div>
 					<button class="btn btn-primary btn-search">查询</button>
 				</div>
-				<table class="table table-hover">
+				<table class="table table-se table-hover">
 					<thead>
 						<tr>
 							<th>时间</th>
