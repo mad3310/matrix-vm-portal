@@ -35,7 +35,7 @@
 		<div class="tab-content">
 			<div id="whitelist" role="tabpanel" class="tab-pane fade active in" aria-labelledby="whitelist-tab">
 				<div id="ipList">
-					<table class="table table-hover">
+					<table class="table table-se table-hover">
 						<thead>
 							<tr>
 								<th colspan="4">允许访问IP名单</th>
@@ -45,7 +45,7 @@
 
 						</tbody>
 					</table>
-					<div class="" style="margin-bottom: 40px">
+					<div class="" style="margin-bottom: 20px;margin-top:20px;">
 						<button id="modifyIpList" class="btn btn-primary">手动修改</button>
 					</div>
 				</div>

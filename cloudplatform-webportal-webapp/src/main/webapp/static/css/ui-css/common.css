@@ -129,7 +129,8 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
     background: none repeat scroll 0% 0% #FFF;
     font-size: 12px;
     border-top: 1px solid #DDD;
-	margin-bottom:0px;
+	/* margin-bottom:8px; */
+	margin-top:8px;
 }
 .table-se thead tr th {
     padding: 4px 8px;
