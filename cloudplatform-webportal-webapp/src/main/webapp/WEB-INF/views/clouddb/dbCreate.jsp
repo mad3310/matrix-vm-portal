@@ -241,7 +241,7 @@
 								<dt class="bk-group-title">存储</dt>
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
-									<div>
+									<div class="disabled">
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">存储空间：</label>
 											<div class="bk-form-row-cell">
@@ -280,7 +280,7 @@
 															</span>
 															<!-- <span>15</span> -->
 															<!-- <button id="btn0"></button> -->
-															<span class="bk-slider-drag"  style="left:5px;" id="btn0"> <i></i> <i></i>
+															<span class="bk-slider-drag disabled"  style="left:5px;" id="btn0"> <i></i> <i></i>
 																<span class="bk-tip-arrow" ></span>
 															</span>
 														</div>
@@ -301,7 +301,7 @@
 													</span>
 													</span>
 												</div>
-												<div class="bk-form-row-txt">步长为5GB</div>
+												<div class="bk-form-row-txt">存储空间暂时不限制</div>
 											</div>
 										</div>
 										<div class="bk-form-row">
@@ -328,7 +328,7 @@
 								<dt class="bk-group-title">购买量</dt>
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
-									<div>
+									<div class="disabled">
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">购买时长：</label>
 											<div class="bk-form-row-cell">
@@ -338,7 +338,7 @@
 															<div id="flag"></div>
 															<!-- <button id="btn1"></button> -->
 															<!-- 拖动按钮 -->
-															<span class="bk-slider-drag" style="left:48px;" id="btn1"> <i></i> <i></i>
+															<span class="bk-slider-drag disabled" style="left:48px;" id="btn1"> <i></i> <i></i>
 																<span class="bk-tip-arrow" ></span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
 																class="bk-slider-block-box"> <span
@@ -443,6 +443,7 @@
 															</span>
 															</span>
 														</div>
+														<div class="bk-form-row-txt">此功能暂时不开放</div>
 													</div>
 												</div>
 											</div>
@@ -864,7 +865,7 @@ scale = function (btn, bar,layer,value,stepLen) {
 	/* this.title = document.getElementById(title); */
 	this.step = this.bar.getElementsByTagName("DIV")[0];
 	this.stepLen = stepLen
-	this.init();
+	//this.init();
 };
 scale.prototype = {
 	init: function () {
