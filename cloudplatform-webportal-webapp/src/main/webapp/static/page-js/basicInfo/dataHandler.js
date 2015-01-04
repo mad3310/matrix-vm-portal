@@ -29,7 +29,9 @@ define(function(require,exports,module){
 
     			$("#db_info_db_id").html(dbInfo.dbName);
     			$("#db_info_db_name").html(dbInfo.dbName);
-    			$("#db_info_available_region").html("酒仙桥机房");
+    			if(dbInfo.hcluster) {
+    				$("#db_info_available_region").html(dbInfo.hcluster.hclusterNameAlias);
+    			}
     			$("#db_info_net_addr").html(GetNetAddr(dbInfo.containers));
                 $("#db_info_running_state").html(cn.TranslateStatus(dbInfo.status));
                 $("#db_info_create_time").html(cn.TransDate('Y-m-d H:i:s',dbInfo.createTime));
