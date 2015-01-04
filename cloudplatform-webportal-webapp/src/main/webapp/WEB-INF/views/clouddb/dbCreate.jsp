@@ -513,7 +513,7 @@
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
+									<button id="monthPurchaseBotton" class="bk-button bk-button-primary disabled">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
