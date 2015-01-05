@@ -1111,6 +1111,12 @@ position: relative;
 }
 
 /*监控界面css*/
+.monitor-date-block li:hover {
+	display: block;
+	background: #e8e8e8;
+	cursor: pointer;
+}
+
 .se-heading .nav-pills {
     display: inline-block;
     vertical-align: middle;
