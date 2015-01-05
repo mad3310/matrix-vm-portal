@@ -213,7 +213,7 @@ padding: 0 0 20px 0;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
-.home .home-orange {
+.home-orange {
 	color: orange;
 }
 .home .info .account {
@@ -565,6 +565,7 @@ width: 30px;
 	width:100%;	
 	padding:6px;
 }
+.form-control-feedback,
 .form-horizontal .has-feedback .form-control-feedback {
      right: -20px;
 }
@@ -1257,11 +1258,11 @@ position: relative;
 
 
 /* 去掉IP授权部分a标签下划线 */
-#newAccountTab a:hover {
+#newAccountTab a:hover,
+#modifyAccountTab a:hover {
 	cursor:pointer;
 	text-decoration:none
-	}
-
+}
 /* 分页条active颜色 */
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
 	background-color: #697485;
@@ -1352,3 +1353,5 @@ position: relative;
     font-size: 20px;
     padding: 5px 0px 0px 20px;
 }
+
+
