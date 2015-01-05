@@ -25,7 +25,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
-          <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a>
+         <%--  <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a> --%>
           <a class="navbar-brand color" href="${ctx}/list/db" style="margin-left:10px;height:40px !important; font-size:15px"><i class="fa fa-database text-10"></i>&nbsp;关系型数据库RDS</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
@@ -140,7 +140,7 @@
 								<li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li>
 							</ul>
 						</li>
-			            <li><a  class="text-sm" href="javascript:void(0)">备份与恢复</a></li>
+			            <li><a  class="text-sm" href="javascript:void(0)">备份与恢复<p class="pull-right wait">敬请期待...</p></a></li>
 			            <li><a  class="text-sm" href="javascript:void(0)">参数设置</a></li>
 			            <li><a class="text-sm" href="javascript:void(0)">日志管理</a></li>
 			            <li><a  class="text-sm" href="javascript:void(0)">性能优化</a></li>
