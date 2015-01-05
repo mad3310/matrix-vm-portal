@@ -59,8 +59,8 @@
 					<div class="col-xs-6 col-md-6"><!-- begin userinfo left-->
 						<div class="info clearfix">
 							<div class="user-info pull-left">
-								<p class="text-muted user-name ellipsis">Hi,<a href="javascript:void(0)" target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</a></p>
-								<p class="user-email ellipsis">${sessionScope.userSession.userName}</p>
+								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
+								<p class="user-email ellipsis">${sessionScope.userSession.userName}@letv.com</p>
 							</div>
 							<div class="account pull-left">
 								<div class="mlt-4 pull-left">
@@ -79,9 +79,6 @@
 									</div>
 									<div>
 										<a href="javascript:void(0)" target="_self" class="btn btn-default btn-sm disabled">订单管理</a>
-										<a target="_self" class="withholding" id="home-cash" href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="您还未签约Le代扣服务,点击查看详情">
-											<span class="glyphicon glyphicon-shopping-cart text-warning"></span> <span >未签约</span>
-										</a>
 									</div>
 								</div>
 							</div> 
@@ -119,10 +116,11 @@
 				</div><!-- end user-profile -->
 				<div class="product-list product-list-opened"><!-- 已开通产品 begin -->
 					<div class="list-title">
-						<span class="list-title-em">已开通</span>的产品与服务:
+						<span class="list-title-em">已开通</span>
+						的产品与服务:
 					</div>
 					<ul class="row">
-						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="rds-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/db" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
@@ -187,40 +185,17 @@
 											<span>ECS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-tags product-opt-icon"></span>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
 										<div class="pull-left">
-											<span class="glyphicon glyphicon-tasks text-muted"></span> 
+											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -230,16 +205,7 @@
 											<span>ESS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt"> 
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 								</ul>
@@ -247,6 +213,20 @@
 							<div class="product-category">
 								<p class="category-title ng-binding">数据库</p>
 								<ul>
+									<li id="rds-not-opened" class="hide clearfix">
+										<div class="pull-left">
+											<span class="fa fa-database text-muted"></span>
+											<span>关系型数据库</span>
+											<span>RDS</span>
+										</div>
+										<div class="pull-right clearfix">
+											<div class="pull-left product-opt-wrap">
+												<a class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+										</div>
+									</li>
 									<li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-tower text-muted"></span> 
@@ -254,16 +234,7 @@
 											<span>OTS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -273,16 +244,7 @@
 											<span>OCS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -292,16 +254,7 @@
 											<span>DRDS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt"> 
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 								</ul>
@@ -318,16 +271,7 @@
 											<span>OSS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt"> 
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -337,16 +281,7 @@
 											<span>CDN</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -356,11 +291,7 @@
 											<span>OAS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt"> 
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 								</ul>
@@ -375,16 +306,7 @@
 											<span>ODPS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -394,16 +316,7 @@
 											<span>DPC</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -413,16 +326,7 @@
 											<span>ADS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+												<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 								</ul>
@@ -439,16 +343,7 @@
 											<span>ACE</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -458,16 +353,7 @@
 											<span>SLS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-envelope product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -477,16 +363,7 @@
 											<span>MQS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -495,16 +372,7 @@
 											<span>开放搜索服务</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -513,16 +381,7 @@
 											<span>性能测试服务 PTS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -531,16 +390,7 @@
 											<span>开放消息服务 ONS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<span class="glyphicon glyphicon-lock product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="javascript:void(0)" target="_self" class="product-opt">
-													<i class="fa fa-desktop product-opt-icon"></i>
-												</a>
-											</div>
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 								</ul>

@@ -14,7 +14,14 @@ define(function(require,exports,module){
     	 * 相关资源量赋值
     	 */
         resCountHandler : function(data){
-            $("#dbCount").html(data.data.db);
+            if(data.data.db > 0){
+                $("#rds-opened").removeClass("hide");
+                $("#rds-not-opened").addClass("hide");
+                $("#dbCount").html(data.data.db);
+            }else{
+                $("#rds-opened").addClass("hide");
+                $("#rds-not-opened").removeClass("hide");
+            }
         }
     }
 });
