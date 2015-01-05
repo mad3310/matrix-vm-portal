@@ -1339,3 +1339,10 @@ position: relative;
 .edit-text-box p{
 	padding-bottom: 2px;
 }
+
+/* 删除对话框警告图标样式 */
+.modal-dialog .modal-body .warning-sign{
+	color: orange;
+    font-size: 20px;
+    padding: 5px 0px 0px 20px;
+}
