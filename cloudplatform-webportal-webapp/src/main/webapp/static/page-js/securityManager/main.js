@@ -34,9 +34,10 @@ define(function(require){
             {
                 dbId:dbId,
                 ips:ips
-            }
+            },
+            asyncModifyIpData()
         );
-        asyncModifyIpData();
+
     })
     $("[name = 'cancleIpForm']").click(function () {
         $("#ipForm").addClass("hide");

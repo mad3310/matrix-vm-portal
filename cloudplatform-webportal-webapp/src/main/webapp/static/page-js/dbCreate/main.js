@@ -79,9 +79,8 @@ define(function(require){
     /*创建数据库*/
     function CreateDb(data){
         var url="/db";
-        cn.PostData(url,data);
-        location.href = "/list/db";
+        cn.PostData(url,data, function () {
+            location.href = "/list/db";
+        });
     }
-
-
 });

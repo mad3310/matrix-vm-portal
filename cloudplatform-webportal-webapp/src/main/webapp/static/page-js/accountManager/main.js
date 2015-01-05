@@ -197,11 +197,11 @@ define(function(require){
             $("#submitCreateUserForm").addClass("disabled");
             var createUserData = dbUser.GetCreateDbUserData();
             var url = "/dbUser";
-            cn.PostData(url,createUserData);
-
-            /*刷新本身ifame*/
-            var $iframe = $("body",parent.document).find("iframe");
-            $iframe.attr("src",$iframe.attr("src"));
+            cn.PostData(url,createUserData, function () {
+                /*刷新本身ifame*/
+                var $iframe = $("body",parent.document).find("iframe");
+                $iframe.attr("src",$iframe.attr("src"));
+            });
         }
     })
 
@@ -212,11 +212,11 @@ define(function(require){
             var modifyUserData = dbUser.GetModifyDbUserData();
             var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
 
-            cn.PostData(url,modifyUserData);
-
-            /*刷新本身ifame*/
-            var $iframe = $("body",parent.document).find("iframe");
-            $iframe.attr("src",$iframe.attr("src"));
+            cn.PostData(url,modifyUserData,function(){
+                /*刷新本身ifame*/
+                var $iframe = $("body",parent.document).find("iframe");
+                $iframe.attr("src",$iframe.attr("src"));
+            });
         }
     })
 })

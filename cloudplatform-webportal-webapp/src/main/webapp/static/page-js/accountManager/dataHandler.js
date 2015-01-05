@@ -90,10 +90,11 @@ define(function(require,exports,module){
                             "dbId":$("#dbId").val()
                         }
                         var url = "/dbUser/security/" + $("[name = 'reset-password']").val();
-                        cn.PostData(url,data);
-                        /*刷新本身ifame*/
-                        var $iframe = $("body",parent.document).find("iframe");
-                        $iframe.attr("src",$iframe.attr("src"));
+                        cn.PostData(url,data, function () {
+                            /*刷新本身ifame*/
+                            var $iframe = $("body",parent.document).find("iframe");
+                            $iframe.attr("src",$iframe.attr("src"));
+                        });
                     }
                 })
             })
@@ -107,10 +108,11 @@ define(function(require,exports,module){
         DeleteDbUser:function(data){
             var username = data;
             var url = "/dbUser/"+$("#dbId").val()+"/"+username;
-            cn.DeleteData(url);
-            /*刷新本身ifame*/
-            var $iframe = $("body",parent.document).find("iframe");
-            $iframe.attr("src",$iframe.attr("src"));
+            cn.DeleteData(url, function () {
+                /*刷新本身ifame*/
+                var $iframe = $("body",parent.document).find("iframe");
+                $iframe.attr("src",$iframe.attr("src"));
+            });
         },
         GetDbUserPrivilege: function(data){
             var $tby = $("#ip-privilege-tby");
