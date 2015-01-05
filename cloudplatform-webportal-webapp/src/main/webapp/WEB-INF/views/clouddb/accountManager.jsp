@@ -377,13 +377,15 @@
 					</button>
 					<h5 id="dialog-box-title" class="modal-title"></h5>
 				</div>
-				<div class="modal-body">
-					<div id="dialog-box-text" class="table-responsive">
+				<div class="modal-body clearfix">
+					<div class="col-sm-1 col-md-1 warning-sign">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
 					</div>
+					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
 				</div>
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>
 		</div>
@@ -424,7 +426,7 @@
 				</div>
 				<div class="modal-footer">
 					<button id="resetPasswordBoxSubmit" type="button" class="disabled btn btn-primary" data-dismiss="modal">确定</button>
-					<button id="resetPasswordBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button id="resetPasswordBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>
 		</div>
