@@ -15,24 +15,31 @@
 </head>
 
 <body>
+	<!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<!-- 全局参数 end -->
 	<div class="se-heading">
 		<div class="pull-left">
 			<h5 class="">数据库连接数</h5>
 		</div>
 		<div class="pull-right">
+			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
 			<span class="monitor-date-block">
 				<ul class="nav nav-pills">
-					<li class="time-block active" >
+					<li class="time-block active" value="1">
 						<a>1小时</a>
 					</li>
-					<li class="time-block" >
+					<li class="time-block" value="2">
 						<a>3小时</a>
 					</li>
-					<li class="time-block" >
+					<li class="time-block" value="3">
 						<a>1天</a>
 					</li>
-					<li class="time-block" >
+					<li class="time-block" value="4">
 						<a>7天</a>
+					</li>
+					<li class="time-block" value="5">
+						<a>1个月</a>
 					</li>
 				</ul>
 			</span>
