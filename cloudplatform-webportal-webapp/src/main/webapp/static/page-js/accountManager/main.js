@@ -29,6 +29,10 @@ define(function(require){
     $("#refresh").click(function() {
         asyncData();
     });
+    $("#manager-ip-list").click(function () {
+        var $iframe = $("body",parent.document).find("iframe");
+        $iframe.attr("src","/detail/security/"+$("#dbId").val());
+    })
     /*页面按钮初始化 --end*/
 
     $('#db_user_create_form').bootstrapValidator({

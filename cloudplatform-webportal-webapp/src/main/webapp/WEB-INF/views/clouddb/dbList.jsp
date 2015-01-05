@@ -63,7 +63,7 @@
 				<h5>
 				<span>关系型数据库管理</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
-				<button class="btn btn-default btn-md ">北京</button>
+				<button class="btn btn-default btn-md btn-region-display">北京</button>
 				</h5> 
 			</div>
 		</div>

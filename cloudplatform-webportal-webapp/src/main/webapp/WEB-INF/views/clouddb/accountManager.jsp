@@ -91,6 +91,9 @@
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
+							<p class="pull-right">
+							<a id="manager-ip-list">管理IP名单</a>
+							</p>
 						</div>
 						<div class="select">
 							<ul class="select-list select-list-left">

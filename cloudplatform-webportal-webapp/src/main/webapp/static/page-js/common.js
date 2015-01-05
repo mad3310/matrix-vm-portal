@@ -319,6 +319,13 @@ define(function(require,exports,module){
 					else { return true; }
 				}
 			}
+		},
+		FilterNull:function(data){
+			if(data == null || data == undefined){
+				return '';
+			}else{
+				return data;
+			}
 		}
 
         /*add new common function*/

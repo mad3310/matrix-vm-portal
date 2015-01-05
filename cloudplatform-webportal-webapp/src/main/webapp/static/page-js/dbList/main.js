@@ -30,8 +30,11 @@ define(function(require){
 		}
 	});
 	/*初始化按钮*/
-
-
+	$(".btn-region-display").click(function(){
+		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
+		$(this).removeClass("btn-default").addClass("btn-success");
+		asyncData();
+	})
 	/*
 	 * 可封装公共方法 begin
 	 */
@@ -56,7 +59,7 @@ define(function(require){
 	});
 	$(document).on('click', 'tfoot input:checkbox' , function(){
 		var that = this;
-		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		$(this).closest('table').find('tr > td:first-child input:checkbox,th input:checkbox ')
 		.each(function(){
 			this.checked = that.checked;
 			$(this).closest('tr').toggleClass('selected');
