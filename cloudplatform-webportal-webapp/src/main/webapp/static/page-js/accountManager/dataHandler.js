@@ -75,7 +75,7 @@ define(function(require,exports,module){
             /*初始化重置密码*/
             $(".dbuser-list-reset-password").click(function () {
                 var lineData = getLineData(this);
-                $("#reset-password-box-title").html("重置账户"+lineData.username+"密码");
+                $("#reset-password-box-title").html("重置账户("+lineData.username+")密码");
                 $("#reset-password-box").modal({
                     backdrop:false,
                     show:true

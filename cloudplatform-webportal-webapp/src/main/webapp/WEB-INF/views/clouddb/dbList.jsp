@@ -51,7 +51,7 @@
       <a class="navbar-brand" href="javascript:void(0)">关系型数据库<font color="#FF9C17">RDS</font></a>
     </div>
   </div>
-</div>。
+</div>
 	
 
 <!-- navbar end -->
@@ -62,8 +62,8 @@
 			<div class="pull-left">
 				<h5>
 				<span>关系型数据库管理</span>
-				<button class="btn btn-success btn-md">全部</button>
-				<button class="btn btn-default btn-md">北京</button>
+				<button class="btn btn-success btn-md btn-region-display">全部</button>
+				<button class="btn btn-default btn-md ">北京</button>
 				</h5> 
 			</div>
 		</div>
@@ -99,7 +99,11 @@
 						<th>运行状态</th>
 						<th>实例类型</th>
 						<th>数据库类型</th>
-						<th>可用区类型</th>
+						<th>可用区类型
+							<a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域" data-content="dfadfadfads">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a>
+						</th>
 						<th>所在可用区</th>
 						<th>付费类型</th>
 						<th class="text-right">操作</th>

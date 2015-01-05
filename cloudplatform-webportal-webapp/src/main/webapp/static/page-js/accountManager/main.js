@@ -10,6 +10,8 @@ define(function(require){
     $(".glyphicon-pencil").click(function(){
         cn.EditBoxInit(this);
     })
+    /*禁用退格键退回网页*/
+    window.onload=cn.DisableBackspace();
 
     /*页面按钮初始化 --start*/
     $(".toCreateAccount").click(function () {           //切换到创建账户

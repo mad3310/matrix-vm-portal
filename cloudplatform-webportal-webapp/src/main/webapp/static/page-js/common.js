@@ -295,6 +295,30 @@ define(function(require,exports,module){
 				backdrop:false,
 				show:true
 			});
+		},
+		DisableBackspace:function(){
+			document.getElementsByTagName("body")[0].onkeydown =function(){
+				var elem = event.srcElement;
+				var name = elem.nodeName;
+				if(event.keyCode==8){
+					if(name!='INPUT' && name!='TEXTAREA'){
+						event.returnValue = false ;
+						return ;
+					}
+					var type_e = elem.type.toUpperCase();
+					if(name=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
+						event.returnValue = false ;
+						return ;
+					}
+					if(name=='INPUT' && (elem.readOnly==true || elem.disabled ==true)){
+						event.returnValue = false ;
+						return ;
+					}
+				}else if(event.keyCode==13){
+					if (name == "INPUT") { return false; }
+					else { return true; }
+				}
+			}
 		}
 
         /*add new common function*/
