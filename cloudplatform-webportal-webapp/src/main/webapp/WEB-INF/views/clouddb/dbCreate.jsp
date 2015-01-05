@@ -96,16 +96,11 @@
 								<dd class="bk-group-detail">
 									<div class="bk-group-control"></div>
 									<div>
-
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">数据库名称：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<input id="dbName"  class="form-control" name="dbName" type="text">
-													</div>
-												</div>
-											</div>
+										<div class="form-group bk-form-row col-sm-12">
+										    <label class="bk-form-row-name col-sm-2" style="padding-left:0px;">数据库名称：</label>
+										    <div class="col-sm-4 row">
+										    	<input id="dbName"  class="form-control" name="dbName" type="text">
+										    </div>
 										</div>
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">地域：</label>

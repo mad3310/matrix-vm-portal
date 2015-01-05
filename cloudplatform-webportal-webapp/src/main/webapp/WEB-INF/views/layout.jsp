@@ -124,7 +124,7 @@
 			            <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
 							<ul class="nav hide">
 								<li><a  class="text-sm" src="${ctx}/monitor/dbLink/${dbId}" href="javascript:void(0)">连接数</a></li>
-							<!-- 	<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
+							<!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
 								<li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
 								<li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
 								<li><a  class="text-sm" href="javascript:void(0)">网络流量</a></li>
