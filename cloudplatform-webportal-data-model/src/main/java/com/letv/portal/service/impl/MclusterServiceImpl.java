@@ -85,4 +85,9 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		return mclusters.size() == 0?true:false;
 	}
 
+	@Override
+	public List<MclusterModel> selectValidMclusters() {
+		return this.mclusterDao.selectValidMclusters();
+	}
+
 }

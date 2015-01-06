@@ -43,5 +43,12 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 
 	public boolean isExistByName(String mclusterName);
 
+	/**Methods Name: selectValidMclusters <br>
+	 * Description: 选择有效的mcluster集群: RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	public List<MclusterModel> selectValidMclusters();
+
 
 }

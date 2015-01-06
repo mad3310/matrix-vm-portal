@@ -215,6 +215,11 @@
 		from WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_CONTAINER C
 		where M.ID = C.MCLUSTER_ID
 	</select>
+	<select id="selectValidMclusters" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14)
+	</select>
 	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"

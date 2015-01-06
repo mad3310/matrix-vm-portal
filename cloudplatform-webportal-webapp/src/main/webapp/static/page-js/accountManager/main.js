@@ -63,7 +63,11 @@ define(function(require){
                         message: '最大并发量不能为空!'
                     },integer: {
                         message: '请输入数字'
-                    },max:5000,min:1
+                    },between:{
+                        min:1,
+                        max:5000,
+                        message:'最大并发量1-5000'
+                    }
                 }
             },
             newPwd1: {

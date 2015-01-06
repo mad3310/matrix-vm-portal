@@ -11,7 +11,7 @@ define(function(require){
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();
-    
+
     /*
      * 加载资源数量：rds数
      */
