@@ -144,7 +144,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				}
 			} else {
 				status = BackupStatus.FAILD;
-				resultDetail = result.substring(result.indexOf("\"response\": \"")+1, result.lastIndexOf("\"}"));
+				resultDetail = result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},"));
 			}
 		}
 	
