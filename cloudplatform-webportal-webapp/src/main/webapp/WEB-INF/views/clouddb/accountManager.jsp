@@ -41,10 +41,12 @@
 					<tr>
 						<th width="15%">帐号</th>
 						<th width="15%">状态</th>
-						<th width="15%">读写比例
+						<th width="15%" class="hide">读写比例
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="10%">频次限制</th>
+						<th width="10%">频次限制
+							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
+						</th>
 						<th>备注说明</th>
 						<th class="text-right" width="30%">
 							<span style="padding-left:8px">操作</span>
@@ -134,7 +136,7 @@
 				</div>
 				<!-- 授权数据库模块end -->
 				<!-- 密码输入模块 -->
-				<div class="form-group">
+				<div class="hide form-group">
 					<label class="col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						读写比例：

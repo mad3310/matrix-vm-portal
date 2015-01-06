@@ -19,7 +19,7 @@ define(function(require,exports,module){
             for(var i= 0, len= array.length;i<len;i++){
                 var td1 = $("<td>"+ array[i].username +"</td>");
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
-                var td3 = $("<td>"+ array[i].readWriterRate + "</td>");
+                var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td><span>"+cn.FilterNull(array[i].descn)+"</span></td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
@@ -141,7 +141,7 @@ define(function(require,exports,module){
         GetCreateDbUserData: function(){
             var dbId = $("#dbId").val();
             var username = $("[name = 'username']").val();
-            var readWriterRate = $("[name = 'readWriterRate']").val();
+            var readWriterRate = "2:1";
             var maxConcurrency = $("[name = 'maxConcurrency']").val();
             var newPwd1 = $("[name = 'newPwd1']").val();
             var accountDesc = $("[name = 'descn']").val();

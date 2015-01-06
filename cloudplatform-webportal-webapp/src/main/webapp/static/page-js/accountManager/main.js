@@ -56,18 +56,6 @@ define(function(require){
                     }
                 }
             },
-            readWriterRate: {
-                validMessage: '请按提示输入',
-                validators: {
-                    notEmpty: {
-                        message: '读写比例不能为空!'
-                    },
-                    regexp: {
-                        regexp: /^((\d|\d\d|\d\d\d)(\:(\d|\d\d|\d\d\d))){1}$/,
-                        message: '请按提示输入'
-                    }
-                }
-            },
             maxConcurrency: {
                 validMessage: '请按提示输入',
                 validators: {
@@ -75,17 +63,13 @@ define(function(require){
                         message: '最大并发量不能为空!'
                     },integer: {
                         message: '请输入数字'
-                    }
+                    },max:5000,min:1
                 }
             },
             newPwd1: {
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },
-                    identical: {
-                        field: 'newPwd2',
-                        message: '两次输入密码不同'
                     },
                     different: {
                         field: 'username',
@@ -105,9 +89,9 @@ define(function(require){
                 }
             }
         }
-    }).on('error.field.bv', function(e, data) {
+    }).on('error.field.bv', function(e) {
         $("#submitCreateUserForm").addClass("disabled");
-    }).on('success.field.bv', function(e, data) {
+    }).on('success.field.bv', function(e) {
         $("#submitCreateUserForm").removeClass("disabled");
     });
 
@@ -122,10 +106,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },
-                    identical: {
-                        field: 'modifyFormNewPwd2',
-                        message: '两次输入密码不同'
                     }
                 }
             },
@@ -157,10 +137,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },
-                    identical: {
-                        field: 'reset-password-repeat',
-                        message: '两次输入密码不同'
                     }
                 }
             },
