@@ -12,11 +12,6 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();
 
-    /*初始化按钮*/
-    $("#rds-purchase").click(function(){
-        location.href = "/detail/dbCreate";
-    })
-
     /*
      * 加载资源数量：rds数
      */
