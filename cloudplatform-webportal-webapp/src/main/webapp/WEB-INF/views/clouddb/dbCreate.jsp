@@ -538,7 +538,7 @@
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button id="monthPurchaseBotton" class="bk-button bk-button-primary disabled">
+									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
@@ -888,7 +888,7 @@ scale = function (btn, bar,layer,value,stepLen) {
 	this.layer = document.getElementById(layer);
 	this.value = document.getElementById(value);
 	/* this.title = document.getElementById(title); */
-	this.step = this.bar.getElementsByTagName("DIV")[0];
+	/*this.step = this.bar.getElementsByTagName("DIV")[0];*/
 	this.stepLen = stepLen
 	//this.init();
 };

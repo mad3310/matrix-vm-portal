@@ -7,6 +7,9 @@ define(function(require){
     var $ = require("jquery");
     require("bootstrapValidator")($);
 
+    /*禁用退格键退回网页*/
+    window.onload=cn.DisableBackspaceEnter();
+
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
         if(!$(this).hasClass("disabled")){
@@ -18,7 +21,7 @@ define(function(require){
             }
         }
     })
-    $("#monthPurchaseBotton").click(function () {
+  /*  $("#monthPurchaseBotton").click(function () {
         if(!$(this).hasClass("disabled")){
             var dbName = $("[name = 'dbName']").val();
             var hclusterId = $("[name = 'hclusterId']").val();
@@ -28,7 +31,7 @@ define(function(require){
             $(this).addClass("disabled");
             CreateDb(formData);
         }
-    })
+    })*/
     
     /*按钮组件封装 --end*/
 
@@ -61,10 +64,15 @@ define(function(require){
                 }
             }
         }
-    }).on('error.field.bv', function(e, data) {
-        $('#monthPurchaseBotton').addClass("disabled");
-    }).on('success.field.bv', function(e, data) {
-        $('#monthPurchaseBotton').removeClass("disabled");
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+
+        var dbName = $("[name = 'dbName']").val();
+        var hclusterId = $("[name = 'hclusterId']").val();
+        var engineType = $("[name = 'engineType']").val();
+        var linkType = $("[name = 'linkType']").val();
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId};
+        CreateDb(formData);
     });
     /*表单验证 --end*/
 

@@ -6,6 +6,8 @@ define(function(require){
     var cn = new common();
     var $ = require("jquery");
     require("bootstrapValidator")($);
+    var dataHandler = require('./dataHandler');
+    var dbUser = new dataHandler();
 
     $(".glyphicon-pencil").click(function(){
         cn.EditBoxInit(this);
@@ -73,9 +75,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },identical: {
-                        field: 'newPwd2',
-                        message: '两次输入密码不同'
                     },different: {
                         field: 'username',
                         message: '密码不能与账户名相同'
@@ -108,11 +107,17 @@ define(function(require){
                 }
             }
         }
-    }).on('error.field.bv', function(e) {
-        $("#submitCreateUserForm").addClass("disabled");
-    }).on('success.field.bv', function(e) {
-        $("#submitCreateUserForm").removeClass("disabled");
-    });
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+
+        var createUserData = dbUser.GetCreateDbUserData();
+        var url = "/dbUser";
+        cn.PostData(url, createUserData, function () {
+            /*刷新本身ifame*/
+            var $iframe = $("body", parent.document).find("iframe");
+            $iframe.attr("src", $iframe.attr("src"));
+        });
+    })
 
     $('#db_user_modify_form').bootstrapValidator({
         feedbackIcons: {
@@ -125,9 +130,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },identical: {
-                        field: 'modifyFormNewPwd2',
-                        message: '两次输入密码不同'
                     },stringLength: {
                     	min: 6,
                         max: 32,
@@ -157,10 +159,17 @@ define(function(require){
                 }
             }
         }
-    }).on('error.field.bv', function(e, data) {
-        $("#submitModifyUserForm").addClass("disabled");
-    }).on('success.field.bv', function(e, data) {
-        $("#submitModifyUserForm").removeClass("disabled");
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+
+        var modifyUserData = dbUser.GetModifyDbUserData();
+        var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+
+        cn.PostData(url,modifyUserData,function(){
+            /*刷新本身ifame*/
+            var $iframe = $("body",parent.document).find("iframe");
+            $iframe.attr("src",$iframe.attr("src"));
+        });
     });
     $('#reset-password-form').bootstrapValidator({
         feedbackIcons: {
@@ -173,9 +182,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },identical: {
-                        field: 'reset-password-repeat',
-                        message: '两次输入密码不同'
                     },stringLength: {
                     	min: 6,
                         max: 32,
@@ -205,18 +211,25 @@ define(function(require){
                 }
             }
         }
-    }).on('error.field.bv', function(e, data) {
-        $("#resetPasswordBoxSubmit").addClass("disabled");
-    }).on('success.field.bv', function(e, data) {
-        $("#resetPasswordBoxSubmit").removeClass("disabled");
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+
+        var data = {
+            "username":$("#reset-password-username").val(),
+            "password":$("[name = 'reset-password']").val(),
+            "dbId":$("#dbId").val()
+        }
+        console.log(data);
+        var url = "/dbUser/security";
+        cn.PostData(url,data, function () {
+            /*刷新本身ifame*/
+            var $iframe = $("body",parent.document).find("iframe");
+            $iframe.attr("src",$iframe.attr("src"));
+        });
     });
 
     /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var dbUser = new dataHandler();
-
     asyncData();
-    //asyncDbUserIpData();
 
     function asyncData() {
         var dbUserListUrl = "/dbUser/"+$("#dbId").val();
@@ -225,33 +238,4 @@ define(function(require){
     function asyncDbUserIpData(){
         cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.DbUserIpHandler);   //创建用户加载IP
     }
-
-    /*创建dbuser*/
-    $("#submitCreateUserForm").click(function () {
-        if(!$("#submitCreateUserForm").hasClass("disabled")){
-            $("#submitCreateUserForm").addClass("disabled");
-            var createUserData = dbUser.GetCreateDbUserData();
-            var url = "/dbUser";
-            cn.PostData(url,createUserData, function () {
-                /*刷新本身ifame*/
-                var $iframe = $("body",parent.document).find("iframe");
-                $iframe.attr("src",$iframe.attr("src"));
-            });
-        }
-    })
-
-    /*修改dbuser权限*/
-    $("#submitModifyUserForm").click(function () {
-        if(!$("#submitModifyUserForm").hasClass("disabled")){
-            $("#submitModifyUserForm").addClass("disabled");
-            var modifyUserData = dbUser.GetModifyDbUserData();
-            var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
-
-            cn.PostData(url,modifyUserData,function(){
-                /*刷新本身ifame*/
-                var $iframe = $("body",parent.document).find("iframe");
-                $iframe.attr("src",$iframe.attr("src"));
-            });
-        }
-    })
 })
