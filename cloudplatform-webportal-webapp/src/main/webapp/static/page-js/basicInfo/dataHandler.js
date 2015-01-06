@@ -20,9 +20,11 @@ define(function(require,exports,module){
                     for(var i= 0,len=containers.length;i<len;i++){
                         if(dbInfo.containers[i].type == "mclustervip"){
                             ips = ips+dbInfo.containers[i].ipAddr+'(vip)'+' ';
-                        }else{
-                            ips = ips+dbInfo.containers[i].ipAddr+' ';
                         }
+                        /*注释掉非VIP的IP
+                         else{
+                            ips = ips+dbInfo.containers[i].ipAddr+' ';
+                        }*/
                     }
                     return ips;
                 }

@@ -22,10 +22,10 @@
 		        <span class="panel-title">
 		          		基本信息
 		        </span>						
-				<div class="pull-right table-viewer-topbar-content">
+				<!-- <div class="pull-right table-viewer-topbar-content">
 					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">只读实例文档</a>
 					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">购买只读实例</a>
-				</div>
+				</div> -->
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
 					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
@@ -105,7 +105,7 @@
 			        		<span class="text-muted pd-r8">可用性:</span><span>100.0%</span>
 			        	</td> 
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">已用空间:</span><span>30.0%</span>
+			        		<span class="text-muted pd-r8">已用空间:</span><span></span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
@@ -137,7 +137,7 @@
 			        		<span class="text-muted pd-r8">数据库内存:</span><span>2048M</span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库空间:</span><span>1024G</span>
+			        		<span class="text-muted pd-r8">数据库空间:</span><span>500G</span>
 			        	</td>
 		        	</tr>
 		        	<tr>
@@ -151,10 +151,10 @@
 		        	</tr>
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大连接数:</span><span>60</span>
+			        		<span class="text-muted pd-r8">最大连接数:</span><span></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大IOPS:</span><span>150</span>
+			        		<span class="text-muted pd-r8">最大IOPS:</span><span></span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
@@ -182,7 +182,7 @@
 			        		<span class="text-muted pd-r8">创建时间:</span><span id="db_info_create_time"></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">付费类型:</span><span>包年36500 天后到期</span>
+			        		<span class="text-muted pd-r8">付费类型:</span><span>包年<span id="db_info_remain_days">365</span> 天后到期</span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
