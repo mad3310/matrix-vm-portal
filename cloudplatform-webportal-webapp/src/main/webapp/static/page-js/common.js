@@ -296,7 +296,7 @@ define(function(require,exports,module){
 				show:true
 			});
 		},
-		DisableBackspace:function(){
+		DisableBackspaceEnter:function(){
 			document.getElementsByTagName("body")[0].onkeydown =function(){
 				var elem = event.srcElement;
 				var name = elem.nodeName;
@@ -326,6 +326,11 @@ define(function(require,exports,module){
 			}else{
 				return data;
 			}
+		},
+		/*刷新ifame*/
+		RefreshIfame:function(url){
+			var $iframe = $("body",parent.document).find("iframe");
+			$iframe.attr("src",url);
 		}
 
         /*add new common function*/

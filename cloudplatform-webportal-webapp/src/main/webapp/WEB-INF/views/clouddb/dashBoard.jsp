@@ -222,7 +222,7 @@
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
-													<span class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 										</div>
