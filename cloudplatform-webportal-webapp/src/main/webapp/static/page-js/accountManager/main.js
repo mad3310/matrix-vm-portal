@@ -78,14 +78,10 @@ define(function(require){
                     },different: {
                         field: 'username',
                         message: '密码不能与账户名相同'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
                     }
                     ,regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
+                        message: "要求6-32位，必须要包含数字，大小写字母"
                     }
                 }
             },
