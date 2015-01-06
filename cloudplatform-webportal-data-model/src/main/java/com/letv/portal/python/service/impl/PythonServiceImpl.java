@@ -25,121 +25,131 @@ public class PythonServiceImpl implements IPythonService{
 	
 	@Override
 	public String createContainer(String mclusterName,String ip,String username,String password) {
-		String url =  URL_HEAD  + ip + URL_PORT + "/containerCluster";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT + "/containerCluster/createStatus/" + mclusterName;
-		String result = HttpClient.get(url,username,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createStatus/").append(mclusterName);
+		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
 
 	@Override
 	public String initZookeeper(String nodeIp) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/admin/conf";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/conf");
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("zkAddress", "127.0.0.1");
 		
-		String result = HttpClient.post(url, map);
+		String result = HttpClient.post(url.toString(), map);
 		return result;
 	}
 
 	@Override
 	public String initUserAndPwd4Manager(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/admin/user";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/user");
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("adminUser", username);
 		map.put("adminPassword", password);
 		
-		String result = HttpClient.post(url, map);
+		String result = HttpClient.post(url.toString(), map);
 		return result;
 	}
 
 	@Override
 	public String postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster");
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterName", mclusterName);
 		map.put("dataNodeIp", nodeIp);
 		map.put("dataNodeName", nodeName);
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String initMcluster(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/init?forceInit=false";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/init?forceInit=false");
 	
-		String result = HttpClient.get(url,username,password);
+		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
 
 	@Override
 	public String postContainerInfo(String nodeIp,String nodeName,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/node";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/node");
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("dataNodeIp", nodeIp);
 		map.put("dataNodeName", nodeName);
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String syncContainer(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/sync";
-		String result = HttpClient.get(url);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/sync");
+		String result = HttpClient.get(url.toString());
 		return result;
 	}
 
 	@Override
 	public String startMcluster(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/start";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/start");
 
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("cluster_flag", "new");
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkContainerStatus(String nodeIp,String username,String password) {
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/cluster/check/online_node";
-		String result = HttpClient.get(url,username,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/check/online_node");
+		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 		
 	}
 
 	@Override
 	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
-	
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/db";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/db");
+		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("dbName", dbName);
 		map.put("userName", dbUserName);
 		map.put("ip_address", "127.0.0.1");
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 
 	@Override
 	public String createDbUser(DbUserModel dbUser, String dbName,String nodeIp,String username, String password) {
-		//假设数据
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/dbUser";
-		
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser");
 				
 		Map<String,String> map = new HashMap<String,String>();
 		if(DbUserRoleStatus.WR.getValue() == dbUser.getType()) {
@@ -161,14 +171,14 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
 		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password) {
-		
-		String url = URL_HEAD  + nodeIp + GBALANCER_PORT + "/glb/start";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(GBALANCER_PORT).append("/glb/start");
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("user", user);
@@ -178,113 +188,147 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("args",args);
 		map.put("service",server);
 		
-		String result = HttpClient.post(url, map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
-		String url = URL_HEAD  + nodeIp + URL_PORT + "/dbUser"+"/"+dbName+"/"+dbUserModel.getUsername()+"/"+URLEncoder.encode(dbUserModel.getAcceptIp());
-		String result = HttpClient.detele(url, username, password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser/").append(dbName).append("/").append(dbUserModel.getUsername()).append("/").append(URLEncoder.encode(dbUserModel.getAcceptIp()));
+		String result = HttpClient.detele(url.toString(), username, password);
 		return result;
 	}
 
 	@Override
 	public String removeMcluster(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT  + "/containerCluster?containerClusterName=" + mclusterName;
-		String result = HttpClient.detele(url,username,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster?containerClusterName=").append(mclusterName);
+		String result = HttpClient.detele(url.toString(),username,password);
 		return result;
 	}
 
 	@Override
 	public String startMcluster(String mclusterName,String ip,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/start");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(URL_HEAD  + ip + URL_PORT  + "/containerCluster/start", map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String stopMcluster(String mclusterName,String ip,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/stop");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
-		String result = HttpClient.post(URL_HEAD  + ip + URL_PORT  + "/containerCluster/stop", map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String startContainer(String containerName,String ip,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/start");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(URL_HEAD  + ip + URL_PORT + "/container/start", map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String stopContainer(String containerName,String ip,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/stop");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
-		String result = HttpClient.post(URL_HEAD  + ip + URL_PORT + "/container/stop", map,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
 	@Override
 	public String checkMclusterStatus(String mclusterName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT  + "/containerCluster/status/" + mclusterName;
-		String result = HttpClient.get(url,username,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(mclusterName);
+		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
 
 	@Override
 	public String checkContainerStatus(String containerName,String ip,String username,String password) {
-		String url = URL_HEAD  + ip + URL_PORT  + "/container/status/" + containerName;
-		String result = HttpClient.get(url,username,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/status/").append(containerName);
+		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
 
 	@Override
 	public String initHcluster(String hostIp) {
-		String url =URL_HEAD+ hostIp+URL_PORT+"/admin/user";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/admin/user");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("adminUser", "root");
 		map.put("adminPassword", "root");
-		String result = HttpClient.post(url, map);
+		String result = HttpClient.post(url.toString(), map);
 		return result;
 	}
 
 	@Override
 	public String createHost(HostModel hostModel) {
-		String url = URL_HEAD+ hostModel.getHostIp()+URL_PORT+"/serverCluster";
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostModel.getHostIp()).append(URL_PORT).append("/serverCluster");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
-		String result = HttpClient.post(url, map,hostModel.getName(),hostModel.getPassword());	
+		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());	
 		return result;
 	}
 
 	@Override
 	public String checkMclusterCount(String hostIp, String name, String password) {
-		String url = URL_HEAD  + hostIp + URL_PORT  + "/containerCluster/sync";
-		String result = HttpClient.get(url,name,password);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/containerCluster/sync");
+		String result = HttpClient.get(url.toString(),name,password);
 		return result;
 	}
 
 	public String getMclusterStatus(String ip)throws Exception{
-		String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/status";
-		String result = HttpClient.get(url,1000,1000);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/mcluster/status");
+		String result = HttpClient.get(url.toString(),1000,1000);
 		return result;
 		
 	}
 	public String getMclusterMonitor(String ip)throws Exception{
-	    String url = URL_HEAD  + ip + URL_PORT  + "/mcluster/monitor";
-	    String result = HttpClient.get(url,1000,1000);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/mcluster/monitor");
+	    String result = HttpClient.get(url.toString(),1000,1000);
 	    return result;
 	}
 	
 	@Override
 	public String getMonitorData(String ip, String index) {
-		String url = URL_HEAD  + ip + URL_PORT  + index;
-		String result = HttpClient.get(url,1000,1000);
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		String result = HttpClient.get(url.toString(),1000,1000);
+		return result;
+	}
+
+	@Override
+	public String wholeBackup4Db(String ipAddr,String name, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup");
+		String result = HttpClient.get(url.toString(),name,password);
+		return result;
+	}
+
+	@Override
+	public String checkBackup4Db(String ipAddr) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup/check");
+		String result = HttpClient.get(url.toString(),1000,2000);
 		return result;
 	}    
 	

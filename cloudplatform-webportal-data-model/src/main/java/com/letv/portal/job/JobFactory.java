@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.util.SpringContextUtil;
 import com.letv.portal.model.ScheduleJobModel;
+import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
@@ -22,6 +23,7 @@ public class JobFactory implements Job {
 	private IMclusterProxy mclusterProxy = (IMclusterProxy) SpringContextUtil.getBean("mclusterProxy");
 	private IContainerProxy containerProxy = (IContainerProxy) SpringContextUtil.getBean("containerProxy");
 	private IMonitorProxy monitorProxy = (IMonitorProxy) SpringContextUtil.getBean("monitorProxy");
+	private IBackupProxy backupProxy = (IBackupProxy) SpringContextUtil.getBean("backupProxy");
 	
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -46,10 +48,21 @@ public class JobFactory implements Job {
         	logger.info("check Mcluster Count");
         	this.mclusterProxy.checkCount();
         }
-        
         if("collectMclusterServiceData".equals(method)) {
         	logger.info("collectMclusterServiceData");
         	this.monitorProxy.collectMclusterServiceData();
+        }
+        
+        //定时任务备份
+        if("wholeBackup4Db".equals(method)) {
+        	logger.info("wholeBackup4Db");
+        	this.backupProxy.backupTask();
+        }
+        
+        //定时任务备份
+        if("checkBackupStatus".equals(method)) {
+        	logger.info("checkBackupStatus");
+        	this.backupProxy.checkBackupStatusTask();
         }
 	}
 

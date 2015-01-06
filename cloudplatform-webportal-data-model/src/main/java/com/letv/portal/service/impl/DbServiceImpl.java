@@ -89,4 +89,12 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		db.setContainers(this.containerDao.selectByMclusterId(db.getMclusterId()));
 		return db;
 	}
+
+	@Override
+	public List<DbModel> selectDbByMclusterId(Long mclusterId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		List<DbModel> dbs = this.dbDao.selectByMap(map);
+		return dbs;
+	}
 }

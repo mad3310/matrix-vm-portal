@@ -263,6 +263,24 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String getMonitorData(String ip,String index);
+
+	/**Methods Name: wholeBackup4Db <br>
+	 * Description: db数据库备份<br>
+	 * @author name: liuhao1
+	 * @param ipAddr
+	 * @param name
+	 * @param password
+	 */
+	public String wholeBackup4Db(String ipAddr,String name, String password);
+
+	/**Methods Name: checkBackup4Db <br>
+	 * Description: 检查db备份结果<br>
+	 * @author name: liuhao1
+	 * @param ipAddr
+	 * @param name
+	 * @param password
+	 */
+	public String checkBackup4Db(String ipAddr);
 	
 	
 	

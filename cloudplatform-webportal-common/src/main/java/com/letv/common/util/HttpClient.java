@@ -123,6 +123,7 @@ public class HttpClient {
 
 	private static String paseResponse(HttpResponse response) {
 		logger.info("get response from http server..");
+		if (response == null) return null;
 		HttpEntity entity = response.getEntity();
 		
 		logger.info("response status: " + response.getStatusLine());
