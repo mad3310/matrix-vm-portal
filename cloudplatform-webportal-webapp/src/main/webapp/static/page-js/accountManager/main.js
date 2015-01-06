@@ -109,8 +109,8 @@ define(function(require){
             descn: {
                 validators: {
                     stringLength: {
-                        max: 40,
-                        message: '描述最多为256字节!'
+                        max: 256,
+                        message: '描述最多256字符!'
                     }
                 }
             }
