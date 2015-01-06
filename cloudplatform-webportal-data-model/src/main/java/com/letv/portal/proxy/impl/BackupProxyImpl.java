@@ -1,6 +1,5 @@
 package com.letv.portal.proxy.impl;
 
-import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,13 +15,11 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.exception.ValidateException;
 import com.letv.portal.enumeration.BackupStatus;
 import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBackupService;
@@ -134,8 +131,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	public void checkBackupStatus(BackupResultModel backup) {
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
-		try {
-			String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
+		String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
+		if(StringUtils.isNullOrEmpty(result)) {
+			status = BackupStatus.FAILD;
+			resultDetail = "Connection refused";
+		} else {
 			if(result.contains("\"code\": 200")) {
 				if(result.contains("back up success")) { 
 					status = BackupStatus.SUCCESS;
@@ -144,26 +144,24 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				}
 			} else {
 				status = BackupStatus.FAILD;
-				resultDetail = result.substring(result.indexOf("[")+1, result.indexOf("]"));
+				resultDetail = result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},"));
 			}
-		} catch (Exception e) {
-			status = BackupStatus.FAILD;
-			resultDetail = e.getMessage();
-			throw new RuntimeException(e);
-		} finally {
-			backup.setStatus(status);
-			backup.setResultDetail(resultDetail);
-			backup.setEndTime(new Date());
-			this.backupService.updateBySelective(backup);
-			
-			if(status.equals(BackupStatus.FAILD)) {
-				//发送邮件通知
-				sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
-			}
+		}
+	
+		backup.setStatus(status);
+		backup.setResultDetail(resultDetail);
+		backup.setEndTime(new Date());
+		this.backupService.updateBySelective(backup);
+		
+		if(status.equals(BackupStatus.FAILD)) {
+			logger.info("check backup faild");
+			//发送邮件通知
+			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
 		}
 	}
 	
 	private void sendBackupFaildNotice(String dbName,String mclusterName,String resultDetail,Date startTime,String backupIp) {
+		logger.info("check backup faild:send email--" + dbName + mclusterName);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbName", dbName);
@@ -173,7 +171,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("backupIp", backupIp);
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
-		mailMessage.setHtml(true);
 		defaultEmailSender.sendMessage(mailMessage);
 	}
 

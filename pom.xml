@@ -537,7 +537,7 @@
                 
                 <webportal.cas.local.http>http://localhost:8081</webportal.cas.local.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
-                <start.timing.jobs>Y</start.timing.jobs>
+                <start.timing.jobs>N</start.timing.jobs>
                  
                 <webportal.log.path>D:</webportal.log.path>
                 
@@ -551,7 +551,7 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
-                
+                <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
             </properties>
         </profile>
@@ -592,7 +592,7 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
-                
+                <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
             </properties>
         </profile>
@@ -635,7 +635,7 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
-                
+                <task.executor.size>30</task.executor.size>
                 <admin.pwd>abc123</admin.pwd>
                 
             </properties>
@@ -679,7 +679,7 @@
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
                 <zabbix.template.normal>23187</zabbix.template.normal>
                 <zabbix.template.vip>65134</zabbix.template.vip>
-                
+                <task.executor.size>150</task.executor.size>
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>
         </profile>

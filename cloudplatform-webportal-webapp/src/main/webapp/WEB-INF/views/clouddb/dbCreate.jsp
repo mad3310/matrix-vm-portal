@@ -554,7 +554,7 @@
 						</div>
 					</div>
 					</form>
-					<div role="tabpanel" class="tab-pane fade" id="dosage">
+					<div role="tabpanel" class="tab-pane fade mc-hide" id="dosage">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
 								<dt class="bk-group-title">基本配置</dt>
