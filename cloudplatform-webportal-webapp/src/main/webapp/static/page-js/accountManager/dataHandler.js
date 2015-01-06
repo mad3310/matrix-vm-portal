@@ -67,8 +67,8 @@ define(function(require,exports,module){
             /*初始化删除按钮*/
             $(".dbuser-list-delete").click(function () {
                 var lineData = getLineData(this);
-                var title = lineData.username;
-                var text = "您确定要删除"+lineData.username+"账户";
+                var title = "确认";
+                var text = "您确定要删除("+lineData.username+")账户";
                 var args = lineData.username;
                 cn.DialogBoxInit(title,text,dbUser.DeleteDbUser,args);
             })
@@ -101,6 +101,14 @@ define(function(require,exports,module){
         },
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
+            console.log(data.data.length);
+            if(data.data.length == 10){
+                var title = "注意";
+                var text = "您当前IP名单为空,点击确认去维护IP名单.";
+                cn.DialogBoxInit(title,text, function () {
+                    cn.RefreshIfame("/detail/security/"+$("#dbId").val());
+                });
+            }
         },
         ModifyDbUserIpHandler: function(data){
             InitDoubleFrame(".modify-multi-select",data.data);

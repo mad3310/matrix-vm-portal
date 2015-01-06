@@ -5,6 +5,7 @@ define(function(require,exports,module){
     var $ = require('jquery');
     require('bootstrap')($);
     var Common = function (){
+		this.totalAvailableTime = 365;
     };
     module.exports = Common;
 
@@ -181,7 +182,6 @@ define(function(require,exports,module){
     	        //r not supported yet
     	        U: function(){return Math.round(jsdate.getTime()/1000)}
     	    };
-    	       
     	    return format.replace(/[\\]?([a-zA-Z])/g, function(t, s){
     	        if( t!=s ){
     	            // escaped
@@ -196,6 +196,13 @@ define(function(require,exports,module){
     	        return ret;
     	    });
         },
+		RemainAvailableTime:function(ctimestamp){
+			var timestamp = Date.parse(new Date());
+			var differDays = parseInt((timestamp-ctimestamp)/(1000 * 60 * 60 * 24));
+			// console.log("differTime:"+differDays+"  this.totalAvailableTime:"+this.totalAvailableTime);
+			var remainDays = this.totalAvailableTime - differDays;
+			return remainDays;
+		},
         Sidebar : function(index){
             var extended = function(obj){   //obj为有二级菜单的li
                 $(obj).removeClass("active");
