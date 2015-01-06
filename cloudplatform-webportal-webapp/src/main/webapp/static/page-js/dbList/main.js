@@ -8,7 +8,7 @@ define(function(require){
 	cn.Tooltip();
 
 	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspace();
+	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

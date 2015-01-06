@@ -11,7 +11,7 @@ define(function(require){
         cn.EditBoxInit(this);
     })
     /*禁用退格键退回网页*/
-    window.onload=cn.DisableBackspace();
+    window.onload=cn.DisableBackspaceEnter();
 
     /*页面按钮初始化 --start*/
     $(".toCreateAccount").click(function () {           //切换到创建账户
@@ -20,7 +20,7 @@ define(function(require){
         $("#newAccountTab").removeClass("mc-hide");
         asyncDbUserIpData();
     })
-    $(".toAccountList").click(function () {             //切换到创建账户
+    $(".toAccountList").click(function () {             //切换到账户列表
         $("#newAccountTab").addClass("mc-hide");
         $("#modifyAccountTab").addClass("mc-hide");
         $("#accountList").removeClass("mc-hide");
@@ -30,8 +30,7 @@ define(function(require){
         asyncData();
     });
     $("#manager-ip-list").click(function () {
-        var $iframe = $("body",parent.document).find("iframe");
-        $iframe.attr("src","/detail/security/"+$("#dbId").val());
+        cn.RefreshIfame("/detail/security/"+$("#dbId").val());
     })
     /*页面按钮初始化 --end*/
 
@@ -167,7 +166,7 @@ define(function(require){
     var dbUser = new dataHandler();
 
     asyncData();
-    asyncDbUserIpData();
+    //asyncDbUserIpData();
 
     function asyncData() {
         var dbUserListUrl = "/dbUser/"+$("#dbId").val();
