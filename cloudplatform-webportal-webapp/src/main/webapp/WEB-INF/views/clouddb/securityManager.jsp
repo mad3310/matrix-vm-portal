@@ -29,7 +29,7 @@
 		</div>
 		<ul class="nav nav-tabs" role="tablist" id="setab">
 			<li id="whitelist-tab" role="presentation" class="active"><a data-toggle="tab" href="#whitelist">白名单设置</a></li>
-			<li id="sqlInject-tab" role="presentation"><a data-toggle="tab" href="#sqlInject">SQL注入警告</a></li>
+			<!-- <li id="sqlInject-tab" role="presentation"><a data-toggle="tab" href="#sqlInject">SQL注入警告</a></li> -->
 		</ul>
 		<!-- <div class="panel-body pd0" id="whitelist"> -->
 		<div class="tab-content">

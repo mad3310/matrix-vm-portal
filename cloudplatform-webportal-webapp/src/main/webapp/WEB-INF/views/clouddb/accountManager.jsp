@@ -208,7 +208,7 @@
 						</div>
 						<!-- 备注信息规则静态提示 -->
 						<div class="col-sm-12 notice-block">
-							<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
+							<p class="text-correct">请输入备注说明，最多256个字符</p>
 						</div>
 					</div>
 				</div>
@@ -217,7 +217,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<input type="button" id="submitCreateUserForm" value="提交" class="disabled btn btn-primary"/>
+						<button type="submit" id="submitCreateUserForm" class="btn btn-primary">提交</button>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
 				</div>
@@ -332,7 +332,7 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-4">
-						<input type="button" id="submitModifyUserForm" value="提交" class="disabled btn btn-primary"/>
+						<button type="submit" id="submitModifyUserForm" class="btn btn-primary">提交</button>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
 				</div>
@@ -405,12 +405,12 @@
 					</button>
 					<h5 id="reset-password-box-title" class="modal-title"></h5>
 				</div>
-				<div class="modal-body">
-					<div id="reset-password-box-text">
-						<form id="reset-password-form" role="form" class="form-horizontal">
+				<form id="reset-password-form" role="form" class="form-horizontal">
+					<input id="reset-password-username" class="hidden" name="usename" type="text"/>
+					<div class="modal-body">
+						<div id="reset-password-box-text">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">密码：
-								</label>
+								<label class="col-sm-4 control-label">密码： </label>
 								<div class="col-sm-8 row">
 									<div class="col-sm-12">
 										<input name="reset-password" class="form-control input-radius-2" type="password" />
@@ -418,21 +418,20 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label">确认密码：
-								</label>
+								<label class="col-sm-4 control-label">确认密码： </label>
 								<div class="col-sm-8 row">
 									<div class="col-sm-12">
 										<input name="reset-password-repeat" class="form-control input-radius-2" type="password" />
 									</div>
 								</div>
 							</div>
-						</form>
+						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button id="resetPasswordBoxSubmit" type="button" class="disabled btn btn-primary" data-dismiss="modal">确定</button>
-					<button id="resetPasswordBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				</div>
+					<div class="modal-footer">
+						<button id="resetPasswordBoxSubmit" type="submit" class="btn btn-primary">确定</button>
+						<button id="resetPasswordBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -444,9 +443,9 @@
 				<input type="text" class="form-control input-radius-2">
 			</p>
 			<p style="color:#999">输入范围：最多256个字</p>
-		</form>
-		<button id="editBoxSubmit" class="btn btn-primary" href="#">提交</button>
+		<button id="editBoxSubmit" type="submit" class="btn btn-primary" href="#">提交</button>
 		<button id="editBoxCancel" class="btn btn-default" href="#">取消</button>
+	</form>
 	</div>
 </body>
 <!-- js -->

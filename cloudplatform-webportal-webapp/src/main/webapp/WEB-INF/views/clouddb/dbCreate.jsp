@@ -508,7 +508,8 @@
 								<div>
 									<div class="bk-items-list">
 										<ul>
-											<li><span class="bk-items-item-name">地域：</span> <span
+											<li><span class="bk-items-item-name">地域：</span> 
+											<span
 												class="bk-items-item-value">北京</span></li>
 											<li><span class="bk-items-item-name">配置：</span> <span
 												class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span>
@@ -537,7 +538,7 @@
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button id="monthPurchaseBotton" class="bk-button bk-button-primary disabled">
+									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
@@ -553,7 +554,7 @@
 						</div>
 					</div>
 					</form>
-					<div role="tabpanel" class="tab-pane fade" id="dosage">
+					<div role="tabpanel" class="tab-pane fade mc-hide" id="dosage">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
 								<dt class="bk-group-title">基本配置</dt>
@@ -887,7 +888,7 @@ scale = function (btn, bar,layer,value,stepLen) {
 	this.layer = document.getElementById(layer);
 	this.value = document.getElementById(value);
 	/* this.title = document.getElementById(title); */
-	this.step = this.bar.getElementsByTagName("DIV")[0];
+	/*this.step = this.bar.getElementsByTagName("DIV")[0];*/
 	this.stepLen = stepLen
 	//this.init();
 };

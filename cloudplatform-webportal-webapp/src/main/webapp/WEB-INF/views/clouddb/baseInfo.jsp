@@ -182,7 +182,7 @@
 			        		<span class="text-muted pd-r8">创建时间:</span><span id="db_info_create_time"></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">付费类型:</span><span>包年<span id="db_info_remain_days">365</span> 天后到期</span>
+			        		<span class="text-muted pd-r8">付费类型:</span><span>包年  <span id="db_info_remain_days"></span>天后到期</span>
 			        	</td>
 		        	</tr>
 		        	</tbody>

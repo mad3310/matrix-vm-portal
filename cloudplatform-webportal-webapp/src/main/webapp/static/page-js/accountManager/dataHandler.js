@@ -80,29 +80,12 @@ define(function(require,exports,module){
                     backdrop:false,
                     show:true
                 });
-
-                $("#resetPasswordBoxSubmit").unbind("click").click(function(){
-                    if(!$("#resetPasswordBoxSubmit").hasClass("disabled")){
-                        $("#resetPasswordBoxSubmit").addClass("disabled");
-                        var data = {
-                            "username":lineData.username,
-                            "password":$("[name = 'reset-password']").val(),
-                            "dbId":$("#dbId").val()
-                        }
-                        var url = "/dbUser/security/" + $("[name = 'reset-password']").val();
-                        cn.PostData(url,data, function () {
-                            /*刷新本身ifame*/
-                            var $iframe = $("body",parent.document).find("iframe");
-                            $iframe.attr("src",$iframe.attr("src"));
-                        });
-                    }
-                })
+                $("#reset-password-username").val(lineData.username);
             })
         },
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);
-            console.log(data.data.length);
-            if(data.data.length == 10){
+            if(data.data.length == 0){
                 var title = "注意";
                 var text = "您当前IP名单为空,点击确认去维护IP名单.";
                 cn.DialogBoxInit(title,text, function () {
