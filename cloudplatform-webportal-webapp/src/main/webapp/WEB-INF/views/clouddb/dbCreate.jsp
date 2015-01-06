@@ -508,7 +508,8 @@
 								<div>
 									<div class="bk-items-list">
 										<ul>
-											<li><span class="bk-items-item-name">地域：</span> <span
+											<li><span class="bk-items-item-name">地域：</span> 
+											<span
 												class="bk-items-item-value">北京</span></li>
 											<li><span class="bk-items-item-name">配置：</span> <span
 												class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span>

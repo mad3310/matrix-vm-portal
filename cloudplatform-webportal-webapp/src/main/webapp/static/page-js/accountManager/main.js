@@ -73,10 +73,20 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },
-                    different: {
+                    },identical: {
+                        field: 'newPwd2',
+                        message: '两次输入密码不同'
+                    },different: {
                         field: 'username',
                         message: '密码不能与账户名相同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    }
+                    ,regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             },
@@ -84,10 +94,16 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },
-                    identical: {
+                    },identical: {
                         field: 'newPwd1',
                         message: '两次输入密码不同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             }
@@ -109,6 +125,16 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
+                    },identical: {
+                        field: 'modifyFormNewPwd2',
+                        message: '两次输入密码不同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             },
@@ -120,6 +146,13 @@ define(function(require){
                     identical: {
                         field: 'modifyFormNewPwd1',
                         message: '两次输入密码不同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             }
@@ -140,6 +173,16 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
+                    },identical: {
+                        field: 'reset-password-repeat',
+                        message: '两次输入密码不同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             },
@@ -151,6 +194,13 @@ define(function(require){
                     identical: {
                         field: 'reset-password',
                         message: '两次输入密码不同'
+                    },stringLength: {
+                    	min: 6,
+                        max: 32,
+                        message: '密码长度6-32位'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9_-]+$/,
+                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             }
