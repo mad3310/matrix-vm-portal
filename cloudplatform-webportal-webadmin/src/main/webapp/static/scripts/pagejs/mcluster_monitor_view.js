@@ -23,7 +23,7 @@ function refreshChartForSelect(){
 function queryMcluster(){
 	$.ajax({
 		type:"get",		
-		url:"/mcluster",
+		url:"/mcluster/valid",
 		dataType:"json",
 		success:function(data){
 			if(error(data)) return;

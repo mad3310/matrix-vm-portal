@@ -65,6 +65,12 @@ public class MclusterController {
 		result.setData(this.mclusterService.select4Run());
 		return result;
 	}	
+	@RequestMapping(value="/valid",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject validList(ResultObject result) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		result.setData(this.mclusterService.selectValidMclusters());
+		return result;
+	}	
 
 	/**Methods Name: save <br>
 	 * Description:  保存并创建mcluster<br>
