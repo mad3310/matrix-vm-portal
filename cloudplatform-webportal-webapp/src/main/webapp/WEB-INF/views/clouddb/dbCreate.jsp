@@ -241,13 +241,14 @@
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">存储空间：</label>
 											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
+											<!-- 原拖动效果注释 -->
+								            <!--<div class="bk-form-row-li">
 													<div class="bk-slider">
 														<div class="bk-slider-range" id="bar0">
 															<div id="flag"></div>
 															<span class="bk-slider-block bk-slider-l2"> <span
 																class="bk-slider-block-box"> <span
-																	class="bk-slider-txt" id="half">250GB</span>
+																	class="bk-slider-txt">250GB</span>
 															</span>
 															</span> <span class="bk-slider-block bk-slider-l1"> <span
 																class="bk-slider-block-box"> <span
@@ -258,10 +259,10 @@
 																	<span class="bk-slider-txt">1000GB</span>
 															</span>
 															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer0" style="width: 5px;"> <span
+																id="layer2" style="width: 11.88px;"> <span
 																class="bk-slider-current"> <span
 																	class="bk-slider-unit bk-slider-l2"> <span
-																		class="bk-slider-unit-box bk-select-action"> <span
+																		class="bk-slider-unit-box"> <span
 																			class="bk-slider-txt">250GB</span></span>
 																</span> <span class="bk-slider-unit bk-slider-l1"> <span
 																		class="bk-slider-unit-box"> <span
@@ -274,15 +275,15 @@
 																</span>
 															</span>
 															</span>
-															<!-- <span>15</span> -->
-															<!-- <button id="btn0"></button> -->
-															<span class="bk-slider-drag disabled"  style="left:5px;" id="btn0"> <i></i> <i></i>
-																<span class="bk-tip-arrow" ></span>
+															<span>15</span>
+															<button id="btn2"></button>
+															<span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
+																<span class="bk-tip-arrow"></span>
 															</span>
 														</div>
 													</div>
 													<span class="bk-number bk-ml2"> <input type="text"
-														class="bk-number-input" id="value0" value="5"> <span
+														class="bk-number-input" id="value2" value="5"> <span
 														class="bk-number-unit">GB</span><span
 														class="bk-number-control"> <span
 															class="bk-number-up bk-number-disabled hide"> <i
@@ -296,15 +297,27 @@
 														</span>
 													</span>
 													</span>
+												</div> -->
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left" style="height:36px;">
+														<span class="sleBG"> 
+                                                       	 	<span class="sleHid">
+                                                            	<select class="form-control w217 wcolor">
+																	<option>500G</option>
+																</select>
+                                                       	 	</span> 
+                                                        </span>  
+                                                        <span class="bk-select-arrow"></span>	
+													</div>
 												</div>
-												<div class="bk-form-row-txt">存储空间暂时不限制</div>
+												<div class="bk-form-row-txt notice-block">存储空间暂时不限制</div>
 											</div>
 										</div>
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">内存：</label>
 											<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
-														<div class="pull-left">
+														<div class="pull-left" style="height:36px;">
 															<span class="sleBG"> 
 															<span class="sleHid">
 																	<select class="form-control w217 wcolor disabled">
@@ -328,12 +341,13 @@
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">购买时长：</label>
 											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
+											    <!-- 拖动原设计注释 -->
+												<!-- <div class="bk-form-row-li">
 													<div class="bk-slider bk-slider-duration">
 														<div class="bk-slider-range" id="bar1">
 															<div id="flag"></div>
-															<!-- <button id="btn1"></button> -->
-															<!-- 拖动按钮 -->
+															<button id="btn1"></button>
+															拖动按钮
 															<span class="bk-slider-drag disabled" style="left:48px;" id="btn1"> <i></i> <i></i>
 																<span class="bk-tip-arrow" ></span>
 															</span> <span class="bk-slider-block bk-slider-mm"> <span
@@ -438,9 +452,20 @@
 																</span>
 															</span>
 															</span>
+														</div> -->
+													    <div class="bk-form-row-li clearfix">
+													 		<div class="pull-left" style="height:36px;">
+																<span class="sleBG"> 
+                                                       	 			<span class="sleHid">
+                                                            			<select class="form-control w217 wcolor">
+																			<option>1年</option>
+																		</select>
+                                                       	 			</span> 
+                                                        		</span>  
+                                                        		<span class="bk-select-arrow"></span>	
+															</div>
 														</div>
 														<div class="bk-form-row-txt">此功能暂时不开放</div>
-													</div>
 												</div>
 											</div>
 										</div>
@@ -448,19 +473,22 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> <input type="text"
-														class="bk-number-input" value="1"> <span
-														class="bk-number-unit">台</span><span
-														class="bk-number-control"> <span
-															class="bk-number-up bk-number-disabled hide"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-up"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down bk-number-disabled"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down hide"> <i
-																class="bk-number-arrow"></i>
-														</span>
+													<span class="bk-number"> 
+													<input type="text" class="bk-number-input" value="3"> 
+														<span class="bk-number-unit">台</span>
+														<span class="bk-number-control"> 
+														  <span class="bk-number-up bk-number-disabled hide"> 
+														       <i class="bk-number-arrow"></i>
+														  </span> 
+														  <span class="bk-number-up"> 
+														  	   <i class="bk-number-arrow"></i>
+														  </span> 
+														  <span class="bk-number-down bk-number-disabled"> 
+														 	 <i class="bk-number-arrow"></i>
+														 </span> 
+														 <span class="bk-number-down hide"> 
+														 	<i class="bk-number-arrow"></i>
+														 </span>
 													</span>
 													</span>
 												</div>
@@ -473,7 +501,7 @@
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-orders-menu  bk-mb4">
 								<span class="bk-orders-menu-name">购买清单</span> <span
-									class="bk-orders-menu-quantity bk-pale">1台</span>
+									class="bk-orders-menu-quantity bk-pale">3台</span>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">当前配置</div>
@@ -483,10 +511,10 @@
 											<li><span class="bk-items-item-name">地域：</span> <span
 												class="bk-items-item-value">北京</span></li>
 											<li><span class="bk-items-item-name">配置：</span> <span
-												class="bk-items-item-value">20GB存储空间、2G内存、MySQL 5.5</span>
+												class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span>
 											</li>
 											<li><span class="bk-items-item-name">购买量：</span> <span
-												class="bk-items-item-value">1个月 x 1台</span></li>
+												class="bk-items-item-value">1年x 3台</span></li>
 										</ul>
 									</div>
 								</div>
