@@ -145,7 +145,7 @@ public class InitializingJob {
 			backupDbData.setJobMethod("wholeBackup4Db");
 			backupDbData.setJobGroup("webportal");
 			backupDbData.setJobStatus("1");
-			backupDbData.setCronExpression("0 0 0/2 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData.setCronExpression("0 0/30 * * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
 			backupDbData.setDescn("db数据库全量备份");
 			jobs.add(backupDbData);
 			//数据库全量备份检查 ，每隔一小时
@@ -154,7 +154,7 @@ public class InitializingJob {
 			checkBackupStatus.setJobMethod("checkBackupStatus");
 			checkBackupStatus.setJobGroup("webportal");
 			checkBackupStatus.setJobStatus("1");
-			checkBackupStatus.setCronExpression("0 0/30 * * * ?");
+			checkBackupStatus.setCronExpression("0 0/10 * * * ?");
 			checkBackupStatus.setDescn("db数据库全量备份检查");
 			jobs.add(checkBackupStatus);
 		}
