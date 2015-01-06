@@ -227,8 +227,7 @@ define(function(require){
             "password":$("[name = 'reset-password']").val(),
             "dbId":$("#dbId").val()
         }
-        console.log(data);
-        var url = "/dbUser/security";
+        var url = "/dbUser/security/"+$("#reset-password-username").val();
         cn.PostData(url,data, function () {
             /*刷新本身ifame*/
             var $iframe = $("body",parent.document).find("iframe");
