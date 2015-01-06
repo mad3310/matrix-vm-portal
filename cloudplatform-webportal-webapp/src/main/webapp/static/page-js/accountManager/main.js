@@ -105,6 +105,14 @@ define(function(require){
                         message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
+            },
+            descn: {
+                validators: {
+                    stringLength: {
+                        max: 256,
+                        message: '描述最多256字符!'
+                    }
+                }
             }
         }
     }).on('success.form.bv', function(e) {
@@ -219,8 +227,7 @@ define(function(require){
             "password":$("[name = 'reset-password']").val(),
             "dbId":$("#dbId").val()
         }
-        console.log(data);
-        var url = "/dbUser/security";
+        var url = "/dbUser/security/"+$("#reset-password-username").val();
         cn.PostData(url,data, function () {
             /*刷新本身ifame*/
             var $iframe = $("body",parent.document).find("iframe");

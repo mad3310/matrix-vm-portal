@@ -208,7 +208,7 @@
 						</div>
 						<!-- 备注信息规则静态提示 -->
 						<div class="col-sm-12 notice-block">
-							<p class="text-correct">请输入备注说明，最多256个字符(一个汉字等于3个字符)</p>
+							<p class="text-correct">请输入备注说明，最多256个字符</p>
 						</div>
 					</div>
 				</div>
