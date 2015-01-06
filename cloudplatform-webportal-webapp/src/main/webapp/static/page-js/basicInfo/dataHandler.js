@@ -19,7 +19,7 @@ define(function(require,exports,module){
                     var ips='';
                     for(var i= 0,len=containers.length;i<len;i++){
                         if(dbInfo.containers[i].type == "mclustervip"){
-                            ips = ips+dbInfo.containers[i].ipAddr+'(vip)'+' ';
+                            ips = ips+dbInfo.containers[i].ipAddr+' ';
                         }
                         /*注释掉非VIP的IP
                          else{
@@ -37,6 +37,7 @@ define(function(require,exports,module){
     			$("#db_info_net_addr").html(GetNetAddr(dbInfo.containers));
                 $("#db_info_running_state").html(cn.TranslateStatus(dbInfo.status));
                 $("#db_info_create_time").html(cn.TransDate('Y-m-d H:i:s',dbInfo.createTime));
+                $("#db_info_remain_days").html(cn.RemainAvailableTime(dbInfo.createTime));
         }
     }
 });
