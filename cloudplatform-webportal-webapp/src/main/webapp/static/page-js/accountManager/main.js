@@ -105,6 +105,14 @@ define(function(require){
                         message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
+            },
+            descn: {
+                validators: {
+                    stringLength: {
+                        max: 40,
+                        message: '描述最多为256字节!'
+                    }
+                }
             }
         }
     }).on('success.form.bv', function(e) {
