@@ -127,6 +127,20 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
+            modifydbUserMaxConcurrency: {
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '最大并发量不能为空!'
+                    },integer: {
+                        message: '请输入数字'
+                    },between:{
+                        min:1,
+                        max:5000,
+                        message:'最大并发量1-5000'
+                    }
+                }
+            },
             modifyFormNewPwd1: {
                 validators: {
                     notEmpty: {
