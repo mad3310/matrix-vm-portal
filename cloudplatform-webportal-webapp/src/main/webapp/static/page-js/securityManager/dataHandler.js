@@ -30,7 +30,7 @@ define(function(require,exports,module){
                 rank = 0;
             }
         }
-        if(tr.length>0){                    //填充空余行
+        if(rank > 0){                    //填充空余行
             for(var i=rank;i<4;i++){
                 var td = $("<td width=\"25%\"></td>");
                 td.appendTo(tr);
