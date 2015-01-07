@@ -237,7 +237,7 @@
 		<div style="width:auto;height:auto;">
 			<form id="db_user_modify_form" role="form" class="form-horizontal" name="account_modify_form">
 				<input class="hidden" id="modifydbUserReadWriterRate" type="text" />
-				<input class="hidden" id="modifydbUserMaxConcurrency" type="text" />
+
 				<!-- 数据库账号模块 -->
 				<div class="form-group">
 					<label class="col-sm-2 control-label">
@@ -291,6 +291,16 @@
 									<span class="text-muted">暂无数据</span>
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 最大并发量：
+					</label>
+					<div class="col-sm-8 row">
+						<!-- 密码输入框 -->
+						<div class="col-sm-4">
+							<input id="modifydbUserMaxConcurrency" name="modifydbUserMaxConcurrency" class="form-control input-radius-2" />
 						</div>
 					</div>
 				</div>

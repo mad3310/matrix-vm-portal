@@ -62,7 +62,7 @@
 								</select>
 							</div>
 							<div class="col-sm-2">
-								<button id="create_on_old_mcluster_botton" type="button" onclick="createDbOnOldMcluster()" class="btn btn-sm btn-info disabled">创建</button>
+								<button id="create_on_old_mcluster_botton" type="submit" class="btn btn-sm btn-info">创建</button>
 							</div>
 						</div>
 					</form>
@@ -77,7 +77,7 @@
 								<input class="form-control" name="mclusterName" id="mclusterName" type="text"/>
 							</div>
 							<div class="col-sm-2">
-								<button id="create-mcluster-botton" type="button" onclick="createDbOnNewMcluster()" class="btn btn-sm btn-info">创建</button>
+								<button id="create-mcluster-botton" type="submit" class="btn btn-sm btn-info">创建</button>
 							</div>
 						</div>
 					</form>

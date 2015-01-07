@@ -80,8 +80,8 @@ define(function(require){
                         message: '密码不能与账户名相同'
                     }
                     ,regexp: {
-                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/,
-                        message: "要求6-32位，必须要包含数字，大小写字母"
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,}$/,
+                        message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
                     }
                 }
             },
@@ -92,13 +92,6 @@ define(function(require){
                     },identical: {
                         field: 'newPwd1',
                         message: '两次输入密码不同'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
-                    },regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             },
@@ -121,6 +114,10 @@ define(function(require){
             var $iframe = $("body", parent.document).find("iframe");
             $iframe.attr("src", $iframe.attr("src"));
         });
+    }).on('keyup', '[name="newPwd1"]', function () {
+        if($("[name = 'newPwd2']").val() != ''){
+            $('#db_user_create_form').bootstrapValidator('revalidateField', 'newPwd2');
+        }
     })
 
     $('#db_user_modify_form').bootstrapValidator({
@@ -130,17 +127,27 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
+            modifydbUserMaxConcurrency: {
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '最大并发量不能为空!'
+                    },integer: {
+                        message: '请输入数字'
+                    },between:{
+                        min:1,
+                        max:5000,
+                        message:'最大并发量1-5000'
+                    }
+                }
+            },
             modifyFormNewPwd1: {
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
                     },regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,}$/,
+                        message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
                     }
                 }
             },
@@ -152,13 +159,6 @@ define(function(require){
                     identical: {
                         field: 'modifyFormNewPwd1',
                         message: '两次输入密码不同'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
-                    },regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             }
@@ -174,6 +174,10 @@ define(function(require){
             var $iframe = $("body",parent.document).find("iframe");
             $iframe.attr("src",$iframe.attr("src"));
         });
+    }).on('keyup', '[name="modifyFormNewPwd1"]', function () {
+        if($("[name = 'modifyFormNewPwd2']").val() != ''){
+            $('#db_user_modify_form').bootstrapValidator('revalidateField', 'modifyFormNewPwd2');
+        }
     });
     $('#reset-password-form').bootstrapValidator({
         feedbackIcons: {
@@ -186,13 +190,9 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
                     },regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,}$/,
+                        message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
                     }
                 }
             },
@@ -204,13 +204,6 @@ define(function(require){
                     identical: {
                         field: 'reset-password',
                         message: '两次输入密码不同'
-                    },stringLength: {
-                    	min: 6,
-                        max: 32,
-                        message: '密码长度6-32位'
-                    },regexp: {
-                        regexp: /^[a-zA-Z0-9_-]+$/,
-                        message: "由字母、数字、中划线或下划线组成，长度6~32位"
                     }
                 }
             }
@@ -229,6 +222,10 @@ define(function(require){
             var $iframe = $("body",parent.document).find("iframe");
             $iframe.attr("src",$iframe.attr("src"));
         });
+    }).on('keyup', '[name="reset-password"]', function () {
+        if($("[name = 'reset-password-repeat']").val() != ''){
+            $('#reset-password-form').bootstrapValidator('revalidateField', 'reset-password-repeat');
+        }
     });
 
     /*加载数据*/

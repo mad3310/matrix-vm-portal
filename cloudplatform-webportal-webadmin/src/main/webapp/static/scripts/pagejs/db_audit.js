@@ -74,8 +74,8 @@ function formValidate() {
 			              max: 40,
 			              message: 'Container集群名过长'
 			          },regexp: {
-		                  regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-  		                  message: "请输入字母数字或'_',Container集群名不能以数字开头."
+		                  regexp: /^([a-zA-Z_0-9]*)$/,
+  		                  message: "请输入字母数字或'_'."
                  	  },remote: {
 	                        message: 'Container集群名已存在!',
 	                        url: "/mcluster/validate"
@@ -83,10 +83,9 @@ function formValidate() {
 	             }
          	}	
          }
-     }).on('error.field.bv', function(e, data) {
-    	 $('#create-mcluster-botton').addClass("disabled");
-     }).on('success.field.bv', function(e, data) {
-    	 $('#create-mcluster-botton').removeClass("disabled");
+     }).on('success.form.bv', function(e) {
+         e.preventDefault();
+         createDbOnNewMcluster();
      });
 	
 	$("#create_on_old_cluster_form").bootstrapValidator({
@@ -101,10 +100,9 @@ function formValidate() {
 	             }
          	}	
          }
-     }).on('error.field.bv', function(e, data) {
-    	 $('#create_on_old_mcluster_botton').addClass("disabled");
-     }).on('success.field.bv', function(e, data) {
-    	 $('#create_on_old_mcluster_botton').removeClass("disabled");
+     }).on('success.form.bv', function(e) {
+         e.preventDefault();
+         createDbOnOldMcluster();
      });
 }
 function queryDbById(){
