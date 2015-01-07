@@ -42,7 +42,6 @@ p {
 		<th width="100px">用户名</th>
 		<th width="100px">密码</th>
 		<th width="100px">访问IP</th>
-		<th width="100px">读写比例</th>
 		<th width="100px">最大并发量</th>
 	</tr>
 	<tr>
@@ -50,7 +49,6 @@ p {
 		<td>${dbUserName}</td>
 		<td>${dbUserPassword}</td>
 		<td>${ip}</td>
-		<td>${readWriterRate}</td>
 		<td>${maxConcurrency}</td>
 	</tr>
 </table>
