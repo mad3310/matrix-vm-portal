@@ -66,7 +66,6 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-
         var dbName = $("[name = 'dbName']").val();
         var hclusterId = $("[name = 'hclusterId']").val();
         var engineType = $("[name = 'engineType']").val();
