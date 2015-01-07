@@ -106,14 +106,21 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-
         var createUserData = dbUser.GetCreateDbUserData();
-        var url = "/dbUser";
-        cn.PostData(url, createUserData, function () {
-            /*刷新本身ifame*/
-            var $iframe = $("body", parent.document).find("iframe");
-            $iframe.attr("src", $iframe.attr("src"));
-        });
+        if(createUserData.ips != '' && createUserData.type != ''){
+            var url = "/dbUser";
+           cn.PostData(url, createUserData, function () {
+                /*刷新本身ifame*/
+                var $iframe = $("body", parent.document).find("iframe");
+                $iframe.attr("src", $iframe.attr("src"));
+            });
+        }else{
+            var title = "警告";
+            var text = "您创建的数据库账户没有添加IP名单,请添加后创建!";
+            cn.DialogBoxInit(title,text,function(){
+                $("#submitCreateUserForm").removeAttr("disabled");
+            });
+        }
     }).on('keyup', '[name="newPwd1"]', function () {
         if($("[name = 'newPwd2']").val() != ''){
             $('#db_user_create_form').bootstrapValidator('revalidateField', 'newPwd2');
@@ -167,13 +174,23 @@ define(function(require){
         e.preventDefault();
 
         var modifyUserData = dbUser.GetModifyDbUserData();
-        var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+        if(modifyUserData.ips != '' && modifyUserData.type != ''){
+            var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+            cn.PostData(url,modifyUserData,function(){
+                /*刷新本身ifame*/
+                var $iframe = $("body",parent.document).find("iframe");
+                $iframe.attr("src",$iframe.attr("src"));
+            });
+        }else{
+            var title = "警告";
+            var text = "您修改的数据库账户没有添加IP名单,请添加后修改!";
+            cn.DialogBoxInit(title,text,function(){
+                $("#submitModifyUserForm").removeAttr("disabled");
+            });
+        }
 
-        cn.PostData(url,modifyUserData,function(){
-            /*刷新本身ifame*/
-            var $iframe = $("body",parent.document).find("iframe");
-            $iframe.attr("src",$iframe.attr("src"));
-        });
+
+
     }).on('keyup', '[name="modifyFormNewPwd1"]', function () {
         if($("[name = 'modifyFormNewPwd2']").val() != ''){
             $('#db_user_modify_form').bootstrapValidator('revalidateField', 'modifyFormNewPwd2');

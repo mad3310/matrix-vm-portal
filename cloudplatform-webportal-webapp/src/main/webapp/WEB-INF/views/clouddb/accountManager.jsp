@@ -387,9 +387,9 @@
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
+			<!--	<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
-					</button>
+					</button>-->
 					<h5 id="dialog-box-title" class="modal-title"></h5>
 				</div>
 				<div class="modal-body clearfix">
@@ -400,7 +400,7 @@
 				</div>
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<!--<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button> -->
 				</div>
 			</div>
 		</div>
