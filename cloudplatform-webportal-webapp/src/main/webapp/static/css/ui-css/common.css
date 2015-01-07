@@ -1354,4 +1354,9 @@ position: relative;
     padding: 5px 0px 0px 20px;
 }
 
-
+/* 账号管理界面滚动条去除 */
+#newAccountTab .form-horizontal .form-group,
+#modifyAccountTab .form-horizontal .form-group,
+#accountList .form-horizontal .form-group{
+  margin-right: -0px; 
+}
