@@ -2,7 +2,7 @@
 <div class="page-content-area">
 	<div class="page-header">
 		<h3> 
-			cluster监控列表
+			db监控列表
 		</h3>
 		<div class="input-group pull-right">
 		<form class="form-inline">
@@ -166,4 +166,4 @@
 </div>
 <!-- /.page-content-area -->
 
-<script src="${ctx}/static/scripts/pagejs/mcluster_monitor_list.js"></script>
+<script src="${ctx}/static/scripts/pagejs/monitor_db_list.js"></script>

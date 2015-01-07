@@ -118,9 +118,17 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/list/mcluster/monitor",method=RequestMethod.GET)
-	public ModelAndView toMonitorCotainer(ModelAndView mav){
-		mav.setViewName("/clouddb/mcluster_monitor_list");
+	@RequestMapping(value="/list/mcluster/monitor/{type}",method=RequestMethod.GET)
+	public ModelAndView toMonitorCotainer(@PathVariable int type,ModelAndView mav){
+		String viewName= "";
+		if(type == 1) {
+			viewName = "/clouddb/mcluster_monitor_list";
+		} else if(type == 2) {
+			viewName = "/clouddb/monitor_node_list";
+		} else if(type == 3) {
+			viewName = "/clouddb/monitor_db_list";
+		}
+		mav.setViewName(viewName);
 		return mav;
 	}
 

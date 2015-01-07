@@ -54,7 +54,7 @@ function queryMclusterMonitor() {
 function getMclusterStatus(ip,obj) {
 	$.ajax({ 
 		type : "get",
-		url : "/monitor/"+ip+"/mcluster/status",
+		url : "/monitor/"+ip+"/node/status",
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -78,7 +78,7 @@ function getMclusterStatus(ip,obj) {
 			}else if(result == "4"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("超时");
-				$(obj).addClass("default-danger");
+				$(obj).addClass("default-danger");		
 			}
 		}	
 	});

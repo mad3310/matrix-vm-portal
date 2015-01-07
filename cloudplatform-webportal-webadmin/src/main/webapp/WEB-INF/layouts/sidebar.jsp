@@ -65,19 +65,43 @@
 		</li>
 		<li id="sidebar-monitor-mgr" >
 			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-list"></i> 
+				<span class="menu-text"> 预警管理 </span> 
+				<b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-monitor-list" >
+					<a href="${ctx}/list/mcluster/monitor/1"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						cluster监控列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-monitor-list" >
+					<a href="${ctx}/list/mcluster/monitor/2"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						node监控列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-monitor-list" >
+					<a href="${ctx}/list/mcluster/monitor/3"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						db监控列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+			</ul>
+		</li>
+		<li id="sidebar-monitor-mgr" >
+			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-bar-chart-o"></i> 
 				<span class="menu-text"> 监控管理 </span> 
 				<b class="arrow fa fa-angle-down"></b>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
-				<li id="sidebar-monitor-list" >
-					<a href="${ctx}/list/mcluster/monitor"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						container集群监控列表
-					</a>
-					<b class="arrow"></b>
-				</li>
 				<li id="sidebar-monitor-view" >
 					<a href="${ctx}/view/mcluster/monitor"> 
 						<i class="menu-icon fa fa-caret-right"></i>

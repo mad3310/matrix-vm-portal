@@ -68,5 +68,12 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerModel> selectVipIps4Monitor();
+
+	/**Methods Name: selectVaildVipContainers <br>
+	 * Description: 有效集群的vip节点<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	public List<ContainerModel> selectVaildVipContainers();
 	
 }
