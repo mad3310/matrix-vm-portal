@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.util.JsonUtils;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
@@ -314,33 +315,33 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
-			try {
-				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
-				if(analysisResult(transResult(result))) {
-					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
-					Map response = (Map) transResult(result).get("response");
-					String userPwd = (String) response.get("user_password");
-					
-					Map<String,Object> emailParams = new HashMap<String,Object>();
-					emailParams.put("dbUserName", dbUserModel.getUsername());
-					emailParams.put("dbUserPassword", dbUserModel.getPassword());
-					emailParams.put("ip", dbUserModel.getAcceptIp());
-					emailParams.put("dbName", params.get("dbName"));
-					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
-					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDbUser.ftl");
-				} else {
-					resultMsg="失败";
-					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
-				}
-			} catch (Exception e) {
+			
+			if(dbUserModel == null || params.isEmpty()) 
+				throw new ValidateException("参数不合法，相关数据不存在。");
+				
+			String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
+			
+			
+			if(!StringUtils.isNullOrEmpty(result) && analysisResult(transResult(result))) {
+				resultMsg="成功";
+				dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+				Map response = (Map) transResult(result).get("response");
+				String userPwd = (String) response.get("user_password");
+				
+				Map<String,Object> emailParams = new HashMap<String,Object>();
+				emailParams.put("dbUserName", dbUserModel.getUsername());
+				emailParams.put("dbUserPassword", dbUserModel.getPassword());
+				emailParams.put("ip", dbUserModel.getAcceptIp());
+				emailParams.put("dbName", params.get("dbName"));
+				emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
+				this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDbUser.ftl");
+			} else {
 				resultMsg="失败";
-				detail = e.getMessage();
 				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
-			} finally {
-				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
-				this.dbUserService.updateStatus(dbUserModel);
 			}
+			
+			this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
+			this.dbUserService.updateStatus(dbUserModel);
 		}
 		
 	}
