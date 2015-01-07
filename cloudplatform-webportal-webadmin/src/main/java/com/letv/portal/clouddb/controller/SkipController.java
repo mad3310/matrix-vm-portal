@@ -6,7 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.letv.common.result.ResultObject;
 
 /**Program Name: SkipController <br>
  * Description:  用于页面跳转       list、detail、form、……<br>
@@ -146,5 +149,10 @@ public class SkipController {
 	public ModelAndView toMonitorCotainerView(ModelAndView mav){
 		mav.setViewName("/clouddb/mcluster_monitor_view");
 		return mav;
+	}
+
+	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
+	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
+		return obj;
 	}
 }
