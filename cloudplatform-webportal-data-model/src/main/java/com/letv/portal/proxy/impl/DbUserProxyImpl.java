@@ -109,6 +109,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<DbUserModel> oldUsers = this.dbUserService.selectByDbIdAndUsername(dbUserModel.getDbId(), dbUserModel.getUsername());
 		boolean flag = true;
 		String pwd = StringUtils.isNullOrEmpty(dbUserModel.getPassword())?PasswordRandom.genStr():dbUserModel.getPassword();
+		Integer maxConcurrency = dbUserModel.getMaxConcurrency();
 		for (DbUserModel dbUser : oldUsers) {
 			String ip = dbUser.getAcceptIp();
 			for (int i = 0; i < arryIps.size(); i++) {
@@ -117,6 +118,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 					//fix password reset start
 					dbUser.setType(formType);
 					dbUser.setPassword(pwd);
+					dbUser.setMaxConcurrency(maxConcurrency);
 					updates.add(dbUser);
 					formIps.remove(arryIps.get(i));
 					formTypes.remove(arryTypes.get(i));
@@ -132,6 +134,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			flag = true;
 		}
 		dbUserModel.setPassword(pwd);
+		dbUserModel.setMaxConcurrency(maxConcurrency);
 		//剩余的，新增。
 		adds = this.transToDbUser(dbUserModel, formIps, formTypes);
 		

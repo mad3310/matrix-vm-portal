@@ -327,7 +327,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					emailParams.put("dbUserPassword", dbUserModel.getPassword());
 					emailParams.put("ip", dbUserModel.getAcceptIp());
 					emailParams.put("dbName", params.get("dbName"));
-					emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
 					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
 					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDbUser.ftl");
 				} else {
@@ -364,7 +363,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					emailParams.put("dbUserPassword", "-");
 					emailParams.put("ip", dbUserModel.getAcceptIp());
 					emailParams.put("dbName", params.get("dbName"));
-					emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
 					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
 					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"updateDbUser.ftl");
 				} else {
@@ -406,7 +404,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 						emailParams.put("dbUserPassword", "-");
 						emailParams.put("ip", dbUserModel.getAcceptIp());
 						emailParams.put("dbName", params.get("dbName"));
-						emailParams.put("readWriterRate", dbUserModel.getReadWriterRate());
 						emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
 						this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"deleteDbUser.ftl");
 		    		} else {
