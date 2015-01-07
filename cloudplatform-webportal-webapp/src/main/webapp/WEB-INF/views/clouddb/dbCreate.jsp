@@ -88,161 +88,152 @@
 					<!--<li role="presentation"><a href="#dosage" role="tab" data-toggle="tab">按量付费</a></li>-->
 				</ul>
 				<div class="tab-content mt20">
-					<form id="monthPurchaseForm">
-					<div role="tabpanel" class="tab-pane fade active in" id="year">
-						<div class="col-sm-12 col-md-9">
-							<dl class="bk-group">
-								<dt class="bk-group-title">基本配置</dt>
-								<dd class="bk-group-detail">
-									<div class="bk-group-control"></div>
-									<div>
-										<div class="form-group bk-form-row col-sm-12">
-										    <label class="bk-form-row-name col-sm-2" style="padding-left:0px;">数据库名称：</label>
-										    <div class="col-sm-4 row">
-										    	<input id="dbName"  class="form-control" name="dbName" type="text">
-										    </div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">地域：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<button class=" bk-button bk-button-primary bk-button-current">
-															<div>
-																<span>北京</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary disabled">
-															<div>
-																<span>成都</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary disabled">
-															<div>
-																<span>青岛</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary disabled">
-															<div>
-																<span>香港</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary disabled">
-															<div>
-																<span>深圳</span>
-															</div>
-														</button>
-													</div>
-													<span><a class="bk-lnk bk-ml2">暂时只有北京可用,其他地域陆续开通</a></span>
-												</div>
-												<div class="bk-form-row-txt">
-													不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择
+						<div role="tabpanel" class="tab-pane fade active in" id="year">
+							<div class="col-sm-12 col-md-9">
+								<dl class="bk-group">
+									<dt class="bk-group-title">基本配置</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div>
+										<form id="monthPurchaseForm">
+											<div class="form-group bk-form-row col-sm-12">
+												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">数据库名称：</label>
+												<div class="col-sm-4 row">
+													<input id="dbName" class="form-control" name="dbName" type="text">
 												</div>
 											</div>
-										</div>
+										</form>
 										<div class="bk-form-row">
-											<label class="bk-form-row-name">可用区：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG"> 
-                                                       	 	<span class="sleHid">
-                                                            	<select name="hclusterId" class="form-control w217 wcolor">
+												<label class="bk-form-row-name">地域：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<button class=" bk-button bk-button-primary bk-button-current">
+																<div>
+																	<span>北京</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled">
+																<div>
+																	<span>成都</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled">
+																<div>
+																	<span>青岛</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled">
+																<div>
+																	<span>香港</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled">
+																<div>
+																	<span>深圳</span>
+																</div>
+															</button>
+														</div>
+														<span><a class="bk-lnk bk-ml2">暂时只有北京可用,其他地域陆续开通</a></span>
+													</div>
+													<div class="bk-form-row-txt">不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">可用区：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid"> <select name="hclusterId" class="form-control w217 wcolor">
 																</select>
-                                                       	 	</span> 
-                                                        </span>  
-                                                        <span class="bk-select-arrow"></span>	
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">数据库类型：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
+																		<option>MySQL</option>
+																</select>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">版本：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<button class=" bk-button bk-button-primary bk-button-current">
+																<div>
+																	<span>5.5</span>
+																</div>
+															</button>
+															<button class=" bk-button bk-button-primary disabled">
+																<div>
+																	<span>5.6</span>
+																</div>
+															</button>
+														</div>
+														<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">存储引擎：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<input name="engineType" type="text" class="hide" value="0">
+															<button class=" bk-button bk-button-primary bk-button-current" value="0">
+																<div>
+																	<span>InnDB</span>
+																</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">链接类型：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<input name="linkType" type="text" class="hide" value="0">
+															<button class=" bk-button bk-button-primary bk-button-current" value="0">
+																<div>
+																	<span>长链接</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary" value="1">
+																<div>
+																	<span>短链接</span>
+																</div>
+															</button>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">数据库类型：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG">   
-                                                        <span class="sleHid">
-                                                            <select class="form-control w217 wcolor">
-																<option >MySQL</option>
-														    </select>
-                                                        </span>   
-                                                        </span>  
-                                                        <span class="bk-select-arrow"></span>	
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">版本：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<button
-															class=" bk-button bk-button-primary bk-button-current">
-															<div>
-																<span>5.5</span>
-															</div>
-														</button>
-														<button
-															class=" bk-button bk-button-primary disabled">
-															<div>
-																<span>5.6</span>
-															</div>
-														</button>
-													</div>
-													<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">存储引擎：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<input name="engineType" type="text" class="hide" value="0">
-														<button class=" bk-button bk-button-primary bk-button-current" value="0">
-															<div>
-																<span>InnDB</span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">链接类型：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li">
-													<div class="bk-buttontab">
-														<input name="linkType" type="text" class="hide" value="0">
-														<button class=" bk-button bk-button-primary bk-button-current" value="0">
-															<div>
-																<span>长链接</span>
-															</div>
-														</button>
-														<button class="bk-button bk-button-primary" value="1">
-															<div>
-																<span>短链接</span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</dd>
-							</dl>
-							<dl class="bk-group">
-								<dt class="bk-group-title">存储</dt>
-								<dd class="bk-group-detail">
-									<div class="bk-group-control"></div>
-									<div class="disabled">
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">存储空间：</label>
-											<div class="bk-form-row-cell">
-											<!-- 原拖动效果注释 -->
-								            <!--<div class="bk-form-row-li">
+									</dd>
+								</dl>
+								<dl class="bk-group">
+									<dt class="bk-group-title">存储</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div class="disabled">
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">存储空间：</label>
+												<div class="bk-form-row-cell">
+													<!-- 原拖动效果注释 -->
+													<!--<div class="bk-form-row-li">
 													<div class="bk-slider">
 														<div class="bk-slider-range" id="bar0">
 															<div id="flag"></div>
@@ -298,51 +289,46 @@
 													</span>
 													</span>
 												</div> -->
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left" style="height:36px;">
-														<span class="sleBG"> 
-                                                       	 	<span class="sleHid">
-                                                            	<select class="form-control w217 wcolor">
-																	<option>500G</option>
-																</select>
-                                                       	 	</span> 
-                                                        </span>  
-                                                        <span class="bk-select-arrow"></span>	
-													</div>
-												</div>
-												<div class="bk-form-row-txt notice-block">存储空间暂时不限制</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">内存：</label>
-											<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
-														<div class="pull-left" style="height:36px;">
-															<span class="sleBG"> 
-															<span class="sleHid">
-																	<select class="form-control w217 wcolor disabled">
+														<div class="pull-left" style="height: 36px;">
+															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
+																		<option>500G</option>
+																</select>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+													</div>
+													<div class="bk-form-row-txt notice-block">存储空间暂时不限制</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">内存：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left" style="height: 36px;">
+															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor disabled">
 																		<option>2G</option>
-																   </select>
+																</select>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
 														</div>
 													</div>
 													<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								</dd>
-							</dl>
-							<dl class="bk-group">
-								<dt class="bk-group-title">购买量</dt>
-								<dd class="bk-group-detail">
-									<div class="bk-group-control"></div>
-									<div class="disabled">
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">购买时长：</label>
-											<div class="bk-form-row-cell">
-											    <!-- 拖动原设计注释 -->
-												<!-- <div class="bk-form-row-li">
+									</dd>
+								</dl>
+								<dl class="bk-group">
+									<dt class="bk-group-title">购买量</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div class="disabled">
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">购买时长：</label>
+												<div class="bk-form-row-cell">
+													<!-- 拖动原设计注释 -->
+													<!-- <div class="bk-form-row-li">
 													<div class="bk-slider bk-slider-duration">
 														<div class="bk-slider-range" id="bar1">
 															<div id="flag"></div>
@@ -453,19 +439,16 @@
 															</span>
 															</span>
 														</div> -->
-													    <div class="bk-form-row-li clearfix">
-													 		<div class="pull-left" style="height:36px;">
-																<span class="sleBG"> 
-                                                       	 			<span class="sleHid">
-                                                            			<select class="form-control w217 wcolor">
-																			<option>1年</option>
-																		</select>
-                                                       	 			</span> 
-                                                        		</span>  
-                                                        		<span class="bk-select-arrow"></span>	
-															</div>
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left" style="height: 36px;">
+															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
+																		<option>1年</option>
+																</select>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
 														</div>
-														<div class="bk-form-row-txt">此功能暂时不开放</div>
+													</div>
+													<div class="bk-form-row-txt">此功能暂时不开放</div>
 												</div>
 											</div>
 										</div>
@@ -473,49 +456,32 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> 
-													<input type="text" class="bk-number-input" value="3"> 
-														<span class="bk-number-unit">台</span>
-														<span class="bk-number-control"> 
-														  <span class="bk-number-up bk-number-disabled hide"> 
-														       <i class="bk-number-arrow"></i>
-														  </span> 
-														  <span class="bk-number-up"> 
-														  	   <i class="bk-number-arrow"></i>
-														  </span> 
-														  <span class="bk-number-down bk-number-disabled"> 
-														 	 <i class="bk-number-arrow"></i>
-														 </span> 
-														 <span class="bk-number-down hide"> 
-														 	<i class="bk-number-arrow"></i>
-														 </span>
+													<span class="bk-number"> <input type="text" class="bk-number-input" value="3"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
+														</span> <span class="bk-number-up"> <i class="bk-number-arrow"></i>
+														</span> <span class="bk-number-down bk-number-disabled"> <i class="bk-number-arrow"></i>
+														</span> <span class="bk-number-down hide"> <i class="bk-number-arrow"></i>
+														</span>
 													</span>
 													</span>
 												</div>
 											</div>
 										</div>
-									</div>
-								</dd>
-							</dl>
+									</dd>
+								</dl>
+							</div>
 						</div>
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-orders-menu  bk-mb4">
-								<span class="bk-orders-menu-name">购买清单</span> <span
-									class="bk-orders-menu-quantity bk-pale">3台</span>
+								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">3台</span>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">当前配置</div>
 								<div>
 									<div class="bk-items-list">
 										<ul>
-											<li><span class="bk-items-item-name">地域：</span> 
-											<span
-												class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">配置：</span> <span
-												class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span>
-											</li>
-											<li><span class="bk-items-item-name">购买量：</span> <span
-												class="bk-items-item-value">1年x 3台</span></li>
+											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
+											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span></li>
+											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年x 3台</span></li>
 										</ul>
 									</div>
 								</div>
@@ -523,28 +489,24 @@
 									<div class="bk-items-price-title bk-pale">配置费用：</div>
 									<div class="bk-items-price-settle">
 										<div>
-											<span class="bk-cny">¥</span> <span
-												class="bk-items-price-money">0.00</span> <span
-												class="bk-items-price-unit"></span>
+											<span class="bk-cny">¥</span> <span class="bk-items-price-money">0.00</span> <span class="bk-items-price-unit"></span>
 										</div>
 									</div>
 								</div>
 								<div class="bk-items-price">
 									<div class="bk-items-price-title bk-pale">公网流量费用：</div>
 									<div class="bk-items-price-settle">
-										<span class="bk-cny">¥</span> <span
-											class="bk-items-price-money">0.00</span> <span
-											class="bk-items-price-unit">/GB</span>
+										<span class="bk-cny">¥</span> <span class="bk-items-price-money">0.00</span> <span class="bk-items-price-unit">/GB</span>
 									</div>
 								</div>
 								<div class="bk-items-price-control">
-									<button id="monthPurchaseBotton" class="bk-button bk-button-primary">
+									<button form="monthPurchaseForm" type="submit" id="monthPurchaseBotton" class="bk-button">
 										<div>
 											<span class="ng-scope">立即购买</span>
 										</div>
 									</button>
 									<button class=" hide bk-button bk-button-default">
-										<div ng-transclude="">
+										<div>
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
@@ -552,9 +514,8 @@
 								<div class="bk-pb4"></div>
 							</div>
 						</div>
-					</div>
-					</form>
-					<div role="tabpanel" class="tab-pane fade mc-hide" id="dosage">
+				</div>
+				<div role="tabpanel" class="tab-pane fade mc-hide" id="dosage">
 						<div class="col-sm-12 col-md-9">
 							<dl class="bk-group">
 								<dt class="bk-group-title">基本配置</dt>
