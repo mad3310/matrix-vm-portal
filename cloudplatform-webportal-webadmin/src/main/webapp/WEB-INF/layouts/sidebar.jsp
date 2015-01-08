@@ -63,7 +63,7 @@
 				</li>
 			</ul>
 		</li>
-		<li id="sidebar-monitor-mgr" >
+		<li id="sidebar-forewarning-monitor-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-list"></i> 
 				<span class="menu-text"> 预警管理 </span> 

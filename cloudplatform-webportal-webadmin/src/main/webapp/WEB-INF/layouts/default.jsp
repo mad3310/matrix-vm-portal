@@ -239,18 +239,28 @@
 	var path = window.location.pathname;
 	var cookie_skin;
 	var mySkin="mySkin";
-	if(path.indexOf("/list/mcluster/monitor") >= 0 ||(path.indexOf("/detail/") >= 0 && path.indexOf("monitor") >= 0)){
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("container集群监控列表");
+	if(path.indexOf("/list/mcluster/monitor/1") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
+		$('#main-content-header li:eq(1)').html("cluster监控列表");
+	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:eq(1)').html("node监控列表");
+	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:eq(1)').html("db监控列表");
 	}else if(path.indexOf("/dashboard") >= 0){
 		$('#sidebar-dashboard').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
 		$('#main-content-header li:eq(1)').html("Dashboard");
 	}else if(path.indexOf("/view/mcluster/monitor") >= 0){
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(1)').addClass("active");
+		$('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("container集群监控视图");
 	}else if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
