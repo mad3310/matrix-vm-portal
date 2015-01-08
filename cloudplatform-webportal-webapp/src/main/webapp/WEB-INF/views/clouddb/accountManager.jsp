@@ -89,7 +89,10 @@
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
+					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+						<span class="text-danger">*</span>
+						授权IP：
+					</label>
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
@@ -252,7 +255,10 @@
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group modify-multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
+					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+						<span class="text-danger">*</span>
+						授权IP：
+					</label>
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
