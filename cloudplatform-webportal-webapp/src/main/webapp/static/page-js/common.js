@@ -306,7 +306,7 @@ define(function(require,exports,module){
 		},
 		DisableBackspaceEnter:function(){
 			document.getElementsByTagName("body")[0].onkeydown  = function(event) {
-				var target, code, tag;
+				var target, code,tag;
 				if (!event) {
 					event = window.event; //针对ie浏览器
 					target = event.srcElement;
@@ -316,16 +316,17 @@ define(function(require,exports,module){
 						if (tag == "TEXTAREA") { return true; }
 						else { return false; }
 					}else if(code == 8){
-						if(name!='INPUT' && name!='TEXTAREA'){
+						tag = target.tagName;
+						if(tag!='INPUT' && tag!='TEXTAREA'){
 							event.returnValue = false ;
 							return ;
 						}
-						var type_e = elem.type.toUpperCase();
-						if(name=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
+						var type_e = target.type.toUpperCase();
+						if(tag=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
 							event.returnValue = false ;
 							return ;
 						}
-						if(name=='INPUT' && (elem.readOnly==true || elem.disabled ==true)){
+						if(tag=='INPUT' && (target.readOnly==true || target.disabled ==true)){
 							event.returnValue = false ;
 							return ;
 						}
@@ -339,16 +340,17 @@ define(function(require,exports,module){
 						if (tag == "INPUT") { return false; }
 						else { return true; }
 					}else if(code == 8){
-						if(name!='INPUT' && name!='TEXTAREA'){
+						tag = target.tagName;
+						if(tag!='INPUT' && tag!='TEXTAREA'){
 							event.returnValue = false ;
 							return ;
 						}
-						var type_e = elem.type.toUpperCase();
-						if(name=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
+						var type_e = target.type.toUpperCase();
+						if(tag=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
 							event.returnValue = false ;
 							return ;
 						}
-						if(name=='INPUT' && (elem.readOnly==true || elem.disabled ==true)){
+						if(tag=='INPUT' && (target.readOnly==true || target.disabled ==true)){
 							event.returnValue = false ;
 							return ;
 						}
