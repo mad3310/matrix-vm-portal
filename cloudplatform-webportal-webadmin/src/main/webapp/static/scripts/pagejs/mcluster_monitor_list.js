@@ -62,22 +62,22 @@ function getMclusterStatus(ip,obj) {
 			var result = data.data.result;
 			if(result == "0"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("正常");
+				$(obj).find('[name="mclusterStatus"]').html("<a>正常</a>");
 			}else if(result == "1"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("危险");
+				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
 				$(obj).addClass("default-danger");		
 			}else if(result == "2"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("严重危险");
-				$(obj).addClass("warning");		
+				$(obj).find('[name="mclusterStatus"]').html("<a>严重危险</a>");
+				$(obj).addClass("default-danger");		
 			}else if(result == "3"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("集群不可用");
+				$(obj).find('[name="mclusterStatus"]').html("<a>集群不可用</a>");
 				$(obj).addClass("default-danger");		
 			}else if(result == "4"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("获取数据超时");
+				$(obj).find('[name="mclusterStatus"]').html("<a>获取数据超时</a>");
 				$(obj).addClass("default-danger");
 			}
 		}	
