@@ -1360,3 +1360,13 @@ position: relative;
 #accountList .form-horizontal .form-group{
   margin-right: -0px; 
 }
+
+/* modal-dialog居屏幕中央 */
+.modal-dialog{
+	 position:fixed;
+	 top:0px;
+	 left:0px;
+     _position:absolute;
+     _left: expression(documentElement.scrollLeft + documentElement.clientWidth - this.offsetWidth); 
+     _top: expression(documentElement.scrollTop + documentElement.clientHeight - this.offsetHeight);
+}

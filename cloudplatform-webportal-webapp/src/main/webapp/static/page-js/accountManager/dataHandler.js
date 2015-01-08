@@ -164,6 +164,7 @@ define(function(require,exports,module){
             var readWriterRate = $("#modifydbUserReadWriterRate").val();
             var maxConcurrency = $("#modifydbUserMaxConcurrency").val();
             var password = $("#modifyFormNewPwd1").val();
+            var descn = $("#modifyFormDbDesc").html();
 
             var ips = "";
             var types = "";
@@ -181,7 +182,8 @@ define(function(require,exports,module){
                 "readWriterRate": readWriterRate,
                 "password":password,
                 "ips":ips,
-                "types":types
+                "types":types,
+                "descn":descn
             }
             return data;
         }

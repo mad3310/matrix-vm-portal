@@ -25,7 +25,7 @@
 	<div id="accountList" class="" role="tablist" aria-multiselectable="true">
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
-				<h4>账号管理</h4>
+				<h5>账号管理</h5>
 			</div>
 			<div class="pull-right">
 				<button id="refresh" class="btn btn-default">
@@ -44,10 +44,10 @@
 						<th width="15%" class="hide">读写比例
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="10%">频次限制
+						<th width="10%">最大并发量
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th>备注说明</th>
+						<th width="15%">备注说明</th>
 						<th class="text-right" width="30%">
 							<span style="padding-left:8px">操作</span>
 						</th>
@@ -89,7 +89,10 @@
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
+					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+						<span class="text-danger">*</span>
+						授权IP：
+					</label>
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
@@ -252,7 +255,10 @@
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group modify-multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">授权IP：</label>
+					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+						<span class="text-danger">*</span>
+						授权IP：
+					</label>
 					<div class="inline-block mcluster-select" style="width:180px">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
@@ -387,9 +393,9 @@
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
+			<!--	<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
-					</button>
+					</button>-->
 					<h5 id="dialog-box-title" class="modal-title"></h5>
 				</div>
 				<div class="modal-body clearfix">
