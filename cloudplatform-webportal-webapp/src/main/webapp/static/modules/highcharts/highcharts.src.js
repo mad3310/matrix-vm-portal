@@ -1274,7 +1274,7 @@ define(function (require, exports, module) {
                     thousandsSep: ','
                 },
                 global: {
-                    useUTC: true,
+                    useUTC: false,
                     //timezoneOffset: 0,
                     canvasToolsURL: 'http://code.highcharts.com/4.0.3/modules/canvas-tools.js',
                     VMLRadialGradientURL: 'http://code.highcharts.com/4.0.3/gfx/vml-radial-gradient.png'

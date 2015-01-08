@@ -4,12 +4,12 @@
  */
 
 // Load the fonts
-Highcharts.createElement('link', {
+/*Highcharts.createElement('link', {
 	href: 'http://fonts.googleapis.com/css?family=Dosis:400,600',
 	rel: 'stylesheet',
 	type: 'text/css'
 }, null, document.getElementsByTagName('head')[0]);
-
+*/
 Highcharts.theme = {
 	colors: ["#7cb5ec", "#f7a35c", "#90ee7e", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
 		"#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],

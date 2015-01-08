@@ -1100,7 +1100,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@SuppressWarnings("finally")
-	private BaseMonitor analysisClusterData(String result){
+	private ClusterModel analysisClusterData(String result){
 		Map<String,Object> data = transResult(result);
 		ClusterModel monitor = new ClusterModel();
 		try {
@@ -1124,7 +1124,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@SuppressWarnings("finally")
-	private BaseMonitor analysisNodeData(String result){
+	private NodeModel analysisDbData(String result){
 		Map<String,Object> data = transResult(result);
 		NodeModel monitor = new NodeModel();
 		try {
@@ -1160,7 +1160,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	@SuppressWarnings("finally")
-	private BaseMonitor analysisDbData(String result){
+	private NodeModel analysisNodeData(String result){
 		Map<String,Object> data = transResult(result);
 		NodeModel monitor = new NodeModel();
 		try {

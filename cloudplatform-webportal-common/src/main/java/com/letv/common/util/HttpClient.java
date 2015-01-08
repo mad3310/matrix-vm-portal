@@ -123,7 +123,10 @@ public class HttpClient {
 
 	private static String paseResponse(HttpResponse response) {
 		logger.info("get response from http server..");
-		if (response == null) return null;
+		if (response == null) {
+			logger.info("get response from http server.. faild");
+			return null;	
+		}
 		HttpEntity entity = response.getEntity();
 		
 		logger.info("response status: " + response.getStatusLine());
@@ -151,9 +154,7 @@ public class HttpClient {
 		try {
 			response = httpclient.execute(httpost);
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return response;
 	}

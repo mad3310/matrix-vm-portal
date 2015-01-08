@@ -18,6 +18,8 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
+	setInterval(asyncData,cn.dbListRefreshTime);
+
 	$("#search").click(function() {
 		asyncData();
 	});
@@ -68,12 +70,12 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
-	
+
 	//加载列表数据
-    function asyncData(page) {
-        var dbName = $("#dbName").val(),location = $("#location").val();
-    	if(!page) page = cn.currentPage;
-    	var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-    	cn.GetData(url,dbListHandler.DbListHandler);
-    }
+	function asyncData(page) {
+		var dbName = $("#dbName").val(),location = $("#location").val();
+		if(!page) page = cn.currentPage;
+		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
+		cn.GetData(url,dbListHandler.DbListHandler);
+	}
 });

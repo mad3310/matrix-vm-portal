@@ -137,7 +137,7 @@
 			        		<span class="text-muted pd-r8">数据库内存:</span><span>2048M</span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库空间:</span><span>500G</span>
+			        		<span class="text-muted pd-r8">数据库空间:</span><span>10G</span>
 			        	</td>
 		        	</tr>
 		        	<tr>

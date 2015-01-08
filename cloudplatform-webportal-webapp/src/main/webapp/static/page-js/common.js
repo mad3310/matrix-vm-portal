@@ -6,6 +6,7 @@ define(function(require,exports,module){
     require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;
+		this.dbListRefreshTime = 10000; //单位ms
     };
     module.exports = Common;
 
@@ -302,30 +303,62 @@ define(function(require,exports,module){
 				backdrop:false,
 				show:true
 			});
+			$("#submitCreateUserForm").removeAttr("disabled");
+			$("#submitModifyUserForm").removeAttr("disabled");
 		},
 		DisableBackspaceEnter:function(){
-			document.getElementsByTagName("body")[0].onkeydown =function(){
-				var elem = event.srcElement;
-				var name = elem.nodeName;
-				if(event.keyCode==8){
-					if(name!='INPUT' && name!='TEXTAREA'){
-						event.returnValue = false ;
-						return ;
+			document.getElementsByTagName("body")[0].onkeydown  = function(event) {
+				var target, code,tag;
+				if (!event) {
+					event = window.event; //针对ie浏览器
+					target = event.srcElement;
+					code = event.keyCode;
+					if (code == 13) {
+						tag = target.tagName;
+						if (tag == "TEXTAREA") { return true; }
+						else { return false; }
+					}else if(code == 8){
+						tag = target.tagName;
+						if(tag!='INPUT' && tag!='TEXTAREA'){
+							event.returnValue = false ;
+							return ;
+						}
+						var type_e = target.type.toUpperCase();
+						if(tag=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
+							event.returnValue = false ;
+							return ;
+						}
+						if(tag=='INPUT' && (target.readOnly==true || target.disabled ==true)){
+							event.returnValue = false ;
+							return ;
+						}
 					}
-					var type_e = elem.type.toUpperCase();
-					if(name=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
-						event.returnValue = false ;
-						return ;
-					}
-					if(name=='INPUT' && (elem.readOnly==true || elem.disabled ==true)){
-						event.returnValue = false ;
-						return ;
-					}
-				}else if(event.keyCode==13){
-					if (name == "INPUT") { return false; }
-					else { return true; }
 				}
-			}
+				else {
+					target = event.target; //针对遵循w3c标准的浏览器，如Firefox
+					code = event.keyCode;
+					if (code == 13) {
+						tag = target.tagName;
+						if (tag == "INPUT") { return false; }
+						else { return true; }
+					}else if(code == 8){
+						tag = target.tagName;
+						if(tag!='INPUT' && tag!='TEXTAREA'){
+							event.returnValue = false ;
+							return ;
+						}
+						var type_e = target.type.toUpperCase();
+						if(tag=='INPUT' && (type_e!='TEXT' && type_e!='TEXTAREA' && type_e!='PASSWORD' && type_e!='FILE')){
+							event.returnValue = false ;
+							return ;
+						}
+						if(tag=='INPUT' && (target.readOnly==true || target.disabled ==true)){
+							event.returnValue = false ;
+							return ;
+						}
+					}
+				}
+			};
 		},
 		FilterNull:function(data){
 			if(data == null || data == undefined){

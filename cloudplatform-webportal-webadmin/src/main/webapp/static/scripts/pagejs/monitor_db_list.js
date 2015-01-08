@@ -35,7 +35,7 @@ function queryMclusterMonitor() {
 							+"<a><i class=\"ace-icon fa fa-spinner fa-spin  bigger-120\"/>数据抓取中...</a>"
 							+ "</td>");
 				var td5 = $("<td>"
-						+ "<a href=\"/monitor/"+array[i].ipAddr+"/mcluster/status\" target=\"_blank\">查看详情</a>"
+						+ "<a href=\"/monitor/"+array[i].ipAddr+"/db/status\" target=\"_blank\">查看详情</a>"
 					+ "</td>");
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
@@ -56,7 +56,7 @@ function queryMclusterMonitor() {
 function getMclusterStatus(ip,obj) {
 	$.ajax({ 
 		type : "get",
-		url : "/monitor/"+ip+"/mcluster/status",
+		url : "/monitor/"+ip+"/db/status",
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {

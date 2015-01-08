@@ -16,6 +16,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MonitorStatus;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.monitor.BaseMonitor;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IDashBoardProxy;
@@ -83,15 +84,16 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 
 	@Override
 	public Map<String, Integer> selectMonitorAlert(Long monitorType) {
-		List<ContainerModel> containers = this.containerService.selectVipIps4Monitor();
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters();
+		
 		
 		int nothing = 0;
 		int general = 0;
 		int serious = 0;
 		int crash = 0;
 		int timeout = 0;
-		
-		for (ContainerModel container : containers) {
+		for (MclusterModel mcluster : mclusters) {
+			ContainerModel container = this.selectValidVipContianer(mcluster.getId(), "mclustervip");
 			BaseMonitor monitor = this.buildTaskService.getMonitorData(container.getIpAddr(),monitorType); 
 			if(MonitorStatus.NORMAL.getValue() == monitor.getResult()) {
 				nothing++;
@@ -121,6 +123,17 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		data.put("crash", crash);
 		data.put("timeout", timeout);
 		return data;
+	}
+	
+	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		map.put("type", type);
+		List<ContainerModel> containers = this.containerService.selectAllByMap(map);
+		if(containers.isEmpty()) {
+			return null;
+		}
+		return containers.get(0);
 	}
 
 	@Override
