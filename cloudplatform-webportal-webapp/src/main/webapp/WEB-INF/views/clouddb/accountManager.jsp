@@ -44,7 +44,7 @@
 						<th width="15%" class="hide">读写比例
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="10%">频次限制
+						<th width="10%">最大并发量
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
 						<th width="15%">备注说明</th>
