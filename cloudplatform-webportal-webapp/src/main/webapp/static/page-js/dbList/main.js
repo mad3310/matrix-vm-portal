@@ -35,6 +35,7 @@ define(function(require){
 	$(".btn-region-display").click(function(){
 		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
 		$(this).removeClass("btn-default").addClass("btn-success");
+		$("#dbName").val("");
 		asyncData();
 	})
 	/*
