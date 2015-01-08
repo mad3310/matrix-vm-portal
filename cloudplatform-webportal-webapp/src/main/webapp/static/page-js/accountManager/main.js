@@ -188,9 +188,6 @@ define(function(require){
                 $("#submitModifyUserForm").removeAttr("disabled");
             });
         }
-
-
-
     }).on('keyup', '[name="modifyFormNewPwd1"]', function () {
         if($("[name = 'modifyFormNewPwd2']").val() != ''){
             $('#db_user_modify_form').bootstrapValidator('revalidateField', 'modifyFormNewPwd2');
