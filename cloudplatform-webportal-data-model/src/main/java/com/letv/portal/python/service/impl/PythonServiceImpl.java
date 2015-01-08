@@ -328,7 +328,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String checkBackup4Db(String ipAddr) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup/check");
-		String result = HttpClient.get(url.toString(),1000,2000);
+		String result = HttpClient.get(url.toString(),1000,10000);
 		return result;
 	}    
 	
