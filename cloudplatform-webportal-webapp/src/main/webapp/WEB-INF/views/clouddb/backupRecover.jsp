@@ -212,6 +212,32 @@
     </div>
   </div>
 </div><!-- modal end -->
+<!-- Modal cleanBinlog-->
+<div class="modal fade" id="cleanBinlog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">一键清除Binlog提示</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="alert overHidden">
+      		<p class="col-sm-2"><i class="fa fa-exclamation-circle text-warning text-size-32"></i></p>
+      		<ul class="col-sm-10" style="list-style: none;">
+      			<li>将清除RDS上所有Binlog文件，请确认。</li>
+      			<li>(Binlog全部清除完成需要些时间，请知晓。)</li>
+      		</ul>
+      	</div>
+      </div>
+      <div class="modal-footer">
+      	<span>
+      		<a class="btn btn-primary">确定</a>
+      		<a class="btn btn-warning" data-dismiss="modal">取消</a>
+      	</span>
+      </div>
+    </div>
+  </div>
+</div><!-- modal end -->
 	<div class="panel-group pd10"  role="tablist" aria-multiselectable="true">
 	    <div class="se-heading" id="headingOne" >
 	        <div class="pull-left">
@@ -223,7 +249,7 @@
 		        </h5>
 	        </div>				      
 		    <div class="pull-right">
-		       	<button id="refresh" class="btn btn-primary">
+		       	<button id="refresh" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
 		       	一键清除Binlog
 		        </button>
 		    </div>
@@ -310,6 +336,9 @@
 						</tr>
 						</tfoot>				        	
 			        </table>
+
+		  		
+		  		
 		  	</div>			
 		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
 		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
