@@ -47,8 +47,8 @@
 						<th width="10%">最大并发量
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="15%">备注说明</th>
-						<th class="text-right" width="30%">
+						<th width="20%" >备注说明</th>
+						<th class="text-right" width="25%">
 							<span style="padding-left:8px">操作</span>
 						</th>
 					</tr>
@@ -248,7 +248,7 @@
 					</label>
 					<div class="col-sm-8 row">
 						<div class="col-sm-4">
-							<label id="modifyFormDbUsername" class="col-sm-2 control-label"></label>
+							<label id="modifyFormDbUsername" style="padding-top:7px"></label>
 						</div>
 					</div>
 				</div>
@@ -340,7 +340,7 @@
 					<label class="col-sm-2 control-label">备注说明：</label>
 					<div class="col-sm-10 row">
 						<div class="col-sm-4">
-							<label id="modifyFormDbDesc" class="col-sm-2 control-label"></label>
+							<label id="modifyFormDbDesc" style="padding-top:7px"></label>
 						</div>
 					</div>
 				</div>
