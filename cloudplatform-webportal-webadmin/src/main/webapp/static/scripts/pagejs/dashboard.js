@@ -70,8 +70,8 @@ function setPieChartData(divName,type){
 			pieChartData[0].data.push({name:'正常',color:'green',y:status.nothing,url:url});
 			pieChartData[0].data.push({name:'危险',color:'#19A2A2',y:status.general,url:url});
 			pieChartData[0].data.push({name:'严重危险',color:'#FDC43E',y:status.serious,url:url});
-			pieChartData[0].data.push({name:'宕机',color:'#D15A06',y:status.crash,url:url});
-			pieChartData[0].data.push({name:'超时',color:'#CC0032',y:status.timeout,url:url});
+			pieChartData[0].data.push({name:'集群不可用',color:'#D15A06',y:status.crash,url:url});
+			pieChartData[0].data.push({name:'获取数据超时',color:'#CC0032',y:status.timeout,url:url});
 			
 			$('#'+divName+'-nothing').html(status.nothing);
 			$('#'+divName+'-general').html(status.general);

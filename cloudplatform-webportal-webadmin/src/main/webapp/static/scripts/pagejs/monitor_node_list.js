@@ -65,20 +65,20 @@ function getMclusterStatus(ip,obj) {
 				$(obj).find('[name="mclusterStatus"]').html("正常");
 			}else if(result == "1"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("异常");
+				$(obj).find('[name="mclusterStatus"]').html("危险");
 				$(obj).addClass("default-danger");		
 			}else if(result == "2"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("危险");
+				$(obj).find('[name="mclusterStatus"]').html("严重危险");
 				$(obj).addClass("warning");		
 			}else if(result == "3"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("宕机");
+				$(obj).find('[name="mclusterStatus"]').html("集群不可用");
 				$(obj).addClass("default-danger");		
 			}else if(result == "4"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("超时");
-				$(obj).addClass("default-danger");		
+				$(obj).find('[name="mclusterStatus"]').html("获取数据超时");
+				$(obj).addClass("default-danger");
 			}
 		}	
 	});
