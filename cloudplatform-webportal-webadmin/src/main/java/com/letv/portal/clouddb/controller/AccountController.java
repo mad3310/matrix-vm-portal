@@ -56,6 +56,10 @@ public class AccountController {
 	public String toLogin() {
 		return "/account/login";
 	}
+	@RequestMapping(value = "/login",method=RequestMethod.HEAD)
+	public String toLoginByHead() {
+		return "/account/login";
+	}
 	
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout
 	public String logout(HttpServletRequest request,HttpServletResponse response) {

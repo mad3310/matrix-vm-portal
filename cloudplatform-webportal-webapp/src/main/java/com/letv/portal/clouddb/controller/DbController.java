@@ -108,13 +108,18 @@ public class DbController {
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
+		logger.info("get db by dbId start");
 		ResultObject obj = new ResultObject();
 		DbModel db = this.dbService.dbList(dbId);
-		if(db.getCreateUser() == sessionService.getSession().getUserId()) {
+		logger.info("db Name:" + db.getDbName());
+		logger.info("db createUser:" + db.getCreateUser());
+		logger.info("session userid:" + sessionService.getSession().getUserId());
+		/*if(db.getCreateUser() == sessionService.getSession().getUserId()) {
 			obj.setData(db);
 		} else {
 			obj.setResult(0);
-		}
+		}*/
+		obj.setData(db);
 		return obj;
 	}	
 	
