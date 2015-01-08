@@ -1362,7 +1362,7 @@ position: relative;
 }
 
 /* modal-dialog居屏幕中央 */
-.modal-dialog{
+/* .modal-dialog{
 	 position:fixed;
 	 top:0px;
 	 left:0px;
@@ -1370,3 +1370,4 @@ position: relative;
      _left: expression(documentElement.scrollLeft + documentElement.clientWidth - this.offsetWidth); 
      _top: expression(documentElement.scrollTop + documentElement.clientHeight - this.offsetHeight);
 }
+ */
