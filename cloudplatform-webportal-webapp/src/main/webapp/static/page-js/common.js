@@ -303,6 +303,8 @@ define(function(require,exports,module){
 				backdrop:false,
 				show:true
 			});
+			$("#submitCreateUserForm").removeAttr("disabled");
+			$("#submitModifyUserForm").removeAttr("disabled");
 		},
 		DisableBackspaceEnter:function(){
 			document.getElementsByTagName("body")[0].onkeydown  = function(event) {
