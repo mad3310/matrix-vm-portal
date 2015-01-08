@@ -47,8 +47,8 @@
 						<th width="10%">最大并发量
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="15%">备注说明</th>
-						<th class="text-right" width="30%">
+						<th width="20%" >备注说明</th>
+						<th class="text-right" width="25%">
 							<span style="padding-left:8px">操作</span>
 						</th>
 					</tr>

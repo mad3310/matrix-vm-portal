@@ -21,7 +21,7 @@ define(function(require,exports,module){
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td><span>"+cn.FilterNull(array[i].descn)+"</span></td>");
+                var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)+"</span></td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
                 + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
