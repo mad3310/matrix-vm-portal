@@ -66,7 +66,7 @@
 								<div class="mlt-4 pull-left">
 									<p class="balance-title">账户余额:</p>
 									<p class="balance-num ellipsis" >
-										<span>0</span>
+										<span>100</span>
 										<span class="balance-after-point">.00</span>
 										<span class="balance-unit">元</span>
 									</p>

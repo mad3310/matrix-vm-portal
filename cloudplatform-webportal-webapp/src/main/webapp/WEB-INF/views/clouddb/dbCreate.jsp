@@ -134,7 +134,7 @@
 																</div>
 															</button>
 														</div>
-														<span><a class="bk-lnk bk-ml2">暂时只有北京可用,其他地域陆续开通</a></span>
+														<span class="bk-lnk" style="cursor: text;">暂时只有北京可用,其他地域陆续开通</span>
 													</div>
 													<div class="bk-form-row-txt">不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择</div>
 												</div>
@@ -182,7 +182,7 @@
 																</div>
 															</button>
 														</div>
-														<span><a class="bk-lnk bk-ml2">暂时只提供5.5版本</a></span>
+														<span class="bk-lnk" style="cursor: text;">暂时只提供5.5版本</span>
 													</div>
 												</div>
 											</div>
@@ -292,7 +292,7 @@
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left" style="height: 36px;">
 															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
-																		<option>500G</option>
+																		<option>10G</option>
 																</select>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
@@ -480,7 +480,7 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">500GB存储空间、2G内存、MySQL 5.5</span></li>
+											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">10GB存储空间、2G内存、MySQL 5.5</span></li>
 											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年x 3台</span></li>
 										</ul>
 									</div>
