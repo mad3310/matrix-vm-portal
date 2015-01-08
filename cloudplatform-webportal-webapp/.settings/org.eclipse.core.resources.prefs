@@ -1,5 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/views/clouddb/accountManager.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/clouddb/dashBoard.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/clouddb/securityManager.jsp=UTF-8
+encoding//src/main/webapp/static/css/ui-css/common.css=UTF-8
 encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8

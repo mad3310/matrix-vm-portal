@@ -52,4 +52,12 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
      * @param dbId
      */
 	public void deleteByDbId(Long dbId);
+	
+	/**Methods Name: selectGroupByName <br>
+	 * Description: 按照参数查出用户，并按照用户名分组<br>
+	 * @author name: liuhao1
+	 * @param params
+	 * @return
+	 */
+	public List<DbUserModel> selectGroupByName(Map<String, Object> params);
 }

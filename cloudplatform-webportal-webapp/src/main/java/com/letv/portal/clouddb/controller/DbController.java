@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.enumeration.DbStatus;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.IContainerService;
@@ -63,6 +63,14 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("createUser", sessionService.getSession().getUserId());	
+		obj.setData(this.dbService.findPagebyParams(params, page));
+		return obj;
+	}
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName) {
 		Page page = new Page();
@@ -70,7 +78,7 @@ public class DbController {
 		page.setRecordsPerPage(recordsPerPage);
 	
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("dbName", dbName);		
+		params.put("dbName", dbName);
 		params.put("createUser", sessionService.getSession().getUserId());		
 		ResultObject obj = new ResultObject();
 		obj.setData(this.dbService.findPagebyParams(params, page));
@@ -100,8 +108,13 @@ public class DbController {
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
-		ResultObject obj = new ResultObject();	
-		obj.setData(this.dbProxy.dbList(dbId));
+		ResultObject obj = new ResultObject();
+		DbModel db = this.dbService.dbList(dbId);
+		if(db.getCreateUser() == sessionService.getSession().getUserId()) {
+			obj.setData(db);
+		} else {
+			obj.setResult(0);
+		}
 		return obj;
 	}	
 	

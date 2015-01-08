@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.SimpleTextEmailSender;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.IIpResourceDao;
 import com.letv.portal.model.DbModel;
@@ -39,6 +41,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IDbUserService dbUserService;
+	
+	@Resource
+	private IContainerDao containerDao;
 	
 	
 	public DbServiceImpl() {
@@ -78,5 +83,21 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 			this.delete(dbModel);
 			this.dbUserService.deleteByDbId(dbModel.getId());
 		}
+	}
+	@Override
+	public DbModel dbList(Long dbId){
+		DbModel db = this.selectById(dbId);
+		if(db == null)
+			throw new ValidateException("参数不合法，相关数据不存在");
+		db.setContainers(this.containerDao.selectByMclusterId(db.getMclusterId()));
+		return db;
+	}
+
+	@Override
+	public List<DbModel> selectDbByMclusterId(Long mclusterId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		List<DbModel> dbs = this.dbDao.selectByMap(map);
+		return dbs;
 	}
 }

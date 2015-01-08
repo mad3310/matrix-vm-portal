@@ -2,10 +2,8 @@ package com.letv.portal.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 
 
@@ -34,4 +32,11 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	List<MclusterModel> selectByName(String mclusterName);
 
 	List<MclusterModel> select4Run();
+
+	/**Methods Name: selectValidMclusters <br>
+	 * Description: 选择有效的mcluster集群: RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	List<MclusterModel> selectValidMclusters();
 }

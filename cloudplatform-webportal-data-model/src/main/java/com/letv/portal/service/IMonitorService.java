@@ -5,8 +5,7 @@ import java.util.Map;
 
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
-import com.letv.portal.model.MonitorViewModel;
-import com.letv.portal.model.MonitorViewYModel;
+import com.letv.portal.model.monitor.MonitorViewYModel;
 
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
@@ -18,5 +17,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	public List<MonitorDetailModel> selectDateTime(Map map);
 	
 	public List<MonitorIndexModel> selectMonitorCount();
+	public Float selectDbStorage(Long mclusterId);
+	public List<Map<String,Object>> selectDbConnect(Long mclusterId);
 	
 }

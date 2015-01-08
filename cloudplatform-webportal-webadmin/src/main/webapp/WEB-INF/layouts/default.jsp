@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html> 
 <head>
-<title>Letv CloudPlateform WebPortal<sitemesh:title/></title>
+<title>Letv CloudPlatform WebPortal<sitemesh:title/></title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta http-equiv="Cache-Control" content="no-store" />
@@ -20,22 +20,24 @@
 <!-- bootstrap & fontawesome -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
-<link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
+
 <link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
 
 <!-- page specific plugin styles -->
-
+<link rel="stylesheet" href="${ctx}/static/ace/css/jquery-ui.min.css" />
 <!-- text fonts -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/ace-fonts.css" />
 
 <!-- ace styles -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/ace.min.css" id="main-ace-style" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/ace-rtl.min.css" />
+<!--skin-custom  -->
+<link rel="stylesheet" href="${ctx}/static/styles/ui-css/skin-custom.css" id="skinCSS" />
 
 <!--[if lte IE 9]>
 	<link rel="stylesheet" href="${ctx}/static/ace/css/ace-part2.min.css" />
-<![endif]-->
-<link rel="stylesheet" href="${ctx}/static/ace/css/ace-skins.min.css" />
-<link rel="stylesheet" href="${ctx}/static/ace/css/ace-rtl.min.css" />
+<![endif]--> 
+
 
 <!--[if lte IE 9]>
 	<link rel="stylesheet" href="${ctx}/static/ace/css/ace-ie.min.css" />
@@ -53,6 +55,8 @@
 <!-- warning box -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/jquery.gritter.css" />
 <script src="${ctx}/static/ace/js/jquery.gritter.min.js"></script>
+<!--cookie插件 -->
+<script src="${ctx}/static/scripts/jquery.cookie.js"></script>
 
 <!-- 常用函数 -->
 <script src="${ctx}/static/scripts/general-function.js"></script>
@@ -67,14 +71,28 @@
 <sitemesh:head/>
 </head>
 
-<body class="no-skin">
+<body class="skin-custom">
 	<%@ include file="/WEB-INF/layouts/header.jsp"%>
 	<div class="main-container" id="main-container">
 		<script type="text/javascript">
+		var cookie_skin;
+		var mySkin="mySkin";
 			try {
 				ace.settings.check('main-container', 'fixed')
 			} catch (e) {
 			}
+			function changeSkin(skinType){
+				$('#skinCSS').attr('href','/static/styles/ui-css/'+skinType+'.css');
+				$.cookie(mySkin,skinType,{path:'/',expires:10}); 
+			}
+			$(function(){
+				cookie_skin=$.cookie(mySkin);				
+				if(cookie_skin){					
+					$('#skinCSS').attr('href','/static/styles/ui-css/'+cookie_skin+'.css');
+					$.cookie(mySkin,cookie_skin,{path:'/',expires:10});
+				} 
+			});
+			
 		</script>
 	<%@ include file="/WEB-INF/layouts/sidebar.jsp"%>
 	
@@ -87,6 +105,7 @@
 					ace.settings.check('breadcrumbs', 'fixed')
 				} catch (e) {
 				}
+				
 			</script>
 
 			<ul id="main-content-header" class="breadcrumb">
@@ -112,6 +131,7 @@
 		
 		<!-- /section:basics/content.breadcrumbs -->
 		<div class="page-content">
+		
 			<!-- #section:settings.box -->
 			<!-- <div class="ace-settings-container" id="ace-settings-container">
 				<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
@@ -193,7 +213,7 @@
 		</div>
 	</div>
 	<!-- /.内容显示  -->
-	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
+	<%-- <%@ include file="/WEB-INF/layouts/footer.jsp"%> --%>
 	</div>
 	
 
@@ -217,18 +237,30 @@
 	<!-- 设置sidebar的高亮显示 -->
 <script type="text/javascript">
 	var path = window.location.pathname;
-	if(path.indexOf("/list/mcluster/monitor") >= 0 ||(path.indexOf("/detail/") >= 0 && path.indexOf("monitor") >= 0)){
-		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:first').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
-		$('#main-content-header li:eq(1)').html("container集群监控列表");
+	var cookie_skin;
+	var mySkin="mySkin";
+	if(path.indexOf("/list/mcluster/monitor/1") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
+		$('#main-content-header li:eq(1)').html("cluster监控列表");
+	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:eq(1)').html("node监控列表");
+	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0){
+		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
+		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:eq(1)').html("db监控列表");
 	}else if(path.indexOf("/dashboard") >= 0){
-		$('#sidebar-dashboard').addClass("active open hsub");
+		$('#sidebar-dashboard').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/dashboard").html("首页");
 		$('#main-content-header li:eq(1)').html("Dashboard");
 	}else if(path.indexOf("/view/mcluster/monitor") >= 0){
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(1)').addClass("active");
+		$('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("container集群监控视图");
 	}else if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){
@@ -252,6 +284,9 @@
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
 		$('#main-content-header li:eq(1)').html("数据库列表");
 	}
+	
+			
+
 </script>
 <!-- ace scripts -->
 <script src="${ctx}/static/ace/js/ace-elements.min.js"></script>

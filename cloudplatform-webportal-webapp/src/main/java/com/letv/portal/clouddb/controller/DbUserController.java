@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
+import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbUserController <br>
  * Description:  db用户<br>
@@ -45,31 +47,35 @@ public class DbUserController {
 	private final static Logger logger = LoggerFactory.getLogger(DbUserController.class);
 		
 	/**Methods Name: list <br>
-	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
-	 * @author name: liuhao1
+	 * Description: dbUser列表<br>
+	 * @author name: liuhao1 20141225
 	 * @param dbId
-	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
-		ResultObject obj = new ResultObject();
-		obj.setData(this.dbUserService.selectByDbId(dbId));
+	public @ResponseBody ResultObject list(@PathVariable Long dbId,ResultObject obj) {
+		if(null == dbId) {
+			throw new ValidateException("参数不能为空");
+		}
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
+		obj.setData(dbUsers);
 		return obj;
 	}
 	
 	/**Methods Name: save <br>
-	 * Description: 保存创建信息  http://localhost:8080/db/user/save<br>
-	 * @author name: liuhao1
-	 * @param dbApplyStandardModel
-	 * @param request
+	 * Description: 用户保存<br>
+	 * @author name: liuhao1 20141226
+	 * @param dbUserModel
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)
-	public @ResponseBody ResultObject save(DbUserModel dbUserModel) {
-		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
-		this.dbUserProxy.saveAndBuild(dbUserModel);
-		ResultObject obj = new ResultObject();
+	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.saveAndBuild(dbUserModel,ips,types);
 		return obj;
 	}
 	/**
@@ -97,23 +103,56 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
-		this.dbUserProxy.deleteDbUser(dbUserId);
+		DbUserModel dbUser = this.dbUserProxy.selectById(Long.parseLong(dbUserId));
 		ResultObject obj = new ResultObject();
+		if(dbUser!= null) {
+			if(dbUser.getCreateUser() == sessionService.getSession().getUserId()) {
+				this.dbUserProxy.deleteDbUser(dbUserId);
+			} else {
+				obj.setResult(0);
+			}
+		} else {
+			obj.setResult(0);
+		}
 		return obj;
 	}
-	/**
-	 * Methods Name: updateDbUser <br>
-	 * Description: 修改DbUser信息
-	 * @author name: wujun
+	@RequestMapping(value="/{dbId}/{username}",method=RequestMethod.DELETE)
+	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbId,@PathVariable String username,ResultObject obj) {
+		if(null == dbId || StringUtils.isNullOrEmpty(username)) {
+			throw new ValidateException("参数不能为空");
+		}
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("dbId", dbId);
+		map.put("username", username);
+		this.dbUserProxy.deleteAndBuild(dbId,username);
+		return obj;
+	}
+	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
+	public  @ResponseBody ResultObject deleteDbUserById(Long dbId,String username,String password,ResultObject obj) {
+		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.updateSecurity(dbId,username,password);
+		return obj;
+	}
+
+	
+	/**Methods Name: updateDbUser <br>
+	 * Description: 用户账户更新<br>
+	 * @author name: liuhao1
 	 * @param dbUserModel
+	 * @param types
+	 * @param ips
+	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/{dbUserId}",method=RequestMethod.POST)
-	public @ResponseBody ResultObject updateDbUser(DbUserModel dbUserModel) {
-		this.dbUserProxy.updateDbUser(dbUserModel);		
-		ResultObject obj = new ResultObject();
+	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
+	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
+			throw new ValidateException("参数不能为空");
+		}
+		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
 		return obj;
 	}
-	
 	
 }

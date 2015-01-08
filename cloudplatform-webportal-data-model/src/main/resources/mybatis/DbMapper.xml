@@ -185,9 +185,9 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
 			<include refid="Base_Column_List" /> 
-			,x.username
-			from WEBPORTAL_DB m ,WEBPORTAL_USER x
-			where  m.CREATE_USER=x.id and m.ID = #{id};
+			,x.username,h.HCLUSTER_NAME_ALIAS
+			from WEBPORTAL_DB m ,WEBPORTAL_USER x,WEBPORTAL_HCLUSTER h
+			where  m.CREATE_USER=x.id and m.ID = #{id} and h.ID = m.HCLUSTER_ID;
 	</select>
 	
 

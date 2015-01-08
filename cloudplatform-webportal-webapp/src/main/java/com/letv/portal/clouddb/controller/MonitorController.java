@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMonitorIndexService;
-import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -47,6 +47,8 @@ public class MonitorController {
 	@RequestMapping(value="/{dbId}/{chartId}/{strategy}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
 		DbModel dbModel = this.dbService.selectById(dbId);
+		if(dbModel == null)
+			throw new ValidateException("参数不合法，相关数据不存在");
 		result.setData(this.monitorProxy.getDbConnMonitor(dbModel.getMclusterId(), chartId, strategy));
 		return result;
 	}

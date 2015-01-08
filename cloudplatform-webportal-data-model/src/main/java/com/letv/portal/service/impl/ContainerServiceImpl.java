@@ -1,5 +1,7 @@
 package com.letv.portal.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +15,9 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IMclusterService;
 
 @Service("containerService")
 public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implements
@@ -21,6 +25,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	
 	@Resource
 	private IContainerDao containerDao;
+	@Resource
+	private IMclusterService mclusterService;
 	@Resource
 	private IDbDao dbDao;
 
@@ -80,5 +86,31 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 	public  List<ContainerModel> selectAllByMap(Map map){
 		return this.containerDao.selectAllByMap(map);	
+	}
+
+	@Override
+	public List<ContainerModel> selectVipIps4Monitor() {
+		return this.containerDao.selectVipIps4Monitor();
+	}
+
+	@Override
+	public List<ContainerModel> selectVaildVipContainers() {
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters();
+		List<ContainerModel> containers = new ArrayList<ContainerModel>();
+		for (MclusterModel mclusterModel : mclusters) {
+			containers.add(this.selectValidVipContianer(mclusterModel.getId(), "mclustervip"));
+		}
+		return containers;
+	}
+	
+	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		map.put("type", type);
+		List<ContainerModel> containers = this.selectAllByMap(map);
+		if(containers.isEmpty()) {
+			return null;
+		}
+		return containers.get(0);
 	}
 }

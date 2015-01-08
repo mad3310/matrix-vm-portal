@@ -7,16 +7,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
 
 public class DbUserControllerTest extends AbstractTest{
 	
 	@Resource
 	private IDbUserService dbUserService;
+	@Resource
+	private IDbUserProxy dbUserProxy;
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	/**
 	 * Methods Name: list <br>
@@ -123,5 +130,19 @@ public class DbUserControllerTest extends AbstractTest{
 	    System.out.print(tg.length);
     }
 	
+	@Test
+	public void testUpdateUserAuthority() {
+		DbUserModel dbUser = new DbUserModel();
+		dbUser.setUsername("sss");
+		dbUser.setDbId(21L);
+		dbUser.setMaxConcurrency(50);
+//		String ips="10.58.166.21,10.58.166.34,10.58.166.35,192.168.30.21";
+//		String types="1,2,3,1";
+		String ips="10.58.166.21,10.58.166.34,10.58.166.35";
+		String types="1,1,1";
+		
+		dbUser.setCreateUser(2L);
+		this.dbUserProxy.updateUserAuthority(dbUser, ips, types);
+	}
 	
 }

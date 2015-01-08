@@ -61,5 +61,19 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
 	public  List<ContainerModel> selectAllByMap(Map map);
+
+	/**Methods Name: selectVips4Monitor <br>
+	 * Description: 查询有效的vip节点ip，进行监控预警<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	public List<ContainerModel> selectVipIps4Monitor();
+
+	/**Methods Name: selectVaildVipContainers <br>
+	 * Description: 有效集群的vip节点<br>
+	 * @author name: liuhao1
+	 * @return
+	 */
+	public List<ContainerModel> selectVaildVipContainers();
 	
 }

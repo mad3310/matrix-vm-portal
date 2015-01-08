@@ -5,31 +5,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonAnyGetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.impl.FixedPushServiceImpl;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.InterfacesModel;
-import com.letv.portal.model.ZabbixParam;
-import com.letv.portal.model.ZabbixPushDeleteModel;
-import com.letv.portal.model.ZabbixPushModel;
+import com.letv.portal.model.zabbix.InterfacesModel;
+import com.letv.portal.model.zabbix.ZabbixParam;
+import com.letv.portal.model.zabbix.ZabbixPushDeleteModel;
+import com.letv.portal.model.zabbix.ZabbixPushModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
 @Service("zabbixPushService")
 public class ZabbixPushServiceImpl implements IZabbixPushService{
 	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
-	private final static String ZABBIX_POST_URL= ConfigUtil.getString("zabbix.post.url");
-	private final static String ZABBIX_NAME= ConfigUtil.getString("zabbix.name");
-	private final static String ZABBIX_PWD= ConfigUtil.getString("zabbix.pwd");
+
+	@Value("${zabbix.post.url}")
+	private String ZABBIX_POST_URL;
+	@Value("${zabbix.name")
+	private String ZABBIX_NAME;
+	@Value("${zabbix.pwd")
+	private String ZABBIX_PWD;
+	@Value("${zabbix.template.normal")
+	private String ZABBIX_TEMPLATE_NORMAL;
+	@Value("${zabbix.template.vip")
+	private String ZABBIX_TEMPLATE_VIP;
 	
 	@Autowired
 	private IContainerService containerService;
@@ -43,6 +49,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 				ZabbixPushModel zabbixPushModel = new ZabbixPushModel();
 							
 				ZabbixParam params = new ZabbixParam();
+				if("mclusternode".equals(c.getType())) {
+					params = new ZabbixParam(ZABBIX_TEMPLATE_NORMAL);
+					logger.info("mclusternode template:" + ZABBIX_TEMPLATE_NORMAL);
+				} else if("mclustervip".equals(c.getType())) {
+					params = new ZabbixParam(ZABBIX_TEMPLATE_VIP);
+					logger.info("mclustervip template:" + ZABBIX_TEMPLATE_VIP);
+				}
 				params.setHost(c.getContainerName());
 				
 				InterfacesModel interfacesModel = new InterfacesModel();

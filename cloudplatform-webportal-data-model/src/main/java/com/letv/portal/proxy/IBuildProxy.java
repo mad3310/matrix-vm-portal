@@ -1,7 +1,5 @@
 package com.letv.portal.proxy;
 
-import java.util.List;
-
 import com.letv.portal.model.BuildModel;
 
 /**Program Name: IBuildProxy <br>
@@ -13,9 +11,4 @@ import com.letv.portal.model.BuildModel;
  */
 public interface IBuildProxy extends IBaseProxy<BuildModel> {
 
-	public List<BuildModel> selectByMclusterId(Long mclusterId);
-
-	public void initStatus(Long mclusterId);
-	
-	public List<BuildModel> selectByDbId(Long dbId);
 }

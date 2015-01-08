@@ -59,6 +59,7 @@
 	          <!-- 如果请求中包含以下路径，则不进行拦截 -->
 	          <value>/login</value>
 	          <value>/static</value>
+	          <value>/jettyMonitor</value>
 	        </list>
 	      </property>
 	    </bean>

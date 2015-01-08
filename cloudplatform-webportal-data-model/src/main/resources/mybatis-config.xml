@@ -16,8 +16,8 @@
         <typeAlias alias="User" type="com.letv.portal.model.UserModel" />
         <typeAlias alias="MonitorDetail" type="com.letv.portal.model.MonitorDetailModel" />        
         <typeAlias alias="MonitorIndex" type="com.letv.portal.model.MonitorIndexModel" />
-        <typeAlias alias="MonitorView" type="com.letv.portal.model.MonitorViewModel" />
         <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />
+        <typeAlias alias="BackupResult" type="com.letv.portal.model.BackupResultModel" />
         
     </typeAliases>
 </configuration>

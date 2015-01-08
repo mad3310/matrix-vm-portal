@@ -1,11 +1,11 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.monitor.ClusterModel;
+import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
+import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IMonitorIndexService;
-import com.letv.portal.service.IMonitorService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -32,17 +34,18 @@ import com.letv.portal.service.IMonitorService;
 public class MonitorController {
 	
 	@Resource
-	private IContainerService containerService;
-	@Resource
-	private IMonitorService monitorService;
-	@Resource
 	private IMonitorProxy monitorProxy;
 	@Resource
 	private IMonitorIndexService monitorIndexService;
 	@Resource
 	private IContainerProxy containerProxy;
+	@Resource
+	private IContainerService containerService;
+	@Resource
+	private IMclusterService mclusterService;
 	
-	
+	@Autowired
+	private IBuildTaskService buildTaskService;
 	
 	/**
 	 * Methods Name: mclusterList <br>
@@ -54,9 +57,7 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/mcluster/list",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterList(ResultObject result) {
-		Map map = new HashMap<String, String>();
-		map.put("type", "mclustervip");
-		result.setData(this.containerProxy.selectMonitorMclusterList(map));
+		result.setData(this.containerService.selectVaildVipContainers());
 		return result; 
 	} 
 	/**
@@ -67,11 +68,21 @@ public class MonitorController {
 	 * @return
 	 */
 	@RequestMapping(value="/{ip}/mcluster/status",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorList(@PathVariable String ip,ResultObject result) {
-		Map map = new HashMap<String, String>();
-		map.put("ipAddr",ip);
-		List<ContainerMonitorModel> list =this.containerProxy.selectMonitorMclusterDetailOrList(map);
-		result.setData(list);
+	public @ResponseBody ResultObject monitorClusterList(@PathVariable String ip,ResultObject result) {
+		ClusterModel clusterModel = (ClusterModel) this.buildTaskService.getMonitorData(ip, 1L);
+		result.setData(clusterModel);
+		return result;
+	}
+	@RequestMapping(value="/{ip}/node/status",method=RequestMethod.GET)
+	public @ResponseBody ResultObject monitorNodeList(@PathVariable String ip,ResultObject result) {
+		NodeModel monitorNode = (NodeModel) this.buildTaskService.getMonitorData(ip, 2L);
+		result.setData(monitorNode);
+		return result;  
+	}
+	@RequestMapping(value="/{ip}/db/status",method=RequestMethod.GET)
+	public @ResponseBody ResultObject monitorDbList(@PathVariable String ip,ResultObject result) {
+		NodeModel monitorNode = (NodeModel) this.buildTaskService.getMonitorData(ip, 3L);
+		result.setData(monitorNode);
 		return result;  
 	}
     /**

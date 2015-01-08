@@ -2,7 +2,7 @@ package com.letv.portal.proxy;
 
 import java.util.List;
 
-import com.letv.portal.model.MonitorViewYModel;
+import com.letv.portal.model.monitor.MonitorViewYModel;
 
 
 

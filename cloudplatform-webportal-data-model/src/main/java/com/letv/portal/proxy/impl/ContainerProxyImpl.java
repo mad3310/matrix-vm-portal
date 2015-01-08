@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.ContainerMonitorModel;
+import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
@@ -54,32 +54,16 @@ public class ContainerProxyImpl extends BaseProxyImpl<ContainerModel> implements
 	public void checkStatus() {
 		List<ContainerModel> list = this.containerService.selectByMap(null);
 		for (ContainerModel container : list) {
-			this.checkStatus(container);
+			this.buildTaskService.checkContainerStatus(container);
 		}
 	}
 	
-	private void checkStatus(ContainerModel container) {
-		this.buildTaskService.checkContainerStatus(container);
-	}
-
-	@Override
-	public List<ContainerModel> selectByMclusterId(Long mclusterId) {
-		return this.containerService.selectByMclusterId(mclusterId);
-	}
-
-	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
-		return this.containerService.selectContainerByMclusterId(clusterId);
-	}
-
 	public List<ContainerMonitorModel> selectMonitorMclusterDetailOrList(Map map){
 		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
 		return  this.buildTaskService.getMonitorData(cModels);
-	}
 	
-	public List<ContainerModel> selectMonitorMclusterList(Map map){
-		List<ContainerModel> cModels = this.containerService.selectAllByMap(map);
-		return  cModels;
-	}	
+	}
+		
 	public ContainerMonitorModel selectMonitorDetailNodeAndDbData(String ip){
 		Map map = new HashMap<String, Object>();
 		map.put("ipAddr", ip);

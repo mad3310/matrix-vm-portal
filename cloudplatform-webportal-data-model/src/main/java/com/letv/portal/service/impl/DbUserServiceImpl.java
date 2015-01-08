@@ -1,10 +1,11 @@
 package com.letv.portal.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -19,9 +20,11 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbUserDao;
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.service.IDbUserService;
+import com.mysql.jdbc.StringUtils;
 
 
 @Service("dbUserService")
@@ -38,6 +41,9 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Value("${default.db.ro.name}")
+	private String DEFAULT_DB_RO_NAME;
 	
 	public DbUserServiceImpl() {
 		super(DbUserModel.class);
@@ -169,5 +175,67 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		DbUserModel dbUserModel = new DbUserModel();
 		dbUserModel.setId(Long.parseLong(dbUserId));
 		this.dbUserDao.update(dbUserModel);
+	}
+
+	@Override
+	public List<DbUserModel> selectGroupByName(Map<String, Object> params) {
+		return this.dbUserDao.selectGroupByName(params);
+	}
+	
+	@Override
+	public List<String> selectIpsFromUser(Long dbId) {
+		List<DbUserModel> dbUsers = this.selectIpsByDbIdAndUsername(dbId, DEFAULT_DB_RO_NAME);
+		List<String> ips = new ArrayList<String>();
+		for (DbUserModel dbUser : dbUsers) {
+			ips.add(dbUser.getAcceptIp());
+		}
+		return ips;
+	}
+
+	@Override
+	public List<Map<String,Object>> selectMarkIps4dbUser(Long dbId,String username) {
+		List<String> all =  this.selectIpsFromUser(dbId);
+		
+		List<Map<String,Object>> selected = new ArrayList<Map<String,Object>>();
+		
+		if(!StringUtils.isNullOrEmpty(username)) {
+			List<DbUserModel> dbUsers = this.selectByDbIdAndUsername(dbId, username);
+			for (DbUserModel dbUser : dbUsers) {
+				Map<String,Object> data = new HashMap<String,Object>();
+				String ip = dbUser.getAcceptIp();
+				data.put("addr",ip);
+				data.put("type", dbUser.getType());
+				data.put("used", 1);
+				selected.add(data);
+				
+				if(all.contains(ip)) {
+					all.remove(ip);
+				}
+			}
+		}
+		for (String ip : all) { //未使用ip
+			Map<String,Object> data = new HashMap<String,Object>();
+			data.put("addr",ip);
+			data.put("used", 0);
+			selected.add(data);
+		}
+		return selected;
+	}
+
+	@Override
+	public List<DbUserModel> selectByDbIdAndUsername(Long dbId, String username) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("username", username);
+		List<DbUserModel> dbUsers = this.selectByMap(params);
+		return dbUsers;
+	}
+	
+	private List<DbUserModel> selectIpsByDbIdAndUsername(Long dbId, String name4Ip) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		params.put("name4Ip",DEFAULT_DB_RO_NAME);
+		List<DbUserModel> dbUsers = this.selectByMap(params);
+		return dbUsers;
 	}
 }

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.model.MclusterModel;
@@ -64,12 +63,6 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	}
 
 	@Override
-	public Boolean isExistByName(String mclusterName) {
-		List<MclusterModel> mclusters = this.mclusterService.selectByName(mclusterName);
-		return mclusters.size() == 0?true:false;
-	}
-
-	@Override
 	public void insertAndBuild(MclusterModel mclusterModel) {
 		this.insert(mclusterModel);
 		buildTaskService.buildMcluster(mclusterModel);
@@ -105,24 +98,15 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		for (MclusterModel mcluster : list) {
 			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()
 					|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus()) {
-			} else {
-				this.checkStatus(mcluster);
+				continue;
 			}
+			this.buildTaskService.checkMclusterStatus(mcluster);
 		}
 	}
 	
-	private void checkStatus(MclusterModel mcluster) {
-		this.buildTaskService.checkMclusterStatus(mcluster);
-	}
-
 	@Override
 	public void checkCount() {
 		this.buildTaskService.checkMclusterCount();
-		
 	}
 
-	@Override
-	public List<MclusterModel> select4Run() {
-		return this.mclusterService.select4Run();
-	}
 }

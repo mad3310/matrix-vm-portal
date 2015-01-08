@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
@@ -13,10 +14,8 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.PasswordEncoder;
 import com.letv.portal.model.UserLogin;
-import com.letv.portal.model.UserModel;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.IUserService;
-import com.mysql.jdbc.StringUtils;
 
 
 @Controller
@@ -33,34 +32,29 @@ public class AccountController {
 
 	private final String ADMIN_PWD = ConfigUtil.getString("admin.pwd");
 	
-	@RequestMapping("/login")
-	public String login(HttpServletRequest request,HttpServletResponse response) {
+	@RequestMapping(value = "/login",method=RequestMethod.POST)
+	public String login(UserLogin userLogin,HttpServletRequest request,HttpServletResponse response) {
 		
-		String loginName=request.getParameter("loginName");
-		String password=request.getParameter("password");
-		
-		if(StringUtils.isNullOrEmpty(loginName)) {
+		if(!"sysadmin".equals(userLogin.getLoginName()) || !PasswordEncoder.md5Encode(ADMIN_PWD,null).equals(userLogin.getPassword()) ) {
+			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
-		} else {
-			if(!"sysadmin".equals(loginName) || !ADMIN_PWD.equals(password) ) {
-				request.setAttribute("error", "用户名或密码错误！");
-				return "/account/login";
-			}
-			UserLogin userLogin = new UserLogin();
-			userLogin.setUserName(loginName);
-			userLogin.setLoginIp(getIp(request));
-			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-			
-			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
-	            @Override
-	            public Session execute() throws Throwable {
-	               return null;
-	            }
-	         });
-			return "redirect:/dashboard";
 		}
+		userLogin.setLoginIp(getIp(request));
+		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
 		
+		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+            @Override
+            public Session execute() throws Throwable {
+               return null;
+            }
+         });
+		return "redirect:/dashboard";
+		
+	}
+	@RequestMapping(value = "/login",method=RequestMethod.GET)
+	public String toLogin() {
+		return "/account/login";
 	}
 	
 	@RequestMapping("/logout")   //http://localhost:8080/account/logout

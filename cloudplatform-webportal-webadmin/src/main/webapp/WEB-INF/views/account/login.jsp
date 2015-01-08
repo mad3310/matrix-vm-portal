@@ -65,7 +65,7 @@
 
 											<div class="space-6"></div>
 
-											<form class="form-horizontal" role="form" action="/account/login">
+											<form class="form-horizontal" role="form" action="/account/login" method="post" onsubmit="MD5Pwd()">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -76,7 +76,8 @@
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" id="password" name="password" placeholder="密码" />
+															<input type="password" class="form-control" id="passwordInput" name="passwordInput" placeholder="密码" />
+															<input type="hidden" class="form-control" id="password" name="password" placeholder="密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
@@ -274,7 +275,8 @@
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='${ctx}/static/ace/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
-
+		<script src="${ctx}/static/ace/js/jquery.min.js"></script>
+		<script src="${ctx}/static/scripts/jquery.md5.js"></script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			jQuery(function($) {
@@ -313,6 +315,10 @@
 			 });
 			 
 			});
+			
+			function MD5Pwd() {
+				$("#password").val($.md5($("#passwordInput").val()));
+			}
 		</script>
 	</body>
 </html>

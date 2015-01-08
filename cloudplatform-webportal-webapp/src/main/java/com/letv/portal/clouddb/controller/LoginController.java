@@ -51,7 +51,7 @@ public class LoginController{
 		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
 		if(principal != null) {
 			UserLogin userLogin = new UserLogin();
-			userLogin.setUserName(principal.getName());
+			userLogin.setLoginName(principal.getName());
 			userLogin.setLoginIp(LoginController.getIp(request));
 			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
@@ -67,43 +67,9 @@ public class LoginController{
 			throw new NoSessionException("请重新登录!");
 		}
         
-		mav.setViewName("redirect:/list/db");
+		mav.setViewName("redirect:/dashboard");
 		return mav;
 	}
-	
-/*	public String login(HttpServletRequest request){
-		
-		String redirectUrl = WebUtil.getRequestUrl(request);
-		String requestQueryStr = WebUtil.getRequestUri(request);
-		
-		if(!isReferrequest(request)
-		&& request.getHeader("referer").indexOf("passport.letv.com")<0)
-				throw new ValidateException("请确认请求地址正确");
-		
-		validateRetURL(redirectUrl);
-		
-		String userName = getUserNameFromPassportHeader(request, false);
-		
-		UserLogin userLogin = new UserLogin();
-		userLogin.setUserName(userName);
-		String ip = getIp(request);
-		userLogin.setLoginIp(ip);
-	    //loginProxy
-		Session userSession = loginProxy.saveOrUpdateUserAndLogin(userLogin);
-		//设置全局的session
-		if (StringUtils.isEmpty(redirectUrl)) {
-			return LogoutController.DASHBORAD_ADDRESS;
-		}
-		
-		if(StringUtils.isNotEmpty(requestQueryStr))
-		{
-			requestQueryStr = WebUtil.urlDecode(requestQueryStr);
-			redirectUrl += "?" + requestQueryStr;
-		}
-		
-		return "redirectUrl";
-   }*/
-	
 	
 	private void validateRetURL(String retURL)
 	{

@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
+import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IMclusterService;
 import com.letv.portal.view.DbAuditView;
+import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbController <br>
  * Description:  db数据库的相关操作<br>
@@ -31,7 +35,11 @@ public class DbController {
 	@Autowired
 	private IDbProxy dbProxy;
 	@Autowired
+	private IDbService dbService;
+	@Autowired
 	private IMclusterProxy mclusterProxy;
+	@Autowired
+	private IMclusterService mclusterService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbController.class);
 
@@ -62,7 +70,7 @@ public class DbController {
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
 		ResultObject obj = new ResultObject();	
-		obj.setData(this.dbProxy.dbList(dbId));
+		obj.setData(this.dbService.dbList(dbId));
 		return obj;
 	}
 	
@@ -74,6 +82,12 @@ public class DbController {
 	 */
 	@RequestMapping(value="/audit",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(DbAuditView dbAuditView) {
+		if(!StringUtils.isNullOrEmpty(dbAuditView.getMclusterName())) {
+			Boolean isExist= this.mclusterService.isExistByName(dbAuditView.getMclusterName());
+			if(!isExist) {
+				throw new ValidateException("集群名称已存在");
+			}
+		}
 		ResultObject obj = new ResultObject();
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbId", dbAuditView.getDbId());

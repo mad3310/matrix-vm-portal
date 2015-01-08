@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
@@ -50,14 +49,12 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
+	@Value("${db.auto.build.count}")
+	private int DB_AUTO_BUILD_COUNT;
+	
 	@Override
 	public IBaseService<DbModel> getService() {
 		return dbService;
-	}
-	public DbModel dbList(Long dbId){
-		DbModel db = this.dbService.selectById(dbId);
-		db.setContainers(this.containerService.selectByMclusterId(db.getMclusterId()));
-		return db;
 	}
 	@Override
 	public void auditAndBuild(Map<String, Object> params) {
@@ -79,7 +76,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
 				mcluster.setMclusterName(mclusterName);
-				mcluster.setHclusterId(hclusterId);
+				mcluster.setHclusterId(hclusterId == null?this.dbService.selectById(dbId).getHclusterId():hclusterId);
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);
@@ -108,7 +105,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		map.put("createUser", userId);
 		
 		List<DbModel> list = this.dbService.selectByMap(map);
-		if(list.size() <= ConfigUtil.getint("db.auto.build.count")) {
+		if(list.size() <= DB_AUTO_BUILD_COUNT) {
 			//创建mcluster集群
 			Map<String,Object> params = new HashMap<String,Object>();
 			
@@ -126,7 +123,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			emailParams.put("createUser", sessionService.getSession().getUserName());
 			emailParams.put("createTime", sdf.format(new Date()));
 			emailParams.put("dbName", dbModel.getDbName());
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","createDb.ftl",emailParams);
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","auditDbNotice.ftl",emailParams);
 			try {
 				defaultEmailSender.sendMessage(mailMessage);
 			} catch (Exception e) {
@@ -134,13 +131,6 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 				logger.error(e.getMessage());
 			}
 		}
-	}
-	@Override
-	public DbModel monitor4conn(Long dbId, Long chartId, Long strategy) {
-		// TODO Auto-generated method stub
-		Long mclusterId = this.dbService.selectById(dbId).getMclusterId();
-		
-		return null;
 	}
 	
 }

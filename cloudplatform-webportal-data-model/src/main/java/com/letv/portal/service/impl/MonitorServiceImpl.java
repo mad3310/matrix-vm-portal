@@ -8,16 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IMonitorDao;
-import com.letv.portal.dao.IMonitorViewDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
-import com.letv.portal.model.MonitorViewYModel;
+import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
@@ -25,11 +26,10 @@ import com.letv.portal.service.IMonitorService;
 @Service("monitorService")
 public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> implements IMonitorService {
 
-	@Autowired
-	private IMonitorDao monitorDao;
+	private final static Logger logger = LoggerFactory.getLogger(MonitorServiceImpl.class);
 	
 	@Autowired
-	private IMonitorViewDao monitorViewDao;
+	private IMonitorDao monitorDao;
 	
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
@@ -53,6 +53,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 	@Override
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId,Integer strategy) {
+		logger.info("get Data-------start");
+		Date start = new Date();
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("mclusterId", mclusterId);
@@ -60,20 +62,16 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	    List<ContainerModel> containers = this.containerService.selectByMap(map);	  
 	    
 	    MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-	    String dataTable = monitorIndexModel.getDetailTable();
-	    
-	    Map<String, Object> indexParams = new HashMap<String, Object>();
-	    indexParams.put("dbName",monitorIndexModel.getDetailTable());
-	    
 	    Date end = new Date();
-	   
-	    List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+	    String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 	    
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put("dbName", monitorIndexModel.getDetailTable());
 		params.put("start", getStartDate(end,strategy));
 		params.put("end", end);
+		Date prepare = new Date();
+		logger.info("get Data-------prepare" + (prepare.getTime()-start.getTime())/1000);
 		
 		for (ContainerModel c : containers) {
 			for (String s : detailNames) {
@@ -94,7 +92,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				ydatas.add(ydata);
 			}
 		}
-
+		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
 	@Override
@@ -102,14 +100,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
 		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
-		String dataTable = monitorIndexModel.getDetailTable();
-		
-		Map<String, Object> indexParams = new HashMap<String, Object>();
-		indexParams.put("dbName",monitorIndexModel.getDetailTable());
-		
 		Date end = new Date();
-		
-		List<String> detailNames =  this.monitorDao.selectDistinct(indexParams);
+		String[] detailNames =  monitorIndexModel.getMonitorPoint().split(",");
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		
@@ -181,5 +173,33 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
     public List<MonitorIndexModel> selectMonitorCount(){
     	return this.monitorIndexService.selectMonitorCount();
     }
+
+
+	@Override
+	public Float selectDbStorage(Long mclusterId) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("mclusterId", mclusterId);
+	    map.put("type", "mclusternode");
+	    List<ContainerModel> containers = this.containerService.selectByMap(map);
+	    if(containers.size()<0) {
+	    	return 0F;
+	    }
+		return this.monitorDao.selectDbStorage(containers.get(0).getIpAddr());
+	}
+
+
+	@Override
+	public List<Map<String,Object>> selectDbConnect(Long mclusterId) {
+		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("mclusterId", mclusterId);
+	    map.put("type", "mclusternode");
+	    List<ContainerModel> containers = this.containerService.selectByMap(map);
+	    if(containers.size()<0) {
+	    	return null;
+	    }
+		return this.monitorDao.selectDbConnect(containers.get(0).getIpAddr());
+	}
 
 }

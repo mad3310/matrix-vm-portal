@@ -138,7 +138,27 @@ public class InitializingJob {
 			collectMclusterServiceData.setCronExpression("0 0/1 * * * ?");
 			collectMclusterServiceData.setDescn("获取监控数据");
 			jobs.add(collectMclusterServiceData);
+			
+			//数据库全量备份，每天凌晨4点
+			ScheduleJobModel backupDbData = new ScheduleJobModel();
+			backupDbData.setJobName("wholeBackup4Db");
+			backupDbData.setJobMethod("wholeBackup4Db");
+			backupDbData.setJobGroup("webportal");
+			backupDbData.setJobStatus("1");
+			backupDbData.setCronExpression("0 0/30 * * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData.setDescn("db数据库全量备份");
+			jobs.add(backupDbData);
+			//数据库全量备份检查 ，每隔一小时
+			ScheduleJobModel checkBackupStatus = new ScheduleJobModel();
+			checkBackupStatus.setJobName("checkBackupStatus");
+			checkBackupStatus.setJobMethod("checkBackupStatus");
+			checkBackupStatus.setJobGroup("webportal");
+			checkBackupStatus.setJobStatus("1");
+			checkBackupStatus.setCronExpression("0 0/10 * * * ?");
+			checkBackupStatus.setDescn("db数据库全量备份检查");
+			jobs.add(checkBackupStatus);
 		}
+		
 		return jobs;
 	}
       

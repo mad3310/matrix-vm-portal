@@ -20,6 +20,8 @@ public class ContainerController {
 	
 	@Resource
 	private IContainerProxy containerProxy;
+	@Resource
+	private IContainerService containerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(ContainerController.class);
 	
@@ -32,7 +34,7 @@ public class ContainerController {
 	 */
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long mclusterId,ResultObject result) {
-		result.setData(this.containerProxy.selectByMclusterId(mclusterId));
+		result.setData(this.containerService.selectByMclusterId(mclusterId));
 		return result;
 	}
 	

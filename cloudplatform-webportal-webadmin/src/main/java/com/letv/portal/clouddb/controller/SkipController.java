@@ -1,13 +1,15 @@
 package com.letv.portal.clouddb.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.letv.common.result.ResultObject;
 
 /**Program Name: SkipController <br>
  * Description:  用于页面跳转       list、detail、form、……<br>
@@ -116,9 +118,17 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/list/mcluster/monitor",method=RequestMethod.GET)
-	public ModelAndView toMonitorCotainer(ModelAndView mav){
-		mav.setViewName("/clouddb/mcluster_monitor_list");
+	@RequestMapping(value="/list/mcluster/monitor/{type}",method=RequestMethod.GET)
+	public ModelAndView toMonitorCotainer(@PathVariable int type,ModelAndView mav){
+		String viewName= "";
+		if(type == 1) {
+			viewName = "/clouddb/mcluster_monitor_list";
+		} else if(type == 2) {
+			viewName = "/clouddb/monitor_node_list";
+		} else if(type == 3) {
+			viewName = "/clouddb/monitor_db_list";
+		}
+		mav.setViewName(viewName);
 		return mav;
 	}
 
@@ -147,5 +157,10 @@ public class SkipController {
 	public ModelAndView toMonitorCotainerView(ModelAndView mav){
 		mav.setViewName("/clouddb/mcluster_monitor_view");
 		return mav;
+	}
+
+	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
+	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
+		return obj;
 	}
 }

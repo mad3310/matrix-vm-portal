@@ -10,15 +10,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.ContainerPush;
-import com.letv.portal.model.FixedPushModel;
+import com.letv.portal.model.fixed.FixedPushModel;
 
 
 
@@ -34,11 +34,14 @@ import com.letv.portal.model.FixedPushModel;
 public class FixedPushServiceImpl implements IFixedPushService{
 	
 	
-	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);	
-	private final static String FIXEDPUSH_GET=ConfigUtil.getString("fixedpush.url");
-	private final static String FIXEDPUSH_SOCKET_IP=ConfigUtil.getString("fixedpush.url.ip");
-	private final static int FIXEDPUSH_SOCKET_PORT=ConfigUtil.getint("fixedpush.url.port");
+	private final static Logger logger = LoggerFactory.getLogger(FixedPushServiceImpl.class);
 	
+	@Value("${fixedpush.url}")
+	private String FIXEDPUSH_GET;
+	@Value("${fixedpush.url.ip}")
+	private String FIXEDPUSH_SOCKET_IP;
+	@Value("${fixedpush.url.port}")
+	private int FIXEDPUSH_SOCKET_PORT;
 	/**
 	 * Methods Name: createMutilContainerPushFixedInfo <br>
 	 * Description: 备案多个container<br>

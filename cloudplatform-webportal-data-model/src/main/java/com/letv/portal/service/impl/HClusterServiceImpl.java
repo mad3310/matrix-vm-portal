@@ -13,14 +13,9 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IHclusterDao;
-import com.letv.portal.dao.IHostDao;
 import com.letv.portal.model.HclusterModel;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHclusterService;
-import com.letv.portal.service.IHostService;
-import com.letv.portal.service.IMclusterService;
 
 @Service("hclusterService")
 public class HClusterServiceImpl extends BaseServiceImpl<HclusterModel> implements

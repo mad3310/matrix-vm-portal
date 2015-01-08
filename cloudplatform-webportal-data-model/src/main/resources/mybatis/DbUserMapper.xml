@@ -27,6 +27,7 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		<result column="DESCN" property="descn" />
 		
 		<association property="db" javaType="Db">
 			<result column="DB_NAME" property="dbName" />
@@ -48,13 +49,25 @@
 				and m.ID=#{id}
 			</if>
 			<if test="username != null  and username != '' ">
-				and m.DBUSER_NAME like CONCAT('%','${username}','%')
+				and m.USERNAME like CONCAT('%','${username}','%')
 			</if>
-			<if test="DbUserIp != null  and DbUserIp != '' ">
-				and m.DBUSER_IP like CONCAT('%','${DbUserIp}','%')
+			<if test="acceptIp != null  and acceptIp != '' ">
+				and m.ACCEPT_IP like CONCAT('%','${acceptIp}','%')
+			</if>
+			<if test="dbId != null  ">
+				and m.DB_ID=#{dbId}
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
+			</if>
+			<if test="deleted != null  ">
+				and m.DELETED=#{deleted}
+			</if>
+			<if test="name4Ip == null  ">
+				and m.USERNAME != '#$*defaultRO'
+			</if>
+			<if test="name4Ip != null  ">
+				and m.USERNAME = #{name4Ip}
 			</if>
 		</trim>
 	</sql>
@@ -65,7 +78,7 @@
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
 		m.ID,m.DB_ID,m.USERNAME,m.PASSWORD,m.SALT,m.TYPE,m.ACCEPT_IP,m.MAX_CONCURRENCY,m.READ_WRITER_RATE,m.MAX_QUERIES_PER_HOUR,m.MAX_UPDATES_PER_HOUR,m.MAX_CONNECTIONS_PER_HOUR,m.MAX_USER_CONNECTIONS,
-		m.STATUS,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER
+		m.STATUS,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER,m.DESCN
 	</sql>
 	
 	<!-- 插入记录 -->
@@ -73,10 +86,10 @@
 		insert into
 		WEBPORTAL_DB_USER
 		(DB_ID,USERNAME,PASSWORD,SALT,TYPE,ACCEPT_IP,MAX_CONCURRENCY,READ_WRITER_RATE,MAX_QUERIES_PER_HOUR,MAX_UPDATES_PER_HOUR,MAX_CONNECTIONS_PER_HOUR,MAX_USER_CONNECTIONS,
-		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN)
 		values
 		(#{dbId},#{username},#{password},#{salt},#{type},#{acceptIp},#{maxConcurrency},#{readWriterRate},#{maxQueriesPerHour},#{maxUpdatesPerHour},#{maxConnectionsPerHour},#{maxUserConnections},
-		#{status},1,now(),#{createUser},now(),#{updateUser})
+		#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{descn})
 	    </insert>
 	    
 	    
@@ -133,6 +146,15 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
+	<select id="selectGroupByName" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_DB_USER m
+		<include refid="Example_Where_Clause" />
+		group by USERNAME
+	</select>
+	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
@@ -167,7 +189,12 @@
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
 				and n.DB_NAME like CONCAT('%','${params.dbName}','%')
 			</if>
-			
+			<if test="params != null and params.name4Ip == null  ">
+				and m.USERNAME != '#$*defaultRO'
+			</if>
+			<if test="params != null and params.name4Ip != null  ">
+				and m.USERNAME = #{name4Ip}
+			</if>
 		</trim>
 	</sql>
   
@@ -228,7 +255,10 @@
 			m.MAX_UPDATES_PER_HOUR=#{maxUpdatesPerHour},
 		</if>		
 		<if test="maxConnectionsPerHour != null  ">
-			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour}
+			m.MAX_CONNECTIONS_PER_HOUR=#{maxConnectionsPerHour},
+		</if>	
+		<if test="descn != null  ">
+			m.DESCN=#{descn}
 		</if>	
 		</set>			
 		where m.ID = #{id}
