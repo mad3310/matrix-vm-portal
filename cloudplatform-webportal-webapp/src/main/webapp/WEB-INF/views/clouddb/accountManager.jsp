@@ -248,7 +248,7 @@
 					</label>
 					<div class="col-sm-8 row">
 						<div class="col-sm-4">
-							<label id="modifyFormDbUsername" class="col-sm-2 control-label"></label>
+							<label id="modifyFormDbUsername" style="padding-top:7px"></label>
 						</div>
 					</div>
 				</div>
@@ -340,7 +340,7 @@
 					<label class="col-sm-2 control-label">备注说明：</label>
 					<div class="col-sm-10 row">
 						<div class="col-sm-4">
-							<label id="modifyFormDbDesc" class="col-sm-2 control-label"></label>
+							<label id="modifyFormDbDesc" style="padding-top:7px"></label>
 						</div>
 					</div>
 				</div>
