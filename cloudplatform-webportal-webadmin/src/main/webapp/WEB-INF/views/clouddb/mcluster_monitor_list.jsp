@@ -146,10 +146,11 @@
 					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th width="25%">container集群名称</th>
-							<th width="25%">VIP节点地址</th>
-							<th width="25%">所属物理机集群</th>
-							<th width="25%" class="hidden-480">当前状态</th>
+							<th width="20%">container集群名称</th>
+							<th width="20%">VIP节点地址</th>
+							<th width="20%">所属物理机集群</th>
+							<th width="20%" class="hidden-480">当前状态</th>
+							<th width="20%">操作</th>
 						</tr>
 					</thead>
 						<tbody id="tby">
