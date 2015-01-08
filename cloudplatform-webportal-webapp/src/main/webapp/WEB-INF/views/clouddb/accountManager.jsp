@@ -47,7 +47,7 @@
 						<th width="10%">频次限制
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th>备注说明</th>
+						<th width="15%">备注说明</th>
 						<th class="text-right" width="30%">
 							<span style="padding-left:8px">操作</span>
 						</th>
@@ -406,7 +406,7 @@
 				</div>
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-				<!--<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button> -->
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>
 		</div>
