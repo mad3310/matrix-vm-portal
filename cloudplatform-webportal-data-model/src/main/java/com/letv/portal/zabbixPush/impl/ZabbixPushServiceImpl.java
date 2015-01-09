@@ -28,13 +28,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 
 	@Value("${zabbix.post.url}")
 	private String ZABBIX_POST_URL;
-	@Value("${zabbix.name")
+	@Value("${zabbix.name}")
 	private String ZABBIX_NAME;
-	@Value("${zabbix.pwd")
+	@Value("${zabbix.pwd}")
 	private String ZABBIX_PWD;
-	@Value("${zabbix.template.normal")
+	@Value("${zabbix.template.normal}")
 	private String ZABBIX_TEMPLATE_NORMAL;
-	@Value("${zabbix.template.vip")
+	@Value("${zabbix.template.vip}")
 	private String ZABBIX_TEMPLATE_VIP;
 	
 	@Autowired
