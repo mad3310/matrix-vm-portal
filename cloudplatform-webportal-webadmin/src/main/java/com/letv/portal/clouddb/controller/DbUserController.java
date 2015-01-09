@@ -74,7 +74,11 @@ public class DbUserController {
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable Long dbId) {
 		ResultObject obj = new ResultObject();
-		obj.setData(this.dbUserService.selectByDbId(dbId));
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("dbId", dbId);
+		
+		obj.setData(this.dbUserService.selectByMap(params));
 		return obj;
 	}
 	/**

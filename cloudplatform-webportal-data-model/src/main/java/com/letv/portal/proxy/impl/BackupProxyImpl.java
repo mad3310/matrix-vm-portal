@@ -110,8 +110,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			if(status == BackupStatus.FAILD)
 				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(), resultDetail,date,container.getIpAddr());
 		}
-		return;
-		
 	}
 	
 	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
