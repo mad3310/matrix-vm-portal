@@ -5,6 +5,7 @@ define(function(require,exports,module){
     var $ = require('jquery');
     var common = require('../common');
     var cn = new common();
+    var dbUsernames = new Array();
 
     var DataHandler = function(){
     };
@@ -12,11 +13,20 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
+        usernamExist: function () {
+            for(var i= 0,len=dbUsernames.length;i<len;i++){
+                if($("[name='username']").val()==dbUsernames[i]){
+                    return false;
+                }
+            }
+            return true;
+        },
         DbUserListHandler : function(data){
             $(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data;
             for(var i= 0, len= array.length;i<len;i++){
+                dbUsernames.push(array[i].username);
                 var td1 = $("<td>"+ array[i].username +"</td>");
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
