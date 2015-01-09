@@ -30,7 +30,7 @@ define(function(require,exports,module){
     function  InitChart(obj,title,ytitle,unit){
         $(obj).highcharts({
             chart: {
-                type: 'area',
+                type: 'areaspline',
                 zoomType: 'x',
                 spacingRight: 20
             },
@@ -66,7 +66,9 @@ define(function(require,exports,module){
                 }
             },
             plotOptions: {
-                area: {
+            	lineWidth: 0.1,  
+                fillOpacity: 0.1,
+                areaspline: {
                     marker: {
                         enabled: false,
                         symbol: 'circle',
@@ -77,7 +79,16 @@ define(function(require,exports,module){
                             }
                         }
                     }
-                }
+                },
+                series:{
+                	lineWidth: 0.5,  
+                    fillOpacity: 0.5,
+                    states:{
+                        hover:{
+                            lineWidthPlus:0
+                        }
+                	}
+            	}
             },
             credits:{
                 enabled: false

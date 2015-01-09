@@ -361,7 +361,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
 					Map<String,Object> emailParams = new HashMap<String,Object>();
 					emailParams.put("dbUserName", dbUserModel.getUsername());
-					emailParams.put("dbUserPassword", "-");
+					emailParams.put("dbUserPassword", dbUserModel.getPassword());
 					emailParams.put("ip", dbUserModel.getAcceptIp());
 					emailParams.put("dbName", params.get("dbName"));
 					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
