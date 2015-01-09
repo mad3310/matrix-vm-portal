@@ -320,7 +320,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String wholeBackup4Db(String ipAddr,String name, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup");
-		String result = HttpClient.get(url.toString(),name,password);
+		String result = HttpClient.get(url.toString(),1000,5000,name,password);
 		return result;
 	}
 
