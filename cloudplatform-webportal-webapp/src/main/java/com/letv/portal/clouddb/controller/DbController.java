@@ -111,14 +111,6 @@ public class DbController {
 		logger.info("get db by dbId start");
 		ResultObject obj = new ResultObject();
 		DbModel db = this.dbService.dbList(dbId);
-		logger.info("db Name:" + db.getDbName());
-		logger.info("db createUser:" + db.getCreateUser());
-		logger.info("session userid:" + sessionService.getSession().getUserId());
-		/*if(db.getCreateUser() == sessionService.getSession().getUserId()) {
-			obj.setData(db);
-		} else {
-			obj.setResult(0);
-		}*/
 		obj.setData(db);
 		return obj;
 	}	
