@@ -52,8 +52,11 @@ define(function(require){
                         max: 16,
                         message: '用户名过长!'
                     }, regexp: {
-                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+                        regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
                         message: "请输入字母数字或'_',用户名不能以数字开头."
+                    },callback:{
+                        message:"用户名已存在.",
+                        callback: dbUser.usernamExist
                     }
                 }
             },
