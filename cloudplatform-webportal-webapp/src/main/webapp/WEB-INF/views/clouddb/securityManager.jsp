@@ -62,7 +62,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-10">
-							<span class="help-block">请以逗号隔开，不可重复，最多100个。</span> <span class="help-block">支持格式如：10.23.12.24,10.23.34.%</span>
+							<span class="text-danger">*注意:如果删除IP,会同时删除与该IP相关的账户权限!</span> <span class="help-block">请以逗号隔开，不可重复，最多100个。支持格式如：10.23.12.24,10.23.34.%</span>
 						</div>
 					</div>
 					<div class="form-group">
@@ -94,6 +94,29 @@
 						</tr>
 					</thead>
 				</table>
+			</div>
+		</div>
+	</div>
+	<!--确认对话框-->
+	<div id="dialog-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!--	<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+							</button>-->
+					<h5 id="dialog-box-title" class="modal-title"></h5>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="col-sm-1 col-md-1 warning-sign">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+					</div>
+					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+					<!--<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>-->
+				</div>
 			</div>
 		</div>
 	</div>
