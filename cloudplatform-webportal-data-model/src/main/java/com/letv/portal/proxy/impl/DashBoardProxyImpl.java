@@ -94,6 +94,10 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		int timeout = 0;
 		for (MclusterModel mcluster : mclusters) {
 			ContainerModel container = this.selectValidVipContianer(mcluster.getId(), "mclustervip");
+			if(container == null) {
+				timeout++;
+				continue;
+			}
 			BaseMonitor monitor = this.buildTaskService.getMonitorData(container.getIpAddr(),monitorType); 
 			if(MonitorStatus.NORMAL.getValue() == monitor.getResult()) {
 				nothing++;

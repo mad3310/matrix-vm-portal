@@ -70,6 +70,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	@Override
 	@Async
 	public void wholeBackup4Db(MclusterModel mcluster) {
+		Date date = new Date();
 		if(mcluster == null)
 			return;
 		
@@ -79,14 +80,21 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		List<DbModel> dbModels = this.dbService.selectDbByMclusterId(mcluster.getId());
 		
 		if(container == null || dbModels.isEmpty()) return;
+		
+		BackupStatus status = BackupStatus.BUILDING;
+		String resultDetail = "";
 		//调用备份接口
 		String result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
 		if(StringUtils.isNullOrEmpty(result)) {
-			//发送邮件通知
-			for (DbModel dbModel : dbModels) {
-				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(),"Connection refused",new Date(),container.getIpAddr());
+			status = BackupStatus.FAILD;
+			resultDetail = "Connection refused";
+		} else {
+			if(result.contains("\"code\": 200")) {
+				status = BackupStatus.BUILDING;
+			} else {
+				status = BackupStatus.FAILD;
+				resultDetail = "api not found";
 			}
-			return;
 		}
 		for (DbModel dbModel : dbModels) {
 			//将备份记录写入数据库。
@@ -94,15 +102,14 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			backup.setMclusterId(mcluster.getId());
 			backup.setDbId(dbModel.getId());
 			backup.setBackupIp(container.getIpAddr());
-			backup.setStartTime(new Date());
-			if(result.contains("\"code\": 200")) {
-				backup.setStatus(BackupStatus.BUILDING);
-			} else {
-				backup.setStatus(BackupStatus.FAILD);
-			}
+			backup.setStartTime(date);
+			backup.setStatus(status);
+			backup.setResultDetail(resultDetail);
 			super.insert(backup);
+			//发送邮件通知
+			if(status == BackupStatus.FAILD)
+				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(), resultDetail,date,container.getIpAddr());
 		}
-		
 	}
 	
 	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
@@ -142,21 +149,24 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				} else if(result.contains("back up is processing")) {
 					status = BackupStatus.BUILDING;
 				}
-			} else {
+			} else if(result.contains("\"code\": 411")) {
 				status = BackupStatus.FAILD;
 				resultDetail = result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},"));
+			} else {
+				status = BackupStatus.FAILD;
+				resultDetail = "api not found";
 			}
 		}
-	
+		Date date = new Date();
 		backup.setStatus(status);
 		backup.setResultDetail(resultDetail);
-		backup.setEndTime(new Date());
+		backup.setEndTime(date);
 		this.backupService.updateBySelective(backup);
 		
 		if(status.equals(BackupStatus.FAILD)) {
 			logger.info("check backup faild");
 			//发送邮件通知
-			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
+			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,date,backup.getBackupIp());
 		}
 	}
 	
