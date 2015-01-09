@@ -23,6 +23,11 @@ define(function(require){
     $("#modifyIpList").click(function () {
         $("#ipList").addClass("hide");
         $("#ipForm").removeClass("hide");
+
+        /*var title = "注意";
+        var text = "如果删除IP,会同时删除与该IP相关的账户权限!";
+        cn.DialogBoxInit(title,text,function() {
+        })*/
     })
     $("[name = 'submitIpForm']").click(function () {
         $("#ipForm").addClass("hide");
