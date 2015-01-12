@@ -166,7 +166,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		if(status.equals(BackupStatus.FAILD)) {
 			logger.info("check backup faild");
 			//发送邮件通知
-			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,date,backup.getBackupIp());
+			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
 		}
 	}
 	
