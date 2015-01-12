@@ -155,10 +155,11 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'密码不能为空'
-                    },regexp: {
+                    }
+            		/*,regexp: {
                         regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,32}$/,
                         message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
-                    }
+                    }*/
                 }
             },
             modifyFormNewPwd2: {
