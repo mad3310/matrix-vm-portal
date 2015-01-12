@@ -620,7 +620,7 @@
                  <webportal.cas.local.http>http://rds3.et.letv.com</webportal.cas.local.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>duanwei1@letv.com;liuhao1@letv.com;wangzhen3@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -674,7 +674,7 @@
                 <fixedpush.url.port>39450</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
-                <zabbix.post.url>http://zabbix.letv.cn/zabbix/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.post.url>http://115.182.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
                 <zabbix.template.normal>23187</zabbix.template.normal>
