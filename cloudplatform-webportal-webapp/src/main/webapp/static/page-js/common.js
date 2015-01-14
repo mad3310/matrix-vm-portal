@@ -23,14 +23,12 @@ define(function(require,exports,module){
                 $(this).tooltip('hide');
             });
         },
-        Collapse : function(id){
-            $(id).click(function(){
-            	if($(this).find(".glyphicon-chevron-down").length>0){
-            		$(this).find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
-            	}else{
-            		$(this).find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
-            	}
-            });
+        Collapse : function(){
+        	$(".collapse").on('show.bs.collapse', function () {
+        			$(this).prev().find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+        	}).on('hide.bs.collapse', function () {
+        			$(this).prev().find(".glyphicon-chevron-down").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+        	})
         },
 		TranslateDbUserType: function(type){
 			if(type == 1){
