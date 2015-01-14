@@ -10,7 +10,7 @@ define(function(require){
     cn.Tooltip('#serviceName');
 
 /*手风琴收放效果箭头变化*/
-    cn.Collapse(".collapse-selector");
+    cn.Collapse();
 
 /*加载数据*/
     var dataHandler = require('./dataHandler');
