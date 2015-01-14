@@ -674,7 +674,7 @@
                 <fixedpush.url.port>39450</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
-                <zabbix.post.url>http://115.182.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
                 <zabbix.name>cloude_api</zabbix.name>
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
                 <zabbix.template.normal>23187</zabbix.template.normal>
