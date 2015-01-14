@@ -243,6 +243,7 @@ define(function(require,exports,module){
         GetData : function(url,handler){  //异步获取数据,将数据交给handler处理
             $.ajax({
                 url:url,
+				cache:false,
                 type:"get",
                 dataType:'json',
                 success:function(data){
@@ -254,6 +255,7 @@ define(function(require,exports,module){
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
             $.ajax({
                 url:url,
+				cache:false,
                 type:"post",
                 dataType:'json',
                 data:data,

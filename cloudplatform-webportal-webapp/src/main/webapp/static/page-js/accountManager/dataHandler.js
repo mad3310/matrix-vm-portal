@@ -282,11 +282,11 @@ define(function(require,exports,module){
         + "</p>"
         + "</li>");
         if(data.type == 1){
-            $li.find("input:first").click();
+            $li.find("input:first").attr("checked",true);
         }else if(data.type == 2){
-            $li.find("input:eq(1)").click();
+            $li.find("input:eq(1)").attr("checked",true);
         }else{
-            $li.find("input:eq(2)").click();
+            $li.find("input:eq(2)").attr("checked",true);
         }
         $li.appendTo($sr);
     };
