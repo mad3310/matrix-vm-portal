@@ -1366,5 +1366,11 @@ input::-ms-clear{display:none;}
 
 /* IE10页面覆盖问题css */
 .embed-responsive .embed-responsive-item{
-	-webkit-padding-right:15px!important;
+	padding-right:15px !important; /* firefox */
+	padding-right:15px\0; /* ie8 */
+	/* +padding-top:85px; ie7  */
+	_padding-right:15px; /* ie6 */
+	-webkit-padding-right:15px;
 }
+
+
