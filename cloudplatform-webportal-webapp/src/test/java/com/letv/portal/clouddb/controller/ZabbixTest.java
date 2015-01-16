@@ -44,9 +44,10 @@ public class ZabbixTest extends AbstractTest {
 		try {
 			List<ContainerModel> list  = new ArrayList<ContainerModel>();
 			ContainerModel containerModel1 = new ContainerModel();
-			containerModel1.setContainerName("www3");
-			containerModel1.setIpAddr("10.58.166.34");
+			containerModel1.setContainerName("abc");
+			containerModel1.setIpAddr("10.154.238.147");
 			containerModel1.setId(3L);
+			containerModel1.setType("mclustervip");
 			list.add(containerModel1);
 		
 			flag = zabbixPushService.createMultiContainerPushZabbixInfo(list);
@@ -62,9 +63,10 @@ public class ZabbixTest extends AbstractTest {
 		try {
 			List<ContainerModel> list  = new ArrayList<ContainerModel>();
 			ContainerModel containerModel1 = new ContainerModel();
-			containerModel1.setContainerName("www3");
-			containerModel1.setIpAddr("10.58.166.34");
+			containerModel1.setContainerName("daocaorgege");
+			containerModel1.setIpAddr("10.58.166.21");
 			containerModel1.setId(3L);
+			containerModel1.setType("mclustervip");
 			list.add(containerModel1);
 		
 			flag = zabbixPushService.createMultiContainerPushZabbixInfo(list);
