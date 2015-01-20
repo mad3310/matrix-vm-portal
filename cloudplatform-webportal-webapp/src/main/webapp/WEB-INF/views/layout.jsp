@@ -166,7 +166,6 @@ seajs.config({
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 	}
 });
-
 seajs.use("${ctx}/static/page-js/layout/main");
 </script>
 
