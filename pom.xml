@@ -691,9 +691,9 @@
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
                 <zabbix.template.normal>23187</zabbix.template.normal>
                 <zabbix.template.vip>65134</zabbix.template.vip>
-                <zabbix.host.groupid>8,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
                 
                 <task.executor.size>150</task.executor.size>
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
