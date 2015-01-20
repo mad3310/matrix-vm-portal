@@ -5,6 +5,9 @@ public class GroupsModel {
 	public GroupsModel(){
 		this.groupid="9";
 	}
+	public GroupsModel(String groupid){
+		this.groupid = groupid;
+	}
 	public String getGroupid() {
 		return groupid;
 	}

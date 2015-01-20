@@ -3,12 +3,17 @@ package com.letv.portal.model.zabbix;
 public class ZabbixPushModel {
 	private String jsonrpc;
 	private String method;
-	private ZabbixParam params;
+	private Object params;
 	private String auth;
 	private int id;
 	public ZabbixPushModel(){
 		this.jsonrpc="2.0";
 		this.method="host.create";
+		this.id=1;
+	}
+	public ZabbixPushModel(String method){
+		this.jsonrpc="2.0";
+		this.method=method;
 		this.id=1;
 	}
 
@@ -24,10 +29,10 @@ public class ZabbixPushModel {
 	public void setMethod(String method) {
 		this.method = method;
 	}
-	public ZabbixParam getParams() {
+	public Object getParams() {
 		return params;
 	}
-	public void setParams(ZabbixParam params) {
+	public void setParams(Object params) {
 		this.params = params;
 	}
 	public String getAuth() {
@@ -42,8 +47,4 @@ public class ZabbixPushModel {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
-	
-	
 }
