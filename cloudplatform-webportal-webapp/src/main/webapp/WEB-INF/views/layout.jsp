@@ -152,7 +152,6 @@
 			<div class="embed-responsive embed-responsive-16by9 col-sm-10">
 			  <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe>
 			</div>
-				
 		</div>
 	</div>
 </body>
