@@ -520,7 +520,7 @@
             </activation>
             <properties>
                 <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                 <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_dev?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                 <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
@@ -551,6 +551,10 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.host.groupid>9,10</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -592,6 +596,10 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.host.groupid>9,10</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
             </properties>
@@ -635,6 +643,10 @@
                 <zabbix.pwd>zabbix</zabbix.pwd>
                 <zabbix.template.normal>10108</zabbix.template.normal>
                 <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.host.groupid>9,10</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>abc123</admin.pwd>
                 
@@ -679,6 +691,10 @@
                 <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
                 <zabbix.template.normal>23187</zabbix.template.normal>
                 <zabbix.template.vip>65134</zabbix.template.vip>
+                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
+                
                 <task.executor.size>150</task.executor.size>
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
             </properties>
