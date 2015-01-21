@@ -371,8 +371,28 @@ define(function(require,exports,module){
 		RefreshIfame:function(url){
 			var $iframe = $("body",parent.document).find("iframe");
 			$iframe.attr("src",url);
+		},
+		/*弹出窗口居中*/
+		center:function(){
+			//获取父窗口对象
+			var winobj=window.parent.document.body;
+			//获取父皇窗口对象属性
+			var screenWidth = $(winobj).width();
+			//var screenHeight = $(winobj).height();
+		    //var scrolltop = $(winobj).scrollTop();//获取当前窗口距离页面顶部高度
+		    
+		    //获取子窗口及对象及子窗口对象的属性
+			var iframebody= document.body;
+			var iframebodyWidth = $(iframebody).width();
+			//var iframebodyHeight = $(iframebody).height();
+			
+			//获取探矿对象
+			var $obj = $(".modal-dialog");
+			//alert($obj.offset().top);
+			var objLeft = ($obj.offset().left - (screenWidth-iframebodyWidth)/2); 
+			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
+			$obj.css({'left':  objLeft + 'px','display': 'block'});
 		}
-
         /*add new common function*/
     }
 });

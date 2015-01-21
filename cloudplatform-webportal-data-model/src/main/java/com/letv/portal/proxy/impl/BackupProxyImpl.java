@@ -144,9 +144,9 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			resultDetail = "Connection refused";
 		} else {
 			if(result.contains("\"code\": 200")) {
-				if(result.contains("back up success")) { 
+				if(result.contains("backup success")) { 
 					status = BackupStatus.SUCCESS;
-				} else if(result.contains("back up is processing")) {
+				} else if(result.contains("backup is processing")) {
 					status = BackupStatus.BUILDING;
 				}
 			} else if(result.contains("\"code\": 411")) {

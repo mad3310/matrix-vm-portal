@@ -46,7 +46,7 @@ public interface IZabbixPushService{
 	 * @param zabbixPushModel
 	 * @return
 	 */
-	public Boolean pushZabbixInfo(ZabbixPushModel zabbixPushModel,Long containerId); 
+	public String pushZabbixInfo(ZabbixPushModel zabbixPushModel,Long containerId); 
 	
 	/**
 	 * Methods Name: sendFixedInfo <br>

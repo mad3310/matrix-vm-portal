@@ -118,6 +118,7 @@ define(function(require){
                 $iframe.attr("src", $iframe.attr("src"));
             });
         }else{
+        	cn.center();
             var title = "警告";
             var text = "您创建的数据库账户没有添加IP名单,请添加后创建!";
             cn.DialogBoxInit(title,text,function(){
@@ -245,7 +246,7 @@ define(function(require){
             $('#reset-password-form').bootstrapValidator('revalidateField', 'reset-password-repeat');
         }
     });
-
+    
     /*加载数据*/
     asyncData();
 

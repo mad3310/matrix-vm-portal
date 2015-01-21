@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
+import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 
 @Controller
 @RequestMapping("/mcluster")
@@ -29,6 +33,11 @@ public class MclusterController {
 	
 	@Autowired
 	private IBuildTaskService buildTaskService;
+	
+	@Autowired
+	public IZabbixPushService zabbixPushService;
+	@Autowired
+	private IContainerService containerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
@@ -134,5 +143,27 @@ public class MclusterController {
 	public @ResponseBody ResultObject stop(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.stop(mclusterId);
 		return result;
+	}
+	
+	/**Methods Name: rmZabbix <br>
+	 * Description: 删除zabbix监控信息<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(value = "/V0.0.6/zabbix/remove/{mclusterName}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject rmZabbix(@PathVariable String mclusterName,ResultObject result) {
+		 List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
+		 if(mclusters.isEmpty())
+			 throw new ValidateException("集群不存在");
+		 if(mclusters.size()>1) {
+			 throw new ValidateException("集群名不唯一");
+		 }
+		 Map<String, Object> map = new HashMap<String, Object>();
+		 map.put("mclusterId", mclusters.get(0).getId());
+	     this.zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
+	     result.getMsgs().add("集群监控删除成功");
+	     return result;
 	}
 }
