@@ -399,7 +399,7 @@ define(function(require,exports,module){
     }
 	var TopBtnInit = function(){
 		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){
-			$(this).width(98);
+			$(this).width(88);
 			$(this).html("管理控制台");
 		}).mouseleave(function () {
 			$(this).width(20);
