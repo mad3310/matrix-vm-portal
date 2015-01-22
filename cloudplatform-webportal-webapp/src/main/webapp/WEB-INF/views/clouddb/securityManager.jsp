@@ -55,8 +55,8 @@
 					</div>
 					<div ng-hide="!loadingState" aliyun-loading="" size="48" style="margin-top: 10px" class="ng-hide"></div>
 					<div class="form-group">
-						<div class="col-sm-4">
-							<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="4"></textarea>
+						<div class="col-sm-8">
+							<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="6"></textarea>
 						</div>
 						<div class="help-block ng-hide" style="padding-top: 30px"></div>
 					</div>
