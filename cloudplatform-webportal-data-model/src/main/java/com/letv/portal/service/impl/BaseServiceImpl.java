@@ -227,6 +227,15 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 		page.setTotalRecords(getDao().selectByMapCount(params));
 		return page;
 	}
+	@Override
+	public <K, V> Page selectPageByParams(Page page, Map<K,V> params) {
+		QueryParam param = new QueryParam();
+		param.setPage(page);
+		param.setParams(params);
+		page.setData(getDao().selectPageByMap(param));
+		page.setTotalRecords(getDao().selectByMapCount(params));
+		return page;
+	}
 	
 	public abstract IBaseDao<T> getDao();
 }
