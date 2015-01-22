@@ -7,6 +7,7 @@ define(function(require,exports,module){
     var Common = function (){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 10000; //单位ms
+		TopBtnInit();//初始化顶部菜单按钮
     };
     module.exports = Common;
 
@@ -393,6 +394,16 @@ define(function(require,exports,module){
 			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
 		}
+
         /*add new common function*/
     }
+	var TopBtnInit = function(){
+		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){
+			$(this).width(88);
+			$(this).html("管理控制台");
+		}).mouseleave(function () {
+			$(this).width(20);
+			$(this).html("<i class=\"fa fa-home text-20\"></i>");
+		})
+	}
 });

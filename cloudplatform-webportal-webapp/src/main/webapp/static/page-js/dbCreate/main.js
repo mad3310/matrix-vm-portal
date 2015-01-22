@@ -10,6 +10,12 @@ define(function(require){
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
 
+    if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
+        $("#monthPurchaseBotton").click(function(){
+            $("#monthPurchaseForm").submit();
+        })
+    }
+
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
         if(!$(this).hasClass("disabled")){
