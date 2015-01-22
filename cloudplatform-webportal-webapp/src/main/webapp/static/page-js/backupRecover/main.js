@@ -1,14 +1,15 @@
 /**
  * Created by yaokuo on 2014/12/12.
+ * backup page js
  */
 define(function(require){
     var common = require('../common');
     var cn = new common();
 
-	cn.Tooltip(); ？？
+	//cn.Tooltip();
 
 	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
+	//window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
@@ -20,24 +21,18 @@ define(function(require){
 	asyncData();
 	setInterval(asyncData,cn.dbListRefreshTime);
 
-	$("#search").click(function() {
+	$("#bksearch").click(function() {
 		asyncData();
 	});
-	$("#refresh").click(function() {
+    /*$("#refresh").click(function() {
 		asyncData();
-	});
-	$("#dbName").keydown(function(e){
+	});*/
+	/*$("#dbName").keydown(function(e){
 		if(e.keyCode==13){
 			asyncData();
 		}
-	});
-	/*初始化按钮*/
-	$(".btn-region-display").click(function(){
-		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
-		$(this).removeClass("btn-default").addClass("btn-success");
-		$("#dbName").val("");
-		asyncData();
-	})
+	});*/
+	
 	/*
 	 * 可封装公共方法 begin
 	 */
@@ -51,32 +46,18 @@ define(function(require){
         	asyncData(page);
         }
 	});
-	//初始化checkbox
-	$(document).on('click', 'th input:checkbox' , function(){
-		var that = this;
-		$(this).closest('table').find('tr > td:first-child input:checkbox')
-		.each(function(){
-			this.checked = that.checked;
-			$(this).closest('tr').toggleClass('selected');
-		});
-	});
-	$(document).on('click', 'tfoot input:checkbox' , function(){
-		var that = this;
-		$(this).closest('table').find('tr > td:first-child input:checkbox,th input:checkbox ')
-		.each(function(){
-			this.checked = that.checked;
-			$(this).closest('tr').toggleClass('selected');
-		});
-	});
-	/*
-	 * 可封装公共方法 end
-	 */
+	
 
 	//加载列表数据
 	function asyncData(page) {
-		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
-		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
+		if(perpage != "undefined") { var perpage = cn.recordsPerPage};
+		var startTime = $("#startTime").val();
+		var endTime = $("#endTime").val();
+		var url="/static/page-js/backupRecover/ipdata.json";
+        //var url = "/backup?dbId=19" + "&&startTime="+ startTime +"&&endTime=" + endTime + "&&recordsPerPage=" + perpage;
+		//url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime;
+		//alert(url);
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });

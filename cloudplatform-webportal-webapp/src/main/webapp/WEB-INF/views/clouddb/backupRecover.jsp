@@ -14,6 +14,8 @@
 	<title>备份与恢复</title>
 </head>
 <body>
+    <!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -266,16 +268,16 @@
 				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-		    			<input type="date" class="form-control" value="2015-01-01">
+		    			<input id="startTime" type="date" class="form-control" value="2015-01-01">
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
-		    		     <input type="date" class="form-control" value="2015-01-08">
+		    		     <input id="endTime" type="date" class="form-control" value="2020-01-08">
 		    	    </div>
 		    	    <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
 		    	    </select>		    
-		    	    <button class="btn btn-primary btn-search">查询</button>	
+		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>	
 		    	</div>
 			        <table class="table table-hover">
 			        	<thead>
@@ -290,8 +292,8 @@
 			        			<td class="text-right">操作</td>
 			        		</tr>
 			        	</thead>
-			        	<tbody>
-			        		<tr>
+			        	<tbody id="backupTbody">
+			        		<!-- <tr>
 			        			<td>2015-01-06 20:49/2015-01-06 20:52</td>
 			        			<td>实例备份</td>
 			        			<td class="text-success">0.39M</td>
@@ -304,7 +306,7 @@
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_creat" data-toggle="modal">创建临时实例</a></span>
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_recover" data-toggle="modal">恢复</a></span>	
 			        			</td>
-			        		</tr>
+			        		</tr> -->
 			        	</tbody> 
 			        	<tfoot>
 						<tr class="tfoot">
@@ -314,7 +316,7 @@
 										<span>共有<span id="totalRecords">3</span>条</span>， 
 										<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
 									    <ul id="paginator" class="pagination pagination-sm">
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">«</a>
 									    	</li>
 									    	<li class="disabled">
@@ -323,10 +325,10 @@
 									    	<li class="active">
 									    		<a href="#">1</a>
 									    	</li>
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">›</a>
 									    	</li>
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">»</a>
 									    	</li>
 									    </ul>
@@ -384,10 +386,11 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
 	}
 });
 
-//seajs.use("${ctx}/static/page-js/backupRecover/main");
+seajs.use("${ctx}/static/page-js/backupRecover/main");
 </script>
 </html>
