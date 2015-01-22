@@ -336,9 +336,6 @@
 						</tr>
 						</tfoot>				        	
 			        </table>
-
-		  		
-		  		
 		  	</div>			
 		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
 		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
@@ -391,6 +388,6 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/securityManager/main");
+//seajs.use("${ctx}/static/page-js/backupRecover/main");
 </script>
 </html>

@@ -1,0 +1,38 @@
+{
+    "data": [
+        {
+	        "startTime": 1421230269000
+	        "endTime": 1421230269000
+	        "strategy": 1
+	        "size": 1000000
+	        "method": 1 
+	        "backupType": 1
+	        "pattern": 1
+	        "status": 1
+        },
+        {
+           
+        },
+        {
+            "type": 3,
+            "status": 6,
+            "salt": null,
+            "password": "abc123Z",
+            "username": "hello",
+            "descn": "ss",
+            "name4Ip": null,
+            "readWriterRate": "2:1",
+            "db": null,
+            "dbId": 19,
+            "acceptIp": "192.168.22.1",
+            "id": 64,
+            
+            "updateUser": null,
+            "deleted": false,
+            "createUser": 2
+        }
+    ],
+    "result": 1,
+    "msgs": [],
+    "callback": null
+}
