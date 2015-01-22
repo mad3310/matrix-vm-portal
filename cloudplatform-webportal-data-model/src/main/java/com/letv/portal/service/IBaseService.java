@@ -92,5 +92,6 @@ public interface IBaseService<T> {
 	 * @return
 	 */
 	<K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc);
+	<K, V> Page selectPageByParams(Page page, Map<K,V> params);
 	
 }

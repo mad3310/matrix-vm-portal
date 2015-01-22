@@ -178,10 +178,10 @@
 				and r.BACKUP_IP=#{params.backupIp}
 			</if>
 			<if test="params != null and params.startTime != null  ">
-				and r.START_TIME=#{params.startTime}
+				and r.START_TIME&gt;=#{params.startTime}
 			</if>
 			<if test="params != null and params.endTime != null  ">
-				and r.END_TIME=#{params.endTime}
+				and r.START_TIME&lt; =#{params.endTime}
 			</if>
 			<if test="params != null and params.status != null  ">
 				and r.STATUS=#{params.status}
@@ -213,6 +213,12 @@
 		<include refid="Example_Page_Where_Clause" />
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+		<if test="params != null and params.orderBy != null  ">
+      		 order by #{params.orderBy}
+    	</if>
+		<if test="params != null and !params.isAsc == false">
+      		 desc
     	</if>
 	</select>
 </mapper>   
