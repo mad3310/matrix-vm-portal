@@ -140,7 +140,7 @@
                             <li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li> -->
                         </ul>
                     </li>
-                    <li><a  class="text-sm" href="javascript:void(0)">备份与恢复<p class="pull-right home-orange">敬请期待...</p></a></li>
+                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/list/backup/${dbId}">备份与恢复</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">性能优化<p class="pull-right home-orange">敬请期待...</p></a></li>
