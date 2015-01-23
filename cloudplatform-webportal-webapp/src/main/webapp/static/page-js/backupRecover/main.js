@@ -46,17 +46,13 @@ define(function(require){
         	asyncData(page);
         }
 	});
-	
-
 	//加载列表数据
 	function asyncData(page) {
 		if(!page) page = cn.currentPage;
 		if(perpage != "undefined") { var perpage = cn.recordsPerPage};
 		var startTime = $("#startTime").val();
 		var endTime = $("#endTime").val();
-		//var url="/static/page-js/backupRecover/ipdata.json";
-		// "&&endTime=" + endTime + 
-		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime +"&&currentPage=" + page + "&&recordsPerPage=" + perpage;
+		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + page + "&&recordsPerPage=" + perpage;
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });

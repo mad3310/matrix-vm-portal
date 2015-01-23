@@ -251,7 +251,7 @@
 		        </h5>
 	        </div>				      
 		    <div class="pull-right">
-		       	<button id="refresh" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
+		       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
 		       	一键清除Binlog
 		        </button>
 		    </div>
