@@ -73,7 +73,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		if (viewName != null) {
 			boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
 			if (isAjaxRequest) {
-				responseJson(req,res,e.getMessage());
+				responseJson(req,res,error);
 				return null;
 			} else {
 				Integer statusCode = determineStatusCode(req, viewName);
@@ -105,7 +105,7 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 			e1.printStackTrace();
 		}
 		ResultObject resultObject = new ResultObject(0);
-		resultObject.addMsg(ERROR_SYSTEM_ERROR);
+		resultObject.addMsg(message);
 		out.append(JSON.toJSONString(resultObject, SerializerFeature.WriteMapNullValue));
 		out.flush();
 
