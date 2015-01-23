@@ -907,3 +907,55 @@ edit by jinglinlin@letv.com
 .skin-custom .dash-a:hover {
     color: #009900 !important;
 }
+
+.skin-custom .se-heading{
+	padding:16px 0px;
+	height: 64px;
+}
+.skin-custom .pd10{padding-top: 0px;}
+
+.skin-custom .time-range-unit-header,
+.skin-custom .time-range-title {	
+    display: inline-block;
+    line-height: 32px;
+    float: left;
+}
+.skin-custom .time-range-unit-header{
+	padding-top:15px;
+	padding-bottom: 5px;
+}
+.skin-custom .date-unit,
+.skin-custom .date-picker-unit{
+    display: inline-block;
+    float: left;
+    height:30px; 
+}
+.skin-custom .date-step-span {
+    display: inline-block;
+    width: 32px;
+    float: left;
+    text-align: center;
+    line-height: 32px;
+}
+.skin-custom .btn-search{
+	margin-left:10px;
+}
+.skin-custom .nav-tabs{
+	height:40px;
+	border-bottom:none;
+}
+.skin-custom .tab-content{
+	border:none;
+}
+.skin-custom .inline-block{
+	display:inline-block !important;
+	display:-moz-inline-stack;
+	display:inline-block;
+	vertical-align:middle;
+	*vertical-align:auto;
+	zoom:1;
+	*display:inline
+}
+.skin-custom .margin-left-5{
+	margin-left: 5px;
+}

@@ -112,7 +112,7 @@
 			</ul>
 		</li>
 		<li id="backupRecover" >
-			<a href="${ctx}/views/clouddb/backupRecover">
+			<a href="${ctx}/backup">
 				<i class="menu-icon fa fa-tachometer"></i> 
 				<span class="menu-text">备份恢复</span> 
 			</a>
