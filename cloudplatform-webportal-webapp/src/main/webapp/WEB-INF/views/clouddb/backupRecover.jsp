@@ -268,7 +268,7 @@
 				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-		    			<input id="startTime" type="date" class="form-control" value="2015-01-01">
+		    			<input id="startTime" type="date" class="form-control" value="2010-01-01">
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
