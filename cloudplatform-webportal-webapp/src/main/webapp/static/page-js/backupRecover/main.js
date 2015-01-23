@@ -54,10 +54,9 @@ define(function(require){
 		if(perpage != "undefined") { var perpage = cn.recordsPerPage};
 		var startTime = $("#startTime").val();
 		var endTime = $("#endTime").val();
-		var url="/static/page-js/backupRecover/ipdata.json";
-        //var url = "/backup?dbId=19" + "&&startTime="+ startTime +"&&endTime=" + endTime + "&&recordsPerPage=" + perpage;
-		//url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime;
-		//alert(url);
+		//var url="/static/page-js/backupRecover/ipdata.json";
+		// "&&endTime=" + endTime + 
+		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime +"&&currentPage=" + page + "&&recordsPerPage=" + perpage;
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });

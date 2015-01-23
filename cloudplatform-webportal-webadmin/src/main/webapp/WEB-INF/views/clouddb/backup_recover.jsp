@@ -1,22 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
-	<%-- <link rel="stylesheet" href="${ctx}/static/styles/ui-css/skin-custom.css"/> --%>
-	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrap.min.css"/>
-	<%-- <link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" /> --%>
-	<!-- ui-css -->
-	<title>备份与恢复</title>
-</head>
-<body>
-    <!-- 全局参数 start -->
-	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
-	<!-- Modal -->
+<!-- 全局参数 start -->
+<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+<!-- Modal -->
+<div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -307,37 +294,24 @@
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_recover" data-toggle="modal">恢复</a></span>	
 			        			</td>
 			        		</tr> -->
-			        	</tbody> 
-			        	<tfoot>
-						<tr class="tfoot">
-							<td colspan="8">
-								<div class="pull-right">
-									<div class="pagination-info">
-										<span>共有<span id="totalRecords">3</span>条</span>， 
-										<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
-									    <ul id="paginator" class="pagination pagination-sm">
-									    	<li class="">
-									    		<a href="#">«</a>
-									    	</li>
-									    	<li class="disabled">
-									    		<a href="#" title="Go to previous page">‹</a>
-									    	</li>
-									    	<li class="active">
-									    		<a href="#">1</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">›</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">»</a>
-									    	</li>
-									    </ul>
-									</div>
-								</div>
-							</td>
-						</tr>
-						</tfoot>				        	
+			        	</tbody>
 			        </table>
+			        <div id="pageControlBar">
+					<input type="hidden" id="totalPage_input" />
+					<ul class="pager">
+						<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+						<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+						<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+						<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+			
+						<li><a>共<lable id="totalPage"></lable>页</a>
+						</li>
+						<li><a>第<lable id="currentPage"></lable>页</a>
+						</li>
+						<li><a>共<lable id="totalRows"></lable>条记录</a>
+						</li>
+					</ul>
+		</div>
 		  	</div>			
 		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
 		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
@@ -376,21 +350,7 @@
 		    	</div>						    		    		    	
 		    </div>			   
 		</div>
-    </div>				
-</body>
+    </div>
+</div>
 <!-- js -->
-<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
-<script type="text/javascript">
-// Set configuration
-seajs.config({
-	base: "${ctx}/static/modules/",
-	alias: {
-		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
-		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
-	}
-});
-
-seajs.use("${ctx}/static/page-js/backupRecover/main");
-</script>
-</html>
+<script src="${ctx}/static/scripts/pagejs/backup_recover.js"></script>

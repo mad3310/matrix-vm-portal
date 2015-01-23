@@ -31,12 +31,6 @@ define(function(require,exports,module){
                         + "/"
                         + cn.TransDate('Y-m-d H:i:s',array[i].endTime)
                         + "</td>");
-                //var dbName = "";
-                /*if(cn.Displayable(array[i].status)){
-                    dbName = "<a href=\"/detail/db/"+array[i].id+"\">" + array[i].dbName + "</a>"
-                }else{
-                    dbName = "<span class=\"text-explode font-disabled\">"+array[i].dbName+"</span>"
-                }*/
                 var td2 = $("<td class=\"padding-left-32\">"
                         + array[i].strategy
                         +"</td>");
@@ -60,11 +54,6 @@ define(function(require,exports,module){
                         + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
                         + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
                         + "</div></td>");
-               /* if(cn.Displayable(array[i].status)){
-                	var td9 = $("<td class=\"text-right\"><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
-                }else{
-                	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
-                }*/
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
                 tr.appendTo($tby);

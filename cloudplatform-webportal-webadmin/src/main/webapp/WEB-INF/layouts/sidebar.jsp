@@ -113,7 +113,7 @@
 		</li>
 		<li id="backupRecover" >
 			<a href="${ctx}/backup">
-				<i class="menu-icon fa fa-tachometer"></i> 
+				<i class="menu-icon fa  fa-university"></i> 
 				<span class="menu-text">备份恢复</span> 
 			</a>
 		</li>
