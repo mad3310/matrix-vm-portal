@@ -264,8 +264,10 @@
 	    </ul>
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">				
-			<div id="backlist" role="tabpanel" class="tab-pane fade active in"  aria-labelledby="backlist-tab">
-				<div class="time-range-unit-header">
+			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
+			<div class="row">
+				<div class="col-sm-12 col-md-12">
+					<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
 		    			<input id="startTime" type="date" class="form-control" value="2010-01-01">
@@ -279,17 +281,19 @@
 		    	    </select>		    
 		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>	
 		    	</div>
-			        <table class="table table-hover">
+				</div>
+				<div class="col-sm-12 col-md-12">
+			        <table class="table table-hover table-se " style="margin-top:10px;">
 			        	<thead>
 			        		<tr class="text-muted">
-			        			<td>备份开始/结束时间</td>
-			        			<td>备份策略</td>
-			        			<td>备份大小</td>
-			        			<td>备份方法</td>
-			        			<td>备份类型</td>
-			        			<td>工作模式</td>
-			        			<td>状态</td>
-			        			<td class="text-right">操作</td>
+			        			<th>备份开始/结束时间</th>
+			        			<th>备份策略</th>
+			        			<th>备份大小</th>
+			        			<th>备份方法</th>
+			        			<th>备份类型</th>
+			        			<th>工作模式</th>
+			        			<th>状态</th>
+			        			<th class="text-right">操作</th>
 			        		</tr>
 			        	</thead>
 			        	<tbody id="backupTbody">
@@ -308,9 +312,9 @@
 			        			</td>
 			        		</tr> -->
 			        	</tbody> 
-			        	<tfoot>
-						<tr class="tfoot">
-							<td colspan="8">
+			        </table>
+			        
+						<div class="tfoot">
 								<div class="pull-right">
 									<div class="pagination-info">
 										<span>共有<span id="totalRecords">3</span>条</span>， 
@@ -334,12 +338,13 @@
 									    </ul>
 									</div>
 								</div>
-							</td>
-						</tr>
-						</tfoot>				        	
-			        </table>
+						</div>   
+				</div>
+			</div>
+				
+		    	
 		  	</div>			
-		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
+		    <div id="backsetting" role="tabpanel" class="tab tab-pane fade" aria-labelledby="backsetting-tab">
 		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
 		    		<div class="form-group clearfix">
 		    			<label class="col-sm-2 text-muted" style="font-weight:normal">保留天数:</label>

@@ -21,33 +21,32 @@ define(function(require,exports,module){
     DataHandler.prototype = {
         DbListHandler : function(data){
         	$(".data-tr").remove();
-        	
             var $tby = $('#backupTbody');
             var array = data.data.data;
-
             for(var i= 0, len= array.length;i<len;i++){
                 var td1 = $("<td>"
                         + cn.TransDate('Y-m-d H:i:s',array[i].startTime) 
                         + "/"
                         + cn.TransDate('Y-m-d H:i:s',array[i].endTime)
                         + "</td>");
+                
                 var td2 = $("<td class=\"padding-left-32\">"
-                        + array[i].strategy
+                        + cn.FilterNull(array[i].strategy)
                         +"</td>");
                 var td3 = $("<td>"
-                        + array[i].size
+                        + cn.FilterNull(array[i].size)
                         +"</td>");
                 var td4 = $("<td>"
-                        + array[i].method
+                        + cn.FilterNull(array[i].method)
                         + "</td>");
                 var td5 = $("<td>"
-                		+ array[i].backupType
+                		+ cn.FilterNull(array[i].backupType)
                 		+"</td>");
                 var td6 = $("<td>"
-                		+ array[i].pattern
+                		+ cn.FilterNull(array[i].pattern)
                 		+ "</td>");
                 var td7 = $("<td><span>"
-                		+ array[i].status
+                		+ cn.FilterNull(array[i].status)
                 		+ "</span></td>");
                 var td8 = $("<td class=\"text-right\"> <div>"
                         + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
