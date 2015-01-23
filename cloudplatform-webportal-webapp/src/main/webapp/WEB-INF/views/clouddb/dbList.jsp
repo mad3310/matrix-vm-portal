@@ -79,7 +79,9 @@
 			<div class="pull-left">
 				<form class="form-inline" role="form">
 					<div class="form-group">
-						<input id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
+						<input onkeyup="value=value.replace(/[\W]/g,'') " 
+						onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" 
+						id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
