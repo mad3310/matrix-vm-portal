@@ -222,7 +222,14 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		List<String> newIps = new ArrayList<String>();
 		Set<String> tempSet = new HashSet<String>(); //使用set去重
 		for (String ip : arrs) {
-			tempSet.add(ip);
+			if(ip.contains("\n")) {
+				String[] arrByN = ip.split("\n");
+				for (String string : arrByN) {
+					tempSet.add(string);
+				}
+			} else {
+				tempSet.add(ip);
+			}
 		}
 		newIps.addAll(tempSet);
 		

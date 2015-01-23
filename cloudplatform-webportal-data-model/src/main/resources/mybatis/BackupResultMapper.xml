@@ -45,14 +45,11 @@
 			<if test="dbId != null  ">
 				and r.DB_ID=#{dbId}
 			</if>
-			<if test="backupIp != null  ">
-				and r.BACKUP_IP=#{backupIp}
-			</if>
 			<if test="startTime != null  ">
-				and r.START_TIME=#{startTime}
+				and r.START_TIME&gt;=#{startTime}
 			</if>
 			<if test="endTime != null  ">
-				and r.END_TIME=#{endTime}
+				and r.START_TIME&lt;=#{endTime}
 			</if>
 			<if test="status != null  ">
 				and r.STATUS=#{status}
@@ -181,7 +178,7 @@
 				and r.START_TIME&gt;=#{params.startTime}
 			</if>
 			<if test="params != null and params.endTime != null  ">
-				and r.START_TIME&lt; =#{params.endTime}
+				and r.START_TIME&lt;=#{params.endTime}
 			</if>
 			<if test="params != null and params.status != null  ">
 				and r.STATUS=#{params.status}
