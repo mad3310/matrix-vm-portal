@@ -101,11 +101,7 @@ public class HclusterController {
 			HttpServletRequest request) {
 		hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
 		ResultObject obj = new ResultObject();
-		try {
-			this.hclusterService.insert(hclusterModel);
-		} catch (Exception e) {
-			logger.debug(e.getMessage());
-		}
+		this.hclusterService.insert(hclusterModel);
 		return obj;
 	}
 
@@ -121,12 +117,8 @@ public class HclusterController {
 			@PathVariable Long hclusterId, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		HclusterModel hclusterModel = new HclusterModel();
-		try {
-			hclusterModel.setId(hclusterId);
-			this.hclusterService.delete(hclusterModel);
-		} catch (Exception e) {
-			logger.debug(e.getMessage());
-		}
+		hclusterModel.setId(hclusterId);
+		this.hclusterService.delete(hclusterModel);
 		return obj;
 	}
 

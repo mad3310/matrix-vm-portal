@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.JsonUtils;
 import com.letv.common.util.PasswordRandom;
@@ -940,11 +941,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	public void createHost(HostModel hostModel){
-		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
-			if(analysisResult(transResult(pythonService.createHost(hostModel))));
-			logger.debug("调用phyhonAPI创建host成功");
+		String result = this.pythonService.initHcluster(hostModel.getHostIp());
+		if(StringUtils.isNullOrEmpty(result)) {
+			throw new PythonException("create host faild by Container Manager's python API: initHcluster");
 		}
-
+		String result2 = this.pythonService.createHost(hostModel);
+		if(StringUtils.isNullOrEmpty(result2)) {
+			throw new PythonException("create host faild by Container Manager's python API: createHost");
+		}
 	}
 	/**
 	 * Methods Name: createDefalutAmin <br>

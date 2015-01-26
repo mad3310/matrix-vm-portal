@@ -100,11 +100,7 @@ public class HostController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		try {		
-			this.hostProxy.insertAndPhyhonApi(hostModel);			
-		} catch (Exception e) {
-			logger.debug(e.getMessage());
-		}	
+		this.hostProxy.insertAndPhyhonApi(hostModel);			
 		return obj;
 	}	
 	/**
@@ -131,12 +127,8 @@ public class HostController {
    public @ResponseBody ResultObject delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
 	ResultObject obj = new ResultObject();
 	HostModel hostModel = new HostModel();
-	try {
-		hostModel.setId(hostId);
-		this.hostService.delete(hostModel);
-	} catch (Exception e) {
-		logger.debug(e.getMessage());
-	}	
+	hostModel.setId(hostId);
+	this.hostService.delete(hostModel);
 	return obj;
    }	
   
@@ -150,11 +142,7 @@ public class HostController {
   @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
   public @ResponseBody ResultObject updateHost(HostModel hostModel) {
 	ResultObject obj = new ResultObject();
-	try {
-		this.hostService.update(hostModel);
-	} catch (Exception e) {
-		logger.debug(e.getMessage());
-	}	
+	this.hostService.update(hostModel);
 	return obj;
 }	
   /**
