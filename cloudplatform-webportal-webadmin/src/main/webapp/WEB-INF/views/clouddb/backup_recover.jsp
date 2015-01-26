@@ -1,22 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
-	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
-	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" />
-	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>备份与恢复</title>
-</head>
-<body>
-    <!-- 全局参数 start -->
-	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
-	<!-- Modal -->
+<!-- 全局参数 start -->
+<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+<!-- Modal -->
+<div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -250,11 +237,11 @@
 				</a>
 		        </h5>
 	        </div>				      
-		    <div class="pull-right">
-		       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
+		   <!--  <div class="pull-right">
+		       	<button id="refresh" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
 		       	一键清除Binlog
 		        </button>
-		    </div>
+		    </div> -->
 	    </div>
 	    <ul class="nav nav-tabs" role="tablist" id="setab">
 	    	<li id="backlist-tab" role="presentation" class="active">
@@ -264,10 +251,8 @@
 	    </ul>
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">				
-			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
-			<div class="row">
-				<div class="col-sm-12 col-md-12">
-					<div class="time-range-unit-header">
+			<div id="backlist" role="tabpanel" class="tab-pane fade active in"  aria-labelledby="backlist-tab">
+				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
 		    			<input id="startTime" type="date" class="form-control" value="2010-01-01">
@@ -276,24 +261,22 @@
 		    		<div class="date-unit">
 		    		     <input id="endTime" type="date" class="form-control" value="2020-01-08">
 		    	    </div>
-		    	    <select class="form-control margin-left-5 inline-block" style="width:160px">
+		    	    <select class="form-control margin-left-5 inline-block" style="width:180px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
 		    	    </select>		    
-		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>	
+		    	    <button id="bksearch" class="btn btn-primary btn-sm btn-search">查询</button>	
 		    	</div>
-				</div>
-				<div class="col-sm-12 col-md-12">
-			        <table class="table table-hover table-se " style="margin-top:10px;">
+			        <table class="table table-hover">
 			        	<thead>
 			        		<tr class="text-muted">
-			        			<th>备份开始/结束时间</th>
-			        			<th>备份策略</th>
-			        			<th>备份大小</th>
-			        			<th>备份方法</th>
-			        			<th>备份类型</th>
-			        			<th>工作模式</th>
-			        			<th>状态</th>
-			        			<th class="text-right">操作</th>
+			        			<td>备份开始/结束时间</td>
+			        			<td>备份策略</td>
+			        			<td>备份大小</td>
+			        			<td>备份方法</td>
+			        			<td>备份类型</td>
+			        			<td>工作模式</td>
+			        			<td>状态</td>
+			        			<td class="text-right">操作</td>
 			        		</tr>
 			        	</thead>
 			        	<tbody id="backupTbody">
@@ -311,40 +294,26 @@
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_recover" data-toggle="modal">恢复</a></span>	
 			        			</td>
 			        		</tr> -->
-			        	</tbody> 
+			        	</tbody>
 			        </table>
-			        
-						<div class="tfoot">
-								<div class="pull-right">
-									<div class="pagination-info">
-										<span>共有<span id="totalRecords">3</span>条</span>， 
-										<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
-									    <ul id="paginator" class="pagination pagination-sm">
-									    	<li class="">
-									    		<a href="#">«</a>
-									    	</li>
-									    	<li class="disabled">
-									    		<a href="#" title="Go to previous page">‹</a>
-									    	</li>
-									    	<li class="active">
-									    		<a href="#">1</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">›</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">»</a>
-									    	</li>
-									    </ul>
-									</div>
-								</div>
-						</div>   
-				</div>
-			</div>
-				
-		    	
+			        <div id="pageControlBar">
+					<input type="hidden" id="totalPage_input" />
+					<ul class="pager">
+						<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
+						<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
+						<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
+						<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
+			
+						<li><a>共<lable id="totalPage"></lable>页</a>
+						</li>
+						<li><a>第<lable id="currentPage"></lable>页</a>
+						</li>
+						<li><a>共<lable id="totalRows"></lable>条记录</a>
+						</li>
+					</ul>
+		</div>
 		  	</div>			
-		    <div id="backsetting" role="tabpanel" class="tab tab-pane fade" aria-labelledby="backsetting-tab">
+		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
 		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
 		    		<div class="form-group clearfix">
 		    			<label class="col-sm-2 text-muted" style="font-weight:normal">保留天数:</label>
@@ -381,21 +350,7 @@
 		    	</div>						    		    		    	
 		    </div>			   
 		</div>
-    </div>				
-</body>
+    </div>
+</div>
 <!-- js -->
-<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
-<script type="text/javascript">
-// Set configuration
-seajs.config({
-	base: "${ctx}/static/modules/",
-	alias: {
-		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
-		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
-	}
-});
-
-seajs.use("${ctx}/static/page-js/backupRecover/main");
-</script>
-</html>
+<script src="${ctx}/static/scripts/pagejs/backup_recover.js"></script>

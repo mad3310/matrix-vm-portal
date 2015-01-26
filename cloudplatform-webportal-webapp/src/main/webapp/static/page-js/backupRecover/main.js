@@ -43,21 +43,17 @@ define(function(require){
 		bootstrapMajorVersion:3,
 		numberOfPages: 5,
 		onPageClicked: function(e,originalEvent,type,page){
+			cn.currentPage = page;
         	asyncData(page);
         }
 	});
-	
-
 	//加载列表数据
 	function asyncData(page) {
 		if(!page) page = cn.currentPage;
 		if(perpage != "undefined") { var perpage = cn.recordsPerPage};
 		var startTime = $("#startTime").val();
 		var endTime = $("#endTime").val();
-		var url="/static/page-js/backupRecover/ipdata.json";
-        //var url = "/backup?dbId=19" + "&&startTime="+ startTime +"&&endTime=" + endTime + "&&recordsPerPage=" + perpage;
-		//url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime;
-		//alert(url);
+		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + page + "&&recordsPerPage=" + perpage;
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });
