@@ -57,13 +57,13 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		mclusterModel.setAdminPassword(mclusterName);
 		mclusterModel.setDeleted(true);
 		mclusterModel.setType(MclusterType.AUTO.getValue());
-		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		mclusterModel.setStatus(MclusterStatus.BUILDDING.getValue());
 		super.insert(mclusterModel);
 	}
 
 	@Override
 	public void insertAndBuild(MclusterModel mclusterModel) {
+		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		this.insert(mclusterModel);
 		buildTaskService.buildMcluster(mclusterModel);
 	}

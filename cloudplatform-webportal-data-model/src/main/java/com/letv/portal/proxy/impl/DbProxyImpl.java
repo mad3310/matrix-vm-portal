@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
@@ -66,6 +68,10 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		String auditInfo = (String) params.get("auditInfo");
 		Long hclusterId = (Long) params.get("hclusterId");
 		
+		if(status == null || dbId == null) {
+			throw new ValidateException("参数不合法");
+		}
+		
 		DbModel dbModel = new DbModel();
 		dbModel.setId(dbId);
 		dbModel.setStatus(status);
@@ -75,8 +81,13 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		if(DbStatus.BUILDDING.getValue().equals(status)) {//审核成功
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
+				if(mclusterName == null) {
+					throw new ValidateException("参数不合法");
+				}
 				mcluster.setMclusterName(mclusterName);
-				mcluster.setHclusterId(hclusterId == null?this.dbService.selectById(dbId).getHclusterId():hclusterId);
+				DbModel db = this.dbService.selectById(dbId);
+				mcluster.setHclusterId(hclusterId == null?db.getHclusterId():hclusterId);
+				mcluster.setCreateUser(db.getCreateUser());
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);
@@ -91,7 +102,6 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			this.dbService.updateBySelective(dbModel);
 		}
 			
-		
 	}
 	@Override
 	public void saveAndBuild(DbModel dbModel) {
