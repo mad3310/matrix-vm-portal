@@ -164,7 +164,7 @@ public class SkipController {
 		return obj;
 	}
 	
-	@RequestMapping(value="/backup",method=RequestMethod.GET)
+	@RequestMapping(value="/list/backup",method=RequestMethod.GET)
 	public ModelAndView toBackupView(ModelAndView mav){
 		mav.setViewName("/clouddb/backup_recover");
 		return mav;
