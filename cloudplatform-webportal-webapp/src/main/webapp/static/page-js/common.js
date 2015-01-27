@@ -263,7 +263,7 @@ define(function(require,exports,module){
                 dataType:'json',
                 success:function(data){
 					/*添加当handler为空时的异常处理*/
-					$('body').find('.spin').remove();
+		//			$('body').find('.spin').remove();
                     handler(data);
                 }
             });
