@@ -76,7 +76,7 @@ define(function(require){
         var hclusterId = $("[name = 'hclusterId']").val();
         var engineType = $("[name = 'engineType']").val();
         var linkType = $("[name = 'linkType']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId};
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":1};
         CreateDb(formData);
     });
     /*表单验证 --end*/

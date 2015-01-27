@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IDbUserService;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -35,6 +35,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	
 	@Autowired
 	private IDbService dbService;
+	@Autowired
+	private IDbUserService dbUserService;
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
@@ -104,12 +106,15 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			
 	}
 	@Override
-	public void saveAndBuild(DbModel dbModel) {
+	public void saveAndBuild(DbModel dbModel,boolean isCreateAdmin) {
 		Long userId = sessionService.getSession().getUserId();
 		dbModel.setCreateUser(userId);
 		dbModel.setStatus(DbStatus.DEFAULT.getValue());
 		dbModel.setDeleted(true);
 		this.dbService.insert(dbModel);
+		
+		if(isCreateAdmin)
+			this.dbUserService.createDefalutAdmin(dbModel.getId());
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("createUser", userId);
