@@ -161,6 +161,30 @@
 						<div class="col-sm-4">
 							<input name="maxConcurrency" class="form-control input-radius-2"/>
 						</div>
+						<div class="col-sm-1" style="padding-top : 8px">
+							<a  data-container="body" data-toggle="popover" data-placement="right" data-html="true"
+								data-content="<div>
+											管理用户不受并发数影响，默认值如下:<br>
+											MAX_QUERIES_PER_HOUR 1000 <br>
+											MAX_UPDATES_PER_HOUR 1000 <br>
+											MAX_CONNECTIONS_PER_HOUR 100 <br>
+											MAX_USER_CONNECTIONS 10 <br>
+
+											读写用户 如例：设置并发数为1 <br>
+											MAX_QUERIES_PER_HOUR 7200=60*60*2*1(并发数1) <br>
+											MAX_UPDATES_PER_HOUR 3600=60*60*1(并发数1) <br>
+											MAX_CONNECTIONS_PER_HOUR 7200=60*60*2*1(并发数1) <br>
+											MAX_USER_CONNECTIONS 1 = 1(并发数1) <br>
+
+											只读用户 如例: 设置并发数为1 <br>
+											MAX_QUERIES_PER_HOUR 7200=60*60*2*1(并发数1) <br>
+											MAX_UPDATES_PER_HOUR 1（不受并发数影响，值不变） <br>
+											MAX_CONNECTIONS_PER_HOUR 7200=60*60*2*1(并发数1) <br>
+											MAX_USER_CONNECTIONS 1=1(并发数1)</div>
+											">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">

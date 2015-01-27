@@ -9,6 +9,10 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
+    /*初始化工具提示*/
+    cn.Tooltip();
+    cn.Popover();
+
     $(".glyphicon-pencil").click(function(){
         cn.EditBoxInit(this);
     })

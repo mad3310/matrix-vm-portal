@@ -24,6 +24,16 @@ define(function(require,exports,module){
                 $(this).tooltip('hide');
             });
         },
+        Popover : function (id){
+        	if(!id) {
+        		id = "[data-toggle='popover']";
+        	}
+			$(id).hover(function() {
+				$(this).popover('show');
+			}, function() {
+				$(this).popover('hide');
+			});
+        },
         Collapse : function(){
         	$(".collapse").on('show.bs.collapse', function () {
         			$(this).prev().find(".glyphicon-chevron-up").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");

@@ -1399,3 +1399,10 @@ pre {
 	padding: 0px;
 }
 
+/*loadding 样式*/
+
+.popover {
+	max-width: none;
+	white-space:nowrap;
+}
+
