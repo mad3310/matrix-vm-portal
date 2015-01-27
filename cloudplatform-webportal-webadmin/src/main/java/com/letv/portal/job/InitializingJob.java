@@ -17,10 +17,10 @@ import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
-import com.letv.common.util.ConfigUtil;
 import com.letv.portal.model.ScheduleJobModel;
 
 /**Program Name: QuartzJob <br>
@@ -35,7 +35,8 @@ public class InitializingJob {
 
 	private final static Logger logger = LoggerFactory.getLogger(InitializingJob.class);
 	
-	private static String START_TIMING_JOBS = ConfigUtil.getString("start.timing.jobs");
+	@Value("${start.timing.jobs}")
+	private String START_TIMING_JOBS;
 	
 	@Autowired(required=false)
 	private SchedulerFactoryBean schedulerFactoryBean;
