@@ -245,9 +245,9 @@
 	        <div class="pull-left">
 	        	<h5>
 	        	备份与恢复
-	        	<a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
+	        	<!-- <a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
 					<i class="fa fa-question-circle text-muted"></i>
-				</a>
+				</a> -->
 		        </h5>
 	        </div>				      
 		    <div class="pull-right">
@@ -276,9 +276,9 @@
 		    		<div class="date-unit">
 		    		     <input id="endTime" type="date" class="form-control" value="2020-01-08">
 		    	    </div>
-		    	    <select class="form-control margin-left-5 inline-block" style="width:160px">
+		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>		    
+		    	    </select>	 -->	    
 		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>	
 		    	</div>
 				</div>
@@ -375,7 +375,8 @@
 		    		<div class="form-group">
 		    			<label class="col-sm-2 control-label"></label>
 		    			<div class="col-sm-8">
-		    				<button type="button" class="btn btn-primary" data-toggle='modal' data-target='#myModal'>修改</button>
+		    			    <button type="button" disabled="true" class="btn btn-primary" data-toggle='modal' data-target='#myModal'>修改</button>		    			   
+		    				<p style="display:inline-block">(暂不提供)</p>
 		    			</div>
 		    		</div>
 		    	</div>						    		    		    	

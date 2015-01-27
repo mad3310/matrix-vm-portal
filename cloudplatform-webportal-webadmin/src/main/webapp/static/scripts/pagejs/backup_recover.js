@@ -5,13 +5,13 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 5; //每页显示条数
 var currentSelectedLineDbName = 1;
+alert(startTime);
+alert(endTime);
 
 
 //页面查询功能
 $("#bksearch").click(function() {
-	var startTime = $("#startTime").val();
-	var endTime = $("#endTime").val();
-	queryByPage(currentPage, recordsPerPage,startTime,endTime);
+	queryByPage(currentPage, recordsPerPage);
 });
 
 $(function(){
@@ -19,17 +19,16 @@ $(function(){
 	page_init();
 });	
 
-function queryByPage(currentPage, recordsPerPage,startTime,endTime) {
+function queryByPage(currentPage, recordsPerPage) {
 	$(".data-tr").remove();
-	var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	var startTime = $("#startTime").val();
+	var endTime = $("#endTime").val();
 	$.ajax({ 
 		type : "get",
-		//url : "/db/" + currentPage + "/" + recordsPerPage+"/" + dbName,
-		url: "/static/scripts/data.json",
-		dataType : "json", /*这句可用可不用，没有影响*/
+		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage,	
+	    dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			
 			error(data);
 			var array = data.data.data;
 			var $backupTbody = $("#backupTbody");
@@ -41,27 +40,33 @@ function queryByPage(currentPage, recordsPerPage,startTime,endTime) {
 	                        + date('Y-m-d H:i:s',array[i].endTime)
 	                        + "</td>");
 	                var td2 = $("<td class=\"padding-left-32\">"
-	                        + array[i].strategy
+	                        /*+ array[i].strategy*/
+	                		+ "实例备份"
 	                        +"</td>");
 	                var td3 = $("<td>"
-	                        + array[i].size
+	                        /*+ array[i].size*/
+	                		+ "0.39M"
 	                        +"</td>");
 	                var td4 = $("<td>"
-	                        + array[i].method
+	                        /*+ array[i].method*/
+	                		+ "物理备份"
 	                        + "</td>");
 	                var td5 = $("<td>"
-	                		+ array[i].backupType
+	                		/*+ array[i].backupType*/
+	                		+ "全量"
 	                		+"</td>");
 	                var td6 = $("<td>"
-	                		+ array[i].pattern
+	                		/*+ array[i].pattern*/
+	                		+ "常规任务"
 	                		+ "</td>");
 	                var td7 = $("<td><span>"
-	                		+ array[i].status
+	                		/*+ array[i].status*/
+	                		+ "完成备份"
 	                		+ "</span></td>");
 	                var td8 = $("<td class=\"text-right\"> <div>"
-	                        + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
-	                        + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
-	                        + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
+	                        + "<a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
+	                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
+	                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
 	                        + "</div></td>");
 	                var tr = $("<tr class='data-tr'></tr>");
 	                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
@@ -154,7 +159,7 @@ function searchAction(){
     });
 }
 function page_init(){
-	queryByPage(currentPage, recordsPerPage,startTime,endTime);
+	queryByPage(currentPage, recordsPerPage);
 	searchAction();
 	pageControl();
 }

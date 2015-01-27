@@ -592,6 +592,10 @@ width: 30px;
 	background: -o-linear-gradient(top, #f3f3f3,#f3f3f3);
 	background: linear-gradient(top, #f3f3f3,#f3f3f3);
 }
+.btn-primary{
+	border: 1px solid #2385D6;
+    background: -moz-linear-gradient(center top , #2590EF, #2789DC) repeat scroll 0% 0% transparent;
+}
 
 /*2014-12-17 by gm RDScreate---------begin*/
 .main-header h4{
@@ -1397,5 +1401,28 @@ pre {
 	font-size:10px;
 	color: #737373;
 	padding: 0px;
+}
+
+/*loadding 样式*/
+.spin {
+	background-image: url('../../img/fading-loader.svg');
+	background-size: 50px 50px;
+	position: absolute;
+	left: 48%;
+	top: 300px;
+	z-index: 999;
+	text-align: center;
+	height: 50px;
+	width: 50px;
+}
+
+/*tooltip popover 禁止自动换行 用<br>换行*/
+.popover {
+	max-width: none;
+	white-space:nowrap;
+}
+.tooltip-inner {
+	max-width: none;
+	white-space:nowrap;
 }
 
