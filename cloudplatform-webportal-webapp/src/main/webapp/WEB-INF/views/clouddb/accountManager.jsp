@@ -162,27 +162,73 @@
 							<input name="maxConcurrency" class="form-control input-radius-2"/>
 						</div>
 						<div class="col-sm-1" style="padding-top : 8px">
-							<a  data-container="body" data-toggle="popover" data-placement="right" data-html="true"
-								data-content="<div>
-											管理用户不受并发数影响，默认值如下:<br>
-											MAX_QUERIES_PER_HOUR 1000 <br>
-											MAX_UPDATES_PER_HOUR 1000 <br>
-											MAX_CONNECTIONS_PER_HOUR 100 <br>
-											MAX_USER_CONNECTIONS 10 <br>
-
-											读写用户 如例：设置并发数为1 <br>
-											MAX_QUERIES_PER_HOUR 7200=60*60*2*1(并发数1) <br>
-											MAX_UPDATES_PER_HOUR 3600=60*60*1(并发数1) <br>
-											MAX_CONNECTIONS_PER_HOUR 7200=60*60*2*1(并发数1) <br>
-											MAX_USER_CONNECTIONS 1 = 1(并发数1) <br>
-
-											只读用户 如例: 设置并发数为1 <br>
-											MAX_QUERIES_PER_HOUR 7200=60*60*2*1(并发数1) <br>
-											MAX_UPDATES_PER_HOUR 1（不受并发数影响，值不变） <br>
-											MAX_CONNECTIONS_PER_HOUR 7200=60*60*2*1(并发数1) <br>
-											MAX_USER_CONNECTIONS 1=1(并发数1)</div>
-											">
-								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							<a data-container="body" data-toggle="popover" data-placement="right" data-html="true"
+								data-content="
+								<!-- <table border='1' style='width:100%'>
+								  <tr>
+								    <td>用户权限</td>				
+								    <td>并发数</td> 
+								    <td>MAX_QUERIES_PER_HOUR</td>
+								    <td>MAX_UPDATES_PER_HOUR</td>
+								    <td>MAX_CONNECTIONS_PER_HOUR</td> 
+								    <td>MAX_USER_CONNECTIONS</td>
+								  </tr>
+								  <tr>
+								    <td>管理用户</td>
+								    <td>默认</td> 
+								    <td>1000</td>
+								    <td>1000</td>
+								    <td>100</td> 
+								    <td>10</td>
+								  </tr>
+								  <tr>			
+								    <td>读写、只读</td>
+								    <td>1</td>
+								    <td>7200=60*60*2*1(并发数1)</td> 
+								    <td>3600=60*60*1(并发数1)</td>
+								    <td>7200=60*60*2*1(并发数1)</td>
+								    <td>1 = 1(并发数1)</td> 
+								  </tr>
+								  <tr>
+								  	<td colspan='6'>注：管理用户不受并发数设置影响；只读用户项'MAX_UPDATES_PER_HOUR'值为1不受并发数设置影响</td> 
+								  </tr>
+								</table> -->
+								<table border='1' style='width:100%'>
+									<tr>
+										<td>用户权限</td>				
+									    <td>管理用户</td> 
+									    <td>读写、只读</td>
+									    <td rowspan='6'>注：管理用户不受并发<br>数设置影响；只读用户项<br>'MAX_UPDATES_PER_HOUR'<br>值为1不受并发数设置影响</td>
+								    </tr>
+									<tr>
+										<td>并发数</td>				
+									    <td>默认</td> 
+									    <td>1</td>
+								    </tr>
+									<tr>
+										<td>MAX_QUERIES_PER_HOUR</td>				
+									    <td>1000</td> 
+									    <td>7200=60*60*2*1(并发数1)</td>
+								    </tr>
+									<tr>
+										<td>MAX_UPDATES_PER_HOUR</td>				
+									    <td>1000</td> 
+									    <td>3600=60*60*1(并发数1)</td>
+								    </tr>
+									<tr>
+										<td>MAX_CONNECTIONS_PER_HOUR</td>				
+									    <td>100</td> 
+									    <td>7200=60*60*2*1(并发数1)</td>
+								    </tr>
+									<tr>
+										<td>MAX_USER_CONNECTIONS</td>				
+									    <td>10</td> 
+									    <td>1 = 1(并发数1)</td>
+								    </tr>
+								</table>
+								
+								">
+								<span class="glyphicon glyphicon-question-sign text-muted"></span>
 							</a>
 						</div>
 					</div>
