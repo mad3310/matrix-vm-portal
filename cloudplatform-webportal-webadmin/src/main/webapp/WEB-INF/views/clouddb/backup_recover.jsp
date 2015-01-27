@@ -261,9 +261,9 @@
 		    		<div class="date-unit">
 		    		     <input id="endTime" type="date" class="form-control" value="2020-01-08">
 		    	    </div>
-		    	    <select class="form-control margin-left-5 inline-block" style="width:180px">
+		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:180px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>		    
+		    	    </select>	 -->	    
 		    	    <button id="bksearch" class="btn btn-primary btn-sm btn-search">查询</button>	
 		    	</div>
 			        <table class="table table-hover">
@@ -344,7 +344,8 @@
 		    		<div class="form-group">
 		    			<label class="col-sm-2 control-label"></label>
 		    			<div class="col-sm-8">
-		    				<button type="button" class="btn btn-primary" data-toggle='modal' data-target='#myModal'>修改</button>
+		    				<button type="button" class="btn btn-primary btn-sm" disabled="true" data-toggle='modal' data-target='#myModal'>修改</button>
+		    				<p style="display:inline-block">(暂不提供)</p>
 		    			</div>
 		    		</div>
 		    	</div>						    		    		    	

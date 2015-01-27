@@ -5,11 +5,8 @@
 define(function(require){
     var common = require('../common');
     var cn = new common();
-
-	//cn.Tooltip();
-
 	/*禁用退格键退回网页*/
-	//window.onload=cn.DisableBackspaceEnter();
+	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
@@ -19,20 +16,11 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	setInterval(asyncData,cn.dbListRefreshTime);
 
 	$("#bksearch").click(function() {
 		asyncData();
 	});
-    /*$("#refresh").click(function() {
-		asyncData();
-	});*/
-	/*$("#dbName").keydown(function(e){
-		if(e.keyCode==13){
-			asyncData();
-		}
-	});*/
-	
+   
 	/*
 	 * 可封装公共方法 begin
 	 */

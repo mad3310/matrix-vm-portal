@@ -959,3 +959,7 @@ edit by jinglinlin@letv.com
 .skin-custom .margin-left-5{
 	margin-left: 5px;
 }
+
+.skin-custom .font-disabled{
+	color:#999;
+}

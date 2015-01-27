@@ -592,6 +592,10 @@ width: 30px;
 	background: -o-linear-gradient(top, #f3f3f3,#f3f3f3);
 	background: linear-gradient(top, #f3f3f3,#f3f3f3);
 }
+.btn-primary{
+	border: 1px solid #2385D6;
+    background: -moz-linear-gradient(center top , #2590EF, #2789DC) repeat scroll 0% 0% transparent;
+}
 
 /*2014-12-17 by gm RDScreate---------begin*/
 .main-header h4{
