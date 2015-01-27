@@ -9,6 +9,10 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var dbUser = new dataHandler();
 
+    /*初始化工具提示*/
+    cn.Tooltip();
+    cn.Popover();
+
     $(".glyphicon-pencil").click(function(){
         cn.EditBoxInit(this);
     })
@@ -69,8 +73,8 @@ define(function(require){
                         message: '请输入数字'
                     },between:{
                         min:1,
-                        max:5000,
-                        message:'最大并发量1-5000'
+                        max:cn.maxConcurrency,
+                        message:'最大并发量1-'+cn.maxConcurrency
                     }
                 }
             },
@@ -147,8 +151,8 @@ define(function(require){
                         message: '请输入数字'
                     },between:{
                         min:1,
-                        max:5000,
-                        message:'最大并发量1-5000'
+                        max:cn.maxConcurrency,
+                        message:'最大并发量1-'+cn.maxConcurrency
                     }
                 }
             },
