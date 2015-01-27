@@ -73,8 +73,8 @@ define(function(require){
                         message: '请输入数字'
                     },between:{
                         min:1,
-                        max:5000,
-                        message:'最大并发量1-5000'
+                        max:cn.maxConcurrency,
+                        message:'最大并发量1-'+cn.maxConcurrency
                     }
                 }
             },
@@ -151,8 +151,8 @@ define(function(require){
                         message: '请输入数字'
                     },between:{
                         min:1,
-                        max:5000,
-                        message:'最大并发量1-5000'
+                        max:cn.maxConcurrency,
+                        message:'最大并发量1-'+cn.maxConcurrency
                     }
                 }
             },

@@ -1400,6 +1400,18 @@ pre {
 }
 
 /*loadding 样式*/
+.spin {
+	background-image: url('../../img/fading-loader.svg');
+	background-size: 50px 50px;
+	position: absolute;
+	left: 48%;
+	top: 300px;
+	z-index: 999;
+	text-align: center;
+	height: 50px;
+	width: 50px;
+	transition: ;
+}
 
 .popover {
 	max-width: none;

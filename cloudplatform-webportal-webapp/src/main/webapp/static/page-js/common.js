@@ -7,6 +7,8 @@ define(function(require,exports,module){
     var Common = function (){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 10000; //单位ms
+		this.maxConcurrency = 2000; //数据库最大并发量
+
 		TopBtnInit();//初始化顶部菜单按钮
     };
     module.exports = Common;
@@ -248,17 +250,20 @@ define(function(require,exports,module){
 		                }
 	        		}
         		}
-        		
             });
         },
-        GetData : function(url,handler){  //异步获取数据,将数据交给handler处理
-            $.ajax({
+        GetData : function(url,handler){ //异步获取数据,将数据交给handler处理
+			if($('body').find('.sidebar').length==0){	//layout界面不添加loading
+				$('body').append("<div class=\"spin\"></div>");
+			}
+			$.ajax({
                 url:url,
 				cache:false,
                 type:"get",
                 dataType:'json',
                 success:function(data){
-                    /*添加当handler为空时的异常处理*/
+					/*添加当handler为空时的异常处理*/
+					$('body').find('.spin').remove();
                     handler(data);
                 }
             });
