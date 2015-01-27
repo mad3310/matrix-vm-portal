@@ -47,14 +47,7 @@ public class HostProxyImpl extends BaseProxyImpl<HostModel> implements
   			HclusterModel hclusterModel = list.get(0);
   			hostModel.setHcluster(hclusterModel);
   		}
-  		try {
-  			this.buildTaskService.createHost(hostModel);
-		} catch (Exception e)  {
-			this.hostService.delete(hostModel);
-			throw new RuntimeException("host ip not exist!");
-		}
-	
+		this.buildTaskService.createHost(hostModel);
 	}
-	
 
 }
