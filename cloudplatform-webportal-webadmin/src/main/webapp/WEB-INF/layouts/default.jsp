@@ -283,6 +283,10 @@
 		$('#sidebar-db-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/db").html("数据库管理");
 		$('#main-content-header li:eq(1)').html("数据库列表");
+	}else if(path.indexOf("/list/backup") >= 0){
+		$('#backupRecover').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/backup").html("备份与修复");
+		$('#main-content-header li:eq(1)').remove();
 	}
 	
 			
