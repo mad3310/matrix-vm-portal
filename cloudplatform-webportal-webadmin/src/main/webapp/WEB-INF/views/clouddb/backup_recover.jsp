@@ -311,14 +311,14 @@
 					    <span class="col-sm-5 col-md-5  control-label">数据库名称：</span>
 					    <div class="col-sm-7 col-md-7 col-xs-7">
 						<input id="dbName" type="input" class="form-control"
-							value="dbName">
+							placeholder="输入dbName">
 						</div>
 					</div>
 					<div class="form-group col-sm-3 col-md-3">
 						<span class="col-sm-5 col-md-5 control-label">集群名称：</span>
 						<div class="col-sm-7 col-md-7 col-xs-8">
 							<input id="mclusterName" type="input" class="form-control"
-							value="mclusterName">
+							placeholder="输入clusterName">
 						</div>
 					</div>
 					<!-- <select class="form-control margin-left-5 inline-block" style="width:180px">

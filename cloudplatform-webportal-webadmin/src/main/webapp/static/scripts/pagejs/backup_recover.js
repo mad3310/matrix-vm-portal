@@ -20,12 +20,12 @@ function queryByPage(currentPage, recordsPerPage) {
 	$("#backupTbody tr").remove();
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
-	var mclusterName = $("mclusterName").val();
-	var dbName = $("dbName").val();
+	var mclusterName = $("#mclusterName").val();
+	var dbName = $("#dbName").val();
 	$.ajax({ 
 		type : "get",
-		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName,	
-	    dataType : "json", /*这句可用可不用，没有影响*/
+		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName,
+		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
 			error(data);
@@ -34,10 +34,10 @@ function queryByPage(currentPage, recordsPerPage) {
 			var totalPages = data.data.totalPages;
 	        for(var i= 0, len= array.length;i<len;i++){
 	                var td1 = $("<td>"
-	                		+ FilterNull(array[i].mclusterName)
+	                		+ FilterNull(array[i].mcluster.mclusterName)
 	                		+"</td>");
 	                var td2 = $("<td>"
-	                		+ FilterNull(array[i].dbName)
+	                		+ FilterNull(array[i].db.dbName)
 	                		+"</td>");
 	                var td3 = $("<td>"
 	                        + date('Y-m-d H:i:s',array[i].startTime)

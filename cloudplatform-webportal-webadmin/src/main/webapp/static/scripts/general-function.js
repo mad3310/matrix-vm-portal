@@ -246,7 +246,7 @@ function bt_toggle(containerId){
 
 function FilterNull(data){
 	if(data == null || data == undefined){
-		return 'mcluster';
+		return '';
 	}else{
 		return data;
 	}
