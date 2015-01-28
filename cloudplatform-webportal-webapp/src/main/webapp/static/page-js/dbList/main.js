@@ -18,7 +18,7 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	setInterval(asyncData,cn.dbListRefreshTime);
+	//setInterval(asyncData,cn.dbListRefreshTime);
 
 	$("#search").click(function() {
 		asyncData();

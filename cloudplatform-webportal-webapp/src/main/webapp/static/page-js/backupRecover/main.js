@@ -18,9 +18,9 @@ define(function(require){
 	asyncData();
 
 	$("#bksearch").click(function() {
+		cn.currentPage = 1;
 		asyncData();
 	});
-   
 	/*
 	 * 可封装公共方法 begin
 	 */

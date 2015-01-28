@@ -3,11 +3,8 @@
  */
 
 var currentPage = 1; //第几页 
-var recordsPerPage = 5; //每页显示条数
+var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
-alert(startTime);
-alert(endTime);
-
 
 //页面查询功能
 $("#bksearch").click(function() {
@@ -20,12 +17,14 @@ $(function(){
 });	
 
 function queryByPage(currentPage, recordsPerPage) {
-	$(".data-tr").remove();
+	$("#backupTbody tr").remove();
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
+	var mclusterName = $("mclusterName").val();
+	var dbName = $("dbName").val();
 	$.ajax({ 
 		type : "get",
-		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage,	
+		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName,	
 	    dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -35,41 +34,31 @@ function queryByPage(currentPage, recordsPerPage) {
 			var totalPages = data.data.totalPages;
 	        for(var i= 0, len= array.length;i<len;i++){
 	                var td1 = $("<td>"
-	                        + date('Y-m-d H:i:s',array[i].startTime) 
-	                        + "/"
-	                        + date('Y-m-d H:i:s',array[i].endTime)
-	                        + "</td>");
-	                var td2 = $("<td class=\"padding-left-32\">"
-	                        /*+ array[i].strategy*/
-	                		+ "实例备份"
-	                        +"</td>");
-	                var td3 = $("<td>"
-	                        /*+ array[i].size*/
-	                		+ "0.39M"
-	                        +"</td>");
-	                var td4 = $("<td>"
-	                        /*+ array[i].method*/
-	                		+ "物理备份"
-	                        + "</td>");
-	                var td5 = $("<td>"
-	                		/*+ array[i].backupType*/
-	                		+ "全量"
+	                		+ FilterNull(array[i].mclusterName)
 	                		+"</td>");
-	                var td6 = $("<td>"
-	                		/*+ array[i].pattern*/
-	                		+ "常规任务"
-	                		+ "</td>");
-	                var td7 = $("<td><span>"
-	                		/*+ array[i].status*/
-	                		+ "完成备份"
+	                var td2 = $("<td>"
+	                		+ FilterNull(array[i].dbName)
+	                		+"</td>");
+	                var td3 = $("<td>"
+	                        + date('Y-m-d H:i:s',array[i].startTime)
+	                        + "</td>");
+	                var td4 = $("<td>"
+                            + date('Y-m-d H:i:s',array[i].endTime)
+	                        + "</td>");
+	                var td5 = $("<td><span>"
+	                		+ translateStatus(array[i].status)
 	                		+ "</span></td>");
-	                var td8 = $("<td class=\"text-right\"> <div>"
-	                        + "<a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
-	                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
-	                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
-	                        + "</div></td>");
-	                var tr = $("<tr class='data-tr'></tr>");
-	                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+	                var td6 = $("<td>"
+	                        + array[i].resultDetail
+	                        + "</td>");
+	                if(array[i].status == 'FAILD'){
+						var tr = $("<tr class=\"data-tr warning\"></tr>");
+					}else if(array[i].status == 'SUCCESS'){
+						var tr = $("<tr class=\" data-tr default-danger\"></tr>");
+					}else{
+						var tr = $("<tr class='data-tr'></tr>");
+					}
+	                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 	                tr.appendTo($backupTbody);
 				   //$('[name = "dbRefuseStatus"]').popover();
 			}//循环json中的数据 

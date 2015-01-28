@@ -50,13 +50,12 @@ define(function(require,exports,module){
                 		+ "常规任务"
                 		+ "</td>");
                 var td7 = $("<td><span>"
-                		/*+ array[i].status*/
-                		+ "完成备份"
+                		+ array[i].status
                 		+ "</span></td>");
                 var td8 = $("<td class=\"text-right\"> <div>"
-                        + "<a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
-                        + "|</span><a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
-                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
+                        + "<span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</span><span class=\"text-explode\">"
+                        + "|</span><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</span><span class=\"text-explode\">"
+                        + "|</span><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</span><span class=\"text-explode\">"
                         + "</div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
