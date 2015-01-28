@@ -221,6 +221,26 @@
 													</div>
 												</div>
 											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">默认管理账户：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<input name="isCreateAdmin" type="text" class="hide" value="0">
+															<button class=" bk-button bk-button-primary " value="1">
+																<div>
+																	<span>创建</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary bk-button-current" value="0">
+																<div>
+																	<span>不创建</span>
+																</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</dd>
 								</dl>

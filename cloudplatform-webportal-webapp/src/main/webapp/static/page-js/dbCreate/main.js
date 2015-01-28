@@ -27,18 +27,6 @@ define(function(require){
             }
         }
     })
-  /*  $("#monthPurchaseBotton").click(function () {
-        if(!$(this).hasClass("disabled")){
-            var dbName = $("[name = 'dbName']").val();
-            var hclusterId = $("[name = 'hclusterId']").val();
-            var engineType = $("[name = 'engineType']").val();
-            var linkType = $("[name = 'linkType']").val();
-            var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId};
-            $(this).addClass("disabled");
-            CreateDb(formData);
-        }
-    })*/
-    
     /*按钮组件封装 --end*/
 
     /*表单验证 --begin*/
@@ -76,7 +64,8 @@ define(function(require){
         var hclusterId = $("[name = 'hclusterId']").val();
         var engineType = $("[name = 'engineType']").val();
         var linkType = $("[name = 'linkType']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":1};
+        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin};
         CreateDb(formData);
     });
     /*表单验证 --end*/
