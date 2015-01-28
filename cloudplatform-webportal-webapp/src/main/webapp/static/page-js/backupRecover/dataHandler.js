@@ -33,7 +33,8 @@ define(function(require,exports,module){
                         + array[i].backupProxy
                         +"</td>");
                 var td3 = $("<td>"
-                        + cn.FilterNull(array[i].size)
+                		+ "---"
+                        //+ cn.FilterNull(array[i].size)
                         +"</td>");
                 var td4 = $("<td>"
                         + array[i].backupMethod
