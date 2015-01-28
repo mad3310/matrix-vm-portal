@@ -93,7 +93,13 @@ define(function(require,exports,module){
 			}
 		},
         TransDate : function (format, timestamp){
-        	var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	//var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	var a;
+        	if(timestamp == null){
+        		return "---";
+        	}else{
+        		var jsdate=new Date(timestamp);
+        	}
     	    var pad = function(n, c){
     	        if((n = n + "").length < c){
     	            return new Array(++c - n.length).join("0") + n;
