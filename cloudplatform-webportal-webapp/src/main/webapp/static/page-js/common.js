@@ -85,7 +85,13 @@ define(function(require,exports,module){
         		return "<font color=\"red\">严重危险</font>";
         	}else if(status == 15){
         		return "禁用";
-        	}
+        	}else if(status == 'FAILD'){
+        		return "备份失败";
+        	}else if(status == 'SUCCESS'){
+        		return "备份成功";
+        	}else if(status == 'BUILDING'){
+        		return "备份中...";
+        	}	
         },
 		Displayable : function (status) {
 			if(status == 6){
