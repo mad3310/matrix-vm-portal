@@ -1,27 +1,32 @@
 package com.letv.portal.clouddb.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.jasig.cas.client.authentication.AttributePrincipal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.letv.common.exception.NoSessionException;
-import com.letv.common.exception.ValidateException;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.CookieUtil;
+import com.letv.common.util.HttpsClient;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
+import com.mysql.jdbc.StringUtils;
 
 @Controller
-@RequestMapping(value="/account")
 public class LoginController{
 	
 	private static String WEB_URL = "http://www.letv.com";
@@ -30,13 +35,16 @@ public class LoginController{
 	
 	@Autowired
 	private ILoginService loginManager;
-	
 	@Autowired
 	private SessionServiceImpl sessionService;
 	
 	@Autowired
 	private ILoginProxy loginProxy;
 
+	@Value("${oauth.auth.http}")
+	private String OAUTH_AUTH_HTTP;
+	@Value("${webportal.local.http}")
+	private String WEBPORTAL_LOCAL_HTTP;
 	
 	/**Methods Name: login <br>
 	 * Description: cas登录完成后，跳转到本页面做相关用户记录，然后跳转到业务界面<br>
@@ -45,64 +53,82 @@ public class LoginController{
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping("/login")
-	public ModelAndView login(HttpServletRequest request,ModelAndView mav) {
+	@RequestMapping("/oauth/callback")
+	public ModelAndView afterlogin(HttpServletRequest request,HttpServletResponse response,ModelAndView mav) throws Exception {
 		
-		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
-		if(principal != null) {
-			UserLogin userLogin = new UserLogin();
-			userLogin.setLoginName(principal.getName());
-			userLogin.setLoginIp(LoginController.getIp(request));
-			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
-	            @Override
-	            public Session execute() throws Throwable {
-	               return null;
-	            }
-	         });
-			logger.info("User:"+principal.getName()+"login success!");
-		} else {
-			//重新登录
-			throw new NoSessionException("请重新登录!");
-		}
+		String clientId = request.getParameter("client_id");
+		String clientSecret = request.getParameter("client_secret");
+		String code = request.getParameter("code");
+		
+		if(StringUtils.isNullOrEmpty(code) && !StringUtils.isNullOrEmpty(clientId)) {
+			CookieUtil.addCookie(response, "clientId", clientId, 10);
+			CookieUtil.addCookie(response, "clientSecret", clientSecret, 10);
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+			logger.debug("getAuthorize :" + buffer.toString());
+			mav.setViewName("redirect:" + buffer.toString());
+			return mav;
+		} 
+		clientId = StringUtils.isNullOrEmpty(clientId)?CookieUtil.getCookieByName(request, "clientId").getValue():clientId;
+		clientSecret = StringUtils.isNullOrEmpty(clientSecret)?CookieUtil.getCookieByName(request, "clientSecret").getValue():clientSecret;
+		code = StringUtils.isNullOrEmpty(code)?request.getParameter("code"):code;
+		
+		String accessToken = this.getAccessToken(clientId, clientSecret, code);
+		String username = this.getUsername(accessToken);
+		
+		UserLogin userLogin = new UserLogin();
+		userLogin.setLoginName(username);
+		userLogin.setLoginIp(this.getIp(request));
+		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+		session.setClientId(clientId);
+		session.setClientSecret(clientSecret);
+		
+		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+            @Override
+            public Session execute() throws Throwable {
+               return null;
+            }
+         });
         
 		mav.setViewName("redirect:/dashboard");
 		return mav;
 	}
 	
-	private void validateRetURL(String retURL)
-	{
-		if(StringUtils.isNotEmpty(retURL))
-		{	
-			String tempRetURL = retURL.replaceAll("http:", "https:");
-			String tempWEBURL = WEB_URL.replaceAll("http:", "https:");
-			boolean result = tempRetURL.startsWith(tempWEBURL);
-			if(!result)
-				throw new ValidateException("请确认跳转地址正确");
-		}
+	
+	private String getAuthorize(String clientId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+		logger.debug("getAuthorize :" + buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		Map<String,Object> resultMap = this.transResult(result);
+		return (String) resultMap.get("code");
+	}
+	private String getAccessToken(String clientId,String clientSecret,String code) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+		logger.debug("getAccessToken :" + buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		Map<String,Object> resultMap = this.transResult(result);
+		return (String) resultMap.get("access_token");
+	}
+	private String getUsername(String accessToken) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/userinfo?access_token=").append(accessToken);
+		logger.debug("getUsername :" + buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		return result;
 	}
 	
-	public boolean isReferrequest(HttpServletRequest request) {
-		String referHeader = request.getHeader("referer");
-		String tempWEBURL = WEB_URL.replaceAll("http:", "https:");
-		if(StringUtils.isNotEmpty(referHeader) 
-				&& 
-		   referHeader.replaceAll("http:", "https:").startsWith(tempWEBURL))
-			return true;
-		return false;
-	}
-	
-	public String getUserNameFromPassportHeader(HttpServletRequest request, boolean isOpenCheckByRequestUrl)
-	{		
-		String userNamePassport = "";
-		
-		if(!isOpenCheckByRequestUrl)  {
-			userNamePassport = request.getHeader("X-LetvPassport-UserId");
-			return userNamePassport;
+	private Map<String,Object> transResult(String result){
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		return userNamePassport;
+		return jsonResult;
 	}
 	
 	/**
@@ -126,4 +152,5 @@ public class LoginController{
         }
         return ip;
     }
+	
 }

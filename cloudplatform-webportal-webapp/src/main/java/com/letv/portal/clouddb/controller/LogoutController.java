@@ -1,7 +1,5 @@
 package com.letv.portal.clouddb.controller;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.letv.common.exception.CommonException;
+import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.HttpsClient;
 import com.letv.portal.service.ILoginService;
 
 @Controller
@@ -22,10 +21,10 @@ public class LogoutController{
 
 	public static final String DASHBORAD_ADDRESS = "/dashboard";
 	
-	@Value("${cas.auth.http}")
-	private String CAS_AUTH_HTTP;
-	@Value("${cas.local.http}")
-	private String CAS_LOCAL_HTTP;
+	@Value("${oauth.auth.http}")
+	private String OAUTH_AUTH_HTTP;
+	@Value("${webportal.local.http}")
+	private String WEBPORTAL_LOCAL_HTTP;
 	
 	@Autowired
 	private ILoginService loginService;
@@ -41,17 +40,23 @@ public class LogoutController{
 	 * @return
 	 */
 	@RequestMapping(value="/logout",method=RequestMethod.GET)   //http://localhost:8080/account/logout
-	public void logout(HttpServletRequest request, HttpServletResponse response){
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		loginService.logout();
-		request.getSession().invalidate();
-		sessionService.setSession(null,"logout");
-		
-		String logoutAddress = CAS_AUTH_HTTP + "/cas/logout?service=" + CAS_LOCAL_HTTP;
-		try {
-			response.sendRedirect(logoutAddress);
-		} catch (IOException e) {
-			throw new CommonException("logout时出现异常！", e);
+		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+		if(session != null) {
+			String clientId = session.getClientId();
+			String clientSecret = session.getClientSecret();
+			
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(OAUTH_AUTH_HTTP).append("/logout?client_id=").append(clientId).append("&client_secret=").append(clientSecret);
+			
+			request.getSession().invalidate();
+			sessionService.setSession(null,"logout");
+			HttpsClient.sendXMLDataByGet(buffer.toString());
 		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+		response.sendRedirect(buffer.toString());
    }
 }
