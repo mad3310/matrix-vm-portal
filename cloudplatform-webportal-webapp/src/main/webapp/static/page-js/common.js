@@ -450,20 +450,19 @@ define(function(require,exports,module){
 			})
 		},
 		getBackupDate:function(){
-			var mydate = new Date();
-			var year = mydate.getFullYear();
-			var month = mydate.getMonth() + 1;
-			var day = mydate.getDate();
-			var hour = mydate.getHours();
+			var myDate = new Date();
+			var timestamp = myDate.valueOf();
+			var hour = myDate.getHours();
 			if(hour > 4){
-				var currentDay = day + 1;
+				timestamp = timestamp + 86400;
 			}else{
-				var currentDay = day;
+				timestamp = timestamp;
 			}
 			
-			if (month > 12 && day > 31){
-				year = year + 1;
-			}
+			newDate = Date.prototype.Format(timestamp);
+			
+			var year = newDate.getFullYear(newDate)
+			var month = newDate.getMonth(newDate);
 			
 			return year + '年' + month + '月' + currentDay + '日';
 		}
