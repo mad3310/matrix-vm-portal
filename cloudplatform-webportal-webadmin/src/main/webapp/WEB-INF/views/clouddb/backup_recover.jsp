@@ -276,12 +276,12 @@
 						<span class="time-range-title">选择时间范围：</span>
 						<div class="date-unit">
 							<input id="startTime" type="date" class="form-control"
-								value = "2010-01-01" placeholder="yyyy-MM-dd">
+								placeholder="yyyy-MM-dd">
 						</div>
 						<span class="date-step-span">至</span>
 						<div class="date-unit">
 							<input id="endTime" type="date" class="form-control"
-								value = "2020-01-01" placeholder="yyyy-MM-dd">
+								placeholder="yyyy-MM-dd">
 						</div>
 				  </div>
 						<div class="form-group">
