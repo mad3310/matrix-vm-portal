@@ -921,7 +921,7 @@ edit by jinglinlin@letv.com
     float: left;
 }
 .skin-custom .time-range-unit-header{
-	padding-top:15px;
+	/* padding-top:15px; */
 	padding-bottom: 5px;
 }
 .skin-custom .date-unit,

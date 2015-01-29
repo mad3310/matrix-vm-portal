@@ -344,43 +344,48 @@
 				
 		    	
 		  	</div>			
-		    <div id="backsetting" role="tabpanel" class="tab tab-pane fade" aria-labelledby="backsetting-tab">
-		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 text-muted" style="font-weight:normal">保留天数:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">7天</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">备份周期:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">星期二,星期四,星期六</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">备份时间:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">20 - 21 时</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">预计下次备份时间:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">2015年01月08日 20 - 21时</div>
-		    			</div>
-		    		</div>
-		    	</div>
-		    	<div class="pull-left col-sm-10">
-		    		<div class="form-group">
-		    			<label class="col-sm-2 control-label"></label>
-		    			<div class="col-sm-8">
-		    			    <button type="button" disabled="true" class="btn btn-primary" data-toggle='modal' data-target='#myModal'>修改</button>		    			   
-		    				<p style="display:inline-block">(暂不提供)</p>
-		    			</div>
-		    		</div>
-		    	</div>						    		    		    	
-		    </div>			   
+			<div id="backsetting" role="tabpanel" class="tab-pane fade"
+				aria-labelledby="backsetting-tab">
+				<div class="pull-left col-sm-10 mt20 padding-left-32">
+					<div class="form-group clearfix">
+						<label class="col-sm-2 text-muted" style="font-weight: normal">保留天数:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">7天</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">备份周期:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">星期一,星期二,星期三,星期四,星期五,星期六,星期日</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">备份时间:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">4:00 AM</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">预计下次备份时间:</label>
+						<div class="col-sm-8">
+							<div id="backupTime" class="form-control-static pd0"></div>
+						</div>
+					</div>
+				</div>
+				<div class="pull-left col-sm-10">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-8">
+							<button type="button" class="btn btn-primary btn-sm"
+								disabled="true" data-toggle='modal' data-target='#myModal'>修改</button>
+							<p style="display: inline-block">(暂不提供)</p>
+						</div>
+					</div>
+				</div>
+			</div>	   
 		</div>
     </div>				
 </body>

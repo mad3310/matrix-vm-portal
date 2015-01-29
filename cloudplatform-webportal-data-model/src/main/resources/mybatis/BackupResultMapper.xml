@@ -45,13 +45,13 @@
 			<if test="dbId != null  ">
 				and r.DB_ID=#{dbId}
 			</if>
-			<if test="startTime != null  ">
+			<if test="startTime != null and startTime != '' ">
 				and r.START_TIME&gt;=#{startTime}
 			</if>
-			<if test="endTime != null  ">
+			<if test="endTime != null  and endTime != '' ">
 				and r.START_TIME&lt;=#{endTime}
 			</if>
-			<if test="status != null  ">
+			<if test="status != null and status != ''">
 				and r.STATUS=#{status}
 			</if>
 			<if test="resultDetail != null  ">
@@ -174,13 +174,13 @@
 			<if test="params != null and params.backupIp != null  ">
 				and r.BACKUP_IP=#{params.backupIp}
 			</if>
-			<if test="params != null and params.startTime != null  ">
+			<if test="params != null and params.startTime != null  and params.startTime != '' ">
 				and r.START_TIME&gt;=#{params.startTime}
 			</if>
-			<if test="params != null and params.endTime != null  ">
+			<if test="params != null and params.endTime != null  and params.endTime != '' ">
 				and r.START_TIME&lt;=#{params.endTime}
 			</if>
-			<if test="params != null and params.status != null  ">
+			<if test="params != null and params.status != null   and params.status != ''">
 				and r.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
@@ -206,8 +206,16 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_BACKUP_RESULT r
+		,m.MCLUSTER_NAME,d.DB_NAME
+		from WEBPORTAL_BACKUP_RESULT r,WEBPORTAL_MCLUSTER_INFO m, WEBPORTAL_DB d
 		<include refid="Example_Page_Where_Clause" />
+		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID
+		<if test="params != null and params.dbName != null and params.dbName != ''">
+			and d.DB_NAME like CONCAT('%','${params.dbName}','%')
+		</if> 
+		<if test="params != null and params.mclusterName != null  and params.dbName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
+		</if> 
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

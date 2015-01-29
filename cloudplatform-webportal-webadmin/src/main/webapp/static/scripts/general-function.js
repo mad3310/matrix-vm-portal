@@ -1,6 +1,13 @@
 /*翻译时间戳为时间格式*/
 function date(format, timestamp){
-    var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+    //var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+	var a;
+	if(timestamp == null){
+		return "---";
+	}else{
+		var jsdate=new Date(timestamp);
+	}
+	
     var pad = function(n, c){
         if((n = n + "").length < c){
             return new Array(++c - n.length).join("0") + n;
@@ -150,7 +157,13 @@ function translateStatus(status){
 		return "<font color=\"red\">严重危险</font>";
 	}else if(status == 15){
 		return "禁用";
-	}
+	}else if(status == 'FAILD'){
+		return "备份失败";
+	}else if(status == 'SUCCESS'){
+		return "备份成功";
+	}else if(status == 'BUILDING'){
+		return "备份中...";
+	}	
 }
 /*错误提示框,一般在异步请求返回信息中用到*/
 function error(errorThrown,time) {
@@ -231,3 +244,10 @@ function bt_toggle(containerId){
 	});
 }
 
+function FilterNull(data){
+	if(data == null || data == undefined){
+		return '';
+	}else{
+		return data;
+	}
+}

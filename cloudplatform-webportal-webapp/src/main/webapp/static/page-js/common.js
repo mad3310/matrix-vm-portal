@@ -85,7 +85,13 @@ define(function(require,exports,module){
         		return "<font color=\"red\">严重危险</font>";
         	}else if(status == 15){
         		return "禁用";
-        	}
+        	}else if(status == 'FAILD'){
+        		return "备份失败";
+        	}else if(status == 'SUCCESS'){
+        		return "备份成功";
+        	}else if(status == 'BUILDING'){
+        		return "备份中...";
+        	}	
         },
 		Displayable : function (status) {
 			if(status == 6){
@@ -93,7 +99,13 @@ define(function(require,exports,module){
 			}
 		},
         TransDate : function (format, timestamp){
-        	var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	//var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	var a;
+        	if(timestamp == null){
+        		return "---";
+        	}else{
+        		var jsdate=new Date(timestamp);
+        	}
     	    var pad = function(n, c){
     	        if((n = n + "").length < c){
     	            return new Array(++c - n.length).join("0") + n;
@@ -436,9 +448,26 @@ define(function(require,exports,module){
 					$(this).find('ul li').first().click();
 				}
 			})
+		},
+		getBackupDate:function(){
+			var mydate = new Date();
+			var year = mydate.getFullYear();
+			var month = mydate.getMonth() + 1;
+			var day = mydate.getDate();
+			var hour = mydate.getHours();
+			if(hour > 4){
+				var currentDay = day + 1;
+			}else{
+				var currentDay = day;
+			}
+			
+			if (month > 12 && day > 31){
+				year = year + 1;
+			}
+			
+			return year + '年' + month + '月' + currentDay + '日';
 		}
-
-        /*add new common function*/
+		 /*add new common function*/
     }
 	var TopBtnInit = function(){
 		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){

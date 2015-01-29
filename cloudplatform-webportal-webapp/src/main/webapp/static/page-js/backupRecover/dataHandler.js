@@ -30,33 +30,28 @@ define(function(require,exports,module){
                         + cn.TransDate('Y-m-d H:i:s',array[i].endTime)
                         + "</td>");
                 var td2 = $("<td class=\"padding-left-32\">"
-                        /*+ array[i].strategy*/
-                		+ "实例备份"
+                        + array[i].backupProxy
                         +"</td>");
                 var td3 = $("<td>"
-                        /*+ array[i].size*/
-                		+ "0.39M"
+                		+ "---"
+                        //+ cn.FilterNull(array[i].size)
                         +"</td>");
                 var td4 = $("<td>"
-                        /*+ array[i].method*/
-                		+ "物理备份"
+                        + array[i].backupMethod
                         + "</td>");
                 var td5 = $("<td>"
-                		/*+ array[i].backupType*/
-                		+ "全量"
+                		+ array[i].backupType
                 		+"</td>");
                 var td6 = $("<td>"
-                		/*+ array[i].pattern*/
-                		+ "常规任务"
+                		+ array[i].workType
                 		+ "</td>");
                 var td7 = $("<td><span>"
-                		/*+ array[i].status*/
-                		+ "完成备份"
+                		+ cn.TranslateStatus(array[i].status)
                 		+ "</span></td>");
                 var td8 = $("<td class=\"text-right\"> <div>"
-                        + "<a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</a><span class=\"text-explode\">"
-                        + "|</span><a class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</a><span class=\"text-explode\">"
-                        + "|</span><a class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</a><span class=\"text-explode\">"
+                        + "<span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</span><span class=\"text-explode\">"
+                        + "|</span><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</span><span class=\"text-explode\">"
+                        + "|</span><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</span><span class=\"text-explode\">"
                         + "</div></td>");
                 var tr = $("<tr class='data-tr'></tr>");
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
