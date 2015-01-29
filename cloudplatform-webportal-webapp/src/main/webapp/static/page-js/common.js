@@ -408,6 +408,34 @@ define(function(require,exports,module){
 			var objLeft = ($obj.offset().left - (screenWidth-iframebodyWidth)/2); 
 			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
+		},
+		divselect: function () {
+			var inputselect = $('.divselect').find('input');
+			var divselects = $(".divselect");
+			/*for(var i = 0,len = divselects.length;i<len;i++){
+				if(divselects[i].find('li').length > 0){
+					divselects[i].
+				}
+			}*/
+			$('.divselect').closest('.pull-left').click(function(){
+				var ul = $(this).find('ul');
+				if(ul.css("display")=="none"){
+					ul.show();
+				}else{
+					ul.hide();
+				}
+			});
+			$('.divselect').find("ul li").click(function(){
+				var txt = $(this).find('a').text();
+				$(this).closest('.divselect').find('span').html(txt);
+				var value = $(this).find('a').attr("selectid");
+				inputselect.val(value);
+			});
+			$(".divselect").each(function () {
+				if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+					$(this).find('ul li').first().click();
+				}
+			})
 		}
 
         /*add new common function*/
