@@ -46,13 +46,13 @@
 				and r.DB_ID=#{dbId}
 			</if>
 			<if test="startTime != null and startTime != '' ">
-				and r.START_TIME&gt;=#{params.startTime}
+				and r.START_TIME&gt;=#{startTime}
 			</if>
 			<if test="endTime != null  and endTime != '' ">
-				and r.START_TIME&lt;=#{params.endTime}
+				and r.START_TIME&lt;=#{endTime}
 			</if>
 			<if test="status != null and status != ''">
-				and r.STATUS=#{params.status}
+				and r.STATUS=#{status}
 			</if>
 			<if test="resultDetail != null  ">
 				and r.RESULT_DETAIL=#{resultDetail}
