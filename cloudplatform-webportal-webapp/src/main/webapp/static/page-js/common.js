@@ -424,7 +424,7 @@ define(function(require,exports,module){
 		getBackupDate:function(){
 			var mydate = new Date();
 			var year = mydate.getFullYear();
-			var month = mydate.getMonth()+1;
+			var month = mydate.getMonth() + 1;
 			var day = mydate.getDate();
 			var hour = mydate.getHours();
 			if(hour > 4){
@@ -432,6 +432,11 @@ define(function(require,exports,module){
 			}else{
 				var currentDay = day;
 			}
+			
+			if (month > 12 && day > 31){
+				year = year + 1;
+			}
+			
 			return year + '年' + month + '月' + currentDay + '日';
 		}
 		 /*add new common function*/
