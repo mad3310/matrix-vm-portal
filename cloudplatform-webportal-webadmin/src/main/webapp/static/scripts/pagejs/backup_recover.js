@@ -86,7 +86,7 @@ function queryByPage(currentPage, recordsPerPage) {
 				   //$('[name = "dbRefuseStatus"]').popover();
 			}//循环json中的数据 
 			
-			if (totalPages <= 1) {
+			if (totalPages < 1) {
 				$("#pageControlBar").hide();
 			} else {
 				$("#pageControlBar").show();

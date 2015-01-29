@@ -21,13 +21,15 @@ define(function(require){
 	//setInterval(asyncData,cn.dbListRefreshTime);
 
 	$("#search").click(function() {
+		cn.currentPage = 1;
 		asyncData();
 	});
-	$("#refresh").click(function() {
+	$("#refresh").click(function() {		
 		asyncData();
 	});
 	$("#dbName").keydown(function(e){
 		if(e.keyCode==13){
+			cn.currentPage = 1;
 			asyncData();
 		}
 	});
