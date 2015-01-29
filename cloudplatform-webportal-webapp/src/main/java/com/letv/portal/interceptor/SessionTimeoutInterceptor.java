@@ -6,10 +6,10 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,8 +20,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.clouddb.controller.LoginController;
-import com.letv.portal.model.UserLogin;
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.proxy.ILoginProxy;
 
 /**
@@ -43,10 +42,17 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		this.allowUrls = allowUrls;
 	}
 
+	@Value("${oauth.auth.http}")
+	private String OAUTH_AUTH_HTTP;
+	@Value("${webportal.local.http}")
+	private String WEBPORTAL_LOCAL_HTTP;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
 		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");  
+		
+		//特殊url过滤
 		if(null != allowUrls && allowUrls.length>=1) {
 			for(String url : allowUrls) {  
 				if(requestUrl.contains(url)) {  
@@ -54,26 +60,29 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		}
-		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
-		if(principal != null) {
-			Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-			if(session == null) {
-				UserLogin userLogin = new UserLogin();
-				userLogin.setLoginName(principal.getName());
-				userLogin.setLoginIp(LoginController.getIp(request));
-				session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-				request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-				
-			} 
+		
+		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
+		if(session == null ) {
+			logger.debug("please login");
+			boolean isAjaxRequest = (request.getHeader("x-requested-with") != null)? true:false;
+			
+			if (isAjaxRequest) {
+				responseJson(request,response,"长时间未操作，请重新登录");
+			} else {
+				StringBuffer buffer = new StringBuffer();
+				buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+				response.sendRedirect(buffer.toString());
+			}
+			return false;
+		} else {
 			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
 				@Override
 				public Session execute() throws Throwable {
 					return null;
 				}
 			});
-		} 
+		}
 		return true;
-		
 	}
 	
 	@Override

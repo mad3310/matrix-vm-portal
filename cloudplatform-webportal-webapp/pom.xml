@@ -218,14 +218,6 @@
 		  <artifactId>janino</artifactId>
 		</dependency>
 		
-		<!-- cas client -->
-		<dependency> 
-		  <groupId>org.jasig.cas.client</groupId> 
-		  <artifactId>cas-client-core</artifactId> 
-		  <version>3.1.12</version> 
-		  <type>jar</type> 
-		</dependency>
-		
 		<dependency>
         	<groupId>com.letv.cloudplatform</groupId>
         	<artifactId>webportal-common</artifactId>

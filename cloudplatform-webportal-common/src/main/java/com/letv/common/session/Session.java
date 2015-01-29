@@ -18,6 +18,9 @@ public class Session implements Serializable{
 	
 	private boolean passwordExpired = false;
 	
+	private String clientId;
+	private String clientSecret;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -44,4 +47,25 @@ public class Session implements Serializable{
 	{
 		this.userName = userName;
 	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public String getClientSecret() {
+		return clientSecret;
+	}
+
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
 }
