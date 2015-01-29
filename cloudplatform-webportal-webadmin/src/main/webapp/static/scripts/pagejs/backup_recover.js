@@ -3,7 +3,7 @@
  */
 
 var currentPage = 1; //第几页 
-var recordsPerPage = 15; //每页显示条数
+var recordsPerPage = 5; //每页显示条数
 var currentSelectedLineDbName = 1;
 $(function(){
 	//初始化
@@ -23,7 +23,6 @@ function queryByPage(currentPage, recordsPerPage) {
 	var dbName = $("#dbName").val();
 	
 	var backupStatus = $("#backupStatus").val();
-	console.log(backupStatus);
 	if  (backupStatus == 0){
 		var status = "SUCCESS";
 	}else if(backupStatus == 1){
@@ -74,6 +73,7 @@ function queryByPage(currentPage, recordsPerPage) {
 			}//循环json中的数据 
 			
 			if (totalPages <= 1) {
+				debugger
 				$("#pageControlBar").hide();
 			} else {
 				$("#pageControlBar").show();
