@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div id="pageControlBar">
-				<input type="hidden" id="totalPage_input" >aaaaa</input>
+				<input type="hidden" id="totalPage_input" ></input>
 				<ul class="pager">
 					<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
 					<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
