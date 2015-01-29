@@ -21,11 +21,11 @@
 				</div>
 				<div class="form-group">
 					<input id="dbName" type="input" class="form-control margin-left-5"
-						placeholder="输入数据库名">
+						placeholder="请输入数据库名称">
 				</div>
 				<div class="form-group ">
 					<input id="mclusterName" type="input"
-						class="form-control margin-left-5" placeholder="输入集群名">
+						class="form-control margin-left-5" placeholder="请输入集群名称">
 				</div>
 				<div class="form-group margin-left-5">
 					<select id="backupStatus" class="form-control">
@@ -48,13 +48,13 @@
 						<table class="table table-hover table-striped">
 							<thead>
 								<tr class="text-muted">
-									<td style="width: 15%">集群名</td>
-									<td style="width: 15%">数据库名</td>
+									<td style="width: 15%">container集群名称</td>
+									<td style="width: 15%">数据库名称</td>
 									<td style="width: 20%">开始时间</td>
 									<td style="width: 20%">结束时间</td>
 									<td style="width: 10%">状态</td>
 									<td style="width: 20%">详情</td>
-								</tr>
+								</tr> 
 							</thead>
 							<tbody id="backupTbody">
 							</tbody>
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div id="pageControlBar">
-				<input type="hidden" id="totalPage_input" >aaaaa</input>
+				<input type="hidden" id="totalPage_input" ></input>
 				<ul class="pager">
 					<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
 					<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>

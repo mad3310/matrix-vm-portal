@@ -3,7 +3,7 @@
  */
 
 var currentPage = 1; //第几页 
-var recordsPerPage = 5; //每页显示条数
+var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
 $(function(){
 	//初始化
@@ -42,9 +42,9 @@ function queryByPage(currentPage, recordsPerPage) {
 			var $backupTbody = $("#backupTbody");
 			var totalPages = data.data.totalPages;
 	        for(var i= 0, len= array.length;i<len;i++){
-	                var td1 = $("<td>"
+	                var td1 = $("<td><a>"
 	                		+ FilterNull(array[i].mcluster.mclusterName)
-	                		+"</td>");
+	                		+"</a></td>");
 	                var td2 = $("<td>"
 	                		+ FilterNull(array[i].db.dbName)
 	                		+"</td>");
@@ -54,16 +54,30 @@ function queryByPage(currentPage, recordsPerPage) {
 	                var td4 = $("<td>"
                             + date('Y-m-d H:i:s',array[i].endTime)
 	                        + "</td>");
-	                var td5 = $("<td><span>"
-	                		+ translateStatus(array[i].status)
-	                		+ "</span></td>");
+	                if(array[i].status == 'FAILD'){
+	                	var td5 = $("<td> <a>"
+								+ translateStatus(array[i].status)
+								+ "</a></td>");
+					}else if(array[i].status == 'BUILDING'){
+						var td5 = $("<td>"
+								+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
+								+ "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+								+ translateStatus(array[i].status)
+								+ "</a>"
+								+ "</td>");
+					}else{
+						var td5 = $("<td> <a>"
+								+ translateStatus(array[i].status)
+								+ "</a></td>");
+					}
+	                
 	                var td6 = $("<td>"
 	                        + array[i].resultDetail
 	                        + "</td>");
 	                if(array[i].status == 'FAILD'){
-						var tr = $("<tr class=\"data-tr warning\"></tr>");
+						var tr = $("<tr class=\"data-tr default-danger\"></tr>");
 					}else if(array[i].status == 'SUCCESS'){
-						var tr = $("<tr class=\" data-tr default-danger\"></tr>");
+						var tr = $("<tr class=\" data-tr warnings\"></tr>");
 					}else{
 						var tr = $("<tr class='data-tr'></tr>");
 					}
@@ -72,8 +86,7 @@ function queryByPage(currentPage, recordsPerPage) {
 				   //$('[name = "dbRefuseStatus"]').popover();
 			}//循环json中的数据 
 			
-			if (totalPages <= 1) {
-				debugger
+			if (totalPages < 1) {
 				$("#pageControlBar").hide();
 			} else {
 				$("#pageControlBar").show();

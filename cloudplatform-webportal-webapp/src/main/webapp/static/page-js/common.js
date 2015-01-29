@@ -421,23 +421,51 @@ define(function(require,exports,module){
 			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
 		},
+		divselect: function () {
+			var inputselect = $('.divselect').find('input');
+			var divselects = $(".divselect");
+			/*for(var i = 0,len = divselects.length;i<len;i++){
+				if(divselects[i].find('li').length > 0){
+					divselects[i].
+				}
+			}*/
+			$('.divselect').closest('.pull-left').click(function(){
+				var ul = $(this).find('ul');
+				if(ul.css("display")=="none"){
+					ul.show();
+				}else{
+					ul.hide();
+				}
+			});
+			$('.divselect').find("ul li").click(function(){
+				var txt = $(this).find('a').text();
+				$(this).closest('.divselect').find('span').html(txt);
+				var value = $(this).find('a').attr("selectid");
+				inputselect.val(value);
+			});
+			$(".divselect").each(function () {
+				if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+					$(this).find('ul li').first().click();
+				}
+			})
+		},
 		getBackupDate:function(){
-			var mydate = new Date();
-			var year = mydate.getFullYear();
-			var month = mydate.getMonth() + 1;
-			var day = mydate.getDate();
-			var hour = mydate.getHours();
+			var myDate = new Date();			
+			var timestamp = myDate.valueOf();			
+			var hour = myDate.getHours();
+			
 			if(hour > 4){
-				var currentDay = day + 1;
+				timestamp = timestamp + 86400000;
 			}else{
-				var currentDay = day;
+				timestamp = timestamp;
 			}
 			
-			if (month > 12 && day > 31){
-				year = year + 1;
-			}
+			var newDate = new Date(timestamp);
+			var year = newDate.getFullYear();
+			var month = newDate.getMonth() + 1;
+			var day = newDate.getDate();
 			
-			return year + '年' + month + '月' + currentDay + '日';
+			return year + '年' + month + '月' + day + '日';
 		}
 		 /*add new common function*/
     }

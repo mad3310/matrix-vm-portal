@@ -1287,14 +1287,13 @@ position: relative;
 .bk-form-row .pull-left .bk-select-arrow {
 	position: relative;
 	left: -10px;
-	top: -35px;
+	top: -20px;
 	float: right;
 	display: inline;
 	width: 0;
 	height: 0;
 	border: solid 5px transparent;	
 	border-top-color: #fff;
-	margin: 15px 0 0 10px;
 	-webkit-transform-origin: 50% 20% 0;
 	-moz-transform-origin: 50% 20% 0;
 	-ms-transform-origin: 50% 20% 0;
@@ -1307,14 +1306,13 @@ position: relative;
    
 .bk-form-row .pull-left .sleHid { 
 	display:block; 
-	width:192px; 
+	width:226px;
 	overflow:hidden; 
 }    
 .bk-form-row .pull-left .sleBG { 
 	width:226px; 
 	height:36px; 
-	border:#43bfe3 1px solid; 
-	border-right:none; 
+	border-right:none;
 	background:#43bfe3 no-repeat 62px 1px; 
 	display:block;
 }
@@ -1424,5 +1422,39 @@ pre {
 .tooltip-inner {
 	max-width: none;
 	white-space:nowrap;
+}
+
+/*select组件重写*/
+.divselect{
+	cursor: pointer;
+	width:226px;
+}
+.divselect span{
+	line-height:36px;
+	font-size:14px;
+	color: #FFFFFF;
+	margin-left: 16px;
+}
+.divselect ul{
+	width:226px;
+	margin:0;
+	padding:0;
+	border:1px solid #eeeeee;
+}
+.bk-select-option{
+	cursor: pointer;
+	list-style:none;
+	display:block;
+	background:#FFFFFF;
+	font-size:14px;
+	padding:1px 16px 2px;
+	line-height:32px;
+	border-top:solid 1px #eeeeee;
+	width:100%;
+	position:relative;
+	white-space:nowrap;
+}
+.bk-select-option a{
+	text-decoration:none;
 }
 
