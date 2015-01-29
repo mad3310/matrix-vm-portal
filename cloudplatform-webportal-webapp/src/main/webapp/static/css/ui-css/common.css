@@ -1427,6 +1427,7 @@ pre {
 
 /*select组件重写*/
 .divselect{
+	cursor: pointer;
 	width:226px;
 }
 .divselect span{
@@ -1439,8 +1440,10 @@ pre {
 	width:226px;
 	margin:0;
 	padding:0;
+	border:1px solid #eeeeee;
 }
 .bk-select-option{
+	cursor: pointer;
 	list-style:none;
 	display:block;
 	background:#FFFFFF;
@@ -1451,5 +1454,8 @@ pre {
 	width:100%;
 	position:relative;
 	white-space:nowrap;
+}
+.bk-select-option a{
+	text-decoration:none;
 }
 
