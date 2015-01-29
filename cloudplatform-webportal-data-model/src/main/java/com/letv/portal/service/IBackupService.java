@@ -11,4 +11,6 @@ import com.letv.portal.model.BackupResultModel;
  */
 public interface IBackupService extends IBaseService<BackupResultModel> {
 
+	void deleteByMclusterId(Long id);
+
 }

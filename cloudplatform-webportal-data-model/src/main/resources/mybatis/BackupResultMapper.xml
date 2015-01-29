@@ -145,16 +145,23 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_BACKUP_RESULT r
+		left join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		<if test="mclusterName != null and mclusterName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
+		</if> 
+		left join WEBPORTAL_DB d on r.DB_ID = d.ID
+		<if test="dbName != null and dbName != ''">
+			and d.DB_NAME like CONCAT('%','${dbName}','%')
+		</if> 
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" /> ,m.MCLUSTER_NAME,d.DB_NAME 
-		from WEBPORTAL_BACKUP_RESULT r,WEBPORTAL_MCLUSTER_INFO m,WEBPORTAL_DB d
+		<include refid="Base_Column_List" /> 
+		from WEBPORTAL_BACKUP_RESULT r
 		<include refid="Example_Where_Clause" />
-		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID 
 	</select>
 	
 	
@@ -207,17 +214,18 @@
 		select
 		<include refid="Base_Column_List" />
 		,m.MCLUSTER_NAME,d.DB_NAME
-		from WEBPORTAL_BACKUP_RESULT r,WEBPORTAL_MCLUSTER_INFO m, WEBPORTAL_DB d
-		<include refid="Example_Page_Where_Clause" />
-		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID
+		from WEBPORTAL_BACKUP_RESULT r
+		left join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
+		</if>
+		left join WEBPORTAL_DB d on r.DB_ID = d.ID
 		<if test="params != null and params.dbName != null and params.dbName != ''">
 			and d.DB_NAME like CONCAT('%','${params.dbName}','%')
 		</if> 
-		<if test="params != null and params.mclusterName != null  and params.dbName != ''">
-			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
-		</if> 
+		<include refid="Example_Page_Where_Clause" />
 		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.recordsPerPage}
+      		limit #{page.startRowPosition},#{page.endRowPosition}
     	</if>
 		<if test="params != null and params.orderBy != null  ">
       		 order by #{params.orderBy}
@@ -226,4 +234,5 @@
       		 desc
     	</if>
 	</select>
+	
 </mapper>   

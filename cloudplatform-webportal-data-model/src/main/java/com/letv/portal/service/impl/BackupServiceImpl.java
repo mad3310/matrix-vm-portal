@@ -1,5 +1,9 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -9,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.IBackupResultDao;
 import com.letv.portal.model.BackupResultModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IBackupService;
 
 /**Program Name: BackupServiceImpl <br>
@@ -35,4 +40,13 @@ public class BackupServiceImpl extends BaseServiceImpl<BackupResultModel> implem
 		return this.backupResultDao;
 	}
 
+	@Override
+	public void deleteByMclusterId(Long id) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", id);
+		List<BackupResultModel> backups = this.backupResultDao.selectByMap(map);
+		for (BackupResultModel backup : backups) {
+			super.delete(backup);
+		}
+	}
 }
