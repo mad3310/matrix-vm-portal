@@ -42,11 +42,19 @@ function queryByPage(currentPage, recordsPerPage) {
 			var $backupTbody = $("#backupTbody");
 			var totalPages = data.data.totalPages;
 	        for(var i= 0, len= array.length;i<len;i++){
+	        		var mclusterName = '';
+	        		if(array[i].mcluster) {
+	        			mclusterName = array[i].mcluster.mclusterName;
+	        		}
+	        		var dbName = '';
+	        		if(array[i].db) {
+	        			dbName = array[i].db.dbName;
+	        		}
 	                var td1 = $("<td><a>"
-	                		+ FilterNull(array[i].mcluster.mclusterName)
+	                		+ FilterNull(mclusterName)
 	                		+"</a></td>");
 	                var td2 = $("<td>"
-	                		+ FilterNull(array[i].db.dbName)
+	                		+ FilterNull(dbName)
 	                		+"</td>");
 	                var td3 = $("<td>"
 	                        + date('Y-m-d H:i:s',array[i].startTime)

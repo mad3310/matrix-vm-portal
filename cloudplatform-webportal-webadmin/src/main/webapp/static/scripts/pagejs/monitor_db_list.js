@@ -15,8 +15,12 @@ function queryMclusterMonitor() {
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
+				var mclusterName = '';
+        		if(array[i].mcluster) {
+        			mclusterName = array[i].mcluster.mclusterName;
+        		}
 				var td1 = $("<td>"
-							+ array[i].mcluster.mclusterName
+							+ mclusterName
 							+ "</td>");
 				var td2 = $("<td name=\"vip\">"
 							+ array[i].ipAddr
