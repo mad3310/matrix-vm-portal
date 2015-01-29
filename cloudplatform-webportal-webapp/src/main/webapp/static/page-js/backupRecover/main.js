@@ -1,5 +1,5 @@
 /**
- * Created by yaokuo on 2014/12/12.
+ * Created by yaokuo on 2015/01/22.
  * backup page js
  */
 define(function(require){
@@ -15,8 +15,11 @@ define(function(require){
     /*
      * 初始化数据
      */
+    
 	asyncData();
-
+	
+	/*设置备份时间*/
+    $("#backupTime").html(cn.getBackupDate()+ ' '+'4:00 AM');
 	$("#bksearch").click(function() {
 		cn.currentPage = 1;
 		asyncData();

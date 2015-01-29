@@ -5,26 +5,36 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
-
+$(function(){
+	//初始化
+	page_init();
+});	
 //页面查询功能
 $("#bksearch").click(function() {
 	queryByPage(currentPage, recordsPerPage);
 });
 
-$(function(){
-	//初始化
-	page_init();
-});	
-
 function queryByPage(currentPage, recordsPerPage) {
+	
 	$("#backupTbody tr").remove();
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
 	var mclusterName = $("#mclusterName").val();
 	var dbName = $("#dbName").val();
+	
+	var backupStatus = $("#backupStatus").val();
+	console.log(backupStatus);
+	if  (backupStatus == 0){
+		var status = "SUCCESS";
+	}else if(backupStatus == 1){
+		var status = "FAILD";
+	}else if(backupStatus == 2){
+		var status = "BUILDING";
+	}
+	
 	$.ajax({ 
 		type : "get",
-		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName,
+		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName +'&&status=' + status,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -148,6 +158,7 @@ function searchAction(){
     });
 }
 function page_init(){
+	$('#nav-search').addClass("hidden");
 	queryByPage(currentPage, recordsPerPage);
 	searchAction();
 	pageControl();

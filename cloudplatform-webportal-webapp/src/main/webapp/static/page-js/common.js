@@ -420,9 +420,26 @@ define(function(require,exports,module){
 			var objLeft = ($obj.offset().left - (screenWidth-iframebodyWidth)/2); 
 			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
+		},
+		getBackupDate:function(){
+			var mydate = new Date();
+			var year = mydate.getFullYear();
+			var month = mydate.getMonth() + 1;
+			var day = mydate.getDate();
+			var hour = mydate.getHours();
+			if(hour > 4){
+				var currentDay = day + 1;
+			}else{
+				var currentDay = day;
+			}
+			
+			if (month > 12 && day > 31){
+				year = year + 1;
+			}
+			
+			return year + '年' + month + '月' + currentDay + '日';
 		}
-
-        /*add new common function*/
+		 /*add new common function*/
     }
 	var TopBtnInit = function(){
 		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){

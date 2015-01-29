@@ -267,67 +267,50 @@
 		</div>
 	</div>
 	<!-- modal end -->
-	<div class="panel-group pd10" role="tablist"
-		aria-multiselectable="true">
-		<div class="se-heading" id="headingOne">
-			<div class="pull-left">
-				<h5>
-					备份与恢复 <a id="back_a" data-toggle="tooltip" data-placement="top"
-						title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。"> <i
-						class="fa fa-question-circle text-muted"></i>
-					</a>
-				</h5>
+	<div class="panel-group pd10" role="tablist" aria-multiselectable="true">
+		<div class="page-header">
+		<!-- <h3>备份恢复列表</h3> -->
+		<div class="input-group pull-right">
+		 <div class="form-inline">
+				 <div class="form-group time-range-unit-header">
+						<span class="time-range-title">选择时间范围：</span>
+						<div class="date-unit">
+							<input id="startTime" type="date" class="form-control"
+								placeholder="yyyy-MM-dd">
+						</div>
+						<span class="date-step-span">至</span>
+						<div class="date-unit">
+							<input id="endTime" type="date" class="form-control"
+								placeholder="yyyy-MM-dd">
+						</div>
+				  </div>
+						<div class="form-group">
+							<input id="dbName" type="input" class="form-control margin-left-5" placeholder="输入数据库名">
+						</div>
+						<div class="form-group ">
+								<input id="mclusterName" type="input" class="form-control margin-left-5" placeholder="输入集群名">
+						</div>
+						<div class="form-group margin-left-5">
+							<select id="backupStatus"class="form-control">
+								<option value="0">备份成功</option>
+								<option value="1" selected="selected">备份失败</option>
+								<option value="2">备份中...</option>
+							</select>
+						</div>
+					<button id="bksearch" class="btn btn-primary btn-sm btn-search">查询</button>
 			</div>
-			<!--  <div class="pull-right">
-		       	<button id="refresh" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
-		       	一键清除Binlog
-		        </button>
-		    </div> -->
-		</div>
-		<ul class="nav nav-tabs" role="tablist" id="setab">
+	    </div>
+	</div>
+<!-- 		<ul class="nav nav-tabs" role="tablist" id="setab">
 			<li id="backlist-tab" role="presentation" class="active"><a
 				data-toggle="tab" href="#backlist">备份列表</a></li>
-			<li id="backsetting-tab" role="presentation"><a
+			<li class="hidden" id="backsetting-tab" role="presentation"><a
 				data-toggle="tab" href="#backsetting">备份设置</a></li>
-		</ul>
+		</ul> -->
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">
 			<div id="backlist" role="tabpanel" class="tab-pane fade active in" aria-labelledby="backlist-tab">
 			<div class="row">
-			<div class="form-horizontal col-sm-12 col-md-12">
-				 <div class="form-group col-sm-5 col-md-5 time-range-unit-header">
-					<span class="time-range-title">选择时间范围：</span>
-					<div class="date-unit">
-						<input id="startTime" type="date" class="form-control"
-							value="2010-01-01">
-					</div>
-					<span class="date-step-span">至</span>
-					<div class="date-unit">
-						<input id="endTime" type="date" class="form-control"
-							value="2020-01-08">
-					</div>
-				</div>
-					<div class="form-group col-sm-3 col-md-3">
-					    <span class="col-sm-5 col-md-5  control-label">数据库名称：</span>
-					    <div class="col-sm-7 col-md-7 col-xs-7">
-						<input id="dbName" type="input" class="form-control"
-							placeholder="输入dbName">
-						</div>
-					</div>
-					<div class="form-group col-sm-3 col-md-3">
-						<span class="col-sm-5 col-md-5 control-label">集群名称：</span>
-						<div class="col-sm-7 col-md-7 col-xs-8">
-							<input id="mclusterName" type="input" class="form-control"
-							placeholder="输入clusterName">
-						</div>
-					</div>
-					<!-- <select class="form-control margin-left-5 inline-block" style="width:180px">
-		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>	 -->
-		    	    <div class="col-sm-1 col-md-1">
-		    	    	<button id="bksearch" class="btn btn-primary btn-sm btn-search">查询</button>
-		    	    </div>
-			</div>
 				<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 						<div class="widget-header">
 							<h5 class="widget-title">备份恢复列表</h5>
@@ -355,7 +338,6 @@
 						<small><font color="gray"></font></small>
 					</div>
 		</div>
-
 				<div id="pageControlBar">
 					<input type="hidden" id="totalPage_input" />
 					<ul class="pager">
@@ -373,7 +355,7 @@
 					</ul>
 				</div>
 			</div>
-			<div id="backsetting" role="tabpanel" class="tab-pane fade"
+			<div id="backsetting" role="tabpanel" class="tab-pane fade hidden"
 				aria-labelledby="backsetting-tab">
 				<div class="pull-left col-sm-10 mt20 padding-left-32">
 					<div class="form-group clearfix">
@@ -386,21 +368,21 @@
 						<label class="col-sm-2 control-label text-muted"
 							style="font-weight: normal">备份周期:</label>
 						<div class="col-sm-8">
-							<div class="form-control-static pd0">星期二,星期四,星期六</div>
+							<div class="form-control-static pd0">星期一，星期二,星期三，星期四,星期五,星期六,星期日</div>
 						</div>
 					</div>
 					<div class="form-group clearfix">
 						<label class="col-sm-2 control-label text-muted"
 							style="font-weight: normal">备份时间:</label>
 						<div class="col-sm-8">
-							<div class="form-control-static pd0">20 - 21 时</div>
+							<div class="form-control-static pd0">4:00 AM</div>
 						</div>
 					</div>
 					<div class="form-group clearfix">
 						<label class="col-sm-2 control-label text-muted"
 							style="font-weight: normal">预计下次备份时间:</label>
 						<div class="col-sm-8">
-							<div class="form-control-static pd0">2015年01月08日 20 - 21时</div>
+							<div id="backupTime" class="form-control-static pd0"></div>
 						</div>
 					</div>
 				</div>
