@@ -270,11 +270,11 @@
 					<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-		    			<input id="startTime" type="date" class="form-control" value="2010-01-01">
+		    			<input id="startTime" type="date" class="form-control" placeholder="yyyy-MM-dd">
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
-		    		     <input id="endTime" type="date" class="form-control" value="2020-01-08">
+		    		     <input id="endTime" type="date" class="form-control" placeholder="yyyy-MM-dd">
 		    	    </div>
 		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
