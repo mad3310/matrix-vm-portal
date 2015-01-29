@@ -45,14 +45,14 @@
 			<if test="dbId != null  ">
 				and r.DB_ID=#{dbId}
 			</if>
-			<if test="startTime != null  ">
-				and r.START_TIME&gt;=#{startTime}
+			<if test="startTime != null and startTime != '' ">
+				and r.START_TIME&gt;=#{params.startTime}
 			</if>
-			<if test="endTime != null  ">
-				and r.START_TIME&lt;=#{endTime}
+			<if test="endTime != null  and endTime != '' ">
+				and r.START_TIME&lt;=#{params.endTime}
 			</if>
-			<if test="status != null  ">
-				and r.STATUS=#{status}
+			<if test="status != null and status != ''">
+				and r.STATUS=#{params.status}
 			</if>
 			<if test="resultDetail != null  ">
 				and r.RESULT_DETAIL=#{resultDetail}
