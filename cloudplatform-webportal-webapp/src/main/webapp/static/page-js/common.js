@@ -86,11 +86,11 @@ define(function(require,exports,module){
         	}else if(status == 15){
         		return "禁用";
         	}else if(status == 'FAILD'){
-        		return "备份失败";
+        		return "<font color=\"red\">备份失败</font>";
         	}else if(status == 'SUCCESS'){
-        		return "备份成功";
+        		return "<span class=\"text-success\">备份成功<span>";
         	}else if(status == 'BUILDING'){
-        		return "备份中...";
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
         	}	
         },
 		Displayable : function (status) {
@@ -441,7 +441,7 @@ define(function(require,exports,module){
 				}
 			})
 			$(document).click(function () {
-				 $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+				$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
 			})
 
 			$('.divselect').find("ul li").click(function(){

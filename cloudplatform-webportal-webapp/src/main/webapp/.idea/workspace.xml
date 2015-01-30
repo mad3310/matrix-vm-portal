@@ -27,18 +27,38 @@
       <file leaf-file-name="test4.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WEB-INF/test/test4.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.75" vertical-offset="38" max-vertical-offset="1007">
-              <caret line="13" column="105" selection-start-line="13" selection-start-column="105" selection-end-line="13" selection-end-column="118" />
+            <state vertical-scroll-proportion="-4.0" vertical-offset="0" max-vertical-offset="418">
+              <caret line="16" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="divselect.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/WEB-INF/test/divselect.js">
+      <file leaf-file-name="test3.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/test/test3.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="513">
-              <caret line="20" column="7" selection-start-line="1" selection-start-column="4" selection-end-line="20" selection-end-column="7" />
+            <state vertical-scroll-proportion="-4.75" vertical-offset="0" max-vertical-offset="513">
+              <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/page-js/dbList/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="819" max-vertical-offset="1748">
+              <caret line="83" column="14" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dbList.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbList.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.1578948" vertical-offset="1299" max-vertical-offset="3173">
+              <caret line="81" column="32" selection-start-line="81" selection-start-column="32" selection-end-line="81" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -47,8 +67,18 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/page-js/dbCreate/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="1786">
-              <caret line="70" column="18" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="876" max-vertical-offset="1786">
+              <caret line="84" column="11" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="baseInfo.jsp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="91.67857" vertical-offset="3631" max-vertical-offset="4636">
+              <caret line="56" column="85" selection-start-line="56" selection-start-column="85" selection-end-line="56" selection-end-column="85" />
               <folding />
             </state>
           </provider>
@@ -64,23 +94,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dbCreate.jsp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dbCreate.jsp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbCreate.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67433834" vertical-offset="8667" max-vertical-offset="17917">
-              <caret line="487" column="71" selection-start-line="487" selection-start-column="71" selection-end-line="487" selection-end-column="71" />
+            <state vertical-scroll-proportion="-15.5" vertical-offset="8762" max-vertical-offset="17955">
+              <caret line="484" column="62" selection-start-line="484" selection-start-column="62" selection-end-line="484" selection-end-column="62" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="common.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="common.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/page-js/common.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.916667" vertical-offset="7693" max-vertical-offset="8702">
-              <caret line="435" column="20" selection-start-line="435" selection-start-column="20" selection-end-line="435" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.51707894" vertical-offset="7978" max-vertical-offset="9386">
+              <caret line="443" column="227" selection-start-line="443" selection-start-column="227" selection-end-line="443" selection-end-column="227" />
               <folding>
-                <marker date="1422514654394" expanded="true" signature="11842:11862" placeholder="..." />
+                <marker date="1422609318179" expanded="true" signature="12309:12329" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -89,8 +119,8 @@
       <file leaf-file-name="common.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/ui-css/common.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.2708335" vertical-offset="26764" max-vertical-offset="27759">
-              <caret line="1427" column="12" selection-start-line="1427" selection-start-column="12" selection-end-line="1427" selection-end-column="12" />
+            <state vertical-scroll-proportion="-11.229167" vertical-offset="24218" max-vertical-offset="27949">
+              <caret line="1303" column="4" selection-start-line="1303" selection-start-column="4" selection-end-line="1303" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -119,25 +149,25 @@
         <option value="$PROJECT_DIR$/static/page-js/securityManager/main.js" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/securityManager.jsp" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/backupRecover.jsp" />
-        <option value="$PROJECT_DIR$/static/page-js/dbList/main.js" />
         <option value="$PROJECT_DIR$/WEB-INF/test/test.html" />
         <option value="$PROJECT_DIR$/WEB-INF/test/test.js" />
         <option value="$PROJECT_DIR$/WEB-INF/test/test1.html" />
         <option value="$PROJECT_DIR$/WEB-INF/test/test2.html" />
         <option value="$PROJECT_DIR$/static/page-js/dashboard/main.js" />
         <option value="$PROJECT_DIR$/static/page-js/accountManager/main.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/test/test3.html" />
         <option value="$PROJECT_DIR$/WEB-INF/web.xml" />
-        <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/dbList.jsp" />
         <option value="$PROJECT_DIR$/static/img/fading-loader.svg" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/accountManager.jsp" />
         <option value="$PROJECT_DIR$/WEB-INF/test/divselect.js" />
-        <option value="$PROJECT_DIR$/WEB-INF/test/test4.html" />
-        <option value="$PROJECT_DIR$/static/page-js/dbCreate/main.js" />
         <option value="$PROJECT_DIR$/static/page-js/dbCreate/dataHandler.js" />
-        <option value="$PROJECT_DIR$/static/css/ui-css/common.css" />
-        <option value="$PROJECT_DIR$/static/page-js/common.js" />
+        <option value="$PROJECT_DIR$/static/page-js/dbCreate/main.js" />
         <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/dbCreate.jsp" />
+        <option value="$PROJECT_DIR$/static/css/ui-css/common.css" />
+        <option value="$PROJECT_DIR$/WEB-INF/test/test4.html" />
+        <option value="$PROJECT_DIR$/WEB-INF/views/clouddb/dbList.jsp" />
+        <option value="$PROJECT_DIR$/static/page-js/dbList/main.js" />
+        <option value="$PROJECT_DIR$/WEB-INF/test/test3.html" />
+        <option value="$PROJECT_DIR$/static/page-js/common.js" />
       </list>
     </option>
   </component>
@@ -311,7 +341,51 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dbCreate" />
+              <option name="myItemId" value="dbList" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modules" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jquery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="2.0.3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -610,13 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="760" max-vertical-offset="4636">
-          <caret line="56" column="85" selection-start-line="56" selection-start-column="85" selection-end-line="56" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/page-js/securityManager/dataHandler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="931">
@@ -649,14 +716,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="228" max-vertical-offset="1805">
           <caret line="47" column="38" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/page-js/dbList/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="496" max-vertical-offset="1691">
-          <caret line="50" column="34" selection-start-line="50" selection-start-column="34" selection-end-line="50" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -727,25 +786,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/test/test3.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.142858" vertical-offset="0" max-vertical-offset="494">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/web.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1026" max-vertical-offset="4826">
           <caret line="87" column="46" selection-start-line="87" selection-start-column="46" selection-end-line="87" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbList.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6578948" vertical-offset="1679" max-vertical-offset="3211">
-          <caret line="103" column="33" selection-start-line="103" selection-start-column="33" selection-end-line="103" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -802,22 +846,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/test/test4.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.75" vertical-offset="38" max-vertical-offset="1007">
-          <caret line="13" column="105" selection-start-line="13" selection-start-column="105" selection-end-line="13" selection-end-column="118" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/page-js/dbCreate/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="1786">
-          <caret line="70" column="18" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/WEB-INF/test/divselect.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="513">
@@ -834,29 +862,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbCreate.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.5" vertical-offset="8762" max-vertical-offset="17955">
+          <caret line="484" column="62" selection-start-line="484" selection-start-column="62" selection-end-line="484" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/page-js/dbCreate/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="876" max-vertical-offset="1786">
+          <caret line="84" column="11" selection-start-line="84" selection-start-column="11" selection-end-line="84" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/baseInfo.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="91.67857" vertical-offset="3631" max-vertical-offset="4636">
+          <caret line="56" column="85" selection-start-line="56" selection-start-column="85" selection-end-line="56" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbList.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.1578948" vertical-offset="1299" max-vertical-offset="3173">
+          <caret line="81" column="32" selection-start-line="81" selection-start-column="32" selection-end-line="81" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/page-js/dbList/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="819" max-vertical-offset="1748">
+          <caret line="83" column="14" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/test/test4.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.0" vertical-offset="0" max-vertical-offset="418">
+          <caret line="16" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/WEB-INF/test/test3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.75" vertical-offset="0" max-vertical-offset="513">
+          <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/ui-css/common.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.2708335" vertical-offset="26764" max-vertical-offset="27759">
-          <caret line="1427" column="12" selection-start-line="1427" selection-start-column="12" selection-end-line="1427" selection-end-column="12" />
+        <state vertical-scroll-proportion="-11.229167" vertical-offset="24218" max-vertical-offset="27949">
+          <caret line="1303" column="4" selection-start-line="1303" selection-start-column="4" selection-end-line="1303" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/page-js/common.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.916667" vertical-offset="7693" max-vertical-offset="8702">
-          <caret line="435" column="20" selection-start-line="435" selection-start-column="20" selection-end-line="435" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.51707894" vertical-offset="7978" max-vertical-offset="9386">
+          <caret line="443" column="227" selection-start-line="443" selection-start-column="227" selection-end-line="443" selection-end-column="227" />
           <folding>
-            <marker date="1422514654394" expanded="true" signature="11842:11862" placeholder="..." />
+            <marker date="1422609318179" expanded="true" signature="12309:12329" placeholder="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/WEB-INF/views/clouddb/dbCreate.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67433834" vertical-offset="8667" max-vertical-offset="17917">
-          <caret line="487" column="71" selection-start-line="487" selection-start-column="71" selection-end-line="487" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
