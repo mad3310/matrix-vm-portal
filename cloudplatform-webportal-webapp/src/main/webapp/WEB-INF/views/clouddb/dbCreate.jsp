@@ -481,7 +481,8 @@
 														</div> -->
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid">
+															<span class="sleBG">
+															<span class="sleHid">
 																<div class="divselect">
 																	<span>一年</span>
 																	<ul style="display: none;">
@@ -489,8 +490,9 @@
 																	</ul>
 																	<input type="hidden" value="" />
 																</div>
-														</span>
-															</span> <span class="bk-select-arrow"></span>
+															</span>
+															</span>
+															<span class="bk-select-arrow"></span>
 														</div>
 													</div>
 													<div class="bk-form-row-txt">此功能暂时不开放</div>

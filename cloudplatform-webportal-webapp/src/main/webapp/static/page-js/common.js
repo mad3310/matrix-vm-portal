@@ -433,10 +433,12 @@ define(function(require,exports,module){
 				var ul = $(this).find('ul');
 				if(ul.css("display")=="none"){
 					ul.show();
+					ul.closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);");
 				}else{
 					ul.hide();
+					ul.closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);");
 				}
-			});
+			})
 			$('.divselect').find("ul li").click(function(){
 				var txt = $(this).find('a').text();
 				$(this).closest('.divselect').find('span').html(txt);
