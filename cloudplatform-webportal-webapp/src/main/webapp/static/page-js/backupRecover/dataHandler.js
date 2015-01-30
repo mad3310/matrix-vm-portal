@@ -1,5 +1,5 @@
 /**
- * Created by yaokuo on 2015/01/22.
+ * Created by jinglinlin@letv.com on 2015/01/22.
  * backup page js
  */
 define(function(require,exports,module){
@@ -63,6 +63,10 @@ define(function(require,exports,module){
             $("#totalRecords").html(data.data.totalRecords);
             $("#recordsPerPage").html(data.data.recordsPerPage);
             
+            if(data.data.totalPages < 1){
+        		data.data.totalPages = 1;
+        	};
+        	
             $('#paginator').bootstrapPaginator({
                 currentPage: data.data.currentPage,
                 totalPages:data.data.totalPages
