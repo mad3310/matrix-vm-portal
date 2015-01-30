@@ -145,11 +145,11 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_BACKUP_RESULT r
-		left join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
 		<if test="mclusterName != null and mclusterName != ''">
 			and m.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
 		</if> 
-		left join WEBPORTAL_DB d on r.DB_ID = d.ID
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
 		<if test="dbName != null and dbName != ''">
 			and d.DB_NAME like CONCAT('%','${dbName}','%')
 		</if> 
@@ -215,17 +215,17 @@
 		<include refid="Base_Column_List" />
 		,m.MCLUSTER_NAME,d.DB_NAME
 		from WEBPORTAL_BACKUP_RESULT r
-		left join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
 			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
 		</if>
-		left join WEBPORTAL_DB d on r.DB_ID = d.ID
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
 		<if test="params != null and params.dbName != null and params.dbName != ''">
 			and d.DB_NAME like CONCAT('%','${params.dbName}','%')
 		</if> 
 		<include refid="Example_Page_Where_Clause" />
 		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.endRowPosition}
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
 		<if test="params != null and params.orderBy != null  ">
       		 order by #{params.orderBy}
