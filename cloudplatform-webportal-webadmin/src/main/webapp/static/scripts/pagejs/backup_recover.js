@@ -29,6 +29,8 @@ function queryByPage(currentPage, recordsPerPage) {
 		var status = "FAILD";
 	}else if(backupStatus == 2){
 		var status = "BUILDING";
+	}else{
+		var status = '';
 	}
 	
 	$.ajax({ 
@@ -42,11 +44,19 @@ function queryByPage(currentPage, recordsPerPage) {
 			var $backupTbody = $("#backupTbody");
 			var totalPages = data.data.totalPages;
 	        for(var i= 0, len= array.length;i<len;i++){
+	        		var mclusterName = '';
+	        		if(array[i].mcluster) {
+	        			mclusterName = array[i].mcluster.mclusterName;
+	        		}
+	        		var dbName = '';
+	        		if(array[i].db) {
+	        			dbName = array[i].db.dbName;
+	        		}
 	                var td1 = $("<td><a>"
-	                		+ FilterNull(array[i].mcluster.mclusterName)
+	                		+ FilterNull(mclusterName)
 	                		+"</a></td>");
 	                var td2 = $("<td>"
-	                		+ FilterNull(array[i].db.dbName)
+	                		+ FilterNull(dbName)
 	                		+"</td>");
 	                var td3 = $("<td>"
 	                        + date('Y-m-d H:i:s',array[i].startTime)
@@ -61,7 +71,7 @@ function queryByPage(currentPage, recordsPerPage) {
 					}else if(array[i].status == 'BUILDING'){
 						var td5 = $("<td>"
 								+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-								+ "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+								+ "<i class=\"ace-icon fa fa-spinner fa-spin dark bigger-125\" />"
 								+ translateStatus(array[i].status)
 								+ "</a>"
 								+ "</td>");
@@ -77,7 +87,7 @@ function queryByPage(currentPage, recordsPerPage) {
 	                if(array[i].status == 'FAILD'){
 						var tr = $("<tr class=\"data-tr default-danger\"></tr>");
 					}else if(array[i].status == 'SUCCESS'){
-						var tr = $("<tr class=\" data-tr warnings\"></tr>");
+						var tr = $("<tr class=\"data-tr success\"></tr>");
 					}else{
 						var tr = $("<tr class='data-tr'></tr>");
 					}

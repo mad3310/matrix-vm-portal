@@ -456,21 +456,22 @@ define(function(require,exports,module){
 			})
 		},
 		getBackupDate:function(){
-			var myDate = new Date();
-			var timestamp = myDate.valueOf();
+			var myDate = new Date();			
+			var timestamp = myDate.valueOf();			
 			var hour = myDate.getHours();
+			
 			if(hour > 4){
-				timestamp = timestamp + 86400;
+				timestamp = timestamp + 86400000;
 			}else{
 				timestamp = timestamp;
 			}
 			
-			newDate = Date.prototype.Format(timestamp);
+			var newDate = new Date(timestamp);
+			var year = newDate.getFullYear();
+			var month = newDate.getMonth() + 1;
+			var day = newDate.getDate();
 			
-			var year = newDate.getFullYear(newDate)
-			var month = newDate.getMonth(newDate);
-			
-			return year + '年' + month + '月' + currentDay + '日';
+			return year + '年' + month + '月' + day + '日';
 		}
 		 /*add new common function*/
     }

@@ -29,8 +29,9 @@
 				</div>
 				<div class="form-group margin-left-5">
 					<select id="backupStatus" class="form-control">
+					    <option value="4"  selected="selected">全部</option>
 						<option value="0">备份成功</option>
-						<option value="1" selected="selected">备份失败</option>
+						<option value="1">备份失败</option>
 						<option value="2">备份中...</option>
 					</select>
 				</div>
@@ -62,6 +63,9 @@
 					</div>
 				</div>
 			</div>
+			<!-- <div class="col-xs-3">
+			      <small><font color="gray">*注：暂无。</font></small>
+		    </div> -->
 			<div id="pageControlBar">
 				<input type="hidden" id="totalPage_input" ></input>
 				<ul class="pager">
