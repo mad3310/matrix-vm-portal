@@ -5,6 +5,7 @@
 function queryMclusterMonitor() {
 	$("#tby tr").remove();
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/monitor/mcluster/list",
 		dataType : "json", /*这句可用可不用，没有影响*/
@@ -59,6 +60,7 @@ function queryMclusterMonitor() {
 }
 function getMclusterStatus(ip,obj) {
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/monitor/"+ip+"/mcluster/status",
 		dataType : "json", 

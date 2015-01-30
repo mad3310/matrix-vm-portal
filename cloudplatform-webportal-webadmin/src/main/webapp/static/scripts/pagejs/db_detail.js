@@ -108,6 +108,7 @@ function checkboxControl(){
 }
 function queryDbUser(){
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/dbUser/"+$("#dbId").val(),
 		dataType : "json", /*这句可用可不用，没有影响*/
@@ -177,6 +178,7 @@ function queryDbUser(){
 }
 function queryDbInfo(){
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/db/"+$("#dbId").val(),
 		dataType : "json", 
