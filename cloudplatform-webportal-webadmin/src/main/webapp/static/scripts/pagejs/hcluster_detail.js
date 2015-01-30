@@ -57,6 +57,7 @@ $('#add_host_form').bootstrapValidator({
 function queryHost(){
 	$("#tby tr").remove();
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/hcluster/"+$("#hclusterId").val(),
 		dataType : "json", 
@@ -113,6 +114,7 @@ function deleteHost(obj){
 	var tr = $(obj).parents("tr");
 	var id =tr.find('[name="host_id"]').val();
 	$.ajax({
+		cache:false,
 		url:'/host/isExistContainerOnHost/validate',
 		type:'post',
 		data:{ 'id' : id },
@@ -121,6 +123,7 @@ function deleteHost(obj){
 				function deleteCmd(){
 					var hostId =$(obj).parents("tr").find('[name="host_id"]').val();
 					$.ajax({
+						cache:false,
 						url:'/host/'+hostId,
 						type:'delete',
 						success:function(data){
@@ -138,6 +141,7 @@ function deleteHost(obj){
 }
 function addHost(){
 	$.ajax({
+		cache:false,
 		url: '/host',
         type: 'post',
         dataType: 'text',

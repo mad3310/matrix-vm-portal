@@ -6,6 +6,7 @@ $(function(){
 function queryContainer(){
 	$("#tby tr").remove();
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/container/"+$("#mclusterId").val(),
 		dataType : "json", 
@@ -77,6 +78,7 @@ function startContainer(obj){
 	function startCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
+			cache:false,
 			url:'/container/start',
 			type:'post',
 			data:{containerId : containerId},
@@ -97,6 +99,7 @@ function stopContainer(obj){
 	function stopCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
 		$.ajax({
+			cache:false,
 			url:'/container/stop',
 			type:'post',
 			data:{containerId : containerId},
