@@ -42,13 +42,14 @@ public class LoginServiceImpl extends BaseServiceImpl<UserLogin> implements ILog
 		
 		String userNamePassport = userLogin.getLoginName();
 		String loginIp = userLogin.getLoginIp();
+		String email = userLogin.getEmail();
 		
 		if(userNamePassport == null || "".equals(userNamePassport))
 			throw new ValidateException("userNamePassort should be not null");
 			
-		UserModel user = userService.getUserByName(userNamePassport);
+		UserModel user = userService.getUserByNameAndEmail(userNamePassport,email);
 		if(null == user)
-			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp);
+			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp,email);
 		
 		if(null == user)
 			throw new ValidateException("用户不存在！");

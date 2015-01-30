@@ -8,7 +8,7 @@ public interface IUserService extends IBaseService<UserModel>{
 	
 	public void saveUserObject(UserModel user);
 	
-	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp);
+	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email);
 	
 	public UserModel getUserByName(String userName);
 	
@@ -19,4 +19,6 @@ public interface IUserService extends IBaseService<UserModel>{
 	public boolean existUserByUserName(String userName);
 	
 	public UserModel getUserById(Long userId);
+
+	public UserModel getUserByNameAndEmail(String userNamePassport, String email);
 }
