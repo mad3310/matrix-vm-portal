@@ -11,6 +11,7 @@ define(function(require){
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var dbListHandler = new dataHandler();
+    var flag = false;
 	
     /*
      * 初始化数据
@@ -22,6 +23,7 @@ define(function(require){
     $("#backupTime").html(cn.getBackupDate()+ ' '+'4:00 AM');
 	$("#bksearch").click(function() {
 		cn.currentPage = 1;
+		flag = true;
 		asyncData();
 	});
 	/*
@@ -34,7 +36,6 @@ define(function(require){
 		bootstrapMajorVersion:3,
 		numberOfPages: 5,
 		onPageClicked: function(e,originalEvent,type,page){
-			cn.currentPage = page;
         	asyncData(page);
         }
 	});
@@ -42,8 +43,13 @@ define(function(require){
 	function asyncData(page) {
 		if(!page) page = cn.currentPage;
 		if(perpage != "undefined") { var perpage = cn.recordsPerPage};
-		var startTime = $("#startTime").val();
-		var endTime = $("#endTime").val();
+		if(flag == true){
+			var startTime = $("#startTime").val();
+			var endTime = $("#endTime").val();
+		}else{
+			var startTime = '';
+			var endTime = '';
+		}
 		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + page + "&&recordsPerPage=" + perpage;
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}

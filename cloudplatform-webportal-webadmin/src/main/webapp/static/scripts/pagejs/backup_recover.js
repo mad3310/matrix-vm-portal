@@ -5,12 +5,14 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
+flag = false;
 $(function(){
 	//初始化
 	page_init();
 });	
 //页面查询功能
 $("#bksearch").click(function() {
+	flag = true;
 	currentPage = 1;
 	queryByPage(currentPage, recordsPerPage);
 });
@@ -18,21 +20,30 @@ $("#bksearch").click(function() {
 function queryByPage(currentPage, recordsPerPage) {
 	
 	$("#backupTbody tr").remove();
-	var startTime = $("#startTime").val();
-	var endTime = $("#endTime").val();
-	var mclusterName = $("#mclusterName").val();
-	var dbName = $("#dbName").val();
-	
-	var backupStatus = $("#backupStatus").val();
-	if  (backupStatus == 0){
-		var status = "SUCCESS";
-	}else if(backupStatus == 1){
-		var status = "FAILD";
-	}else if(backupStatus == 2){
-		var status = "BUILDING";
+	if(flag == true){
+		var startTime = $("#startTime").val();
+		var endTime = $("#endTime").val();
+		var mclusterName = $("#mclusterName").val();
+		var dbName = $("#dbName").val();
+		
+		var backupStatus = $("#backupStatus").val();
+		if(backupStatus == 0){
+			var status = "SUCCESS";
+		}else if(backupStatus == 1){
+			var status = "FAILD";
+		}else if(backupStatus == 2){
+			var status = "BUILDING";
+		}else{
+			var status = '';
+		}
 	}else{
+		var startTime = '';
+		var endTime = '';
+		var mclusterName = '';
+		var dbName = '';
 		var status = '';
 	}
+	
 	
 	$.ajax({ 
 		type : "get",
