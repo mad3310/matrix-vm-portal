@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.service.IBackupService;
-
 @Controller
 @RequestMapping("/backup")
 public class BackupController {
@@ -30,7 +29,10 @@ public class BackupController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(HttpServletRequest request,Page page,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("dbName", StringUtil.transSqlCharacter(request.getParameter("dbName")));
+		params.put("mclusterName", StringUtil.transSqlCharacter(request.getParameter("mclusterName")));
 		obj.setData(this.backupService.selectPageByParams(page, params));
 		return obj;
 	}
+	
 }

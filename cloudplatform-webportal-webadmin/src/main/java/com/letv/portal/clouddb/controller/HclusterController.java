@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.service.IHclusterService;
@@ -49,7 +50,7 @@ public class HclusterController {
 		page.setRecordsPerPage(recordsPerPage);
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("hclusterName", hclusterName);
+		params.put("hclusterName", StringUtil.transSqlCharacter(hclusterName));
 
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.findPagebyParams(params, page));

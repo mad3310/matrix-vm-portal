@@ -62,7 +62,7 @@
 				and m.ID=#{id}
 			</if>
 			<if test="dbName != null  and dbName != ''  and dbName != 'null'">
-				and m.DB_NAME like CONCAT('%','${dbName}','%')
+				and m.DB_NAME like CONCAT('%','${dbName}','%') escape '^'
 			</if>
 			<if test="mclusterId != null  ">
 				and m.MCLUSTER_ID=#{mclusterId}
@@ -235,7 +235,7 @@
 				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
-				and m.DB_NAME like CONCAT('%','${params.dbName}','%')
+				and m.DB_NAME like CONCAT('%','${params.dbName}','%') escape '^'
 			</if>
 			<if test="params != null and params.mclusterId != null  ">
 				and m.MCLUSTER_ID=#{params.mclusterId}
