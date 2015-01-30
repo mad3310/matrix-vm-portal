@@ -63,9 +63,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-3">
+			<!-- <div class="col-xs-3">
 			      <small><font color="gray">*注：暂无。</font></small>
-		    </div>
+		    </div> -->
 			<div id="pageControlBar">
 				<input type="hidden" id="totalPage_input" ></input>
 				<ul class="pager">

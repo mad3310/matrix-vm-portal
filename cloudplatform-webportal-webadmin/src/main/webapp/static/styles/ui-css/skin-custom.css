@@ -772,8 +772,11 @@ edit by jinglinlin@letv.com
 .skin-custom .table>thead:first-child>tr:first-child>th{border:0;border-top:1px solid #fff;border-bottom:1px solid #fff;}
 .skin-custom .table thead th{color:#707070;}
 .skin-custom .widget-color-blue{  border-color:#fff;}
-.skin-custom table tr td a {color: #69aa46;}
+.skin-custom table tr td a {color: #707070;} 
 .skin-custom table tr td a:hover{text-decoration:none;}
+.skin-custom .success a{
+	color:#69aa46;
+}
 .skin-custom .default-danger a{
 	color:#D95C5C;
 }

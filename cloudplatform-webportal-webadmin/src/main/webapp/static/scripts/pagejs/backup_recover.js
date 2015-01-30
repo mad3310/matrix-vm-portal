@@ -71,7 +71,7 @@ function queryByPage(currentPage, recordsPerPage) {
 					}else if(array[i].status == 'BUILDING'){
 						var td5 = $("<td>"
 								+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-								+ "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\" />"
+								+ "<i class=\"ace-icon fa fa-spinner fa-spin dark bigger-125\" />"
 								+ translateStatus(array[i].status)
 								+ "</a>"
 								+ "</td>");
@@ -87,7 +87,7 @@ function queryByPage(currentPage, recordsPerPage) {
 	                if(array[i].status == 'FAILD'){
 						var tr = $("<tr class=\"data-tr default-danger\"></tr>");
 					}else if(array[i].status == 'SUCCESS'){
-						var tr = $("<tr class=\" data-tr warnings\"></tr>");
+						var tr = $("<tr class=\"data-tr success\"></tr>");
 					}else{
 						var tr = $("<tr class='data-tr'></tr>");
 					}
