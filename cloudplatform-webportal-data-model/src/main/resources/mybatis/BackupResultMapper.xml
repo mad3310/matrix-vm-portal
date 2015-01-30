@@ -225,7 +225,7 @@
 		</if> 
 		<include refid="Example_Page_Where_Clause" />
 		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.endRowPosition}
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
 		<if test="params != null and params.orderBy != null  ">
       		 order by #{params.orderBy}
