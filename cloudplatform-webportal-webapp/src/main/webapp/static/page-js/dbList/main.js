@@ -80,7 +80,6 @@ define(function(require){
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		console.log(url);
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });

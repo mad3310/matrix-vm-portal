@@ -433,7 +433,6 @@ define(function(require,exports,module){
 				event.stopPropagation();
 				var ul = $(this).find('ul');
 				if(ul.css("display")=="none"){
-					debugger
 					$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
 					ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");
 				}else{
