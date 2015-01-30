@@ -22,6 +22,7 @@ function refreshChartForSelect(){
 
 function queryMcluster(){
 	$.ajax({
+		cache:false,
 		type:"get",		
 		url:"/mcluster/valid",
 		dataType:"json",
@@ -39,6 +40,7 @@ function queryMcluster(){
 
 function queryMonitorPoint(){
 	$.ajax({
+		cache:false,
 		type:"get",		
 		url : "/monitor/index",
 		dataType:"json",
@@ -135,6 +137,7 @@ function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
 	$.ajax({
+		cache:false,
 		type : "get",
 		url : "/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
 		dataType : "json", 

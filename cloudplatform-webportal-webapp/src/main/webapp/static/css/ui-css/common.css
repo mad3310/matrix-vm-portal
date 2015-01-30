@@ -1285,6 +1285,7 @@ position: relative;
 	border:0px;
 }
 .bk-form-row .pull-left .bk-select-arrow {
+	cursor: pointer;
 	position: relative;
 	left: -10px;
 	top: -20px;
@@ -1302,6 +1303,10 @@ position: relative;
 	-moz-transform: rotate(0deg);
 	-ms-transform: rotate(0deg);
 	-o-transform: rotate(0deg);
+	transition: all .3s;
+	-moz-transition: all .3s;
+	-webkit-transition: all .3s;
+	-o-transition: all .3s;
 }
    
 .bk-form-row .pull-left .sleHid { 

@@ -11,6 +11,7 @@ $(function(){
 });	
 //页面查询功能
 $("#bksearch").click(function() {
+	currentPage = 1;
 	queryByPage(currentPage, recordsPerPage);
 });
 

@@ -86,11 +86,11 @@ define(function(require,exports,module){
         	}else if(status == 15){
         		return "禁用";
         	}else if(status == 'FAILD'){
-        		return "备份失败";
+        		return "<font color=\"red\">备份失败</font>";
         	}else if(status == 'SUCCESS'){
-        		return "备份成功";
+        		return "<span class=\"text-success\">备份成功<span>";
         	}else if(status == 'BUILDING'){
-        		return "备份中...";
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
         	}	
         },
 		Displayable : function (status) {
@@ -429,14 +429,20 @@ define(function(require,exports,module){
 					divselects[i].
 				}
 			}*/
-			$('.divselect').closest('.pull-left').click(function(){
+			$('.divselect').closest('.pull-left').click(function(event){
+				event.stopPropagation();
 				var ul = $(this).find('ul');
 				if(ul.css("display")=="none"){
-					ul.show();
+					$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);");//关闭所有select
+					ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);");
 				}else{
-					ul.hide();
+					ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);");
 				}
-			});
+			})
+			$(document).click(function () {
+				 $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);");
+			})
+
 			$('.divselect').find("ul li").click(function(){
 				var txt = $(this).find('a').text();
 				$(this).closest('.divselect').find('span').html(txt);

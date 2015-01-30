@@ -8,6 +8,7 @@ $(function(){
 });
 function createDbOnOldMcluster(){
 	$.ajax({
+		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#create_on_old_cluster_form').serialize(),
@@ -19,6 +20,7 @@ function createDbOnOldMcluster(){
 }
 function createDbOnNewMcluster(){
 	$.ajax({
+		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#create_on_new_cluster_form').serialize(),
@@ -30,6 +32,7 @@ function createDbOnNewMcluster(){
 }
 function refuseCreateMcluster(){
 	$.ajax({
+		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#refuse_create_mcluster').serialize(),
@@ -107,6 +110,7 @@ function formValidate() {
 }
 function queryDbById(){
 	$.ajax({
+		cache:false,
 		type:"get",
 		url:"/db/"+$("#dbId").val(),
 		dataType:"json",
@@ -135,6 +139,7 @@ function queryDbById(){
 }
 function queryMcluserById(){
 	$.ajax({
+		cache:false,
 		type:"get",
 		url:"/mcluster",
 		dataType:"json",
