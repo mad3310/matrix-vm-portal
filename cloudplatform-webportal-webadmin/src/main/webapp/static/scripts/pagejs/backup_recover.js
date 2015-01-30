@@ -29,6 +29,8 @@ function queryByPage(currentPage, recordsPerPage) {
 		var status = "FAILD";
 	}else if(backupStatus == 2){
 		var status = "BUILDING";
+	}else{
+		var status = '';
 	}
 	
 	$.ajax({ 

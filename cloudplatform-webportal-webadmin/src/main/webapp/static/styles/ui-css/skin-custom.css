@@ -761,6 +761,10 @@ edit by jinglinlin@letv.com
 	background-color:#F1F1F1;
 }
 
+.skin-custom table{
+	border-bottom: solid 1px #ddd !important;
+}
+
 .skin-custom table thead th{
 	background-image:none; 
 	background-color:#DDDDDD;	
