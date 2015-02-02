@@ -933,6 +933,7 @@ edit by jinglinlin@letv.com
 }
 .skin-custom .date-unit,
 .skin-custom .date-picker-unit{
+	position:relative;
     display: inline-block;
     float: left;
     height:30px; 

@@ -3,6 +3,7 @@ package com.letv.portal.clouddb.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -65,12 +66,19 @@ public class LoginController{
 			CookieUtil.addCookie(response, "clientSecret", clientSecret, 10);
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
-			logger.debug("getAuthorize :" + buffer.toString());
 			mav.setViewName("redirect:" + buffer.toString());
 			return mav;
 		} 
-		clientId = StringUtils.isNullOrEmpty(clientId)?CookieUtil.getCookieByName(request, "clientId").getValue():clientId;
-		clientSecret = StringUtils.isNullOrEmpty(clientSecret)?CookieUtil.getCookieByName(request, "clientSecret").getValue():clientSecret;
+		Cookie clientIdCookie = CookieUtil.getCookieByName(request, "clientId");
+		Cookie clientSecretCookie = CookieUtil.getCookieByName(request, "clientSecret");
+		if(clientIdCookie == null || clientSecretCookie == null) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+			mav.setViewName("redirect:" + buffer.toString());
+			return mav;
+		}
+		clientId = clientIdCookie.getValue();
+		clientSecret = clientSecretCookie.getValue();
 		code = StringUtils.isNullOrEmpty(code)?request.getParameter("code"):code;
 		
 		String accessToken = this.getAccessToken(clientId, clientSecret, code);

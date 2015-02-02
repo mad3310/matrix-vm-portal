@@ -10,15 +10,27 @@
 				<div class="form-group time-range-unit-header">
 					<span class="time-range-title">选择时间范围：</span>
 					<div class="date-unit">
-						<input id="startTime" type="date" class="form-control"
-							placeholder="yyyy-MM-dd">
+						<input type='text' class="form-control datetimepicker" id='startTime' />
 					</div>
 					<span class="date-step-span">至</span>
 					<div class="date-unit">
-						<input id="endTime" type="date" class="form-control"
-							placeholder="yyyy-MM-dd">
+						<input type='text' class="form-control datetimepicker" id='endTime' />
 					</div>
 				</div>
+				<script type="text/javascript">
+				$(function () {
+	                $('#startTime').datetimepicker({
+	            		viewMode: 'months',
+	            		format: 'L',
+	            		locale: 'zh-cn'
+	            	});
+	                $('#endTime').datetimepicker({
+	            		viewMode: 'months',
+	            		format: 'L',
+	            		locale: 'zh-cn'
+	            	});
+	            });
+				</script>
 				<div class="form-group">
 					<input id="dbName" type="input" class="form-control margin-left-5"
 						placeholder="请输入数据库名称">
@@ -85,4 +97,6 @@
 </div>
 
 <!-- js -->
+<<script src="${ctx}/static/scripts/moment/2.9.0/moment-with-locales.min.js"></script>
+<script src="${ctx}/static/scripts/bootstrap/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script src="${ctx}/static/scripts/pagejs/backup_recover.js"></script>

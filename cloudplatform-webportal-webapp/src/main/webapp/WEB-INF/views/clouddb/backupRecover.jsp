@@ -399,7 +399,7 @@ seajs.config({
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
 		"moment": "moment/2.9.0/moment-with-locales.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
 		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
 		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"
 	}

@@ -3,7 +3,7 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
-    require('bootstrap');
+    require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 10000; //单位ms
