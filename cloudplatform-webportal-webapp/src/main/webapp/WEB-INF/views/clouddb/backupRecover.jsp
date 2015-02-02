@@ -8,6 +8,7 @@
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap-datetimepicker.min.css"/>
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" />
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
@@ -270,16 +271,16 @@
 					<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-		    			<input id="startTime" type="date" class="form-control" placeholder="yyyy-MM-dd">
+            			<input type='text' class="form-control" id='startTime' class="datetimepicker"/>
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
-		    		     <input id="endTime" type="date" class="form-control" placeholder="yyyy-MM-dd">
+		    		     <input type='text' class="form-control" id='endTime' class="datetimepicker"/>
 		    	    </div>
 		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>	 -->	    
-		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>	
+		    	    </select>	 -->
+		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
 		    	</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
@@ -387,7 +388,7 @@
 				</div>
 			</div>	   
 		</div>
-    </div>				
+    </div>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
@@ -397,11 +398,12 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
-		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
+		"moment": "moment/2.9.0/moment-with-locales.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.min.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
+		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"
 	}
 });
-
 seajs.use("${ctx}/static/page-js/backupRecover/main");
 </script>
 </html>

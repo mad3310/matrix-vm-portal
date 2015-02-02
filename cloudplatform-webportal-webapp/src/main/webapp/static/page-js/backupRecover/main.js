@@ -4,15 +4,23 @@
  */
 define(function(require){
     var common = require('../common');
-    var cn = new common();
+	var $  = require("jquery");
+	require('moment');
+	require('bootstrap');
+	require('datetimepicker');
+	var cn = new common();
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbListHandler = new dataHandler();
-    var flag = false;
-	
+    var backupRecover = new dataHandler();
+    var flag = false; //flag 标记是否已点击查询，true已点击，false未点击
+
+	/*初始化时间输入框*/
+	$("#startTime").datetimepicker();
+	$("#endTime").datetimepicker();
+
     /*
      * 初始化数据
      */
@@ -51,6 +59,6 @@ define(function(require){
 			var endTime = '';
 		}
 		var url = "/backup?dbId=" + $("#dbId").val() + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + page + "&&recordsPerPage=" + perpage;
-		cn.GetData(url,dbListHandler.DbListHandler);
+		cn.GetData(url,backupRecover.DbListHandler);
 	}
 });
