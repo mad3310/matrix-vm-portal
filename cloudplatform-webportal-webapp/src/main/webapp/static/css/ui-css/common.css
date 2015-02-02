@@ -156,6 +156,7 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 }
 .date-unit,
 .date-picker-unit{
+	position: relative;
     display: inline-block;
     float: left;
     height:30px; 
