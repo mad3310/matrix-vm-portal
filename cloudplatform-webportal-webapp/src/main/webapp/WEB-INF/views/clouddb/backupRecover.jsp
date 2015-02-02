@@ -268,14 +268,14 @@
 			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
 			<div class="row">
 				<div class="col-sm-12 col-md-12">
-					<div class="time-range-unit-header">
+				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-            			<input type='text' class="form-control" id='startTime' class="datetimepicker"/>
+            			<input type='text' class="form-control datetimepicker" id='startTime' />
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
-		    		     <input type='text' class="form-control" id='endTime' class="datetimepicker"/>
+		    		     <input type='text' class="form-control datetimepicker" id='endTime' />
 		    	    </div>
 		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>

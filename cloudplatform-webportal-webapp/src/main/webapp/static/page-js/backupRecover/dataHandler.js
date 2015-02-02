@@ -25,8 +25,10 @@ define(function(require,exports,module){
             var array = data.data.data;
             if(array.length == 0){
             	$("#noData").removeClass("hidden");
+            	$("#paginatorBlock").hide();
             }else{
             	$("#noData").addClass("hidden");
+            	$("#paginatorBlock").show();
             	 for(var i= 0, len= array.length;i<len;i++){
                      var td1 = $("<td>"
                              + cn.TransDate('Y-m-d H:i:s',array[i].startTime) 

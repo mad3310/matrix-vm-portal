@@ -3,7 +3,7 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
-    require('bootstrap')($);
+    require('bootstrap');
     var Common = function (){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 10000; //单位ms
@@ -15,7 +15,7 @@ define(function(require,exports,module){
 
     Common.prototype = {
     	currentPage:1,
-    	recordsPerPage:5,
+    	recordsPerPage:10,
         Tooltip : function (id){
         	if(!id) {
         		id = "[data-toggle='tooltip']";
