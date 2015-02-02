@@ -266,7 +266,7 @@
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">				
 			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
-			<div class="row">
+			<div class="row" style="margin-right:0;"> 
 				<div class="col-sm-12 col-md-12">
 				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
