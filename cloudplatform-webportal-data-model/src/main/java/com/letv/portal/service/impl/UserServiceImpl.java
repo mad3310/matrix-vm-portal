@@ -94,13 +94,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	}
 	
 	@Override
-	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp) {
+	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email) {
 		UserModel user = new UserModel();
 		user.setUserName(userName);
 		user.setCurrentLoginIp(loginIp);
-		user.setEmail(userName + SUFFIX_EMAIL);
-		
-		
+		user.setEmail(email);
 		saveUserObject(user);
 		return user;
 	}
@@ -134,6 +132,18 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	@Override
 	public IBaseDao<UserModel> getDao() {
 		return userDao;
+	}
+
+	@Override
+	public UserModel getUserByNameAndEmail(String userNamePassport, String email) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("userName",userNamePassport);
+		map.put("email",email);
+		List<UserModel> users = selectByMap(map);
+		if(null == users || users.isEmpty())
+			return null;
+		
+		return users.get(0);
 	}
   
 }

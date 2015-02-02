@@ -312,9 +312,9 @@
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_recover" data-toggle="modal">恢复</a></span>	
 			        			</td>
 			        		</tr> -->
-			        	</tbody> 
+			        	</tbody>
 			        </table>
-			        
+			            <div class="help-block hidden" id="noData">没有符合条件的查询结果。</div>
 						<div class="tfoot">
 								<div class="pull-right">
 									<div class="pagination-info">

@@ -63,9 +63,9 @@
 					</div>
 				</div>
 			</div>
-			<!-- <div class="col-xs-3">
-			      <small><font color="gray">*注：暂无。</font></small>
-		    </div> -->
+			<div id="noData" class="col-xs-12 col-md-12 hidden">
+			      <small><font color="gray">没有符合条件的记录。</font></small>
+		    </div>
 			<div id="pageControlBar">
 				<input type="hidden" id="totalPage_input" ></input>
 				<ul class="pager">

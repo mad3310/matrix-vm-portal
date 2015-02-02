@@ -61,7 +61,7 @@
 				and m.ID=#{id}
 			</if>
 			<if test="hclusterName != null  and hclusterName != '' and hclusterName != 'null'">
-				and m.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%')
+				and m.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 			<if test="status != null  ">
 				and m.STATUS=#{status}
@@ -90,7 +90,7 @@
 				and m.ID=#{params.id}
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
-				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%')
+				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
 
 		</trim>

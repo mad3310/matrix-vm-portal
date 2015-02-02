@@ -20,6 +20,7 @@ public class Session implements Serializable{
 	
 	private String clientId;
 	private String clientSecret;
+	private String email;
 	
 	public Long getUserId() {
 		return userId;
@@ -67,5 +68,12 @@ public class Session implements Serializable{
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

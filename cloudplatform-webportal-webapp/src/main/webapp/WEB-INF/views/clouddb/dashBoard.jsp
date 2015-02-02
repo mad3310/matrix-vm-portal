@@ -60,7 +60,7 @@
 						<div class="info clearfix">
 							<div class="user-info pull-left">
 								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
-								<p class="user-email ellipsis">${sessionScope.userSession.userName}@letv.com</p>
+								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
 							</div>
 							<div class="account pull-left">
 								<div class="mlt-4 pull-left">

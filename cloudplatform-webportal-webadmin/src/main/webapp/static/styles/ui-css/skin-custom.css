@@ -970,3 +970,7 @@ edit by jinglinlin@letv.com
 .skin-custom .font-disabled{
 	color:#999;
 }
+
+.skin-custom #noData{
+	text-align:center;
+}

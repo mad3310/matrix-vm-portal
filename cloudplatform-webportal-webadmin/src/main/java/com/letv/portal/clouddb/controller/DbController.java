@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.service.IDbService;
@@ -55,7 +56,7 @@ public class DbController {
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,ResultObject obj) {
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("dbName", dbName);		
+		params.put("dbName", StringUtil.transSqlCharacter(dbName));		
 		obj.setData(this.dbProxy.selectPageByParams(currentPage,recordsPerPage,params));
 		return obj;
 	}

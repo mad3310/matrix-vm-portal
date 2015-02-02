@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -50,7 +51,7 @@ public class MclusterController {
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{mclusterName}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String mclusterName,ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("mclusterName", mclusterName);
+		map.put("mclusterName", StringUtil.transSqlCharacter(mclusterName));
 		result.setData(this.mclusterProxy.selectPageByParams(currentPage,recordsPerPage,map));
 		return result;
 	}	

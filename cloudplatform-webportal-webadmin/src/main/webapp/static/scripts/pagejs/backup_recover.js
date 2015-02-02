@@ -18,7 +18,6 @@ $("#bksearch").click(function() {
 });
 
 function queryByPage(currentPage, recordsPerPage) {
-	
 	$("#backupTbody tr").remove();
 	if(flag == true){
 		var startTime = $("#startTime").val();
@@ -43,8 +42,6 @@ function queryByPage(currentPage, recordsPerPage) {
 		var dbName = '';
 		var status = '';
 	}
-	
-	
 	$.ajax({ 
 		type : "get",
 		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName +'&&status=' + status,
@@ -52,62 +49,67 @@ function queryByPage(currentPage, recordsPerPage) {
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
 			error(data);
-			var array = data.data.data;
 			var $backupTbody = $("#backupTbody");
 			var totalPages = data.data.totalPages;
-	        for(var i= 0, len= array.length;i<len;i++){
-	        		var mclusterName = '';
-	        		if(array[i].mcluster) {
-	        			mclusterName = array[i].mcluster.mclusterName;
-	        		}
-	        		var dbName = '';
-	        		if(array[i].db) {
-	        			dbName = array[i].db.dbName;
-	        		}
-	                var td1 = $("<td><a>"
-	                		+ FilterNull(mclusterName)
-	                		+"</a></td>");
-	                var td2 = $("<td>"
-	                		+ FilterNull(dbName)
-	                		+"</td>");
-	                var td3 = $("<td>"
-	                        + date('Y-m-d H:i:s',array[i].startTime)
-	                        + "</td>");
-	                var td4 = $("<td>"
-                            + date('Y-m-d H:i:s',array[i].endTime)
-	                        + "</td>");
-	                if(array[i].status == 'FAILD'){
-	                	var td5 = $("<td> <a>"
-								+ translateStatus(array[i].status)
-								+ "</a></td>");
-					}else if(array[i].status == 'BUILDING'){
-						var td5 = $("<td>"
-								+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-								+ "<i class=\"ace-icon fa fa-spinner fa-spin dark bigger-125\" />"
-								+ translateStatus(array[i].status)
-								+ "</a>"
-								+ "</td>");
-					}else{
-						var td5 = $("<td> <a>"
-								+ translateStatus(array[i].status)
-								+ "</a></td>");
-					}
-	                
-	                var td6 = $("<td>"
-	                        + array[i].resultDetail
-	                        + "</td>");
-	                if(array[i].status == 'FAILD'){
-						var tr = $("<tr class=\"data-tr default-danger\"></tr>");
-					}else if(array[i].status == 'SUCCESS'){
-						var tr = $("<tr class=\"data-tr success\"></tr>");
-					}else{
-						var tr = $("<tr class='data-tr'></tr>");
-					}
-	                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-	                tr.appendTo($backupTbody);
-				   //$('[name = "dbRefuseStatus"]').popover();
-			}//循环json中的数据 
-			
+			var array = data.data.data;
+			if(array.length == 0){
+				$("#noData").removeClass("hidden");
+			}else{
+				$("#noData").addClass("hidden");
+				 for(var i= 0, len= array.length;i<len;i++){
+		        		var mclusterName = '';
+		        		if(array[i].mcluster) {
+		        			mclusterName = array[i].mcluster.mclusterName;
+		        		}
+		        		var dbName = '';
+		        		if(array[i].db) {
+		        			dbName = array[i].db.dbName;
+		        		}
+		                var td1 = $("<td><a>"
+		                		+ FilterNull(mclusterName)
+		                		+"</a></td>");
+		                var td2 = $("<td>"
+		                		+ FilterNull(dbName)
+		                		+"</td>");
+		                var td3 = $("<td>"
+		                        + date('Y-m-d H:i:s',array[i].startTime)
+		                        + "</td>");
+		                var td4 = $("<td>"
+	                            + date('Y-m-d H:i:s',array[i].endTime)
+		                        + "</td>");
+		                if(array[i].status == 'FAILD'){
+		                	var td5 = $("<td> <a>"
+									+ translateStatus(array[i].status)
+									+ "</a></td>");
+						}else if(array[i].status == 'BUILDING'){
+							var td5 = $("<td>"
+									+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
+									+ "<i class=\"ace-icon fa fa-spinner fa-spin dark bigger-125\" />"
+									+ translateStatus(array[i].status)
+									+ "</a>"
+									+ "</td>");
+						}else{
+							var td5 = $("<td> <a>"
+									+ translateStatus(array[i].status)
+									+ "</a></td>");
+						}
+		                
+		                var td6 = $("<td>"
+		                        + array[i].resultDetail
+		                        + "</td>");
+		                if(array[i].status == 'FAILD'){
+							var tr = $("<tr class=\"data-tr default-danger\"></tr>");
+						}else if(array[i].status == 'SUCCESS'){
+							var tr = $("<tr class=\"data-tr success\"></tr>");
+						}else{
+							var tr = $("<tr class='data-tr'></tr>");
+						}
+		                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+		                tr.appendTo($backupTbody);
+					   //$('[name = "dbRefuseStatus"]').popover();
+				}//循环json中的数据 
+			}
+	       			
 			if (totalPages < 1) {
 				$("#pageControlBar").hide();
 			} else {

@@ -74,11 +74,14 @@ public class LoginController{
 		code = StringUtils.isNullOrEmpty(code)?request.getParameter("code"):code;
 		
 		String accessToken = this.getAccessToken(clientId, clientSecret, code);
-		String username = this.getUsername(accessToken);
+		Map<String,Object> userDetailInfo = this.getUserdetailinfo(accessToken);
+		String username = (String) userDetailInfo.get("username");
+		String email = (String) userDetailInfo.get("email");
 		
 		UserLogin userLogin = new UserLogin();
 		userLogin.setLoginName(username);
 		userLogin.setLoginIp(this.getIp(request));
+		userLogin.setEmail(email);
 		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		session.setClientId(clientId);
 		session.setClientSecret(clientSecret);
@@ -112,12 +115,13 @@ public class LoginController{
 		Map<String,Object> resultMap = this.transResult(result);
 		return (String) resultMap.get("access_token");
 	}
-	private String getUsername(String accessToken) {
+	private Map<String,Object> getUserdetailinfo(String accessToken) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/userinfo?access_token=").append(accessToken);
-		logger.debug("getUsername :" + buffer.toString());
+		buffer.append(OAUTH_AUTH_HTTP).append("/userdetailinfo?access_token=").append(accessToken);
+		logger.debug("getUserdetailinfo :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
-		return result;
+		Map<String,Object> resultMap = this.transResult(result);
+		return resultMap;
 	}
 	
 	private Map<String,Object> transResult(String result){

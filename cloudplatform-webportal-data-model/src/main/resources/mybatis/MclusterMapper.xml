@@ -44,7 +44,7 @@
 				and M.ID=#{id}
 			</if>
 			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
-				and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%')
+				and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
 			</if>
 			<if test="status != null  ">
 				and M.STATUS=#{status}
@@ -83,7 +83,7 @@
 				and M.ID=#{params.id}
 			</if>
 			<if test="params != null and params.mclusterName != null  and params.mclusterName != '' and params.mclusterName != 'null'">
-				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%')
+				and M.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.status != null  ">
 				and M.STATUS=#{params.status}
