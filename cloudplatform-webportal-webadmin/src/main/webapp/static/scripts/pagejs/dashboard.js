@@ -56,6 +56,7 @@ function setPieChartData(divName,type){
 	var url = "/list/mcluster/monitor/" + type
 	chart.showLoading();
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/dashboard/monitor/" + type,
 		dataType : "json", 
@@ -96,6 +97,7 @@ function updateMclusterChart(divName,type){
 
 function getOverview(){
 	$.ajax({
+		cache:false,
 		type : "get",
 		url : "/dashboard/statistics",
 		contentType : "application/json; charset=utf-8",

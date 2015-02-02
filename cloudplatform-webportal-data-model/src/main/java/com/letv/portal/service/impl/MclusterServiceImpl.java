@@ -11,6 +11,7 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IMclusterDao;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.service.IBackupService;
 import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
@@ -36,6 +37,8 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	private IBuildService buildService;
 	@Autowired
 	private IDbService dbService;
+	@Autowired
+	private IBackupService backupService;
 	
 	public MclusterServiceImpl() {
 		super(MclusterModel.class);
@@ -71,6 +74,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		this.containerService.deleteByMclusterId(mcluster.getId());
 		this.buildService.deleteByMclusterId(mcluster.getId());
 		this.dbService.deleteByMclusterId(mcluster.getId());
+		this.backupService.deleteByMclusterId(mcluster.getId());
 		this.mclusterDao.delete(mcluster);
 	}
 

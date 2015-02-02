@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
-         <%--  <a class="navbar-brand color" href="${ctx}/dashboard" style="margin-left:10px;height:40px !important;"><i class="fa fa-home text-20"></i></a> --%>
+		  <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
@@ -60,7 +60,7 @@
 						<div class="info clearfix">
 							<div class="user-info pull-left">
 								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
-								<p class="user-email ellipsis">${sessionScope.userSession.userName}@letv.com</p>
+								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
 							</div>
 							<div class="account pull-left">
 								<div class="mlt-4 pull-left">

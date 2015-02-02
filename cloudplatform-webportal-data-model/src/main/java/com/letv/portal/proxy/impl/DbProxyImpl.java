@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
@@ -24,6 +25,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IDbUserService;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -33,6 +35,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	
 	@Autowired
 	private IDbService dbService;
+	@Autowired
+	private IDbUserService dbUserService;
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
@@ -66,6 +70,10 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		String auditInfo = (String) params.get("auditInfo");
 		Long hclusterId = (Long) params.get("hclusterId");
 		
+		if(status == null || dbId == null) {
+			throw new ValidateException("参数不合法");
+		}
+		
 		DbModel dbModel = new DbModel();
 		dbModel.setId(dbId);
 		dbModel.setStatus(status);
@@ -75,8 +83,13 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		if(DbStatus.BUILDDING.getValue().equals(status)) {//审核成功
 			//判断mclsuterId是否为空
 			if(mclusterId == null) { //创建新的mcluster集群
+				if(mclusterName == null) {
+					throw new ValidateException("参数不合法");
+				}
 				mcluster.setMclusterName(mclusterName);
-				mcluster.setHclusterId(hclusterId == null?this.dbService.selectById(dbId).getHclusterId():hclusterId);
+				DbModel db = this.dbService.selectById(dbId);
+				mcluster.setHclusterId(hclusterId == null?db.getHclusterId():hclusterId);
+				mcluster.setCreateUser(db.getCreateUser());
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);
@@ -91,15 +104,17 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			this.dbService.updateBySelective(dbModel);
 		}
 			
-		
 	}
 	@Override
-	public void saveAndBuild(DbModel dbModel) {
+	public void saveAndBuild(DbModel dbModel,boolean isCreateAdmin) {
 		Long userId = sessionService.getSession().getUserId();
 		dbModel.setCreateUser(userId);
 		dbModel.setStatus(DbStatus.DEFAULT.getValue());
 		dbModel.setDeleted(true);
 		this.dbService.insert(dbModel);
+		
+		if(isCreateAdmin)
+			this.dbUserService.createDefalutAdmin(dbModel.getId());
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("createUser", userId);
@@ -124,12 +139,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			emailParams.put("createTime", sdf.format(new Date()));
 			emailParams.put("dbName", dbModel.getDbName());
 			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","auditDbNotice.ftl",emailParams);
-			try {
-				defaultEmailSender.sendMessage(mailMessage);
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error(e.getMessage());
-			}
+			defaultEmailSender.sendMessage(mailMessage);
 		}
 	}
 	

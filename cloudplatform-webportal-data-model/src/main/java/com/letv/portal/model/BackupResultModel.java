@@ -27,6 +27,42 @@ public class BackupResultModel extends BaseModel {
 	private MclusterModel mcluster;
 	private DbModel db;
 
+	private String backupProxy = "实例备份";
+	private String backupMethod = "物理备份";
+	private String backupType ="全量";
+	private String workType = "常规任务";
+	private Float backupSize;
+	
+	public String getBackupProxy() {
+		return backupProxy;
+	}
+	public void setBackupProxy(String backupProxy) {
+		this.backupProxy = backupProxy;
+	}
+	public String getBackupMethod() {
+		return backupMethod;
+	}
+	public void setBackupMethod(String backupMethod) {
+		this.backupMethod = backupMethod;
+	}
+	public String getBackupType() {
+		return backupType;
+	}
+	public void setBackupType(String backupType) {
+		this.backupType = backupType;
+	}
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
+	public Float getBackupSize() {
+		return backupSize;
+	}
+	public void setBackupSize(Float backupSize) {
+		this.backupSize = backupSize;
+	}
 	public Long getMclusterId() {
 		return mclusterId;
 	}

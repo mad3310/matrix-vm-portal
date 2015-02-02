@@ -8,12 +8,15 @@
 	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
+	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap-datetimepicker.min.css"/>
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" />
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 	<title>备份与恢复</title>
 </head>
 <body>
+    <!-- 全局参数 start -->
+	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -243,13 +246,13 @@
 	        <div class="pull-left">
 	        	<h5>
 	        	备份与恢复
-	        	<a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
+	        	<!-- <a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
 					<i class="fa fa-question-circle text-muted"></i>
-				</a>
+				</a> -->
 		        </h5>
 	        </div>				      
 		    <div class="pull-right">
-		       	<button id="refresh" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
+		       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
 		       	一键清除Binlog
 		        </button>
 		    </div>
@@ -262,36 +265,40 @@
 	    </ul>
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">				
-			<div id="backlist" role="tabpanel" class="tab-pane fade active in"  aria-labelledby="backlist-tab">
+			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
+			<div class="row" style="margin-right:0;"> 
+				<div class="col-sm-12 col-md-12">
 				<div class="time-range-unit-header">
 		    		<span class="time-range-title">选择时间范围：</span>
 		    		<div class="date-unit">
-		    			<input type="date" class="form-control" value="2015-01-01">
+            			<input type='text' class="form-control datetimepicker" id='startTime' />
 		    		</div>
 		    		<span class="date-step-span">至</span>
 		    		<div class="date-unit">
-		    		     <input type="date" class="form-control" value="2015-01-08">
+		    		     <input type='text' class="form-control datetimepicker" id='endTime' />
 		    	    </div>
-		    	    <select class="form-control margin-left-5 inline-block" style="width:160px">
+		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>		    
-		    	    <button class="btn btn-primary btn-search">查询</button>	
+		    	    </select>	 -->
+		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
 		    	</div>
-			        <table class="table table-hover">
+				</div>
+				<div class="col-sm-12 col-md-12">
+			        <table class="table table-hover table-se " style="margin-top:10px;">
 			        	<thead>
 			        		<tr class="text-muted">
-			        			<td>备份开始/结束时间</td>
-			        			<td>备份策略</td>
-			        			<td>备份大小</td>
-			        			<td>备份方法</td>
-			        			<td>备份类型</td>
-			        			<td>工作模式</td>
-			        			<td>状态</td>
-			        			<td class="text-right">操作</td>
+			        			<th>备份开始/结束时间</th>
+			        			<th>备份策略</th>
+			        			<th>备份大小</th>
+			        			<th>备份方法</th>
+			        			<th>备份类型</th>
+			        			<th>工作模式</th>
+			        			<th>状态</th>
+			        			<th class="text-right">操作</th>
 			        		</tr>
 			        	</thead>
-			        	<tbody>
-			        		<tr>
+			        	<tbody id="backupTbody">
+			        		<!-- <tr>
 			        			<td>2015-01-06 20:49/2015-01-06 20:52</td>
 			        			<td>实例备份</td>
 			        			<td class="text-success">0.39M</td>
@@ -304,17 +311,17 @@
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_creat" data-toggle="modal">创建临时实例</a></span>
 			        				<span class="inline-block"><a class="btn btn-xs" href="#back_recover" data-toggle="modal">恢复</a></span>	
 			        			</td>
-			        		</tr>
-			        	</tbody> 
-			        	<tfoot>
-						<tr class="tfoot">
-							<td colspan="8">
+			        		</tr> -->
+			        	</tbody>
+			        </table>
+			        <div class="help-block hidden" id="noData">没有符合条件的查询结果。</div>
+				    <div class="tfoot" id="paginatorBlock">
 								<div class="pull-right">
 									<div class="pagination-info">
 										<span>共有<span id="totalRecords">3</span>条</span>， 
 										<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
 									    <ul id="paginator" class="pagination pagination-sm">
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">«</a>
 									    	</li>
 									    	<li class="disabled">
@@ -323,61 +330,65 @@
 									    	<li class="active">
 									    		<a href="#">1</a>
 									    	</li>
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">›</a>
 									    	</li>
-									    	<li class="disabled">
+									    	<li class="">
 									    		<a href="#">»</a>
 									    	</li>
 									    </ul>
 									</div>
 								</div>
-							</td>
-						</tr>
-						</tfoot>				        	
-			        </table>
-
-		  		
-		  		
+						</div>   
+				</div>
+			</div>
+				
+		    	
 		  	</div>			
-		    <div id="backsetting" role="tabpanel" class="tab-pane fade" aria-labelledby="backsetting-tab">
-		    	<div class="pull-left col-sm-10 mt20 padding-left-32">
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 text-muted" style="font-weight:normal">保留天数:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">7天</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">备份周期:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">星期二,星期四,星期六</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">备份时间:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">20 - 21 时</div>
-		    			</div>
-		    		</div>
-		    		<div class="form-group clearfix">
-		    			<label class="col-sm-2 control-label text-muted" style="font-weight:normal">预计下次备份时间:</label>
-		    			<div class="col-sm-8">
-		    				<div class="form-control-static pd0">2015年01月08日 20 - 21时</div>
-		    			</div>
-		    		</div>
-		    	</div>
-		    	<div class="pull-left col-sm-10">
-		    		<div class="form-group">
-		    			<label class="col-sm-2 control-label"></label>
-		    			<div class="col-sm-8">
-		    				<button type="button" class="btn btn-primary" data-toggle='modal' data-target='#myModal'>修改</button>
-		    			</div>
-		    		</div>
-		    	</div>						    		    		    	
-		    </div>			   
+			<div id="backsetting" role="tabpanel" class="tab-pane fade"
+				aria-labelledby="backsetting-tab">
+				<div class="pull-left col-sm-10 mt20 padding-left-32">
+					<div class="form-group clearfix">
+						<label class="col-sm-2 text-muted" style="font-weight: normal">保留天数:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">7天</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">备份周期:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">星期一,星期二,星期三,星期四,星期五,星期六,星期日</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">备份时间:</label>
+						<div class="col-sm-8">
+							<div class="form-control-static pd0">4:00 AM</div>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<label class="col-sm-2 control-label text-muted"
+							style="font-weight: normal">预计下次备份时间:</label>
+						<div class="col-sm-8">
+							<div id="backupTime" class="form-control-static pd0"></div>
+						</div>
+					</div>
+				</div>
+				<div class="pull-left col-sm-10">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-8">
+							<button type="button" class="btn btn-primary btn-sm"
+								disabled="true" data-toggle='modal' data-target='#myModal'>修改</button>
+							<p style="display: inline-block">(暂不提供)</p>
+						</div>
+					</div>
+				</div>
+			</div>	   
 		</div>
-    </div>				
+    </div>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
@@ -387,10 +398,12 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"moment": "moment/2.9.0/moment-with-locales.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
+		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"
 	}
 });
-
-seajs.use("${ctx}/static/page-js/securityManager/main");
+seajs.use("${ctx}/static/page-js/backupRecover/main");
 </script>
 </html>

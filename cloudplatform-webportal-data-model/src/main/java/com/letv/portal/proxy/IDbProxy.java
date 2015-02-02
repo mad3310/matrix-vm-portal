@@ -19,6 +19,7 @@ public interface IDbProxy extends IBaseProxy<DbModel> {
 	 * Description: 保存db，并创建container集群及db<br>
 	 * @author name: liuhao1
 	 * @param dbModel
+	 * @param isCreateAdmin 是否默认创建管理员用户
 	 */
-	public void saveAndBuild(DbModel dbModel);
+	public void saveAndBuild(DbModel dbModel,boolean isCreateAdmin);
 }

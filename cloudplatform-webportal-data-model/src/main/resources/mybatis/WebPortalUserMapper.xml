@@ -34,10 +34,10 @@
 				and ID=#{id}
 			</if>
 			<if test="userName != null  and userName != '' ">
-				and USERNAME like CONCAT('%','#{userName}','%')
+				and USERNAME =#{userName}
 			</if>
 			<if test="EMAIL != null  and EMAIL != '' ">
-				and EMAIL like CONCAT('%','#{EMAIL}','%')
+				and EMAIL =#{EMAIL}
 			</if>
 		</trim>
 	</sql>
@@ -113,10 +113,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_USER 
-		where 1=1
-		<if test="userName != null  and userName != '' ">
-			and USERNAME like CONCAT('%',#{userName},'%')
-		</if>
+		<include refid="Example_Where_Clause" />
 	</select>
 	
 </mapper>   

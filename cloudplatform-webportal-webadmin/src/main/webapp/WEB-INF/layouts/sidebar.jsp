@@ -111,6 +111,12 @@
 				</li>
 			</ul>
 		</li>
+		<li id="backupRecover" >
+			<a href="${ctx}/list/backup">
+				<i class="menu-icon fa  fa-university"></i> 
+				<span class="menu-text">备份与恢复</span> 
+			</a>
+		</li>
 	</ul>
 
 	<!-- #section:basics/sidebar.layout.minimize -->

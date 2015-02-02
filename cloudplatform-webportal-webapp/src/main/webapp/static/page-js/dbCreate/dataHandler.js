@@ -3,6 +3,8 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
+    var common = require('../common');
+    var cn = new common();
 
     var DataHandler = function(){
     };
@@ -12,11 +14,12 @@ define(function(require,exports,module){
     DataHandler.prototype = {
         GetHclusterHandler : function(data){
             var hcluster = data.data;
-            var select = $("[name='hclusterId']");
+            var ul = $("[name='hclusterId']").parent('div').find('ul');
             for(var i= 0,len=hcluster.length;i<len;i++){
-                var option = $("<option value=\""+hcluster[i].id+"\">"+hcluster[i].hclusterNameAlias+"</option>");
-                option.appendTo(select);
+                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+hcluster[i].id+"\">"+hcluster[i].hclusterNameAlias+"</a></li>");
+                li.appendTo(ul);
             }
+            cn.divselect();
         }
     }
 });

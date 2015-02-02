@@ -45,16 +45,13 @@
 			<if test="dbId != null  ">
 				and r.DB_ID=#{dbId}
 			</if>
-			<if test="backupIp != null  ">
-				and r.BACKUP_IP=#{backupIp}
+			<if test="startTime != null and startTime != '' ">
+				and r.START_TIME&gt;=#{startTime}
 			</if>
-			<if test="startTime != null  ">
-				and r.START_TIME=#{startTime}
+			<if test="endTime != null  and endTime != '' ">
+				and r.START_TIME&lt;=#{endTime}
 			</if>
-			<if test="endTime != null  ">
-				and r.END_TIME=#{endTime}
-			</if>
-			<if test="status != null  ">
+			<if test="status != null and status != ''">
 				and r.STATUS=#{status}
 			</if>
 			<if test="resultDetail != null  ">
@@ -148,16 +145,23 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_BACKUP_RESULT r
+		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		<if test="mclusterName != null and mclusterName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
+		</if> 
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
+		<if test="dbName != null and dbName != ''">
+			and d.DB_NAME like CONCAT('%','${dbName}','%') escape '^'
+		</if> 
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" /> ,m.MCLUSTER_NAME,d.DB_NAME 
-		from WEBPORTAL_BACKUP_RESULT r,WEBPORTAL_MCLUSTER_INFO m,WEBPORTAL_DB d
+		<include refid="Base_Column_List" /> 
+		from WEBPORTAL_BACKUP_RESULT r
 		<include refid="Example_Where_Clause" />
-		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID 
 	</select>
 	
 	
@@ -177,13 +181,13 @@
 			<if test="params != null and params.backupIp != null  ">
 				and r.BACKUP_IP=#{params.backupIp}
 			</if>
-			<if test="params != null and params.startTime != null  ">
-				and r.START_TIME=#{params.startTime}
+			<if test="params != null and params.startTime != null  and params.startTime != '' ">
+				and r.START_TIME&gt;=#{params.startTime}
 			</if>
-			<if test="params != null and params.endTime != null  ">
-				and r.END_TIME=#{params.endTime}
+			<if test="params != null and params.endTime != null  and params.endTime != '' ">
+				and r.START_TIME&lt;=#{params.endTime}
 			</if>
-			<if test="params != null and params.status != null  ">
+			<if test="params != null and params.status != null   and params.status != ''">
 				and r.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
@@ -209,10 +213,26 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
+		,m.MCLUSTER_NAME,d.DB_NAME
 		from WEBPORTAL_BACKUP_RESULT r
+		join WEBPORTAL_MCLUSTER_INFO m on r.MCLUSTER_ID = m.ID
+		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+		</if>
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
+		<if test="params != null and params.dbName != null and params.dbName != ''">
+			and d.DB_NAME like CONCAT('%','${params.dbName}','%') escape '^'
+		</if> 
 		<include refid="Example_Page_Where_Clause" />
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
+		<if test="params != null and params.orderBy != null  ">
+      		 order by #{params.orderBy}
+    	</if>
+		<if test="params != null and !params.isAsc == false">
+      		 desc
+    	</if>
 	</select>
+	
 </mapper>   

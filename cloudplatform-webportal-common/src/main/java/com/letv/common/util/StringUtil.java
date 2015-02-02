@@ -3,6 +3,7 @@ package com.letv.common.util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -115,5 +116,18 @@ public final class StringUtil {
 		}
 		return id;
 	}
-    
+	
+	/**Methods Name: transSqlCharacter <br>
+	 * Description: sql like查询 替换特殊字符<br>
+	 * @author name: liuhao1
+	 * @param str
+	 * @return
+	 */
+	public static String transSqlCharacter(String str) {
+		if(!StringUtils.isEmpty(str)) {
+			str = str.replace("_", "^_");
+			str = str.replace("%", "^%");
+		}
+		return str;
+	}
 }

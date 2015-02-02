@@ -123,4 +123,6 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 */
 	public List<String> selectIpsFromUser(Long dbId);
 	
+	public void createDefalutAdmin(Long dbId);
+	
 }

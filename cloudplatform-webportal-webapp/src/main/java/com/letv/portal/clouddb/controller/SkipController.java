@@ -134,4 +134,11 @@ public class SkipController {
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
 		return obj;
 	}
+	
+	@RequestMapping(value ="/list/backup/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toDbBackup(@PathVariable Long dbId,ModelAndView mav){
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/backupRecover");
+		return mav;
+	}
 }

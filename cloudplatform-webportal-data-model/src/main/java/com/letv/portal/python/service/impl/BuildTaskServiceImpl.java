@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.JsonUtils;
 import com.letv.common.util.PasswordRandom;
@@ -300,7 +301,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			dbModel.setStatus(status);
 			this.dbService.updateBySelective(dbModel);
 			if(DbStatus.NORMAL.getValue() == status) {
-				buildUser(createDefalutAdmin(dbId).toString());
+				List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId);
+				StringBuffer ids = new StringBuffer();
+				for (DbUserModel dbUser : dbUsers) {
+					ids.append(dbUser.getId()).append(",");
+				}
+				buildUser(ids.substring(0, ids.length()-1));
 			} 
 		}
 	}
@@ -940,32 +946,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	public void createHost(HostModel hostModel){
-		if(analysisResult(transResult(pythonService.initHcluster(hostModel.getHostIp())))){
-			if(analysisResult(transResult(pythonService.createHost(hostModel))));
-			logger.debug("调用phyhonAPI创建host成功");
+		String result = this.pythonService.initHcluster(hostModel.getHostIp());
+		if(StringUtils.isNullOrEmpty(result)) {
+			throw new PythonException("create host faild by Container Manager's python API: initHcluster");
 		}
-
+		String result2 = this.pythonService.createHost(hostModel);
+		if(StringUtils.isNullOrEmpty(result2)) {
+			throw new PythonException("create host faild by Container Manager's python API: createHost");
+		}
 	}
-	/**
-	 * Methods Name: createDefalutAmin <br>
-	 * Description: 创建默认管理员<br>
-	 * @author name: wujun
-	 * @return
-	 */
-	public Long createDefalutAdmin(Long dbId){
-		DbUserModel dbUserModel = new DbUserModel();
-		dbUserModel.setDbId(dbId);
-		dbUserModel.setUsername("admin");
-		dbUserModel.setPassword(PasswordRandom.genStr());
-		dbUserModel.setAcceptIp("%");
-     	dbUserModel.setType(DbUserRoleStatus.MANAGER.getValue());
-		dbUserModel.setMaxConcurrency(50);
-		dbUserModel.setReadWriterRate("2:1");
-		dbUserModel.setCreateUser(this.dbService.selectById(dbId).getCreateUser());
-		dbUserService.insert(dbUserModel);
-		Long id = dbUserModel.getId();
-		return id;
-	}
+	
 	
 	
 	private HostModel getHostByHclusterId(Long hclusterId){

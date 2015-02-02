@@ -8,6 +8,8 @@ public class UserLogin {
 	
 	private String loginIp;
 	
+	private String email;
+	
 	public UserLogin(){}
 	
 	public String getLoginName() {
@@ -34,5 +36,13 @@ public class UserLogin {
 
 	public String getLoginIp() {
 		return loginIp;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

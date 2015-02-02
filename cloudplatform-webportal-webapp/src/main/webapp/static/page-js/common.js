@@ -2,11 +2,14 @@
  * Created by yaokuo on 2014/12/12.
  */
 define(function(require,exports,module){
-    var $ = require('jquery');
+    var  $ = require('jquery');
     require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 10000; //单位ms
+		this.maxConcurrency = 2000; //数据库最大并发量
+
+		TopBtnInit();//初始化顶部菜单按钮
     };
     module.exports = Common;
 
@@ -22,6 +25,16 @@ define(function(require,exports,module){
             }, function() {
                 $(this).tooltip('hide');
             });
+        },
+        Popover : function (id){
+        	if(!id) {
+        		id = "[data-toggle='popover']";
+        	}
+			$(id).hover(function() {
+				$(this).popover('show');
+			}, function() {
+				$(this).popover('hide');
+			});
         },
         Collapse : function(){
         	$(".collapse").on('show.bs.collapse', function () {
@@ -72,7 +85,13 @@ define(function(require,exports,module){
         		return "<font color=\"red\">严重危险</font>";
         	}else if(status == 15){
         		return "禁用";
-        	}
+        	}else if(status == 'FAILD'){
+        		return "<font color=\"red\">备份失败</font>";
+        	}else if(status == 'SUCCESS'){
+        		return "<span class=\"text-success\">备份成功<span>";
+        	}else if(status == 'BUILDING'){
+        		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
+        	}	
         },
 		Displayable : function (status) {
 			if(status == 6){
@@ -80,7 +99,13 @@ define(function(require,exports,module){
 			}
 		},
         TransDate : function (format, timestamp){
-        	var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	//var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
+        	var a;
+        	if(timestamp == null){
+        		return "---";
+        	}else{
+        		var jsdate=new Date(timestamp);
+        	}
     	    var pad = function(n, c){
     	        if((n = n + "").length < c){
     	            return new Array(++c - n.length).join("0") + n;
@@ -237,17 +262,20 @@ define(function(require,exports,module){
 		                }
 	        		}
         		}
-        		
             });
         },
-        GetData : function(url,handler){  //异步获取数据,将数据交给handler处理
-            $.ajax({
+        GetData : function(url,handler){ //异步获取数据,将数据交给handler处理
+			if($('body').find('.sidebar').length==0){	//layout界面不添加loading
+				$('body').append("<div class=\"spin\"></div>");
+			}
+			$.ajax({
                 url:url,
 				cache:false,
                 type:"get",
                 dataType:'json',
                 success:function(data){
-                    /*添加当handler为空时的异常处理*/
+					/*添加当handler为空时的异常处理*/
+					$('body').find('.spin').remove();
                     handler(data);
                 }
             });
@@ -392,7 +420,68 @@ define(function(require,exports,module){
 			var objLeft = ($obj.offset().left - (screenWidth-iframebodyWidth)/2); 
 			//var objTop = ($obj.offset().top  - (screenHeight-iframebodyHeight)/2);
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
+		},
+		divselect: function () {
+			var inputselect = $('.divselect').find('input');
+			var divselects = $(".divselect");
+			/*for(var i = 0,len = divselects.length;i<len;i++){
+				if(divselects[i].find('li').length > 0){
+					divselects[i].
+				}
+			}*/
+			$('.divselect').closest('.pull-left').click(function(event){
+				event.stopPropagation();
+				var ul = $(this).find('ul');
+				if(ul.css("display")=="none"){
+					$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
+					ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");
+				}else{
+					ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+				}
+			})
+			$(document).click(function () {
+				$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+			})
+
+			$('.divselect').find("ul li").click(function(){
+				var txt = $(this).find('a').text();
+				$(this).closest('.divselect').find('span').html(txt);
+				var value = $(this).find('a').attr("selectid");
+				inputselect.val(value);
+			});
+			$(".divselect").each(function () {
+				if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+					$(this).find('ul li').first().click();
+				}
+			})
+		},
+		getBackupDate:function(){
+			var myDate = new Date();			
+			var timestamp = myDate.valueOf();			
+			var hour = myDate.getHours();
+			
+			if(hour > 4){
+				timestamp = timestamp + 86400000;
+			}else{
+				timestamp = timestamp;
+			}
+			
+			var newDate = new Date(timestamp);
+			var year = newDate.getFullYear();
+			var month = newDate.getMonth() + 1;
+			var day = newDate.getDate();
+			
+			return year + '年' + month + '月' + day + '日';
 		}
-        /*add new common function*/
+		 /*add new common function*/
     }
+	var TopBtnInit = function(){
+		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){
+			$(this).width(88);
+			$(this).html("管理控制台");
+		}).mouseleave(function () {
+			$(this).width(20);
+			$(this).html("<i class=\"fa fa-home text-20\"></i>");
+		})
+	}
 });

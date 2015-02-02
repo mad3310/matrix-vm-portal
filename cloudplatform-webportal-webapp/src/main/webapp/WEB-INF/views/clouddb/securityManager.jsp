@@ -55,14 +55,18 @@
 					</div>
 					<div ng-hide="!loadingState" aliyun-loading="" size="48" style="margin-top: 10px" class="ng-hide"></div>
 					<div class="form-group">
-						<div class="col-sm-4">
-							<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="4"></textarea>
+						<div class="col-sm-6">
+							<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="6"></textarea>
 						</div>
 						<div class="help-block ng-hide" style="padding-top: 30px"></div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-10">
-							<span class="text-danger">*注意:如果删除IP,会同时删除与该IP相关的账户权限!</span> <span class="help-block">请以逗号隔开，不可重复，最多100个。支持格式如：10.23.12.24,10.23.34.%</span>
+							<span class="text-danger">*注意:如果删除IP,会同时删除与该IP相关的账户权限!</span>
+<pre>
+请以逗号隔开或换行，不可重复，最多100个。支持格式如：	10.23.12.24,10.23.34.%
+							10.23.12.25
+</pre>
 						</div>
 					</div>
 					<div class="form-group">

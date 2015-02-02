@@ -93,8 +93,8 @@ public class DbController {
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(DbModel dbModel) {
-		this.dbProxy.saveAndBuild(dbModel);
+	public @ResponseBody ResultObject save(DbModel dbModel,boolean isCreateAdmin) {
+		this.dbProxy.saveAndBuild(dbModel,isCreateAdmin);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

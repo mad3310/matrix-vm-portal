@@ -11,5 +11,7 @@ import com.letv.portal.model.BackupResultModel;
  * Modified Date: <br>
  */
 public interface IBackupResultDao extends IBaseDao<BackupResultModel> {
+
+	void deleteByMclusterId(Long id);
 	  
 }

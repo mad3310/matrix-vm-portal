@@ -5,6 +5,7 @@
 function queryMclusterMonitor() {
 	$("#tby tr").remove();
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/monitor/mcluster/list",
 		dataType : "json", /*这句可用可不用，没有影响*/
@@ -15,14 +16,18 @@ function queryMclusterMonitor() {
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
+				var mclusterName = '';
+        		if(array[i].mcluster) {
+        			mclusterName = array[i].mcluster.mclusterName;
+        		}
 				var td1 = $("<td>"
-							+ array[i].mcluster.mclusterName
+							+ mclusterName
 							+ "</td>");
 				var td2 = $("<td name=\"vip\">"
 							+ array[i].ipAddr
 							+ "</td>");
 
-			if(array[i].hcluster.hclusterNameAlias){
+				if(array[i].hcluster.hclusterNameAlias){
 					var td3 = $("<td>"
  							+ array[i].hcluster.hclusterNameAlias
 							+ "</td>");
@@ -55,6 +60,7 @@ function queryMclusterMonitor() {
 }
 function getMclusterStatus(ip,obj) {
 	$.ajax({ 
+		cache:false,
 		type : "get",
 		url : "/monitor/"+ip+"/node/status",
 		dataType : "json", 

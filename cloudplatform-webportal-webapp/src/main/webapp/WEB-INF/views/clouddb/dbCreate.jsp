@@ -139,34 +139,44 @@
 													<div class="bk-form-row-txt">不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择</div>
 												</div>
 											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">可用区：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix">
-														<div class="pull-left">
-															<span class="sleBG"> <span class="sleHid"> <select name="hclusterId" class="form-control w217 wcolor">
-																</select>
-															</span>
-															</span> <span class="bk-select-arrow"></span>
-														</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">可用区：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left">
+														<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span></span>
+																	<ul>
+																	</ul>
+																	<input name="hclusterId" type="hidden" value="" />
+																</div>
+														</span>
+														</span> <span class="bk-select-arrow"></span>
 													</div>
 												</div>
 											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">数据库类型：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix">
-														<div class="pull-left">
-															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
-																		<option>MySQL</option>
-																</select>
-															</span>
-															</span> <span class="bk-select-arrow"></span>
-														</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">数据库类型：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left">
+														<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span>MYSQL</span>
+																	<ul style="display: none;">
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1">MYSQL</a></li>
+																	</ul>
+																	<input name="mysql" type="hidden" value="" />
+																</div>
+														</span>
+														</span> <span class="bk-select-arrow"></span>
 													</div>
 												</div>
 											</div>
-											<div class="bk-form-row">
+										</div>
+										<div class="bk-form-row">
 												<label class="bk-form-row-name">版本：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li">
@@ -215,6 +225,26 @@
 															<button class="bk-button bk-button-primary" value="1">
 																<div>
 																	<span>短链接</span>
+																</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">默认管理账户：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<input name="isCreateAdmin" type="text" class="hide" value="0">
+															<button class=" bk-button bk-button-primary " value="1">
+																<div>
+																	<span>创建</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary bk-button-current" value="0">
+																<div>
+																	<span>不创建</span>
 																</div>
 															</button>
 														</div>
@@ -291,9 +321,14 @@
 												</div> -->
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
-																		<option>10G</option>
-																</select>
+															<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span>10G</span>
+																	<ul style="display: none;">
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1">10G</a></li>
+																	</ul>
+																	<input type="hidden" value="" />
+																</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
 														</div>
@@ -306,10 +341,15 @@
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor disabled">
-																		<option>2G</option>
-																</select>
-															</span>
+															<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span>2G</span>
+																	<ul style="display: none;">
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1">2G</a></li>
+																	</ul>
+																	<input type="hidden" value="" />
+																</div>
+														</span>
 															</span> <span class="bk-select-arrow"></span>
 														</div>
 													</div>
@@ -441,11 +481,18 @@
 														</div> -->
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
-																		<option>1年</option>
-																</select>
+															<span class="sleBG">
+															<span class="sleHid">
+																<div class="divselect">
+																	<span>一年</span>
+																	<ul style="display: none;">
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1">一年</a></li>
+																	</ul>
+																	<input type="hidden" value="" />
+																</div>
 															</span>
-															</span> <span class="bk-select-arrow"></span>
+															</span>
+															<span class="bk-select-arrow"></span>
 														</div>
 													</div>
 													<div class="bk-form-row-txt">此功能暂时不开放</div>
@@ -510,6 +557,7 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
+									<div class="bk-form-row-txt notice-block">您购买的数据库创建大约需要5分钟,请耐心等待...</div>
 								</div>
 								<div class="bk-pb4"></div>
 							</div>

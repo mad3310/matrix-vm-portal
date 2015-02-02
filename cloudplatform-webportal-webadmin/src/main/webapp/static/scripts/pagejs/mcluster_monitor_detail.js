@@ -37,6 +37,7 @@ function addDataToTable(data,tby,type){
 
 function queryNodeMonitorDetail(){
 	$.ajax({
+		cache:false,
 		type : "get",
 		url : "/monitor/"+$("#ip").val()+"/mcluster/nodeAndDb",
 		dataType : "json",
@@ -58,6 +59,7 @@ function queryNodeMonitorDetail(){
 
 function queryClusterMonitorDetail(){
 	$.ajax({
+		cache:false,
 		type : "get",
 		url : "/monitor/"+$("#ip").val()+"/mcluster/cluster",
 		dataType : "json",

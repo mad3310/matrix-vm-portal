@@ -18,16 +18,18 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	setInterval(asyncData,cn.dbListRefreshTime);
+	//setInterval(asyncData,cn.dbListRefreshTime);
 
 	$("#search").click(function() {
+		cn.currentPage = 1;
 		asyncData();
 	});
-	$("#refresh").click(function() {
+	$("#refresh").click(function() {		
 		asyncData();
 	});
 	$("#dbName").keydown(function(e){
 		if(e.keyCode==13){
+			cn.currentPage = 1;
 			asyncData();
 		}
 	});
@@ -48,6 +50,7 @@ define(function(require){
 		bootstrapMajorVersion:3,
 		numberOfPages: 5,
 		onPageClicked: function(e,originalEvent,type,page){
+			cn.currentPage = page;
         	asyncData(page);
         }
 	});

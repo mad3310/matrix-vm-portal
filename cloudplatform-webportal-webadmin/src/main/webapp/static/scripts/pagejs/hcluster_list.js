@@ -20,6 +20,7 @@ function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	$.ajax({
+		cache:false,
 		type : "get",
 		url : "/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
@@ -180,6 +181,7 @@ function formValidate() {
 
 function createHcluster(){
 	$.ajax({
+		cache:false,
 		type : "post",
 		url : "/hcluster",
 		data :$('#create-hcluster-form').serialize(),
@@ -199,6 +201,7 @@ function deleteHcluster(obj){
 	var tr = $(obj).parents("tr");
 	var hclusterId =tr.find('[name="hcluster_id"]').val();
 	$.ajax({
+		cache:false,
 		url:'/hcluster/isExistHostOnHcluster/validate',
 		type:'post',
 		data:{ 'hclusterId' : hclusterId },
@@ -206,6 +209,7 @@ function deleteHcluster(obj){
 			if(data.valid){  //data.valid为true时可删除
 				function deleteCmd(){
 					$.ajax({
+						cache:false,
 						url:'/hcluster/'+hclusterId,
 						type:'delete',
 						success:function(data){

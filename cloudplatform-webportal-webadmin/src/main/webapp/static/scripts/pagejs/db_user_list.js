@@ -39,6 +39,7 @@ function buildUser() {
 	
 	if(flag > 0) {
 		$.ajax({ 
+			cache:false,
 			type : "post",
 			url : "/dbUser",
 			dataType : "json",
@@ -70,6 +71,7 @@ function buildUser() {
 		$("#tby tr").remove();
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		$.ajax({ 
+			cache:false,
 			type : "get",
 			url : "/dbUser/" + currentPage + "/" + recordsPerPage+"/" + dbName,
 			dataType : "json", /*这句可用可不用，没有影响*/

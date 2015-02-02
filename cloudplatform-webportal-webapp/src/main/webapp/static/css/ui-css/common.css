@@ -156,6 +156,7 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 }
 .date-unit,
 .date-picker-unit{
+	position: relative;
     display: inline-block;
     float: left;
     height:30px; 
@@ -591,6 +592,10 @@ width: 30px;
 	background: -moz-linear-gradient(top, #f3f3f3,#f3f3f3);
 	background: -o-linear-gradient(top, #f3f3f3,#f3f3f3);
 	background: linear-gradient(top, #f3f3f3,#f3f3f3);
+}
+.btn-primary{
+	border: 1px solid #2385D6;
+    background: -moz-linear-gradient(center top , #2590EF, #2789DC) repeat scroll 0% 0% transparent;
 }
 
 /*2014-12-17 by gm RDScreate---------begin*/
@@ -1197,11 +1202,7 @@ position: relative;
 .navbar .color{color:#fff !important;padding-top:10px; padding-bottom:0px !important;}
 .navbar-inverse .navbar-nav>li>a.hlight{color:#fff !important;padding-top:10px; padding-bottom:10px !important;}
 .navbar .color:hover,.navbar-inverse .navbar-nav>li>a.hlight:hover{
-	background-color:#9d9d9d;
-	filter:alpha(opacity=50);  
-    -moz-opacity:0.5;  
-    -khtml-opacity: 0.5;  
-    opacity: 0.5;
+	background-color:#575E66;
 }
 .text-20{
 	font-size:20px;
@@ -1285,16 +1286,16 @@ position: relative;
 	border:0px;
 }
 .bk-form-row .pull-left .bk-select-arrow {
+	cursor: pointer;
 	position: relative;
 	left: -10px;
-	top: -35px;
+	top: -20px;
 	float: right;
 	display: inline;
 	width: 0;
 	height: 0;
 	border: solid 5px transparent;	
 	border-top-color: #fff;
-	margin: 15px 0 0 10px;
 	-webkit-transform-origin: 50% 20% 0;
 	-moz-transform-origin: 50% 20% 0;
 	-ms-transform-origin: 50% 20% 0;
@@ -1303,18 +1304,21 @@ position: relative;
 	-moz-transform: rotate(0deg);
 	-ms-transform: rotate(0deg);
 	-o-transform: rotate(0deg);
+	transition: all .3s;
+	-moz-transition: all .3s;
+	-webkit-transition: all .3s;
+	-o-transition: all .3s;
 }
    
 .bk-form-row .pull-left .sleHid { 
 	display:block; 
-	width:192px; 
+	width:226px;
 	overflow:hidden; 
 }    
 .bk-form-row .pull-left .sleBG { 
 	width:226px; 
 	height:36px; 
-	border:#43bfe3 1px solid; 
-	border-right:none; 
+	border-right:none;
 	background:#43bfe3 no-repeat 62px 1px; 
 	display:block;
 }
@@ -1373,4 +1377,95 @@ input::-ms-clear{display:none;}
 	-webkit-padding-right:15px;
 }
 
+.top-bar-btn{
+	width: 50px;
+	height: 40px;
+	display: inline-block;
+	margin-right: 1px;
+	margin-left: 0px !important;
+	vertical-align: middle;
+	text-align:center;
+	line-height : 23px;
+	-webkit-transition :all 0.3s;
+	-o-transition :all 0.3s;
+	-moz-transition :all 0.3s;
+	-ms-transition :all 0.3s;
+}
 
+textarea {
+	resize:vertical;
+}
+pre {
+	display: block;
+	font-family: monospace;
+	white-space: pre;
+	margin: 1em 0;
+	background-color:#FFFFFF;
+	border:0px;
+	font-size:10px;
+	color: #737373;
+	padding: 0px;
+}
+
+/*loadding 样式*/
+.spin {
+	background-image: url('../../img/fading-loader.svg');
+	background-size: 50px 50px;
+	position: absolute;
+	left: 48%;
+	top: 300px;
+	z-index: 999;
+	text-align: center;
+	height: 50px;
+	width: 50px;
+}
+
+/*tooltip popover 禁止自动换行 用<br>换行*/
+.popover {
+	max-width: none;
+	white-space:nowrap;
+}
+.tooltip-inner {
+	max-width: none;
+	white-space:nowrap;
+}
+
+/*select组件重写*/
+.divselect{
+	cursor: pointer;
+	width:226px;
+}
+.divselect span{
+	line-height:36px;
+	font-size:14px;
+	color: #FFFFFF;
+	margin-left: 16px;
+}
+.divselect ul{
+	width:226px;
+	margin:0;
+	padding:0;
+	border:1px solid #eeeeee;
+}
+.bk-select-option{
+	cursor: pointer;
+	list-style:none;
+	display:block;
+	background:#FFFFFF;
+	font-size:14px;
+	padding:1px 16px 2px;
+	line-height:32px;
+	border-top:solid 1px #eeeeee;
+	width:100%;
+	position:relative;
+	white-space:nowrap;
+}
+.bk-select-option a{
+	text-decoration:none;
+}
+
+/*  无搜索结果提示信息样式 */
+#noData{
+	color:#ddd;
+	text-align:center
+}

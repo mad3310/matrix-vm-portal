@@ -19,6 +19,8 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.IDbUserDao;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
@@ -44,6 +46,9 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Value("${default.db.ro.name}")
 	private String DEFAULT_DB_RO_NAME;
+	
+	@Autowired(required=false)
+	private SessionServiceImpl sessionService;
 	
 	public DbUserServiceImpl() {
 		super(DbUserModel.class);
@@ -237,5 +242,19 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		params.put("name4Ip",DEFAULT_DB_RO_NAME);
 		List<DbUserModel> dbUsers = this.selectByMap(params);
 		return dbUsers;
+	}
+	
+	@Override
+	public void createDefalutAdmin(Long dbId){
+		DbUserModel dbUserModel = new DbUserModel();
+		dbUserModel.setDbId(dbId);
+		dbUserModel.setUsername("admin");
+		dbUserModel.setPassword(PasswordRandom.genStr());
+		dbUserModel.setAcceptIp("%");
+     	dbUserModel.setType(DbUserRoleStatus.MANAGER.getValue());
+		dbUserModel.setMaxConcurrency(50);
+		dbUserModel.setReadWriterRate("2:1");
+		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
+		this.insert(dbUserModel);
 	}
 }

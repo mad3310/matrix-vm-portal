@@ -10,6 +10,12 @@ define(function(require){
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
 
+    if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
+        $("#monthPurchaseBotton").click(function(){
+            $("#monthPurchaseForm").submit();
+        })
+    }
+
     /*按钮组件封装 --begin*/
     $(".bk-button-primary").click(function () {
         if(!$(this).hasClass("disabled")){
@@ -21,18 +27,6 @@ define(function(require){
             }
         }
     })
-  /*  $("#monthPurchaseBotton").click(function () {
-        if(!$(this).hasClass("disabled")){
-            var dbName = $("[name = 'dbName']").val();
-            var hclusterId = $("[name = 'hclusterId']").val();
-            var engineType = $("[name = 'engineType']").val();
-            var linkType = $("[name = 'linkType']").val();
-            var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId};
-            $(this).addClass("disabled");
-            CreateDb(formData);
-        }
-    })*/
-    
     /*按钮组件封装 --end*/
 
     /*表单验证 --begin*/
@@ -70,7 +64,8 @@ define(function(require){
         var hclusterId = $("[name = 'hclusterId']").val();
         var engineType = $("[name = 'engineType']").val();
         var linkType = $("[name = 'linkType']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId};
+        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin};
         CreateDb(formData);
     });
     /*表单验证 --end*/
