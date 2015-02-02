@@ -16,7 +16,6 @@ define(function(require){
     /*
      * 初始化数据
      */
-    
 	asyncData();
 	
 	/*设置备份时间*/

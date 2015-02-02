@@ -1463,3 +1463,8 @@ pre {
 	text-decoration:none;
 }
 
+/*  无搜索结果提示信息样式 */
+#noData{
+	color:#ddd;
+	text-align:center
+}
