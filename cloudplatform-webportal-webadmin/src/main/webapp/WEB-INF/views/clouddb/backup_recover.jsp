@@ -19,8 +19,16 @@
 				</div>
 				<script type="text/javascript">
 				$(function () {
-	                $('#startTime').datetimepicker();
-	                $('#endTime').datetimepicker();
+	                $('#startTime').datetimepicker({
+	            		viewMode: 'months',
+	            		format: 'L',
+	            		locale: 'zh-cn'
+	            	});
+	                $('#endTime').datetimepicker({
+	            		viewMode: 'months',
+	            		format: 'L',
+	            		locale: 'zh-cn'
+	            	});
 	            });
 				</script>
 				<div class="form-group">
