@@ -2,7 +2,7 @@
  * Created by yaokuo on 2014/12/12.
  */
 define(function(require,exports,module){
-    var $ = require('jquery');
+    var  $ = require('jquery');
     require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;

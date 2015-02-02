@@ -3,10 +3,12 @@
  * backup page js
  */
 define(function(require){
-    var common = require('../common');
+	var common = require('../common');
 	var cn = new common();
 
-	var moment = require('moment');
+	require('jquery')
+	require('moment');
+	require('bootstrap');
 	require('datetimepicker');
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
