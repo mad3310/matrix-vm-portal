@@ -1,6 +1,8 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.IBuildDao;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.model.BuildModel;
@@ -75,5 +78,21 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 		
 	}
 
+	@Override
+	public int getStepByDbId(Long dbId) {
+		if(dbId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("dbId", dbId);
+		map.put("status", BuildStatus.BUILDING.getValue());
+		List<BuildModel> builds = this.selectByMap(map);
+		if(builds.isEmpty()) {
+			//判断是否出错，
+			map.put("status", BuildStatus.FAIL.getValue());
+			List<BuildModel> builds2 = this.selectByMap(map);
+			return builds2.isEmpty()?0:-1; //成功或失败
+		}
+		return builds.get(0).getStep(); //返回当前进度
+	}
 
 }
