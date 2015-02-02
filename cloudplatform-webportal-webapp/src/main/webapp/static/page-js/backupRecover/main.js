@@ -4,11 +4,10 @@
  */
 define(function(require){
     var common = require('../common');
-	var $  = require("jquery");
-	require('moment');
-	require('bootstrap');
-	require('datetimepicker');
 	var cn = new common();
+
+	var moment = require('moment');
+	require('datetimepicker');
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 

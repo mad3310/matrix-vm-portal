@@ -20,6 +20,7 @@
 <!-- bootstrap & fontawesome -->
 <link rel="stylesheet" href="${ctx}/static/ace/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${ctx}/static/ace/css/font-awesome.min.css" />
+<link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrap-datetimepicker.min.css" />
 
 <link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
 
