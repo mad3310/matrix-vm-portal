@@ -266,7 +266,8 @@ define(function(require,exports,module){
         },
         GetData : function(url,handler){ //异步获取数据,将数据交给handler处理
 			if($('body').find('.sidebar').length==0){	//layout界面不添加loading
-				$('body').append("<div class=\"spin\"></div>");
+			   $('body').append("<div class=\"spin\"></div>");
+			   $('body').append("<div class=\"far-spin\"></div>");
 			}
 			$.ajax({
                 url:url,
@@ -276,6 +277,7 @@ define(function(require,exports,module){
                 success:function(data){
 					/*添加当handler为空时的异常处理*/
 					$('body').find('.spin').remove();
+					$('body').find('.far-spin').remove();
                     handler(data);
                 }
             });

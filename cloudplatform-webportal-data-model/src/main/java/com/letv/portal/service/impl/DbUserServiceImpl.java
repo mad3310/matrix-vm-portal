@@ -257,4 +257,10 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		dbUserModel.setCreateUser(sessionService.getSession().getUserId());
 		this.insert(dbUserModel);
 	}
+
+	@Override
+	public void updateDescnByUsername(DbUserModel dbUserModel) {
+		this.dbUserDao.updateDescnByUsername(dbUserModel);
+		
+	}
 }

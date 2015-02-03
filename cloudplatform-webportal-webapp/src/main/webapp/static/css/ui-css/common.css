@@ -159,7 +159,7 @@ body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragin
 	position: relative;
     display: inline-block;
     float: left;
-    height:30px; 
+    height:30px;
 }
 .date-step-span {
     display: inline-block;
@@ -1415,9 +1415,23 @@ pre {
 	left: 48%;
 	top: 300px;
 	z-index: 999;
-	text-align: center;
+	text-align: center;	
 	height: 50px;
 	width: 50px;
+}
+
+.far-spin {
+  	   width:100%; 
+	   height:100%; 
+	   overflow:hidden; 
+	   position:absolute;
+	   top:0px;
+	   left:0px; 
+	   z-index:998;
+	   background:#DDD;
+	   filter:alpha(opacity=0); 
+       -moz-opacity:0; 
+       opacity:0; 
 }
 
 /*tooltip popover 禁止自动换行 用<br>换行*/

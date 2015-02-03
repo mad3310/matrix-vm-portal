@@ -13,6 +13,7 @@ import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
+import com.letv.portal.service.IMonitorService;
 
 @Component
 public class JobFactory implements Job {
@@ -23,6 +24,7 @@ public class JobFactory implements Job {
 	private IMclusterProxy mclusterProxy = (IMclusterProxy) SpringContextUtil.getBean("mclusterProxy");
 	private IContainerProxy containerProxy = (IContainerProxy) SpringContextUtil.getBean("containerProxy");
 	private IMonitorProxy monitorProxy = (IMonitorProxy) SpringContextUtil.getBean("monitorProxy");
+	private IMonitorService monitorService = (IMonitorService) SpringContextUtil.getBean("monitorService");
 	private IBackupProxy backupProxy = (IBackupProxy) SpringContextUtil.getBean("backupProxy");
 	
 	@Override
@@ -52,11 +54,31 @@ public class JobFactory implements Job {
         	logger.info("collectMclusterServiceData");
         	this.monitorProxy.collectMclusterServiceData();
         }
+        if("deleteMonitorMonthAgo".equals(method)) {
+        	logger.info("deleteMonitorMonthAgo");
+        	this.monitorService.deleteOutData();
+        }
         
         //定时任务备份
-        if("wholeBackup4Db".equals(method)) {
+       /* if("wholeBackup4Db".equals(method)) {
         	logger.info("wholeBackup4Db");
         	this.backupProxy.backupTask();
+        }*/
+        if("wholeBackup4Db1".equals(method)) {
+        	logger.info("wholeBackup4Db1");
+        	this.backupProxy.backupTask(1);
+        }
+        if("wholeBackup4Db2".equals(method)) {
+        	logger.info("wholeBackup4Db2");
+        	this.backupProxy.backupTask(2);
+        }
+        if("wholeBackup4Db3".equals(method)) {
+        	logger.info("wholeBackup4Db3");
+        	this.backupProxy.backupTask(3);
+        }
+        if("wholeBackup4Db4".equals(method)) {
+        	logger.info("wholeBackup4Db4");
+        	this.backupProxy.backupTask(4);
         }
         
         //定时任务备份

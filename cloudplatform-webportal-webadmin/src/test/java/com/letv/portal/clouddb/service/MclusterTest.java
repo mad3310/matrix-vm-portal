@@ -1,5 +1,7 @@
 package com.letv.portal.clouddb.service;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,29 @@ public class MclusterTest extends AbstractTest{
     public void testDelete() {
     	MclusterModel mcluster = this.mclusterService.selectById(28L);
     	this.mclusterService.delete(mcluster);
+    }
+    @Test
+    public void testSelectValidMclusters() {
+    	List<MclusterModel> selectValidMclusters = this.mclusterService.selectValidMclusters(0);
+    	for (MclusterModel mclusterModel : selectValidMclusters) {
+			System.out.println(mclusterModel.getMclusterName());
+		}
+    	List<MclusterModel> selectValidMclusters1 = this.mclusterService.selectValidMclusters(1);
+    	for (MclusterModel mclusterModel : selectValidMclusters1) {
+    		System.out.println(mclusterModel.getMclusterName());
+    	}
+    	List<MclusterModel> selectValidMclusters2 = this.mclusterService.selectValidMclusters(2);
+    	for (MclusterModel mclusterModel : selectValidMclusters2) {
+    		System.out.println(mclusterModel.getMclusterName());
+    	}
+    	List<MclusterModel> selectValidMclusters3 = this.mclusterService.selectValidMclusters(3);
+    	for (MclusterModel mclusterModel : selectValidMclusters3) {
+    		System.out.println(mclusterModel.getMclusterName());
+    	}
+    	List<MclusterModel> selectValidMclusters4 = this.mclusterService.selectValidMclusters(4);
+    	for (MclusterModel mclusterModel : selectValidMclusters4) {
+    		System.out.println(mclusterModel.getMclusterName());
+    	}
     }
     
 }
