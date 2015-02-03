@@ -12,6 +12,8 @@ define(function(require){
     /*初始化工具提示*/
     cn.Tooltip();
     cn.Popover();
+    /*modal提示框居中*/
+    cn.center();
 
     $(".glyphicon-pencil").click(function(){
         cn.EditBoxInit(this);
@@ -122,7 +124,6 @@ define(function(require){
                 $iframe.attr("src", $iframe.attr("src"));
             });
         }else{
-        	cn.center();
             var title = "警告";
             var text = "您创建的数据库账户没有添加IP名单,请添加后创建!";
             cn.DialogBoxInit(title,text,function(){

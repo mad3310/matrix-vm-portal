@@ -6,7 +6,7 @@ define(function(require){
 	var common = require('../common');
 	var cn = new common();
 
-	require('jquery')
+	require('jquery');
 	require('moment');
 	require('bootstrap');
 	require('datetimepicker');

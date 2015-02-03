@@ -70,14 +70,12 @@ define(function(require,exports,module){
 
             /*初始化查看用户权限按钮*/
             $(".dbuser-list-ip-privilege").click(function () {
-            	cn.center();
                 var lineData = getLineData(this);
                 cn.GetData("/dbIp/"+$("#dbId").val()+"/"+lineData.username,dbUser.GetDbUserPrivilege);
                 $("#showDbuserIpPrivilegeTitle").html(lineData.username);
             })
             /*初始化删除按钮*/
             $(".dbuser-list-delete").click(function () {    
-            	cn.center();
                 var lineData = getLineData(this);
                 var title = "确认";
                 var text = "您确定要删除("+lineData.username+")账户";
@@ -86,7 +84,6 @@ define(function(require,exports,module){
             })
             /*初始化重置密码*/
             $(".dbuser-list-reset-password").click(function () {
-            	cn.center();
                 var lineData = getLineData(this);
                 $("#reset-password-box-title").html("重置账户("+lineData.username+")密码");
                 $("#reset-password-box").modal({
