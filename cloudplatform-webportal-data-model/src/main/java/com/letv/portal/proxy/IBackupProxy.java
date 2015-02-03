@@ -18,6 +18,13 @@ public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 	 */
 	public void backupTask();
 	
+	/**Methods Name: backupTask <br>
+	 * Description: 备份任务：0:all  1:0点备份 2:2点备份 3:4点备份 4:6点备份<br>
+	 * @author name: liuhao1
+	 * @param stage
+	 */
+	public void backupTask(int stage);
+	
 	/**Methods Name: wholeBackup4Db <br>
 	 * Description: 数据库全量备份 <br>
 	 * @author name: liuhao1

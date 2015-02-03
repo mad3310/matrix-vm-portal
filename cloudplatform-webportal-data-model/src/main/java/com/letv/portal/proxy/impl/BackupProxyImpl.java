@@ -57,10 +57,12 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	
 	@Override
 	public void backupTask() {
+		this.backupTask(0); //all
+	}
+	@Override
+	public void backupTask(int stage) {
 		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
-		
-		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters();
-		
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(stage);
 		for (MclusterModel mclusterModel : mclusters) {
 			//进行备份。
 			this.wholeBackup4Db(mclusterModel);

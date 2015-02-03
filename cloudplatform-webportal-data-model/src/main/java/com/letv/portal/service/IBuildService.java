@@ -27,4 +27,6 @@ public interface IBuildService extends IBaseService<BuildModel> {
 	public List<BuildModel> selectByDbId(Long dbId);
 
 	public void updateByStep(BuildModel nextBuild);
+	
+	public int getStepByDbId(Long dbId);
 }

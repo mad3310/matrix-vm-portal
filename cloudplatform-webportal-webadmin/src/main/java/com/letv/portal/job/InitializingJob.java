@@ -141,15 +141,47 @@ public class InitializingJob {
 			jobs.add(collectMclusterServiceData);
 			
 			//数据库全量备份，每天凌晨4点
-			ScheduleJobModel backupDbData = new ScheduleJobModel();
+			/*ScheduleJobModel backupDbData = new ScheduleJobModel();
 			backupDbData.setJobName("wholeBackup4Db");
 			backupDbData.setJobMethod("wholeBackup4Db");
 			backupDbData.setJobGroup("webportal");
 			backupDbData.setJobStatus("1");
 			backupDbData.setCronExpression("0 0 4 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
 			backupDbData.setDescn("db数据库全量备份");
-			jobs.add(backupDbData);
-			//数据库全量备份检查 ，每隔一小时
+			jobs.add(backupDbData);*/
+			ScheduleJobModel backupDbData1 = new ScheduleJobModel();
+			backupDbData1.setJobName("wholeBackup4Db1");
+			backupDbData1.setJobMethod("wholeBackup4Db1");
+			backupDbData1.setJobGroup("webportal");
+			backupDbData1.setJobStatus("1");
+			backupDbData1.setCronExpression("0 0 0 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData1.setDescn("db数据库全量备份1");
+			jobs.add(backupDbData1);
+			ScheduleJobModel backupDbData2 = new ScheduleJobModel();
+			backupDbData2.setJobName("wholeBackup4Db2");
+			backupDbData2.setJobMethod("wholeBackup4Db2");
+			backupDbData2.setJobGroup("webportal");
+			backupDbData2.setJobStatus("1");
+			backupDbData2.setCronExpression("0 0 2 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData2.setDescn("db数据库全量备份2");
+			jobs.add(backupDbData2);
+			ScheduleJobModel backupDbData3 = new ScheduleJobModel();
+			backupDbData3.setJobName("wholeBackup4Db3");
+			backupDbData3.setJobMethod("wholeBackup4Db3");
+			backupDbData3.setJobGroup("webportal");
+			backupDbData3.setJobStatus("1");
+			backupDbData3.setCronExpression("0 0 4 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData3.setDescn("db数据库全量备份3");
+			jobs.add(backupDbData3);
+			ScheduleJobModel backupDbData4 = new ScheduleJobModel();
+			backupDbData4.setJobName("wholeBackup4Db4");
+			backupDbData4.setJobMethod("wholeBackup4Db4");
+			backupDbData4.setJobGroup("webportal");
+			backupDbData4.setJobStatus("1");
+			backupDbData4.setCronExpression("0 0 6 * * ?"); //暂时设置每两小时执行一次备份。测试完成后，修改为凌晨4点
+			backupDbData4.setDescn("db数据库全量备份4");
+			jobs.add(backupDbData4);
+			//数据库全量备份检查 ，每隔半小时
 			ScheduleJobModel checkBackupStatus = new ScheduleJobModel();
 			checkBackupStatus.setJobName("checkBackupStatus");
 			checkBackupStatus.setJobMethod("checkBackupStatus");

@@ -94,4 +94,13 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		return this.mclusterDao.selectValidMclusters();
 	}
 
+	@Override
+	public List<MclusterModel> selectValidMclusters(int stage) {
+		if(stage == 0)
+			return this.mclusterDao.selectValidMclusters();
+		Page page = new Page(stage,25);
+		if(stage == 4)
+			page.setRecordsPerPage(1000);
+		return this.mclusterDao.selectValidMclustersByPage(page);
+	}
 }

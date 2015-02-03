@@ -54,9 +54,25 @@ public class JobFactory implements Job {
         }
         
         //定时任务备份
-        if("wholeBackup4Db".equals(method)) {
+       /* if("wholeBackup4Db".equals(method)) {
         	logger.info("wholeBackup4Db");
         	this.backupProxy.backupTask();
+        }*/
+        if("wholeBackup4Db1".equals(method)) {
+        	logger.info("wholeBackup4Db1");
+        	this.backupProxy.backupTask(1);
+        }
+        if("wholeBackup4Db2".equals(method)) {
+        	logger.info("wholeBackup4Db2");
+        	this.backupProxy.backupTask(2);
+        }
+        if("wholeBackup4Db3".equals(method)) {
+        	logger.info("wholeBackup4Db3");
+        	this.backupProxy.backupTask(3);
+        }
+        if("wholeBackup4Db4".equals(method)) {
+        	logger.info("wholeBackup4Db4");
+        	this.backupProxy.backupTask(4);
         }
         
         //定时任务备份

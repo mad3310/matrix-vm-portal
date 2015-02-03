@@ -31,6 +31,9 @@
 			<if test="dbId != null">
 				and B.DB_ID=#{dbId}
 			</if>
+			<if test="status != null">
+				and B.STATUS=#{status}
+			</if>
 			
 		</trim>
 	</sql>
