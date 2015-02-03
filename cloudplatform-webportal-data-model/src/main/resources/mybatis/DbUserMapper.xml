@@ -272,4 +272,13 @@
 		</if>
 		where m.ID = #{id}
 	</update>
+	<update id="updateDescnByUsername" parameterType="DbUser">
+	 update WEBPORTAL_DB_USER
+		 <set>
+		 	<if test="descn != null">
+				DESCN=#{descn}
+			</if>
+	 	</set>
+		where USERNAME = #{username} and DB_ID = #{dbId}
+	</update>
 </mapper>   

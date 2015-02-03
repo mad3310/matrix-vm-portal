@@ -124,5 +124,12 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	public List<String> selectIpsFromUser(Long dbId);
 	
 	public void createDefalutAdmin(Long dbId);
+
+	/**Methods Name: updateDescnByUsername <br>
+	 * Description: 修改描述<br>
+	 * @author name: liuhao1
+	 * @param dbUserModel
+	 */
+	public void updateDescnByUsername(DbUserModel dbUserModel);
 	
 }

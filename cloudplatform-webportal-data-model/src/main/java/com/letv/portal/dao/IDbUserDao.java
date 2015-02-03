@@ -60,4 +60,6 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	 * @return
 	 */
 	public List<DbUserModel> selectGroupByName(Map<String, Object> params);
+
+	public void updateDescnByUsername(DbUserModel dbUserModel);
 }
