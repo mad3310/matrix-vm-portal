@@ -11,6 +11,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -202,4 +203,24 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.selectDbConnect(containers.get(0).getIpAddr());
 	}
 
+
+	@Override
+	@Async
+	public void deleteOutData() {
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 1);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);    //得到前一个月
+		long date = cal.getTimeInMillis();
+		Date monthAgo = new Date(date);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		for (MonitorIndexModel monitorIndexModel : indexs) {
+			map.put("dbName", monitorIndexModel.getDetailTable());
+			map.put("monitorDate", monthAgo);
+			this.monitorDao.deleteOutDataByIndex(map);
+		}
+	}
 }

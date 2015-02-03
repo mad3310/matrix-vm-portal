@@ -13,6 +13,7 @@ import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
+import com.letv.portal.service.IMonitorService;
 
 @Component
 public class JobFactory implements Job {
@@ -23,6 +24,7 @@ public class JobFactory implements Job {
 	private IMclusterProxy mclusterProxy = (IMclusterProxy) SpringContextUtil.getBean("mclusterProxy");
 	private IContainerProxy containerProxy = (IContainerProxy) SpringContextUtil.getBean("containerProxy");
 	private IMonitorProxy monitorProxy = (IMonitorProxy) SpringContextUtil.getBean("monitorProxy");
+	private IMonitorService monitorService = (IMonitorService) SpringContextUtil.getBean("monitorService");
 	private IBackupProxy backupProxy = (IBackupProxy) SpringContextUtil.getBean("backupProxy");
 	
 	@Override
@@ -51,6 +53,10 @@ public class JobFactory implements Job {
         if("collectMclusterServiceData".equals(method)) {
         	logger.info("collectMclusterServiceData");
         	this.monitorProxy.collectMclusterServiceData();
+        }
+        if("deleteMonitorMonthAgo".equals(method)) {
+        	logger.info("deleteMonitorMonthAgo");
+        	this.monitorService.deleteOutData();
         }
         
         //定时任务备份

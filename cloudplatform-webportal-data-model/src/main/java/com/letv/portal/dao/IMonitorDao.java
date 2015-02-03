@@ -19,4 +19,5 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public List<MonitorDetailModel> selectDateTime(Map map);
 	public Float selectDbStorage(String ipAddr);
 	public List<Map<String,Object>> selectDbConnect(String ipAddr);
+	public void deleteOutDataByIndex(Map<String,Object> map);
 }

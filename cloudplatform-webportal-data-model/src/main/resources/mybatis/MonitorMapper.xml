@@ -75,6 +75,10 @@
         <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
 	</select>
 	
+	<update id="deleteOutDataByIndex" parameterType="java.util.Map">
+		delete from ${dbName} where MONITOR_DATE &lt;= #{monitorDate}
+	</update>
+	
 	<select id="selectDbStorage" resultType="java.lang.Float" parameterType="java.lang.String">
 		select detail_value,monitor_date from WEBPORTAL_MONITOR_NODE_DATADIRSIZE 
 		where ip= #{ipAddr} and detail_name = '/srv/mcluster' order by monitor_date desc limit 0,1 
