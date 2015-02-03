@@ -1,5 +1,6 @@
 /**
  * Created by yaokuo on 2014/12/12.
+ * dblist page
  */
 define(function(require){
     var common = require('../common');
@@ -74,12 +75,14 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
-
+	
+	
 	//加载列表数据
 	function asyncData(page) {
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
+		//var url = "/static/page-js/dbList/jsondata.json";
 		cn.GetData(url,dbListHandler.DbListHandler);
 	}
 });

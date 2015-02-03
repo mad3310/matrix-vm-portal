@@ -282,6 +282,18 @@ define(function(require,exports,module){
                 }
             });
         },
+        GetLocalData : function(url,handler){ //异步获取数据,将数据交给handler处理
+			$.ajax({
+                url:url,
+				cache:false,
+                type:"get",
+                dataType:'json',
+                success:function(data){
+					/*添加当handler为空时的异常处理*/
+                    handler(data);
+                }
+            });
+        },
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
             $.ajax({
                 url:url,
@@ -312,7 +324,7 @@ define(function(require,exports,module){
         },
 		EditBoxInit: function(obj){
 			var offset = $(obj).offset();
-			var left = offset.left-35;
+			var left = offset.left;
 			var top = offset.top+$(obj).height()+5;
 
 			$(".edit-text-box").css('left',left+"px");

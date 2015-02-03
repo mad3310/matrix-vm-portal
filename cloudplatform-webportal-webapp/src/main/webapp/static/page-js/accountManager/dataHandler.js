@@ -1,5 +1,6 @@
 /**
  * Created by yaokuo on 2014/12/14.
+ * accountManager page
  */
 define(function(require,exports,module){
     var $ = require('jquery');
@@ -31,7 +32,9 @@ define(function(require,exports,module){
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)+"</span></td>");
+                var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
+                		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
+                		+ "</span></td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
                 + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
@@ -41,6 +44,18 @@ define(function(require,exports,module){
                 tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                 tr.appendTo($tby);
             }
+            
+            /*初始化编辑按钮*/
+            $(".glyphicon-pencil").click(function(){
+                cn.EditBoxInit(this);
+            });
+            $("#tby tr").hover(function(){
+            	$(this).find(".glyphicon-pencil").show();
+            },function(){
+            	$(this).find(".glyphicon-pencil").hide();
+            });
+            /* 编辑按钮初始化完毕*/
+
             /*获取行信息*/
             function getLineData(obj){
                 var line = {
@@ -335,3 +350,4 @@ define(function(require,exports,module){
     }
     /*双选框初始化 --end*/
 });
+

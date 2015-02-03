@@ -1,5 +1,6 @@
 /**
  * Created by yaokuo on 2014/12/12.
+ * accountManager page
  */
 define(function(require){
     var common = require('../common');
@@ -13,9 +14,7 @@ define(function(require){
     cn.Tooltip();
     cn.Popover();
 
-    $(".glyphicon-pencil").click(function(){
-        cn.EditBoxInit(this);
-    })
+   
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
 
@@ -233,7 +232,6 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-
         var data = {
             "username":$("#reset-password-username").val(),
             "password":$("[name = 'reset-password']").val(),
@@ -250,6 +248,26 @@ define(function(require){
             $('#reset-password-form').bootstrapValidator('revalidateField', 'reset-password-repeat');
         }
     });
+    /*修改描述*/
+    $("#editBoxSubmit").click(function(e){
+    	//e.preventDefault();
+    	
+    	var url = "/dbUser/descn/" + username;
+    	console.log(url);
+    	var data = {
+    			username: 
+    			descn : $("#descn").val(),
+    			dbId : $("#dbId").val()
+    	}
+    	//var descnData = dbUser.GetDescnData
+    	console.log(data);
+        cn.PostData(url, data, function () {
+             /*刷新本身ifame*/
+        	console.log("aaaa");
+             var $iframe = $("body", parent.document).find("iframe");
+             $iframe.attr("src", $iframe.attr("src"));
+         });
+    })
     
     /*加载数据*/
     asyncData();

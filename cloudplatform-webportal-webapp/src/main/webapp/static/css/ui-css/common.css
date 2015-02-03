@@ -1483,3 +1483,56 @@ pre {
 	color:#ddd;
 	text-align:center
 }
+
+/* dblist页面进度条CSS */
+#Grise {
+  background-color : #ddd;
+  height : 10px;
+  width : 120px;
+  padding-top : 0px;
+  float : left;
+  position : relative;
+}
+#Grise #load {
+  color : #222;
+  font-family : calibri;
+  text-align : center;
+  position : relative;
+  top : -15px;
+  font-size : 8px;
+}
+
+
+
+/****DEBUT PROGRESS****/
+#progress {
+  height : 10px;
+  width : 120px;
+  position : absolute;
+  top : 0;
+  left : 0;
+  box-shadow : 0 0 10px #111111 inset;
+}
+
+#charge {
+  height : 10px;
+  width : 120px;
+  position : absolute;
+  top : 0px;
+  left : 0px;
+  background-color : #C9F76F;
+  margin : 0px;
+  box-shadow : 0px 0px 5px #222 inset;
+}
+
+@-webkit-keyframes charge {
+  0% {width : 0px;}
+  100% {width : 100%;}
+}
+
+@keyframes charge {
+  0% {width : 0px;}
+  100% {width : 100%;}
+}
+
+
