@@ -42,20 +42,18 @@ define(function(require,exports,module){
                 var td3 = '';
                 if(array[i].status == 6){
                 	var td3 = $("<td>"
-                            + "<div id=\"Grise\">"
-                            + "<div id=\"progress\">"
-                            + "<div id=\"charge\"></div>"
+                            + "<div id= \"Grise"+ array[i].id + "\" class=\"Grise hide\">"
+                            + "<div class=\"progress\">"
+                            + "<div class=\"charge\"></div>"
                             + "</div>"
-                            + "<div id=\"load\">"
+                            + "<div class=\"load\">"
                             + "<p></p>"
                             + "</div>"
                             + "</div>"
-                            +"</td>");
-                	var dbId = array[i].id
-                	var url = "/build/db/" + dbId;
-                	var dblistHandler = new DataHandler();
-                	setInterval(cn.GetLocalData(url,dblistHandler.progress),100);
-                	//setInterval(progress(url),1000);
+                            + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
+                            + "</td>");
+                			/*var url = "/build/db/" + array[i].id;
+                	        cn.GetLocalData(url,handlerData);*/
                 }else{
                 	var td3 = $("<td>"
                             + cn.TranslateStatus(array[i].status)
@@ -94,64 +92,7 @@ define(function(require,exports,module){
             });
         },
 	    progress : function(data){
-	    	var data = data.data;
-	        var unitLen = 100 / 16;
-	    	if(data == 1){
-	         	$("#charge").css({"width": unitLen + 'px'});
-	         	$("#load p").html("环境准备");
-	         }else if(data == 2){
-	         	$("#charge").css({"width": (unitLen * 2) + 'px'});
-	         	$("#load p").html("环境准备");
-	         }else if(data == 3){
-	         	$("#charge").css({"width": (unitLen * 3) + 'px'});
-	         	$("#load p").html("环境准备");
-	         }else if(data == 4){
-	         	$("#charge").css({"width": (unitLen * 4) + 'px'});
-	         	$("#load p").html("环境准备");
-	         }else if(data == 5){
-	         	$("#charge").css({"width": (unitLen * 5) + 'px'});
-	         	$("#load p").html("软件安装");
-	         }else if(data == 6){
-	         	$("#charge").css({"width": (unitLen * 6) + 'px'});
-	         	$("#load p").html("软件安装");
-	         }else if(data == 7){
-	         	$("#charge").css({"width": (unitLen * 7) + 'px'});
-	         	$("#load p").html("软件安装");
-	         }else if(data == 8){
-	         	$("#charge").css({"width": (unitLen * 8) + 'px'});
-	         	$("#load p").html("软件安装");
-	         }else if(data == 9){
-	         	$("#charge").css({"width": (unitLen * 9) + 'px'});
-	         	$("#load p").html("服务初始化");
-	         }else if(data == 10){
-	         	$("#charge").css({"width": (unitLen * 10) + 'px'});
-	         	$("#load p").html("服务初始化");
-	         }else if(data == 11){
-	         	$("#charge").css({"width": (unitLen * 11) + 'px'});
-	         	$("#load p").html("服务初始化");
-	         }else if(data == 12){
-	         	$("#charge").css({"width": (unitLen * 12) + 'px'});
-	         	$("#load p").html("服务初始化");
-	         }else if(data == 13){
-	         	$("#charge").css({"width": (unitLen * 13) + 'px'});
-	         	$("#load p").html("数据初始化");
-	         }else if(data == 14){
-	         	$("#charge").css({"width": (unitLen * 14) + 'px'});
-	         	$("#load p").html("数据初始化");
-	         }else if(data == 15){
-	         	$("#charge").css({"width": (unitLen * 15) + 'px'});
-	         	$("#load p").html("数据初始化");
-	         }else if(data == 16){
-	         	$("#charge").css({"width": (unitLen * 15) + 'px'});
-	         	$("#load p").html("数据初始化");
-	         }else if(data == 0){
-	         	$("#charge").css({"width": "100%"});
-	         	$("#load p").html("创建完成");
-	         }else{
-	         	$("#charge").css({"width": "100%"});
-	         	$("#load p").html("创建失败");
-	         }
+	    	
 	    }
     }
-
 });

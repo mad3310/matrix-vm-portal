@@ -1485,7 +1485,7 @@ pre {
 }
 
 /* dblist页面进度条CSS */
-#Grise {
+.Grise {
   background-color : #ddd;
   height : 10px;
   width : 120px;
@@ -1493,7 +1493,7 @@ pre {
   float : left;
   position : relative;
 }
-#Grise #load {
+.Grise .load {
   color : #222;
   font-family : calibri;
   text-align : center;
@@ -1505,7 +1505,7 @@ pre {
 
 
 /****DEBUT PROGRESS****/
-#progress {
+.progress {
   height : 10px;
   width : 120px;
   position : absolute;
@@ -1514,7 +1514,7 @@ pre {
   box-shadow : 0 0 10px #111111 inset;
 }
 
-#charge {
+.charge {
   height : 10px;
   width : 120px;
   position : absolute;
