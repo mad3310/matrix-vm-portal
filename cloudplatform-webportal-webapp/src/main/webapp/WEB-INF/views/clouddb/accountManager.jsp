@@ -526,9 +526,9 @@
 
 	<!--内容编辑框-->
 	<div class="edit-text-box hide">
-		<form role="form">
+		<form id="modifyDescnForm" role="form">
 			<p>
-				<input type="text" class="form-control input-radius-2">
+				<input id="descn" type="text" class="form-control input-radius-2">
 			</p>
 			<p style="color:#999">输入范围：最多256个字</p>
 		<button id="editBoxSubmit" type="submit" class="btn btn-primary" href="#">提交</button>

@@ -1,5 +1,6 @@
 /**
  * Created by yaokuo on 2014/12/12.
+ * accountManager page
  */
 define(function(require){
     var common = require('../common');
@@ -12,10 +13,10 @@ define(function(require){
     /*初始化工具提示*/
     cn.Tooltip();
     cn.Popover();
+    /*modal提示框居中*/
+    cn.center();
 
-    $(".glyphicon-pencil").click(function(){
-        cn.EditBoxInit(this);
-    })
+   
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
 
@@ -122,7 +123,6 @@ define(function(require){
                 $iframe.attr("src", $iframe.attr("src"));
             });
         }else{
-        	cn.center();
             var title = "警告";
             var text = "您创建的数据库账户没有添加IP名单,请添加后创建!";
             cn.DialogBoxInit(title,text,function(){
@@ -233,7 +233,6 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-
         var data = {
             "username":$("#reset-password-username").val(),
             "password":$("[name = 'reset-password']").val(),
@@ -250,6 +249,26 @@ define(function(require){
             $('#reset-password-form').bootstrapValidator('revalidateField', 'reset-password-repeat');
         }
     });
+    /*修改描述*/
+    $("#editBoxSubmit").click(function(e){
+    	//e.preventDefault();
+    	
+    	var url = "/dbUser/descn/" + username;
+    	console.log(url);
+    	var data = {
+    			username: 
+    			descn : $("#descn").val(),
+    			dbId : $("#dbId").val()
+    	}
+    	//var descnData = dbUser.GetDescnData
+    	console.log(data);
+        cn.PostData(url, data, function () {
+             /*刷新本身ifame*/
+        	console.log("aaaa");
+             var $iframe = $("body", parent.document).find("iframe");
+             $iframe.attr("src", $iframe.attr("src"));
+         });
+    })
     
     /*加载数据*/
     asyncData();
