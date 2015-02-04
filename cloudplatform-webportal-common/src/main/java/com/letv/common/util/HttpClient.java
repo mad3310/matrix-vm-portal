@@ -64,6 +64,20 @@ public class HttpClient {
 		
 		return body;
 	}
+	public static String post(String url, Map<String, String> params,int connectionTimeout,int soTimeout,String username,String password) {
+		
+		DefaultHttpClient httpclient = getHttpclient(connectionTimeout,soTimeout,username,password);
+		String body = null;
+		
+		logger.info("create httppost:" + url);
+		HttpPost post = postForm(url, params);
+		
+		body = invoke(httpclient, post);
+		
+		httpclient.getConnectionManager().shutdown();
+		
+		return body;
+	}
 	
 	
 	public static String postObject(String url, Object obj) {

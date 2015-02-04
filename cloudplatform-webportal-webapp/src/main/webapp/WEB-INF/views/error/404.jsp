@@ -11,7 +11,7 @@
 	<link type="text/css" rel="stylesheet" href="../../../static/css/font-awesome.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="../../../static/css/ui-css/common.css"/>
-	<title>500错误</title>
+	<title>404错误</title>
 </head>
 <body>
 <!-- top bar begin -->
@@ -44,8 +44,8 @@
 <!-- center body -->
 <div class="container">
 	<div class="col-md-12 text-center">
-		<div><img src="../../../static/img/error500.png"></div>
-		<p class="text-muted"><b>服务器调皮，开小差出游。请稍后重试</b></p>
+		<div><img src="../../../static/img/error.png"></div>
+		<p class="text-muted"><b>404警告！您探索了一个未知领域！</b></p>
 		<p class="text-muted"><a><span class="text-muted">返回乐视云首页</span></a></p>
 	</div>
 </div>

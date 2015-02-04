@@ -100,7 +100,7 @@
 						<th>实例类型</th>
 						<th>数据库类型</th>
 						<th>可用区类型
-							<a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域" data-content="dfadfadfads">
+							<a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域">
 								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 							</a>
 						</th>
