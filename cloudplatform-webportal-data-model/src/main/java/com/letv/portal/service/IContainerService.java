@@ -75,5 +75,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 * @return
 	 */
 	public List<ContainerModel> selectVaildVipContainers();
+
+	public ContainerModel selectValidVipContianer(Long mclusterId,String type);
 	
 }

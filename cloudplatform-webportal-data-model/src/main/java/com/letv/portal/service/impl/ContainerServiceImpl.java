@@ -103,7 +103,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		return containers;
 	}
 	
-	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
+	@Override
+	public ContainerModel selectValidVipContianer(Long mclusterId,String type){
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("mclusterId", mclusterId);
 		map.put("type", type);
@@ -113,4 +114,5 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		}
 		return containers.get(0);
 	}
+
 }

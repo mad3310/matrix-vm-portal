@@ -129,7 +129,7 @@ public class PythonServiceImpl implements IPythonService{
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("cluster_flag", "old");
 		
-		String result = HttpClient.post(url.toString(), map,username,password);
+		String result = HttpClient.post(url.toString(), map,1000,2000,username,password);
 		return result;
 	}
 
