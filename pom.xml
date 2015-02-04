@@ -536,7 +536,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
-                <oauth.auth.http>https://oauth.lecloud.com/cloud-oauth</oauth.auth.http>
+                <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
@@ -582,7 +582,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
-                <oauth.auth.http>https://oauth.lecloud.com/cloud-oauth</oauth.auth.http>
+                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
@@ -628,7 +628,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                  <webportal.local.http>http://rds3.et.letv.com</webportal.local.http>
-                <oauth.auth.http>https://oauth.lecloud.com/cloud-oauth</oauth.auth.http>
+                <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
@@ -677,7 +677,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.local.http>http://rds.et.letv.com</webportal.local.http>
-                <oauth.auth.http>https://oauth.lecloud.com/cloud-oauth</oauth.auth.http>
+                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>liuhao1@letv.com;wangzhen3@letv.com;yaofaliang@letv.com;yaokuo@letv.com;zhangxiang@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
