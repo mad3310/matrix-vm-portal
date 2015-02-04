@@ -2,17 +2,22 @@ package com.letv.portal.proxy.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.exception.PythonException;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
+import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IBuildService;
 import com.letv.portal.service.IContainerService;
@@ -44,6 +49,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	private IDbService dbService;
 	@Autowired
 	private IBuildService buildService;
+	@Autowired
+	private IPythonService pythonService;
 	
 	@Override
 	public IBaseService<MclusterModel> getService() {
@@ -109,4 +116,27 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		this.buildTaskService.checkMclusterCount();
 	}
 
+	@Override
+	public void restartDb(Long mclusterId) {
+		if(mclusterId == null) 
+			throw new ValidateException("参数不合法");
+		MclusterModel mcluster = this.selectById(mclusterId);
+		if(mcluster == null)
+			throw new ValidateException("参数不合法");
+		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
+		if(containers.isEmpty())
+			throw new ValidateException("参数不合法");
+		boolean flag = true;
+		for (ContainerModel container : containers) {
+			String result = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+			if(!StringUtils.isEmpty(result) && result.contains("\"code\": 200")) {
+				flag = false;
+				break;
+			}
+		}
+		if(flag) {
+			throw new ValidateException("call restart db service API error");
+		}
+	}
+		
 }

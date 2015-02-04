@@ -167,4 +167,18 @@ public class MclusterController {
 	     result.getMsgs().add("集群监控删除成功");
 	     return result;
 	}
+	/**Methods Name: restartDb <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param dbId
+	 * @return
+	 */
+	@RequestMapping(value="/restart",method=RequestMethod.POST)
+	public @ResponseBody ResultObject restartDb(Long mclusterId,ResultObject obj){
+		if(mclusterId == null) 
+			throw new ValidateException("参数不合法");
+		this.mclusterProxy.restartDb(mclusterId);
+		return obj;
+	}
+	
 }

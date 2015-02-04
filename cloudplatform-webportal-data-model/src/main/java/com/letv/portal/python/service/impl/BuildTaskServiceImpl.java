@@ -1284,5 +1284,4 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 	}
-
 }
