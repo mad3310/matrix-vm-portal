@@ -37,9 +37,6 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResolver {
-	private static final String ERROR_SYSTEM_ERROR = "系统出现异常，请稍后再试";
-	private static final String VALIDATE_ERROR = "未查询到相关数据，请稍后再试";
-	
 	private Logger logger = LoggerFactory.getLogger(DefaultMappingExceptionResolver.class);
 	
 	
@@ -58,9 +55,8 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     @Override
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
-    	String error = ERROR_SYSTEM_ERROR;
+    	String error = e.getMessage();
     	if(e instanceof ValidateException) {
-    		error = VALIDATE_ERROR;
     	} else {
     		if(Boolean.valueOf(ERROR_MAIL_ENABLED)) {
     			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);

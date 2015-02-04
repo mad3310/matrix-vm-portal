@@ -123,20 +123,15 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		MclusterModel mcluster = this.selectById(mclusterId);
 		if(mcluster == null)
 			throw new ValidateException("参数不合法");
-		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
-		if(containers.isEmpty())
-			throw new ValidateException("参数不合法");
-		boolean flag = true;
-		for (ContainerModel container : containers) {
-			String result = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
-			if(!StringUtils.isEmpty(result) && result.contains("\"code\": 200")) {
-				flag = false;
-				break;
-			}
+		ContainerModel container = this.containerService.selectValidVipContianer(mclusterId, "mclustervip");
+		if(container == null)
+			throw new ValidateException("vip节点不存在");
+		String result = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+		if(StringUtils.isEmpty(result)) {
+			throw new PythonException("call restart db service API error:connect out");
 		}
-		if(flag) {
-			throw new ValidateException("call restart db service API error");
+		if(!result.contains("\"code\": 200")) {
+			throw new PythonException("call restart db service API error:" + result.substring(result.indexOf("\"response\""),  result.length()));
 		}
 	}
-		
 }
