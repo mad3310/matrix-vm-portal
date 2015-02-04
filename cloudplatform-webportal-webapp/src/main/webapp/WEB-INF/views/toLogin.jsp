@@ -9,7 +9,7 @@
         if (self != top){
             window.top.location = window.location;
         }
-        document.write(${oauth});
+        window.location.replace("${loginURI}");
     };
 </script>
 </html>
