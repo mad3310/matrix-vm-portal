@@ -141,11 +141,13 @@ function restartMclusterServer(obj){
 			mclusterId:$(obj).closest("tr").find('[name = "mclusterId"]').val()
 		},
 		success : function(data) {
+			$(obj).closest('tr').find('[name = "onRestart"]').val(0); //恢复可刷新状态
 			if(error(data)){
-				$(obj).closest('tr').find('[name = "onRestart"]').val(0); //恢复可刷新状态
 				$(obj).closest('tr').find('[name="mclusterControl"] a:eq(1)').attr('title',"拉起").find('i').attr('class',"ace-icon fa fa-repeat bigger-120");//改为刷新状态，并提示正在拉起
 				return;
 			}
+			var tr = $(obj).closest('tr')
+			getMclusterStatus(tr.find('[name="vip"]').html(),tr); //返回成功刷新本行
 		}
 	});
 }
