@@ -3,6 +3,7 @@ package com.letv.portal.interceptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,11 +43,6 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		this.allowUrls = allowUrls;
 	}
 
-	@Value("${oauth.auth.http}")
-	private String OAUTH_AUTH_HTTP;
-	@Value("${webportal.local.http}")
-	private String WEBPORTAL_LOCAL_HTTP;
-	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
@@ -69,9 +65,8 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			if (isAjaxRequest) {
 				responseJson(request,response,"长时间未操作，请重新登录");
 			} else {
-				StringBuffer buffer = new StringBuffer();
-				buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
-				response.sendRedirect(buffer.toString());
+				RequestDispatcher rd = request.getRequestDispatcher("/toLogin");
+				rd.forward(request, response);
 			}
 			return false;
 		} else {

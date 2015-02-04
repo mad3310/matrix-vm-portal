@@ -1,6 +1,7 @@
 package com.letv.portal.clouddb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,10 @@ public class SkipController {
 	@Autowired
 	private IDbService dbService;
 	
+	@Value("${oauth.auth.http}")
+	private String OAUTH_AUTH_HTTP;
+	@Value("${webportal.local.http}")
+	private String WEBPORTAL_LOCAL_HTTP;
 	/**
 	 * Methods Name: dbInfo<br>
 	 * Description: 跳转基本信息页面
@@ -139,6 +144,14 @@ public class SkipController {
 	public ModelAndView toDbBackup(@PathVariable Long dbId,ModelAndView mav){
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/backupRecover");
+		return mav;
+	}
+	@RequestMapping(value ="/toLogin",method=RequestMethod.GET)
+	public ModelAndView toLogin(ModelAndView mav){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+		mav.addObject("loginURI", buffer.toString());
+		mav.setViewName("/toLogin");
 		return mav;
 	}
 }

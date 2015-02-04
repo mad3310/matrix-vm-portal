@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.service.IMclusterService;
  
 public class MclusterTest extends AbstractTest{
 
 	@Autowired
 	private IMclusterService mclusterService;
+	@Autowired
+	private IMclusterProxy mclusterProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(
 			MclusterTest.class);
@@ -47,6 +50,11 @@ public class MclusterTest extends AbstractTest{
     	for (MclusterModel mclusterModel : selectValidMclusters4) {
     		System.out.println(mclusterModel.getMclusterName());
     	}
+    }
+    
+    @Test
+    public void testRestartDb() {
+    	this.mclusterProxy.restartDb(22L);
     }
     
 }

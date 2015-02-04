@@ -121,6 +121,17 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
+	@Override
+	public String restartMcluster(String nodeIp,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/start");
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("cluster_flag", "old");
+		
+		String result = HttpClient.post(url.toString(), map,username,password);
+		return result;
+	}
 
 	@Override
 	public String checkContainerStatus(String nodeIp,String username,String password) {

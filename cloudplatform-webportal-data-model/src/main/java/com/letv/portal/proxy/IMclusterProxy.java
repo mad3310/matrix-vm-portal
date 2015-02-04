@@ -54,4 +54,11 @@ public interface IMclusterProxy extends IBaseProxy<MclusterModel> {
 	 */
 	public void checkCount();
 
+	/**Methods Name: restartDb <br>
+	 * Description: 重启db服务<br>
+	 * @author name: liuhao1
+	 * @param mclusterId
+	 */
+	public void restartDb(Long mclusterId);
+
 }

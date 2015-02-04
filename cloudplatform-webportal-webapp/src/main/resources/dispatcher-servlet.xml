@@ -63,6 +63,7 @@
 	          <value>/static</value>
 	          <value>/logout</value>
 	          <value>/jettyMonitor</value>
+	          <value>/toLogin</value>
 	        </list>
 	      </property>
 	    </bean>

@@ -97,6 +97,15 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String startMcluster(String nodeIp,String username,String password);
+	/**Methods Name: restartMcluster <br>
+	 * Description: 重新启动集群<br>
+	 * @author name: liuhao1
+	 * @param nodeIp  启动的主节点ip
+	 * @param username 集群用户名
+	 * @param password 集群密码
+	 * @return
+	 */
+	public String restartMcluster(String nodeIp,String username,String password);
 	
 	/**Methods Name: checkContainerStatus <br>
 	 * Description: 检查集群状态：检查节点状态<br>
