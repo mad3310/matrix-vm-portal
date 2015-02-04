@@ -196,6 +196,20 @@ function warn(warnMsg,time) {
 	});
 	return;
 }
+/*成功提示框,一般在操作提示中用到*/
+function success(warnMsg,time) {
+	if(!time){
+		time = 1000;
+	}
+	$.gritter.add({
+		title: '成功',
+		text: warnMsg,
+		sticky: false,
+		time: time,
+		class_name: 'gritter-success'
+	});
+	return;
+}
 /*确认框脚本
  * 
  * */

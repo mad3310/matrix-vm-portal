@@ -20,6 +20,7 @@ function queryMclusterMonitor() {
         		if(array[i].mcluster) {
         			mclusterName = array[i].mcluster.mclusterName;
         		}
+        		var td0 = "<input name=\"mclusterId\" type=\"hidden\" value=\""+array[i].mclusterId+"\"/>"
 				var td1 = $("<td>"
 							+ mclusterName
 							+ "</td>");
@@ -40,7 +41,11 @@ function queryMclusterMonitor() {
 							+"<a><i class=\"ace-icon fa fa-spinner fa-spin  bigger-120\"/>数据抓取中...</a>"
 							+ "</td>");
 				var td5 = $("<td>"
-						+ "<a href=\"/monitor/"+array[i].ipAddr+"/db/status\" target=\"_blank\">查看详情</a>"
+						+ "<span><a href=\"/monitor/"+array[i].ipAddr+"/db/status\" target=\"_blank\">查看详情</a></span>"
+						+ "<span class=\"text-explode\">|</span>" 
+						+ "<a data-toggle=\"tooltip\" data-placement=\"top\" title=\"拉起\" style=\"cursor:pointer\" onclick=\"restartMclusterServer(this)\">"
+							+"<i class=\"ace-icon fa fa-repeat bigger-130\"></i>"
+						+"</a>"
 					+ "</td>");
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
@@ -50,11 +55,12 @@ function queryMclusterMonitor() {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
 				
 			}//循环json中的数据 
 			updateMclusterStatus();//查询集群状态
+			$('[data-toggle = "tooltip"]').tooltip();
 		}
 	});
 }
@@ -99,6 +105,23 @@ function updateMclusterStatus(){
 		}
 	});
 }
+
+function restartMclusterServer(obj){
+	$.ajax({ 
+		cache:false,
+		type : "post",
+		url : "/mcluster/restart",
+		dataType : "json", 
+		data : {
+			mclusterId:$(obj).closest("tr").find('[name = "mclusterId"]').val()
+		},
+		success : function(data) {
+			if(error(data)) return;
+			success($(obj).closest("tr").find('td').first().html()+"拉起命令已发出，请等待...",3000);
+		}
+	});
+}
+
 function page_init(){
 	$('#nav-search').addClass("hidden");
 	queryMclusterMonitor();
