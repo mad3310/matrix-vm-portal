@@ -436,13 +436,6 @@ define(function(require,exports,module){
 			$obj.css({'left':  objLeft + 'px','display': 'block'});
 		},
 		divselect: function () {
-			var inputselect = $('.divselect').find('input');
-			var divselects = $(".divselect");
-			/*for(var i = 0,len = divselects.length;i<len;i++){
-				if(divselects[i].find('li').length > 0){
-					divselects[i].
-				}
-			}*/
 			$('.divselect').closest('.pull-left').click(function(event){
 				event.stopPropagation();
 				var ul = $(this).find('ul');
@@ -461,7 +454,7 @@ define(function(require,exports,module){
 				var txt = $(this).find('a').text();
 				$(this).closest('.divselect').find('span').html(txt);
 				var value = $(this).find('a').attr("selectid");
-				inputselect.val(value);
+				$(this).closest('.divselect').find('input').val(value);
 			});
 			$(".divselect").each(function () {
 				if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
