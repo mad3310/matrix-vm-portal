@@ -527,6 +527,7 @@
 	<!--内容编辑框-->
 	<div class="edit-text-box hide">
 		<form id="modifyDescnForm" role="form">
+		    <input id="modify-descn-username" class="hidden" name="usename" type="text"/>
 			<p>
 				<input id="descn" type="text" class="form-control input-radius-2">
 			</p>

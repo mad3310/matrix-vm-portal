@@ -28,13 +28,16 @@ define(function(require,exports,module){
             var array = data.data;
             for(var i= 0, len= array.length;i<len;i++){
                 dbUsernames.push(array[i].username);
-                var td1 = $("<td>"+ array[i].username +"</td>");
+                var td1 = $("<td>"
+                		+ array[i].username
+                		+"</td>");
                 var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
                 var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
                 var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
                 var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
+                		+ "</span>" 
                 		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
-                		+ "</span></td>");
+                		+ "</td>");
                 var td6 = $("<td class=\"text-right\"> <div>"
                 + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
                 + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
@@ -45,17 +48,6 @@ define(function(require,exports,module){
                 tr.appendTo($tby);
             }
             
-            /*初始化编辑按钮*/
-            $(".glyphicon-pencil").click(function(){
-                cn.EditBoxInit(this);
-            });
-            $("#tby tr").hover(function(){
-            	$(this).find(".glyphicon-pencil").show();
-            },function(){
-            	$(this).find(".glyphicon-pencil").hide();
-            });
-            /* 编辑按钮初始化完毕*/
-
             /*获取行信息*/
             function getLineData(obj){
                 var line = {
@@ -107,6 +99,22 @@ define(function(require,exports,module){
                 });
                 $("#reset-password-username").val(lineData.username);
             })
+            /*初始化编辑描述*/
+            $(".glyphicon-pencil").click(function(){
+                cn.EditBoxInit(this);
+                var lineData = getLineData(this);
+                $("#modify-descn-username").val(lineData.username);
+                $("#descn").val(lineData.descn);
+            });
+            /* 编辑描述对话框初始化完毕*/
+            
+            /*初始化tr hover方法*/
+            $("#tby tr").hover(function(){
+            	$(this).find(".glyphicon-pencil").show();
+            },function(){
+            	$(this).find(".glyphicon-pencil").hide();
+            });
+            /*tr hover方法初始化完毕*/
         },
         DbUserIpHandler: function(data){
             InitDoubleFrame(".multi-select",data.data);

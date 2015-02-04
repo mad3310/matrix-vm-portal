@@ -252,19 +252,15 @@ define(function(require){
     /*修改描述*/
     $("#editBoxSubmit").click(function(e){
     	//e.preventDefault();
-    	
+    	var username = $("#modify-descn-username").val();
     	var url = "/dbUser/descn/" + username;
-    	console.log(url);
     	var data = {
-    			username: 
+    			username: username,
     			descn : $("#descn").val(),
     			dbId : $("#dbId").val()
     	}
-    	//var descnData = dbUser.GetDescnData
-    	console.log(data);
         cn.PostData(url, data, function () {
-             /*刷新本身ifame*/
-        	console.log("aaaa");
+        	 /*刷新iframe*/
              var $iframe = $("body", parent.document).find("iframe");
              $iframe.attr("src", $iframe.attr("src"));
          });
