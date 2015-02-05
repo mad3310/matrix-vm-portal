@@ -42,18 +42,12 @@ define(function(require,exports,module){
                 var td3 = '';
                 if(array[i].status == 6){
                 	var td3 = $("<td>"
-                            + "<div id= \"Grise"+ array[i].id + "\" class=\"Grise hide\">"
-                            + "<div class=\"progress\">"
-                            + "<div class=\"charge\"></div>"
-                            + "</div>"
-                            + "<div class=\"load\">"
-                            + "<p></p>"
-                            + "</div>"
-                            + "</div>"
+                			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\"  data-toggle=\"tooltip\" data-placement=\"top\">"
+                			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
+                			+ "</div>"
+                			+ "</div>"
                             + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
                             + "</td>");
-                			/*var url = "/build/db/" + array[i].id;
-                	        cn.GetLocalData(url,handlerData);*/
                 }else{
                 	var td3 = $("<td>"
                             + cn.TranslateStatus(array[i].status)
