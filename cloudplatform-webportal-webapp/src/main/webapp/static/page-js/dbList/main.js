@@ -5,8 +5,11 @@
 define(function(require){
     var common = require('../common');
     var cn = new common();
+    var  $ = require('jquery');
+    require('bootstrap')($);
 
-	cn.Tooltip();
+    cn.Tooltip();
+    
 
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
@@ -18,9 +21,14 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	//setInterval(asyncData,cn.dbListRefreshTime);
+	/*定时刷新
+	if ($(".progress").length == 0){
+		setInterval(asyncData,cn.dbListRefreshTime);
+	}else{
+		setInterval(asyncProgressData,2000);
+	}*/
+	setInterval(asyncData,cn.dbListRefreshTime);
 	setInterval(asyncProgressData,1000);
-	//asyncProgressData();
 	
 	$("#search").click(function() {
 		cn.currentPage = 1;
@@ -35,6 +43,7 @@ define(function(require){
 			asyncData();
 		}
 	});
+	
 	/*初始化按钮*/
 	$(".btn-region-display").click(function(){
 		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
@@ -42,6 +51,7 @@ define(function(require){
 		$("#dbName").val("");
 		asyncData();
 	})
+	
 	/*
 	 * 可封装公共方法 begin
 	 */
@@ -82,107 +92,71 @@ define(function(require){
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		//var url = "/static/page-js/dbList/jsondata.json";
 		cn.GetSyncData(url,dbListHandler.DbListHandler);
+		cn.Tooltip();
 	}
-	 /*进度条部分*/
+	
+	 /*进度条数据刷新*/
 	function asyncProgressData(){
 		var progressArr = $("input[name = progress_db_id]");
-		//alert(progressArr.length);
-		//console.log(progressArr.length);
-		for(var i= 0, len= progressArr.length;i<len;i++){
+		console.log(progressArr.length);
+		for(var i= 0, len = progressArr.length;i < len;i++){
 			var db_id = $(progressArr[i]).val();
-			//console.log(db_id);
 			var url = "/build/db/" + db_id;
 			progress(url,db_id);
 		}
 	}
 	
+	 /*进度条进度控制*/
 	function progress(url,db_id){
 		$.get(url,function(data){
-			//var data = data.data;
-			var data = db_id - 10 
+			var data = data.data;
+			//var data = db_id - 10 
 	        var unitLen = 100 / 16;
-	        var $obj = $("#Grise" + db_id);
-	        var $prg = $obj.find(".charge");
-	        var $load = $obj.find(".load > p");
-	        $obj.removeClass("hide");
-	    	if(data == 1){
-	         	$prg.css({"width": unitLen + 'px'});
-	         	$load.html("环境准备");
-	         }else if(data == 2){
-	         	$prg.css({"width": (unitLen * 2) + 'px'});
-	         	$load.html("环境准备");
-	         }else if(data == 3){
-	         	$prg.css({"width": (unitLen * 3) + 'px'});
-	         	$load.html("环境准备");
-	         }else if(data == 4){
-	         	$prg.css({"width": (unitLen * 4) + 'px'});
-	         	$load.html("环境准备");
-	         }else if(data == 5){
-	         	$prg.css({"width": (unitLen * 5) + 'px'});
-	         	$load.html("软件安装");
-	         }else if(data == 6){
-	         	$prg.css({"width": (unitLen * 6) + 'px'});
-	         	$load.html("软件安装");
-	         }else if(data == 7){
-	         	$prg.css({"width": (unitLen * 7) + 'px'});
-	         	$load.html("软件安装");
-	         }else if(data == 8){
-	         	$prg.css({"width": (unitLen * 8) + 'px'});
-	         	$load.html("软件安装");
-	         }else if(data == 9){
-	         	$prg.css({"width": (unitLen * 9) + 'px'});
-	         	$load.html("服务初始化");
-	         }else if(data == 10){
-	         	$prg.css({"width": (unitLen * 10) + 'px'});
-	         	$load.html("服务初始化");
-	         }else if(data == 11){
-	         	$prg.css({"width": (unitLen * 11) + 'px'});
-	         	$load.html("服务初始化");
-	         }else if(data == 12){
-	         	$prg.css({"width": (unitLen * 12) + 'px'});
-	         	$load.html("服务初始化");
-	         }else if(data == 13){
-	         	$prg.css({"width": (unitLen * 13) + 'px'});
-	         	$load.html("数据初始化");
-	         }else if(data == 14){
-	         	$prg.css({"width": (unitLen * 14) + 'px'});
-	         	$load.html("数据初始化");
-	         }else if(data == 15){
-	         	$prg.css({"width": (unitLen * 15) + 'px'});
-	         	$load.html("数据初始化");
-	         }else if(data == 16){
-	         	$prg.css({"width": (unitLen * 15) + 'px'});
-	         	$load.html("数据初始化");
-	         }else if(data == 0){
-	         	$prg.css({"width": "100%"});
-	         	$load.html("创建完成");
-	         }else{
-	         	$prg.css({"width": "100%"});
-	         	$load.html("创建失败");
-	         } 
-	    	
-	    	/*创建失败或者创建成功隐藏进度条*/
-	    	var pValue = $load.html();
-	    	
-	    	if( pValue == "创建完成" ){
-	    		if($obj.closest("tr").find("td:eq(2) span").length < 1){
-	        		var html = "<span class=\"text-success\">正常</span>"
-	    	        //console.log($obj);
-	    	        $obj.parent().append(html);
-	    	        $obj.hide();
-	        	}
-	    	}
-	    	if(pValue == "创建失败"){
-	    		if($obj.closest("tr").find("td:eq(2) span").length < 1){
-	        		var html = "<span>创建失败</span>"
-	    	        //console.log($obj);
-	    	        $obj.parent().append(html);
-	    	        $obj.hide();
-	        	}
-	    	}
-	    	
+	        var $obj = $("#prg" + db_id);
+	        var $prg = $obj.find(".progress-bar");
+	       
+	        /*控制进度条状态*/
+	       	var pWidth = unitLen * data;
+        	if( data > 1 && data <= 4){
+        		$prg.css({"width": pWidth + 'px'});
+        		$prg.html( pWidth + "%");
+        		$obj.tooltip({
+    			    title: '环境准备'
+    			});
+        	}else if (data > 4 && data <= 8){
+        		$prg.css({"width": pWidth + 'px'});
+        		$prg.html( pWidth + "%");
+        		$obj.tooltip({
+    			    title: '软件安装'
+    			});
+        	}else if (data > 8 && data <= 12){
+        		$prg.css({"width": pWidth + 'px'});
+        		$prg.html( pWidth + "%");
+        		$obj.tooltip({
+    			    title: '服务初始化'
+    			});
+        	}else if (data > 8 && data <= 12){
+        		$prg.css({"width": pWidth + 'px'});
+        		$prg.html( pWidth + "%");
+        		$obj.tooltip({
+    			    title: '数据初始化'
+    			});
+        	}else if (data == 0){
+        		$prg.css({"width": "100%"});
+        		$prg.html("100%");
+        		$obj.tooltip({
+    			    title: '创建完成'
+    			});
+        		asyncData;
+        	}else{
+        		$prg.css({"width": "100%"});
+        		$prg.html("100%");
+        		$obj.tooltip({
+    			    title: '创建失败'
+    			});
+        		asyncData;
+        	}
 		});
 	}
 });
