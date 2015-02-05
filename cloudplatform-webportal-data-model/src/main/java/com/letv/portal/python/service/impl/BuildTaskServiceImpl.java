@@ -24,12 +24,10 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.JsonUtils;
-import com.letv.common.util.PasswordRandom;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
-import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
@@ -168,9 +166,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.buildResultToMgr("mcluster集群" + mclusterModel.getMclusterName() + "创建", "失败", e.getMessage(), ERROR_MAIL_ADDRESS);
 			return;
 		}
-		if(nextStep && dbId != null) {
+		/*if(nextStep && dbId != null) {
 			this.buildDb(dbId);
-		}
+		}*/
 	}
 	
 	@Override
@@ -260,7 +258,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Integer status = null;
 		String resultMsg = "";
 		String detail = "";
-		Map<String,Object> params = this.dbService.selectCreateParams(dbId);
+		Map<String,Object> params = this.dbService.selectCreateParams(dbId,isSelectVip(dbId));
 		try {
 			String result = this.pythonService.createDb((String)params.get("nodeIp"), (String)params.get("dbName"), (String)params.get("dbName"), null, (String)params.get("username"), (String)params.get("password"));
 			
@@ -302,6 +300,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			this.dbService.updateBySelective(dbModel);
 			if(DbStatus.NORMAL.getValue() == status) {
 				List<DbUserModel> dbUsers = this.dbUserService.selectByDbId(dbId);
+				if(dbUsers.isEmpty())
+					return;
 				StringBuffer ids = new StringBuffer();
 				for (DbUserModel dbUser : dbUsers) {
 					ids.append(dbUser.getId()).append(",");
@@ -320,7 +320,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
 			
 			if(dbUserModel == null || params.isEmpty()) 
 				throw new ValidateException("参数不合法，相关数据不存在。");
@@ -356,10 +356,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String[] str = ids.split(",");
 		String resultMsg = "";
 		String detail = "";
+		
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
 			try {
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
@@ -398,10 +399,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		String[] str = ids.split(",");	
 		String resultMsg = "";
 		String detail = "";
+		
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
 		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
-		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id));
+		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 		    		if(analysisResult(transResult(result))) {
@@ -492,6 +494,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				this.mclusterService.updateBySelective(mcluster);
 			}
 		}
+		
+		//quickly create db 20150205 liuhao1@letv.com
+		if(nextStep && dbId != null) {
+			this.buildDb(dbId);
+		}
+		
 		if(nextStep) {
 			step++;
 			startTime = new Date();
@@ -659,6 +667,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			BuildModel nextBuild = new BuildModel();
 			nextBuild.setMclusterId(mclusterId);
 			nextBuild.setStep(step+1);
+			nextBuild.setDbId(dbId);
 			nextBuild.setStartTime(new Date());
 			nextBuild.setStatus(BuildStatus.BUILDING.getValue());
 			this.buildService.updateByStep(nextBuild);
@@ -1283,5 +1292,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 		}
 		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+	}
+	
+	private boolean isSelectVip(Long dbId) {
+		int step = this.buildService.getStepByDbId(dbId);
+		if(0<step && step<10) {
+			return false;
+		}
+		return true;
 	}
 }

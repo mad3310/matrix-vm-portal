@@ -73,8 +73,15 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	}
 
 	@Override
-	public Map<String, Object> selectCreateParams(Long id) {
-		return this.dbUserDao.selectCreateParams(id);
+	public Map<String, Object> selectCreateParams(Long id,boolean isVip) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("id", id);
+		if(isVip) {
+			params.put("type", "mclustervip");
+		} else {
+			params.put("zookeeperId", 1);
+		}
+		return this.dbUserDao.selectCreateParams(params);
 	}
 
 	@Override

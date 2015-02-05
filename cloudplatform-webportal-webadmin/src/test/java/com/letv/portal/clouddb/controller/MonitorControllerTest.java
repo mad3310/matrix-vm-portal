@@ -10,16 +10,12 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSONObject;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
-import com.letv.portal.model.MonitorTimeModel;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMonitorProxy;
-import com.letv.portal.python.service.IBuildTaskService;
-import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorService;
 

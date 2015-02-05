@@ -29,9 +29,10 @@ public interface IDbService extends IBaseService<DbModel> {
 	 * Description: 查询创建dbUser相关参数<br>
 	 * @author name: liuhao1
 	 * @param id
+	 * @param isVip
 	 * @return
 	 */
-	public Map<String,Object> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Long id,boolean isVip);
 
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>

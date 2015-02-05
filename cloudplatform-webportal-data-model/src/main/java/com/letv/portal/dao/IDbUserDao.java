@@ -26,10 +26,10 @@ public interface IDbUserDao extends IBaseDao<DbUserModel> {
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建dbUser相关参数<br>
 	 * @author name: liuhao1
-	 * @param id
+	 * @param params
 	 * @return
 	 */
-	public Map<String,Object> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Map<String, Object> params);
 	
 	/**Methods Name: updateStatus <br>
 	 * Description: 更新数据库用户状态<br>

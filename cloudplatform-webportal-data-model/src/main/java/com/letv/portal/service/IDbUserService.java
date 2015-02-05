@@ -36,9 +36,10 @@ public interface IDbUserService extends IBaseService<DbUserModel> {
 	 * Description: 查询创建用户相关参数<br>
 	 * @author name: liuhao1
 	 * @param id
+	 * @param isVip 
 	 * @return
 	 */
-	public Map<String,Object> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Long id, boolean isVip);
 
 	/**Methods Name: updateStatus <br>
 	 * Description: 根据数据库用户名和ip查询数据：用于验证数据库用户名和ip是否重复<br>

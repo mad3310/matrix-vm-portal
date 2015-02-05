@@ -130,11 +130,17 @@
 		from WEBPORTAL_DB_USER m where m.DB_ID = #{dbId}
 	</select>
 	<!-- 查询创建用户所需参数-->
-	<select id="selectCreateParams" resultMap="createParams" parameterType="java.lang.Long">
+	<select id="selectCreateParams" resultMap="createParams" parameterType="java.util.Map">
 		select DB.DB_NAME,CONTAINER.IP_ADDR,MCLUSTER.ADMIN_USER,MCLUSTER.ADMIN_PASSWORD,USER.CREATE_USER
 		from WEBPORTAL_DB_USER USER,WEBPORTAL_MCLUSTER_INFO MCLUSTER,WEBPORTAL_DB DB,WEBPORTAL_CONTAINER CONTAINER 
 		where
-		USER.DB_ID = DB.ID AND DB.MCLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.MCLUSTER_ID AND CONTAINER.TYPE='mclustervip' AND USER.Id=#{id}
+		USER.DB_ID = DB.ID AND DB.MCLUSTER_ID=MCLUSTER.ID AND MCLUSTER.ID=CONTAINER.MCLUSTER_ID AND USER.Id=#{id}
+		<if test="zookeeperId !=null  ">
+			and CONTAINER.ZOOKEEPER_ID=#{zookeeperId}
+		</if>
+		<if test="type !=null  ">
+			and CONTAINER.TYPE=#{type}
+		</if>
 	</select>
 	
 	<!-- 根据条件查询 -->

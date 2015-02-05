@@ -26,10 +26,10 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	/**Methods Name: selectCreateParams <br>
 	 * Description: 查询创建db相关参数<br>
 	 * @author name: liuhao1
-	 * @param id
+	 * @param params
 	 * @return
 	 */
-	public Map<String,Object> selectCreateParams(Long id);
+	public Map<String,Object> selectCreateParams(Map<String, Object> params);
 
 	/**Methods Name: selectByDbName <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>

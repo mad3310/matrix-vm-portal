@@ -65,8 +65,15 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public Map<String, Object> selectCreateParams(Long id) {
-		return this.dbDao.selectCreateParams(id);
+	public Map<String, Object> selectCreateParams(Long dbId,boolean isVip) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("id", dbId);
+		if(isVip) {
+			params.put("type", "mclustervip");
+		} else {
+			params.put("zookeeperId", 1);
+		}
+		return this.dbDao.selectCreateParams(params);
 	}
 
 	@Override
