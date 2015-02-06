@@ -84,10 +84,10 @@ define(function(require){
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		cn.GetData(url,rfreshhCtl);
+		cn.GetData(url,refreshCtl);
 		cn.Tooltip();
 	}
-	function rfreshhCtl(data) {
+	function refreshCtl(data) {
 		dbListHandler.DbListHandler(data);
 		if ($(".progress").length == 0){
 			if(pFresh){
@@ -104,7 +104,7 @@ define(function(require){
 			if(pFresh){
 				clearInterval(pFresh);
 			}
-			pFresh = setInterval(asyncProgressData,2000);
+			pFresh = setInterval(asyncProgressData,10000);
 		}
 	}	
 	 /*进度条数据刷新*/

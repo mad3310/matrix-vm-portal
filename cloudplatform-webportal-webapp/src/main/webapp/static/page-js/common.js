@@ -6,7 +6,7 @@ define(function(require,exports,module){
     require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;
-		this.dbListRefreshTime = 10000; //单位ms
+		this.dbListRefreshTime = 60000; //单位ms
 		this.maxConcurrency = 2000; //数据库最大并发量
 		
 		TopBtnInit();//初始化顶部菜单按钮
