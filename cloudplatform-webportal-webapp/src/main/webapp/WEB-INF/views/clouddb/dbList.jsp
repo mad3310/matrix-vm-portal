@@ -111,7 +111,7 @@
 				</thead>
 				<tbody id="tby">
 				</tbody>
-				<tfoot>
+				<tfoot id="paginatorBlock">
 					<tr class="tfoot" >
 						<td width="10">
 							<input type="checkbox">
@@ -135,7 +135,7 @@
 					</tr>
 				</tfoot>
 			</table>
-		    
+		    <div class="help-block hidden" id="noData">没有符合条件的查询结果。</div>
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
