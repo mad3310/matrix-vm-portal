@@ -265,10 +265,10 @@ define(function(require,exports,module){
             });
         },
         GetData : function(url,handler){ //异步获取数据,将数据交给handler处理
-			/*if($('body').find('.sidebar').length==0){	//layout界面不添加loading
+			if($('body').find('.sidebar').length==0){	//layout界面不添加loading
 			   $('body').append("<div class=\"spin\"></div>");
 			   $('body').append("<div class=\"far-spin\"></div>");
-			}*/
+			}
 			$.ajax({
                 url:url,
 				cache:false,
@@ -276,27 +276,8 @@ define(function(require,exports,module){
                 dataType:'json',
                 success:function(data){
 					/*添加当handler为空时的异常处理*/
-					/*$('body').find('.spin').remove();
-					$('body').find('.far-spin').remove();*/
-                    handler(data);
-                }
-            });
-        },
-        GetSyncData : function(url,handler){ //异步获取数据,将数据交给handler处理
-			/*if($('body').find('.sidebar').length==0){	//layout界面不添加loading
-			   $('body').append("<div class=\"spin\"></div>");
-			   $('body').append("<div class=\"far-spin\"></div>");
-			}*/
-			$.ajax({
-                url:url,
-				cache:false,
-				async:false,
-                type:"get",
-                dataType:'json',
-                success:function(data){
-					/*添加当handler为空时的异常处理*/
-					/*$('body').find('.spin').remove();
-					$('body').find('.far-spin').remove();*/
+					$('body').find('.spin').remove();
+					$('body').find('.far-spin').remove();
                     handler(data);
                 }
             });
@@ -305,12 +286,11 @@ define(function(require,exports,module){
 			$.ajax({
                 url:url,
 				cache:false,
-				async:false,
                 type:"get",
                 dataType:'json',
                 success:function(data){
 					/*添加当handler为空时的异常处理*/
-                    handler(data);
+                	handler(data);
                 }
             });
         },

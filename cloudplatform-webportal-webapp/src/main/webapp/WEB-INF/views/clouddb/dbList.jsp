@@ -96,7 +96,7 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">实例名称</th>
-						<th>运行状态</th>
+						<th style="width:20%">运行状态</th>
 						<th>实例类型</th>
 						<th>数据库类型</th>
 						<th>可用区类型
@@ -111,7 +111,6 @@
 				</thead>
 				<tbody id="tby">
 				</tbody>
-				
 				<tfoot>
 					<tr class="tfoot" >
 						<td width="10">

@@ -12,6 +12,7 @@ define(function(require,exports,module){
 	
     var common = require('../common');
     var cn = new common();
+   
     
     var DataHandler = function(){
     };
@@ -39,8 +40,8 @@ define(function(require,exports,module){
                         + dbName
                         +"</td>");
                 
-                var td3 = '';
-                if(array[i].status == 6){
+                var td3 = '';                
+                if(array[i].status == 2){
                 	var td3 = $("<td>"
                 			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\"  data-toggle=\"tooltip\" data-placement=\"top\">"
                 			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
@@ -80,13 +81,63 @@ define(function(require,exports,module){
             if(data.data.totalPages < 1){
         		data.data.totalPages = 1;
         	};
+        	
             $('#paginator').bootstrapPaginator({
                 currentPage: data.data.currentPage,
                 totalPages:data.data.totalPages
             });
         },
-	    progress : function(data){
-	    	
-	    }
+        /*进度条进度控制*/
+	    progress : function(db_id,data,func){
+	    	var data = data.data;	    	
+   	        var unitLen = 100 / 8;
+   	        var $obj = $("#prg" + db_id);
+   	        var $prg = $obj.find(".progress-bar");
+   	       	var pWidth = unitLen * data;
+           	if( data == 1){
+           		$prg.css({"width": pWidth + '%'});
+           		$prg.html( pWidth + "%");
+           		$obj.tooltip({
+       			    title: '正在准备安装环境...'
+       			});
+           	}else if (data > 1 && data <= 3){
+           		$prg.css({"width": pWidth + '%'});
+           		$prg.html( pWidth + "%");
+           		$obj.tooltip({
+       			    title: '正在检查安装环境...'
+       			});
+           	}else if (data > 3 && data <= 6){
+           		$prg.css({"width": pWidth + '%'});
+           		$prg.html( pWidth + "%");
+           		$obj.tooltip({
+       			    title: '正在初始化数据库服务...'
+       			});
+           	}else if (data > 6 && data <= 8){
+           		$prg.css({"width": pWidth + '%'});
+           		$prg.html( pWidth + "%");
+           		$obj.tooltip({
+       			    title: '正在创建数据库...'
+       			});
+           	}else if (data == 0){
+           		$prg.css({"width": "100%"});
+           		$prg.html("100%");
+           		$obj.tooltip({
+       			    title: '创建完成'
+       			});
+           		$obj.remove();
+           		console.log("aaa");
+           		func();
+           	}else if(data == -1){
+           		$prg.css({"width": "100%"});
+           		$prg.html("100%");
+           		$obj.tooltip({
+       			    title: '创建失败'
+       			});
+           		$obj.hide();
+           		func();
+           	}else{
+           		func();
+           	}
+	   	}
     }
 });
