@@ -113,7 +113,7 @@ define(function(require,exports,module){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
            		$obj.attr('data-original-title',"正在初始化数据库服务...");          		
-           	}else if (data > 6 && data < 8){
+           	}else if (data > 6 && data <= 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
            		$obj.attr('data-original-title',"正在创建数据库...");
