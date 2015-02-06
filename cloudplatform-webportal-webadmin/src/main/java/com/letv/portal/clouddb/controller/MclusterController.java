@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -37,6 +38,8 @@ public class MclusterController {
 	
 	@Autowired
 	public IZabbixPushService zabbixPushService;
+	@Autowired
+	public IFixedPushService fixedPushService;
 	@Autowired
 	private IContainerService containerService;
 	
@@ -166,6 +169,20 @@ public class MclusterController {
 	     this.zabbixPushService.deleteMutilContainerPushZabbixInfo(this.containerService.selectByMap(map));
 	     result.getMsgs().add("集群监控删除成功");
 	     return result;
+	}
+	@RequestMapping(value = "/V0.0.6/fixed/remove/{mclusterName}", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject rmFixed(@PathVariable String mclusterName,ResultObject result) {
+		List<MclusterModel> mclusters  = this.mclusterService.selectByName(mclusterName);
+		if(mclusters.isEmpty())
+			throw new ValidateException("集群不存在");
+		if(mclusters.size()>1) {
+			throw new ValidateException("集群名不唯一");
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mclusterId", mclusters.get(0).getId());
+		this.fixedPushService.deleteMutilContainerPushFixedInfo(this.containerService.selectByMap(map));
+		result.getMsgs().add("集群固资信息删除成功");
+		return result;
 	}
 	/**Methods Name: restartDb <br>
 	 * Description: <br>
