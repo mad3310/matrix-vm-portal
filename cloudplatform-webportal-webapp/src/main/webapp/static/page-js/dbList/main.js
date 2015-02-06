@@ -85,7 +85,7 @@ define(function(require){
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
 		cn.GetData(url,refreshCtl);
-		cn.Tooltip();
+		
 	}
 	function refreshCtl(data) {
 		dbListHandler.DbListHandler(data);
@@ -98,6 +98,7 @@ define(function(require){
 			}
 			iFresh = setInterval(asyncData,cn.dbListRefreshTime);
 		}else{
+			asyncProgressData();
 			if(iFresh){
 				clearInterval(iFresh);
 			}
@@ -109,14 +110,13 @@ define(function(require){
 	}	
 	 /*进度条数据刷新*/
 	function asyncProgressData(){
-		var progressArr = $("input[name = progress_db_id]");
-		for(var i= 0, len = progressArr.length;i < len;i++){
-			var dbId = $(progressArr[i]).val();
+		$("input[name = progress_db_id]").each(function(){
+			var dbId = $(this).val();
 			function progress_func(data){
 				dbListHandler.progress(dbId,data,asyncData);
 			}
 			var url = "/build/db/" + dbId;
 			cn.GetLocalData(url,progress_func);
-		}
+		})
 	}
 });

@@ -95,55 +95,43 @@ define(function(require,exports,module){
             });
         },
         /*进度条进度控制*/
-	    progress : function(db_id,data,func){
+	    progress : function(db_id,data,asyncData){
 	    	var data = data.data;	    	
    	        var unitLen = 100 / 8;
    	        var $obj = $("#prg" + db_id);
    	        var $prg = $obj.find(".progress-bar");
+   	        console.log($obj);
    	       	var pWidth = unitLen * data;
            	if( data == 1){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.tooltip({
-       			    title: '正在准备安装环境...'
-       			});
+           		$obj.attr('data-original-title',"正在准备安装环境...");           		
            	}else if (data > 1 && data <= 3){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.tooltip({
-       			    title: '正在检查安装环境...'
-       			});
+           		$obj.attr('data-original-title',"正在检查安装环境...");         		
            	}else if (data > 3 && data <= 6){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.tooltip({
-       			    title: '正在初始化数据库服务...'
-       			});
+           		$obj.attr('data-original-title',"正在初始化数据库服务...");          		
            	}else if (data > 6 && data < 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.tooltip({
-       			    title: '正在创建数据库...'
-       			});
-           	}else if (data == 0 || data == 8){
+           		$obj.attr('data-original-title',"正在创建数据库...");
+           	}else if (data == 0 || data > 8){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
-           		$obj.tooltip({
-       			    title: '创建完成'
-       			});
-           		$obj.remove();
-           		func();
+           		$obj.attr('data-original-title',"创建完成") 
+           		asyncData();
            	}else if(data == -1){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
-           		$obj.tooltip({
-       			    title: '创建失败'
-       			});
-           		$obj.hide();
-           		func();
+           		$obj.attr('data-original-title',"创建失败");           		
+           		asyncData();
            	}else{
-           		func();
+           		asyncData();
            	}
+            cn.Tooltip();
 	   	}
     }
 });
