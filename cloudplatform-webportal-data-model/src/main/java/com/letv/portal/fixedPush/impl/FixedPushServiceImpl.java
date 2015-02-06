@@ -143,6 +143,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 		try{
 			if(null == pushString ||"".equals(pushString)){
 			}else{
+			os.write(int2byte(pushString.getBytes().length));
 			os.write(pushString.getBytes());
 			}
             os.flush();            
@@ -153,5 +154,10 @@ public class FixedPushServiceImpl implements IFixedPushService{
         	 s1.close();
         };
 	}
+    private static byte[] int2byte(int i) {
+        return new byte[] { (byte) ((i >> 24) & 0xFF),
+                (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF),
+                (byte) (i & 0xFF) };
+    }
 
 }

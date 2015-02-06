@@ -320,7 +320,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			
 			if(dbUserModel == null || params.isEmpty()) 
 				throw new ValidateException("参数不合法，相关数据不存在。");
@@ -360,7 +360,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
+			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			try {
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 				if(analysisResult(transResult(result))) {
@@ -403,7 +403,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
 		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
-		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getId()));
+		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 		    	try {
 		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 		    		if(analysisResult(transResult(result))) {
@@ -1297,9 +1297,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	
 	private boolean isSelectVip(Long dbId) {
 		int step = this.buildService.getStepByDbId(dbId);
-		if(0<step && step<10) {
-			return false;
+		if(step == 0) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

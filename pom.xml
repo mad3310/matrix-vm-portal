@@ -544,7 +544,7 @@
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
-                <fixedpush.url.port>39450</fixedpush.url.port>
+                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
@@ -590,7 +590,7 @@
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
-                <fixedpush.url.port>39450</fixedpush.url.port>
+                 <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
@@ -638,7 +638,7 @@
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
-                <fixedpush.url.port>39450</fixedpush.url.port>
+                <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
                 <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
@@ -687,7 +687,7 @@
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
-                <fixedpush.url.port>39450</fixedpush.url.port>
+                <fixedpush.url.port>29350</fixedpush.url.port>
                 <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
                 
                 <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
