@@ -119,20 +119,19 @@ define(function(require,exports,module){
            		$obj.tooltip({
        			    title: '正在初始化数据库服务...'
        			});
-           	}else if (data > 6 && data <= 8){
+           	}else if (data > 6 && data < 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
            		$obj.tooltip({
        			    title: '正在创建数据库...'
        			});
-           	}else if (data == 0){
+           	}else if (data == 0 || data == 8){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
            		$obj.tooltip({
        			    title: '创建完成'
        			});
            		$obj.remove();
-           		console.log("aaa");
            		func();
            	}else if(data == -1){
            		$prg.css({"width": "100%"});
