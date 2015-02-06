@@ -60,6 +60,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 				containerMode.setIp(c.getIpAddr());
 				list.add(containerMode);
 				fixedPushModel.setServertag(servertag);	
+				fixedPushModel.setType("add");
 				fixedPushModel.setIpaddress(list);
 				createContainerPushFixedInfo(fixedPushModel);
 			}
@@ -70,8 +71,32 @@ public class FixedPushServiceImpl implements IFixedPushService{
 		}
          return flag;
 	}
+	@Override
+	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers){
+		Boolean flag = false;
+		try {					
+			for(ContainerModel c:containers){
+				String servertag = c.getHostIp();
+				List<ContainerPush> list = new ArrayList<ContainerPush>();	
+				FixedPushModel fixedPushModel = new FixedPushModel();
+				ContainerPush containerMode = new ContainerPush();
+				containerMode.setName(c.getContainerName());
+				containerMode.setIp(c.getIpAddr());
+				list.add(containerMode);
+				fixedPushModel.setServertag(servertag);	
+				fixedPushModel.setType("delete");
+				fixedPushModel.setIpaddress(list);
+				createContainerPushFixedInfo(fixedPushModel);
+			}
+			flag = true;
+			logger.debug("fixed success");
+		} catch (Exception e) {
+			logger.debug("fixed failure"+e.getMessage());
+		}
+		return flag;
+	}
 	/**
-	 * Methods Name: sendFixedInfo <br>
+	 * Methods Name: createContainerPushFixedInfo <br>
 	 * Description: 创建container的相关系统<br>
 	 * @author name: wujun
 	 */
@@ -80,7 +105,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	}
 	
 	/**
-	 * Methods Name: sendFixedInfo <br>
+	 * Methods Name: deleteContainerPushFixedInfo <br>
 	 * Description: 删除container的相关信息<br>
 	 * @author name: wujun
 	 */

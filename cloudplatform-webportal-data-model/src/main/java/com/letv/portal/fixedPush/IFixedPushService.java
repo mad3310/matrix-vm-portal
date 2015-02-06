@@ -22,6 +22,7 @@ public interface IFixedPushService {
 	 * @param fixedPushModel
 	 */
 	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers);
+	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers);
 	/**
 	 * Methods Name: createContainerPushFixedInfo <br>
 	 * Description: 创建container的相关系统<br>

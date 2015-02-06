@@ -840,7 +840,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		if(analysisResult(transResult(result))) {
 			if(this.zabbixPushService.deleteMutilContainerPushZabbixInfo(list)){
 				logger.info("invoke remove mcluster api success");
-			}		
+			}
+			this.fixedPushService.deleteMutilContainerPushFixedInfo(list);
 		} else {
 			logger.info("invoke remove mcluster api error");
 		}
