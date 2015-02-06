@@ -1486,6 +1486,7 @@ pre {
 
 /* dblist页面进度条CSS */
 .progress{
+	margin-right:20px;
 	margin-bottom:0;
 	height:15px;	
 }

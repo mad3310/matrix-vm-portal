@@ -100,7 +100,6 @@ define(function(require,exports,module){
    	        var unitLen = 100 / 8;
    	        var $obj = $("#prg" + db_id);
    	        var $prg = $obj.find(".progress-bar");
-   	        console.log($obj);
    	       	var pWidth = unitLen * data;
            	if( data == 1){
            		$prg.css({"width": pWidth + '%'});
@@ -121,7 +120,7 @@ define(function(require,exports,module){
            	}else if (data == 0 || data > 8){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
-           		$obj.attr('data-original-title',"创建完成") 
+           		$obj.attr('data-original-title',"创建完成");
            		asyncData();
            	}else if(data == -1){
            		$prg.css({"width": "100%"});
