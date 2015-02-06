@@ -84,7 +84,7 @@ define(function(require){
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		cn.GetLocalData(url,rfreshhCtl);
+		cn.GetData(url,rfreshhCtl);
 		cn.Tooltip();
 	}
 	function rfreshhCtl(data) {
