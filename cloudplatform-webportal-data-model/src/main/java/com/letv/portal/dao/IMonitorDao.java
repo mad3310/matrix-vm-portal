@@ -1,5 +1,6 @@
 package com.letv.portal.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,5 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public Float selectDbStorage(String ipAddr);
 	public List<Map<String,Object>> selectDbConnect(String ipAddr);
 	public void deleteOutDataByIndex(Map<String,Object> map);
+	public List<Map<String,Object>> selectExtremeIdByMonitorDate(Map<String, Object> map);
 }

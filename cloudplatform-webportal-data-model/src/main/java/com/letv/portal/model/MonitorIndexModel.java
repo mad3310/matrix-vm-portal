@@ -11,7 +11,7 @@ import com.letv.common.model.BaseModel;
  */
 public class MonitorIndexModel extends BaseModel{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2402474398314816140L;
 	private String titleText;
 	private String subTitleText;
 	private String yAxisText;
