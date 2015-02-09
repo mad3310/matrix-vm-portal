@@ -17,6 +17,10 @@
 		<result column="DETAIL_VALUE" property="detailValue" />
 		<result column="DETAIL_NAME" property="detailName" />
 	</resultMap>
+	<resultMap id="extremeIdMap" type="java.util.Map">
+        <result column="MAX_ID" property="maxId" />
+		<result column="MIN_ID" property="minId" />
+	</resultMap>
 	
 
 	<!-- WEBPORTAL_DB table all fields -->
@@ -75,8 +79,15 @@
         <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
 	</select>
 	
+	<select id="selectExtremeIdByMonitorDate" resultMap="extremeIdMap" parameterType="java.util.Map">
+		select 
+        max(id) MAX_ID,min(id) MIN_ID
+	   	from ${dbName} m
+        where MONITOR_DATE &lt;= #{monitorDate}
+	</select>
+	
 	<update id="deleteOutDataByIndex" parameterType="java.util.Map">
-		delete from ${dbName} where MONITOR_DATE &lt;= #{monitorDate}
+		delete from ${dbName} where id &lt;= #{id}
 	</update>
 	
 	<select id="selectDbStorage" resultType="java.lang.Float" parameterType="java.lang.String">

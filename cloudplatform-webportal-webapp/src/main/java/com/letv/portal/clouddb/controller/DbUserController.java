@@ -165,7 +165,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/descn/{username}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateUserDescn(DbUserModel dbUserModel,ResultObject obj) {
-		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null) {
+		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {
 			throw new ValidateException("参数不能为空");
 		}
 		this.dbUserService.updateDescnByUsername(dbUserModel);

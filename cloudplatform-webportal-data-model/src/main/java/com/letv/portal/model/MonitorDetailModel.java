@@ -12,10 +12,8 @@ import com.letv.common.model.BaseModel;
  * Modified Date: <br>
  */
 public class MonitorDetailModel extends BaseModel {
-	/**
-	 * @Field long serialVersionUID 
-	 */
-	private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 5918229179935808282L;
 	private String detailName;
 	private float detailValue;
 	private String dbName;

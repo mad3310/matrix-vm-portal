@@ -1,6 +1,7 @@
 package com.letv.portal.service.impl;
 
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -218,9 +219,25 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (MonitorIndexModel monitorIndexModel : indexs) {
+			
+			//get max id and min id from table where monitor_date<monthAgo
+			//for in  min and max, delete every 5000 by id.
+			
 			map.put("dbName", monitorIndexModel.getDetailTable());
 			map.put("monitorDate", monthAgo);
-			this.monitorDao.deleteOutDataByIndex(map);
+			List<Map<String,Object>> ids = this.monitorDao.selectExtremeIdByMonitorDate(map);
+			if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
+				continue;
+			}
+			Map<String, Object> extremeIds = ids.get(0);
+			Long max = ((BigInteger)extremeIds.get("maxId")).longValue();
+			Long min = ((BigInteger)extremeIds.get("minId")).longValue();
+			if(max == null || max == 0 || max == min)
+				return;
+			for (Long i = min; i <= max; i+=5000) {
+				map.put("id", i);
+				this.monitorDao.deleteOutDataByIndex(map);
+			}
 		}
 	}
 }

@@ -12,8 +12,7 @@ import com.letv.common.model.BaseModel;
  */
 public class HostModel extends BaseModel {
 	
-	private static final long serialVersionUID = 3497965985607790962L;
-	
+	private static final long serialVersionUID = -4046115868963401983L;
 	private String hostName; //主机名称
 	private String hostIp; //主机ip
 	private Integer nodesNumber; //节点个数
