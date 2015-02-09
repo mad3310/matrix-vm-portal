@@ -97,6 +97,6 @@
 </div>
 
 <!-- js -->
-<<script src="${ctx}/static/scripts/moment/2.9.0/moment-with-locales.min.js"></script>
+<script src="${ctx}/static/scripts/moment/2.9.0/moment-with-locales.min.js"></script>
 <script src="${ctx}/static/scripts/bootstrap/datetimepicker/bootstrap-datetimepicker.js"></script>
 <script src="${ctx}/static/scripts/pagejs/backup_recover.js"></script>
