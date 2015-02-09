@@ -398,10 +398,10 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"moment": "moment/2.9.0/moment-with-locales.min.js",
+		"moment": "moment/2.9.0/moment-with-locales.js",
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
 		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
-		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"
+		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/backupRecover/main");
