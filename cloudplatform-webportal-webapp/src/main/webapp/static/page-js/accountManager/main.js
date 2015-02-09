@@ -260,8 +260,8 @@ define(function(require){
         	'modifyDescn': {
                 validators: {
                     stringLength: {
-                        max: 256,
-                        message: '输入长度不超过256个字符!'
+                        max: 100,
+                        message: '输入长度不超过100个字符'
                     }
                 }
             }

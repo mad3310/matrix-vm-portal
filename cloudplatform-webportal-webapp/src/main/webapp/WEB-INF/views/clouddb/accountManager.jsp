@@ -532,7 +532,7 @@
 			<div class="form-group col-sm-12 col-md-12">
 				<input name="modifyDescn" id="modifyDescn" type="text" class="form-control input-radius-2">
 				<div class="col-sm-12 notice-block" style="padding-left:0;">
-					<p style="color:#999">输入范围：输入长度不超过256个字符</p>
+					<p style="color:#999">输入范围：输入长度不超过100个字符</p>
 				</div>
 			</div>
 			<div class="form-group col-sm-12 col-md -12">
