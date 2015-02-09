@@ -250,13 +250,29 @@ define(function(require){
         }
     });
     /*修改描述*/
-    $("#editBoxSubmit").click(function(e){
-    	//e.preventDefault();
+    $("#modifyDescnForm").bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields:{
+        	'modifyDescn': {
+                validators: {
+                    stringLength: {
+                        max: 256,
+                        message: '输入长度不超过256个字符!'
+                    }
+                }
+            }
+        }	
+    }).on('success.form.bv', function(e) {
+    	e.preventDefault();
     	var username = $("#modify-descn-username").val();
     	var url = "/dbUser/descn/" + username;
     	var data = {
     			username: username,
-    			descn : $("#descn").val(),
+    			descn : $("#modifyDescn").val(),
     			dbId : $("#dbId").val()
     	}
         cn.PostData(url, data, function () {

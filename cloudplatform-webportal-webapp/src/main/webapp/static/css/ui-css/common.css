@@ -1351,6 +1351,13 @@ position: relative;
 	padding-bottom: 2px;
 }
 
+.edit-text-box .form-control-feedback,
+.edit-text-box .form-horizontal .has-feedback .form-control-feedback {
+     right: 15px;;
+}
+.edit-text-box .form-group{
+	margin-left:0;
+}
 /* 删除对话框警告图标样式 */
 .modal-dialog .modal-body .warning-sign{
 	color: orange;

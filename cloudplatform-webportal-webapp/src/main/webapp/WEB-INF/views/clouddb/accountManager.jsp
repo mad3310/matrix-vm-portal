@@ -76,10 +76,8 @@
 						<span class="text-danger">*</span>
 						数据库帐号：
 					</label>
-					<div class="col-sm-8 row">
-						<!-- ngIf: !newAccount -->
-						<div class="col-sm-4">
-							<!-- ngIf: newAccount && !isJst -->
+					<div class="col-sm-8 row">						
+						<div class="col-sm-4">							
 							<input name="username" class="form-control input-radius-2" type="text"></div>
 						<div class="col-sm-12 notice-block">
 							<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
@@ -526,14 +524,21 @@
 
 	<!--内容编辑框-->
 	<div class="edit-text-box hide">
-		<form id="modifyDescnForm" role="form">
+		<div class="col-sm-12 col-md-12">
+		    <h5>请输入描述:</h5>
+		</div>
+		<form id="modifyDescnForm" role="form" class="form-horizontal">
 		    <input id="modify-descn-username" class="hidden" name="usename" type="text"/>
-			<p>
-				<input id="descn" type="text" class="form-control input-radius-2">
-			</p>
-			<p style="color:#999">输入范围：最多256个字</p>
-		<button id="editBoxSubmit" type="submit" class="btn btn-primary" href="#">提交</button>
-		<button id="editBoxCancel" class="btn btn-default" href="#">取消</button>
+			<div class="form-group col-sm-12 col-md-12">
+				<input name="modifyDescn" id="modifyDescn" type="text" class="form-control input-radius-2">
+				<div class="col-sm-12 notice-block" style="padding-left:0;">
+					<p style="color:#999">输入范围：输入长度不超过256个字符</p>
+				</div>
+			</div>
+			<div class="form-group col-sm-12 col-md -12">
+			    <button id="editBoxCancel" type="button" class="btn btn-default pull-right margin-left-5">取消</button>
+				<button id="editBoxSubmit" type="submit" class="btn btn-primary pull-right margin-left-5">提交</button>
+			</div>
 	</form>
 	</div>
 </body>

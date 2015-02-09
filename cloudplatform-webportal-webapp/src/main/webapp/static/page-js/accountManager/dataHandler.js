@@ -104,7 +104,7 @@ define(function(require,exports,module){
                 cn.EditBoxInit(this);
                 var lineData = getLineData(this);
                 $("#modify-descn-username").val(lineData.username);
-                $("#descn").val(lineData.descn);
+                $("#modifyDescn").val(lineData.descn);
             });
             /* 编辑描述对话框初始化完毕*/
             
