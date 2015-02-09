@@ -6,18 +6,10 @@ define(function(require){
 	var common = require('../common');
 	var cn = new common();
 
-	require('jquery');
 	require('moment');
+	require('jquery');
 	require('bootstrap');
 	require('datetimepicker');
-	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
-
-    /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var backupRecover = new dataHandler();
-    var flag = false; //flag 标记是否已点击查询，true已点击，false未点击
-
 	/*初始化时间输入框*/
 	$("#startTime").datetimepicker({
 		viewMode: 'months',
@@ -29,6 +21,14 @@ define(function(require){
 		format: 'L',
 		locale: 'zh-cn'
 	});
+	
+	/*禁用退格键退回网页*/
+	window.onload=cn.DisableBackspaceEnter();
+
+    /*加载数据*/
+    var dataHandler = require('./dataHandler');
+    var backupRecover = new dataHandler();
+    var flag = false; //flag 标记是否已点击查询，true已点击，false未点击
 
     /*
      * 初始化数据
