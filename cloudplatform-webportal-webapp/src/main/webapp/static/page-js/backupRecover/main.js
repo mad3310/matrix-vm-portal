@@ -6,21 +6,20 @@ define(function(require){
 	var common = require('../common');
 	var cn = new common();
 
-	require('moment');
-	require('jquery');
-	require('bootstrap');
-	require('datetimepicker');
 	/*初始化时间输入框*/
-	$("#startTime").datetimepicker({
-		viewMode: 'months',
-		format:'L',
-		locale: 'zh-cn'
-	});
-	$("#endTime").datetimepicker({
-		viewMode: 'months',
-		format: 'L',
-		locale: 'zh-cn'
-	});
+	 require.async(['moment', 'jquery','datetimepicker'], function() {  
+		 $("#startTime").datetimepicker({
+				viewMode: 'months',
+				format:'L',
+				locale: 'zh-cn'
+			});
+			$("#endTime").datetimepicker({
+				viewMode: 'months',
+				format: 'L',
+				locale: 'zh-cn'
+			});
+	    });  
+	
 	
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
