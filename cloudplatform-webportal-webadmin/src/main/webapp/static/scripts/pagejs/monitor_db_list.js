@@ -4,6 +4,7 @@
 });	
 function queryMclusterMonitor() {
 	$("#tby tr").remove();
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
@@ -11,6 +12,7 @@ function queryMclusterMonitor() {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -76,7 +78,7 @@ function getMclusterStatus(ip,obj) {
 	}
 	
 	if($(obj).find('[name = "onRestart"]').val() != 0) return; //如果正在拉起，不更新
-	
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
@@ -84,6 +86,7 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var result = data.data.result;
 			if(result == "0"){
@@ -132,6 +135,7 @@ function restartMclusterServer(obj){
 		$(obj).closest('tr').find('[name = "onRestart"]').val(1);
 	}
 	$(obj).closest('tr').find('[name="mclusterControl"] a:eq(1)').attr('title',"正在拉起，请稍等...").find('i').attr('class',"ace-icon fa fa-spinner fa-spin  bigger-120");//改为刷新状态，并提示正在拉起
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "post",
@@ -141,6 +145,7 @@ function restartMclusterServer(obj){
 			mclusterId:$(obj).closest("tr").find('[name = "mclusterId"]').val()
 		},
 		success : function(data) {
+			removeLoading();
 			$(obj).closest('tr').find('[name = "onRestart"]').val(0); //恢复可刷新状态
 			if(error(data)){
 				$(obj).closest('tr').find('[name="mclusterControl"] a:eq(1)').attr('title',"拉起").find('i').attr('class',"ace-icon fa fa-repeat bigger-120");//改为刷新状态，并提示正在拉起

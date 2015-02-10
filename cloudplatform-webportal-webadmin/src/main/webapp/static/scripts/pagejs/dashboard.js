@@ -55,6 +55,7 @@ function setPieChartData(divName,type){
 	var chart = $('#' + divName).highcharts();
 	var url = "/list/mcluster/monitor/" + type
 	chart.showLoading();
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
@@ -62,6 +63,7 @@ function setPieChartData(divName,type){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var status = data.data;
 			var pieChartData=[{
@@ -96,12 +98,14 @@ function updateMclusterChart(divName,type){
 }
 
 function getOverview(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/dashboard/statistics",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var view = data.data;
 			$('#dbSum').html(view.db);

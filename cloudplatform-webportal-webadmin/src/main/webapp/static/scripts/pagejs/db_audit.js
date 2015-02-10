@@ -7,36 +7,42 @@ $(function(){
 	$("#pageMessage").hide();
 });
 function createDbOnOldMcluster(){
+	getLoading()
 	$.ajax({
 		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#create_on_old_cluster_form').serialize(),
 		success : function (data){
+			removeLoading();
 			if(error(data)) return;
 			window.location = "/list/db";
 		}
 	});
 }
 function createDbOnNewMcluster(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#create_on_new_cluster_form').serialize(),
 		success:function (data){
+			removeLoading();
 			if(error(data)) return;
 			window.location = "/list/db";
 		}
 	});
 }
 function refuseCreateMcluster(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "post",
 		url : "/db/audit",
 		data :$('#refuse_create_mcluster').serialize(),
 		success:function (data){
+			removeLoading();
 			if(error(data)) return;
 			window.location = "/list/db";
 		}
@@ -109,12 +115,14 @@ function formValidate() {
      });
 }
 function queryDbById(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",
 		url:"/db/"+$("#dbId").val(),
 		dataType:"json",
 		success:function(data){
+			removeLoading();
 			if(error(data)) return;
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);
@@ -138,12 +146,14 @@ function queryDbById(){
 	});
 }
 function queryMcluserById(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",
 		url:"/mcluster",
 		dataType:"json",
 		success:function(data){
+			removeLoading();
 			if(error(data)) return;
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length; i < len ;i++)

@@ -19,12 +19,14 @@ $(function(){
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data.data;
 			var tby = $("#tby");

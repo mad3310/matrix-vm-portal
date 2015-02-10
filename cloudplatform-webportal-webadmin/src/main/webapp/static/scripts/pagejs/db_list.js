@@ -46,6 +46,7 @@ var currentSelectedLineDbName = 1;
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -53,6 +54,7 @@ function queryByPage(currentPage,recordsPerPage) {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			error(data);
 			var array = data.data.data;
 			var tby = $("#tby");
@@ -259,12 +261,14 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	if(type == "new"){
 		$("#build_status_tby tr").remove();
 	}
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			removeLoading();
 			error(data);
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
