@@ -135,7 +135,7 @@
 					</tr>
 				</tfoot>
 			</table>
-		    <div class="help-block hidden" id="noData">没有记录</div>
+		    <!-- <div class="help-block hidden" id="noData">没有记录</div> -->
 		</div>
 	</div><!-- main-content-center-end -->
 </div>

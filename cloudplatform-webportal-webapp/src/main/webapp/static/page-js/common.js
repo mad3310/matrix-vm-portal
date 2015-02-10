@@ -325,7 +325,8 @@ define(function(require,exports,module){
 		EditBoxInit: function(obj){
 			var offset = $(obj).offset();
 			var left = offset.left;
-			var top = offset.top+$(obj).height()+5;
+			var top = offset.top+$(obj).height()+5;			
+			$("#edit-spin").addClass("edit-spin");
 
 			$(".edit-text-box").css('left',left+"px");
 			$(".edit-text-box").css('top',top+"px");
@@ -333,6 +334,7 @@ define(function(require,exports,module){
 
 			$("#editBoxCancel").unbind("click").click(function(){
 				$(".edit-text-box").addClass("hide");
+				$("#edit-spin").removeClass("edit-spin");
 			})
 		},
 		DialogBoxInit:function(title,text,handler,args){
@@ -418,7 +420,7 @@ define(function(require,exports,module){
 		center:function(){
 			//获取父窗口对象
 			var winobj=window.parent.document.body;
-			//获取父皇窗口对象属性
+			//获取父窗口对象属性
 			var screenWidth = $(winobj).width();
 			//var screenHeight = $(winobj).height();
 		    //var scrolltop = $(winobj).scrollTop();//获取当前窗口距离页面顶部高度
@@ -479,6 +481,11 @@ define(function(require,exports,module){
 			var day = newDate.getDate();
 			
 			return year + '年' + month + '月' + day + '日';
+		},
+		emptyBlock:function(obj){
+			if($("#noData").length < 1){
+				$(obj).closest("div").after("<div class=\"help-block\" id=\"noData\">没有数据记录</div>");
+			}			
 		}
 		 /*add new common function*/
     }

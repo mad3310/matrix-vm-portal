@@ -26,28 +26,41 @@ define(function(require,exports,module){
             $(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data;
-            for(var i= 0, len= array.length;i<len;i++){
-                dbUsernames.push(array[i].username);
-                var td1 = $("<td>"
-                		+ array[i].username
-                		+"</td>");
-                var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
-                var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
-                var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
-                var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
-                		+ "</span>" 
-                		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
-                		+ "</td>");
-                var td6 = $("<td class=\"text-right\"> <div>"
-                + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
-                + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div></td>");
-                var tr = $("<tr class='data-tr'></tr>");
-                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-                tr.appendTo($tby);
+            if(array.length == 0){
+            	cn.emptyBlock($tby);
+            	if($("#paginatorBlock").length > 0){
+            		$("#paginatorBlock").hide();
+            	}
+            }else{
+            	 if($("#noData").length > 0){
+            		 $("#noData").remove();
+            	 }
+            	 if($("#paginatorBlock").length > 0){
+            		 $("#paginatorBlock").show();
+            	 }
+            	 
+            	 for(var i= 0, len= array.length;i<len;i++){
+                     dbUsernames.push(array[i].username);
+                     var td1 = $("<td>"
+                     		+ array[i].username
+                     		+"</td>");
+                     var td2 = $("<td>" + cn.TranslateStatus(array[i].status) +"</td>");
+                     var td3 = $("<td class=\"hide\">"+ array[i].readWriterRate + "</td>");
+                     var td4 = $("<td><span>"+array[i].maxConcurrency+"</span></td>");
+                     var td5 = $("<td style=\"word-break:break-all\"><span>"+cn.FilterNull(array[i].descn)
+                     		+ "</span>" 
+                     		+ "<a class=\"mc-hide btn btn-default btn-xs glyphicon glyphicon-pencil\"></a>"
+                     		+ "</td>");
+                     var td6 = $("<td class=\"text-right\"> <div>"
+                     + "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\">ip访问权限</a><span class=\"text-explode\">"
+                     + "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\">重置密码</a><span class=\"text-explode\">"
+                     + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
+                     + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\">删除</a> </div></td>");
+                     var tr = $("<tr class='data-tr'></tr>");
+                     tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+                     tr.appendTo($tby);
+                 }            	
             }
-            
             /*获取行信息*/
             function getLineData(obj){
                 var line = {

@@ -520,9 +520,11 @@
 				</form>
 			</div>
 		</div>
+	
 	</div>
 
 	<!--内容编辑框-->
+	<div id="edit-spin" class=""></div>
 	<div class="edit-text-box hide">
 		<div class="col-sm-12 col-md-12">
 		    <h5>请输入描述:</h5>
@@ -539,7 +541,7 @@
 			    <button id="editBoxCancel" type="button" class="btn btn-default pull-right margin-left-5">取消</button>
 				<button id="editBoxSubmit" type="submit" class="btn btn-primary pull-right margin-left-5">提交</button>
 			</div>
-	</form>
+		</form>
 	</div>
 </body>
 <!-- js -->

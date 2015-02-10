@@ -26,12 +26,17 @@ define(function(require,exports,module){
             var $tby = $('#tby');
             var array = data.data.data;
             if(array.length == 0){
-            	$("#noData").removeClass("hidden");
-            	$("#paginatorBlock").hide();
+            	cn.emptyBlock($tby);
+            	if($("#paginatorBlock").length > 0){
+            		$("#paginatorBlock").hide();
+            	}
             }else{
-            	$("#noData").addClass("hidden");
-            	$("#paginatorBlock").show();
-
+            	 if($("#noData").length > 0){
+            		 $("#noData").remove();
+            	 }
+            	 if($("#paginatorBlock").length > 0){
+            		 $("#paginatorBlock").show();
+            	 }
                 for(var i= 0, len= array.length;i<len;i++){
                     var td1 = $("<td width=\"10\">"
                             + "<input type=\"checkbox\" name=\"mcluster_id\" value= \""+array[i].id+"\">"
