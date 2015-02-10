@@ -6,10 +6,21 @@ define(function(require){
 	var common = require('../common');
 	var cn = new common();
 
-	require('jquery');
-	require('moment');
-	require('bootstrap');
-	require('datetimepicker');
+	/*初始化时间输入框*/
+	 require.async(['moment', 'jquery','datetimepicker'], function() {  
+		 $("#startTime").datetimepicker({
+				viewMode: 'months',
+				format:'L',
+				locale: 'zh-cn'
+			});
+			$("#endTime").datetimepicker({
+				viewMode: 'months',
+				format: 'L',
+				locale: 'zh-cn'
+			});
+	    });  
+	
+	
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
@@ -17,18 +28,6 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var backupRecover = new dataHandler();
     var flag = false; //flag 标记是否已点击查询，true已点击，false未点击
-
-	/*初始化时间输入框*/
-	$("#startTime").datetimepicker({
-		viewMode: 'months',
-		format:'L',
-		locale: 'zh-cn'
-	});
-	$("#endTime").datetimepicker({
-		viewMode: 'months',
-		format: 'L',
-		locale: 'zh-cn'
-	});
 
     /*
      * 初始化数据

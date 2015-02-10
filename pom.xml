@@ -558,6 +558,9 @@
                 
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
+                 <yaofaliang.pwd>000000</yaofaliang.pwd>
+                <zhangxiang.pwd>111111</zhangxiang.pwd>
+                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
 
@@ -604,6 +607,9 @@
                 
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>000000</admin.pwd>
+                 <yaofaliang.pwd>000000</yaofaliang.pwd>
+                <zhangxiang.pwd>111111</zhangxiang.pwd>
+                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
         
@@ -652,7 +658,9 @@
                 
                 <task.executor.size>30</task.executor.size>
                 <admin.pwd>abc123</admin.pwd>
-                
+                 <yaofaliang.pwd>000000</yaofaliang.pwd>
+                <zhangxiang.pwd>111111</zhangxiang.pwd>
+                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
 
@@ -701,6 +709,9 @@
                 
                 <task.executor.size>150</task.executor.size>
                 <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
+                <yaofaliang.pwd>legend-kobe</yaofaliang.pwd>
+                <zhangxiang.pwd>lylj0728</zhangxiang.pwd>
+                <zhoubingzheng.pwd>zhoubingzheng</zhoubingzheng.pwd>
             </properties>
         </profile>
 

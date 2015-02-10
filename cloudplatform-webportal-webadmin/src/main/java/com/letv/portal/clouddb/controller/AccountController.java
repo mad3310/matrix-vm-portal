@@ -33,25 +33,36 @@ public class AccountController {
 	
 	@Value("${admin.pwd}")
 	private String ADMIN_PWD;
+	@Value("${yaofaliang.pwd}")
+	private String YAOFALIANG_PWD;
+	@Value("${zhangxiang.pwd}")
+	private String ZHANGXIANG_PWD;
+	@Value("${zhoubingzheng.pwd}")
+	private String ZHOUBINGZHENG_PWD;
 
 	@RequestMapping(value = "/login",method=RequestMethod.POST)
 	public String login(UserLogin userLogin,HttpServletRequest request,HttpServletResponse response) {
 		
-		if(!"sysadmin".equals(userLogin.getLoginName()) || !PasswordEncoder.md5Encode(ADMIN_PWD,null).equals(userLogin.getPassword()) ) {
+		if(("sysadmin".equals(userLogin.getLoginName()) && PasswordEncoder.md5Encode(ADMIN_PWD,null).equals(userLogin.getPassword())) ||
+		   ("yaofaliang".equals(userLogin.getLoginName()) && PasswordEncoder.md5Encode(YAOFALIANG_PWD,null).equals(userLogin.getPassword())) ||	
+		   ("zhangxiang".equals(userLogin.getLoginName()) && PasswordEncoder.md5Encode(ZHANGXIANG_PWD,null).equals(userLogin.getPassword())) ||	
+		   ("zhoubingzheng".equals(userLogin.getLoginName()) && PasswordEncoder.md5Encode(ZHOUBINGZHENG_PWD,null).equals(userLogin.getPassword()))
+		 ){
+			userLogin.setLoginIp(getIp(request));
+			Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
+			request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
+			
+			sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
+	            @Override
+	            public Session execute() throws Throwable {
+	               return null;
+	            }
+	         });
+			return "redirect:/dashboard";
+		} else {
 			request.setAttribute("error", "用户名或密码错误！");
 			return "/account/login";
 		}
-		userLogin.setLoginIp(getIp(request));
-		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
-		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
-		
-		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){
-            @Override
-            public Session execute() throws Throwable {
-               return null;
-            }
-         });
-		return "redirect:/dashboard";
 		
 	}
 	@RequestMapping(value = "/login",method=RequestMethod.GET)

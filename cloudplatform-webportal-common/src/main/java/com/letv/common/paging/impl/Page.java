@@ -20,7 +20,6 @@ public class Page implements IPage {
     private long preId = -1;
     private long nextId = -1;
     private int currentRecord = 0;
-    private int startRowPosition = 0;
     
     private Object data = new Object();
     
@@ -30,20 +29,16 @@ public class Page implements IPage {
     public Page(int currentPage,int recordsPerPage) {
     	this.currentPage = currentPage;
     	this.recordsPerPage = recordsPerPage;
-    	this.setStartRowPosition();
     }
 
 	public int getStartRowPosition() {
-    	return this.startRowPosition;
+    	if(recordsPerPage >= 0)
+            return recordsPerPage * (getCurrentPage() - 1);
+    	else
+    		return 0;
     }
 
-    public void setStartRowPosition() {
-		if(recordsPerPage >= 0)
-			this.startRowPosition = recordsPerPage * (getCurrentPage() - 1);
-    	else
-    		this.startRowPosition = 0;
-	}
-	public int getEndRowPosition() {
+    public int getEndRowPosition() {
         int max = recordsPerPage * getCurrentPage();
         return max;
     }
