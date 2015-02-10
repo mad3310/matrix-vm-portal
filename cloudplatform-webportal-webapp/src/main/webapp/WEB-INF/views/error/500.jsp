@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<%@page import="com.letv.common.util.ConfigUtil"%>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -19,7 +20,7 @@
 	<div class="col-md-12 text-center">
 		<div><img src="../../../static/img/error500.png"></div>
 		<p class="text-muted"><b>服务器调皮，开小差出游。请稍后重试</b></p>
-		<p class="text-muted"><a href="http://rds.et.letv.com"><span class="text-muted">返回乐视云首页</span></a></p>
+		<p class="text-muted"><a href="<%=ConfigUtil.getString("webportal.local.http") %>"><span class="text-muted">返回乐视云首页</span></a></p>
 	</div>
 </div>
 <!-- end center body -->
@@ -28,7 +29,6 @@
 	<div class="col-md-12 text-muted text-center">
 		<ul class="list-inline">
 			<li><a href="http://www.letv.com"><span class="text-muted">乐视网</span></a></li>
-			<li><a href="http://rds.et.letv.com"><span class="text-muted">乐视云计算</span></a></li>
 			<li><a href="http://www.wangjiu.com"><span class="text-muted">网酒网</span></a></li>
 			<li><a href="http://shop.letv.com"><span class="text-muted">乐视商城</span></a></li>
 			<li><a href="http://pan.letv.com"><span class="text-muted">乐视云盘</span></a></li>
