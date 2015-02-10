@@ -14,4 +14,8 @@ public class BaseController {
 	public String notFound(HttpServletRequest request,HttpServletResponse response) {
 		return "/error/404";
 	}
+	@RequestMapping(value="/500",method=RequestMethod.GET)   
+	public String webportalException(HttpServletRequest request,HttpServletResponse response) {
+		return "/error/500";
+	}
 }
