@@ -1347,6 +1347,7 @@ position: relative;
 	border-radius:4px ;
 	box-shadow: 0px 5px 10px rgba(0,0,0,0.5);
 }
+
 .edit-text-box p{
 	padding-bottom: 2px;
 }
@@ -1354,7 +1355,7 @@ position: relative;
 .edit-text-box .form-control-feedback,
 .edit-text-box .form-horizontal .has-feedback .form-control-feedback {
      right: 15px;;
-}
+} 
 .edit-text-box .form-group{
 	margin-left:0;
 }
@@ -1441,6 +1442,19 @@ pre {
        opacity:0; 
 }
 
+.edit-spin {
+  	   width:100%; 
+	   height:100%; 
+	   overflow:hidden; 
+	   position:absolute;
+	   top:0px;
+	   left:0px; 
+	   z-index:998;
+	   background:#DDD;
+	   filter:alpha(opacity=0.0); 
+       -moz-opacity:0.0; 
+       opacity:0.0; 
+}
 /*tooltip popover 禁止自动换行 用<br>换行*/
 .popover {
 	max-width: none;

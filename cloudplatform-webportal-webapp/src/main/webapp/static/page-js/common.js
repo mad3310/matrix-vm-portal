@@ -325,7 +325,8 @@ define(function(require,exports,module){
 		EditBoxInit: function(obj){
 			var offset = $(obj).offset();
 			var left = offset.left;
-			var top = offset.top+$(obj).height()+5;
+			var top = offset.top+$(obj).height()+5;			
+			$("#edit-spin").addClass("edit-spin");
 
 			$(".edit-text-box").css('left',left+"px");
 			$(".edit-text-box").css('top',top+"px");
@@ -333,6 +334,7 @@ define(function(require,exports,module){
 
 			$("#editBoxCancel").unbind("click").click(function(){
 				$(".edit-text-box").addClass("hide");
+				$("#edit-spin").removeClass("edit-spin");
 			})
 		},
 		DialogBoxInit:function(title,text,handler,args){

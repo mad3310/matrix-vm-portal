@@ -6,9 +6,7 @@ define(function(require){
 	var pFresh,iFresh;
     var common = require('../common');
     var cn = new common();
-    var  $ = require('jquery');
-    require('bootstrap')($);
-
+    
     cn.Tooltip();
     
 	/*禁用退格键退回网页*/
