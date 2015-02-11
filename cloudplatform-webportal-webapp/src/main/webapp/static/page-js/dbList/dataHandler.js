@@ -100,10 +100,10 @@ define(function(require,exports,module){
             });
         },
         /*进度条进度控制*/
-	    progress : function(db_id,data,asyncData){
+	    progress : function(dbId,data,asyncData){
 	    	var data = data.data;	    	
    	        var unitLen = 100 / 8;
-   	        var $obj = $("#prg" + db_id);
+   	        var $obj = $("#prg" + dbId);
    	        var $prg = $obj.find(".progress-bar");
    	       	var pWidth = unitLen * data;
            	if( data == 1){

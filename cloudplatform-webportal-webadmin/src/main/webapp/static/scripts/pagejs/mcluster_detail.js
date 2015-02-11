@@ -5,12 +5,14 @@ $(function(){
 })
 function queryContainer(){
 	$("#tby tr").remove();
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
 		url : "/container/"+$("#mclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -77,12 +79,14 @@ function startContainer(obj){
 	}
 	function startCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
+		getLoading();
 		$.ajax({
 			cache:false,
 			url:'/container/start',
 			type:'post',
 			data:{containerId : containerId},
 			success:function(data){
+				removeLoading();
 				if(error(data)) return;
 				queryContainer();
 			}
@@ -98,12 +102,14 @@ function stopContainer(obj){
 	}
 	function stopCmd(){
 		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
+		getLoading();
 		$.ajax({
 			cache:false,
 			url:'/container/stop',
 			type:'post',
 			data:{containerId : containerId},
 			success:function(data){
+				removeLoading();
 				if(error(data)) return;
 				queryContainer();
 			}

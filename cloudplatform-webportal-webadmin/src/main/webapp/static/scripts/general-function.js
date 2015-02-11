@@ -257,7 +257,14 @@ function bt_toggle(containerId){
 		$('#'+temp+"-div").slideToggle();
 	});
 }
-
+function getLoading(){
+	$('body').append("<div class=\"spin\"></div>");
+	$('body').append("<div class=\"far-spin\"></div>");
+}
+function removeLoading(){
+	$('body').find('.spin').remove();
+	$('body').find('.far-spin').remove();
+}
 function FilterNull(data){
 	if(data == null || data == undefined){
 		return '';

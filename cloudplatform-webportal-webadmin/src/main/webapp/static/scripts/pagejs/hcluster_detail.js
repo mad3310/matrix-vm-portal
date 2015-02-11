@@ -56,12 +56,14 @@ $('#add_host_form').bootstrapValidator({
 
 function queryHost(){
 	$("#tby tr").remove();
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
 		url : "/hcluster/"+$("#hclusterId").val(),
 		dataType : "json", 
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var headerName = data.data.hcluster;
 			if($('#headerHostName').html().indexOf(data.data.hcluster) < 0){

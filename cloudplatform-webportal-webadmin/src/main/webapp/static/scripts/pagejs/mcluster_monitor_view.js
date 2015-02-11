@@ -21,12 +21,14 @@ function refreshChartForSelect(){
 }
 
 function queryMcluster(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",		
 		url:"/mcluster/valid",
 		dataType:"json",
 		success:function(data){
+			removeLoading();
 			if(error(data)) return;
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
@@ -39,12 +41,14 @@ function queryMcluster(){
 }
 
 function queryMonitorPoint(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",		
 		url : "/monitor/index",
 		dataType:"json",
 		success:function(data){
+			removeLoading();
 			if(error(data)) return;
 			var monitorPoint = data.data;
 			for(var i=0,len=monitorPoint.length;i<len;i++){
@@ -136,6 +140,7 @@ function initChart(obj,title,ytitle,unit){
 function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -143,6 +148,7 @@ function setChartData(indexId,chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
+			removeLoading();
 	 		if(error(data)) return;
 	 		var ydata = data.data;
 	 		for(var i=chart.series.length-1;i>=0;i--){

@@ -50,12 +50,14 @@ $(function(){
 function queryByPage(currentPage,recordsPerPage) {
 	$("#tby tr").remove();
 	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data.data;
 			var tby = $("#tby");
@@ -264,12 +266,14 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	if(type == "new"){
 		$("#build_status_tby tr").remove();
 	}
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/build/mcluster/"+mclusterId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var build_status_tby = $("#build_status_tby");
@@ -346,12 +350,14 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
  }
 
 function createMcluster(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "post",
 		url : "/mcluster",
 		data :$('#create-mcluster-form').serialize(),
 		success:function (data){
+			removeLoading();
 			if(error(data)) return;
 			$('#create-mcluster-form').find(":input").not(":button,:submit,:reset,:hidden").val("").removeAttr("checked").removeAttr("selected");
 			$('#create-mcluster-form').data('bootstrapValidator').resetForm();
@@ -370,12 +376,14 @@ function startMcluster(obj){
 	}
 	function startCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		getLoading();
 		$.ajax({
 			cache:false,
 			url:'/mcluster/start',
 			type:'post',
 			data:{mclusterId : mclusterId},
 			success:function(data){
+				removeLoading();
 				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
@@ -391,12 +399,14 @@ function stopMcluster(obj){
 	}
 	function stopCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+		getLoading();
 		$.ajax({
 			cache:false,
 			url:'/mcluster/stop',
 			type:'post',
 			data:{mclusterId : mclusterId},
 			success:function(data){
+				removeLoading();
 				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
@@ -416,11 +426,13 @@ function deleteMcluster(obj){
 	}
 	function deleteCmd(){
 		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+	
 		$.ajax({
 			cache:false,
 			url:'/mcluster/'+mclusterId,
 			type:'delete',
 			success:function(data){
+				
 				if(error(data)) return;
 				queryByPage(currentPage, recordsPerPage);
 			}
@@ -431,12 +443,14 @@ function deleteMcluster(obj){
 
 function queryHcluster(){
 	var options = $('#hcluster_select');
+	getLoading();
 	$.ajax({
 		cache:false,
 		url:'/hcluster',
 		type:'get',
 		dataType:'json',
 		success:function(data){
+			removeLoading();
 			var array = data.data;
 			for(var i = 0, len = array.length; i < len; i++){
 				

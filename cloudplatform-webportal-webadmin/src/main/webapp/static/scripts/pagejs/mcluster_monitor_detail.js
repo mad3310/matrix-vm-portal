@@ -36,6 +36,7 @@ function addDataToTable(data,tby,type){
 }
 
 function queryNodeMonitorDetail(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -43,6 +44,7 @@ function queryNodeMonitorDetail(){
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			if($('#header_mcluster_name').html().indexOf(array.mclusterName) < 0){
@@ -58,6 +60,7 @@ function queryNodeMonitorDetail(){
 }
 
 function queryClusterMonitorDetail(){
+	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -65,6 +68,7 @@ function queryClusterMonitorDetail(){
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 

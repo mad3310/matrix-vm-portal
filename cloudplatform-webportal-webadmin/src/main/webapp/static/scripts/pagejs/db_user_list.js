@@ -38,6 +38,7 @@ function buildUser() {
 	});
 	
 	if(flag > 0) {
+		getLoading();
 		$.ajax({ 
 			cache:false,
 			type : "post",
@@ -45,6 +46,7 @@ function buildUser() {
 			dataType : "json",
 			data : {'dbUserId':str},
 			success : function(data) {
+				removeLoading();
 				if(error(data)) return;
 				if(data.result == 1) {
 					$("#titleCheckbox").attr("checked", false);
@@ -70,6 +72,7 @@ function buildUser() {
 	function queryByPage(currentPage,recordsPerPage) {
 		$("#tby tr").remove();
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+		getLoading();
 		$.ajax({ 
 			cache:false,
 			type : "get",
@@ -77,6 +80,7 @@ function buildUser() {
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
+				removeLoading();
 				if(error(data)) return;
 				var array = data.data.data;
 				var tby = $("#tby");
