@@ -22,6 +22,8 @@ public class Session implements Serializable{
 	private String clientSecret;
 	private String email;
 	
+	private boolean isAdmin;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -76,4 +78,13 @@ public class Session implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 }

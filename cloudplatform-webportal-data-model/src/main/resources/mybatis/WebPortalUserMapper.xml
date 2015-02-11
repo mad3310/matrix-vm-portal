@@ -16,6 +16,7 @@
 		<result column="CURRENTLOGINTIME" property="currentLoginTime" />
 		<result column="CURRENTLOGINIP" property="currentLoginIp" />
 		<result column="REGISTERDATE" property="registerDate" />
+		<result column="IS_ADMIN" property="isAdmin" />
 		
 		<result column="SALT" property="salt" />
 		<result column="TYPE" property="type" />
@@ -45,14 +46,14 @@
 	<!-- WEBPORTAL_DB_USER table all fields -->
 	<sql id="Base_Column_List">
 		ID,USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP,
-		CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,
+		CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,IS_ADMIN,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-	insert into WEBPORTAL_USER (USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP, CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
-    (#{userName},#{email},#{passportId},#{lastLoginTime},#{lastLoginIp},#{currentLoginTime},#{currentLoginIp},#{registerDate},now(),#{createUser},now(),#{updateUser}) 
+	insert into WEBPORTAL_USER (USERNAME,EMAIL,PASSPORT_ID,LAST_LOGIN_TIME,LASTLOGIN_IP, CURRENT_LOGIN_TIME,CURRENT_LOGIN_IP,REGISTER_DATE,IS_ADMIN, CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER) values
+    (#{userName},#{email},#{passportId},#{lastLoginTime},#{lastLoginIp},#{currentLoginTime},#{currentLoginIp},#{registerDate},#{isAdmin},now(),#{createUser},now(),#{updateUser}) 
 	</insert>
 	
 	

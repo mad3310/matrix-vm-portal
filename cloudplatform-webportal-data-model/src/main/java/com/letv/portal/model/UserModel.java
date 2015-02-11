@@ -32,6 +32,8 @@ public class UserModel extends BaseModel{
 	private String salt;
 	private Integer type;
 	
+	private boolean isAdmin;
+	
 	public UserModel() {
 	}
 
@@ -138,6 +140,14 @@ public class UserModel extends BaseModel{
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 }
