@@ -107,12 +107,14 @@ function checkboxControl(){
 	});
 }
 function queryDbUser(){
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
 		url : "/dbUser/"+$("#dbId").val(),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -177,12 +179,14 @@ function queryDbUser(){
 	});
 }
 function queryDbInfo(){
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
 		url : "/db/"+$("#dbId").val(),
 		dataType : "json", 
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var dbInfo = data.data;
 			$("#headerDbName").append(dbInfo.dbName);

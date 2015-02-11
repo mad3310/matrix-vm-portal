@@ -275,10 +275,14 @@ define(function(require,exports,module){
                 type:"get",
                 dataType:'json',
                 success:function(data){
-					/*添加当handler为空时的异常处理*/
-					$('body').find('.spin').remove();
+                	$('body').find('.spin').remove();
 					$('body').find('.far-spin').remove();
-                    handler(data);
+                	if(data.result == 0){
+                		 window.location.href="/500";
+                	}else{
+                		/*添加当handler为空时的异常处理*/
+                        handler(data);
+                	}
                 }
             });
         },

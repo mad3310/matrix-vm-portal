@@ -69,6 +69,10 @@
 	    <servlet-name>default</servlet-name>       
 	    <url-pattern>*.json</url-pattern>      
 	</servlet-mapping>
+	<servlet-mapping>        
+	    <servlet-name>default</servlet-name>       
+	    <url-pattern>*.svg</url-pattern>      
+	</servlet-mapping>
 
 	<!-- apache shiro for security -->
 	<!-- <filter>

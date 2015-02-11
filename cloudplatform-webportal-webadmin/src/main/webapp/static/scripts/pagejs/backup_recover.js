@@ -42,12 +42,15 @@ function queryByPage(currentPage, recordsPerPage) {
 		var dbName = '';
 		var status = '';
 	}
+	
+	getLoading();
 	$.ajax({ 
 		type : "get",
 		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName +'&&status=' + status,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			error(data);
 			var $backupTbody = $("#backupTbody");
 			var totalPages = data.data.totalPages;
