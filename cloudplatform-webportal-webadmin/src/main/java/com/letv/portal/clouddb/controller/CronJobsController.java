@@ -61,7 +61,7 @@ public class CronJobsController {
     	return obj;
 	}
 	/**Methods Name: checkContainerStatus <br>
-	 * Description: 检查集群健康状况<br>
+	 * Description: 检查container健康状况<br>
 	 * @author name: liuhao1
 	 * @param request
 	 * @param obj
