@@ -4,6 +4,7 @@
 });	
 function queryMclusterMonitor() {
 	$("#tby tr").remove();
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
@@ -11,13 +12,14 @@ function queryMclusterMonitor() {
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
 				var mclusterName = '';
-        		if(array[i].mcluster) {
+        		if(array[i].mcluster != undefined && array[i].mcluster != null) {
         			mclusterName = array[i].mcluster.mclusterName;
         		}
 				var td1 = $("<td>"
@@ -59,6 +61,7 @@ function queryMclusterMonitor() {
 	});
 }
 function getMclusterStatus(ip,obj) {
+	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
@@ -66,6 +69,7 @@ function getMclusterStatus(ip,obj) {
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
+			removeLoading();
 			if(error(data)) return;
 			var result = data.data.result;
 			if(result == "0"){
