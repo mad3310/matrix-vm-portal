@@ -21,14 +21,14 @@ function refreshChartForSelect(){
 }
 
 function queryMcluster(){
-	getLoading();
+	//getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",		
 		url:"/mcluster/valid",
 		dataType:"json",
 		success:function(data){
-			removeLoading();
+			//removeLoading();
 			if(error(data)) return;
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
@@ -41,14 +41,14 @@ function queryMcluster(){
 }
 
 function queryMonitorPoint(){
-	getLoading();
+	//getLoading();
 	$.ajax({
 		cache:false,
 		type:"get",		
 		url : "/monitor/index",
 		dataType:"json",
 		success:function(data){
-			removeLoading();
+			//removeLoading();
 			if(error(data)) return;
 			var monitorPoint = data.data;
 			for(var i=0,len=monitorPoint.length;i<len;i++){
@@ -132,6 +132,22 @@ function initChart(obj,title,ytitle,unit){
         },
         tooltip: {
             valueSuffix: unit
+        },
+        loading: {
+            hideDuration: 100,
+            showDuration: 100,
+            style: {
+            	position: 'absolute',
+            	backgroundColor: 'white',
+            	opacity: 0.5,
+            	textAlign: 'center'
+            },
+            labelStyle:{
+           	 "fontWeight": "bold",
+           	 "position": "relative", 
+           	 "top": "45%",
+           	 "fontSize":"12px"
+           }
         }
     });
 
@@ -140,7 +156,7 @@ function initChart(obj,title,ytitle,unit){
 function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
-	getLoading();
+	chart.showLoading();\
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -148,7 +164,7 @@ function setChartData(indexId,chart){
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
 		success:function(data){
-			removeLoading();
+			chart.hideLoading();
 	 		if(error(data)) return;
 	 		var ydata = data.data;
 	 		for(var i=chart.series.length-1;i>=0;i--){
@@ -157,6 +173,7 @@ function setChartData(indexId,chart){
 	 		for(var i=0;i<ydata.length;i++){
 	 			chart.addSeries(ydata[i],false);
  			}
+	 		
 	 		chart.redraw();
 		}
 	});
