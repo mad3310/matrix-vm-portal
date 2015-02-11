@@ -57,7 +57,7 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 		session.setUserInfoId(user.getId());
 		session.setUserName(user.getUserName());
 		session.setEmail(user.getEmail());
-		
+		session.setAdmin(user.isAdmin());
 		return session;
 	}
 

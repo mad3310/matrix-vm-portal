@@ -68,6 +68,8 @@
 	          <value>/static</value>
 	          <value>/jettyMonitor</value>
 	          <value>/cronJobs</value>
+	          <value>/oauth/callback</value>
+	          <value>/403</value>
 	        </list>
 	      </property>
 	    </bean>

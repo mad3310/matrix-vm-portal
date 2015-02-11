@@ -18,8 +18,9 @@ function queryMclusterMonitor() {
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
+				if(array[i] == null) continue;
 				var mclusterName = '';
-        		if(array[i].mcluster) {
+        		if(array[i].mcluster != undefined && array[i].mcluster != null) {
         			mclusterName = array[i].mcluster.mclusterName;
         		}
         		var tdh1 = "<input name=\"mclusterId\" type=\"hidden\" value=\""+array[i].mclusterId+"\"/>"

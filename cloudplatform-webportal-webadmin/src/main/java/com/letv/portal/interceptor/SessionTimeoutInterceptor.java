@@ -3,12 +3,15 @@ package com.letv.portal.interceptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,20 +21,26 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.ILoginService;
+import com.letv.common.util.ConfigUtil;
+import com.letv.portal.proxy.ILoginProxy;
 
 /**
  * 处理session超时的拦截器
  */
+@Component
 public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	private final static Logger logger = LoggerFactory.getLogger(SessionTimeoutInterceptor.class);
+	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
 	
-	@Autowired(required=false)
-	private ILoginService loginService;
+	@Autowired
+	private ILoginProxy loginProxy;
 	
-	
+	@Value("${oauth.auth.http}")
+	private String OAUTH_AUTH_HTTP;
+	@Value("${webportal.admin.http}")
+	private String WEBPORTAL_ADMIN_HTTP;
 	
 	public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
 	
@@ -43,12 +52,16 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
 		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");  
-		if(null != allowUrls && allowUrls.length>=1)
+		
+		//特殊url过滤
+		if(null != allowUrls && allowUrls.length>=1) {
 			for(String url : allowUrls) {  
 				if(requestUrl.contains(url)) {  
 					return true;  
 				}  
 			}
+		}
+		
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 		if(session == null ) {
 			logger.debug("please login");
@@ -57,7 +70,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			if (isAjaxRequest) {
 				responseJson(request,response,"长时间未操作，请重新登录");
 			} else {
-				response.sendRedirect("/account/login");
+				StringBuffer buffer = new StringBuffer();
+				buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
+				response.sendRedirect(buffer.toString());
 			}
 			return false;
 		} else {
@@ -69,7 +84,6 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			});
 		}
 		return true;
-		
 	}
 	
 	@Override

@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class BaseController {
+	@RequestMapping(value="/403",method=RequestMethod.GET)   
+	public String noAuthor(HttpServletRequest request,HttpServletResponse response) {
+		return "/error/403";
+	}
 	@RequestMapping(value="/404",method=RequestMethod.GET)   
 	public String notFound(HttpServletRequest request,HttpServletResponse response) {
 		return "/error/404";

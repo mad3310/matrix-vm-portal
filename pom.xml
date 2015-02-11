@@ -536,6 +536,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
+                <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
@@ -557,10 +558,6 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
-                <admin.pwd>000000</admin.pwd>
-                 <yaofaliang.pwd>000000</yaofaliang.pwd>
-                <zhangxiang.pwd>111111</zhangxiang.pwd>
-                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
 
@@ -584,7 +581,8 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
-                <webportal.local.http>http://localhost:8081</webportal.local.http>
+                 <webportal.local.http>http://localhost:8081</webportal.local.http>
+                <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                  <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
@@ -606,10 +604,6 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
-                <admin.pwd>000000</admin.pwd>
-                 <yaofaliang.pwd>000000</yaofaliang.pwd>
-                <zhangxiang.pwd>111111</zhangxiang.pwd>
-                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
         
@@ -634,6 +628,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                  <webportal.local.http>http://rds3.et.letv.com</webportal.local.http>
+                <webportal.admin.http>http://rds2.et.letv.com</webportal.admin.http>
                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
@@ -657,10 +652,6 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
-                <admin.pwd>abc123</admin.pwd>
-                 <yaofaliang.pwd>000000</yaofaliang.pwd>
-                <zhangxiang.pwd>111111</zhangxiang.pwd>
-                <zhoubingzheng.pwd>222222</zhoubingzheng.pwd>
             </properties>
         </profile>
 
@@ -685,6 +676,7 @@
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                 
                 <webportal.local.http>http://rds.et.letv.com</webportal.local.http>
+                <webportal.admin.http>http://rds1.et.letv.com</webportal.admin.http>
                  <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
@@ -708,10 +700,6 @@
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
                 
                 <task.executor.size>150</task.executor.size>
-                <admin.pwd>CH$xTw6HU!MBZjP1</admin.pwd>
-                <yaofaliang.pwd>legend-kobe</yaofaliang.pwd>
-                <zhangxiang.pwd>lylj0728</zhangxiang.pwd>
-                <zhoubingzheng.pwd>zhoubingzheng</zhoubingzheng.pwd>
             </properties>
         </profile>
 
