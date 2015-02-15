@@ -225,6 +225,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14) limit #{startRowPosition},#{recordsPerPage}
 	</select>
+	<select id="selectLastValidMclustersByPage" resultMap="BaseResultMap" parameterType="com.letv.common.paging.impl.Page">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14) limit #{startRowPosition},1000
+	</select>
 	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"

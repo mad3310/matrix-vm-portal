@@ -100,7 +100,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 			return this.mclusterDao.selectValidMclusters();
 		Page page = new Page(stage,25);
 		if(stage == 4)
-			page = new Page(stage,1000);
+			return this.mclusterDao.selectLastValidMclustersByPage(page);
 		return this.mclusterDao.selectValidMclustersByPage(page);
 	}
 }
