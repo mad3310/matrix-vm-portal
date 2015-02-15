@@ -7,6 +7,7 @@ $(function () {
 });
 
 function initPieChart(divName,type){
+	
     $('#' + divName).highcharts({
         chart: {
             type: 'pie',
@@ -46,6 +47,22 @@ function initPieChart(divName,type){
         },
         credits:{
         	enabled: false
+        },
+        loading: {
+            hideDuration: 100,
+            showDuration: 100,
+            style: {
+            	position: 'absolute',
+            	backgroundColor: 'white',
+            	opacity: 0.5,
+            	textAlign: 'center'
+            },
+            labelStyle:{
+           	 "fontWeight": "bold",
+           	 "position": "relative", 
+           	 "top": "45%",
+           	 "fontSize":"12px"
+           }
         }
     });
     setPieChartData(divName,type);
@@ -53,17 +70,15 @@ function initPieChart(divName,type){
 
 function setPieChartData(divName,type){
 	var chart = $('#' + divName).highcharts();
-	var url = "/list/mcluster/monitor/" + type
-	chart.showLoading();
-	getLoading();
+    chart.showLoading();
+	var url = "/list/mcluster/monitor/" + type;		
 	$.ajax({ 
 		cache:false,
 		type : "get",
 		url : "/dashboard/monitor/" + type,
 		dataType : "json", 
 		contentType : "application/json; charset=utf-8",
-		success : function(data) {
-			removeLoading();
+		success : function(data) {			
 			if(error(data)) return;
 			var status = data.data;
 			var pieChartData=[{
@@ -98,14 +113,12 @@ function updateMclusterChart(divName,type){
 }
 
 function getOverview(){
-	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/dashboard/statistics",
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
-			removeLoading();
 			if(error(data)) return;
 			var view = data.data;
 			$('#dbSum').html(view.db);

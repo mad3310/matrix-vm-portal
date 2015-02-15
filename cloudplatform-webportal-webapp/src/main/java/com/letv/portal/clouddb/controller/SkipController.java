@@ -135,7 +135,7 @@ public class SkipController {
 		return mav;
 	}
 	
-	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
+	@RequestMapping(value ="/jettyMonitor")
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
 		return obj;
 	}
@@ -146,7 +146,7 @@ public class SkipController {
 		mav.setViewName("/clouddb/backupRecover");
 		return mav;
 	}
-	@RequestMapping(value ="/toLogin",method=RequestMethod.GET)
+	@RequestMapping(value ="/toLogin")
 	public ModelAndView toLogin(ModelAndView mav){
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
