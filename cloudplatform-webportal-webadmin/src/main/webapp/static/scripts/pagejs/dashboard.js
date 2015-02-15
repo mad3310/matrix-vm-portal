@@ -6,8 +6,7 @@ $(function () {
 	$('#nav-search').addClass("hidden");
 });
 
-function initPieChart(divName,type){
-	
+function initPieChart(divName,type){	
     $('#' + divName).highcharts({
         chart: {
             type: 'pie',
@@ -17,7 +16,7 @@ function initPieChart(divName,type){
         },
         tooltip: {
 	        formatter: function() {
-	            return '<b>'+ this.point.name +'</b>: '+ this.point.y ;
+	            return '<b>'+ this.point.name +'</b>: '+ this.point.y;
 	        } 
         },
         title: {

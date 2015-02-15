@@ -1354,7 +1354,7 @@ position: relative;
 
 .edit-text-box .form-control-feedback,
 .edit-text-box .form-horizontal .has-feedback .form-control-feedback {
-     right: 15px;;
+     right: -15px;;
 } 
 .edit-text-box .form-group{
 	margin-left:0;

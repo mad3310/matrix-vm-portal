@@ -106,8 +106,8 @@ define(function(require){
             descn: {
                 validators: {
                     stringLength: {
-                        max: 256,
-                        message: '描述最多256字符!'
+                        max: 100,
+                        message: '输入长度不超过100个字符!'
                     }
                 }
             }
@@ -120,7 +120,7 @@ define(function(require){
            cn.PostData(url, createUserData, function () {
                 /*刷新本身ifame*/
                 var $iframe = $("body", parent.document).find("iframe");
-                $iframe.attr("src", $iframe.attr("src"));
+              //  $iframe.attr("src", $iframe.attr("src"));
             });
         }else{
             var title = "警告";
