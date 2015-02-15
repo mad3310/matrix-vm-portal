@@ -87,7 +87,7 @@ function buildUser() {
 				var totalPages = data.data.totalPages;
 				
 				for (var i = 0, len = array.length; i < len; i++) {
-					if(array[i].db = undefined || array[i].db == null) continue;
+					if(array[i].db == undefined || array[i].db == null) continue;
 					var td1 = $("<td class=\"center\">"
 									+"<label class=\"position-relative\">"
 									+"<input name=\"db_user_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
