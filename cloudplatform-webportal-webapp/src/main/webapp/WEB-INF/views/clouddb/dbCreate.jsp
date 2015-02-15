@@ -557,7 +557,7 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
-									<div class="bk-form-row-txt notice-block">您购买的数据库创建大约需要5分钟,请耐心等待...</div>
+									<div class="bk-form-row-txt notice-block">您购买的数据库创建大约需要2分钟,请耐心等待...</div>
 								</div>
 								<div class="bk-pb4"></div>
 							</div>
