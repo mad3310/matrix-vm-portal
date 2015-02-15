@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.mysql.jdbc.StringUtils;
 
@@ -37,6 +39,8 @@ public class DbUserController {
 	
 	@Resource
 	private IDbUserService dbUserService;
+	@Resource
+	private IDbService dbService;
 	
 	@Resource
 	private IDbUserProxy dbUserProxy;
@@ -54,9 +58,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(@PathVariable Long dbId,ResultObject obj) {
-		if(null == dbId) {
-			throw new ValidateException("参数不能为空");
-		}
+		isAuthorityDb(dbId);
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbId", dbId);
 		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
@@ -72,6 +74,7 @@ public class DbUserController {
 	 */
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
+		isAuthorityDb(dbUserModel.getDbId());
 		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		}
@@ -103,17 +106,9 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
-		DbUserModel dbUser = this.dbUserProxy.selectById(Long.parseLong(dbUserId));
 		ResultObject obj = new ResultObject();
-		if(dbUser!= null) {
-			if(dbUser.getCreateUser() == sessionService.getSession().getUserId()) {
-				this.dbUserProxy.deleteDbUser(dbUserId);
-			} else {
-				obj.setResult(0);
-			}
-		} else {
-			obj.setResult(0);
-		}
+		isAuthorityDbUser(Long.parseLong(dbUserId));
+		this.dbUserProxy.deleteDbUser(dbUserId);
 		return obj;
 	}
 	@RequestMapping(value="/{dbId}/{username}",method=RequestMethod.DELETE)
@@ -121,6 +116,7 @@ public class DbUserController {
 		if(null == dbId || StringUtils.isNullOrEmpty(username)) {
 			throw new ValidateException("参数不能为空");
 		}
+		isAuthorityDb(dbId);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("dbId", dbId);
 		map.put("username", username);
@@ -132,6 +128,7 @@ public class DbUserController {
 		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
 			throw new ValidateException("参数不能为空");
 		}
+		isAuthorityDb(dbId);
 		this.dbUserProxy.updateSecurity(dbId,username,password);
 		return obj;
 	}
@@ -151,6 +148,7 @@ public class DbUserController {
 		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
 			throw new ValidateException("参数不能为空");
 		}
+		isAuthorityDb(dbUserModel.getDbId());
 		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);
 		return obj;
 	}
@@ -168,8 +166,31 @@ public class DbUserController {
 		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {
 			throw new ValidateException("参数不能为空");
 		}
+		isAuthorityDb(dbUserModel.getDbId());
 		this.dbUserService.updateDescnByUsername(dbUserModel);
 		return obj;
+	}
+	
+	private void isAuthorityDb(Long dbId) {
+		if(dbId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("id", dbId);
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<DbModel> dbs = this.dbService.selectByMap(map);
+		if(dbs == null || dbs.isEmpty())
+			throw new ValidateException("参数不合法");
+	}
+	
+	private void isAuthorityDbUser(Long dbUserId) {
+		if(dbUserId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("id", dbUserId);
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(map);
+		if(dbUsers == null || dbUsers.isEmpty())
+			throw new ValidateException("参数不合法");
 	}
 	
 }

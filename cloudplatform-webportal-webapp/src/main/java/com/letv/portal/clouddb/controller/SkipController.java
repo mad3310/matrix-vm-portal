@@ -1,5 +1,9 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -9,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IDbService;
 
 /**Program Name: SkipController <br>
@@ -42,6 +48,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/detail/baseInfo/{dbId}",method=RequestMethod.GET)
 	public ModelAndView tobaseInfo(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/baseInfo");
 		return mav;
@@ -55,6 +62,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/detail/db/{dbId}",method=RequestMethod.GET)
 	public ModelAndView dbDetail(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/layout");
 		return mav;
@@ -96,6 +104,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/detail/account/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toAccountManager(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/accountManager");
 		return mav;
@@ -110,6 +119,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/detail/security/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toSecurityManager(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/securityManager");
 		return mav;
@@ -117,6 +127,7 @@ public class SkipController {
 	
 	@RequestMapping(value ="/monitor/dbLink/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toMonitor(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/monitor/dbLink");
 		return mav;
@@ -135,23 +146,35 @@ public class SkipController {
 		return mav;
 	}
 	
-	@RequestMapping(value ="/jettyMonitor")
+	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
 		return obj;
 	}
 	
 	@RequestMapping(value ="/list/backup/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toDbBackup(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
 		mav.setViewName("/clouddb/backupRecover");
 		return mav;
 	}
-	@RequestMapping(value ="/toLogin")
+	@RequestMapping(value ="/toLogin",method=RequestMethod.GET)
 	public ModelAndView toLogin(ModelAndView mav){
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		mav.addObject("loginURI", buffer.toString());
 		mav.setViewName("/toLogin");
 		return mav;
+	}
+	
+	private void isAuthorityDb(Long dbId) {
+		if(dbId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("id", dbId);
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<DbModel> dbs = this.dbService.selectByMap(map);
+		if(dbs == null || dbs.isEmpty())
+			throw new ValidateException("参数不合法");
 	}
 }

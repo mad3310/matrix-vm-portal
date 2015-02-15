@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
@@ -108,7 +109,7 @@ public class DbController {
 	 */
 	@RequestMapping(value="/{dbId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long dbId){
-		logger.info("get db by dbId start");
+		isAuthorityDb(dbId);
 		ResultObject obj = new ResultObject();
 		DbModel db = this.dbService.dbList(dbId);
 		obj.setData(db);
@@ -123,4 +124,14 @@ public class DbController {
 		return map;
 	}
 	
+	private void isAuthorityDb(Long dbId) {
+		if(dbId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("id", dbId);
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<DbModel> dbs = this.dbService.selectByMap(map);
+		if(dbs == null || dbs.isEmpty())
+			throw new ValidateException("参数不合法");
+	}
 }

@@ -97,7 +97,7 @@
 	<update id="delete" parameterType="DbUser">
 		delete from WEBPORTAL_DB_USER where ID = #{id}
 	</update>
-	<update id="deleteByDbId" parameterType="DbUser">
+	<update id="deleteByDbId" parameterType="java.lang.Long">
 		delete from WEBPORTAL_DB_USER where DB_ID = #{dbId}
 	</update>
 	
