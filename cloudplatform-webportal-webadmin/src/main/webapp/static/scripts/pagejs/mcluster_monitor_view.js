@@ -134,15 +134,15 @@ function initChart(obj,title,ytitle,unit){
             valueSuffix: unit
         },
         loading: {
-            hideDuration: 100,
-            showDuration: 100,
+            hideDuration: 10,
+            showDuration: 10,
             style: {
             	position: 'absolute',
             	backgroundColor: 'white',
             	opacity: 0.5,
             	textAlign: 'center'
             },
-            labelStyle:{
+           labelStyle:{
            	 "fontWeight": "bold",
            	 "position": "relative", 
            	 "top": "45%",
@@ -156,7 +156,7 @@ function initChart(obj,title,ytitle,unit){
 function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
-	chart.showLoading();\
+	chart.showLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -173,7 +173,6 @@ function setChartData(indexId,chart){
 	 		for(var i=0;i<ydata.length;i++){
 	 			chart.addSeries(ydata[i],false);
  			}
-	 		
 	 		chart.redraw();
 		}
 	});
