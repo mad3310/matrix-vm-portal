@@ -175,7 +175,7 @@ public class DbUserController {
 		if(dbId == null)
 			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("dbId", dbId);
+		map.put("id", dbId);
 		map.put("createUser", sessionService.getSession().getUserId());
 		List<DbModel> dbs = this.dbService.selectByMap(map);
 		if(dbs == null || dbs.isEmpty())
@@ -186,7 +186,7 @@ public class DbUserController {
 		if(dbUserId == null)
 			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("dbUserId", dbUserId);
+		map.put("id", dbUserId);
 		map.put("createUser", sessionService.getSession().getUserId());
 		List<DbUserModel> dbUsers = this.dbUserService.selectByMap(map);
 		if(dbUsers == null || dbUsers.isEmpty())
