@@ -80,7 +80,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	}
 
 	@Override
-//	@Async
+	@Async
 	public void deleteOutData() {
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 1);
