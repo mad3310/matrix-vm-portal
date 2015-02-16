@@ -56,7 +56,7 @@ public class JobFactory implements Job {
         }
         if("deleteMonitorMonthAgo".equals(method)) {
         	logger.info("deleteMonitorMonthAgo");
-        	this.monitorService.deleteOutData();
+        	this.monitorProxy.deleteOutData();
         }
         
         //定时任务备份

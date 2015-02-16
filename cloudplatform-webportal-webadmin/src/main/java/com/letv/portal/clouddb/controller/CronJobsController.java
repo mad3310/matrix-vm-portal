@@ -96,7 +96,7 @@ public class CronJobsController {
 	@RequestMapping(value="/mcluster/monitor",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject deleteMonitorMonthAgo(HttpServletRequest request,ResultObject obj) {
 		logger.info("deleteMonitorMonthAgo");
-    	this.monitorService.deleteOutData();
+    	this.monitorProxy.deleteOutData();
     	return obj;
 	}
 	

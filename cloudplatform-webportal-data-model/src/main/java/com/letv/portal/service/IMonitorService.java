@@ -20,10 +20,8 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	public Float selectDbStorage(Long mclusterId);
 	public List<Map<String,Object>> selectDbConnect(Long mclusterId);
 	
-	/**Methods Name: deleteOutData <br>
-	 * Description: 删除过时数据：当前时间往前一个月<br>
-	 * @author name: liuhao1
-	 */
-	public void deleteOutData();
+	public void deleteOutDataByIndex(Map<String, Object> map);
+	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
+			Map<String, Object> map);
 	
 }

@@ -6,20 +6,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.letv.portal.junitBase.AbstractTest;
-import com.letv.portal.model.MclusterModel;
-import com.letv.portal.service.IMonitorService;
+import com.letv.portal.proxy.IMonitorProxy;
  
 public class MonitorTest extends AbstractTest{
 
 	@Autowired
-	private IMonitorService monitorService;
+	private IMonitorProxy monitorProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(
 			MonitorTest.class);
 
     @Test
     public void testDeleteOutData() {
-    	this.monitorService.deleteOutData();
+    	this.monitorProxy.deleteOutData();
     }
     
 }
