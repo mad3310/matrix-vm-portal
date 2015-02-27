@@ -42,4 +42,6 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	List<MclusterModel> selectValidMclusters();
 
 	List<MclusterModel> selectValidMclustersByPage(Page page);
+
+	List<MclusterModel> selectLastValidMclustersByPage(Page page);
 }

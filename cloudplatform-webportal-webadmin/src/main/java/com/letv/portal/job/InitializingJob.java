@@ -146,7 +146,7 @@ public class InitializingJob {
 			deleteMonitorMonthAgo.setJobMethod("deleteMonitorMonthAgo");
 			deleteMonitorMonthAgo.setJobGroup("webportal");
 			deleteMonitorMonthAgo.setJobStatus("1");
-			deleteMonitorMonthAgo.setCronExpression("0 0 0 * * ?"); //凌晨0点
+			deleteMonitorMonthAgo.setCronExpression("0 0 15 * * ?"); //每天下午3点
 			deleteMonitorMonthAgo.setDescn("删除旧的监控数据");
 			jobs.add(deleteMonitorMonthAgo);
 			

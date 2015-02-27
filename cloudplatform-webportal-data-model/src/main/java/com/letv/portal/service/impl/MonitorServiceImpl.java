@@ -204,40 +204,15 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.selectDbConnect(containers.get(0).getIpAddr());
 	}
 
+	@Override
+	public void deleteOutDataByIndex(Map<String, Object> map) {
+		this.monitorDao.deleteOutDataByIndex(map);
+	}
 
 	@Override
-	@Async
-	public void deleteOutData() {
-		Map<String,Object> indexParams = new  HashMap<String,Object>();
-		indexParams.put("status", 1);
-		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
-		
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MONTH, -1);    //得到前一个月
-		long date = cal.getTimeInMillis();
-		Date monthAgo = new Date(date);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (MonitorIndexModel monitorIndexModel : indexs) {
-			
-			//get max id and min id from table where monitor_date<monthAgo
-			//for in  min and max, delete every 5000 by id.
-			
-			map.put("dbName", monitorIndexModel.getDetailTable());
-			map.put("monitorDate", monthAgo);
-			List<Map<String,Object>> ids = this.monitorDao.selectExtremeIdByMonitorDate(map);
-			if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
-				continue;
-			}
-			Map<String, Object> extremeIds = ids.get(0);
-			Long max = ((BigInteger)extremeIds.get("maxId")).longValue();
-			Long min = ((BigInteger)extremeIds.get("minId")).longValue();
-			if(max == null || max == 0 || max == min)
-				return;
-			for (Long i = min; i <= max; i+=5000) {
-				map.put("id", i);
-				this.monitorDao.deleteOutDataByIndex(map);
-			}
-		}
+	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
+			Map<String, Object> map) {
+		return this.monitorDao.selectExtremeIdByMonitorDate(map);
 	}
+
 }
