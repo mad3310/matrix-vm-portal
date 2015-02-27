@@ -120,7 +120,7 @@ define(function(require){
            cn.PostData(url, createUserData, function () {
                 /*刷新本身ifame*/
                 var $iframe = $("body", parent.document).find("iframe");
-              //  $iframe.attr("src", $iframe.attr("src"));
+                $iframe.attr("src", $iframe.attr("src"));
             });
         }else{
             var title = "警告";
