@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -15,7 +16,9 @@ import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.IBuildDao;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.model.BuildModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.service.IBuildService;
+import com.letv.portal.service.IDbService;
 
 @Service("buildService")
 public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
@@ -25,6 +28,9 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	
 	@Resource
 	private IBuildDao buildDao;
+	
+	@Autowired
+	private IDbService dbService;
 
 	public BuildServiceImpl() {
 		super(BuildModel.class);
@@ -82,8 +88,12 @@ public class BuildServiceImpl extends BaseServiceImpl<BuildModel> implements
 	public int getStepByDbId(Long dbId) {
 		if(dbId == null)
 			throw new ValidateException("参数不合法");
+		DbModel db = this.dbService.selectById(dbId);
+		if(db == null)
+			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("dbId", dbId);
+		map.put("mclusterId", db.getMclusterId());
 		map.put("status", BuildStatus.BUILDING.getValue());
 		List<BuildModel> builds = this.selectByMap(map);
 		if(builds.isEmpty()) {
