@@ -11,15 +11,25 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+
+import com.mysql.jdbc.StringUtils;
 
 /*
  * author:haungxuebin
@@ -79,12 +89,11 @@ public class HttpsClient {
 	 * HTTP Client Object,used HttpClient Class before(version 3.x),but now the
 	 * HttpClient is an interface
 	 */
-
-	public static String sendXMLDataByGet(String url) {
+	public static String sendXMLDataByGet(String url,int connectionTimeout,int soTimeout) {
 		// 创建HttpClient实例
 		if (client == null) {
 			// Create HttpClient Object
-			client = new DefaultHttpClient();
+			client = getHttpclient(connectionTimeout, soTimeout);
 			enableSSL(client);
 		}
 		// 创建Get方法实例
@@ -126,11 +135,11 @@ public class HttpsClient {
 	 * @throws IOException
 	 * @throws ClientProtocolException
 	 */
-	public static String sendXMLDataByPost(String url, String xmlData)
+	public static String sendXMLDataByPost(String url, String xmlData,int connectionTimeout,int soTimeout)
 			throws ClientProtocolException, IOException {
 		if (client == null) {
 			// Create HttpClient Object
-			client = new DefaultHttpClient();
+			client = getHttpclient(connectionTimeout, soTimeout);
 			enableSSL(client);
 		}
 		client.getParams().setParameter("http.protocol.content-charset",
@@ -174,6 +183,20 @@ public class HttpsClient {
 		// statusCode = response.getStatusLine().getStatusCode();
 		return strrep;
 	}
+	
+	private static DefaultHttpClient getHttpclient(int connectionTimeout,int soTimeout){
+		
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		/*
+		 * 设置超时时间
+		 */
+		HttpParams params = httpclient.getParams();  
+		HttpConnectionParams.setConnectionTimeout(params, connectionTimeout);  
+		HttpConnectionParams.setSoTimeout(params, soTimeout);
+        
+	    return httpclient;
+	}
+
 
 	/**
 	 * Get XML String of utf-8
@@ -196,7 +219,7 @@ public class HttpsClient {
 	}
 	
 	public static void main(String[] args) {
-		String result = HttpsClient.sendXMLDataByGet("https://oauth.lecloud.com/cloud-oauth/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7");
+		String result = HttpsClient.sendXMLDataByGet("https://oauth.lecloud.com/cloud-oauth/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
 		System.out.println(result);
 		
 	}

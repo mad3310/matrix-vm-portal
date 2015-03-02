@@ -16,10 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.letv.common.exception.OauthException;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
 import com.letv.common.util.CookieUtil;
 import com.letv.common.util.HttpsClient;
 import com.letv.portal.model.UserLogin;
@@ -111,7 +111,9 @@ public class LoginController{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		logger.debug("getAuthorize :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		if(StringUtils.isNullOrEmpty(result))
+			throw new OauthException("getAuthorize connection timeout");
 		Map<String,Object> resultMap = this.transResult(result);
 		return (String) resultMap.get("code");
 	}
@@ -119,7 +121,9 @@ public class LoginController{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		logger.debug("getAccessToken :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		if(StringUtils.isNullOrEmpty(result))
+			throw new OauthException("getAccessToken connection timeout");
 		Map<String,Object> resultMap = this.transResult(result);
 		return (String) resultMap.get("access_token");
 	}
@@ -127,7 +131,9 @@ public class LoginController{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/userdetailinfo?access_token=").append(accessToken);
 		logger.debug("getUserdetailinfo :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString());
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		if(StringUtils.isNullOrEmpty(result))
+			throw new OauthException("getUserdetailinfo connection timeout");
 		Map<String,Object> resultMap = this.transResult(result);
 		return resultMap;
 	}

@@ -52,7 +52,7 @@ public class LogoutController{
 			
 			request.getSession().invalidate();
 			sessionService.setSession(null,"logout");
-			HttpsClient.sendXMLDataByGet(buffer.toString());
+			HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
