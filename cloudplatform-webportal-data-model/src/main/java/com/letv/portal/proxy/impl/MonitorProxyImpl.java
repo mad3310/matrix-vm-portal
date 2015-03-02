@@ -80,7 +80,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	}
 
 	@Override
-	@Async
+//	@Async
 	public void deleteOutData() {
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 1);
@@ -108,9 +108,12 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			Long min = ((BigInteger)extremeIds.get("minId")).longValue();
 			if(max == null || max == 0 || max == min)
 				return;
-			for (Long i = min; i <= max; i+=5000) {
-				map.put("id", i);
-				this.monitorService.deleteOutDataByIndex(map); 
+			Long j = min;
+			for (Long i = min; i <= max; i+=300) {
+				j = i-300;
+				map.put("min", j);
+				map.put("max", i);
+				this.monitorService.deleteOutDataByIndex(map);
 			}
 		}
 	}
