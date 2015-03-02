@@ -87,7 +87,7 @@
 	</select>
 	
 	<update id="deleteOutDataByIndex" parameterType="java.util.Map">
-		delete from ${dbName} where id &lt;= #{id}
+		delete from ${dbName} where id between #{min} and #{max}
 	</update>
 	
 	<select id="selectDbStorage" resultType="java.lang.Float" parameterType="java.lang.String">
