@@ -49,10 +49,10 @@
 				and m.ID=#{id}
 			</if>
 			<if test="username != null  and username != '' ">
-				and m.USERNAME like CONCAT('%','${username}','%')
+				and m.USERNAME=#{username}
 			</if>
 			<if test="acceptIp != null  and acceptIp != '' ">
-				and m.ACCEPT_IP like CONCAT('%','${acceptIp}','%')
+				and m.ACCEPT_IP=#{acceptIp}
 			</if>
 			<if test="dbId != null  ">
 				and m.DB_ID=#{dbId}
