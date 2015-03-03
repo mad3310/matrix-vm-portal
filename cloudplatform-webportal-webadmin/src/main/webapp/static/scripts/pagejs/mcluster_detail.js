@@ -31,9 +31,24 @@ function queryContainer(){
 				var	td4 = $("<td>"
 						+ array[i].ipAddr
 						+ "</td>");
+				/*if(array[i].mountDir != null){
+					var len=array[i].mountDir.length; 
+					for(var j=0;j<len;j++){ 
+						for(var key in array[i].mountDir[j]){
+							alert("key："+key+",value："+array[i].mountDir[j][key]); 
+							} 
+						}
+				}*/
+				
 				if(array[i].mountDir != null){
+					jsonStr = array[i].mountDir.substring(1,array[i].mountDir.length-1);
+					jsonArr = jsonStr.split(",");
+					var mountDir = "";
+					for (var j = 0; j < jsonArr.length; j++){						
+						mountDir += jsonArr[j]+"<br/>";					
+					}
 					var	td5 = $("<td>"
-							+ array[i].mountDir
+							+ mountDir
 							+ "</td>");
 				}else{
 					var	td5 = $("<td>"
