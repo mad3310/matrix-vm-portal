@@ -31,6 +31,8 @@ public class BackupController {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("dbName", StringUtil.transSqlCharacter(request.getParameter("dbName")));
 		params.put("mclusterName", StringUtil.transSqlCharacter(request.getParameter("mclusterName")));
+		params.put("orderBy", "START_TIME");
+		params.put("isAsc", true);
 		obj.setData(this.backupService.selectPageByParams(page, params));
 		return obj;
 	}

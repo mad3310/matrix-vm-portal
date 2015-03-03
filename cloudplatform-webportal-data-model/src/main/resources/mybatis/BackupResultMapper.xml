@@ -225,14 +225,14 @@
 			and d.DB_NAME like CONCAT('%','${params.dbName}','%') escape '^'
 		</if> 
 		<include refid="Example_Page_Where_Clause" />
-		<if test="page != null">
-      		limit #{page.startRowPosition},#{page.recordsPerPage}
-    	</if>
 		<if test="params != null and params.orderBy != null  ">
-      		 order by #{params.orderBy}
+      		 order by r.${params.orderBy}
     	</if>
 		<if test="params != null and !params.isAsc == false">
-      		 desc
+      		 desc 
+    	</if>
+    	<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
 	</select>
 	

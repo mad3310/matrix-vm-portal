@@ -33,6 +33,8 @@ public class BackupController {
 		if(null == params.get("dbId")) {
 			throw new ValidateException("参数不能为空");
 		}
+		params.put("orderBy", "START_TIME");
+		params.put("isAsc", true);
 		obj.setData(this.backupService.selectPageByParams(page, params));
 		return obj;
 	}
