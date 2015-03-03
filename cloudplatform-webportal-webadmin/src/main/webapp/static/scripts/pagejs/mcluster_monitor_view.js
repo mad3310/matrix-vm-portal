@@ -34,6 +34,8 @@ function queryMcluster(){
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
 				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
 				$("#mclusterOption").append(option);
+				//chosen 组件配置
+				chosenConf();
 			}
 			queryMonitorPoint();
 		}

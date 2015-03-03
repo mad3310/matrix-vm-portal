@@ -55,14 +55,14 @@
 						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 						<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="col-sm-3 control-label">选择Container集群</label>
-							<div class="col-sm-7">
-								<select id="mclusterOption" name="mclusterId" class="form-control">
-									<option value=""></option>
+							<label class="col-sm-2 control-label" for="mclusterOption">选择Container集群</label>
+							<div class="col-sm-9">
+								<select class="chosen-select" id="mclusterOption" data-placeholder="Choose a container...">
+									<option value="">  </option>
 								</select>
 							</div>
-							<div class="col-sm-2">
-								<button id="create_on_old_mcluster_botton" type="submit" class="btn btn-sm btn-info">创建</button>
+							<div class="col-sm-1">
+								<button id="create_on_old_mcluster_botton" type="submit" class="pull-right btn btn-sm btn-info">创建</button>
 							</div>
 						</div>
 					</form>
@@ -103,6 +103,9 @@
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/ace.min.css" />
+<!-- <link rel="stylesheet" href="../assets/css/ace.min.css" id="main-ace-style" />  -->
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
-
 <script src="${ctx}/static/scripts/pagejs/db_audit.js"></script>
+<script src="${ctx}/static/ace/js/chosen.jquery.min.js"></script>

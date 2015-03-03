@@ -162,6 +162,8 @@ function queryMcluserById(){
 								+mclustersInfo[i].mclusterName
 								+"</option>");
 				$("#mclusterOption").append(option);
+				//chosen 组件配置
+				chosenConf();
 			}
 		}
 	});

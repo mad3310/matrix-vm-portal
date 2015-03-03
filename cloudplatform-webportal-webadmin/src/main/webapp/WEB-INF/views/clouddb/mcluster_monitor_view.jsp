@@ -11,19 +11,12 @@
 			<div class="clearfix form-actions">
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
-						<label class="col-sm-2 control-label no-padding-right text-info">Container集群</label>
+					    <label class="col-sm-2 control-label" for="mclusterOption">选择Container集群</label>
 						<div class="col-sm-4">
-							<select id="mclusterOption" name="mclusterId" class="form-control">
+							<select class="chosen-select" id="mclusterOption" data-placeholder="Choose a container...">
+								<option value="">  </option>
 							</select>
-												
 						</div>
-					<!-- 	<label class="col-sm-1 control-label">监控点</label>
-						<div class="col-sm-2">
-							<select id="monitorPointOption" name="monitorPoint" class="form-control">
-								<option value=""></option>
-							</select>
-						</div> -->					
-						
 						<label class="col-sm-2 control-label text-info">时间</label>
 						<div class="col-sm-3">
 							<select id="queryTime" name="queryTime" class="form-control">
@@ -73,10 +66,14 @@
 		</div>
 	</div>
 </div>
+
+<link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
+<link rel="stylesheet" href="${ctx}/static/ace/css/ace.min.css" />
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
 <script src="${ctx}/static/scripts/highcharts/themes/grid-light.js"></script>
 
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
 <script src="${ctx}/static/scripts/pagejs/mcluster_monitor_view.js"></script>
+<script src="${ctx}/static/ace/js/chosen.jquery.min.js"></script>
 
