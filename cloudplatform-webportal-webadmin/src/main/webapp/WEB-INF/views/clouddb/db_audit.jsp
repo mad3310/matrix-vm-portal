@@ -55,8 +55,8 @@
 						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 						<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label class="col-sm-2 control-label" for="mclusterOption">选择Container集群</label>
-							<div class="col-sm-9">
+							<label class="col-sm-3 control-label" for="mclusterOption">选择Container集群</label>
+							<div class="col-sm-8">
 								<select class="chosen-select" id="mclusterOption" data-placeholder="Choose a container...">
 									<option value="">  </option>
 								</select>
