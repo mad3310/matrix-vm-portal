@@ -54,10 +54,11 @@ define(function(require,exports,module){
                     var td3 = '';                
                     if(array[i].status == 2){
                     	var td3 = $("<td>"
-                    			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\"  data-toggle=\"tooltip\" data-placement=\"top\">"
+                    			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\">"
                     			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
                     			+ "</div>"
                     			+ "</div>"
+                    			+ "<span class=\"progress-info\"></span>"
                                 + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
                                 + "</td>");
                     }else{
@@ -71,15 +72,21 @@ define(function(require,exports,module){
                     var td5 = $("<td><span>MySQL5.5</span></td>");
                     var td6 = $("<td><span >单可用区</span></td>");
                     var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                    var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
-                    if(cn.Displayable(array[i].status)){
-                    	var td9 = $("<td class=\"text-right\"><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    if(array[i].mcluster == null){
+                    	var td8 = $("<td></td>");
                     }else{
-                    	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                    	var td8 = $("<td><span>"+cn.FilterNull(array[i].mcluster.mclusterName)+"</span></td>")
+                    }
+                    
+                    var td9 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    if(cn.Displayable(array[i].status)){
+                    	var td10 = $("<td class=\"text-right\"><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    }else{
+                    	var td10 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
                     
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9).append(td10);
                     tr.appendTo($tby);
                  }
             }
@@ -109,33 +116,32 @@ define(function(require,exports,module){
            	if( data == 1){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.attr('data-original-title',"正在准备安装环境...");           		
+           		$obj.next().html("正在准备安装环境...");
            	}else if (data > 1 && data <= 3){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.attr('data-original-title',"正在检查安装环境...");         		
+           		$obj.next().html("正在检查安装环境...");
            	}else if (data > 3 && data <= 6){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.attr('data-original-title',"正在初始化数据库服务...");          		
-           	}else if (data > 6 && data <= 8){
+           		$obj.next().html("正在初始化数据库服务...");
+           	}else if (data > 6 && data < 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.attr('data-original-title',"正在创建数据库...");
-           	}else if (data == 0 || data > 8){
+           		$obj.next().html("正在创建数据库...");
+           	}else if (data == 0 || data >= 8){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
-           		$obj.attr('data-original-title',"创建完成");
+           		$obj.next().html("创建完成");
            		asyncData();
            	}else if(data == -1){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
-           		$obj.attr('data-original-title',"创建失败");           		
+           		$obj.next().html("创建失败");
            		asyncData();
            	}else{
            		asyncData();
            	}
-            cn.Tooltip();
 	   	}
     }
 });
