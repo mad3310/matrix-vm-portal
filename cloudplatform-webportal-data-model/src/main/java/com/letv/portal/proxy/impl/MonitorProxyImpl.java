@@ -27,6 +27,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private final static Logger logger = LoggerFactory.getLogger(MonitorProxyImpl.class);
 	@Autowired
 	private IMonitorService monitorService;
+	@Autowired
+	private IMonitorService monitorServiceByJdbc;
 	
 	@Autowired
 	private IBuildTaskService buildTaskService;
@@ -109,11 +111,12 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			if(max == null || max == 0 || max == min)
 				return;
 			Long j = min;
-			for (Long i = min; i <= max; i+=300) {
-				j = i-300;
+			for (Long i = min; i <= max; i+=100) {
+				j = i-100;
 				map.put("min", j);
 				map.put("max", i);
-				this.monitorService.deleteOutDataByIndex(map);
+//				this.monitorService.deleteOutDataByIndex(map);
+				this.monitorServiceByJdbc.deleteOutDataByIndex(map);
 			}
 		}
 	}
