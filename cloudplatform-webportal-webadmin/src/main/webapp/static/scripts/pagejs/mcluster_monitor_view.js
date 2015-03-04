@@ -58,7 +58,10 @@ function queryMonitorPoint(){
 				$("#monitorPointOption").append(option);
 				//init all charts
 				initCharts(monitorPoint[i]);
+				/*chosen组件配置*/
+				chosenConf();
 			}
+			
 			initMultiple();
 		/* 	$('.widget-box').each(function(){
 				$(this).resize(function(){

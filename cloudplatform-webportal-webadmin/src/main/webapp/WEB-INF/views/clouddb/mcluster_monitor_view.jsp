@@ -11,10 +11,9 @@
 			<div class="clearfix form-actions">
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
-					    <label class="col-sm-2 control-label" for="mclusterOption">选择Container集群</label>
+					   <label class="col-sm-2 control-label text-info no-padding-right" for="mclusterOption">选择Container集群</label>
 						<div class="col-sm-4">
-							<select class="chosen-select" id="mclusterOption" data-placeholder="Choose a container...">
-								<option value="">  </option>
+							<select class="chosen-select" id="mclusterOption" name="mclusterId" data-placeholder="请选择集群...">
 							</select>
 						</div>
 						<label class="col-sm-2 control-label text-info">时间</label>
@@ -67,13 +66,12 @@
 	</div>
 </div>
 
-<link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="${ctx}/static/ace/css/ace.min.css" />
+
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
 <script src="${ctx}/static/scripts/highcharts/themes/grid-light.js"></script>
 
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
 <script src="${ctx}/static/scripts/pagejs/mcluster_monitor_view.js"></script>
-<script src="${ctx}/static/ace/js/chosen.jquery.min.js"></script>
+
 

@@ -57,7 +57,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="mclusterOption">选择Container集群</label>
 							<div class="col-sm-8">
-								<select class="chosen-select" id="mclusterOption" data-placeholder="Choose a container...">
+								<select class="chosen-select" id="mclusterOption" data-placeholder="请选择集群...">
 									<option value="">  </option>
 								</select>
 							</div>
@@ -103,9 +103,8 @@
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
-<link rel="stylesheet" href="${ctx}/static/ace/css/chosen.css" />
-<link rel="stylesheet" href="${ctx}/static/ace/css/ace.min.css" />
+
 <!-- <link rel="stylesheet" href="../assets/css/ace.min.css" id="main-ace-style" />  -->
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 <script src="${ctx}/static/scripts/pagejs/db_audit.js"></script>
-<script src="${ctx}/static/ace/js/chosen.jquery.min.js"></script>
+
