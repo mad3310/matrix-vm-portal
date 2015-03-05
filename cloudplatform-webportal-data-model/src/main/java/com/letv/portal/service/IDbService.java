@@ -34,13 +34,13 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public Map<String,Object> selectCreateParams(Long id,boolean isVip);
 
-	/**Methods Name: selectByDbName <br>
+	/**Methods Name: selectByDbNameForValidate <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
 	 * @author name: liuhao1
 	 * @param dbName
 	 * @return
 	 */
-	public List<DbModel> selectByDbName(String dbName);
+	public List<DbModel> selectByDbNameForValidate(String dbName,Long createUser);
 
 	/**Methods Name: deleteByMclusterId <br>
 	 * Description: 根据container集群id删除对应db<br>

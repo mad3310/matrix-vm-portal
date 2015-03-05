@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +78,13 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public List<DbModel> selectByDbName(String dbName) {
-		return this.dbDao.selectByDbName(dbName);
+	public List<DbModel> selectByDbNameForValidate(String dbName,Long createUser) {
+		if(StringUtils.isEmpty(dbName) || null == createUser)
+			throw new ValidateException("参数不合法");
+		HashMap<String, Object> params = new HashMap<String,Object>();
+		params.put("dbName", dbName);
+		params.put("createUser", createUser);
+		return this.dbDao.selectByDbNameForValidate(params);
 	}
 
 	@Override

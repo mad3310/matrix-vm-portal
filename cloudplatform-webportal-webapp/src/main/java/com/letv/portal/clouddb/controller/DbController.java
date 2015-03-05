@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +119,10 @@ public class DbController {
 	
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String dbName,HttpServletRequest request) {
+		if(StringUtils.isEmpty(dbName))
+			throw new ValidateException("参数不合法");
+		List<DbModel> list = this.dbService.selectByDbNameForValidate(dbName,sessionService.getSession().getUserId());
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<DbModel> list = this.dbService.selectByDbName(dbName);
 		map.put("valid", list.size()>0?false:true);
 		return map;
 	}

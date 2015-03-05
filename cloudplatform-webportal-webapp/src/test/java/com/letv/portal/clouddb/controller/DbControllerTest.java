@@ -92,7 +92,7 @@ public class DbControllerTest extends AbstractTest{
 	public void validate() {
 		Map<String,Object> map = new HashMap<String,Object>();
 		String dbName ="test";
-		List<DbModel> list = this.dbService.selectByDbName(dbName);
+		List<DbModel> list = this.dbService.selectByDbNameForValidate(dbName,4L);
 		map.put("valid", list.size()>0?false:true);
 		System.out.println(map.get("valid"));
 	}

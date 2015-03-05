@@ -1,5 +1,6 @@
 package com.letv.portal.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +32,10 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	 */
 	public Map<String,Object> selectCreateParams(Map<String, Object> params);
 
-	/**Methods Name: selectByDbName <br>
+	/**Methods Name: selectByDbNameForValidate <br>
 	 * Description: 根据数据库名查询数据：用于验证数据库名是否重复<br>
 	 * @author name: liuhao1
-	 * @param dbName
+	 * @param params
 	 */
-	public List<DbModel> selectByDbName(String dbName);
+	public List<DbModel> selectByDbNameForValidate(HashMap<String, Object> params);
 }
