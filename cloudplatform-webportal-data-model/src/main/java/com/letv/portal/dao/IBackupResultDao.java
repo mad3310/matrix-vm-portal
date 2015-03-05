@@ -1,5 +1,8 @@
 package com.letv.portal.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.BackupResultModel;
 
@@ -13,5 +16,8 @@ import com.letv.portal.model.BackupResultModel;
 public interface IBackupResultDao extends IBaseDao<BackupResultModel> {
 
 	void deleteByMclusterId(Long id);
+
+	List<Map<String, Object>> selectExtremeIdByMonitorDate(
+			Map<String, Object> map);
 	  
 }

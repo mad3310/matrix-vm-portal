@@ -27,6 +27,10 @@
 			<result column="DB_NAME" property="dbName" />
 		</association>
 	</resultMap>
+	<resultMap id="extremeIdMap" type="java.util.Map">
+        <result column="MAX_ID" property="maxId" />
+		<result column="MIN_ID" property="minId" />
+	</resultMap>
 	
 	<sql id="Base_Column_List">
 		r.ID,r.MCLUSTER_ID,r.DB_ID,r.BACKUP_IP,r.START_TIME,r.END_TIME,r.STATUS,r.RESULT_DETAIL,r.DELETED,r.CREATE_TIME,r.CREATE_USER,r.UPDATE_TIME,r.UPDATE_USER
@@ -208,7 +212,12 @@
 			</if>
 		</trim>
 	</sql>
-	
+	<select id="selectExtremeIdByMonitorDate" resultMap="extremeIdMap" parameterType="java.util.Map">
+		select 
+        max(id) MAX_ID,min(id) MIN_ID
+	   	from WEBPORTAL_BACKUP_RESULT
+        where START_TIME &lt;= #{startTime}
+	</select>
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">

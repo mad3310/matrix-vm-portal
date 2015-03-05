@@ -11,10 +11,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.exception.CommonException;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
@@ -212,8 +214,12 @@ public class MonitorServiceImplByJdbc extends BaseServiceImpl<MonitorDetailModel
 		StringBuffer sql = new StringBuffer();
 		sql.append("delete from ").append(map.get("dbName")).append(" where id between ? and ?");
 		logger.debug("delete sql:" + sql.toString());
-		jdbcTemplate.update(sql.toString(), new Object[] {map.get("min"),map.get("max")},
-	              new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER});
+		try {
+			jdbcTemplate.update(sql.toString(), new Object[] {map.get("min"),map.get("max")},
+			          new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER});
+		} catch (Exception e) {
+			throw new CommonException("delete monitor data error:" + sql.toString());
+		}
 	}
 
 	@Override

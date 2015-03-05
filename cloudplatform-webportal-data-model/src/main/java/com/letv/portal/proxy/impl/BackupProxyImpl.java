@@ -1,6 +1,8 @@
 package com.letv.portal.proxy.impl;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBackupService;
@@ -186,5 +189,38 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
 		defaultEmailSender.sendMessage(mailMessage);
 	}
-
+	
+	@Override
+	@Async
+	public void deleteOutData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_MONTH, -15);    //得到前15天
+		long date = cal.getTimeInMillis();
+		Date monthAgo = new Date(date);
+		map.put("startTime", monthAgo);
+		
+		List<Map<String,Object>> ids = this.backupService.selectExtremeIdByMonitorDate(map);
+		if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
+			return;
+		}
+		Map<String, Object> extremeIds = ids.get(0);
+		Long max = (Long)extremeIds.get("maxId");
+		Long min = (Long)extremeIds.get("minId");
+		if(max == null || max == 0 || max == min)
+			return;
+		Long j = min;
+		for (Long i = min; i <= max; i+=100) {
+			j = i-100;
+			map.put("min", j);
+			map.put("max", i);
+			this.backupService.deleteOutDataByIndex(map);
+		}
+		map.put("min", max-100);
+		map.put("max", max);
+		this.backupService.deleteOutDataByIndex(map);
+		
+		
+		
+	}
 }

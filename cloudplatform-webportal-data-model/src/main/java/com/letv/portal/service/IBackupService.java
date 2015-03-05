@@ -1,5 +1,8 @@
 package com.letv.portal.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.letv.portal.model.BackupResultModel;
 
 /**Program Name: IBackupService <br>
@@ -12,5 +15,9 @@ import com.letv.portal.model.BackupResultModel;
 public interface IBackupService extends IBaseService<BackupResultModel> {
 
 	void deleteByMclusterId(Long id);
+
+	public void deleteOutDataByIndex(Map<String, Object> map);
+	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
+			Map<String, Object> map);
 
 }

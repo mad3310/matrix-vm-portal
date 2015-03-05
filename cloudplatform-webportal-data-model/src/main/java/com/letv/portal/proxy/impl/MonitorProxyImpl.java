@@ -118,6 +118,9 @@ public class MonitorProxyImpl implements IMonitorProxy{
 //				this.monitorService.deleteOutDataByIndex(map);
 				this.monitorServiceByJdbc.deleteOutDataByIndex(map);
 			}
+			map.put("min", max-100);
+			map.put("max", max);
+			this.monitorServiceByJdbc.deleteOutDataByIndex(map);
 		}
 	}
 

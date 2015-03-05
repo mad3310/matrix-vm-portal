@@ -200,6 +200,14 @@ public class InitializingJob {
 			checkBackupStatus.setCronExpression("0 0/30 * * * ?");
 			checkBackupStatus.setDescn("db数据库全量备份检查");
 			jobs.add(checkBackupStatus);
+			ScheduleJobModel deleteBackupHalfMonthAgo = new ScheduleJobModel();
+			deleteBackupHalfMonthAgo.setJobName("deleteBackupHalfMonthAgo");
+			deleteBackupHalfMonthAgo.setJobMethod("deleteBackupHalfMonthAgo");
+			deleteBackupHalfMonthAgo.setJobGroup("webportal");
+			deleteBackupHalfMonthAgo.setJobStatus("1");
+			deleteBackupHalfMonthAgo.setCronExpression("0 0 0 * * ?");
+			deleteBackupHalfMonthAgo.setDescn("db数据库全量备份删除历史数据");
+			jobs.add(deleteBackupHalfMonthAgo);
 		}
 		
 		return jobs;

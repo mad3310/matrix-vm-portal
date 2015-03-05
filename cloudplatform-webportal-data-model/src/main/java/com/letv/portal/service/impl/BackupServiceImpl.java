@@ -8,9 +8,12 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.exception.CommonException;
 import com.letv.portal.dao.IBackupResultDao;
 import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.DbModel;
@@ -30,6 +33,8 @@ public class BackupServiceImpl extends BaseServiceImpl<BackupResultModel> implem
 	
 	@Resource
 	private IBackupResultDao backupResultDao;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	public BackupServiceImpl() {
 		super(BackupResultModel.class);
@@ -48,5 +53,25 @@ public class BackupServiceImpl extends BaseServiceImpl<BackupResultModel> implem
 		for (BackupResultModel backup : backups) {
 			super.delete(backup);
 		}
+	}
+
+	@Override
+	public void deleteOutDataByIndex(Map<String, Object> map) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from ").append("WEBPORTAL_BACKUP_RESULT").append(" where id between ? and ?");
+		logger.debug("delete sql:" + sql.toString());
+		try {
+			jdbcTemplate.update(sql.toString(), new Object[] {map.get("min"),map.get("max")},
+			          new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER});
+		} catch (Exception e) {
+			throw new CommonException("delete monitor data error:" + sql.toString());
+		}
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
+			Map<String, Object> map) {
+		return this.backupResultDao.selectExtremeIdByMonitorDate(map);
 	}
 }

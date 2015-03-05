@@ -1,5 +1,8 @@
 package com.letv.portal.clouddb.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -31,6 +34,8 @@ public class CronJobsController {
 	private IBackupProxy backupProxy;
 	@Autowired
 	private IMonitorService monitorService;
+	@Autowired
+	private IMonitorService monitorServiceByJdbc;
 	
 	
 	private final static Logger logger = LoggerFactory.getLogger(CronJobsController.class);
@@ -100,7 +105,6 @@ public class CronJobsController {
     	return obj;
 	}
 	
-	
 	/**Methods Name: dbBackup <br>
 	 * Description: db数据库备份<br>
 	 * @author name: liuhao1
@@ -132,5 +136,19 @@ public class CronJobsController {
 		logger.info("db backup check");
 		this.backupProxy.checkBackupStatusTask();
 		return obj;
+	}
+	
+	/**Methods Name: deleteBackupHalfMonthAgo <br>
+	 * Description: <br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/db/backup",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject deleteBackupHalfMonthAgo(HttpServletRequest request,ResultObject obj) {
+		logger.info("deleteBackupHalfMonthAgo");
+    	this.backupProxy.deleteOutData();
+    	return obj;
 	}
 }

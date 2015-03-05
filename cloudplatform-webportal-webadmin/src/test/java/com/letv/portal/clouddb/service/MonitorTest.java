@@ -29,10 +29,12 @@ public class MonitorTest extends AbstractTest{
     @Test
     public void testDeleteOutDataByIndex() {
     	Map<String, Object> params = new HashMap<String,Object>();
-    	params.put("dbName", "WEBPORTAL_BACKUP_RESULT");
-    	params.put("min", 166);
-    	params.put("max", 168);
-    	this.monitorServiceByJdbc.deleteOutDataByIndex(params);
+    	for (int i = 0; i < 10000000; i+=100) {
+    		params.put("dbName", "WEBPORTAL_BACKUP_RESULT");
+    		params.put("min", i);
+    		params.put("max", i+100);
+    		this.monitorServiceByJdbc.deleteOutDataByIndex(params);
+		}
     }
     
 }

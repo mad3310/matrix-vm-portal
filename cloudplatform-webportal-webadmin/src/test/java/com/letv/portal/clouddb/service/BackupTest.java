@@ -38,4 +38,9 @@ public class BackupTest extends AbstractTest{
     	this.backupProxy.backupTask();
     }
     
+    @Test
+    public void testDeleteOutData() {
+    	this.backupProxy.deleteOutData();
+    }
+    
 }
