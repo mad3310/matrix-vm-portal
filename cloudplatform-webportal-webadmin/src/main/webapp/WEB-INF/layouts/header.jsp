@@ -11,7 +11,7 @@
 	<div class="navbar-container" id="navbar-container">
 		<div class="navbar-header pull-left">
 			<a href="#" class="navbar-brand logo"> 
-				<img src="${ctx}/static/image/site.logo.png" alt="paas云管理平台" style="max-width:150px;margin-top:-5px;"/> 
+				<img src="${ctx}/static/image/site.logo.png" alt="paas云管理平台" style="max-width:112px;margin-top:-5px;"/> 
 				<b><small>PAAS portal</small></b> 
 				<span><small style="font-size: 25%;">beta</small></span>
 			</a>
