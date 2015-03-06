@@ -19,5 +19,10 @@
         <typeAlias alias="ScheduleJob" type="com.letv.portal.model.ScheduleJobModel" />
         <typeAlias alias="BackupResult" type="com.letv.portal.model.BackupResultModel" />
         
+        <typeAlias alias="SlbServer" type="com.letv.portal.model.slb.SlbServer" />
+        <typeAlias alias="SlbConfig" type="com.letv.portal.model.slb.SlbConfig" />
+        <typeAlias alias="SlbBackendServer" type="com.letv.portal.model.slb.SlbBackendServer" />
+        <typeAlias alias="SlbCluster" type="com.letv.portal.model.slb.SlbCluster" />
+        <typeAlias alias="SlbContainer" type="com.letv.portal.model.slb.SlbContainer" />
     </typeAliases>
 </configuration>

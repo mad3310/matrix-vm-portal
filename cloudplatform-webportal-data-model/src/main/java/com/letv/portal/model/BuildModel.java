@@ -81,12 +81,5 @@ public class BuildModel extends BaseModel {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	@Override
-	public String toString() {
-		return "BuildModel [mclusterId=" + mclusterId + ", dbId=" + dbId
-				+ ", step=" + step + ", stepMsg=" + stepMsg + ", status="
-				+ status + ", code=" + code + ", msg=" + msg + ", startTime="
-				+ startTime + ", endTime=" + endTime + "]";
-	}
 
 }
