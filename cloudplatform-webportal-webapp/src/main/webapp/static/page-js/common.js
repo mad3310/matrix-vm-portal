@@ -418,7 +418,12 @@ define(function(require,exports,module){
 		/*刷新ifame*/
 		RefreshIfame:function(url){
 			var $iframe = $("body",parent.document).find("iframe");
-			$iframe.attr("src",url);
+			if(url == undefined || url == null){
+				//刷新dangqianye
+				$iframe.attr("src",$("body", parent.document).find("iframe").attr("src"));
+			}else{
+				$iframe.attr("src",url);
+			}
 		},
 		/*弹出窗口居中*/
 		center:function(){
@@ -490,7 +495,15 @@ define(function(require,exports,module){
 			if($("#noData").length < 1){
 				$(obj).closest("div").after("<div class=\"help-block\" id=\"noData\">没有数据记录</div>");
 			}			
+		},
+		TranslateAgentType:function(data){
+			if(data = 1){
+				return "http";
+			}else{
+				return "tcp";
+			}
 		}
+
 		 /*add new common function*/
     }
 	var TopBtnInit = function(){
