@@ -1,19 +1,14 @@
-package com.letv.portal.model;
+package com.letv.portal.model.slb;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.UserModel;
 
-/**Program Name: MclusterModel <br>
- * Description:  <br>
- * @author name: liuhao1 <br>
- * Written Date: 2014年8月12日 <br>
- * Modified By: <br>
- * Modified Date: <br>
- */
-public class MclusterModel extends BaseModel {
+public class SlbCluster extends BaseModel {
 	
-	private static final long serialVersionUID = 8873122802478974943L;
-	
-	private String mclusterName; //名称
+	private static final long serialVersionUID = -8757063845109274144L;
+
+	private String clusterName; //名称
 	private String adminUser;
 	private String adminPassword;
 	private Integer status; //状态
@@ -26,11 +21,11 @@ public class MclusterModel extends BaseModel {
 	
 	private UserModel createUserModel;
 	
-	public String getMclusterName() {
-		return mclusterName;
+	public String getClusterName() {
+		return clusterName;
 	}
-	public void setMclusterName(String mclusterName) {
-		this.mclusterName = mclusterName;
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
 	}
 	public Integer getStatus() {
 		return status;
@@ -84,4 +79,5 @@ public class MclusterModel extends BaseModel {
 	public void setType(Integer type) {
 		this.type = type;
 	}
+	
 }

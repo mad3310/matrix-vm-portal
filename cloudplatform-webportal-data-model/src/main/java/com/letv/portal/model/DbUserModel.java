@@ -167,18 +167,4 @@ public class DbUserModel extends BaseModel {
 		this.name4Ip = name4Ip;
 	}
 
-	@Override
-	public String toString() {
-		return "DbUserModel [dbId=" + dbId + ", username=" + username
-				+ ", password=" + password + ", salt=" + salt + ", type="
-				+ type + ", acceptIp=" + acceptIp + ", readWriterRate="
-				+ readWriterRate + ", maxConcurrency=" + maxConcurrency
-				+ ", status=" + status + ", maxQueriesPerHour="
-				+ maxQueriesPerHour + ", maxUpdatesPerHour="
-				+ maxUpdatesPerHour + ", maxConnectionsPerHour="
-				+ maxConnectionsPerHour + ", maxUserConnections="
-				+ maxUserConnections + ", db=" + db + "]";
-	}
-
-	
 }

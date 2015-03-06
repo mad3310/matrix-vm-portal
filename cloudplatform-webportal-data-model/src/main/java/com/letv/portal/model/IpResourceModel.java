@@ -44,9 +44,4 @@ public class IpResourceModel extends BaseModel {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "IpResourceModel [ip=" + ip + ", gateWay=" + gateWay + ", mask="
-				+ mask + ", status=" + status + "]";
-	}
 }

@@ -163,15 +163,4 @@ public class DbModel extends BaseModel {
 	public void setHcluster(HclusterModel hcluster) {
 		this.hcluster = hcluster;
 	}
-	@Override
-	public String toString() {
-		return "DbModel [mclusterId=" + mclusterId + ", projectId=" + projectId
-				+ ", dbName=" + dbName + ", status=" + status + ", mcluster="
-				+ mcluster + ", backupCycle=" + backupCycle + ", noticeType="
-				+ noticeType + ", descn=" + descn + ", developLanguage="
-				+ developLanguage + ", engineType=" + engineType
-				+ ", linkType=" + linkType + ", fromDbIp=" + fromDbIp
-				+ ", fromDbPort=" + fromDbPort + ", fromDbName=" + fromDbName
-				+ ", auditUser=" + auditUser + ", auditInfo=" + auditInfo + "]";
-	}
 }
