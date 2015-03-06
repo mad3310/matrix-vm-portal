@@ -55,8 +55,14 @@ function queryMclusterMonitor() {
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
 				tr.appendTo(tby);
-				
 			}//循环json中的数据 
+			/*增加标记行，控制各种状态的归类显示*/
+			var tr1 = $("<tr class=\"default-danger normalTag\"></tr>");
+			var tr2 = $("<tr class=\"default-danger lightDangerTag\"></tr>");
+			var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
+			var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
+			var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
+			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
 			updateMclusterStatus();//查询集群状态
 		}
 	});
@@ -76,22 +82,27 @@ function getMclusterStatus(ip,obj) {
 			if(result == "0"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>正常</a>");
+				$(obj).parent().find(".normalTag").after($(obj));
 			}else if(result == "1"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
-				$(obj).addClass("default-danger");		
+				$(obj).addClass("default-danger lightDanger");
+				$(obj).parent().find(".lightDangerTag").after($(obj));	
 			}else if(result == "2"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>严重危险</a>");
-				$(obj).addClass("default-danger");		
+				$(obj).addClass("default-danger serious");
+				$(obj).parent().find(".seriousTag").after($(obj));
 			}else if(result == "3"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>集群不可用</a>");
-				$(obj).addClass("default-danger");		
+				$(obj).addClass("default-danger disableCluster");
+				$(obj).parent().find(".disableClusterTag").after($(obj));	
 			}else if(result == "4"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>获取数据超时</a>");
-				$(obj).addClass("default-danger");
+				$(obj).addClass("default-danger timeoutCluster");
+				$(obj).parent().find(".timeoutClusterTag").after($(obj));
 			}
 		}	
 	});
