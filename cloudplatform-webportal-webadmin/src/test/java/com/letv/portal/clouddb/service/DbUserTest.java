@@ -18,7 +18,7 @@ public class DbUserTest extends AbstractTest{
 	private IDbUserService dbUserService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(
-			DbUserTest.class);
+			TemplateTaskChainServiceTest.class);
 
   
     @Test
