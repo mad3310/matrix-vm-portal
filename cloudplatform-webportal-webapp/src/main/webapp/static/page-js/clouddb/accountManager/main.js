@@ -3,7 +3,7 @@
  * accountManager page
  */
 define(function(require){
-    var common = require('../common');
+    var common = require('../../common');
     var cn = new common();
     var $ = require("jquery");
     require("bootstrapValidator")($);

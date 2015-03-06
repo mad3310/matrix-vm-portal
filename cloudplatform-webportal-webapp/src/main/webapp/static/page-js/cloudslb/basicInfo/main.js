@@ -12,9 +12,9 @@ define(function(require){
 /*手风琴收放效果箭头变化*/
     cn.Collapse();
 
-/*加载数据*/
+    /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbInfoHandler = new dataHandler();
+    var slbInfoHandler = new dataHandler();
 
-    cn.GetData("/db/"+$("#dbId").val(),dbInfoHandler.DbInfoHandler);
+    cn.GetData("/slb/"+$("#slbId").val(),slbInfoHandler.SlbInfoHandler);
 });

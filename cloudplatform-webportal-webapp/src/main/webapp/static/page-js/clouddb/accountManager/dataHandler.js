@@ -4,9 +4,11 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
-    var common = require('../common');
+    var common = require('../../common');
     var cn = new common();
     var dbUsernames = new Array();
+    
+    var selectNameDist = 0;
 
     var DataHandler = function(){
     };
@@ -300,19 +302,20 @@ define(function(require,exports,module){
         $li.appendTo($sl);
     };
     function AddToRightFrame($sr,data){
+    	var ipName = selectNameDist++;
         var $li = $("<li class=\"select-item\"> "
         + "<p class=\"pull-left\">"+data.addr+"</p>"
         + "<p class=\"pull-right\" style=\"margin-right:5px\">"
         + "<span>"
-        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"1\" >"
+        + "<input type=\"radio\" name=\""+ipName+"\" value=\"1\" >"
         + "<label class=\"mgr\">管理</label>"
         + "</span>"
         + "<span>"
-        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"2\">"
+        + "<input type=\"radio\" name=\""+ipName+"\" value=\"2\">"
         + "<label class=\"ro\">只读</label>"
         + "</span>"
         + "<span>"
-        + "<input type=\"radio\" name=\""+data.addr+"\" value=\"3\">"
+        + "<input type=\"radio\" name=\""+ipName+"\" value=\"3\">"
         + "<label class=\"rw\">读写</label>"
         + "</span>"
         + "</p>"

@@ -4,7 +4,7 @@
 define(function(require){
 	var $ = require('jquery');
 	require('highcharts')($);
-    var common = require('../../common');
+    var common = require('../../../common');
     var cn = new common();
 
 	var dataHandler = require('./dataHandler');

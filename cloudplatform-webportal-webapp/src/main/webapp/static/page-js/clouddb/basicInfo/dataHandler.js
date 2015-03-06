@@ -3,7 +3,7 @@
  */
 define(function(require,exports,module){
     var $ = require('jquery');
-    var common = require('../common');
+    var common = require('../../common');
     var cn = new common();
 
     var DataHandler = function(){

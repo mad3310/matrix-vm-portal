@@ -38,35 +38,31 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            dbName: {
-                validMessage: '请按提示输入',
-                validators: {
-                    notEmpty: {
-                        message: '数据库名称不能为空!'
-                    },
-                    stringLength: {
-                        max: 16,
-                        message: '数据库名名过长!'
-                    }, regexp: {
-                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-                        message: "请输入字母数字或'_',数据库名不能以数字开头."
-                    },
-                    remote: {
-                        message: '数据库名已存在!',
-                        url: '/db/validate'
-                    }
-                }
-            }
+        	slbName:{
+				validMessage: '请按提示输入',
+				validators: {
+					notEmpty: {
+						message: '负载均衡名不能为空!'
+					}, stringLength: {
+						max: 16,
+						message: '负载均衡名过长!'
+					}, regexp: {
+						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
+						message: "请输入字母数字或'_',负载均衡名不能以数字开头."
+					}
+				}
+			}
         }
     }).on('success.form.bv', function(e) {
-        e.preventDefault();
-        var dbName = $("[name = 'dbName']").val();
-        var hclusterId = $("[name = 'hclusterId']").val();
-        var engineType = $("[name = 'engineType']").val();
-        var linkType = $("[name = 'linkType']").val();
-        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin};
-        CreateDb(formData);
+    	e.preventDefault();
+		var createConfigData = {
+			slbName : $("[name = slbName]").val(),
+			hclusterId : $("[name = 'hclusterId']").val()
+		}
+		var url = "/slb";
+		cn.PostData(url, createConfigData, function () {
+			location.href = "/list/slb";
+		});
     });
     /*表单验证 --end*/
 

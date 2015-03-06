@@ -24,7 +24,8 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
-	<a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
+	<a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}
+    /static/img/logo.png"/></a>
      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
 	<a class="navbar-brand color" href="${ctx}/list/db" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-database text-10"></i>&nbsp;关系型数据库RDS</a>
     </div>
@@ -166,7 +167,7 @@ alias: {
     "bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 }
 });
-seajs.use("${ctx}/static/page-js/layout/main");
+seajs.use("${ctx}/static/page-js/clouddb/layout/main");
 </script>
 
 </html>

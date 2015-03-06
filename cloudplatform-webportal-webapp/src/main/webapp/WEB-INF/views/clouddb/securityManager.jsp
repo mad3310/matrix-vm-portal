@@ -138,6 +138,6 @@
 		}
 	});
 
-	seajs.use("${ctx}/static/page-js/securityManager/main");
+	seajs.use("${ctx}/static/page-js/clouddb/securityManager/main");
 </script>
 </html>

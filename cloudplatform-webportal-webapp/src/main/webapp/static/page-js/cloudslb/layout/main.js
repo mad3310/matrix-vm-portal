@@ -8,12 +8,12 @@ define(function(require){
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();
-    
+
     /*初始化侧边栏菜单*/
     var index = [1,0];
     cn.Sidebar(index);//index为菜单中的排序(1-12)
     /*
-     * 加载db基础信息
+     * 加载slb基础信息
      */
-    cn.GetData("/db/"+$("#dbId").val(),basicInfoHandler.resCountHandler);
+    cn.GetData("/slb/"+$("#slbId").val(),basicInfoHandler.resCountHandler);
 });

@@ -140,6 +140,26 @@
 								</a>
 							</div>
 						</li>
+						<li id="slb-opened" class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+							<div class="item-profile clearfix">
+								<a href="${ctx}/list/slb" class="pull-left">
+									<span class="item-icon product-icons-48 product-icons-slb"></span>
+								</a>
+								<p class="item-title">
+									<a href="${ctx}/list/slb">负载均衡&nbsp;<span class="item-title-short">SLB</span>
+									</a>
+								</p>
+							</div>
+							<div class="item-record">
+								<span class="item-record-num">
+									<a class="item-record-num-count" href="${ctx}/list/slb"><span id="slbCount">0</span></a>
+								</span>
+								<span class="item-record-unit">个</span>
+								<a data-toggle="tooltip" data-placement="top" title="负载均衡数">
+									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+								</a>
+							</div>
+						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
@@ -188,14 +208,18 @@
 											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
-									<li class="clearfix">
+									<li  id="slb-not-opened" class="hide clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
 										</div>
 										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
+											<div class="pull-left product-opt-wrap">
+												<a href="/detail/slbCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
 										</div>
 									</li>
 									<li class="clearfix">
@@ -415,6 +439,6 @@ alias: {
 }
 });
 
-seajs.use("${ctx}/static/page-js/dashboard/main");
+seajs.use("${ctx}/static/page-js/clouddb/dashboard/main");
 </script>
 </html>

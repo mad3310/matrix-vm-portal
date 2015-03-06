@@ -73,7 +73,7 @@
 			<div class="col-sm-12 col-md-6">
 				<div class="pull-left">
 					<h4>
-						<span>关系型数据库RDS</span>
+						<span>负载均衡SLB</span>
 					</h4>
 				</div>
 			</div>
@@ -97,9 +97,9 @@
 										<div>
 										<form id="monthPurchaseForm">
 											<div class="form-group bk-form-row col-sm-12">
-												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">数据库名称：</label>
+												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">负载均衡名称：</label>
 												<div class="col-sm-4 row">
-													<input id="dbName" class="form-control" name="dbName" type="text">
+													<input id="slbName" class="form-control" name="slbName" type="text">
 												</div>
 											</div>
 										</form>
@@ -157,205 +157,6 @@
 												</div>
 											</div>
 										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">数据库类型：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span>MYSQL</span>
-																	<ul style="display: none;">
-																		<li class="bk-select-option"><a href="javascript:;" selectid="1">MYSQL</a></li>
-																	</ul>
-																	<input name="mysql" type="hidden" value="" />
-																</div>
-														</span>
-														</span> <span class="bk-select-arrow"></span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-												<label class="bk-form-row-name">版本：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li">
-														<div class="bk-buttontab">
-															<button class=" bk-button bk-button-primary bk-button-current">
-																<div>
-																	<span>5.5</span>
-																</div>
-															</button>
-															<button class=" bk-button bk-button-primary disabled">
-																<div>
-																	<span>5.6</span>
-																</div>
-															</button>
-														</div>
-														<span class="bk-lnk" style="cursor: text;">暂时只提供5.5版本</span>
-													</div>
-												</div>
-											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">存储引擎：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li">
-														<div class="bk-buttontab">
-															<input name="engineType" type="text" class="hide" value="0">
-															<button class=" bk-button bk-button-primary bk-button-current" value="0">
-																<div>
-																	<span>InnDB</span>
-																</div>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">链接类型：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li">
-														<div class="bk-buttontab">
-															<input name="linkType" type="text" class="hide" value="0">
-															<button class=" bk-button bk-button-primary bk-button-current" value="0">
-																<div>
-																	<span>长链接</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary" value="1">
-																<div>
-																	<span>短链接</span>
-																</div>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">默认管理账户：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li">
-														<div class="bk-buttontab">
-															<input name="isCreateAdmin" type="text" class="hide" value="0">
-															<button class=" bk-button bk-button-primary " value="1">
-																<div>
-																	<span>创建</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary bk-button-current" value="0">
-																<div>
-																	<span>不创建</span>
-																</div>
-															</button>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</dd>
-								</dl>
-								<dl class="bk-group">
-									<dt class="bk-group-title">存储</dt>
-									<dd class="bk-group-detail">
-										<div class="bk-group-control"></div>
-										<div class="disabled">
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">存储空间：</label>
-												<div class="bk-form-row-cell">
-													<!-- 原拖动效果注释 -->
-													<!--<div class="bk-form-row-li">
-													<div class="bk-slider">
-														<div class="bk-slider-range" id="bar0">
-															<div id="flag"></div>
-															<span class="bk-slider-block bk-slider-l2"> <span
-																class="bk-slider-block-box"> <span
-																	class="bk-slider-txt">250GB</span>
-															</span>
-															</span> <span class="bk-slider-block bk-slider-l1"> <span
-																class="bk-slider-block-box"> <span
-																	class="bk-slider-txt">500GB</span>
-															</span>
-															</span> <span class="bk-slider-block bk-slider-l1"> <span
-																class="bk-slider-block-box bk-slider-block-box-last bk-select-action">
-																	<span class="bk-slider-txt">1000GB</span>
-															</span>
-															</span> <span class="bk-slider-container bk-slider-transition"
-																id="layer2" style="width: 11.88px;"> <span
-																class="bk-slider-current"> <span
-																	class="bk-slider-unit bk-slider-l2"> <span
-																		class="bk-slider-unit-box"> <span
-																			class="bk-slider-txt">250GB</span></span>
-																</span> <span class="bk-slider-unit bk-slider-l1"> <span
-																		class="bk-slider-unit-box"> <span
-																			class="bk-slider-txt">500GB</span>
-																	</span>
-																</span> <span class="bk-slider-unit bk-slider-l1"> <span
-																		class="bk-slider-unit-box bk-slider-unit-box-last">
-																			<span class="bk-slider-txt">1000GB</span>
-																	</span>
-																</span>
-															</span>
-															</span>
-															<span>15</span>
-															<button id="btn2"></button>
-															<span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
-																<span class="bk-tip-arrow"></span>
-															</span>
-														</div>
-													</div>
-													<span class="bk-number bk-ml2"> <input type="text"
-														class="bk-number-input" id="value2" value="5"> <span
-														class="bk-number-unit">GB</span><span
-														class="bk-number-control"> <span
-															class="bk-number-up bk-number-disabled hide"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-up"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down bk-number-disabled"> <i
-																class="bk-number-arrow"></i>
-														</span> <span class="bk-number-down hide"> <i
-																class="bk-number-arrow"></i>
-														</span>
-													</span>
-													</span>
-												</div> -->
-													<div class="bk-form-row-li clearfix">
-														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span>10G</span>
-																	<ul style="display: none;">
-																		<li class="bk-select-option"><a href="javascript:;" selectid="1">10G</a></li>
-																	</ul>
-																	<input type="hidden" value="" />
-																</div>
-															</span>
-															</span> <span class="bk-select-arrow"></span>
-														</div>
-													</div>
-													<div class="bk-form-row-txt notice-block">存储空间暂时不限制</div>
-												</div>
-											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">内存：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix">
-														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span>2G</span>
-																	<ul style="display: none;">
-																		<li class="bk-select-option"><a href="javascript:;" selectid="1">2G</a></li>
-																	</ul>
-																	<input type="hidden" value="" />
-																</div>
-														</span>
-															</span> <span class="bk-select-arrow"></span>
-														</div>
-													</div>
-													<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
-												</div>
-											</div>
 										</div>
 									</dd>
 								</dl>
@@ -503,7 +304,7 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> <input type="text" class="bk-number-input" value="3"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
+													<span class="bk-number"> <input type="text" class="bk-number-input" value="1"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-up"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-down bk-number-disabled"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-down hide"> <i class="bk-number-arrow"></i>
@@ -519,7 +320,7 @@
 						</div>
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-orders-menu  bk-mb4">
-								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">3台</span>
+								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">1台</span>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">当前配置</div>
@@ -527,8 +328,7 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">10GB存储空间、2G内存、MySQL 5.5</span></li>
-											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年x 3台</span></li>
+											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年</span></li>
 										</ul>
 									</div>
 								</div>
@@ -557,7 +357,6 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
-									<div class="bk-form-row-txt notice-block">您购买的数据库创建大约需要2分钟,请耐心等待...</div>
 								</div>
 								<div class="bk-pb4"></div>
 							</div>
@@ -887,7 +686,7 @@ seajs.config({
 		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
-seajs.use("${ctx}/static/page-js/clouddb/dbCreate/main");
+seajs.use("${ctx}/static/page-js/cloudslb/slbCreate/main");
 </script>
 
 <script type="text/javascript">

@@ -12,16 +12,22 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>RDS管理控制台</title>
+	<title>SLB管理控制台</title>
 </head>
 <body>
 <!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
-	      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-          <a class="navbar-brand color" href="${ctx}/list/db" style="margin-left:10px;height:40px !important; font-size:15px"><i class="fa fa-database text-10"></i>&nbsp;关系型数据库RDS</a>
+          <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;">
+          	<img src="${ctx}/static/img/logo.png"/>
+          </a>
+	      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px">
+	      	<i class="fa fa-home text-20"></i>
+	      </a>
+          <a class="navbar-brand color" href="${ctx}/list/slb" style="margin-left:10px;height:40px !important; font-size:15px">
+          	<i class="fa fa-database text-10"></i>&nbsp;负载均衡SLB
+          </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
@@ -48,12 +54,15 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">关系型数据库<font color="#FF9C17">RDS</font></a>
-    </div>
+		<a class="navbar-brand" href="javascript:void(0)">负载均衡<font color="#FF9C17">SLB</font></a>
+		<ul class="nav navbar-nav">
+			<li class="active">
+				<a class="navbar-brand" href="javascript:void(0)">实例</a>
+			</li>
+		</ul>
+	</div>
   </div>
 </div>
-	
-
 <!-- navbar end -->
 <!-- main-content begin-->
 <div class="container-fluid">
@@ -61,7 +70,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>关系型数据库管理</span>
+				<span>负载均衡管理</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
 				<button class="btn btn-default btn-md btn-region-display">北京</button>
 				</h5> 
@@ -71,7 +80,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
-				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/dbCreate')">新建数据库</button>
+				<button class="btn-primary btn btn-md"  onclick="window.open('${ctx}/detail/slbCreate')">创建负载均衡</button>
 				</h5>
 			</div>
 		</div>
@@ -79,7 +88,7 @@
 			<div class="pull-left">
 				<form class="form-inline" role="form">
 					<div class="form-group">
-						<input  id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
+						<input  id="slbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
@@ -96,28 +105,65 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">实例名称</th>
-						<th style="width:20%">运行状态</th>
-						<th>实例类型</th>
-						<th>数据库类型</th>
-						<th>可用区类型
-							<a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域">
-								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
-							</a>
-						</th>
+						<th>服务地址</th>
+						<th>状态</th>
 						<th>所在可用区</th>
-						<th>所在服务集群</th>
-						<th>付费类型</th>
+						<th>运行状态</th>
+						<th>付费方式</th>
 						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
-				</tbody>
+						<!-- <tr>
+							<td width="10"><input type="checkbox"></td>
+							<td class="padding-left-32">
+								<div>
+									<div>
+										<a href="/detail/slb/123">14b732abd0f-cn-qingdao-cm5-a01</a><br> <span text-length="26">14b732abd0f-cn-qingdao-cm5-a01</span> <a class="btn btn-default btn-xs glyphicon glyphicon-pencil" href="#"></a>
+									</div>
+								</div>
+							</td>
+							<td><span tooltip="" class="text-success ng-scope">10.129.147.84(私网)</span></td>
+							<td><span>已启用</span></td>
+							<td><span>TCP : 22</span></td>
+							<td><span>TCP : 22 </span>
+							<span class="text-success">正常</span></td>
+							<td><span>iZ28x6n5ua8Z</span></td>
+							<td><span><span>包年</span><span class="margin-left-1 text-success">303</span><span> 天后到期</span></span></td>
+							<td class="text-right">
+								<div>
+									<a href="#">管理</a> <span class="text-explode">|</span> <a href="#" target="_blank">续费</a> <span class="text-explode">|</span> <a href="#">升级</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td width="10"><input type="checkbox"></td>
+							<td class="padding-left-32">
+								<div>
+									<div>
+										<a href="/detail/slb/123">14b732abd0f-cn-qingdao-cm5-a02</a><br> <span text-length="26">14b732abd0f-cn-qingdao-cm5-a02</span> <a class="btn btn-default btn-xs glyphicon glyphicon-pencil" href="#"></a>
+									</div>
+								</div>
+							</td>
+							<td><span tooltip="" class="text-success ng-scope">166.10.47.84(公网)</span></td>
+							<td><span>已启用</span></td>
+							<td><span>TCP : 11122</span></td>
+							<td><span>TCP : 22 </span><span class="text-success">正常</span></td>
+							<td><span>iZ28x6n5ua8Z</span></td>
+							<td><span><span>包年</span><span class="margin-left-1 text-success">303</span><span> 天后到期</span></span></td>
+							<td class="text-right">
+								<div>
+									<a href="#">管理</a> <span class="text-explode">|</span> <a href="#" target="_blank">续费</a> <span class="text-explode">|</span> <a href="#">升级</a>
+								</div>
+							</td>
+						</tr> -->
+					</tbody>
 				<tfoot id="paginatorBlock">
 					<tr class="tfoot" >
 						<td width="10">
 							<input type="checkbox">
 						</td>
-						<td colspan=" 9">
+						<td colspan=" 8">
 							<div class="pull-left">
 									<div pagination-info="paginationInfo">
 										<div class="pull-left">
@@ -140,7 +186,6 @@
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
-
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
@@ -155,8 +200,6 @@ seajs.config({
 		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
 	}
 });
-
-seajs.use("${ctx}/static/page-js/clouddb/dbList/main");
-
+seajs.use("${ctx}/static/page-js/cloudslb/slbList/main");
 </script>
 </html>

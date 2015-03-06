@@ -17,10 +17,10 @@ define(function(require,exports,module){
     	 */
         resCountHandler : function(data){
             if(cn.Displayable(data.data.status)){
-                $("#dbName").html(data.data.dbName);
-                $("#dbStatus").html("("+cn.TranslateStatus(data.data.status)+")");
+                $("#slbName").html(data.data.slbName);
+                $("#slbStatus").html("("+cn.TranslateStatus(data.data.status)+")");
             }else{
-                location.href = '/list/db';
+                location.href = '/list/slb';
             }
         }
     }

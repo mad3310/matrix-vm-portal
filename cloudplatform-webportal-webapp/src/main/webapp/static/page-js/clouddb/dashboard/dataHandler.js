@@ -22,6 +22,14 @@ define(function(require,exports,module){
                 $("#rds-opened").addClass("hide");
                 $("#rds-not-opened").removeClass("hide");
             }
+            if(data.data.slb > 0){
+                $("#slb-opened").removeClass("hide");
+                $("#slb-not-opened").addClass("hide");
+                $("#slbCount").html(data.data.slb);
+            }else{
+                $("#slb-opened").addClass("hide");
+                $("#slb-not-opened").removeClass("hide");
+            }
         }
     }
 });

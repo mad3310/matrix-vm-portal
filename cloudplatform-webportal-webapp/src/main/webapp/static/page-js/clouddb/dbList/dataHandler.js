@@ -10,7 +10,7 @@ define(function(require,exports,module){
 	require('bootstrap');
 	require('paginator');
 	
-    var common = require('../common');
+    var common = require('../../common');
     var cn = new common();
    
     

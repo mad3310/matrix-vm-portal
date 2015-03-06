@@ -69,7 +69,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/monitor/dbLink/main");
+seajs.use("${ctx}/static/page-js/clouddb/monitor/dbLink/main");
 
 </script>
 </html>

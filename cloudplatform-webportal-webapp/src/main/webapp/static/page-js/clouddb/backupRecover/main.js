@@ -3,7 +3,7 @@
  * backup page js
  */
 define(function(require){
-	var common = require('../common');
+	var common = require('../../common');
 	var cn = new common();
 
 	/*初始化时间输入框*/

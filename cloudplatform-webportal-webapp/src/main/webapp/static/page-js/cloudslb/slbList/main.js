@@ -1,9 +1,4 @@
-/**
- * Created by yaokuo on 2014/12/12.
- * dblist page
- */
 define(function(require){
-	var pFresh,iFresh;
     var common = require('../../common');
     var cn = new common();
     
@@ -13,8 +8,9 @@ define(function(require){
 	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var dbListHandler = new dataHandler();
+	/*加载数据*/
+	var dataHandler = require('./dataHandler');
+	var slbDataHandler = new dataHandler();
     /*
      * 初始化数据
      */
@@ -76,45 +72,14 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
-	
+
 	//加载列表数据
 	function asyncData(page) {
-		var dbName = $("#dbName").val(),location = $("#location").val();
+		var slbName = $("#slbName").val();
 		if(!page) page = cn.currentPage;
-		var url = "/db?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		cn.GetData(url,refreshCtl);
-		
-	}
-	function refreshCtl(data) {
-		dbListHandler.DbListHandler(data);
-		if ($(".progress").length == 0){
-			if(pFresh){
-				clearInterval(pFresh);
-			}
-			if(iFresh){
-				clearInterval(iFresh);
-			}
-			iFresh = setInterval(asyncData,cn.dbListRefreshTime);
-		}else{
-			asyncProgressData();
-			if(iFresh){
-				clearInterval(iFresh);
-			}
-			if(pFresh){
-				clearInterval(pFresh);
-			}
-			pFresh = setInterval(asyncProgressData,10000);
-		}
-	}	
-	 /*进度条数据刷新*/
-	function asyncProgressData(){
-		$("input[name = progress_db_id]").each(function(){
-			var dbId = $(this).val();
-			function progress_func(data){
-				dbListHandler.progress(dbId,data,asyncData);
-			}
-			var url = "/build/db/" + dbId;
-			cn.GetLocalData(url,progress_func);
-		})
+		//var url = "/static/page-js/cloudslb/slbList/data.json";
+		url = "/slb?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&slbName=" + slbName;
+		cn.GetData(url,slbDataHandler.SlbListHandler);
+
 	}
 });
