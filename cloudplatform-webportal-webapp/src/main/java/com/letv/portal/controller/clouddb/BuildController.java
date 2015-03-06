@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.controller.clouddb;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
