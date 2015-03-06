@@ -26,7 +26,7 @@ import com.letv.portal.service.IDbService;
  * Modified By: <br>
  * Modified Date: <br>
  */
-@Controller
+@Controller("dbSkip")
 public class SkipController {
 	
 	@Autowired(required=false)
@@ -64,7 +64,7 @@ public class SkipController {
 	public ModelAndView dbDetail(@PathVariable Long dbId,ModelAndView mav){
 		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
-		mav.setViewName("/layout");
+		mav.setViewName("/clouddb/layout");
 		return mav;
 	}
 
@@ -91,7 +91,7 @@ public class SkipController {
 	 */
 	@RequestMapping(value ="/dashboard",method=RequestMethod.GET)
 	public ModelAndView toDashBoard(ModelAndView mav){
-		mav.setViewName("/clouddb/dashBoard");
+		mav.setViewName("/dashBoard");
 		return mav;
 	}
 	/**
@@ -146,7 +146,7 @@ public class SkipController {
 		return mav;
 	}
 	
-	@RequestMapping(value ="/jettyMonitor")
+	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
 		return obj;
 	}
