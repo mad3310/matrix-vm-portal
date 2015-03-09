@@ -57,7 +57,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="mclusterOption">选择Container集群</label>
 							<div class="col-sm-8">
-								<select class="chosen-select" id="mclusterOption" data-placeholder="请选择集群...">
+								<select class="chosen-select" id="mclusterOption" name="mclusterId" data-placeholder="请选择集群...">
 									<option value="">  </option>
 								</select>
 							</div>
