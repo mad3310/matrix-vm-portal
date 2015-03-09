@@ -598,6 +598,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		buildModel.setStep(step);
 		buildModel.setStartTime(startTime);
 		buildModel.setEndTime(new Date());
+		buildModel.setStatus(BuildStatus.SUCCESS.getValue());
 		if(!sendFlag) {
 			//if failed then send email to system Manager,and go on.
 			this.buildResultToMgr("mcluster集群", "相关系统推送异常", type + "推送异常，请运维人员重新推送！", ERROR_MAIL_ADDRESS);
