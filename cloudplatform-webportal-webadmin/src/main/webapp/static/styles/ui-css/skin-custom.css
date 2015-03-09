@@ -846,6 +846,11 @@ edit by jinglinlin@letv.com
 	font-size:8px;
 	height:34px;
 }
+
+.skin-custom .chosen-container-single .chosen-search input[type="text"] {
+   font-size:14px;
+}
+
 /* .skin-custom .form-horizontal .form-group button{
 	height:34px;
 } */

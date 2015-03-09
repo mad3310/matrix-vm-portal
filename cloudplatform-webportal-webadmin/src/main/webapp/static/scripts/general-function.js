@@ -275,7 +275,11 @@ function FilterNull(data){
 //chosen 组件配置
 function chosenConf(){	
 	$('.chosen-select').chosen("destroy"); 
-	$('.chosen-select').chosen({allow_single_deselect:true}); 
+	$('.chosen-select').chosen({
+		allow_single_deselect:true,
+		search_contains:true,
+		no_results_text:"未找到匹配数据"
+		}); 
 	//resize the chosen on window resize
 
 	$(window)
