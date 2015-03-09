@@ -351,7 +351,7 @@
 					<div class="form-group clearfix">
 						<label class="col-sm-2 text-muted" style="font-weight: normal">保留天数:</label>
 						<div class="col-sm-8">
-							<div class="form-control-static pd0">7天</div>
+							<div class="form-control-static pd0">15天</div>
 						</div>
 					</div>
 					<div class="form-group clearfix">
