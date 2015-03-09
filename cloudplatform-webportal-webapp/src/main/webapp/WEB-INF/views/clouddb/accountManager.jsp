@@ -596,7 +596,7 @@ seajs.config({
 		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
-seajs.use("${ctx}/static/page-js/accountManager/main");
+seajs.use("${ctx}/static/page-js/clouddb/accountManager/main");
 </script>
 
 </html>

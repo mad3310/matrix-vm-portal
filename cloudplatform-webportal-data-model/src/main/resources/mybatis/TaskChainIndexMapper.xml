@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.task.ITaskChainIndexDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="TaskChainIndex">
+		<result column="ID" property="id" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="STATUS" property="status" />
+		<result column="START_TIME" property="startTime" />
+		<result column="END_TIME" property="endTime" />
+			
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		tci.ID,tci.TASK_ID,tci.STATUS,tci.START_TIME,tci.END_TIME,tci.DELETED,tci.CREATE_TIME,tci.CREATE_USER,tci.UPDATE_TIME,tci.UPDATE_USER
+	</sql>
+	
+	<insert id="insert" parameterType="BackupResult" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_TASK_CHAIN_INDEX(TASK_ID,STATUS,START_TIME,END_TIME,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{taskId},#{status},#{startTime},#{endTime},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
+	</insert>
+	
+	<!-- -->
+	<update id="updateBySelective" parameterType="TaskChainIndex">
+		update WEBPORTAL_TASK_CHAIN_INDEX
+		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
+			<if test="taskId != null  ">
+				TASK_ID=#{taskId},
+			</if>
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="startTime != null  ">
+				START_TIME=#{startTime},
+			</if>
+			<if test="endTime != null  ">
+				END_TIME=#{endTime},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=#{updateTime},
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser},
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TASK_CHAIN_INDEX tci where tci.id = #{id}
+	</select>
+</mapper>   

@@ -233,7 +233,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/basicInfo/main");
+seajs.use("${ctx}/static/page-js/clouddb/basicInfo/main");
 
 </script>
 </html>

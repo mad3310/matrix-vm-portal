@@ -1,6 +1,7 @@
 package com.letv.portal.model;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.enumeration.ServiceType;
 
 
 /**Program Name: ContainerModel <br>
@@ -27,6 +28,8 @@ public class ContainerModel extends BaseModel {
 	private Integer memorySize; //内存大小
 	private Integer status; //状态
 	private String zabbixHosts;//对应zabbix删除container时候需要的标识
+	
+	private ServiceType serviceType;
 	
 	private Long hostId;  //所属host
 	private String hostIp; //ip
@@ -227,15 +230,13 @@ public class ContainerModel extends BaseModel {
 	}
 
 
-	@Override
-	public String toString() {
-		return "ContainerModel [containerName=" + containerName + ", mountDir="
-				+ mountDir + ", zookeeperId=" + zookeeperId + ", ipAddr="
-				+ ipAddr + ", gateAddr=" + gateAddr + ", ipMask=" + ipMask
-				+ ", type=" + type + ", diskSize=" + diskSize
-				+ ", coresNumber=" + coresNumber + ", cpuSpeed=" + cpuSpeed
-				+ ", memorySize=" + memorySize + ", status=" + status
-				+ ", hostId=" + hostId + ", mclusterId=" + mclusterId + "]";
+	public ServiceType getServiceType() {
+		return serviceType;
 	}
-	
+
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
+
 }

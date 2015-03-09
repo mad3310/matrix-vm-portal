@@ -139,18 +139,5 @@ public class HostModel extends BaseModel {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	@Override
-	public String toString() {
-		return "HostModel [hostName=" + hostName + ", hostIp="
-				+ hostIp + ", nodesNumber=" + nodesNumber + ", hostModel="
-				+ hostModel + ", cpuModel=" + cpuModel + ", coresNumber="
-				+ coresNumber + ", memorySize=" + memorySize + ", diskSize="
-				+ diskSize + ", diskUsed=" + diskUsed + ", status=" + status
-				+ "]";
-	}
-	
-	
-	
-	
 	
 }

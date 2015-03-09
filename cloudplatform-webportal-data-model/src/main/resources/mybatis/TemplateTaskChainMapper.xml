@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.task.ITemplateTaskChainDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="TemplateTaskChain">
+		<result column="ID" property="id" />
+		<result column="TASK_ID" property="taskId" />
+		<result column="TASK_DETAIL_ID" property="taskDetailId" />
+		<result column="EXECUTE_ORDER" property="executeOrder" />
+			
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		ttc.ID,ttc.TASK_ID,ttc.TASK_DETAIL_ID,ttc.EXECUTE_ORDER,ttc.DELETED,ttc.CREATE_TIME,ttc.CREATE_USER,ttc.UPDATE_TIME,ttc.UPDATE_USER
+	</sql>
+	
+	<!-- -->
+	<update id="updateBySelective" parameterType="TemplateTaskChain">
+		update WEBPORTAL_TEMPLATE_TASK_CHAIN
+		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
+			<if test="taskId != null  ">
+				TASK_ID=#{taskId},
+			</if>
+			<if test="taskDetailId != null  ">
+				TASK_DETAIL_ID=#{taskDetailId},
+			</if>
+			<if test="executeOrder != null  ">
+				EXECUTE_ORDER=#{executeOrder},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=#{updateTime},
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser},
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
+	<select id="selectByTemplateTaskId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TEMPLATE_TASK_CHAIN ttc where ttc.TASK_ID = #{taskId}
+	</select>
+
+</mapper>   

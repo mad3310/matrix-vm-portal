@@ -156,7 +156,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/dbList/main");
+seajs.use("${ctx}/static/page-js/clouddb/dbList/main");
 
 </script>
 </html>

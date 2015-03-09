@@ -887,7 +887,7 @@ seajs.config({
 		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
-seajs.use("${ctx}/static/page-js/dbCreate/main");
+seajs.use("${ctx}/static/page-js/clouddb/dbCreate/main");
 </script>
 
 <script type="text/javascript">

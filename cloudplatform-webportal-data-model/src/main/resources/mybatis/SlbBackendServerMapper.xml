@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.slb.ISlbBackendServerDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="SlbBackendServer">
+		<result column="ID" property="id" />
+	
+		<result column="SLB_ID" property="slbId" />
+		<result column="CONTAINER_ID" property="containerId" />
+		<result column="TYPE" property="type" />
+		<result column="SERVER_NAME" property="serverName" />
+		<result column="SERVER_IP" property="serverIp" />
+		<result column="PORT" property="port" />
+			
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		s.ID,
+		s.SLB_ID,s.CONTAINER_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,
+		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and s.ID=#{id}
+			</if>
+			
+			<if test="slbId != null  ">
+				and s.SLB_ID=#{slbId}
+			</if>
+			<if test="containerId != null  ">
+				and s.CONTAINER_ID=#{containerId}
+			</if>
+			<if test="type != null  ">
+				and s.TYPE=#{type}
+			</if>
+			<if test="serverName != null  ">
+				and s.SERVER_NAME=#{serverName}
+			</if>
+			<if test="serverIp != null  ">
+				and s.SERVER_IP=#{serverIp}
+			</if>
+			<if test="port != null  ">
+				and s.PORT=#{port}
+			</if>
+			
+			<if test="deleted != null  ">
+				and s.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and s.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and s.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and s.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and s.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="SlbBackendServer" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_SLB_BACKEND_SERVER(
+			SLB_ID,CONTAINER_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,
+			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+			#{slbId},#{containerId},#{type},#{serverName},#{serverIp},#{port},
+			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
+	</insert>
+
+	<!-- -->
+	<update id="updateBySelective" parameterType="SlbBackendServer">
+		update WEBPORTAL_SLB_BACKEND_SERVER
+		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
+			
+			<if test="slbId != null  ">
+				SLB_ID=#{slbId},
+			</if>
+			<if test="containerId != null  ">
+				CONTAINER_ID=#{containerId},
+			</if>
+			<if test="type != null  ">
+				TYPE=#{type},
+			</if>
+			<if test="serverName != null  ">
+				SERVER_NAME=#{serverName},
+			</if>
+			<if test="serverIp != null  ">
+				SERVER_IP=#{serverIp},
+			</if>
+			<if test="port != null  ">
+				PORT=#{port},
+			</if>
+			
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=#{updateTime},
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser},
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="SlbBackendServer">
+		delete from WEBPORTAL_SLB_BACKEND_SERVER where ID = #{id}
+	</update>
+	
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" /> 
+			where s.ID = #{id}
+	</select>
+	
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_SLB_BACKEND_SERVER s
+		<include refid="Example_Where_Clause" />
+	</select>
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLB_BACKEND_SERVER s
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and s.ID=#{params.id}
+			</if>
+			
+			<if test="params != null and params.slbId != null  ">
+				and s.SLB_ID=#{params.slbId}
+			</if>
+			<if test="params != null and params.containerId != null  ">
+				and s.CONTAINER_ID=#{params.containerId}
+			</if>
+			<if test="params != null and params.type != null  ">
+				and s.TYPE=#{params.type}
+			</if>
+			<if test="params != null and params.serverName != null  ">
+				and s.SERVER_NAME=#{params.serverName}
+			</if>
+			<if test="params != null and params.serverIp != null  ">
+				and s.SERVER_IP=#{params.serverIp}
+			</if>
+			<if test="params != null and params.port != null  ">
+				and s.PORT=#{params.port}
+			</if>
+			
+			<if test="params != null and params.deleted != null  ">
+				and s.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and s.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and s.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and s.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and s.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLB_BACKEND_SERVER s 
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY s.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+	</select>
+	
+</mapper>   

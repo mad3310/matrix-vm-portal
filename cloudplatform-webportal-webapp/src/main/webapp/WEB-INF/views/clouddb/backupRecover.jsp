@@ -404,6 +404,6 @@ seajs.config({
 		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.js"
 	}
 });
-seajs.use("${ctx}/static/page-js/backupRecover/main");
+seajs.use("${ctx}/static/page-js/clouddb/backupRecover/main");
 </script>
 </html>

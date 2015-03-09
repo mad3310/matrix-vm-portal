@@ -84,11 +84,4 @@ public class MclusterModel extends BaseModel {
 	public void setType(Integer type) {
 		this.type = type;
 	}
-	@Override
-	public String toString() {
-		return "MclusterModel [mclusterName=" + mclusterName + ", status="
-				+ status + ", adminUser=" + adminUser + ", adminPassword="
-				+ adminPassword + "]";
-	}
-
 }
