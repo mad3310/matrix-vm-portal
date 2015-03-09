@@ -353,6 +353,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	@Override
 	public void updateUser(String ids) {
+		if(StringUtils.isNullOrEmpty(ids))
+			return;
 		String[] str = ids.split(",");
 		String resultMsg = "";
 		String detail = "";
@@ -360,6 +362,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+			if(dbUserModel == null)
+				continue;
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			try {
 				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));

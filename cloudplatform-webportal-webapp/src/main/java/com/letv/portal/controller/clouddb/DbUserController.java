@@ -75,8 +75,8 @@ public class DbUserController {
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
 		isAuthorityDb(dbUserModel.getDbId());
-		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
-			throw new ValidateException("参数不能为空");
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)|| types.contains("undefined") || ips.contains("undefined")) {
+			throw new ValidateException("参数不合法");
 		}
 		this.dbUserProxy.saveAndBuild(dbUserModel,ips,types);
 		return obj;
@@ -145,8 +145,8 @@ public class DbUserController {
 	 */
 	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
-		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)) {
-			throw new ValidateException("参数不能为空");
+		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips) || types.contains("undefined") || ips.contains("undefined")) {
+			throw new ValidateException("参数不合法");
 		}
 		isAuthorityDb(dbUserModel.getDbId());
 		this.dbUserProxy.updateUserAuthority(dbUserModel,ips,types);

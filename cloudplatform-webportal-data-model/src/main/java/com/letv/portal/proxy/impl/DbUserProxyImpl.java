@@ -79,6 +79,9 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	}
 	
 	public void updateDbUser(DbUserModel dbUserModel){
+		DbUserModel dbUser = this.selectById(dbUserModel.getId());
+		if(dbUser == null)
+			return;
 		this.dbUserService.update(dbUserModel);
 		this.buildTaskService.updateUser(dbUserModel.getId().toString());
 	}
@@ -89,6 +92,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			throw new ValidateException("参数不能为空");
 		}
 		List<DbUserModel> users = this.transToDbUser(dbUserModel, ips, types);
+		
 		this.saveAndBuild(users);
 	}
 	
@@ -143,10 +147,20 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			this.saveAndBuild(adds);
 		}
 		if(!updates.isEmpty()) {
-			this.updateDbUser(updates);
+			//去掉重复违法数据。
+			Set<String> updateIps = new HashSet<String>();
+			for (DbUserModel ip : updates) {
+				if(updateIps.contains(ip.getAcceptIp())) {
+					removes.add(ip);
+				}
+				updateIps.add(ip.getAcceptIp());
+			}
 		}
 		if(!removes.isEmpty()) {
 			this.deleteAndBuild(removes);
+		}
+		if(!updates.isEmpty()) {
+			this.updateDbUser(updates);
 		}
 	}
 	
@@ -191,6 +205,7 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		}
 		String[] arryIps = ips.split(",");
 		String[] arryTypes = types.split(",");
+		
 		return this.transToDbUser(dbUserModel, arryIps, arryTypes);
 	}
 	private List<DbUserModel> transToDbUser(DbUserModel dbUserModel,String[] ips,String[] types) {
@@ -200,7 +215,11 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 			BeanUtils.copyProperties(dbUserModel, dbUser);
 			dbUser.setAcceptIp(ips[i]);
 			dbUser.setType(Integer.parseInt(types[i]));
-			users.add(dbUser);
+			
+			List<DbUserModel> existUsers = this.dbUserService.selectByIpAndUsername(dbUser);
+			
+			if(existUsers.isEmpty())
+				users.add(dbUser);
 		}
 		return users;
 	}
