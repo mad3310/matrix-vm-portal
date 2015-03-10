@@ -158,6 +158,19 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_monitor_view");
 		return mav;
 	}
+	
+	/**
+	 * Methods Name: toMonitorMclusterListDetail <br>
+	 * Description: mcluster监控详情
+	 * @author name: yaokuo
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/detail/mcluster/monitor",method=RequestMethod.GET)
+	public ModelAndView toMonitorMclusterListDetail(ModelAndView mav){
+		mav.setViewName("/clouddb/monitor_mcluster_list_detail");
+		return mav;
+	}
 
 	@RequestMapping(value ="/jettyMonitor")
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
