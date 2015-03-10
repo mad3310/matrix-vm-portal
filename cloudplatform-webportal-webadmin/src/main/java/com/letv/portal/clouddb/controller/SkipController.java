@@ -166,7 +166,7 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
-	@RequestMapping(value="/detail/mcluster/monitor",method=RequestMethod.GET)
+	@RequestMapping(value="/detail/mcluster/monitor/list",method=RequestMethod.GET)
 	public ModelAndView toMonitorMclusterListDetail(ModelAndView mav){
 		mav.setViewName("/clouddb/monitor_mcluster_list_detail");
 		return mav;
