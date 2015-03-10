@@ -40,9 +40,10 @@ function queryMclusterMonitor() {
 				var td4 = $("<td name=\"mclusterStatus\">"
 							+"<a><i class=\"ace-icon fa fa-spinner fa-spin  bigger-120\"/>数据抓取中...</a>"
 							+ "</td>");
-				var td5 = $("<td>"
-						+ "<a href=\"/monitor/"+array[i].ipAddr+"/mcluster/status\" target=\"_blank\">查看详情</a>"
-					+ "</td>");
+				var td5 = $("<td>"						
+						+ "<a href=\"/detail/mcluster/monitor/list/" + array[i].ipAddr + "/1\">查看详情</a>"
+						//+ "<a href=\"/monitor/"+array[i].ipAddr+"/mcluster/status\" target=\"_blank\">查看详情</a>"
+						+ "</td>");
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
 				}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
@@ -59,7 +60,7 @@ function queryMclusterMonitor() {
 			var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
 			var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
 			var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
-			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
+			tby.prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
 			updateMclusterStatus();//查询集群状态
 		}
 	});
