@@ -24,6 +24,8 @@ function queryMonitorDbInfo(){
 				var write_read_avaliable = monitorDbInfo.db.write_read_avaliable;
 				var wsrep_status = monitorDbInfo.db.wsrep_status;
 				var cur_conns = monitorDbInfo.db.cur_conns;
+				console.log(typeof(dbuser.error_record));
+				console.log(typeof(dbuser.message));
 				for(var key in dbuser){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
@@ -34,7 +36,7 @@ function queryMonitorDbInfo(){
 				for(var key in backup){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
-					var tdInfo = $("<td>"+ backup[key] + "</td>");
+					var tdInfo = $("<td>"+ JSON.stringify(backup[key])+ "</td>");
 					tr.append(tdStr).append(tdInfo);
 					//console.log(key+" : "+ dbuser[key]);
 					$(".backup").after(tr);
@@ -42,7 +44,7 @@ function queryMonitorDbInfo(){
 				for(var key in existed_db_anti_item){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
-					var tdInfo = $("<td>"+ existed_db_anti_item[key] + "</td>");
+					var tdInfo = $("<td>"+ JSON.stringify(existed_db_anti_item[key]) + "</td>");
 					tr.append(tdStr).append(tdInfo);
 					//console.log(key+" : "+ dbuser[key]);
 					$(".existed_db_anti_item").after(tr);
@@ -51,7 +53,7 @@ function queryMonitorDbInfo(){
 				for(var key in write_read_avaliable){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
-					var tdInfo = $("<td>"+ write_read_avaliable[key] + "</td>");
+					var tdInfo = $("<td>"+ JSON.stringify(write_read_avaliable[key]) + "</td>");
 					tr.append(tdStr).append(tdInfo);
 					//console.log(key+" : "+ dbuser[key]);
 					$(".write_read_avaliable").after(tr);
@@ -59,7 +61,7 @@ function queryMonitorDbInfo(){
 				for(var key in wsrep_status){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
-					var tdInfo = $("<td>"+ wsrep_status[key] + "</td>");
+					var tdInfo = $("<td>"+ JSON.stringify(wsrep_status[key]) + "</td>");
 					tr.append(tdStr).append(tdInfo);
 					//console.log(key+" : "+ dbuser[key]);
 					$(".wsrep_status").after(tr);
@@ -67,7 +69,7 @@ function queryMonitorDbInfo(){
 				for(var key in cur_conns){
 					var tr = $("<tr></tr>");
 					var tdStr = $("<td>"+ key + "</td>");
-					var tdInfo = $("<td>"+ cur_conns[key] + "</td>");
+					var tdInfo = $("<td>"+ JSON.stringify(cur_conns[key]) + "</td>");
 					tr.append(tdStr).append(tdInfo);
 					//console.log(key+" : "+ dbuser[key]);
 					$(".cur_conns").after(tr);
