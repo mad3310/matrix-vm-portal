@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1>
-			<a href="${ctx}/list/mcluster">返回Container集群列表<i class="ace-icon fa fa-reply icon-only"></i></a>	
+			<a href="${ctx}/list/mcluster/monitor/3">返回db监控列表<i class="ace-icon fa fa-reply icon-only"></i></a>	
 		</h1>
 	</div>
 	<input class="hidden" value="${ip}" name="vipaddr" id="vipaddr" type="text" />

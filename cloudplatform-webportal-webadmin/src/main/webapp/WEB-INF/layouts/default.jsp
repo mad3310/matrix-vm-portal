@@ -246,7 +246,6 @@
 		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
 		$('#main-content-header li:eq(1)').html("cluster监控列表");
 	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 2)){
-		console.log("aaa");
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
 		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");

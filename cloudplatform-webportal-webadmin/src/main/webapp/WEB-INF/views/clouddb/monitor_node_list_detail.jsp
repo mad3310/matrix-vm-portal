@@ -3,7 +3,7 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h1>
-			<a href="${ctx}/list/mcluster">返回Container集群列表<i class="ace-icon fa fa-reply icon-only"></i></a>	
+			<a href="${ctx}/list/mcluster/monitor/2">返回node监控列表<i class="ace-icon fa fa-reply icon-only"></i></a>	
 		</h1>
 	</div>
 	<input class="hidden" value="${ip}" name="vipaddr" id="vipaddr" type="text" />
@@ -17,7 +17,7 @@
 						<th colspan="4" style="text-align: center">db监控信息</th>
 					</tr>
 				</thead>
-			   <tbody id="db_detail_table">
+			   <tbody id="node_detail_table">
 					<tr class="logWarning">
 						<td rowspan="5" style="width: 20%;">log_warning</td>
 						<input type="text" id="logWarnFailNum" class="hidden" />
