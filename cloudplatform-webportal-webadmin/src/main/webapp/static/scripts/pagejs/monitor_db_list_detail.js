@@ -10,8 +10,8 @@ function queryMonitorDbInfo(){
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		//url :"/monitor/" + ip + "/db/status",
-		url:"/static/scripts/pagejs/nodedata.json",
+		url :"/monitor/" + ip + "/db/status",
+		//url:"/static/scripts/pagejs/nodedata.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
