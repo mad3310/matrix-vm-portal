@@ -18,22 +18,6 @@
 					</tr>
 				</thead>
 			   <tbody id="node_detail_table">
-					<tr class="logWarning">
-						<td rowspan="5" style="width: 20%;">log_warning</td>
-						<input type="text" id="logWarnFailNum" class="hidden" />
-					</tr>
-					<tr class="logHealth">
-						<td rowspan="5" style="width: 20%;">log_health</td>
-						<input type="text" id="logHealthFailNum" class="hidden" />
-					</tr>
-					<tr class="logError">
-						<td rowspan="5" style="width: 20%;">log_error</td>
-						<input type="text" id="logErrFailNum" class="hidden" />						
-					</tr>
-					<tr class="nodeStart">
-						<td rowspan="5" style="width: 20%;">started</td>
-						<input type="text" id="startFailNum" class="hidden" />
-					</tr>
 				</tbody>
 			</table>
 			</div>

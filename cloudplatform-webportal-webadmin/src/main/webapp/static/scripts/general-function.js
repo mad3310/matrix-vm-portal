@@ -376,4 +376,18 @@ function dataAppend(data,tableFlag,failedObj){
 		tableFlag.after(tr);
 	}
 }
+function getCount(obj){
+	var t = typeof(obj);
+	if(t == "string"){
+		return obj.length;		
+	}else if(t == "object"){
+		var n=0;
+		for (var i in obj){
+			n++;
+		}
+		return n;
+	}else{
+		return false;
+	}
+}
 /*预警管理页面查看详情通用函数 end*/

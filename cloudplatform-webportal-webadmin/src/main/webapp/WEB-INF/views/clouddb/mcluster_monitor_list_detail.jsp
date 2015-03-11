@@ -18,14 +18,6 @@
 					</tr>
 				</thead>
 			   <tbody id="cluster_detail_table">
-					<tr class="node">
-						<td rowspan="4" style="width: 20%;">node</td>
-						<input type="text" id="nodeFailNum" class="hidden" />
-					</tr>
-					<tr class="cluster">
-						<td rowspan="3" style="width: 20%;">cluster</td>
-						<input type="text" id="clusterFailNum" class="hidden" />
-					</tr>
 				</tbody>
 			</table>
 			</div>
