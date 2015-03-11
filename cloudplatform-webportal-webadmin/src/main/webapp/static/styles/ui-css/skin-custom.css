@@ -1007,3 +1007,19 @@ edit by jinglinlin@letv.com
        -moz-opacity:0; 
        opacity:0; 
 }
+
+/* 监控详情页面信息展示格式 */
+.skin-custom .monitor-text-danger{
+	color:red;
+	font-size:12px;
+	font-weight:bold;
+}
+.skin-custom .monitor-text-success{
+	color:#0f0;
+	font-size:12px;
+}
+.skin-custom .monitor-text-serious{
+	color:yellow;
+	font-size:12px;
+	font-weight:bold;
+}

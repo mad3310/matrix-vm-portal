@@ -20,21 +20,27 @@
 			   <tbody id="db_detail_table">
 					<tr class="dbuser">
 						<td rowspan="5" style="width: 20%;">dbuser</td>
+						<input type="text" id="dbuserFailNum" class="hidden" />
 					</tr>
 					<tr class="backup">
 						<td rowspan="5" style="width: 20%;">backup</td>
+						<input type="text" id="backupFailNum" class="hidden" />
 					</tr>
 					<tr class="existed_db_anti_item">
 						<td rowspan="5" style="width: 20%;">existed_db_anti_item</td>
+						<input type="text" id="antiItemFailNum" class="hidden" />						
 					</tr>
 					<tr class="write_read_avaliable">
 						<td rowspan="5" style="width: 20%;">write_read_avaliable</td>
+						<input type="text" id="wravailFailNum" class="hidden" />
 					</tr>
 					<tr class="wsrep_status">
 						<td rowspan="5" style="width: 20%;">wsrep_status</td>
+						<input type="text" id="wsrepFailNum" class="hidden" />
 					</tr>
 					<tr class="cur_conns">
 						<td rowspan="5" style="width: 20%;">cur_conns</td>
+						<input type="text" id="curFailNum" class="hidden" />
 					</tr>
 				</tbody>
 			</table>
