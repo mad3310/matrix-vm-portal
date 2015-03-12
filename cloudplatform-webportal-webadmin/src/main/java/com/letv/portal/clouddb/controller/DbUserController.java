@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -71,6 +72,19 @@ public class DbUserController {
 	 * @param currentPage
 	 * @param recordsPerPage
 	 * @param dbName
+	 * @param request
+	 * @return
+	 */
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.dbUserService.selectPageByParams(page, params));
+		return obj;
+	}
+	
+	/**Methods Name: list <br>
+	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
+	 * @author name: liuhao1
+	 * @param dbId
 	 * @param request
 	 * @return
 	 */

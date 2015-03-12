@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.monitor.ClusterModel;
 import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.proxy.IContainerProxy;
@@ -56,8 +59,9 @@ public class MonitorController {
 	 * @return
 	 */
 	@RequestMapping(value="/mcluster/list",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterList(ResultObject result) {
-		result.setData(this.containerService.selectVaildVipContainers());
+	public @ResponseBody ResultObject mclusterList(HttpServletRequest request,ResultObject result) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		result.setData(this.containerService.selectVaildVipContainers(params));
 		return result; 
 	} 
 	/**
