@@ -53,12 +53,12 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'dbName':dbName/*,
+			'dbName':dbName,
 			'mclusterName':mclusterName,
 			'hclusterName':hclusterName,
 			'userName':userName,
 			'createTime':createTime,
-			'status':status*/
+			'status':status
 		}
 	$("#tby tr").remove();
 	getLoading();
