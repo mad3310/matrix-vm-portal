@@ -17,8 +17,8 @@
 						<th colspan="4" style="text-align: center">db监控信息</th>
 					</tr>
 				</thead>
-			   <tbody id="node_detail_table">
-				</tbody>
+			    <tbody id="node_detail_table">
+			    </tbody>
 			</table>
 			</div>
 		</div>

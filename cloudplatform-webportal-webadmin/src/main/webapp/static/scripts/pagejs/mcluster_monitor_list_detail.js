@@ -12,8 +12,8 @@ function queryMonitorClusterInfo(){
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		//url :"/monitor/" + ip + "/mcluster/status",
-		url:"/static/scripts/pagejs/clusterdata.json",
+		url :"/monitor/" + ip + "/mcluster/status",
+		//url:"/static/scripts/pagejs/clusterdata.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
@@ -44,8 +44,8 @@ function queryMonitorClusterInfo(){
 				/*定义表格布局end*/
 				
 				/*向表格添加数据*/
-				dataAppend(nodeSize,$(".node"),$("#nodeFailNum"));				
-				dataAppend(clusterAvail,$(".cluster"),$("#clusterFailNum"));
+				dataAppend(nodeSize,tr1,"nodeFailNum");				
+				dataAppend(clusterAvail,tr2,"clusterFailNum");
 			}else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>");
 			}

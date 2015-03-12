@@ -310,7 +310,7 @@ function strToJson(str){
 	}
 }
 
-function msgFormat(data,obj,failedObj){
+function msgFormat(data,obj,eleId){
 	if(typeof(data) == "string"){
 		var span = $("<span>" + data +"</span>" + "<br/>");
 		obj.append(span);
@@ -318,7 +318,7 @@ function msgFormat(data,obj,failedObj){
 		for (var key in data){
 			var span = $("<span>" + key + "  :  " + data[key] + "</span>" + "<br/>");
 			if( (key.indexOf("failed") >= 0 || key.indexOf("lost")>=0 ) && data[key] > 0){
-				failedObj.val(data[key]);
+				$("#"+eleId).val(data[key]);
 				span.eq(0).addClass("monitor-text-danger");
 			}
 			obj.append(span);
@@ -326,9 +326,9 @@ function msgFormat(data,obj,failedObj){
 	}
 }
 
-function alarmFormat(str,obj,failedObj){
+function alarmFormat(str,obj,eleId){
 	var span = $("<span>" + str + "</span>" + "<br/>");
-	var failNum = failedObj.val()
+	var failNum = $("#"+eleId).val()
 	if(failNum == "0"){
 		span.eq(0).addClass("monitor-text-success");
 	}else if(failNum == "1"){
@@ -354,7 +354,7 @@ function errorRecordFormat(json,obj){
 	}
 }
 
-function dataAppend(data,tableFlag,failedObj){
+function dataAppend(data,tableFlag,eleId){
 	for(var key in data){
 		var tr = $("<tr></tr>");
 		var tdStr = $("<td>"+ key + "</td>");
@@ -362,10 +362,10 @@ function dataAppend(data,tableFlag,failedObj){
 		if( key == "message" ){
 			var msgJson = strToJson(data[key]);
 			if(!$.isEmptyObject(msgJson)){
-				msgFormat(msgJson,tdInfo,failedObj)
+				msgFormat(msgJson,tdInfo,eleId)
 			}
 		}else if(key == "alarm"){
-			alarmFormat(data[key],tdInfo,failedObj);
+			alarmFormat(data[key],tdInfo,eleId);
 		}else if(key == "error_record"){
 			errorRecordFormat(data[key],tdInfo)
 		}else{

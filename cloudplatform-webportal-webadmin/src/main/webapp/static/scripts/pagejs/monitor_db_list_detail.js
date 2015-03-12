@@ -10,8 +10,8 @@ function queryMonitorDbInfo(){
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		//url :"/monitor/" + ip + "/db/status",
-		url:"/static/scripts/pagejs/nodedata.json",
+		url :"/monitor/" + ip + "/db/status",
+		//url:"/static/scripts/pagejs/nodedata.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
@@ -78,12 +78,12 @@ function queryMonitorDbInfo(){
 				$tby.append(tr1).append(tr2).append(tr3).append(tr4).append(tr5).append(tr6);
 					
 				/*表格数据添加*/	
-				dataAppend(dbuser,$(".dbuser"),$("#dbuserFailNum"));
-				dataAppend(backup,$(".backup"),$("#backupFailNum"));				
-				dataAppend(existed_db_anti_item,$(".existed_db_anti_item"),$("#antiItemFailNum"));
-				dataAppend(existed_db_anti_item,$(".write_read_avaliable"),$("#wravailFailNum"));
-				dataAppend(existed_db_anti_item,$(".wsrep_status"),$("#wsrepFailNum"));
-				dataAppend(existed_db_anti_item,$(".cur_conns"),$("#curFailNum"));
+				dataAppend(dbuser,tr1,"dbuserFailNum");
+				dataAppend(backup,tr2,"backupFailNum");				
+				dataAppend(existed_db_anti_item,tr3,"antiItemFailNum");
+				dataAppend(existed_db_anti_item,tr4,"wravailFailNum");
+				dataAppend(existed_db_anti_item,tr5,"wsrepFailNum");
+				dataAppend(existed_db_anti_item,tr6,"curFailNum");
 			}else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>");
 			}

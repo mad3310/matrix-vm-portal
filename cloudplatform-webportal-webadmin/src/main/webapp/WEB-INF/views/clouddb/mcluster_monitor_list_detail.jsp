@@ -17,8 +17,8 @@
 						<th colspan="6" style="text-align: center">cluster监控信息</th>
 					</tr>
 				</thead>
-			   <tbody id="cluster_detail_table">
-				</tbody>
+			    <tbody id="cluster_detail_table">
+			    </tbody>
 			</table>
 			</div>
 		</div>

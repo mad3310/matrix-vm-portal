@@ -10,8 +10,8 @@ function queryMonitorNodeInfo(){
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		//url :"/monitor/" + ip + "/node/status",
-		url:"/static/scripts/pagejs/nodedata.json",
+		url :"/monitor/" + ip + "/node/status",
+		//url:"/static/scripts/pagejs/nodedata.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
@@ -58,10 +58,10 @@ function queryMonitorNodeInfo(){
 				
 				$tby.append(tr1).append(tr2).append(tr3).append(tr4);
 				/*添加表格数据	*/
-				dataAppend(logWarning,$(".logWarning"),$("#logWarnFailNum"));				
-				dataAppend(logHealth,$(".logHealth"),$("#logHealthFailNum"));				
-				dataAppend(logError,$(".logError"),$("#logErrFailNum"));
-				dataAppend(started,$(".nodeStart"),$("#startFailNum"));
+				dataAppend(logWarning,tr1,"logWarnFailNum");				
+				dataAppend(logHealth,tr2,"logHealthFailNum");				
+				dataAppend(logError,tr3,"logErrFailNum");
+				dataAppend(started,tr4,"startFailNum");
 				
 			}else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>")
