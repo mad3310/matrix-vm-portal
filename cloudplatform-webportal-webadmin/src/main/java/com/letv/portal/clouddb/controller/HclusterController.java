@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.HclusterModel;
@@ -42,7 +43,7 @@ public class HclusterController {
      * @return
      */
 	@RequestMapping(value = "/{currentPage}/{recordsPerPage}/{hclusterName}", method = RequestMethod.GET)
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,
+	public @ResponseBody ResultObject oldList(@PathVariable int currentPage,
 			@PathVariable int recordsPerPage,
 			@PathVariable String hclusterName, HttpServletRequest request) {
 		Page page = new Page();
@@ -54,6 +55,23 @@ public class HclusterController {
 
 		ResultObject obj = new ResultObject();
 		obj.setData(this.hclusterService.findPagebyParams(params, page));
+		return obj;
+	}
+	
+	/**
+     * Methods Name: list <br>
+     * Description: 展示hcluster的分页<br>
+     * @author name: wujun
+     * @param currentPage
+     * @param recordsPerPage
+     * @param hclusterName
+     * @param request
+     * @return
+     */
+	@RequestMapping(method = RequestMethod.GET)
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.hclusterService.selectPageByParams(page, params));
 		return obj;
 	}
 
