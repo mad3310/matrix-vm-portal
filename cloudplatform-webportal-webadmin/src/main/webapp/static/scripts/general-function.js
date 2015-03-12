@@ -272,6 +272,14 @@ function FilterNull(data){
 		return data;
 	}
 }
+
+function queryUrlBuilder(url,data){
+	var queryUrl = "?key=";
+	for(var key in data){  
+		queryUrl = queryUrl+"&&"+key+"="+data[key]
+    }
+	return url+queryUrl;
+}
 //chosen 组件配置
 function chosenConf(){	
 	$('.chosen-select').chosen("destroy"); 

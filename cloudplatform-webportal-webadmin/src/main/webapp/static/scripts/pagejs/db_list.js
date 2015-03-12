@@ -43,14 +43,29 @@ var currentSelectedLineDbName = 1;
 		location.reload();
 	});
 });	
-function queryByPage(currentPage,recordsPerPage) {
+function queryByPage() {
+	var dbName = $("#dbName").val()?$("#dbName").val():'null';
+	var mclusterName = $("#dbMcluster").val()?$("#dbMcluster").val():'null';
+	var hclusterName = $("#dbPhyMcluster").val()?$("#dbPhyMcluster").val():'null';
+	var userName = $("#dbuser").val()?$("#dbuser").val():'null';
+	var createTime = $("#PhyMechineDate").val()?$("#PhyMechineDate").val():'null';
+	var status = $("#PhyMechineRunState").val()?$("#PhyMechineRunState").val():'null';
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+			'dbName':dbName/*,
+			'mclusterName':mclusterName,
+			'hclusterName':hclusterName,
+			'userName':userName,
+			'createTime':createTime,
+			'status':status*/
+		}
 	$("#tby tr").remove();
-	var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/db/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+		url : queryUrlBuilder("/db",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -209,7 +224,7 @@ function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
 		currentPage = 1;
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 
 	// 上一页
@@ -227,7 +242,7 @@ function pageControl() {
 			
 		} else {
 			currentPage--;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
@@ -246,14 +261,14 @@ function pageControl() {
 			
 		} else {
 			currentPage++;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
 	// 末页
 	$("#lastPage").bind("click", function() {
 		currentPage = $("#totalPage_input").val();
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 }
 //查询Container集群创建过程
@@ -344,16 +359,11 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 	});
  }
 
-function searchAction(){
-	$('#nav-search-input').bind('keypress',function(event){
-        if(event.keyCode == "13")    
-        {
-        	queryByPage(currentPage, recordsPerPage);
-        }
-    });
-}
 function page_init(){
-	queryByPage(currentPage, recordsPerPage);
-	searchAction();
+	$('#nav-search').addClass("hidden");
+	$('.fa-search').click(function(){
+		queryByPage();
+	})
+	queryByPage();
 	pageControl();
 }
