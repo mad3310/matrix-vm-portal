@@ -57,12 +57,12 @@ var currentSelectedLineDbName = 1;
 	})
 });	
 function queryByPage() {
-	var dbName = $("#dbName").val()?$("#dbName").val():'null';
-	var mclusterName = $("#dbMcluster").val()?$("#dbMcluster").val():'null';
-	var hclusterName = $("#dbPhyMcluster").val()?$("#dbPhyMcluster").val():'null';
-	var userName = $("#dbuser").val()?$("#dbuser").val():'null';
+	var dbName = $("#dbName").val()?$("#dbName").val():'';
+	var mclusterName = $("#dbMcluster").val()?$("#dbMcluster").val():'';
+	var hclusterName = $("#dbPhyMcluster").val()?$("#dbPhyMcluster").val():'';
+	var userName = $("#dbuser").val()?$("#dbuser").val():'';
 	/*var createTime = $("#PhyMechineDate").val()?$("#PhyMechineDate").val():'null';*/
-	var status = $("#dbStatus").val()?$("#dbStatus").val():'null';
+	var status = $("#dbStatus").val()?$("#dbStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
@@ -375,9 +375,6 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
 
 function page_init(){
 	$('#nav-search').addClass("hidden");
-	$('.fa-search').click(function(){
-		queryByPage();
-	})
 	queryByPage();
 	pageControl();
 	
