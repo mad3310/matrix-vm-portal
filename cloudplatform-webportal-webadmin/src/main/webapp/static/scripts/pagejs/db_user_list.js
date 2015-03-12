@@ -17,6 +17,15 @@ var currentSelectedLineDbName = 1;
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+	
+	/*查询功能*/
+	$("#dbuserSearch").click(function(){
+		queryByPage();
+	});
+	$("#dbuseClearSearch").click(function(){
+		var clearList = ["userDb","userName","userAuthority","userIp","dbuserStatus"];
+		clearSearch(clearList);
+	})
 });	
  
 function buildUser() {
@@ -73,13 +82,29 @@ function buildUser() {
 }
  
 	function queryByPage(currentPage,recordsPerPage) {
+		var dbName = $("#userDb").val()?$("#userDb").val():'';
+		var userName = $("#userName").val()?$("#userName").val():'';
+		var userAuthority = $("#userAuthority").val()?$("#userAuthority").val():'';
+		var acceptIp = $("#userIp").val()?$("#userIp").val():'';
+		var status = $("#dbuserStatus").val()?$("#dbuserStatus").val():'';
+		var queryCondition = {
+				'currentPage':currentPage,
+				'recordsPerPage':recordsPerPage,
+				'dbName':dbName,
+				'userName':userName,
+				'type':userAuthority,
+				'acceptIp':acceptIp,
+				/*'createTime':createTime,*/
+				'status':status
+			}
 		$("#tby tr").remove();
 		var dbName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 		getLoading();
 		$.ajax({ 
 			cache:false,
 			type : "get",
-			url : "/dbUser/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+			//url : "/dbUser/" + currentPage + "/" + recordsPerPage+"/" + dbName,
+			url : queryUrlBuilder("/dbUser/",queryCondition),
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {

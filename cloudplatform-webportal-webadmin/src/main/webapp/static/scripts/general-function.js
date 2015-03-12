@@ -442,3 +442,9 @@ function addSltOpt(array,obj){
 		obj.append(opt);
 	}
 }
+
+function clearSearch(objArr){
+	for(var i = 0;i<objArr.length;i++){
+		$("#"+objArr[i]).val("");
+	}
+}

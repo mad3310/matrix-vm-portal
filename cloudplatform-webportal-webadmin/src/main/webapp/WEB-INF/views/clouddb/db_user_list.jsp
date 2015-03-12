@@ -23,8 +23,7 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" id="userIp"
-						placeholder="ip地址">
+					<input type="text" class="form-control" id="userIp" placeholder="ip地址">
 				</div>
 				<!-- <div class="form-group">
 					<select class="form-control" id="userLimit">
@@ -35,15 +34,14 @@
 					</select>
 				</div> -->
 				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunState">
+					<select class="form-control" id="dbuserStatus">
 						<option value="">请选择状态</option>
 					</select>
 				</div>
-				<button class="btn btn-sm btn-primary btn-search" type="button">
+				<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
 					<i class="ace-icon fa fa-search"></i>搜索
 				</button>
-				<button class="btn btn-sm " type="button"
-					id="dbuseClearSearch">清空</button>
+				<button class="btn btn-sm " type="button" id="dbuseClearSearch">清空</button>
 			</form>
 		</div>
 	</div>

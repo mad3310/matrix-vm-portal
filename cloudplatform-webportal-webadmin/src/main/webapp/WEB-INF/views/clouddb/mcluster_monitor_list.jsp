@@ -23,8 +23,8 @@
 						<option value="">请选择运行状态</option>
 					</select>
 				</div> -->
-				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
-				<button class="btn btn-sm " type="button" id="monitorClearSearch">清空</button>
+				<button class="btn btn-sm btn-primary btn-search" id="monitorClusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+				<button class="btn btn-sm " type="button" id="monitorClusterClear">清空</button>
 			</form>
 
 		</div>

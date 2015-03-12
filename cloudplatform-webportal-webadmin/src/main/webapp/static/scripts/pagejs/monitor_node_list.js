@@ -1,14 +1,32 @@
  $(function(){
 	//初始化
 	page_init();
+	/*查询功能*/
+	
+	$("#monitorNodeSearch").click(function(){
+		queryMclusterMonitor();
+	});
+	$("#monitorNodeClear").click(function(){
+		var clearList = ["monitorContainer","monitorPhyM","VipAddress"]
+		clearSearch(clearList);
+	})
 });	
-function queryMclusterMonitor() {
+function queryMclusterMonitor(){
+	var mclusterName = $("#monitorContainer").val()?$("#monitorContainer").val():'';
+	var hclusterName = $("#monitorPhyM").val()?$("#monitorPhyM").val():'';
+	var vip = $("#VipAddress").val()?$("#VipAddress").val():'';
+	var queryCondition = {
+			'mclusterName':mclusterName,
+			'hclusterName':hclusterName,
+			'vip':vipAddr
+		}	
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		url : "/monitor/mcluster/list",
+		//url : "/monitor/mcluster/list",
+		url : queryUrlBuilder("/monitor/mcluster/list/",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {

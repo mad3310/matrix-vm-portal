@@ -30,7 +30,7 @@
 				<!-- <div class="form-group">
 					<input type="date" class="form-control" placeholder="yyyy-MM-dd">
 				</div> -->
-				<button class="btn btn-sm btn-primary btn-search" type="button">
+				<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
 					<i class="ace-icon fa fa-search"></i>搜索
 				</button>
 				<button class="btn btn-sm" type="button" id="mclusterClearSearch">清空</button>

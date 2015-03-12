@@ -49,16 +49,40 @@ $(function(){
 		location.reload();
 	});
 	
+	$("#mclusterSearch").click(function(){
+		queryByPage();
+	});
+	$("#mclusterClearSearch").click(function(){
+		$("#containerName").val("");
+		$("#Physicalcluster").val("");
+		$("#containeruser").val("");
+		$("#containerStatus").val("")
+	});
 });
 
-function queryByPage(currentPage,recordsPerPage) {
+function queryByPage() {
+	var mclusterName = $("#containerName").val()?$("#containerName").val():'';
+	var hclusterName = $("#Physicalcluster").val()?$("#Physicalcluster").val():'';
+	var userName = $("#containeruser").val()?$("#containeruser").val():'';
+	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+			'mclusterName':mclusterName,
+			'hclusterName':hclusterName,
+			'userName':userName,
+			/*'createTime':createTime,*/
+			'status':status
+		}
+	
 	$("#tby tr").remove();
-	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	//var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
+		//url : "/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
+		url : queryUrlBuilder("/mcluster/list",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -172,7 +196,7 @@ function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
 		currentPage = 1;
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 
 	// 上一页
@@ -190,7 +214,7 @@ function pageControl() {
 			
 		} else {
 			currentPage--;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
@@ -209,14 +233,14 @@ function pageControl() {
 			
 		} else {
 			currentPage++;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
 	// 末页
 	$("#lastPage").bind("click", function() {
 		currentPage = $("#totalPage_input").val();
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 }
 
@@ -224,7 +248,7 @@ function pageControl() {
 		$('#nav-search-input').bind('keypress',function(event){
 	        if(event.keyCode == "13")    
 	        {
-	        	queryByPage(currentPage, recordsPerPage);
+	        	queryByPage();
 	        }
 	    });
 	}
@@ -368,7 +392,7 @@ function createMcluster(){
 			$('#create-mcluster-botton').addClass('disabled');
 			$('#create-mcluster-modal').modal('hide');
 			//延时一秒刷新列表
-			setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
+			setTimeout("queryByPage()",1000);
 		}
 	});
 }
@@ -389,7 +413,7 @@ function startMcluster(obj){
 			success:function(data){
 				removeLoading();
 				if(error(data)) return;
-				queryByPage(currentPage, recordsPerPage);
+				queryByPage();
 			}
 		});
 	}
@@ -412,7 +436,7 @@ function stopMcluster(obj){
 			success:function(data){
 				removeLoading();
 				if(error(data)) return;
-				queryByPage(currentPage, recordsPerPage);
+				queryByPage();
 			}
 		});
 	}
@@ -438,7 +462,7 @@ function deleteMcluster(obj){
 			success:function(data){
 				
 				if(error(data)) return;
-				queryByPage(currentPage, recordsPerPage);
+				queryByPage();
 			}
 		});
 	}
@@ -468,7 +492,7 @@ function queryHcluster(){
 }
 
 function page_init(){
-	queryByPage(currentPage, recordsPerPage);
+	queryByPage();
 	searchAction();
 	formValidate();
 	pageControl();

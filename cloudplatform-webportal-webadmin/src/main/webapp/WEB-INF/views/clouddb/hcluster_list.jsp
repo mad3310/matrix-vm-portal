@@ -6,11 +6,11 @@
 		<div class="input-group pull-right">
 			<form class="form-inline">
 				<div class="form-group">
-					<input type="text" class="form-control" id="PhysicalMechine"
+					<input type="text" class="form-control" id="hclusterName"
 						placeholder="物理集群名称">
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" id="PhyMechineNum"
+					<input type="text" class="form-control" id="hclusterIndex"
 						placeholder="编号">
 				</div>
 				<!-- <div class="form-group">
@@ -18,12 +18,12 @@
 						placeholder="创建时间">
 				</div> -->
 				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunStatus">
+					<select class="form-control" id="hclusterStatus">
 					    <option value="">请选择状态</option>
 					</select>
 				</div>
-				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
-				<button class="btn btn-sm " type="button" id="hclusterClear">清空</button>
+				<button class="btn btn-sm btn-primary btn-search" id="hclusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+				<button class="btn btn-sm " type="button" id="hclusterSearchClear">清空</button>
 			</form>
 		</div>
 	</div>

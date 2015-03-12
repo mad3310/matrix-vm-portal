@@ -19,16 +19,37 @@ $(function(){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+	
+	$("#hclusterSearch").click(function(){
+		queryByPage();
+	});
+	$("#hclusterSearchClear").click(function(){
+		var clearList = ["clearSearch","hclusterIndex","hclusterStatus"];
+		clearSearch(clearList);
+	});
 });
 
-function queryByPage(currentPage,recordsPerPage) {
+function queryByPage() {
+	var hclusterName = $("#hclusterName").val()?$("#hclusterName").val():'';
+	var hclusterIndex = $("#hclusterIndex").val()?$("#hclusterIndex").val():'';
+	var status = $("#hclusterStatus").val()?$("#hclusterStatus").val():'';
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+			'hclusterName':hclusterName,
+			'hclusterNameAlias':hclusterIndex,
+			/*'createTime':createTime,*/
+			'status':status
+		}
+	
 	$("#tby tr").remove();
-	var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
+	//var mclusterName = $("#nav-search-input").val()?$("#nav-search-input").val():'null';
 	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
+		//url : "/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
+		url : queryUrlBuilder("/hcluster/",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -92,7 +113,7 @@ function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
 		currentPage = 1;
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 
 	// 上一页
@@ -110,7 +131,7 @@ function pageControl() {
 			
 		} else {
 			currentPage--;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
@@ -129,14 +150,14 @@ function pageControl() {
 			
 		} else {
 			currentPage++;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		}
 	});
 
 	// 末页
 	$("#lastPage").bind("click", function() {
 		currentPage = $("#totalPage_input").val();
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 	});
 }
 

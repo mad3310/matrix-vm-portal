@@ -5,7 +5,10 @@ var currentSelectedLineDbName = 1;
  $(function(){
 	//初始化
 	page_init();
-
+    /*动态添加select内容*/
+	var sltArray = [0,2,3,4,5,6,7,8,9,10,11,12,13,14];
+	addSltOpt(sltArray,$("#dbStatus"));
+	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -48,12 +51,9 @@ var currentSelectedLineDbName = 1;
 		queryByPage();
 	});
 	$("#dbSearchClear").click(function(){
-		$("#dbName").val("");
-		$("#dbMcluster").val("");
-		$("#dbPhyMcluster").val("");
-		$("#dbuser").val("");
-		/*$("#PhyMechineDate").val("");*/
-		$("#dbStatus").val("");
+		//var clearList = ["","","","","",""]
+		var clearList = ["dbName","dbMcluster","dbPhyMcluster","dbuser","dbStatus"]
+		clearSearch(clearList);
 	})
 });	
 function queryByPage() {
@@ -73,7 +73,7 @@ function queryByPage() {
 			/*'createTime':createTime,*/
 			'status':status
 		}
-	console.log(queryUrlBuilder("/db",queryCondition));
+	
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({
@@ -377,8 +377,4 @@ function page_init(){
 	$('#nav-search').addClass("hidden");
 	queryByPage();
 	pageControl();
-	
-	var sltArray = [0,2,3,4,5,6,7,8,9,10,11,12,13,14];
-	addSltOpt(sltArray,$("#dbStatus"));
-	
 }
