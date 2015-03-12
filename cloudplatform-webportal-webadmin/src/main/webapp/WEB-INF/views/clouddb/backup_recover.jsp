@@ -4,6 +4,7 @@
 <input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 
 <div class="page-content-area">
+	<div class="page-header">
 		<!-- <h3>备份恢复列表</h3> -->
 		<div class="input-group pull-right">
 			<div class="form-inline">
@@ -47,9 +48,11 @@
 						<option value="2">备份中...</option>
 					</select>
 				</div>
-				<button id="bksearch" class="btn btn-primary btn-sm btn-search">查询</button>
+				<button id="bksearch" class="btn btn-primary btn-sm btn-search"><i class="ace-icon fa fa-search"></i>搜索</button>
+				<button class="btn btn-sm" type="button" id="clear">清空</button>
 			</div>
 		</div>
+	</div>
 	</div>
 		<div class="row">
 			<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">

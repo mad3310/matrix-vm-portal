@@ -1,85 +1,38 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
 	<div class="page-header">
-		<h3> 
+		<!-- <h3> 
 			cluster监控列表
-		</h3>
+		</h3> -->
 		<div class="input-group pull-right">
-		<form class="form-inline">
-			<!-- <div class="form-group">
-				<select class="form-control">
-					<option value="0">请选择查询条件</option>
-					<option value="1">按container集群名称查询</option>
-					<option value="2">按所属物理集群查询</option>
-					<option value="3">按当前状态查询</option>
-				</select>
-			</div> -->
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="请输入关键字">
-			</div>
-			<div class="form-group">
-				<input type="date" class="form-control" placeholder="yyyy-MM-dd">
-			</div>
-			<button class="btn btn-sm btn-default" type="button"><i class="icon-search"></i>搜索</button>
-			<button class="btn btn-sm btn-info" type="button" id="monitorAdvancedSearch">高级搜索</button>
-		</form>
-		
-	</div>
+			<form class="form-inline">
+				<div class="form-group ">
+					<input type="text" class="form-control" id="monitorContainer"
+						placeholder="container集群名称">
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="VipAddress"
+						placeholder="Vip节点地址">
+				</div>
+				<div class="form-group">
+					<input type="text" class="form-control" id="monitorPhyM"
+						placeholder="所属物理机集群">
+				</div>
+				<div class="form-group">
+					<select class="form-control" id="PhyMechineRunState">
+						<option value="">运行状态</option>
+						<option value="">创建失败</option>
+						<option value="">未审核</option>
+						<option value="">。。。</option>
+					</select>
+				</div>
+				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+				<button class="btn btn-sm " type="button" id="monitorClearSearch">清空</button>
+			</form>
+
+		</div>
 	</div>
 	<!-- /.page-header -->
-	<div id="monitorAdvancedSearch-div" style="display:none;overflow:hidden;">
-		<form class="form-horizontal" role="form">
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="monitorContainer"><b>container集群名称</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="monitorContainer" placeholder="container集群名称">
-            						</div>
-            						
-            					</div>
-            					
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="VipAddress"><b>Vip节点地址</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="VipAddress" placeholder="Vip节点地址">
-            						</div>
-            						
-            					</div>
-            					<div class="form-group">
-    								 <div class="col-sm-4">
-    										<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>
-    								</div>
-    							</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="monitorPhyM"><b>所属物理机集群</b> <i class="ace-icon fa fa-question-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="monitorPhyM" placeholder="所属物理机集群">
-            						</div>
-            						
-            					</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>当前状态</b> <i class="ace-icon fa fa-cogs blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<select class="form-control" id="PhyMechineRunState">
-            								<option value="">创建失败</option>
-            								<option value="">未审核</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						
-            					</div>
-            			<div class="form-group">
-    						<div class="col-sm-4">	
-    							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
-    						</div>
-    					</div>
-            				</form>
-	</div>
-	<script type="text/javascript">
-		$(function(){
-			bt_toggle('monitorAdvancedSearch');
-		})
-	</script>
-
             <!-- <div class="modal fade" id="dbuseradvancedSearch">
             	<div class="modal-dialog">
             		<div class="modal-content">
