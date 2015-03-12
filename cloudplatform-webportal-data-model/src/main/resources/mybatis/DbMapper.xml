@@ -246,7 +246,7 @@
 			<if test="params != null and params.mclusterId != null  ">
 				and m.MCLUSTER_ID=#{params.mclusterId}
 			</if>
-			<if test="params != null and params.status != null  ">
+			<if test="params != null and params.status != null and params.status != '' ">
 				and m.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">
@@ -279,8 +279,8 @@
 			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
 		</if>
 		join WEBPORTAL_USER u on m.CREATE_USER = u.ID
-		<if test="params != null and params.username != null  and params.username != ''">
-			and u.USERNAME like CONCAT('%','${params.username}','%') escape '^'
+		<if test="params != null and params.userName != null  and params.userName != ''">
+			and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
 		</if>
 		join WEBPORTAL_HCLUSTER h on m.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">

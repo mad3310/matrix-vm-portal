@@ -52,7 +52,7 @@ public class DbUserController {
 	 * @return
 	 */
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
+	public @ResponseBody ResultObject oldList(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,HttpServletRequest request) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
@@ -64,10 +64,13 @@ public class DbUserController {
 		obj.setData(this.dbUserService.findPagebyParams(params, page));
 		return obj;
 	} 
+	
 	/**Methods Name: list <br>
-	 * Description: db列表 http://localhost:8080/db/user/list/{dbId}<br>
-	 * @author name: liuhao1
-	 * @param dbId
+	 * Description: 根据dbName查询相关dbUser分页数据<br>
+	 * @author name: yaokuo
+	 * @param currentPage
+	 * @param recordsPerPage
+	 * @param dbName
 	 * @param request
 	 * @return
 	 */
