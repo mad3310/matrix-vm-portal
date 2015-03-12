@@ -273,11 +273,23 @@
 		select
 		<include refid="Base_Column_List" />
 		,n.MCLUSTER_NAME,u.USERNAME,h.HCLUSTER_NAME_ALIAS
-		from WEBPORTAL_DB m 
+		from WEBPORTAL_DB m
 		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = m.MCLUSTER_ID 
+		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
+			and m.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+		</if>
 		left join WEBPORTAL_USER u on m.CREATE_USER = u.ID
+		<if test="params != null and params.username != null  and params.username != ''">
+			and u.USERNAME like CONCAT('%','${params.username}','%') escape '^'
+		</if>
 		left join WEBPORTAL_HCLUSTER h on m.HCLUSTER_ID = h.ID
+		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+			and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+		</if>
 		<include refid="Example_Page_Where_Clause" />
+		<if test="params != null and params.status != null  and params.status != ''">
+			and m.STATUS = ${params.status}
+		</if>
 		ORDER BY m.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
