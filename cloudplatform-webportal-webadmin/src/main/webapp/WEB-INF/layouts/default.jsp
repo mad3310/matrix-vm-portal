@@ -240,17 +240,17 @@
 	var path = window.location.pathname;
 	var cookie_skin;
 	var mySkin="mySkin";
-	if(path.indexOf("/list/mcluster/monitor/1") >= 0 || path.indexOf("/detail/mcluster/monitor/list/1") >=0){
+	if(path.indexOf("/list/mcluster/monitor/1") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 1)){
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
 		$('#sidebar-forewarning-monitor-mgr ul li:first').addClass("active");
 		$('#main-content-header li:eq(1)').html("cluster监控列表");
-	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0 || path.indexOf("/detail/mcluster/monitor/list/2") >=0){
+	}else if(path.indexOf("/list/mcluster/monitor/2") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 2)){
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
 		$('#sidebar-forewarning-monitor-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:eq(1)').html("node监控列表");
-	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0 || path.indexOf("/detail/mcluster/monitor/list/3") >=0){
+	}else if(path.indexOf("/list/mcluster/monitor/3") >= 0 || (path.indexOf("/detail/mcluster/monitor/list") >=0 && path[path.length-1] == 3)){
 		$('#sidebar-forewarning-monitor-mgr').addClass("active open hsub");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("预警管理");
 		$('#sidebar-forewarning-monitor-mgr ul li:eq(2)').addClass("active");
