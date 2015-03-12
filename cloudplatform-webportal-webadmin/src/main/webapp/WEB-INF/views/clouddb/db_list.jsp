@@ -25,17 +25,14 @@
 						placeholder="创建时间">
 				</div> -->
 				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunState">
-						<option value="">运行状态</option>
-						<option value="">创建失败</option>
-						<option value="">未审核</option>
-						<option value="">。。。</option>
+					<select class="form-control" id="dbStatus">
+						<option value="">请选择状态</option>
 					</select>
 				</div>
 				
-				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索
+				<button class="btn btn-sm btn-primary btn-search" type="button" id="dbSearch"><i class="ace-icon fa fa-search"></i>搜索
 				</button>
-				<button class="btn btn-sm" type="button" id="dbadvancedSearch">清空</button>
+				<button class="btn btn-sm" type="button" id="dbSearchClear">清空</button>
 			</form>
 		</div>	
 	</div>

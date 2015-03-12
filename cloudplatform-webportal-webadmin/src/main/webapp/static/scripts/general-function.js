@@ -399,3 +399,46 @@ function getCount(obj){
 	}
 }
 /*预警管理页面查看详情通用函数 end*/
+
+/*搜索功能begin*/
+function addSltOpt(array,obj){
+	var len = array.length;
+	for (var i = 0;i < len;i++){
+		var opt = $("<option></option>");
+		if(array[i] == 0){
+			opt.html("未审核");
+		}else if(array[i] == 1){
+			opt.html("运行中");
+		}else if(array[i] == 2){
+			opt.html("创建中");
+		}else if(array[i] == 3){
+			opt.html("创建失败");
+		}else if(array[i] == 4){
+			opt.html("审核失败");
+		}else if(array[i] == 5){
+			opt.html("异常");
+		}else if(array[i] == 6){
+			opt.html("正常");
+		}else if(array[i] == 7){
+			opt.html("启动中");
+		}else if(array[i] == 8){
+			opt.html("停止中");
+		}else if(array[i] == 9){
+			opt.html("已停止");
+		}else if(array[i] == 10){
+			opt.html("删除中");
+		}else if(array[i] == 11){
+			opt.html("已删除");
+		}else if(array[i] == 12){
+			opt.html("不存在");
+		}else if(array[i] == 13){
+			opt.html("危险");
+		}else if(array[i] == 14){
+			opt.html("严重危险");
+		}else if(array[i] == 15){
+			opt.html("禁用");
+		}
+		opt.attr({"value":array[i]});
+		obj.append(opt);
+	}
+}

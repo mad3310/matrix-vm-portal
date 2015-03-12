@@ -5,6 +5,11 @@ var queryBuildStatusrefresh;//刷新handler
 $(function(){
 	//初始化 
 	page_init();
+	
+	/*动态加载下拉列表值*/
+	var sltArray = [1,10,11,12,15];
+	addSltOpt(sltArray,$("#PhyMechineRunStatus"));
+	
 	$('[name = "popoverHelp"]').popover();
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
