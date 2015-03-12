@@ -6,6 +6,10 @@ $(function(){
 	//初始化 
 	page_init();
 	
+	/*动态加载界面下拉列表值*/
+	var sltArray = [1,2,3,5,7,8,9,10,11,12,13,14];
+	addSltOpt(sltArray,$("#containerStatus"));
+	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')

@@ -42,14 +42,27 @@ var currentSelectedLineDbName = 1;
 		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
 		location.reload();
 	});
+	
+	/*查询功能*/
+	$("#dbSearch").click(function(){
+		queryByPage();
+	});
+	$("#dbSearchClear").click(function(){
+		$("#dbName").val("");
+		$("#dbMcluster").val("");
+		$("#dbPhyMcluster").val("");
+		$("#dbuser").val("");
+		/*$("#PhyMechineDate").val("");*/
+		$("#dbStatus").val("");
+	})
 });	
 function queryByPage() {
 	var dbName = $("#dbName").val()?$("#dbName").val():'null';
 	var mclusterName = $("#dbMcluster").val()?$("#dbMcluster").val():'null';
 	var hclusterName = $("#dbPhyMcluster").val()?$("#dbPhyMcluster").val():'null';
 	var userName = $("#dbuser").val()?$("#dbuser").val():'null';
-	var createTime = $("#PhyMechineDate").val()?$("#PhyMechineDate").val():'null';
-	var status = $("#PhyMechineRunState").val()?$("#PhyMechineRunState").val():'null';
+	/*var createTime = $("#PhyMechineDate").val()?$("#PhyMechineDate").val():'null';*/
+	var status = $("#dbStatus").val()?$("#dbStatus").val():'null';
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
@@ -57,9 +70,10 @@ function queryByPage() {
 			'mclusterName':mclusterName,
 			'hclusterName':hclusterName,
 			'userName':userName,
-			'createTime':createTime,
+			/*'createTime':createTime,*/
 			'status':status
 		}
+	
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({
@@ -366,4 +380,8 @@ function page_init(){
 	})
 	queryByPage();
 	pageControl();
+	
+	var sltArray = [0,2,3,4,5,6,7,8,9,10,11,12,13,14];
+	addSltOpt(sltArray,$("#dbStatus"));
+	
 }

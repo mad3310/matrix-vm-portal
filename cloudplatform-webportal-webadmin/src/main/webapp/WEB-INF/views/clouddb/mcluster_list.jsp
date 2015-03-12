@@ -23,11 +23,8 @@
 
 				</div>
 				<div class="form-group">
-					<select class="form-control" id="containerRunState">
-						<option value="0">运行状态</option>
-						<option value="">运行中</option>
-						<option value="">危险</option>
-						<option value="">创建失败</option>
+					<select class="form-control" id="containerStatus">
+						<option value="">请选择状态</option>
 					</select>
 				</div>
 				<!-- <div class="form-group">

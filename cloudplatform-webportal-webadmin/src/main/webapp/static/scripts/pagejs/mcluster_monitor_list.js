@@ -1,6 +1,9 @@
  $(function(){
 	//初始化
 	page_init();
+	
+	var sltArray = [1,2,3,5,7,8,9,10,11,12,13,14];
+	addSltOpt(sltArray,$("#PhyMechineRunStatus"));
 });	
 function queryMclusterMonitor() {
 	$("#tby tr").remove();

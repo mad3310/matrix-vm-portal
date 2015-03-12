@@ -5,7 +5,10 @@ var currentSelectedLineDbName = 1;
  $(function(){
 	//初始化
 	page_init();
-
+    
+	var sltArray = [0,3,4,5,6,7,8,9,11,12,13,14];
+	addSltOpt(sltArray,$("#PhyMechineRunState"));
+	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')

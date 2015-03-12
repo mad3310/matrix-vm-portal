@@ -18,13 +18,11 @@
 					<input type="text" class="form-control" id="monitorPhyM"
 						placeholder="所属物理机集群">
 				</div>
-				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunState">
-						<option value="">创建失败</option>
-						<option value="">未审核</option>
-						<option value="">。。。</option>
+				<!-- <div class="form-group">
+					<select class="form-control" id="monitorDbStatus">
+						<option value="">请选择运行状态</option>
 					</select>
-				</div>
+				</div> -->
 				<!-- <div class="form-group">
 					<input type="date" class="form-control" placeholder="yyyy-MM-dd">
 				</div> -->

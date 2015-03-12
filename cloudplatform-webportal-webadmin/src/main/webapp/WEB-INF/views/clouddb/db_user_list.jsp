@@ -16,30 +16,27 @@
 				<div class="form-group">
 					<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
 					<select class="form-control" id="userAuthority">
-						<option value="">用户权限</option>					
-						<option value="">管理员</option>
-						<option value="">读写</option>
-						<option value="">。。。</option>
+						<option value="">请选择用户权限</option>
+						<option value="1">管理员</option>
+						<option value="2">只读用户</option>
+						<option value="3">读写用户</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control" id="userIp"
 						placeholder="ip地址">
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<select class="form-control" id="userLimit">
 						<option value="">频次限制</option>
 						<option value="">50</option>
 						<option value="">100</option>
 						<option value="">。。。</option>
 					</select>
-				</div>
+				</div> -->
 				<div class="form-group">
 					<select class="form-control" id="PhyMechineRunState">
-						<option value="">运行状态</option>
-						<option value="">创建失败</option>
-						<option value="">未审核</option>
-						<option value="">。。。</option>
+						<option value="">请选择状态</option>
 					</select>
 				</div>
 				<button class="btn btn-sm btn-primary btn-search" type="button">

@@ -18,14 +18,11 @@
 					<input type="text" class="form-control" id="monitorPhyM"
 						placeholder="所属物理机集群">
 				</div>
-				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunState">
-						<option value="">运行状态</option>
-						<option value="">创建失败</option>
-						<option value="">未审核</option>
-						<option value="">。。。</option>
+				<!-- <div class="form-group">
+					<select class="form-control" id="PhyMechineRunStatus">
+						<option value="">请选择运行状态</option>
 					</select>
-				</div>
+				</div> -->
 				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
 				<button class="btn btn-sm " type="button" id="monitorClearSearch">清空</button>
 			</form>

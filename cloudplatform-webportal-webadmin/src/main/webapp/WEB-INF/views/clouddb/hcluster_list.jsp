@@ -18,11 +18,8 @@
 						placeholder="创建时间">
 				</div> -->
 				<div class="form-group">
-					<select class="form-control" id="PhyMechineRunState">
-					    <option value="0">运行状态</option>
-						<option value="">运行中</option>
-						<option value="">未审核</option>
-						<option value="">。。。</option>
+					<select class="form-control" id="PhyMechineRunStatus">
+					    <option value="">请选择状态</option>
 					</select>
 				</div>
 				<button class="btn btn-sm btn-primary btn-search" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
