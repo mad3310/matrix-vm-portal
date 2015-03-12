@@ -69,7 +69,7 @@ public class MclusterController {
 	 * @param dbName
 	 * @param request
 	 */
-	@RequestMapping(method=RequestMethod.GET)   
+	@RequestMapping(value="/list",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.mclusterService.selectPageByParams(page, params));
