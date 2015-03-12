@@ -73,7 +73,7 @@ function queryByPage() {
 			/*'createTime':createTime,*/
 			'status':status
 		}
-	
+	console.log(queryUrlBuilder("/db",queryCondition));
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({
