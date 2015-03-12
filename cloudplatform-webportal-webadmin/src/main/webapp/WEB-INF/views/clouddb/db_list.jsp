@@ -26,60 +26,60 @@
     <!-- /.page-header -->
     <div id="dbadvancedSearch-div" style="display:none;overflow:hidden;">
 		<form class="form-horizontal" role="form">
-            					<div class="form-group col-md-3 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="dbName"><b>数据库名称</b> <i class="ace-icon fa fa-database blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="dbName" placeholder="数据库名称">
-            						</div>
-            					</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="dbMcluster"><b>所属Mcluster</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="dbMcluster" placeholder="所属Mcluster">
-            						</div>
-            					</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="dbPhyMcluster"><b>所属物理机集群</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="dbPhyMcluster" placeholder="所属物理机集群">
-            						</div>
-            					</div>
-            					<div class="form-group">
-    						      	<div class=" col-sm-1"  style="position：absolute;	right:-60px;">
-    									<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>    							
-    								</div>
-    							</div>
-            					<div class="form-group col-md-3 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="dbuser"><b>所属用户</b> <i class="ace-icon fa fa-user blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="text" class="form-control" id="dbuser" placeholder="所属用户">
-            						</div>
-            						
-            					</div>
-            					
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="PhyMechineDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<input type="date" class="form-control" id="PhyMechineDate" placeholder="创建时间">
-            						</div>
-            						
-            					</div>
-            					<div class="form-group col-md-4 col-sm-6 col-xs-12">
-            						<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>运行状态</b> <i class="ace-icon fa fa-cog blue bigger-125"></i></lable>
-            						<div class="col-md-6">
-            							<select class="form-control" id="PhyMechineRunState">
-            								<option value="">创建失败</option>
-            								<option value="">未审核</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            					</div>
-            		    <div class="form-group">
-    						<div class="col-sm-1" style="position：absolute;	right:-60px;">
-    							<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
-    						</div>
-    					</div>	
-            	</form>
+			<div class="form-group col-md-3 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="dbName"><b>数据库名称</b> <i class="ace-icon fa fa-database blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="dbName" placeholder="数据库名称">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="dbMcluster"><b>所属Mcluster</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="dbMcluster" placeholder="所属Mcluster">
+				</div>
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="dbPhyMcluster"><b>所属物理机集群</b> <i class="ace-icon fa fa-info-circle blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="dbPhyMcluster" placeholder="所属物理机集群">
+				</div>
+			</div>
+			<div class="form-group">
+	  			<div class=" col-sm-1"  style="position：absolute;	right:-60px;">
+					<button class="btn btn-sm btn-info pull-right" type="button" style="margin-left:5px;"><i class="ace-icon fa fa-search"></i>搜索</button>    							
+				</div>
+			</div>
+			<div class="form-group col-md-3 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="dbuser"><b>所属用户</b> <i class="ace-icon fa fa-user blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<input type="text" class="form-control" id="dbuser" placeholder="所属用户">
+				</div>
+				
+			</div>
+			
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="PhyMechineDate"><b>创建时间</b> <i class="ace-icon fa fa-calendar blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<input type="date" class="form-control" id="PhyMechineDate" placeholder="创建时间">
+				</div>
+				
+			</div>
+			<div class="form-group col-md-4 col-sm-6 col-xs-12">
+				<lable class="col-md-6 control-label" for="PhyMechineRunState"><b>运行状态</b> <i class="ace-icon fa fa-cog blue bigger-125"></i></lable>
+				<div class="col-md-6">
+					<select class="form-control" id="PhyMechineRunState">
+						<option value="1">创建失败</option>
+						<option value="2">未审核</option>
+						<option value="3">。。。</option>
+					</select>
+				</div>
+			</div>
+  		    <div class="form-group">
+				<div class="col-sm-1" style="position：absolute;	right:-60px;">
+					<button class="btn btn-sm btn-default pull-right" type="reset"><i class="ace-icon fa fa-refresh"></i>清空</button>
+				</div>
+			</div>	
+    	</form>
 	</div>
 <script type="text/javascript">
 		$(function(){

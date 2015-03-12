@@ -3,6 +3,8 @@ package com.letv.portal.clouddb.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
@@ -54,10 +58,23 @@ public class DbController {
 	 * @param request
 	 */
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}",method=RequestMethod.GET)  
-	public @ResponseBody ResultObject list(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,ResultObject obj) {
+	public @ResponseBody ResultObject oldList(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String dbName,ResultObject obj) {
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("dbName", StringUtil.transSqlCharacter(dbName));		
 		obj.setData(this.dbProxy.selectPageByParams(currentPage,recordsPerPage,params));
+		return obj;
+	}
+	
+	/**Methods Name: list <br>
+	 * Description: 查询db列表<br>
+	 * @author name: yaokuo
+	 * @param dbName
+	 * @param request
+	 */
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.dbService.selectPageByParams(page, params));
 		return obj;
 	}
 	
