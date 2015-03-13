@@ -90,8 +90,8 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public List<MclusterModel> selectValidMclusters() {
-		return this.mclusterDao.selectValidMclusters();
+	public List<MclusterModel> selectValidMclustersByMap(Map<String, Object> params) {
+		return this.mclusterDao.selectValidMclustersByMap(params);
 	}
 
 	@Override
@@ -102,5 +102,10 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		if(stage == 4)
 			return this.mclusterDao.selectLastValidMclustersByPage(page);
 		return this.mclusterDao.selectValidMclustersByPage(page);
+	}
+
+	@Override
+	public List<MclusterModel> selectValidMclusters() {
+		return this.mclusterDao.selectValidMclusters();
 	}
 }

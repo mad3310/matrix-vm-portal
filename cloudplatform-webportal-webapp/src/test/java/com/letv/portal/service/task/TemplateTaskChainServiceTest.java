@@ -1,4 +1,4 @@
-package com.letv.portal.task.service;
+package com.letv.portal.service.task;
 
 import java.util.List;
 

@@ -60,7 +60,7 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	public ContainerModel selectByName(String containerName);
 	
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId);
-	public  List<ContainerModel> selectAllByMap(Map map);
+	public  List<ContainerModel> selectAllByMap(Map<String,Object> map);
 
 	/**Methods Name: selectVips4Monitor <br>
 	 * Description: 查询有效的vip节点ip，进行监控预警<br>
@@ -76,6 +76,6 @@ public interface IContainerService extends IBaseService<ContainerModel> {
 	 */
 	public List<ContainerModel> selectVaildVipContainers(Map<String,Object> params);
 
-	public ContainerModel selectValidVipContianer(Long mclusterId,String type);
+	ContainerModel selectValidVipContianer(Long mclusterId, String type, Map<String, Object> params);
 	
 }

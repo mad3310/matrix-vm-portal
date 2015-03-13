@@ -232,7 +232,19 @@
 		select
 		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HOST_NAME,H.HOST_NAME_ALIAS,U.HCLUSTER_NAME_ALIAS
 		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
-		<include refid="Example_Where_Clause" />
+		where 1=1
+		<if test="containerName != null  and containerName != '' and containerName != 'null'">
+			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+		</if>
+		<if test="type != null ">
+			and C.TYPE=#{type}
+		</if>
+		<if test="ipAddr != null and ipAddr != ''">
+			and C.IP_ADDR like CONCAT('%','${ipAddr}','%')
+		</if>
+		<if test="mclusterId != null ">
+			and C.MCLUSTER_ID=#{mclusterId}
+		</if>
 		and C.MCLUSTER_ID=M.Id and C.HOST_ID=H.ID and H.HCLUSTER_ID=U.ID
 	</select>
 	

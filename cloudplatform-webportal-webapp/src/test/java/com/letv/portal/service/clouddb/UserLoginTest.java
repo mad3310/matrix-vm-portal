@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.service.clouddb;
 
 import com.letv.portal.junitBase.AbstractTest;
 
