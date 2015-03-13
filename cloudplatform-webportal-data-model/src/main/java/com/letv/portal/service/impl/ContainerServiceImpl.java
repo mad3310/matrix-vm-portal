@@ -84,7 +84,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	public  List<ContainerModel> selectContainerByMclusterId(Long clusterId){
 		return this.containerDao.selectContainerByMclusterId(clusterId);
 	}
-	public  List<ContainerModel> selectAllByMap(Map map){
+	
+	public  List<ContainerModel> selectAllByMap(Map<String, Object> map){
 		return this.containerDao.selectAllByMap(map);	
 	}
 
@@ -94,21 +95,20 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	}
 
 	@Override
-	public List<ContainerModel> selectVaildVipContainers() {
-		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters();
+	public List<ContainerModel> selectVaildVipContainers(Map<String,Object> params) {
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclustersByMap(params);
 		List<ContainerModel> containers = new ArrayList<ContainerModel>();
 		for (MclusterModel mclusterModel : mclusters) {
-			containers.add(this.selectValidVipContianer(mclusterModel.getId(), "mclustervip"));
+			containers.add(this.selectValidVipContianer(mclusterModel.getId(), "mclustervip",params));
 		}
 		return containers;
 	}
 	
 	@Override
-	public ContainerModel selectValidVipContianer(Long mclusterId,String type){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("mclusterId", mclusterId);
-		map.put("type", type);
-		List<ContainerModel> containers = this.selectAllByMap(map);
+	public ContainerModel selectValidVipContianer(Long mclusterId,String type,Map<String,Object> params){
+		params.put("mclusterId", mclusterId);
+		params.put("type", type);
+		List<ContainerModel> containers = this.selectAllByMap(params);
 		if(containers.isEmpty()) {
 			return null;
 		}

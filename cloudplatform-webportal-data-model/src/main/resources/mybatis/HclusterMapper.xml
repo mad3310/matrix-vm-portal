@@ -92,6 +92,9 @@
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
 				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
+			<if test="params != null and params.hclusterNameAlias != null  and params.hclusterNameAlias != ''  and params.hclusterNameAlias != 'null'">
+				and m.HCLUSTER_NAME_ALIAS like CONCAT('%','${params.hclusterNameAlias}','%') escape '^'
+			</if>
 
 		</trim>
 	</sql>

@@ -49,7 +49,7 @@ function queryByPage() {
 		cache:false,
 		type : "get",
 		//url : "/hcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
-		url : queryUrlBuilder("/hcluster/",queryCondition),
+		url : queryUrlBuilder("/hcluster/list",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();

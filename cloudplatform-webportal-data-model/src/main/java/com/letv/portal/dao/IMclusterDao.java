@@ -2,6 +2,7 @@ package com.letv.portal.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.paging.impl.Page;
@@ -44,4 +45,6 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	List<MclusterModel> selectValidMclustersByPage(Page page);
 
 	List<MclusterModel> selectLastValidMclustersByPage(Page page);
+	
+	List<MclusterModel> selectValidMclustersByMap(Map<String, Object> params);
 }

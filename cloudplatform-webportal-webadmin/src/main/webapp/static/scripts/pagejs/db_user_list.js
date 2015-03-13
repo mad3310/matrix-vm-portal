@@ -81,7 +81,7 @@ function buildUser() {
 	}
 }
  
-	function queryByPage(currentPage,recordsPerPage) {
+	function queryByPage() {
 		var dbName = $("#userDb").val()?$("#userDb").val():'';
 		var userName = $("#userName").val()?$("#userName").val():'';
 		var userAuthority = $("#userAuthority").val()?$("#userAuthority").val():'';
@@ -91,7 +91,7 @@ function buildUser() {
 				'currentPage':currentPage,
 				'recordsPerPage':recordsPerPage,
 				'dbName':dbName,
-				'userName':userName,
+				'username':userName,
 				'type':userAuthority,
 				'acceptIp':acceptIp,
 				/*'createTime':createTime,*/
@@ -104,7 +104,7 @@ function buildUser() {
 			cache:false,
 			type : "get",
 			//url : "/dbUser/" + currentPage + "/" + recordsPerPage+"/" + dbName,
-			url : queryUrlBuilder("/dbUser/",queryCondition),
+			url : queryUrlBuilder("/dbUser",queryCondition),
 			dataType : "json", /*这句可用可不用，没有影响*/
 			contentType : "application/json; charset=utf-8",
 			success : function(data) {
@@ -191,7 +191,7 @@ function buildUser() {
 		// 首页
 		$("#firstPage").bind("click", function() {
 			currentPage = 1;
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		});
 
 		// 上一页
@@ -209,7 +209,7 @@ function buildUser() {
 				
 			} else {
 				currentPage--;
-				queryByPage(currentPage,recordsPerPage);
+				queryByPage();
 			}
 		});
 
@@ -228,14 +228,14 @@ function buildUser() {
 				
 			} else {
 				currentPage++;
-				queryByPage(currentPage,recordsPerPage);
+				queryByPage();
 			}
 		});
 
 		// 末页
 		$("#lastPage").bind("click", function() {
 			currentPage = $("#totalPage_input").val();
-			queryByPage(currentPage,recordsPerPage);
+			queryByPage();
 		});
 	}
 	
@@ -243,13 +243,13 @@ function buildUser() {
 		$('#nav-search-input').bind('keypress',function(event){
 	        if(event.keyCode == "13")    
 	        {
-	        	queryByPage(currentPage, recordsPerPage);
+	        	queryByPage();
 	        }
 	    });
 	}
 	
 	function page_init(){
 		searchAction();
-		queryByPage(currentPage,recordsPerPage);
+		queryByPage();
 		pageControl();
 	}

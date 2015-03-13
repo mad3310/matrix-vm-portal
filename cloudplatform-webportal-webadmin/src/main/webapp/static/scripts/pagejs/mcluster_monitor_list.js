@@ -18,7 +18,7 @@ function queryMclusterMonitor() {
 	var queryCondition = {
 			'mclusterName':mclusterName,
 			'hclusterName':hclusterName,
-			'vip':vipAddr
+			'ipAddr':vip
 		}
 	$("#tby tr").remove();
 	$.ajax({ 
