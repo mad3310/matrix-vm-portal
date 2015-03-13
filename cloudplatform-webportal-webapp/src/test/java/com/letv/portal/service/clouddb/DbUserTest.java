@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.service.clouddb;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
 
-public class DbUserControllerTest extends AbstractTest{
+public class DbUserTest extends AbstractTest{
 	
 	@Resource
 	private IDbUserService dbUserService;
@@ -144,5 +144,13 @@ public class DbUserControllerTest extends AbstractTest{
 		dbUser.setCreateUser(2L);
 		this.dbUserProxy.updateUserAuthority(dbUser, ips, types);
 	}
+	 @Test
+    public void getStepByDbId() {
+    	DbUserModel dbUser = new DbUserModel();
+    	dbUser.setUsername("test_jll");
+    	dbUser.setDbId(14L);
+    	dbUser.setDescn("hello world");
+    	this.dbUserService.updateDescnByUsername(dbUser);
+    }
 	
 }

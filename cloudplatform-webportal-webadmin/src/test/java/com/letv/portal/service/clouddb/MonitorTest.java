@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.service;
+package com.letv.portal.service.clouddb;
 
 import java.util.HashMap;
 import java.util.Map;

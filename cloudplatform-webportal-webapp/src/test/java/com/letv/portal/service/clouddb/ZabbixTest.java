@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.service.clouddb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
