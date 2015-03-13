@@ -106,6 +106,8 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 	
 	@Override
 	public ContainerModel selectValidVipContianer(Long mclusterId,String type,Map<String,Object> params){
+		if(params == null)
+			params = new HashMap<String,Object>();
 		params.put("mclusterId", mclusterId);
 		params.put("type", type);
 		List<ContainerModel> containers = this.selectAllByMap(params);

@@ -123,7 +123,7 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		MclusterModel mcluster = this.selectById(mclusterId);
 		if(mcluster == null)
 			throw new ValidateException("参数不合法");
-		ContainerModel container = this.containerService.selectValidVipContianer(mclusterId, "mclustervip");
+		ContainerModel container = this.containerService.selectValidVipContianer(mclusterId, "mclustervip",null);
 		if(container == null)
 			throw new ValidateException("vip节点不存在");
 		String result = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
