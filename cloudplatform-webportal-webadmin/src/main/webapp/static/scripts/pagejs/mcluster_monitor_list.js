@@ -18,14 +18,14 @@ function queryMclusterMonitor() {
 	var queryCondition = {
 			'mclusterName':mclusterName,
 			'hclusterName':hclusterName,
-			'vip':vipAddr
+			'vip':vip
 		}
 	$("#tby tr").remove();
 	$.ajax({ 
 		cache:false,
 		type : "get",
-		url : "/monitor/mcluster/list",
-		//url : queryUrlBuilder("/monitor/mcluster/list/",queryCondition),
+		//url : "/monitor/mcluster/list",
+		url : queryUrlBuilder("/monitor/mcluster/list/",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
