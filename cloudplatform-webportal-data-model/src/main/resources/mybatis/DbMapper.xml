@@ -274,6 +274,10 @@
 		<include refid="Base_Column_List" />
 		,n.MCLUSTER_NAME,u.USERNAME,h.HCLUSTER_NAME_ALIAS
 		from WEBPORTAL_DB m
+		<if test="params != null and params.mclusterName == null  or params.mclusterName == ''">
+			<!-- 查询条件为空时，左关联，否则，右关联 20150313 liuhao -->
+			left
+		</if>
 		join WEBPORTAL_MCLUSTER_INFO n on n.ID = m.MCLUSTER_ID 
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
 			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
