@@ -116,6 +116,14 @@ public class DbController {
 		obj.setData(db);
 		return obj;
 	}	
+	@RequestMapping(value="/gbConfig/{dbId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getGbaConfig(@PathVariable Long dbId){
+		isAuthorityDb(dbId);
+		ResultObject obj = new ResultObject();
+		Map<String,Object> config = this.dbService.getGbaConfig(dbId);
+		obj.setData(config);
+		return obj;
+	}	
 	
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String dbName,HttpServletRequest request) {
