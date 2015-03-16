@@ -9,6 +9,7 @@
 	
 		<result column="SLB_ID" property="slbId" />
 		<result column="CONTAINER_ID" property="containerId" />
+		<result column="SLB_CONFIG_ID" property="configId" />
 		<result column="TYPE" property="type" />
 		<result column="SERVER_NAME" property="serverName" />
 		<result column="SERVER_IP" property="serverIp" />
@@ -29,7 +30,7 @@
 	
 	<sql id="Base_Column_List">
 		s.ID,
-		s.SLB_ID,s.CONTAINER_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,
+		s.SLB_ID,s.CONTAINER_ID,s.SLB_CONFIG_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,
 		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
 	</sql>
 	
@@ -46,6 +47,9 @@
 			</if>
 			<if test="containerId != null  ">
 				and s.CONTAINER_ID=#{containerId}
+			</if>
+			<if test="configId != null  ">
+				and s.SLB_CONFIG_ID=#{configId}
 			</if>
 			<if test="type != null  ">
 				and s.TYPE=#{type}
@@ -83,10 +87,10 @@
 	<insert id="insert" parameterType="SlbBackendServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_SLB_BACKEND_SERVER(
-			SLB_ID,CONTAINER_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,
+			SLB_ID,CONTAINER_ID,SLB_CONFIG_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{slbId},#{containerId},#{type},#{serverName},#{serverIp},#{port},
+			#{slbId},#{containerId},#{configId},#{type},#{serverName},#{serverIp},#{port},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 

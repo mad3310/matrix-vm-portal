@@ -31,7 +31,7 @@
 		</div>
 		<ul class="nav nav-tabs" role="tablist" id="setab">
 			<li id="whitelist-tab" role="presentation" class="active">
-				<a data-toggle="tab" href="#addedServer">已添加的服务器</a></li>
+				<a data-toggle="tab" href="#addedServer">已添加的服务配置</a></li>
 			<!-- <li id="sqlInject-tab" role="presentation">
 				<a data-toggle="tab" href="#sqlInject">未添加的服务器</a></li> -->
 		</ul>

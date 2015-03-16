@@ -52,6 +52,9 @@ public class SlbConfigController {
 			throw new ValidateException("参数不合法");
 		isAuthoritySlb(slbConfig.getSlbId());
 		slbConfig.setCreateUser(this.sessionService.getSession().getUserId());
+		
+		String frontPort = "28080";
+		slbConfig.setFrontPort(frontPort);
 		this.slbConfigService.insert(slbConfig);
 		return obj;
 	}

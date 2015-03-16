@@ -46,8 +46,7 @@ define(function(require){
         e.preventDefault();
         var createConfigData = {
             slbId: $("#slbId").val(),
-            agentType :  $("[name = agentType]").val(),
-            frontPort : $("[name = frontendPort]").val()
+            agentType :  $("[name = agentType]").val()
         }
         var url = "/slbConfig";
         cn.PostData(url, createConfigData, function () {

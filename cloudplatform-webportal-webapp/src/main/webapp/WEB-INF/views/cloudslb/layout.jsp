@@ -100,7 +100,7 @@
 					<ul class="nav nav-sidebar li-underline">
 						<li class="active"><a class="text-sm" src="${ctx}/detail/slbBaseInfo/${slbId}" href="javascript:void(0)">实例详情</a></li>
 						<li><a class="text-sm" src="${ctx}/detail/slbConfig/${slbId}" href="javascript:void(0)">服务监听配置</a></li>
-						<li><a class="text-sm" src="${ctx}/detail/backend/server/${slbId}" href="javascript:void(0)">后端服务器</a></li>
+						<li><a class="text-sm" src="${ctx}/detail/backend/server/${slbId}" href="javascript:void(0)">后端服务配置</a></li>
 					</ul>
 				</div>
 			</nav>

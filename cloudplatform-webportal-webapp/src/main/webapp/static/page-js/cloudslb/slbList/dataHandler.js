@@ -75,7 +75,6 @@ define(function(require,exports,module){
                     	var td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
-                    console.log(td9);
                     tr.append(td1).append(td2).append(td8).append(td9).append(td3).append(td4).append(td5).append(td6).append(td7);
                     tr.appendTo($tby);
                  }
@@ -98,6 +97,9 @@ define(function(require,exports,module){
         }
     }
     function addPort(data){
+        if(data.length == 0){
+            return "-";
+        }
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
             ret = ret
