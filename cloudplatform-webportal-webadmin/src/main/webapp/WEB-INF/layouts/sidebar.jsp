@@ -23,17 +23,17 @@
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
-				<li id="sidebar-mcluster-list" >
-					<a href="${ctx}/list/mcluster"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						Container集群列表
-					</a>
-					<b class="arrow"></b>
-				</li>
 				<li id="sidebar-hcluster-list" >
 					<a href="${ctx}/list/hcluster"> 
 						<i class="menu-icon fa fa-caret-right"></i>
 						物理机集群列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-mcluster-list" >
+					<a href="${ctx}/list/mcluster"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						Container集群列表
 					</a>
 					<b class="arrow"></b>
 				</li>
