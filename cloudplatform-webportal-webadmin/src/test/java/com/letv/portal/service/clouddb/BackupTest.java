@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.service;
+package com.letv.portal.service.clouddb;
 
 import org.junit.Test;
 import org.slf4j.Logger;

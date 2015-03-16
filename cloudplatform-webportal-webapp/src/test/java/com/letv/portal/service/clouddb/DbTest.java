@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.service.clouddb;
 
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService; 
 import com.letv.portal.service.IUserService;
 
-public class DbControllerTest extends AbstractTest{
+public class DbTest extends AbstractTest{
 	@Resource
 	private IDbService dbService;
 	@Resource

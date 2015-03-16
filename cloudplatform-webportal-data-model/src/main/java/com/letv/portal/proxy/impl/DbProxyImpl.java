@@ -26,6 +26,7 @@ import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
+import com.letv.portal.service.IMclusterService;
 
 @Component
 public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
@@ -41,6 +42,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	private IContainerService containerService;
 	@Autowired
 	private IMclusterProxy mclusterProxy;
+	@Autowired
+	private IMclusterService mclusterService;
 	@Autowired
 	private IBuildTaskService buildTaskService;
 	
@@ -125,7 +128,15 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			Map<String,Object> params = new HashMap<String,Object>();
 			
 			params.put("dbId", dbModel.getId());
-			params.put("mclusterName", userId + "_" + dbModel.getDbName());
+			StringBuffer mclusterName = new StringBuffer();
+			mclusterName.append(userId).append("_").append(dbModel.getDbName());
+			Boolean isExist= this.mclusterService.isExistByName(mclusterName.toString());
+			int i = 1;
+			while(!isExist) {
+				isExist= this.mclusterService.isExistByName(mclusterName.toString() + i);
+				i++;
+			}
+			params.put("mclusterName", mclusterName.toString() + (i-1));
 			params.put("status", DbStatus.BUILDDING.getValue());
 			params.put("hclusterId", dbModel.getHclusterId());
 			

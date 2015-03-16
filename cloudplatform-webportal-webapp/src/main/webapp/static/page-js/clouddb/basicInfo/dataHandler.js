@@ -38,6 +38,23 @@ define(function(require,exports,module){
                 $("#db_info_running_state").html(cn.TranslateStatus(dbInfo.status));
                 $("#db_info_create_time").html(cn.TransDate('Y-m-d H:i:s',dbInfo.createTime));
                 $("#db_info_remain_days").html(cn.RemainAvailableTime(dbInfo.createTime));
+                
+                
+                var dbconfig = new DataHandler();
+                $("#showConfigInfo").click(function(){
+                	cn.GetData("/db/gbConfig/" + $("#dbId").val(),dbconfig.getInfo);
+                  });
+        },
+        getInfo: function(data){
+        	var $tby = $("#dbConfigTby");
+            $tby.find("tr").remove();
+        	$('#dbConfigModal').modal({
+                backdrop:false,
+                show:true
+            });
+        	console.log(data);
+        	$("#dbConfigModalLabel").html("配置信息")
+        	//$("#dbConfigModalContent").html("this is a test");
         }
     }
 });

@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.service;
+package com.letv.portal.service.clouddb;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class DbUserTest extends AbstractTest{
 	private IDbUserService dbUserService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(
-			TemplateTaskChainServiceTest.class);
+			DbUserTest.class);
 
   
     @Test

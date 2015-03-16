@@ -59,4 +59,6 @@ public interface IDbService extends IBaseService<DbModel> {
 	 */
 	public List<DbModel> selectDbByMclusterId(Long mclusterId);
 
+	public Map<String, Object> getGbaConfig(Long dbId);
+
 }

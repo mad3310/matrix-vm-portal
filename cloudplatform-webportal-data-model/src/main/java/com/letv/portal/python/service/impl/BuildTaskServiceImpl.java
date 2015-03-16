@@ -666,6 +666,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private Map<String,Object> transResult(String result){
 		ObjectMapper resultMapper = new ObjectMapper();
 		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		if(StringUtils.isNullOrEmpty(result))
+			return jsonResult;
 		try {
 			jsonResult = resultMapper.readValue(result, Map.class);
 		}catch (Exception e) {

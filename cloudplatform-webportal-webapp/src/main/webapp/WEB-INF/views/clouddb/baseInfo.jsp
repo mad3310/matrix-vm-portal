@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
@@ -13,6 +14,7 @@
 
 	<title>RDS基本信息</title>
 </head>
+
 <body> 
 <!-- 全局参数 start -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
@@ -121,6 +123,7 @@
 				<div class="pull-right table-viewer-topbar-content">
 					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
 					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
+					<a class="btn btn-xs btn-primary" id="showConfigInfo" href="javascript:void(0)">配置信息</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
@@ -217,23 +220,47 @@
 		      </div>
 		    </div>
 	  	</div>
+	    <!-- /.modal config-->
+		<div class="modal" id="dbConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
+					</div>
+					<div class="highlight modal-body clearfix" id="dbConfigInfoWrap" >
+						<pre>
+							<code id="dbConfigInfo" class="language-html">section</code>
+						</pre>					 	
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="copyConf">复制</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 	</div>
 </body>
+
 
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">
-
-// Set configuration
-seajs.config({
-	base: "${ctx}/static/modules/",
-	alias: {
-		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
-	}
-});
-
-seajs.use("${ctx}/static/page-js/clouddb/basicInfo/main");
-
+	// Set configuration
+	seajs.config({
+		base : "${ctx}/static/modules/",
+		alias : {
+			"jquery" : "jquery/2.0.3/jquery.min.js",
+			"bootstrap" : "bootstrap/bootstrap/3.3.0/bootstrap.js",
+			"zclip" : "jquery/zclip/jquery.zclip.min.js"
+		}
+	});
+	seajs.use("${ctx}/static/page-js/clouddb/basicInfo/main");
 </script>
+<%-- <script type="text/javascript" src="${ctx}/static/modules/jquery/zclip/jquery.zclip.min.js"></script> --%>
+
 </html>
