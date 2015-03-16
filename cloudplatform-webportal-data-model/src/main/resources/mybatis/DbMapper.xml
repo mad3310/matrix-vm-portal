@@ -70,7 +70,7 @@
 			<if test="hclusterId != null  ">
 				and m.HCLUSTER_ID=#{hclusterId}
 			</if>
-			<if test="status != null  ">
+			<if test="status != null and status!='' ">
 				and m.STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">
@@ -246,7 +246,7 @@
 			<if test="params != null and params.mclusterId != null  ">
 				and m.MCLUSTER_ID=#{params.mclusterId}
 			</if>
-			<if test="params != null and params.status != null and params.status != '' ">
+			<if test="params != null and params.status != null and params.status != ''  and params.status != 'null' ">
 				and m.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.deleted != null  ">

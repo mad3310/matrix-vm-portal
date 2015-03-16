@@ -46,7 +46,7 @@
 			<if test="mclusterName != null  and mclusterName != '' and mclusterName != 'null'">
 				and M.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
 			</if>
-			<if test="status != null  ">
+			<if test="status != null and status != ''">
 				and M.STATUS=#{status}
 			</if>
 			<if test="type != null  ">
