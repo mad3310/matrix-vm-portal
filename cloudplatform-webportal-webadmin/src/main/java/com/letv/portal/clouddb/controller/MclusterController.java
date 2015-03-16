@@ -200,6 +200,46 @@ public class MclusterController {
 		result.getMsgs().add("集群固资信息删除成功");
 		return result;
 	}
+	@RequestMapping(value = "/V0.1.0/fixed/syncAll", method=RequestMethod.GET) 
+	public @ResponseBody ResultObject syncAll(ResultObject result) {
+		List<MclusterModel> mclusters  = this.mclusterService.selectValidMclustersByMap(null);
+		int sum = 0;
+		int success = 0;
+		int fail = 0;
+		for (MclusterModel mclusterModel : mclusters) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mclusterId", mclusterModel.getId());
+			boolean isSuccess = this.fixedPushService.deleteMutilContainerPushFixedInfo(this.containerService.selectByMap(map));
+			if(isSuccess) {
+				success++;
+			} else {
+				fail ++;
+			}
+			sum++;
+		}
+		result.getMsgs().add("delete mcluster sum:" + sum);
+		result.getMsgs().add("delete mcluster success:" + success);
+		result.getMsgs().add("delete mcluster fail:" + fail);
+		sum = 0;
+		success =0;
+		fail = 0;
+		
+		for (MclusterModel mclusterModel : mclusters) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("mclusterId", mclusterModel.getId());
+			boolean isSuccess = this.fixedPushService.createMutilContainerPushFixedInfo(this.containerService.selectByMap(map));
+			if(isSuccess) {
+				success++;
+			} else {
+				fail ++;
+			}
+			sum++;
+		}
+		result.getMsgs().add("add mcluster sum:" + sum);
+		result.getMsgs().add("add mcluster success:" + success);
+		result.getMsgs().add("add mcluster fail:" + fail);
+		return result;
+	}
 	/**Methods Name: restartDb <br>
 	 * Description: <br>
 	 * @author name: liuhao1
