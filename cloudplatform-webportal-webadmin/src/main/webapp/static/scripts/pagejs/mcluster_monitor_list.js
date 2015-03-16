@@ -92,26 +92,26 @@ function getMclusterStatus(ip,obj) {
 			var result = data.data.result;
 			if(result == "0"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>姝ｅ父</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>正常</a>");
 				$(obj).parent().find(".normalTag").after($(obj));
 			}else if(result == "1"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>鍗遍櫓</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
 				$(obj).addClass("default-danger lightDanger");
 				$(obj).parent().find(".lightDangerTag").after($(obj));
 			}else if(result == "2"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>涓ラ噸鍗遍櫓</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>严重危险</a>");
 				$(obj).addClass("default-danger serious");
 				$(obj).parent().find(".seriousTag").after($(obj));
 			}else if(result == "3"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>闆嗙兢涓嶅彲鐢�/a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>集群不可用/a>");
 				$(obj).addClass("default-danger disableCluster");
 				$(obj).parent().find(".disableClusterTag").after($(obj));
 			}else if(result == "4"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>鑾峰彇鏁版嵁瓒呮椂</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>获取数据超时</a>");
 				$(obj).addClass("default-danger timeoutCluster");
 				$(obj).parent().find(".timeoutClusterTag").after($(obj));
 			}
