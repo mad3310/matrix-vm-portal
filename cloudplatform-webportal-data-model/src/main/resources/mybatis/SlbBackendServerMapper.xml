@@ -20,6 +20,11 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
+		<association property="slbConfig" javaType="SlbConfig">
+			<result column="AGENT_TYPE" property="agentType" />
+			<result column="FRONT_PORT" property="frontPort" />
+		</association>
+		
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -206,8 +211,9 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" />
+		<include refid="Base_Column_List" />,c.AGENT_TYPE,c.FRONT_PORT
 		from WEBPORTAL_SLB_BACKEND_SERVER s 
+		left join WEBPORTAL_SLB_CONFIG c on c.ID = SLB_CONFIG_ID 
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">

@@ -26,6 +26,14 @@ define(function(require,exports,module){
                 var td3 = $("<td>"
                 + array[i].port
                 + "</td>");
+                var td10="<td>-</td>"
+                if(array[i].slbConfig != undefined && array[i].slbConfig != null){
+                    td10="<td>"
+                    +"<span class=\"text-success\">"+array[i].slbConfig.agentType+"</span>"
+                    +"<span class=\"text-success\">:</span>"
+                    +"<span class=\"text-success\">"+array[i].slbConfig.frontPort+"</span><br>"
+                    +"</td>";
+                }
                 var td4 = $("<td>"
                 + "<span class=\"text-success\">运行中</span>"
                 + "</td>");
@@ -44,8 +52,17 @@ define(function(require,exports,module){
                 var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">移除</span></td>");
                 var tr = $("<tr class='data-tr'></tr>");
 
-                tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
+                tr.append(td1).append(td2).append(td3).append(td10).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                 tr.appendTo($tby);
+            }
+        },
+        ConfigHandler : function(data){
+            var select = $("[name = frontPort]")
+            var array = data.data.data;
+
+            for(var i= 0,len=array.length;i<len;i++) {
+                var option = $("<option value=\""+array[i].id+"\">"+array[i].frontPort+"</option>");
+                option.appendTo(select);
             }
         }
     }

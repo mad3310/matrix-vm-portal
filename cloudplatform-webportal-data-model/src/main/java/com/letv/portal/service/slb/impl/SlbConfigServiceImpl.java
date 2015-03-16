@@ -2,6 +2,7 @@ package com.letv.portal.service.slb.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -33,6 +34,11 @@ public class SlbConfigServiceImpl extends BaseServiceImpl<SlbConfig> implements 
 	@Override
 	public IBaseDao<SlbConfig> getDao() {
 		return this.slbConfigDao;
+	}
+
+	@Override
+	public List<SlbConfig> selectBySlbServerId(Long id) {
+		return this.slbConfigDao.selectBySlbServerId(id);
 	}
 
 }

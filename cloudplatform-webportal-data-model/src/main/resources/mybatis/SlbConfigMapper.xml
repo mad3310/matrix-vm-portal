@@ -188,4 +188,12 @@
     	</if>
 	</select>
 	
+	<!-- 根据slbClusterId查询 -->
+	<select id="selectBySlbServerId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLB_CONFIG s
+		where s.SLB_ID = #{id}
+	</select>
+	
 </mapper>   

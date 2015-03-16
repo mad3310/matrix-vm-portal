@@ -73,13 +73,13 @@
 								</select> 
 							</div>
 						</div>
-						<div class="form-inline form-group">
+						<!-- <div class="form-inline form-group">
 							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>SLB端口：
 							</label>
 							<div class="col-sm-7 ng-scope">
 								<input name="frontendPort" class="form-control" size="7" type="text">
 							</div>
-						</div>
+						</div> -->
 						<div class="modal-footer">
 							<button class="btn btn-primary" type="submit">添加监听</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

@@ -34,6 +34,6 @@ public interface IBaseDao<T> {
 	 * @param params
 	 * @return
 	 */
-	public List<Object> selectPageByMap(QueryParam params);
+	public List<T> selectPageByMap(QueryParam params);
 	
 }

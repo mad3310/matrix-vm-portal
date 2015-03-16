@@ -44,6 +44,7 @@
 						<th>云服务器ID/名称</th>
 						<th>公网/内网IP地址</th>
 						<th>服务端口</th>
+						<th>SLB协议端口</th>
 						<th>状态</th>
 						<th>网络类型</th>
 						<th>付款方式</th>
@@ -136,6 +137,14 @@
 							</label>
 							<div class="col-sm-3">
 								<input name="backendPort" class="form-control" size="7" type="text">
+							</div>
+						</div>
+						<div class="form-inline form-group">
+							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>SLB协议端口：
+							</label>
+							<div class="col-sm-8 ng-scope">
+								<select name="frontPort" class="form-control ng-pristine ng-valid" style="width: 90px">
+								</select>
 							</div>
 						</div>
 						<div class="modal-footer">

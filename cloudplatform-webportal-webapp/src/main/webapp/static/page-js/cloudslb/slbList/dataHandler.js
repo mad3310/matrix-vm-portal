@@ -52,6 +52,12 @@ define(function(require,exports,module){
                     var td8 = $("<td class=\"padding-left-32\">"
                             + "<span>"+array[i].ip+"</span>"
                             +"</td>");
+                    var td9=$("<td>-</td>");
+                    if(array[i].slbConfigs != undefined || array[i].slbConfigs !=null){
+                        td9 = $("<td>"
+                            +addPort(array[i].slbConfigs)
+                            +"</td>")
+                    }
                     var td3 = $("<td>"
                         + "<span class=\"text-success\">已启用</span>"
                         + "</td>");
@@ -69,8 +75,8 @@ define(function(require,exports,module){
                     	var td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
-                    
-                    tr.append(td1).append(td2).append(td8).append(td3).append(td4).append(td5).append(td6).append(td7);
+                    console.log(td9);
+                    tr.append(td1).append(td2).append(td8).append(td9).append(td3).append(td4).append(td5).append(td6).append(td7);
                     tr.appendTo($tby);
                  }
             }
@@ -90,5 +96,15 @@ define(function(require,exports,module){
                 totalPages:data.data.totalPages
             });
         }
+    }
+    function addPort(data){
+        var ret="";
+        for(var i= 0,len=data.length;i<len;i++){
+            ret = ret
+            +"<span class=\"text-success\">"+data[i].agentType+"</span>"
+            +"<span class=\"text-success\">:</span>"
+            +"<span class=\"text-success\">"+data[i].frontPort+"</span><br>"
+        }
+        return ret;
     }
 });

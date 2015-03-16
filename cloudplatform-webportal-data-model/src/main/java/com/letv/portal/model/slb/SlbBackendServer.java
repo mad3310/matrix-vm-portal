@@ -1,5 +1,7 @@
 package com.letv.portal.model.slb;
 
+import java.util.List;
+
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.SlbBackEndType;
 
@@ -13,7 +15,22 @@ public class SlbBackendServer extends BaseModel {
 	private String serverIp;
 	private String port;
 	private Long slbId;
+	private Long configId;
 	
+	private SlbConfig slbConfig;
+	
+	public SlbConfig getSlbConfig() {
+		return slbConfig;
+	}
+	public void setSlbConfig(SlbConfig slbConfig) {
+		this.slbConfig = slbConfig;
+	}
+	public Long getConfigId() {
+		return configId;
+	}
+	public void setConfigId(Long configId) {
+		this.configId = configId;
+	}
 	public Long getContainerId() {
 		return containerId;
 	}

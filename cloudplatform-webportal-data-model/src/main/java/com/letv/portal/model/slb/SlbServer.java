@@ -1,7 +1,8 @@
 package com.letv.portal.model.slb;
 
+import java.util.List;
+
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
 
@@ -21,6 +22,7 @@ public class SlbServer extends BaseModel {
 	private HclusterModel hcluster;
 	private SlbCluster slbCluster;
 	private UserModel createUserModel;
+	private List<SlbConfig> slbConfigs;
 	
 	public String getSlbName() {
 		return slbName;
@@ -77,4 +79,11 @@ public class SlbServer extends BaseModel {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+	public List<SlbConfig> getSlbConfigs() {
+		return slbConfigs;
+	}
+	public void setSlbConfigs(List<SlbConfig> slbConfigs) {
+		this.slbConfigs = slbConfigs;
+	}
+	
 }

@@ -14,9 +14,15 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var slbServerHandler = new dataHandler();
 
+    getConfig();
+    function getConfig(){
+        var url="/slbConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        cn.GetData(url,slbServerHandler.ConfigHandler);
+    }
+
     asyncData();
     function asyncData() {
-        url = "/slbBackend?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        var url = "/slbBackend?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbServerHandler.ServerHandler);
     }
 
@@ -73,7 +79,8 @@ define(function(require){
             slbId: $("#slbId").val(),
             serverName :  $("[name = backendServerName]").val(),
             serverIp : $("[name = backendServerIp]").val(),
-            port : $("[name = backendPort]").val()
+            port : $("[name = backendPort]").val(),
+            configId : $("[name = frontPort]").val()
         }
         var url = "/slbBackend ";
         cn.PostData(url, createConfigData, function () {

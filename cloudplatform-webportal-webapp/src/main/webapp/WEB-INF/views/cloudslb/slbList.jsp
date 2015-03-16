@@ -106,6 +106,7 @@
 						</th>
 						<th class="padding-left-32">实例名称</th>
 						<th>服务地址</th>
+						<th>服务端口</th>
 						<th>状态</th>
 						<th>所在可用区</th>
 						<th>运行状态</th>
