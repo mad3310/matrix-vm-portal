@@ -22,12 +22,16 @@ define(function(require){
     var dbInfoHandler = new dataHandler();
 
     cn.GetData("/db/"+$("#dbId").val(),dbInfoHandler.DbInfoHandler);
+//    $("#copyConf").click(function(){
+//    	alert("aaa");
+//    })
     
     $("#copyConf").zclip({
-    	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
-    	copy: function(){
-    		console.log("aaaa");
-    		return $("#dbConfigInfoWrap").val();
-    	}
+        	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
+        	copy: function(){
+        		console.log("aaaa");
+        		return $("#dbConfigInfo").text();
+        	}
     })
+   
 });

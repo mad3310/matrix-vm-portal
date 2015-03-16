@@ -229,10 +229,11 @@
 							aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
 					</div>
-					<div class="highlight modal-body clearfix" id="dbConfigInfoWrap" >
-						<pre>
+					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
+						<%-- <pre>
 							<code id="dbConfigInfo" class="language-html">section</code>
-						</pre>					 	
+						</pre>		 --%>	
+						<div id="dbConfigInfo">aaaaa</div>		 	
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="copyConf">复制</button>

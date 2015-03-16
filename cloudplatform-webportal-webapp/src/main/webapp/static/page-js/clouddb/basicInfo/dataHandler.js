@@ -52,9 +52,11 @@ define(function(require,exports,module){
                 backdrop:false,
                 show:true
             });
-        	console.log(data);
-        	$("#dbConfigModalLabel").html("配置信息")
-        	//$("#dbConfigModalContent").html("this is a test");
+        	
+        	$("#dbConfigModalLabel").html("配置信息");
+        	var data = data.data;
+        	
+        	/*$("#dbConfigInfo").html("<br/>" + JSON.stringify(data));*/
         }
     }
 });
