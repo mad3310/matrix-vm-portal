@@ -9,7 +9,7 @@ $(function(){
 	
 	/*动态加载下拉列表值*/
 	var sltArray = [1,10,11,12,15];
-	addSltOpt(sltArray,$("#PhyMechineRunStatus"));
+	addSltOpt(sltArray,$("#hclusterStatus"));
 	
 	$('[name = "popoverHelp"]').popover();
 	$(document).on('click', 'th input:checkbox' , function(){
@@ -25,7 +25,7 @@ $(function(){
 		queryByPage();
 	});
 	$("#hclusterSearchClear").click(function(){
-		var clearList = ["clearSearch","hclusterIndex","hclusterStatus"];
+		var clearList = ["hclusterName","hclusterIndex","hclusterStatus"];
 		clearSearch(clearList);
 	});
 });

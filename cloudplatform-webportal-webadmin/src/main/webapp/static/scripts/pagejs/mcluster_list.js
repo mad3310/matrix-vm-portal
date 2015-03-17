@@ -53,10 +53,8 @@ $(function(){
 		queryByPage();
 	});
 	$("#mclusterClearSearch").click(function(){
-		$("#containerName").val("");
-		$("#Physicalcluster").val("");
-		$("#containeruser").val("");
-		$("#containerStatus").val("")
+		var clearList = ["containerName","Physicalcluster","containeruser","containerStatus"];
+		clearSearch(clearList);
 	});
 });
 

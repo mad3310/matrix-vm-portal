@@ -7,7 +7,7 @@ var currentSelectedLineDbName = 1;
 	page_init();
     
 	var sltArray = [0,3,4,5,6,7,8,9,11,12,13,14];
-	addSltOpt(sltArray,$("#PhyMechineRunState"));
+	addSltOpt(sltArray,$("#dbuserStatus"));
 	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;

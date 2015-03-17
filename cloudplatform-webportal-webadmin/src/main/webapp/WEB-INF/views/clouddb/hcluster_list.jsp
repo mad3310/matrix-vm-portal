@@ -7,7 +7,7 @@
 			<form class="form-inline">
 				<div class="form-group">
 					<input type="text" class="form-control" id="hclusterName"
-						placeholder="物理集群名称">
+						placeholder="物理机集群名称">
 				</div>
 				<div class="form-group">
 					<input type="text" class="form-control" id="hclusterIndex"

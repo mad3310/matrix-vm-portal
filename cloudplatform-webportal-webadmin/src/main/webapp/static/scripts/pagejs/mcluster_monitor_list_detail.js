@@ -21,8 +21,10 @@ function queryMonitorClusterInfo(){
 			var monitorClusterInfo = data.data.response;
 			var $tby = $("#cluster_detail_table");
 			if( monitorClusterInfo != null){
-				var nodeSize = monitorClusterInfo.node.node_size;
-				var clusterAvail = monitorClusterInfo.cluster.cluster_available;
+				
+				var nodeSize = monitorClusterInfo.node.node_size ? monitorClusterInfo.node.node_size : '';
+				var clusterAvail = monitorClusterInfo.cluster.cluster_available ? monitorClusterInfo.cluster.cluster_available : '';
+				
 				var nodeCount = getCount(nodeSize);
 				var clusterCount = getCount(clusterAvail);
 				

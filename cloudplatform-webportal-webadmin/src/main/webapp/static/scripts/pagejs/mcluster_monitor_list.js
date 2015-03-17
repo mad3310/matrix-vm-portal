@@ -57,7 +57,7 @@ function queryMclusterMonitor() {
 							+"<a><i class=\"ace-icon fa fa-spinner fa-spin  bigger-120\"/>获取数据中...</a>"
 							+ "</td>");
 				var td5 = $("<td>"						
-						+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/monitor/list/" + array[i].ipAddr + "/1\">查看详情</a>"
+						+ "<a class=\"link\" href=\"/detail/mcluster/monitor/list/" + array[i].ipAddr + "/1\">查看详情</a>"
 						//+ "<a href=\"/monitor/"+array[i].ipAddr+"/mcluster/status\" target=\"_blank\"></a>"
 						+ "</td>");
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
