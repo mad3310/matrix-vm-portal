@@ -13,7 +13,7 @@ function queryMonitorClusterInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/mcluster/status",
-		//url:"/static/scripts/pagejs/clusterdata.json",
+		//url:"/static/scripts/pagejs/testjson/clusterNomal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
@@ -22,8 +22,8 @@ function queryMonitorClusterInfo(){
 			var $tby = $("#cluster_detail_table");
 			if( monitorClusterInfo != null){
 				
-				var nodeSize = monitorClusterInfo.node.node_size ? monitorClusterInfo.node.node_size : '';
-				var clusterAvail = monitorClusterInfo.cluster.cluster_available ? monitorClusterInfo.cluster.cluster_available : '';
+				var nodeSize = monitorClusterInfo.node.node_size;
+				var clusterAvail = monitorClusterInfo.cluster.cluster_available;
 				
 				var nodeCount = getCount(nodeSize);
 				var clusterCount = getCount(clusterAvail);
@@ -35,8 +35,10 @@ function queryMonitorClusterInfo(){
 				var td2 = $("<td style=\"width: 20%;\">cluster" 
 						+ "<input type=\"text\" id=\"clusterFailNum\" class=\"hidden\" />"
 						+ "</td>");
+				//定义表格跨行数目
 				td1.attr({"rowspan":nodeCount + 1});
 				td2.attr({"rowspan":clusterCount + 1});
+				
 				
 				var tr1 = $("<tr class=\"node\"></tr>");
 				var tr2 = $("<tr class=\"cluster\"></tr>");

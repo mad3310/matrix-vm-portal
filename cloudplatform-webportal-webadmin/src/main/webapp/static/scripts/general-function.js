@@ -353,11 +353,10 @@ function errorRecordFormat(json,obj){
 		for (var key in json){
 			if(typeof(json[key] == "object")){
 				var span = $("<span>"+ key + "  :   " + JSON.stringify(json[key]) + "</span>" + "<br/>")
-				obj.append(span);
 			}else{
 				var span = $("<span>"+ key + "  :   " + json[key] + "</span>" + "<br/>")
-				obj.append(span);
 			}
+			obj.append(span);
 		}		
 	}
 }

@@ -11,12 +11,13 @@ function queryMonitorDbInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/db/status",
-		//url:"/static/scripts/pagejs/nodedata.json",
+		//url:"/static/scripts/pagejs/testjson/dbNormal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
 			var monitorDbInfo = data.data.response;
+			
 			var $tby = $("#db_detail_table");
 			if( monitorDbInfo != null){
 				var dbuser = monitorDbInfo.db.dbuser;
@@ -53,6 +54,7 @@ function queryMonitorDbInfo(){
 						+ "<input type=\"text\" id=\"curFailNum\" class=\"hidden\" />"
 						+ "</td>");
 				
+				//定义表格跨行数目
 				td1.attr({"rowspan":dbuserC + 1});
 				td2.attr({"rowspan":backupC + 1});
 				td3.attr({"rowspan":antiC + 1});
@@ -60,7 +62,7 @@ function queryMonitorDbInfo(){
 				td5.attr({"rowspan":wsrepC + 1});
 				td6.attr({"rowspan":curC + 1});
 				
-				
+				//添加标记，根据关键字添加表格
 				var tr1 = $("<tr class=\"dbuser\"></tr>");
 				var tr2 = $("<tr class=\"backup\"></tr>");
 				var tr3 = $("<tr class=\"existed_db_anti_item\"></tr>");
@@ -68,6 +70,7 @@ function queryMonitorDbInfo(){
 				var tr5 = $("<tr class=\"wsrep_status\"></tr>");
 				var tr6 = $("<tr class=\"cur_conns\"></tr>");
 				
+				//将单元格追加到行上
 				tr1.append(td1);
 				tr2.append(td2);
 				tr3.append(td3);
@@ -75,15 +78,17 @@ function queryMonitorDbInfo(){
 				tr5.append(td5);
 				tr6.append(td6);
 				
+				//将数目添加到表格中				
 				$tby.append(tr1).append(tr2).append(tr3).append(tr4).append(tr5).append(tr6);
 					
 				/*表格数据添加*/	
 				dataAppend(dbuser,tr1,"dbuserFailNum");
 				dataAppend(backup,tr2,"backupFailNum");				
 				dataAppend(existed_db_anti_item,tr3,"antiItemFailNum");
-				dataAppend(existed_db_anti_item,tr4,"wravailFailNum");
-				dataAppend(existed_db_anti_item,tr5,"wsrepFailNum");
-				dataAppend(existed_db_anti_item,tr6,"curFailNum");
+				dataAppend(write_read_avaliable,tr4,"wravailFailNum");
+				dataAppend(wsrep_status,tr5,"wsrepFailNum");
+				dataAppend(cur_conns,tr6,"curFailNum");
+				/*定义表格布局end*/
 			}else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>");
 			}

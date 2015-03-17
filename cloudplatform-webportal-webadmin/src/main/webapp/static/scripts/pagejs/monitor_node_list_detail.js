@@ -11,7 +11,7 @@ function queryMonitorNodeInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/node/status",
-		//url:"/static/scripts/pagejs/nodedata.json",
+		//url:"/static/scripts/pagejs/testjson/nodeNormal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
@@ -41,7 +41,8 @@ function queryMonitorNodeInfo(){
 				var td4 = $("<td style=\"width: 20%;\">started" 
 						+ "<input type=\"text\" id=\"startFailNum\" class=\"hidden\" />"
 						+ "</td>");
-			
+				
+				/*定义表格跨行数目*/
 				td1.attr({"rowspan":warnCount + 1});
 				td2.attr({"rowspan":healthCount + 1});
 				td3.attr({"rowspan":errorCount + 1});
@@ -62,7 +63,7 @@ function queryMonitorNodeInfo(){
 				dataAppend(logHealth,tr2,"logHealthFailNum");				
 				dataAppend(logError,tr3,"logErrFailNum");
 				dataAppend(started,tr4,"startFailNum");
-				
+				/*定义表格布局end*/
 			}else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>")
 			}
