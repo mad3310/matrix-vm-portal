@@ -100,21 +100,21 @@ function queryByPage() {
 				var td2;
 				if(array[i].status == 6){
 					td2 = $("<td>"
-							+ "<a href=\"/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\"  target=\"_blank\" href=\"/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a  class=\"danger\" href=\"/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\" class=\"danger\" target=\"_blank\" href=\"/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else{
 					td2 = $("<td>"
-							+ "<a style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\" target=\"_blank\" style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}
 				if(array[i].mcluster){
 					var td3 = $("<td>"
- 							+ array[i].mcluster.mclusterName
-							+ "</td>");
+							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
+ 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");
 				}

@@ -70,7 +70,7 @@ function queryByPage() {
 						+ array[i].hclusterNameAlias
 						+ "</td>");
 				var td3 = $("<td>"
-						+  "<a href=\"/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
+						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
 						+ "</td>");
 				var td4 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)

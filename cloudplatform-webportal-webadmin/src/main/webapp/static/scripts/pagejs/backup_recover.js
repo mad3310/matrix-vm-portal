@@ -69,10 +69,10 @@ function queryByPage(currentPage, recordsPerPage) {
 		        			dbName = array[i].db.dbName;
 		        		}
 		                var td1 = $("<td><a>"
-		                		+ FilterNull(mclusterName)
+		                		+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId +"\">"+FilterNull(mclusterName)+"</a>"
 		                		+"</a></td>");
 		                var td2 = $("<td>"
-		                		+ FilterNull(dbName)
+		                		+ "<a class=\"link\" class=\"danger\" target=\"_blank\" href=\"/audit/db/"+array[i].dbId+"\">"+FilterNull(dbName)+"</a>"
 		                		+"</td>");
 		                var td3 = $("<td>"
 		                        + date('Y-m-d H:i:s',array[i].startTime)
@@ -82,8 +82,8 @@ function queryByPage(currentPage, recordsPerPage) {
 		                        + "</td>");
 		                if(array[i].status == 'FAILD'){
 		                	var td5 = $("<td> <a>"
-									+ translateStatus(array[i].status)
-									+ "</a></td>");
+								+ translateStatus(array[i].status)
+								+ "</a></td>");
 						}else if(array[i].status == 'BUILDING'){
 							var td5 = $("<td>"
 									+ "<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"

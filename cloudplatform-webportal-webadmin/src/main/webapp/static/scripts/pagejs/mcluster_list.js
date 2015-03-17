@@ -99,11 +99,11 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
 					var td3 = $("<td>"
- 							+ array[i].hcluster.hclusterNameAlias
+							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");

@@ -1023,3 +1023,11 @@ edit by jinglinlin@letv.com
 	font-size:12px;
 	font-weight:bold;
 }
+/* 界面超连接样式 */
+
+.skin-custom .link{
+	font-style: italic;
+	text-decoration: underline;
+	font-weight:bold;
+	
+}

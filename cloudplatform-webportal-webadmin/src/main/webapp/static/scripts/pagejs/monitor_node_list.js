@@ -42,15 +42,15 @@ function queryMclusterMonitor(){
         			mclusterName = array[i].mcluster.mclusterName;
         		}
 				var td1 = $("<td>"
-							+ mclusterName
-							+ "</td>");
+						+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+ mclusterName +"</a>"
+						+ "</td>");
 				var td2 = $("<td name=\"vip\">"
-							+ array[i].ipAddr
-							+ "</td>");
+						+ array[i].ipAddr
+						+ "</td>");
 
 				if(array[i].hcluster.hclusterNameAlias){
 					var td3 = $("<td>"
- 							+ array[i].hcluster.hclusterNameAlias
+							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].host.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				}else{
 					var td3 = $("<td>"
@@ -62,7 +62,7 @@ function queryMclusterMonitor(){
 							+ "</td>");
 				var td5 = $("<td>"
 						//+ "<a href=\"/monitor/"+array[i].ipAddr+"/node/status\" target=\"_blank\">查看详情</a>"
-						+ "<a href=\"/detail/mcluster/monitor/list/" + array[i].ipAddr + "/2\">查看详情</a>"
+						+ "<a class=\"link\" href=\"/detail/mcluster/monitor/list/" + array[i].ipAddr + "/2\">查看详情</a>"
 					+ "</td>");
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
