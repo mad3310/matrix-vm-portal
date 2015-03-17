@@ -56,7 +56,7 @@ define(function(require,exports,module){
         	$("#dbConfigModalLabel").html("配置信息");
         	var data = data.data;
         	
-        	/*$("#dbConfigInfo").html("<br/>" + JSON.stringify(data));*/
+        	$("#dbConfigInfo").html("<br/>" + JSON.stringify(data));
         }
     }
 });

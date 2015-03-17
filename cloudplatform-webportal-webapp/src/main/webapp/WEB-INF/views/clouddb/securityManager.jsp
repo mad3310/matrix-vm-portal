@@ -63,10 +63,10 @@
 					<div class="form-group">
 						<div class="col-sm-10">
 							<span class="text-danger">*注意:如果删除IP,会同时删除与该IP相关的账户权限!</span>
-<pre>
-请以逗号隔开或换行，不可重复，最多100个。支持格式如：	10.23.12.24,10.23.34.%
-							10.23.12.25
-</pre>
+							<pre class="mclpre">
+							请以逗号隔开或换行，不可重复，最多100个。支持格式如：	10.23.12.24,10.23.34.%
+														10.23.12.25
+							</pre>
 						</div>
 					</div>
 					<div class="form-group">

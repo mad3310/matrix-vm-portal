@@ -230,13 +230,13 @@
 						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
 					</div>
 					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
-						<%-- <pre>
-							<code id="dbConfigInfo" class="language-html">section</code>
-						</pre>		 --%>	
-						<div id="dbConfigInfo">aaaaa</div>		 	
+						 <pre>
+							<code id="dbConfigInfo" class="language-html"></code>
+						</pre>
+						<!-- <div id="dbConfigInfo">aaaaa</div>		 --> 	
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="copyConf">复制</button>
+						<!-- <button type="button" class="btn btn-primary" id="copyConf">复制</button> -->
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 					</div>
 				</div>

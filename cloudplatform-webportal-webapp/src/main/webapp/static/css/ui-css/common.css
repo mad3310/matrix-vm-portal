@@ -1403,7 +1403,18 @@ input::-ms-clear{display:none;}
 textarea {
 	resize:vertical;
 }
-pre {
+/* pre {
+	display: block;
+	font-family: monospace;
+	white-space: pre;
+	margin: 1em 0;
+	background-color:#FFFFFF;
+	border:0px;
+	font-size:10px;
+	color: #737373;
+	padding: 0px;
+} */
+.mclpre{
 	display: block;
 	font-family: monospace;
 	white-space: pre;
