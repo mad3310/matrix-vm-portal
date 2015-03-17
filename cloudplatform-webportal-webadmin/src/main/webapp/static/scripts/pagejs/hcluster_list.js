@@ -86,7 +86,7 @@ function queryByPage() {
 						+"</div>"
 						+ "</td>"
 				);
-				console.log("data-ready")
+				
 				if(array[i].status == 3){
 					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else{
