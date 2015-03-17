@@ -119,7 +119,7 @@ function getMclusterStatus(ip,obj) {
 			if(result == "0"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>正常</a>");
-				$(obj).parent().find(".normalTag").after($(obj));
+				//$(obj).parent().find(".normalTag").after($(obj));
 				addNormalButton();
 			}else if(result == "1"){
 				$(obj).removeClass();

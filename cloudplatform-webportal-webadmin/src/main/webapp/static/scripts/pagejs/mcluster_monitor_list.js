@@ -75,7 +75,7 @@ function queryMclusterMonitor() {
 			var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
 			var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
 			var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
-			tby.prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
+			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
 			updateMclusterStatus();
 		}
 	});
@@ -93,7 +93,7 @@ function getMclusterStatus(ip,obj) {
 			if(result == "0"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>正常</a>");
-				$(obj).parent().find(".normalTag").after($(obj));
+				//$(obj).parent().find(".normalTag").after($(obj));
 			}else if(result == "1"){
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
