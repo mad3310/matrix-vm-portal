@@ -227,12 +227,12 @@
 									</li>
 									<li class="clearfix">
 										<div class="pull-left">
-											<span class="glyphicon glyphicon-random text-muted"></span> 
+											<!-- <span class="glyphicon glyphicon-random text-muted"></span> 
 											<span>弹性伸缩服务</span>
-											<span>ESS</span>
+											<span>ESS</span>  -->
 										</div>
 										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
+											<!-- <span class="home-orange">敬请期待...</span> -->
 										</div>
 									</li>
 								</ul>
@@ -254,7 +254,7 @@
 											</div>
 										</div>
 									</li>
-									<li class="clearfix">
+									<!-- <li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-tower text-muted"></span> 
 											<span>开放结构化数据服务</span>
@@ -263,7 +263,7 @@
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
 										</div>
-									</li>
+									</li> -->
 									<li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
@@ -302,17 +302,17 @@
 										</div>
 									</li>
 									<li class="clearfix">
-										<div class="pull-left">
+										<!-- <div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
 											<span>内容分发网络</span>
 											<span>CDN</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div>
+										</div> -->
 									</li>
-									<li class="clearfix">
-										<div class="pull-left">
+									<!-- <li class="clearfix">
+										 <div class="pull-left">
 											<span class="glyphicon glyphicon-retweet text-muted"></span> 
 											<span>开放归档服务</span>
 											<span>OAS</span>
@@ -320,13 +320,13 @@
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
 										</div>
-									</li>
+									</li> -->
 								</ul>
 							</div>
 							<div class="product-category">
 								<p class="category-title ng-binding">大规模计算</p>
 								<ul>
-									<li class="clearfix">
+									<!-- <li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-road text-muted"></span> 
 											<span>开放数据处理服务</span>
@@ -335,17 +335,17 @@
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
 										</div>
-									</li>
-									<li class="clearfix">
-										<div class="pull-left">
+									</li> -->
+									<!-- <li class="clearfix">
+										 <div class="pull-left">
 											<span class="glyphicon glyphicon-cloud-download text-muted"></span> 
 											<span>采云间</span>
 											<span>DPC</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div>
-									</li>
+										</div> 
+									</li> -->
 									<li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-compressed text-muted"></span> 
@@ -394,31 +394,31 @@
 										</div>
 									</li>
 									<li class="clearfix">
-										<div class="pull-left">
+										<!-- <div class="pull-left">
 											<span class="glyphicon glyphicon-search text-muted"></span> 
 											<span>开放搜索服务</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div>
+										</div> -->
 									</li>
 									<li class="clearfix">
-										<div class="pull-left">
+										<!-- <div class="pull-left">
 											<span class="glyphicon glyphicon-sound-dolby text-muted"></span> 
 											<span>性能测试服务 PTS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div>
+										</div> -->
 									</li>
 									<li class="clearfix">
-										<div class="pull-left">
+										<!-- <div class="pull-left">
 											<span class="glyphicon glyphicon-list-alt text-muted"></span> 
 											<span>开放消息服务 ONS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div>
+										</div> -->
 									</li>
 								</ul>
 							</div>
