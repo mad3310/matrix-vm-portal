@@ -60,10 +60,10 @@ function queryContainer(){
 						+ "</td>");
 				var td8 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startContainer(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"green\" href=\"#\" onclick=\"startContainer(this)\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
 						+"</a>"
-						+"<a class=\"blue\" href=\"#\" onclick=\"stopContainer(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"blue\" href=\"#\" onclick=\"stopContainer(this)\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -73,6 +73,9 @@ function queryContainer(){
 				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}
+			
+			/*初始化tooltip*/
+			$('[data-toggle = "tooltip"]').tooltip();
 		}
 	});
 }

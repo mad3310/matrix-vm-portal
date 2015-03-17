@@ -6,6 +6,7 @@ $(function(){
 	//初始化 
 	page_init();
 	
+	
 	/*动态加载下拉列表值*/
 	var sltArray = [1,10,11,12,15];
 	addSltOpt(sltArray,$("#PhyMechineRunStatus"));
@@ -79,13 +80,13 @@ function queryByPage() {
 						+ "</a></td>");
 				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
-							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+					    +"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
 						+ "</td>"
 				);
-					
+				console.log("data-ready")
 				if(array[i].status == 3){
 					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else{
@@ -95,6 +96,8 @@ function queryByPage() {
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
+			
+			$('[data-toggle = "tooltip"]').tooltip();
 			
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
@@ -165,7 +168,7 @@ function searchAction(){
 	$('#nav-search-input').bind('keypress',function(event){
         if(event.keyCode == "13")    
         {
-        	queryByPage(currentPage, recordsPerPage);
+        	queryByPage();
         }
     });
 }
@@ -220,7 +223,7 @@ function createHcluster(){
 			$('#create-hcluster-botton').addClass('disabled');
 			$('#create-hcluster-modal').modal('hide');
 			//延时一秒刷新列表
-			setTimeout("queryByPage(currentPage, recordsPerPage)",1000);
+			setTimeout("queryByPage()",1000);
 		}
 	});
 }
@@ -242,7 +245,7 @@ function deleteHcluster(obj){
 						type:'delete',
 						success:function(data){
 							if(error(data)) return;
-							queryByPage(currentPage, recordsPerPage);
+							queryByPage();
 						}
 					});
 				}
@@ -254,8 +257,9 @@ function deleteHcluster(obj){
 	});
 }
 
+
 function page_init(){
-	queryByPage(currentPage, recordsPerPage);
+	queryByPage();
 	searchAction();
 	formValidate();
 	pageControl();

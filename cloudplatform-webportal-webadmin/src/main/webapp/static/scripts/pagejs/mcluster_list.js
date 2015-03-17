@@ -149,13 +149,13 @@ function queryByPage() {
 					
 				var td8 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\">"
+						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
 						+"</a>"
-						+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 						+"</a>"
-						+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this)\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -173,6 +173,9 @@ function queryByPage() {
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}//循环json中的数据 
+			
+			/*初始化tooltip*/
+			$('[data-toggle = "tooltip"]').tooltip();
 			
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
