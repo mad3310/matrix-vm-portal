@@ -257,7 +257,7 @@
 		alias : {
 			"jquery" : "jquery/2.0.3/jquery.min.js",
 			"bootstrap" : "bootstrap/bootstrap/3.3.0/bootstrap.js",
-			"zclip" : "jquery/zclip/jquery.zclip.min.js"
+			"zclip" : "jquery/zclip/jquery.zclip.js"
 		}
 	});
 	seajs.use("${ctx}/static/page-js/clouddb/basicInfo/main");
