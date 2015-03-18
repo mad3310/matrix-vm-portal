@@ -214,16 +214,16 @@
 											<span>负载均衡</span>
 											<span>SLB</span>
 										</div>
-										<div class="pull-right clearfix">
+										<!-- <div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/slbCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
-										</div>
-										<!-- <div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
 										</div> -->
+										<div class="pull-right clearfix">
+											<span class="home-orange">敬请期待...</span>
+										</div>
 									</li>
 									<li class="clearfix">
 										<div class="pull-left">
