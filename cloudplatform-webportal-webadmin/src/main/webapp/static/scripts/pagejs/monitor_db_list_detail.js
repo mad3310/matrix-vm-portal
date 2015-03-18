@@ -11,7 +11,6 @@ function queryMonitorDbInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/db/status",
-		//url:"/static/scripts/pagejs/testjson/dbNormal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();

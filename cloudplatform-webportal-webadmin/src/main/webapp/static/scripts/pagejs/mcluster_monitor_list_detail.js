@@ -13,7 +13,6 @@ function queryMonitorClusterInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/mcluster/status",
-		//url:"/static/scripts/pagejs/testjson/clusterNomal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();

@@ -163,7 +163,9 @@ function translateStatus(status){
 		return "备份成功";
 	}else if(status == 'BUILDING'){
 		return "备份中...";
-	}	
+	}else if(status == null){
+		return "未知";
+	}
 }
 /*错误提示框,一般在异步请求返回信息中用到*/
 function error(errorThrown,time) {

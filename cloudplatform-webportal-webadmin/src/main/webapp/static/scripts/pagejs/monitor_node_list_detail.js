@@ -11,7 +11,6 @@ function queryMonitorNodeInfo(){
 		cache:false,
 		type : "get",
 		url :"/monitor/" + ip + "/node/status",
-		//url:"/static/scripts/pagejs/testjson/nodeNormal.json",
 		dataType : "json", 
 		success : function(data) {
 			removeLoading();
