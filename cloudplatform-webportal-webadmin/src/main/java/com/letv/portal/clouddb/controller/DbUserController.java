@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -78,6 +79,9 @@ public class DbUserController {
 	@RequestMapping(method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		if(params !=null && params.containsKey("acceptIp")) {
+			params.put("acceptIp", StringUtil.transSqlCharacter((String)params.get("acceptIp")));
+		}
 		obj.setData(this.dbUserService.selectPageByParams(page, params));
 		return obj;
 	}

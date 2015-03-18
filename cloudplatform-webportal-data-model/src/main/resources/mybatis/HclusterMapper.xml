@@ -89,6 +89,9 @@
 			<if test="params != null and params.id !=null  ">
 				and m.ID=#{params.id}
 			</if>
+			<if test="params != null and params.status !=null and params.status != '' ">
+				and m.STATUS=#{params.status}
+			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''  and params.hclusterName != 'null'">
 				and m.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>

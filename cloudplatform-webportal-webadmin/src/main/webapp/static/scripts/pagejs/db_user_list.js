@@ -81,7 +81,7 @@ function buildUser() {
 		return false;
 	}
 }
- 
+
 function queryByPage(){
 	var dbName = $("#userDb").val()?$("#userDb").val():'';
 	var userName = $("#userName").val()?$("#userName").val():'';

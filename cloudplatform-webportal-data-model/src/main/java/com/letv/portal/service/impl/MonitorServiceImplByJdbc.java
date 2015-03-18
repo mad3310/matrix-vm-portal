@@ -218,6 +218,7 @@ public class MonitorServiceImplByJdbc extends BaseServiceImpl<MonitorDetailModel
 			jdbcTemplate.update(sql.toString(), new Object[] {map.get("min"),map.get("max")},
 			          new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER});
 		} catch (Exception e) {
+			logger.debug("delete monitor data error:" + sql.toString() + ",errorDetail:" + e.getMessage());
 			throw new CommonException("delete monitor data error:" + sql.toString());
 		}
 	}

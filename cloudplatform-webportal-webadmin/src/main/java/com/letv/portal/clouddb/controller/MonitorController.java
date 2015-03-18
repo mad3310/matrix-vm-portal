@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.model.monitor.ClusterModel;
 import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.proxy.IContainerProxy;
@@ -61,6 +62,9 @@ public class MonitorController {
 	@RequestMapping(value="/mcluster/list",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterList(HttpServletRequest request,ResultObject result) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		if(params !=null && params.containsKey("ipAddr")) {
+			params.put("ipAddr", StringUtil.transSqlCharacter((String)params.get("ipAddr")));
+		}
 		result.setData(this.containerService.selectVaildVipContainers(params));
 		return result; 
 	} 
