@@ -16,7 +16,16 @@ $("#bksearch").click(function() {
 	currentPage = 1;
 	queryByPage(currentPage, recordsPerPage);
 });
-
+/*绑定enter事件*/
+$(".input-group input").each(function(){
+	flag = true;
+	$(this).bind('keypress',function(event){
+        if(event.keyCode == "13")    
+        {
+        	queryByPage(currentPage, recordsPerPage);
+        }
+    });
+});
 function queryByPage(currentPage, recordsPerPage) {
 	$("#backupTbody tr").remove();
 	if(flag == true){

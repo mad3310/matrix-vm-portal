@@ -56,6 +56,8 @@ $(function(){
 		var clearList = ["containerName","Physicalcluster","containeruser","containerStatus"];
 		clearSearch(clearList);
 	});
+	
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
 });
 
 function queryByPage() {

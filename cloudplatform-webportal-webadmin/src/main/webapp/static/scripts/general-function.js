@@ -449,3 +449,15 @@ function clearSearch(objArr){
 		$("#"+objArr[i]).val("");
 	}
 }
+
+/*enter绑定函数*/
+function enterKeydown(obj,func){
+	obj.each(function(){
+		$(this).bind('keypress',function(event){
+	        if(event.keyCode == "13")    
+	        {
+	        	func();
+	        }
+	    });
+	})	
+}

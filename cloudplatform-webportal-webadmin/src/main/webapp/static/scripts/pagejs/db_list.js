@@ -54,7 +54,9 @@ var currentSelectedLineDbName = 1;
 		//var clearList = ["","","","","",""]
 		var clearList = ["dbName","dbMcluster","dbPhyMcluster","dbuser","dbStatus"]
 		clearSearch(clearList);
-	})
+	});
+	
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
 });	
 function queryByPage() {
 	var dbName = $("#dbName").val()?$("#dbName").val():'';

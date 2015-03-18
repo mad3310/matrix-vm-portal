@@ -10,6 +10,7 @@
 		var clearList = ["monitorContainer","monitorPhyM","VipAddress"]
 		clearSearch(clearList);
 	})
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
 });	
 function queryMclusterMonitor(){
 	var mclusterName = $("#monitorContainer").val()?$("#monitorContainer").val():'';

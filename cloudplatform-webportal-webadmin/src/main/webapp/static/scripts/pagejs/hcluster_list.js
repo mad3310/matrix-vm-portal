@@ -4,6 +4,7 @@ var queryBuildStatusrefresh;//刷新handler
 	
 $(function(){
 	//初始化 
+	$('#nav-search-input').addClass("hide");
 	page_init();
 	
 	
@@ -21,13 +22,8 @@ $(function(){
 		});
 	});
 	
-	$("#hclusterSearch").click(function(){
-		queryByPage();
-	});
-	$("#hclusterSearchClear").click(function(){
-		var clearList = ["hclusterName","hclusterIndex","hclusterStatus"];
-		clearSearch(clearList);
-	});
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
+	
 });
 
 function queryByPage() {
@@ -163,15 +159,6 @@ function pageControl() {
 		queryByPage();
 	});
 }
-
-function searchAction(){
-	$('#nav-search-input').bind('keypress',function(event){
-        if(event.keyCode == "13")    
-        {
-        	queryByPage();
-        }
-    });
-}
 	
 //创建Container集群表单验证
 function formValidate() {
@@ -257,10 +244,22 @@ function deleteHcluster(obj){
 	});
 }
 
+function searchAction(){
+	$("#hclusterSearch").click(function(){
+		queryByPage();
+	});
+}
 
+function clearAction(){
+	$("#hclusterSearchClear").click(function(){
+		var clearList = ["hclusterName","hclusterIndex","hclusterStatus"];
+		clearSearch(clearList);
+	});
+}
 function page_init(){
 	queryByPage();
-	searchAction();
 	formValidate();
 	pageControl();
+	searchAction();
+	clearAction();
 }
