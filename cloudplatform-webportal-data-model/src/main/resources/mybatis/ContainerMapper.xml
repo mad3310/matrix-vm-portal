@@ -241,7 +241,7 @@
 			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null and ipAddr != ''">
-			and C.IP_ADDR like CONCAT('%','${ipAddr}','%')
+			and C.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
 		</if>
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId}

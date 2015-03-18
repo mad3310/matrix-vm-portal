@@ -189,7 +189,7 @@
 			and m.STATUS=#{params.status}
 		</if>
 		<if test="params != null and params.acceptIp !=null and params.acceptIp !=''">
-			and m.ACCEPT_IP like CONCAT('%','${params.acceptIp}','%')
+			and m.ACCEPT_IP like CONCAT('%','${params.acceptIp}','%') escape '^'
 		</if>
 		<if test="params != null and params.dbName != null  and params.dbName != ''  and params.dbName != 'null'">
 			and n.DB_NAME like CONCAT('%','${params.dbName}','%')
