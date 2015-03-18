@@ -94,7 +94,7 @@ function queryByPage(){
 			'dbName':dbName,
 			'username':userName,
 			'type':userAuthority,
-			'acceptIp':acceptIp,
+			'acceptIp':acceptIp.replace(/\%/g,"%25"),
 			/*'createTime':createTime,*/
 			'status':status
 		}

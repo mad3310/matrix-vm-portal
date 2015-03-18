@@ -19,7 +19,7 @@ function queryMclusterMonitor(){
 	var queryCondition = {
 			'mclusterName':mclusterName,
 			'hclusterName':hclusterName,
-			'ipAddr':vip
+			'ipAddr':vip.replace(/\%/g,"%25")
 		}	
 	$("#tby tr").remove();
 	getLoading();
