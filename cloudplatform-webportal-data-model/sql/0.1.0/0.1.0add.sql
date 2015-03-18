@@ -1,0 +1,1 @@
+alter table WEBPORTAL_SLB_BACKEND_SERVER add column  SLB_CONFIG_ID bigint unsigned

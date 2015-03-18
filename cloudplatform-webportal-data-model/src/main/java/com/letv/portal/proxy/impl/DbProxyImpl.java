@@ -131,12 +131,14 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			StringBuffer mclusterName = new StringBuffer();
 			mclusterName.append(userId).append("_").append(dbModel.getDbName());
 			Boolean isExist= this.mclusterService.isExistByName(mclusterName.toString());
-			int i = 1;
+			int i = 0;
 			while(!isExist) {
 				isExist= this.mclusterService.isExistByName(mclusterName.toString() + i);
 				i++;
 			}
-			params.put("mclusterName", mclusterName.toString() + (i-1));
+			if(i>0)
+				mclusterName.append(i);
+			params.put("mclusterName", mclusterName.toString());
 			params.put("status", DbStatus.BUILDDING.getValue());
 			params.put("hclusterId", dbModel.getHclusterId());
 			
