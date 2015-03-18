@@ -10,7 +10,7 @@
 	<!-- /.page-header -->
 	<div class="row">
 		<div class="col-sm-12 col-md-12">
-			<div  class="col-sm-6 col-md-9" style="margin-top: 10px;">
+			<div style="margin-top: 10px;">
 			<table class="table table-bordered table-striped table-hover">
 			   	<thead>
 			       	<tr>
