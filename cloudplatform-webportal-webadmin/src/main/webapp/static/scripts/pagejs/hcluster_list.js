@@ -4,10 +4,7 @@ var queryBuildStatusrefresh;//刷新handler
 	
 $(function(){
 	//初始化 
-	$('#nav-search-input').addClass("hide");
 	page_init();
-	
-	
 	/*动态加载下拉列表值*/
 	var sltArray = [1,10,11,12,15];
 	addSltOpt(sltArray,$("#hclusterStatus"));
@@ -257,6 +254,7 @@ function clearAction(){
 	});
 }
 function page_init(){
+	$('#nav-search').addClass("hidden");
 	queryByPage();
 	formValidate();
 	pageControl();

@@ -495,6 +495,7 @@ function queryHcluster(){
 }
 
 function page_init(){
+	
 	queryByPage();
 	searchAction();
 	formValidate();

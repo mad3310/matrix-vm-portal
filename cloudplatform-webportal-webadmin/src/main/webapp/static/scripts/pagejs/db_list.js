@@ -376,7 +376,6 @@ function queryBuildStatus(mclusterId,type) {	//type(update或new)
  }
 
 function page_init(){
-	$('#nav-search').addClass("hidden");
 	queryByPage();
 	pageControl();
 }
