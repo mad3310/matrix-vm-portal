@@ -127,7 +127,7 @@ function queryByPage(){
 						+ array[i].username
 						+ "</td>");
 				var td3 = $("<td>"
-						+ "<a class=\"link\"  href=\"/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
+						+ "<a class=\"link\"  target=\"_blank\" href=\"/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 						+ "</td>");
 				if(array[i].type == 1){
 					var td4 = $("<td>"
