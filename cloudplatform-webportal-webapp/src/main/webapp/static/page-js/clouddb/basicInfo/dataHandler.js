@@ -71,7 +71,6 @@ define(function(require,exports,module){
         	$('#zclipCopy').zclip({
                 	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
                 	copy: function(){
-                		console.log("aaa");
                 		return $('#dbConfigInfo').text();
                 	},
             		afterCopy:function(){
