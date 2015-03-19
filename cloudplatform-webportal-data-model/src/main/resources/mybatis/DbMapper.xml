@@ -222,6 +222,22 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_DB m
+		<if test="mclusterName == null  or mclusterName == ''">
+			<!-- 查询条件为空时，左关联，否则，右关联 20150313 liuhao -->
+			left
+		</if>
+		join WEBPORTAL_MCLUSTER_INFO n on n.ID = m.MCLUSTER_ID 
+		<if test="mclusterName != null  and mclusterName != ''">
+			and n.MCLUSTER_NAME like CONCAT('%','${mclusterName}','%') escape '^'
+		</if>
+		join WEBPORTAL_USER u on m.CREATE_USER = u.ID
+		<if test="userName != null  and userName != ''">
+			and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+		</if>
+		join WEBPORTAL_HCLUSTER h on m.HCLUSTER_ID = h.ID
+		<if test="hclusterName != null  and hclusterName != ''">
+			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+		</if>
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->

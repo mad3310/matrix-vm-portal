@@ -63,7 +63,10 @@
 			<if test="hclusterName != null  and hclusterName != '' and hclusterName != 'null'">
 				and m.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
-			<if test="status != null  ">
+			<if test="hclusterNameAlias != null  and hclusterNameAlias != ''  and hclusterNameAlias != 'null'">
+				and m.HCLUSTER_NAME_ALIAS like CONCAT('%','${hclusterNameAlias}','%') escape '^'
+			</if>
+			<if test="status != null and status != '' ">
 				and m.STATUS=#{status}
 			</if>
 			<if test="deleted != null  ">

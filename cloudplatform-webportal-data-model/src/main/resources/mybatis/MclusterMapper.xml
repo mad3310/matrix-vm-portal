@@ -200,6 +200,14 @@
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_MCLUSTER_INFO M
+		join WEBPORTAL_USER U ON U.ID = M.CREATE_USER
+		<if test="userName != null  and userName != ''">
+			and U.USERNAME like CONCAT('%','${userName}','%') escape '^'
+		</if>
+		join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
+		<if test="hclusterName != null  and hclusterName != ''">
+			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+		</if>
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->

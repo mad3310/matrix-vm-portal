@@ -165,7 +165,31 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_DB_USER m
-		<include refid="Example_Where_Clause" />
+		join WEBPORTAL_DB n on n.ID = m.DB_ID
+		<if test="id !=null">
+			and m.ID=#{id}
+		</if>
+		<if test="username !=null and username !='' ">
+			and m.USERNAME like CONCAT('%','${username}','%')
+		</if>
+		<if test="type !=null and type !=''">
+			and m.TYPE=#{type}
+		</if>
+		<if test="status !=null and status !=''">
+			and m.STATUS=#{status}
+		</if>
+		<if test="acceptIp !=null and acceptIp !=''">
+			and m.ACCEPT_IP like CONCAT('%','${acceptIp}','%') escape '^'
+		</if>
+		<if test="dbName != null  and dbName != ''  and dbName != 'null'">
+			and n.DB_NAME like CONCAT('%','${dbName}','%')
+		</if>
+		<if test="name4Ip == null  ">
+			and m.USERNAME != '#$*defaultRO'
+		</if>
+		<if test="name4Ip != null  ">
+			and m.USERNAME = #{name4Ip}
+		</if>
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -228,7 +252,7 @@
 				and m.USERNAME != '#$*defaultRO'
 			</if>
 			<if test="params != null and params.name4Ip != null  ">
-				and m.USERNAME = #{name4Ip}
+				and m.USERNAME = #{params.name4Ip}
 			</if>
 		</trim>
 	</sql>
