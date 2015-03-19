@@ -1536,3 +1536,71 @@ textarea {
 	color:#282;
 	font-weight:bold;	
 }
+
+/* 复制功能模块css样式 */
+@media (min-width: 768px){
+	.zero-clipboard {
+	display: block;
+	}
+}
+
+.zero-clipboard {
+	position: relative;
+}
+@media (min-width: 768px){
+	.btn-clipboard {
+		top: -16px;
+		border-top-right-radius: 0;
+	}
+}
+
+.btn-clipboard {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 10;
+	display: block;
+	padding: 5px 8px;
+	font-size: 12px;
+	color: #767676;
+	cursor: pointer;
+	background-color: #fff;
+	border: 1px solid #e1e1e8;
+	border-radius: 0 4px 0 4px;
+}
+
+/* .btn-clipboard:hover{
+	color:#fff;
+	background-color:#563d7c;
+	border-color:#563d7c	
+} */
+
+.btn-clipboard-hover{
+	color:#fff;
+	background-color:#563d7c;
+	border-color:#563d7c
+}
+@media (min-width: 768px){
+	.highlight {
+		margin-top: -16px;
+		margin-right: 0;
+		margin-left: 0;
+		border-width: 1px;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
+}
+}
+.highlight {
+	padding: 9px 14px;
+	margin-bottom: 14px;
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	border-radius: 4px;
+}
+#msg{
+	position:absolute;
+	top:30px;
+	right:0;
+	color:green; 
+}
+/* 复制功能模块css样式end */

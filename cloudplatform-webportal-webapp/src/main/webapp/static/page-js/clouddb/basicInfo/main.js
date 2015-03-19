@@ -4,7 +4,6 @@
  */
 define(function(require){
 	var $ = require('jquery');
-	require('zclip');
     var common = require('../../common');
     var cn = new common();
 
@@ -22,14 +21,4 @@ define(function(require){
     var dbInfoHandler = new dataHandler();
 
     cn.GetData("/db/"+$("#dbId").val(),dbInfoHandler.DbInfoHandler);
-    
-    /*复制功能代码*/
-    /*$("#copyConf").zclip({
-        	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
-        	copy: function(){
-        		console.log("aaaa");
-        		return $("#dbConfigInfo").text();
-        	}
-    })
-   */
 });
