@@ -230,15 +230,18 @@
 						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
 					</div>
 					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
-						 <pre>
+						<div class="zero-clipboard">
+							<a id= "zclipCopy" class="btn-clipboard">复制</a>
+						</div>
+						<pre>
 							<code id="dbConfigInfo" class="language-html"></code>
 						</pre>
-						<!-- <div id="dbConfigInfo">aaaaa</div>		 --> 	
+						<div id="zeroclipboardTooltip" data-toggle="tooltip" title="" style="position: absolute; right: 50px; top:10px; z-index: 999999999;">
+						</div>
 					</div>
-					<div class="modal-footer">
-						<!-- <button type="button" class="btn btn-primary" id="copyConf">复制</button> -->
-						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					</div>
+					<!-- <div class="modal-footer">
+						<button type="button" id="fortest" class="btn btn-default" >测试</button>
+					</div> -->
 				</div>
 				<!-- /.modal-content -->
 			</div>
@@ -262,6 +265,4 @@
 	});
 	seajs.use("${ctx}/static/page-js/clouddb/basicInfo/main");
 </script>
-<%-- <script type="text/javascript" src="${ctx}/static/modules/jquery/zclip/jquery.zclip.min.js"></script> --%>
-
 </html>

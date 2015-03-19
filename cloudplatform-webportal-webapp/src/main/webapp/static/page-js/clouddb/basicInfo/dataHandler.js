@@ -2,10 +2,11 @@
  * Created by yaokuo on 2014/12/14.
  */
 define(function(require,exports,module){
-    var $ = require('jquery');
+    var jQuery = $ = require('jquery');
+    require('zclip');
     var common = require('../../common');
     var cn = new common();
-
+   
     var DataHandler = function(){
     };
 
@@ -43,7 +44,7 @@ define(function(require,exports,module){
                 var dbconfig = new DataHandler();
                 $("#showConfigInfo").click(function(){
                 	cn.GetData("/db/gbConfig/" + $("#dbId").val(),dbconfig.getInfo);
-                  });
+                });
         },
         getInfo: function(data){
         	var $tby = $("#dbConfigTby");
@@ -56,7 +57,26 @@ define(function(require,exports,module){
         	$("#dbConfigModalLabel").html("配置信息");
         	var data = data.data;
         	
+        	/*添加配置信息*/
         	$("#dbConfigInfo").html("<br/>" + cn.formatJson(JSON.stringify(data)));
+        	
+        	/*初始化tooltip*/
+        	$('#zclipCopy').hover(function(){
+    			$("#zeroclipboardTooltip").data("placement", "top").attr("data-original-title", "复制到剪贴板").tooltip("show");
+    		},function(){
+    			$("#zeroclipboardTooltip").tooltip('hide');
+    		})
+    		
+        	 /*初始化复制功能按钮*/        	
+        	$('#zclipCopy').zclip({
+                	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
+                	copy: function(){
+                		return $('#dbConfigInfo').text();
+                	},
+            		afterCopy:function(){
+            			$("#zeroclipboardTooltip").attr("data-original-title", "复制成功").tooltip("show");
+            		}
+            });
         }
     }
 });
