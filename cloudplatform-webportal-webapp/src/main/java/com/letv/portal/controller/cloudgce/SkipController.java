@@ -31,8 +31,8 @@ public class SkipController {
 	private IDbService dbService;
 	
 	/**
-	 * Methods Name: slbList<br>
-	 * Description: 跳转负载均衡列表
+	 * Methods Name: gceList<br>
+	 * Description: 跳转gce列表
 	 * @author name: yaokuo
 	 * @param request
 	 * @param response
@@ -44,8 +44,8 @@ public class SkipController {
 		return mav;
 	}
 	
-	/**Methods Name: slbDetail <br>
-	 * Description: 跳转至slb详情<br>
+	/**Methods Name: gceDetail <br>
+	 * Description: 跳转至gce详情<br>
 	 * @author name: yaokuo
 	 * @param slbId
 	 * @param mav
@@ -60,8 +60,8 @@ public class SkipController {
 	}
 	
 	/**
-	 * Methods Name: slbCreate<br>
-	 * Description: 跳转数据库创建页面
+	 * Methods Name: gceCreate<br>
+	 * Description: 跳转gce创建页面
 	 * @author name: yaokuo
 	 * @param request
 	 * @param response
@@ -73,14 +73,6 @@ public class SkipController {
 		return mav;
 	}
 	
-	/**
-	 * Methods Name: slbCreate<br>
-	 * Description: 跳转数据库创建页面
-	 * @author name: yaokuo
-	 * @param request
-	 * @param response
-	 * @return
-	 */
 	@RequestMapping(value ="/detail/gceBaseInfo/{gceId}",method=RequestMethod.GET)
 	public ModelAndView toGceCreate(@PathVariable Long gceId,ModelAndView mav){
 		mav.addObject("gceId",gceId);

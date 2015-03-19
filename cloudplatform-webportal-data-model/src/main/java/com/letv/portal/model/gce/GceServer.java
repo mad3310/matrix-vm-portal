@@ -14,6 +14,14 @@ public class GceServer extends BaseModel {
 	private Long hclusterId;
 
 	private String gceImageName;
+	private String ip;
+	private String portForward;
+	private Integer status;
+	private String descn;
+	
+	private HclusterModel hcluster;
+	private GceCluster gceCluster;
+	private UserModel createUserModel;
 	
 	public String getGceName() {
 		return gceName;
@@ -81,12 +89,4 @@ public class GceServer extends BaseModel {
 	public void setCreateUserModel(UserModel createUserModel) {
 		this.createUserModel = createUserModel;
 	}
-	private String ip;
-	private String portForward;
-	private Integer status;
-	private String descn;
-	
-	private HclusterModel hcluster;
-	private GceCluster gceCluster;
-	private UserModel createUserModel;
 }

@@ -11,11 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.slb.ISlbConfigDao;
-import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.slb.SlbConfig;
-import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.slb.ISlbConfigService;
 

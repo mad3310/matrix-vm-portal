@@ -25,7 +25,7 @@ public class GceContainer extends BaseModel {
 	
 	private String hostIp; //ip
 	private Long hostId;  //所属host
-	private Long slbClusterId; //所属cluster
+	private Long gceClusterId; //所属cluster
 	
 	public String getContainerName() {
 		return containerName;
@@ -123,11 +123,10 @@ public class GceContainer extends BaseModel {
 	public void setHostId(Long hostId) {
 		this.hostId = hostId;
 	}
-	public Long getSlbClusterId() {
-		return slbClusterId;
+	public Long getGceClusterId() {
+		return gceClusterId;
 	}
-	public void setSlbClusterId(Long slbClusterId) {
-		this.slbClusterId = slbClusterId;
+	public void setGceClusterId(Long gceClusterId) {
+		this.gceClusterId = gceClusterId;
 	}
-	
 }

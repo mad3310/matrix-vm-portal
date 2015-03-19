@@ -108,7 +108,7 @@ public class SkipController {
 	
 	/**
 	 * Methods Name: slbCreate<br>
-	 * Description: 跳转数据库创建页面
+	 * Description: 跳转slb创建页面
 	 * @author name: yaokuo
 	 * @param request
 	 * @param response
