@@ -283,15 +283,16 @@ function queryUrlBuilder(url,data){
 	return url+queryUrl;
 }
 //chosen 组件配置
-function chosenConf(){	
-	$('.chosen-select').chosen("destroy"); 
+function initChosen(){
+	$('.chosen-select').trigger('chosen:updated');
 	$('.chosen-select').chosen({
 		allow_single_deselect:true,
 		search_contains:true,
-		no_results_text:"未找到匹配数据"
+		no_results_text:"未找到匹配数据",
+		disable_search:false	
 		}); 
+	
 	//resize the chosen on window resize
-
 	$(window)
 	.off('resize.chosen')
 	.on('resize.chosen', function() {
@@ -302,6 +303,16 @@ function chosenConf(){
 	}).trigger('resize.chosen');
 }
 
+function initMultiple(){
+	$('.chosen-select').trigger('chosen:updated');
+	$('.chosen-select').chosen({allow_single_deselect:true}); 
+	$(window).off('resize.chosen').on('resize.chosen', function() {
+		$('.chosen-select').each(function() {
+			 var $this = $(this);
+			 $this.next().css({'width': $this.parent().width()});
+		})
+	}).trigger('resize.chosen');
+}
 /*预警管理页面查看详情通用函数 begin*/
 function strToJson(str){
 	var jsonArr = {};

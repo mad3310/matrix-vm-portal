@@ -9,7 +9,7 @@
 		clearSearch(clearList);
 	});
 	
-	enterKeydown($(".page-header > .input-group input"),queryByPage);
+	enterKeydown($(".page-header > .input-group input"),queryMclusterMonitor);
 });	
 function queryMclusterMonitor() {
 	var mclusterName = $("#monitorContainer").val()?$("#monitorContainer").val():'';
