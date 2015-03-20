@@ -22,8 +22,8 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
-import com.letv.portal.model.slb.SlbServer;
-import com.letv.portal.service.slb.ISlbServerService;
+import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.service.gce.IGceServerService;
 
 @Controller
 @RequestMapping("/gce")
@@ -33,7 +33,7 @@ public class GceServerController {
 	private SessionServiceImpl sessionService;
 	
 	@Autowired
-	private ISlbServerService slbServerService;
+	private IGceServerService gceServerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceServerController.class);
 	
@@ -41,21 +41,25 @@ public class GceServerController {
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());
-		String slbName = (String) params.get("slbName");
-		if(!StringUtils.isEmpty(slbName))
-			params.put("slbName", StringUtil.transSqlCharacter(slbName));
-		obj.setData(this.slbServerService.selectPageByParams(page, params));
+		String gceName = (String) params.get("gceName");
+		if(!StringUtils.isEmpty(gceName))
+			params.put("gceName", StringUtil.transSqlCharacter(gceName));
+		obj.setData(this.gceServerService.selectPageByParams(page, params));
 		return obj;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(SlbServer slbServer,ResultObject obj) {
-		if(slbServer == null || StringUtils.isEmpty(slbServer.getSlbName()))
+	public @ResponseBody ResultObject save(GceServer gceServer,ResultObject obj) {
+		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName()) || StringUtils.isEmpty(gceServer.getForwardPort())){
 			throw new ValidateException("参数不合法");
-		slbServer.setCreateUser(this.sessionService.getSession().getUserId());
-		slbServer.setIp("10.58.88.163"); //get ip from python api
-		slbServer.setSlbClusterId(1L); //create cluster when create slbServer
-		this.slbServerService.insert(slbServer);
+		}else{
+			
+		}
+		
+		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
+		gceServer.setIp("10.58.88.163"); //get ip from python api
+		gceServer.setGceClusterId(1L); //create cluster when create slbServer
+		this.gceServerService.insert(gceServer);
 		return obj;
 	}
 	
@@ -63,12 +67,10 @@ public class GceServerController {
 	public @ResponseBody ResultObject detail(@PathVariable Long id){
 		isAuthoritySlb(id);
 		ResultObject obj = new ResultObject();
-		SlbServer slb = this.slbServerService.selectById(id);
+		GceServer slb = this.gceServerService.selectById(id);
 		obj.setData(slb);
 		return obj;
 	}	
-	
-	
 	
 	private void isAuthoritySlb(Long id) {
 		if(id == null)
@@ -76,7 +78,7 @@ public class GceServerController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", id);
 		map.put("createUser", sessionService.getSession().getUserId());
-		List<SlbServer> slbs = this.slbServerService.selectByMap(map);
+		List<GceServer> slbs = this.gceServerService.selectByMap(map);
 		if(slbs == null || slbs.isEmpty())
 			throw new ValidateException("参数不合法");
 	}

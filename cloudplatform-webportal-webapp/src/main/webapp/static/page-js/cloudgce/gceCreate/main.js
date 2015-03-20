@@ -38,31 +38,43 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	slbName:{
+        	gceName:{
 				validMessage: '请按提示输入',
 				validators: {
 					notEmpty: {
-						message: '负载均衡名不能为空!'
+						message: '云应用名不能为空!'
 					}, stringLength: {
 						max: 16,
-						message: '负载均衡名过长!'
+						message: '云应用名过长!'
 					}, regexp: {
 						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
-						message: "请输入字母数字或'_',负载均衡名不能以数字开头."
+						message: "请输入字母数字或'_',云应用名不能以数字开头."
 					}
+				}
+			},
+            forwardPort:{
+				validMessage: '请按提示输入',
+				validators: {
+					notEmpty: {
+						message: '内部服务端口不能为空!'
+					}/*, regexp: {
+						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
+						message: "请按格式输入端口，如80,8080"
+					}*/
 				}
 			}
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
-		var createConfigData = {
-			slbName : $("[name = slbName]").val(),
+		var createGceData = {
+			gceName : $("[name = slbName]").val(),
+            forwardPort : $("[name = forwardPort]").val(),
 			hclusterId : $("[name = 'hclusterId']").val()
 		}
-		/*var url = "/slb";
-		cn.PostData(url, createConfigData, function () {
-			location.href = "/list/slb";
-		});*/
+		var url = "/gce";
+		cn.PostData(url, createGceData, function () {
+			location.href = "/list/gce";
+		});
     });
     /*表单验证 --end*/
 
@@ -73,12 +85,5 @@ define(function(require){
     function GetHcluster(){
         var url="/hcluster";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
-    }
-    /*创建数据库*/
-    function CreateDb(data){
-        var url="/db";
-        cn.PostData(url,data, function () {
-            location.href = "/list/db";
-        });
     }
 });

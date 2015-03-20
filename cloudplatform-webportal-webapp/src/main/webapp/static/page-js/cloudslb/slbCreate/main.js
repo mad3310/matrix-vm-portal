@@ -74,11 +74,4 @@ define(function(require){
         var url="/hcluster";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
-    /*创建数据库*/
-    function CreateDb(data){
-        var url="/db";
-        cn.PostData(url,data, function () {
-            location.href = "/list/db";
-        });
-    }
 });

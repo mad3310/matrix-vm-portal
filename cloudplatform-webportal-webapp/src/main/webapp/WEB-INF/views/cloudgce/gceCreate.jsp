@@ -102,6 +102,12 @@
 													<input id="slbName" class="form-control" name="slbName" type="text">
 												</div>
 											</div>
+											<div class="form-group bk-form-row col-sm-12">
+												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">内部服务端口：</label>
+												<div class="col-sm-2 row">
+													<input id="forwardPort" class="form-control" name="forwardPort" type="text">
+												</div>
+											</div>
 										</form>
 										<div class="bk-form-row">
 												<label class="bk-form-row-name">地域：</label>
@@ -178,14 +184,6 @@
 												</div>
 											</div>
 										</div>
-										<form id="monthPurchaseForm">
-												<div class="form-group bk-form-row col-sm-12">
-													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">内部服务端口：</label>
-												<div class="col-sm-2 row">
-													<input id="slbName" class="form-control" name="innerPort" type="text">
-												</div>
-											</div>
-										</form>
 										</div>
 									</dd>
 								</dl>

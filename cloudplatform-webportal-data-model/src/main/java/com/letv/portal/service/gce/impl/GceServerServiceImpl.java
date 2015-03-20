@@ -51,13 +51,4 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		super.insert(t);
 	}
 	
-	@Override
-	public <K, V> Page selectPageByParams(Page page, Map<K, V> params) {
-		page = super.selectPageByParams(page, params);
-		List<GceServer> data = (List<GceServer>) page.getData();
-		
-		page.setData(data);
-		return page;
-	}
-
 }
