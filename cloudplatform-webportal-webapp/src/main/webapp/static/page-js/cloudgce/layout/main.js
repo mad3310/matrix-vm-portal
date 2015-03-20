@@ -13,7 +13,7 @@ define(function(require){
     var index = [1,0];
     cn.Sidebar(index);//index为菜单中的排序(1-12)
     /*
-     * 加载slb基础信息
+     * 加载gce基础信息
      */
-   // cn.GetData("/gce/"+$("#gceId").val(),basicInfoHandler.resCountHandler);
+    cn.GetData("/gce/"+$("#gceId").val(),basicInfoHandler.resCountHandler);
 });

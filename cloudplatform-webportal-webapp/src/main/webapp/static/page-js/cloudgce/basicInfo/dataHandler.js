@@ -12,14 +12,15 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-    		SlbInfoHandler : function(data){
-                var slbInfo = data.data;
-    			$("#slb_info_slb_id").html(slbInfo.slbName);
-    			$("#slb_info_slb_name").html(slbInfo.slbName);
-                $("#slbServerIp").html(slbInfo.ip);
-    			$("#slb_create_time").html(cn.TransDate('Y-m-d H:i:s',slbInfo.createTime));
-                if(slbInfo.hcluster != undefined && slbInfo.hcluster != null) {
-                    $("#slb_info_available_region").html(slbInfo.hcluster.hclusterNameAlias);
+    		GceInfoHandler : function(data){
+                var gceInfo = data.data;
+    			$("#gce_info_gce_name").html(gceInfo.gceName);
+    			$("#gce_info_gce_image").html(gceInfo.gceImageName);
+                $("#gceServerIp").html(gceInfo.ip);
+                $("#gce_info_port_forward").html(gceInfo.portForward);
+    			$("#gce_create_time").html(cn.TransDate('Y-m-d H:i:s',gceInfo.createTime));
+                if(gceInfo.hcluster != undefined && gceInfo.hcluster != null) {
+                    $("#gce_info_available_region").html(gceInfo.hcluster.hclusterNameAlias);
                 }
             }
     }

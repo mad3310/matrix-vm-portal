@@ -14,7 +14,7 @@ define(function(require){
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var slbInfoHandler = new dataHandler();
+    var gceInfoHandler = new dataHandler();
 
- //   cn.GetData("/slb/"+$("#slbId").val(),slbInfoHandler.SlbInfoHandler);
+    cn.GetData("/gce/"+$("#gceId").val(),gceInfoHandler.GceInfoHandler);
 });

@@ -99,13 +99,13 @@
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">云应用名称：</label>
 												<div class="col-sm-4 row">
-													<input id="slbName" class="form-control" name="slbName" type="text">
+													<input id="gceName" class="form-control" name="gceName" type="text">
 												</div>
 											</div>
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">内部服务端口：</label>
 												<div class="col-sm-2 row">
-													<input id="forwardPort" class="form-control" name="forwardPort" type="text">
+													<input id="portForward" class="form-control" name="portForward" type="text">
 												</div>
 											</div>
 										</form>
@@ -172,11 +172,8 @@
 																<div class="divselect">
 																	<span></span>
 																	<ul>
-																		<li class="bk-select-option"><a href="javascript:;" selectid="1">webportal-img</a></li>
-																		<li class="bk-select-option"><a href="javascript:;" selectid="2">container-manager</a></li>
-																		<li class="bk-select-option"><a href="javascript:;" selectid="3">mcluster-manager</a></li>
 																	</ul>
-																	<input name="developLang" type="hidden" value="1" />
+																	<input name="gceImageName" type="hidden" value="1" />
 																</div>
 														</span>
 														</span> <span class="bk-select-arrow"></span>

@@ -17,7 +17,7 @@
 </head>
 <body>
 	<!-- 全局参数 start -->
-	<input class="hidden" value="${gceId}" name="gceId" id="slbId" type="text" />
+	<input class="hidden" value="${gceId}" name="gceId" id="gceId" type="text" />
 	<!-- 全局参数 end -->
 	<!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height: 40px; height: 40px;">
@@ -29,7 +29,7 @@
 				<a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space: nowrap; font-size: 13px">
 					<i class="fa fa-home text-20"></i>
 				</a>
-				<a class="navbar-brand color" href="${ctx}/list/slb" style="margin-left: 10px; height: 40px !important; font-size: 15px">
+				<a class="navbar-brand color" href="${ctx}/list/gce" style="margin-left: 10px; height: 40px !important; font-size: 15px">
 					<i class="fa fa-database text-10">
 					</i>&nbsp;云引擎GCE
 				</a>
@@ -74,9 +74,9 @@
 				<div class="pull-left">
 					<h3>
 						<span class="fa  fa-cubes"></span>
-						<span id="slbName"></span>
+						<span id="gceName"></span>
 						<span style="display: inline-block;vertical-align:super;">
-							<small id="slbStatus" class="text-success text-xs"></small>webportal
+							<small id="gceStatus" class="text-success text-xs"></small>
 						</span>
 							<a class="btn btn-default btn-xs" href="${ctx}/list/gce">
 						<span class="glyphicon glyphicon-step-backward"></span>

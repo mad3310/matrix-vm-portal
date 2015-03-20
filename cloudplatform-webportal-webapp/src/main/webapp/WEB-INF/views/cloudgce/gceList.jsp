@@ -88,7 +88,7 @@
 			<div class="pull-left">
 				<form class="form-inline" role="form">
 					<div class="form-group">
-						<input  id="slbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
+						<input  id="gceName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
@@ -108,21 +108,13 @@
 						<th>镜像ID</th>
 						<th>访问地址</th>
 						<th>端口映射(外部:内部)</th>
+						<th>所在可用区</th>
 						<th>状态</th>
+						<th>付费方式</th>
 						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
-					<tr>
-						<td width="10"><input type="checkbox"></td>
-						<td><a href="${ctx}/detail/gce/123">webportal</a></td>
-						<td>webportal-img</td>
-						<td>192.168.30.49</td>
-						<td class="text-success">18080:8080<br>
-							18081:8081</td>
-						<td>未部署</td>
-						<td class="text-right"><a href="/detail/gce/123">管理</a><span class="text-explode font-disabled">|续费|升级</span></td>
-					</tr>
 				</tbody>
 				<tfoot id="paginatorBlock">
 					<tr class="tfoot" >

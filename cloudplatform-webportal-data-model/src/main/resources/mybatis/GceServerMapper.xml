@@ -35,9 +35,9 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		s.ID,
-		s.GCE_NAME,s.GCECLUSTER_ID,s.HCLUSTER_ID,s.PORT_FORWARD,s.GCE_IMAGE_NAME,s.STATUS,s.DESCN,s.IP,
-		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+		g.ID,
+		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.STATUS,g.DESCN,g.IP,
+		g.DELETED,g.CREATE_TIME,g.CREATE_USER,g.UPDATE_TIME,g.UPDATE_USER
 	</sql>
 	
 	<!-- 查询条件 -->
@@ -45,46 +45,46 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and s.ID=#{id}
+				and g.ID=#{id}
 			</if>
 			
 			<if test="gceName != null and gceName != '' ">
-				and s.GCE_NAME like CONCAT('%','${gceName}','%') escape '^'
+				and g.GCE_NAME like CONCAT('%','${gceName}','%') escape '^'
 			</if>
 			
 			<if test="gceClusterId != null  ">
-				and s.GCECLUSTER_ID=#{gceClusterId}
+				and g.GCECLUSTER_ID=#{gceClusterId}
 			</if>
 			<if test="hclusterId != null  ">
-				and s.HCLUSTER_ID=#{hclusterId}
+				and g.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="portForward != null and portForward != ''">
-				and s.HCLUSTER_ID=#{portForward}
+				and g.HCLUSTER_ID=#{portForward}
 			</if>
 			<if test="gceImageName != null and gceImageName != '' ">
-				and s.HCLUSTER_ID=#{gceImageName}
+				and g.HCLUSTER_ID=#{gceImageName}
 			</if>
 			<if test="status != null and status != ''  ">
-				and s.STATUS=#{status}
+				and g.STATUS=#{status}
 			</if>
 			<if test="ip != null and ip != ''  ">
-				and s.IP=#{ip}
+				and g.IP=#{ip}
 			</if>
 			
 			<if test="deleted != null  ">
-				and s.DELETED=#{deleted}
+				and g.DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
-				and s.CREATE_TIME=#{createTime}
+				and g.CREATE_TIME=#{createTime}
 			</if>
 			<if test="createUser != null  ">
-				and s.CREATE_USER=#{createUser}
+				and g.CREATE_USER=#{createUser}
 			</if>
 			<if test="updateTime != null  ">
-				and s.UPDATE_TIME=#{updateTime}
+				and g.UPDATE_TIME=#{updateTime}
 			</if>
 			<if test="updateUser != null  ">
-				and s.UPDATE_USER=#{updateUser}
+				and g.UPDATE_USER=#{updateUser}
 			</if>
 			
 		</trim>
@@ -119,10 +119,10 @@
 				HCLUSTER_ID=#{hclusterId},
 			</if>
 			<if test="portForward != null ">
-				and s.HCLUSTER_ID=#{portForward}
+				and g.HCLUSTER_ID=#{portForward}
 			</if>
 			<if test="gceImageName != null ">
-				and s.HCLUSTER_ID=#{gceImageName}
+				and g.HCLUSTER_ID=#{gceImageName}
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
@@ -161,15 +161,15 @@
 	        select
 			<include refid="Base_Column_List" /> 
 			,n.CLUSTER_NAME,u.USERNAME,h.HCLUSTER_NAME_ALIAS
-			from WEBPORTAL_GCE s ,WEBPORTAL_GCECLUSTER n,WEBPORTAL_USER u,WEBPORTAL_HCLUSTER h 
-			where s.CREATE_USER=u.id and s.ID = #{id} and n.ID = s.GCECLUSTER_ID and s.HCLUSTER_ID = h.ID
+			from WEBPORTAL_GCE g ,WEBPORTAL_GCECLUSTER n,WEBPORTAL_USER u,WEBPORTAL_HCLUSTER h 
+			where g.CREATE_USER=u.id and g.ID = #{id} and n.ID = g.GCECLUSTER_ID and g.HCLUSTER_ID = h.ID
 	</select>
 	
 	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_GCE s
+		select count(1) from WEBPORTAL_GCE g
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
@@ -177,7 +177,7 @@
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_GCE s
+		from WEBPORTAL_GCE g
 		<include refid="Example_Where_Clause" />
 	</select>
 	
@@ -186,47 +186,47 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="params != null and params.id !=null  ">
-				and s.ID=#{params.id}
+				and g.ID=#{params.id}
 			</if>
 			<if test="params != null and params.gceName != null  and params.gceName != ''  and params.gceName != 'null'">
-				and s.GCE_NAME like CONCAT('%','${params.gceName}','%') escape '^'
+				and g.GCE_NAME like CONCAT('%','${params.gceName}','%') escape '^'
 			</if>
 			
 			<if test="params != null and params.gceClusterId != null  ">
-				and s.GCECLUSTER_ID=#{params.gceClusterId}
+				and g.GCECLUSTER_ID=#{params.gceClusterId}
 			</if>
 			<if test="params != null and params.hclusterId != null  ">
-				and s.HCLUSTER_ID=#{params.hclusterId}
+				and g.HCLUSTER_ID=#{params.hclusterId}
 			</if>
 			<if test="params != null and params.portForward != null and params.portForward != ''">
-				and s.HCLUSTER_ID=#{params.portForward}
+				and g.HCLUSTER_ID=#{params.portForward}
 			</if>
 			<if test="params != null and params.gceImageName != null and params.gceImageName != '' ">
-				and s.HCLUSTER_ID=#{params.gceImageName}
+				and g.HCLUSTER_ID=#{params.gceImageName}
 			</if>
 			<if test="params != null and params.status != null  ">
-				and s.STATUS=#{params.status}
+				and g.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.descn != null  ">
-				and s.DESCN=#{params.descn}
+				and g.DESCN=#{params.descn}
 			</if>
 			<if test="params != null and params.ip != null  ">
-				and s.IP=#{params.ip}
+				and g.IP=#{params.ip}
 			</if>
 			<if test="params != null and params.deleted != null  ">
-				and s.DELETED=#{params.deleted}
+				and g.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
-				and s.CREATE_TIME=#{params.createTime}
+				and g.CREATE_TIME=#{params.createTime}
 			</if>
 			<if test="params != null and params.createUser != null  ">
-				and s.CREATE_USER=#{params.createUser}
+				and g.CREATE_USER=#{params.createUser}
 			</if>
 			<if test="params != null and params.updateTime != null  ">
-				and s.UPDATE_TIME=#{params.updateTime}
+				and g.UPDATE_TIME=#{params.updateTime}
 			</if>
 			<if test="params != null and params.updateUser != null  ">
-				and s.UPDATE_USER=#{params.updateUser}
+				and g.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>
@@ -237,12 +237,12 @@
 		select
 		<include refid="Base_Column_List" />
 		,n.CLUSTER_NAME,u.USERNAME,h.HCLUSTER_NAME_ALIAS
-		from WEBPORTAL_GCE s 
-		left join WEBPORTAL_GCECLUSTER n on n.ID = s.GCECLUSTER_ID 
-		left join WEBPORTAL_USER u on s.CREATE_USER = u.ID
-		left join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
+		from WEBPORTAL_GCE g 
+		left join WEBPORTAL_GCECLUSTER n on n.ID = g.GCECLUSTER_ID 
+		left join WEBPORTAL_USER u on g.CREATE_USER = u.ID
+		left join WEBPORTAL_HCLUSTER h on g.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY s.CREATE_TIME DESC
+		ORDER BY g.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>

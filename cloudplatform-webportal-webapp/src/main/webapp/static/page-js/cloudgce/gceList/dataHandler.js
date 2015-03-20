@@ -20,7 +20,7 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-        SlbListHandler : function(data){
+        GceListHandler : function(data){
         	$(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data.data;
@@ -38,44 +38,41 @@ define(function(require,exports,module){
             	 }
                 for(var i= 0, len= array.length;i<len;i++){
                     var td1 = $("<td width=\"10\">"
-                            + "<input type=\"checkbox\" name=\"slbcluster_id\" value= \""+array[i].id+"\">"
+                            + "<input type=\"checkbox\" name=\"gcecluster_id\" value= \""+array[i].id+"\">"
                             + "</td>");
-                    var slbName = "";
+                    var gceName = "";
                     if(cn.Displayable(array[i].status)){
-                        slbName = "<a href=\"/detail/slb/"+array[i].id+"\">" + array[i].slbName + "</a>"
+                        gceName = "<a href=\"/detail/gce/"+array[i].id+"\">" + array[i].gceName + "</a>"
                     }else{
-                        slbName = "<span class=\"text-explode font-disabled\">"+array[i].slbName +"</span>"
+                        gceName = "<span class=\"text-explode font-disabled\">"+array[i].gceName +"</span>"
                     }
                     var td2 = $("<td class=\"padding-left-32\">"
-                            + slbName
+                            + gceName
                             +"</td>");
-                    var td8 = $("<td class=\"padding-left-32\">"
+                    var td3 = $("<td class=\"padding-left-32\">"
+                            + "<span>"+array[i].gceImageName+"</span>"
+                            +"</td>");
+                    var td4 = $("<td class=\"padding-left-32\">"
                             + "<span>"+array[i].ip+"</span>"
                             +"</td>");
-                    var td9=$("<td>-</td>");
-                    if(array[i].slbConfigs != undefined || array[i].slbConfigs !=null){
-                        td9 = $("<td>"
-                            +addPort(array[i].slbConfigs)
-                            +"</td>")
-                    }
-                    var td3 = $("<td>"
-                        + "<span class=\"text-success\">已启用</span>"
-                        + "</td>");
-                    var td4="<td></td>";
+                    var td5 = $("<td class=\"padding-left-32\">"
+                            + "<span>"+array[i].portForward+"</span>"
+                            +"</td>");
+                    var td6="<td></td>";
                     if(array[i].hcluster != undefined && array[i].hcluster != null){
-                        var td4 = $("<td>"
+                        var td6 = $("<td>"
                         + "<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>"
                         + "</td>");
                     }
-                    var td5 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
-                    var td6 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    var td7 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
+                    var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    	var td9 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
-                    	var td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                    	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
-                    tr.append(td1).append(td2).append(td8).append(td9).append(td3).append(td4).append(td5).append(td6).append(td7);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
                  }
             }

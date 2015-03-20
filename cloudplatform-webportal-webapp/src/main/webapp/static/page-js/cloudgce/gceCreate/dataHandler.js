@@ -20,6 +20,15 @@ define(function(require,exports,module){
                 li.appendTo(ul);
             }
             cn.divselect();
+        },
+        GetImageHandler : function(data){
+            var images = data.data;
+            var ul = $("[name='gceImageName']").parent('div').find('ul');
+            for(var i= 0,len=images.length;i<len;i++){
+                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+images[i]+"\">"+images[i]+"</a></li>");
+                li.appendTo(ul);
+            }
+            cn.divselect();
         }
     }
 });

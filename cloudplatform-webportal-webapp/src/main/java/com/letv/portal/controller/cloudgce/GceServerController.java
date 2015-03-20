@@ -50,7 +50,7 @@ public class GceServerController {
 	
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(GceServer gceServer,ResultObject obj) {
-		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName()) || StringUtils.isEmpty(gceServer.getForwardPort())){
+		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName()) || StringUtils.isEmpty(gceServer.getPortForward())){
 			throw new ValidateException("参数不合法");
 		}else{
 			
@@ -65,14 +65,22 @@ public class GceServerController {
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long id){
-		isAuthoritySlb(id);
+		isAuthorityGce(id);
 		ResultObject obj = new ResultObject();
-		GceServer slb = this.gceServerService.selectById(id);
-		obj.setData(slb);
+		GceServer gce = this.gceServerService.selectById(id);
+		obj.setData(gce);
+		return obj;
+	}
+	
+	@RequestMapping(value="/image/list",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getImage(){
+		ResultObject obj = new ResultObject();
+		String images[] = {"webportal-0.0.1.img","container-manager-0.1.0.img"};
+		obj.setData(images);
 		return obj;
 	}	
 	
-	private void isAuthoritySlb(Long id) {
+	private void isAuthorityGce(Long id) {
 		if(id == null)
 			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();

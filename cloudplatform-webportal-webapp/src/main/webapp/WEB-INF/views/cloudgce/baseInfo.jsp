@@ -36,12 +36,12 @@
 					<table class="table table-bordered table-bi">
 						<tbody>
 						<tr>
-							<td width="50%"><span class="text-muted pd-r8">镜像ID:</span><span id="slb_info_gce_id">webportal-img</span></td>
-							<td width="50%"><span class="text-muted" style="padding-right:8px">状态:</span><span>未部署</span></td>
+							<td width="50%"><span class="text-muted pd-r8">应用名称:</span><span id="gce_info_gce_name">webportal-img</span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">状态:</span><span>运行中</span></td>
 						</tr>
 						<tr>
 							<td width="50%">
-								<span class="text-muted pd-r8">应用名称:</span><span text-length="26" id="slb_info_slb_name">webportal</span>
+								<span class="text-muted pd-r8">镜像ID:</span><span text-length="26" id="gce_info_gce_image"></span>
 							</td>
 							<td width="50%">
 								<span class="text-muted pd-r8">地域:</span>北京
@@ -49,15 +49,15 @@
 						</tr>
 						<tr>
 							<td width="50%">
-								<span class="text-muted pd-r8">访问地址:</span><span text-length="26">192.168.30.25</span>
+								<span class="text-muted pd-r8">访问地址:</span><span text-length="26" id="gceServerIp"></span>
 							</td>
 							<td width="50%">
-								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="slb_info_available_region">酒仙桥</span>
+								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="gce_info_available_region"></span>
 							</td>
 						</tr>
 						<tr>
 							<td colspan=2>
-								<span class="text-muted pd-r8">端口映射(外部:内部):</span><span text-length="26" id="slb_info_available_region">18080:8080,18081:8081</span>
+								<span class="text-muted pd-r8">端口映射(外部:内部):</span><span text-length="26" id="gce_info_port_forward"></span>
 							</td>
 						</tr>
 						</tbody>
@@ -82,7 +82,7 @@
 						<tbody>
 						<tr>
 							<td width="50%"><span class="text-muted pd-r8">付费方式:</span><span class="text-success">包年</span></td>
-							<td width="50%"><span class="text-muted" style="padding-right:8px">创建时间:</span><span id="slb_create_time">2015-03-03 16:30</span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">创建时间:</span><span id="gce_create_time">2015-03-03 16:30</span></td>
 						</tr>
 						<tr>
 							<td width="50%">

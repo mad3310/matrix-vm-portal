@@ -52,7 +52,7 @@ define(function(require){
 					}
 				}
 			},
-            forwardPort:{
+            portForward:{
 				validMessage: '请按提示输入',
 				validators: {
 					notEmpty: {
@@ -67,9 +67,10 @@ define(function(require){
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
 		var createGceData = {
-			gceName : $("[name = slbName]").val(),
-            forwardPort : $("[name = forwardPort]").val(),
-			hclusterId : $("[name = 'hclusterId']").val()
+			gceName : $("[name = gceName]").val(),
+            portForward : $("[name = portForward]").val(),
+			hclusterId : $("[name = 'hclusterId']").val(),
+            gceImageName : $("[name = gceImageName]").val()
 		}
 		var url = "/gce";
 		cn.PostData(url, createGceData, function () {
@@ -82,8 +83,13 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var createDbHandler = new dataHandler();
     GetHcluster();
+    GetImage();
     function GetHcluster(){
         var url="/hcluster";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
+    }
+    function GetImage(){
+        var url="/gce/image/list";
+        cn.GetData(url,createDbHandler.GetImageHandler);
     }
 });
