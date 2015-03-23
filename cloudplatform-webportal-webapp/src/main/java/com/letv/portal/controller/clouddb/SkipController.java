@@ -132,6 +132,22 @@ public class SkipController {
 		mav.setViewName("/clouddb/monitor/dbLink");
 		return mav;
 	}
+	
+	@RequestMapping(value ="/monitor/InnoDB/buffer/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toMonitorInnoDB(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/monitor/InnoDB");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/monitor/QPS/TPS/{dbId}",method=RequestMethod.GET)
+	public ModelAndView toMonitorQPS(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/monitor/QPS_TPS");
+		return mav;
+	}
 	/**
 	 * Methods Name: dbCreate<br>
 	 * Description: 跳转数据库创建页面
