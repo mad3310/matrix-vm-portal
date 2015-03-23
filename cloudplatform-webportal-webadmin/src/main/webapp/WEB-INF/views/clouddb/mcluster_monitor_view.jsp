@@ -13,7 +13,6 @@
 								<select class="chosen-select" data-placeholder="请选择物理机集群..."
 									id="monitorHclusterOption">
 									<option></option>
-									<option>hclusterlist</option>
 								</select>
 							</div>
 							<div class="col-sm-2">

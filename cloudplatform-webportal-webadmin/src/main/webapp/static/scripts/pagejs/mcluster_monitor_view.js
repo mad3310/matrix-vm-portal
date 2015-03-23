@@ -20,12 +20,32 @@ function refreshChartForSelect(){
 	});
 }
 
-function queryMcluster(){
-	//getLoading();
+function queryHcluster(){
 	$.ajax({
 		cache:false,
 		type:"get",		
-		url:"/mcluster/valid",
+		url:"/hcluster",
+		dataType:"json",
+		success:function(data){
+			//removeLoading();
+			if(error(data)) return;
+			var hclusterInfo = data.data;
+			for(var i=0,len=hclusterInfo.length;i<len;i++){
+				var option = $("<option value=\""+hclusterInfo[i].id+"\">"+hclusterInfo[i].hclusterNameAlias+"</option>");
+				$("#monitorHclusterOption").append(option);
+			}
+			initChosen();
+			queryMonitorPoint();
+		}
+	});	
+}
+function queryMcluster(){
+	//getLoading();
+	var hclusterId = $('#monitorHclusterOption').val();
+	$.ajax({
+		cache:false,
+		type:"get",		
+		url:"/mcluster/valid/" + hclusterId,
 		dataType:"json",
 		success:function(data){
 			//removeLoading();
@@ -36,7 +56,6 @@ function queryMcluster(){
 				$("#mclusterOption").append(option);
 			}
 			initChosen();
-			queryMonitorPoint();
 		}
 	});	
 }
@@ -248,6 +267,8 @@ function updateChartSize(obj){
 
 $(function(){
 	$('#nav-search').addClass("hidden");
-	queryMcluster();
-	
+	queryHcluster();
+	$("#monitorHclusterOption").change(function() {
+		queryMcluster();
+	})
 });

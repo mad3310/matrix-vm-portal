@@ -100,6 +100,15 @@ public class MclusterController {
 		result.setData(this.mclusterService.selectValidMclusters());
 		return result;
 	}	
+	@RequestMapping(value="/valid/{hclusterId}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject validList(@PathVariable Long hclusterId,ResultObject result) {
+		if(hclusterId == null)
+			throw new ValidateException("参数不合法");
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("hclusterId", hclusterId);
+		result.setData(this.mclusterService.selectValidMclustersByMap(map));
+		return result;
+	}	
 
 	/**Methods Name: save <br>
 	 * Description:  保存并创建mcluster<br>
