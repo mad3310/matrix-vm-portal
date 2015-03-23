@@ -30,6 +30,14 @@ define(function(require,exports,module){
                 $("#slb-opened").addClass("hide");
                 $("#slb-not-opened").removeClass("hide");
             }
+            if(data.data.gce > 0){
+            	$("#gce-opened").removeClass("hide");
+            	$("#gce-not-opened").addClass("hide");
+            	$("#gceCount").html(data.data.gce);
+            }else{
+            	$("#gce-opened").addClass("hide");
+            	$("#gce-not-opened").removeClass("hide");
+            }
         }
     }
 });

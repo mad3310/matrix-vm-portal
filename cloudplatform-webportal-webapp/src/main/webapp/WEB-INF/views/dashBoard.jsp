@@ -140,7 +140,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="slb-opened" class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="slb-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/slb" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-slb"></span>
@@ -160,7 +160,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="slb-opened" class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="gce-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/gce" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-ace"></span>
@@ -172,7 +172,7 @@
 							</div>
 							<div class="item-record">
 								<span class="item-record-num">
-									<a class="item-record-num-count" href="${ctx}/list/gce"><span id="gceCount">1</span></a>
+									<a class="item-record-num-count" href="${ctx}/list/gce"><span id="gceCount"></span></a>
 								</span>
 								<span class="item-record-unit">个</span>
 								<a data-toggle="tooltip" data-placement="top" title="云引擎数">
@@ -383,12 +383,19 @@
 							<div class="product-category">
 								<p class="category-title ng-binding">应用服务</p>
 								<ul>
-									<li class="clearfix">
+									<li id="gce-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-gift text-muted"></span> 
 											<span>云引擎</span>
-											<span>ACE</span>
+											<span>GCE</span>
 										</div>
+										<!-- <div class="pull-right clearfix">
+											<div class="pull-left product-opt-wrap">
+												<a href="/detail/gceCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+													<span id="gce-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+										</div> -->
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
 										</div>
