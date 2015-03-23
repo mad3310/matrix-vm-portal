@@ -121,8 +121,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			throw new TaskExecuteException("afterExecute TaskChain or TaskResult is null");
 			
 		tc.setStatus(tr.isSuccess()?TaskExecuteStatus.SUCCESS:TaskExecuteStatus.FAILED);
-		if(tr.getTaskExecuteException() != null)
-			tc.setResult(tr.getTaskExecuteException().getMessage());
+		tc.setResult(tr.getResult());
 		tc.setEndTime(new Date());
 		this.taskChainService.updateBySelective(tc);
 		
@@ -180,10 +179,10 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 				retry++;
 			}
 			if(retry == ttd.getRetry() && !tr.isSuccess()) {
-				baseTask.rollBack(params);
+				baseTask.rollBack(tr);
 			}
 			if(tr.isSuccess()) {
-				baseTask.callBack(params);
+				baseTask.callBack(tr);
 			}
 			
 			tc = afterExecute(tc,tr);
@@ -192,15 +191,14 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			}
 		} catch (Exception e) {
 			tc.setResult(e.getMessage());
-			throw new TaskExecuteException(e.getMessage());
-		} finally {
+			e.printStackTrace();
 			tc.setStatus(TaskExecuteStatus.FAILED);
 			tc.setEndTime(new Date());
 			this.taskChainService.updateBySelective(tc);
 			tci.setStatus(TaskExecuteStatus.FAILED);
 			tci.setEndTime(new Date());
 			this.taskChainIndexService.updateBySelective(tci);
-		}
+		} 
 	}
 
 	private Map<String,Object> transToMap(String params){

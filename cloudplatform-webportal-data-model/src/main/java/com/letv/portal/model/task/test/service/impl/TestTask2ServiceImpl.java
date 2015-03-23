@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 
 @Service("testTask2Service")
-public class TestTask2ServiceImpl implements IBaseTaskService{
+public class TestTask2ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TestTask2ServiceImpl.class);
 
@@ -23,7 +24,7 @@ public class TestTask2ServiceImpl implements IBaseTaskService{
 		TaskResult tr = new TaskResult();
 		if(0 == (Integer)params.get("id")) {
 			tr.setSuccess(false);
-			tr.setTaskExecuteException(new TaskExecuteException("id is wrong"));
+			tr.setResult("id is wrong");
 		} else {
 			tr.setSuccess(true);
 		}
@@ -35,12 +36,12 @@ public class TestTask2ServiceImpl implements IBaseTaskService{
 	}
 
 	@Override
-	public void rollBack(Map<String, Object> params) {
+	public void rollBack(TaskResult tr) {
 		logger.debug("testTask2Service's rollBack begin----------------------------------------");
 	}
 
 	@Override
-	public void callBack(Map<String, Object> params) {
+	public void callBack(TaskResult tr) {
 		logger.debug("testTask2Service's success! callBack begin----------------------------------------");
 	}
 
