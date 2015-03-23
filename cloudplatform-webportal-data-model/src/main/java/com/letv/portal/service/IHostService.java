@@ -54,4 +54,7 @@ public interface IHostService extends IBaseService<HostModel> {
 	 */
 	public List<HostModel> isExistContainerOnHost(HostModel hostModel);
 	
+	
+	public HostModel getHostByHclusterId(Long hclusterId);
+	
 }

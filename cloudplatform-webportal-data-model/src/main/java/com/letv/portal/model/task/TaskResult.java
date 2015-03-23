@@ -7,11 +7,11 @@ public class TaskResult extends BaseModel {
 
 	private static final long serialVersionUID = 6232740793479016919L;
 
-	private boolean isSuccess;
+	private boolean isSuccess = true;
 	
 	private Object params; //json params
 	
-	private TaskExecuteException taskExecuteException; //if field.
+	private String result; //failed or success message.
 
 	public boolean isSuccess() {
 		return isSuccess;
@@ -29,12 +29,12 @@ public class TaskResult extends BaseModel {
 		this.params = params;
 	}
 
-	public TaskExecuteException getTaskExecuteException() {
-		return taskExecuteException;
+	public String getResult() {
+		return result;
 	}
 
-	public void setTaskExecuteException(TaskExecuteException taskExecuteException) {
-		this.taskExecuteException = taskExecuteException;
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 }

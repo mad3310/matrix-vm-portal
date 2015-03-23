@@ -7,10 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 
 @Service("testTask5Service")
-public class TestTask5ServiceImpl implements IBaseTaskService{
+public class TestTask5ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TestTask3ServiceImpl.class);
 	
@@ -23,18 +24,6 @@ public class TestTask5ServiceImpl implements IBaseTaskService{
 		tr.setSuccess(true);
 		tr.setParams(params);
 		return tr;
-	}
-
-	@Override
-	public void rollBack(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void callBack(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

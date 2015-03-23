@@ -9,9 +9,7 @@
       <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>com.letv.cloudplatform</groupId>
   <artifactId>webportal-common</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>webportal-common</name>
 
   <properties>

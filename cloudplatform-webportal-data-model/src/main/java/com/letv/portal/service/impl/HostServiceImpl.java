@@ -16,6 +16,7 @@ import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IContainerDao;
 import com.letv.portal.dao.IHostDao;
+import com.letv.portal.enumeration.HostType;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
@@ -90,5 +91,13 @@ public class HostServiceImpl extends BaseServiceImpl<HostModel> implements
 	@Override
 	public List<HostModel> isExistContainerOnHost(HostModel hostModel) {
 		return this.hostDao.isExistContainerOnHost(hostModel);
+	}
+	
+	@Override
+	public HostModel getHostByHclusterId(Long hclusterId){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("hclusterId", hclusterId);
+		map.put("type", HostType.MASTER.getValue());
+		return this.selectByMap(map).get(0);
 	}
 }
