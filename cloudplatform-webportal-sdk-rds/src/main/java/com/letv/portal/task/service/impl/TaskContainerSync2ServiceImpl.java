@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,9 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskContainerPostInfo2Service")
-public class TaskContainerPostInfo2ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
-
+@Service("taskContainerSync2Service")
+public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+	
 	@Autowired
 	private IPythonService pythonService;
 	@Autowired
@@ -31,7 +31,7 @@ public class TaskContainerPostInfo2ServiceImpl extends BaseTask4RDSServiceImpl i
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskContainerPostInfo2ServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskContainerSync2ServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -54,14 +54,12 @@ public class TaskContainerPostInfo2ServiceImpl extends BaseTask4RDSServiceImpl i
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String nodeName3 = containers.get(2).getContainerName();
-		
-		String result = this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password);
-		
+		String result = this.pythonService.syncContainer(nodeIp3, username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);
 		return tr;
 	}
-	
+
+
 }

@@ -6,6 +6,9 @@
         <dependent-module archiveName="webportal-data-model-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/webportal-data-model/webportal-data-model">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="webportal-sdk-rds-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/webportal-sdk-rds/webportal-sdk-rds">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     <property name="context-root" value="webportal-webapp"/>
     <property name="java-output-path" value="/classes"/>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>

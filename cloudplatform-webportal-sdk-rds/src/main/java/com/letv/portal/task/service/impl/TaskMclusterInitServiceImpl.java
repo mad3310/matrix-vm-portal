@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
@@ -20,8 +19,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterInitZookeeperService")
-public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskMclusterInitService")
+public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -31,29 +30,45 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitZookeeperServiceImpl.class);
+
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
-
+		
 		Long mclusterId = getLongFromObject(params.get("mclusterId"));
 		if(mclusterId == null)
 			throw new ValidateException("params's mclusterId is null");
 		//执行业务
+		MclusterModel mclusterModel = this.mclusterService.selectById(mclusterId);
+		if(mclusterModel == null)
+			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
+		
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		String nodeIp1 = containers.get(0).getIpAddr();
 		
-		String result = this.pythonService.initZookeeper(nodeIp1);
+		String nodeIp1 = containers.get(0).getIpAddr();
+		String username = mclusterModel.getAdminUser();
+		String password = mclusterModel.getAdminPassword();
+		
+		String result = this.pythonService.initMcluster(nodeIp1, username, password);
+		
 		tr = analyzeRestServiceResult(result);
 		
+		if(tr.isSuccess()) {
+			//保存sstPwd，启动启动gbalancer时使用。
+			String sstPwd = (String) ((Map)transToMap(result).get("response")).get("sst_user_password");
+			MclusterModel mcluster = new MclusterModel();
+			mcluster.setId(mclusterModel.getId());
+			mcluster.setSstPwd(sstPwd);
+			this.mclusterService.updateBySelective(mcluster);
+		}
 		tr.setParams(params);
 		return tr;
 	}
-	
+
 }

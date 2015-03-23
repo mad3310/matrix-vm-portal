@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
@@ -20,8 +19,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterPostInfoService")
-public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskMclusterStartService")
+public class TaskMclusterStartServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -32,7 +31,7 @@ public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl imp
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterPostInfoServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterStartServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -51,15 +50,11 @@ public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl imp
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		
 		String nodeIp1 = containers.get(0).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String nodeName1 = containers.get(0).getContainerName();
-		String mclusterName = mclusterModel.getMclusterName();
-		
-		String result = this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password);
+		String result = this.pythonService.startMcluster(nodeIp1, username, password);
 		
 		tr = analyzeRestServiceResult(result);
 		

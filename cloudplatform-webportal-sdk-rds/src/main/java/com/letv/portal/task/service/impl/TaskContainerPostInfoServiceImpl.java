@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterStartGlb8888Service")
-public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskContainerPostInfoService")
+public class TaskContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -31,7 +31,7 @@ public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterStartGlb8888ServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskContainerPostInfoServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,16 +50,15 @@ public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		String nodeIp1 = containers.get(0).getIpAddr();
 		String nodeIp2 = containers.get(1).getIpAddr();
-		String nodeIp3 = containers.get(2).getIpAddr();
-		String vipNodeIp = containers.get(3).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		StringBuffer ipListPort = new StringBuffer();
-		ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
-		String result = this.pythonService.startGbalancer(vipNodeIp, "monitor", mclusterModel.getSstPwd(),"http", ipListPort.toString(), "8888", "-daemon", username, password);
+		String nodeName2 = containers.get(1).getContainerName();
+		String mclusterName = mclusterModel.getMclusterName();
+		
+		String result = this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password);
+		
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

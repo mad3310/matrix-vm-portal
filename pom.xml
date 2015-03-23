@@ -19,6 +19,7 @@
         <module>cloudplatform-webportal-cache-client</module>
         <module>cloudplatform-webportal-exception</module>
         <module>cloudplatform-webportal-logger</module>
+        <module>cloudplatform-webportal-sdk-rds</module>
   </modules>
 
 

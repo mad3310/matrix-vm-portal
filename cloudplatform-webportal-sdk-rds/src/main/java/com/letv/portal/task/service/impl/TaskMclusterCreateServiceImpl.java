@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.Map;
 

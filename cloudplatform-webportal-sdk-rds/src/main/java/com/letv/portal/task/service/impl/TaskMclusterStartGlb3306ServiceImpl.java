@@ -1,4 +1,4 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,9 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskContainerSync2Service")
-public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
-	
+@Service("taskMclusterStartGlb3306Service")
+public class TaskMclusterStartGlb3306ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+
 	@Autowired
 	private IPythonService pythonService;
 	@Autowired
@@ -31,7 +31,7 @@ public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl imple
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskContainerSync2ServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterStartGlb3306ServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,16 +50,20 @@ public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl imple
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
+		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeIp2 = containers.get(1).getIpAddr();
 		String nodeIp3 = containers.get(2).getIpAddr();
+		String vipNodeIp = containers.get(3).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String result = this.pythonService.syncContainer(nodeIp3, username, password);
+		StringBuffer ipListPort = new StringBuffer();
+		ipListPort.append(nodeIp1).append(":3306,").append(nodeIp2).append(":3306,").append(nodeIp3).append(":3306");
+		String result = this.pythonService.startGbalancer(vipNodeIp, "monitor", mclusterModel.getSstPwd(),"mysql", ipListPort.toString(), "3306", "-daemon", username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);
 		return tr;
 	}
-
-
+	
 }

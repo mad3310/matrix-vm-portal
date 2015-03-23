@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-    	<artifactId>webportal</artifactId>
-    	<groupId>com.letv.cloudplatform</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>webportal-webapp</artifactId>
-    <name>webportal-webapp</name>
-    <packaging>war</packaging>
+  <parent>
+       <groupId>com.letv.cloudplatform</groupId>
+       <artifactId>webportal</artifactId>
+       <version>1.0-SNAPSHOT</version>
+  </parent>
+ 
+  <artifactId>webportal-sdk-rds</artifactId>
+  <name>webportal-sdk-rds</name>
+  <packaging>jar</packaging>
 
-    <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-   </properties>
-
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
     <dependencies>
 
@@ -108,10 +108,6 @@
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
         </dependency>
-        <dependency>  
-		    <groupId>org.codehaus.jackson</groupId>  
-		    <artifactId>jackson-core-asl</artifactId>  
-		</dependency>  
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -120,14 +116,20 @@
 		   <groupId>org.apache.httpcomponents</groupId>
 		   <artifactId>httpclient</artifactId>
 		</dependency>
-		
 
         <!-- logger -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
+ 		<dependency>
+            <groupId>log.logback</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log.logback</groupId>
+            <artifactId>classic</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -141,7 +143,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-
         <dependency>
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib-ext-spring</artifactId>
@@ -180,47 +181,11 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-        </dependency>
-        
-        <!-- SECURITY begin -->
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-spring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.shiro</groupId>
-			<artifactId>shiro-ehcache</artifactId>
-		</dependency>
-		<!-- SECURITY end -->
-		
-		<dependency>
-			<groupId>opensymphony</groupId>
-			<artifactId>sitemesh</artifactId>
-		</dependency>
-		
-		<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
+        </dependency>		
+        <!-- quartz 20141015 liuhao1 -->
         <dependency>
-            <groupId>log.logback</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log.logback</groupId>
-            <artifactId>classic</artifactId>
-        </dependency>
-        <dependency>
-		  <groupId>janino</groupId>
-		  <artifactId>janino</artifactId>
-		</dependency>
-		
-		<dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-common</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
         </dependency>
         <dependency>
         	<groupId>com.letv.cloudplatform</groupId>
@@ -229,43 +194,7 @@
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
-        <dependency>
-        	<groupId>com.letv.cloudplatform</groupId>
-        	<artifactId>webportal-sdk-rds</artifactId>
-        	<version>1.0-SNAPSHOT</version>
-        	<type>jar</type>
-        	<scope>compile</scope>
-        </dependency>
     </dependencies>
-    
-    <build>
-		<plugins>
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.9</version>
-				<configuration>
-					<contextPath>/</contextPath>
-					<scanIntervalSeconds>3</scanIntervalSeconds>
-					<connectors>
-		                <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-		                    <port>8081</port>
-		                </connector>
-		            </connectors>                 
-					<scanTargetPatterns>
-						<scanTargetPattern>
-							<directory>src/main/webapp/WEB-INF</directory>
-							<excludes>
-								<exclude>**/*.jsp</exclude>
-							</excludes>
-							<includes>
-								<include>**/*.properties</include>
-								<include>**/*.xml</include>
-							</includes>
-						</scanTargetPattern>
-					</scanTargetPatterns>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
+
 </project>

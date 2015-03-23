@@ -1,7 +1,6 @@
-package com.letv.portal.model.task.rds.service.impl;
+package com.letv.portal.task.service.impl;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +14,10 @@ import org.springframework.stereotype.Service;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
-import com.letv.common.util.JsonUtils;
 import com.letv.portal.dao.IMonitorDao;
-import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
-import com.letv.portal.model.ContainerModel;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
-import com.letv.portal.model.HostModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
@@ -41,7 +34,6 @@ import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.zabbixPush.IZabbixPushService;
-import com.mysql.jdbc.StringUtils;
 
 @Service("taskDbUserCreateService")
 public class TaskDbUserCreateServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
