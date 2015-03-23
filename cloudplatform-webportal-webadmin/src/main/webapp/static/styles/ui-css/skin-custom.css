@@ -40,12 +40,12 @@ edit by jinglinlin@letv.com
 }
 
 .skin-custom .nav-list > li:hover:before {
-  background-color: #009900;;
+  background-color: #4d96c6;;
 }
 .skin-custom .nav-list > li.active:before {
   display: block;
-/*background-color: #4d96c6;*/
-  background-color:#009900;;
+  background-color: #4d96c6;
+ /*  background-color:#009900;; */
 }
 .skin-custom .nav-list li.active > a:after {
   border-width: 16px 10px;
@@ -89,12 +89,11 @@ edit by jinglinlin@letv.com
   color: #d9dfe6;
 }
 .skin-custom .nav-list > li > .submenu > li:hover > a {
-/*   color: #8ab4de; */
-    color:#009900; !important;
+   color: #8ab4de; 
 }
 .skin-custom .nav-list > li > .submenu > li.active > a {
- /*  color: #7bb7e5 !important; */
-  color: #009900; !important;
+   color: #7bb7e5 !important;
+  /* color: #009900; !important; */
   background-color: #161b1d;
 }
 .skin-custom .nav-list > li > .submenu:before,
@@ -109,13 +108,13 @@ edit by jinglinlin@letv.com
   color: #d9dfe6;
 }
 .skin-custom .nav-list > li .submenu li > .submenu li:hover > a {
-/*   color: #8ab4de; */
-	color:#009900; !important;
+    color: #8ab4de; 
+	/* color:#009900; !important; */
 }
 .skin-custom .nav-list > li .submenu li.open > a,
 .skin-custom .nav-list > li .submenu li > .submenu > li.open > a {
-  /* color: #85c0ec; */
-  color:#009900;;
+  	color: #85c0ec; 
+
 }
 
 .skin-custom .nav-list > li .submenu li > .submenu li.active > a {
@@ -192,9 +191,9 @@ edit by jinglinlin@letv.com
 }
 .skin-custom .sidebar.menu-min .nav-list > li.active > a,
 .skin-custom .sidebar.menu-min .nav-list > li.active > a:hover {
-  background-color: #141a1b;
-/*   color: #7bb7e5;  */
-  color:#009900; !important;
+   background-color: #141a1b;
+   color: #7bb7e5; 
+ 
 }
 .skin-custom .sidebar.menu-min .nav-list > li:hover > a {
   color: #e1eaf1;
@@ -276,8 +275,7 @@ edit by jinglinlin@letv.com
   .skin-custom .sidebar.responsive-min .nav-list > li.active > a,
   .skin-custom .sidebar.responsive-min .nav-list > li.active > a:hover {
     background-color: #141a1b;
-/*     color: #7bb7e5; */
-    color:#009900; !important;
+    color: #7bb7e5; 
   }
   .skin-custom .sidebar.responsive-min .nav-list > li:hover > a {
     color: #e1eaf1;

@@ -11,38 +11,35 @@ function refreshChartForSelect(){
 				}
 				$(this).addClass('hide');
 			}
-		}else{
+		}/*else{
 			$(this).removeClass('hide');
 			monitorPointId=$(this).find('[name="data-chart"]').attr('id');
 			var chart = $("#"+monitorPointId).highcharts();
 			setChartData(monitorPointId,chart);
-		}
+		}*/
 	});
 }
 
-function queryMcluster(){
-	//getLoading();
+function queryMclusterOption(){
 	$.ajax({
 		cache:false,
 		type:"get",		
 		url:"/mcluster/valid",
 		dataType:"json",
 		success:function(data){
-			//removeLoading();
 			if(error(data)) return;
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
 				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
 				$("#mclusterOption").append(option);
-				//chosen 组件配置
-				chosenConf();
 			}
-			queryMonitorPoint();
+			//chosen 组件配置
+			initChosen();
 		}
 	});	
 }
 
-function queryMonitorPoint(){
+function queryMonitorPointOption(){
 	//getLoading();
 	$.ajax({
 		cache:false,
@@ -56,33 +53,49 @@ function queryMonitorPoint(){
 			for(var i=0,len=monitorPoint.length;i<len;i++){
 				var option = $("<option value=\""+monitorPoint[i].id+"\">"+monitorPoint[i].titleText+"</option>");
 				$("#monitorPointOption").append(option);
+			}
+			/*chosen组件初始化*/
+			initChosen();
+		}
+	});	
+}
+
+function queryMcluster(){
+	//getLoading();
+	queryMonitorPoint();
+	
+}
+
+
+function queryMonitorPoint(){
+	//getLoading();
+	$.ajax({
+		cache:false,
+		type:"get",		
+		url : "/monitor/index",
+		dataType:"json",
+		success:function(data){
+			//removeLoading();
+			if(error(data)) return;
+			var monitorPoint = data.data;
+			for(var i=0,len=monitorPoint.length;i<len;i++){
 				//init all charts
 				initCharts(monitorPoint[i]);
-				/*chosen组件配置*/
-				chosenConf();
 			}
-			
-			initMultiple();
-		/* 	$('.widget-box').each(function(){
-				$(this).resize(function(){
-					alert($(this).width());
-				});
-			  }); */
 		}
 	});	
 }
 
 function initCharts(data){
-	var viewDemo = $('#monitor-view-demo').clone().removeClass('hide').attr("id",data.id+"-monitor-view").appendTo($('#monitor-view'));
-	var div = $(viewDemo).find('[name="data-chart"]');
-	$(div).attr("id",data.id);
-	//init div to chart
-	initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
-	
-	var chart = $(div).highcharts();
-	setChartData(data.id,chart);
-	
-	draggable(viewDemo);
+		var viewDemo = $('#monitor-view-demo').clone().attr("id",data.id+"-monitor-view").appendTo($('#monitor-view'));
+		var div = $(viewDemo).find('[name="data-chart"]');
+		$(div).attr("id",data.id);
+		//init div to chart
+		initChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
+		
+		var chart = $(div).highcharts();
+		setChartData(data.id,chart);
+		draggable(viewDemo);
 }
 
 function initChart(obj,title,ytitle,unit){
@@ -161,26 +174,31 @@ function initChart(obj,title,ytitle,unit){
 function setChartData(indexId,chart){
 	var mclusterId= $('#mclusterOption').val();
 	var queryTime= $('#queryTime').val();
-	chart.showLoading();
-	$.ajax({
-		cache:false,
-		type : "get",
-		url : "/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
-		dataType : "json", 
-		contentType : "application/json; charset=utf-8",
-		success:function(data){
-			chart.hideLoading();
-	 		if(error(data)) return;
-	 		var ydata = data.data;
-	 		for(var i=chart.series.length-1;i>=0;i--){
-	 			chart.series[i].remove(false);
- 			}
-	 		for(var i=0;i<ydata.length;i++){
-	 			chart.addSeries(ydata[i],false);
- 			}
-	 		chart.redraw();
-		}
-	});
+	if(queryTime == ''){
+		var queryTime = 1;
+	}
+	if(mclusterId != ''){
+		chart.showLoading();
+		$.ajax({
+			cache:false,
+			type : "get",
+			url : "/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
+			dataType : "json", 
+			contentType : "application/json; charset=utf-8",
+			success:function(data){
+				chart.hideLoading();
+		 		if(error(data)) return;
+		 		var ydata = data.data;
+		 		for(var i=chart.series.length-1;i>=0;i--){
+		 			chart.series[i].remove(false);
+	 			}
+		 		for(var i=0;i<ydata.length;i++){
+		 			chart.addSeries(ydata[i],false);
+	 			}
+		 		chart.redraw();
+			}
+		});
+	}
 }
 
 function draggable(obj){
@@ -218,16 +236,6 @@ function changeDraggable(obj){
 	}
 }
 
-function initMultiple(){
-	$('.chosen-select').chosen({allow_single_deselect:true}); 
-	$(window).off('resize.chosen').on('resize.chosen', function() {
-		$('.chosen-select').each(function() {
-			 var $this = $(this);
-			 $this.next().css({'width': $this.parent().width()});
-		})
-	}).trigger('resize.chosen');
-}
-
 function updateChartSize(obj){
 	 setTimeout(function () { 
 		 $(obj).closest('.widget-box').find('[name="data-chart"]').highcharts().reflow();
@@ -236,5 +244,7 @@ function updateChartSize(obj){
 
 $(function(){
 	$('#nav-search').addClass("hidden");
-	queryMcluster();
+	queryMonitorPointOption();
+	queryMclusterOption();
+	queryMonitorPoint()
 });
