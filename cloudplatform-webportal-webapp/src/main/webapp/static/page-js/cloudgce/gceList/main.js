@@ -10,7 +10,7 @@ define(function(require){
     /*加载数据*/
 	/*加载数据*/
 	var dataHandler = require('./dataHandler');
-	var slbDataHandler = new dataHandler();
+	var gceDataHandler = new dataHandler();
     /*
      * 初始化数据
      */
@@ -34,7 +34,7 @@ define(function(require){
 	$(".btn-region-display").click(function(){
 		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
 		$(this).removeClass("btn-default").addClass("btn-success");
-		$("#dbName").val("");
+		$("#gceName").val("");
 		asyncData();
 	})
 	
@@ -75,11 +75,10 @@ define(function(require){
 
 	//加载列表数据
 	function asyncData(page) {
-		var slbName = $("#slbName").val();
+		var gceName = $("#gceName").val();
 		if(!page) page = cn.currentPage;
-		//var url = "/static/page-js/cloudslb/gceList/data.json";
-		url = "/slb?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&slbName=" + slbName;
-		cn.GetData(url,slbDataHandler.SlbListHandler);
+		url = "/gce?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&slbName=" + gceName;
+		cn.GetData(url,gceDataHandler.GceListHandler);
 
 	}
 });

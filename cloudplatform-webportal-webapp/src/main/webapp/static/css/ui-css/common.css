@@ -366,6 +366,12 @@ margin-right: 8px;
 .product-icons-48.product-icons-rds {
 background-position: 0 -100px;
 }
+.product-icons-48.product-icons-slb {
+background-position: 0 -50px;
+}
+.product-icons-48.product-icons-ace {
+background-position: 0 -400px;
+}
 .home .product-list ul li.product-item .item-profile .item-title {
 line-height: 1em;
 }
@@ -1505,6 +1511,7 @@ textarea {
 	width:100%;
 	position:relative;
 	white-space:nowrap;
+	z-index:998;
 }
 .bk-select-option a{
 	text-decoration:none;

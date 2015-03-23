@@ -16,7 +16,7 @@ define(function(require){
 
     getConfig();
     function getConfig(){
-        var url="/slbConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        var url="/gceConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbServerHandler.ConfigHandler);
     }
 

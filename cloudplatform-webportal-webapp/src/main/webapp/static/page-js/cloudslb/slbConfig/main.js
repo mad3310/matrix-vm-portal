@@ -16,7 +16,7 @@ define(function(require){
 
     asyncData();
     function asyncData() {
-        url = "/slbConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        url = "/gceConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbConfigHandler.SlbConfigHandler);
     }
 
@@ -48,7 +48,7 @@ define(function(require){
             slbId: $("#slbId").val(),
             agentType :  $("[name = agentType]").val()
         }
-        var url = "/slbConfig";
+        var url = "/gceConfig";
         cn.PostData(url, createConfigData, function () {
             /*刷新本身ifame*/
             cn.RefreshIfame();
