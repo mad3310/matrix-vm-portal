@@ -17,8 +17,8 @@ define(function(require,exports,module){
     	 */
         resCountHandler : function(data){
             if(cn.Displayable(data.data.status)){
-                $("#slbName").html(data.data.slbName);
-                $("#slbStatus").html("("+cn.TranslateStatus(data.data.status)+")");
+                $("#gceName").html(data.data.gceName);
+                $("#gceStatus").html("("+cn.TranslateStatus(data.data.status)+")");
             }else{
                // location.href = '/list/gce';
             }
