@@ -42,6 +42,8 @@ function queryHcluster(){
 function queryMcluster(){
 	//getLoading();
 	var hclusterId = $('#monitorHclusterOption').val();
+	$("#mclusterOption").empty();
+	$("#mclusterOption").append("<option></option>");
 	$.ajax({
 		cache:false,
 		type:"get",		
