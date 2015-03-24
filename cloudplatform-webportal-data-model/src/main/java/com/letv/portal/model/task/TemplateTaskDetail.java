@@ -9,16 +9,16 @@ public class TemplateTaskDetail extends BaseModel {
 	private String name;
 	private String descn;
 	private String beanName;
-	private String parameters;
-	public String getParameters() {
-		return parameters;
-	}
-	public void setParameters(String parameters) {
-		this.parameters = parameters;
-	}
+	private String params;
 	private int retry;
 	private int version;
 	
+	public String getParameters() {
+		return params;
+	}
+	public void setParameters(String params) {
+		this.params = params;
+	}
 	public String getName() {
 		return name;
 	}

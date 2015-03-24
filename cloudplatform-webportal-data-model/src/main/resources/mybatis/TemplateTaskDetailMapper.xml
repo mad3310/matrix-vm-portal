@@ -9,7 +9,7 @@
 		<result column="NAME" property="name" />
 		<result column="DESCN" property="descn" />
 		<result column="BEANNAME" property="beanName" />
-		<result column="PARAMETERS" property="parameters" />
+		<result column="PARAMS" property="params" />
 		<result column="RETRY" property="retry" />
 		<result column="VERSION" property="version" />
 			
@@ -21,7 +21,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		ttd.ID,ttd.NAME,ttd.DESCN,ttd.BEANNAME,ttd.PARAMETERS,ttd.RETRY,ttd.VERSION,ttd.DELETED,ttd.CREATE_TIME,ttd.CREATE_USER,ttd.UPDATE_TIME,ttd.UPDATE_USER
+		ttd.ID,ttd.NAME,ttd.DESCN,ttd.BEANNAME,ttd.PARAMS,ttd.RETRY,ttd.VERSION,ttd.DELETED,ttd.CREATE_TIME,ttd.CREATE_USER,ttd.UPDATE_TIME,ttd.UPDATE_USER
 	</sql>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -46,8 +46,8 @@
 			<if test="beanName != null and beanName != '' ">
 				and ttd.BEANNAME=#{beanName}
 			</if>
-			<if test="parameters != null and parameters != '' ">
-				and ttd.PARAMETERS=#{parameters}
+			<if test="params != null and params != '' ">
+				and ttd.PARAMS=#{params}
 			</if>
 			<if test="retry != null ">
 				and ttd.RETRY=#{retry}
@@ -96,8 +96,8 @@
 			<if test="params != null and params.beanName != null and params.beanName != '' ">
 				and ttd.BEANNAME=#{params.beanName}
 			</if>
-			<if test="params != null and params.parameters != null and params.parameters != '' ">
-				and ttd.PARAMETERS=#{params.parameters}
+			<if test="params != null and params.params != null and params.params != '' ">
+				and ttd.PARAMS=#{params.params}
 			</if>
 			<if test="params != null and params.retry != null ">
 				and ttd.RETRY=#{params.retry}

@@ -547,7 +547,7 @@
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
-                <webportal.errormail.to>liuhao1@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
                 <webportal.log.path>D:</webportal.log.path>
