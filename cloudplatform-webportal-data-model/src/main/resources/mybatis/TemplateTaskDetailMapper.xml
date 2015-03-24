@@ -9,7 +9,7 @@
 		<result column="NAME" property="name" />
 		<result column="DESCN" property="descn" />
 		<result column="BEANNAME" property="beanName" />
-		<result column="PARAMS" property="params" />
+		<result column="PARAMETERS" property="parameters" />
 		<result column="RETRY" property="retry" />
 		<result column="VERSION" property="version" />
 			
@@ -21,13 +21,119 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		ttd.ID,ttd.NAME,ttd.DESCN,ttd.BEANNAME,ttd.PARAMS,ttd.RETRY,ttd.VERSION,ttd.DELETED,ttd.CREATE_TIME,ttd.CREATE_USER,ttd.UPDATE_TIME,ttd.UPDATE_USER
+		ttd.ID,ttd.NAME,ttd.DESCN,ttd.BEANNAME,ttd.PARAMETERS,ttd.RETRY,ttd.VERSION,ttd.DELETED,ttd.CREATE_TIME,ttd.CREATE_USER,ttd.UPDATE_TIME,ttd.UPDATE_USER
 	</sql>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd where ttd.id = #{id}
+	</select>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and ttd.ID=#{id}
+			</if>
+			<if test="name != null and name != '' ">
+				and ttd.NAME like CONCAT('%','${name}','%') escape '^'
+			</if>
+			<if test="descn != null and descn != '' ">
+				and ttd.DESCN=#{descn}
+			</if>
+			<if test="beanName != null and beanName != '' ">
+				and ttd.BEANNAME=#{beanName}
+			</if>
+			<if test="parameters != null and parameters != '' ">
+				and ttd.PARAMETERS=#{parameters}
+			</if>
+			<if test="retry != null ">
+				and ttd.RETRY=#{retry}
+			</if>
+			<if test="version != null ">
+				and ttd.VERSION=#{version}
+			</if>
+			
+			<if test="deleted != null  ">
+				and ttd.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and ttd.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and ttd.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and ttd.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and ttd.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and ttd.ID=#{params.id}
+			</if>
+			<if test="params != null and params.name != null and params.name != '' ">
+				and ttd.NAME like CONCAT('%','${params.name}','%') escape '^'
+			</if>
+			<if test="params != null and params.descn != null and params.descn != '' ">
+				and ttd.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.beanName != null and params.beanName != '' ">
+				and ttd.BEANNAME=#{params.beanName}
+			</if>
+			<if test="params != null and params.parameters != null and params.parameters != '' ">
+				and ttd.PARAMETERS=#{params.parameters}
+			</if>
+			<if test="params != null and params.retry != null ">
+				and ttd.RETRY=#{params.retry}
+			</if>
+			<if test="params != null and params.version != null ">
+				and ttd.VERSION=#{params.version}
+			</if>
+			
+			<if test="params != null and params.deleted != null  ">
+				and ttd.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and ttd.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and ttd.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and ttd.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and ttd.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY ttd.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
 	</select>
 
 </mapper>

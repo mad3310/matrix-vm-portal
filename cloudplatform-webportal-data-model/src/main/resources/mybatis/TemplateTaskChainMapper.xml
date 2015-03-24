@@ -21,8 +21,10 @@
 	<sql id="Base_Column_List">
 		ttc.ID,ttc.TASK_ID,ttc.TASK_DETAIL_ID,ttc.EXECUTE_ORDER,ttc.DELETED,ttc.CREATE_TIME,ttc.CREATE_USER,ttc.UPDATE_TIME,ttc.UPDATE_USER
 	</sql>
-	
-	<!-- -->
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="TemplateTaskChain" useGeneratedKeys="true" keyProperty="id" >
+	</insert>
+	<!--update-->
 	<update id="updateBySelective" parameterType="TemplateTaskChain">
 		update WEBPORTAL_TEMPLATE_TASK_CHAIN
 		<set>

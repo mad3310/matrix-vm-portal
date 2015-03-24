@@ -9,7 +9,13 @@ public class TemplateTaskDetail extends BaseModel {
 	private String name;
 	private String descn;
 	private String beanName;
-	private String params;
+	private String parameters;
+	public String getParameters() {
+		return parameters;
+	}
+	public void setParameters(String parameters) {
+		this.parameters = parameters;
+	}
 	private int retry;
 	private int version;
 	
@@ -30,12 +36,6 @@ public class TemplateTaskDetail extends BaseModel {
 	}
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
-	}
-	public String getParams() {
-		return params;
-	}
-	public void setParams(String params) {
-		this.params = params;
 	}
 	public int getRetry() {
 		return retry;
