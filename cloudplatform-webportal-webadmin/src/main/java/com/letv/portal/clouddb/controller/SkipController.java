@@ -31,6 +31,22 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_list");
 		return mav;
 	}
+	@RequestMapping(value ="/list/job/stream",method=RequestMethod.GET)
+	public ModelAndView toJobStreamList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/job_stream_list");
+		return mav;
+	}
+	@RequestMapping(value ="/list/job/unit",method=RequestMethod.GET)
+	public ModelAndView toJobUnitList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/job_unit_list");
+		return mav;
+	}
+	@RequestMapping(value ="/detail/job/stream/{jobStreamId}",method=RequestMethod.GET)
+	public ModelAndView toJobStreamDetail(ModelAndView mav,@PathVariable Long jobStreamId){
+		mav.addObject("jobStreamId",jobStreamId);
+		mav.setViewName("/clouddb/job_stream_list_detail");
+		return mav;
+	}
 
 	@RequestMapping(value="/detail/mcluster/{mclusterId}", method=RequestMethod.GET)   
 	public ModelAndView toMclusterDetail(@PathVariable Long mclusterId,ModelAndView mav) {
