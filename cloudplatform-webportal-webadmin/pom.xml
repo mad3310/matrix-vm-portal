@@ -214,6 +214,10 @@
 		  <groupId>janino</groupId>
 		  <artifactId>janino</artifactId>
 		</dependency>
+		<dependency>
+		  <groupId>org.google</groupId>
+		  <artifactId>kaptcha</artifactId>
+		</dependency>
 		
 		<dependency>
         	<groupId>com.letv.cloudplatform</groupId>
@@ -225,6 +229,13 @@
         <dependency>
         	<groupId>com.letv.cloudplatform</groupId>
         	<artifactId>webportal-data-model</artifactId>
+        	<version>1.0-SNAPSHOT</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+         <dependency>
+        	<groupId>com.letv.cloudplatform</groupId>
+        	<artifactId>webportal-cache-client</artifactId>
         	<version>1.0-SNAPSHOT</version>
         	<type>jar</type>
         	<scope>compile</scope>

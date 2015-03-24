@@ -70,6 +70,7 @@
 	          <value>/cronJobs</value>
 	          <value>/oauth/callback</value>
 	          <value>/403</value>
+	          <value>/kaptcha</value>
 	        </list>
 	      </property>
 	    </bean>

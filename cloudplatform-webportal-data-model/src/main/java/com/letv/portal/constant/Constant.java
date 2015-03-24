@@ -2,6 +2,7 @@ package com.letv.portal.constant;
 
 public class Constant {
 
+	public static final String KAPTCHA_COOKIE_NAME = "captcha_cache_id_";
 	public static int RESULT_SUCCESS = 1;
 	public static int RESULT_ERROR = 0;
 
@@ -9,8 +10,8 @@ public class Constant {
 	public static int PAGE_SIZE = 10;
 	
 	//container node节点类型
-	public static String MCLUSTER_NODE_TYPE_VIP = "VIP";
-	public static String MCLUSTER_NODE_TYPE_NORMAL = "normal";
+	public static String MCLUSTER_NODE_TYPE_VIP_SUFFIX = "_vip";
+	public static String MCLUSTER_NODE_TYPE_DATA_SUFFIX = "_data";
 	
 	//db审批状态
 	public static String DB_AUDIT_STATUS_FALSE = "-1"; 
