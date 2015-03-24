@@ -1,5 +1,6 @@
 package com.letv.portal.task.service.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -17,8 +19,8 @@ import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterCreateService")
-public class TaskMclusterCreateServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskMclusterCreateDataService")
+public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 	
 	@Autowired
 	private IPythonService pythonService;
@@ -27,7 +29,7 @@ public class TaskMclusterCreateServiceImpl extends BaseTask4RDSServiceImpl imple
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateDataServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
@@ -45,8 +47,11 @@ public class TaskMclusterCreateServiceImpl extends BaseTask4RDSServiceImpl imple
 		HostModel host = this.hostService.getHostByHclusterId(mclusterModel.getHclusterId());
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
-		
-		String result = this.pythonService.createContainer(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX);
+		map.put("componentType", "mclusternode");
+		map.put("networkMode", "ip");
+		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

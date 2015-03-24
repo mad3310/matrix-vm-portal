@@ -32,6 +32,13 @@ public class PythonServiceImpl implements IPythonService{
 		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
+	@Override
+	public String createContainer(Map<String,String> params,String ip,String username,String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
+		String result = HttpClient.post(url.toString(), params,username,password);
+		return result;
+	}
 
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {

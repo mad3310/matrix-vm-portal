@@ -25,8 +25,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterCheckStatusService")
-public class TaskMclusterCheckStatusServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskMclusterCheckDataStatusService")
+public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Value("${python_create_check_time}")
 	private long PYTHON_CREATE_CHECK_TIME;
@@ -44,7 +44,7 @@ public class TaskMclusterCheckStatusServiceImpl extends BaseTask4RDSServiceImpl 
 	@Autowired
 	private IHostService hostService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCheckStatusServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCheckDataStatusServiceImpl.class);
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -63,8 +63,8 @@ public class TaskMclusterCheckStatusServiceImpl extends BaseTask4RDSServiceImpl 
 		HostModel host = this.hostService.getHostByHclusterId(mclusterModel.getHclusterId());
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
-		
-		String result = pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+		String mclusterDataName = mclusterModel.getMclusterName() +  Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX;
+		String result = pythonService.checkContainerCreateStatus(mclusterDataName,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		Long start = new Date().getTime();
@@ -74,7 +74,7 @@ public class TaskMclusterCheckStatusServiceImpl extends BaseTask4RDSServiceImpl 
 				tr.setResult("check time over");
 				break;
 			}
-			result = pythonService.checkContainerCreateStatus(mclusterModel.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
+			result = pythonService.checkContainerCreateStatus(mclusterDataName,host.getHostIp(),host.getName(),host.getPassword());
 			tr = analyzeRestServiceResult(result);
 		}
 		if(tr.isSuccess()) {
