@@ -238,7 +238,6 @@ function confirmframe(title,content,question,ok,cancle){
 					"class" : "btn btn-primary btn-xs",
 					click : function() {
 						ok();
-						$(this).dialog("close");
 					}
 				},
 				{
