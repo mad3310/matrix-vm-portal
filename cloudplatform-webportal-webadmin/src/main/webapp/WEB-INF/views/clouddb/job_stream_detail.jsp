@@ -32,7 +32,7 @@
 												<span class="lbl"></span>
 											</label>
 										</th>
-										<th>任务单元名称</th>
+										<th width=25%>任务单元名称</th>
 										<th>业务类型</th>
 										<th>失败重试次数</th>
 										<th>功能描述</th>
@@ -118,3 +118,6 @@
 		</div>
 	</div>
 </div>
+<link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script src="${ctx}/static/scripts/pagejs/job_stream_detail.js"></script>

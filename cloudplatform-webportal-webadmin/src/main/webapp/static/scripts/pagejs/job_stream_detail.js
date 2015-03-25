@@ -1,128 +1,148 @@
+var currentPage = 1; //第几页 
+var recordsPerPage = 15; //每页显示条数
+	
 $(function(){
-	//隐藏搜索框
-	$('#nav-search').addClass("hidden");
-	queryContainer();
-})
-function queryContainer(){
+	//初始化 
+	page_init();
+	
+	$(document).on('click', 'th input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+});	
+function queryByPage() {
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+		}
+	
 	$("#tby tr").remove();
 	getLoading();
-	$.ajax({ 
+	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/container/"+$("#mclusterId").val(),
-		dataType : "json", 
+		url : "/task/detail/"+$("#jobStreamId").val(),
+		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
- 			$("#headerContainerName").append(array[0].mcluster.mclusterName);
+			
 			for (var i = 0, len = array.length; i < len; i++) {
-				var td0 = $("<input name=\"container_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");
-				var td1 = $("<td>"
-					    + array[i].containerName
-				        + "</td>");
-				var	td2 = $("<td>"
-						+ array[i].type
-						+ "</td>");
-				var	td3 = $("<td>"
-						+ array[i].hostIp
-						+ "</td>");
-				var	td4 = $("<td>"
-						+ array[i].ipAddr
-						+ "</td>");
-				if(array[i].mountDir != null){
-					jsonStr = array[i].mountDir.substring(1,array[i].mountDir.length-1);
-					jsonArr = jsonStr.split(",");
-					var mountDir = "";
-					for (var j = 0; j < jsonArr.length; j++){						
-						mountDir += jsonArr[j]+"<br/>";					
+				var td1 = $("<td class=\"center\">"
+							+"<label class=\"position-relative\">"
+							+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+							+"<span class=\"lbl\"></span>"
+							+"</label>"
+							+"</td>");
+				var td2 = $("<td>-</td>");
+				var td3 = $("<td>-</td>");
+				var td5 = $("<td>-</td>");
+					if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
+						td2 = $("<td>"
+								+array[i].templateTaskDetail.name
+								+ "</td>");
+						var td3 = $("<td>"
+								+ array[i].templateTaskDetail.taskType
+								+ "</td>");
+						var td5 = $("<td>"
+								+ array[i].templateTaskDetail.descn
+								+ "</td>");
 					}
-					var	td5 = $("<td>"
-							+ mountDir
-							+ "</td>");
-				}else{
-					var	td5 = $("<td>"
-							+ '-'
-							+ "</td>");
-				}
-				if(array[i].zookeeperId != null){
-					var	td6 = $("<td>"
-							+ array[i].zookeeperId
-							+ "</td>");
-				}else{
-					var	td6 = $("<td>"
-							+ '-'
-							+ "</td>");
-				}
-				var	td7 = $("<td>"
-						+ translateStatus(array[i].status)
+				var td4 = $("<td>"
+						+ array[i].retry
 						+ "</td>");
-				var td8 = $("<td>"
-						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startContainer(this)\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-						+"</a>"
-						+"<a class=\"blue\" href=\"#\" onclick=\"stopContainer(this)\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-						+"</a>"
-						+"</div>"
-						+ "</td>"
+				var td6 = $("<td>"
+						+ array[i].executeOrder
+						+ "</td>");
+				var td7 = $("<td>"
+						+ "<a><span>修改</span><a>"
+						+"</td>"
 				);
-				var tr = $("<tr></tr>");;				
-				tr.append(td0).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				
+				var tr = $("<tr></tr>");
+				
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
 				tr.appendTo(tby);
-			}
+			}//循环json中的数据 
 			
 			/*初始化tooltip*/
 			$('[data-toggle = "tooltip"]').tooltip();
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			error(XMLHttpRequest);
+			return false;
 		}
 	});
+	}
+   
+
+
+	function searchAction(){
+		$('#nav-search-input').bind('keypress',function(event){
+	        if(event.keyCode == "13")    
+	        {
+	        	queryByPage();
+	        }
+	    });
+	}
+	
+//创建Container集群表单验证
+function formValidate() {
+	$("#create-task-stream-form").bootstrapValidator({
+	  message: '无效的输入',
+         feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+         },
+         fields: {
+        	 taskStreamName: {
+                 validMessage: '请按提示输入',
+                 validators: {
+                     notEmpty: {
+                         message: '任务流名称不能为空!'
+                     },
+			          stringLength: {
+			              max: 40,
+			              message: '任务流名过长'
+			          }
+	             }
+         	},descn:{
+         		validMessage: '请按提示输入',
+         		validators: {
+			          stringLength: {
+			              max: 100,
+			              message: '描述最长字符为100'
+			          }
+	             }
+         	}	
+         }
+     }).on('success.form.bv', function(e) {
+    	 e.preventDefault();
+    	$.ajax({
+    		cache:false,
+    		type : "post",
+    		url : "/task",
+    		data: {
+    			name:$('#taskStreamName').val(),
+    			taskType:$('#taskType').val(),
+    			descn:$('#descn').val()
+    		},
+    		success : function(data) {
+    			location.href = "/list/job/stream";
+    		}
+    	})
+     });
 }
 
-function startContainer(obj){
-	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("已停止") < 0){
-		warn("当前状态无法执行启动操作!",3000);
-		return 0;
-	}
-	function startCmd(){
-		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
-		getLoading();
-		$.ajax({
-			cache:false,
-			url:'/container/start',
-			type:'post',
-			data:{containerId : containerId},
-			success:function(data){
-				removeLoading();
-				if(error(data)) return;
-				queryContainer();
-			}
-		});
-	}
-	confirmframe("启动container","启动container大概需要几分钟时间!","请耐心等待...",startCmd);
-}
-function stopContainer(obj){
-	var tr = $(obj).parents("tr").html();
-	if (tr.indexOf("运行中") < 0 && tr.indexOf("异常") < 0){
-		warn("当前状态无法执行关闭操作!",3000);
-		return 0;
-	}
-	function stopCmd(){
-		var containerId =$(obj).parents("tr").find('[name="container_id"]').val();
-		getLoading();
-		$.ajax({
-			cache:false,
-			url:'/container/stop',
-			type:'post',
-			data:{containerId : containerId},
-			success:function(data){
-				removeLoading();
-				if(error(data)) return;
-				queryContainer();
-			}
-		});
-	}
-	confirmframe("关闭container","关闭container将不能提供服务,再次启动需要十几分钟!","您确定要关闭?",stopCmd);
+function page_init(){
+	$('[name = "popoverHelp"]').popover();
+	queryByPage();
+//	formValidate();
 }

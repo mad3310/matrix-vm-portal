@@ -17,6 +17,11 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
+		<association property="templateTaskDetail" javaType="TemplateTaskDetail">
+			<result column="NAME" property="name" />
+			<result column="TASK_TYPE" property="taskType" />
+			<result column="DESCN" property="descn" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -69,9 +74,11 @@
 	</update>
 	
 	<select id="selectByTemplateTaskId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_TEMPLATE_TASK_CHAIN ttc where ttc.TASK_ID = #{taskId}
+		select 
+		<include refid="Base_Column_List" />,ttd.NAME,ttd.TASK_TYPE,ttd.DESCN
+		from WEBPORTAL_TEMPLATE_TASK_CHAIN ttc
+		left join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.ID = ttc.TASK_DETAIL_ID
+		where ttc.TASK_ID = #{taskId}
+		ORDER BY ttc.EXECUTE_ORDER
 	</select>
-
 </mapper>   
