@@ -44,7 +44,7 @@ public class SkipController {
 	@RequestMapping(value ="/detail/job/stream/{jobStreamId}",method=RequestMethod.GET)
 	public ModelAndView toJobStreamDetail(ModelAndView mav,@PathVariable Long jobStreamId){
 		mav.addObject("jobStreamId",jobStreamId);
-		mav.setViewName("/clouddb/job_stream_list_detail");
+		mav.setViewName("/clouddb/job_stream_detail");
 		return mav;
 	}
 

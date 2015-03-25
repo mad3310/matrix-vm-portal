@@ -117,6 +117,30 @@
 				<span class="menu-text">备份与恢复</span> 
 			</a>
 		</li>
+		<li id="sidebar-task-mgr" >
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-tasks"></i> 
+				<span class="menu-text">任务管理</span> 
+				<b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-task-unit-view" >
+					<a href="${ctx}/list/job/unit"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						任务单元列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-task-stream-view" >
+					<a href="${ctx}/list/job/stream"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						任务流列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+			</ul>
+		</li>
 	</ul>
 
 	<!-- #section:basics/sidebar.layout.minimize -->

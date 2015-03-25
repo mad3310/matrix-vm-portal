@@ -25,29 +25,12 @@
 								</th>
 								<th>任务流名称</th>
 								<th>业务类型</th>
-								<th>所属用户</th>
 								<th>创建时间</th>
 								<th>描述</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
-							<tr><td class="center"><label class="position-relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-								<td>快速创建RDS</td>
-								<td>RDS</td>
-								<td>yaokuo</td>
-								<td>昨天</td>
-								<td>最新型创建方式</td>
-								<td>管理|详情</td>
-							</tr>
-							<tr><td class="center"><label class="position-relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-								<td>创建SLB</td>
-								<td>SLB</td>
-								<td>liuhao1</td>
-								<td>刚刚</td>
-								<td>经典</td>
-								<td>管理|详情</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -79,12 +62,12 @@
            				</button>
            				<h4 class="modal-title">创建任务流 </h4>
             		</div>
-					<form id="create-hcluster-form" name="create-hcluster-form" class="form-horizontal" role="form">
+					<form id="create-task-stream-form" name="create-task-stream-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">任务流名称</label>
+								<label class="col-sm-4 control-label" for="taskStreamName">任务流名称</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+									<input class="form-control" name="taskStreamName" id="taskStreamName" type="text" />
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务流名称应能概括此任务的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
@@ -93,19 +76,20 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">业务类型</label>
+								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
 								<div class="col-sm-6">
-									<select class="form-control" name="jobType" id="jobType">
-										<option value="">RDS</option>
-										<option value="">SLB</option>
-										<option value="">GCE</option>
+									<select class="form-control" name="taskType" id="taskType">
+										<option value="RDS">RDS</option>
+										<option value="SLB">SLB</option>
+										<option value="GCE">GCE</option>
+										<option value="消息中间件">消息中间件</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="descn">描述</label>
 								<div class="col-sm-6">
-									<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="4"></textarea>
+									<textarea name="descn" id="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="输入字母、数字或_,最多100字符!" style="cursor:pointer; text-decoration:none;">
@@ -116,7 +100,7 @@
             			</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-hcluster-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="">创建</button>
+						<button type="submit" class="btn btn-sm btn-primary" onclick="">创建</button>
 					</div>
 				</form>
 				</div>
@@ -124,3 +108,6 @@
 		</div>
 	</div>
 </div>
+<link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
+<script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
+<script src="${ctx}/static/scripts/pagejs/job_stream_list.js"></script>

@@ -2,43 +2,33 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.letv.portal.dao.task.ITemplateTaskDetailDao">
+<mapper namespace="com.letv.portal.dao.task.ITemplateTaskDao">
 	<!-- Result Map -->
-	<resultMap id="BaseResultMap" type="TemplateTaskDetail">
+	<resultMap id="BaseResultMap" type="TemplateTask">
 		<result column="ID" property="id" />
 		<result column="NAME" property="name" />
 		<result column="DESCN" property="descn" />
-		<result column="BEANNAME" property="beanName" />
 		<result column="TASK_TYPE" property="taskType" />
-		<result column="PARAMS" property="params" />
-		<result column="RETRY" property="retry" />
-		<result column="VERSION" property="version" />
 			
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		ttd.ID,ttd.NAME,ttd.DESCN,ttd.BEANNAME,ttd.TASK_TYPE,ttd.PARAMS,ttd.RETRY,ttd.VERSION,ttd.DELETED,ttd.CREATE_TIME,ttd.CREATE_USER,ttd.UPDATE_TIME,ttd.UPDATE_USER
+		tt.ID,tt.NAME,tt.DESCN,tt.TASK_TYPE,tt.DELETED,tt.DELETED,tt.CREATE_TIME,tt.CREATE_USER,tt.UPDATE_TIME,tt.UPDATE_USER
 	</sql>
-	
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd where ttd.id = #{id}
-	</select>
-	
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="TemplateTaskDetail" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="insert" parameterType="TemplateTask" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_TEMPLATE_TASK_DETAIL(
-			ID,NAME,DESCN,BEANNAME,TASK_TYPE,PARAMS,RETRY,VERSION,
+		WEBPORTAL_TEMPLATE_TASK(
+			ID,NAME,DESCN,TASK_TYPE,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{id},#{name},#{descn},#{beanName},#{taskType},#{params},#{retry},#{version},
+			#{id},#{name},#{descn},#{taskType},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 	
@@ -47,52 +37,72 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and ttd.ID=#{id}
+				and tt.ID=#{id}
 			</if>
 			<if test="name != null and name != '' ">
-				and ttd.NAME like CONCAT('%','${name}','%') escape '^'
+				and tt.NAME like CONCAT('%','${name}','%') escape '^'
 			</if>
 			<if test="descn != null and descn != '' ">
-				and ttd.DESCN=#{descn}
-			</if>
-			<if test="beanName != null and beanName != '' ">
-				and ttd.BEANNAME=#{beanName}
+				and tt.DESCN=#{descn}
 			</if>
 			<if test="taskType != null and taskType != '' ">
-				and ttd.TASK_TYPE=#{taskType}
+				and tt.TASK_TYPE=#{taskType}
 			</if>
-			<if test="params != null and params != '' ">
-				and ttd.PARAMS=#{params}
-			</if>
-			<if test="retry != null ">
-				and ttd.RETRY=#{retry}
-			</if>
-			<if test="version != null ">
-				and ttd.VERSION=#{version}
-			</if>
-			
 			<if test="deleted != null  ">
-				and ttd.DELETED=#{deleted}
+				and tt.DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
-				and ttd.CREATE_TIME=#{createTime}
+				and tt.CREATE_TIME=#{createTime}
 			</if>
 			<if test="createUser != null  ">
-				and ttd.CREATE_USER=#{createUser}
+				and tt.CREATE_USER=#{createUser}
 			</if>
 			<if test="updateTime != null  ">
-				and ttd.UPDATE_TIME=#{updateTime}
+				and tt.UPDATE_TIME=#{updateTime}
 			</if>
 			<if test="updateUser != null  ">
-				and ttd.UPDATE_USER=#{updateUser}
+				and tt.UPDATE_USER=#{updateUser}
 			</if>
 		</trim>
 	</sql>
 	
+	<!--update-->
+	<update id="updateBySelective" parameterType="TemplateTask">
+		update WEBPORTAL_TEMPLATE_TASK
+		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
+			<if test="name != null and name != '' ">
+				NAME=#{name},
+			</if>
+			<if test="descn != null and descn != ''">
+				DESCN=#{descn},
+			</if>
+			<if test="taskType != null and taskType != ''">
+				TASK_TYPE=#{taskType},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=#{updateTime},
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser},
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
+		select count(1) from WEBPORTAL_TEMPLATE_TASK tt
 		<include refid="Example_Where_Clause" />
 	</select>
 	
@@ -100,58 +110,45 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="params != null and params.id != null  ">
-				and ttd.ID=#{params.id}
+				and tt.ID=#{id}
 			</if>
 			<if test="params != null and params.name != null and params.name != '' ">
-				and ttd.NAME like CONCAT('%','${params.name}','%') escape '^'
+				and tt.NAME like CONCAT('%','${params.name}','%') escape '^'
 			</if>
 			<if test="params != null and params.descn != null and params.descn != '' ">
-				and ttd.DESCN=#{params.descn}
-			</if>
-			<if test="params != null and params.beanName != null and params.beanName != '' ">
-				and ttd.BEANNAME=#{params.beanName}
+				and tt.DESCN=#{params.descn}
 			</if>
 			<if test="params != null and params.taskType != null and params.taskType != '' ">
-				and ttd.TASK_TYPE=#{params.taskType}
+				and tt.TASK_TYPE=#{params.taskType}
 			</if>
-			<if test="params != null and params.params != null and params.params != '' ">
-				and ttd.PARAMS=#{params.params}
-			</if>
-			<if test="params != null and params.retry != null ">
-				and ttd.RETRY=#{params.retry}
-			</if>
-			<if test="params != null and params.version != null ">
-				and ttd.VERSION=#{params.version}
-			</if>
-			
 			<if test="params != null and params.deleted != null  ">
-				and ttd.DELETED=#{params.deleted}
+				and tt.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
-				and ttd.CREATE_TIME=#{params.createTime}
+				and tt.CREATE_TIME=#{params.createTime}
 			</if>
 			<if test="params != null and params.createUser != null  ">
-				and ttd.CREATE_USER=#{params.createUser}
+				and tt.CREATE_USER=#{params.createUser}
 			</if>
 			<if test="params != null and params.updateTime != null  ">
-				and ttd.UPDATE_TIME=#{params.updateTime}
+				and tt.UPDATE_TIME=#{params.updateTime}
 			</if>
 			<if test="params != null and params.updateUser != null  ">
-				and ttd.UPDATE_USER=#{params.updateUser}
+				and tt.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>
+	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
+		from WEBPORTAL_TEMPLATE_TASK tt
 		<include refid="Example_Page_Where_Clause" />
-		ORDER BY ttd.CREATE_TIME DESC
+		ORDER BY tt.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
 	</select>
-
-</mapper>
+</mapper>   

@@ -288,6 +288,16 @@
 		$('#backupRecover').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/backup").html("备份与修复");
 		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/job/stream") >= 0 || path.indexOf("/detail/job/stream") >= 0){
+		$('#sidebar-task-mgr').addClass("active open hsub");
+		$('#sidebar-task-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/unit").html("任务管理");
+		$('#main-content-header li:eq(1)').html("任务流列表");
+	}else if(path.indexOf("/list/job/unit") >= 0){
+		$('#sidebar-task-mgr').addClass("active open hsub");
+		$('#sidebar-task-mgr ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/unit").html("任务管理");
+		$('#main-content-header li:eq(1)').html("任务单元列表");
 	}
 	
 			

@@ -10,14 +10,22 @@ public class TemplateTaskDetail extends BaseModel {
 	private String descn;
 	private String beanName;
 	private String params;
+	private String taskType;
+	
 	private int retry;
 	private int version;
 	
-	public String getParameters() {
+	public String getParams() {
 		return params;
 	}
-	public void setParameters(String params) {
+	public void setParams(String params) {
 		this.params = params;
+	}
+	public String getTaskType() {
+		return taskType;
+	}
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
 	}
 	public String getName() {
 		return name;
@@ -49,5 +57,4 @@ public class TemplateTaskDetail extends BaseModel {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	
 }

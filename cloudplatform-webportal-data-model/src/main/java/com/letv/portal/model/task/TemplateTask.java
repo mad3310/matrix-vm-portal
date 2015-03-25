@@ -9,6 +9,7 @@ public class TemplateTask extends BaseModel {
 	private String name;
 	private String descn;
 	private int version;
+	private String taskType;
 	
 	public String getName() {
 		return name;
@@ -27,6 +28,12 @@ public class TemplateTask extends BaseModel {
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	public String getTaskType() {
+		return taskType;
+	}
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
 	}
 	
 }

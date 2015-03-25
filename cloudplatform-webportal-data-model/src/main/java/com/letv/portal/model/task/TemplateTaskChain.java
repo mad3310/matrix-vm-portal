@@ -9,7 +9,14 @@ public class TemplateTaskChain extends BaseModel {
 	private Long taskId;
 	private Long taskDetailId;
 	private int  executeOrder;
+	private int  retry;
 	
+	public int getRetry() {
+		return retry;
+	}
+	public void setRetry(int retry) {
+		this.retry = retry;
+	}
 	public Long getTaskId() {
 		return taskId;
 	}

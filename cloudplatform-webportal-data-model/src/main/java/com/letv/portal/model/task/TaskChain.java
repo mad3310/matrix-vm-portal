@@ -11,6 +11,8 @@ public class TaskChain extends BaseModel {
 	private Long taskId;
 	private Long taskDetailId;
 	private int  executeOrder;
+	private int  retry;
+	
 	
 	private Long chainIndexId;
 	private TaskExecuteStatus status;
@@ -27,6 +29,12 @@ public class TaskChain extends BaseModel {
 	}
 	public void setChainIndexId(Long chainIndexId) {
 		this.chainIndexId = chainIndexId;
+	}
+	public int getRetry() {
+		return retry;
+	}
+	public void setRetry(int retry) {
+		this.retry = retry;
 	}
 	public Long getTaskId() {
 		return taskId;
