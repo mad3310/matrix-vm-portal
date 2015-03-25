@@ -48,8 +48,8 @@ define(function(require){
                         max: 16,
                         message: '数据库名名过长!'
                     }, regexp: {
-                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-                        message: "请输入字母数字或'_',数据库名不能以数字开头."
+                        regexp: /^((?!^monitor$)([a-zA-Z_]+[a-zA-Z_0-9]*))$/,
+                        message: "请输入字母数字或'_',数据库名不能以数字开头且数据库名称不能命名为monitor."
                     }/*,
                     remote: {
                         message: '数据库名已存在!',
