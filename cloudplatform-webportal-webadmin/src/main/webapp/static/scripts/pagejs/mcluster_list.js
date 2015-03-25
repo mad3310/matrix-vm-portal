@@ -464,7 +464,6 @@ function deleteMcluster(obj){
 	
 	/*warn("危险操作，本版本不启用...",3000);
 	return;*/
-	window.event.preventDefault();
 	
 	var tr = $(obj).parents("tr").html();
 	if (tr.indexOf("删除中") >= 0){
@@ -506,15 +505,15 @@ function deleteMcluster(obj){
 	/*验证码DOM*/
 	var form = $("<form>"
 			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
-			 + "<input type=\"text\" name=\"kaptcha\" />"
-			 //+ "<input type=\"submit\" value=\"Submit\" name=\"_finish\"/>"
+			 + "<input type=\"text\" name=\"kaptcha\" />"			 
              + "</form>");
 	
 	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
 	
 	/*刷新验证码*/
 	function refreshCode(){
-		$("#kaptchaImage").attr('src', '/kaptcha');
+		var dt = new Date();
+		$("#kaptchaImage").attr('src', '/kaptcha?t='+ dt);
 	}
 	
 	/*输入框改变绑定事件*/
@@ -522,7 +521,7 @@ function deleteMcluster(obj){
 		$('.warning-info').remove();
 	});
 	
-	/*点击验证码刷新验证码*/
+	/*点击验证码刷新验证码*/	
 	$(".kaptcha").bind('click',function(){
 		refreshCode();
 	});
