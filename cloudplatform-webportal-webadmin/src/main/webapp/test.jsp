@@ -8,7 +8,7 @@
 </head>
 <body>
 <form action="/kaptcha" method="post">
-<img src="/kaptcha" width="65" height="30" id="kaptchaImage" style="margin-bottom: 2px"/><input type="text" name="kaptcha" /><input type="submit" value="Submit" name="_finish"/>
+<img src="/kaptcha" width="65" height="30" id="kaptchaImage" style="margin-bottom: 2px"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="kaptcha" /><input type="submit" value="Submit" name="_finish"/>
 </form>
 </body>
 </html>

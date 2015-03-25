@@ -47,6 +47,7 @@ public class CaptchaController {
         CookieUtil.addCookie(response, Constant.KAPTCHA_COOKIE_NAME, captchaId, 30);
         cacheService.set(Constant.KAPTCHA_COOKIE_NAME + captchaId, capText);
 	        
+        logger.debug(capText);
 		response.setDateHeader("Expires", 0);  
         // Set standard HTTP/1.1 no-cache headers.  
         response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");  
