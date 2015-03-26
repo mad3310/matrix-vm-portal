@@ -24,6 +24,7 @@ import com.letv.portal.model.task.TemplateTask;
 import com.letv.portal.model.task.TemplateTaskChain;
 import com.letv.portal.model.task.TemplateTaskDetail;
 import com.letv.portal.model.task.service.ITaskChainIndexService;
+import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskDetailService;
 import com.letv.portal.model.task.service.ITemplateTaskService;
@@ -46,6 +47,8 @@ public class TaskController {
 	private ITemplateTaskChainService templateTaskChainService;
 	@Autowired
 	private ITaskChainIndexService taskChainIndexService;
+	@Autowired
+	private ITaskChainService taskChainService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -85,6 +88,17 @@ public class TaskController {
 		obj.setData(this.taskChainIndexService.selectPageByParams(page, params));
 		return obj;
 	}
+	/**Methods Name: taskMonitorDetail <br>
+	 * Description: 查询任务监控详情<br>
+	 * @author name: yaokuo
+	 * @param page
+	 * @param request
+	 */
+	@RequestMapping(value ="/monitor/detail/{chainIndexId}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject taskMonitorDetail(@PathVariable Long chainIndexId,HttpServletRequest request,ResultObject obj) {
+		obj.setData(this.taskChainService.selectAllChainByIndexId(chainIndexId));
+		return obj;
+	}
 	/**Methods Name: taskDetail <br>
 	 * Description: 查询任务流详情<br>
 	 * @author name: yaokuo
@@ -93,7 +107,6 @@ public class TaskController {
 	 */
 	@RequestMapping(value ="/detail/{id}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject taskDetail(@PathVariable Long id,HttpServletRequest request,ResultObject obj) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.templateTaskChainService.selectByTemplateTaskId(id));
 		return obj;
 	}
@@ -105,7 +118,6 @@ public class TaskController {
 	 */
 	@RequestMapping(value ="/unit/{type}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject getTaskUnit(@PathVariable String type,HttpServletRequest request,ResultObject obj) {
-		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.templateTaskDetailService.selectByTemplateTaskType(type));
 		return obj;
 	}

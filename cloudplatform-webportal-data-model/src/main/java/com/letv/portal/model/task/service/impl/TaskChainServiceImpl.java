@@ -1,5 +1,7 @@
 package com.letv.portal.model.task.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -44,6 +46,11 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 		tc.setChainIndexId(chainIndexId);
 		tc.setStatus(TaskExecuteStatus.FAILED);
 		return this.taskChainDao.selectFailedChainByIndex(tc);
+	}
+
+	@Override
+	public List<TaskChain> selectAllChainByIndexId(Long chainIndexId) {
+		return this.taskChainDao.selectAllChainByIndexId(chainIndexId);
 	}
 	
 }

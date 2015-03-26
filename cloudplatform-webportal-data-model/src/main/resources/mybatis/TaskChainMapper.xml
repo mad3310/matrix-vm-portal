@@ -99,4 +99,9 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_TASK_CHAIN tc where tc.CHAIN_INDEX_ID = #{chainIndexId} and STATUS=#{status}
 	</select>
+	<select id="selectAllChainByIndexId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TASK_CHAIN tc where tc.CHAIN_INDEX_ID = #{chainIndexId}
+	</select>
 </mapper>   
