@@ -1048,3 +1048,19 @@ edit by jinglinlin@letv.com
 .task-monitor-table{
 	border-left-width:8px;
 }
+
+/* 验证码图标样式 */
+.skin-custom .warning-info{
+	display:inline;
+	margin-left:10px;
+}
+.skin-custom .success-info{
+	display:inline;
+	margin-left:10px;
+}
+.skin-custom #infoBlock{
+	position:absolute;
+	/* top:10px;
+	right:20px; */
+	margin-top: 5px;
+}

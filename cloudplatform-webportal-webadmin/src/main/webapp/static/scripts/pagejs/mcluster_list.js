@@ -171,6 +171,9 @@ function queryByPage() {
 							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 							+"</a>"
+							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+							+"</a>"
 							+"</div>"
 							+ "</td>"
 					);
@@ -492,9 +495,14 @@ function deleteMcluster(obj){
 					});				
 					$('#dialog-confirm').dialog("close");
 				}else if(data.data == false){
-					if($('.warning-info').length == 0){
-						var _block = $('<p class="red warning-info" style="font-size:12px;margin-top:10px;"><i class="fa fa-exclamation-circle"></i>验证码错误</p>')
-						$("[name='kaptcha']").after(_block);
+					refreshCode();
+					$('.warning-info').remove();
+					$('.success-info').remove();
+					if($('.warning-info').length == 0){						
+						if($('.warning-info').length == 0){
+							var _block = $(' <i class="red warning-info fa fa-exclamation-circle"></i>');
+							$("#infoBlock").html(_block);
+						}	
 					}					
 				}
 			}
@@ -504,8 +512,11 @@ function deleteMcluster(obj){
 	
 	/*验证码DOM*/
 	var form = $("<form>"
+			 + "<div class=\"form-group\">"
 			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
-			 + "<input type=\"text\" name=\"kaptcha\" />"			 
+			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
+             + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"
+			 + "</div>"
              + "</form>");
 	
 	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
@@ -519,6 +530,31 @@ function deleteMcluster(obj){
 	/*输入框改变绑定事件*/
 	$("input[name='kaptcha']").on('input',function(e){  
 		$('.warning-info').remove();
+		$('.success-info').remove();
+		var value=$("[name='kaptcha']").val();
+		
+		$.ajax({
+			cache:false,
+			url:'/kaptcha',
+			type:'post',
+			data:{'kaptcha': value},	
+			success:function(data){
+				if(data.data == false){
+					$('.success-info').remove();
+					if($('.warning-info').length == 0){
+						var _block = $(' <i class="red warning-info fa fa-exclamation-circle"></i>');
+						$("#infoBlock").html(_block);
+					}	
+				}else if(data.data==true){
+					$('.warning-info').remove();
+					if($('.success-info').length == 0){
+						var _block = $(' <i class="green success-info fa  fa-check"></i>')
+						$("#infoBlock").html(_block);
+					}					
+				}		
+			}	
+		});
+		
 	});
 	
 	/*点击验证码刷新验证码*/	
