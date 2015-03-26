@@ -415,6 +415,13 @@ function getCount(obj){
 		return false;
 	}
 }
+function getItem(data){
+    var tdArr=[];
+    for (var key in data){
+                    tdArr.push(key);                    
+            }
+    return tdArr
+}
 /*预警管理页面查看详情通用函数 end*/
 
 /*搜索功能begin*/
