@@ -139,6 +139,13 @@
 					</a>
 					<b class="arrow"></b>
 				</li>
+				<li id="sidebar-task-stream-view" >
+					<a href="${ctx}/list/job/monitor"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						任务监控
+					</a>
+					<b class="arrow"></b>
+				</li>
 			</ul>
 		</li>
 	</ul>

@@ -13,6 +13,7 @@ public class TaskChainIndex extends BaseModel {
 	
 	private Date startTime;
 	private Date endTime;
+	private TemplateTask templateTask;
 	
 	public Long getTaskId() {
 		return taskId;
@@ -38,5 +39,10 @@ public class TaskChainIndex extends BaseModel {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	
+	public TemplateTask getTemplateTask() {
+		return templateTask;
+	}
+	public void setTemplateTask(TemplateTask templateTask) {
+		this.templateTask = templateTask;
+	}
 }

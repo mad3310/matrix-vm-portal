@@ -41,6 +41,11 @@ public class SkipController {
 		mav.setViewName("/clouddb/job_unit_list");
 		return mav;
 	}
+	@RequestMapping(value ="/list/job/monitor",method=RequestMethod.GET)
+	public ModelAndView toJobMonitorList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/job_monitor_list");
+		return mav;
+	}
 	@RequestMapping(value ="/detail/job/stream/{jobStreamId}",method=RequestMethod.GET)
 	public ModelAndView toJobStreamDetail(ModelAndView mav,@PathVariable Long jobStreamId){
 		mav.addObject("jobStreamId",jobStreamId);

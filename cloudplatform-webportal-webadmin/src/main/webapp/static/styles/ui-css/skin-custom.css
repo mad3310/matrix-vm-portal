@@ -1029,3 +1029,22 @@ edit by jinglinlin@letv.com
 	font-weight:bold;
 	
 }
+
+/* 任务监控列表样式*/
+.task-monitor-menu{
+	min-height:550px;
+	border-right:1px solid #DDD;
+	padding-right:2px;
+}
+.task-monitor-list{
+	
+}
+.task-monitor-list tr:hover{
+	background-color:#e6e6e6;
+}
+.task-monitor-list .selected{
+	background-color:#c0c0c0;
+}
+.task-monitor-table{
+	border-left-width:8px;
+}

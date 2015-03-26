@@ -298,6 +298,11 @@
 		$('#sidebar-task-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/unit").html("任务管理");
 		$('#main-content-header li:eq(1)').html("任务单元列表");
+	}else if(path.indexOf("/list/job/monitor") >= 0){
+		$('#sidebar-task-mgr').addClass("active open hsub");
+		$('#sidebar-task-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/monitor").html("任务管理");
+		$('#main-content-header li:eq(1)').html("任务监控");
 	}
 	
 			

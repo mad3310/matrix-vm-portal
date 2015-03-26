@@ -23,6 +23,7 @@ import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.task.TemplateTask;
 import com.letv.portal.model.task.TemplateTaskChain;
 import com.letv.portal.model.task.TemplateTaskDetail;
+import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITemplateTaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskDetailService;
 import com.letv.portal.model.task.service.ITemplateTaskService;
@@ -43,6 +44,8 @@ public class TaskController {
 	private ITemplateTaskDetailService templateTaskDetailService;
 	@Autowired
 	private ITemplateTaskChainService templateTaskChainService;
+	@Autowired
+	private ITaskChainIndexService taskChainIndexService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -68,6 +71,18 @@ public class TaskController {
 	public @ResponseBody ResultObject taskUnitList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.templateTaskDetailService.selectPageByParams(page, params));
+		return obj;
+	}
+	/**Methods Name: taskMonitorList <br>
+	 * Description: 查询任务监控列表<br>
+	 * @author name: yaokuo
+	 * @param page
+	 * @param request
+	 */
+	@RequestMapping(value ="/monitor",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject taskMonitorList(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.taskChainIndexService.selectPageByParams(page, params));
 		return obj;
 	}
 	/**Methods Name: taskDetail <br>

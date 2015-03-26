@@ -16,6 +16,12 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="templateTask" javaType="TemplateTask">
+			<result column="NAME" property="name" />
+			<result column="DESCN" property="descn" />
+			<result column="TASK_TYPE" property="taskType" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -28,6 +34,44 @@
 		values(
 		#{taskId},#{status},#{startTime},#{endTime},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
 	</insert>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and tci.ID=#{id}
+			</if>
+			<if test="taskId != null">
+				and tci.TASK_ID=#{taskId}
+			</if>
+			<if test="startTime != null and startTime != '' ">
+				and tci.START_TIME=#{startTime}
+			</if>
+			<if test="endTime != null and endTime != '' ">
+				and tci.END_TIME=#{endTime}
+			</if>
+			<if test="status != null and status != '' ">
+				and tci.STATUS=#{status}
+			</if>
+			
+			<if test="deleted != null  ">
+				and tci.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and tci.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and tci.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and tci.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and tci.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
 	
 	<!-- -->
 	<update id="updateBySelective" parameterType="TaskChainIndex">
@@ -64,10 +108,67 @@
 		</set>
 		where ID=#{id}
 	</update>
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_TASK_CHAIN_INDEX tci
+		<include refid="Example_Where_Clause" />
+	</select>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_TASK_CHAIN_INDEX tci where tci.id = #{id}
+	</select>
+	
+	<!--  分页：根据条件查询 -->
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and tci.ID=#{params.id}
+			</if>
+			<if test="params != null and params.taskId != null">
+				and tci.TASK_ID=#{params.taskId}
+			</if>
+			<if test="params != null and params.startTime != null and params.startTime != '' ">
+				and tci.START_TIME=#{params.startTime}
+			</if>
+			<if test="params != null and params.endTime != null and params.endTime != '' ">
+				and tci.END_TIME=#{params.endTime}
+			</if>
+			<if test="params != null and params.status != null and params.status != '' ">
+				and tci.STATUS=#{params.status}
+			</if>
+			
+			<if test="params != null and params.deleted != null  ">
+				and tci.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and tci.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and tci.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and tci.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and tci.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />,tt.TASK_TYPE,tt.DESCN,tt.NAME
+		from WEBPORTAL_TASK_CHAIN_INDEX tci
+		left join WEBPORTAL_TEMPLATE_TASK tt on tt.ID = tci.TASK_ID
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY tci.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
 	</select>
 </mapper>   
