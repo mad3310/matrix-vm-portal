@@ -361,6 +361,11 @@
 	            <artifactId>quartz</artifactId>
             	<version>2.2.1</version>
         	</dependency>
+        	<dependency>
+			  <groupId>org.google</groupId>
+			  <artifactId>kaptcha</artifactId>
+			  <version>2.3.2</version>
+			</dependency>
       </dependencies>
   </dependencyManagement>
   
@@ -567,6 +572,8 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
             </properties>
         </profile>
 
@@ -613,6 +620,8 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
             </properties>
         </profile>
         
@@ -661,6 +670,8 @@
                 <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
                 
                 <task.executor.size>30</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
             </properties>
         </profile>
 
@@ -709,6 +720,8 @@
                 <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
                 
                 <task.executor.size>150</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
             </properties>
         </profile>
 

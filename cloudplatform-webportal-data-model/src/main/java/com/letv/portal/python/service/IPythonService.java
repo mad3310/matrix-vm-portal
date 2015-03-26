@@ -1,5 +1,7 @@
 package com.letv.portal.python.service;
 
+import java.util.Map;
+
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
 
@@ -20,6 +22,7 @@ public interface IPythonService {
 	 * @return
 	 */
 	public String createContainer(String mclusterName,String ip,String username,String password);
+	public String createContainer(Map<String,String> params,String ip,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>

@@ -97,7 +97,7 @@ function queryHost(){
 						+ "</td>");
 				var td6 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"red\" href=\"#\" onclick=\"deleteHost(this)\" data-toggle=\"modal\" data-target=\"#\">"
+						+"<a class=\"red\" href=\"#\" onclick=\"deleteHost(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -108,6 +108,7 @@ function queryHost(){
 				tr.appendTo(tby);
 				numberOfHost++;
 			}
+			$('[data-toggle = "tooltip"]').tooltip();
 		}
 	});
 }

@@ -34,8 +34,8 @@ public class TaskEngineRDS extends AbstractTest{
     @Test
     public void testRun5() {
     	Map<String,Object> params = new HashMap<String,Object>();
-    	params.put("mclusterId", 10L);
-    	params.put("dbId", 12L);
+    	params.put("mclusterId", 15L);
+    	params.put("dbId", 18L);
     	this.taskEngine.run(2L,params);
     }
     
@@ -45,7 +45,7 @@ public class TaskEngineRDS extends AbstractTest{
      */
     @Test
     public void testRun6() {
-    	TaskChain tc = this.taskChainService.selectFailedChainByIndex(25L);
+    	TaskChain tc = this.taskChainService.selectFailedChainByIndex(16L);
     	this.taskEngine.run(tc);
     }
     

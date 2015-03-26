@@ -146,21 +146,36 @@ function queryByPage() {
 							+ "</td>");
 					
 				}
-					
-				var td8 = $("<td>"
-						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-						+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-						+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-						+"</a>"
-						+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-						+"</a>"
-						+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this)\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+				
+				if(array[i].status == 3){
+					var td8 = $("<td>"
+							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+							+"</a>"
+							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
+								+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+							+"</a>"
+							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-						+"</a>"
-						+"</div>"
-						+ "</td>"
-				);
+							+"</a>"
+							+"</div>"
+							+ "</td>"
+					);
+				}else{
+					var td8 = $("<td>"
+							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+							+"</a>"
+							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+							+"</a>"
+							+"</div>"
+							+ "</td>"
+					);
+				}
+				
 					
 				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"default-danger\"></tr>");
@@ -447,29 +462,71 @@ function stopMcluster(obj){
 }
 function deleteMcluster(obj){
 	
-	warn("危险操作，本版本不启用...",3000);
-	return;
+	/*warn("危险操作，本版本不启用...",3000);
+	return;*/
 	
 	var tr = $(obj).parents("tr").html();
 	if (tr.indexOf("删除中") >= 0){
 		warn("正在删除集群,请耐心等待...",3000);
 		return 0;
 	}
-	function deleteCmd(){
-		var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
 	
+	function deleteCmd(){
+		var value=$("[name='kaptcha']").val();
 		$.ajax({
 			cache:false,
-			url:'/mcluster/'+mclusterId,
-			type:'delete',
+			url:'/kaptcha',
+			type:'post',
+			data:{'kaptcha': value},	
 			success:function(data){
-				
-				if(error(data)) return;
-				queryByPage();
+				if(data.data == true){
+					var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+					$.ajax({
+						cache:false,
+						url:'/mcluster/'+mclusterId,
+						type:'delete',
+						success:function(data){							
+							if(error(data)) return;
+							queryByPage();
+						}
+					});				
+					$('#dialog-confirm').dialog("close");
+				}else if(data.data == false){
+					if($('.warning-info').length == 0){
+						var _block = $('<p class="red warning-info" style="font-size:12px;margin-top:10px;"><i class="fa fa-exclamation-circle"></i>验证码错误</p>')
+						$("[name='kaptcha']").after(_block);
+					}					
+				}
 			}
-		});
+		})
+		
 	}
-	confirmframe("删除container集群","删除container集群后将不能恢复!","您确定要删除?",deleteCmd);
+	
+	/*验证码DOM*/
+	var form = $("<form>"
+			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
+			 + "<input type=\"text\" name=\"kaptcha\" />"			 
+             + "</form>");
+	
+	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
+	
+	/*刷新验证码*/
+	function refreshCode(){
+		var dt = new Date();
+		$("#kaptchaImage").attr('src', '/kaptcha?t='+ dt);
+	}
+	
+	/*输入框改变绑定事件*/
+	$("input[name='kaptcha']").on('input',function(e){  
+		$('.warning-info').remove();
+	});
+	
+	/*点击验证码刷新验证码*/	
+	$(".kaptcha").bind('click',function(){
+		refreshCode();
+	});
+	
+	setInterval(refreshCode,60000);
 }
 
 function queryHcluster(){

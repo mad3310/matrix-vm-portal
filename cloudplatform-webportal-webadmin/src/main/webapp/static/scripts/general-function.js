@@ -238,7 +238,6 @@ function confirmframe(title,content,question,ok,cancle){
 					"class" : "btn btn-primary btn-xs",
 					click : function() {
 						ok();
-						$(this).dialog("close");
 					}
 				},
 				{
@@ -362,7 +361,10 @@ function alarmFormat(str,obj,eleId){
 }
 
 function errorRecordFormat(json,obj){
-	if(!$.isEmptyObject(json)){
+	if(typeof(json) == "string"){
+		var span = $("<span>" + json +"</span>" + "<br/>");
+		obj.append(span)
+	}else if(!$.isEmptyObject(json)){
 		for (var key in json){
 			if(typeof(json[key] == "object")){
 				var span = $("<span>"+ key + "  :   " + JSON.stringify(json[key]) + "</span>" + "<br/>")
@@ -371,6 +373,9 @@ function errorRecordFormat(json,obj){
 			}
 			obj.append(span);
 		}		
+	}else{
+		var span = $("<span>" + JSON.stringify(json) +"</span>" + "<br/>");
+		obj.append(span);
 	}
 }
 
