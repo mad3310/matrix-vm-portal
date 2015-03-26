@@ -66,6 +66,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	@Override
 	public void backupTask(int count) {
 		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
+		if(count == 0)
+			count = 5;
 		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count);
 		for (MclusterModel mclusterModel : mclusters) {
 			//进行备份。
@@ -129,7 +131,9 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	public void checkBackupStatusTask() {
+	public void checkBackupStatusTask(int count) {
+		if(count == 0)
+			count = 5;
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
