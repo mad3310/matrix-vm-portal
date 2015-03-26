@@ -15,7 +15,7 @@
 					<div class="widget-header">
 						<h5 class="widget-title">任务流详情</h5>
 						<div class="widget-toolbar no-border">
-							<button id="create_job_stream" class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#add-job-stream-unit-modal">
+							<button id="add_job_unit" class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#add-job-stream-unit-modal">
 								<i class="ace-icont fa fa-plus"></i>
 								 添加任务单元
 							</button>
@@ -41,30 +41,6 @@
 									</tr>
 								</thead>
 								<tbody id="tby">
-									<tr><td class="center"><label class="position-relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-										<td>创建cluster</td>
-										<td>RDS</td>
-										<td>5</td>
-										<td>为RDS准备集群</td>
-										<td>1</td>
-										<td>编辑|删除</td>
-									</tr>
-									<tr><td class="center"><label class="position-relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-										<td>mysql服务初始化</td>
-										<td>RDS</td>
-										<td>5</td>
-										<td>为RDS准备server</td>
-										<td>2</td>
-										<td>编辑|删除</td>
-									</tr>
-									<tr><td class="center"><label class="position-relative"><input type="checkbox" class="ace"><span class="lbl"></span></label></td>
-										<td>创建db用户</td>
-										<td>RDS</td>
-										<td>5</td>
-										<td>为RDS用户创建默认账户</td>
-										<td>3</td>
-										<td>编辑|删除</td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -87,36 +63,47 @@
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">任务单元</label>
 								<div class="col-sm-6">
-									<select class="form-control" name="jobType" id="jobType">
-										<option value="">初始化cluster</option>
-										<option value="">启动sqlServer</option>
-										<option value="">创建数据库</option>
+									<select class="form-control" name="taskDetailId" id="taskDetailId">
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">失败重试次数</label>
+								<label class="col-sm-4 control-label" for="retry">失败重试次数</label>
 								<div class="col-sm-3">
-									<select class="form-control" name="jobType" id="jobType">
-										<option value="">1</option>
-										<option value="">2</option>
-										<option value="">3</option>
-										<option value="">4</option>
-										<option value="">5</option>
+									<select class="form-control" name="retry" id="retry">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
 									</select>
 								</div>
 							</div>
+            				<div class="form-group">
+								<label class="col-sm-4 control-label" for="hcluster_name">执行顺序</label>
+								<div class="col-sm-3">
+									<input class="form-control" type="text" name="executeOrder" id="executeOrder"/>
+								</div>
 							</div>
-            			</div>
+							</div>
+						</form>
+            		</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-hcluster-botton" type="button" class="btn btn-sm disabled btn-primary" onclick="">创建</button>
+						<button id="add-task-unit" type="button" class="btn btn-sm btn-primary">创建</button>
 					</div>
-				</form>
 				</div>
 			</div>
+			<div id="dialog-confirm" class="hide">
+				<div id="dialog-confirm-content" class="alert alert-info bigger-110">
+					删除container集群将不能恢复！
+				</div>
+				<div class="space-6"></div>
+				<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
+					您确定要删除?
+				</p>
+			</div>
 		</div>
-	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>

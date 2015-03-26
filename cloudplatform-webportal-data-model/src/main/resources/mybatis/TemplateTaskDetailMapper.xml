@@ -95,7 +95,13 @@
 		select count(1) from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
 		<include refid="Example_Where_Clause" />
 	</select>
-	
+	<!-- 按task_type查询 -->
+	<select id="selectByTemplateTaskType" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TEMPLATE_TASK_DETAIL ttd
+		where ttd.TASK_TYPE = #{type}
+	</select>
 	<sql id="Example_Page_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">

@@ -36,32 +36,34 @@ function queryByPage() {
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 							+"<label class=\"position-relative\">"
-							+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+							+"<input name=\"chainId\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 							+"<span class=\"lbl\"></span>"
 							+"</label>"
 							+"</td>");
 				var td2 = $("<td>-</td>");
 				var td3 = $("<td>-</td>");
-				var td5 = $("<td>-</td>");
-					if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
-						td2 = $("<td>"
-								+array[i].templateTaskDetail.name
-								+ "</td>");
-						var td3 = $("<td>"
-								+ array[i].templateTaskDetail.taskType
-								+ "</td>");
-						var td5 = $("<td>"
-								+ array[i].templateTaskDetail.descn
-								+ "</td>");
-					}
 				var td4 = $("<td>"
 						+ array[i].retry
 						+ "</td>");
+				var td5 = $("<td>-</td>");
+				if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
+					td2 = $("<td>"
+							+array[i].templateTaskDetail.name
+							+ "</td>");
+					td5 = $("<td>"
+							+ array[i].templateTaskDetail.descn
+							+ "</td>");
+				}
+				if(array[i].templateTask != undefined && array[i].templateTask != null){
+					td3 = $("<td>"
+						+ array[i].templateTask.taskType
+						+ "</td>");
+				}
 				var td6 = $("<td>"
 						+ array[i].executeOrder
 						+ "</td>");
 				var td7 = $("<td>"
-						+ "<a><span>修改</span><a>"
+						+ "<span onclick=\"delTaskUnit(this)\" style=\"cursor:pointer\">删除</span>"
 						+"</td>"
 				);
 				
@@ -73,6 +75,8 @@ function queryByPage() {
 			
 			/*初始化tooltip*/
 			$('[data-toggle = "tooltip"]').tooltip();
+			
+			init_task_option("/task/unit/"+array[0].templateTask.taskType)//根据任务流类型初始化任务单元选项
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			error(XMLHttpRequest);
@@ -91,58 +95,62 @@ function queryByPage() {
 	        }
 	    });
 	}
-	
-//创建Container集群表单验证
-function formValidate() {
-	$("#create-task-stream-form").bootstrapValidator({
-	  message: '无效的输入',
-         feedbackIcons: {
-             valid: 'glyphicon glyphicon-ok',
-             invalid: 'glyphicon glyphicon-remove',
-             validating: 'glyphicon glyphicon-refresh'
-         },
-         fields: {
-        	 taskStreamName: {
-                 validMessage: '请按提示输入',
-                 validators: {
-                     notEmpty: {
-                         message: '任务流名称不能为空!'
-                     },
-			          stringLength: {
-			              max: 40,
-			              message: '任务流名过长'
-			          }
-	             }
-         	},descn:{
-         		validMessage: '请按提示输入',
-         		validators: {
-			          stringLength: {
-			              max: 100,
-			              message: '描述最长字符为100'
-			          }
-	             }
-         	}	
-         }
-     }).on('success.form.bv', function(e) {
-    	 e.preventDefault();
-    	$.ajax({
-    		cache:false,
-    		type : "post",
-    		url : "/task",
-    		data: {
-    			name:$('#taskStreamName').val(),
-    			taskType:$('#taskType').val(),
-    			descn:$('#descn').val()
-    		},
-    		success : function(data) {
-    			location.href = "/list/job/stream";
-    		}
-    	})
-     });
+function addTaskUnit(){
+	$("#add-task-unit").click(function(){
+		$("#add-task-unit").addClass("diabled");
+		var data={
+				taskDetailId : $("#taskDetailId").val(),
+				retry : $("#retry").val(),
+				taskId : $("#jobStreamId").val(),
+				executeOrder : $("#executeOrder").val(),
+		}
+		$.ajax({
+			cache:false,
+			type : "post",
+			url : "/task/stream",
+			data : data,
+			success : function(){
+				location.href = "/detail/job/stream/"+data.taskId;
+			}
+		})
+	})
+}
+
+function delTaskUnit(obj){
+		var chainId = $(obj).closest("tr").find("input").val();
+		function delCmd(){
+			$.ajax({
+				cache:false,
+				type : "delete",
+				url : "/task/stream/"+chainId,
+				success : function(){
+					location.href = "/detail/job/stream/"+$("#jobStreamId").val();
+				}
+			})
+		}
+		confirmframe("删除任务单元","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
+}
+function init_task_option(url){
+	var select = $("#taskDetailId");
+	$.ajax({
+		cache:false,
+		type : "get",
+		url : url,
+		dataType : "json", /*这句可用可不用，没有影响*/
+		success : function(data){
+			var array = data.data;
+			for(var i=0,len=array.length;i<len;i++){
+				var option = $("<option value=\""+array[i].id+"\">"+array[i].name+"</option>");
+				option.appendTo(select);
+			}
+		}
+	})
 }
 
 function page_init(){
+	
 	$('[name = "popoverHelp"]').popover();
 	queryByPage();
-//	formValidate();
+	//formValidate();
+	addTaskUnit();
 }

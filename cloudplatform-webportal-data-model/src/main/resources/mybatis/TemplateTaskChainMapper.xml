@@ -19,8 +19,10 @@
 		
 		<association property="templateTaskDetail" javaType="TemplateTaskDetail">
 			<result column="NAME" property="name" />
-			<result column="TASK_TYPE" property="taskType" />
 			<result column="DESCN" property="descn" />
+		</association>
+		<association property="templateTask" javaType="TemplateTask">
+			<result column="TASK_TYPE" property="taskType" />
 		</association>
 	</resultMap>
 	
@@ -37,6 +39,10 @@
 			#{id},#{taskId},#{taskDetailId},#{retry},#{executeOrder},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="TemplateTaskChain">
+		delete from WEBPORTAL_TEMPLATE_TASK_CHAIN where ID = #{id}
+	</update>
 	<!--update-->
 	<update id="updateBySelective" parameterType="TemplateTaskChain">
 		update WEBPORTAL_TEMPLATE_TASK_CHAIN
@@ -75,9 +81,10 @@
 	
 	<select id="selectByTemplateTaskId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select 
-		<include refid="Base_Column_List" />,ttd.NAME,ttd.TASK_TYPE,ttd.DESCN
+		<include refid="Base_Column_List" />,ttd.NAME,ttd.DESCN,tt.TASK_TYPE
 		from WEBPORTAL_TEMPLATE_TASK_CHAIN ttc
 		left join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.ID = ttc.TASK_DETAIL_ID
+		left join WEBPORTAL_TEMPLATE_TASK tt on tt.ID = ttc.TASK_ID
 		where ttc.TASK_ID = #{taskId}
 		ORDER BY ttc.EXECUTE_ORDER
 	</select>

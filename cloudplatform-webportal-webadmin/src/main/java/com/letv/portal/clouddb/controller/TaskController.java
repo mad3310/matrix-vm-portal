@@ -21,6 +21,7 @@ import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.task.TemplateTask;
+import com.letv.portal.model.task.TemplateTaskChain;
 import com.letv.portal.model.task.TemplateTaskDetail;
 import com.letv.portal.model.task.service.ITemplateTaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskDetailService;
@@ -81,9 +82,21 @@ public class TaskController {
 		obj.setData(this.templateTaskChainService.selectByTemplateTaskId(id));
 		return obj;
 	}
+	/**Methods Name: getTaskUnit <br>
+	 * Description: 查询任务流详情<br>
+	 * @author name: yaokuo
+	 * @param id
+	 * @param request
+	 */
+	@RequestMapping(value ="/unit/{type}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getTaskUnit(@PathVariable String type,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.templateTaskDetailService.selectByTemplateTaskType(type));
+		return obj;
+	}
 	
 	/**
-     * Methods Name: templateTask <br>
+     * Methods Name: saveTask <br>
      * Description: 保存templateTask信息<br>
      * @author name: yaokuo 
      * @param TemplateTask
@@ -97,7 +110,7 @@ public class TaskController {
 		return obj;
 	}
 	/**
-	 * Methods Name: templateTask <br>
+	 * Methods Name: saveTaskUnit <br>
 	 * Description: 保存templateTaskUnit信息<br>
 	 * @author name: yaokuo 
 	 * @param TemplateTask
@@ -108,6 +121,36 @@ public class TaskController {
 	public @ResponseBody ResultObject saveTaskUnit(TemplateTaskDetail templateTaskDetailModal, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		this.templateTaskDetailService.insert(templateTaskDetailModal);
+		return obj;
+	}
+	/**
+	 * Methods Name: addTaskUnit <br>
+	 * Description: 保存taskUnit信息<br>
+	 * @author name: yaokuo 
+	 * @param TemplateTask
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/stream",method = RequestMethod.POST)
+	public @ResponseBody ResultObject addTaskUnit(TemplateTaskChain templateTaskChain, HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		this.templateTaskChainService.insert(templateTaskChain);
+		return obj;
+	}
+	/**
+	 * Methods Name: delTaskUnit <br>
+	 * Description: 删除taskUnit信息<br>
+	 * @author name: yaokuo 
+	 * @param TemplateTask
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/stream/{id}",method = RequestMethod.DELETE)
+	public @ResponseBody ResultObject delTaskUnit(@PathVariable Long id, HttpServletRequest request) {
+		TemplateTaskChain templateTaskChain = new TemplateTaskChain();
+		templateTaskChain.setId(id);
+		ResultObject obj = new ResultObject();
+		this.templateTaskChainService.delete(templateTaskChain);
 		return obj;
 	}
 }

@@ -188,7 +188,7 @@ function formValidate() {
     			taskType:$('#taskType').val(),
     			descn:$('#descn').val()
     		},
-    		success : function(data) {
+    		success : function() {
     			location.href = "/list/job/stream";
     		}
     	})

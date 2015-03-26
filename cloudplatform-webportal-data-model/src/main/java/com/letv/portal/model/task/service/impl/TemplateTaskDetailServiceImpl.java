@@ -1,5 +1,7 @@
 package com.letv.portal.model.task.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -27,6 +29,11 @@ public class TemplateTaskDetailServiceImpl extends BaseServiceImpl<TemplateTaskD
 	@Override
 	public IBaseDao<TemplateTaskDetail> getDao() {
 		return templateTaskDetailDao;
+	}
+
+	@Override
+	public List<TemplateTaskDetail> selectByTemplateTaskType(String type) {
+		return this.templateTaskDetailDao.selectByTemplateTaskType(type);
 	}
 	
 }

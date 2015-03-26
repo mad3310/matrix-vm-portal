@@ -12,6 +12,7 @@ public class TemplateTaskChain extends BaseModel {
 	private int  retry;
 	
 	private TemplateTaskDetail templateTaskDetail;
+	private TemplateTask templateTask;
 	
 	public int getRetry() {
 		return retry;
@@ -42,5 +43,11 @@ public class TemplateTaskChain extends BaseModel {
 	}
 	public void setTemplateTaskDetail(TemplateTaskDetail templateTaskDetail) {
 		this.templateTaskDetail = templateTaskDetail;
+	}
+	public TemplateTask getTemplateTask() {
+		return templateTask;
+	}
+	public void setTemplateTask(TemplateTask templateTask) {
+		this.templateTask = templateTask;
 	}
 }
