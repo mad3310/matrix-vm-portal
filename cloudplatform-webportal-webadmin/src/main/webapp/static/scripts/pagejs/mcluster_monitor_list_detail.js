@@ -17,41 +17,37 @@ function queryMonitorClusterInfo(){
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
-			var monitorClusterInfo = data.data.response;
+			
 			var $tby = $("#cluster_detail_table");
-			if( monitorClusterInfo != null){
-				
-				var nodeSize = monitorClusterInfo.node.node_size;
-				var clusterAvail = monitorClusterInfo.cluster.cluster_available;
-				
-				var nodeCount = getCount(nodeSize);
-				var clusterCount = getCount(clusterAvail);
-				
-				/*定义表格布局begin*/
-				var td1 = $("<td style=\"width: 20%;\">node" 
-						+ "<input type=\"text\" id=\"nodeFailNum\" class=\"hidden\" />"
-						+ "</td>");
-				var td2 = $("<td style=\"width: 20%;\">cluster" 
-						+ "<input type=\"text\" id=\"clusterFailNum\" class=\"hidden\" />"
-						+ "</td>");
-				//定义表格跨行数目
-				td1.attr({"rowspan":nodeCount + 1});
-				td2.attr({"rowspan":clusterCount + 1});
-				
-				
-				var tr1 = $("<tr class=\"node\"></tr>");
-				var tr2 = $("<tr class=\"cluster\"></tr>");
-				tr1.append(td1);
-				tr2.append(td2);
-				$tby.append(tr1).append(tr2);
-				/*定义表格布局end*/
-				
-				/*向表格添加数据*/
-				dataAppend(nodeSize,tr1,"nodeFailNum");				
-				dataAppend(clusterAvail,tr2,"clusterFailNum");
-			}else{
+            var data=data.data.response;
+            if(data != null){
+            	var tr1 = $("<tr >"
+                        + "<td colspan=\"3\">node</td>"
+                        + "</tr>")
+                var tr2 = $("<tr >"
+                        + "<td colspan=\"3\">cluster</td>"
+                        + "</tr>")
+                        
+                        if(data.node != null){
+                             specialData(data.node,$tby,tr1);                        
+                        }else{
+                            var trs = $("<tr><td>"
+                                    + JSON.stringify(data)
+                                    + "</td></tr>");
+                            $tby.append(trs);       
+                        }
+                        
+                        if(data.cluster != null){
+                            specialData(data.cluster,$tby,tr2);         
+                        }else{
+                            var trs = $("<tr><td>"
+                                    + JSON.stringify(data)
+                                    + "</td></tr>");
+                            $tby.append(trs);       
+                        }	
+            }else{
 				$tby.html("<tr><td>没有查询到数据信息</td></tr>");
-			}
+			}            	
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			$.gritter.add({
@@ -64,4 +60,42 @@ function queryMonitorClusterInfo(){
 			return false;
 		}
 	});
+}
+
+function specialData(data,$tby,tr1){
+    if(data != null){
+    	var item = getItem(data);
+        for (var i=0;i<item.length;i++ ){
+            /*创建tr*/
+            var tr = $("<tr></tr>");
+            tr.addClass(item[i]);
+            $tby.append(tr);
+
+           /* 获取数据并添加标记td*/
+            var unitData = data[item[i]];
+            var td = $("<td style=\"width: 20%;\">"
+                    + item[i]
+                    +  "<input type=\"text\" class=\"hidden\"/>"
+                    + "</td>");
+            var inputId = item[i] + "Num";
+            var unitdataCount = getCount(unitData);
+            
+            /*隐藏input用来记录失败fail count*/
+            td.find("input").attr({"id": inputId});
+
+            /*为表格添加数据*/
+            if(unitData != null){
+                td.attr({"rowspan":unitdataCount + 1});                
+                $('.'+item[i]).append(td);
+                dataAppend(unitData,$("."+item[i]),inputId)
+            }else{
+                var td2 = $("<td>"
+                    + unitData
+                    + "</td>");
+                td2.attr({"colspan":2});
+                $('.'+item[i]).append(td).append(td2);
+            }
+            $("."+ item[i]).before(tr1);
+        }
+    }
 }
