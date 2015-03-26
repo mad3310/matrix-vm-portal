@@ -35,7 +35,7 @@ public class BackupTest extends AbstractTest{
 	
     @Test
     public void testBackupTask() {
-    	this.backupProxy.backupTask();
+    	this.backupProxy.backupTask(3);
     }
     
     @Test

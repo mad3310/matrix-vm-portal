@@ -47,4 +47,6 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	List<MclusterModel> selectLastValidMclustersByPage(Page page);
 	
 	List<MclusterModel> selectValidMclustersByMap(Map<String, Object> params);
+
+	List<MclusterModel> selectNextValidMclusterById(Map<String, Object> map);
 }
