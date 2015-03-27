@@ -19,11 +19,17 @@ public class TaskChain extends BaseModel {
 	
 	private Date startTime;
 	private Date endTime;
-	
 	private String result;
-	
 	private String params; //json params
 	
+	private TemplateTaskDetail templateTaskDetail;
+	
+	public TemplateTaskDetail getTemplateTaskDetail() {
+		return templateTaskDetail;
+	}
+	public void setTemplateTaskDetail(TemplateTaskDetail templateTaskDetail) {
+		this.templateTaskDetail = templateTaskDetail;
+	}
 	public Long getChainIndexId() {
 		return chainIndexId;
 	}

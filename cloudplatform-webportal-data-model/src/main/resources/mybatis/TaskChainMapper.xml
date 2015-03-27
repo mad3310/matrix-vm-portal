@@ -22,6 +22,11 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="templateTaskDetail" javaType="TemplateTaskDetail">
+			<result column="NAME" property="name" />
+			<result column="DESCN" property="descn" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -101,7 +106,9 @@
 	</select>
 	<select id="selectAllChainByIndexId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_TASK_CHAIN tc where tc.CHAIN_INDEX_ID = #{chainIndexId}
+		<include refid="Base_Column_List" />,ttd.NAME,ttd.DESCN
+		from WEBPORTAL_TASK_CHAIN tc 
+		join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.id = tc.TASK_DETAIL_ID
+		where tc.CHAIN_INDEX_ID = #{chainIndexId}
 	</select>
 </mapper>   

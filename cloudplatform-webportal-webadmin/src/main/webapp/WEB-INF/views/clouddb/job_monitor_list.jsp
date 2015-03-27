@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div class="row">
-		<div class="task-monitor-menu col-xs-3">
+		<div class="task-monitor-menu col-xs-2">
 			<table class="table task-monitor-list" id="db_detail_table" >
 				<thead>
 					<tr>
@@ -10,18 +10,6 @@
 					</tr>
 				</thead>
 				<tbody id="menu-tby">
-					<tr>
-						<td>创建RDS</td>
-						<td width="80px">成功</td>
-					</tr>
-					<tr class="selected">
-						<td>创建SLB</td>
-						<td width="80px">成功</td>
-					</tr>
-					<tr>
-						<td>创建GCE</td>
-						<td width="80px">成功</td>
-					</tr>
 				</tbody>
 			</table>
 			<div id="pageControlBar">
@@ -37,7 +25,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-9">
+		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-10">
 			<div class="widget-header">
 				<h5 class="widget-title">任务监控</h5>
 			</div>
@@ -50,7 +38,8 @@
 								<th>起始时间</th>
 								<th>结束时间</th>
 								<th>重试次数</th>
-								<th>执行结果</th>
+								<th width=25%>执行结果</th>
+								<th>当期状态</th>
 								<th>操作</th>
 							</tr>
 						</thead>

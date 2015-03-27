@@ -1032,9 +1032,11 @@ edit by jinglinlin@letv.com
 
 /* 任务监控列表样式*/
 .task-monitor-menu{
-	min-height:550px;
-	border-right:1px solid #DDD;
+	min-height:650px;
+	border-right:3px solid #DDD;
 	padding-right:2px;
+    padding-top: 4px;
+	
 }
 .task-monitor-list{
 	
@@ -1046,7 +1048,8 @@ edit by jinglinlin@letv.com
 	background-color:#c0c0c0;
 }
 .task-monitor-table{
-	border-left-width:8px;
+	border-left-width:12px;
+	
 }
 
 /* 验证码图标样式 */
