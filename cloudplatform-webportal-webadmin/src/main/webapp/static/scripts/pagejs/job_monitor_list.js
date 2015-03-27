@@ -1,5 +1,6 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 200; //每页显示条数
+var refresh = null;
 	
 $(function(){
 	//初始化 
@@ -10,7 +11,6 @@ function queryByPage() {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 		}
-	
 	$("#tby tr").remove();
 	$.ajax({
 		cache:false,
@@ -50,10 +50,6 @@ function queryByPage() {
 				$("#totalRows").html(data.data.totalRecords);
 				$("#totalPage").html(totalPages);
 			}
-		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
-			error(XMLHttpRequest);
-			return false;
 		}
 	});
 	}
@@ -119,21 +115,30 @@ function initMonitorListClick(){
 			$(this).addClass("selected");
 			
 			var taskId = $(this).find("input").val();
-			queryTaskDetail(taskId);
+			queryTaskDetail(taskId,"new");
+			
+			function updateTaskDetail(){
+				queryTaskDetail(taskId,"update");
+			}
+			/*定时刷新状态*/
+			if(refresh != null){
+				clearInterval(refresh);
+			}
+			refresh = setInterval(updateTaskDetail,5000);
 		})
 	})
 }
 
-function queryTaskDetail(taskId){
-	getLoading();
+function queryTaskDetail(taskId,type){	//type 为 new|update
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : "/task/monitor/detail/"+taskId,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
-			$("#tby tr").remove();
-			removeLoading();
+			if(type == "new"){
+				$("#tby tr").remove();
+			}
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -169,7 +174,11 @@ function queryTaskDetail(taskId){
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
-				tr.appendTo(tby);
+				if(type == "new"){
+					tr.appendTo(tby);
+				}else{
+					tby.find("tr:eq("+i+")").html(tr.html());
+				}
 			}
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
