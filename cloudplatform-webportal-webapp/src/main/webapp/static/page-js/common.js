@@ -10,6 +10,8 @@ define(function(require,exports,module){
 		this.maxConcurrency = 2000; //数据库最大并发量
 		
 		TopBtnInit();//初始化顶部菜单按钮
+		
+		 browserVersion();
     };
     module.exports = Common;
 
@@ -584,4 +586,19 @@ define(function(require,exports,module){
 			$(this).html("<i class=\"fa fa-home text-20\"></i>");
 		})
 	}
+    var browserVersion = function(){
+    	var browser=navigator.appName 
+    	  var b_version=navigator.appVersion 
+    	  var version=b_version.split(";"); 
+    	  var trim_Version=version[1].replace(/[ ]/g,""); 
+    	  if(browser=="Microsoft Internet Explorer"){
+    	    if((trim_Version=="MSIE6.0")||(trim_Version=="MSIE7.0")||(trim_Version=="MSIE8.0")){
+    	      window.location.replace="browserError.jsp";
+    	    }
+    	  }
+    }
 });
+
+
+
+
