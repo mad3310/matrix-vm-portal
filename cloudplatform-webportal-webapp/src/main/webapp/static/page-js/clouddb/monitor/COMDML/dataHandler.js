@@ -12,6 +12,7 @@ define(function(require,exports,module){
     DataHandler.prototype = {
         InitCharts:function (data){
             var div = $('#chart-container');
+            
             InitChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
         },
         SetChartData:function(data){
@@ -22,6 +23,15 @@ define(function(require,exports,module){
                 chart.series[i].remove(false);
             }
             for(var i=0;i<ydata.length;i++){
+            	if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_inserts"){
+            		ydata[i].name = "平均每秒insert语句执行次数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_deletes"){
+            		ydata[i].name = "平均每秒delete语句执行次数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_updates"){
+            		ydata[i].name = "平均每秒update语句执行次数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_reads"){
+            		ydata[i].name = "平均每秒select语句执行次数";
+            	}
                 chart.addSeries(ydata[i],false);
             }
             chart.redraw();

@@ -22,6 +22,15 @@ define(function(require,exports,module){
                 chart.series[i].remove(false);
             }
             for(var i=0;i<ydata.length;i++){
+            	if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "Commit_PS"){
+            		ydata[i].name = "平均每秒事务数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "QPS"){
+            		ydata[i].name = "平均每秒SQL语句执行次数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "Opens_PS"){
+            		ydata[i].name = "平均每秒打开表数";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "Threads_PS"){
+            	ydata[i].name = "平均每秒创建连接数";
+            }
                 chart.addSeries(ydata[i],false);
             }
             chart.redraw();
