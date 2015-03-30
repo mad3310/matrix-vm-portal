@@ -72,9 +72,9 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		statistics.put("hcluster", this.hclusterService.selectByMapCount(null));
 		statistics.put("host", this.hostService.selectByMapCount(null));
 		
+		statistics.put("dbAudit", this.dbService.selectCountByStatus(DbStatus.DEFAULT.getValue()));
+		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("status", DbStatus.DEFAULT.getValue());
-		statistics.put("dbAudit", this.dbService.selectByMapCount(map));
 		statistics.put("dbUserAudit", this.dbUserService.selectByMapCount(map));
 		map.put("status", DbStatus.BUILDFAIL.getValue());
 		statistics.put("dbFaild", this.dbService.selectByMapCount(map));

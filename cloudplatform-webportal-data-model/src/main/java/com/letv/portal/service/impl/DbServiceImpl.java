@@ -155,4 +155,9 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 		
 		return glbParams;
 	}
+
+	@Override
+	public Integer selectCountByStatus(Integer _parameter) {
+		return this.dbDao.selectCountByStatus(_parameter);
+	}
 }
