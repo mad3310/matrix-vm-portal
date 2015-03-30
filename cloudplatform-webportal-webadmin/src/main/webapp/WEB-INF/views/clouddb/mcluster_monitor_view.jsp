@@ -82,7 +82,7 @@
 
 <script src="${ctx}/static/scripts/highcharts/highcharts.js"></script>
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/grid.js"></script> --%>
-	<script src="${ctx}/static/scripts/highcharts/themes/grid-light.js">
+	<%-- <script src="${ctx}/static/scripts/highcharts/themes/grid-light.js"> --%>
 </script>
 
 <%-- <script src="${ctx}/static/scripts/highcharts/themes/dark-blue.js"></script> --%>
