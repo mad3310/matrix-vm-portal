@@ -11,7 +11,7 @@ define(function(require,exports,module){
 		
 		TopBtnInit();//初始化顶部菜单按钮
 		
-		 browserVersion();
+		browserVersion(); //浏览器检测初始化
     };
     module.exports = Common;
 
@@ -593,7 +593,7 @@ define(function(require,exports,module){
     	  var trim_Version=version[1].replace(/[ ]/g,""); 
     	  if(browser=="Microsoft Internet Explorer"){
     	    if((trim_Version=="MSIE6.0")||(trim_Version=="MSIE7.0")||(trim_Version=="MSIE8.0")){
-    	      window.location.replace="browserError.jsp";
+    	      window.location.replace="/browserError";
     	    }
     	  }
     }

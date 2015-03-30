@@ -1,15 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@page import="com.letv.common.util.ConfigUtil"%>
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>当前浏览器不支持</title>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<!-- bootstrap css -->
+	<link type="text/css" rel="stylesheet" href="../../../static/css/bootstrap.min.css"/>
+	<!-- fontawesome css -->
+	<link type="text/css" rel="stylesheet" href="../../../static/css/font-awesome.min.css"/>
+	<!-- ui-css -->
+	<link type="text/css" rel="stylesheet" href="../../../static/css/ui-css/common.css"/>
+	<title>浏览器版本错误</title>
 </head>
 <body>
 <body>
 	<div class="text-center pd30" style="background:#f7f6f2;">
-		<p class="mt30"><h2>升级浏览器，升级你的浏览体验</h2></p>
+		<p class="mt30"><h2>升级浏览器，升级您的浏览体验</h2></p>
 		<ul class="ul_horizon mt30">
 			<li>
 				<a href="https://www.google.com/chrome/browser/" target="_blank">
@@ -32,10 +40,10 @@
 		</ul>
 	</div>
 	<div class="text-center mt30 pd30">
-		<div class="ib pd30"><img src="static/img/mokey.png" /></div>
+		<div class="ib pd30"><img src="static/img/monkey.png" /></div>
 		<div class="ib pd30">
 			<p><h4>您的浏览器好像有点过时了。</h4></p>
-			<p><h4>为了您正常使用 乐视云服务，建议安装以上现代浏览器。</h4></p>
+			<p><h4>为了您正常使用管理控制台，您可以点击以上浏览器图标升级浏览器版本。</h4></p>
 		</div>
 	</div>
 </body>

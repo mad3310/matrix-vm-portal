@@ -1,5 +1,6 @@
 body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
 	font-size: 12px;}
+.mt30{marin-top:30px;}
 .mt50{margin-top:50px;}
 .mt40{margin-top:40px;}
 .mt20{margin-top: 20px;}
@@ -578,7 +579,7 @@ width: 30px;
 }
 /*账户管理页end*/
 
-/*输入提示信息格式*/
+/*输入提示信息格式 begin*/
 .notice-block p {
     line-height: 24px;
     padding-top: 5px;
@@ -899,7 +900,7 @@ position: relative;
 display: block;
 height: 36px;
 background-color: #e8e8e8;
-padding-right:11px;/* 添加padding，预留拖动按钮的占位 */
+padding-right:11px;
 }
 .bk-slider .bk-slider-l2 {
 width: 206px;
@@ -1083,7 +1084,7 @@ position: relative;
 
 /*2014-12-19 by gm 数字框---end*/
 
-/*基本信息页面下拉箭头位置*/
+/*基本信息页面下拉箭头位置 bengin*/
 .panel-heading-mcluster{
 	margin-bottom: -1px;
 	height: 40px;
@@ -1185,8 +1186,8 @@ position: relative;
 	left: 0.166672px;
 	top: 0.600006px;
 }
-/* 监控界面css end */
-/* dblist页分页按钮 */
+/* 监控页面css end */
+/* dblist 列表*/
 .pagination{
 	vertical-align:middle;
 	margin:0px !important;
@@ -1203,8 +1204,8 @@ position: relative;
     border-bottom: 1px solid #DDD;
     vertical-align: middle;
 }
-/* dblist页分页按钮  end*/
-/* navbar-brand&nav ul color 覆盖&tip nowrap------2014-12-23--begin */
+/* dblist列表 end*/
+/* navbar-brand&nav ul color &tip nowrap------2014-12-23--begin */
 .navbar .color{color:#fff !important;padding-top:10px; padding-bottom:0px !important;}
 .navbar-inverse .navbar-nav>li>a.hlight{color:#fff !important;padding-top:10px; padding-bottom:10px !important;}
 .navbar .color:hover,.navbar-inverse .navbar-nav>li>a.hlight:hover{
@@ -1216,7 +1217,7 @@ position: relative;
 .tooltip-inner{
 	min-width:65px;
 }
-/* navbar-brand&nav ul color 覆盖------2014-12-23--end*/
+/* navbar-brand&nav ul color ------2014-12-23--end*/
 .bk-slider-range{
 	width: inherit;
 	height:36px;
@@ -1247,8 +1248,8 @@ position: relative;
 	/* border: #000 solid 3px transparent; */
 	/* border-top-color: #000; */
 }
-/* 暂不提供的功能设置disable类  该disable类可以 加在bk-slider-range等外层div上*/
-.bk-group .disabled .bk-slider-drag{
+/* bk-slider拖拽部分样式*/
+/* .bk-group .disabled .bk-slider-drag{
 	background:#84b4dc;
 	background-color:#84b4dc;
 	border:1px solid #84b4dc;
@@ -1261,27 +1262,27 @@ position: relative;
 }
 .bk-group .disabled .bk-slider-unit-box {
      border-right: solid 1px #84b4dc;
-}
+} */
 
 
-/* 去掉IP授权部分a标签下划线 */
+/* 创建账户和修改账户界面样式*/
 #newAccountTab a:hover,
 #modifyAccountTab a:hover {
 	cursor:pointer;
 	text-decoration:none
 }
-/* 分页条active颜色 */
+
 .pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover, .pagination>.active>a:focus, .pagination>.active>span:focus {
 	background-color: #697485;
 	boder-color: #697485;
 }
 
-/* 字体置灰 */
+/* disable font style */
 .font-disabled{
 	color:#999;
 }
 
-/* 创建数据库页面下拉列表框样式 */
+/* double select style */
 .bk-form-row select option{
 	padding:5px 5px 5px 5px;
 	color:#333;
@@ -1329,13 +1330,13 @@ position: relative;
 	display:block;
 }
 
-/* 各个界面input的radius */
+/* input border radius */
 .input-radius-2{
 	border-radius:2px;
 	box-shadow:none;
 }
 
-/* 创建实例界面input和i标签位置 */
+/* dbcreate page style  */
 .bk-buttontab .form-control-feedback{
 	top:18px;
 	left:350px;
@@ -1365,24 +1366,24 @@ position: relative;
 .edit-text-box .form-group{
 	margin-left:0;
 }
-/* 删除对话框警告图标样式 */
+/* modal-dialog style*/
 .modal-dialog .modal-body .warning-sign{
 	color: orange;
     font-size: 20px;
     padding: 5px 0px 0px 20px;
 }
 
-/* 账号管理界面滚动条去除 */
+/* 解决IE兼容性问题*/
 #newAccountTab .form-horizontal .form-group,
 #modifyAccountTab .form-horizontal .form-group,
 #accountList .form-horizontal .form-group{
   margin-right: -0px; 
 }
 
-/* 去掉IE10输入框中的X */
+/* 解决IE10兼容性问题 */
 input::-ms-clear{display:none;}
 
-/* IE10页面覆盖问题css */
+/* IE10兼容性问题css */
 .embed-responsive .embed-responsive-item{
 	padding-right:15px !important; /* firefox */
 	padding-right:15px\0; /* ie8 */
@@ -1432,7 +1433,7 @@ textarea {
 	padding: 0px;
 }
 
-/*loadding 样式*/
+/*loadding style*/
 .spin {
 	background-image: url('../../img/fading-loader.svg');
 	background-size: 50px 50px;
@@ -1472,7 +1473,7 @@ textarea {
        -moz-opacity:0.0; 
        opacity:0.0; 
 }
-/*tooltip popover 禁止自动换行 用<br>换行*/
+/*tooltip popover style*/
 .popover {
 	max-width: none;
 	white-space:nowrap;
@@ -1482,7 +1483,7 @@ textarea {
 	white-space:nowrap;
 }
 
-/*select组件重写*/
+/*select style*/
 .divselect{
 	cursor: pointer;
 	width:226px;
@@ -1517,13 +1518,13 @@ textarea {
 	text-decoration:none;
 }
 
-/*  无搜索结果提示信息样式 */
+/*  nodata div style*/
 #noData{
 	color:#ddd;
 	text-align:center
 }
 
-/* dblist页面进度条CSS */
+/* dblist progress CSS */
 .progress{
 	position:relative;
 	float:left;
@@ -1544,7 +1545,7 @@ textarea {
 	font-weight:bold;	
 }
 
-/* 复制功能模块css样式 */
+/* copy  plug-in style begin*/
 @media (min-width: 768px){
 	.zero-clipboard {
 	display: block;
@@ -1610,4 +1611,27 @@ textarea {
 	right:0;
 	color:green; 
 }
-/* 复制功能模块css样式end */
+/* copy plug-in style end */
+
+/* browser error page style begin */
+.ul_horizon{
+	list-style: none;
+	display: inline-block;
+	padding:0px;
+	}
+.ul_horizon li{
+	display:inline-block;
+	_zoom:1;
+	_display:inline;
+	overflow:hidden;
+	margin-right:5px;
+	}
+.ul_horizon li a{
+	padding:5px 10px;
+	/*color:#97a6b6;*/
+	color:#4A4F54;
+	}
+.pd30{
+	padding:30px;
+	}
+/* browser error page style end */
