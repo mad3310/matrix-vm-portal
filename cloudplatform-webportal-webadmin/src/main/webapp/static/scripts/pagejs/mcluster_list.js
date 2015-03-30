@@ -571,7 +571,7 @@ function deleteMcluster(obj){
 		refreshCode();
 	});
 	
-	setInterval(refreshCode,60000);
+	/*setInterval(refreshCode,60000);*/
 }
 
 function queryHcluster(){
