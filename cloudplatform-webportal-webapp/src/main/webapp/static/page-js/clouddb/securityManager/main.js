@@ -64,7 +64,7 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message:'IP名单不能为空!'
-                    },regexp: {                    	
+                    },regexp: {
                         regexp: /^(((\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3}[\,\n])*)((\d|\d\d|1\d\d|2[0-4]\d|25[0-5])((\.(\d|\d\d|1\d\d|2[0-4]\d|25[0-5]))|(\.\%)){3})$/,
                         message: '请按提示格式输入'
                     }
