@@ -20,6 +20,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.proxy.IMclusterProxy;
@@ -146,6 +147,11 @@ public class MclusterController {
 	 */
 	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
 	public @ResponseBody ResultObject delete(@PathVariable Long mclusterId,ResultObject result) {
+		if(mclusterId == null)
+			throw new ValidateException("参数不合法");
+		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
+		if(mcluster == null || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus())
+			throw new ValidateException("参数不合法");
 		this.mclusterProxy.deleteAndRemove(mclusterId);
 		return result;
 	}
