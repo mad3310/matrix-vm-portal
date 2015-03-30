@@ -38,4 +38,6 @@ public interface IDbDao extends IBaseDao<DbModel> {
 	 * @param params
 	 */
 	public List<DbModel> selectByDbNameForValidate(HashMap<String, Object> params);
+
+	public Integer selectCountByStatus(Integer _parameter);
 }

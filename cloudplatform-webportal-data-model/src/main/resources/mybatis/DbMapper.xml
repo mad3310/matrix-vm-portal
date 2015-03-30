@@ -217,7 +217,14 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 
-
+	<select id="selectCountByStatus" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		select count(1) from WEBPORTAL_DB m 
+		<if test="_parameter != null">
+		 where STATUS = #{_parameter}
+		</if>
+	</select>
+	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">

@@ -61,4 +61,6 @@ public interface IDbService extends IBaseService<DbModel> {
 
 	public Map<String, Object> getGbaConfig(Long dbId);
 
+	public Integer selectCountByStatus(Integer _parameter);
+
 }
