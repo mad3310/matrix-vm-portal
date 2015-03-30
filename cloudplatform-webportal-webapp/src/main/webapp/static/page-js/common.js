@@ -621,7 +621,7 @@ define(function(require,exports,module){
     		  window.location.replace="/browserError";
     	  }else if(_browser.indexOf("chrome") >=0 && verinfo < 21.0){
     		  window.location.replace="/browserError";
-    	  }else if(_browser.indexOf("safari") >=0 && verinfo < 10.0){
+    	  }else if(_browser.indexOf("safari") >=0 && verinfo < 4.0){
     		  window.location.replace="/browserError";
     	  }
     }
