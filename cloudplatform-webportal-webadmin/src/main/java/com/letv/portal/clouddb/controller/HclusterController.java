@@ -198,7 +198,6 @@ public class HclusterController {
 	@RequestMapping(method = RequestMethod.GET)
     public  @ResponseBody ResultObject selectHclusterByStatus(HclusterModel hclusterModel){
     	ResultObject obj = new ResultObject();
-    	hclusterModel.setStatus(HclusterStatus.RUNNING.getValue());
     	obj.setData(this.hclusterService.selectHclusterByStatus(hclusterModel));
     	return obj;
     }
