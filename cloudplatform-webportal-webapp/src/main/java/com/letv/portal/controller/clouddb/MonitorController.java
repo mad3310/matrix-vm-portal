@@ -44,12 +44,12 @@ public class MonitorController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(value="/{dbId}/{chartId}/{strategy}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject mclusterMonitorCharts(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,ResultObject result) {
+	@RequestMapping(value="/{dbId}/{chartId}/{strategy}/{isTimeAveraging}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getDbConnMonitor(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,@PathVariable boolean isTimeAveraging,ResultObject result) {
 		DbModel dbModel = this.dbService.selectById(dbId);
 		if(dbModel == null)
 			throw new ValidateException("参数不合法，相关数据不存在");
-		result.setData(this.monitorProxy.getDbConnMonitor(dbModel.getMclusterId(), chartId, strategy));
+		result.setData(this.monitorProxy.getDbData(dbModel.getMclusterId(), chartId, strategy,isTimeAveraging));
 		return result;
 	}
 	

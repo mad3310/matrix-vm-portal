@@ -97,8 +97,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		logger.info("get Data-------end" + (new Date().getTime()-prepare.getTime())/1000);
 		return ydatas;
 	}
+	
 	@Override
-	public List<MonitorViewYModel> getDbConnMonitor(String ip,Long chartId,Integer strategy) {
+	public List<MonitorViewYModel> getDbData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
 		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
@@ -124,15 +125,24 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			beforData = this.monitorDao.selectDateTime(params); 
 			
 			List<List<Object>> datas = new ArrayList<List<Object>>();
-			
-			for (int i = 0; i < beforData.size()-1; i++) {
-				List<Object> point = new ArrayList<Object>();
-				point.add(beforData.get(i+1).getMonitorDate());
-				float diff = beforData.get(i+1).getDetailValue()-beforData.get(i).getDetailValue();
-				float time = (beforData.get(i+1).getMonitorDate().getTime()-beforData.get(i).getMonitorDate().getTime())/1000;
-				Long value = (long) (diff>0?diff/time:0);
-				point.add(value);
-				datas.add(point);
+			if(isTimeAveraging) {
+				for (int i = 0; i < beforData.size()-1; i++) {
+					List<Object> point = new ArrayList<Object>();
+					point.add(beforData.get(i+1).getMonitorDate());
+					float diff = beforData.get(i+1).getDetailValue()-beforData.get(i).getDetailValue();
+					float time = (beforData.get(i+1).getMonitorDate().getTime()-beforData.get(i).getMonitorDate().getTime())/1000;
+					Long value = (long) (diff>0?diff/time:0);
+					point.add(value);
+					datas.add(point);
+				}
+			} else {
+				for (int i = 0; i < beforData.size()-1; i++) {
+					List<Object> point = new ArrayList<Object>();
+					point.add(beforData.get(i).getMonitorDate());
+					Long value = (long) (beforData.get(i).getDetailValue()>=0?beforData.get(i).getDetailValue():0);
+					point.add(value);
+					datas.add(point);
+				}
 			}
 			
 			ydata.setName(s);

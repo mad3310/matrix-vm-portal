@@ -129,7 +129,7 @@ public class SkipController {
 	public ModelAndView toMonitor(@PathVariable Long dbId,ModelAndView mav){
 		isAuthorityDb(dbId);
 		mav.addObject("dbId",dbId);
-		mav.setViewName("/clouddb/monitor/dbLink");
+		mav.setViewName("/clouddb/monitor/COMDML");
 		return mav;
 	}
 	

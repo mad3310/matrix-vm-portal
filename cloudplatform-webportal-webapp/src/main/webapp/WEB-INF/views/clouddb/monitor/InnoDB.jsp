@@ -60,7 +60,7 @@
 <script type="text/javascript">
 
 // Set configuration
-/* seajs.config({
+ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
@@ -69,7 +69,7 @@
 	}
 });
 
-seajs.use("${ctx}/static/page-js/clouddb/monitor/dbLink/main"); */
+seajs.use("${ctx}/static/page-js/clouddb/monitor/InnoDbBufferPool/main");
 
 </script>
 </html>
