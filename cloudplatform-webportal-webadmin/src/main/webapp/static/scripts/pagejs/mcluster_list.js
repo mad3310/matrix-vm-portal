@@ -488,7 +488,10 @@ function deleteMcluster(obj){
 						cache:false,
 						url:'/mcluster/'+mclusterId,
 						type:'delete',
-						success:function(data){							
+						success:function(data){
+							if(typeof(data) == 'string'){
+								data = JSON.parse(data)
+							};
 							if(error(data)) return;
 							queryByPage();
 						}
@@ -594,7 +597,6 @@ function queryHcluster(){
 }
 
 function page_init(){
-	
 	queryByPage();
 	searchAction();
 	formValidate();
