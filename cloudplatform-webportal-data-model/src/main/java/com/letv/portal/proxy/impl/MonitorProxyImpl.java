@@ -64,7 +64,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	}
 	
 	@Override
-	public List<MonitorViewYModel> getDbConnMonitor(Long mclusterId,Long chartId, Integer strategy) {
+	public List<MonitorViewYModel> getDbData(Long mclusterId,Long chartId, Integer strategy,boolean isTimeAveraging) {
 		Date start = new Date();
 		logger.debug("get data start" + start);
 		logger.debug("get data prepare" + start);
@@ -74,7 +74,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		List<ContainerModel> containers = this.containerService.selectByMap(map);	
 		Date prepare = new Date();
 		logger.debug("get data prepare" + (prepare.getTime()-start.getTime())/1000);
-		List<MonitorViewYModel> data = this.monitorService.getDbConnMonitor(containers.get(0).getIpAddr(), chartId, strategy);
+		List<MonitorViewYModel> data = this.monitorService.getDbData(containers.get(0).getIpAddr(), chartId, strategy,isTimeAveraging);
 		Date end = new Date();
 		
 		logger.debug("get data end" + (end.getTime()-prepare.getTime())/1000);

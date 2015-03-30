@@ -18,7 +18,7 @@ public interface IMonitorProxy {
 	public void collectMclusterServiceData();
 
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId, Long chartId,Integer strategy);
-	public List<MonitorViewYModel> getDbConnMonitor(Long mclusterId,Long chartId, Integer strategy);
+	public List<MonitorViewYModel> getDbData(Long mclusterId,Long chartId, Integer strategy,boolean isTimeAveraging);
 
 	/**Methods Name: deleteOutData <br>
 	 * Description: 删除过时数据：当前时间往前一个月<br>
