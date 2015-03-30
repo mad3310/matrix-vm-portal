@@ -56,7 +56,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		}
-		
+		if("/".equals(requestUrl)) {
+			return true; 
+		}
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 		if(session == null ) {
 			logger.debug("please login");

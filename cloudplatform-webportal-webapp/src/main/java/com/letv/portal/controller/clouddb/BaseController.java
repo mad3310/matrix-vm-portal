@@ -22,4 +22,8 @@ public class BaseController {
 	public String browserErrorException(HttpServletRequest request,HttpServletResponse response) {
 		return "/error/browserError";
 	}
+	@RequestMapping(value="/home",method=RequestMethod.GET)   
+	public String home(HttpServletRequest request,HttpServletResponse response) {
+		return "/portal/home";
+	}
 }

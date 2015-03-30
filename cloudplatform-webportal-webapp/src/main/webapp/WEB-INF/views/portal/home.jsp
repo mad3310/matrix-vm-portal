@@ -6,11 +6,11 @@
 <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 <meta name="viewpoint" content="width=device-width,initial-scale=1"/>
 
-<link type="text/css" rel="stylesheet" href=" ../css/bootstrap.min.css"/>
-<link type="text/css" rel="stylesheet" href=" ../css/font-awesome.min.css"/>
-<link rel="shortcut icon" href=" img/favicon2.ico">
-<script type="text/javascript" src="../modules/jquery/2.0.3/jquery.min.js"></script>
-<script type="text/javascript" src=" ../modules/bootstrap/bootstrap/3.3.0/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
+<link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css"/>
+<link rel="shortcut icon" href=" ${ctx}/static/img/favicon2.ico">
+<script type="text/javascript" src="${ctx}/static/modules/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/modules/bootstrap/bootstrap/3.3.0/bootstrap.min.js"></script>
 <title>用户注册中心</title>
 </head>
 <body>
@@ -61,7 +61,7 @@ browserVersion(); //浏览器检测初始化
 .hidden{display: none;}
 /*video*/
 .page-background {
-  background-image: url(img/userbg.jpg);
+  background-image: url(${ctx}/static/img/userbg.jpg);
 }
 .page-background {
   background-attachment: fixed;
@@ -549,18 +549,18 @@ animation-name: swashOut;
                   <!-- Wrapper for slides -->
                   <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                      <img src="img/userbg.jpg" alt="...">
+                      <img src="${ctx}/static/img/userbg.jpg" alt="...">
                       <div class="carousel-caption" >
                     <!--  文字说明 -->
                       </div>
                     </div>
                     <div class="item">
-                      <img src="img/userbg2.jpg" alt="...">
+                      <img src="${ctx}/static/img/userbg2.jpg" alt="...">
                       <div class="carousel-caption">
                       </div>
                     </div>
                     <div class="item">
-                      <img src="img/userbg3.jpg" alt="...">
+                      <img src="${ctx}/static/img/userbg3.jpg" alt="...">
                       <div class="carousel-caption">
                       </div>
                     </div>
@@ -600,17 +600,17 @@ animation-name: swashOut;
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
 	                                <a href="" title="数据库RDS">
-	                                    <img src="img/img-a.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-a.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a href="" title="缓存服务">
-	                                    <img src="img/img-b.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-b.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a href="" title="分布式RDS">
-	                                    <img src="img/img-c.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-c.jpg" alt="">
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -623,38 +623,38 @@ animation-name: swashOut;
 	                        <div class="blue filled-circle">
 	                            <div class="table-wrapper frame-2-2 hidden first-children">
 	                                <div class="word-wrapper swashIn magictime holeOut">
-	                                    <img src="img/c6e91970cd4ed6d3d75f1ba027a51480.png" alt="" class="part-1">
+	                                    <img src="${ctx}/static/img/c6e91970cd4ed6d3d75f1ba027a51480.png" alt="" class="part-1">
 	                                    <h2></h2>
 	                                </div>
 	                            </div>
 	                            <div class="table-wrapper frame-2-3 hidden">
 	                                <div class="word-wrapper openDownRightOut magictime slideLeftRetourn">
-	                                    <img src="img/87f1baf73a3130d273c36cd2f1e7b452.png" alt="" class="part-1">
+	                                    <img src="${ctx}/static/img/87f1baf73a3130d273c36cd2f1e7b452.png" alt="" class="part-1">
 	                                    <h2>代码托管</h2>
 	                                </div>
 	                            </div>
 	                            <div class="table-wrapper frame-2-4 hidden">
 	                                <div class="word-wrapper openUpLeftOut magictime slideRightRetourn">
-	                                    <img src="img/eb783668c50d9fb69f1559470264c0e3.png" alt="" class="part-1">
+	                                    <img src="${ctx}/static/img/eb783668c50d9fb69f1559470264c0e3.png" alt="" class="part-1">
 	                                    <h2>运行空间<br>(Paas)</h2>
 
 	                                </div>
 	                            </div>
 	                            <div class="table-wrapper frame-2-5 hidden">
 	                                <div class="word-wrapper swashOut magictime slideDownRetourn">
-	                                    <img src="img/15fc474671ffd6f88773924b97610634.png" alt="" class="part-1">
+	                                    <img src="${ctx}/static/img/15fc474671ffd6f88773924b97610634.png" alt="" class="part-1">
 	                                    <h2 style="height: auto; margin-top: 40px;">质量控制</h2>
 	                                </div>
 	                            </div>
 	                            <!-- <div class="table-wrapper frame-2-6 hidden last-children">
-	                                <img src="img/4579875e7d66b84fa4e96119356cb034.png" alt="" class="part-1 magictime swashIn">
-	                                <img src="img/b0e596561669088619b6adfb4a20e1dd.png" alt="" class="part-2 magictime swashIn">
-	                                <img src="img/08b1573ac84744faa5e963059b1d18d1.png" alt="" class="part-3 magictime swashIn">
-	                                <img src="img/d657cd3da45603b60b2c578a8095031f.png" alt="" class="part-4 magictime swashIn">
-	                                <img src="img/7d2ba4136e2368c09ea0879107f89189.png" alt="" class="part-5 magictime swashIn">
+	                                <img src="${ctx}/static/img/4579875e7d66b84fa4e96119356cb034.png" alt="" class="part-1 magictime swashIn">
+	                                <img src="${ctx}/static/img/b0e596561669088619b6adfb4a20e1dd.png" alt="" class="part-2 magictime swashIn">
+	                                <img src="${ctx}/static/img/08b1573ac84744faa5e963059b1d18d1.png" alt="" class="part-3 magictime swashIn">
+	                                <img src="${ctx}/static/img/d657cd3da45603b60b2c578a8095031f.png" alt="" class="part-4 magictime swashIn">
+	                                <img src="${ctx}/static/img/7d2ba4136e2368c09ea0879107f89189.png" alt="" class="part-5 magictime swashIn">
 	                                <div class="word-wrapper">
-	                                    <img src="img/eb783668c50d9fb69f1559470264c0e3.png" class="frame-2-6-2 magictime swashIn" style="display: inline;">
-	                                    <img src="img/9383ecf417be779e10905fe3521118af.png" class="frame-2-6-1" style="display: block; top: 54%; opacity: 0;">
+	                                    <img src="${ctx}/static/img/eb783668c50d9fb69f1559470264c0e3.png" class="frame-2-6-2 magictime swashIn" style="display: inline;">
+	                                    <img src="${ctx}/static/img/9383ecf417be779e10905fe3521118af.png" class="frame-2-6-1" style="display: block; top: 54%; opacity: 0;">
 	                                </div>
 	                            </div> -->
 	                        </div>
@@ -671,9 +671,9 @@ animation-name: swashOut;
 	                        <div class="red doted-circle circling">
 	                        </div>
 	                        <div class="red filled-circle">
-	                            <img src="img/4282e17f31acb10d9cd8257a7043d93f.png" alt="" class="frame-3 part-1">
-	                            <img src="img/a8d7303b7bb154a491e16a53c542e03f.png" alt="" class="frame-3 part-2">
-	                            <img src="img/67bf9b845b9d31526fab1c62ca20bd3d.png" alt="" class="frame-3 part-3">
+	                            <img src="${ctx}/static/img/4282e17f31acb10d9cd8257a7043d93f.png" alt="" class="frame-3 part-1">
+	                            <img src="${ctx}/static/img/a8d7303b7bb154a491e16a53c542e03f.png" alt="" class="frame-3 part-2">
+	                            <img src="${ctx}/static/img/67bf9b845b9d31526fab1c62ca20bd3d.png" alt="" class="frame-3 part-3">
 	                        </div>
 	                        
 	                    </div>
@@ -688,17 +688,17 @@ animation-name: swashOut;
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
 	                                <a href="" title="数据库RDS">
-	                                    <img src="img/img-a.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-a.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a href="" title="缓存服务">
-	                                    <img src="img/img-b.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-b.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a href="" title="分布式RDS">
-	                                    <img src="img/img-c.jpg" alt="">
+	                                    <img src="${ctx}/static/img/img-c.jpg" alt="">
 	                                </a>
 	                            </li>
 	                        </ul>
