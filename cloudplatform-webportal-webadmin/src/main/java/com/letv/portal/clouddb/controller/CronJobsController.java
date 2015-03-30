@@ -114,14 +114,12 @@ public class CronJobsController {
 	 * @return
 	 */
 	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject dbBackup(int stage, HttpServletRequest request,ResultObject obj) {
+	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
-		if(stage<1 || stage>4) {
-			obj.setResult(0);
-			obj.getMsgs().add("参数不合法");
-			return obj;
+		if(count ==0 || count<0) {
+			count = 5;
 		}
-		this.backupProxy.backupTask(stage);
+		this.backupProxy.backupTask(count);
 		return obj;
 	}
 	/**Methods Name: dbBackupCheck <br>
@@ -132,9 +130,12 @@ public class CronJobsController {
 	 * @return
 	 */
 	@RequestMapping(value="/db/backup/check",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject dbBackupCheck(HttpServletRequest request,ResultObject obj) {
+	public @ResponseBody ResultObject dbBackupCheck(int count,HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup check");
-		this.backupProxy.checkBackupStatusTask();
+		if(count ==0 || count<0) {
+			count = 5;
+		}
+		this.backupProxy.checkBackupStatusTask(count);
 		return obj;
 	}
 	

@@ -168,6 +168,21 @@
 		<include refid="Example_Where_Clause" />
 		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID
 	</select>
+	<select id="selectByStatusAndDateOrderByMclusterId" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_BACKUP_RESULT r where 1=1
+		<trim suffixOverrides=",">
+			<if test="startTime != null and startTime != '' ">
+				and r.START_TIME&gt;=#{startTime}
+			</if>
+			<if test="status != null and status != ''">
+				and r.STATUS=#{status}
+			</if>
+		</trim>
+		order by r.MCLUSTER_ID desc limit 1
+	</select>
 	
 	
 	<sql id="Example_Page_Where_Clause">

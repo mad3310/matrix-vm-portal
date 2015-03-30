@@ -1,5 +1,6 @@
 package com.letv.portal.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,17 +96,24 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	}
 
 	@Override
-	public List<MclusterModel> selectValidMclusters(int stage) {
-		if(stage == 0)
+	public List<MclusterModel> selectValidMclusters(int count) {
+		if(count == 0)
 			return this.mclusterDao.selectValidMclusters();
-		Page page = new Page(stage,25);
-		if(stage == 4)
-			return this.mclusterDao.selectLastValidMclustersByPage(page);
+		Page page = new Page(1,count);
 		return this.mclusterDao.selectValidMclustersByPage(page);
 	}
 
 	@Override
 	public List<MclusterModel> selectValidMclusters() {
 		return this.mclusterDao.selectValidMclusters();
+	}
+	
+	@Override
+	public List<MclusterModel> selectNextValidMclusterById(Long mclusterId,
+			int addNewCount) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("mclusterId", mclusterId);
+		map.put("addNewCount", addNewCount);
+		return this.mclusterDao.selectNextValidMclusterById(map);
 	}
 }

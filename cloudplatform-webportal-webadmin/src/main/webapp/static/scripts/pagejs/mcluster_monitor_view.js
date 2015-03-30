@@ -103,12 +103,12 @@ function initCharts(data){
 
 function initChart(obj,title,ytitle,unit){
     $(obj).highcharts({
-    	chart: {
-    		type: 'areaspline',
+        chart: {
+            type: 'areaspline',
             zoomType: 'x',
             spacingRight: 20
         },
-        colors: ['#ff66cc','#66ff66','#66ffff','#FFBB33','#C9C','#090','#330000','#CCCC00','#66cc99','#ccff66','#996666','#66cc33'],
+        colors:['#ff66cc','#66ff66','#66ffff','#FFBB33','#C9C','#090','#330000','#CCCC00','#66cc99','#ccff66','#996666','#66cc33'],
         title: {
             text: title
         },
@@ -123,9 +123,9 @@ function initChart(obj,title,ytitle,unit){
         },
         xAxis: {
             type: 'datetime',
-            tickPixelInterval:30,
+            tickPixelInterval:150,
             labels:{
-                rotation:-90,
+                rotation:0,
                 align:'right'
             },
             dateTimeLabelFormats:{
@@ -139,23 +139,22 @@ function initChart(obj,title,ytitle,unit){
                 year: '%Y'
             }
         },
-        plotOptions: {  
-            spline: {  
-                lineWidth: 1.5,  
-                fillOpacity: 0.1,  
-                 marker: {  
-                    enabled: false,  
-                    states: {  
-                        hover: {  
-                            enabled: true,  
-                            radius: 2  
-                        }  
-                    }  
-                },  
-                shadow: false  
-            }  
-        }, 
-        series:{
+        plotOptions: {
+        	lineWidth: 0.1,  
+            fillOpacity: 0.1,
+            areaspline: {
+                marker: {
+                    enabled: false,
+                    symbol: 'circle',
+                    radius: 2,
+                    states: {
+                        hover: {
+                            enabled: true
+                        }
+                    }
+                }
+            },
+            series:{
             	lineWidth: 0.5,  
                 fillOpacity: 0.5,
                 states:{
@@ -163,6 +162,7 @@ function initChart(obj,title,ytitle,unit){
                         lineWidthPlus:0
                     }
             	}
+        	}
         },
         credits:{
             enabled: false
@@ -175,22 +175,6 @@ function initChart(obj,title,ytitle,unit){
         tooltip: {
             valueSuffix: "/s",
             shared: true
-        },
-        loading: {
-            hideDuration: 10,
-            showDuration: 10,
-            style: {
-            	position: 'absolute',
-            	backgroundColor: 'white',
-            	opacity: 0.5,
-            	textAlign: 'center'
-            },
-           labelStyle:{
-           	 "fontWeight": "bold",
-           	 "position": "relative", 
-           	 "top": "45%",
-           	 "fontSize":"12px"
-           }
         }
     });
 

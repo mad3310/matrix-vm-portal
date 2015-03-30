@@ -20,4 +20,7 @@ public interface IBackupService extends IBaseService<BackupResultModel> {
 	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
 			Map<String, Object> map);
 
+	List<BackupResultModel> selectByStatusAndDateOrderByMclusterId(
+			Map<String, Object> params);
+
 }
