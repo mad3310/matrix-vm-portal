@@ -162,7 +162,7 @@ public class SkipController {
 		return mav;
 	}
 	
-	@RequestMapping(value ="/jettyMonitor",method=RequestMethod.GET)
+	@RequestMapping(value ="/jettyMonitor")
 	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
 		return obj;
 	}
