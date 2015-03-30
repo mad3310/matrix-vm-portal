@@ -26,7 +26,7 @@ define(function(require){
 		cn.GetData("/monitor/index/19",monitor.InitCharts);
 	}
 	function UpdateChartData(){
-		var url = "/monitor/"+$("#dbId").val()+"/19/"+$("#strategy").val()+"/true";
+		var url = "/monitor/"+$("#dbId").val()+"/19/"+$("#strategy").val()+"/false";
 		cn.GetData(url,monitor.SetChartData); 
 	}
 });

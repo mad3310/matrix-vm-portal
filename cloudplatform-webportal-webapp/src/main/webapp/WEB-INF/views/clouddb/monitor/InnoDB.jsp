@@ -20,7 +20,7 @@
 	<!-- 全局参数 end -->
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">InnoDB缓冲池</h5>
+			<h5 class="">InnoDB缓存读命中率、使用大小、脏块大小</h5>
 		</div>
 		<div class="pull-right">
 			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />

@@ -22,6 +22,13 @@ define(function(require,exports,module){
                 chart.series[i].remove(false);
             }
             for(var i=0;i<ydata.length;i++){
+            	if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "buf_pool_hit_rate"){
+            		ydata[i].name = "缓冲池的读命中率";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "buf_free"){
+            		ydata[i].name = "缓冲池剩余空间";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "buf_pool_size"){
+            		ydata[i].name = "缓冲池总空间";
+            	}
                 chart.addSeries(ydata[i],false);
             }
             chart.redraw();
@@ -99,7 +106,7 @@ define(function(require,exports,module){
                 }
             },
             tooltip: {
-                valueSuffix: "/s",
+                valueSuffix: "",
                 shared: true
             }
         });
