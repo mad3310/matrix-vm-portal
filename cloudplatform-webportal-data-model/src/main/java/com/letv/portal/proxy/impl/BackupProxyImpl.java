@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,9 +64,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		this.backupTask(0); //all
 	}
 	@Override
-	public void backupTask(int stage) {
+	public void backupTask(int count) {
 		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
-		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(stage);
+		if(count == 0)
+			count = 5;
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count);
 		for (MclusterModel mclusterModel : mclusters) {
 			//进行备份。
 			this.wholeBackup4Db(mclusterModel);
@@ -73,12 +76,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	@Async
+//	@Async
 	public void wholeBackup4Db(MclusterModel mcluster) {
 		Date date = new Date();
 		if(mcluster == null)
 			return;
-		
 		//选择集群的第二个节点ip (ps:mcluster manager 要求打到第二个节点)。
 		ContainerModel container = this.selectValidVipContianer(mcluster.getId(), "mclustervip");
 		//选择该集群下的所有db库（不止一个）
@@ -129,10 +131,15 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	public void checkBackupStatusTask() {
+	public void checkBackupStatusTask(int count) {
+		if(count == 0)
+			count = 5;
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
+		int addNewCount = 5-results.size();
+		if(addNewCount>0)
+			this.backupTask4addNew(addNewCount);
 		for (BackupResultModel backup : results) {
 			this.checkBackupStatus(backup);
 		}
@@ -140,7 +147,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	@Async
+//	@Async
 	public void checkBackupStatus(BackupResultModel backup) {
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
@@ -163,11 +170,13 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				resultDetail = "api not found";
 			}
 		}
+		
 		Date date = new Date();
 		backup.setStatus(status);
 		backup.setResultDetail(resultDetail);
 		backup.setEndTime(date);
 		this.backupService.updateBySelective(backup);
+		
 		
 		if(status.equals(BackupStatus.FAILD)) {
 			logger.info("check backup faild");
@@ -176,6 +185,25 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 	}
 	
+	private void backupTask4addNew(int addNewCount) {
+		BackupResultModel recentBackup = this.selectRecentBackup();
+		List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), addNewCount);
+		for (MclusterModel mclusterModel : mclusters) {
+			this.wholeBackup4Db(mclusterModel);
+		}
+	}
+	private BackupResultModel selectRecentBackup() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Map<String, Object> params = new HashMap<String,Object>();
+		Calendar curDate = Calendar.getInstance();
+		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
+		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		List<BackupResultModel> results = this.backupService.selectByStatusAndDateOrderByMclusterId(params);
+		if(results.isEmpty())
+			return null;
+		return results.get(0);
+	}
+
 	private void sendBackupFaildNotice(String dbName,String mclusterName,String resultDetail,Date startTime,String backupIp) {
 		logger.info("check backup faild:send email--" + dbName + mclusterName);
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -187,7 +215,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("backupIp", backupIp);
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
-		defaultEmailSender.sendMessage(mailMessage);
+//		defaultEmailSender.sendMessage(mailMessage);
 	}
 	
 	@Override

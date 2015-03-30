@@ -19,5 +19,8 @@ public interface IBackupResultDao extends IBaseDao<BackupResultModel> {
 
 	List<Map<String, Object>> selectExtremeIdByMonitorDate(
 			Map<String, Object> map);
+
+	List<BackupResultModel> selectByStatusAndDateOrderByMclusterId(
+			Map<String, Object> params);
 	  
 }
