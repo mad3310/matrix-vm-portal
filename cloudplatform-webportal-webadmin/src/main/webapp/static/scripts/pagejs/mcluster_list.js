@@ -171,9 +171,9 @@ function queryByPage() {
 							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 							+"</a>"
-							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							/*+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</a>"
+							+"</a>"*/
 							+"</div>"
 							+ "</td>"
 					);
@@ -492,7 +492,7 @@ function deleteMcluster(obj){
 							if(error(data)) return;
 							queryByPage();
 						}
-					});				
+					});		
 					$('#dialog-confirm').dialog("close");
 				}else if(data.data == false){
 					refreshCode();
@@ -527,7 +527,7 @@ function deleteMcluster(obj){
 		$("#kaptchaImage").attr('src', '/kaptcha?t='+ dt);
 	}
 	
-	/*输入框改变绑定事件*/
+	/*输入框改变时绑定事件*/
 	$("input[name='kaptcha']").on('input',function(e){  
 		$('.warning-info').remove();
 		$('.success-info').remove();
@@ -556,6 +556,12 @@ function deleteMcluster(obj){
 		});
 		
 	});
+	/*焦点移开事件*/
+	/*$("input[name='kaptcha']").blur(function(){
+		$('.warning-info').remove();
+		$('.success-info').remove();
+		var value=$("[name='kaptcha']").val('');
+	});*/
 	
 	/*点击验证码刷新验证码*/	
 	$(".kaptcha").bind('click',function(){
