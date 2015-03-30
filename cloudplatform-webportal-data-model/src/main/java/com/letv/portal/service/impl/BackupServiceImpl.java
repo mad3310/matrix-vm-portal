@@ -74,4 +74,10 @@ public class BackupServiceImpl extends BaseServiceImpl<BackupResultModel> implem
 			Map<String, Object> map) {
 		return this.backupResultDao.selectExtremeIdByMonitorDate(map);
 	}
+
+	@Override
+	public List<BackupResultModel> selectByStatusAndDateOrderByMclusterId(
+			Map<String, Object> params) {
+		return this.backupResultDao.selectByStatusAndDateOrderByMclusterId(params);
+	}
 }

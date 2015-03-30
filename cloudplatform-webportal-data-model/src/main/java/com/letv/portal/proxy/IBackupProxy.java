@@ -35,7 +35,7 @@ public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 	 * Description: 定期检查备份结果 任务<br>
 	 * @author name: liuhao1
 	 */
-	public void checkBackupStatusTask();
+	public void checkBackupStatusTask(int count);
 	
 	/**Methods Name: checkBackupStatus <br>
 	 * Description: 检查某备份结果<br>
