@@ -150,7 +150,7 @@ public class MclusterController {
 		if(mclusterId == null)
 			throw new ValidateException("参数不合法");
 		MclusterModel mcluster = this.mclusterService.selectById(mclusterId);
-		if(mcluster == null || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus())
+		if(mcluster == null || MclusterStatus.BUILDFAIL.getValue() != mcluster.getStatus())
 			throw new ValidateException("参数不合法");
 		this.mclusterProxy.deleteAndRemove(mclusterId);
 		return result;
