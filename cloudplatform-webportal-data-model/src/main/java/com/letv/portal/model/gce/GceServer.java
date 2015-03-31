@@ -13,16 +13,24 @@ public class GceServer extends BaseModel {
 	private Long gceClusterId;
 	private Long hclusterId;
 
-	private String gceImageName;
+	private String gceImageName;//gce镜像名称
 	private String ip;
-	private String portForward;
+	private String portForward;//端口转发规则
 	private Integer status;
 	private String descn;
+	private String type;//container类型：nginx、jetty
 	
 	private HclusterModel hcluster;
 	private GceCluster gceCluster;
 	private UserModel createUserModel;
 	
+
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getGceName() {
 		return gceName;
 	}

@@ -20,6 +20,10 @@ public class GceContainer extends BaseModel {
 	private Integer memorySize; //内存大小
 	private Integer status; //状态
 	private String zabbixHosts;//对应zabbix删除container时候需要的标识
+	private String bindContainerPort;//容器内部服务端口
+	private String bingHostPort;//物理机映射端口
+	private String bingHostIp;//物理机映射IP
+	private String containerUuid;//调用container用的UUID
 	
 	private ServiceType serviceType;
 	
@@ -128,5 +132,29 @@ public class GceContainer extends BaseModel {
 	}
 	public void setGceClusterId(Long gceClusterId) {
 		this.gceClusterId = gceClusterId;
+	}
+	public String getBindContainerPort() {
+		return bindContainerPort;
+	}
+	public void setBindContainerPort(String bindContainerPort) {
+		this.bindContainerPort = bindContainerPort;
+	}
+	public String getBingHostPort() {
+		return bingHostPort;
+	}
+	public void setBingHostPort(String bingHostPort) {
+		this.bingHostPort = bingHostPort;
+	}
+	public String getBingHostIp() {
+		return bingHostIp;
+	}
+	public void setBingHostIp(String bingHostIp) {
+		this.bingHostIp = bingHostIp;
+	}
+	public String getContainerUuid() {
+		return containerUuid;
+	}
+	public void setContainerUuid(String containerUuid) {
+		this.containerUuid = containerUuid;
 	}
 }
