@@ -148,8 +148,8 @@ function init_task_option(url){
 						allow_single_deselect:true,
 						search_contains:true,
 						no_results_text:"未找到匹配数据",
-						disable_search:true,	
-						width:'210px'
+						disable_search:false,	
+						width:'320px'
 					}
 				$('.chosen-select').trigger('chosen:updated');	
 				$('.chosen-select').chosen(options)
