@@ -66,6 +66,11 @@
 									<select class="form-control" name="taskDetailId" id="taskDetailId">
 									</select>
 								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="可在下拉列表中选择已创建的任务单元。" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="retry">失败重试次数</label>
@@ -78,20 +83,31 @@
 										<option value="5">5</option>
 									</select>
 								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务创建失败后，可以重试的次数。" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
 							</div>
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">执行顺序</label>
 								<div class="col-sm-3">
 									<input class="form-control" type="text" name="executeOrder" id="executeOrder"/>
 								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的期望执行顺序，只能输入整数数字。" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
 							</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+								<button id="add-task-unit" type="button" class="btn btn-sm btn-primary">创建</button>
 							</div>
 						</form>
             		</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="add-task-unit" type="button" class="btn btn-sm btn-primary">创建</button>
-					</div>
+					
 				</div>
 			</div>
 			<div id="dialog-confirm" class="hide">

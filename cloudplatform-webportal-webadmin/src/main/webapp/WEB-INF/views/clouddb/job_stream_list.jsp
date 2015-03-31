@@ -85,6 +85,11 @@
 										<option value="消息中间件">消息中间件</option>
 									</select>
 								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的业务类型，例如RDS，GLB，GCE，消息中间件等" style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="descn">描述</label>
