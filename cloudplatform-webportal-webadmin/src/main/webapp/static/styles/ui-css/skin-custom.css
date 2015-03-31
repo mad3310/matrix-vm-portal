@@ -1,4 +1,4 @@
-/* ºÚÉ«Æ¤·ô 
+/* ï¿½ï¿½É«Æ¤ï¿½ï¿½ 
 edit by jinglinlin@letv.com 
 */
 .skin-custom {
@@ -818,7 +818,7 @@ edit by jinglinlin@letv.com
 
 .skin-custom .pager>li>a, 
 .skin-custom .pagination>li>a{
-	color:#69aa46;
+	color:#7bb7e5;
 }
 
 .skin-custom .text-info{
@@ -901,7 +901,7 @@ edit by jinglinlin@letv.com
 	margin-top:10px;
 }
 
-/* dashboardÒ³Ãæcss */
+/* dashboardÒ³ï¿½ï¿½css */
 .skin-custom .infobox{
 	margin:15px 0 15px 0;
 	width:20%;
@@ -979,7 +979,7 @@ edit by jinglinlin@letv.com
 	text-align:center;
 }
 
-/* loadingÑùÊ½ */
+/* loadingï¿½ï¿½Ê½ */
 .skin-custom .spin {
 	background-image: url('../../image/fading-loader.svg');
 	background-size: 50px 50px;
@@ -1006,7 +1006,7 @@ edit by jinglinlin@letv.com
        opacity:0; 
 }
 
-/* ¼à¿ØÏêÇéÒ³ÃæÐÅÏ¢Õ¹Ê¾¸ñÊ½ */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Ï¢Õ¹Ê¾ï¿½ï¿½Ê½ */
 .skin-custom .monitor-text-danger{
 	color:red;
 	font-size:12px;
@@ -1021,7 +1021,7 @@ edit by jinglinlin@letv.com
 	font-size:12px;
 	font-weight:bold;
 }
-/* ½çÃæ³¬Á¬½ÓÑùÊ½ */
+/* ï¿½ï¿½ï¿½æ³¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 
 .skin-custom .link{
 	font-style: italic;
@@ -1030,7 +1030,7 @@ edit by jinglinlin@letv.com
 	
 }
 
-/* ÈÎÎñ¼à¿ØÁÐ±íÑùÊ½*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½Ê½*/
 .task-monitor-menu{
 	min-height:650px;
 	border-right:3px solid #DDD;
@@ -1052,7 +1052,7 @@ edit by jinglinlin@letv.com
 	
 }
 
-/* ÑéÖ¤ÂëÍ¼±êÑùÊ½ */
+/* ï¿½ï¿½Ö¤ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ê½ */
 .skin-custom .warning-info{
 	display:inline;
 	margin-left:10px;
