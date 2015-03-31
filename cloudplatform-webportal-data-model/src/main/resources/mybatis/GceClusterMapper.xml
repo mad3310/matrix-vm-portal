@@ -34,86 +34,48 @@
 		<result column="ADMIN_PASSWORD" property="password" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		GC.ID,GC.CLUSTER_NAME,GC.ADMIN_USER,GC.ADMIN_PASSWORD,GC.STATUS,GC.TYPE,GC.SST_PASSWORD,GC.HCLUSTER_ID,GC.DELETED,GC.CREATE_TIME,GC.CREATE_USER,GC.UPDATE_TIME,GC.UPDATE_USER
+		GCS.ID,GCS.CLUSTER_NAME,GCS.ADMIN_USER,GCS.ADMIN_PASSWORD,GCS.STATUS,GCS.TYPE,GCS.SST_PASSWORD,GCS.HCLUSTER_ID,GCS.DELETED,GCS.CREATE_TIME,GCS.CREATE_USER,GCS.UPDATE_TIME,GCS.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and GC.ID=#{id}
+				and GCS.ID=#{id}
 			</if>
 			<if test="clusterName != null  and clusterName != '' and clusterName != 'null'">
-				and GC.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
+				and GCS.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
 			</if>
 			<if test="status != null and status != ''">
-				and GC.STATUS=#{status}
+				and GCS.STATUS=#{status}
 			</if>
 			<if test="type != null  ">
-				and GC.TYPE=#{type}
+				and GCS.TYPE=#{type}
 			</if>
 			<if test="sstPwd != null  ">
-				and GC.SST_PASSWORD=#{sstPwd}
+				and GCS.SST_PASSWORD=#{sstPwd}
 			</if>
 			<if test="hclusterId != null  ">
-				and GC.HCLUSTER_ID=#{hclusterId}
+				and GCS.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="deleted != null  ">
-				and GC.DELETED=#{deleted}
+				and GCS.DELETED=#{deleted}
 			</if>
 			<if test="createTime != null  ">
-				and GC.CREATE_TIME=#{createTime}
+				and GCS.CREATE_TIME=#{createTime}
 			</if>
 			<if test="createUser != null  ">
-				and GC.CREATE_USER=#{createUser}
+				and GCS.CREATE_USER=#{createUser}
 			</if>
 			<if test="updateTime != null  ">
-				and GC.UPDATE_TIME=#{updateTime}
+				and GCS.UPDATE_TIME=#{updateTime}
 			</if>
 			<if test="updateUser != null  ">
-				and GC.UPDATE_USER=#{updateUser}
+				and GCS.UPDATE_USER=#{updateUser}
 			</if>
 		</trim>
 	</sql>
 	
-	<sql id="Example_Page_Where_Clause">
-		where 1=1
-		<trim suffixOverrides=",">
-			<if test="params != null and params.id !=null  ">
-				and GC.ID=#{params.id}
-			</if>
-			<if test="params != null and params.clusterName != null  and params.clusterName != '' and params.clusterName != 'null'">
-				and GC.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
-			</if>
-			<if test="params != null and params.status != null and params.status != '' ">
-				and GC.STATUS=#{params.status}
-			</if>
-			<if test="params != null and params.type != null  ">
-				and GC.TYPE=#{params.type}
-			</if>
-			<if test="params != null and params.deleted != null  ">
-				and GC.DELETED=#{params.deleted}
-			</if>
-			<if test="params != null and params.sstPwd != null  ">
-				and GC.SST_PASSWORD=#{params.sstPwd}
-			</if>
-			<if test="params != null and params.hclusterId != null  ">
-				and GC.HCLUSTER_ID=#{params.hclusterId}
-			</if>
-			<if test="params != null and params.createTime != null  ">
-				and GC.CREATE_TIME=#{params.createTime}
-			</if>
-			<if test="params != null and params.createUser != null  ">
-				and GC.CREATE_USER=#{params.createUser}
-			</if>
-			<if test="params != null and params.updateTime != null  ">
-				and GC.UPDATE_TIME=#{params.updateTime}
-			</if>
-			<if test="params != null and params.updateUser != null  ">
-				and GC.UPDATE_USER=#{params.updateUser}
-			</if>
-		</trim>
-	</sql>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="GceCluster" useGeneratedKeys="true" keyProperty="id">
@@ -170,4 +132,12 @@
 		</set>
 		where ID=#{id}
 	</update>
+	
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" />
+			from WEBPORTAL_GCECLUSTER GCS
+			where GCS.ID=#{id}
+	</select>
+	
 </mapper>   
