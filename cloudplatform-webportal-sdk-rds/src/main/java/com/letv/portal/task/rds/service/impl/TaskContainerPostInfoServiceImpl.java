@@ -1,4 +1,4 @@
-package com.letv.portal.task.service.impl;
+package com.letv.portal.task.rds.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterInitService")
-public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskContainerPostInfoService")
+public class TaskContainerPostInfoServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -30,8 +30,8 @@ public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl impleme
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
-
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitServiceImpl.class);
+	
+	private final static Logger logger = LoggerFactory.getLogger(TaskContainerPostInfoServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,25 +50,19 @@ public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl impleme
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		
-		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeIp2 = containers.get(1).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String result = this.pythonService.initMcluster(nodeIp1, username, password);
+		String nodeName2 = containers.get(1).getContainerName();
+		String mclusterName = mclusterModel.getMclusterName();
+		
+		String result = this.pythonService.postContainerInfo(nodeIp2, nodeName2, username, password);
 		
 		tr = analyzeRestServiceResult(result);
 		
-		if(tr.isSuccess()) {
-			//保存sstPwd，启动启动gbalancer时使用。
-			String sstPwd = (String) ((Map)transToMap(result).get("response")).get("sst_user_password");
-			MclusterModel mcluster = new MclusterModel();
-			mcluster.setId(mclusterModel.getId());
-			mcluster.setSstPwd(sstPwd);
-			this.mclusterService.updateBySelective(mcluster);
-		}
 		tr.setParams(params);
 		return tr;
 	}
-
+	
 }

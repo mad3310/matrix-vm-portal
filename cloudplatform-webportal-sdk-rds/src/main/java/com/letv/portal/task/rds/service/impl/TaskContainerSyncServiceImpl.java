@@ -1,4 +1,4 @@
-package com.letv.portal.task.service.impl;
+package com.letv.portal.task.rds.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,9 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterPostInfoService")
-public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
-
+@Service("taskContainerSyncService")
+public class TaskContainerSyncServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+	
 	@Autowired
 	private IPythonService pythonService;
 	@Autowired
@@ -31,7 +31,7 @@ public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl imp
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterPostInfoServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskContainerSyncServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -51,19 +51,15 @@ public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl imp
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
 		
-		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeIp2 = containers.get(1).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String nodeName1 = containers.get(0).getContainerName();
-		String mclusterName = mclusterModel.getMclusterName();
-		
-		String result = this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password);
-		
+		String result = this.pythonService.syncContainer(nodeIp2, username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);
 		return tr;
 	}
-	
+
 }

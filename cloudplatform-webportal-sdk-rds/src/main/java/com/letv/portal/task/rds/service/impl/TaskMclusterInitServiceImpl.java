@@ -1,4 +1,4 @@
-package com.letv.portal.task.service.impl;
+package com.letv.portal.task.rds.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -19,8 +19,8 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterStartGlb8888Service")
-public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskMclusterInitService")
+public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IPythonService pythonService;
@@ -30,8 +30,8 @@ public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterStartGlb8888ServiceImpl.class);
+
+	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,20 +50,25 @@ public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
+		
 		String nodeIp1 = containers.get(0).getIpAddr();
-		String nodeIp2 = containers.get(1).getIpAddr();
-		String nodeIp3 = containers.get(2).getIpAddr();
-		String vipNodeIp = containers.get(3).getIpAddr();
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		StringBuffer ipListPort = new StringBuffer();
-		ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
-		String result = this.pythonService.startGbalancer(vipNodeIp, "monitor", mclusterModel.getSstPwd(),"http", ipListPort.toString(), "8888", "-daemon", username, password);
+		String result = this.pythonService.initMcluster(nodeIp1, username, password);
+		
 		tr = analyzeRestServiceResult(result);
 		
+		if(tr.isSuccess()) {
+			//保存sstPwd，启动启动gbalancer时使用。
+			String sstPwd = (String) ((Map)transToMap(result).get("response")).get("sst_user_password");
+			MclusterModel mcluster = new MclusterModel();
+			mcluster.setId(mclusterModel.getId());
+			mcluster.setSstPwd(sstPwd);
+			this.mclusterService.updateBySelective(mcluster);
+		}
 		tr.setParams(params);
 		return tr;
 	}
-	
+
 }

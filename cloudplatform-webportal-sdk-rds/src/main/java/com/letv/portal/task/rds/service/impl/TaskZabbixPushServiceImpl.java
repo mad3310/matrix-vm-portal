@@ -1,4 +1,4 @@
-package com.letv.portal.task.service.impl;
+package com.letv.portal.task.rds.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -14,24 +14,24 @@ import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
-import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.zabbixPush.IZabbixPushService;
 
-@Service("taskContainerSync2Service")
-public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
-	
-	@Autowired
-	private IPythonService pythonService;
+@Service("taskZabbixPushService")
+public class TaskZabbixPushServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
 	private IHostService hostService;
+	@Autowired 
+	private IZabbixPushService zabbixPushService;
 	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskContainerSync2ServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskZabbixPushServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,16 +50,22 @@ public class TaskContainerSync2ServiceImpl extends BaseTask4RDSServiceImpl imple
 		List<ContainerModel> containers = this.containerService.selectByMclusterId(mclusterId);
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
-		String nodeIp3 = containers.get(2).getIpAddr();
-		String username = mclusterModel.getAdminUser();
-		String password = mclusterModel.getAdminPassword();
 		
-		String result = this.pythonService.syncContainer(nodeIp3, username, password);
-		tr = analyzeRestServiceResult(result);
+		boolean isSuccess = zabbixPushService.createMultiContainerPushZabbixInfo(containers);
+		if(!isSuccess) {
+			//发送推送失败邮件，流程继续。
+			buildResultToMgr("RDS服务相关系统推送异常", mclusterModel.getAdminPassword() +"集群zabbix系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+			tr.setResult("zabbix系统数据推送失败");
+		}
 		
+		tr.setSuccess(true);
 		tr.setParams(params);
 		return tr;
 	}
-
-
+	
+	@Override
+	public void callBack(TaskResult tr) {
+		super.rollBack(tr);
+	}
+	
 }

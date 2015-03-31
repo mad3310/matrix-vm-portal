@@ -1,4 +1,4 @@
-package com.letv.portal.task.service.impl;
+package com.letv.portal.task.rds.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -9,32 +9,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
-import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 
-@Service("taskMclusterInitAdminUserAndPwdService")
-public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskFixedPushService")
+public class TaskFixedPushServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
 
-	@Autowired
-	private IPythonService pythonService;
 	@Autowired
 	private IContainerService containerService;
 	@Autowired
 	private IHostService hostService;
 	@Autowired
+	private IFixedPushService fixedPushService;
+	@Autowired
 	private IMclusterService mclusterService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterInitAdminUserAndPwdServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskFixedPushServiceImpl.class);
 	
 	@Override
-	public TaskResult execute(Map<String, Object> params) throws Exception{
+	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
@@ -51,15 +51,14 @@ public class TaskMclusterInitAdminUserAndPwdServiceImpl extends BaseTask4RDSServ
 		if(containers.isEmpty())
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
 		
-		String nodeIp1 = containers.get(0).getIpAddr();
-		String username = mclusterModel.getAdminUser();
-		String password = mclusterModel.getAdminPassword();
+		boolean isSuccess = fixedPushService.createMutilContainerPushFixedInfo(containers);
+		if(!isSuccess) {
+			//发送推送失败邮件，流程继续。
+			buildResultToMgr("RDS服务相关系统推送异常", mclusterModel.getAdminPassword() +"集群固资系统数据推送失败，请运维人员重新推送", tr.getResult(), null);
+			tr.setResult("固资系统数据推送失败");
+		}
 		
-		String result = this.pythonService.initUserAndPwd4Manager(nodeIp1,username,password);
-		
-		tr = analyzeRestServiceResult(result);
-		
-		//set params
+		tr.setSuccess(true);
 		tr.setParams(params);
 		return tr;
 	}
