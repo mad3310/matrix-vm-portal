@@ -78,7 +78,8 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
 								<div class="col-sm-6">
-									<select class="form-control" name="taskType" id="taskType">
+									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择业务类型">
+									    <option value=""> </option>
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
 										<option value="GCE">GCE</option>

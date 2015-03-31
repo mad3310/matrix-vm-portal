@@ -5,6 +5,7 @@ $(function(){
 	//初始化 
 	page_init();
 	
+
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -142,6 +143,16 @@ function init_task_option(url){
 			for(var i=0,len=array.length;i<len;i++){
 				var option = $("<option value=\""+array[i].id+"\">"+array[i].name+"</option>");
 				option.appendTo(select);
+				
+				var options = {
+						allow_single_deselect:true,
+						search_contains:true,
+						no_results_text:"未找到匹配数据",
+						disable_search:true,	
+						width:'210px'
+					}
+				$('.chosen-select').trigger('chosen:updated');	
+				$('.chosen-select').chosen(options)
 			}
 		}
 	})

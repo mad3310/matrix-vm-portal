@@ -284,12 +284,13 @@ function queryUrlBuilder(url,data){
 //chosen 组件配置
 function initChosen(){
 	$('.chosen-select').trigger('chosen:updated');
-	$('.chosen-select').chosen({
-		allow_single_deselect:true,
-		search_contains:true,
-		no_results_text:"未找到匹配数据",
-		disable_search:false	
-		}); 
+	var defOpt = {
+			allow_single_deselect:true,
+			search_contains:true,
+			no_results_text:"未找到匹配数据",
+			disable_search:false	
+	}
+	$('.chosen-select').chosen(defOpt); 
 	
 	//resize the chosen on window resize
 	$(window)
