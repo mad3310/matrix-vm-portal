@@ -23,7 +23,7 @@ import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.gce.IGceContainerService;
 
-@Service("taskMclusterCheckDataStatusService")
+@Service("taskGceClusterCheckStatusService")
 public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImpl implements IBaseTaskService{
 
 	@Autowired

@@ -1,6 +1,5 @@
 package com.letv.portal.task.gce.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
