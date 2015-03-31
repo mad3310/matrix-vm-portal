@@ -12,6 +12,7 @@
 		<result column="HCLUSTER_ID" property="hclusterId" />
 		<result column="PORT_FORWARD" property="portForward" />
 		<result column="GCE_IMAGE_NAME" property="gceImageName" />
+		<result column="TYPE" property="type" />
 		<result column="STATUS" property="status" />
 		<result column="DESCN" property="descn" />
 		<result column="IP" property="ip" />
@@ -36,7 +37,7 @@
 	
 	<sql id="Base_Column_List">
 		g.ID,
-		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.STATUS,g.DESCN,g.IP,
+		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.TYPE,g.STATUS,g.DESCN,g.IP,
 		g.DELETED,g.CREATE_TIME,g.CREATE_USER,g.UPDATE_TIME,g.UPDATE_USER
 	</sql>
 	
@@ -63,6 +64,9 @@
 			</if>
 			<if test="gceImageName != null and gceImageName != '' ">
 				and g.HCLUSTER_ID=#{gceImageName}
+			</if>
+			<if test="type != null and type != ''  ">
+				and g.TYPE=#{type}
 			</if>
 			<if test="status != null and status != ''  ">
 				and g.STATUS=#{status}
@@ -95,10 +99,10 @@
 	<insert id="insert" parameterType="GceServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_GCE(
-			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,STATUS,DESCN,IP,
+			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,TYPE,STATUS,DESCN,IP,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{status},#{descn},#{ip},
+			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{type},#{status},#{descn},#{ip},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -123,6 +127,9 @@
 			</if>
 			<if test="gceImageName != null ">
 				and g.HCLUSTER_ID=#{gceImageName}
+			</if>
+			<if test="type != null  ">
+				TYPE=#{type},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
@@ -203,6 +210,9 @@
 			</if>
 			<if test="params != null and params.gceImageName != null and params.gceImageName != '' ">
 				and g.HCLUSTER_ID=#{params.gceImageName}
+			</if>
+			<if test="params != null and params.type != null  ">
+				and g.TYPE=#{params.type}
 			</if>
 			<if test="params != null and params.status != null  ">
 				and g.STATUS=#{params.status}
