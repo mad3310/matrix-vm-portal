@@ -13,7 +13,6 @@ import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
-import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
