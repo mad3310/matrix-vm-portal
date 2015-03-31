@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.task.TaskResult;
-import com.letv.portal.model.task.service.BaseTask4RDSServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;

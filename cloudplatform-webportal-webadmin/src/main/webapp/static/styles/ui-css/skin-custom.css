@@ -1,4 +1,5 @@
-/* ��ɫƤ�� 
+/* 
+black skin
 edit by jinglinlin@letv.com 
 */
 .skin-custom {
@@ -901,7 +902,7 @@ edit by jinglinlin@letv.com
 	margin-top:10px;
 }
 
-/* dashboardҳ��css */
+/* dashboard css */
 .skin-custom .infobox{
 	margin:15px 0 15px 0;
 	width:20%;
@@ -979,7 +980,7 @@ edit by jinglinlin@letv.com
 	text-align:center;
 }
 
-/* loading��ʽ */
+/* loading css*/
 .skin-custom .spin {
 	background-image: url('../../image/fading-loader.svg');
 	background-size: 50px 50px;
@@ -1006,7 +1007,7 @@ edit by jinglinlin@letv.com
        opacity:0; 
 }
 
-/* �������ҳ����Ϣչʾ��ʽ */
+/* monitor page font style */
 .skin-custom .monitor-text-danger{
 	color:red;
 	font-size:12px;
@@ -1021,7 +1022,7 @@ edit by jinglinlin@letv.com
 	font-size:12px;
 	font-weight:bold;
 }
-/* ���泬������ʽ */
+/* monitor page font style end */
 
 .skin-custom .link{
 	font-style: italic;
@@ -1030,7 +1031,7 @@ edit by jinglinlin@letv.com
 	
 }
 
-/* �������б���ʽ*/
+
 .task-monitor-menu{
 	min-height:650px;
 	border-right:3px solid #DDD;
@@ -1052,7 +1053,7 @@ edit by jinglinlin@letv.com
 	
 }
 
-/* ��֤��ͼ����ʽ */
+
 .skin-custom .warning-info{
 	display:inline;
 	margin-left:10px;
@@ -1067,3 +1068,13 @@ edit by jinglinlin@letv.com
 	right:20px; */
 	margin-top: 5px;
 }
+
+/* rewrite chosen-single css begin */
+.chosen-container>.chosen-single, [class*=chosen-container]>.chosen-single{
+	background:#fff;
+}
+
+.chosen-container-single .chosen-single{
+	border:1px solid #d5d5d5;
+}
+/* rewrite chosen-single css end */

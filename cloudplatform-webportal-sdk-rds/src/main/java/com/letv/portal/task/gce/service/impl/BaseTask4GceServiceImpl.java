@@ -1,6 +1,7 @@
-package com.letv.portal.model.task.service;
+package com.letv.portal.task.gce.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,23 +19,35 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
-import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.HostModel;
+import com.letv.portal.model.gce.GceCluster;
+import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.task.TaskResult;
-import com.letv.portal.service.IDbService;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.model.task.service.IBaseTaskService;
+import com.letv.portal.service.IHostService;
+import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.gce.IGceContainerService;
+import com.letv.portal.service.gce.IGceServerService;
 
-@Component("baseTaskService")
-public class BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Component("baseGceTaskService")
+public class BaseTask4GceServiceImpl implements IBaseTaskService{
 
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	@Autowired
-	private IMclusterService mclusterService;
-	@Autowired
-	private IDbService dbService;
-	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
-	private final static Logger logger = LoggerFactory.getLogger(BaseTask4RDSServiceImpl.class);
+	
+	@Autowired
+	private IHostService hostService;
+	@Autowired
+	private IGceClusterService gceClusterService;
+	@Autowired
+	private IGceServerService gceServerService;
+	@Autowired
+	private IGceContainerService gceContainerService;
+	
+	private final static Logger logger = LoggerFactory.getLogger(BaseTask4GceServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -50,37 +63,25 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 	@Override
 	public void rollBack(TaskResult tr) {
 		//发送错误邮件
-		this.buildResultToMgr("RDS服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}
 	
 	private void serviceOver(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		Long mclusterId = getLongFromObject(params.get("mclusterId"));
-		Long dbId = getLongFromObject(params.get("dbId"));
-		if(mclusterId == null)
-			throw new ValidateException("params's mclusterId is null");
-		//执行业务
-		MclusterModel mclusterModel = this.mclusterService.selectById(mclusterId);
-		if(mclusterModel == null)
-			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
+		GceServer gce = this.getGceServer(params);
+		GceCluster cluster = this.getGceCluster(params);
+		
 		if(tr.isSuccess()) {
-			mclusterModel.setStatus(MclusterStatus.RUNNING.getValue());
-			this.mclusterService.audit(mclusterModel);
-			logger.info("RDS service build success:" + mclusterModel.getMclusterName());
+			gce.setStatus(DbStatus.NORMAL.getValue());
+			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 		} else {
-			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
-			this.mclusterService.audit(mclusterModel);
-			logger.info("RDS service build failed:" + mclusterModel.getMclusterName());
-			if(dbId==null)
-				return;
-			DbModel dbModel = this.dbService.selectById(dbId);
-			if(dbModel.getStatus() != DbStatus.NORMAL.getValue()) {
-				dbModel.setStatus(DbStatus.BUILDFAIL.getValue());
-				this.dbService.updateBySelective(dbModel);
-			}
+			gce.setStatus(DbStatus.BUILDFAIL.getValue());
+			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
 		}
+		this.gceServerService.updateBySelective(gce);
+		this.gceClusterService.updateBySelective(cluster);
 	}
 
 	@Override
@@ -88,36 +89,6 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 		
 	}
 
-	/*
-	public TaskResult analyzeRestServiceResult(String result) throws Exception{
-		TaskResult tr = new TaskResult();
-		RestServiceResult rsr = getRestServiceResult(result);
-		if(rsr == null) {
-			tr.setSuccess(false);
-			tr.setResult("api connect failed");
-			return tr;
-		}
-		
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(rsr.getMeta().getCode());
-		tr.setSuccess(isSucess);
-		if(isSucess) {
-			tr.setResult(rsr.getResponse().getMessage());
-		} else {
-			tr.setResult(rsr.getResponse().getErrorDetail());
-		}
-		return tr;
-		
-	}
-	
-	public RestServiceResult getRestServiceResult(String result) throws Exception{
-		if(StringUtils.isEmpty(result))
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		RestServiceResult rsr = resultMapper.readValue(result, RestServiceResult.class);
-		return rsr;
-	}
-	*/
-	
 	@SuppressWarnings("unchecked")
 	public TaskResult analyzeRestServiceResult(String result) throws Exception{
 		TaskResult tr = new TaskResult();
@@ -188,5 +159,49 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 			value = (Long) o;
 		
 		return value;
+	}
+	
+	public GceServer getGceServer(Map<String, Object> params) {
+		Long gceId = getLongFromObject(params.get("gceId"));
+		if(gceId == null)
+			throw new ValidateException("params's gceId is null");
+		
+		GceServer gceServer = this.gceServerService.selectById(gceId);
+		if(gceServer == null)
+			throw new ValidateException("gceServer is null by gceId:" + gceId);
+		
+		return gceServer;
+	}
+	
+	public GceCluster getGceCluster(Map<String, Object> params) {
+		Long gceClusterId = getLongFromObject(params.get("gceClusterId"));
+		if(gceClusterId == null)
+			throw new ValidateException("params's gceClusterId is null");
+		
+		GceCluster gceCluster = this.gceClusterService.selectById(gceClusterId);
+		if(gceCluster == null)
+			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
+		
+		return gceCluster;
+	}
+	
+	public HostModel getHost(Long hclusterId) {
+		if(hclusterId == null)
+			throw new ValidateException("hclusterId is null :" + hclusterId);
+		HostModel host = this.hostService.getHostByHclusterId(hclusterId);
+		if(host == null)
+			throw new ValidateException("host is null by hclusterIdId:" + hclusterId);
+		
+		return host;
+	}
+	public List<GceContainer> getContainers(Map<String, Object> params) {
+		Long gceClusterId = getLongFromObject(params.get("gceClusterId"));
+		if(gceClusterId == null)
+			throw new ValidateException("params's gceClusterId is null");
+		
+		List<GceContainer> gceContainers = null;//this.gceContainerService.selectbyClusterId(gceClusterId);
+		if(gceContainers == null || gceContainers.isEmpty())
+			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
+		return gceContainers;
 	}
 }

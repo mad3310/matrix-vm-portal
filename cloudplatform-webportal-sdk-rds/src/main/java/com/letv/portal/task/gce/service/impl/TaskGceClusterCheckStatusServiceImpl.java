@@ -1,4 +1,4 @@
-package com.letv.portal.task.rds.service.impl;
+package com.letv.portal.task.gce.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -11,39 +11,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.exception.ValidateException;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.MclusterStatus;
-import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.HostModel;
-import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.gce.GceCluster;
+import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
-import com.letv.portal.python.service.IPythonService;
-import com.letv.portal.service.IContainerService;
+import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IHostService;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.gce.IGceContainerService;
 
-@Service("taskMclusterCheckDataStatusService")
-public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Service("taskGceClusterCheckStatusService")
+public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImpl implements IBaseTaskService{
 
+	@Autowired
+	private IGcePythonService gcePythonService;
+	@Autowired
+	private IHostService hostService;
+	@Autowired
+	private IGceContainerService gceContainerService;
+	
 	@Value("${python_create_check_time}")
 	private long PYTHON_CREATE_CHECK_TIME;
 	@Value("${python_check_interval_time}")
 	private long PYTHON_CHECK_INTERVAL_TIME;
 	
-	@Autowired
-	private IPythonService pythonService;
-	
-	@Autowired
-	private IContainerService containerService;
-	@Autowired
-	private IMclusterService mclusterService;
-	
-	@Autowired
-	private IHostService hostService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCheckDataStatusServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskGceClusterCheckStatusServiceImpl.class);
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -52,18 +47,10 @@ public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceI
 		if(!tr.isSuccess())
 			return tr;
 		
-		Long mclusterId = getLongFromObject(params.get("mclusterId"));
-		if(mclusterId == null)
-			throw new ValidateException("params's mclusterId is null");
-		//执行业务
-		MclusterModel mclusterModel = this.mclusterService.selectById(mclusterId);
-		if(mclusterModel == null)
-			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
-		HostModel host = this.hostService.getHostByHclusterId(mclusterModel.getHclusterId());
-		if(host == null || mclusterModel.getHclusterId() == null)
-			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
-		String mclusterDataName = mclusterModel.getMclusterName() +  Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX;
-		String result = pythonService.checkContainerCreateStatus(mclusterDataName,host.getHostIp(),host.getName(),host.getPassword());
+		GceCluster gceCluster = super.getGceCluster(params);
+		HostModel host = super.getHost(gceCluster.getHclusterId());
+		
+		String result = gcePythonService.checkContainerCreateStatus(gceCluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		Long start = new Date().getTime();
@@ -73,15 +60,15 @@ public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceI
 				tr.setResult("check time over");
 				break;
 			}
-			result = pythonService.checkContainerCreateStatus(mclusterDataName,host.getHostIp(),host.getName(),host.getPassword());
+			result = gcePythonService.checkContainerCreateStatus(gceCluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
 			tr = analyzeRestServiceResult(result);
 		}
 		if(tr.isSuccess()) {
 			List<Map> containers = (List<Map>)((Map)transToMap(result).get("response")).get("containers");
 			for (Map map : containers) {
-				ContainerModel container = new ContainerModel();
+				GceContainer container = new GceContainer();
 				BeanUtils.populate(container, map);
-				container.setMclusterId(mclusterModel.getId());
+				container.setGceClusterId(gceCluster.getId());
 				container.setIpMask((String) map.get("netMask"));
 				container.setContainerName((String) map.get("containerName"));
 				container.setStatus(MclusterStatus.RUNNING.getValue());
@@ -91,7 +78,7 @@ public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceI
 				if(null != hostModel) {
 					container.setHostId(hostModel.getId());
 				}
-				this.containerService.insert(container);
+				this.gceContainerService.insert(container);
 			}
 		}
 		tr.setParams(params);
