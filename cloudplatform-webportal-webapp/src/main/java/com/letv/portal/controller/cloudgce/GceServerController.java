@@ -56,8 +56,6 @@ public class GceServerController {
 			
 		}
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
-		gceServer.setIp("10.58.88.163");
-		gceServer.setGceClusterId(1L);
 		this.gceServerService.saveAndBuild(gceServer);
 		return obj;
 	}

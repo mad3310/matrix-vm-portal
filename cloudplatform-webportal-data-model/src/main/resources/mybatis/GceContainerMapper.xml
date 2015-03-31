@@ -5,7 +5,7 @@
 <mapper namespace="com.letv.portal.dao.gce.IGceContainerDao">
 
 	<!-- Result Map -->
-	<resultMap id="BaseResultMap" type="Container">
+	<resultMap id="BaseResultMap" type="GceContainer">
 		<result column="ID" property="id" />
 		<result column="CONTAINER_NAME" property="containerName" />
 		<result column="MOUNT_DIR" property="mountDir" />
@@ -81,7 +81,7 @@
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="GceContainer" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_GCECONTAINER
 		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,CONTAINER_UUID
@@ -92,7 +92,7 @@
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
-	<update id="update" parameterType="Container">
+	<update id="update" parameterType="GceContainer">
 		update WEBPORTAL_GCECONTAINER set
 		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
 		BIND_CONTAINER_PORT=#{bindContainerPort},BIND_HOST_PORT=#{bingHostPort},BIND_HOST_IP=#{bingHostIp},CONTAINER_UUID=#{containerUuid},
@@ -101,7 +101,7 @@
 		where ID=#{id}
 	</update>
 	
-	<update id="updateHostIpByName" parameterType="Container">
+	<update id="updateHostIpByName" parameterType="GceContainer">
 		update WEBPORTAL_GCECONTAINER
 		<set>
 			<if test="hostId != null  ">
@@ -115,7 +115,7 @@
 	</update>
 
 	<!--根据id，有选择的修改记录 -->
-	<update id="updateBySelective" parameterType="Container">
+	<update id="updateBySelective" parameterType="GceContainer">
 		update WEBPORTAL_GCECONTAINER
 		<set>
 			<if test="containerName != null  and containerName != '' ">
@@ -196,12 +196,12 @@
 	</update>
 	
 	<!-- 物理删除 -->
-	<update id="delete" parameterType="Container">
+	<update id="delete" parameterType="GceContainer">
 		delete from WEBPORTAL_GCECONTAINER where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
-	<update id="deleteFlag" parameterType="Container">
+	<update id="deleteFlag" parameterType="GceContainer">
 		update WEBPORTAL_GCECONTAINER set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -22,6 +23,8 @@ import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.slb.SlbConfig;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.slb.ISlbConfigService;
@@ -34,6 +37,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	
 	@Resource
 	private IGceServerDao gceServerDao;
+	@Autowired
+	private IGceClusterService gceClusterService;
 
 	public GceServerServiceImpl() {
 		super(GceServer.class);
@@ -54,20 +59,24 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 
 	@Override
 	public void saveAndBuild(GceServer gceServer) {
+		gceServer.setStatus(GceStatus.BUILDDING.getValue());
+		
+		StringBuffer mclusterName = new StringBuffer();
+		mclusterName.append(gceServer.getCreateUser()).append("_").append(gceServer.getGceName());
+		
+		/*function 验证mclusterName是否存在*/
+		
+		GceCluster gceCluster = new GceCluster();
+		gceCluster.setHclusterId(gceServer.getHclusterId());
+		gceCluster.setClusterName(mclusterName.toString());
+		gceCluster.setStatus(GceStatus.BUILDDING.getValue());
+		gceCluster.setCreateUser(gceServer.getCreateUser());
+		
+		this.gceClusterService.insert(gceCluster);
+		
+		gceServer.setGceClusterId(gceCluster.getId());
 		this.gceServerDao.insert(gceServer);
 		
-		/*StringBuffer mclusterName = new StringBuffer();
-		mclusterName.append(gceServer.getCreateUser()).append("_").append(gceServer.getGceName());
-		Boolean isExist= this.mclusterService.isExistByName(mclusterName.toString());
-		int i = 0;
-		while(!isExist) {
-			isExist= this.mclusterService.isExistByName(mclusterName.toString() + i);
-			i++;
-		}
-		if(i>0)
-			mclusterName.append(i);
-		GceCluster gceCluster = new GceCluster();
-		gceCluster.setHclusterId(gceServer.getGceClusterId());*/
 	}
 	
 }
