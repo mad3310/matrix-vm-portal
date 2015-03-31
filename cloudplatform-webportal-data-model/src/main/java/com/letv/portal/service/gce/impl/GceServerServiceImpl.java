@@ -18,6 +18,7 @@ import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.slb.SlbConfig;
 import com.letv.portal.model.slb.SlbServer;
@@ -49,6 +50,24 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 			throw new ValidateException("参数不合法");
 		t.setStatus(GceStatus.NORMAL.getValue());
 		super.insert(t);
+	}
+
+	@Override
+	public void saveAndBuild(GceServer gceServer) {
+		this.gceServerDao.insert(gceServer);
+		
+		/*StringBuffer mclusterName = new StringBuffer();
+		mclusterName.append(gceServer.getCreateUser()).append("_").append(gceServer.getGceName());
+		Boolean isExist= this.mclusterService.isExistByName(mclusterName.toString());
+		int i = 0;
+		while(!isExist) {
+			isExist= this.mclusterService.isExistByName(mclusterName.toString() + i);
+			i++;
+		}
+		if(i>0)
+			mclusterName.append(i);
+		GceCluster gceCluster = new GceCluster();
+		gceCluster.setHclusterId(gceServer.getGceClusterId());*/
 	}
 	
 }

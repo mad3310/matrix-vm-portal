@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.letv.portal.dao.gce.IGceContainerDao">
+<mapper namespace="com.letv.portal.dao.slb.ISlbContainerDao">
 
 	<!-- Result Map -->
 	<resultMap id="BaseResultMap" type="Container">
@@ -18,13 +18,9 @@
 		<result column="CORES_NUMBER" property="coresNumber" />
 		<result column="CPU_SPEED" property="cpuSpeed" />
 		<result column="MEMORY_SIZE" property="memorySize" />
-		<result column="BIND_CONTAINER_PORT" property="bindContainerPort" />
-		<result column="BIND_HOST_PORT" property="bingHostPort" />
-		<result column="BIND_HOST_IP" property="bingHostIp" />
-		<result column="CONTAINER_UUID" property="containerUuid" />
 		<result column="HOST_ID" property="hostId" />
 		<result column="HOST_IP" property="hostIp" />
-		<result column="GCECLUSTER_ID" property="mclusterId" />
+		<result column="MCLUSTER_ID" property="mclusterId" />
 		<result column="ZABBIXHOSTS" property="zabbixHosts" />
 		
 		<result column="STATUS" property="status" />
@@ -40,8 +36,8 @@
 			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
-	    <association property="gceCluster" javaType="GceCluster">
-			<result column="GCECLUSTER_NAME" property="gceClusterName" />
+	    <association property="mcluster" javaType="Mcluster">
+			<result column="MCLUSTER_NAME" property="mclusterName" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -51,58 +47,57 @@
 	
 	
 	
-	<!-- WEBPORTAL_GCECONTAINER GC table all fields -->
+	<!-- WEBPORTAL_CONTAINER C table all fields -->
 	<sql id="Base_Column_List">
-		GC.ID,GC.CONTAINER_NAME,GC.MOUNT_DIR,GC.ZOOKEEPER_ID,GC.IP_ADDR,GC.GATE_ADDR,GC.IP_MASK,GC.TYPE,GC.ZABBIXHOSTS,GC.BIND_HOST_PORT,GC.BIND_HOST_IP,GC.CONTAINER_UUID,GC.BIND_CONTAINER_PORT,
-		GC.DISK_SIZE,GC.CORES_NUMBER,GC.MEMORY_SIZE,GC.CPU_SPEED,GC.HOST_ID,GC.HOST_IP,GC.GCECLUSTER_ID,GC.STATUS,GC.DELETED,GC.CREATE_TIME,GC.CREATE_USER,GC.UPDATE_TIME,GC.UPDATE_USER
+		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,C.ZABBIXHOSTS,
+		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.HOST_IP,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and GC.ID=#{id}
+				and C.ID=#{id}
 			</if>
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
-				and GC.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
 			</if>
 			<if test="type != null ">
-				and GC.TYPE=#{type}
+				and C.TYPE=#{type}
 			</if>
 			<if test="ipAddr != null ">
-				and GC.IP_ADDR=#{ipAddr}
+				and C.IP_ADDR=#{ipAddr}
 			</if>
 			<if test="mclusterId != null ">
-				and GC.GCECLUSTER_ID=#{mclusterId}
+				and C.MCLUSTER_ID=#{mclusterId}
 			</if>
 			<if test="zookeeperId != null ">
-				and GC.ZOOKEEPER_ID=#{zookeeperId}
+				and C.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		WEBPORTAL_GCECONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,CONTAINER_UUID
-		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,GCECLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_CONTAINER
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
+		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{containerUuid}
-		#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
+		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
+		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Container">
-		update WEBPORTAL_GCECONTAINER set
+		update WEBPORTAL_CONTAINER set
 		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
-		BIND_CONTAINER_PORT=#{bindContainerPort},BIND_HOST_PORT=#{bingHostPort},BIND_HOST_IP=#{bingHostIp},CONTAINER_UUID=#{containerUuid},
-		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},GCECLUSTER_ID=#{mclusterId},
+		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},MCLUSTER_ID=#{mclusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 	
 	<update id="updateHostIpByName" parameterType="Container">
-		update WEBPORTAL_GCECONTAINER
+		update WEBPORTAL_CONTAINER
 		<set>
 			<if test="hostId != null  ">
 				HOST_ID=#{hostId},
@@ -116,7 +111,7 @@
 
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Container">
-		update WEBPORTAL_GCECONTAINER
+		update WEBPORTAL_CONTAINER
 		<set>
 			<if test="containerName != null  and containerName != '' ">
 				CONTAINER_NAME=#{containerName},
@@ -158,20 +153,9 @@
 				HOST_IP=#{hostIp},
 			</if>
 			<if test="mclusterId != null  ">
-				GCECLUSTER_ID=#{mclusterId},
+				MCLUSTER_ID=#{mclusterId},
 			</if>
-			<if test="bindContainerPort != null  ">
-				BIND_CONTAINER_PORT=#{bindContainerPort},
-			</if>
-			<if test="bingHostPort != null  ">
-				BIND_HOST_PORT=#{bingHostPort},
-			</if>
-			<if test="bingHostIp != null  ">
-				BIND_HOST_IP=#{bingHostIp},
-			</if>
-			<if test="containerUuid != null  ">
-				CONTAINER_UUID=#{containerUuid},
-			</if>
+			
 			<if test="status != null  ">
 				STATUS=#{status},
 			</if>
@@ -197,12 +181,12 @@
 	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Container">
-		delete from WEBPORTAL_GCECONTAINER where ID = #{id}
+		delete from WEBPORTAL_CONTAINER where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="deleteFlag" parameterType="Container">
-		update WEBPORTAL_GCECONTAINER set
+		update WEBPORTAL_CONTAINER set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}
 		</if>
@@ -213,27 +197,33 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_GCECONTAINER GC where GC.ID = #{id}
+		from WEBPORTAL_CONTAINER C where C.ID = #{id}
 	</select>
-	<!-- 根据clusterId查询-->
+	<!-- 根据id查询-->
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CONTAINER C where C.CONTAINER_NAME = #{containerName}
+	</select>
+	<!-- 根据db id查询-->
 	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		,M.MCLUSTER_NAME 
-		from WEBPORTAL_GCECONTAINER GC left join WEBPORTAL_MCLUSTER_INFO M
-		ON M.ID = GC.GCECLUSTER_ID
-		where GC.GCECLUSTER_ID = #{gceClusterId} ORDER BY GC.TYPE,GC.ZOOKEEPER_ID
+		from WEBPORTAL_CONTAINER C left join WEBPORTAL_MCLUSTER_INFO M
+		ON M.ID = C.MCLUSTER_ID
+		where C.MCLUSTER_ID = #{mclusterId} ORDER BY C.TYPE,C.ZOOKEEPER_ID
 	</select>
 	<!-- 物理删除 -->
 	<update id="deleteByMclusterId" parameterType="java.lang.Long">
-		delete from WEBPORTAL_GCECONTAINER where GCECLUSTER_ID = #{mclusterId}
+		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
 	</update>	
 	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_GCECONTAINER GC
+		from WEBPORTAL_CONTAINER C
 		<include refid="Example_Where_Clause" />
 	</select>
 	
@@ -242,36 +232,36 @@
 	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HOST_NAME,H.HOST_NAME_ALIAS,U.HCLUSTER_NAME_ALIAS,H.HCLUSTER_ID
-		from WEBPORTAL_GCECONTAINER GC,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
+		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
 		where 1=1
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">
-			and GC.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
 		</if>
 		<if test="type != null ">
-			and GC.TYPE=#{type}
+			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null and ipAddr != ''">
-			and GC.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
+			and C.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
 		</if>
 		<if test="mclusterId != null ">
-			and GC.GCECLUSTER_ID=#{mclusterId}
+			and C.MCLUSTER_ID=#{mclusterId}
 		</if>
-		and GC.GCECLUSTER_ID=M.Id and GC.HOST_ID=H.ID and H.HCLUSTER_ID=U.ID
+		and C.MCLUSTER_ID=M.Id and C.HOST_ID=H.ID and H.HCLUSTER_ID=U.ID
 	</select>
 	
 	<select id="selectVipIps4Monitor" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		GC.IP_ADDR
-		from WEBPORTAL_GCECONTAINER GC,WEBPORTAL_MCLUSTER_INFO M
+		C.IP_ADDR
+		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M
 		where 
-		GC.GCECLUSTER_ID=M.Id and GC.TYPE='mclustervip'
+		C.MCLUSTER_ID=M.Id and C.TYPE='mclustervip'
 	</select>
 	
 		<!--查询集群下container的信息-->
 	<select id="selectContainerByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_GCECONTAINER GC ,WEBPORTAL_MCLUSTER_INFO M 
-		where GC.GCECLUSTER_ID=M.ID and M.ID=#{mclusterId}
+		from WEBPORTAL_CONTAINER C ,WEBPORTAL_MCLUSTER_INFO M 
+		where C.MCLUSTER_ID=M.ID and M.ID=#{mclusterId}
 	</select>
 </mapper>   

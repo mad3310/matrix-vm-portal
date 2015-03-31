@@ -55,11 +55,10 @@ public class GceServerController {
 		}else{
 			
 		}
-		
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
-		gceServer.setIp("10.58.88.163"); //get ip from python api
-		gceServer.setGceClusterId(1L); //create cluster when create slbServer
-		this.gceServerService.insert(gceServer);
+		gceServer.setIp("10.58.88.163");
+		gceServer.setGceClusterId(1L);
+		this.gceServerService.saveAndBuild(gceServer);
 		return obj;
 	}
 	
