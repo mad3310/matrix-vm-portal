@@ -3,6 +3,27 @@
 <div class="page-content-area">
 	<div class="row">
 		<div class="task-monitor-menu col-xs-2">
+			<div class="widget-header">
+				<div class="input-group pull-right">
+					<form class="form-inline">
+						<div class="form-group">
+							<select class="form-control" id="jobstatus">
+								<option value="">请选择状态</option>
+								<option value="1">RDS</option>
+								<option value="2">GLB</option>
+								<option value="3">GCE</option>
+								<option value="4">消息中间件</option>
+							</select>
+						</div>
+						<div class=" form-group">
+							<button class="btn btn-sm btn-primary btn-search " id="jobSearch"
+								type="button">
+								<i class="ace-icon fa fa-search"></i>搜索
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
 			<table class="table task-monitor-list" id="db_detail_table" >
 				<thead>
 					<tr>

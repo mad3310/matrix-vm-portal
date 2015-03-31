@@ -62,8 +62,9 @@
 						<div class="modal-body">            				
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">任务单元</label>
-								<div class="col-sm-6">
-									<select class="form-control" name="taskDetailId" id="taskDetailId">
+								<div class="col-sm-5">
+									<select class="chosen-select" name="taskDetailId" id="taskDetailId" data-placeholder="请选择任务单元">
+										<option value=""> </option>
 									</select>
 								</div>
 								<label class="control-label">
@@ -74,8 +75,9 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="retry">失败重试次数</label>
-								<div class="col-sm-3">
-									<select class="form-control" name="retry" id="retry">
+								<div class="col-sm-5">
+									<select class="chosen-select" name="retry" id="retry" data-placeholder="请选择重试次数">
+										<option value=""> </option>
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
@@ -92,7 +94,7 @@
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">执行顺序</label>
 								<div class="col-sm-3">
-									<input class="form-control" type="text" name="executeOrder" id="executeOrder"/>
+									<input class="form-control" type="text" name="executeOrder" value="请输入顺序" id="executeOrder"/>
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的期望执行顺序，只能输入整数数字。" style="cursor:pointer; text-decoration:none;">

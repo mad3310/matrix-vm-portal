@@ -4,6 +4,16 @@ var recordsPerPage = 15; //每页显示条数
 $(function(){
 	//初始化 
 	page_init();
+	var options = {
+		allow_single_deselect:true,
+		search_contains:true,
+		no_results_text:"未找到匹配数据",
+		disable_search:true,	
+		width:'272px'
+	}
+	
+	$('.chosen-select').chosen(options)
+
 	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;

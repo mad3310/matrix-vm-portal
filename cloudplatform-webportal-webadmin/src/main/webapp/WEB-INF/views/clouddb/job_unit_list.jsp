@@ -77,13 +77,14 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
 								<div class="col-sm-6">
-									<select class="form-control" name="taskType" id="taskType">
+									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择类型...">
+										<option value="">  </option>
+										<option value="xx">消息中间件</option>
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
-										<option value="GCE">GCE</option>
-										<option value="xx">消息中间件</option>
+										<option value="GCE">GCE</option>										
 									</select>
-								</div>
+								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的业务类型，例如RDS，GLB，GCE，消息中间件等" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
