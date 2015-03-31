@@ -16,6 +16,9 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
@@ -67,11 +70,18 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	
 	private void serviceOver(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		Long mclusterId = getLongFromObject(params.get("mclusterId"));
-		Long dbId = getLongFromObject(params.get("dbId"));
-		if(mclusterId == null)
-			throw new ValidateException("params's mclusterId is null");
-		//执行业务
+		GceServer gce = this.getGceServer(params);
+		GceCluster cluster = this.getGceCluster(params);
+		
+		if(tr.isSuccess()) {
+			gce.setStatus(DbStatus.NORMAL.getValue());
+			cluster.setStatus(MclusterStatus.RUNNING.getValue());
+		} else {
+			gce.setStatus(DbStatus.BUILDFAIL.getValue());
+			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
+		}
+		this.gceServerService.updateBySelective(gce);
+		this.gceClusterService.updateBySelective(cluster);
 	}
 
 	@Override

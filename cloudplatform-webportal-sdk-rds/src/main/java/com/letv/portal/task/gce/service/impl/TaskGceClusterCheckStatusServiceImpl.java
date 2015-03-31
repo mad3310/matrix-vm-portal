@@ -49,7 +49,6 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 		
 		GceCluster gceCluster = super.getGceCluster(params);
 		HostModel host = super.getHost(gceCluster.getHclusterId());
-		GceServer gceServer = super.getGceServer(params);
 		
 		String result = gcePythonService.checkContainerCreateStatus(gceCluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);

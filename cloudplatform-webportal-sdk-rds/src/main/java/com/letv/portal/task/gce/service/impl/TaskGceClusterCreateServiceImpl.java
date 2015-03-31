@@ -35,7 +35,7 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", gceCluster.getClusterName());
-		map.put("componentType", "nginx");//gceServer.getType()
+		map.put("componentType", gceServer.getType());
 		map.put("networkMode", "bridge");
 		
 		String result = this.gcePythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
