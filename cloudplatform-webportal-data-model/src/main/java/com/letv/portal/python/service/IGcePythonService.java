@@ -51,7 +51,7 @@ public interface IGcePythonService {
 	
 	public String createContainer1(Map<String,String> params,String ip,String username,String password);
 
-	public String syncContainer2(Map<String, String> map, String nodeIp1,String adminUser, String adminPassword);
+	public String syncContainer2(String nodeIp1,String adminUser, String adminPassword);
 
 	public String startCluster(String nodeIp1, String adminUser,String adminPassword);
 	
