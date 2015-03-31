@@ -106,6 +106,13 @@
 		<include refid="Example_Where_Clause" />
 	</select>
 	
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TEMPLATE_TASK tt
+		where tt.ID=#{id}
+	</select>
+	
 	<sql id="Example_Page_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">

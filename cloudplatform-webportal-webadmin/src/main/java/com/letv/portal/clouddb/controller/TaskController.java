@@ -107,7 +107,10 @@ public class TaskController {
 	 */
 	@RequestMapping(value ="/detail/{id}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject taskDetail(@PathVariable Long id,HttpServletRequest request,ResultObject obj) {
-		obj.setData(this.templateTaskChainService.selectByTemplateTaskId(id));
+		Map<String,Object> result = new HashMap<String, Object>();
+		result.put("templateTask",this.templateTaskService.selectById(id));
+		result.put("templateTaskDetail",this.templateTaskChainService.selectByTemplateTaskId(id));
+		obj.setData(result);
 		return obj;
 	}
 	/**Methods Name: getTaskUnit <br>

@@ -30,7 +30,7 @@ function queryByPage() {
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
-			var array = data.data;
+			var array = data.data.templateTaskDetail;
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
@@ -76,7 +76,7 @@ function queryByPage() {
 			/*初始化tooltip*/
 			$('[data-toggle = "tooltip"]').tooltip();
 			
-			init_task_option("/task/unit/"+array[0].templateTask.taskType)//根据任务流类型初始化任务单元选项
+			init_task_option("/task/unit/"+data.data.templateTask.taskType)//根据任务流类型初始化任务单元选项
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			error(XMLHttpRequest);
