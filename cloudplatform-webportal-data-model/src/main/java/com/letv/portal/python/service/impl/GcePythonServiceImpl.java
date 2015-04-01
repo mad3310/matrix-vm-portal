@@ -72,16 +72,12 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	}
 
 	@Override
-	public String syncContainer2(String nodeIp1,
+	public String syncContainer2(Map<String, String> params,String nodeIp1,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(nodeIp1).append(GCE_PORT).append("/admin/conf");
+		url.append(URL_HEAD).append(nodeIp1).append(GCE_PORT).append("/cluster/sync");
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("zkAddress", "127.0.0.1");
-		map.put("zkPort", "2181");
-		
-		String result = HttpClient.post(url.toString(), map);
+		String result = HttpClient.post(url.toString(), params);
 		return result;
 	}
 
