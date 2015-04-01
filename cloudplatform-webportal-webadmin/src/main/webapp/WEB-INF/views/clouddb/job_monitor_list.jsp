@@ -37,15 +37,21 @@
 				</tbody>
 			</table>
 			<div id="pageControlBar">
-				<input type="hidden" id="totalPage_input" />
+				<input class="hidden" id="totalPage_input" />
 				<ul class="pager">
 					<li><a href="javascript:void(0);" id="firstPage">&laquo&nbsp;首页</a></li>
 					<li><a href="javascript:void(0);" id="prevPage" >上一页</a></li>
+					<li>
+					   <a>
+						   <input class="pageinput" id="currentPage" style="text-align:right"/>/
+						   <input class="pageinput" id="totalPage" />
+					   </a>
+					</li>
 					<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 					<li><a href="javascript:void(0);" id="lastPage">末页&nbsp;&raquo</a></li>
-					<li><a>共<lable id="totalPage"></lable>页</a></li>
+					<!-- <li><a>共<lable id="totalPage"></lable>页</a></li>
 					<li><a>第<lable id="currentPage"></lable>页</a></li>
-					<li><a>共<lable id="totalRows"></lable>条记录</a></li>
+					<li><a>共<lable id="totalRows"></lable>条记录</a></li> -->
 				</ul>
 			</div>
 		</div>
