@@ -33,10 +33,9 @@ function queryByPage() {
 			if(error(data)) return;
 			
 			//在页面顶部显示任务流名称
-			if($('#jobStreamName').html().indexOf(data.data.hcluster) < 0){
- 				$("#jobStreamName").append(data.data.templateTask.name);
+			if($('#jobDetailTitle').html().indexOf(data.data.templateTask.name) < 0){
+ 				$("#jobDetailTitle").prepend(data.data.templateTask.name);
 			}
-			
 			var array = data.data.templateTaskDetail;
 			var tby = $("#tby");
 			
@@ -169,10 +168,51 @@ function init_task_option(url){
 	})
 }
 
+/*表单验证*/
+function formValidate() {
+	$("#create-unitjob-form").bootstrapValidator({
+	  message: '无效的输入',
+         feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+         },
+         fields: {
+        	 executeOrder: {
+                 validMessage: '请按提示输入',
+                 validators: {
+                     notEmpty: {
+                         message: '执行顺序不能为空!'
+                     },
+                     integer: {
+                         message: '任务流执行顺序仅支持整数'
+                     }
+	             }
+         	}
+         }
+     }).on('success.form.bv', function(e){
+    	 e.preventDefault();
+    	 var data={
+ 				taskDetailId : $("#taskDetailId").val(),
+ 				retry : $("#retry").val(),
+ 				taskId : $("#jobStreamId").val(),
+ 				executeOrder : $("#executeOrder").val(),
+ 		}
+ 		$.ajax({
+ 			cache:false,
+ 			type : "post",
+ 			url : "/task/stream",
+ 			data : data,
+ 			success : function(){
+ 				location.href = "/detail/job/stream/"+data.taskId;
+ 			}
+ 		})
+     });
+}
 function page_init(){
 	
 	$('[name = "popoverHelp"]').popover();
 	queryByPage();
-	//formValidate();
+	formValidate();
 	addTaskUnit();
 }
