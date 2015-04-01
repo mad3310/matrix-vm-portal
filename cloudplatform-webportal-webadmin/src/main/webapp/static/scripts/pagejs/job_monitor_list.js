@@ -8,6 +8,7 @@ $(function(){
 });	
 function queryByPage() {
 	var queryCondition = {
+			'taskType':$('#jobstatus').val(),
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 		}
@@ -219,7 +220,6 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 function taskRestart(obj,taskChainId){
 	var id = $("#taskIdTemp").val();
 	queryTaskDetail(id,"update");
-	
 	$.ajax({
 		cache:false,
 		type : "post",
@@ -239,6 +239,9 @@ function taskRestart(obj,taskChainId){
 }
 
 function page_init(){
+	$('#jobSearch').click(function(){
+		queryByPage();
+	})
 	queryByPage();
 	pageControl();
 }
