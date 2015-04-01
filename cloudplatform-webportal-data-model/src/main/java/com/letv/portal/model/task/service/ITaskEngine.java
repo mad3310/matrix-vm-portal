@@ -8,6 +8,7 @@ import com.letv.portal.model.task.TaskResult;
 public interface ITaskEngine {
 
 	public TaskChainIndex init(Long taskId,Object params);
+	public TaskChainIndex init(String taskName,Object params);
 	
 	public void run(Long taskId);
 	

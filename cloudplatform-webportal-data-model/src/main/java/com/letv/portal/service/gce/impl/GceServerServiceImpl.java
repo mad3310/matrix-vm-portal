@@ -1,6 +1,6 @@
 package com.letv.portal.service.gce.impl;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -8,27 +8,19 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
-import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.gce.IGceServerDao;
-import com.letv.portal.dao.slb.ISlbServerDao;
 import com.letv.portal.enumeration.GceStatus;
-import com.letv.portal.enumeration.SlbStatus;
-import com.letv.portal.model.DbUserModel;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
-import com.letv.portal.model.slb.SlbConfig;
-import com.letv.portal.model.slb.SlbServer;
-import com.letv.portal.service.IMclusterService;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
-import com.letv.portal.service.slb.ISlbConfigService;
-import com.letv.portal.service.slb.ISlbServerService;
 
 @Service("gceServerService")
 public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements IGceServerService{
@@ -39,6 +31,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceServerDao gceServerDao;
 	@Autowired
 	private IGceClusterService gceClusterService;
+	@Autowired
+	private ITaskEngine taskEngine;	
 
 	public GceServerServiceImpl() {
 		super(GceServer.class);
@@ -77,6 +71,14 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		gceServer.setGceClusterId(gceCluster.getId());
 		this.gceServerDao.insert(gceServer);
 		
+		this.build(gceCluster, gceServer);
 	}
 	
+	@Async
+	private void build(GceCluster gceCluster,GceServer gceServer) {
+		Map<String,Object> params = new HashMap<String,Object>();
+    	params.put("gceClusterId", gceCluster.getId());
+    	params.put("gceId", gceServer.getId());
+    	this.taskEngine.run(5L,params);
+	}
 }

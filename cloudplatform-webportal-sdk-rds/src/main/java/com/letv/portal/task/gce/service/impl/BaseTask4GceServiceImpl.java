@@ -199,7 +199,7 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		if(gceClusterId == null)
 			throw new ValidateException("params's gceClusterId is null");
 		
-		List<GceContainer> gceContainers = null;//this.gceContainerService.selectbyClusterId(gceClusterId);
+		List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceClusterId);
 		if(gceContainers == null || gceContainers.isEmpty())
 			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
 		return gceContainers;
