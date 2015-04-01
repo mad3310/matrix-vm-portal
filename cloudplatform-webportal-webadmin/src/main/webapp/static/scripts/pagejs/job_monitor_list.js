@@ -32,12 +32,21 @@ function queryByPage() {
 						+array[i].templateTask.name
 						+ "</td>");
 				}
-				var td2 = $("<td width=\"80px\">"
+				var td2 =$("<td>"
+						+date('Y-m-d H:i:s',array[i].startTime)
+						+"</td>");
+				var td3 =$("<td>"						
+						+array[i].clusterName
+						+"</td>");
+				var td4 =$("<td>"						
+						+array[i].clusterName
+						+"</td>");
+				var td5 = $("<td width=\"80px\">"
 						+"<a>"
 						+ array[i].status
 						+"</a>"
 						+ "</td>");
-				var td3 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
+				var td6 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
 				var tr = $("<tr></tr>");
 				
 				
@@ -48,9 +57,9 @@ function queryByPage() {
 				}else if(array[i].status == "UNDO"){
 					tr.addClass("default-gray");
 				}else if(array[i].status == "DOING"){
-					td2.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
+					td5.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
 				}
-				tr.append(td1).append(td2).append(td3);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			initMonitorListClick();//初始化点击事件

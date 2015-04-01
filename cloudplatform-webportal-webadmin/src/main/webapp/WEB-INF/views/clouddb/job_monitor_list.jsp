@@ -11,10 +11,9 @@
 					<form class="form-inline">
 						<div class="form-group">
 							<select class="form-control" id="jobstatus">
-								<option value="">请选择要显示的业务类型...</option>
+								<option value="GCE">GCE</option>
 								<option value="RDS">RDS</option>
 								<option value="SLB">SLB</option>
-								<option value="GCE">GCE</option>
 							</select>
 						</div>
 						<div class=" form-group">
@@ -34,6 +33,7 @@
 					</tr>
 				</thead> -->
 				<tbody id="menu-tby">
+				
 				</tbody>
 			</table>
 			<div id="pageControlBar" class="hidden">

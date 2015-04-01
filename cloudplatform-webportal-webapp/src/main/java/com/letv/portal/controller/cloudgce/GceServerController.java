@@ -52,7 +52,7 @@ public class GceServerController {
 	
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(GceServer gceServer,ResultObject obj) {
-		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName()) || StringUtils.isEmpty(gceServer.getPortForward())){
+		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName())){
 			throw new ValidateException("参数不合法");
 		}else{
 			

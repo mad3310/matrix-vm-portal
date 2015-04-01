@@ -7,6 +7,8 @@
 	<resultMap id="BaseResultMap" type="TaskChainIndex">
 		<result column="ID" property="id" />
 		<result column="TASK_ID" property="taskId" />
+		<result column="CLUSTER_NAME" property="clusterName" />
+		<result column="SERVICE_NAME" property="serviceName" />
 		<result column="STATUS" property="status" />
 		<result column="START_TIME" property="startTime" />
 		<result column="END_TIME" property="endTime" />
@@ -25,14 +27,14 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		tci.ID,tci.TASK_ID,tci.STATUS,tci.START_TIME,tci.END_TIME,tci.DELETED,tci.CREATE_TIME,tci.CREATE_USER,tci.UPDATE_TIME,tci.UPDATE_USER
+		tci.ID,tci.TASK_ID,tci.STATUS,tci.SERVICE_NAME,tci.CLUSTER_NAME,tci.START_TIME,tci.END_TIME,tci.DELETED,tci.CREATE_TIME,tci.CREATE_USER,tci.UPDATE_TIME,tci.UPDATE_USER
 	</sql>
 	
 	<insert id="insert" parameterType="BackupResult" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_TASK_CHAIN_INDEX(TASK_ID,STATUS,START_TIME,END_TIME,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		WEBPORTAL_TASK_CHAIN_INDEX(TASK_ID,CLUSTER_NAME,SERVICE_NAME,STATUS,START_TIME,END_TIME,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{taskId},#{status},#{startTime},#{endTime},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
+		#{taskId},#{clusterName},#{serviceName},#{status},#{startTime},#{endTime},#{deleted},#{createTime},#{createUser},#{updateTime},#{updateUser})
 	</insert>
 	
 	<!-- 查询条件 -->
@@ -44,6 +46,12 @@
 			</if>
 			<if test="taskId != null">
 				and tci.TASK_ID=#{taskId}
+			</if>
+			<if test="serviceName != null">
+				and tci.SERVICE_NAME=#{serviceName}
+			</if>
+			<if test="clusterName != null">
+				and tci.CLUSTER_NAME=#{clusterName}
 			</if>
 			<if test="startTime != null and startTime != '' ">
 				and tci.START_TIME=#{startTime}
@@ -82,6 +90,12 @@
 			</if>
 			<if test="taskId != null  ">
 				TASK_ID=#{taskId},
+			</if>
+			<if test="serviceName != null">
+				and tci.SERVICE_NAME=#{serviceName}
+			</if>
+			<if test="clusterName != null">
+				and tci.CLUSTER_NAME=#{clusterName}
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},
@@ -134,6 +148,12 @@
 			</if>
 			<if test="params != null and params.taskId != null">
 				and tci.TASK_ID=#{params.taskId}
+			</if>
+			<if test="params != null and params.serviceName != null and params.clusterName != ''">
+				and tci.SERVICE_NAME=#{params.serviceName}
+			</if>
+			<if test="params != null and params.clusterName != null and params.clusterName != ''">
+				and tci.CLUSTER_NAME=#{params.clusterName}
 			</if>
 			<if test="params != null and params.startTime != null and params.startTime != '' ">
 				and tci.START_TIME=#{params.startTime}
