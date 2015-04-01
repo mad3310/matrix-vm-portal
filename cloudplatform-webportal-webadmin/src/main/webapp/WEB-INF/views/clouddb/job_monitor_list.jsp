@@ -11,7 +11,7 @@
 					<form class="form-inline">
 						<div class="form-group">
 							<select class="form-control" id="jobstatus">
-								<option value="">请选择要显示的业务..</option>
+								<option value="">请选择要显示的业务类型...</option>
 								<option value="RDS">RDS</option>
 								<option value="SLB">SLB</option>
 								<option value="GCE">GCE</option>
@@ -69,6 +69,7 @@
 						</thead>
 						<tbody id="tby">
 						</tbody>
+						<input type="text" id="taskIdTemp" class="hidden"/>
 					</table>
 				</div>
 			</div>

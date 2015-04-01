@@ -61,7 +61,7 @@
            				</button>
            				<h4 class="modal-title">添加任务单元</h4>
             		</div>
-					<form id="create-hcluster-form" name="create-hcluster-form" class="form-horizontal" role="form">
+					<form id="create-unitjob-form" name="create-hcluster-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">任务单元</label>

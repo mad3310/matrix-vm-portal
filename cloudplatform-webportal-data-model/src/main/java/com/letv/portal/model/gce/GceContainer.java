@@ -2,6 +2,8 @@ package com.letv.portal.model.gce;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.ServiceType;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 
 public class GceContainer extends BaseModel {
 	
@@ -27,6 +29,10 @@ public class GceContainer extends BaseModel {
 	private String containerUuid;//调用container用的UUID
 	
 	private ServiceType serviceType;
+	
+	private HostModel host;
+	private GceCluster gceCluster;
+	private HclusterModel hcluster;
 	
 	private String hostIp; //ip
 	private Long hostId;  //所属host
@@ -163,6 +169,24 @@ public class GceContainer extends BaseModel {
 	}
 	public void setBingProtocol(String bingProtocol) {
 		this.bingProtocol = bingProtocol;
+	}
+	public HostModel getHost() {
+		return host;
+	}
+	public void setHost(HostModel host) {
+		this.host = host;
+	}
+	public GceCluster getGceCluster() {
+		return gceCluster;
+	}
+	public void setGceCluster(GceCluster gceCluster) {
+		this.gceCluster = gceCluster;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
 	}
 	
 }

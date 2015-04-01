@@ -782,6 +782,9 @@ edit by jinglinlin@letv.com
 .skin-custom .default-success a{
 	color:#090;
 }
+.skin-custom .default-gray a{
+	color:#ddd;
+}
 .skin-custom .breadcrumb > li > a {
 	color:#000000;
 	font-weight:bolder;
