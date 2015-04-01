@@ -1,5 +1,7 @@
 package com.letv.portal.service.gce.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -27,6 +29,11 @@ public class GceContainerServiceImpl extends BaseServiceImpl<GceContainer> imple
 	@Override
 	public IBaseDao<GceContainer> getDao() {
 		return this.gceContainerDao;
+	}
+
+	@Override
+	public List<GceContainer> selectByGceMclusterId(Long gceClusterId) {
+		return this.gceContainerDao.selectContainerByGceClusterId(gceClusterId);
 	}
 
 }
