@@ -23,6 +23,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.gce.IGceServerService;
 
 @Controller
@@ -31,9 +32,10 @@ public class GceServerController {
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
-	
 	@Autowired
 	private IGceServerService gceServerService;
+	@Autowired
+	private IGceProxy gceProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceServerController.class);
 	
@@ -56,7 +58,7 @@ public class GceServerController {
 			
 		}
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
-		this.gceServerService.saveAndBuild(gceServer);
+		this.gceProxy.saveAndBuild(gceServer);
 		return obj;
 	}
 	
