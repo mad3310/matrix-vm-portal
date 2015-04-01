@@ -21,6 +21,7 @@
 		<result column="BIND_CONTAINER_PORT" property="bindContainerPort" />
 		<result column="BIND_HOST_PORT" property="bingHostPort" />
 		<result column="BIND_HOST_IP" property="bingHostIp" />
+		<result column="BIND_PROTOCOL" property="bingProtocol" />
 		<result column="CONTAINER_UUID" property="containerUuid" />
 		<result column="HOST_ID" property="hostId" />
 		<result column="HOST_IP" property="hostIp" />
@@ -51,7 +52,7 @@
 	
 	<!-- WEBPORTAL_GCECONTAINER GC table all fields -->
 	<sql id="Base_Column_List">
-		GCT.ID,GCT.CONTAINER_NAME,GCT.MOUNT_DIR,GCT.ZOOKEEPER_ID,GCT.IP_ADDR,GCT.GATE_ADDR,GCT.IP_MASK,GCT.TYPE,GCT.ZABBIXHOSTS,GCT.BIND_HOST_PORT,GCT.BIND_HOST_IP,GCT.CONTAINER_UUID,GCT.BIND_CONTAINER_PORT,
+		GCT.ID,GCT.CONTAINER_NAME,GCT.MOUNT_DIR,GCT.ZOOKEEPER_ID,GCT.IP_ADDR,GCT.GATE_ADDR,GCT.IP_MASK,GCT.TYPE,GCT.ZABBIXHOSTS,GCT.BIND_HOST_PORT,GCT.BIND_HOST_IP,GCT.BIND_PROTOCOL,GCT.CONTAINER_UUID,GCT.BIND_CONTAINER_PORT,
 		GCT.DISK_SIZE,GCT.CORES_NUMBER,GCT.MEMORY_SIZE,GCT.CPU_SPEED,GCT.HOST_ID,GCT.HOST_IP,GCT.GCECLUSTER_ID,GCT.STATUS,GCT.DELETED,GCT.CREATE_TIME,GCT.CREATE_USER,GCT.UPDATE_TIME,GCT.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
@@ -82,10 +83,10 @@
 	<insert id="insert" parameterType="GceContainer" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_GCECONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,CONTAINER_UUID
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,BIND_PROTOCOL,CONTAINER_UUID
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,GCECLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{containerUuid}
+		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{bingProtocol},#{containerUuid}
 		#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{gceClusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
@@ -93,7 +94,7 @@
 	<update id="update" parameterType="GceContainer">
 		update WEBPORTAL_GCECONTAINER set
 		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
-		BIND_CONTAINER_PORT=#{bindContainerPort},BIND_HOST_PORT=#{bingHostPort},BIND_HOST_IP=#{bingHostIp},CONTAINER_UUID=#{containerUuid},
+		BIND_CONTAINER_PORT=#{bindContainerPort},BIND_HOST_PORT=#{bingHostPort},BIND_HOST_IP=#{bingHostIp},BIND_PROTOCOL=#{bingProtocol},CONTAINER_UUID=#{containerUuid},
 		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},GCECLUSTER_ID=#{gceClusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
@@ -153,6 +154,9 @@
 			</if>
 			<if test="bingHostIp != null  ">
 				BIND_HOST_IP=#{bingHostIp},
+			</if>
+			<if test="bingProtocol != null  ">
+				BIND_PROTOCOL=#{bingProtocol},
 			</if>
 			<if test="containerUuid != null  ">
 				CONTAINER_UUID=#{containerUuid},

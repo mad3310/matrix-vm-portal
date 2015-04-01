@@ -33,5 +33,4 @@ public class TemplateTaskServiceImpl extends BaseServiceImpl<TemplateTask> imple
 	public TemplateTask selectByName(String name) {
 		return this.templateTaskDao.selectByName(name);
 	}
-	
 }
