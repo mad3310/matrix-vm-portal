@@ -32,7 +32,7 @@ public class GceContainerServiceImpl extends BaseServiceImpl<GceContainer> imple
 	}
 
 	@Override
-	public List<GceContainer> selectByGceMclusterId(Long gceClusterId) {
+	public List<GceContainer> selectByGceClusterId(Long gceClusterId) {
 		return this.gceContainerDao.selectContainerByGceClusterId(gceClusterId);
 	}
 

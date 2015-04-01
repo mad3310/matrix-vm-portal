@@ -7,5 +7,5 @@ import com.letv.portal.service.IBaseService;
 
 public interface IGceContainerService extends IBaseService<GceContainer> {
 	
-	public List<GceContainer> selectByGceMclusterId(Long gceClusterId);
+	public List<GceContainer> selectByGceClusterId(Long gceClusterId);
 }
