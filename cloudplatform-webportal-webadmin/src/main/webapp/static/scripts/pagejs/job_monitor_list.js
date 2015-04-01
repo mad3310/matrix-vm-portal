@@ -151,7 +151,7 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 			var array = data.data;
 			var tby = $("#tby");
 			
-			for (var i = 0, len = array.length; i < len; i++) {
+			for (var len = array.length, i = len - 1; i >=0 ; i--) {
 				var td1= $("<td>-</td>");
 				if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
 					td1 = $("<td>"
@@ -168,7 +168,7 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 						+ array[i].retry
 						+ "</td>");
 				var td5 = $("<td>"
-						+ array[i].result
+						+ FilterNull(array[i].result)
 						+ "</td>");
 				var td6 = $("<td>"
 						+ "<a>"
@@ -178,16 +178,21 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				var td7 = $("<td></td>");
 				
 				var tr = $("<tr></tr>");
+				
 				if(array[i].status == "FAILED"){
 					td7.html("<span class=\"ace-icon fa fa-repeat bigger-120\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></span>");
-					tr.addClass("danger");
+					tr.addClass("default-danger");
 				}else if(array[i].status == "SUCCESS"){
 					tr.addClass("default-success");
+				}else if(array[i].status == "UNDO"){
+					tr.addClass("default-gray");
+				}else if(array[i].status == "DOING"){
+					td6.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
 				if(type == "new"){
-					tr.appendTo(tby);
+					tr.prependTo(tby);
 				}else{
 					tby.find("tr:eq("+i+")").html(tr.html());
 				}

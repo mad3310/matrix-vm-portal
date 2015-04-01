@@ -71,7 +71,7 @@
 									<input class="form-control" name="taskUnitName" id="taskUnitName" type="text" />
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务单元名称应能概括此任务的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务单元名称应能概括此任务的信息，可用汉字" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -88,7 +88,7 @@
 									</select>
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的业务类型，例如RDS，GLB，GCE，消息中间件等" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="所属业务类型" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -99,7 +99,7 @@
 									<input class="form-control" name="beanName" id="beanName" type="text" />
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="描述待商议" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="执行本任务时所调用的接口" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -121,7 +121,7 @@
 									</select>
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="描述待商议" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="失败后自动重试的次数" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -132,7 +132,7 @@
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="输入字母、数字或_,最多100字符!" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="本单元的功能描述，可输入字母、数字或_,最多100字符!" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>

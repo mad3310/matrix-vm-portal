@@ -3,10 +3,10 @@
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
 		<h3>
-			<a href="${ctx}/list/job/stream">任务流列表<!-- <i class="ace-icon fa fa-reply icon-only"></i> --></a>
+			<%-- <a href="${ctx}/list/job/stream">任务流列表<!-- <i class="ace-icon fa fa-reply icon-only"></i> --></a>
 			<small id="jobStreamName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
-			</small>	
+			</small>	 --%>
 		</h3>		
 	</div>
 	<input class="hidden" value="${jobStreamId}" name="jobStreamId" id="jobStreamId" type="text" />
@@ -16,7 +16,7 @@
 			<div style="margin-top: 10px;">
 				<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 					<div class="widget-header">
-						<h5 class="widget-title">任务流详情</h5>
+						<h5 id="jobDetailTitle" class="widget-title">任务流详情</h5>
 						<div class="widget-toolbar no-border">
 							<button id="add_job_unit" class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#add-job-stream-unit-modal">
 								<i class="ace-icont fa fa-plus"></i>
@@ -71,7 +71,7 @@
 									</select>
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="可在下拉列表中选择已创建的任务单元。" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请在下拉列表中选择任务单元，如需维护任务单元，请到任务单元列表页面维护" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -93,7 +93,7 @@
 									</select>
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务创建失败后，可以重试的次数。" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务创建失败后，自动重试的次数。" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -104,7 +104,7 @@
 									<input class="form-control" type="text" name="executeOrder" id="executeOrder"/>
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的期望执行顺序，只能输入整数数字。" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元在整个任务流中的执行顺序，只能输入正整数数字。" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
