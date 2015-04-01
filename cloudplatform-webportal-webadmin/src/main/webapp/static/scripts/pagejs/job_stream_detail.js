@@ -31,10 +31,19 @@ function queryByPage() {
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
+			
+			//在页面顶部显示任务流名称
+			if($('#jobStreamName').html().indexOf(data.data.hcluster) < 0){
+ 				$("#jobStreamName").append(data.data.templateTask.name);
+			}
+			
 			var array = data.data.templateTaskDetail;
 			var tby = $("#tby");
 			
 			for (var i = 0, len = array.length; i < len; i++) {
+				/*添加执行顺序默认值*/
+				$("#executeOrder").val(len + 1);
+				
 				var td1 = $("<td class=\"center\">"
 							+"<label class=\"position-relative\">"
 							+"<input name=\"chainId\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
@@ -64,7 +73,9 @@ function queryByPage() {
 						+ array[i].executeOrder
 						+ "</td>");
 				var td7 = $("<td>"
-						+ "<span onclick=\"delTaskUnit(this)\" style=\"cursor:pointer\">删除</span>"
+						+"<a class=\"red\" href=\"#\" onclick=\"delTaskUnit(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+						+"</a>"
 						+"</td>"
 				);
 				

@@ -2,9 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h1>
-			<a href="${ctx}/list/job/stream">返回任务流列表<i class="ace-icon fa fa-reply icon-only"></i></a>	
-		</h1>
+		<h3>
+			<a href="${ctx}/list/job/stream">任务流列表<!-- <i class="ace-icon fa fa-reply icon-only"></i> --></a>
+			<small id="jobStreamName"> 
+				<i class="ace-icon fa fa-angle-double-right"></i> 
+			</small>	
+		</h3>		
 	</div>
 	<input class="hidden" value="${jobStreamId}" name="jobStreamId" id="jobStreamId" type="text" />
 	<!-- /.page-header -->

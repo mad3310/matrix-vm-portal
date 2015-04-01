@@ -96,9 +96,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="beanName">实现接口</label>
 								<div class="col-sm-6">
-									<select class="chosen-select" name="beanName" id="beanName" data-placeholder="请选择接口...">
-										<option value="">  </option>		
-									</select>
+									<input class="form-control" name="beanName" id="beanName" type="text" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="描述待商议" style="cursor:pointer; text-decoration:none;">
