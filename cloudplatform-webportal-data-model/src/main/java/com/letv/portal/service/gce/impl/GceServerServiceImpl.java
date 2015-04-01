@@ -52,7 +52,7 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	}
 
 	@Override
-	public void saveAndBuild(GceServer gceServer) {
+	public Map<String,Object> save(GceServer gceServer) {
 		gceServer.setStatus(GceStatus.BUILDDING.getValue());
 		
 		StringBuffer mclusterName = new StringBuffer();
@@ -71,14 +71,9 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		gceServer.setGceClusterId(gceCluster.getId());
 		this.gceServerDao.insert(gceServer);
 		
-		this.build(gceCluster, gceServer);
-	}
-	
-	@Async
-	private void build(GceCluster gceCluster,GceServer gceServer) {
 		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("gceClusterId", gceCluster.getId());
     	params.put("gceId", gceServer.getId());
-    	this.taskEngine.run(5L,params);
+		return params;
 	}
 }
