@@ -65,6 +65,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		gceCluster.setClusterName(mclusterName.toString());
 		gceCluster.setStatus(GceStatus.BUILDDING.getValue());
 		gceCluster.setCreateUser(gceServer.getCreateUser());
+		gceCluster.setAdminUser("root");
+		gceCluster.setAdminPassword(mclusterName.toString());
 		
 		this.gceClusterService.insert(gceCluster);
 		

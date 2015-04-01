@@ -149,7 +149,7 @@ function initMonitorListClick(){
 			if(refresh != null){
 				clearInterval(refresh);
 			}
-			refresh = setInterval(updateTaskDetail,500000);
+			refresh = setInterval(updateTaskDetail,5000);
 		})
 	})
 	this.exportMethod = function(){
@@ -232,7 +232,6 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 
 function taskRestart(obj,taskChainId){
 	var id = $("#taskIdTemp").val();
-	queryTaskDetail(id,"update");
 	$.ajax({
 		cache:false,
 		type : "post",
@@ -243,6 +242,7 @@ function taskRestart(obj,taskChainId){
 		},
 		success : function(data) {
 			if(error(data)) return;
+			queryTaskDetail(id,"update");
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			error(XMLHttpRequest);

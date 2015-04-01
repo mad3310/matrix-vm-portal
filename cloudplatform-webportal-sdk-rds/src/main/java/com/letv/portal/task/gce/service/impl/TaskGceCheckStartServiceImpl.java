@@ -1,6 +1,5 @@
 package com.letv.portal.task.gce.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +14,13 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IGcePythonService;
 
-@Service("taskGceContainerSync2Service")
-public class TaskGceContainerSync2ServiceImpl extends BaseTask4GceServiceImpl implements IBaseTaskService{
+@Service("taskGceCheckStartService")
+public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private IGcePythonService gcePythonService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskGceContainerSync2ServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskGceCheckStartServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -31,17 +30,20 @@ public class TaskGceContainerSync2ServiceImpl extends BaseTask4GceServiceImpl im
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp2 = containers.get(1).getHostIp();
-		String port = containers.get(1).getMgrBindHostPort();
+		String nodeIp1 = containers.get(0).getHostIp();
+		String port = containers.get(0).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("clusterUUID", containers.get(0).getContainerUuid());
-		String result = this.gcePythonService.syncContainer2(map,nodeIp2,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		String result = this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);
 		return tr;
+	}
+	
+	@Override
+	public void callBack(TaskResult tr) {
+		super.rollBack(tr);
 	}
 	
 }

@@ -30,10 +30,11 @@ public class TaskGceStartServiceImpl extends BaseTask4GceServiceImpl implements 
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeIp1 = containers.get(0).getHostIp();
+		String port = containers.get(0).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
 		
-		String result = this.gcePythonService.startCluster(nodeIp1,cluster.getAdminUser(),cluster.getAdminPassword());
+		String result = this.gcePythonService.startCluster(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

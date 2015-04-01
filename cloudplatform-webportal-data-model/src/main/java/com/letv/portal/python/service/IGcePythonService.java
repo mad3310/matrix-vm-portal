@@ -37,7 +37,7 @@ public interface IGcePythonService {
 	 * @return
 	 */
 
-	public String initZookeeper(String nodeIp);
+	public String initZookeeper(String nodeIp,String port);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>
@@ -47,12 +47,14 @@ public interface IGcePythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public String initUserAndPwd4Manager(String nodeIp,String username,String password);
+	public String initUserAndPwd4Manager(String nodeIp,String port,String username,String password);
 	
-	public String createContainer1(Map<String,String> params,String ip,String username,String password);
+	public String createContainer1(Map<String,String> params,String ip,String port,String username,String password);
+	public String createContainer2(Map<String,String> params,String ip,String port,String username,String password);
 
-	public String syncContainer2(Map<String,String> params,String nodeIp1,String adminUser, String adminPassword);
+	public String syncContainer2(Map<String,String> params,String nodeIp1,String port,String adminUser, String adminPassword);
 
-	public String startCluster(String nodeIp1, String adminUser,String adminPassword);
+	public String startCluster(String nodeIp1,String port,String adminUser,String adminPassword);
+	public String CheckClusterStatus(String nodeIp1,String port,String adminUser,String adminPassword);
 	
 }

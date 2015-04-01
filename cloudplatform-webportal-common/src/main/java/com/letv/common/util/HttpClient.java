@@ -182,10 +182,12 @@ public class HttpClient {
 		HttpPost httpost = new HttpPost(url);
 		List<NameValuePair> nvps = new ArrayList <NameValuePair>();
 		
-		Set<String> keySet = params.keySet();
-		for(String key : keySet) {
-			nvps.add(new BasicNameValuePair(key, params.get(key)));
-			logger.info("param-->" + key + ":" + params.get(key));
+		if(params !=null && !params.isEmpty()) {
+			Set<String> keySet = params.keySet();
+			for(String key : keySet) {
+				nvps.add(new BasicNameValuePair(key, params.get(key)));
+				logger.info("param-->" + key + ":" + params.get(key));
+			}
 		}
 		
 		try {

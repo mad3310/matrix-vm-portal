@@ -29,9 +29,9 @@ public class TaskGceInitZookeeper2ServiceImpl extends BaseTask4GceServiceImpl im
 
 		//执行业务
 		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp2 = containers.get(1).getIpAddr();
-		
-		String result = this.gcePythonService.initZookeeper(nodeIp2);
+		String nodeIp2 = containers.get(1).getHostIp();
+		String port = containers.get(1).getMgrBindHostPort();
+		String result = this.gcePythonService.initZookeeper(nodeIp2,port);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

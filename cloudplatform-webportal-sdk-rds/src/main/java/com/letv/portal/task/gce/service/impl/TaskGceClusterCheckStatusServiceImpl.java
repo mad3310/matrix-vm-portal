@@ -83,6 +83,10 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				StringBuffer containerPort = new StringBuffer();
 				StringBuffer protocol = new StringBuffer();
 				for (Map portBinding : portBindings) {
+					if("manager".equals(portBinding.get("type"))) {
+						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
+						continue;
+					}
 					hostPort.append((String)portBinding.get("hostPort")).append(",");
 					containerPort.append((String)portBinding.get("containerPort")).append(",");
 					protocol.append((String)portBinding.get("protocol")).append(",");

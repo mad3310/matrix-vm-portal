@@ -63,7 +63,7 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	@Override
 	public void rollBack(TaskResult tr) {
 		//发送错误邮件
-		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+//		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}
