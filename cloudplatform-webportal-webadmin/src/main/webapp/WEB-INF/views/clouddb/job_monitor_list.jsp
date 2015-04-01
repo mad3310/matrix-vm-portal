@@ -36,8 +36,8 @@
 				<tbody id="menu-tby">
 				</tbody>
 			</table>
-			<div id="pageControlBar">
-				<input class="hidden" id="totalPage_input" />
+			<div id="pageControlBar" class="hidden">
+				<input type="hidden" id="totalPage_input" />
 				<ul class="pager">
 					<li><a href="javascript:void(0);" id="firstPage">&laquo&nbsp;首页</a></li>
 					<li><a href="javascript:void(0);" id="prevPage" >上一页</a></li>
