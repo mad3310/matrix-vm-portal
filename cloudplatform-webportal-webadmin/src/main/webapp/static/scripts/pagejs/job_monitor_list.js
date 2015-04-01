@@ -32,10 +32,18 @@ function queryByPage() {
 						+ "</td>");
 				}
 				var td2 = $("<td width=\"80px\">"
+						+"<a>"
 						+ array[i].status
+						+"</a>"
 						+ "</td>");
 				var td3 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
 				var tr = $("<tr></tr>");
+				
+				if(array[i].status == "FAILED"){
+					tr.addClass("default-danger");
+				}else if(array[i].status == "SUCCESS"){
+					tr.addClass("default-success");
+				}
 				
 				tr.append(td1).append(td2).append(td3);
 				tr.appendTo(tby);
@@ -163,7 +171,9 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 						+ array[i].result
 						+ "</td>");
 				var td6 = $("<td>"
+						+ "<a>"
 						+ array[i].status
+						+ "</a>"
 						+ "</td>");
 				var td7 = $("<td></td>");
 				
@@ -171,6 +181,8 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				if(array[i].status == "FAILED"){
 					td7.html("<span class=\"ace-icon fa fa-repeat bigger-120\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></span>");
 					tr.addClass("danger");
+				}else if(array[i].status == "SUCCESS"){
+					tr.addClass("default-success");
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
