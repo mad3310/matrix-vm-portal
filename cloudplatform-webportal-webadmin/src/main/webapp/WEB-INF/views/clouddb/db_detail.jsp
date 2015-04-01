@@ -2,12 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h3> 
+		<%-- <h3> 
 			<a href="${ctx}/list/db">数据库列表</a>
 			<small id="headerDbName"> 
 				<i class="ace-icon fa fa-angle-double-right"></i> 
 			</small>
-		</h3>
+		</h3> --%>
 	</div>
 	<!-- /.page-header -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />

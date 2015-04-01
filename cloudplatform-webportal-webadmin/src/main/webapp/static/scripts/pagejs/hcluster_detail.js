@@ -66,8 +66,11 @@ function queryHost(){
 			removeLoading();
 			if(error(data)) return;
 			var headerName = data.data.hcluster;
-			if($('#headerHostName').html().indexOf(data.data.hcluster) < 0){
+			/*if($('#headerHostName').html().indexOf(data.data.hcluster) < 0){
  				$("#headerHostName").append(data.data.hcluster);
+			}*/
+			if($('#hclusterTitle').html().indexOf(data.data.hcluster) < 0){
+ 				$("#hclusterTitle").prepend(data.data.hcluster);
 			}
 			var array = data.data.hclusterDetail;
 			var tby = $("#tby");

@@ -3,9 +3,9 @@
 <script src="${ctx}/static/scripts/jquery.bootstrap-duallistbox.min.js"></script>
 <div class="page-content-area">
 	<div id="page-header-id" class="page-header">
-		<h3> 
+		<%-- <h3> 
 			<a href="${ctx}/list/db">数据库列表<i class="ace-icon fa fa-reply icon-only"></i> </a>
-		</h3>
+		</h3> --%>
 	</div>
 	<!-- /.page-header -->
 	<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
