@@ -17,6 +17,7 @@ import com.letv.portal.model.task.TaskChain;
 import com.letv.portal.model.task.TaskChainIndex;
 import com.letv.portal.model.task.TaskExecuteStatus;
 import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.TemplateTask;
 import com.letv.portal.model.task.TemplateTaskChain;
 import com.letv.portal.model.task.TemplateTaskDetail;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -40,6 +41,19 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	private ITaskChainService taskChainService;
 	@Autowired
 	private ITaskChainIndexService taskChainIndexService;
+	
+	@Override
+	public TaskChainIndex init(String taskName,Object params) {
+		
+		if(null == taskName)
+			throw new TaskExecuteException("taskId is null");
+		
+		TemplateTask task = this.templateTaskService.selectByName(taskName);
+		if(null == task)
+			throw new TaskExecuteException("task is null by name:" + taskName);
+		return init(task.getId(), params);
+	}
+	
 	
 	@Override
 	public TaskChainIndex init(Long taskId,Object params) {

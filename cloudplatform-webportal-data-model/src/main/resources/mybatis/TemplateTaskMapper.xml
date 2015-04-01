@@ -112,6 +112,12 @@
 		from WEBPORTAL_TEMPLATE_TASK tt
 		where tt.ID=#{id}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TEMPLATE_TASK tt
+		where tt.NAME=#{name}
+	</select>
 	
 	<sql id="Example_Page_Where_Clause">
 		where 1=1

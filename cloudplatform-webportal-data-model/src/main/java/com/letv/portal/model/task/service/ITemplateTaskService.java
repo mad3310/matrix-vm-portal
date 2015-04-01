@@ -5,4 +5,5 @@ import com.letv.portal.service.IBaseService;
 
 public interface ITemplateTaskService extends IBaseService<TemplateTask>{
 	
+	public TemplateTask selectByName(String name);
 }

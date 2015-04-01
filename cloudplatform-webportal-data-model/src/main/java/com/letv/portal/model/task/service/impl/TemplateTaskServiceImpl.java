@@ -28,5 +28,10 @@ public class TemplateTaskServiceImpl extends BaseServiceImpl<TemplateTask> imple
 	public IBaseDao<TemplateTask> getDao() {
 		return templateTaskDao;
 	}
+
+	@Override
+	public TemplateTask selectByName(String name) {
+		return this.templateTaskDao.selectByName(name);
+	}
 	
 }
