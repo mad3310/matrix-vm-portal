@@ -112,7 +112,11 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_TASK_CHAIN_INDEX tci
-		<include refid="Example_Where_Clause" />
+		left join WEBPORTAL_TEMPLATE_TASK tt on tt.ID = tci.TASK_ID
+		<include refid="Example_Page_Where_Clause"/>
+		<if test="params != null and params.taskType != null and params.taskType != '' ">
+			and tt.TASK_TYPE=#{params.taskType}
+		</if>
 	</select>
 	
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -165,7 +169,10 @@
 		<include refid="Base_Column_List" />,tt.TASK_TYPE,tt.DESCN,tt.NAME
 		from WEBPORTAL_TASK_CHAIN_INDEX tci
 		left join WEBPORTAL_TEMPLATE_TASK tt on tt.ID = tci.TASK_ID
-		<include refid="Example_Page_Where_Clause" />
+		<include refid="Example_Page_Where_Clause"/>
+		<if test="params != null and params.taskType != null and params.taskType != '' ">
+			and tt.TASK_TYPE=#{params.taskType}
+		</if>
 		ORDER BY tci.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

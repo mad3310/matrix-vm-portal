@@ -8,6 +8,7 @@ $(function(){
 });	
 function queryByPage() {
 	var queryCondition = {
+			'taskType':$('#jobstatus').val(),
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 		}
@@ -225,6 +226,9 @@ function taskRestart(obj,taskChainId){
 }
 
 function page_init(){
+	$('#jobSearch').click(function(){
+		queryByPage();
+	})
 	queryByPage();
 	pageControl();
 }

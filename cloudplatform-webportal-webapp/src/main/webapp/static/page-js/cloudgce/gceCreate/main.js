@@ -51,24 +51,12 @@ define(function(require){
 						message: "请输入字母数字或'_',云应用名不能以数字开头."
 					}
 				}
-			},
-            portForward:{
-				validMessage: '请按提示输入',
-				validators: {
-					notEmpty: {
-						message: '内部服务端口不能为空!'
-					}/*, regexp: {
-						regexp: /^[a-zA-Z_]+[a-zA-Z_0-9]*$/,
-						message: "请按格式输入端口，如80,8080"
-					}*/
-				}
 			}
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
 		var createGceData = {
 			gceName : $("[name = gceName]").val(),
-            portForward : $("[name = portForward]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
             gceImageName : $("[name = gceImageName]").val(),
             type:$("[name = type]").val()
