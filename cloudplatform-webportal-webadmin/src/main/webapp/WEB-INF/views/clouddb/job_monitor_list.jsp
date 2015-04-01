@@ -70,7 +70,7 @@
 						</thead>
 						<tbody id="tby">
 						</tbody>
-						<input type="text" id="taskIdTemp"/>
+						<input type="text" id="taskIdTemp" class="hidden"/>
 					</table>
 				</div>
 			</div>
