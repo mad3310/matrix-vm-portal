@@ -28,6 +28,7 @@ import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IMonitorService;
+import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.slb.ISlbServerService;
 
 @Component
@@ -56,6 +57,8 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 	private IMonitorService monitorService;
 	@Autowired
 	private ISlbServerService slbServerService;
+	@Autowired
+	private IGceServerService gceServerService;
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
@@ -156,6 +159,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy{
 		statistics.put("dbFree", dbFree>0?dbFree:0);
 		statistics.put("dbUser", this.dbUserService.selectByMapCount(map));
 		statistics.put("slb", this.slbServerService.selectByMapCount(map));
+		statistics.put("gce", this.gceServerService.selectByMapCount(map));
 		return statistics;
 	}
 

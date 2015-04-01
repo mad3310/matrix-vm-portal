@@ -80,6 +80,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			tc.setExecuteOrder(ttc.getExecuteOrder());
 			tc.setChainIndexId(tci.getId());
 			tc.setStatus(TaskExecuteStatus.UNDO);
+			tc.setRetry(ttc.getRetry());
 			if(ttc.getExecuteOrder() == 1) {
 				tc.setParams(this.transToString(params));
 			}

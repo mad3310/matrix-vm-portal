@@ -70,7 +70,8 @@ define(function(require){
 			gceName : $("[name = gceName]").val(),
             portForward : $("[name = portForward]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
-            gceImageName : $("[name = gceImageName]").val()
+            gceImageName : $("[name = gceImageName]").val(),
+            type:$("[name = type]").val()
 		}
 		var url = "/gce";
 		cn.PostData(url, createGceData, function () {
