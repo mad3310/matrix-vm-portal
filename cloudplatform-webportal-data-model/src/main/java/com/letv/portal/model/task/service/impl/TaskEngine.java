@@ -97,6 +97,15 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	public void run(Long taskId,Object params) {
 		run(init(taskId,params));
 	}
+	@Override
+	public void run(String taskName) {
+		run(taskName,null);
+	}
+	
+	@Override
+	public void run(String taskName,Object params) {
+		run(init(taskName,params));
+	}
 	
 	@Override
 	public void run(TaskChainIndex tci) {

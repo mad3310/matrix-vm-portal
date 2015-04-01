@@ -11,8 +11,10 @@ public interface ITaskEngine {
 	public TaskChainIndex init(String taskName,Object params);
 	
 	public void run(Long taskId);
+	public void run(String taskName);
 	
 	public void run(Long taskId,Object params);
+	public void run(String taskName,Object params);
 
 	public void run(TaskChainIndex tci);
 	
