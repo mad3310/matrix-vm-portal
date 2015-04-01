@@ -23,6 +23,7 @@ public class GceContainer extends BaseModel {
 	private String bindContainerPort;//容器内部服务端口
 	private String bingHostPort;//物理机映射端口
 	private String bingHostIp;//物理机映射IP
+	private String bingProtocol;//
 	private String containerUuid;//调用container用的UUID
 	
 	private ServiceType serviceType;
@@ -157,4 +158,11 @@ public class GceContainer extends BaseModel {
 	public void setContainerUuid(String containerUuid) {
 		this.containerUuid = containerUuid;
 	}
+	public String getBingProtocol() {
+		return bingProtocol;
+	}
+	public void setBingProtocol(String bingProtocol) {
+		this.bingProtocol = bingProtocol;
+	}
+	
 }

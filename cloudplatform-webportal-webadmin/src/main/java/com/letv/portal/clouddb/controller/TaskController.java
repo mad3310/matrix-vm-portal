@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.HclusterStatus;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.task.TaskChain;
 import com.letv.portal.model.task.TemplateTask;
 import com.letv.portal.model.task.TemplateTaskChain;
 import com.letv.portal.model.task.TemplateTaskDetail;
 import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITaskChainService;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.model.task.service.ITemplateTaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskDetailService;
 import com.letv.portal.model.task.service.ITemplateTaskService;
@@ -49,6 +54,9 @@ public class TaskController {
 	private ITaskChainIndexService taskChainIndexService;
 	@Autowired
 	private ITaskChainService taskChainService;
+	
+	@Autowired
+	private ITaskEngine taskEngine;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskController.class);
 
@@ -97,6 +105,16 @@ public class TaskController {
 	@RequestMapping(value ="/monitor/detail/{chainIndexId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject taskMonitorDetail(@PathVariable Long chainIndexId,HttpServletRequest request,ResultObject obj) {
 		obj.setData(this.taskChainService.selectAllChainByIndexId(chainIndexId));
+		return obj;
+	}
+	@RequestMapping(value ="/restart",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject restartTask(Long taskChainId,ResultObject obj) {
+		if(null == taskChainId)
+			throw new ValidateException("参数不合法");
+		
+		TaskChain tc = this.taskChainService.selectById(taskChainId);
+    	this.taskEngine.run(tc);
+    	
 		return obj;
 	}
 	/**Methods Name: taskDetail <br>
@@ -182,5 +200,22 @@ public class TaskController {
 		ResultObject obj = new ResultObject();
 		this.templateTaskChainService.delete(templateTaskChain);
 		return obj;
+	}
+	/**
+	 * Methods Name: validate <br>
+	 * Description: 验证任务流是否存在<br>
+	 * @author name: yaokuo 
+	 * @param name
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/validate",method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> validate(String name,HttpServletRequest request) {
+		if(StringUtils.isEmpty(name))
+			throw new ValidateException("参数不合法");
+		TemplateTask templateTask = this.templateTaskService.selectByName(name);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("valid", templateTask==null?false:true);
+		return map;
 	}
 }
