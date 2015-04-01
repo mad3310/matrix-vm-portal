@@ -102,12 +102,6 @@
 													<input id="gceName" class="form-control" name="gceName" type="text">
 												</div>
 											</div>
-											<div class="form-group bk-form-row col-sm-12">
-												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">内部服务端口：</label>
-												<div class="col-sm-2 row">
-													<input id="portForward" class="form-control" name="portForward" type="text">
-												</div>
-											</div>
 										</form>
 										<div class="bk-form-row">
 												<label class="bk-form-row-name">地域：</label>

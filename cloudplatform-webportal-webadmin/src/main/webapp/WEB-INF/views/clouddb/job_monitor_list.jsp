@@ -12,10 +12,9 @@
 						<div class="form-group">
 							<select class="form-control" id="jobstatus">
 								<option value="">请选择要显示的业务类型...</option>
-								<option value="1">RDS</option>
-								<option value="2">GLB</option>
-								<option value="3">GCE</option>
-								<option value="4">消息中间件</option>
+								<option value="RDS">RDS</option>
+								<option value="SLB">SLB</option>
+								<option value="GCE">GCE</option>
 							</select>
 						</div>
 						<div class=" form-group">
