@@ -123,10 +123,10 @@
 				HCLUSTER_ID=#{hclusterId},
 			</if>
 			<if test="portForward != null ">
-				and g.HCLUSTER_ID=#{portForward}
+				PORT_FORWARD=#{portForward}
 			</if>
 			<if test="gceImageName != null ">
-				and g.HCLUSTER_ID=#{gceImageName}
+				GCE_IMAGE_NAME=#{gceImageName}
 			</if>
 			<if test="type != null  ">
 				TYPE=#{type},
