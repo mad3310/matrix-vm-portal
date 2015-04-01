@@ -123,11 +123,14 @@ function initMonitorListClick(){
 			$(this).addClass("selected");
 			
 			var taskId = $(this).find("input").val();
+			
+			$("#taskIdTemp").val(taskId);
 			queryTaskDetail(taskId,"new");
 			
 			function updateTaskDetail(){
 				queryTaskDetail(taskId,"update");
 			}
+			
 			/*定时刷新状态*/
 			if(refresh != null){
 				clearInterval(refresh);
@@ -135,6 +138,9 @@ function initMonitorListClick(){
 			refresh = setInterval(updateTaskDetail,500000);
 		})
 	})
+	this.exportMethod = function(){
+		updateTaskDetail();
+	}
 }
 
 function queryTaskDetail(taskId,type){	//type 为 new|update
@@ -211,6 +217,9 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 }
 
 function taskRestart(obj,taskChainId){
+	var id = $("#taskIdTemp").val();
+	queryTaskDetail(id,"update");
+	
 	$.ajax({
 		cache:false,
 		type : "post",
