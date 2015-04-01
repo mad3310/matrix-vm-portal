@@ -1084,3 +1084,13 @@ edit by jinglinlin@letv.com
 	border:1px solid #d5d5d5;
 }
 /* rewrite chosen-single css end */
+
+
+/* pageinator input style begin */
+.pageinput{
+	width:20px;
+	height:19px;
+	border:none;
+	background: inherit;
+}
+/* pageinator input style end */

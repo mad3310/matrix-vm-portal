@@ -16,6 +16,9 @@ function queryContainer(){
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
+			if($('#mclusterTitle').html().indexOf(array[0].mcluster.mclusterName) < 0){
+ 				$("#mclusterTitle").prepend(array[0].mcluster.mclusterName);
+			}
  			$("#headerContainerName").append(array[0].mcluster.mclusterName);
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td0 = $("<input name=\"container_id\" value= \""+array[i].id+"\" type=\"hidden\"/>");

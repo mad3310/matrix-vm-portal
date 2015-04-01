@@ -59,9 +59,9 @@ function queryByPage() {
 			} else {
 				$("#pageControlBar").show();
 				$("#totalPage_input").val(totalPages);
-				$("#currentPage").html(currentPage);
-				$("#totalRows").html(data.data.totalRecords);
-				$("#totalPage").html(totalPages);
+				$("#currentPage").val(currentPage);
+				/*$("#totalRows").html(data.data.totalRecords);*/
+				$("#totalPage").val(totalPages);
 			}
 		}
 	});
