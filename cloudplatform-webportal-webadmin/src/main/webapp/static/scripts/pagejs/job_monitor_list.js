@@ -41,15 +41,15 @@ function queryByPage() {
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			initMonitorListClick();//初始化点击事件
-			if (totalPages <= 1) {
+			/*if (totalPages <= 1) {
 				$("#pageControlBar").hide();
-			} else {
+			} else {*/
 				$("#pageControlBar").show();
 				$("#totalPage_input").val(totalPages);
 				$("#currentPage").html(currentPage);
 				$("#totalRows").html(data.data.totalRecords);
 				$("#totalPage").html(totalPages);
-			}
+			/*}*/
 		}
 	});
 	}

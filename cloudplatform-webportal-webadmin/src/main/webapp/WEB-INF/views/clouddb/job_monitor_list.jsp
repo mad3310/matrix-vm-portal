@@ -1,14 +1,17 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
-	<div class="row">
-		<div class="task-monitor-menu col-xs-2">
-			<div class="widget-header">
+	<div class="row">		
+		<div class="task-monitor-menu col-xs-4 dataTables_wrapper form-inline no-footer">
+			<div class="table-header" style="margin-bottom:10px;background-color:#333;">
+			任务流执行记录
+			</div>
+			<div class="row">
 				<div class="input-group pull-right">
 					<form class="form-inline">
 						<div class="form-group">
 							<select class="form-control" id="jobstatus">
-								<option value="">请选择状态</option>
+								<option value="">请选择要显示的业务..</option>
 								<option value="1">RDS</option>
 								<option value="2">GLB</option>
 								<option value="3">GCE</option>
@@ -24,12 +27,13 @@
 					</form>
 				</div>
 			</div>
-			<table class="table task-monitor-list" id="db_detail_table" >
-				<thead>
+			<table class="table task-monitor-list" id="db_detail_table" style="margin-top:10px;">
+				<!-- <thead>
 					<tr>
-						<th colspan="2"  style="background-color:#333;text-align:center;color:seashell;">任务流执行记录</th>
+						<th colspan="2"
+							style="background-color: #333; text-align: center; color: seashell;">任务流执行记录</th>
 					</tr>
-				</thead>
+				</thead> -->
 				<tbody id="menu-tby">
 				</tbody>
 			</table>
@@ -46,7 +50,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-10">
+		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-8">
 			<div class="widget-header">
 				<h5 class="widget-title">任务监控</h5>
 			</div>
