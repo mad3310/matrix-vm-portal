@@ -67,7 +67,7 @@
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="taskStreamName">任务流名称</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="taskStreamName" id="taskStreamName" type="text" />
+									<input class="form-control" name="name" id="taskStreamName" type="text" />
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="任务流名称应能概括此任务的信息，仅支持数字字母和下划线!" style="cursor:pointer; text-decoration:none;">

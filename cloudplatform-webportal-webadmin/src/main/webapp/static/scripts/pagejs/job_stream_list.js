@@ -165,7 +165,7 @@ function formValidate() {
              validating: 'glyphicon glyphicon-refresh'
          },
          fields: {
-        	 taskStreamName: {
+        	 name: {
                  validMessage: '请按提示输入',
                  validators: {
                      notEmpty: {
@@ -174,6 +174,9 @@ function formValidate() {
 			          stringLength: {
 			              max: 40,
 			              message: '任务流名过长'
+			          },remote:{
+			        	  message: '任务流名称已存在!',
+	                        url: "/task/validate"
 			          }
 	             }
          	},descn:{

@@ -215,7 +215,7 @@ public class TaskController {
 			throw new ValidateException("参数不合法");
 		TemplateTask templateTask = this.templateTaskService.selectByName(name);
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("valid", templateTask==null?false:true);
+		map.put("valid", templateTask==null?true:false);
 		return map;
 	}
 }
