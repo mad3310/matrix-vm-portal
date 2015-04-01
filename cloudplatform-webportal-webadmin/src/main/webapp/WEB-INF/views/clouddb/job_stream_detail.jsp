@@ -34,7 +34,7 @@
 										</th>
 										<th width=25%>任务单元名称</th>
 										<th>业务类型</th>
-										<th>失败重试次数</th>
+										<th style="width:8%">失败重试次数</th>
 										<th>功能描述</th>
 										<th>执行顺序</th>
 										<th>操作</th>
@@ -62,7 +62,7 @@
 						<div class="modal-body">            				
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">任务单元</label>
-								<div class="col-sm-5">
+								<div class="col-sm-7">
 									<select class="chosen-select" name="taskDetailId" id="taskDetailId" data-placeholder="请选择任务单元">
 										<option value=""> </option>
 									</select>
@@ -75,14 +75,18 @@
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="retry">失败重试次数</label>
-								<div class="col-sm-5">
+								<div class="col-sm-7">
 									<select class="chosen-select" name="retry" id="retry" data-placeholder="请选择重试次数">
-										<option value=""> </option>
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
 										<option value="4">4</option>
 										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
 									</select>
 								</div>
 								<label class="control-label">
@@ -94,7 +98,7 @@
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="hcluster_name">执行顺序</label>
 								<div class="col-sm-3">
-									<input class="form-control" type="text" name="executeOrder" value="请输入顺序" id="executeOrder"/>
+									<input class="form-control" type="text" name="executeOrder" id="executeOrder"/>
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该任务单元的期望执行顺序，只能输入整数数字。" style="cursor:pointer; text-decoration:none;">

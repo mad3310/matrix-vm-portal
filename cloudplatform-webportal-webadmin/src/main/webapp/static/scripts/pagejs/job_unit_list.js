@@ -61,13 +61,18 @@ function queryByPage() {
 						+ array[i].descn
 						+ "</td>");
 				var td5 = $("<td>"
+						+ array[i].beanName
+						+ "</td>");
+				var td6 = $("<td>"
+						+ array[i].retry
+						+ "</td>");
+				/*var td5 = $("<td>"
 						+ "<a><span>修改</span><a>"
-						+"</td>"
-				);
+						+"</td>");*/
 				
 				var tr = $("<tr></tr>");
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
