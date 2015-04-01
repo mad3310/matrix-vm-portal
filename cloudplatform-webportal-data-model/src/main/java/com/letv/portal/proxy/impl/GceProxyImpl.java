@@ -46,7 +46,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 
 	@Async
 	private void build(Map<String,Object> params) {
-    	this.taskEngine.run(5L,params);
+    	this.taskEngine.run("GCE_BUY",params);
 	}
 	
 	@Override
