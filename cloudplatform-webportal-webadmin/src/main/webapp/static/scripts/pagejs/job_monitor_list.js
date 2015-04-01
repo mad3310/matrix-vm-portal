@@ -124,7 +124,7 @@ function initMonitorListClick(){
 			if(refresh != null){
 				clearInterval(refresh);
 			}
-			refresh = setInterval(updateTaskDetail,5000);
+			refresh = setInterval(updateTaskDetail,500000);
 		})
 	})
 }
@@ -169,7 +169,7 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				
 				var tr = $("<tr></tr>");
 				if(array[i].status == "FAILED"){
-					td7.html("<span class=\"ace-icon fa fa-repeat bigger-120\" style=\"cursor:pointer\"></span>");
+					td7.html("<span class=\"ace-icon fa fa-repeat bigger-120\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></span>");
 					tr.addClass("danger");
 				}
 				
@@ -180,6 +180,25 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 					tby.find("tr:eq("+i+")").html(tr.html());
 				}
 			}
+		},
+		error : function(XMLHttpRequest,textStatus, errorThrown) {
+			error(XMLHttpRequest);
+			return false;
+		}
+	});
+}
+
+function taskRestart(obj,taskChainId){
+	$.ajax({
+		cache:false,
+		type : "post",
+		url : "/task/restart",
+		dataType : "json",
+		data:{
+			taskChainId:taskChainId
+		},
+		success : function(data) {
+			if(error(data)) return;
 		},
 		error : function(XMLHttpRequest,textStatus, errorThrown) {
 			error(XMLHttpRequest);

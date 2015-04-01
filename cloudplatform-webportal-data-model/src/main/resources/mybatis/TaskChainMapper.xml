@@ -111,4 +111,11 @@
 		join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.id = tc.TASK_DETAIL_ID
 		where tc.CHAIN_INDEX_ID = #{chainIndexId}
 	</select>
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_TASK_CHAIN tc 
+		join WEBPORTAL_TEMPLATE_TASK_DETAIL
+		where tc.ID = #{id}
+	</select>
 </mapper>   
