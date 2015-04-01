@@ -79,15 +79,15 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 					container.setHostId(hostModel.getId());
 				}
 				List<Map> portBindings = (List<Map>) map.get("port_bindings");
-				StringBuffer hostPost = new StringBuffer();
+				StringBuffer hostPort = new StringBuffer();
 				StringBuffer containerPort = new StringBuffer();
 				StringBuffer protocol = new StringBuffer();
 				for (Map portBinding : portBindings) {
-					hostPost.append((String)portBinding.get("hostPost")).append(",");
+					hostPort.append((String)portBinding.get("hostPort")).append(",");
 					containerPort.append((String)portBinding.get("containerPort")).append(",");
 					protocol.append((String)portBinding.get("protocol")).append(",");
 				}
-				container.setBingHostPort(hostPost.length()>0?hostPost.substring(0, hostPost.length()-1):hostPost.toString());
+				container.setBingHostPort(hostPort.length()>0?hostPort.substring(0, hostPort.length()-1):hostPort.toString());
 				container.setBindContainerPort(containerPort.length()>0?containerPort.substring(0, containerPort.length()-1):containerPort.toString());
 				container.setBingProtocol(protocol.length()>0?protocol.substring(0, protocol.length()-1):protocol.toString());
 				

@@ -15,6 +15,9 @@ public class TaskChainIndex extends BaseModel {
 	private Date endTime;
 	private TemplateTask templateTask;
 	
+	private String serviceName;
+	private String clusterName;
+	
 	public Long getTaskId() {
 		return taskId;
 	}
@@ -45,4 +48,17 @@ public class TaskChainIndex extends BaseModel {
 	public void setTemplateTask(TemplateTask templateTask) {
 		this.templateTask = templateTask;
 	}
+	public String getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+	public String getClusterName() {
+		return clusterName;
+	}
+	public void setClusterName(String clusterName) {
+		this.clusterName = clusterName;
+	}
+	
 }
