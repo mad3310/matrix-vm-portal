@@ -779,6 +779,9 @@ edit by jinglinlin@letv.com
 .skin-custom .default-danger a{
 	color:#D95C5C;
 }
+.skin-custom .default-success a{
+	color:#090;
+}
 .skin-custom .breadcrumb > li > a {
 	color:#000000;
 	font-weight:bolder;
