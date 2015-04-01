@@ -83,10 +83,10 @@
 	<insert id="insert" parameterType="GceContainer" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_GCECONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,BIND_PROTOCOL,CONTAINER_UUID
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_CONTAINER_PORT,BIND_HOST_PORT,BIND_HOST_IP,BIND_PROTOCOL,CONTAINER_UUID,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,GCECLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{bingProtocol},#{containerUuid}
+		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{bingProtocol},#{containerUuid},
 		#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{gceClusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
