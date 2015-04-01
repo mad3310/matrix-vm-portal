@@ -49,15 +49,15 @@ function queryByPage() {
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			initMonitorListClick();//初始化点击事件
-			/*if (totalPages <= 1) {
+			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
-			} else {*/
+			} else {
 				$("#pageControlBar").show();
 				$("#totalPage_input").val(totalPages);
 				$("#currentPage").html(currentPage);
 				$("#totalRows").html(data.data.totalRecords);
 				$("#totalPage").html(totalPages);
-			/*}*/
+			}
 		}
 	});
 	}
@@ -150,7 +150,7 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
-			
+			var mark = false;
 			for (var len = array.length, i = len - 1; i >=0 ; i--) {
 				var td1= $("<td>-</td>");
 				if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
@@ -180,7 +180,8 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				var tr = $("<tr></tr>");
 				
 				if(array[i].status == "FAILED"){
-					td7.html("<span class=\"ace-icon fa fa-repeat bigger-120\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></span>");
+					mark = true;
+					td7.html("<i class=\"ace-icon fa fa-play-circle-o green bigger-130\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></i>");
 					tr.addClass("default-danger");
 				}else if(array[i].status == "SUCCESS"){
 					tr.addClass("default-success");
@@ -188,6 +189,10 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 					tr.addClass("default-gray");
 				}else if(array[i].status == "DOING"){
 					td6.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
+				}
+				
+				if(mark == true){
+					td7.html("<i class=\"ace-icon fa fa-play-circle-o green bigger-130\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></i>");
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);

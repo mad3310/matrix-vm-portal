@@ -11,7 +11,7 @@
 					<form class="form-inline">
 						<div class="form-group">
 							<select class="form-control" id="jobstatus">
-								<option value="">请选择要显示的业务..</option>
+								<option value="">请选择要显示的业务类型...</option>
 								<option value="1">RDS</option>
 								<option value="2">GLB</option>
 								<option value="3">GCE</option>
