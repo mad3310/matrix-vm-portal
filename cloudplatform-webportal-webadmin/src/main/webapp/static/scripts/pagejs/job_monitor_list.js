@@ -40,12 +40,16 @@ function queryByPage() {
 				var td3 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
 				var tr = $("<tr></tr>");
 				
+				
 				if(array[i].status == "FAILED"){
 					tr.addClass("default-danger");
 				}else if(array[i].status == "SUCCESS"){
 					tr.addClass("default-success");
+				}else if(array[i].status == "UNDO"){
+					tr.addClass("default-gray");
+				}else if(array[i].status == "DOING"){
+					td2.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
 				}
-				
 				tr.append(td1).append(td2).append(td3);
 				tr.appendTo(tby);
 			}//循环json中的数据 

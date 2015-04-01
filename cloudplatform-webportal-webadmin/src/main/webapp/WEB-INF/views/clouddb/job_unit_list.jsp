@@ -81,7 +81,7 @@
 								<div class="col-sm-6">
 									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择类型...">
 										<option value="">  </option>
-										<option value="xx">消息中间件</option>
+										<!-- <option value="xx">消息中间件</option> -->
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
 										<option value="GCE">GCE</option>										
