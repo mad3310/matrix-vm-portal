@@ -8,6 +8,5 @@ import com.letv.portal.model.slb.SlbContainer;
 
 public interface ISlbContainerDao extends IBaseDao<SlbContainer> {
 	
-	List<SlbContainer> selectBySlbClusterId(Long clusterId);
-
+	List<SlbContainer> selectBySlbClusterId(Long slbClusterId);
 }
