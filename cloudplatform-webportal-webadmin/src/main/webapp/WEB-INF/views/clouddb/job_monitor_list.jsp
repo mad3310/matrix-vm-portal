@@ -27,12 +27,15 @@
 				</div>
 			</div>
 			<table class="table task-monitor-list" id="db_detail_table" style="margin-top:10px;">
-				<!-- <thead>
+				 <thead>
 					<tr>
-						<th colspan="2"
-							style="background-color: #333; text-align: center; color: seashell;">任务流执行记录</th>
+						<th>名称</th>
+						<th>起始时间</th>
+						<th>应用名称</th>
+						<th>集群名称</th>						
+						<th>状态</th>
 					</tr>
-				</thead> -->
+				</thead>
 				<tbody id="menu-tby">
 				
 				</tbody>
