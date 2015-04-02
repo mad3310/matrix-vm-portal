@@ -229,6 +229,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			}
 		} catch (Exception e) {
 			tr.setSuccess(false);
+			tr.setResult(e.getMessage());
 			baseTask.rollBack(tr);
 			tc.setResult(e.getMessage());
 			tc.setStatus(TaskExecuteStatus.FAILED);
