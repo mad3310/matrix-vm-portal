@@ -49,9 +49,7 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + gceName
                             +"</td>");
-                    var td3 = $("<td class=\"padding-left-32\">"
-                            + "<span>"+array[i].gceImageName+"</span>"
-                            +"</td>");
+                    var td3 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
                     var td4 = $("<td class=\"padding-left-32\">"
                             + "<span>"+array[i].ip+"</span>"
                             +"</td>");
@@ -64,7 +62,7 @@ define(function(require,exports,module){
                         + "<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>"
                         + "</td>");
                     }
-                    var td7 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
+                    
                     var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
                     	var td9 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
@@ -72,7 +70,7 @@ define(function(require,exports,module){
                     	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td8).append(td9);
                     tr.appendTo($tby);
                  }
             }
