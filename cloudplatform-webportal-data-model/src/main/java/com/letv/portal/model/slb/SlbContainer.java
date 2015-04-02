@@ -20,6 +20,7 @@ public class SlbContainer extends BaseModel {
 	private Integer memorySize; //内存大小
 	private Integer status; //状态
 	private String zabbixHosts;//对应zabbix删除container时候需要的标识
+	private String containerUuid;//调用container用的UUID
 	
 	private ServiceType serviceType;
 	
@@ -129,5 +130,10 @@ public class SlbContainer extends BaseModel {
 	public void setSlbClusterId(Long slbClusterId) {
 		this.slbClusterId = slbClusterId;
 	}
-	
+	public String getContainerUuid() {
+		return containerUuid;
+	}
+	public void setContainerUuid(String containerUuid) {
+		this.containerUuid = containerUuid;
+	}
 }

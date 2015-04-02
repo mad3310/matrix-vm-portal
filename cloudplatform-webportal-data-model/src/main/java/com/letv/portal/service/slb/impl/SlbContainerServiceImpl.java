@@ -1,5 +1,7 @@
 package com.letv.portal.service.slb.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.slb.ISlbContainerDao;
+import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.slb.ISlbContainerService;
@@ -27,6 +30,11 @@ public class SlbContainerServiceImpl extends BaseServiceImpl<SlbContainer> imple
 	@Override
 	public IBaseDao<SlbContainer> getDao() {
 		return this.slbContainerDao;
+	}
+
+	@Override
+	public List<SlbContainer> selectBySlbClusterId(Long slbClusterId) {
+		return this.slbContainerDao.selectBySlbClusterId(slbClusterId);
 	}
 
 }
