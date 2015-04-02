@@ -138,14 +138,14 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		map.put("buildResult", result);
 		map.put("errorDetail", detail);
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
-//		defaultEmailSender.sendMessage(mailMessage);
+		defaultEmailSender.sendMessage(mailMessage);
 	}
 	public void email4User(Map<String,Object> params,Long to,String ftlName){
 		UserModel user = this.userService.selectById(to);
 		if(null != user) {
 			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知",ftlName,params);
 			mailMessage.setHtml(true);
-//			defaultEmailSender.sendMessage(mailMessage);
+			defaultEmailSender.sendMessage(mailMessage);
 		}
 	}
 	
