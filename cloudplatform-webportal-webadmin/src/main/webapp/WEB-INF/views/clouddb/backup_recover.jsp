@@ -78,7 +78,7 @@
 				</div>
 			</div>
 			<div id="noData" class="col-xs-12 col-md-12 hidden">
-			      <small><font color="gray">没有记录</font></small>
+			      <small><font color="gray">没有数据记录</font></small>
 		    </div>
 			<div id="pageControlBar">
 				<input type="hidden" id="totalPage_input" ></input>
