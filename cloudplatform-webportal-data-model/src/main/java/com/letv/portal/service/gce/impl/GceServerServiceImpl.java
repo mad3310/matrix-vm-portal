@@ -1,6 +1,7 @@
 package com.letv.portal.service.gce.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.gce.IGceServerDao;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceCluster;
+import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 
@@ -31,6 +35,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceServerDao gceServerDao;
 	@Autowired
 	private IGceClusterService gceClusterService;
+	@Autowired
+	private IGceContainerService gceContainerService;
 	@Autowired
 	private ITaskEngine taskEngine;	
 
@@ -77,5 +83,24 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
     	params.put("gceClusterId", gceCluster.getId());
     	params.put("gceId", gceServer.getId());
 		return params;
+	}
+	
+	public <K, V> Page selectPageByParams(Page page, Map<K, V> params){
+		page = super.selectPageByParams(page, params);
+		List<GceServer> gceServers = (List<GceServer>) page.getData();
+		
+		for(GceServer gceServer : gceServers){
+			List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceServer.getGceClusterId());
+			gceServer.setGceContainers(gceContainers);
+		}
+		page.setData(gceServers);
+		return page;
+	}
+	
+	public GceServer selectById(Long id){
+		GceServer gceServer = this.gceServerDao.selectById(id);
+		List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceServer.getGceClusterId());
+		gceServer.setGceContainers(gceContainers);
+		return gceServer;
 	}
 }

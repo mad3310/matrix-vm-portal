@@ -143,6 +143,11 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 		tc.setStatus(TaskExecuteStatus.DOING);
 		tc.setStartTime(new Date());
 		this.taskChainService.updateBySelective(tc);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("executeOrder", tc.getExecuteOrder());
+		map.put("chainIndexId", tc.getChainIndexId());
+		map.put("status", TaskExecuteStatus.UNDO);
+		this.taskChainService.updateAfterDoingChainStatus(map);
 		return tc;
 	}
 	
@@ -179,6 +184,8 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	
 	@Override
 	public void execute(TaskChain tc,TaskChainIndex tci) {
+		IBaseTaskService baseTask = null;
+		TaskResult tr = null;
 		try {
 			tc = beforeExecute(tc);
 			
@@ -194,13 +201,13 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			String paramStr = tc.getParams();
 			Map<String,Object> params = transToMap(paramStr);
 			
-			IBaseTaskService baseTask;
 			try {
 				baseTask = (IBaseTaskService)getApplicationContext().getBean(taskBeanName);
 			} catch (Exception e) {
 				throw new TaskExecuteException("execute getBean exception:" + e.getMessage());
 			}
-			TaskResult tr = baseTask.execute(params);
+			baseTask.beforExecute(params);
+			tr = baseTask.execute(params);
 			if(tr == null)
 				throw new TaskExecuteException("task execute result is null");
 			
@@ -221,8 +228,10 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 				execute(tc,tci);
 			}
 		} catch (Exception e) {
+			tr.setSuccess(false);
+			tr.setResult(e.getMessage());
+			baseTask.rollBack(tr);
 			tc.setResult(e.getMessage());
-			e.printStackTrace();
 			tc.setStatus(TaskExecuteStatus.FAILED);
 			tc.setEndTime(new Date());
 			this.taskChainService.updateBySelective(tc);

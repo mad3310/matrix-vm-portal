@@ -33,10 +33,8 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 	@Autowired
 	private IGceContainerService gceContainerService;
 	
-	@Value("${python_create_check_time}")
-	private long PYTHON_CREATE_CHECK_TIME;
-	@Value("${python_check_interval_time}")
-	private long PYTHON_CHECK_INTERVAL_TIME;
+	private final static long PYTHON_CREATE_CHECK_TIME = 180000;
+	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskGceClusterCheckStatusServiceImpl.class);
 	

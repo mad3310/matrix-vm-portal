@@ -1,5 +1,7 @@
 package com.letv.portal.model.gce;
 
+import java.util.List;
+
 import com.letv.common.model.BaseModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
@@ -23,6 +25,7 @@ public class GceServer extends BaseModel {
 	private HclusterModel hcluster;
 	private GceCluster gceCluster;
 	private UserModel createUserModel;
+	private List<GceContainer> gceContainers;
 	
 
 	public String getType() {
@@ -96,5 +99,11 @@ public class GceServer extends BaseModel {
 	}
 	public void setCreateUserModel(UserModel createUserModel) {
 		this.createUserModel = createUserModel;
+	}
+	public List<GceContainer> getGceContainers() {
+		return gceContainers;
+	}
+	public void setGceContainers(List<GceContainer> gceContainers) {
+		this.gceContainers = gceContainers;
 	}
 }

@@ -27,7 +27,7 @@
 					</div>
 					<a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 					<span class="toggle-drop-down-icon" toggle-show="toggleShow">
-						<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
+						<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown"></span>
 					</span>
 					</a>
 				</div>
@@ -41,7 +41,7 @@
 						</tr>
 						<tr>
 							<td width="50%">
-								<span class="text-muted pd-r8">镜像ID:</span><span text-length="26" id="gce_info_gce_image"></span>
+								<span class="text-muted pd-r8">应用类型:</span><span text-length="26" id="gce_type"></span>
 							</td>
 							<td width="50%">
 								<span class="text-muted pd-r8">地域:</span>北京
@@ -49,7 +49,7 @@
 						</tr>
 						<tr>
 							<td width="50%">
-								<span class="text-muted pd-r8">访问地址:</span><span text-length="26" id="gceServerIp"></span>
+								<span class="text-muted pd-r8">访问地址:</span><span text-length="26" id="gce_server_addr"></span>
 							</td>
 							<td width="50%">
 								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="gce_info_available_region"></span>
@@ -82,16 +82,16 @@
 						<tbody>
 						<tr>
 							<td width="50%"><span class="text-muted pd-r8">付费方式:</span><span class="text-success">包年</span></td>
-							<td width="50%"><span class="text-muted" style="padding-right:8px">创建时间:</span><span id="gce_create_time">2015-03-03 16:30</span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">创建时间:</span><span id="gce_create_time"></span></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td width="50%">
 								<span class="text-muted pd-r8">服务地址：</span><span id="slbServerIp" text-length="26">---</span>
 							</td>
 							<td width="50%">
 								<span class="text-muted pd-r8">自动释放时间:</span><span>无</span>
 							</td>
-						</tr>
+						</tr> -->
 						</tbody>
 					</table>
 				  </div>

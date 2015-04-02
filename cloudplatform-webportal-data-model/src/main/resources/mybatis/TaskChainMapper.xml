@@ -99,6 +99,9 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_TASK_CHAIN tc where tc.CHAIN_INDEX_ID = #{chainIndexId} and EXECUTE_ORDER=#{executeOrder}
 	</select>
+	<select id="updateAfterDoingChainStatus" resultMap="BaseResultMap" parameterType="java.util.Map">
+		update WEBPORTAL_TASK_CHAIN set status = #{status} where EXECUTE_ORDER>#{executeOrder} and CHAIN_INDEX_ID = #{chainIndexId}
+	</select>
 	<select id="selectFailedChainByIndex" resultMap="BaseResultMap" parameterType="TaskChain">
 		select
 		<include refid="Base_Column_List" />
