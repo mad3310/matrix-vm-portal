@@ -7,17 +7,17 @@
 			任务流执行记录
 			</div>
 			<div class="row">
-				<div class="input-group pull-right col-sm-12 col-md-12">
+				<div class="input-group pull-right">
 					<form class="form-inline">
-						<div class="form-group  col-sm-5 col-md-5"></div>
-						<div class="form-group  col-sm-4 col-md-4">
-							<select class="col-sm-12 col-md-12" id="jobstatus" style="height:34px;">
+						<div class="form-group"></div>
+						<div class="form-group ">
+							<select class="" id="jobstatus" style="height:34px;width:150px;">
 								<option value="GCE">GCE</option>
 								<option value="RDS">RDS</option>
 								<option value="SLB">SLB</option>
 							</select>
 						</div>
-						<div class=" form-group  col-sm-3 col-md-3">
+						<div class=" form-group">
 							<button class="btn btn-sm btn-primary btn-search pull-right " id="jobSearch"
 								type="button">
 								<i class="ace-icon fa fa-search"></i>搜索
