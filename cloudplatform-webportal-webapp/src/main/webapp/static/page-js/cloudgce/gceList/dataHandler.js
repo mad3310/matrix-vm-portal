@@ -90,7 +90,7 @@ define(function(require,exports,module){
         }
     }
     function getAccpetAddr(data){
-        if(data == null && data.length == 0){
+        if(data == null || data.length == 0){
             return "-";
         }
         var ret="";
