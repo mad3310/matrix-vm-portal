@@ -193,7 +193,7 @@
 		<if test="params != null and params.taskType != null and params.taskType != '' ">
 			and tt.TASK_TYPE=#{params.taskType}
 		</if>
-		ORDER BY tci.CREATE_TIME DESC
+		ORDER BY tci.START_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
     	</if>
