@@ -37,6 +37,9 @@
 				
 				</tbody>
 			</table>
+			<div id="noData" class="col-xs-12 col-md-12 hidden" style="border-top:1px solid #ccc;padding-top:10px;margin-top:-20px;">
+			      <small><font color="gray">没有数据记录</font></small>
+		    </div>
 			<div id="pageControlBar" class="hidden">
 				<input type="hidden" id="totalPage_input" />
 				<ul class="pager">

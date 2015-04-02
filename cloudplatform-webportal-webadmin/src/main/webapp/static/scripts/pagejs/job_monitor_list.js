@@ -12,57 +12,63 @@ function queryByPage() {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 		}
-	$("#tby tr").remove();
+	$("#tby tr").remove();	
+	$("#noData").addClass("hidden");
 	$.ajax({
 		cache:false,
 		type : "get",
 		url : queryUrlBuilder("/task/monitor",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
-		success : function(data) {
+		success : function(data) {			
 			$("#menu-tby tr").remove();
 			if(error(data)) return;
 			var array = data.data.data;
 			var tby = $("#menu-tby");
 			var totalPages = data.data.totalPages;
+			if(array.length == 0){
+				$("#noData").removeClass("hidden");
+			}else{
+				$("#noData").addClass("hidden");
 			
-			for (var i = 0, len = array.length; i < len; i++) {
-				var td1=$("<td>-</td>")
-				if(array[i].templateTask != undefined && array[i].templateTask!= null){
-					td1 = $("<td>"
-						+array[i].templateTask.name
-						+ "</td>");
-				}
-				var td2 =$("<td>"
-						+date('Y-m-d H:i:s',array[i].startTime)
-						+"</td>");
-				var td3 =$("<td>"						
-						+array[i].clusterName
-						+"</td>");
-				var td4 =$("<td>"						
-						+array[i].clusterName
-						+"</td>");
-				var td5 = $("<td width=\"80px\">"
-						+"<a>"
-						+ array[i].status
-						+"</a>"
-						+ "</td>");
-				var td6 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
-				var tr = $("<tr></tr>");
-				
-				
-				if(array[i].status == "FAILED"){
-					tr.addClass("default-danger");
-				}else if(array[i].status == "SUCCESS"){
-					tr.addClass("default-success");
-				}else if(array[i].status == "UNDO"){
-					tr.addClass("default-gray");
-				}else if(array[i].status == "DOING"){
-					td5.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
-				}
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
-				tr.appendTo(tby);
-			}//循环json中的数据 
-			initMonitorListClick();//初始化点击事件
+				for (var i = 0, len = array.length; i < len; i++) {
+					var td1=$("<td>-</td>")
+					if(array[i].templateTask != undefined && array[i].templateTask!= null){
+						td1 = $("<td>"
+							+array[i].templateTask.name
+							+ "</td>");
+					}
+					var td2 =$("<td>"
+							+date('Y-m-d H:i:s',array[i].startTime)
+							+"</td>");
+					var td3 =$("<td>"						
+							+array[i].clusterName
+							+"</td>");
+					var td4 =$("<td>"						
+							+array[i].clusterName
+							+"</td>");
+					var td5 = $("<td width=\"80px\">"
+							+"<a>"
+							+ array[i].status
+							+"</a>"
+							+ "</td>");
+					var td6 = $("<input type=\"hidden\" value=\""+array[i].id+"\"/>");
+					var tr = $("<tr></tr>");
+					
+					
+					if(array[i].status == "FAILED"){
+						tr.addClass("default-danger");
+					}else if(array[i].status == "SUCCESS"){
+						tr.addClass("default-success");
+					}else if(array[i].status == "UNDO"){
+						tr.addClass("default-gray");
+					}else if(array[i].status == "DOING"){
+						td5.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
+					}
+					tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+					tr.appendTo(tby);
+				}//循环json中的数据 
+				initMonitorListClick();//初始化点击事件				
+			}
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
 			} else {
