@@ -20,7 +20,7 @@
 		<result column="MEMORY_SIZE" property="memorySize" />
 		<result column="HOST_ID" property="hostId" />
 		<result column="HOST_IP" property="hostIp" />
-		<result column="MCLUSTER_ID" property="mclusterId" />
+		<result column="CLUSTER_ID" property="clusterId" />
 		<result column="ZABBIXHOSTS" property="zabbixHosts" />
 		
 		<result column="STATUS" property="status" />
@@ -36,8 +36,8 @@
 			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
-	    <association property="mcluster" javaType="Mcluster">
-			<result column="MCLUSTER_NAME" property="mclusterName" />
+	    <association property="slbCluster" javaType="SlbCluster">
+			<result column="CLUSTER_NAME" property="clusterName" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -47,57 +47,57 @@
 	
 	
 	
-	<!-- WEBPORTAL_CONTAINER C table all fields -->
+	<!-- WEBPORTAL_SLBCONTAINER SCT table all fields -->
 	<sql id="Base_Column_List">
-		C.ID,C.CONTAINER_NAME,C.MOUNT_DIR,C.ZOOKEEPER_ID,C.IP_ADDR,C.GATE_ADDR,C.IP_MASK,C.TYPE,C.ZABBIXHOSTS,
-		C.DISK_SIZE,C.CORES_NUMBER,C.MEMORY_SIZE,C.CPU_SPEED,C.HOST_ID,C.HOST_IP,C.MCLUSTER_ID,C.STATUS,C.DELETED,C.CREATE_TIME,C.CREATE_USER,C.UPDATE_TIME,C.UPDATE_USER
+		SCT.ID,SCT.CONTAINER_NAME,SCT.MOUNT_DIR,SCT.ZOOKEEPER_ID,SCT.IP_ADDR,SCT.GATE_ADDR,SCT.IP_MASK,SCT.TYPE,SCT.ZABBIXHOSTS,
+		SCT.DISK_SIZE,SCT.CORES_NUMBER,SCT.MEMORY_SIZE,SCT.CPU_SPEED,SCT.HOST_ID,SCT.HOST_IP,SCT.CLUSTER_ID,SCT.STATUS,SCT.DELETED,SCT.CREATE_TIME,SCT.CREATE_USER,SCT.UPDATE_TIME,SCT.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and C.ID=#{id}
+				and SCT.ID=#{id}
 			</if>
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
-				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+				and SCT.CONTAINER_NAME like CONCAT('%','${containerName}','%')
 			</if>
 			<if test="type != null ">
-				and C.TYPE=#{type}
+				and SCT.TYPE=#{type}
 			</if>
 			<if test="ipAddr != null ">
-				and C.IP_ADDR=#{ipAddr}
+				and SCT.IP_ADDR=#{ipAddr}
 			</if>
-			<if test="mclusterId != null ">
-				and C.MCLUSTER_ID=#{mclusterId}
+			<if test="clusterId != null ">
+				and SCT.CLUSTER_ID=#{clusterId}
 			</if>
 			<if test="zookeeperId != null ">
-				and C.ZOOKEEPER_ID=#{zookeeperId}
+				and SCT.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		WEBPORTAL_CONTAINER
+		WEBPORTAL_SLBCONTAINER
 		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
-		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,MCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,CLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
-		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{mclusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
+		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{clusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Container">
-		update WEBPORTAL_CONTAINER set
+		update WEBPORTAL_SLBCONTAINER set
 		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
-		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},MCLUSTER_ID=#{mclusterId},
+		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},CLUSTER_ID=#{clusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 	
 	<update id="updateHostIpByName" parameterType="Container">
-		update WEBPORTAL_CONTAINER
+		update WEBPORTAL_SLBCONTAINER
 		<set>
 			<if test="hostId != null  ">
 				HOST_ID=#{hostId},
@@ -111,7 +111,7 @@
 
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Container">
-		update WEBPORTAL_CONTAINER
+		update WEBPORTAL_SLBCONTAINER
 		<set>
 			<if test="containerName != null  and containerName != '' ">
 				CONTAINER_NAME=#{containerName},
@@ -152,8 +152,8 @@
 			<if test="hostIp != null  ">
 				HOST_IP=#{hostIp},
 			</if>
-			<if test="mclusterId != null  ">
-				MCLUSTER_ID=#{mclusterId},
+			<if test="clusterId != null  ">
+				CLUSTER_ID=#{clusterId},
 			</if>
 			
 			<if test="status != null  ">
@@ -181,12 +181,12 @@
 	
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="Container">
-		delete from WEBPORTAL_CONTAINER where ID = #{id}
+		delete from WEBPORTAL_SLBCONTAINER where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
 	<update id="deleteFlag" parameterType="Container">
-		update WEBPORTAL_CONTAINER set
+		update WEBPORTAL_SLBCONTAINER set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}
 		</if>
@@ -197,71 +197,24 @@
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER C where C.ID = #{id}
+		from WEBPORTAL_SLBCONTAINER SCT where SCT.ID = #{id}
 	</select>
-	<!-- 根据id查询-->
-	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
-		select 
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER C where C.CONTAINER_NAME = #{containerName}
-	</select>
-	<!-- 根据db id查询-->
-	<select id="selectByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="selectByClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		,M.MCLUSTER_NAME 
-		from WEBPORTAL_CONTAINER C left join WEBPORTAL_MCLUSTER_INFO M
-		ON M.ID = C.MCLUSTER_ID
-		where C.MCLUSTER_ID = #{mclusterId} ORDER BY C.TYPE,C.ZOOKEEPER_ID
+		from WEBPORTAL_SLBCONTAINER SCT 
+		where SCT.CLUSTER_ID = #{clusterId}
 	</select>
 	<!-- 物理删除 -->
-	<update id="deleteByMclusterId" parameterType="java.lang.Long">
-		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
+	<update id="deleteByClusterId" parameterType="java.lang.Long">
+		delete from WEBPORTAL_SLBCONTAINER where CLUSTER_ID = #{clusterId}
 	</update>	
 	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER C
+		from WEBPORTAL_SLBCONTAINER SCT
 		<include refid="Example_Where_Clause" />
-	</select>
-	
-	
-	<!-- 根据条件查询 -->
-	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HOST_NAME,H.HOST_NAME_ALIAS,U.HCLUSTER_NAME_ALIAS,H.HCLUSTER_ID
-		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
-		where 1=1
-		<if test="containerName != null  and containerName != '' and containerName != 'null'">
-			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
-		</if>
-		<if test="type != null ">
-			and C.TYPE=#{type}
-		</if>
-		<if test="ipAddr != null and ipAddr != ''">
-			and C.IP_ADDR like CONCAT('%','${ipAddr}','%') escape '^'
-		</if>
-		<if test="mclusterId != null ">
-			and C.MCLUSTER_ID=#{mclusterId}
-		</if>
-		and C.MCLUSTER_ID=M.Id and C.HOST_ID=H.ID and H.HCLUSTER_ID=U.ID
-	</select>
-	
-	<select id="selectVipIps4Monitor" resultMap="BaseResultMap" parameterType="java.util.Map">
-		select
-		C.IP_ADDR
-		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M
-		where 
-		C.MCLUSTER_ID=M.Id and C.TYPE='mclustervip'
-	</select>
-	
-		<!--查询集群下container的信息-->
-	<select id="selectContainerByMclusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_CONTAINER C ,WEBPORTAL_MCLUSTER_INFO M 
-		where C.MCLUSTER_ID=M.ID and M.ID=#{mclusterId}
 	</select>
 </mapper>   
