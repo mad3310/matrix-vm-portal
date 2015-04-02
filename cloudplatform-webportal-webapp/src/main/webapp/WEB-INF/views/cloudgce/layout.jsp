@@ -13,7 +13,7 @@
 <link type="text/css" rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" />
 <!-- ui-css -->
 <link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css" />
-<title>SLB管理控制台</title>
+<title>GCE管理控制台</title>
 </head>
 <body>
 	<!-- 全局参数 start -->

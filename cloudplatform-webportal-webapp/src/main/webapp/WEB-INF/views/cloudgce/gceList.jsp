@@ -106,8 +106,8 @@
 						</th>
 						<th class="padding-left-32">应用名称</th>
 						<th>状态</th>
+						<th>服务类型</th>
 						<th>访问地址</th>
-						<th>端口映射(外部:内部)</th>
 						<th>所在可用区</th>
 						<th>付费方式</th>
 						<th class="text-right">操作</th>
