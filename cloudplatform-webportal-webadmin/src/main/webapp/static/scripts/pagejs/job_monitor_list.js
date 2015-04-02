@@ -1,5 +1,5 @@
 var currentPage = 1; //第几页 
-var recordsPerPage = 200; //每页显示条数
+var recordsPerPage = 20; //每页显示条数
 var refresh = null;
 	
 $(function(){
@@ -230,7 +230,11 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 	});
 }
 
-function taskRestart(obj,taskChainId){
+function taskRestart(obj,taskChainId){	
+	$(obj).removeClass("fa-play-circle-o green bigger-130");	
+	$(obj).addClass("fa-spinner fa-spin bigger-125");
+	$(obj).attr("onclick","return false;");
+	
 	var id = $("#taskIdTemp").val();
 	$.ajax({
 		cache:false,

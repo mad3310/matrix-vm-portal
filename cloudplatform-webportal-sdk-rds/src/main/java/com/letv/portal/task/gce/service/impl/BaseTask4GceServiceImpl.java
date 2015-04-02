@@ -18,14 +18,15 @@ import com.letv.common.exception.ValidateException;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HostModel;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IHostService;
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -46,8 +47,24 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	private IGceServerService gceServerService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private IUserService userService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4GceServiceImpl.class);
+	
+	@Override
+	public void beforExecute(Map<String, Object> params) {
+		GceServer gce = this.getGceServer(params);
+		GceCluster cluster = this.getGceCluster(params);
+		if(gce.getStatus() != DbStatus.BUILDDING.getValue()) {
+			gce.setStatus(DbStatus.BUILDDING.getValue());
+			this.gceServerService.updateBySelective(gce);
+		}
+		if(gce.getStatus() != MclusterStatus.BUILDDING.getValue()) {
+			cluster.setStatus(MclusterStatus.BUILDDING.getValue());
+			this.gceClusterService.updateBySelective(cluster);
+		}
+	}
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -62,8 +79,8 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 
 	@Override
 	public void rollBack(TaskResult tr) {
-		//发送错误邮件
-//		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		//发送邮件
+		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}
@@ -76,6 +93,9 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		if(tr.isSuccess()) {
 			gce.setStatus(DbStatus.NORMAL.getValue());
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
+			Map<String, Object> emailParams = new HashMap<String,Object>();
+			emailParams.put("gceName", gce.getGceName());
+			this.email4User(emailParams, gce.getCreateUser(),"gce/createGce.ftl");
 		} else {
 			gce.setStatus(DbStatus.BUILDFAIL.getValue());
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
@@ -118,9 +138,16 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		map.put("buildResult", result);
 		map.put("errorDetail", detail);
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
-		defaultEmailSender.sendMessage(mailMessage);
+//		defaultEmailSender.sendMessage(mailMessage);
 	}
-	
+	public void email4User(Map<String,Object> params,Long to,String ftlName){
+		UserModel user = this.userService.selectById(to);
+		if(null != user) {
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知",ftlName,params);
+			mailMessage.setHtml(true);
+//			defaultEmailSender.sendMessage(mailMessage);
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String,Object> transToMap(String params){
@@ -204,4 +231,5 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
 		return gceContainers;
 	}
+	
 }

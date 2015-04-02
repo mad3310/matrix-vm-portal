@@ -190,4 +190,10 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 		
 		return value;
 	}
+
+	@Override
+	public void beforExecute(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.exception.TaskExecuteException;
@@ -90,31 +91,37 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	}
 	
 	@Override
+	@Async
 	public void run(Long taskId) {
 		run(taskId,null);
 	}
 	
 	@Override
+	@Async
 	public void run(Long taskId,Object params) {
 		run(init(taskId,params));
 	}
 	@Override
+	@Async
 	public void run(String taskName) {
 		run(taskName,null);
 	}
 	
 	@Override
+	@Async
 	public void run(String taskName,Object params) {
 		run(init(taskName,params));
 	}
 	
 	@Override
+	@Async
 	public void run(TaskChainIndex tci) {
 		TaskChain tc = this.taskChainService.selectNextChainByIndexAndOrder(tci.getId(),1); //select first TaskChain or doing TaskChain from table by taskChain order。
 		run(tc,tci);
 	}
 	
 	@Override
+	@Async
 	public void run(TaskChain tc) {
 		TaskChainIndex tci = this.taskChainIndexService.selectById(tc.getChainIndexId());
 		run(tc,tci);
@@ -136,6 +143,11 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 		tc.setStatus(TaskExecuteStatus.DOING);
 		tc.setStartTime(new Date());
 		this.taskChainService.updateBySelective(tc);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("executeOrder", tc.getExecuteOrder());
+		map.put("chainIndexId", tc.getChainIndexId());
+		map.put("status", TaskExecuteStatus.UNDO);
+		this.taskChainService.updateAfterDoingChainStatus(map);
 		return tc;
 	}
 	
@@ -172,6 +184,8 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	
 	@Override
 	public void execute(TaskChain tc,TaskChainIndex tci) {
+		IBaseTaskService baseTask = null;
+		TaskResult tr = null;
 		try {
 			tc = beforeExecute(tc);
 			
@@ -187,13 +201,13 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			String paramStr = tc.getParams();
 			Map<String,Object> params = transToMap(paramStr);
 			
-			IBaseTaskService baseTask;
 			try {
 				baseTask = (IBaseTaskService)getApplicationContext().getBean(taskBeanName);
 			} catch (Exception e) {
 				throw new TaskExecuteException("execute getBean exception:" + e.getMessage());
 			}
-			TaskResult tr = baseTask.execute(params);
+			baseTask.beforExecute(params);
+			tr = baseTask.execute(params);
 			if(tr == null)
 				throw new TaskExecuteException("task execute result is null");
 			
@@ -214,8 +228,9 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 				execute(tc,tci);
 			}
 		} catch (Exception e) {
+			tr.setSuccess(false);
+			baseTask.rollBack(tr);
 			tc.setResult(e.getMessage());
-			e.printStackTrace();
 			tc.setStatus(TaskExecuteStatus.FAILED);
 			tc.setEndTime(new Date());
 			this.taskChainService.updateBySelective(tc);

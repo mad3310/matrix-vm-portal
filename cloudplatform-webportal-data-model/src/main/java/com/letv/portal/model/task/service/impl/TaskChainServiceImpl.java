@@ -1,6 +1,7 @@
 package com.letv.portal.model.task.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -51,6 +52,12 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 	@Override
 	public List<TaskChain> selectAllChainByIndexId(Long chainIndexId) {
 		return this.taskChainDao.selectAllChainByIndexId(chainIndexId);
+	}
+
+	@Override
+	public void updateAfterDoingChainStatus(Map<String, Object> params) {
+		this.taskChainDao.updateAfterDoingChainStatus(params);
+		
 	}
 	
 }
