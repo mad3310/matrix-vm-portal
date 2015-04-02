@@ -158,25 +158,7 @@
 											</div>
 										</div>
 										<div class="bk-form-row">
-											<label class="bk-form-row-name">镜像：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span></span>
-																	<ul>
-																	</ul>
-																	<input name="gceImageName" type="hidden" value="1" />
-																</div>
-														</span>
-														</span> <span class="bk-select-arrow"></span>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="bk-form-row">
-											<label class="bk-form-row-name">镜像：</label>
+											<label class="bk-form-row-name">服务类型：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left">
@@ -185,6 +167,7 @@
 																	<span></span>
 																	<ul>
 																	<li class="bk-select-option"><a href="javascript:;" selectid="nginx">nginx</a></li>
+																	<li class="bk-select-option"><a href="javascript:;" selectid="jetty">jetty</a></li>
 																	</ul>
 																	<input name="type" type="hidden" value="nginx" />
 																</div>
