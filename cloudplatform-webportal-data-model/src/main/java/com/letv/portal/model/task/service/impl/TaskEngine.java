@@ -179,6 +179,8 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	
 	@Override
 	public void execute(TaskChain tc,TaskChainIndex tci) {
+		IBaseTaskService baseTask = null;
+		TaskResult tr = null;
 		try {
 			tc = beforeExecute(tc);
 			
@@ -194,13 +196,12 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			String paramStr = tc.getParams();
 			Map<String,Object> params = transToMap(paramStr);
 			
-			IBaseTaskService baseTask;
 			try {
 				baseTask = (IBaseTaskService)getApplicationContext().getBean(taskBeanName);
 			} catch (Exception e) {
 				throw new TaskExecuteException("execute getBean exception:" + e.getMessage());
 			}
-			TaskResult tr = baseTask.execute(params);
+			tr = baseTask.execute(params);
 			if(tr == null)
 				throw new TaskExecuteException("task execute result is null");
 			
@@ -221,8 +222,9 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 				execute(tc,tci);
 			}
 		} catch (Exception e) {
+			tr.setSuccess(false);
+			baseTask.rollBack(tr);
 			tc.setResult(e.getMessage());
-			e.printStackTrace();
 			tc.setStatus(TaskExecuteStatus.FAILED);
 			tc.setEndTime(new Date());
 			this.taskChainService.updateBySelective(tc);
