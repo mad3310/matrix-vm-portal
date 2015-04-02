@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.exception.TaskExecuteException;
@@ -90,31 +91,37 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	}
 	
 	@Override
+	@Async
 	public void run(Long taskId) {
 		run(taskId,null);
 	}
 	
 	@Override
+	@Async
 	public void run(Long taskId,Object params) {
 		run(init(taskId,params));
 	}
 	@Override
+	@Async
 	public void run(String taskName) {
 		run(taskName,null);
 	}
 	
 	@Override
+	@Async
 	public void run(String taskName,Object params) {
 		run(init(taskName,params));
 	}
 	
 	@Override
+	@Async
 	public void run(TaskChainIndex tci) {
 		TaskChain tc = this.taskChainService.selectNextChainByIndexAndOrder(tci.getId(),1); //select first TaskChain or doing TaskChain from table by taskChain order。
 		run(tc,tci);
 	}
 	
 	@Override
+	@Async
 	public void run(TaskChain tc) {
 		TaskChainIndex tci = this.taskChainIndexService.selectById(tc.getChainIndexId());
 		run(tc,tci);
