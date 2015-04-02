@@ -23,7 +23,7 @@ define(function(require){
 	$("#refresh").click(function() {		
 		asyncData();
 	});
-	$("#dbName").keydown(function(e){
+	$("#gceName").keydown(function(e){
 		if(e.keyCode==13){
 			cn.currentPage = 1;
 			asyncData();
@@ -77,7 +77,7 @@ define(function(require){
 	function asyncData(page) {
 		var gceName = $("#gceName").val();
 		if(!page) page = cn.currentPage;
-		url = "/gce?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&slbName=" + gceName;
+		url = "/gce?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&gceName=" + gceName;
 		cn.GetData(url,gceDataHandler.GceListHandler);
 
 	}
