@@ -34,7 +34,7 @@ public class SlbContainerServiceImpl extends BaseServiceImpl<SlbContainer> imple
 
 	@Override
 	public List<SlbContainer> selectBySlbClusterId(Long slbClusterId) {
-		return this.slbContainerDao.selectByClusterId(slbClusterId);
+		return this.slbContainerDao.selectBySlbClusterId(slbClusterId);
 	}
 
 }
