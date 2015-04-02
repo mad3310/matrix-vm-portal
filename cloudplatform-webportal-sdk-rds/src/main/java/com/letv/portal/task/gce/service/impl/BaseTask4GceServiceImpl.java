@@ -53,6 +53,20 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4GceServiceImpl.class);
 	
 	@Override
+	public void beforExecute(Map<String, Object> params) {
+		GceServer gce = this.getGceServer(params);
+		GceCluster cluster = this.getGceCluster(params);
+		if(gce.getStatus() != DbStatus.BUILDDING.getValue()) {
+			gce.setStatus(DbStatus.BUILDDING.getValue());
+			this.gceServerService.updateBySelective(gce);
+		}
+		if(gce.getStatus() != MclusterStatus.BUILDDING.getValue()) {
+			cluster.setStatus(MclusterStatus.BUILDDING.getValue());
+			this.gceClusterService.updateBySelective(cluster);
+		}
+	}
+	
+	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = new TaskResult();
 		if(params == null || params.isEmpty()) {
@@ -217,4 +231,5 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
 		return gceContainers;
 	}
+	
 }

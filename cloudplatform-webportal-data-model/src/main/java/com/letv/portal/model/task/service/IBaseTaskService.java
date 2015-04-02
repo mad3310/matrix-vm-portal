@@ -11,5 +11,7 @@ public interface IBaseTaskService {
 	public void rollBack(TaskResult tr);
 	
 	public void callBack(TaskResult tr);
+
+	public void beforExecute(Map<String, Object> params);
 	
 }

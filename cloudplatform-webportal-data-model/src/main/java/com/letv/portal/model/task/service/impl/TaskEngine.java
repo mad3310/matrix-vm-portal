@@ -143,6 +143,11 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 		tc.setStatus(TaskExecuteStatus.DOING);
 		tc.setStartTime(new Date());
 		this.taskChainService.updateBySelective(tc);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("executeOrder", tc.getExecuteOrder());
+		map.put("chainIndexId", tc.getChainIndexId());
+		map.put("status", TaskExecuteStatus.UNDO);
+		this.taskChainService.updateAfterDoingChainStatus(map);
 		return tc;
 	}
 	
@@ -201,6 +206,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			} catch (Exception e) {
 				throw new TaskExecuteException("execute getBean exception:" + e.getMessage());
 			}
+			baseTask.beforExecute(params);
 			tr = baseTask.execute(params);
 			if(tr == null)
 				throw new TaskExecuteException("task execute result is null");
