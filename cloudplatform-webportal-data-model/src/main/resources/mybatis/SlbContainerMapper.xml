@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.letv.portal.dao.slb.ISlbContainerDao">
+<mapper namespace="com.letv.portal.dao.slb.ISlbSlbContainerDao">
 
 	<!-- Result Map -->
-	<resultMap id="BaseResultMap" type="Container">
+	<resultMap id="BaseResultMap" type="SlbContainer">
 		<result column="ID" property="id" />
 		<result column="CONTAINER_NAME" property="containerName" />
 		<result column="MOUNT_DIR" property="mountDir" />
@@ -19,6 +19,7 @@
 		<result column="CPU_SPEED" property="cpuSpeed" />
 		<result column="MEMORY_SIZE" property="memorySize" />
 		<result column="HOST_ID" property="hostId" />
+		<result column="CONTAINER_UUID" property="containerUuid" />
 		<result column="HOST_IP" property="hostIp" />
 		<result column="SLBSLBCLUSTER_ID" property="slbClusterId" />
 		<result column="ZABBIXHOSTS" property="zabbixHosts" />
@@ -45,11 +46,9 @@
 		</association>
 	</resultMap>
 	
-	
-	
 	<!-- WEBPORTAL_SLBCONTAINER SCT table all fields -->
 	<sql id="Base_Column_List">
-		SCT.ID,SCT.CONTAINER_NAME,SCT.MOUNT_DIR,SCT.ZOOKEEPER_ID,SCT.IP_ADDR,SCT.GATE_ADDR,SCT.IP_MASK,SCT.TYPE,SCT.ZABBIXHOSTS,
+		SCT.ID,SCT.CONTAINER_NAME,SCT.MOUNT_DIR,SCT.ZOOKEEPER_ID,SCT.IP_ADDR,SCT.GATE_ADDR,SCT.IP_MASK,SCT.TYPE,SCT.ZABBIXHOSTS,SCT.CONTAINER_UUID,
 		SCT.DISK_SIZE,SCT.CORES_NUMBER,SCT.MEMORY_SIZE,SCT.CPU_SPEED,SCT.HOST_ID,SCT.HOST_IP,SCT.SLBCLUSTER_ID,SCT.STATUS,SCT.DELETED,SCT.CREATE_TIME,SCT.CREATE_USER,SCT.UPDATE_TIME,SCT.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
@@ -65,6 +64,9 @@
 			<if test="type != null ">
 				and SCT.TYPE=#{type}
 			</if>
+			<if test="containerUuid != null ">
+				and SCT.CONTAINER_UUID=#{containerUuid}
+			</if>
 			<if test="ipAddr != null ">
 				and SCT.IP_ADDR=#{ipAddr}
 			</if>
@@ -77,27 +79,27 @@
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="Container" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="SlbContainer" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_SLBCONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,CONTAINER_UUID,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,SLBCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
-		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},
-		#{type},#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{slbClusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
+		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{containerUuid},
+		#{diskSize},#{coresNumber},#{memorySize},#{cpuSpeed},#{hostId},#{hostIp},#{slbClusterId},#{status},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
-	<update id="update" parameterType="Container">
+	<update id="update" parameterType="SlbContainer">
 		update WEBPORTAL_SLBCONTAINER set
-		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
+		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},CONTAINER_UUID=#{containerUuid},
 		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},SLBCLUSTER_ID=#{slbClusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 	
 	<!--根据id，有选择的修改记录 -->
-	<update id="updateBySelective" parameterType="Container">
+	<update id="updateBySelective" parameterType="SlbContainer">
 		update WEBPORTAL_SLBCONTAINER
 		<set>
 			<if test="containerName != null  and containerName != '' ">
@@ -139,6 +141,9 @@
 			<if test="hostIp != null  ">
 				HOST_IP=#{hostIp},
 			</if>
+			<if test="containerUuid != null  ">
+				CONTAINER_UUID=#{containerUuid},
+			</if>
 			<if test="slbClusterId != null  ">
 				SLBCLUSTER_ID=#{slbClusterId},
 			</if>
@@ -167,12 +172,12 @@
 	</update>
 	
 	<!-- 物理删除 -->
-	<update id="delete" parameterType="Container">
+	<update id="delete" parameterType="SlbContainer">
 		delete from WEBPORTAL_SLBCONTAINER where ID = #{id}
 	</update>
 	
 	<!-- 逻辑删除，将deleted 改成 0或1 -->
-	<update id="deleteFlag" parameterType="Container">
+	<update id="deleteFlag" parameterType="SlbContainer">
 		update WEBPORTAL_SLBCONTAINER set
 		<if test="deleted != null  ">
 			DELETED=#{deleted}
