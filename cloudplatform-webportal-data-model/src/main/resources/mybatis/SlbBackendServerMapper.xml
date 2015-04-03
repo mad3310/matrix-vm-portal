@@ -11,6 +11,7 @@
 		<result column="CONTAINER_ID" property="containerId" />
 		<result column="SLB_CONFIG_ID" property="configId" />
 		<result column="TYPE" property="type" />
+		<result column="STATUS" property="status" />
 		<result column="SERVER_NAME" property="serverName" />
 		<result column="SERVER_IP" property="serverIp" />
 		<result column="PORT" property="port" />
@@ -30,7 +31,7 @@
 	
 	<sql id="Base_Column_List">
 		s.ID,
-		s.SLB_ID,s.CONTAINER_ID,s.SLB_CONFIG_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,
+		s.SLB_ID,s.CONTAINER_ID,s.SLB_CONFIG_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,s.STATUS,
 		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
 	</sql>
 	
@@ -53,6 +54,9 @@
 			</if>
 			<if test="type != null  ">
 				and s.TYPE=#{type}
+			</if>
+			<if test="status != null  ">
+				and s.STATUS=#{status}
 			</if>
 			<if test="serverName != null  ">
 				and s.SERVER_NAME=#{serverName}
@@ -87,10 +91,10 @@
 	<insert id="insert" parameterType="SlbBackendServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_SLB_BACKEND_SERVER(
-			SLB_ID,CONTAINER_ID,SLB_CONFIG_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,
+			SLB_ID,CONTAINER_ID,SLB_CONFIG_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,STATUS,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{slbId},#{containerId},#{configId},#{type},#{serverName},#{serverIp},#{port},
+			#{slbId},#{containerId},#{configId},#{type},#{serverName},#{serverIp},#{port},#{status},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -110,6 +114,9 @@
 			</if>
 			<if test="type != null  ">
 				TYPE=#{type},
+			</if>
+			<if test="status != null  ">
+				STATUS=#{status},
 			</if>
 			<if test="serverName != null  ">
 				SERVER_NAME=#{serverName},
@@ -182,6 +189,9 @@
 			</if>
 			<if test="params != null and params.type != null  ">
 				and s.TYPE=#{params.type}
+			</if>
+			<if test="params != null and params.status != null  ">
+				and s.STATUS=#{params.status}
 			</if>
 			<if test="params != null and params.serverName != null  ">
 				and s.SERVER_NAME=#{params.serverName}

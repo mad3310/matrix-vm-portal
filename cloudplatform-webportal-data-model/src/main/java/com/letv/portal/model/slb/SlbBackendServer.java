@@ -14,6 +14,7 @@ public class SlbBackendServer extends BaseModel {
 	private String serverName;
 	private String serverIp;
 	private String port;
+	private Integer status;
 	private Long slbId;
 	private Long configId;
 	
@@ -67,5 +68,10 @@ public class SlbBackendServer extends BaseModel {
 	public void setPort(String port) {
 		this.port = port;
 	}
-
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

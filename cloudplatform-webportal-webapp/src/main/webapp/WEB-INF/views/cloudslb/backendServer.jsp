@@ -28,6 +28,11 @@
 				<h5>负载均衡服务器池</h5>
 				<span class="ng-binding">所在地域：北京</span>
 			</div>
+			<div class="pull-right">
+				<button id="restart" class="btn btn-default">
+					<span>重启服务</span>
+				</button>
+			</div>
 		</div>
 		<ul class="nav nav-tabs" role="tablist" id="setab">
 			<li id="whitelist-tab" role="presentation" class="active">
