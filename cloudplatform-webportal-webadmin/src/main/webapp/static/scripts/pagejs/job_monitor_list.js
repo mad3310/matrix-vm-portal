@@ -163,7 +163,8 @@ function initMonitorListClick(){
 	}
 }
 
-function queryTaskDetail(taskId,type){	//type 为 new|update
+function queryTaskDetail(taskId,type){
+	//type 为 new|update
 	$.ajax({
 		cache:false,
 		type : "get",
@@ -173,6 +174,7 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 			if(type == "new"){
 				$("#tby tr").remove();
 			}
+			
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
@@ -208,13 +210,16 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				if(array[i].status == "FAILED"){
 					mark = true;
 					td7.html("<i class=\"ace-icon fa fa-play-circle-o green bigger-130\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></i>");
-					tr.addClass("default-danger");
+					tr.attr("class","");
+					tr.addClass("default-danger");	
 				}else if(array[i].status == "SUCCESS"){
+					tr.attr("class","");
 					tr.addClass("default-success");
 				}else if(array[i].status == "UNDO"){
-					tr.addClass("default-gray");
+					tr.attr("class","");
+					tr.addClass("default-gray");					
 				}else if(array[i].status == "DOING"){
-					td6.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)
+					td6.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)				
 				}
 				
 				if(mark == true){
@@ -222,10 +227,12 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 				}
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
+				
 				if(type == "new"){
 					tr.prependTo(tby);
 				}else{
-					tby.find("tr:eq("+i+")").html(tr.html());
+					//tr.prependTo(tby);
+					tby.find("tr:eq("+i+")").replaceWith(tr);
 				}
 			}
 		},
@@ -239,9 +246,10 @@ function queryTaskDetail(taskId,type){	//type 为 new|update
 function taskRestart(obj,taskChainId){	
 	$(obj).removeClass("fa-play-circle-o green bigger-130");	
 	$(obj).addClass("fa-spinner fa-spin bigger-125");
-	$(obj).attr("onclick","return false;");
+	$(obj).attr("onclick","return false;");	
 	
 	var id = $("#taskIdTemp").val();
+	
 	$.ajax({
 		cache:false,
 		type : "post",
@@ -253,8 +261,9 @@ function taskRestart(obj,taskChainId){
 		success : function(data) {
 			if(error(data)) return;
 			queryTaskDetail(id,"update");
+			
 		},
-		error : function(XMLHttpRequest,textStatus, errorThrown) {
+		error : function(XMLHttpRequest,textStatus, errorThrown){
 			error(XMLHttpRequest);
 			return false;
 		}
