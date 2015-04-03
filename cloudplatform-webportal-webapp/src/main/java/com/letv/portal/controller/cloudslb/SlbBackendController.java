@@ -21,6 +21,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.slb.SlbBackendServer;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.proxy.ISlbBackendProxy;
 import com.letv.portal.service.slb.ISlbBackendServerService;
 import com.letv.portal.service.slb.ISlbServerService;
 
@@ -31,6 +32,8 @@ public class SlbBackendController {
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
 	
+	@Autowired
+	private ISlbBackendProxy slbBackendProxy;
 	@Autowired
 	private ISlbBackendServerService slbBackendServerService;
 	@Autowired
@@ -52,7 +55,7 @@ public class SlbBackendController {
 			throw new ValidateException("参数不合法");
 		isAuthoritySlb(slbBackendServer.getSlbId());
 		slbBackendServer.setCreateUser(this.sessionService.getSession().getUserId());
-		this.slbBackendServerService.insert(slbBackendServer);
+		this.slbBackendProxy.saveAndConfig(slbBackendServer);
 		return obj;
 	}
 	
