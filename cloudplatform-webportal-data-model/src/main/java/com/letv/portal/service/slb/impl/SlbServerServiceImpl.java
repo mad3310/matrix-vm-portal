@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.dao.slb.ISlbConfigDao;
 import com.letv.portal.dao.slb.ISlbServerDao;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.enumeration.SlbStatus;
@@ -32,6 +33,8 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 	
 	@Resource
 	private ISlbServerDao slbServerDao;
+	@Resource
+	private ISlbConfigDao slbConfigDao;
 	@Autowired
 	private ISlbClusterService slbClusterService;
 	@Resource
@@ -63,6 +66,7 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		
 		/*function 验证mclusterName是否存在*/
 		
+		//数据库添加slbCluster
 		SlbCluster slbCluster = new SlbCluster();
 		slbCluster.setHclusterId(slbServer.getHclusterId());
 		slbCluster.setClusterName(clusterName.toString());
@@ -73,8 +77,15 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		
 		this.slbClusterService.insert(slbCluster);
 		
+		//数据库添加slbServer
 		slbServer.setSlbClusterId(slbCluster.getId());
 		this.slbServerDao.insert(slbServer);
+		
+		//数据库添加slbConfig
+		SlbConfig slbConfig = new SlbConfig();
+		slbConfig.setFrontPort("7888");
+		slbConfig.setSlbId(slbServer.getId());
+		this.slbConfigDao.insert(slbConfig);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("SlbClusterId", slbCluster.getId());
@@ -92,6 +103,15 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		}
 		page.setData(data);
 		return page;
+	}
+
+	@Override
+	public void updateSlbStatusById(Long id, SlbStatus status) {
+		SlbServer slbServer = new SlbServer();
+		slbServer.setId(id);
+		slbServer.setStatus(status.getValue());
+		
+		this.slbServerDao.updateBySelective(slbServer);
 	}
 
 }

@@ -52,7 +52,6 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 
 	@Override
 	public void restart(Long id) {
-		// TODO Auto-generated method stub
 		
 	}
 	
