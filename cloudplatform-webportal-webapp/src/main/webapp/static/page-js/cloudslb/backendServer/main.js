@@ -13,6 +13,20 @@ define(function(require){
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var slbServerHandler = new dataHandler();
+    
+    $("#refresh").click(function(){
+    	asyncData();
+    });
+    $("#restart").click(function(){
+    	var url = "/slb/restart";
+    	var restartData = {
+                slbId: $("#slbId").val()
+            }
+        cn.PostData(url, restartData, function () {
+            /*刷新本身ifame*/
+            cn.RefreshIfame();
+        });
+    });
 
     getConfig();
     function getConfig(){

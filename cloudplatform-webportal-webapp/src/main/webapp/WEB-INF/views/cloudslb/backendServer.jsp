@@ -29,7 +29,12 @@
 				<span class="ng-binding">所在地域：北京</span>
 			</div>
 			<div class="pull-right">
-				<button id="restart" class="btn btn-default">
+				<button id="refresh" class="btn btn-default">
+					<span>刷新</span>
+				</button>
+			</div>
+			<div class="pull-right">
+				<button id="restart" class="btn btn-primary">
 					<span>重启服务</span>
 				</button>
 			</div>
