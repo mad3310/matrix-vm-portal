@@ -88,8 +88,8 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		this.slbConfigDao.insert(slbConfig);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
-    	params.put("SlbClusterId", slbCluster.getId());
-    	params.put("SlbId", slbServer.getId());
+    	params.put("slbClusterId", slbCluster.getId());
+    	params.put("slbId", slbServer.getId());
 		return params;
 	}
 	@Override

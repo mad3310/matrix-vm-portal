@@ -191,9 +191,9 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 	}
 	
 	public SlbServer getServer(Map<String, Object> params) {
-		Long gceId = getLongFromObject(params.get("gceId"));
+		Long gceId = getLongFromObject(params.get("slbId"));
 		if(gceId == null)
-			throw new ValidateException("params's gceId is null");
+			throw new ValidateException("params's slbId is null");
 		
 		SlbServer slbServer = this.slbServerService.selectById(gceId);
 		if(slbServer == null)
