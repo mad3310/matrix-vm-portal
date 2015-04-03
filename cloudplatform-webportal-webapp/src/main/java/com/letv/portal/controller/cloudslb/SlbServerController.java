@@ -23,6 +23,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.proxy.ISlbProxy;
 import com.letv.portal.service.slb.ISlbServerService;
 
 @Controller
@@ -34,6 +35,8 @@ public class SlbServerController {
 	
 	@Autowired
 	private ISlbServerService slbServerService;
+	@Autowired
+	private ISlbProxy slbProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SlbServerController.class);
 	
@@ -53,9 +56,7 @@ public class SlbServerController {
 		if(slbServer == null || StringUtils.isEmpty(slbServer.getSlbName()))
 			throw new ValidateException("参数不合法");
 		slbServer.setCreateUser(this.sessionService.getSession().getUserId());
-		slbServer.setIp("10.58.88.163"); //get ip from python api
-		slbServer.setSlbClusterId(1L); //create cluster when create slbServer
-		this.slbServerService.insert(slbServer);
+		this.slbProxy.saveAndBuild(slbServer);
 		return obj;
 	}
 	
