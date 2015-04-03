@@ -56,7 +56,7 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 	@Override
 	public Map<String,Object> save(SlbServer slbServer) {
 		
-		slbServer.setStatus(GceStatus.BUILDDING.getValue());
+		slbServer.setStatus(SlbStatus.BUILDDING.getValue());
 		
 		StringBuffer clusterName = new StringBuffer();
 		clusterName.append(slbServer.getCreateUser()).append("_").append(slbServer.getSlbName());
@@ -73,7 +73,7 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		
 		this.slbClusterService.insert(slbCluster);
 		
-		slbServer.setSlbClusterId(slbServer.getId());
+		slbServer.setSlbClusterId(slbCluster.getId());
 		this.slbServerDao.insert(slbServer);
 		
 		Map<String,Object> params = new HashMap<String,Object>();
