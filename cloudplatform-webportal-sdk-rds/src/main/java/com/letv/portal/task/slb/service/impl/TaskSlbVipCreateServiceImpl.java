@@ -1,6 +1,7 @@
 package com.letv.portal.task.slb.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -40,12 +41,17 @@ public class TaskSlbVipCreateServiceImpl extends BaseTask4SlbServiceImpl impleme
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("num", "1");
 		
-		String result = this.slbPythonService.createContainer2(map,host.getHostIp(),host.getName(),host.getPassword());
+		String result = this.slbPythonService.getVipIp(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		if(tr.isSuccess()) {
-			Map data = (Map) ((Map)transToMap(result).get("response")).get("data");
-			server.setIp((String) data.get("ip"));
+			Map data = (Map) ((Map)transToMap(result).get("response"));
+			StringBuffer ipBuffer = new StringBuffer();
+			List<String> ips = (List<String>) data.get("ip");
+			for (String ip : ips) {
+				ipBuffer.append(ip).append(",");
+			}
+			server.setIp(ipBuffer.length()>0?ipBuffer.substring(0, ipBuffer.length()-1):ipBuffer.toString());
 			this.slbServerService.updateBySelective(server);
 		}
 		tr.setParams(params);

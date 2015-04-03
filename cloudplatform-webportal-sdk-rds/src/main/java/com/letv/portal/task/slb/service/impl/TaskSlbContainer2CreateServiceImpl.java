@@ -31,7 +31,7 @@ public class TaskSlbContainer2CreateServiceImpl extends BaseTask4SlbServiceImpl 
 
 		//执行业务
 		List<SlbContainer> containers = super.getContainers(params);
-		String nodeIp2 = containers.get(1).getHostIp();
+		String nodeIp2 = containers.get(1).getIpAddr();
 		SlbCluster cluster = super.getCluster(params);
 		
 		Map<String,String> map = new HashMap<String,String>();
