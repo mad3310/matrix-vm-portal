@@ -143,7 +143,7 @@
 							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>SLB协议端口：
 							</label>
 							<div class="col-sm-8 ng-scope">
-								<select name="frontPort" class="form-control ng-pristine ng-valid" style="width: 90px">
+								<select name="frontPort" class="form-control ng-pristine ng-valid">
 								</select>
 							</div>
 						</div>

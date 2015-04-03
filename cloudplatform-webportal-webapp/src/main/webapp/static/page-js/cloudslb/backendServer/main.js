@@ -16,7 +16,7 @@ define(function(require){
 
     getConfig();
     function getConfig(){
-        var url="/gceConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        var url="/slbConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbServerHandler.ConfigHandler);
     }
 
@@ -82,7 +82,7 @@ define(function(require){
             port : $("[name = backendPort]").val(),
             configId : $("[name = frontPort]").val()
         }
-        var url = "/slbBackend ";
+        var url = "/slbBackend";
         cn.PostData(url, createConfigData, function () {
             /*刷新本身ifame*/
             cn.RefreshIfame();

@@ -50,7 +50,7 @@ define(function(require,exports,module){
                             + slbName
                             +"</td>");
                     var td8 = $("<td class=\"padding-left-32\">"
-                            + "<span>"+array[i].ip+"</span>"
+                            + "<span>"+cn.TableFilterNull(array[i].ip)+"</span>"
                             +"</td>");
                     var td9=$("<td>-</td>");
                     if(array[i].slbConfigs != undefined || array[i].slbConfigs !=null){
@@ -97,7 +97,7 @@ define(function(require,exports,module){
         }
     }
     function addPort(data){
-        if(data.length == 0){
+        if(data ==null || data.length == 0){
             return "-";
         }
         var ret="";

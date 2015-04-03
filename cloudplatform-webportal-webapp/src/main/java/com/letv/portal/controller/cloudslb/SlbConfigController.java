@@ -41,7 +41,6 @@ public class SlbConfigController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		params.put("createUser", sessionService.getSession().getUserId());
 		obj.setData(this.slbConfigService.selectPageByParams(page, params));
 		return obj;
 	}

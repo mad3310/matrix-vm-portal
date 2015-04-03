@@ -48,9 +48,9 @@
 				</tbody>
 			</table>
 		</div>
-		<div style="height: 40px; margin-top: 20px;">
+		<!-- <div style="height: 40px; margin-top: 20px;">
 			<a class="btn btn-success" data-backdrop="false" data-toggle="modal" data-target="#myModal">添加</a>
-		</div>
+		</div> -->
 	</div>
 	<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">

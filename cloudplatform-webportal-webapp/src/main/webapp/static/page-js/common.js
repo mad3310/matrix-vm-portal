@@ -408,6 +408,13 @@ define(function(require,exports,module){
 				}
 			};
 		},
+		TableFilterNull:function(data){
+			if(data == null || data == undefined){
+				return '-';
+			}else{
+				return data;
+			}
+		},
 		FilterNull:function(data){
 			if(data == null || data == undefined){
 				return '';
