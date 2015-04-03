@@ -17,6 +17,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.slb.ISlbConfigDao;
 import com.letv.portal.dao.slb.ISlbServerDao;
 import com.letv.portal.enumeration.GceStatus;
+import com.letv.portal.enumeration.SlbAgentType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbConfig;
@@ -84,6 +85,7 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		//数据库添加slbConfig
 		SlbConfig slbConfig = new SlbConfig();
 		slbConfig.setFrontPort("7888");
+		slbConfig.setAgentType(SlbAgentType.HTTP);
 		slbConfig.setSlbId(slbServer.getId());
 		this.slbConfigDao.insert(slbConfig);
 		

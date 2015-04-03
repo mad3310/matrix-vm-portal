@@ -61,9 +61,17 @@ define(function(require,exports,module){
             var array = data.data.data;
 
             for(var i= 0,len=array.length;i<len;i++) {
-                var option = $("<option value=\""+array[i].id+"\">"+array[i].frontPort+"</option>");
+                var option = $("<option value=\""+array[i].id+"\">"+addPort(array[i])+"</option>");
                 option.appendTo(select);
             }
         }
+    }
+    function addPort(data){
+        if(data ==null || data.length == 0){
+            return "-";
+        }
+        return "<span>"+data.agentType+"</span>"
+		        +"<span>:</span>"
+		        +"<span>"+data.frontPort+"</span><br>";
     }
 });
