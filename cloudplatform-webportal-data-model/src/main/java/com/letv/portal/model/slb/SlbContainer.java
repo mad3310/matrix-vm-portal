@@ -2,6 +2,9 @@ package com.letv.portal.model.slb;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.ServiceType;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
+import com.letv.portal.model.gce.GceCluster;
 
 public class SlbContainer extends BaseModel {
 	
@@ -27,6 +30,10 @@ public class SlbContainer extends BaseModel {
 	private String hostIp; //ip
 	private Long hostId;  //所属host
 	private Long slbClusterId; //所属cluster
+	
+	private HostModel host;
+	private SlbCluster slbCluster;
+	private HclusterModel hcluster;
 	
 	public String getContainerName() {
 		return containerName;
@@ -136,4 +143,23 @@ public class SlbContainer extends BaseModel {
 	public void setContainerUuid(String containerUuid) {
 		this.containerUuid = containerUuid;
 	}
+	public HostModel getHost() {
+		return host;
+	}
+	public void setHost(HostModel host) {
+		this.host = host;
+	}
+	public SlbCluster getSlbCluster() {
+		return slbCluster;
+	}
+	public void setSlbCluster(SlbCluster slbCluster) {
+		this.slbCluster = slbCluster;
+	}
+	public HclusterModel getHcluster() {
+		return hcluster;
+	}
+	public void setHcluster(HclusterModel hcluster) {
+		this.hcluster = hcluster;
+	}
+	
 }

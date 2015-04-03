@@ -82,7 +82,7 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 	@Override
 	public void rollBack(TaskResult tr) {
 		//发送邮件
-		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("Slb服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}
@@ -191,9 +191,9 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 	}
 	
 	public SlbServer getServer(Map<String, Object> params) {
-		Long gceId = getLongFromObject(params.get("gceId"));
+		Long gceId = getLongFromObject(params.get("slbId"));
 		if(gceId == null)
-			throw new ValidateException("params's gceId is null");
+			throw new ValidateException("params's slbId is null");
 		
 		SlbServer slbServer = this.slbServerService.selectById(gceId);
 		if(slbServer == null)
@@ -228,9 +228,9 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 		if(slbClusterId == null)
 			throw new ValidateException("params's slbClusterId is null");
 		
-		List<SlbContainer> gceContainers = null;// this.slbContainerService.selectBySlbClusterId(slbClusterId);
+		List<SlbContainer> gceContainers = this.slbContainerService.selectBySlbClusterId(slbClusterId);
 		if(gceContainers == null || gceContainers.isEmpty())
-			throw new ValidateException("gceCluster is null by slbClusterId:" + slbClusterId);
+			throw new ValidateException("slbCluster is null by slbClusterId:" + slbClusterId);
 		return gceContainers;
 	}
 	

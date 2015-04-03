@@ -38,7 +38,7 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		HostModel host = super.getHost(cluster.getHclusterId());
 		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("containerClusterName",server.getSlbName());
+		map.put("containerClusterName",cluster.getClusterName());
 		map.put("componentType", "mclustervip");
 		map.put("networkMode", "ip");
 		String result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());

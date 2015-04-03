@@ -57,4 +57,6 @@ public interface ISlbPythonService {
 	public String startCluster(String nodeIp1,String adminUser,String adminPassword);
 	public String CheckClusterStatus(String nodeIp1,String adminUser,String adminPassword);
 	
+	public String getVipIp(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
+	
 }

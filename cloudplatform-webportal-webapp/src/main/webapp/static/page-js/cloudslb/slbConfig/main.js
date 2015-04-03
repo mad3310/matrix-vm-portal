@@ -16,7 +16,7 @@ define(function(require){
 
     asyncData();
     function asyncData() {
-        url = "/gceConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
+        url = "/slbConfig?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbConfigHandler.SlbConfigHandler);
     }
 
@@ -46,7 +46,7 @@ define(function(require){
         e.preventDefault();
         var createConfigData = {
             slbId: $("#slbId").val(),
-            agentType :  $("[name = agentType]").val()
+            agentType:$("[name = agentType]").val()
         }
         var url = "/gceConfig";
         cn.PostData(url, createConfigData, function () {

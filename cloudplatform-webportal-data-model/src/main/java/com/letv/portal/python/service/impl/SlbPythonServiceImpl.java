@@ -16,12 +16,12 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 	private final static Logger logger = LoggerFactory.getLogger(SlbPythonServiceImpl.class);
 	
 	private final static String URL_HEAD = "http://";
-	private final static String URL_PORT = ":8888";	
+	private final static String URL_PORT = "8888";	
 	
 	@Override
 	public String createContainer(Map<String,String> params,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
+		url.append(URL_HEAD).append(ip).append(":").append(URL_PORT).append("/containerCluster");
 		String result = HttpClient.post(url.toString(), params,username,password);
 		return result;
 	}
@@ -29,7 +29,7 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 	@Override
 	public String checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createStatus/").append(gceClusterName);
+		url.append(URL_HEAD).append(ip).append(":").append(URL_PORT).append("/containerCluster/createStatus/").append(gceClusterName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
@@ -107,6 +107,16 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster");
 		
 		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String getVipIp(Map<String, String> params,String nodeIp1, String adminUser,
+			String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/resource/ip");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
 		return result;
 	}
 }

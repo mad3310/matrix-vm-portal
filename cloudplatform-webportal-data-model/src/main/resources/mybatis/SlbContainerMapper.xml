@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.letv.portal.dao.slb.ISlbSlbContainerDao">
+<mapper namespace="com.letv.portal.dao.slb.ISlbContainerDao">
 
 	<!-- Result Map -->
 	<resultMap id="BaseResultMap" type="SlbContainer">
