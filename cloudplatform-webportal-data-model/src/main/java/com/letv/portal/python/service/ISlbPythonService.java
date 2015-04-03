@@ -59,4 +59,11 @@ public interface ISlbPythonService {
 	
 	public String getVipIp(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
 	
+	public String commitProxyConfig(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
+	public String start(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
+	public String checkStart(String nodeIp1,String adminUser,String adminPassword);
+	
+	
+	
+	
 }

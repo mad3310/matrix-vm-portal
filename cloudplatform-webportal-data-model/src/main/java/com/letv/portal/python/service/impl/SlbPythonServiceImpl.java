@@ -119,4 +119,33 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
 		return result;
 	}
+
+	@Override
+	public String commitProxyConfig(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/node/config");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+	@Override
+	public String start(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/start");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String checkStart(String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster");
+		
+		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
+		return result;
+	}
 }
