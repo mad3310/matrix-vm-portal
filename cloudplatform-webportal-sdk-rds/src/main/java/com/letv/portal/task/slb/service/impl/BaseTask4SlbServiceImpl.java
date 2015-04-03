@@ -228,9 +228,9 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 		if(slbClusterId == null)
 			throw new ValidateException("params's slbClusterId is null");
 		
-		List<SlbContainer> gceContainers = null;// this.slbContainerService.selectBySlbClusterId(slbClusterId);
+		List<SlbContainer> gceContainers = this.slbContainerService.selectBySlbClusterId(slbClusterId);
 		if(gceContainers == null || gceContainers.isEmpty())
-			throw new ValidateException("gceCluster is null by slbClusterId:" + slbClusterId);
+			throw new ValidateException("slbCluster is null by slbClusterId:" + slbClusterId);
 		return gceContainers;
 	}
 	
