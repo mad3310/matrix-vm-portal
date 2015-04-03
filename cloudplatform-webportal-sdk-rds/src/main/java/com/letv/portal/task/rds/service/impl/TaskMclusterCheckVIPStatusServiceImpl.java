@@ -99,7 +99,7 @@ public class TaskMclusterCheckVIPStatusServiceImpl extends BaseTask4RDSServiceIm
 	}
 	
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) throws Exception {
+	public TaskResult analyzeRestServiceResult(String result) {
 		TaskResult tr = new TaskResult();
 		Map<String, Object> map = transToMap(result);
 		if(map == null) {

@@ -235,12 +235,19 @@
     	</if>
 	</select>
 	
-	<!-- 根据slbClusterId查询 -->
+	<!-- 根据slbServerId查询 -->
 	<select id="selectBySlbServerId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_SLB_BACKEND_SERVER s
-		where s.SLB_ID = #{id}
+		where s.SLB_ID = #{slbServerId}
+	</select>
+	<!-- 根据slbConfigId查询 -->
+	<select id="selectBySlbConfigId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLB_BACKEND_SERVER s
+		where s.SLB_CONFIG_ID = #{slbConfigId}
 	</select>
 	
 </mapper>   

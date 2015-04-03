@@ -13,5 +13,7 @@ public interface IBaseTaskService {
 	public void callBack(TaskResult tr);
 
 	public void beforExecute(Map<String, Object> params);
+
+	public TaskResult analyzeRestServiceResult(String result);
 	
 }

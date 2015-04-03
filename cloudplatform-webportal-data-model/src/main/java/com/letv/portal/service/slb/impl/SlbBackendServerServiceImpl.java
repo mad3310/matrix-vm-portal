@@ -36,4 +36,9 @@ public class SlbBackendServerServiceImpl extends BaseServiceImpl<SlbBackendServe
 		return this.slbBackendServerDao.selectBySlbServerId(slbServerId);
 	}
 
+	@Override
+	public List<SlbBackendServer> selectBySlbConfigId(Long slbConfigId) {
+		return this.slbBackendServerDao.selectBySlbConfigId(slbConfigId);
+	}
+
 }

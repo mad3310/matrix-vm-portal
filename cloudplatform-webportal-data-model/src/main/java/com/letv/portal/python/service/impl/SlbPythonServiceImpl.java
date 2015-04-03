@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.HttpClient;
+import com.letv.portal.constant.Constant;
+import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.python.service.ISlbPythonService;
  
 @Service("slbPythonService")
@@ -148,4 +150,5 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
 		return result;
 	}
+	
 }

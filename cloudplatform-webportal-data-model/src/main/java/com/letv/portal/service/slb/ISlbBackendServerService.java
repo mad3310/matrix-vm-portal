@@ -9,4 +9,6 @@ public interface ISlbBackendServerService extends IBaseService<SlbBackendServer>
 
 	List<SlbBackendServer> selectBySlbServerId(Long slbServerId);
 
+	List<SlbBackendServer> selectBySlbConfigId(Long slbConfigId);
+
 }

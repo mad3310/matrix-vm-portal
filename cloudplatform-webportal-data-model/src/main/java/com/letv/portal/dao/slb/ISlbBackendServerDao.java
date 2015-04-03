@@ -9,4 +9,6 @@ public interface ISlbBackendServerDao extends IBaseDao<SlbBackendServer> {
 
 	List<SlbBackendServer> selectBySlbServerId(Long slbServerId);
 
+	List<SlbBackendServer> selectBySlbConfigId(Long slbConfigId);
+
 }
