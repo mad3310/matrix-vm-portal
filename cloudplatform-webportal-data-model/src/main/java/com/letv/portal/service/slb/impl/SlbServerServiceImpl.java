@@ -82,13 +82,6 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		slbServer.setSlbClusterId(slbCluster.getId());
 		this.slbServerDao.insert(slbServer);
 		
-		//数据库添加slbConfig
-		SlbConfig slbConfig = new SlbConfig();
-		slbConfig.setFrontPort("7888");
-		slbConfig.setAgentType(SlbAgentType.HTTP);
-		slbConfig.setSlbId(slbServer.getId());
-		this.slbConfigDao.insert(slbConfig);
-		
 		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("slbClusterId", slbCluster.getId());
     	params.put("slbId", slbServer.getId());

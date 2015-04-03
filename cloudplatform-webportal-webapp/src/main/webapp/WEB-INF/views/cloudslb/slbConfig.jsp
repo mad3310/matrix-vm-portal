@@ -48,9 +48,9 @@
 				</tbody>
 			</table>
 		</div>
-		<!-- <div style="height: 40px; margin-top: 20px;">
+		<div id="addButton" class=" hidden" style="height: 40px; margin-top: 20px;">
 			<a class="btn btn-success" data-backdrop="false" data-toggle="modal" data-target="#myModal">添加</a>
-		</div> -->
+		</div>
 	</div>
 	<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
@@ -70,6 +70,7 @@
 								<select name="agentType" class="form-control ng-pristine ng-valid" style="width: 90px">
 									<option value="HTTP">HTTP</option>
 									<option value="TCP">TCP</option>
+									<option value="MYSQL">MYSQL</option>
 								</select> 
 							</div>
 						</div>

@@ -16,6 +16,10 @@ define(function(require,exports,module){
             $(".data-tr").remove();
             var $tby = $('#tby');
             var array = data.data.data;
+            if(array.length == 0){
+            	$("#addButton").removeClass("hidden");
+            	return
+            }
             for(var i= 0, len= array.length;i<len;i++){
                 var td1 = $("<td>"
                         + array[i].agentType + " : " + array[i].frontPort

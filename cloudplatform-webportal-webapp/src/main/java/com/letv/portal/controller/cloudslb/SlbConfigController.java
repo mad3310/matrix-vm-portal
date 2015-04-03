@@ -52,7 +52,7 @@ public class SlbConfigController {
 		isAuthoritySlb(slbConfig.getSlbId());
 		slbConfig.setCreateUser(this.sessionService.getSession().getUserId());
 		
-		String frontPort = "28080";
+		String frontPort = "7888";
 		slbConfig.setFrontPort(frontPort);
 		this.slbConfigService.insert(slbConfig);
 		return obj;

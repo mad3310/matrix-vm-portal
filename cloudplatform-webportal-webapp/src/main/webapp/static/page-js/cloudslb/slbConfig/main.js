@@ -48,7 +48,7 @@ define(function(require){
             slbId: $("#slbId").val(),
             agentType:$("[name = agentType]").val()
         }
-        var url = "/gceConfig";
+        var url = "/slbConfig";
         cn.PostData(url, createConfigData, function () {
             /*刷新本身ifame*/
             cn.RefreshIfame();
