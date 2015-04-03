@@ -179,7 +179,13 @@ function formValidate() {
 			              message: '任务单元名过长'
 			          }
 	             }
-         	},descn:{
+         	},
+         	beanName:{
+         		 notEmpty: {
+                     message: '实现接口不能为空!'
+                 }
+         	},
+         	descn:{
          		validMessage: '请按提示输入',
          		validators: {
 			          stringLength: {
@@ -198,7 +204,9 @@ function formValidate() {
     		data: {
     			name:$('#taskUnitName').val(),
     			taskType:$('#taskType').val(),
-    			descn:$('#descn').val()
+    			descn:$('#descn').val(),
+    			beanName:$('#beanName').val(),
+    			retry:$('#retry').val
     		},
     		success : function(data) {
     			location.href = "/list/job/unit";
