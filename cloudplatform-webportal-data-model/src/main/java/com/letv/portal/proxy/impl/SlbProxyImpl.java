@@ -42,12 +42,18 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	}
 
 	private void build(Map<String,Object> params) {
-    	//this.taskEngine.run("SLB_BUY",params);
+    	this.taskEngine.run("SLB_BUY",params);
 	}
 	
 	@Override
 	public IBaseService<SlbServer> getService() {
 		return slbServerService;
+	}
+
+	@Override
+	public void restart(Long id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
