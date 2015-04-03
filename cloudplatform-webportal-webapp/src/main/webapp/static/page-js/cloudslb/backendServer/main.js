@@ -20,7 +20,7 @@ define(function(require){
     $("#restart").click(function(){
     	var url = "/slb/restart";
     	var restartData = {
-                slbId: $("#slbId").val()
+                id: $("#slbId").val()
             }
         cn.PostData(url, restartData, function () {
             /*刷新本身ifame*/
