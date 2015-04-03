@@ -22,6 +22,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.gce.IGceServerService;

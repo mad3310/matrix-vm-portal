@@ -61,7 +61,8 @@ public class SlbServerController {
 	}
 	
 	@RequestMapping(value="/restart",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject restart(@PathVariable Long id,ResultObject obj) {
+	public @ResponseBody ResultObject restart(Long id,ResultObject obj) {
+		isAuthoritySlb(id);
 		this.slbProxy.restart(id);
 		return obj;
 	}

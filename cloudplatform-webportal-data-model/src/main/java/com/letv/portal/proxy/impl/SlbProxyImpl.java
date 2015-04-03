@@ -90,10 +90,15 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
 		
 		this.commitProxyConfig(slb,cluster,containers);
+//		this.stop(slb,cluster,containers);
 		this.start(slb,cluster,containers);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+		}
 		this.checkStart(slb,cluster,containers);
 		
-		slb.setStatus(SlbStatus.RUNNING.getValue());
+		slb.setStatus(SlbStatus.NORMAL.getValue());
 		this.slbServerService.updateBySelective(slb);
 	}
 	
@@ -108,24 +113,45 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 					param.put("state", "BACKUP");
 				String result = this.slbPythonService.commitProxyConfig(param, container.getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
-				if(!tr.isSuccess()) 
+				if(!tr.isSuccess()) {
+					slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+					this.slbServerService.updateBySelective(slb);
 					throw new TaskExecuteException("SLB service commit porxyConfig error:" + tr.getResult());
+				}
 			}
 		}
 		return tr.isSuccess();
 	}
-	private boolean start(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.commitProxyConfig(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+	private boolean stop(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
-		if(!tr.isSuccess()) 
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.slbServerService.updateBySelective(slb);
+			throw new TaskExecuteException("SLB service stop error:" + tr.getResult());
+		}
+		return tr.isSuccess();
+	}
+	private boolean start(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+		String result = this.slbPythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service start error:" + tr.getResult());
+		}
 		return tr.isSuccess();
 	}
 	private boolean checkStart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		String result = this.slbPythonService.checkStart(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
-		if(!tr.isSuccess()) 
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service check start error:" + tr.getResult());
+			
+		}
+			
 		return tr.isSuccess();
 	}
 	
@@ -139,7 +165,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 			backendServers = this.slbBackendServerService.selectBySlbConfigId(config.getId());
 			if(backendServers !=null && !backendServers.isEmpty()) {
 				Map<String,String> param = new HashMap<String,String>();
-				param.put("service", config.getAgentType().toString());
+				param.put("service", config.getAgentType().toString().toLowerCase());
 				param.put("port", config.getFrontPort());
 				param.put("vip", slb.getIp());
 				param.put("addr", "0.0.0.0");
@@ -155,6 +181,5 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return params;
 	}
-	
 	
 }

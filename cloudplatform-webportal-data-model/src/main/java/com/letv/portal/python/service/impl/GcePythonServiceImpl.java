@@ -110,4 +110,14 @@ public class GcePythonServiceImpl implements IGcePythonService{
 		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
 		return result;
 	}
+
+	@Override
+	public String nginxProxyConfig(Map<String, String> params, String ip,
+			String port, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster/node/config");
+		
+		String result = HttpClient.post(url.toString(), params,username,password);
+		return result;
+	}
 }

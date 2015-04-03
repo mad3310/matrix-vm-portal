@@ -57,4 +57,5 @@ public interface IGcePythonService {
 	public String startCluster(String nodeIp1,String port,String adminUser,String adminPassword);
 	public String CheckClusterStatus(String nodeIp1,String port,String adminUser,String adminPassword);
 	
+	public String nginxProxyConfig(Map<String,String> params,String ip,String port,String username,String password);
 }
