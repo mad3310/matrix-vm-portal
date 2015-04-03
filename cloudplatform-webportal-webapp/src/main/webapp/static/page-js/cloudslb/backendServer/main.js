@@ -20,11 +20,10 @@ define(function(require){
     $("#restart").click(function(){
     	var url = "/slb/restart";
     	var restartData = {
-                id: $("#slbId").val()
+                id:$("#slbId").val()
             }
         cn.PostData(url, restartData, function () {
-            /*刷新本身ifame*/
-            cn.RefreshIfame();
+        	window.top.location.href = "/list/slb";
         });
     });
 
