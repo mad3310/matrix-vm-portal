@@ -1,5 +1,7 @@
 package com.letv.portal.service.slb.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -27,6 +29,11 @@ public class SlbBackendServerServiceImpl extends BaseServiceImpl<SlbBackendServe
 	@Override
 	public IBaseDao<SlbBackendServer> getDao() {
 		return this.slbBackendServerDao;
+	}
+
+	@Override
+	public List<SlbBackendServer> selectBySlbServerId(Long slbServerId) {
+		return this.slbBackendServerDao.selectBySlbServerId(slbServerId);
 	}
 
 }
