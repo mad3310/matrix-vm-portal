@@ -93,12 +93,28 @@ define(function(require,exports,module){
         if(data == null || data.length == 0){
             return "-";
         }
+        
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
+        	var hostPortArr = data[i].bingHostPort.split(',');
+        	var containerPortArr = data[i].bindContainerPort.split(',');
+
+        	var servicePort;
+        	for(var j = 0,len = hostPortArr.length;i<len;i++){
+        		if(containerPortArr[j] == "8080" ||containerPortArr[j] == "8001"){
+        			servicePort = {
+        					hostPort:hostPortArr[j],
+        					containerPort:containerPortArr[j]
+        			}
+        		}else{
+        			continue;
+        		}
+        	};
+        	
             ret = ret
             +"<span class=\"text-success\">"+data[i].hostIp+"</span>"
             +"<span class=\"text-success\">:</span>"
-            +"<span class=\"text-success\">"+data[i].bingHostPort+"</span><br>"
+            +"<span class=\"text-success\">"+servicePort.hostPort+"</span><br>"
         }
         return ret;
     }
