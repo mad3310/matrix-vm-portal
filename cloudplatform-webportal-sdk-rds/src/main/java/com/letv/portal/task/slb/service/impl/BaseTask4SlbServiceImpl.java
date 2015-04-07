@@ -96,7 +96,7 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 			slb.setStatus(DbStatus.NORMAL.getValue());
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 			Map<String, Object> emailParams = new HashMap<String,Object>();
-			emailParams.put("gceName", slb.getSlbName());
+			emailParams.put("slbName", slb.getSlbName());
 			this.email4User(emailParams, slb.getCreateUser(),"slb/createSlb.ftl");
 		} else {
 			slb.setStatus(DbStatus.BUILDFAIL.getValue());
