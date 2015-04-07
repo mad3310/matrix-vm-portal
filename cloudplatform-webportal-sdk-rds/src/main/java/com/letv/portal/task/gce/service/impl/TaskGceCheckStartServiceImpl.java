@@ -12,6 +12,7 @@ import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.python.service.IGcePythonService;
 
 @Service("taskGceCheckStartService")
@@ -43,7 +44,6 @@ public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implem
 	
 	@Override
 	public void callBack(TaskResult tr) {
-		super.rollBack(tr);
 	}
 	
 }

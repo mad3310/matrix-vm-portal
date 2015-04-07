@@ -92,10 +92,10 @@
 				TASK_ID=#{taskId},
 			</if>
 			<if test="serviceName != null">
-				and tci.SERVICE_NAME=#{serviceName}
+				SERVICE_NAME=#{serviceName},
 			</if>
 			<if test="clusterName != null">
-				and tci.CLUSTER_NAME=#{clusterName}
+				CLUSTER_NAME=#{clusterName},
 			</if>
 			<if test="status != null  ">
 				STATUS=#{status},

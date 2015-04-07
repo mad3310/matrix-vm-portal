@@ -85,6 +85,8 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("slbClusterId", slbCluster.getId());
     	params.put("slbId", slbServer.getId());
+    	params.put("serviceName", slbServer.getSlbName());
+    	params.put("clusterName", slbCluster.getClusterName());
 		return params;
 	}
 	@Override
