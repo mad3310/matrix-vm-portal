@@ -60,13 +60,6 @@ public class GceServerController {
 		}
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.gceProxy.saveAndBuild(gceServer);
-		//if jetty server,then create nginx server.
-		if("jetty".equals(gceServer.getType())) {
-			gceServer.setType("nginx");
-			gceServer.setGceName("nginx4Jetty_" + gceServer.getGceName());
-			this.gceProxy.saveAndBuild(gceServer);
-		}
-		
 		return obj;
 	}
 	

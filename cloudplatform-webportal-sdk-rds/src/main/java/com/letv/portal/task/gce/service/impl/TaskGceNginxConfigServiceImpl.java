@@ -1,9 +1,11 @@
 package com.letv.portal.task.gce.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
@@ -29,6 +32,8 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 	private IGceServerService gceServerService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private ITaskEngine taskEngine;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskGceNginxConfigServiceImpl.class);
 	
@@ -37,9 +42,14 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
-
-		Long nginxClusterId = super.getLongFromObject(params.get("nginxClusterId"));
-		Long jettyClusterId = super.getLongFromObject(params.get("jettyClusterId"));
+		boolean isConfig = (Boolean) params.get("isConfig");
+		if(!isConfig) {
+			tr.setSuccess(true);
+			tr.setResult("no doing in this step.");
+			return tr;
+		}
+		Long nginxClusterId = super.getLongFromObject(params.get("gceClusterId"));
+		Long jettyClusterId = super.getLongFromObject(params.get("pGceClusterId"));
 		
 		GceCluster nginxCluster = this.gceClusterService.selectById(nginxClusterId);
 		List<GceContainer> nginxContainers = gceContainerService.selectByGceClusterId(nginxClusterId);
@@ -48,7 +58,29 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 		StringBuffer sb = new StringBuffer();
 		
 		for (GceContainer jettyContainer : jettyContainers) {
-			sb.append(jettyContainer.getBingHostIp()).append(":").append(jettyContainer.getBindContainerPort()).append(",");
+			
+			String containerPorts = jettyContainer.getBindContainerPort();
+			String hostPorts = jettyContainer.getBingHostPort();
+			if(StringUtils.isEmpty(containerPorts) || StringUtils.isEmpty(hostPorts)) {
+				tr.setSuccess(false);
+				tr.setResult("jetty containerPorts or hostPorts is null");
+				return tr;
+			}
+			String[] containerPortArry = containerPorts.split(",");
+			String[] hostPortArry = hostPorts.split(",");
+			int j = -1;
+			for (int i = 0; i < containerPortArry.length; i++) {
+				if("8080".equals(containerPortArry[i])) {
+					j = i;
+					break;
+				}
+			}
+			if(j<0){
+				tr.setSuccess(false);
+				tr.setResult("jetty containerPorts or hostPorts is null");
+				return tr;
+			}
+			sb.append(jettyContainer.getHostIp()).append(":").append(hostPortArry[j]).append(",");
 		}
 		
 		Map<String, String> param = new HashMap<String,String>();
@@ -58,12 +90,25 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 		param.put("serverPorts", sb.length()>0?sb.substring(0, sb.length()-1):sb.toString());
 		
 		for (GceContainer c : nginxContainers) {
-			String result = this.gcePythonService.nginxProxyConfig(param,c.getHostIp(),c.getBindContainerPort(),nginxCluster.getAdminUser(),nginxCluster.getAdminPassword());
+			String result = this.gcePythonService.nginxProxyConfig(param,c.getHostIp(),c.getMgrBindHostPort(),nginxCluster.getAdminUser(),nginxCluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 		}
 		
 		tr.setParams(params);
 		return tr;
+	}
+	
+	@Override
+	public void callBack(TaskResult tr) {
+		super.rollBack(tr);
+
+		Map<String,Object> params = (Map<String, Object>) tr.getParams();
+		boolean isContinue = (Boolean) params.get("isContinue");
+		if(!isContinue) {
+			return;
+		}
+		Map<String,Object> nextParams = (Map<String, Object>) params.get("nextParams");
+		this.taskEngine.run("GCE_BUY", nextParams);
 	}
 	
 }
