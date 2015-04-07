@@ -1,5 +1,6 @@
 package com.letv.portal.model.task.service.impl;
 
+import java.security.Provider.Service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public TaskChainIndex init(Long taskId,Object params) {
 		
@@ -66,11 +68,15 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 		
 		if(null == ttcs || ttcs.isEmpty())
 			throw new TaskExecuteException("TemplateTaskChain is null by taskId");
-		
+			
 		//create TaskChainIndex
 		TaskChainIndex tci = new TaskChainIndex();
 		tci.setTaskId(taskId);
 		tci.setStatus(TaskExecuteStatus.UNDO);
+		if(params != null && params instanceof Map) {
+			tci.setServiceName((String) ((Map<String,Object>)params).get("serviceName"));
+			tci.setClusterName((String) ((Map<String,Object>)params).get("clusterName"));
+		}
 		this.taskChainIndexService.insert(tci);
 		
 		//create TaskChains

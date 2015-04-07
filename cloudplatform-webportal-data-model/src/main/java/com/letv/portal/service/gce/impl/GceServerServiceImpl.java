@@ -82,6 +82,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		Map<String,Object> params = new HashMap<String,Object>();
     	params.put("gceClusterId", gceCluster.getId());
     	params.put("gceId", gceServer.getId());
+    	params.put("serviceName", gceServer.getGceName());
+    	params.put("clusterName", gceCluster.getClusterName());
 		return params;
 	}
 	

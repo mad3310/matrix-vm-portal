@@ -45,6 +45,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			throw new ValidateException("参数不合法");
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
+		params.put("isConfig", false);
 		if("jetty".equals(gceServer.getType())) {
 			gceServer.setType("nginx");
 			gceServer.setGceName("n4j_" + gceServer.getGceName());
@@ -53,10 +54,12 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			nextParams.put("isConfig", true);
 			nextParams.put("pGceId", params.get("gceId"));
 			nextParams.put("pGceClusterId", params.get("gceClusterId"));
+			
+			params.put("isContinue", true);
+			params.put("nextParams", nextParams);
+		} else {
+			params.put("isContinue", false);
 		}
-		params.put("isContinue", true);
-		params.put("isConfig", false);
-		params.put("nextParams", nextParams);
 		this.build(params);
 	}
 
