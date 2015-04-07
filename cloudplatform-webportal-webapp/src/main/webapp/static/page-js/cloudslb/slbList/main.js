@@ -23,7 +23,7 @@ define(function(require){
 	$("#refresh").click(function() {		
 		asyncData();
 	});
-	$("#dbName").keydown(function(e){
+	$("#slbName").keydown(function(e){
 		if(e.keyCode==13){
 			cn.currentPage = 1;
 			asyncData();
@@ -73,6 +73,7 @@ define(function(require){
 	 * 可封装公共方法 end
 	 */
 
+	setInterval(asyncData,cn.dbListRefreshTime);
 	//加载列表数据
 	function asyncData(page) {
 		var slbName = $("#slbName").val();

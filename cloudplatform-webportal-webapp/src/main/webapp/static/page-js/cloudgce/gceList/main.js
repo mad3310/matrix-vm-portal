@@ -72,7 +72,8 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
-
+	
+	setInterval(asyncData,cn.dbListRefreshTime);
 	//加载列表数据
 	function asyncData(page) {
 		var gceName = $("#gceName").val();
