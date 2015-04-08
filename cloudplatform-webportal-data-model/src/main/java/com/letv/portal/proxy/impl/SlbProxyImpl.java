@@ -64,6 +64,8 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
 
+	private TaskResult tr;
+
 	@Override
 	public void saveAndBuild(SlbServer slbServer) {
 		Map<String,Object> params = this.slbServerService.save(slbServer);
@@ -90,15 +92,73 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
 		
 		this.commitProxyConfig(slb,cluster,containers);
-//		this.stop(slb,cluster,containers);
-		this.start(slb,cluster,containers);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
+		this.restart(slb,cluster,containers);
+		String status = "";
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			status = this.checkStart(slb,cluster,containers);
+			if("start".equals(status))
+				break;
 		}
-		this.checkStart(slb,cluster,containers);
-		
+		if("".equals(status))
+			throw new TaskExecuteException("SLB服务重启失败");
 		slb.setStatus(SlbStatus.NORMAL.getValue());
+		this.slbServerService.updateBySelective(slb);
+	}
+	@Override
+	@Async
+	public void start(Long id) {
+		SlbServer slb = this.selectById(id);
+		slb.setStatus(SlbStatus.STARTING.getValue());
+		this.slbServerService.updateBySelective(slb);
+		
+		SlbCluster cluster = this.slbClusterService.selectById(slb.getSlbClusterId());
+		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
+	
+		this.start(slb,cluster,containers);
+		String status = "";
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			status = this.checkStart(slb,cluster,containers);
+			if("start".equals(status))
+				break;
+		}
+		if("".equals(status))
+			throw new TaskExecuteException("SLB服务启动失败");
+		slb.setStatus(SlbStatus.NORMAL.getValue());
+		this.slbServerService.updateBySelective(slb);
+	}
+	@Override
+	@Async
+	public void stop(Long id) {
+		SlbServer slb = this.selectById(id);
+		slb.setStatus(SlbStatus.STOPPING.getValue());
+		this.slbServerService.updateBySelective(slb);
+		
+		SlbCluster cluster = this.slbClusterService.selectById(slb.getSlbClusterId());
+		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
+		
+		this.commitProxyConfig(slb,cluster,containers);
+		this.restart(slb,cluster,containers);
+		String status = "";
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			status = this.checkStart(slb,cluster,containers);
+			if("start".equals(status))
+				break;
+		}
+		if("".equals(status))
+			throw new TaskExecuteException("SLB服务停止失败");
+		slb.setStatus(SlbStatus.STOPED.getValue());
 		this.slbServerService.updateBySelective(slb);
 	}
 	
@@ -122,6 +182,16 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return tr.isSuccess();
 	}
+	private boolean restart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.slbServerService.updateBySelective(slb);
+			throw new TaskExecuteException("SLB service restart error:" + tr.getResult());
+		}
+		return tr.isSuccess();
+	}
 	private boolean stop(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
@@ -142,17 +212,16 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return tr.isSuccess();
 	}
-	private boolean checkStart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+	private String checkStart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		String result = this.slbPythonService.checkStart(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
-		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
+		tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
 			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service check start error:" + tr.getResult());
-			
 		}
-			
-		return tr.isSuccess();
+		Map<String,Object> params = (Map<String, Object>) tr.getParams();
+		return (String) ((Map<String,Object>)params.get("data")).get("status");
 	}
 	
 	private List<Map<String,String>> getProxyConfig(SlbServer slb) {

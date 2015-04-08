@@ -66,6 +66,18 @@ public class SlbServerController {
 		this.slbProxy.restart(id);
 		return obj;
 	}
+	@RequestMapping(value="/start",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject start(Long id,ResultObject obj) {
+		isAuthoritySlb(id);
+		this.slbProxy.start(id);
+		return obj;
+	}
+	@RequestMapping(value="/stop",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject stop(Long id,ResultObject obj) {
+		isAuthoritySlb(id);
+		this.slbProxy.stop(id);
+		return obj;
+	}
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long id){

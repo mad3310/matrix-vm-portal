@@ -8,7 +8,9 @@ public enum SlbStatus implements ByteEnum{
 	AUDITFAIL(4),
 	ABNORMAL(5),
 	NORMAL(6),
-	STARTING(7);
+	STARTING(7),
+	STOPPING(8),
+	STOPED(9);
 	
 	private final Integer value;
 	

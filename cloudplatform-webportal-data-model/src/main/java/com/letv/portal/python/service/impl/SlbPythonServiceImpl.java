@@ -149,6 +149,15 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
 		return result;
 	}
+	@Override
+	public String restart(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/restart");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
 
 	@Override
 	public String checkStart(String nodeIp1,
