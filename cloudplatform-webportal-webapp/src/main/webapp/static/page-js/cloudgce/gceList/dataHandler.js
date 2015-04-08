@@ -62,10 +62,21 @@ define(function(require,exports,module){
                     }
                     
                     var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
-                    if(cn.Displayable(array[i].status)){
-                    	var td9 = $("<td class=\"text-right\"><a href=\"/detail/gce/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    var td9 = $("<td></td>");
+                    if(array[i].status == 6){
+                    	td9 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
+                    		+ "<span class=\"text-explode font-disabled\">|</span>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"stop(this)\">停止</span></a>"
+                			+ "<span class=\"text-explode font-disabled\">|</span>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"restart(this)\">重启</span></a>"
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    }else if(array[i].status == 9){
+                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    		+ "<span class=\"text-explode font-disabled\">|</span>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"start(this)\">启动</span></a>"
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
-                    	var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
                     tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);

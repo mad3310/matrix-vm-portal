@@ -66,11 +66,23 @@ define(function(require,exports,module){
                     }
                     var td5 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
                     var td6 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
-                    if(cn.Displayable(array[i].status)){
-                    	var td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    var td7 = $("<td></td>");
+                    if(array[i].status == 6){
+                    	td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
+                        		+ "<span class=\"text-explode font-disabled\">|</span>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"stop(this)\">停止</span></a>"
+                    			+ "<span class=\"text-explode font-disabled\">|</span>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"restart(this)\">重启</span></a>"
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    }else if(array[i].status == 9){
+                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    		+ "<span class=\"text-explode font-disabled\">|</span>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"start(this)\">启动</span></a>"
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
-                    	var td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
+                    
                     var tr = $("<tr class='data-tr'></tr>");
                     tr.append(td1).append(td2).append(td8).append(td9).append(td4).append(td5).append(td6).append(td7);
                     tr.appendTo($tby);
