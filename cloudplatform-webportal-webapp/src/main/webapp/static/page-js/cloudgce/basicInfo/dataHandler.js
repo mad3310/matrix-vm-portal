@@ -17,7 +17,6 @@ define(function(require,exports,module){
     			$("#gce_info_gce_name").html(gceInfo.gceName);
     			$("#gce_type").html(gceInfo.type);
                 $("#gce_server_addr").html(getAccpetAddr(gceInfo.gceContainers));
-                $("#gce_info_port_forward").html(getPort(gceInfo.gceContainers));
     			$("#gce_create_time").html(cn.TransDate('Y-m-d H:i:s',gceInfo.createTime));
                 if(gceInfo.hcluster != undefined && gceInfo.hcluster != null) {
                     $("#gce_info_available_region").html(gceInfo.hcluster.hclusterNameAlias);
@@ -28,34 +27,32 @@ define(function(require,exports,module){
         if(data == null || data.length == 0){
             return "-";
         }
+        
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
+        	var hostPortArr = data[i].bingHostPort.split(',');
+        	var containerPortArr = data[i].bindContainerPort.split(',');
+
+        	var servicePort;
+        	for(var j = 0,len = hostPortArr.length;j<len;j++){
+        		if(containerPortArr[j] == "8080" ||containerPortArr[j] == "8001"){
+        			servicePort = {
+        					hostPort:hostPortArr[j],
+        					containerPort:containerPortArr[j]
+        			};
+        		}else{
+        			continue;
+        		}
+        	}
             ret = ret
             +"<span class=\"text-success\">"+data[i].hostIp+"</span>"
             +"<span class=\"text-success\">:</span>"
-            +"<span class=\"text-success\">"+data[i].bingHostPort+"</span>"
+            +"<span class=\"text-success\">"+servicePort.hostPort+"</span>"
             
             if(i!=len-1){
             	ret = ret + "; "
             }
         }
         return ret;
-    }
-    function getPort(data){
-    	if(data == null || data.length == 0){
-    		return "-";
-    	}
-    	var ret="";
-    	for(var i= 0,len=data.length;i<len;i++){
-    		ret = ret
-    		+"<span class=\"text-success\">"+data[i].bingHostPort+"</span>"
-    		+"<span class=\"text-success\">:</span>"
-    		+"<span class=\"text-success\">"+data[i].bindContainerPort+"</span>"
-    		
-    		if(i!=len-1){
-    			ret = ret + "; "
-    		}
-    	}
-    	return ret;
     }
 });

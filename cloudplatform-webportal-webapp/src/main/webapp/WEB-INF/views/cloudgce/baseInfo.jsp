@@ -55,11 +55,6 @@
 								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="gce_info_available_region"></span>
 							</td>
 						</tr>
-						<tr>
-							<td colspan=2>
-								<span class="text-muted pd-r8">端口映射(外部:内部):</span><span text-length="26" id="gce_info_port_forward"></span>
-							</td>
-						</tr>
 						</tbody>
 					</table>
 				  </div>
