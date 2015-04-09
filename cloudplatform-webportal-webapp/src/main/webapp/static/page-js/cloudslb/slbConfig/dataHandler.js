@@ -42,12 +42,18 @@ define(function(require,exports,module){
                 var td8 = $("<td>"
                         + "<span>100 Mbps</span>"
                         + "</td>");
-                var td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">编辑|删除</span></td>");
+                var td9 = $("<td class=\"text-right\">"
+                		+"<a data-backdrop=\"false\" data-toggle=\"modal\" data-target=\"#modifyModal\"><span class=\"text-explode slb-config-modify\" configId=\""+array[i].id+"\">编辑</span></a>" 
+                		+"<span class=\"text-explode font-disabled\">|删除</span>" 
+                		+"</td>");
                 var tr = $("<tr class='data-tr'></tr>");
 
                 tr.append(td1).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                 tr.appendTo($tby);
             }
+            $(".slb-config-modify").click(function(){
+        			$("#id").val($(this).attr('configId'));
+        	});
         }
     }
 });
