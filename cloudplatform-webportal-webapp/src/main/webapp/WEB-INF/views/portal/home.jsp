@@ -73,6 +73,9 @@ browserVersion(); //浏览器检测初始化
   background-size: cover;
   -webkit-transition: background-image .25s;
 }
+.last.page-background {
+  background-image: url(${ctx}/static/img/ftb.jpg);
+}
 .page-background-image {
   background: rgba(0,0,0,.5);
 }
@@ -226,6 +229,47 @@ margin-bottom: 40px;
 font-size: 60px;
 font-weight: 700;
 }
+/*footer*/
+.footer.section .tableCell>.wrapper {
+  display: table-row;
+  position: relative;
+  width: 100%;
+}
+#fullpage>.section>.tableCell {
+  min-width: 470px;
+}
+.footer.section .tableCell>.wrapper {
+  display: table-row;
+  position: relative;
+  width: 100%;
+}
+.footer.section .tableCell>.wrapper>.inner-wrapper {
+  position: relative;
+  display: table-cell;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.footer.section h1 {
+  font-size: 60px;
+  font-weight: 700;
+  color: #FFF;
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 2;
+}
+#footer {
+  border-top: 1px solid rgba(0,0,0,.1);
+  padding: 30px 0;
+  background: #FFF;
+  position: relative;
+  display: table-row;
+  bottom: 0;
+  left: 0;
+  height: 200px;
+  width: 100%;
+}
 @media only screen and (max-width: 1366px)
 .article-wrapper h1 {
   margin-bottom: 40px;
@@ -281,26 +325,13 @@ border: 1px solid #CCC;
 border-radius: 3px;
 background: #FFF;
 }
-
-@media only screen and (max-width:980px){form.register-form .input-wrapper{display:block;float:none;margin-right:0;margin-bottom:20px}form.register-form .button-wrapper{display:block}form.register-form .register.button{float:none;width:100%!important}.frame-2-2 img.part-1,.frame-2-3 img.part-1,.frame-2-4 img.part-1,.frame-2-5 img.part-1{width:58%}.frame-3[class*=part-]{width:30%!important}.frame-3.part-1{top:15%!important;left:58%!important;margin-left:-87px!important}.frame-3.part-2{bottom:19%!important;right:11%!important}.frame-3.part-3{bottom:19%!important;left:16%!important}img.frame-4,img.frame-5{width:66%}img.frame-5.part-2{width:auto}.circle-wrapper{width:400px!important;height:400px!important}.footer.section h1{font-size:40px!important}}
-@media only screen and (max-width:1366px){
-	/*#top-menu{height:60px}#top-menu .logo{padding:10px 0}#top-menu .logo img{height:40px}#top-menu form .wrapper{top:16px;left:155px}#top-menu 
-	.public-pages{line-height:60px;margin-left:190px}#top-menu .login,#top-menu .register{margin:13px 20px auto auto}#current-user{margin:10px 0 auto auto;padding:0 20px}#current-user>img{width:40px;border-radius:40px}*/
-	.circle-wrapper{width:580px;height:580px}.article-wrapper{text-align:left;margin:0 10% 0 15%}.article-wrapper h1{margin-bottom:40px;font-size:45px;font-weight:700}.article-wrapper p{font-size:22px;line-height:40px}
-	/*.footer.section h1{font-size:50px;margin-bottom:40px}*/
-	.frame-3[class*=part-]{width:150px}.frame-3.part-1{top:15%;left:53%;margin-left:-87px}.frame-3.part-2{bottom:25%;right:13%}.frame-3.part-3{bottom:25%;left:13%}.footer.section .partners .partner img{height:40px}}
-@media all and (max-width:900px){.mfp-arrow{-webkit-transform:scale(0.75);transform:scale(0.75)}.mfp-arrow-left{-webkit-transform-origin:0;transform-origin:0}.mfp-arrow-right{-webkit-transform-origin:100%;transform-origin:100%}.mfp-container{padding-left:6px;padding-right:6px}}
-
-/*@media only screen and (max-width: 1366px)
-.circle-wrapper {
-  width: 580px;
-  height: 580px;
-}
-@media only screen and (max-width: 980px)
-.circle-wrapper {
-  width: 400px!important;
-  height: 400px!important;
-}*/
+/*自定义*/
+.screenshot img{width:120px;height:68px;position:relative;z-index:101;cursor:pointer}
+.down{position:fixed;z-index:100;left:50%;bottom:15px;color:rgba(0,0,0,.3);}
+.up{position:fixed;z-index:100;left:50%;top:15px;color:rgba(0,0,0,.3);}
+.down span,.up span{font-size:40px;}
+.down span:hover,.up span:hover{color:rgba(0,0,0,.6);cursor:pointer;}
+/*end 自定义*/
 .circle-wrapper {
 width: 680px;
 height: 680px;
@@ -414,6 +445,26 @@ display: table-cell;
 text-align: center;
 vertical-align: middle;
 color: #FFF;
+}
+@media only screen and (max-width:980px){form.register-form .input-wrapper{display:block;float:none;margin-right:0;margin-bottom:20px}form.register-form .button-wrapper{display:block}form.register-form .register.button{float:none;width:100%!important}.frame-2-2 img.part-1,.frame-2-3 img.part-1,.frame-2-4 img.part-1,.frame-2-5 img.part-1{width:58%}.frame-3[class*=part-]{width:30%!important}.frame-3.part-1{top:15%!important;left:58%!important;margin-left:-87px!important}.frame-3.part-2{bottom:19%!important;right:11%!important}.frame-3.part-3{bottom:19%!important;left:16%!important}img.frame-4,img.frame-5{width:66%}img.frame-5.part-2{width:auto}.circle-wrapper{width:400px!important;height:400px!important}.footer.section h1{font-size:40px!important}}
+@media only screen and (max-width:1366px){
+  /*#top-menu{height:60px}#top-menu .logo{padding:10px 0}#top-menu .logo img{height:40px}#top-menu form .wrapper{top:16px;left:155px}#top-menu 
+  .public-pages{line-height:60px;margin-left:190px}#top-menu .login,#top-menu .register{margin:13px 20px auto auto}#current-user{margin:10px 0 auto auto;padding:0 20px}#current-user>img{width:40px;border-radius:40px}*/
+  .circle-wrapper{width:580px;height:580px}.article-wrapper{text-align:left;margin:0 10% 0 15%}.article-wrapper h1{margin-bottom:40px;font-size:45px;font-weight:700}.article-wrapper p{font-size:22px;line-height:40px}
+  /*.footer.section h1{font-size:50px;margin-bottom:40px}*/
+  .frame-3[class*=part-]{width:150px}.frame-3.part-1{top:15%;left:53%;margin-left:-87px}.frame-3.part-2{bottom:25%;right:13%}.frame-3.part-3{bottom:25%;left:13%}.footer.section .partners .partner img{height:40px}}
+@media all and (max-width:900px){.mfp-arrow{-webkit-transform:scale(0.75);transform:scale(0.75)}.mfp-arrow-left{-webkit-transform-origin:0;transform-origin:0}.mfp-arrow-right{-webkit-transform-origin:100%;transform-origin:100%}.mfp-container{padding-left:6px;padding-right:6px}}
+.imgScale{
+  -webkit-transform-origin:0 80%;
+  -moz-transform-origin:0 80%;
+  -ms-transform-origin:0 80%;
+  -o-transform-origin:0 80%;
+  transform-origin: 0 80%;
+  -webkit-transform:scale(10,10);
+  -moz-transform:scale(10,10);
+  -ms-transform:scale(10,10);
+  -o-transform:scale(10,10);
+  transform:scale(10,10);
 }
 .holeOut {
 -webkit-animation-name: holeOut;
@@ -599,18 +650,18 @@ animation-name: swashOut;
 	                        </p>
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
-	                                <a href="" title="数据库RDS">
-	                                    <img src="${ctx}/static/img/img-a.jpg" alt="">
+	                                <a  title="数据库RDS">
+	                                    <img src="${ctx}/static/img/img-aL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
-	                                <a href="" title="缓存服务">
-	                                    <img src="${ctx}/static/img/img-b.jpg" alt="">
+	                                <a  title="缓存服务">
+	                                    <img src="${ctx}/static/img/img-bL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
-	                                <a href="" title="分布式RDS">
-	                                    <img src="${ctx}/static/img/img-c.jpg" alt="">
+	                                <a  title="分布式RDS">
+	                                    <img src="${ctx}/static/img/img-cL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -647,14 +698,14 @@ animation-name: swashOut;
 	                                </div>
 	                            </div>
 	                            <!-- <div class="table-wrapper frame-2-6 hidden last-children">
-	                                <img src="${ctx}/static/img/4579875e7d66b84fa4e96119356cb034.png" alt="" class="part-1 magictime swashIn">
-	                                <img src="${ctx}/static/img/b0e596561669088619b6adfb4a20e1dd.png" alt="" class="part-2 magictime swashIn">
-	                                <img src="${ctx}/static/img/08b1573ac84744faa5e963059b1d18d1.png" alt="" class="part-3 magictime swashIn">
-	                                <img src="${ctx}/static/img/d657cd3da45603b60b2c578a8095031f.png" alt="" class="part-4 magictime swashIn">
-	                                <img src="${ctx}/static/img/7d2ba4136e2368c09ea0879107f89189.png" alt="" class="part-5 magictime swashIn">
+	                                <img src="img/4579875e7d66b84fa4e96119356cb034.png" alt="" class="part-1 magictime swashIn">
+	                                <img src="img/b0e596561669088619b6adfb4a20e1dd.png" alt="" class="part-2 magictime swashIn">
+	                                <img src="img/08b1573ac84744faa5e963059b1d18d1.png" alt="" class="part-3 magictime swashIn">
+	                                <img src="img/d657cd3da45603b60b2c578a8095031f.png" alt="" class="part-4 magictime swashIn">
+	                                <img src="img/7d2ba4136e2368c09ea0879107f89189.png" alt="" class="part-5 magictime swashIn">
 	                                <div class="word-wrapper">
-	                                    <img src="${ctx}/static/img/eb783668c50d9fb69f1559470264c0e3.png" class="frame-2-6-2 magictime swashIn" style="display: inline;">
-	                                    <img src="${ctx}/static/img/9383ecf417be779e10905fe3521118af.png" class="frame-2-6-1" style="display: block; top: 54%; opacity: 0;">
+	                                    <img src="img/eb783668c50d9fb69f1559470264c0e3.png" class="frame-2-6-2 magictime swashIn" style="display: inline;">
+	                                    <img src="img/9383ecf417be779e10905fe3521118af.png" class="frame-2-6-1" style="display: block; top: 54%; opacity: 0;">
 	                                </div>
 	                            </div> -->
 	                        </div>
@@ -663,7 +714,7 @@ animation-name: swashOut;
 	            </div>
 	        </div>
 	    </div>
-	    <div class="section table lastSn hidden" style=" background-color: rgb(257, 256, 242);">
+	    <div class="section table hidden thi-sect" style=" background-color: rgb(257, 256, 242);">
 	    	<div class="tableCell">
 	            <div class="section-inner">
 	                <div class="left-section">
@@ -687,18 +738,18 @@ animation-name: swashOut;
 	                        </p>
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
-	                                <a href="" title="数据库RDS">
-	                                    <img src="${ctx}/static/img/img-a.jpg" alt="">
+	                                <a title="数据库RDS">
+	                                    <img src="${ctx}/static/img/img-aL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
-	                                <a href="" title="缓存服务">
-	                                    <img src="${ctx}/static/img/img-b.jpg" alt="">
+	                                <a title="缓存服务">
+	                                    <img src="${ctx}/static/img/img-bL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
-	                                <a href="" title="分布式RDS">
-	                                    <img src="${ctx}/static/img/img-c.jpg" alt="">
+	                                <a title="分布式RDS">
+	                                    <img src="${ctx}/static/img/img-cL.jpg" alt="">
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -707,7 +758,27 @@ animation-name: swashOut;
 	            </div>
 	        </div>
 	    </div>
+      <div class="section table footer hidden lastSn">
+        <div class="tableCell">
+            <div class="wrapper">
+                <div class="inner-wrapper last page-background">
+                    <div class="page-background-image"></div>
+                    <h1>即刻体验云端开发之美<span style="opacity: 0">；</span>做拥抱云时代的开发者</h1>
+                </div>
+            </div>
+            <div id="footer">
+              <%@ include file="footer.jsp"%>
+            </div>
+        </div>
+      </div>
     </div>
+    <div class="down">
+      <span class="glyphicon glyphicon-chevron-down"></span>
+    </div>
+    <div class="up hide">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+    </div>
+
     <div id="fullPage-nav" class="right light-nav" style="color: rgb(0, 0, 0); margin-top: -63.5px;">
     	<ul>
     		<li>
@@ -715,27 +786,40 @@ animation-name: swashOut;
     		<li>
     			<a href="#" class="sec-a"><span></span></a></li>
     		<li>
-    			<a href="#" class="thi"><span></span></a></li>
-    		<!-- <li>
-    			<a href="#"><span></span></a></li>
+    			<a href="#" class="thi-a"><span></span></a></li>
     		<li>
+    			<a href="#" class="ft-a"><span></span></a></li>
+    		<!-- <li>
     			<a href="#"><span></span></a></li>
     		<li>
     		<a href="#"><span></span></a></li> -->
     	</ul>
     </div>
 </div>
+<style>
+.img-mfy {width: 100%;height: 100%;position: absolute;left: 0;top:0;z-index: 102;background: rgba(0,0,0,.6);}
+.img-mfy i{font-size: 30px;position:relative;top:0;left:-5px;}
+.img-mfy i:hover{cursor:pointer;}
+</style>
+<div class="img-mfy hidden">
+  <img src="" />
+  <i class="fa fa-times-circle"></i>
+</div>
 <script>
 $('.carousel').carousel({
   interval: 3000
-})
+});
+var _fw=$('.footer').find('.last');
 var o=0,p=0;
 var _fp=$('.fullpage');
 var _fpnav=$('#fullPage-nav');
 var _sn=$('.section');
 var _tableC=$('.tableCell');
 var _this=$('.activeSn');
-$('.oauth-footer').addClass('section hidden');
+var _down=$('.down');
+var _up=$('.up');
+var _tarImg=$('.img-mfy');
+$('.oauth-footer').addClass('');
 $('.oauth_header').css({
 	position: 'absolute',
 	top: '0',
@@ -753,14 +837,19 @@ $(window).resize(function(event) {
 });
 function setH(){
 	var ih=window.innerHeight?window.innerHeight:document.body.clientHeight;
-	var iw=window.innerWidth?window.innerWidth:document.body.clientWidth; 
+	var iw=window.innerWidth?window.innerWidth:document.body.clientWidth;
 	_sn.css({
 		height: ih,
 		width: iw
 	});
 	_tableC.css({
-		height: ih
+		height: ih,
+    width:iw
 	});
+  _fw.css({
+    height: ih-273,
+    width:iw
+  });
 	$('#video_background').css({
 		height: ih,
 		width: iw
@@ -769,6 +858,13 @@ function setH(){
     height: ih,
     width: iw
   });
+  _tarImg.children('img').css({
+                          width:iw*.8,
+                          height:ih*.8,
+                          'margin-top': ih*.1,
+                          'margin-left':iw*.1
+                        });
+  _tarImg.children('i').css('top',-ih*.35);
 }
 document.body.onmousewheel = function(event) {
     event = event || window.event;
@@ -805,8 +901,12 @@ function switchSec(p){
 		if($('.activeSn').hasClass('firstSn')){
 			_fp.css('top', '0');
 			_fpnav.addClass('light-nav');
+      _down.removeClass('hide');
+      _up.addClass('hide');
       switchAni();
 		}else{
+      _down.removeClass('hide');
+      _up.removeClass('hide');
 			$('.activeSn').prev().removeClass('hidden')
 								.addClass('activeSn')
 							.next().removeClass('activeSn');
@@ -818,49 +918,52 @@ function switchSec(p){
 			//改变 top 值,不变 直观上可以
 			// var h=$('.activeSn').offset().top;
 			if($('.activeSn').hasClass('firstSn')){
+        _up.addClass('hide');
 				_fpnav.addClass('light-nav');
 			}
-			// var h=$('.activeSn')[0].scrollHeight;		
-			// if(ih-h==0){
-			// 	$('#fullPage-nav').addClass('light-nav');
-			// }	
-			// _fp.css('top', ih-h);
 		}
 	}
 	if((p==-120)||(p==3)||(p==-240)||(p==6)||(p==-360)||(p==9)){//down
 		_fpnav.removeClass('light-nav');
 		if($('.activeSn').hasClass('lastSn')){
+      _fpnav.addClass('light-nav');
+      _down.addClass('hide');
+      _up.removeClass('hide');
       switchAni();
 		}else{
+       _down.removeClass('hide');
+      _up.removeClass('hide');
 			$('.activeSn').next().removeClass('hidden')
 								.addClass('activeSn')
 							.prev().removeClass('activeSn')
 									.addClass('hidden');
+      if($('.activeSn').hasClass('lastSn')){
+        _fpnav.addClass('light-nav');
+         _down.addClass('hide');
+      }
       switchAni();
 			//改变dot 的颜色、状态
 			$('.activel').parent().next().find('a').addClass('activel')
 						.parent().prev().find('a').removeClass('activel');
-			//改变top值,不变 直观上可以	
-			// var h=$('.activeSn').offset().top;
-			// _fp.css('top', -h);
-			// var h=$('.activeSn')[0].scrollHeight;	
-			// if(ih-h==0){
-			// 	$('#fullPage-nav').addClass('light-nav');
-			// }	
-			// _fp.css('top', ih-h);
-									
+			//改变top值,不变 直观上可以							
 		}
 	}
 }
 $('.fir-a').click(function(event) {
   _fp.css('top', '0');
-  $('.firstSn').addClass('activeSn').removeClass('hidden').fadeIn()
-                .siblings().removeClass('activeSn').addClass('hidden');
+  _down.removeClass('hide');
+  _up.addClass('hide');  
+  $('.firstSn').addClass('activeSn').fadeIn('slow', function() {
+    $('.firstSn').removeClass('hidden');
+  });
+  $('.firstSn').siblings().removeClass('activeSn').addClass('hidden');
   _fpnav.addClass('light-nav');
   $('.fir-a').addClass('activel')
           .parent().siblings().find('a').removeClass('activel');
 });
 $('.sec-a').click(function(event) {
+  _down.removeClass('hide');
+  _up.removeClass('hide');  
   $('.sec-sect').addClass('activeSn').removeClass('hidden')
                 .siblings().removeClass('activeSn').addClass('hidden');
   _fpnav.removeClass('light-nav');
@@ -868,13 +971,26 @@ $('.sec-a').click(function(event) {
           .parent().siblings().find('a').removeClass('activel');
   switchAni();
 });
-$('.thi').click(function(event) {
-  $('.lastSn').addClass('activeSn').removeClass('hidden')
+$('.thi-a').click(function(event) {
+  _down.removeClass('hide');
+  _up.removeClass('hide');  
+  $('.thi-sect').addClass('activeSn').removeClass('hidden')
               .siblings().removeClass('activeSn').addClass('hidden');
   _fpnav.removeClass('light-nav');
-  $('.thi').addClass('activel')
+  $('.thi-a').addClass('activel')
           .parent().siblings().find('a').removeClass('activel');
   switchAni();
+});
+$('.ft-a').click(function(event) {
+  _down.addClass('hide');
+    _up.removeClass('hide');  
+  $('.lastSn').addClass('activeSn').fadeIn('400', function() {
+    $('.lastSn').removeClass('hidden')
+  });
+  $('.lastSn').siblings().removeClass('activeSn').addClass('hidden');
+  _fpnav.addClass('light-nav');
+  $('.ft-a').addClass('activel')
+          .parent().siblings().find('a').removeClass('activel');
 });
 function switchAni(){
   var s2=$('.frame-2-2');
@@ -941,5 +1057,75 @@ function switchAni(){
     //                               });
   }
 }
+udTrans();
+function udTrans(){
+  var _down=$('.down');
+  var _up=$('.up');
+  _down.click(function(event) {
+    //下一个section
+    _fpnav.removeClass('light-nav');
+    if($('.activeSn').hasClass('lastSn')){
+      _fpnav.addClass('light-nav');
+      _down.addClass('hide');
+      _up.removeClass('hide');
+      switchAni();
+    }else{
+       _down.removeClass('hide');
+      _up.removeClass('hide');
+      $('.activeSn').next().removeClass('hidden')
+                .addClass('activeSn')
+              .prev().removeClass('activeSn')
+                  .addClass('hidden');
+      if($('.activeSn').hasClass('lastSn')){
+        _fpnav.addClass('light-nav');
+         _down.addClass('hide');
+      }
+      switchAni();
+      //改变dot 的颜色、状态
+      $('.activel').parent().next().find('a').addClass('activel')
+            .parent().prev().find('a').removeClass('activel');
+      //改变top值,不变 直观上可以             
+    }
+  });
+  _up.click(function(event) {
+    if($('.activeSn').hasClass('firstSn')){
+      _fp.css('top', '0');
+      _fpnav.addClass('light-nav');
+      _down.removeClass('hide');
+      _up.addClass('hide');
+      switchAni();
+    }else{
+      _down.removeClass('hide');
+      _up.removeClass('hide');
+      $('.activeSn').prev().removeClass('hidden')
+                .addClass('activeSn')
+              .next().removeClass('activeSn');
+      _fpnav.removeClass('light-nav');
+      switchAni();
+      //改变dot 的颜色、状态
+      $('.activel').parent().prev().find('a').addClass('activel')
+            .parent().next().find('a').removeClass('activel');
+      //改变 top 值,不变 直观上可以
+      // var h=$('.activeSn').offset().top;
+      if($('.activeSn').hasClass('firstSn')){
+        _up.addClass('hide');
+        _fpnav.addClass('light-nav');
+      }
+    }
+  });
+}
+function imgClick(){
+  var _thisImg=$('.screenshot').find('img');
+  var _tg=$('.img-mfy');
+  _thisImg.click(function(event) {
+    var src=$(this).attr('src');
+    _tg.children('img').attr('src',src);
+    _tg.removeClass('hidden');
+  });
+  _tg.click(function(event) {
+    _tg.addClass('hidden');
+  });
+}
+imgClick();//无法自适应
 </script>
 </body>
