@@ -66,14 +66,14 @@ define(function(require,exports,module){
                     if(array[i].status == 6){
                     	td9 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"stop(this)\">停止</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-stop\">停止</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"restart(this)\">重启</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else if(array[i].status == 9){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"start(this)\">启动</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");

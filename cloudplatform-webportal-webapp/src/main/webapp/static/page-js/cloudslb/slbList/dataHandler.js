@@ -70,14 +70,14 @@ define(function(require,exports,module){
                     if(array[i].status == 6){
                     	td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
                         		+ "<span class=\"text-explode font-disabled\">|</span>"
-                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"stop(this)\">停止</span></a>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
-                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"restart(this)\">重启</span></a>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else if(array[i].status == 9){
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode\" onclick=\"start(this)\">启动</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-start\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
@@ -87,6 +87,28 @@ define(function(require,exports,module){
                     tr.append(td1).append(td2).append(td8).append(td9).append(td4).append(td5).append(td6).append(td7);
                     tr.appendTo($tby);
                  }
+            	$(".slb-start").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=slbcluster_id]").val()};
+            		var url = "/slb/start";
+            		console.log(data.id);
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/slb";
+            		});
+            	});
+            	$(".slb-restart").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=slbcluster_id]").val()};
+            		var url = "/slb/restart";
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/slb";
+            		});
+            	});
+            	$(".slb-stop").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=slbcluster_id]").val()};
+            		var url = "/slb/stop";
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/slb";
+            		});
+            	});
             }
        
             /*

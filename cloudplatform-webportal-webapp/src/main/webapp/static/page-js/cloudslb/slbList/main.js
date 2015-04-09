@@ -69,6 +69,7 @@ define(function(require){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
+
 	/*
 	 * 可封装公共方法 end
 	 */
