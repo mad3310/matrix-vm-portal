@@ -67,7 +67,10 @@ function queryByPage() {
 					tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
 					tr.appendTo(tby);
 				}//循环json中的数据 
-				initMonitorListClick();//初始化点击事件				
+				initMonitorListClick();//初始化点击事件	
+				
+				/*加载第一个task详情*/
+				$("#menu-tby tr:first").click();
 			}
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();

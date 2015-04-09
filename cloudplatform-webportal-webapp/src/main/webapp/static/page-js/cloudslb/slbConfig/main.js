@@ -54,4 +54,38 @@ define(function(require){
             cn.RefreshIfame();
         });
     })
+    
+     $('#modifyHealthBase').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            frontendPort:{
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '端口不能为空!'
+                    },integer: {
+                        message: '请输入整数'
+                    },between:{
+                        min:0,
+                        max:65535,
+                        message:'端口号为：0-65535'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+        var createConfigData = {
+            id: $("#id").val(),
+            agentType:$("[name = modifyAgentType]").val()
+        }
+        var url = "/slbConfig/modify";
+        cn.PostData(url, createConfigData, function () {
+            cn.RefreshIfame();
+        });
+    })
 });

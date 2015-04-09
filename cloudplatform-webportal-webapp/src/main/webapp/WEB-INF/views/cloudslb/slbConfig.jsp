@@ -90,6 +90,46 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="modifyModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">修改服务监听</h4>
+				</div>
+				<form id="modifyHealthBase" name="modifyHealthBase" class="form-horizontal" role="form">
+					<div class="modal-body">
+						<div class="form-inline form-group">
+							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>协议：
+							</label>
+							<div class="col-sm-8 ng-scope">
+								<select name="modifyAgentType" class="form-control ng-pristine ng-valid" style="width: 90px">
+									<option value="HTTP">HTTP</option>
+									<option value="TCP">TCP</option>
+									<option value="MYSQL">MYSQL</option>
+								</select> 
+								<input type="hidden" id="id"  value=""/>
+							</div>
+						</div>
+						<!-- <div class="form-inline form-group">
+							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>SLB端口：
+							</label>
+							<div class="col-sm-7 ng-scope">
+								<input name="frontendPort" class="form-control" size="7" type="text">
+							</div>
+						</div> -->
+						<div class="modal-footer">
+							<button class="btn btn-primary" type="submit">修改</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 	<!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

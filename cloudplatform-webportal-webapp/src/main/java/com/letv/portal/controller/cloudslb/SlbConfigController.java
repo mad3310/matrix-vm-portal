@@ -62,14 +62,9 @@ public class SlbConfigController {
 	
 	@RequestMapping(value="/modify",method=RequestMethod.POST)
 	public @ResponseBody ResultObject modify(SlbConfig slbConfig,ResultObject obj) {
-		if(slbConfig == null || slbConfig.getSlbId() == null)
-			throw new ValidateException("参数不合法");
-		isAuthoritySlb(slbConfig.getSlbId());
-		slbConfig.setCreateUser(this.sessionService.getSession().getUserId());
-		
 		String frontPort = "80";
 		slbConfig.setFrontPort(frontPort);
-		this.slbConfigService.update(slbConfig);
+		this.slbConfigService.updateBySelective(slbConfig);
 		return obj;
 	}
 	
