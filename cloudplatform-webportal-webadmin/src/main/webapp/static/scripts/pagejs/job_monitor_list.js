@@ -1,7 +1,10 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 20; //每页显示条数
 var refresh = null;
-	
+
+var currentListStatus = "UNDO";
+var currentDetailStatus = "UNDO";
+
 $(function(){
 	//初始化 
 	page_init();
@@ -46,7 +49,7 @@ function queryByPage() {
 					var td4 =$("<td>"						
 							+FilterNull(array[i].clusterName)
 							+"</td>");					
-					var td5 = $("<td width=\"80px\">"
+					var td5 = $("<td class=\"status\" width=\"80px\">"
 							+"<a>"
 							+ array[i].status
 							+"</a>"
@@ -144,6 +147,7 @@ function initMonitorListClick(){
 		$(this).click(function(){
 			trs.removeClass("selected");
 			$(this).addClass("selected");
+			currentListStatus=$(this).find(".status a").html();
 			
 			var taskId = $(this).find("input").val();
 			
@@ -211,6 +215,7 @@ function queryTaskDetail(taskId,type){
 				var tr = $("<tr></tr>");
 				
 				if(array[i].status == "FAILED"){
+					currentDetailStatus="FAILED";//记录当前状态为failed
 					mark = true;
 					td7.html("<i class=\"ace-icon fa fa-play-circle-o green bigger-130\" style=\"cursor:pointer\" onclick=\"taskRestart(this,'"+array[i].id+"')\"></i>");
 					tr.attr("class","");
@@ -222,6 +227,7 @@ function queryTaskDetail(taskId,type){
 					tr.attr("class","");
 					tr.addClass("default-gray");					
 				}else if(array[i].status == "DOING"){
+					currentDetailStatus="DOING";//记录当前状态为doing
 					td6.html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+array[i].status)				
 				}
 				
@@ -236,6 +242,23 @@ function queryTaskDetail(taskId,type){
 				}else{
 					//tr.prependTo(tby);
 					tby.find("tr:eq("+i+")").replaceWith(tr);
+				}
+			}
+			//更新状态
+			if(array[array.length-1].status=="SUCCESS"){
+				currentDetailStatus="SUCCESS";
+			}
+			if(currentDetailStatus !== currentListStatus ){
+				currentListStatus = currentDetailStatus;
+				var tr=$("#menu-tby .selected");
+				if(currentListStatus == "FAILED"){
+					tr.removeClass().addClass("default-danger selected").find(".status").html("<a>"+currentListStatus+"</a>");
+				}else if(currentListStatus == "SUCCESS"){
+					tr.removeClass().addClass("default-success selected").find(".status").html("<a>"+currentListStatus+"</a>");
+				}else if(currentListStatus == "UNDO"){
+					tr.removeClass().addClass("default-gray selected").find(".status").html("<a>"+currentListStatus+"</a>");
+				}else if(currentListStatus == "DOING"){
+					tr.removeClass().addClass("selected").find(".status").html("<i class=\"ace-icon fa fa-spinner fa-spin bigger-125\"></i>"+currentListStatus);						
 				}
 			}
 		},
