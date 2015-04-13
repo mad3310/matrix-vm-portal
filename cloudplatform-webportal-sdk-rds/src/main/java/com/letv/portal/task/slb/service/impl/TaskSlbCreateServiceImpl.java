@@ -39,7 +39,7 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName",cluster.getClusterName());
-		map.put("componentType", "gbalancer");
+		map.put("componentType", "gbalancerCluster");
 		map.put("networkMode", "ip");
 		String result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
