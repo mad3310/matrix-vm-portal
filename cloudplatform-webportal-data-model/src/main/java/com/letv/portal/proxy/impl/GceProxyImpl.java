@@ -2,6 +2,7 @@ package com.letv.portal.proxy.impl;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,11 +13,18 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.SlbStatus;
+import com.letv.portal.model.gce.GceCluster;
+import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
 
 @Component
@@ -27,6 +35,10 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	
 	@Autowired
 	private IGceServerService gceServerService;
+	@Autowired
+	private IGceClusterService gceClusterService;
+	@Autowired
+	private IGceContainerService gceContainerService;
 	@Autowired
 	private ITaskEngine taskEngine;
 	
@@ -70,6 +82,38 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	@Override
 	public IBaseService<GceServer> getService() {
 		return gceServerService;
+	}
+	
+	@Override
+	@Async
+	public void restart(Long id) {
+		GceServer gce = this.selectById(id);
+		gce.setStatus(SlbStatus.STARTING.getValue());
+		this.gceServerService.updateBySelective(gce);
+		
+		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
+		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
+		
+	}
+	@Override
+	@Async
+	public void start(Long id) {
+		GceServer gce = this.selectById(id);
+		gce.setStatus(SlbStatus.STARTING.getValue());
+		this.gceServerService.updateBySelective(gce);
+		
+		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
+		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
+	}
+	@Override
+	@Async
+	public void stop(Long id) {
+		GceServer gce = this.selectById(id);
+		gce.setStatus(SlbStatus.STARTING.getValue());
+		this.gceServerService.updateBySelective(gce);
+		
+		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
+		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
 	}
 	
 }

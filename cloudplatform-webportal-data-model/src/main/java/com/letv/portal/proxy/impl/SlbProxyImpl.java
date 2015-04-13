@@ -99,7 +99,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
-			status = this.checkStart(slb,cluster,containers);
+			status = this.checkStatus(slb,cluster,containers);
 			if("start".equals(status))
 				break;
 		}
@@ -117,7 +117,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		
 		SlbCluster cluster = this.slbClusterService.selectById(slb.getSlbClusterId());
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
-	
+		this.commitProxyConfig(slb,cluster,containers);
 		this.start(slb,cluster,containers);
 		String status = "";
 		for (int i = 0; i < 3; i++) {
@@ -125,7 +125,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
-			status = this.checkStart(slb,cluster,containers);
+			status = this.checkStatus(slb,cluster,containers);
 			if("start".equals(status))
 				break;
 		}
@@ -144,15 +144,14 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		SlbCluster cluster = this.slbClusterService.selectById(slb.getSlbClusterId());
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
 		
-		this.commitProxyConfig(slb,cluster,containers);
-		this.restart(slb,cluster,containers);
+		this.stop(slb,cluster,containers);
 		String status = "";
 		for (int i = 0; i < 3; i++) {
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
-			status = this.checkStart(slb,cluster,containers);
+			status = this.checkStatus(slb,cluster,containers);
 			if("start".equals(status))
 				break;
 		}
@@ -212,8 +211,8 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return tr.isSuccess();
 	}
-	private String checkStart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.checkStart(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+	private String checkStatus(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+		String result = this.slbPythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.BUILDFAIL.getValue());

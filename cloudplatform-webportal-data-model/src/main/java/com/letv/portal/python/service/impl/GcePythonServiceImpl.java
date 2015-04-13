@@ -120,4 +120,41 @@ public class GcePythonServiceImpl implements IGcePythonService{
 		String result = HttpClient.post(url.toString(), params,username,password);
 		return result;
 	}
+	@Override
+	public String stop(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/stop");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+	@Override
+	public String start(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/start");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+	@Override
+	public String restart(Map<String, String> params, String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster/reload");
+		
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String checkStatus(String nodeIp1,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster");
+		
+		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
+		return result;
+	}
 }

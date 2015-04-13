@@ -160,7 +160,7 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 	}
 
 	@Override
-	public String checkStart(String nodeIp1,
+	public String checkStatus(String nodeIp1,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(URL_PORT).append("/cluster");
