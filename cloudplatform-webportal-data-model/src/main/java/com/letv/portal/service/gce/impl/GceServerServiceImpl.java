@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -20,7 +19,6 @@ import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
-import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -37,8 +35,6 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceClusterService gceClusterService;
 	@Autowired
 	private IGceContainerService gceContainerService;
-	@Autowired
-	private ITaskEngine taskEngine;	
 
 	public GceServerServiceImpl() {
 		super(GceServer.class);
