@@ -91,20 +91,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		
 		this.commitProxyConfig(slb,cluster,containers);
 		this.restart(slb,cluster,containers);
-		String status = "";
-		for (int i = 0; i < 3; i++) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-			status = this.checkStatus(slb,cluster,containers);
-			if("STARTED".equals(status))
-				break;
-		}
-		if("".equals(status))
-			throw new TaskExecuteException("SLB服务重启失败");
-		slb.setStatus(SlbStatus.NORMAL.getValue());
-		this.slbServerService.updateBySelective(slb);
+		this.checkStatus(slb, cluster, containers,"STARTED","SLB服务重启失败");
 	}
 	@Override
 	@Async
@@ -117,20 +104,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
 		this.commitProxyConfig(slb,cluster,containers);
 		this.start(slb,cluster,containers);
-		String status = "";
-		for (int i = 0; i < 3; i++) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-			status = this.checkStatus(slb,cluster,containers);
-			if("STARTED".equals(status))
-				break;
-		}
-		if("".equals(status))
-			throw new TaskExecuteException("SLB服务启动失败");
-		slb.setStatus(SlbStatus.NORMAL.getValue());
-		this.slbServerService.updateBySelective(slb);
+		this.checkStatus(slb, cluster, containers,"STARTED","SLB服务启动失败");
 	}
 	@Override
 	@Async
@@ -143,22 +117,8 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		List<SlbContainer> containers = this.slbContainerService.selectBySlbClusterId(cluster.getId());
 		
 		this.stop(slb,cluster,containers);
-		String status = "";
-		for (int i = 0; i < 3; i++) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-			status = this.checkStatus(slb,cluster,containers);
-			if("STOP".equals(status))
-				break;
-		}
-		if("".equals(status))
-			throw new TaskExecuteException("SLB服务停止失败");
-		slb.setStatus(SlbStatus.STOPED.getValue());
-		this.slbServerService.updateBySelective(slb);
+		this.checkStatus(slb, cluster, containers,"STOP","SLB服务停止失败");
 	}
-	
 	private boolean commitProxyConfig(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		List<Map<String,String>> params = getProxyConfig(slb);
 		
@@ -220,6 +180,22 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		return (String) ((Map<String,Object>)params.get("data")).get("status");
+	}
+	private void checkStatus(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers,String expectStatus,String exception) {
+		String status = "";
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			status = this.checkStatus(slb,cluster,containers);
+			if(expectStatus.equals(status))
+				break;
+		}
+		if("".equals(status))
+			throw new TaskExecuteException(exception);
+		slb.setStatus(SlbStatus.NORMAL.getValue());
+		this.slbServerService.updateBySelective(slb);
 	}
 	
 	private List<Map<String,String>> getProxyConfig(SlbServer slb) {

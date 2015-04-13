@@ -19,9 +19,11 @@ import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
-import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IGceProxy;
+import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
@@ -36,9 +38,13 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	@Autowired
 	private IGceServerService gceServerService;
 	@Autowired
+	private IGcePythonService gcePythonService;
+	@Autowired
 	private IGceClusterService gceClusterService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private IBaseTaskService baseGceTaskService;
 	@Autowired
 	private ITaskEngine taskEngine;
 	
@@ -93,7 +99,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		
 		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
 		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
-		
+		this.restart(gce,cluster,containers);
+		this.checkStatus(gce, cluster, containers,"STARTED","GCE服务重启失败");
 	}
 	@Override
 	@Async
@@ -104,6 +111,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		
 		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
 		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
+		this.start(gce,cluster,containers);
+		this.checkStatus(gce, cluster, containers,"STARTED","GCE服务启动失败");
 	}
 	@Override
 	@Async
@@ -114,6 +123,66 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		
 		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
 		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
+		this.stop(gce,cluster,containers);
+		this.checkStatus(gce, cluster, containers,"STARTED","GCE服务停止失败");
 	}
 	
+	private boolean restart(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
+		String result = this.gcePythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.gceServerService.updateBySelective(slb);
+			throw new TaskExecuteException("SLB service restart error:" + tr.getResult());
+		}
+		return tr.isSuccess();
+	}
+	private boolean stop(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
+		String result = this.gcePythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.gceServerService.updateBySelective(slb);
+			throw new TaskExecuteException("GCE service stop error:" + tr.getResult());
+		}
+		return tr.isSuccess();
+	}
+	private boolean start(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
+		String result = this.gcePythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			gce.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.gceServerService.updateBySelective(gce);
+			throw new TaskExecuteException("GCE service start error:" + tr.getResult());
+		}
+		return tr.isSuccess();
+	}
+	private String checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
+		 TaskResult tr = new TaskResult();
+		String result = this.gcePythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		if(!tr.isSuccess()) {
+			gce.setStatus(SlbStatus.BUILDFAIL.getValue());
+			this.gceServerService.updateBySelective(gce);
+			throw new TaskExecuteException("GCE service check start error:" + tr.getResult());
+		}
+		Map<String,Object> params = (Map<String, Object>) tr.getParams();
+		return (String) ((Map<String,Object>)params.get("data")).get("status");
+	}
+	private void checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers,String expectStatus,String exception) {
+		String status = "";
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			status = this.checkStatus(gce,cluster,containers);
+			if(expectStatus.equals(status))
+				break;
+		}
+		if("".equals(status))
+			throw new TaskExecuteException(exception);
+		gce.setStatus(SlbStatus.NORMAL.getValue());
+		this.gceServerService.updateBySelective(gce);
+	}
 }
