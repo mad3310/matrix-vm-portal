@@ -58,6 +58,7 @@ define(function(require){
 		var createGceData = {
 			gceName : $("[name = gceName]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
+			gceImageName:$("[name = gceImageName]").val(),
             type:$("[name = type]").val()
 		}
 		var url = "/gce";

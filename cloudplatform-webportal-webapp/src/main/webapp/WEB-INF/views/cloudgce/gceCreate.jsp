@@ -158,6 +158,24 @@
 											</div>
 										</div>
 										<div class="bk-form-row">
+											<label class="bk-form-row-name">镜像：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left">
+														<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span></span>
+																	<ul>
+																	</ul>
+																	<input name=gceImageName type="hidden" value="" />
+																</div>
+														</span>
+														</span> <span class="bk-select-arrow"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
 											<label class="bk-form-row-name">服务类型：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
