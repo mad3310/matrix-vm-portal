@@ -13,7 +13,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.service.IBuildService;
 
-@Controller
+@Controller("slbBulid")
 @RequestMapping("/build")
 public class BuildController {
 	
