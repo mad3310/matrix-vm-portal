@@ -64,8 +64,6 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
 
-	private TaskResult tr;
-
 	@Override
 	public void saveAndBuild(SlbServer slbServer) {
 		Map<String,Object> params = this.slbServerService.save(slbServer);
@@ -100,7 +98,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 			} catch (InterruptedException e) {
 			}
 			status = this.checkStatus(slb,cluster,containers);
-			if("start".equals(status))
+			if("STARTED".equals(status))
 				break;
 		}
 		if("".equals(status))
@@ -126,7 +124,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 			} catch (InterruptedException e) {
 			}
 			status = this.checkStatus(slb,cluster,containers);
-			if("start".equals(status))
+			if("STARTED".equals(status))
 				break;
 		}
 		if("".equals(status))
@@ -152,7 +150,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 			} catch (InterruptedException e) {
 			}
 			status = this.checkStatus(slb,cluster,containers);
-			if("start".equals(status))
+			if("STOP".equals(status))
 				break;
 		}
 		if("".equals(status))
@@ -212,6 +210,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		return tr.isSuccess();
 	}
 	private String checkStatus(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
+		 TaskResult tr = new TaskResult();
 		String result = this.slbPythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
