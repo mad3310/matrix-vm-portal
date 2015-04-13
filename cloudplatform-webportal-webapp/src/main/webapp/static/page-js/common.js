@@ -578,10 +578,234 @@ define(function(require,exports,module){
 		},
 		repeat:function(s, count){
 			 return new Array(count + 1).join(s);
-		}	
+		},	
 
 		 /*add new common function*/
-    }    
+         //2015-04-13 by gm new add drag及相关
+         baseData:function(){
+            var _base=$('.bk-slider-l2');
+            var level1=_base.width();//0-250:206
+            var level2=_base.next().width();//103
+            var level3=_base.next().next().width();//103
+            var length={
+                lev1:level1,
+                lev2:level1+level2,
+                lev3:level1+level2+level3
+            }
+            return length;
+        },
+        btnPrimaryClick:function(){
+            var _current=$('.bk-button-primary');
+            _current.click(function(event) {
+                var _this=$(this);
+                if(_this.hasClass('bk-button-current')){
+
+                }else{
+                    _this.removeClass('disabled').addClass('bk-button-current');
+                    _this.siblings().removeClass('bk-button-current');
+                }
+            });
+        },
+        barDrag:function(options){//滑动条拖动
+            var _awCursor=$('.awCursor');
+            var _slider=$('.bk-slider');
+            var dgFlag=false;
+            var temp;
+            _awCursor.on('mousedown',function(event) {
+                event.preventDefault();
+                dgFlag=true;
+                $(this).prev().removeClass('bk-slider-transition');
+            });
+            $('body').on('mousemove',function(event) {
+                event.preventDefault();
+                if(dgFlag){
+                    //可以拖拽
+                    _awCursor.find('.bk-tip-gray').removeClass('hide');
+                    var left=event.pageX;
+                    var left2=_slider.offset().left;
+                    temp=parseInt(left)-parseInt(left2);
+                    if(temp>414){
+                        //拖拽过最右界
+                        temp=412;
+                    }else{
+                         if(temp<0){
+                            //拖拽过最左界
+                            //temp=5;
+                            temp=options.stepSize;
+                         }else{
+                            //允许范围之内
+                        }               
+                    }
+                    drag(temp,options);
+                }else{
+                    //不能拖拽
+                }
+            });
+            $('body').on('mouseup',function(event) {
+                event.preventDefault();
+                dgFlag=false;
+                _awCursor.find('.bk-tip-gray').addClass('hide');
+                _awCursor.prev().addClass('bk-slider-transition');
+            });
+        },
+        barClickDrag:function(options){
+            var _slider=$('.bk-slider');
+            _slider.on('click',function(event) {
+                event.preventDefault();
+                var left=event.pageX;
+                var left2=_slider.offset().left;
+                var relaLen=left-left2;
+                drag(relaLen,options);
+            });
+        },
+        inputChge:function(options){
+            var _memSize=$('.memSize');
+            var val=_memSize.val();
+            inputChgeDrag(val,options);
+        },
+        chgeBuyNmu:function(){
+            var _taiNum=$('.tai-num');
+            var _upT=$('.tai-num-up');var _downT=$('.tai-num-down');
+            var val=_taiNum.val();
+            val=parseInt(val);
+            if(val<=1){
+                val=1;
+                _downT.addClass('bk-number-disabled');
+            }else if(val>=99){
+                val=99;
+                _upT.addClass('bk-number-disabled');
+            }else{
+                //合法范围
+                _upT.removeClass('bk-number-disabled');
+                _downT.removeClass('bk-number-disabled');
+            }
+            _taiNum.val(val);
+        }
+    }
+    function drag(relaLen,options){
+        var _memSize=$('.memSize');
+        var _awCursor=$('.awCursor');
+        var _layer2=$('#layer2');
+        var _up=$('.mem-num-up');
+        var _down=$('.mem-num-down');
+        var base=options.stepSize;
+        var lev1=options.lev1;//0-250:206
+        var lev2=options.lev2;//250-500:206+103
+        var lev3=options.lev3;//500-1000:206+103+103
+        if(relaLen>lev3){
+            //不合适
+            _up.addClass('bk-number-disabled')
+        }else{
+            _up.removeClass('bk-number-disabled');
+            _down.removeClass('bk-number-disabled');
+            if(relaLen>lev2){
+                //500-1000档
+                var tempL=parseInt(relaLen)-lev2;
+                var temp=tempL*500/(lev2-lev1);
+                var i=Math.ceil(temp);
+                i=base*Math.ceil(i/base);
+                // temp=i*5;
+                temp=i+500;
+                _memSize.val(temp);
+                _awCursor.find('.ng-binding').text(temp);
+                _layer2.css({
+                    width:relaLen
+                });
+                _awCursor.css({
+                    left:relaLen
+                });
+            }else if(relaLen>lev1){
+                //250-500
+                var tempL=parseInt(relaLen)-lev1;
+                var temp=tempL*250/(lev2-lev1);
+                var i=Math.ceil(temp);
+                i=base*Math.ceil(i/base);
+                // temp=i*5;
+                temp=i+250;
+                _memSize.val(temp);
+                _awCursor.find('.ng-binding').text(temp);
+                _layer2.css({
+                    width:relaLen
+                });
+                _awCursor.css({
+                    left:relaLen
+                });
+            }else if(relaLen>=base){
+                //5-250
+                var tempL=parseInt(relaLen);
+                // var i=Math.ceil(tempL/base);
+                // tempL=i*base;
+                var temp=250*tempL/lev1;
+                var j=Math.ceil(temp/base);
+                tempL=j*base;
+                _memSize.val(tempL);
+                _awCursor.find('.ng-binding').text(tempL);
+                _layer2.css({
+                    width:relaLen
+                });
+                _awCursor.css({
+                    left:relaLen
+                });
+            }else{
+                //<5 不合适
+                _down.addClass('bk-number-disabled')
+            }
+        }
+    }
+    function inputChgeDrag(val,options){
+        var _memSize=$('.memSize');
+        var _awCursor=$('.awCursor');
+        var _layer2=$('#layer2');
+        var base=options.stepSize;
+        var lev1=options.lev1;//0-250:206
+        var lev2=options.lev2;//250-500:206+103
+        var lev3=options.lev3;//500-1000:206+103+103
+        var lenPerc;
+        var i=Math.ceil(val/base);
+        val=i*base;
+        _memSize.val(val);
+        if(val<base){
+            _memSize.val(base);
+            lenPerc=_memSize.val()*lev1/250;
+            _awCursor.css({
+                left:lenPerc
+            });
+        }else{
+            if(val<=250){
+                lenPerc=_memSize.val()*lev1/250;
+                _awCursor.css({
+                    left:lenPerc
+                });
+            }else if(val<=500){
+                lenPerc=(_memSize.val()-250)*(lev2-lev1)/250;
+                lenPerc+=lev1;
+                _awCursor.css({
+                    left:lenPerc
+                });
+            }else{
+                if(val<=1000){
+                    lenPerc=(_memSize.val()-500)*(lev2-lev1)/500;
+                    lenPerc+=lev2;
+                    _awCursor.css({
+                        left:lenPerc
+                    });
+                }else{
+                    _memSize.val(1000);
+                    lenPerc=lev3+1;
+                    _awCursor.css({
+                        left:lenPerc
+                    });
+                }
+            }
+        }
+        _awCursor.css({
+            left:lenPerc
+        });
+        _layer2.css({
+            width:lenPerc
+        });
+    } 
+    //end 2015-04-10 by gm new add drag及相关 
 	var TopBtnInit = function(){
 		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){
 			$(this).width(88);

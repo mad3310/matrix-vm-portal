@@ -8,47 +8,8 @@
 .bk-slider .bk-slider-range{padding-right:0;}
 .bk-slider .bk-slider-container{padding:0;}
 .bk-slider .bk-slider-l1 {margin-left:-3px;}
-.awCursor {position: absolute;width: 0;height: 0;border-color: transparent;border-style: solid;top: 21px;left:0;margin-left: -15px;border-width: 0 15px 15px;border-bottom-color:#428bca;
-}
 </style>
-	<!-- top bar begin -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"
-		style="min-height: 40px; height: 40px;">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand color" href="${ctx}/dashboard"
-					style="padding-top: 2px; height: 40px !important;"><img
-					src="${ctx}/static/img/logo.png" /></a> 
-					<a class="navbar-brand color"
-					href="${ctx}/dashboard"
-					style="margin-left: 10px; height: 40px !important;"><i
-					class="fa fa-home text-20"></i></a>
-			</div>
-			<div id="navbar" class="navbar-collapse collapse pull-right">
-				<ul class="nav navbar-nav">
-					<li><a href="javascript:void(0)" class="hlight"><span
-							class="glyphicon glyphicon-bell"></span></a></li>
-					<li class="dropdown"><a href="javascript:void(0)"
-						class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span
-							class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="javascript:void(0)">用户中心</a></li>
-							<li><a href="javascript:void(0)">我的订单</a></li>
-							<li><a href="javascript:void(0)">账户管理</a></li>
-							<li class="divider"></li>
-							<li><a href="${ctx}/account/logout">退出</a></li>
-						</ul></li>
-					<li><a href="javascript:void(0)" class="hlight"><span
-							class="glyphicon glyphicon-lock"></span></a></li>
-					<li><a href="javascript:void(0)" class="hlight"><span
-							class="glyphicon glyphicon-pencil"></span></a></li>
-				</ul>
-			</div>
-			<!--/.nav-collapse -->
-		</div>
-	</nav>
-	<!-- top bar end -->
-
+	<%@include file='header.jsp' %>
 	<!-- navbar begin -->
 	<div class="navbar navbar-default mt40"
 		style="margin-bottom: 0px !important;">
@@ -92,7 +53,7 @@
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">实例名称：</label>
 												<div class="col-sm-4 row">
-													<input id="dbName" class="form-control" name="dbName" type="text">
+													<input id="cacheName" class="form-control" name="cacheName" type="text">
 												</div>
 											</div>
 										</form>
@@ -141,7 +102,7 @@
 															<span class="sleHid"> 
 															<div class="divselect">
 																<span>酒仙桥机房</span>
-																<ul class="hide">
+																<ul style="display:none;">
 																<li class="bk-select-option"><a href="javascript:;" selectid="14">酒仙桥机房</a></li></ul>
 															</div>
 															</span>
@@ -204,11 +165,17 @@
 																<!-- <span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
 																	<span class="bk-tip-arrow"></span>
 																</span> -->
-																<span class="awCursor" style="left: 4.12px;"></span>
+																<span class="awCursor" style="left: 4.12px;">
+																	<div style="position: relative" class="ng-scope">
+																		<div class="bk-tip-gray hide" style="top: -44px;left: -18px">
+																			<span class="ng-binding">5</span> <span class="bk-tip-arrow"></span>
+																		</div>
+																	</div>
+																</span>
 															</div>
 														</div>
 														<span class="bk-number bk-ml2">
-															<input type="text" class="bk-number-input memSize" id="value2" value="5" onchange="inite()">
+															<input type="text" class="bk-number-input memSize" id="value2" value="5">
 															<span class="bk-number-unit">GB</span>
 															<span class="bk-number-control">
 																<span class="bk-number-up mem-num-up"> <i class="bk-number-arrow"></i> </span> 
@@ -264,7 +231,7 @@
 														<span class="sleHid"> 
 														<div class="divselect">
 																<span>1月</span>
-																<ul class="hide">
+																<ul style="display:none;">
 																	<li class="bk-select-option"><a href="javascript:;">1月</a></li>
 																	<li class="bk-select-option"><a href="javascript:;">2月</a></li>
 																</ul>
@@ -281,11 +248,11 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<span class="bk-number">
-														<input type="text" class="bk-number-input tai-num" value="3" onchange="taiChange()">
+														<input type="text" class="bk-number-input tai-num" value="3">
 														<span class="bk-number-unit">台</span>
 														<span class="bk-number-control"> 
-															<span class="bk-number-up"> <i class="bk-number-arrow"></i></span>
-															<span class="bk-number-down"> <i class="bk-number-arrow"></i>
+															<span class="bk-number-up tai-num-up"> <i class="bk-number-arrow"></i></span>
+															<span class="bk-number-down tai-num-down"> <i class="bk-number-arrow"></i>
 														</span> 
 													</span>
 													</span>
@@ -329,6 +296,9 @@
 										<span class="bk-cny">¥</span> <span class="bk-items-price-money">0.00</span> <span class="bk-items-price-unit">/GB</span>
 									</div>
 								</div>
+								<!-- <div class="bk-items-price">
+									<div class="bk-items-price-title bk-pale">《计费标准说明》</div>
+								</div> -->
 								<div class="bk-items-price-control">
 									<button form="monthPurchaseForm" type="submit" id="monthPurchaseBotton" class="bk-button">
 										<div>
@@ -340,6 +310,7 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
+									<div class="bk-form-row-txt notice-block">您购买的缓存创建大约需要2分钟,请耐心等待...</div>
 								</div>
 								<div class="bk-pb4"></div>
 							</div>
@@ -362,290 +333,6 @@ seajs.config({
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 	}
 });
-
-/*self define*/
-selecAwClick();
-var _up=$('.mem-num-up');
-var _down=$('.mem-num-down');
-var _upT=$('.bk-number-up');
-var _downT=$('.bk-number-down');
-_up.click(function(event) {
-	var _memSize=$('.memSize');
-	var val=_memSize.val();
-		var temp=parseInt(val)+5;
-	if(temp>=1000){
-		_up.addClass('bk-number-disabled');
-	}else{
-		_up.removeClass('bk-number-disabled');
-		if(temp>5){
-			_down.removeClass('bk-number-disabled');
-		}else{
-			_down.addClass('bk-number-disabled');
-		}
-	}
-	_memSize.val(temp);
-	changeDrag(temp);
-});
-_down.click(function(event) {
-	var _memSize=$('.memSize');
-	var val=_memSize.val();
-	var temp=parseInt(val)-5;
-	if(temp<=5){
-		_down.addClass('bk-number-disabled');
-	}else{
-		_down.removeClass('bk-number-disabled');
-		if(temp<1000){
-			_up.removeClass('bk-number-disabled');
-		}else{
-			_up.addClass('bk-number-disabled');
-		}
-	}
-	_memSize.val(temp);
-	changeDrag(temp);
-});
-sliderClick();
-awDrag();
-_upT.click(function(event) {
-	var _taiNum=$('.tai-num');
-	var val=_taiNum.val();
-	val=parseInt(val);
-	val=val+1;
-	if(val<=1){
-		val=1;
-		_downT.addClass('bk-number-disabled');
-	}else if(val>=99){
-		_upT.addClass('bk-number-disabled');
-		val=99;
-	}else{
-		//合法范围
-		_upT.removeClass('bk-number-disabled');
-		_downT.removeClass('bk-number-disabled');
-		
-	}
-	_taiNum.val(val);
-});
-_downT.click(function(event) {
-	var _taiNum=$('.tai-num');
-	var val=_taiNum.val();
-	val=parseInt(val);
-	val=val-1;
-	if(val<=1){
-		val=1;
-		_downT.addClass('bk-number-disabled');
-	}else if(val>=99){
-		val=99;
-		_upT.addClass('bk-number-disabled');
-	}else{
-		//合法范围
-		_upT.removeClass('bk-number-disabled');
-		_downT.removeClass('bk-number-disabled');
-	}
-	_taiNum.val(val);
-});
-// permentClick();
-primaryClick();
-function inite(){
-	var _memSize=$('.memSize');
-	var val=_memSize.val();
-	changeDrag(val);	
-}
-function taiChange(){
-	var _taiNum=$('.tai-num');
-	var val=_taiNum.val();
-	chgeBuyNmu();
-}
-function sliderClick(){
-	var _slider=$('.bk-slider');
-	_slider.click(function(event) {
-		var left=event.pageX;
-		var left2=_slider.offset().left;
-		var relaLen=left-left2;
-		drag(relaLen)
-		
-	});
-}
-function awDrag(){
-	var _awCursor=$('.awCursor');
-	var _slider=$('.bk-slider');
-	var dgFlag=false;
-	var temp;
-	_awCursor.mousedown(function(event) {
-		dgFlag=true;
-	});
-	$('body').mousemove(function(event) {
-		if(dgFlag){
-			//可以拖拽
-			var left=event.pageX;
-			var left2=_slider.offset().left;
-			temp=parseInt(left)-parseInt(left2);
-			if(temp>414){
-				//拖拽过最右界
-				temp=412;
-			}else{
-				 if(temp<0){
-				 	//拖拽过最左界
-					temp=5;
-				 }else{
-				 	//允许范围之内
-				}				
-			}
-			drag(temp);
-		}else{
-			//不能拖拽
-		}
-	});
-	$('body').mouseup(function(event) {
-		dgFlag=false;
-		console.log(temp+"up");
-	});
-}
-function primaryClick(){
-	var _current=$('.bk-button-primary');
-	_current.click(function(event) {
-		var _this=$(this);
-		if(_this.hasClass('bk-button-current')){
-
-		}else{
-			_this.removeClass('disabled').addClass('bk-button-current');
-			_this.siblings().removeClass('bk-button-current');
-		}
-	});
-}
-function changeDrag(val){
-	var _memSize=$('.memSize');
-	var _awCursor=$('.awCursor');
-	var _layer2=$('#layer2');
-	var lenPerc;
-	var i=Math.ceil(val/5);
-	val=i*5;
-	_memSize.val(val);
-	if(val<5){
-		_memSize.val(5);
-		lenPerc=_memSize.val()*206/250;
-		_awCursor.css({
-			left:lenPerc
-		});
-	}else{
-		if(val<=250){
-			lenPerc=_memSize.val()*206/250;
-			_awCursor.css({
-				left:lenPerc
-			});
-		}else if(val<=500){
-			lenPerc=(_memSize.val()-250)*103/250;
-			lenPerc+=206;
-			_awCursor.css({
-				left:lenPerc
-			});
-		}else{
-			if(val<=1000){
-				lenPerc=(_memSize.val()-500)*103/500;
-				lenPerc+=309;
-				_awCursor.css({
-					left:lenPerc
-				});
-			}else{
-				_memSize.val(1000);
-				lenPerc=414;
-				_awCursor.css({
-					left:lenPerc
-				});
-			}
-		}
-	}
-	_awCursor.css({
-		left:lenPerc
-	});
-	_layer2.css({
-		width:lenPerc
-	});
-}
-function chgeBuyNmu(){
-	var _taiNum=$('.tai-num');
-	var val=_taiNum.val();
-	val=parseInt(val);
-	if(val<=1){
-		val=1;
-		_downT.addClass('bk-number-disabled');
-	}else if(val>=99){
-		val=99;
-		_upT.addClass('bk-number-disabled');
-	}else{
-		//合法范围
-		_upT.removeClass('bk-number-disabled');
-		_downT.removeClass('bk-number-disabled');
-	}
-	_taiNum.val(val);
-}
-function drag(relaLen){
-	var _memSize=$('.memSize');
-	var _awCursor=$('.awCursor');
-	var _layer2=$('#layer2');
-	if(relaLen>414){
-		//不合适
-		_up.addClass('bk-number-disabled')
-	}else{
-		_up.removeClass('bk-number-disabled');
-		_down.removeClass('bk-number-disabled');
-		if(relaLen>309){
-			//500-1000档
-			var tempL=parseInt(relaLen)-206-103;
-			var temp=tempL*500/103;
-			var i=Math.ceil(temp);
-			// temp=i*5;
-			temp=i+500;
-			_memSize.val(temp);
-			_layer2.css({
-				width:relaLen
-			});
-			_awCursor.css({
-				left:relaLen
-			});
-		}else if(relaLen>206){
-			//250-500
-			var tempL=parseInt(relaLen)-206;
-			var temp=tempL*250/103;
-			var i=Math.ceil(temp);
-			// temp=i*5;
-			temp=i+250;
-			_memSize.val(temp);
-			_layer2.css({
-				width:relaLen
-			});
-			_awCursor.css({
-				left:relaLen
-			});
-		}else if(relaLen>=5){
-			//5-250
-			var tempL=parseInt(relaLen);
-			var i=Math.ceil(tempL/5);
-			tempL=i*5;
-			_memSize.val(tempL);
-			_layer2.css({
-				width:relaLen
-			});
-			_awCursor.css({
-				left:relaLen
-			});
-		}else{
-			//<5 不合适
-			_down.addClass('bk-number-disabled')
-		}
-	}
-}
-function selecAwClick(){
-	var _target=$('.divselect');
-	_target.click(function(event) {
-		var _this=$(this);
-		_this.parent().parent().next().toggleClass('turn-self');
-		_this.find('ul').toggleClass('hide');
-	});
-	var _li=$('.bk-select-option');
-	_li.click(function(event) {
-		var _this=$(this);
-		console.log(_this.text());
-		_this.parent().prev().text(_this.text());
-	});
-}
+seajs.use("${ctx}/static/page-js/cloudcache/cacheCreate/main");
 </script>
 </html>

@@ -11,7 +11,7 @@
 	<a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}
     /static/img/logo.png"/></a>
      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-	<a class="navbar-brand color" href="${ctx}/list/db" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-database text-10"></i>&nbsp;关系型数据库RDS</a>
+	<a class="navbar-brand color" href="${ctx}/list/cache" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-database text-10"></i>&nbsp;开放缓存服务OCS</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse pull-right">
         <ul class="nav navbar-nav">
@@ -150,7 +150,7 @@ alias: {
     "bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 }
 });
-//seajs.use("${ctx}/static/page-js/clouddb/layout/main");
+//seajs.use("${ctx}/static/page-js/cloudcache/layout/main");
 </script>
 
 </html>

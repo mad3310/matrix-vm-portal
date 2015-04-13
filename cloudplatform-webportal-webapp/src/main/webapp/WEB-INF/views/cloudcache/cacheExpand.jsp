@@ -7,8 +7,8 @@
 .bk-slider .bk-slider-range{padding-right:0;}
 .bk-slider .bk-slider-container{padding:0;}
 .bk-slider .bk-slider-l1 {margin-left:-3px;}
-.awCursor {position: absolute;width: 0;height: 0;border-color: transparent;border-style: solid;top: 21px;left:0;margin-left: -15px;border-width: 0 15px 15px;border-bottom-color:#428bca;
-}
+/*.awCursor {position: absolute;width: 0;height: 0;border-color: transparent;border-style: solid;top: 21px;left:0;margin-left: -15px;border-width: 0 15px 15px;border-bottom-color:#428bca;
+}*/
 </style>
 <body>
 		<div class="container-fluid">
@@ -96,7 +96,13 @@
 																<!-- <span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
 																	<span class="bk-tip-arrow"></span>
 																</span> -->
-																<span class="awCursor" style="left: 4.12px;"></span>
+																<span class="awCursor" style="left: 4.12px;">
+																	<div style="position: relative" class="ng-scope">
+																		<div class="bk-tip-gray hide" style="top: -44px;left: -18px">
+																			<span class="ng-binding">5</span> <span class="bk-tip-arrow"></span>
+																		</div>
+																	</div>
+																</span>
 															</div>
 														</div>
 														<span class="bk-number bk-ml2">
