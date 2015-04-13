@@ -653,7 +653,7 @@
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
-                <webportal.log.path>/var/log</webportal.log.path>
+                <webportal.log.path>/tmp/var/log</webportal.log.path>
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
