@@ -49,7 +49,7 @@
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div>
-										<form id="monthPurchaseForm">
+										<form id="monthPurchaseForm" class="bv-form">
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">实例名称：</label>
 												<div class="col-sm-4 row">
@@ -104,6 +104,7 @@
 																<span>酒仙桥机房</span>
 																<ul style="display:none;">
 																<li class="bk-select-option"><a href="javascript:;" selectid="14">酒仙桥机房</a></li></ul>
+																<input name="cacheId" type="hidden" value="" />
 															</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
@@ -330,7 +331,8 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/cloudcache/cacheCreate/main");

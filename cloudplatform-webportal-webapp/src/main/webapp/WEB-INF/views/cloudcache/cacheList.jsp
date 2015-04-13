@@ -49,7 +49,7 @@
 					<div class="form-group">
 						<input onkeyup="value=value.replace(/[\W]/g,'') " 
 						onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" 
-						id="dbName" type="text" class="form-control" size="48" placeholder="请输入缓存实例名称进行搜索">
+						id="cacheName" type="text" class="form-control" size="48" placeholder="请输入缓存实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
@@ -83,7 +83,7 @@
 						<td width="10">
 							<input type="checkbox">
 						</td>
-						<td><span>cyxtest</span></td>
+						<td><span><a href="/detail/cache/702">cyxtest</a></span></td>
 						<td><span>正常</span></td>
 						<td><span>持久化</span></td>
 						<td>
@@ -97,7 +97,8 @@
 						<td><span>酒仙桥DC</span></td>
 						<td><span>2015-03-25</span></td>
 						<td><span>包年 365天后到期</span></td>
-						<td><span class="text-explode font-disabled">管理|续费|升级</span></td>
+						<td><span class="text-explode font-disabled">管理|续费|
+						扩容</span></td>
 					</tr>
 				</thead>
 				<tbody id="tby">
@@ -138,10 +139,11 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
 	}
 });
-
+seajs.use("${ctx}/static/page-js/cloudcache/cacheList/main");
 /*self define*/
 </script>
 </html>
