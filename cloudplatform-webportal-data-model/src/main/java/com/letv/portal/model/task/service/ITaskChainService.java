@@ -17,5 +17,7 @@ public interface ITaskChainService extends IBaseService<TaskChain>{
 	void updateAfterDoingChainStatus(Map<String,Object> params);
 
 	public int getStepByGceId(Long gceId);
+
+	public int getStepBySlbId(Long slbId);
 	
 }

@@ -19,6 +19,8 @@ import com.letv.portal.model.BuildModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.slb.SlbCluster;
+import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.task.TaskChain;
 import com.letv.portal.model.task.TaskChainIndex;
 import com.letv.portal.model.task.TaskExecuteStatus;
@@ -27,6 +29,8 @@ import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.slb.ISlbClusterService;
+import com.letv.portal.service.slb.ISlbServerService;
 
 @Service("taskChainService")
 public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements ITaskChainService{
@@ -38,7 +42,11 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 	@Autowired
 	private IGceServerService gceServerService;
 	@Autowired
+	private ISlbServerService slbServerService;
+	@Autowired
 	private IGceClusterService gceClusterService;
+	@Autowired
+	private ISlbClusterService slbClusterService;
 	@Autowired
 	private ITaskChainIndexService taskChainIndexService;
 	
@@ -88,6 +96,20 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 			throw new ValidateException("参数不合法");
 		String serviceName = gce.getGceName();
 		String clusterName = gceCluster.getClusterName();
+		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
+		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
+	}
+	
+	@Override
+	public int getStepBySlbId(Long slbId) {
+		if(slbId == null)
+			throw new ValidateException("参数不合法");
+		SlbServer slb = this.slbServerService.selectById(slbId);
+		SlbCluster slbCluster = this.slbClusterService.selectById(slb.getSlbClusterId());
+		if(slb == null)
+			throw new ValidateException("参数不合法");
+		String serviceName = slb.getSlbName();
+		String clusterName = slbCluster.getClusterName();
 		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
