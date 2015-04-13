@@ -133,7 +133,7 @@
 		</if>
 	</select>
 	
-	<select id="selectByMap" resultType="BaseResultMap" parameterType="java.util.Map">
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select 
 		<include refid="Base_Column_List" />
  		from WEBPORTAL_TASK_CHAIN_INDEX tci
