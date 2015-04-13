@@ -63,7 +63,7 @@ public interface ISlbPythonService {
 	public String start(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
 	public String stop(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
 	public String restart(Map<String,String> params,String nodeIp1,String adminUser,String adminPassword);
-	public String checkStart(String nodeIp1,String adminUser,String adminPassword);
+	public String checkStatus(String nodeIp1,String adminUser,String adminPassword);
 	
 	
 	
