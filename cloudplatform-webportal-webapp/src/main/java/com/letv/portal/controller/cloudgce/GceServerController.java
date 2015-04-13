@@ -94,7 +94,7 @@ public class GceServerController {
 	@RequestMapping(value="/image/list",method=RequestMethod.GET)
 	public @ResponseBody ResultObject getImage(){
 		ResultObject obj = new ResultObject();
-		String images[] = {"webportal-0.0.1.img","container-manager-0.1.0.img"};
+		String images[] = {"webportal-0.0.1.img","container-0.1.0.img"};
 		obj.setData(images);
 		return obj;
 	}	

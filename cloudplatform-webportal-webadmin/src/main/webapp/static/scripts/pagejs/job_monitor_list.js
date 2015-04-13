@@ -13,7 +13,7 @@ function queryByPage() {
 	var queryCondition = {
 			'taskType':$('#jobstatus').val(),
 			'currentPage':currentPage,
-			'recordsPerPage':recordsPerPage,
+			'recordsPerPage':recordsPerPage
 		}
 	$("#tby tr").remove();	
 	$("#noData").addClass("hidden");
