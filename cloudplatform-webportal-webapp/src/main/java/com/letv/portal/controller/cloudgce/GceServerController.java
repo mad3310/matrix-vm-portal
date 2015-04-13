@@ -63,6 +63,25 @@ public class GceServerController {
 		return obj;
 	}
 	
+	@RequestMapping(value="/restart",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject restart(Long id,ResultObject obj) {
+		isAuthorityGce(id);
+		this.gceProxy.restart(id);
+		return obj;
+	}
+	@RequestMapping(value="/start",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject start(Long id,ResultObject obj) {
+		isAuthorityGce(id);
+		this.gceProxy.start(id);
+		return obj;
+	}
+	@RequestMapping(value="/stop",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject stop(Long id,ResultObject obj) {
+		isAuthorityGce(id);
+		this.gceProxy.stop(id);
+		return obj;
+	}
+	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(@PathVariable Long id){
 		isAuthorityGce(id);
