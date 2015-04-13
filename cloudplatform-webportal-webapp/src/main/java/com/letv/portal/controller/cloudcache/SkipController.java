@@ -50,13 +50,45 @@ public class SkipController {
 	 * @param mav
 	 * @return
 	 */
+	@RequestMapping(value ="/detail/baseInfo/{cacheId}",method=RequestMethod.GET)
+	public ModelAndView tobaseInfo(@PathVariable Long cacheId,ModelAndView mav){
+		mav.addObject("cacheId",cacheId);
+		mav.setViewName("/cloudcache/baseInfo");
+		return mav;
+	}
 	@RequestMapping(value = "/detail/cache/{cacheId}", method = RequestMethod.GET)
 	public ModelAndView cacheDetail(@PathVariable Long cacheId, ModelAndView mav) {
 		mav.addObject("cacheId", cacheId);
 		mav.setViewName("/cloudcache/layout");
 		return mav;
 	}
-
+//	监控页
+	@RequestMapping(value ="/monitor/cacheLink/{cacheId}",method=RequestMethod.GET)
+	public ModelAndView toMonitor(@PathVariable Long cacheId,ModelAndView mav){
+		mav.addObject("cacheId",cacheId);
+		mav.setViewName("/cloudcache/monitor/cacheMonitor");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/monitor/InnoDB/buffer/{cacheId}",method=RequestMethod.GET)
+	public ModelAndView toMonitorInnoDB(@PathVariable Long cacheId,ModelAndView mav){
+		mav.addObject("cacheId",cacheId);
+		mav.setViewName("/cloudcache/monitor/cacheMonitor");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/monitor/QPS/TPS/{cacheId}",method=RequestMethod.GET)
+	public ModelAndView toMonitorQPS(@PathVariable Long cacheId,ModelAndView mav){
+		mav.addObject("cacheId",cacheId);
+		mav.setViewName("/cloudcache/monitor/cacheMonitor");
+		return mav;
+	}
+	@RequestMapping(value ="/list/cachemanage/{cacheId}",method=RequestMethod.GET)
+	public ModelAndView toDbBackup(@PathVariable Long cacheId,ModelAndView mav){
+		mav.addObject("cacheId",cacheId);
+		mav.setViewName("/cloudcache/dataManage");
+		return mav;
+	}
 	/**
 	 * Methods Name: cacheCreate<br>
 	 * Description: 跳转cache创建页面

@@ -1,8 +1,56 @@
 define(function(require){
 	var $ = require("jquery");
+	require("bootstrapValidator")($);
 	var Common=require('../../common');var cn=new Common();
 	var Handler=require('./dataHandler');var hdler=new Handler();
+	
 	cn.divselect();
+	/*禁用退格键退回网页*/
+    window.onload=cn.DisableBackspaceEnter();
+    if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
+        $("#monthPurchaseBotton").click(function(){
+            $("#monthPurchaseForm").submit();
+        })
+    }
+    $("#monthPurchaseForm").bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            cacheName: {
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '实例名称不能为空!'
+                    },
+                    stringLength: {
+                        max: 16,
+                        message: '实例名称过长!'
+                    }, regexp: {
+                        regexp: /^((?!^monitor$)([a-zA-Z_]+[a-zA-Z_0-9]*))$/,
+                        message: "请输入字母数字或'_',实例名称不能以数字开头且数据库名称不能命名为monitor."
+                    }/*,
+                    remote: {
+                        message: '数据库名已存在!',
+                        url: '/db/validate'
+                    }*/
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+        e.preventDefault();
+        var cacheName = $("[name = 'cacheName']").val();
+        var cacheId = $("[name = 'cacheId']").val();
+        var engineType = $("[name = 'engineType']").val();
+        var linkType = $("[name = 'linkType']").val();
+        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
+        var formData = {"cacheName":cacheName,"linkType":linkType,"engineType":engineType,"cacheId":cacheId,"isCreateAdmin":isCreateAdmin};
+        CreateCache(formData);
+    });
+    /*表单验证 --end*/
 	var _up=$('.mem-num-up');var _down=$('.mem-num-down');var _upT=$('.tai-num-up');var _downT=$('.tai-num-down');
 	var options={
 		'stepSize':5,
@@ -91,21 +139,12 @@ define(function(require){
 		var val=_taiNum.val();
 		cn.chgeBuyNmu();
 	});
-	// function chgeBuyNmu(){
-	// 	var _taiNum=$('.tai-num');
-	// 	var val=_taiNum.val();
-	// 	val=parseInt(val);
-	// 	if(val<=1){
-	// 		val=1;
-	// 		_downT.addClass('bk-number-disabled');
-	// 	}else if(val>=99){
-	// 		val=99;
-	// 		_upT.addClass('bk-number-disabled');
-	// 	}else{
-	// 		//合法范围
-	// 		_upT.removeClass('bk-number-disabled');
-	// 		_downT.removeClass('bk-number-disabled');
-	// 	}
-	// 	_taiNum.val(val);
-	// }
+
+	//cn.GetData('url',hdler.GetCacheHandler);
+	function CreateCache (data) {
+		var url="/cache";
+        cn.PostData(url,data, function () {
+            location.href = "/list/cache";
+        });
+	}
 });

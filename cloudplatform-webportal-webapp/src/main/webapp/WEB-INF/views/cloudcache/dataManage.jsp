@@ -4,12 +4,11 @@
 <html lang="zh">
 <%@include file='main.jsp' %>
 <body>
-<div class="navbar navbar-default" style="margin-bottom: 0px !important;">  
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">实例数据管理</a>
-    </div>
-  </div>
+<div class="se-heading" id="headingOne">
+	<div class="pull-left">
+		<h5>实例数据管理</h5>
+	</div>
+	<div class="clearfix"></div>
 </div>
 <div class="container-fluid">
 	<div class="col-sm-12 col-md-offset-1 col-md-3">
@@ -18,7 +17,7 @@
 		      <li role="presentation" class="active"><a href="#get" id="get-tab" role="tab" data-toggle="tab" aria-controls="get" aria-expanded="true">查询(Get)</a></li>
 		      <li role="presentation"><a href="#delete" role="tab" id="delete-tab" data-toggle="tab" aria-controls="delete">删除(Delete)</a></li>
 		    </ul>
-		    <div  class="tab-content" style="padding:15px;padding-top:20px;border:1px solid #ddd;border-top:none;">
+		    <div  class="tab-content" style="padding:15px;padding-top:20px;border:1px solid #ddd;border-top:none;" >
 		      <div role="tabpanel" class="tab-pane fade in active" id="get" aria-labelledby="get-tab">
 		        <form class="form-horizontal">
 		        	<div class="form-group">
@@ -35,7 +34,7 @@
             		</div>
 		        </form>
 		      </div>
-		      <div role="tabpanel" class="tab-pane fade" id="delete" aria-labelledby="delete-tab">
+		      <div role="tabpanel" class="tab-pane fade" id="delete" aria-labelledby="delete-tab" >
 		        <form class="form-horizontal">
 		        	<div class="form-group">
 		                <label class="col-xs-12 col-sm-3 col-md-3 control-label">键(Key)</label>
@@ -160,8 +159,9 @@ seajs.config({
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 	}
 });
-
+seajs.use("${ctx}/static/page-js/cloudcache/dataManage/main");
 /*self define*/
+
 </script>
 </body>
 </html>
