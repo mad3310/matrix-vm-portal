@@ -334,7 +334,11 @@
 											<span>OCS</span>
 										</div>
 										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
+											<div class="pull-left product-opt-wrap">
+												<a href="/detail/cacheCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
 										</div>
 									</li>
 									<li class="clearfix">
