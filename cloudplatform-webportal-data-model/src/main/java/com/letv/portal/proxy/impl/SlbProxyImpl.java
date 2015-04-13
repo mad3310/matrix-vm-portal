@@ -140,7 +140,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		return tr.isSuccess();
 	}
 	private boolean restart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.slbPythonService.restart(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
