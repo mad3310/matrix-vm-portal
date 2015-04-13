@@ -1,5 +1,6 @@
 package com.letv.portal.model.task.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,14 +8,29 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.task.ITaskChainDao;
+import com.letv.portal.enumeration.BuildStatus;
+import com.letv.portal.model.BuildModel;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.model.gce.GceCluster;
+import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.slb.SlbCluster;
+import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.task.TaskChain;
+import com.letv.portal.model.task.TaskChainIndex;
 import com.letv.portal.model.task.TaskExecuteStatus;
+import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITaskChainService;
+import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.slb.ISlbClusterService;
+import com.letv.portal.service.slb.ISlbServerService;
 
 @Service("taskChainService")
 public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements ITaskChainService{
@@ -23,6 +39,16 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 
 	@Resource
 	private ITaskChainDao taskChainDao;
+	@Autowired
+	private IGceServerService gceServerService;
+	@Autowired
+	private ISlbServerService slbServerService;
+	@Autowired
+	private IGceClusterService gceClusterService;
+	@Autowired
+	private ISlbClusterService slbClusterService;
+	@Autowired
+	private ITaskChainIndexService taskChainIndexService;
 	
 	public TaskChainServiceImpl() {
 		super(TaskChain.class);
@@ -59,5 +85,48 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 		this.taskChainDao.updateAfterDoingChainStatus(params);
 		
 	}
+
+	@Override
+	public int getStepByGceId(Long gceId) {
+		if(gceId == null)
+			throw new ValidateException("参数不合法");
+		GceServer gce = this.gceServerService.selectById(gceId);
+		GceCluster gceCluster = this.gceClusterService.selectById(gce.getGceClusterId());
+		if(gce == null)
+			throw new ValidateException("参数不合法");
+		String serviceName = gce.getGceName();
+		String clusterName = gceCluster.getClusterName();
+		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
+		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
+	}
 	
+	@Override
+	public int getStepBySlbId(Long slbId) {
+		if(slbId == null)
+			throw new ValidateException("参数不合法");
+		SlbServer slb = this.slbServerService.selectById(slbId);
+		SlbCluster slbCluster = this.slbClusterService.selectById(slb.getSlbClusterId());
+		if(slb == null)
+			throw new ValidateException("参数不合法");
+		String serviceName = slb.getSlbName();
+		String clusterName = slbCluster.getClusterName();
+		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
+		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
+	}
+	
+	private int getStepByTaskChainIndexId(Long taskChainIndexId){
+		List<TaskChain> taskChains = this.selectAllChainByIndexId(taskChainIndexId);
+
+		if(taskChains.get(0).getStatus() ==TaskExecuteStatus.SUCCESS){
+			return 0;//返回创建成功
+		}
+		for(TaskChain taskChain : taskChains){
+			if(taskChain.getStatus() == TaskExecuteStatus.FAILED){
+				return -1;//返回创建失败
+			}else if(taskChain.getStatus() == TaskExecuteStatus.DOING){
+				return taskChain.getExecuteOrder();//返回此步所在任务中的顺序
+			}
+		}
+		return 1;//都没有，则认为正在执行第一步
+	}
 }

@@ -1,5 +1,9 @@
 package com.letv.portal.model.task.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -27,6 +31,14 @@ public class TaskChainIndexServiceImpl extends BaseServiceImpl<TaskChainIndex> i
 	@Override
 	public IBaseDao<TaskChainIndex> getDao() {
 		return taskChainIndexDao;
+	}
+
+	@Override
+	public TaskChainIndex selectByServiceAndClusterName(String serviceName,String clusterName) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("serviceName", serviceName);
+		map.put("clusterName", clusterName);
+		return this.taskChainIndexDao.selectByMap(map).get(0);
 	}
 	
 }
