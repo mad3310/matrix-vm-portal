@@ -578,7 +578,7 @@
         </profile>
 
         <profile>
-            <id>dev_test</id>
+            <id>dev_linux</id>
             <properties>
                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
                  <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
@@ -603,7 +603,7 @@
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
-                <webportal.log.path>D:</webportal.log.path>
+                <webportal.log.path>/tmp/var/log</webportal.log.path>
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
@@ -653,7 +653,7 @@
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
-                <webportal.log.path>/tmp/var/log</webportal.log.path>
+                <webportal.log.path>/var/log</webportal.log.path>
                 
                 <!-- fixed and zabbix config -->
                 <fixedpush.url.ip>123.126.32.147</fixedpush.url.ip>
