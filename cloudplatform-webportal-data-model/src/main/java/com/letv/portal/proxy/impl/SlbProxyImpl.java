@@ -194,7 +194,10 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		if("".equals(status))
 			throw new TaskExecuteException(exception);
-		slb.setStatus(SlbStatus.NORMAL.getValue());
+		if("STARTED".equals(expectStatus))
+			slb.setStatus(SlbStatus.NORMAL.getValue());
+		if("STOP".equals(expectStatus))
+			slb.setStatus(SlbStatus.STOPED.getValue());
 		this.slbServerService.updateBySelective(slb);
 	}
 	

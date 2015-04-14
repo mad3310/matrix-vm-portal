@@ -128,7 +128,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	
 	private boolean restart(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.gcePythonService.restart(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -138,7 +138,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		return tr.isSuccess();
 	}
 	private boolean stop(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.gcePythonService.stop(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -148,7 +148,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		return tr.isSuccess();
 	}
 	private boolean start(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.gcePythonService.start(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			gce.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -159,7 +159,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	private String checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
 		 TaskResult tr = new TaskResult();
-		String result = this.gcePythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.gcePythonService.checkStatus(containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = this.baseGceTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			gce.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -182,7 +182,10 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		if("".equals(status))
 			throw new TaskExecuteException(exception);
-		gce.setStatus(SlbStatus.NORMAL.getValue());
+		if("STARTED".equals(expectStatus))
+			gce.setStatus(SlbStatus.NORMAL.getValue());
+		if("STOP".equals(expectStatus))
+			gce.setStatus(SlbStatus.STOPED.getValue());
 		this.gceServerService.updateBySelective(gce);
 	}
 }
