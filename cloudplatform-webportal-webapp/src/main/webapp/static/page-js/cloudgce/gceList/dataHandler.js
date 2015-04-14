@@ -90,7 +90,6 @@ define(function(require,exports,module){
 	             $(".gce-start").click(function(){
 	            		var data = {id : $(this).closest("tr").find("[name=gcecluster_id]").val()};
 	            		var url = "/gce/start";
-	            		console.log(data.id);
 	            		cn.PostData(url,data,function(){
 	            			window.location.href = "/list/gce";
 	            		});
