@@ -64,28 +64,28 @@ define(function(require,exports,module){
                     var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     var td9 = $("<td></td>");
                     if(array[i].status == 6){
-                    	td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
+                    	td7 = $("<td class=\"text-right\"><a href=\"/detail/gce/"+array[i].id+"\">管理</a>"
                         		+ "<span class=\"text-explode font-disabled\">|</span>"
-                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-stop\" >停止</span></a>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
-                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
+                    			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else if(array[i].status == 9){
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-start\">启动</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else if(array[i].status == 5){
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
                 $(".gce-start").click(function(){
             		var data = {id : $(this).closest("tr").find("[name=gcecluster_id]").val()};
-            		var url = "/gce4/start";
+            		var url = "/gce/start";
             		console.log(data.id);
             		cn.PostData(url,data,function(){
             			window.location.href = "/list/gce";
