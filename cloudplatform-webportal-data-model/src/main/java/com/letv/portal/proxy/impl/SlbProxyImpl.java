@@ -131,7 +131,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 				String result = this.slbPythonService.commitProxyConfig(param, container.getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 				if(!tr.isSuccess()) {
-					slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+					slb.setStatus(SlbStatus.ABNORMAL.getValue());
 					this.slbServerService.updateBySelective(slb);
 					throw new TaskExecuteException("SLB service commit porxyConfig error:" + tr.getResult());
 				}
@@ -143,7 +143,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		String result = this.slbPythonService.restart(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
-			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service restart error:" + tr.getResult());
 		}
@@ -153,7 +153,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
-			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service stop error:" + tr.getResult());
 		}
@@ -163,7 +163,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		String result = this.slbPythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
-			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service start error:" + tr.getResult());
 		}
@@ -174,7 +174,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		String result = this.slbPythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
-			slb.setStatus(SlbStatus.BUILDFAIL.getValue());
+			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.slbServerService.updateBySelective(slb);
 			throw new TaskExecuteException("SLB service check start error:" + tr.getResult());
 		}
