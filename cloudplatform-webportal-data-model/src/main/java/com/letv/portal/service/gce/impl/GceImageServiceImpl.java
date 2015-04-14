@@ -12,7 +12,7 @@ import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 
-@Service("gceServerService")
+@Service("gceImageService")
 public class GceImageServiceImpl extends BaseServiceImpl<GceImage> implements IGceImageService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceImageServiceImpl.class);

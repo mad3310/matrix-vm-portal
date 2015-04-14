@@ -141,7 +141,7 @@
 	</update>
 	
 	<!-- 根据id查询-->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.langi.Long">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
 			<include refid="Base_Column_List" /> 
 			from WEBPORTAL_GCE_IMAGE gi
@@ -150,7 +150,7 @@
 	
 	
 	<!-- 列表总数 -->
-	<select id="selectByMapCount" resultType="java.langi.Integer"
+	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_GCE_IMAGE gi
 		<include refid="Example_Where_Clause" />
