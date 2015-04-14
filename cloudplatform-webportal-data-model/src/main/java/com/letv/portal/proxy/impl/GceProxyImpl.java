@@ -118,13 +118,13 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	@Async
 	public void stop(Long id) {
 		GceServer gce = this.selectById(id);
-		gce.setStatus(SlbStatus.STARTING.getValue());
+		gce.setStatus(SlbStatus.STOPPING.getValue());
 		this.gceServerService.updateBySelective(gce);
 		
 		GceCluster cluster = this.gceClusterService.selectById(gce.getGceClusterId());
 		List<GceContainer> containers = this.gceContainerService.selectByGceClusterId(cluster.getId());
 		this.stop(gce,cluster,containers);
-		this.checkStatus(gce, cluster, containers,"STARTED","GCE服务停止失败");
+		this.checkStatus(gce, cluster, containers,"STOP","GCE服务停止失败");
 	}
 	
 	private boolean restart(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
