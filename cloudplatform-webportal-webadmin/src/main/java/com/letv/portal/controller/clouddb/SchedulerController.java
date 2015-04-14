@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.controller.clouddb;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;

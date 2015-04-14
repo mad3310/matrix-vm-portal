@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.controller.clouddb;
 
 import java.awt.image.BufferedImage;
 import java.util.UUID;

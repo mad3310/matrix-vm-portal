@@ -8,8 +8,8 @@
 		<result column="ID" property="id" />
 	
 		<result column="NAME" property="name" />
-		<result column="URL" property="portForward" />
-		<result column="TAG" property="gceImageName" />
+		<result column="URL" property="url" />
+		<result column="TAG" property="tag" />
 		<result column="TYPE" property="type" />
 		<result column="OWNER" property="owner" />
 		<result column="STATUS" property="status" />
@@ -216,7 +216,7 @@
 		parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		form
+		from WEBPORTAL_GCE_IMAGE gi
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY gi.CREATE_TIME DESC
 		<if test="page != null">

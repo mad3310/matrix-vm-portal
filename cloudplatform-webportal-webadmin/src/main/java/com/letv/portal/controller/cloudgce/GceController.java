@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.controller.cloudgce;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class GceController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceController.class);
 
-	@RequestMapping(method=RequestMethod.GET)   
+	@RequestMapping(value="/image",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject imageList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.gceImageService.selectPageByParams(page, params));
