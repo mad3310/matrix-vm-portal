@@ -73,7 +73,7 @@ define(function(require,exports,module){
                     }else if(array[i].status == 9){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
-                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">启动</span></a>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
@@ -82,6 +82,28 @@ define(function(require,exports,module){
                     tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
                  }
+                $(".gce-start").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=gcecluster_id]").val()};
+            		var url = "/gce4/start";
+            		console.log(data.id);
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/gce";
+            		});
+            	});
+            	$(".gce-restart").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=gcecluster_id]").val()};
+            		var url = "/gce/restart";
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/gce";
+            		});
+            	});
+            	$(".gce-stop").click(function(){
+            		var data = {id : $(this).closest("tr").find("[name=gcecluster_id]").val()};
+            		var url = "/gce/stop";
+            		cn.PostData(url,data,function(){
+            			window.location.href = "/list/gce";
+            		});
+            	});
             }
        
             /*
