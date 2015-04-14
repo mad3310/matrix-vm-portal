@@ -95,7 +95,6 @@ define(function(require,exports,module){
             	$(".slb-start").click(function(){
             		var data = {id : $(this).closest("tr").find("[name=slbcluster_id]").val()};
             		var url = "/slb/start";
-            		console.log(data.id);
             		cn.PostData(url,data,function(){
             			window.location.href = "/list/slb";
             		});
