@@ -71,12 +71,15 @@ function queryByPage() {
 						+ array[i].url
 						+ "</td>");
 				var td8 = $("<td>"
+						+ array[i].descn
+						+ "</td>");
+				var td9 = $("<td>"
 						+ "修改"
 						+ "</td>");
 				
 				var tr = $("<tr></tr>");
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -164,7 +167,7 @@ function pageControl() {
 	
 //创建Container集群表单验证
 function formValidate() {
-	$("#create-task-unit-form").bootstrapValidator({
+	$("#add-gce-image-form").bootstrapValidator({
 	  message: '无效的输入',
          feedbackIcons: {
              valid: 'glyphicon glyphicon-ok',
@@ -172,48 +175,24 @@ function formValidate() {
              validating: 'glyphicon glyphicon-refresh'
          },
          fields: {
-        	 taskUnitName: {
-                 validMessage: '请按提示输入',
-                 validators: {
-                     notEmpty: {
-                         message: '任务单元名称不能为空!'
-                     },
-			          stringLength: {
-			              max: 40,
-			              message: '任务单元名过长'
-			          }
-	             }
-         	},
-         	beanName:{
-         		 notEmpty: {
-                     message: '实现接口不能为空!'
-                 }
-         	},
-         	descn:{
-         		validMessage: '请按提示输入',
-         		validators: {
-			          stringLength: {
-			              max: 100,
-			              message: '描述最长字符为100'
-			          }
-	             }
-         	}	
          }
      }).on('success.form.bv', function(e) {
     	 e.preventDefault();
     	$.ajax({
     		cache:false,
     		type : "post",
-    		url : "/task/unit",
+    		url : "/gce/image",
     		data: {
-    			name:$('#taskUnitName').val(),
-    			taskType:$('#taskType').val(),
+    			name:$('#name').val(),
+    			type:$('#type').val(),
     			descn:$('#descn').val(),
-    			beanName:$('#beanName').val(),
-    			retry:$('#retry').val
+    			tag:$('#tag').val(),
+    			url:$('#url').val(),
+    			status:$('#status').val(),
+    			owner:$('#owner').val()
     		},
     		success : function(data) {
-    			location.href = "/list/job/unit";
+    			location.href = "/list/gce/image";
     		}
     	})
      });

@@ -23,12 +23,13 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width=25%>镜像名称</th>
+								<th>镜像名称</th>
 								<th>类型</th>
 								<th>版本</th>
 								<th>所属用户</th>
 								<th>可用性</th>
 								<th>下载地址</th>
+								<th>描述</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -64,12 +65,12 @@
            				</button>
            				<h4 class="modal-title">添加镜像 </h4>
             		</div>
-					<form id="create-task-unit-form" name="create-task-unit-form" class="form-horizontal" role="form">
+					<form id="add-gce-image-form" name="add-gce-image-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="taskUnitName">镜像名称</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="taskUnitName" id="taskUnitName" type="text" />
+									<input class="form-control" name="name" id="name" type="text" />
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="镜像名称应与下载镜像名相同" style="cursor:pointer; text-decoration:none;">
@@ -78,14 +79,13 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
+								<label class="col-sm-4 control-label" for="type">业务类型</label>
 								<div class="col-sm-6">
-									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择类型...">
+									<select class="chosen-select" name="type" id="type" data-placeholder="请选择类型...">
 										<!-- <option value="">  </option> -->
 										<!-- <option value="xx">消息中间件</option> -->
-										<option value="RDS">RDS</option>
-										<option value="SLB">SLB</option>
-										<option value="GCE">GCE</option>										
+										<option value="jetty">jetty</option>
+										<option value="nginx">nginx</option>
 									</select>
 								</div>								
 								<label class="control-label">
@@ -97,7 +97,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="beanName">镜像版本</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="beanName" id="beanName" type="text" />
+									<input class="form-control" name="tag" id="tag" type="text" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传镜像的版本号tag" style="cursor:pointer; text-decoration:none;">
@@ -106,9 +106,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">下载地址</label>
+								<label class="col-sm-4 control-label" for="url">下载地址</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="beanName" id="beanName" type="text" />
+									<input class="form-control" name="url" id="url" type="text" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此镜像的地址" style="cursor:pointer; text-decoration:none;">
@@ -119,9 +119,9 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="beanName">可用性</label>
 								<div class="col-sm-6">
-									<select class="chosen-select" name="retry" id="retry" data-placeholder="该镜像是否可用">
-										<option value="2">可用</option>
-										<option value="1">不可用</option>
+									<select class="chosen-select" name="status" id="status" data-placeholder="该镜像是否可用">
+										<option value="AVAILABLE">AVAILABLE</option>
+										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
 									</select>
 								</div>							
 								<label class="control-label">
@@ -133,7 +133,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-6">
-									<select class="chosen-select" name="retry" id="retry" data-placeholder="请选择所属用户">
+									<select class="chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
 										<option value="2">liuhao1</option>
 										<option value="1">yaouo</option>
 										<option value="3">gaomin</option>

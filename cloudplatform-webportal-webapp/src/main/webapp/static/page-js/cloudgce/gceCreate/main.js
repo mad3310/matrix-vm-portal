@@ -72,13 +72,21 @@ define(function(require){
     var dataHandler = require('./dataHandler');
     var createDbHandler = new dataHandler();
     GetHcluster();
-    GetImage();
+    GetImageByType();
+    $("[name = type]").change(function(){
+    		setTimeout(GetImageByType,100);
+  	})
+    
     function GetHcluster(){
         var url="/hcluster";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
-    function GetImage(){
-        var url="/gce/image/list";
+    function GetImageByType(){
+    	var type = $("[name = type]").val();
+    	if(type == null){
+    		return;
+    	}
+        var url="/gce/image/list/"+type;
         cn.GetData(url,createDbHandler.GetImageHandler);
     }
 });

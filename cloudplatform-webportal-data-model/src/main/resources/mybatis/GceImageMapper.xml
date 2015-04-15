@@ -84,7 +84,7 @@
 	<insert id="insert" parameterType="GceImage" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_GCE_IMAGE(
-			NAME,URL,gi.TAG,TYPE,OWNER,STATUS,DESCN,
+			NAME,URL,TAG,TYPE,OWNER,STATUS,DESCN,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
 			#{name},#{url},#{tag},#{type},#{owner},#{status},#{descn},

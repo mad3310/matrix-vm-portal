@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.service.gce.IGceImageService;
 @Controller
 @RequestMapping("/gce")
@@ -29,6 +30,13 @@ public class GceController {
 	public @ResponseBody ResultObject imageList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.gceImageService.selectPageByParams(page, params));
+		return obj;
+	}
+	
+	@RequestMapping(value="/image",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject addImage(GceImage gceImage,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		this.gceImageService.insert(gceImage);
 		return obj;
 	}
 }
