@@ -182,9 +182,9 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		if("".equals(status))
 			throw new TaskExecuteException(exception);
-		if("STARTED".equals(expectStatus))
+		if("STARTED".equals(status))
 			gce.setStatus(SlbStatus.NORMAL.getValue());
-		if("STOP".equals(expectStatus))
+		if("STOP".equals(status))
 			gce.setStatus(SlbStatus.STOPED.getValue());
 		this.gceServerService.updateBySelective(gce);
 	}

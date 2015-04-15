@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.SlbBackEndType;
+import com.letv.portal.enumeration.SlbBackendStatus;
 
 public class SlbBackendServer extends BaseModel {
 	
