@@ -3,7 +3,8 @@ package com.letv.portal.enumeration;
 public enum ServiceType implements ByteEnum{
 	RDS(0),
 	SLB(1),
-	WEBSERVER(2);
+	WEBSERVER(2),
+	CBASE(3);
 	
 	private final Integer value;
 	
