@@ -26,6 +26,7 @@
         <typeAlias alias="SlbContainer" type="com.letv.portal.model.slb.SlbContainer" />
         
         <typeAlias alias="GceServer" type="com.letv.portal.model.gce.GceServer" />
+        <typeAlias alias="GceImage" type="com.letv.portal.model.gce.GceImage" />
         <typeAlias alias="GceCluster" type="com.letv.portal.model.gce.GceCluster" />
         <typeAlias alias="GceContainer" type="com.letv.portal.model.gce.GceContainer" />
         

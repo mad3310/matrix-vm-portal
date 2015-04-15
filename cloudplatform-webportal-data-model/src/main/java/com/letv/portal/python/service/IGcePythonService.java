@@ -60,8 +60,8 @@ public interface IGcePythonService {
 	
 	public String nginxProxyConfig(Map<String,String> params,String ip,String port,String username,String password);
 	
-	public String start(Map<String, String> params, String nodeIp1,String adminUser, String adminPassword);
-	public String stop(Map<String, String> params, String nodeIp1,String adminUser, String adminPassword);
-	public String restart(Map<String, String> params, String nodeIp1,String adminUser, String adminPassword);
-	public String checkStatus(String nodeIp1,String adminUser, String adminPassword);
+	public String start(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
+	public String stop(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
+	public String restart(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
+	public String checkStatus(String nodeIp1,String port,String adminUser, String adminPassword);
 }

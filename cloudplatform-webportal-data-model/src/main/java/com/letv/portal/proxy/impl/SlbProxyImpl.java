@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
+import com.letv.portal.enumeration.SlbBackendStatus;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.slb.SlbBackendServer;
 import com.letv.portal.model.slb.SlbCluster;
@@ -194,7 +195,10 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		if("".equals(status))
 			throw new TaskExecuteException(exception);
-		slb.setStatus(SlbStatus.NORMAL.getValue());
+		if("STARTED".equals(status))
+			slb.setStatus(SlbStatus.NORMAL.getValue());
+		if("STOP".equals(status))
+			slb.setStatus(SlbStatus.STOPED.getValue());
 		this.slbServerService.updateBySelective(slb);
 	}
 	
@@ -216,11 +220,12 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 				StringBuffer sb = new StringBuffer();
 				for (SlbBackendServer backendServer : backendServers) {
 					sb.append(backendServer.getServerIp()).append(":").append(backendServer.getPort()).append(",");
+					backendServer.setStatus(SlbBackendStatus.WORK.getValue());
+					slbBackendServerService.updateBySelective(backendServer);
 				}
 				param.put("iplist_port", sb.length()>0?sb.substring(0, sb.length()-1):sb.toString());
 				params.add(param);
 			}
-			
 		}
 		return params;
 	}
