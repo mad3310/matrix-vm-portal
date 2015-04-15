@@ -60,9 +60,10 @@ function queryByPage() {
 				var td4 = $("<td>"
 						+ array[i].tag
 						+ "</td>");
-				var td5 = $("<td>"
-						+ array[i].owner
-						+ "</td>");
+				var td5 = $("<td> - </td>");
+				if(array[i].createUserModel != undefined && array[i].createUserModel != null ){
+					td5.html(array[i].createUserModel.userName);
+				}
 				var td6 = $("<td>"
 						+ array[i].status
 						+ "</td>");
