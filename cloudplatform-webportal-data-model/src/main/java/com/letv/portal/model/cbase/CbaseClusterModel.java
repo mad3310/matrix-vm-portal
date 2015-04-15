@@ -4,7 +4,7 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
 
-public class CbaseClusterMode extends BaseModel {
+public class CbaseClusterModel extends BaseModel {
 
 	private static final long serialVersionUID = 5248463017990587985L;
 	
