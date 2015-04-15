@@ -4,16 +4,6 @@ var recordsPerPage = 15; //每页显示条数
 $(function(){
 	//初始化 
 	page_init();
-	var options = {
-		allow_single_deselect:true,
-		search_contains:true,
-		no_results_text:"未找到匹配数据",
-		disable_search:true,	
-		width:'272px'
-	}
-	
-	$('.chosen-select').chosen(options)
-
 	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
@@ -27,7 +17,7 @@ $(function(){
 function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
-			'recordsPerPage':recordsPerPage,
+			'recordsPerPage':recordsPerPage
 		}
 	
 	$("#tby tr").remove();
@@ -47,7 +37,7 @@ function queryByPage() {
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td1 = $("<td class=\"center\">"
 							+"<label class=\"position-relative\">"
-							+"<input name=\"mcluster_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
+							+"<input name=\"gce_image_id\" value= \""+array[i].id+"\" type=\"checkbox\" class=\"ace\"/>"
 							+"<span class=\"lbl\"></span>"
 							+"</label>"
 							+"</td>");
@@ -74,9 +64,10 @@ function queryByPage() {
 						+ array[i].descn
 						+ "</td>");
 				var td9 = $("<td>"
-						+ "修改"
-						+ "</td>");
-				
+						+"<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+						+"</a>"
+						+"</td>");
 				var tr = $("<tr></tr>");
 				
 				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
@@ -197,10 +188,51 @@ function formValidate() {
     	})
      });
 }
+function getUser(){
+	var select = $("#owner");
+	$.ajax({
+    		cache:false,
+    		type : "get",
+    		url : "/gce/user",
+    		success : function(data) {
+    			var users = data.data;
+    			for (var i=0,len = users.length;i < len; i++){
+    				var option =$("<option value=\""+users[i].id+"\">"+users[i].userName+"</option>");
+    				option.appendTo(select);
+    			}
+    			initSelect();
+    		}
+    	})
+}
+function initSelect(){
+	var options = {
+		allow_single_deselect:true,
+		search_contains:true,
+		no_results_text:"未找到匹配数据",
+		disable_search:true,	
+		width:'272px'
+	}
+	$('.chosen-select').chosen(options)
+}
 
+function delGceImage(obj){
+		var gceImageId = $(obj).closest("tr").find("input").val();
+		function delCmd(){
+			$.ajax({
+				cache:false,
+				type : "delete",
+				url : "/gce/image/"+gceImageId,
+				success : function(){
+					location.href = "/list/gce/image";
+				}
+			})
+		}
+		confirmframe("删除镜像","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
+}
 function page_init(){
 	$('[name = "popoverHelp"]').popover();
 	queryByPage();
 	formValidate();
 	pageControl();
+	 getUser();
 }

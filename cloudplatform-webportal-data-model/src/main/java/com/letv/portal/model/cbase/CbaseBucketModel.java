@@ -6,7 +6,7 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
 
-public class CbaseBucketMode extends BaseModel {
+public class CbaseBucketModel extends BaseModel {
 
 	private static final long serialVersionUID = -3992964949274238740L;
 
@@ -14,7 +14,7 @@ public class CbaseBucketMode extends BaseModel {
 	private String bucketName; // bucket名称
 	private Integer status; // 状态
 
-	private CbaseClusterMode cbaseCluster; // 所属cluster
+	private CbaseClusterModel cbaseCluster; // 所属cluster
 
 	private String descn; // 描述
 	private Integer bucketType;   //bucket类型:    0:持久化   1:非持久化
@@ -24,7 +24,7 @@ public class CbaseBucketMode extends BaseModel {
 	private Long hclusterId;
 	private HclusterModel hcluster;
 
-	private List<CbaseContainerMode> containers;
+	private List<CbaseContainerModel> containers;
 
 	public Long getHclusterId() {
 		return hclusterId;
@@ -42,11 +42,11 @@ public class CbaseBucketMode extends BaseModel {
 		this.user = user;
 	}
 
-	public List<CbaseContainerMode> getContainers() {
+	public List<CbaseContainerModel> getContainers() {
 		return containers;
 	}
 
-	public void setContainers(List<CbaseContainerMode> containers) {
+	public void setContainers(List<CbaseContainerModel> containers) {
 		this.containers = containers;
 	}
 
@@ -90,11 +90,11 @@ public class CbaseBucketMode extends BaseModel {
 		this.bucketName = bucketName;
 	}
 
-	public CbaseClusterMode getCbaseCluster() {
+	public CbaseClusterModel getCbaseCluster() {
 		return cbaseCluster;
 	}
 
-	public void setCbaseCluster(CbaseClusterMode cbaseCluster) {
+	public void setCbaseCluster(CbaseClusterModel cbaseCluster) {
 		this.cbaseCluster = cbaseCluster;
 	}
 

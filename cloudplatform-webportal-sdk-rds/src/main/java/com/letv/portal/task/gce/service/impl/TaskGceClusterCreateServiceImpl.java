@@ -3,6 +3,7 @@ package com.letv.portal.task.gce.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,8 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("containerClusterName", gceCluster.getClusterName());
 		map.put("componentType", gceServer.getType());
 		map.put("networkMode", "bridge");
-		
+		if(StringUtils.isEmpty(gceServer.getGceImageName()))
+			map.put("image", gceServer.getGceImageName());
 		String result = this.gcePythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
