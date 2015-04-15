@@ -5,7 +5,7 @@ import com.letv.portal.enumeration.ServiceType;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
 
-public class CbaseContainerMode extends BaseModel {
+public class CbaseContainerModel extends BaseModel {
 
 	private static final long serialVersionUID = 3680518769947914310L;
 	
@@ -29,7 +29,7 @@ public class CbaseContainerMode extends BaseModel {
 	private Long cbaseClusterId; // 所属cluster
 
 	private HostModel host;
-	private CbaseClusterMode cbaseCluster;
+	private CbaseClusterModel cbaseCluster;
 	private HclusterModel hcluster;
 
 	public String getContainerName() {
@@ -168,11 +168,11 @@ public class CbaseContainerMode extends BaseModel {
 		this.hcluster = hcluster;
 	}
 
-	public CbaseClusterMode getCbaseCluster() {
+	public CbaseClusterModel getCbaseCluster() {
 		return cbaseCluster;
 	}
 
-	public void setCbaseCluster(CbaseClusterMode cbaseCluster) {
+	public void setCbaseCluster(CbaseClusterModel cbaseCluster) {
 		this.cbaseCluster = cbaseCluster;
 	}
 

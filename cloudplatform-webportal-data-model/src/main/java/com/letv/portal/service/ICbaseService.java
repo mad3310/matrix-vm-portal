@@ -1,9 +1,9 @@
 package com.letv.portal.service;
 
-import com.letv.portal.model.cbase.CbaseClusterMode;
+import com.letv.portal.model.cbase.CbaseClusterModel;
 
 
-public interface ICbaseService extends IBaseService<CbaseClusterMode>{
+public interface ICbaseService extends IBaseService<CbaseClusterModel>{
 
 	public String getHello(String name);
 	public String getClusterDetail();

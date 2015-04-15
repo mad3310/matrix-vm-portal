@@ -1,8 +1,8 @@
 package com.letv.portal.service;
 
-import com.letv.portal.model.cbase.CbaseBucketMode;
+import com.letv.portal.model.cbase.CbaseBucketModel;
 
 
-public interface ICbaseBucketService extends IBaseService<CbaseBucketMode> {
+public interface ICbaseBucketService extends IBaseService<CbaseBucketModel> {
 
 }
