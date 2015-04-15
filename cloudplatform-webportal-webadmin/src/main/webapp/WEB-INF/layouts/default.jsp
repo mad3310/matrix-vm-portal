@@ -303,6 +303,10 @@
 		$('#sidebar-task-mgr ul li:eq(2)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/monitor").html("任务管理");
 		$('#main-content-header li:eq(1)').html("任务监控");
+	}else if(path.indexOf("/list/gce/image") >= 0){
+		$('#sidebar-image-mgr').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/image").html("镜像管理");
+		$('#main-content-header li:eq(1)').remove();
 	}
 	
 			
