@@ -136,12 +136,15 @@ define(function(require,exports,module){
         	var hostPortArr = data[i].bingHostPort.split(',');
         	var containerPortArr = data[i].bindContainerPort.split(',');
 
-        	var servicePort;
-        	for(var j = 0,len = hostPortArr.length;j<len;j++){
+        	var servicePort = {
+        			hostPort:'',
+        			containerPort:''
+        	};
+        	for(var j = 0,jlen = hostPortArr.length;j<jlen;j++){
         		if(containerPortArr[j] == "8080" ||containerPortArr[j] == "8001"){
         			servicePort = {
-        					hostPort:hostPortArr[j],
-        					containerPort:containerPortArr[j]
+        					hostPort:servicePort.hostPort+hostPortArr[j],
+        					containerPort:servicePort.containerPort+containerPortArr[j]
         			};
         		}else{
         			continue;

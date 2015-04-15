@@ -1,6 +1,8 @@
 package com.letv.portal.model.gce;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.enumeration.GceImageStatus;
+import com.letv.portal.model.UserModel;
 
 public class GceImage extends BaseModel {
 	
@@ -12,8 +14,10 @@ public class GceImage extends BaseModel {
 	private String tag;
 	private String name;
 	private String type;//jetty,nginx
-	private String status;
+	private GceImageStatus status;
 	private String descn;//镜像描述
+	
+	private UserModel createUserModel;
 	
 	public Long getOwner() {
 		return owner;
@@ -45,10 +49,10 @@ public class GceImage extends BaseModel {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getStatus() {
+	public GceImageStatus getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(GceImageStatus status) {
 		this.status = status;
 	}
 	public String getDescn() {
@@ -56,5 +60,11 @@ public class GceImage extends BaseModel {
 	}
 	public void setDescn(String descn) {
 		this.descn = descn;
+	}
+	public UserModel getCreateUserModel() {
+		return createUserModel;
+	}
+	public void setCreateUserModel(UserModel createUserModel) {
+		this.createUserModel = createUserModel;
 	}
 }

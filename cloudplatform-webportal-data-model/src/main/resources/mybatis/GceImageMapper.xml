@@ -20,6 +20,10 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		
+		<association property="createUserModel" javaType="User">
+			<result column="USERNAME" property="userName" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -153,6 +157,7 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_GCE_IMAGE gi
+		left join WEBPORTAL_USER u on gi.OWNER = u.ID
 		<include refid="Example_Where_Clause" />
 	</select>
 	<!-- 根据条件查询 -->
@@ -192,7 +197,6 @@
 			<if test="params != null and params.descn != null and params.descn != ''  ">
 				and gi.DESCN=#{params.descn}
 			</if>
-			
 			<if test="params != null and params.deleted != null  ">
 				and gi.DELETED=#{deleted}
 			</if>
@@ -215,8 +219,9 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" />
+		<include refid="Base_Column_List" />,u.USERNAME
 		from WEBPORTAL_GCE_IMAGE gi
+		left join WEBPORTAL_USER u on gi.OWNER = u.ID
 		<include refid="Example_Page_Where_Clause" />
 		ORDER BY gi.CREATE_TIME DESC
 		<if test="page != null">
