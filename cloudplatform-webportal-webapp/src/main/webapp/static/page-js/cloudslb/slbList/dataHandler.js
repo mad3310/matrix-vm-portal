@@ -79,6 +79,11 @@ define(function(require,exports,module){
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-start\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    }else if(array[i].status == 5){
+                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    		+ "<span class=\"text-explode font-disabled\">|</span>"
+                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
                     }else{
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
                     }
@@ -90,7 +95,6 @@ define(function(require,exports,module){
             	$(".slb-start").click(function(){
             		var data = {id : $(this).closest("tr").find("[name=slbcluster_id]").val()};
             		var url = "/slb/start";
-            		console.log(data.id);
             		cn.PostData(url,data,function(){
             			window.location.href = "/list/slb";
             		});

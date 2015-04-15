@@ -125,6 +125,7 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		if(isSucess) {
 			Map<String,Object> response = (Map<String, Object>) map.get("response");
 			tr.setResult((String) response.get("message"));
+			tr.setParams(response);
 		} else {
 			tr.setResult((String) meta.get("errorType") +":"+ (String) meta.get("errorDetail"));
 		}

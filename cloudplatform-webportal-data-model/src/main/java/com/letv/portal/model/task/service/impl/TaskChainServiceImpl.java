@@ -117,7 +117,7 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 	private int getStepByTaskChainIndexId(Long taskChainIndexId){
 		List<TaskChain> taskChains = this.selectAllChainByIndexId(taskChainIndexId);
 
-		if(taskChains.get(0).getStatus() ==TaskExecuteStatus.SUCCESS){
+		if(taskChains.get(taskChains.size()-1).getStatus() ==TaskExecuteStatus.SUCCESS){
 			return 0;//返回创建成功
 		}
 		for(TaskChain taskChain : taskChains){

@@ -1,7 +1,7 @@
 package com.letv.portal.service.impl;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.model.CbaseBucketModel;
+import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.service.ICbaseBucketService;
 
 public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>

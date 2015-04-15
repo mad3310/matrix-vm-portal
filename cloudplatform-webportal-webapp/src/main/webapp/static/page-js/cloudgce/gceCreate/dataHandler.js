@@ -23,9 +23,15 @@ define(function(require,exports,module){
         },
         GetImageHandler : function(data){
             var images = data.data;
-            var ul = $("[name='gceImageName']").parent('div').find('ul');
+            var div = $("[name='gceImageName']").parent('div');
+             var ul = div.find("ul");
+            
+            div.find("li").remove();
+            div.find("span").html('');
+            
             for(var i= 0,len=images.length;i<len;i++){
-                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+images[i]+"\">"+images[i]+"</a></li>");
+            	var imageName = images[i].name+'-'+images[i].tag
+                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+imageName+"\">"+imageName+"</a></li>");
                 li.appendTo(ul);
             }
             cn.divselect();

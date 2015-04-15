@@ -472,7 +472,7 @@ define(function(require,exports,module){
 				var txt = $(this).find('a').text();
 				$(this).closest('.divselect').find('span').html(txt);
 				var value = $(this).find('a').attr("selectid");
-				$(this).closest('.divselect').find('input').val(value);
+				$(this).closest('.divselect').find('input').val(value).change();
 			});
 			$(".divselect").each(function () {
 				if($(this).find('span').html() == ''&&$(this).find('li').length > 0){

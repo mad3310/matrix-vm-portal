@@ -22,9 +22,12 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.enumeration.GceImageStatus;
 import com.letv.portal.enumeration.GceStatus;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.proxy.IGceProxy;
+import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 
 @Controller
@@ -35,6 +38,8 @@ public class GceServerController {
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IGceServerService gceServerService;
+	@Autowired
+	private IGceImageService gceImageService;
 	@Autowired
 	private IGceProxy gceProxy;
 	
@@ -91,11 +96,16 @@ public class GceServerController {
 		return obj;
 	}
 	
-	@RequestMapping(value="/image/list",method=RequestMethod.GET)
-	public @ResponseBody ResultObject getImage(){
+	@RequestMapping(value="/image/list/{type}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getImage(@PathVariable String type){
 		ResultObject obj = new ResultObject();
-		String images[] = {"webportal-0.0.1.img","container-0.1.0.img"};
-		obj.setData(images);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("owner", sessionService.getSession().getUserId());
+		map.put("type", type);
+		map.put("status", GceImageStatus.AVAILABLE);
+		
+		List<GceImage> gceImages= this.gceImageService.selectByMap(map);
+		obj.setData(gceImages);
 		return obj;
 	}	
 	

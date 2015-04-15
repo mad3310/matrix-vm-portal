@@ -34,8 +34,11 @@ define(function(require,exports,module){
                     +"<span class=\"text-success\">"+array[i].slbConfig.frontPort+"</span><br>"
                     +"</td>";
                 }
+                var status ="-";
+                if(array[i].status==5) status = "未生效";
+                if(array[i].status==6) status = "生效";
                 var td4 = $("<td>"
-                + "<span class=\"text-success\">运行中</span>"
+                + "<span class=\"text-success\">"+status+"</span>"
                 + "</td>");
                 var td5 = $("<td>"
                 + "<span>经典网络</span>"

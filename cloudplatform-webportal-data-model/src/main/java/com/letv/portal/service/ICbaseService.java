@@ -1,12 +1,7 @@
 package com.letv.portal.service;
 
-import com.letv.portal.model.CbaseClusterModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
 
-/**
- * 
- * @author liyunhui
- *
- */
 
 public interface ICbaseService extends IBaseService<CbaseClusterModel>{
 

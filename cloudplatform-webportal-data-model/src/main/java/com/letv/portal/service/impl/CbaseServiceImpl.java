@@ -1,8 +1,6 @@
 package com.letv.portal.service.impl;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,8 +25,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.ICbaseDao;
-import com.letv.portal.model.CbaseClusterModel;
-import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.service.ICbaseService;
 
 /**

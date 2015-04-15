@@ -1,4 +1,4 @@
-package com.letv.portal.clouddb.controller;
+package com.letv.portal.controller.clouddb;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +18,7 @@ import com.letv.common.result.ResultObject;
  * Modified By: <br>
  * Modified Date: <br>
  */
-@Controller
+@Controller("dbSkip")
 public class SkipController {
 	
 	@RequestMapping(value ="/dashboard",method=RequestMethod.GET)
