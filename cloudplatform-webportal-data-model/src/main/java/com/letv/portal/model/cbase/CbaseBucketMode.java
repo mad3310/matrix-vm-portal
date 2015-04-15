@@ -1,4 +1,4 @@
-package com.letv.portal.model.cache;
+package com.letv.portal.model.cbase;
 
 import java.util.List;
 

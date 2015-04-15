@@ -1,4 +1,4 @@
-package com.letv.portal.model.cache;
+package com.letv.portal.model.cbase;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.ServiceType;
