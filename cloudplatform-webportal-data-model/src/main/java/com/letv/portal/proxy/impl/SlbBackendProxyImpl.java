@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.portal.enumeration.SlbBackendStatus;
 import com.letv.portal.model.slb.SlbBackendServer;
 import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.ISlbBackendProxy;
@@ -36,6 +37,7 @@ public class SlbBackendProxyImpl extends BaseProxyImpl<SlbBackendServer> impleme
 	@Override
 	public void saveAndConfig(SlbBackendServer slbBackendServer) {
 		Config(slbBackendServer);
+		slbBackendServer.setStatus(SlbBackendStatus.NOWORK.getValue());
 		this.slbBackendServerService.insert(slbBackendServer);
 	}
 
