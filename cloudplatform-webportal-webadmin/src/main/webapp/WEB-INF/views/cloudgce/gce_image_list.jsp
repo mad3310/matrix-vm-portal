@@ -134,11 +134,6 @@
 								<label class="col-sm-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-6">
 									<select class="chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
-										<option value="2">liuhao1</option>
-										<option value="1">yaouo</option>
-										<option value="3">gaomin</option>
-										<option value="4">zhangzeng</option>
-										<option value="5">zhangxiang</option>
 									</select>
 								</div>
 								<label class="control-label">
@@ -167,6 +162,15 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="dialog-confirm" class="hide">
+		<div id="dialog-confirm-content" class="alert alert-info bigger-110">
+			删除container集群将不能恢复！
+		</div>
+		<div class="space-6"></div>
+		<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
+			您确定要删除?
+		</p>
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />

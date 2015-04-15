@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ import com.letv.portal.dao.gce.IGceServerDao;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
+import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 
@@ -35,6 +38,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceClusterService gceClusterService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private IGceImageService gceImageService;
 
 	public GceServerServiceImpl() {
 		super(GceServer.class);
@@ -73,6 +78,14 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		this.gceClusterService.insert(gceCluster);
 		
 		gceServer.setGceClusterId(gceCluster.getId());
+		
+		//处理gce image.
+		String imageId = gceServer.getGceImageName();
+		if(!StringUtils.isEmpty(imageId)) {
+			GceImage image = this.gceImageService.selectById(Long.parseLong(imageId));
+			gceServer.setGceImageName(image!=null?image.getUrl():"");
+		}
+		
 		this.gceServerDao.insert(gceServer);
 		
 		Map<String,Object> params = new HashMap<String,Object>();

@@ -55,12 +55,16 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
+    	var gceImageName=$("[name = gceImageName]").val();
 		var createGceData = {
 			gceName : $("[name = gceName]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
-			gceImageName:$("[name = gceImageName]").val(),
             type:$("[name = type]").val()
 		}
+		if(gceImageName != null && gceImageName != ''){
+			createGceData.put("gceImageName",gceImageName);
+		}
+		
 		var url = "/gce";
 		cn.PostData(url, createGceData, function () {
 			location.href = "/list/gce";

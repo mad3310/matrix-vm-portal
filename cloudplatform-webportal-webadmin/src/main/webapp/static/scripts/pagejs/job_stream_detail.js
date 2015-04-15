@@ -113,7 +113,7 @@ function addTaskUnit(){
 				taskDetailId : $("#taskDetailId").val(),
 				retry : $("#retry").val(),
 				taskId : $("#jobStreamId").val(),
-				executeOrder : $("#executeOrder").val(),
+				executeOrder : $("#executeOrder").val()
 		}
 		$.ajax({
 			cache:false,
