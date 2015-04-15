@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.dao.ICbaseDao;
+import com.letv.portal.dao.cbase.ICbaseClusterDao;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.service.ICbaseService;
 
@@ -42,7 +42,7 @@ public class CbaseServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 			.getLogger(CbaseServiceImpl.class);
 
 	@Resource
-	private ICbaseDao cbaseDao;
+	private ICbaseClusterDao cbaseClusterDao;
 
 	public CbaseServiceImpl() {
 		super(CbaseClusterModel.class);
@@ -50,7 +50,7 @@ public class CbaseServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 
 	@Override
 	public IBaseDao<CbaseClusterModel> getDao() {
-		return this.cbaseDao;
+		return this.cbaseClusterDao;
 	}
 
 	@Override
