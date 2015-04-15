@@ -1,8 +1,6 @@
 package com.letv.portal.service.impl;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -27,8 +25,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.ICbaseDao;
-import com.letv.portal.model.CbaseClusterModel;
-import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.cbase.CbaseClusterMode;
 import com.letv.portal.service.ICbaseService;
 
 /**
@@ -38,7 +35,7 @@ import com.letv.portal.service.ICbaseService;
  */
 
 @Service("cbaseService")
-public class CbaseServiceImpl extends BaseServiceImpl<CbaseClusterModel>
+public class CbaseServiceImpl extends BaseServiceImpl<CbaseClusterMode>
 		implements ICbaseService {
 
 	private final static Logger logger = LoggerFactory
@@ -48,11 +45,11 @@ public class CbaseServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 	private ICbaseDao cbaseDao;
 
 	public CbaseServiceImpl() {
-		super(CbaseClusterModel.class);
+		super(CbaseClusterMode.class);
 	}
 
 	@Override
-	public IBaseDao<CbaseClusterModel> getDao() {
+	public IBaseDao<CbaseClusterMode> getDao() {
 		return this.cbaseDao;
 	}
 
