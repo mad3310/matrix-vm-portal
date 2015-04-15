@@ -36,5 +36,6 @@
         <typeAlias alias="TaskChain" type="com.letv.portal.model.task.TaskChain" />
         <typeAlias alias="TaskChainIndex" type="com.letv.portal.model.task.TaskChainIndex" />
         
+        <typeAlias alias="ZookeeperInfo" type="com.letv.portal.model.common.ZookeeperInfo" />
     </typeAliases>
 </configuration>
