@@ -1,7 +1,7 @@
 /**
  * Created on Oct 24, 2011
  */
-package com.letv.portal.persistence;
+package com.letv.portal.dao;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import com.letv.portal.model.SearchCriteria;
 // SQL mapping configuration file 在
 // resources目录 com.apress.prospring3.ch11.persistence
 
-public interface ContactMapper {
+public interface IContactDao {
 
 	// 这些操作的实际实现都在 ContactMapper.xml文件
 	public List<Contact> findAll();

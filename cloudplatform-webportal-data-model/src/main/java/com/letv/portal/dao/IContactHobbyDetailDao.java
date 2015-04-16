@@ -1,15 +1,15 @@
 /**
  * Created on Oct 24, 2011
  */
-package com.letv.portal.persistence;
+package com.letv.portal.dao;
 
 import com.letv.portal.model.ContactHobbyDetail;
 
 /**
- * @author Clarence
+ * @author liyunhui
  *
  */
-public interface ContactHobbyDetailMapper {
+public interface IContactHobbyDetailDao {
 
 	public void insertContactHobbyDetail(ContactHobbyDetail contactHobbyDetail);
 	

@@ -37,5 +37,12 @@
         <typeAlias alias="TaskChainIndex" type="com.letv.portal.model.task.TaskChainIndex" />
         
         <typeAlias alias="ZookeeperInfo" type="com.letv.portal.model.common.ZookeeperInfo" />
+        
+        <typeAlias alias="Contact" type="com.letv.portal.model.Contact" />
+        <typeAlias alias="ContactHobbyDetail" type="com.letv.portal.model.ContactHobbyDetail" />
+        <typeAlias alias="ContactTelDetail" type="com.letv.portal.model.ContactTelDetail" />
+        <typeAlias alias="Hobby" type="com.letv.portal.model.Hobby" />
+        <typeAlias alias="SearchCriteria" type="com.letv.portal.model.SearchCriteria" />
+        
     </typeAliases>
 </configuration>

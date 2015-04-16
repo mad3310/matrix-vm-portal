@@ -1,7 +1,7 @@
 /**
  * Created on Oct 24, 2011
  */
-package com.letv.portal.persistence;
+package com.letv.portal.dao;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import com.letv.portal.model.ContactTelDetail;
  * @author liyunhui
  *
  */
-public interface ContactTelDetailMapper {
+public interface IContactTelDetailDao {
 
 	public List<ContactTelDetail> selectTelDetailForContact(Long contactId);
 	
