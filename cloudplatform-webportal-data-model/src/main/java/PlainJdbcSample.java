@@ -11,7 +11,7 @@ import com.letv.portal.dao.impl.PlainJDBCContactDao;
 import com.letv.portal.model.ContactModel;
 
 /**
- * @author Clarence
+ * @author liyunhui
  *
  */
 

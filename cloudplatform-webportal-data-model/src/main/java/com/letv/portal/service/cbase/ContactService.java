@@ -1,7 +1,7 @@
 /**
  * Created on Oct 24, 2011
  */
-package com.letv.portal.service;
+package com.letv.portal.service.cbase;
 
 import java.util.List;
 

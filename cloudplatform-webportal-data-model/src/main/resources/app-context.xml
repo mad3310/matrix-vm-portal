@@ -26,6 +26,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="typeAliasesPackage" value="com.letv.portal.model" />
+        <property name="mapperLocations" value="classpath:com/letv/portal/persistence/*.xml" />
     </bean>
 
 	<!-- 从这里scan mappers -->
