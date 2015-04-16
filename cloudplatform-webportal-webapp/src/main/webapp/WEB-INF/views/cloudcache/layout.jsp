@@ -108,12 +108,10 @@
         <nav class="col-sm-2 col-md-2">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
-                    <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
+                    <li class="active"><a class="text-sm" src="${ctx}/detail/cacheBaseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/cacheLink/${cacheId}" href="javascript:void(0)">COMDML</a></li>
-                            <li><a  class="text-sm" src="${ctx}/monitor/InnoDB/buffer/${cacheId}" href="javascript:void(0)">InnoDB缓冲池</a></li>
-                            <li><a  class="text-sm" src="${ctx}/monitor/QPS/TPS/${cacheId}" href="javascript:void(0)">QPS/TPS</a></li>
+                            <li><a  class="text-sm" src="${ctx}/monitor/cache//${cacheId}" href="javascript:void(0)">监控</a></li>
                         <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
@@ -128,13 +126,11 @@
                             <li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li> -->
                         </ul>
                     </li>
-                    <!-- <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/list/backup/${dbId}">备份与恢复</a></li> -->
-                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/list/cachemanage/${cacheId}">数据管理</a></li>
+                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/data/${cacheId}">数据管理</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">性能优化<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">阈值报警<p class="pull-right home-orange">敬请期待...</p></a></li>
-                    <li><a class="text-sm" src="${ctx}/detail/security/${dbId}" href="javascript:void(0)">安全控制</a></li>
                 </ul>
             </div>
         </nav>
