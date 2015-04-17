@@ -22,23 +22,13 @@ import com.letv.portal.service.cbase.ContactService;
  */
 public class MyBatisSample {
 
-	// 使用 MyBatis，  需要mybatis-spring 和 mybatis 依赖
-	// 核心是SqlSession 和SqlSessionFactory
-	// 从SqlSessionFactoryBean 获得SqlSessionFactory
-	// 从SqlSessionFactory 获得SqlSession
 	
-	// 另外一个重要的概念是mapper interfaces
-	// 用来在 Sql查询和 domain object之间映射
-	// 可以用xml配置，或者annotation，等
 	public static void main(String[] args) {
 		
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 		ctx.load("classpath:app-context.xml");
 		ctx.refresh();
 		
-		//注入ContactServiceImpl
-		// ContactService用来访问数据库， 获得Contact
-		// 也可以在加入 ContactDao层
 		ContactService contactService = ctx.getBean("contactService", ContactService.class);
 
 		List<Contact> contacts;

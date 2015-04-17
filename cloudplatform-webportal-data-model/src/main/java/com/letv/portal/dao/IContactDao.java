@@ -13,16 +13,8 @@ import com.letv.portal.model.SearchCriteria;
  *
  */
 
-// Mapper 是 MyBatis 的核心， 3个相关的部分
-// Domain object， Mapper interface， SQL mapping configuration file
-// Domain object 在 com.apress.prospring3.ch11.domain
-// Mapper interface 在这里 com.apress.prospring3.ch11.persistence
-// SQL mapping configuration file 在
-// resources目录 com.apress.prospring3.ch11.persistence
-
 public interface IContactDao {
 
-	// 这些操作的实际实现都在 ContactMapper.xml文件
 	public List<Contact> findAll();
 	
 	public List<Contact> findAllWithDetail();

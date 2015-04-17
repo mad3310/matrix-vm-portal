@@ -18,12 +18,10 @@ public class SpringJdbcSample {
 
 	public static void main(String[] args) {
 		
-		// 使用Spring JDBC支持， 在 app-context-xml.xml配置
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 		ctx.load("classpath:cbase-context-xml.xml");
 		ctx.refresh();
 		
-		// 从xml注入这个bean 
 		IContactDao contactDao = ctx.getBean("contactDao", IContactDao.class);
 		
 		// Find first name by id

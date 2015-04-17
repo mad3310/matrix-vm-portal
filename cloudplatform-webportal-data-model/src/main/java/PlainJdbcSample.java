@@ -17,7 +17,6 @@ import com.letv.portal.model.Contact;
 
 public class PlainJdbcSample {
 
-	// 使用纯 JDBC的方式 访问数据库。 每次查询建立连接，很多冗余代码
 	private static IContactDao contactDao = new PlainJDBCContactDao();
 
 	public static void main(String[] args) {
