@@ -45,6 +45,9 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.controller.clouddb.HclusterController;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.model.cbase.CbaseBucketModel;
+import com.letv.portal.service.ICbaseBucketService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.ICbaseService;
 import com.letv.portal.service.IHclusterService;
@@ -57,10 +60,10 @@ import com.letv.portal.service.IHclusterService;
 
 @Controller
 public class CbaseController {
-	// @Autowired(required = false)
-	// private SessionServiceImpl sessionService;
-	// @Autowired
-	// private IDbService dbService;
+	@Autowired(required = false)
+	private SessionServiceImpl sessionService;
+	@Autowired
+	private ICbaseBucketService cbaseBucketService;
 	@Resource
 	private ICbaseService cbaseService;
 
@@ -114,7 +117,20 @@ public class CbaseController {
 			@RequestParam(value = "bucketType", required = false, defaultValue = "memcached") String bucketType,
 
 			ResultObject result) {
-
+		
+		// 添加数据库处理
+		
+		Long userId = sessionService.getSession().getUserId();
+		System.out.println("userId = "+userId);
+		CbaseBucketModel cbaseBucketModel = new CbaseBucketModel();
+		
+		cbaseBucketModel.setCreateUser(userId);
+		cbaseBucketModel.setStatus(0);
+		cbaseBucketModel.setDeleted(true);
+		//this.cbaseBucketService.insert(cbaseBucketModel);
+		this.cbaseBucketService.dbList(12L);
+		
+		
 		CloseableHttpClient client = HttpClients.createDefault();
 
 		HttpHost targetHost = new HttpHost("10.154.156.57", 8091, "http");
