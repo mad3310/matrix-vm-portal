@@ -6,19 +6,19 @@ import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.letv.portal.dao.ContactDao;
+import com.letv.portal.dao.IContactDao;
 import com.letv.portal.dao.impl.PlainJDBCContactDao;
-import com.letv.portal.model.ContactModel;
+import com.letv.portal.model.Contact;
 
 /**
- * @author Clarence
+ * @author liyunhui
  *
  */
 
 public class PlainJdbcSample {
 
 	// 使用纯 JDBC的方式 访问数据库。 每次查询建立连接，很多冗余代码
-	private static ContactDao contactDao = new PlainJDBCContactDao();
+	private static IContactDao contactDao = new PlainJDBCContactDao();
 
 	public static void main(String[] args) {
 
@@ -30,12 +30,12 @@ public class PlainJdbcSample {
 
 		// Insert a new contact
 		System.out.println("Insert a new contact");
-		ContactModel contact = new ContactModel();
+		Contact contact = new Contact();
 		contact.setFirstName("Jacky");
 		contact.setLastName("Chan");
 		contact.setBirthDate(new Date((new GregorianCalendar(2001, 10, 1))
 				.getTime().getTime()));
-		contactDao.insert(contact);
+		contactDao.insertContact(contact);
 		System.out.println("Listing contact data after new contact created:");
 		listAllContacts();
 
@@ -43,7 +43,7 @@ public class PlainJdbcSample {
 
 		// Delete the above newly created contact
 		System.out.println("Deleting the previous created contact");
-		contactDao.delete(contact.getId());
+		contactDao.deleteContact(contact.getId());
 		System.out.println("Listing contact data after new contact deleted:");
 		listAllContacts();
 
@@ -51,9 +51,9 @@ public class PlainJdbcSample {
 
 	private static void listAllContacts() {
 
-		List<ContactModel> contacts = contactDao.findAll();
+		List<Contact> contacts = contactDao.findAll();
 
-		for (ContactModel contact : contacts) {
+		for (Contact contact : contacts) {
 			System.out.println(contact);
 		}
 	}

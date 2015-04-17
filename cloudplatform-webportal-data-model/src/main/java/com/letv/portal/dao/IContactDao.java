@@ -1,14 +1,15 @@
 /**
  * Created on Oct 24, 2011
  */
-package com.letv.portal.persistence;
+package com.letv.portal.dao;
 
 import java.util.List;
 
 import com.letv.portal.model.Contact;
+import com.letv.portal.model.SearchCriteria;
 
 /**
- * @author Clarence
+ * @author liyunhui
  *
  */
 
@@ -19,7 +20,7 @@ import com.letv.portal.model.Contact;
 // SQL mapping configuration file 在
 // resources目录 com.apress.prospring3.ch11.persistence
 
-public interface ContactMapper {
+public interface IContactDao {
 
 	// 这些操作的实际实现都在 ContactMapper.xml文件
 	public List<Contact> findAll();
@@ -28,7 +29,7 @@ public interface ContactMapper {
 	
 	public Contact findById(Long id);
 	
-	//public List<Contact> findByFirstNameAndLastName(SearchCriteria criteria);	
+	public List<Contact> findByFirstNameAndLastName(SearchCriteria criteria);	
 	
 	public void insertContact(Contact contact);
 	

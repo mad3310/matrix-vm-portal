@@ -3,9 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Contact Tel Detail Mapper -->
-<mapper namespace="com.letv.portal.persistence.ContactTelDetailMapper">
+<mapper namespace="com.letv.portal.dao.IContactTelDetailDao">
 
-    <resultMap id="contactTelDetailResultMap" type="ContactTelDetail">
+    <resultMap id="contactTelDetailResultMap" type="com.letv.portal.model.ContactTelDetail">
         <id property="id" column="id" />
         <result property="telType" column="tel_type" />
         <result property="telNumber" column="tel_number" />

@@ -23,14 +23,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 
 import com.letv.common.dao.QueryParam;
-import com.letv.portal.dao.ContactDao;
-import com.letv.portal.model.ContactModel;
+import com.letv.portal.dao.IContactDao;
+import com.letv.portal.model.Contact;
+import com.letv.portal.model.SearchCriteria;
 
 /**
  * @author Clarence
  *
  */
-public class SpringJdbcContactDao implements ContactDao, InitializingBean {
+public class SpringJdbcContactDao implements IContactDao, InitializingBean {
 
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -53,7 +54,7 @@ public class SpringJdbcContactDao implements ContactDao, InitializingBean {
 		}
 	}
 
-	public List<ContactModel> findAll() {
+	public List<Contact> findAll() {
 		String sql = "select id, first_name, last_name, birth_date from CONTACT";
 		return jdbcTemplate.query(sql, new ContactMapper());	
 	}
@@ -76,17 +77,17 @@ public class SpringJdbcContactDao implements ContactDao, InitializingBean {
 		return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
 	}
 
-	public List<ContactModel> findByFirstName(String firstName) {
+	public List<Contact> findByFirstName(String firstName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void insert(ContactModel contact) {
+	public void insert(Contact contact) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void update(ContactModel contact) {
+	public void update(Contact contact) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -96,21 +97,21 @@ public class SpringJdbcContactDao implements ContactDao, InitializingBean {
 		
 	}	
 	
-	public void insertWithDetail(ContactModel contact) {
+	public void insertWithDetail(Contact contact) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	protected void retrieveIdentity(final ContactModel contact) {
+	protected void retrieveIdentity(final Contact contact) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(getDataSource()); 
 		contact.setId(jdbcTemplate.queryForLong("select last_insert_id()")); 
 	}
 	
-	private static final class ContactMapper implements RowMapper<ContactModel> {
+	private static final class ContactMapper implements RowMapper<Contact> {
 
-		public ContactModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public Contact mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-			ContactModel contact = new ContactModel();
+			Contact contact = new Contact();
 			contact.setId(rs.getLong("id"));
 			contact.setFirstName(rs.getString("first_name"));
 			contact.setLastName(rs.getString("last_name"));
@@ -121,58 +122,42 @@ public class SpringJdbcContactDao implements ContactDao, InitializingBean {
 	}
 
 	@Override
-	public void updateBySelective(ContactModel t) {
+	public List<Contact> findAllWithDetail() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Contact findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Contact> findByFirstNameAndLastName(SearchCriteria criteria) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void insertContact(Contact contact) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete(ContactModel t) {
+	public void updateContact(Contact contact) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteFlag(Long id) {
+	public void deleteContact(Long id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public ContactModel selectById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Integer selectByModelCount(ContactModel t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <K, V> Integer selectByMapCount(Map<K, V> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ContactModel> selectByModel(ContactModel t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <K, V> List<ContactModel> selectByMap(Map<K, V> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ContactModel> selectPageByMap(QueryParam params) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	
 	
 
 }

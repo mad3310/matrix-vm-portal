@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Contact Mapper with Nested Results for Collection -->
-<mapper namespace="com.letv.portal.persistence.ContactMapper">
+<mapper namespace="com.letv.portal.dao.IContactDao">
 
     <resultMap id="contactResultMap" type="Contact">
         <id property="id" column="ID" />

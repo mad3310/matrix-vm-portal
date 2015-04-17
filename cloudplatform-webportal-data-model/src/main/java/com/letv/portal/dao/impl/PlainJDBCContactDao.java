@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.dao.QueryParam;
-import com.letv.portal.dao.ContactDao;
-import com.letv.portal.model.ContactModel;
+import com.letv.portal.dao.IContactDao;
+import com.letv.portal.model.Contact;
+import com.letv.portal.model.SearchCriteria;
 
-public class PlainJDBCContactDao implements ContactDao {
+public class PlainJDBCContactDao implements IContactDao {
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -40,8 +41,8 @@ public class PlainJDBCContactDao implements ContactDao {
 		}
 	}
 
-	public List<ContactModel> findAll() {
-		List<ContactModel> result = new ArrayList<ContactModel>();
+	public List<Contact> findAll() {
+		List<Contact> result = new ArrayList<Contact>();
 		Connection connection = null;
 
 		try {
@@ -50,7 +51,7 @@ public class PlainJDBCContactDao implements ContactDao {
 					.prepareStatement("select * from CONTACT");
 			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
-				ContactModel contact = new ContactModel();
+				Contact contact = new Contact();
 				contact.setId(resultSet.getLong("id"));
 				contact.setFirstName(resultSet.getString("first_name"));
 				contact.setLastName(resultSet.getString("last_name"));
@@ -65,11 +66,11 @@ public class PlainJDBCContactDao implements ContactDao {
 		return result;
 	}
 
-	public List<ContactModel> findByFirstName(String firstName) {
+	public List<Contact> findByFirstName(String firstName) {
 		return null;
 	}
 
-	public void insert(ContactModel contact) {
+	public void insertContact(Contact contact) {
 		Connection connection = null;
 		try {
 			connection = getConnection();
@@ -92,10 +93,10 @@ public class PlainJDBCContactDao implements ContactDao {
 		}
 	}
 
-	public void update(ContactModel contact) {
+	public void updateContact(Contact contact) {
 	}
 
-	public void delete(Long contactId) {
+	public void deleteContact(Long contactId) {
 		Connection connection = null;
 
 		try {
@@ -112,69 +113,24 @@ public class PlainJDBCContactDao implements ContactDao {
 	}
 
 	@Override
-	public void updateBySelective(ContactModel t) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(ContactModel t) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteFlag(Long id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ContactModel selectById(Long id) {
+	public List<Contact> findAllWithDetail() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Integer selectByModelCount(ContactModel t) {
+	public Contact findById(Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <K, V> Integer selectByMapCount(Map<K, V> map) {
+	public List<Contact> findByFirstNameAndLastName(SearchCriteria criteria) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public List<ContactModel> selectByModel(ContactModel t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
-	@Override
-	public <K, V> List<ContactModel> selectByMap(Map<K, V> map) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ContactModel> selectPageByMap(QueryParam params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String findFirstNameById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String findLastNameById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

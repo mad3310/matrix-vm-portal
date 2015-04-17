@@ -3,9 +3,9 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Contact Hobby Detail Mapper -->
-<mapper namespace="com.letv.portal.persistence.ContactHobbyDetailMapper">
+<mapper namespace="com.letv.portal.dao.IContactHobbyDetailDao">
 
-    <insert id="insertContactHobbyDetail" parameterType="ContactHobbyDetail">
+    <insert id="insertContactHobbyDetail" parameterType="com.letv.portal.model.ContactHobbyDetail">
         INSERT INTO CONTACT_HOBBY_DETAIL (CONTACT_ID, HOBBY_ID) 
         VALUES (#{contactId}, #{hobbyId})    
     </insert>

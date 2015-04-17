@@ -4,7 +4,7 @@
 
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,10 +14,10 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import com.letv.portal.model.Contact;
 import com.letv.portal.model.ContactTelDetail;
 import com.letv.portal.model.Hobby;
-import com.letv.portal.service.ContactService;
+import com.letv.portal.service.cbase.ContactService;
 
 /**
- * @author Clarence
+ * @author liyunhui
  *
  */
 public class MyBatisSample {
@@ -67,7 +67,7 @@ public class MyBatisSample {
 		contact = new Contact();
 		contact.setFirstName("Michael");
 		contact.setLastName("Jackson");
-		contact.setBirthDate(new Date());
+		contact.setBirthDate(new Date(1992,10,20));
 		Set<ContactTelDetail> contactTelDetails = new HashSet<ContactTelDetail>();
 		ContactTelDetail contactTelDetail = new ContactTelDetail();
 		contactTelDetail.setTelType("Home");
