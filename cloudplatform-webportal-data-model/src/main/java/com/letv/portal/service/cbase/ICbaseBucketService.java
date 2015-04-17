@@ -8,4 +8,5 @@ import com.letv.portal.service.IBaseService;
 public interface ICbaseBucketService extends IBaseService<CbaseBucketModel> {
 
 	Map<String, Object> save(CbaseBucketModel cbaseBucketModel);
+	public void dbList(Long cbaseId);
 }

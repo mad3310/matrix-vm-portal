@@ -56,9 +56,9 @@ import com.letv.portal.service.IHclusterService;
 public class CbaseController {
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
-	@Autowired
-	private ICbaseBucketService cbaseBucketService;
 	@Resource
+	private ICbaseBucketService cbaseBucketService;
+	//
 //	private ICbaseService cbaseService;
 
 	private final static Logger logger = LoggerFactory

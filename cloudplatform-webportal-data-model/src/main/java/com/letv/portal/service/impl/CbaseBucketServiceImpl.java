@@ -1,4 +1,4 @@
-package com.letv.portal.service.cbase.impl;
+package com.letv.portal.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +15,7 @@ import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
-import com.letv.portal.service.ICbaseBucketService;
-import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.cbase.ICbaseBucketService;
 
 @Service("cbaseBucketService")
 public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
@@ -44,6 +43,12 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		
 		cbaseBucketDao.insert(cbaseBucketModel);
 
+	}
+
+	@Override
+	public Map<String, Object> save(CbaseBucketModel cbaseBucketModel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
