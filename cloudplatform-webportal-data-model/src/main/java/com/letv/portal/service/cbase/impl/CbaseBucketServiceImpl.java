@@ -41,23 +41,11 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		return this.cbaseBucketDao;
 	}
 
-	@Override
-	public void insert(CbaseBucketModel cbaseBucket) {
-
-	}
 
 	@Override
 	public Map<String, Object> save(CbaseBucketModel cbaseBucket) {
 		return null;
 
-	}
-
-	public <K, V> Page selectPageByParams(Page page, Map<K, V> params) {
-		return page;
-	}
-
-	public CbaseBucketModel selectById(Long id) {
-		return null;
 	}
 
 	@Override
