@@ -41,6 +41,7 @@ import com.letv.common.util.HttpClient;
 import com.letv.portal.controller.clouddb.HclusterController;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.cbase.CbaseBucketModel;
+import com.letv.portal.service.ICbaseService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.IHclusterService;
@@ -58,8 +59,8 @@ public class CbaseController {
 	private SessionServiceImpl sessionService;
 	@Resource
 	private ICbaseBucketService cbaseBucketService;
-	//
-//	private ICbaseService cbaseService;
+	@Resource
+	private ICbaseService cbaseService;
 
 	private final static Logger logger = LoggerFactory
 			.getLogger(CbaseController.class);
@@ -76,27 +77,27 @@ public class CbaseController {
 			ResultObject result) {
 
 		System.out.println("name=" + name);
-
+		result.setData(cbaseService.getHello(name));
 		return result;
 	}
 
 	@RequestMapping(value = "/cbase/clusterDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseClusterDetail(ResultObject result) {
-
+		result.setData(cbaseService.getClusterDetail());
 		return result;
 
 	}
 
 	@RequestMapping(value = "/cbase/nodeDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseNodeDetail(ResultObject result) {
-
+		result.setData(cbaseService.getNodeDetail());
 		return result;
 
 	}
 
 	@RequestMapping(value = "/cbase/bucketDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseBucketDetail(ResultObject result) {
-
+		result.setData(cbaseService.getBucketDetail());
 		return result;
 	}
 
