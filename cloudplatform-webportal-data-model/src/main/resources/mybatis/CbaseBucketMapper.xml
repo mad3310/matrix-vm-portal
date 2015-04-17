@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cbase.ICbaseBucketDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CbaseBucket">
+		<result column="ID" property="id" />
+		<result column="CBASECLUSTER_ID" property="cbaseClusterId" />
+		<result column="HCLUSTER_ID" property="hclusterId" />
+		<result column="BUCKET_NAME" property="bucketName" />
+		
+		<result column="STATUS" property="status" />
+		<result column="DESCN" property="descn" />
+		
+		<result column="BUCKET_TYPE" property="bucketType" />		 
+		<result column="RAMQUOTAMB" property="ramQuotaMB" />		 
+		<result column="AUTH_TYPE" property="authType" />		 
+		
+		
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	</resultMap>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CbaseBucket" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CBASE_BUCKET(BUCKET_NAME,CBASECLUSTER_ID,HCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,BUCKET_TYPE,RAMQUOTAMB,AUTH_TYPE)
+		values(
+		#{bucketName},#{cbaseClusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{bucketType},#{ramQuotaMB},#{authType})
+	</insert>
+	
+	
+</mapper>

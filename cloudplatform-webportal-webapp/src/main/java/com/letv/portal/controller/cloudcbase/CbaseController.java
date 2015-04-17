@@ -128,7 +128,8 @@ public class CbaseController {
 		cbaseBucketModel.setStatus(0);
 		cbaseBucketModel.setDeleted(true);
 		//this.cbaseBucketService.insert(cbaseBucketModel);
-		this.cbaseBucketService.dbList(12L);
+		System.out.println("insert");
+		this.cbaseBucketService.insert(cbaseBucketModel);
 		
 		
 		CloseableHttpClient client = HttpClients.createDefault();

@@ -97,6 +97,34 @@ public class DbController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(DbModel dbModel,boolean isCreateAdmin) {
 		this.dbProxy.saveAndBuild(dbModel,isCreateAdmin);
+		
+		System.out.println(isCreateAdmin);					//false
+		System.out.println(""+dbModel.getDbName());			//lyh3
+		System.out.println(""+dbModel.getAuditInfo());		//null
+		System.out.println(""+dbModel.getAuditUser());
+		System.out.println(""+dbModel.getBackupCycle());
+		System.out.println(""+dbModel.getDescn());
+		System.out.println(""+dbModel.getDevelopLanguage());
+		System.out.println(""+dbModel.getFromDbIp());
+		System.out.println(""+dbModel.getFromDbName());
+		System.out.println(""+dbModel.getFromDbPort());		//null
+		System.out.println(""+dbModel.getCreateUser());		// 14
+		System.out.println(""+dbModel.getEngineType());		// 0
+		System.out.println(""+dbModel.getHclusterId());		// 1
+		System.out.println(""+dbModel.getId());				// 27
+		System.out.println(""+dbModel.getLinkType());		// 0 
+		System.out.println(""+dbModel.getMclusterId());		//null
+		System.out.println(""+dbModel.getNoticeType());
+		System.out.println(""+dbModel.getProjectId());		//null
+		System.out.println(""+dbModel.getStatus());			// 0
+		System.out.println(""+dbModel.getUpdateUser());
+		System.out.println(""+dbModel.getContainers());
+		System.out.println(""+dbModel.getCreateTime());
+		System.out.println(""+dbModel.getHcluster());
+		System.out.println(""+dbModel.getMcluster());
+		System.out.println(""+dbModel.getUpdateTime());
+		System.out.println(""+dbModel.getUser());
+		
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

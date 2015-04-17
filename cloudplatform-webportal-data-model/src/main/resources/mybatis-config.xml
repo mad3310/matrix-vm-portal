@@ -38,11 +38,14 @@
         
         <typeAlias alias="ZookeeperInfo" type="com.letv.portal.model.common.ZookeeperInfo" />
         
+        <!-- for testing lyh -->
         <typeAlias alias="Contact" type="com.letv.portal.model.Contact" />
         <typeAlias alias="ContactHobbyDetail" type="com.letv.portal.model.ContactHobbyDetail" />
         <typeAlias alias="ContactTelDetail" type="com.letv.portal.model.ContactTelDetail" />
         <typeAlias alias="Hobby" type="com.letv.portal.model.Hobby" />
         <typeAlias alias="SearchCriteria" type="com.letv.portal.model.SearchCriteria" />
+        
+        <typeAlias alias="CbaseBucket" type="com.letv.portal.model.cbase.CbaseBucketModel" />
         
     </typeAliases>
 </configuration>

@@ -34,10 +34,11 @@ import com.letv.portal.service.IMclusterService;
 
 @Service("dbService")
 public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
-		IDbService{
-	
-	private final static Logger logger = LoggerFactory.getLogger(DbServiceImpl.class);
-	
+		IDbService {
+
+	private final static Logger logger = LoggerFactory
+			.getLogger(DbServiceImpl.class);
+
 	@Resource
 	private IDbDao dbDao;
 	@Resource
@@ -45,7 +46,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	@Resource
 	private SimpleTextEmailSender simpleTextEmailSender;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
 	@Autowired
 	private IDbUserService dbUserService;
@@ -53,11 +54,10 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	private IContainerService containerService;
 	@Autowired
 	private IMclusterService mclusterService;
-	
+
 	@Resource
 	private IContainerDao containerDao;
-	
-	
+
 	public DbServiceImpl() {
 		super(DbModel.class);
 	}
@@ -69,18 +69,18 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public Page findPagebyParams(Map<String, Object> params, Page page) {
-		QueryParam param = new QueryParam(params,page);
+		QueryParam param = new QueryParam(params, page);
 		page.setData(this.dbDao.selectPageByMap(param));
 		page.setTotalRecords(this.dbDao.selectByMapCount(params));
 		return page;
-		
+
 	}
 
 	@Override
-	public Map<String, Object> selectCreateParams(Long dbId,boolean isVip) {
-		Map<String,Object> params = new HashMap<String,Object>();
+	public Map<String, Object> selectCreateParams(Long dbId, boolean isVip) {
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", dbId);
-		if(isVip) {
+		if (isVip) {
 			params.put("type", "mclustervip");
 		} else {
 			params.put("zookeeperId", 1);
@@ -89,10 +89,11 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 	}
 
 	@Override
-	public List<DbModel> selectByDbNameForValidate(String dbName,Long createUser) {
-		if(StringUtils.isEmpty(dbName) || null == createUser)
+	public List<DbModel> selectByDbNameForValidate(String dbName,
+			Long createUser) {
+		if (StringUtils.isEmpty(dbName) || null == createUser)
 			throw new ValidateException("参数不合法");
-		HashMap<String, Object> params = new HashMap<String,Object>();
+		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("dbName", dbName);
 		params.put("createUser", createUser);
 		return this.dbDao.selectByDbNameForValidate(params);
@@ -100,7 +101,7 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public void deleteByMclusterId(Long mclusterId) {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mclusterId", mclusterId);
 		List<DbModel> dbs = this.dbDao.selectByMap(map);
 		for (DbModel dbModel : dbs) {
@@ -108,20 +109,22 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 			this.dbUserService.deleteByDbId(dbModel.getId());
 		}
 	}
+
 	@Override
-	public DbModel dbList(Long dbId){
-		if(dbId == null)
+	public DbModel dbList(Long dbId) {
+		if (dbId == null)
 			throw new ValidateException("参数不合法");
 		DbModel db = this.selectById(dbId);
-		if(db == null)
+		if (db == null)
 			throw new ValidateException("参数不合法，相关数据不存在");
-		db.setContainers(this.containerDao.selectByMclusterId(db.getMclusterId()));
+		db.setContainers(this.containerDao.selectByMclusterId(db
+				.getMclusterId()));
 		return db;
 	}
 
 	@Override
 	public List<DbModel> selectDbByMclusterId(Long mclusterId) {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mclusterId", mclusterId);
 		List<DbModel> dbs = this.dbDao.selectByMap(map);
 		return dbs;
@@ -129,30 +132,32 @@ public class DbServiceImpl extends BaseServiceImpl<DbModel> implements
 
 	@Override
 	public Map<String, Object> getGbaConfig(Long dbId) {
-		if(dbId == null)
+		if (dbId == null)
 			throw new ValidateException("参数不合法");
-		
+
 		DbModel db = this.selectById(dbId);
-		if(db == null)
+		if (db == null)
 			throw new ValidateException("参数不合法，相关数据不存在");
-		
-		Map<String,Object> glbParams = new HashMap<String,Object>();
-		
-		List<ContainerModel> containers = this.containerService.selectByMclusterId(db.getMclusterId());
-		MclusterModel mcluster = this.mclusterService.selectById(db.getMclusterId());
+
+		Map<String, Object> glbParams = new HashMap<String, Object>();
+
+		List<ContainerModel> containers = this.containerService
+				.selectByMclusterId(db.getMclusterId());
+		MclusterModel mcluster = this.mclusterService.selectById(db
+				.getMclusterId());
 		List<String> urlPorts = new ArrayList<String>();
 		for (ContainerModel container : containers) {
-			if("mclusternode".equals(container.getType())) {
+			if ("mclusternode".equals(container.getType())) {
 				urlPorts.add(container.getIpAddr() + ":3306");
 			}
 		}
-		
+
 		glbParams.put("User", "monitor");
 		glbParams.put("Pass", mcluster.getSstPwd());
 		glbParams.put("Addr", "127.0.0.1");
 		glbParams.put("Port", "3306");
 		glbParams.put("Backend", urlPorts);
-		
+
 		return glbParams;
 	}
 
