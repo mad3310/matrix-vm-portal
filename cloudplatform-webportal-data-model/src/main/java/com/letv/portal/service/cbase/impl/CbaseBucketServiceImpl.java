@@ -1,4 +1,7 @@
-package com.letv.portal.service.impl;
+package com.letv.portal.service.cbase.impl;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -7,11 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IDbDao;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.service.ICbaseBucketService;
+import com.letv.portal.service.impl.BaseServiceImpl;
 
 @Service("cbaseBucketService")
 public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
@@ -40,5 +45,6 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		cbaseBucketDao.insert(cbaseBucketModel);
 
 	}
+
 
 }

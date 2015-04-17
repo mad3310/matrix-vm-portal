@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
@@ -19,7 +17,6 @@ import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.auth.BasicScheme;
@@ -32,14 +29,11 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
@@ -47,10 +41,10 @@ import com.letv.common.util.HttpClient;
 import com.letv.portal.controller.clouddb.HclusterController;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.cbase.CbaseBucketModel;
-import com.letv.portal.service.ICbaseBucketService;
 import com.letv.portal.service.IDbService;
-import com.letv.portal.service.ICbaseService;
+import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.IHclusterService;
+
 
 /**
  * 
@@ -65,7 +59,7 @@ public class CbaseController {
 	@Autowired
 	private ICbaseBucketService cbaseBucketService;
 	@Resource
-	private ICbaseService cbaseService;
+//	private ICbaseService cbaseService;
 
 	private final static Logger logger = LoggerFactory
 			.getLogger(CbaseController.class);
@@ -83,14 +77,12 @@ public class CbaseController {
 
 		System.out.println("name=" + name);
 
-		result.setData(cbaseService.getHello(name));
 		return result;
 	}
 
 	@RequestMapping(value = "/cbase/clusterDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseClusterDetail(ResultObject result) {
 
-		result.setData(cbaseService.getClusterDetail());
 		return result;
 
 	}
@@ -98,7 +90,6 @@ public class CbaseController {
 	@RequestMapping(value = "/cbase/nodeDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseNodeDetail(ResultObject result) {
 
-		result.setData(cbaseService.getNodeDetail());
 		return result;
 
 	}
@@ -106,7 +97,6 @@ public class CbaseController {
 	@RequestMapping(value = "/cbase/bucketDetail", method = RequestMethod.GET)
 	public @ResponseBody ResultObject cbaseBucketDetail(ResultObject result) {
 
-		result.setData(cbaseService.getBucketDetail());
 		return result;
 	}
 
