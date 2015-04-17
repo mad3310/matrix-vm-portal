@@ -25,15 +25,19 @@
     <!-- Define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeAliasesPackage" value="com.letv.portal.model" />
-        <property name="mapperLocations" value="classpath:com/letv/portal/persistence/*.xml" />
+        <!-- <property name="typeAliasesPackage" value="com.letv.portal.model" /> -->
+        
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        
+        <property name="mapperLocations" value="classpath:mybatis/*.xml" />
+        
     </bean>
 
 	<!-- 从这里scan mappers -->
 	<!-- 如果有多个SqlSessionFactory 的话， 需要显式的注入这里 -->
     <!-- Scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.letv.portal.persistence" />
+        <property name="basePackage" value="com.letv.portal.dao" />
     </bean>
 
 </beans>
