@@ -20,7 +20,6 @@ public class CbaseContainerModel extends BaseModel {
 	private Integer cpuSpeed; // cpu速度
 	private Integer memorySize; // 内存大小
 	private Integer status; // 状态
-	private String zabbixHosts;// 对应zabbix删除container时候需要的标识
 
 	private ServiceType serviceType;
 
@@ -28,8 +27,10 @@ public class CbaseContainerModel extends BaseModel {
 	private Long hostId; // 所属host
 	private Long cbaseClusterId; // 所属cluster
 
-	private HostModel host;
+	private String zabbixHosts;// 对应zabbix删除container时候需要的标识
+
 	private CbaseClusterModel cbaseCluster;
+	private HostModel host;
 	private HclusterModel hcluster;
 
 	public String getContainerName() {

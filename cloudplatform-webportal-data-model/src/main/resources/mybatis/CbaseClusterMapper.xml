@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cbase.ICbaseClusterDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CbaseCluster">
+		<result column="ID" property="id" />
+		<result column="CBASECLUSTER_NAME" property="cbaseClusterName" />
+		<result column="ADMIN_USER" property="adminUser" />
+		<result column="ADMIN_PASSWORD" property="adminPassword" />
+		<result column="HCLUSTER_ID" property="hclusterId" />
+		
+		<result column="STATUS" property="status" />
+		<result column="TYPE" property="type" />
+
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	</resultMap>
+	
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CbaseCluster" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		WEBPORTAL_CBASECLUSTER_INFO(CBASECLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,TYPE,HCLUSTER_ID,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(#{cbaseClusterName},#{adminUser},#{adminPassword},#{status},#{type},#{hclusterId},#{deleted},now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="CbaseCluster">
+		update WEBPORTAL_CBASECLUSTER_INFO set
+		CBASECLUSTER_NAME=#{cbaseClusterName},
+		ADMIN_USER=#{adminUser},
+		ADMIN_PASSWORD=#{adminPassword},
+		STATUS=#{status},
+		TYPE=#{type},
+		HCLUSTER_ID=#{hclusterId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+	
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="CbaseCluster">
+		delete from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
+	</delete>
+	
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		ID,
+		CBASECLUSTER_NAME,
+		ADMIN_USER,
+		ADMIN_PASSWORD,
+		STATUS,
+		TYPE,
+		HCLUSTER_ID,
+		DELETED,
+		CREATE_TIME,
+		CREATE_USER,
+		UPDATE_TIME,
+		UPDATE_USER
+		from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
+	</select>
+	
+</mapper>

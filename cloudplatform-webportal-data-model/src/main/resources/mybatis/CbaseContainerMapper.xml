@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cbase.ICbaseContainerDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CbaseContainer">
+		<result column="ID" property="id" />
+		<result column="CONTAINER_NAME" property="containerName" />
+		<result column="MOUNT_DIR" property="mountDir" />
+		<result column="IP_ADDR" property="ipAddr" />
+		<result column="GATE_ADDR" property="gateAddr" />
+		<result column="IP_MASK" property="ipMask" />
+		<!-- 
+		<result column="ZOOKEEPER_ID" property="zookeeperId" />
+		 -->
+		 
+		<result column="TYPE" property="type" />
+		<result column="DISK_SIZE" property="diskSize" />
+		<result column="CORES_NUMBER" property="coresNumber" />
+		<result column="CPU_SPEED" property="cpuSpeed" />
+		<result column="MEMORY_SIZE" property="memorySize" />
+		<result column="STATUS" property="status" />
+		
+		<result column="HOST_IP" property="hostIp" />
+		<result column="HOST_ID" property="hostId" />
+		<result column="CBASECLUSTER_ID" property="cbaseClusterId" />
+		<result column="ZABBIXHOSTS" property="zabbixHosts" />
+		
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	</resultMap>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CbaseContainer" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		WEBPORTAL_CBASE_CONTAINER
+		(CONTAINER_NAME,MOUNT_DIR,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
+		DISK_SIZE,CORES_NUMBER,CPU_SPEED,MEMORY_SIZE,STATUS,HOST_IP,HOST_ID,CBASECLUSTER_ID,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values
+		(#{containerName},#{mountDir},#{ipAddr},#{gateAddr},#{ipMask},#{type},
+		#{diskSize},#{coresNumber},#{cpuSpeed},#{memorySize},#{status},#{hostIp},#{hostId},#{cbaseClusterId},${deleted},now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="CbaseContainer">
+		update WEBPORTAL_CBASE_CONTAINER set
+		CONTAINER_NAME=#{containerName},
+		MOUNT_DIR=#{mountDir},
+		IP_ADDR=#{ipAddr},
+		GATE_ADDR=#{gateAddr},
+		IP_MASK=#{ipMask},
+		TYPE=#{type},
+		DISK_SIZE=#{diskSize},
+		CORES_NUMBER=#{coresNumber},
+		CPU_SPEED=#{cpuSpeed},
+		MEMORY_SIZE=#{memorySize},
+		STATUS=#{status},
+		HOST_IP=#{hostIp},
+		HOST_ID=#{hostId},
+		CBASECLUSTER_ID=#{cbaseClusterId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+	
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="CbaseContainer">
+		delete from WEBPORTAL_CBASE_CONTAINER where ID = #{id}
+	</delete>
+	
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		ID,
+		CONTAINER_NAME,
+		MOUNT_DIR,
+		IP_ADDR,
+		GATE_ADDR,
+		IP_MASK,
+		TYPE,
+		DISK_SIZE,
+		CORES_NUMBER,
+		CPU_SPEED,
+		MEMORY_SIZE,
+		STATUS,
+		HOST_IP,
+		HOST_ID,
+		CBASECLUSTER_ID,
+		DELETED,
+		CREATE_TIME,
+		CREATE_USER,
+		UPDATE_TIME,
+		UPDATE_USER
+		ZABBIXHOSTS,
+		from WEBPORTAL_CBASE_CONTAINER where ID = #{id}
+	</select>
+	
+	
+</mapper>

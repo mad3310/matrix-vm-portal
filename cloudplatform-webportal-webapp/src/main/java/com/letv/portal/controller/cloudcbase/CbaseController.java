@@ -41,9 +41,13 @@ import com.letv.common.util.HttpClient;
 import com.letv.portal.controller.clouddb.HclusterController;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.cbase.CbaseBucketModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
+import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.service.ICbaseService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
+import com.letv.portal.service.cbase.ICbaseClusterService;
+import com.letv.portal.service.cbase.ICbaseContainerService;
 import com.letv.portal.service.IHclusterService;
 
 
@@ -61,6 +65,11 @@ public class CbaseController {
 	private ICbaseBucketService cbaseBucketService;
 	@Resource
 	private ICbaseService cbaseService;
+	
+	@Resource
+	private ICbaseClusterService cbaseClusterService;
+	@Resource
+	private ICbaseContainerService cbaseContainerService;
 
 	private final static Logger logger = LoggerFactory
 			.getLogger(CbaseController.class);
@@ -127,28 +136,23 @@ public class CbaseController {
 		cbaseBucketModel.setAuthType("sasl");
 		
 		
-		System.out.println("insert");
-		this.cbaseBucketService.insert(cbaseBucketModel);
+//		System.out.println("insert");
+//		this.cbaseBucketService.insert(cbaseBucketModel);
 		
-		cbaseBucketModel.setCreateUser(userId);
-		cbaseBucketModel.setStatus(0);
-		cbaseBucketModel.setDeleted(false);
-		cbaseBucketModel.setBucketName("update");
-		cbaseBucketModel.setCbaseClusterId(null);
-		cbaseBucketModel.setHclusterId(null);
-		cbaseBucketModel.setBucketType(0);
-		cbaseBucketModel.setRamQuotaMB("100");
-		cbaseBucketModel.setAuthType("sasl");
+		// 测试service
+		CbaseClusterModel cbaseClusterModel = new CbaseClusterModel();
+		cbaseClusterModel.setCbaseClusterName("test");
+		cbaseClusterModel.setAdminUser("root");
+		cbaseClusterModel.setAdminPassword("hhh");
+		this.cbaseClusterService.insert(cbaseClusterModel);
 		
 		
-		System.out.println("update");
-		this.cbaseBucketService.update(cbaseBucketModel);
+		CbaseContainerModel cbaseContainerModel = new CbaseContainerModel();
+		cbaseContainerModel.setContainerName("cccc");
+		cbaseContainerModel.setDiskSize(1000);
+		cbaseContainerModel.setStatus(1);
+		this.cbaseContainerService.insert(cbaseContainerModel);
 		
-		System.out.println("search");
-		searchresult = this.cbaseBucketService.selectById(6L);
-		System.out.println("BuketName for id 6L: "+searchresult.getBucketName());
-		searchresult = this.cbaseBucketService.selectById(7L);
-		System.out.println("BuketName for id 7L: "+searchresult.getBucketName());
 		
 		
 		

@@ -7,23 +7,27 @@ import com.letv.portal.model.UserModel;
 public class CbaseClusterModel extends BaseModel {
 
 	private static final long serialVersionUID = 5248463017990587985L;
-	
-	private String clusterName; // 名称
+
+	private String cbaseClusterName; // 名称
 	private String adminUser;
 	private String adminPassword;
 	private Integer status; // 状态
+	
+	private Integer type;
 
 	private Long hclusterId;
 	private HclusterModel hcluster;
 
 	private UserModel createUserModel;
 
-	public String getClusterName() {
-		return clusterName;
+	
+	
+	public String getCbaseClusterName() {
+		return cbaseClusterName;
 	}
 
-	public void setClusterName(String clusterName) {
-		this.clusterName = clusterName;
+	public void setCbaseClusterName(String cbaseClusterName) {
+		this.cbaseClusterName = cbaseClusterName;
 	}
 
 	public Integer getStatus() {
@@ -72,6 +76,14 @@ public class CbaseClusterModel extends BaseModel {
 
 	public void setHcluster(HclusterModel hcluster) {
 		this.hcluster = hcluster;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 }

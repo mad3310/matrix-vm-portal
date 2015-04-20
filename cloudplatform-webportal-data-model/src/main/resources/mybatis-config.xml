@@ -46,6 +46,8 @@
         <typeAlias alias="SearchCriteria" type="com.letv.portal.model.SearchCriteria" />
         
         <typeAlias alias="CbaseBucket" type="com.letv.portal.model.cbase.CbaseBucketModel" />
+        <typeAlias alias="CbaseCluster" type="com.letv.portal.model.cbase.CbaseClusterModel" />
+        <typeAlias alias="CbaseContainer" type="com.letv.portal.model.cbase.CbaseContainerModel" />
         
     </typeAliases>
 </configuration>
