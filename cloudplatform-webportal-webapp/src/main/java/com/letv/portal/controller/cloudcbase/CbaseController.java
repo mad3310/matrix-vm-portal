@@ -114,13 +114,42 @@ public class CbaseController {
 		Long userId = sessionService.getSession().getUserId();
 		System.out.println("userId = "+userId);
 		CbaseBucketModel cbaseBucketModel = new CbaseBucketModel();
+		CbaseBucketModel searchresult;
 		
 		cbaseBucketModel.setCreateUser(userId);
 		cbaseBucketModel.setStatus(0);
-		cbaseBucketModel.setDeleted(true);
-		//this.cbaseBucketService.insert(cbaseBucketModel);
+		cbaseBucketModel.setDeleted(false);
+		cbaseBucketModel.setBucketName("default");
+		cbaseBucketModel.setCbaseClusterId(null);
+		cbaseBucketModel.setHclusterId(null);
+		cbaseBucketModel.setBucketType(1);
+		cbaseBucketModel.setRamQuotaMB("100");
+		cbaseBucketModel.setAuthType("sasl");
+		
+		
 		System.out.println("insert");
 		this.cbaseBucketService.insert(cbaseBucketModel);
+		
+		cbaseBucketModel.setCreateUser(userId);
+		cbaseBucketModel.setStatus(0);
+		cbaseBucketModel.setDeleted(false);
+		cbaseBucketModel.setBucketName("update");
+		cbaseBucketModel.setCbaseClusterId(null);
+		cbaseBucketModel.setHclusterId(null);
+		cbaseBucketModel.setBucketType(0);
+		cbaseBucketModel.setRamQuotaMB("100");
+		cbaseBucketModel.setAuthType("sasl");
+		
+		
+		System.out.println("update");
+		this.cbaseBucketService.update(cbaseBucketModel);
+		
+		System.out.println("search");
+		searchresult = this.cbaseBucketService.selectById(6L);
+		System.out.println("BuketName for id 6L: "+searchresult.getBucketName());
+		searchresult = this.cbaseBucketService.selectById(7L);
+		System.out.println("BuketName for id 7L: "+searchresult.getBucketName());
+		
 		
 		
 		CloseableHttpClient client = HttpClients.createDefault();

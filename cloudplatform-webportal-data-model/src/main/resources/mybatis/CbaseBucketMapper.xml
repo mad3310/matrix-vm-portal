@@ -34,5 +34,48 @@
 		#{bucketName},#{cbaseClusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{bucketType},#{ramQuotaMB},#{authType})
 	</insert>
 	
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Db">
+		update WEBPORTAL_CBASE_BUCKET set
+		ID=#{id},
+		BUCKET_NAME=#{bucketName},
+		CBASECLUSTER_ID=#{cbaseClusterId},
+		HCLUSTER_ID=#{hclusterId},
+		STATUS=#{status},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser},
+		BUCKET_TYPE=#{bucketType},
+		RAMQUOTAMB=#{ramQuotaMB},
+		AUTH_TYPE=#{authType}
+		where ID=#{id}
+	</update>
 	
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="CbaseBucket">
+        DELETE FROM WEBPORTAL_CBASE_BUCKET WHERE ID = #{id}
+    </delete> 
+    
+    <!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			ID,
+			CBASECLUSTER_ID,
+			HCLUSTER_ID,
+			BUCKET_NAME,
+			STATUS,
+			DESCN,
+			BUCKET_TYPE,
+			DELETED,
+			CREATE_TIME,
+			CREATE_USER,
+			UPDATE_TIME,
+			UPDATE_USER
+			from WEBPORTAL_CBASE_BUCKET
+			where ID = #{id}
+	</select>
+	
+    
 </mapper>

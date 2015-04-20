@@ -110,4 +110,20 @@ public class CbaseBucketModel extends BaseModel {
 	public void setBucketType(Integer bucketType) {
 		this.bucketType = bucketType;
 	}
+
+	public String getRamQuotaMB() {
+		return ramQuotaMB;
+	}
+
+	public void setRamQuotaMB(String ramQuotaMB) {
+		this.ramQuotaMB = ramQuotaMB;
+	}
+
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
 }
