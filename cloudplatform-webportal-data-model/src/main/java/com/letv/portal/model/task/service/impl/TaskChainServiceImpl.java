@@ -129,4 +129,10 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 		}
 		return 1;//都没有，则认为正在执行第一步
 	}
+
+	@Override
+	public int getStepByCacheId(Long cacheId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
