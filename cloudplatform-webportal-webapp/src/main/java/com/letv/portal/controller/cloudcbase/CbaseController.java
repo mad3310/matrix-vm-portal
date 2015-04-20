@@ -140,19 +140,22 @@ public class CbaseController {
 //		this.cbaseBucketService.insert(cbaseBucketModel);
 		
 		// 测试service
-		CbaseClusterModel cbaseClusterModel = new CbaseClusterModel();
-		cbaseClusterModel.setCbaseClusterName("test");
-		cbaseClusterModel.setAdminUser("root");
-		cbaseClusterModel.setAdminPassword("hhh");
-		this.cbaseClusterService.insert(cbaseClusterModel);
-		
-		
 		CbaseContainerModel cbaseContainerModel = new CbaseContainerModel();
 		cbaseContainerModel.setContainerName("cccc");
 		cbaseContainerModel.setDiskSize(1000);
 		cbaseContainerModel.setStatus(1);
 		this.cbaseContainerService.insert(cbaseContainerModel);
 		
+		cbaseContainerModel.setContainerName("modify");
+		cbaseContainerModel.setDiskSize(200);
+		cbaseContainerModel.setStatus(2);
+		this.cbaseContainerService.update(cbaseContainerModel);
+		
+		CbaseContainerModel resultCluster = this.cbaseContainerService.selectById(1L);
+		System.out.println(resultCluster.getContainerName());
+		
+		cbaseContainerModel.setId(1L);
+		this.cbaseContainerService.delete(cbaseContainerModel);
 		
 		
 		
