@@ -147,7 +147,7 @@ define(function(require){
         var url="/hcluster";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
-
+    /*创建cache*/
 	function CreateCache (data) {
 		var url="/cache";
         cn.PostData(url,data, function () {

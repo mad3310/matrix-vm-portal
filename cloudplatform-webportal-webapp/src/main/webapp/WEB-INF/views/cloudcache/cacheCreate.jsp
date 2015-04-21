@@ -101,10 +101,10 @@
 															<span class="sleBG"> 
 															<span class="sleHid"> 
 															<div class="divselect">
-																<span>酒仙桥机房</span>
-																<ul style="display:none;">
-																<li class="bk-select-option"><a href="javascript:;" selectid="14">酒仙桥机房</a></li></ul>
-																<input name="cacheId" type="hidden" value="" />
+																<span></span>
+																<ul>
+																</ul>
+																<input name="hclusterId" type="hidden" value="" />
 															</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
