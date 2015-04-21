@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
 import com.letv.portal.model.cbase.CbaseBucketModel;
@@ -52,5 +53,17 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 	public void dbList(Long cbaseId) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Page findPagebyParams(Map<String, Object> params, Page page) {
+		
+		QueryParam param = new QueryParam(params, page);
+		page.setData(this.cbaseBucketDao.selectPageByMap(param));
+		page.setTotalRecords(this.cbaseBucketDao.selectByMapCount(params));
+		
+		
+		return page;
+
 	}
 }

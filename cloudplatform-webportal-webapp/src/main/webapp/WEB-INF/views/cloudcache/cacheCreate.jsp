@@ -249,7 +249,7 @@
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
 													<span class="bk-number">
-														<input type="text" class="bk-number-input tai-num" value="3">
+														<input type="text" class="bk-number-input tai-num" value="1">
 														<span class="bk-number-unit">台</span>
 														<span class="bk-number-control"> 
 															<span class="bk-number-up tai-num-up"> <i class="bk-number-arrow"></i></span>

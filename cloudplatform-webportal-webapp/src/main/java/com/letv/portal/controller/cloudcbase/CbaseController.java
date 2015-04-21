@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -35,11 +37,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpClient;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.controller.clouddb.HclusterController;
 import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -80,6 +85,25 @@ public class CbaseController {
 	// @Value("${webportal.local.http}")
 	// private String WEBPORTAL_LOCAL_HTTP;
 
+	@RequestMapping(value = "/cbase", method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("createUser", sessionService.getSession().getUserId());	
+		obj.setData(this.cbaseBucketService.findPagebyParams(params, page));
+		
+		//lyh test
+		System.out.println("obj="+obj.getResult());
+		System.out.println("obj="+obj.getCallback());
+		System.out.println("obj="+obj.getMsgs());
+		
+		for (CbaseBucketModel cbasebucket : ((List<CbaseBucketModel>)((Page)obj.getData()).getData()) ){
+			System.out.println(cbasebucket.getBucketName());
+		}
+		
+		
+		return obj;
+	}
+	
 	@RequestMapping(value = "/cbase/hello", method = RequestMethod.GET)
 	public @ResponseBody ResultObject returnhello(
 			@RequestParam(value = "name", required = false, defaultValue = "lyh") String name,
@@ -136,26 +160,26 @@ public class CbaseController {
 		cbaseBucketModel.setAuthType("sasl");
 		
 		
-//		System.out.println("insert");
-//		this.cbaseBucketService.insert(cbaseBucketModel);
+		System.out.println("insert");
+		this.cbaseBucketService.insert(cbaseBucketModel);
 		
 		// 测试service
-		CbaseContainerModel cbaseContainerModel = new CbaseContainerModel();
-		cbaseContainerModel.setContainerName("cccc");
-		cbaseContainerModel.setDiskSize(1000);
-		cbaseContainerModel.setStatus(1);
-		this.cbaseContainerService.insert(cbaseContainerModel);
-		
-		cbaseContainerModel.setContainerName("modify");
-		cbaseContainerModel.setDiskSize(200);
-		cbaseContainerModel.setStatus(2);
-		this.cbaseContainerService.update(cbaseContainerModel);
-		
-		CbaseContainerModel resultCluster = this.cbaseContainerService.selectById(1L);
-		System.out.println(resultCluster.getContainerName());
-		
-		cbaseContainerModel.setId(1L);
-		this.cbaseContainerService.delete(cbaseContainerModel);
+//		CbaseContainerModel cbaseContainerModel = new CbaseContainerModel();
+//		cbaseContainerModel.setContainerName("cccc");
+//		cbaseContainerModel.setDiskSize(1000);
+//		cbaseContainerModel.setStatus(1);
+//		this.cbaseContainerService.insert(cbaseContainerModel);
+//		
+//		cbaseContainerModel.setContainerName("modify");
+//		cbaseContainerModel.setDiskSize(200);
+//		cbaseContainerModel.setStatus(2);
+//		this.cbaseContainerService.update(cbaseContainerModel);
+//		
+//		CbaseContainerModel resultCluster = this.cbaseContainerService.selectById(1L);
+//		System.out.println(resultCluster.getContainerName());
+//		
+//		cbaseContainerModel.setId(1L);
+//		this.cbaseContainerService.delete(cbaseContainerModel);
 		
 		
 		
