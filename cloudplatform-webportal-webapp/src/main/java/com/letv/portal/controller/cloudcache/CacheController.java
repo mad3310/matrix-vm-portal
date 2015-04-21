@@ -19,6 +19,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.proxy.ICbaseProxy;
 import com.letv.portal.service.cbase.ICbaseBucketService;
@@ -50,19 +51,38 @@ public class CacheController {
 		obj.setData(this.cbaseBucketService.findPagebyParams(params, page));
 		return obj;
 	}
-
+	
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject save(CbaseBucketModel cbaseBucketModel,
 			ResultObject obj) {
-		if (cbaseBucketModel == null
-				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
-			throw new ValidateException("参数不合法");
-		} else {
-
-		}
+//		if (cbaseBucketModel == null
+//				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
+//			throw new ValidateException("参数不合法");
+//		} else {
+//
+//		}
+		System.out.println("in POST");
 		cbaseBucketModel.setCreateUser(this.sessionService.getSession()
 				.getUserId());
-		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
+		
+		System.out.println(cbaseBucketModel.getBucketName());
+		System.out.println(cbaseBucketModel.getHclusterId());
+		System.out.println(cbaseBucketModel.getHcluster());
+		System.out.println(cbaseBucketModel.getCbaseClusterId());
+		System.out.println(cbaseBucketModel.getCbaseCluster());
+		System.out.println(cbaseBucketModel.getStatus());
+		System.out.println(cbaseBucketModel.getDescn());
+		System.out.println(cbaseBucketModel.getBucketType());
+		
+		System.out.println(cbaseBucketModel.getRamQuotaMB());
+		System.out.println(cbaseBucketModel.getAuthType());
+		System.out.println(cbaseBucketModel.getContainers());
+		
+		System.out.println("insert");
+		this.cbaseBucketService.insert(cbaseBucketModel);
+		
+		//this.cbaseProxy.saveAndBuild(cbaseBucketModel);
 		return obj;
 	}
 
