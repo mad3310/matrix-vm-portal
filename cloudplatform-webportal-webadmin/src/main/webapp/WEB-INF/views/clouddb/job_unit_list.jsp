@@ -84,7 +84,8 @@
 										<!-- <option value="xx">消息中间件</option> -->
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
-										<option value="GCE">GCE</option>										
+										<option value="GCE">GCE</option>
+										<option value="GCE">CBASE</option>								
 									</select>
 								</div>								
 								<label class="control-label">
