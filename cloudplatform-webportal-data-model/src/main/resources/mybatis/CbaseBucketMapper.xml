@@ -101,5 +101,7 @@
 		UPDATE_TIME,
 		UPDATE_USER
 		from WEBPORTAL_CBASE_BUCKET m
+		
+		
 	</select>
 </mapper>

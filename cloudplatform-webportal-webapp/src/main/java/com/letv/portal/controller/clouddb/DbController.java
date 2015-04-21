@@ -69,7 +69,13 @@ public class DbController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		params.put("createUser", sessionService.getSession().getUserId());	
+	
+		params.put("createUser", sessionService.getSession().getUserId());
+		
+		for(String key:params.keySet()){
+			System.out.println(key+"="+params.get(key));
+		}
+		
 		obj.setData(this.dbService.findPagebyParams(params, page));
 		
 		//lyh test
