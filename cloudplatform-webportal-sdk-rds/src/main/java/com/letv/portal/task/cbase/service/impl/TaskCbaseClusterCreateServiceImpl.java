@@ -31,11 +31,11 @@ public class TaskCbaseClusterCreateServiceImpl extends
 
 		CbaseClusterModel cbaseCluster = super.getCbaseCluster(params);
 		HostModel host = super.getHost(cbaseCluster.getHclusterId());
-		// CbaseBucketModel cbaseBucket = super.getCbaseBucket(params);
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("containerClusterName", cbaseCluster.getCbaseClusterName());
-		map.put("networkMode", "bridge");
+		map.put("componentType", "cbase");
+		map.put("networkMode", "ip");
 		String result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);
