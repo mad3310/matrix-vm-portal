@@ -1,6 +1,6 @@
 package com.letv.portal.enumeration;
 
-public enum CacheStatus implements ByteEnum{
+public enum CbaseBucketStatus implements ByteEnum{
 	DEFAULT(0),
 	RUNNING(1),  
 	BUILDDING(2),
@@ -11,7 +11,7 @@ public enum CacheStatus implements ByteEnum{
 	
 	private final Integer value;
 	
-	private CacheStatus(Integer value)
+	private CbaseBucketStatus(Integer value)
 	{
 		this.value = value;
 	}

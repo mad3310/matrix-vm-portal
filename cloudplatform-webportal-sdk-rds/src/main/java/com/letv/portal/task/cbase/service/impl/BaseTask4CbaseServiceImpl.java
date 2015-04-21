@@ -16,7 +16,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.constant.Constant;
-import com.letv.portal.enumeration.CacheStatus;
+import com.letv.portal.enumeration.CbaseBucketStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.UserModel;
@@ -55,13 +55,13 @@ public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 
 	@Override
 	public void beforExecute(Map<String, Object> params) {
-		CbaseBucketModel cbase = this.getCbaseBucket(params);
+		CbaseBucketModel cbaseBucket = this.getCbaseBucket(params);
 		CbaseClusterModel cluster = this.getCbaseCluster(params);
-		if (cbase.getStatus() != CacheStatus.BUILDDING.getValue()) {
-			cbase.setStatus(CacheStatus.BUILDDING.getValue());
-			this.cbaseBucketService.updateBySelective(cbase);
+		if (cbaseBucket.getStatus() != CbaseBucketStatus.BUILDDING.getValue()) {
+			cbaseBucket.setStatus(CbaseBucketStatus.BUILDDING.getValue());
+			this.cbaseBucketService.updateBySelective(cbaseBucket);
 		}
-		if (cbase.getStatus() != MclusterStatus.BUILDDING.getValue()) {
+		if (cbaseBucket.getStatus() != MclusterStatus.BUILDDING.getValue()) {
 			cluster.setStatus(MclusterStatus.BUILDDING.getValue());
 			this.cbaseClusterService.updateBySelective(cluster);
 		}
@@ -93,14 +93,14 @@ public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 		CbaseClusterModel cluster = this.getCbaseCluster(params);
 
 		if (tr.isSuccess()) {
-			cbase.setStatus(CacheStatus.NORMAL.getValue());
+			cbase.setStatus(CbaseBucketStatus.NORMAL.getValue());
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 			Map<String, Object> emailParams = new HashMap<String, Object>();
 			emailParams.put("cacheName", cbase.getBucketName());
 			this.email4User(emailParams, cbase.getCreateUser(),
 					"cache/createCache.ftl");
 		} else {
-			cbase.setStatus(CacheStatus.BUILDFAIL.getValue());
+			cbase.setStatus(CbaseBucketStatus.BUILDFAIL.getValue());
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
 		}
 		this.cbaseBucketService.updateBySelective(cbase);

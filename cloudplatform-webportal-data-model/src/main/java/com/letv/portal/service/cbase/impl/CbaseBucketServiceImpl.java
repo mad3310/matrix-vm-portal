@@ -14,7 +14,7 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
-import com.letv.portal.enumeration.CacheStatus;
+import com.letv.portal.enumeration.CbaseBucketStatus;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.service.cbase.ICbaseBucketService;
@@ -47,7 +47,7 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 
 	@Override
 	public Map<String, Object> save(CbaseBucketModel cbaseBucket) {
-		cbaseBucket.setStatus(CacheStatus.BUILDDING.getValue());
+		cbaseBucket.setStatus(CbaseBucketStatus.BUILDDING.getValue());
 
 		StringBuffer cbaseClusterName = new StringBuffer();
 		cbaseClusterName.append(cbaseBucket.getCreateUser()).append("_")
@@ -58,7 +58,7 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		CbaseClusterModel cbaseCluster = new CbaseClusterModel();
 		cbaseCluster.setHclusterId(cbaseBucket.getHclusterId());
 		cbaseCluster.setCbaseClusterName(cbaseClusterName.toString());
-		cbaseCluster.setStatus(CacheStatus.BUILDDING.getValue());
+		cbaseCluster.setStatus(CbaseBucketStatus.BUILDDING.getValue());
 		cbaseCluster.setCreateUser(cbaseBucket.getCreateUser());
 		cbaseCluster.setAdminUser("root");
 		cbaseCluster.setAdminPassword(cbaseClusterName.toString());
