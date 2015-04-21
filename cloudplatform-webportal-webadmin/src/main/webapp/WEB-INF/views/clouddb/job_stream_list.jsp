@@ -83,7 +83,7 @@
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
 										<option value="GCE">GCE</option>
-										<option value="CBASE">CBASEs</option>
+										<option value="CBASE">CBASE</option>
 										<!-- <option value="消息中间件">消息中间件</option> -->
 									</select>
 								</div>
