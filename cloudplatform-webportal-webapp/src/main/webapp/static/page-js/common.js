@@ -91,7 +91,9 @@ define(function(require,exports,module){
         		return "<span class=\"text-success\">备份成功<span>";
         	}else if(status == 'BUILDING'){
         		return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
-        	}	
+        	}else{
+                return 'null';
+            }	
         },
 		Displayable : function (status) {
 			if(status == 6){
