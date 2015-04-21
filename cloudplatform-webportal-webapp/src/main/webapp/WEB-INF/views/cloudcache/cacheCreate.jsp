@@ -53,7 +53,7 @@
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">实例名称：</label>
 												<div class="col-sm-4 row">
-													<input id="cacheName" class="form-control" name="cacheName" type="text">
+													<input id="cacheName" class="form-control" name="bucketName" type="text">
 												</div>
 											</div>
 										</form>
@@ -169,14 +169,14 @@
 																<span class="awCursor" style="left: 4.12px;">
 																	<div style="position: relative" class="ng-scope">
 																		<div class="bk-tip-gray hide" style="top: -44px;left: -18px">
-																			<span class="ng-binding">5</span> <span class="bk-tip-arrow"></span>
+																			<span class="ng-binding">1</span> <span class="bk-tip-arrow"></span>
 																		</div>
 																	</div>
 																</span>
 															</div>
 														</div>
 														<span class="bk-number bk-ml2">
-															<input type="text" class="bk-number-input memSize" id="value2" value="5">
+															<input type="text" class="bk-number-input memSize" id="value2" value="1" name="ramQuotaMB">
 															<span class="bk-number-unit">GB</span>
 															<span class="bk-number-control">
 																<span class="bk-number-up mem-num-up"> <i class="bk-number-arrow"></i> </span> 
@@ -200,7 +200,7 @@
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li">
 														<div class="bk-buttontab">
-															<input name="linkType" type="text" class="hide" value="0">
+															<input name="bucketType" type="text" class="hide" value="0">
 															<button class="bk-button bk-button-primary bk-button-current bk-perment-bt" value="0">
 																<div>
 																	<span>持久化</span>

@@ -11,6 +11,17 @@ define(function(require){
             $("#monthPurchaseForm").submit();
         })
     }
+    /*按钮组件封装 --begin*/
+    $(".bk-button-primary").click(function () {
+        if(!$(this).hasClass("disabled")){
+            $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
+            $(this).addClass("bk-button-current");
+            if($(this).parent().find(".hide").length > 0 ){
+                var val = $(this).val();
+                $(this).parent().find(".hide").val(val);
+            }
+        }
+    })
     $("#monthPurchaseForm").bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -19,7 +30,7 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            cacheName: {
+        	bucketName: {
                 validMessage: '请按提示输入',
                 validators: {
                     notEmpty: {
@@ -41,18 +52,17 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-        var cacheName = $("[name = 'cacheName']").val();
-        var cacheId = $("[name = 'cacheId']").val();
-        var engineType = $("[name = 'engineType']").val();
-        var linkType = $("[name = 'linkType']").val();
-        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
-        var formData = {"cacheName":cacheName,"linkType":linkType,"engineType":engineType,"cacheId":cacheId,"isCreateAdmin":isCreateAdmin};
+        var bucketName = $("[name = 'bucketName']").val();
+        var hclusterId = $("[name = 'hclusterId']").val();
+        var ramQuotaMB=$("[name='ramQuotaMB']").val();
+        var bucketType = $("[name = 'bucketType']").val();
+        var formData = {"bucketName":bucketName,"hclusterId":hclusterId,"ramQuotaMB":ramQuotaMB,"bucketType":bucketType};
         CreateCache(formData);
     });
     /*表单验证 --end*/
 	var _up=$('.mem-num-up');var _down=$('.mem-num-down');var _upT=$('.tai-num-up');var _downT=$('.tai-num-down');
 	var options={
-		'stepSize':5,
+		'stepSize':1,
 		'lev1':206,
 		'lev2':309,
 		'lev3':412
@@ -93,7 +103,7 @@ define(function(require){
 	});
 	cn.barClickDrag(options);
 	cn.barDrag(options);
-	cn.btnPrimaryClick();
+//	cn.btnPrimaryClick();
 	_upT.click(function(event) {
 		var _taiNum=$('.tai-num');
 		var val=_taiNum.val();
@@ -149,6 +159,7 @@ define(function(require){
     }
     /*创建cache*/
 	function CreateCache (data) {
+		console.log(data)
 		var url="/cache";
         cn.PostData(url,data, function () {
             location.href = "/list/cache";
