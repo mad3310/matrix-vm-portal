@@ -71,6 +71,17 @@ public class DbController {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());	
 		obj.setData(this.dbService.findPagebyParams(params, page));
+		
+		//lyh test
+		System.out.println("obj="+obj.getResult());
+		System.out.println("obj="+obj.getCallback());
+		System.out.println("obj="+obj.getMsgs());
+		
+		for (DbModel db : ((List<DbModel>)((Page)obj.getData()).getData()) ){
+			System.out.println(db.getDbName());
+		}
+		
+		
 		return obj;
 	}
 	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{dbName}", method=RequestMethod.GET)   

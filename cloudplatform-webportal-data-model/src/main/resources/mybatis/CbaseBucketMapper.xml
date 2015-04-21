@@ -78,4 +78,28 @@
 	</select>
 	
     
+    <!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_CBASE_BUCKET m
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+	parameterType="com.letv.common.dao.QueryParam">
+		select
+		ID,
+		CBASECLUSTER_ID,
+		HCLUSTER_ID,
+		BUCKET_NAME,
+		STATUS,
+		DESCN,
+		BUCKET_TYPE,
+		DELETED,
+		CREATE_TIME,
+		CREATE_USER,
+		UPDATE_TIME,
+		UPDATE_USER
+		from WEBPORTAL_CBASE_BUCKET m
+	</select>
 </mapper>
