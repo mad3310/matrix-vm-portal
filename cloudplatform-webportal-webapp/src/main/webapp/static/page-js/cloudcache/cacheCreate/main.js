@@ -2,7 +2,6 @@ define(function(require){
 	var $ = require("jquery");
 	require("bootstrapValidator")($);
 	var Common=require('../../common');var cn=new Common();
-	var Handler=require('./dataHandler');var hdler=new Handler();
 	
 	cn.divselect();
 	/*禁用退格键退回网页*/
@@ -139,8 +138,16 @@ define(function(require){
 		var val=_taiNum.val();
 		cn.chgeBuyNmu();
 	});
-
-	//cn.GetData('url',hdler.GetCacheHandler);
+	
+    /*加载数据*/
+    var dataHandler = require('./dataHandler');
+    var createDbHandler = new dataHandler();
+    GetHcluster();
+    function GetHcluster(){
+        var url="/hcluster";
+        cn.GetData(url,createDbHandler.GetHclusterHandler);
+    }
+    /*创建cache*/
 	function CreateCache (data) {
 		var url="/cache";
         cn.PostData(url,data, function () {
