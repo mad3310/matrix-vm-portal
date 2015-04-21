@@ -28,9 +28,9 @@
 				<span>缓存实例列表</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
 				<button class="btn btn-default btn-md btn-region-display">北京</button>
-				<button class="btn btn-default btn-md btn-region-display">杭州</button>
+				<!-- <button class="btn btn-default btn-md btn-region-display">杭州</button>
 				<button class="btn btn-default btn-md btn-region-display">青岛</button>
-				<button class="btn btn-default btn-md btn-region-display">香港</button>
+				<button class="btn btn-default btn-md btn-region-display">香港</button> -->
 				</h5> 
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 						<th>付费类型</th>
 						<th>操作</th>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td width="10">
 							<input type="checkbox">
 						</td>
@@ -99,7 +99,7 @@
 						<td><span>包年 365天后到期</span></td>
 						<td><span class="text-explode font-disabled">管理|续费|
 						扩容</span></td>
-					</tr>
+					</tr> -->
 				</thead>
 				<tbody id="tby">
 				</tbody>
