@@ -85,7 +85,7 @@
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>
 										<option value="GCE">GCE</option>
-										<option value="GCE">CBASE</option>								
+										<option value="CBASE">CBASE</option>								
 									</select>
 								</div>								
 								<label class="control-label">
