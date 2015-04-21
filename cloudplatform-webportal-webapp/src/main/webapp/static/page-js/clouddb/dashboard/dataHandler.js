@@ -38,6 +38,14 @@ define(function(require,exports,module){
             	$("#gce-opened").addClass("hide");
             	$("#gce-not-opened").removeClass("hide");
             }
+            if(data.data.cache > 0){
+                $("#ocs-opened").removeClass("hide");
+                $("#ocs-not-opened").addClass("hide");
+                $("#ocsCount").html(data.data.cache);
+            }else{
+                $("#ocs-opened").addClass("hide");
+                $("#ocs-not-opened").removeClass("hide");
+            }
         }
     }
 });

@@ -223,6 +223,26 @@
 								</a>
 							</div>
 						</li>
+						<li id="ocs-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+							<div class="item-profile clearfix">
+								<a href="${ctx}/list/cache" class="pull-left">
+									<span class="item-icon product-icons-48 product-icons-ace"></span>
+								</a>
+								<p class="item-title">
+									<a href="${ctx}/list/cache">开放缓存&nbsp;<span class="item-title-short">OCS</span>
+									</a>
+								</p>
+							</div>
+							<div class="item-record">
+								<span class="item-record-num">
+									<a class="item-record-num-count" href="${ctx}/list/cache"><span id="ocsCount"></span></a>
+								</span>
+								<span class="item-record-unit">个</span>
+								<a data-toggle="tooltip" data-placement="top" title="缓存数">
+									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+								</a>
+							</div>
+						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
