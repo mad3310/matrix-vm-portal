@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
@@ -38,7 +39,7 @@ public class CacheController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(Page page,
-			HttpServletRequest request, ResultObject obj) {
+			HttpServletRequest request, ResultObject result) {
 		Map<String, Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());
 
@@ -46,19 +47,20 @@ public class CacheController {
 		if (!StringUtils.isEmpty(cacheName))
 			params.put("cacheName", StringUtil.transSqlCharacter(cacheName));
 
-		obj.setData(this.cbaseBucketService.findPagebyParams(params, page));
-		return obj;
+		result.setData(this.cbaseBucketService.findPagebyParams(params, page));
+		return result;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject save(CbaseBucketModel cbaseBucketModel,
 			ResultObject obj) {
-		// if (cbaseBucketModel == null
-		// || StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
-		// throw new ValidateException("参数不合法");
-		// } else {
-		//
-		// }
+		if (cbaseBucketModel == null
+				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
+			throw new ValidateException("参数不合法");
+		} else {
+
+		}
+
 		System.out.println("in POST");
 		cbaseBucketModel.setCreateUser(this.sessionService.getSession()
 				.getUserId());
@@ -77,10 +79,10 @@ public class CacheController {
 		System.out.println(cbaseBucketModel.getContainers());
 
 		System.out.println("insert");
-		// this.cbaseBucketService.insert(cbaseBucketModel);
 
 		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
 		return obj;
+
 	}
 
 }
