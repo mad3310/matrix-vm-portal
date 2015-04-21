@@ -49,8 +49,6 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 			throw new ValidateException("参数不合法");
 		Map<String, Object> params = this.cbaseBucketService
 				.save(cbaseBucketModel);
-		params.put("isConfig", false);
-		params.put("isContinue", false);
 		this.build(params);
 	}
 
