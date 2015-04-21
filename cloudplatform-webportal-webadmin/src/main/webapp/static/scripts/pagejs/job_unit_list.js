@@ -206,7 +206,7 @@ function formValidate() {
     			taskType:$('#taskType').val(),
     			descn:$('#descn').val(),
     			beanName:$('#beanName').val(),
-    			retry:$('#retry').val
+    			retry:$('#retry').val()
     		},
     		success : function(data) {
     			location.href = "/list/job/unit";

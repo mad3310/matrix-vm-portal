@@ -19,7 +19,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
-import com.letv.portal.model.DbModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.proxy.ICbaseProxy;
 import com.letv.portal.service.cbase.ICbaseBucketService;
@@ -40,32 +39,32 @@ public class CacheController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(Page page,
-			HttpServletRequest request, ResultObject obj) {
+			HttpServletRequest request, ResultObject result) {
 		Map<String, Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());
-		
+
 		String cacheName = (String) params.get("cacheName");
 		if (!StringUtils.isEmpty(cacheName))
 			params.put("cacheName", StringUtil.transSqlCharacter(cacheName));
-		
-		obj.setData(this.cbaseBucketService.findPagebyParams(params, page));
-		return obj;
+
+		result.setData(this.cbaseBucketService.findPagebyParams(params, page));
+		return result;
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject save(CbaseBucketModel cbaseBucketModel,
 			ResultObject obj) {
-//		if (cbaseBucketModel == null
-//				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
-//			throw new ValidateException("参数不合法");
-//		} else {
-//
-//		}
+		if (cbaseBucketModel == null
+				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
+			throw new ValidateException("参数不合法");
+		} else {
+
+		}
+
 		System.out.println("in POST");
 		cbaseBucketModel.setCreateUser(this.sessionService.getSession()
 				.getUserId());
-		
+
 		System.out.println(cbaseBucketModel.getBucketName());
 		System.out.println(cbaseBucketModel.getHclusterId());
 		System.out.println(cbaseBucketModel.getHcluster());
@@ -74,16 +73,16 @@ public class CacheController {
 		System.out.println(cbaseBucketModel.getStatus());
 		System.out.println(cbaseBucketModel.getDescn());
 		System.out.println(cbaseBucketModel.getBucketType());
-		
+
 		System.out.println(cbaseBucketModel.getRamQuotaMB());
 		System.out.println(cbaseBucketModel.getAuthType());
 		System.out.println(cbaseBucketModel.getContainers());
-		
+
 		System.out.println("insert");
-		this.cbaseBucketService.insert(cbaseBucketModel);
-		
-		//this.cbaseProxy.saveAndBuild(cbaseBucketModel);
+
+		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
 		return obj;
+
 	}
 
 }
