@@ -89,6 +89,73 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 	}
 
 	@Override
+	public String rebalanceCluster(String nodeIp, String port,
+			String knownNodes, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
+				.append("/controller/rebalance");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("ejectedNodes", "");
+		map.put("knownNodes", knownNodes);
+
+		String result = HttpClient
+				.post(url.toString(), map, username, password);
+		return result;
+	}
+
+	@Override
+	public String checkClusterRebalanceStatus(String nodeIp, String port,
+			String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
+				.append("/pools/default/rebalanceProgress");
+
+		String result = HttpClient.get(url.toString(), username, password);
+		return result;
+	}
+
+	@Override
+	public String createPersistentBucket(String nodeIp, String port,
+			String bucketName, String ramQuotaMB, String authType,
+			String saslPassword, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
+				.append("/pools/default/buckets");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", bucketName);
+		map.put("ramQuotaMB", ramQuotaMB);
+		map.put("authType", authType);
+		map.put("saslPassword", saslPassword);
+		map.put("replicaNumber", "1");
+
+		String result = HttpClient
+				.post(url.toString(), map, username, password);
+		return result;
+	}
+
+	@Override
+	public String createUnPersistentBucket(String nodeIp, String port,
+			String bucketName, String ramQuotaMB, String authType,
+			String saslPassword, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
+				.append("/pools/default/buckets");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", bucketName);
+		map.put("ramQuotaMB", ramQuotaMB);
+		map.put("authType", authType);
+		map.put("saslPassword", saslPassword);
+		map.put("bucketType", "memcached");
+
+		String result = HttpClient
+				.post(url.toString(), map, username, password);
+		return result;
+	}
+
+	@Override
 	public String CheckClusterStatus(String nodeIp1, String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();

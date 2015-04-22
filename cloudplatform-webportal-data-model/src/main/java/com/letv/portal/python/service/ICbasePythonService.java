@@ -19,6 +19,20 @@ public interface ICbasePythonService {
 	public String addNodeToCluster(String srcNodeIp, String addNodeIp,
 			String port, String username, String password);
 
+	public String rebalanceCluster(String nodeIp, String port,
+			String knownNodes, String username, String password);
+
+	public String checkClusterRebalanceStatus(String nodeIp, String port,
+			String username, String password);
+
+	public String createPersistentBucket(String nodeIp, String port,
+			String bucketName, String ramQuotaMB, String authType,
+			String saslPassword, String username, String password);
+	
+	public String createUnPersistentBucket(String nodeIp, String port,
+			String bucketName, String ramQuotaMB, String authType,
+			String saslPassword, String username, String password);
+
 	public String CheckClusterStatus(String nodeIp1, String port,
 			String adminUser, String adminPassword);
 

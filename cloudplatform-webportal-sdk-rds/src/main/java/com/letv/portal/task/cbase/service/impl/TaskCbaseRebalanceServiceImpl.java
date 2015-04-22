@@ -14,15 +14,15 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.ICbasePythonService;
 
-@Service("taskCbaseAddNodeService")
-public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
+@Service("taskCbaseRebalanceService")
+public class TaskCbaseRebalanceServiceImpl extends BaseTask4CbaseServiceImpl
 		implements IBaseTaskService {
 
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 
 	private final static Logger logger = LoggerFactory
-			.getLogger(TaskCbaseAddNodeServiceImpl.class);
+			.getLogger(TaskCbaseRebalanceServiceImpl.class);
 
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -33,25 +33,20 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(0).getHostIp();
-		Long cbaseContainerCount = getLongFromObject(params
-				.get("cbaseContainerCount"));
-		String nodeIp2;
-		if (cbaseContainerCount > 2) {
-			nodeIp2 = containers.get(1).getHostIp();
-			cbaseContainerCount--;
-			params.put("cbaseContainerCount", cbaseContainerCount);
-		} else {
-			nodeIp2 = containers.get(2).getHostIp();
-		}
+		String nodeIp2 = containers.get(1).getHostIp();
+		String nodeIp3 = containers.get(2).getHostIp();
+		StringBuffer knownNodes = new StringBuffer();
+		knownNodes.append("ns_1@").append(nodeIp1).append(",").append("ns_1@")
+				.append(nodeIp2).append(",").append("ns_1@").append(nodeIp3);
+
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		String result = this.cbasePythonService.addNodeToCluster(nodeIp1,
-				nodeIp2, super.getCbaseManagePort(), cluster.getAdminUser(),
-				cluster.getAdminPassword());
+		String result = this.cbasePythonService.rebalanceCluster(nodeIp1,
+				super.getCbaseManagePort(), knownNodes.toString(),
+				cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 
 		tr.setParams(params);
 		return tr;
 	}
-
 }

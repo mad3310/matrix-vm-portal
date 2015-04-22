@@ -4,15 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.portal.constant.Constant;
-import com.letv.portal.enumeration.MclusterStatus;
-import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.model.task.TaskResult;
@@ -21,8 +18,8 @@ import com.letv.portal.python.service.ICbasePythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.cbase.ICbaseContainerService;
 
-@Service("taskCbaseClusterCheckStatusService")
-public class TaskCbaseClusterCheckStatusServiceImpl extends
+@Service("taskCbaseRebalanceCheckStatusService")
+public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 		BaseTask4CbaseServiceImpl implements IBaseTaskService {
 
 	@Autowired
@@ -36,7 +33,7 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
 
 	private final static Logger logger = LoggerFactory
-			.getLogger(TaskCbaseClusterCheckStatusServiceImpl.class);
+			.getLogger(TaskCbaseRebalanceCheckStatusServiceImpl.class);
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -45,12 +42,14 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 		if (!tr.isSuccess())
 			return tr;
 
-		CbaseClusterModel cbaseCluster = super.getCbaseCluster(params);
-		HostModel host = super.getHost(cbaseCluster.getHclusterId());
+		List<CbaseContainerModel> containers = super.getContainers(params);
+		String nodeIp1 = containers.get(0).getHostIp();
 
-		String result = cbasePythonService.checkContainerCreateStatus(
-				cbaseCluster.getCbaseClusterName(), host.getHostIp(),
-				host.getName(), host.getPassword());
+		CbaseClusterModel cluster = super.getCbaseCluster(params);
+
+		String result = this.cbasePythonService.checkClusterRebalanceStatus(
+				nodeIp1, super.getCbaseManagePort(), cluster.getAdminUser(),
+				cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 
 		Long start = new Date().getTime();
@@ -60,33 +59,32 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 				tr.setResult("check time over");
 				break;
 			}
-			result = cbasePythonService.checkContainerCreateStatus(
-					cbaseCluster.getCbaseClusterName(), host.getHostIp(),
-					host.getName(), host.getPassword());
+			result = cbasePythonService.checkClusterRebalanceStatus(nodeIp1,
+					super.getCbaseManagePort(), cluster.getAdminUser(),
+					cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 		}
-		if (tr.isSuccess()) {
-			List<Map> containers = (List<Map>) ((Map) transToMap(result).get(
-					"response")).get("containers");
-			for (Map map : containers) {
-				CbaseContainerModel container = new CbaseContainerModel();
-				BeanUtils.populate(container, map);
-				container.setCbaseClusterId(cbaseCluster.getId());
-				container.setIpMask((String) map.get("netMask"));
-				container.setContainerName((String) map.get("containerName"));
-				container.setStatus(MclusterStatus.RUNNING.getValue());
-				// 物理机集群维护完成后，修改此处，需要关联物理机id
-				container.setHostIp((String) map.get("hostIp"));
-				HostModel hostModel = this.hostService.selectByIp((String) map
-						.get("hostIp"));
-				if (null != hostModel) {
-					container.setHostId(hostModel.getId());
-				}
-
-				this.cbaseContainerService.insert(container);
-			}
-			params.put("cbaseContainerCount", containers.size());
-		}
+		// if (tr.isSuccess()) {
+		// List<Map> containers = (List<Map>) ((Map) transToMap(result).get(
+		// "response")).get("containers");
+		// for (Map map : containers) {
+		// CbaseContainerModel container = new CbaseContainerModel();
+		// BeanUtils.populate(container, map);
+		// container.setCbaseClusterId(cbaseCluster.getId());
+		// container.setIpMask((String) map.get("netMask"));
+		// container.setContainerName((String) map.get("containerName"));
+		// container.setStatus(MclusterStatus.RUNNING.getValue());
+		// // 物理机集群维护完成后，修改此处，需要关联物理机id
+		// container.setHostIp((String) map.get("hostIp"));
+		// HostModel hostModel = this.hostService.selectByIp((String) map
+		// .get("hostIp"));
+		// if (null != hostModel) {
+		// container.setHostId(hostModel.getId());
+		// }
+		//
+		// this.cbaseContainerService.insert(container);
+		// }
+		// }
 
 		tr.setParams(params);
 		return tr;
