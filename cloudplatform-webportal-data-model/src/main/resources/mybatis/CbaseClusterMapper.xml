@@ -47,6 +47,45 @@
 		where ID=#{id}
 	</update>
 	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="CbaseCluster">
+		update WEBPORTAL_CBASECLUSTER_INFO
+		<set>
+			<if test="cbaseClusterName != null  and cbaseClusterName != '' ">
+				CBASECLUSTER_NAME=#{cbaseClusterName},
+			</if>
+			<if test="adminUser != null  ">
+				ADMIN_USER=#{adminUser},
+			</if>
+			<if test="adminPassword != null  ">
+				ADMIN_PASSWORD=#{adminPassword},
+			</if>
+			<if test="status != null  ">
+				STATUS=#{status},
+			</if>
+			<if test="type != null  ">
+				TYPE=#{type},
+			</if>
+			<if test="hclusterId != null  ">
+				HCLUSTER_ID=#{hclusterId},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=now(),
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser}
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
 	<!-- 删除记录 -->
 	<delete id="delete" parameterType="CbaseCluster">
 		delete from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}

@@ -86,9 +86,17 @@
 			</if>
 				UPDATE_TIME=now(),
 			<if test="updateUser != null  ">
-				UPDATE_USER=#{updateUser}
+				UPDATE_USER=#{updateUser},
 			</if>
-		
+			<if test="bucketType != null  ">
+				BUCKET_TYPE=#{bucketType},
+			</if>
+			<if test="bucketType != null  ">
+				RAMQUOTAMB=#{ramQuotaMB},
+			</if>
+			<if test="bucketType != null  ">
+				AUTH_TYPE=#{authType}
+			</if>
 		</set>
 		where ID=#{id}
 	</update>
