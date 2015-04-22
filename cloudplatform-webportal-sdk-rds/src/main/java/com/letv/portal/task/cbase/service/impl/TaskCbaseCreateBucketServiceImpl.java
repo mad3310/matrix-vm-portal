@@ -56,4 +56,9 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 		tr.setParams(params);
 		return tr;
 	}
+
+	@Override
+	public void callBack(TaskResult tr) {
+		super.rollBack(tr);
+	}
 }
