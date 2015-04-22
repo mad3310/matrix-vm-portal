@@ -608,6 +608,37 @@ define(function(require,exports,module){
                 }
             });
         },
+        dragBarInite:function(options){
+            var len=options.stepSize;
+            var width=len*options.lev1/options.grade1;
+            var html='<div class="bk-slider"><div class="bk-slider-range" id="bar0"><span class="bk-slider-block bk-slider-l2"><span class="bk-slider-block-box"><span class="bk-slider-txt">'+options.grade1+options.unit+'</span></span></span><span class="bk-slider-block bk-slider-l1"><span class="bk-slider-block-box">'
+                    +'<span class="bk-slider-txt">'+options.grade2+options.unit+'</span></span></span> <span class="bk-slider-block bk-slider-l1" style="margin-left:-4px;"><span class="bk-slider-block-box bk-slider-block-box-last bk-select-action"><span class="bk-slider-txt">'+options.grade3+options.unit+'</span>'
+                    +'</span></span><span class="bk-slider-container bk-slider-transition" id="layer2" style="width:'+width+'px;"><span class="bk-slider-current"><span class="bk-slider-unit bk-slider-l2"><span class="bk-slider-unit-box">'
+                    +'<span class="bk-slider-txt">'+options.grade1+options.unit+'</span></span></span><span class="bk-slider-unit bk-slider-l1"><span class="bk-slider-unit-box"><span class="bk-slider-txt">'+options.grade2+options.unit+'</span></span></span>'
+                    +'<span class="bk-slider-unit bk-slider-l1"><span class="bk-slider-unit-box bk-slider-unit-box-last"><span class="bk-slider-txt">'+options.grade3+options.unit+'</span></span>'
+                    +'</span></span></span><span class="awCursor" style="left:'+width+'px;"><div style="position: relative" class="ng-scope"><div class="bk-tip-gray hide" style="top: -44px;left: -18px"><span class="ng-binding">1</span> <span class="bk-tip-arrow"></span>'
+                    +'</div></div></span></div></div><span class="bk-number bk-ml2"><input type="text" class="bk-number-input memSize" id="value2" name="ramQuotaMB"><span class="bk-number-unit">'+options.unit+'</span><span class="bk-number-control"><span class="bk-number-up mem-num-up"> <i class="bk-number-arrow"></i> </span>' 
+                    +'<span class="bk-number-down mem-num-down bk-number-disabled"> <i class="bk-number-arrow"></i></span> </span></span>';
+            $('.self-dragBar').append(html);
+            $('.memSize').val(options.stepSize);
+        },
+        dragBarUpdate:function(options){
+            var _this=$('.bk-slider-range').children('.bk-slider-l2');
+            _this.find('.bk-slider-txt').text(options.grade1);
+            _this.next().find('.bk-slider-txt').text(options.grade2);
+            _this.next().next().find('.bk-slider-txt').text(options.grade3);
+            var _grayLayer=$('.bk-slider-transition').find('.bk-slider-l2');
+            _grayLayer.find('.bk-slider-txt').text(options.grade1);
+            _grayLayer.next().find('.bk-slider-txt').text(options.grade2);
+            _grayLayer.next().next().find('.bk-slider-txt').text(options.grade3);
+            var len=options.stepSize;
+            var width=len*options.lev1/options.grade1;
+            $('#layer2').css('width',width);
+            $('.awCursor').css('left',width);
+            $('.memSize').val(options.stepSize);
+            var curPosition=$('#layer2').width();
+            drag(curPosition,options);
+        },
         barDrag:function(options){//滑动条拖动
             var _awCursor=$('.awCursor');
             var _slider=$('.bk-slider');
@@ -630,10 +661,10 @@ define(function(require,exports,module){
                         //拖拽过最右界
                         temp=412;
                     }else{
-                         if(temp<0){
+                         if(temp<=0){
                             //拖拽过最左界
                             //temp=5;
-                            temp=options.stepSize;
+                            temp=options.stepSize*options.lev1/options.grade1;
                          }else{
                             //允许范围之内
                         }               
@@ -691,9 +722,10 @@ define(function(require,exports,module){
         var _up=$('.mem-num-up');
         var _down=$('.mem-num-down');
         var base=options.stepSize;
-        var lev1=options.lev1;//0-250:206
-        var lev2=options.lev2;//250-500:206+103
-        var lev3=options.lev3;//500-1000:206+103+103
+        var baseL=base*options.lev1/options.grade1;
+        var lev1=options.lev1;//0-250:206 grade1
+        var lev2=options.lev2;//250-500:206+103 grade2
+        var lev3=options.lev3;//500-1000:206+103+103 grade3
         if(relaLen>lev3){
             //不合适
             _up.addClass('bk-number-disabled')
@@ -703,11 +735,12 @@ define(function(require,exports,module){
             if(relaLen>lev2){
                 //500-1000档
                 var tempL=parseInt(relaLen)-lev2;
-                var temp=tempL*500/(lev2-lev1);
+                // var temp=tempL*500/(lev2-lev1);
+                var temp=tempL*options.grade2/(lev2-lev1);
                 var i=Math.ceil(temp);
                 i=base*Math.ceil(i/base);
-                // temp=i*5;
-                temp=i+500;
+                // temp=i+500;
+                temp=i+options.grade2;
                 _memSize.val(temp);
                 _awCursor.find('.ng-binding').text(temp);
                 _layer2.css({
@@ -719,11 +752,12 @@ define(function(require,exports,module){
             }else if(relaLen>lev1){
                 //250-500
                 var tempL=parseInt(relaLen)-lev1;
-                var temp=tempL*250/(lev2-lev1);
+                // var temp=tempL*250/(lev2-lev1);
+                var temp=tempL*options.grade1/(lev2-lev1);
                 var i=Math.ceil(temp);
                 i=base*Math.ceil(i/base);
-                // temp=i*5;
-                temp=i+250;
+                // temp=i+250;
+                temp=i+options.grade1;
                 _memSize.val(temp);
                 _awCursor.find('.ng-binding').text(temp);
                 _layer2.css({
@@ -732,12 +766,12 @@ define(function(require,exports,module){
                 _awCursor.css({
                     left:relaLen
                 });
-            }else if(relaLen>=base){
+            // }else if(relaLen>=base){
+            }else if(relaLen>=baseL){
                 //5-250
                 var tempL=parseInt(relaLen);
-                // var i=Math.ceil(tempL/base);
-                // tempL=i*base;
-                var temp=250*tempL/lev1;
+                // var temp=250*tempL/lev1;
+                var temp=options.grade1*tempL/lev1;
                 var j=Math.ceil(temp/base);
                 tempL=j*base;
                 _memSize.val(tempL);
@@ -759,40 +793,47 @@ define(function(require,exports,module){
         var _awCursor=$('.awCursor');
         var _layer2=$('#layer2');
         var base=options.stepSize;
-        var lev1=options.lev1;//0-250:206
-        var lev2=options.lev2;//250-500:206+103
-        var lev3=options.lev3;//500-1000:206+103+103
+        var lev1=options.lev1;//0-250:206 grade1
+        var lev2=options.lev2;//250-500:206+103 grade2
+        var lev3=options.lev3;//500-1000:206+103+103 grade3
         var lenPerc;
         var i=Math.ceil(val/base);
         val=i*base;
         _memSize.val(val);
         if(val<base){
             _memSize.val(base);
-            lenPerc=_memSize.val()*lev1/250;
+            // lenPerc=_memSize.val()*lev1/250;
+            lenPerc=_memSize.val()*lev1/options.grade1;
             _awCursor.css({
                 left:lenPerc
             });
         }else{
-            if(val<=250){
-                lenPerc=_memSize.val()*lev1/250;
+            // if(val<=250){
+            if(val<=options.grade1){
+                // lenPerc=_memSize.val()*lev1/250;
+                lenPerc=_memSize.val()*lev1/options.grade1;
                 _awCursor.css({
                     left:lenPerc
                 });
-            }else if(val<=500){
-                lenPerc=(_memSize.val()-250)*(lev2-lev1)/250;
+            // }else if(val<=500){
+              }else if(val<=options.grade2){  
+                // lenPerc=(_memSize.val()-250)*(lev2-lev1)/250;
+                lenPerc=(_memSize.val()-options.grade1)*(lev2-lev1)/options.grade1;
                 lenPerc+=lev1;
                 _awCursor.css({
                     left:lenPerc
                 });
             }else{
-                if(val<=1000){
-                    lenPerc=(_memSize.val()-500)*(lev2-lev1)/500;
+                // if(val<=1000){
+                if(val<=options.grade3){
+                    // lenPerc=(_memSize.val()-500)*(lev2-lev1)/500;
+                    lenPerc=(_memSize.val()-options.grade2)*(lev2-lev1)/options.grade2;
                     lenPerc+=lev2;
                     _awCursor.css({
                         left:lenPerc
                     });
                 }else{
-                    _memSize.val(1000);
+                    _memSize.val(options.grade3);
                     lenPerc=lev3+1;
                     _awCursor.css({
                         left:lenPerc

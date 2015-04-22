@@ -2,8 +2,21 @@ define(function(require){
 	var $ = require("jquery");
 	require("bootstrapValidator")($);
 	var Common=require('../../common');var cn=new Common();
-	
+	var options={//拖动条初始化参数 全局变量
+			'stepSize':100,//步长
+			'lev1':206,//拖动条第一块长度==css width
+			'lev2':309,//拖动条第二块长度==css width
+			'lev3':412,//拖动条第三块长度==css width
+			'grade1':2500,//三段设置，倍数关系2
+			'grade2':5000,
+			'grade3':10000,
+			'unit':'MB'
+	};
 	cn.divselect();
+	//drag bar 
+	cn.dragBarInite(options);
+	cn.barClickDrag(options);
+	cn.barDrag(options);
 	/*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
     if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
@@ -19,9 +32,39 @@ define(function(require){
             if($(this).parent().find(".hide").length > 0 ){
                 var val = $(this).val();
                 $(this).parent().find(".hide").val(val);
+                if(val==1){//非持久化
+                	options={
+						'stepSize':1,
+						'lev1':206,
+						'lev2':309,
+						'lev3':412,
+						'grade1':75,
+						'grade2':150,
+						'grade3':300,
+						'unit':'MB'
+					};
+					cn.dragBarUpdate(options);
+					cn.barClickDrag(options);
+					cn.barDrag(options);
+                }else if(val==0){//持久化
+                	options={
+						'stepSize':100,
+						'lev1':206,
+						'lev2':309,
+						'lev3':412,
+						'grade1':2500,
+						'grade2':5000,
+						'grade3':10000,
+						'unit':'MB'
+					};
+					cn.dragBarUpdate(options);
+					cn.barClickDrag(options);
+					cn.barDrag(options);
+                }
             }
         }
-    })
+    });
+    
     $("#monthPurchaseForm").bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -61,17 +104,11 @@ define(function(require){
     });
     /*表单验证 --end*/
 	var _up=$('.mem-num-up');var _down=$('.mem-num-down');var _upT=$('.tai-num-up');var _downT=$('.tai-num-down');
-	var options={
-		'stepSize':1,
-		'lev1':206,
-		'lev2':309,
-		'lev3':412
-	};
 	_up.click(function(event) {
 		var _memSize=$('.memSize');
 		var val=_memSize.val();
 		var temp=parseInt(val)+options.stepSize;
-		if(temp>=1000){
+		if(temp>=options.grade3){
 			_up.addClass('bk-number-disabled');
 		}else{
 			_up.removeClass('bk-number-disabled');
@@ -92,7 +129,7 @@ define(function(require){
 			_down.addClass('bk-number-disabled');
 		}else{
 			_down.removeClass('bk-number-disabled');
-			if(temp<1000){
+			if(temp<options.grade3){
 				_up.removeClass('bk-number-disabled');
 			}else{
 				_up.addClass('bk-number-disabled');
@@ -101,9 +138,7 @@ define(function(require){
 		_memSize.val(temp);
 		cn.inputChge(options);
 	});
-	cn.barClickDrag(options);
-	cn.barDrag(options);
-//	cn.btnPrimaryClick();
+	
 	_upT.click(function(event) {
 		var _taiNum=$('.tai-num');
 		var val=_taiNum.val();
