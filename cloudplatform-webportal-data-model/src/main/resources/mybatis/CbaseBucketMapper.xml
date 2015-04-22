@@ -128,14 +128,14 @@
 			H.HCLUSTER_NAME_ALIAS,
 			H.STATUS
 			from WEBPORTAL_CBASE_BUCKET M, WEBPORTAL_HCLUSTER H
-			where M.ID = #{id} and H.ID = m.HCLUSTER_ID
+			where M.ID = #{id} and H.ID = M.HCLUSTER_ID
 	</select>
 	
     
     <!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
-		select count(1) from WEBPORTAL_CBASE_BUCKET m
+		select count(1) from WEBPORTAL_CBASE_BUCKET M
 	</select>
 	
 	<!-- 分页：根据条件查询 ? 待完善 -->
