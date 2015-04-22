@@ -125,74 +125,8 @@
 												<div class="bk-form-row-cell">
 													<!-- 原拖动效果注释 -->
 													<div class="bk-form-row-li">
-														<div class="bk-slider">
-															<div class="bk-slider-range" id="bar0">
-																<div id="flag"></div>
-																<span class="bk-slider-block bk-slider-l2">
-																	<span class="bk-slider-block-box">
-																		<span class="bk-slider-txt">250GB</span>
-																	</span>
-																</span>
-																<span class="bk-slider-block bk-slider-l1">
-																	<span class="bk-slider-block-box">
-																		<span class="bk-slider-txt">500GB</span>
-																	</span>
-																</span> 
-																<span class="bk-slider-block bk-slider-l1" style="margin-left:-4px;">
-																	<span class="bk-slider-block-box bk-slider-block-box-last bk-select-action">
-																		<span class="bk-slider-txt">1000GB</span>
-																	</span>
-																</span>
-																<span class="bk-slider-container bk-slider-transition" id="layer2" style="width:4.12px;">
-																	<span class="bk-slider-current">
-																		<span class="bk-slider-unit bk-slider-l2">
-																			<span class="bk-slider-unit-box">
-																				<span class="bk-slider-txt">250GB</span>
-																			</span>
-																		</span>
-																		<span class="bk-slider-unit bk-slider-l1">
-																			<span class="bk-slider-unit-box">
-																				<span class="bk-slider-txt">500GB</span>
-																			</span>
-																		</span>
-																		<span class="bk-slider-unit bk-slider-l1">
-																			<span class="bk-slider-unit-box bk-slider-unit-box-last">
-																				<span class="bk-slider-txt">1000GB</span>
-																			</span>
-																		</span>
-																	</span>
-																</span>
-																<!-- <button id="btn2"></button> -->
-																<!-- <span class="bk-slider-drag" id="btn0"> <i></i> <i></i>
-																	<span class="bk-tip-arrow"></span>
-																</span> -->
-																<span class="awCursor" style="left: 4.12px;">
-																	<div style="position: relative" class="ng-scope">
-																		<div class="bk-tip-gray hide" style="top: -44px;left: -18px">
-																			<span class="ng-binding">1</span> <span class="bk-tip-arrow"></span>
-																		</div>
-																	</div>
-																</span>
-															</div>
-														</div>
-														<span class="bk-number bk-ml2">
-															<input type="text" class="bk-number-input memSize" id="value2" value="1" name="ramQuotaMB">
-															<span class="bk-number-unit">GB</span>
-															<span class="bk-number-control">
-																<span class="bk-number-up mem-num-up"> <i class="bk-number-arrow"></i> </span> 
-																<span class="bk-number-down mem-num-down bk-number-disabled"> <i class="bk-number-arrow"></i></span> 
-															</span>
-														</span>
-												</div>
-													<!-- <div class="bk-form-row-li clearfix">
-														<div class="pull-left" style="height: 36px;">
-															<span class="sleBG"> <span class="sleHid"> <select class="form-control w217 wcolor">
-																		<option>10G</option>
-																</select>
-															</span>
-															</span> <span class="bk-select-arrow"></span>
-														</div>
-													</div> -->
+														<div class="self-dragBar"></div><!-- 拖动条生成容器 -->	
+													</div>	
 												</div>
 											</div>
 											<div class="bk-form-row">

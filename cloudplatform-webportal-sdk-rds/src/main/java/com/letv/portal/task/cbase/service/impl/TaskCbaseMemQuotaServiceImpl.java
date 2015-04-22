@@ -8,20 +8,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.model.cbase.CbaseBucketModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.ICbasePythonService;
 
-@Service("taskCbaseCheckStartService")
-public class TaskCbaseCheckStartServiceImpl extends BaseTask4CbaseServiceImpl
+@Service("taskCbaseMemQuotaService")
+public class TaskCbaseMemQuotaServiceImpl extends BaseTask4CbaseServiceImpl
 		implements IBaseTaskService {
 
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 
 	private final static Logger logger = LoggerFactory
-			.getLogger(TaskCbaseCheckStartServiceImpl.class);
+			.getLogger(TaskCbaseMemQuotaServiceImpl.class);
 
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -32,19 +34,16 @@ public class TaskCbaseCheckStartServiceImpl extends BaseTask4CbaseServiceImpl
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(0).getHostIp();
-		// String port = containers.get(0).getMgrBindHostPort();
-		// CbaseClusterModel cluster = super.getCbaseCluster(params);
-		//
-		// String result = this.cbasePythonService.CheckClusterStatus(nodeIp1,
-		// port, cluster.getAdminUser(), cluster.getAdminPassword());
-		// tr = analyzeRestServiceResult(result);
-		//
-		// tr.setParams(params);
-		return tr;
-	}
+		CbaseClusterModel cluster = super.getCbaseCluster(params);
+		CbaseBucketModel bucket = super.getCbaseBucket(params);
 
-	@Override
-	public void callBack(TaskResult tr) {
+		String result = this.cbasePythonService.configClusterMemQuota(nodeIp1,
+				super.getCbaseManagePort(), bucket.getRamQuotaMB(),
+				cluster.getAdminUser(), cluster.getAdminPassword());
+		tr = analyzeRestServiceResult(result);
+
+		tr.setParams(params);
+		return tr;
 	}
 
 }

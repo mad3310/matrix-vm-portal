@@ -45,26 +45,46 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 			String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
-				.append("/admin/user");
+				.append("/settings/web");
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("adminUser", username);
-		map.put("adminPassword", password);
+		map.put("username", username);
+		map.put("password", password);
+		map.put("port", port);
 
-		String result = HttpClient
-				.post(url.toString(), map, username, password);
+		String result = HttpClient.post(url.toString(), map);
 		return result;
 	}
 
 	@Override
-	public String startCluster(String nodeIp1, String port, String adminUser,
-			String adminPassword) {
+	public String configClusterMemQuota(String nodeIp1, String port,
+			String memoryQuota, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
-				.append("/cluster/start");
+				.append("/pools/default");
 
-		String result = HttpClient.post(url.toString(), null, adminUser,
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memoryQuota", memoryQuota);
+
+		String result = HttpClient.post(url.toString(), map, adminUser,
 				adminPassword);
+		return result;
+	}
+
+	@Override
+	public String addNodeToCluster(String srcNodeIp, String addNodeIp,
+			String port, String username, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(srcNodeIp).append(":").append(port)
+				.append("/controller/addNode");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("hostname", addNodeIp);
+		map.put("user", username);
+		map.put("password", password);
+
+		String result = HttpClient
+				.post(url.toString(), map, username, password);
 		return result;
 	}
 

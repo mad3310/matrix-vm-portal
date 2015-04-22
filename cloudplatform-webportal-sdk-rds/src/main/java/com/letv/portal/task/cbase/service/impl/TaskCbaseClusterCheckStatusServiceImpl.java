@@ -82,35 +82,6 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 				if (null != hostModel) {
 					container.setHostId(hostModel.getId());
 				}
-				List<Map> portBindings = (List<Map>) map.get("port_bindings");
-				StringBuffer hostPort = new StringBuffer();
-				StringBuffer containerPort = new StringBuffer();
-				StringBuffer protocol = new StringBuffer();
-				// for (Map portBinding : portBindings) {
-				// if ("manager".equals(portBinding.get("type"))) {
-				// container.setMgrBindHostPort((String) portBinding
-				// .get("hostPort"));
-				// continue;
-				// }
-				// hostPort.append((String) portBinding.get("hostPort"))
-				// .append(",");
-				// containerPort.append(
-				// (String) portBinding.get("containerPort")).append(
-				// ",");
-				// protocol.append((String) portBinding.get("protocol"))
-				// .append(",");
-				// }
-				// container.setBingHostPort(hostPort.length() > 0 ? hostPort
-				// .substring(0, hostPort.length() - 1) : hostPort
-				// .toString());
-				// container
-				// .setBindContainerPort(containerPort.length() > 0 ?
-				// containerPort
-				// .substring(0, containerPort.length() - 1)
-				// : containerPort.toString());
-				// container.setBingProtocol(protocol.length() > 0 ? protocol
-				// .substring(0, protocol.length() - 1) : protocol
-				// .toString());
 
 				this.cbaseContainerService.insert(container);
 			}
