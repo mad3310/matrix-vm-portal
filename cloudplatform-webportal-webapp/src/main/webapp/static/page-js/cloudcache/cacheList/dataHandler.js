@@ -76,8 +76,8 @@ define(function(require,exports,module){
                     }
                     var td5 = $('<td><span><div class="progress" style="margin-bottom:0;"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40%</span></div></div></span></td>');
                     var td6 = $("<td><span >北京</span></td>");
-                    // var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                    var td7 = $("<td><span>可用区</span></td>");
+                    var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
+//                    var td7 = $("<td><span>可用区</span></td>");
                     // if(array[i].mcluster == null){//服务集群array[i].hcluster.***
                     // 	var td8 = $("<td></td>");
                     // }else{
