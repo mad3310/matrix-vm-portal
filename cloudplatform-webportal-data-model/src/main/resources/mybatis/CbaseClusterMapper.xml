@@ -70,4 +70,21 @@
 		from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
 	</select>
 	
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		ID,
+		CBASECLUSTER_NAME,
+		ADMIN_USER,
+		ADMIN_PASSWORD,
+		STATUS,
+		TYPE,
+		HCLUSTER_ID,
+		DELETED,
+		CREATE_TIME,
+		CREATE_USER,
+		UPDATE_TIME,
+		UPDATE_USER
+		from WEBPORTAL_CBASECLUSTER_INFO M WHERE M.CBASECLUSTER_NAME = #{cbaseClusterName}
+	</select>
+	
 </mapper>
