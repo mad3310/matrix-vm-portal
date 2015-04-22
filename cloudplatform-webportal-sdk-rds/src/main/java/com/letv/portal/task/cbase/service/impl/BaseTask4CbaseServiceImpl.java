@@ -34,6 +34,7 @@ import com.letv.portal.service.cbase.ICbaseContainerService;
 @Component("baseCbaseTaskService")
 public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 
+	private static String cbaseManagePort = "8091";
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
 	@Autowired
@@ -250,6 +251,14 @@ public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 			throw new ValidateException(
 					"cbaseCluster is null by cbaseClusterId:" + cbaseClusterId);
 		return cbaseContainers;
+	}
+
+	public static String getCbaseManagePort() {
+		return cbaseManagePort;
+	}
+
+	public static void setCbaseManagePort(String cbaseManagePort) {
+		BaseTask4CbaseServiceImpl.cbaseManagePort = cbaseManagePort;
 	}
 
 }

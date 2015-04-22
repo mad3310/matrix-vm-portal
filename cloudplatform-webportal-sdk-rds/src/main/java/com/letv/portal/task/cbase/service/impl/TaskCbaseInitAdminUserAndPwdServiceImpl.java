@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -32,15 +33,14 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(0).getHostIp();
-		// String port = containers.get(0).getMgrBindHostPort();
-		// CbaseClusterModel cluster = super.getCbaseCluster(params);
-		//
-		// String result =
-		// this.cbasePythonService.initUserAndPwd4Manager(nodeIp1,
-		// port, cluster.getAdminUser(), cluster.getAdminPassword());
-		// tr = analyzeRestServiceResult(result);
-		//
-		// tr.setParams(params);
+		CbaseClusterModel cluster = super.getCbaseCluster(params);
+
+		String result = this.cbasePythonService.initUserAndPwd4Manager(nodeIp1,
+				super.getCbaseManagePort(), cluster.getAdminUser(),
+				cluster.getAdminPassword());
+		tr = analyzeRestServiceResult(result);
+
+		tr.setParams(params);
 		return tr;
 	}
 

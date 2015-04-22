@@ -13,8 +13,11 @@ public interface ICbasePythonService {
 	public String initUserAndPwd4Manager(String nodeIp, String port,
 			String username, String password);
 
-	public String startCluster(String nodeIp1, String port, String adminUser,
-			String adminPassword);
+	public String configClusterMemQuota(String nodeIp, String port,
+			String memoryQuota, String username, String password);
+
+	public String addNodeToCluster(String srcNodeIp, String addNodeIp,
+			String port, String username, String password);
 
 	public String CheckClusterStatus(String nodeIp1, String port,
 			String adminUser, String adminPassword);

@@ -48,6 +48,7 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 	@Override
 	public Map<String, Object> save(CbaseBucketModel cbaseBucket) {
 		cbaseBucket.setStatus(CbaseBucketStatus.BUILDDING.getValue());
+		cbaseBucket.setAuthType("sasl");
 
 		StringBuffer cbaseClusterName = new StringBuffer();
 		cbaseClusterName.append(cbaseBucket.getCreateUser()).append("_")
