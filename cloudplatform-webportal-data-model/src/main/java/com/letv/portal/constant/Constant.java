@@ -35,6 +35,8 @@ public class Constant {
 	
 	public static String PYTHON_API_RESPONSE_SUCCESS= "200";
 	
+	public static String CREATE_BUCKET_API_RESPONSE_SUCCESS= "202";
+	
 	public static String PYTHON_API_RESULT_SUCCESS= "000000";
 	
 	public static String PYTHON_API_CHECK_CONTAINER_RUNNING= "<running>";

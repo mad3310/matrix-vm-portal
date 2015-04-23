@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -60,5 +61,25 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 	@Override
 	public void callBack(TaskResult tr) {
 		super.rollBack(tr);
+	}
+
+	@Override
+	public TaskResult analyzeRestServiceResult(String result) {
+		TaskResult tr = new TaskResult();
+		if (result == null) {
+			tr.setSuccess(false);
+			tr.setResult("api connect failed");
+			return tr;
+		}
+
+		boolean isSucess = Constant.CREATE_BUCKET_API_RESPONSE_SUCCESS
+				.equals(result);
+		if (isSucess) {
+			tr.setResult("Create Bucket SUCCESS");
+		} else {
+			tr.setResult("Create Bucket FAILURE");
+		}
+		tr.setSuccess(isSucess);
+		return tr;
 	}
 }

@@ -130,8 +130,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("saslPassword", saslPassword);
 		map.put("replicaNumber", "1");
 
-		String result = HttpClient
-				.post(url.toString(), map, username, password);
+		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
+				port, map, username, password);
 		return result;
 	}
 
@@ -150,8 +150,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("saslPassword", saslPassword);
 		map.put("bucketType", "memcached");
 
-		String result = HttpClient
-				.post(url.toString(), map, username, password);
+		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
+				port, map, username, password);
 		return result;
 	}
 

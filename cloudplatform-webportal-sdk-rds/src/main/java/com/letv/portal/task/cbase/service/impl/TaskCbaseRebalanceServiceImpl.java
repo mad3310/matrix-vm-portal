@@ -62,9 +62,9 @@ public class TaskCbaseRebalanceServiceImpl extends BaseTask4CbaseServiceImpl
 
 		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
 		if (isSucess) {
-			tr.setResult("ConfigMemQuota SUCCESS");
+			tr.setResult("Rebalance Operation SUCCESS");
 		} else {
-			tr.setResult("ConfigMemQuota FAILURE");
+			tr.setResult("Rebalance Operation FAILURE");
 		}
 		tr.setSuccess(isSucess);
 		return tr;
