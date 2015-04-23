@@ -12,32 +12,37 @@
 		<result column="IP_ADDR" property="ipAddr" />
 		<result column="GATE_ADDR" property="gateAddr" />
 		<result column="IP_MASK" property="ipMask" />
-		<!-- 
-		<result column="ZOOKEEPER_ID" property="zookeeperId" />
-		 -->
-		 
+		<!-- <result column="ZOOKEEPER_ID" property="zookeeperId" /> -->
+
 		<result column="TYPE" property="type" />
 		<result column="DISK_SIZE" property="diskSize" />
 		<result column="CORES_NUMBER" property="coresNumber" />
 		<result column="CPU_SPEED" property="cpuSpeed" />
 		<result column="MEMORY_SIZE" property="memorySize" />
 		<result column="STATUS" property="status" />
-		
+
 		<result column="HOST_IP" property="hostIp" />
 		<result column="HOST_ID" property="hostId" />
 		<result column="CBASECLUSTER_ID" property="cbaseClusterId" />
 		<result column="ZABBIXHOSTS" property="zabbixHosts" />
-		
+
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
-		
+
 	</resultMap>
-	
+
+	<!-- WEBPORTAL_CBASE_CONTAINER CCT table all fields -->
+	<sql id="Base_Column_List">
+		CCT.ID,CCT.CONTAINER_NAME,CCT.MOUNT_DIR,CCT.IP_ADDR,CCT.GATE_ADDR,CCT.IP_MASK,CCT.TYPE,CCT.ZABBIXHOSTS,
+		CCT.DISK_SIZE,CCT.CORES_NUMBER,CCT.MEMORY_SIZE,CCT.CPU_SPEED,CCT.HOST_ID,CCT.HOST_IP,CCT.CBASECLUSTER_ID,CCT.STATUS,CCT.DELETED,CCT.CREATE_TIME,CCT.CREATE_USER,CCT.UPDATE_TIME,CCT.UPDATE_USER
+	</sql>
+
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="CbaseContainer" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="CbaseContainer"
+		useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_CBASE_CONTAINER
 		(CONTAINER_NAME,MOUNT_DIR,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,
@@ -46,10 +51,11 @@
 		(#{containerName},#{mountDir},#{ipAddr},#{gateAddr},#{ipMask},#{type},
 		#{diskSize},#{coresNumber},#{cpuSpeed},#{memorySize},#{status},#{hostIp},#{hostId},#{cbaseClusterId},${deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
-	
+
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="CbaseContainer">
-		update WEBPORTAL_CBASE_CONTAINER set
+		update
+		WEBPORTAL_CBASE_CONTAINER set
 		CONTAINER_NAME=#{containerName},
 		MOUNT_DIR=#{mountDir},
 		IP_ADDR=#{ipAddr},
@@ -71,13 +77,14 @@
 		UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
-	
+
 	<!-- 删除记录 -->
 	<delete id="delete" parameterType="CbaseContainer">
-		delete from WEBPORTAL_CBASE_CONTAINER where ID = #{id}
+		delete from
+		WEBPORTAL_CBASE_CONTAINER where ID = #{id}
 	</delete>
-	
-	<!-- 根据id查询-->
+
+	<!-- 根据id查询 -->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		ID,
@@ -103,6 +110,14 @@
 		ZABBIXHOSTS
 		from WEBPORTAL_CBASE_CONTAINER where ID = #{id}
 	</select>
-	
-	
+
+	<select id="selectContainerByCbaseClusterId" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASE_CONTAINER CCT
+		where
+		CCT.CBASECLUSTER_ID=#{cbaseClusterId}
+	</select>
+
 </mapper>

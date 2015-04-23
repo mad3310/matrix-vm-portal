@@ -32,7 +32,7 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
 		String result = this.cbasePythonService.initUserAndPwd4Manager(nodeIp1,
