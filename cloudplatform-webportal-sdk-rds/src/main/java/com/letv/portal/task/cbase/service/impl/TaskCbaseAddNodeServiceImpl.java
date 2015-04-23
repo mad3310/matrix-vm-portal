@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.model.task.TaskResult;
@@ -54,4 +55,22 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 		return tr;
 	}
 
+	@Override
+	public TaskResult analyzeRestServiceResult(String result) {
+		TaskResult tr = new TaskResult();
+		if (result == null) {
+			tr.setSuccess(false);
+			tr.setResult("api connect failed");
+			return tr;
+		}
+
+		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
+		if (isSucess) {
+			tr.setResult("ConfigMemQuota SUCCESS");
+		} else {
+			tr.setResult("ConfigMemQuota FAILURE");
+		}
+		tr.setSuccess(isSucess);
+		return tr;
+	}
 }

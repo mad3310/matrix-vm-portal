@@ -53,7 +53,6 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 			tr.setResult("api connect failed");
 			return tr;
 		}
-		Map<String, Object> response = null;
 
 		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
 		if (isSucess) {

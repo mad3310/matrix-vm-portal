@@ -66,8 +66,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("memoryQuota", memoryQuota);
 
-		String result = HttpClient.postCbaseManager(nodeIp1, port,
-				url.toString(), map, adminUser, adminPassword);
+		String result = HttpClient.postCbaseManager(url.toString(), nodeIp1,
+				port, map, adminUser, adminPassword);
 		return result;
 	}
 
@@ -83,8 +83,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("user", username);
 		map.put("password", password);
 
-		String result = HttpClient
-				.post(url.toString(), map, username, password);
+		String result = HttpClient.postCbaseManager(url.toString(), srcNodeIp,
+				port, map, username, password);
 		return result;
 	}
 
@@ -99,8 +99,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("ejectedNodes", "");
 		map.put("knownNodes", knownNodes);
 
-		String result = HttpClient
-				.post(url.toString(), map, username, password);
+		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
+				port, map, username, password);
 		return result;
 	}
 
