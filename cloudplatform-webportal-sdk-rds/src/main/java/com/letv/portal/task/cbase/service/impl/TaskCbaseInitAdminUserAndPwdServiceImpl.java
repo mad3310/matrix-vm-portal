@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.model.task.TaskResult;
@@ -41,6 +42,26 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 		tr = analyzeRestServiceResult(result);
 
 		tr.setParams(params);
+		return tr;
+	}
+
+	@Override
+	public TaskResult analyzeRestServiceResult(String result) {
+		TaskResult tr = new TaskResult();
+		if (result == null) {
+			tr.setSuccess(false);
+			tr.setResult("api connect failed");
+			return tr;
+		}
+		Map<String, Object> response = null;
+
+		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
+		if (isSucess) {
+			tr.setResult("InitAdminUserAndPwd SUCCESS");
+		} else {
+			tr.setResult("InitAdminUserAndPwd FAILURE");
+		}
+		tr.setSuccess(isSucess);
 		return tr;
 	}
 

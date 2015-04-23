@@ -52,7 +52,7 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("password", password);
 		map.put("port", port);
 
-		String result = HttpClient.post(url.toString(), map);
+		String result = HttpClient.postCbaseManager(url.toString(), map);
 		return result;
 	}
 
@@ -66,8 +66,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("memoryQuota", memoryQuota);
 
-		String result = HttpClient.post(url.toString(), map, adminUser,
-				adminPassword);
+		String result = HttpClient.postCbaseManager(nodeIp1, port,
+				url.toString(), map, adminUser, adminPassword);
 		return result;
 	}
 
