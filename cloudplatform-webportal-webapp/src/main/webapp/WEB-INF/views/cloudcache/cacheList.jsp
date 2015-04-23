@@ -75,6 +75,7 @@
 							</a> -->
 						</th>
 						<th>可用区</th>
+						<th>所在服务集群</th>
 						<th>创建时间</th>
 						<th>付费类型</th>
 						<th>操作</th>
@@ -108,7 +109,7 @@
 						<td width="10">
 							<input type="checkbox">
 						</td>
-						<td colspan=" 9">
+						<td colspan="10">
 							<div class="pull-left">
 									<div pagination-info="paginationInfo">
 										<div class="pull-left">
