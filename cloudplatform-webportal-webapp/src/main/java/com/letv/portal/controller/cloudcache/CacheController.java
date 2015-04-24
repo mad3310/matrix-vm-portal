@@ -61,28 +61,10 @@ public class CacheController {
 
 		}
 
-		System.out.println("in POST");
 		cbaseBucketModel.setCreateUser(this.sessionService.getSession()
 				.getUserId());
-
-		System.out.println(cbaseBucketModel.getBucketName());
-		System.out.println(cbaseBucketModel.getHclusterId());
-		System.out.println(cbaseBucketModel.getHcluster());
-		System.out.println(cbaseBucketModel.getCbaseClusterId());
-		System.out.println(cbaseBucketModel.getCbaseCluster());
-		System.out.println(cbaseBucketModel.getStatus());
-		System.out.println(cbaseBucketModel.getDescn());
-		System.out.println(cbaseBucketModel.getBucketType());
-
-		System.out.println(cbaseBucketModel.getRamQuotaMB());
-		System.out.println(cbaseBucketModel.getAuthType());
-		System.out.println(cbaseBucketModel.getContainers());
-
-		System.out.println("insert");
-
 		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
 		return obj;
-
 	}
 
 }
