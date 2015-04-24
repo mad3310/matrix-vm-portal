@@ -33,7 +33,7 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 			return tr;
 
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
 
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 		CbaseBucketModel bucket = super.getCbaseBucket(params);

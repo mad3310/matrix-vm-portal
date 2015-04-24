@@ -90,21 +90,21 @@ public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 
 	private void serviceOver(TaskResult tr) {
 		Map<String, Object> params = (Map<String, Object>) tr.getParams();
-		CbaseBucketModel cbase = this.getCbaseBucket(params);
+		CbaseBucketModel bucket = this.getCbaseBucket(params);
 		CbaseClusterModel cluster = this.getCbaseCluster(params);
 
 		if (tr.isSuccess()) {
-			cbase.setStatus(CbaseBucketStatus.NORMAL.getValue());
+			bucket.setStatus(CbaseBucketStatus.NORMAL.getValue());
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 			Map<String, Object> emailParams = new HashMap<String, Object>();
-			emailParams.put("cacheName", cbase.getBucketName());
-			this.email4User(emailParams, cbase.getCreateUser(),
+			emailParams.put("cacheName", bucket.getBucketName());
+			this.email4User(emailParams, bucket.getCreateUser(),
 					"cache/createCache.ftl");
 		} else {
-			cbase.setStatus(CbaseBucketStatus.BUILDFAIL.getValue());
+			bucket.setStatus(CbaseBucketStatus.BUILDFAIL.getValue());
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
 		}
-		this.cbaseBucketService.updateBySelective(cbase);
+		this.cbaseBucketService.updateBySelective(bucket);
 		this.cbaseClusterService.updateBySelective(cluster);
 	}
 

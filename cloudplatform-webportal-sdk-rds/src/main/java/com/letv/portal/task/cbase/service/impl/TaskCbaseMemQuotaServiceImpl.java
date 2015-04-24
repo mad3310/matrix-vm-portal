@@ -34,7 +34,7 @@ public class TaskCbaseMemQuotaServiceImpl extends BaseTask4CbaseServiceImpl
 
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 		CbaseBucketModel bucket = super.getCbaseBucket(params);
 

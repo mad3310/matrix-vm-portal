@@ -216,6 +216,38 @@ public class HttpClient {
 
 		return body;
 	}
+	
+	public static String getCbaseManager(String url, String username, String password) {
+		DefaultHttpClient httpclient = getHttpclient(username, password);
+		String body = null;
+
+		logger.info("create httpget:" + url);
+		HttpGet get = new HttpGet(url);
+		
+		HttpResponse response = sendRequest(httpclient, get);
+		
+		logger.info("get response from http server..");
+		if (response == null) {
+			logger.info("get response from http server.. faild");
+			return null;
+		}
+		HttpEntity entity = response.getEntity();
+
+		logger.info("response status: " + response.getStatusLine());
+
+		try {
+			body = EntityUtils.toString(entity);
+			logger.info(body);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		httpclient.getConnectionManager().shutdown();
+
+		return body;
+	}
 
 	private static String invoke(DefaultHttpClient httpclient,
 			HttpUriRequest httpost) {

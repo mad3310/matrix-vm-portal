@@ -111,7 +111,8 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
 				.append("/pools/default/rebalanceProgress");
 
-		String result = HttpClient.get(url.toString(), username, password);
+		String result = HttpClient.getCbaseManager(url.toString(), username,
+				password);
 		return result;
 	}
 

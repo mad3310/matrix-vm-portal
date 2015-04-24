@@ -43,7 +43,7 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 			return tr;
 
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
 
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
@@ -64,27 +64,6 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 					cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 		}
-		// if (tr.isSuccess()) {
-		// List<Map> containers = (List<Map>) ((Map) transToMap(result).get(
-		// "response")).get("containers");
-		// for (Map map : containers) {
-		// CbaseContainerModel container = new CbaseContainerModel();
-		// BeanUtils.populate(container, map);
-		// container.setCbaseClusterId(cbaseCluster.getId());
-		// container.setIpMask((String) map.get("netMask"));
-		// container.setContainerName((String) map.get("containerName"));
-		// container.setStatus(MclusterStatus.RUNNING.getValue());
-		// // 物理机集群维护完成后，修改此处，需要关联物理机id
-		// container.setHostIp((String) map.get("hostIp"));
-		// HostModel hostModel = this.hostService.selectByIp((String) map
-		// .get("hostIp"));
-		// if (null != hostModel) {
-		// container.setHostId(hostModel.getId());
-		// }
-		//
-		// this.cbaseContainerService.insert(container);
-		// }
-		// }
 
 		tr.setParams(params);
 		return tr;
@@ -99,21 +78,13 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 			tr.setResult("api connect failed");
 			return tr;
 		}
-		Map<String, Object> meta = (Map<String, Object>) map.get("meta");
-		Map<String, Object> response = null;
 
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String
-				.valueOf(meta.get("code")));
+		boolean isSucess = Constant.CREATE_REBALANCE_STATUS_RESPONSE_SUCCESS
+				.equals(String.valueOf(map.get("status")));
 		if (isSucess) {
-			response = (Map<String, Object>) map.get("response");
-			isSucess = Constant.PYTHON_API_RESULT_SUCCESS.equals(String
-					.valueOf(response.get("code")));
-		}
-		if (isSucess) {
-			tr.setResult((String) response.get("message"));
+			tr.setResult("Rebalance DONE");
 		} else {
-			tr.setResult((String) meta.get("errorType") + ":"
-					+ (String) meta.get("errorDetail"));
+			tr.setResult("Rebalance In Progress");
 		}
 		tr.setSuccess(isSucess);
 		return tr;

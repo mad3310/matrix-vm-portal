@@ -33,16 +33,16 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
 		Long cbaseContainerCount = getLongFromObject(params
 				.get("cbaseContainerCount"));
 		String nodeIp2;
 		if (cbaseContainerCount > 2) {
-			nodeIp2 = containers.get(1).getHostIp();
+			nodeIp2 = containers.get(1).getIpAddr();
 			cbaseContainerCount--;
 			params.put("cbaseContainerCount", cbaseContainerCount);
 		} else {
-			nodeIp2 = containers.get(2).getHostIp();
+			nodeIp2 = containers.get(2).getIpAddr();
 		}
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
@@ -66,9 +66,9 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 
 		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
 		if (isSucess) {
-			tr.setResult("ConfigMemQuota SUCCESS");
+			tr.setResult("AddNode SUCCESS");
 		} else {
-			tr.setResult("ConfigMemQuota FAILURE");
+			tr.setResult("AddNode FAILURE");
 		}
 		tr.setSuccess(isSucess);
 		return tr;

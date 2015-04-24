@@ -33,9 +33,9 @@ public class TaskCbaseRebalanceServiceImpl extends BaseTask4CbaseServiceImpl
 
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
-		String nodeIp2 = containers.get(1).getHostIp();
-		String nodeIp3 = containers.get(2).getHostIp();
+		String nodeIp1 = containers.get(0).getIpAddr();
+		String nodeIp2 = containers.get(1).getIpAddr();
+		String nodeIp3 = containers.get(2).getIpAddr();
 		StringBuffer knownNodes = new StringBuffer();
 		knownNodes.append("ns_1@").append(nodeIp1).append(",").append("ns_1@")
 				.append(nodeIp2).append(",").append("ns_1@").append(nodeIp3);
