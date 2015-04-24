@@ -183,6 +183,7 @@ public class CbaseController {
 		
 		System.out.println(isExist);
 		
+		/// 如果有重名的
 		int i = 0;
 		while(!isExist) {
 			isExist= this.cbaseClusterService.isExistByName(cbaseclusterName.toString() + i);
