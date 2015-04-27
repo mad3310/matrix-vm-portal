@@ -1,6 +1,5 @@
 package com.letv.portal.model.task.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +13,8 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.task.ITaskChainDao;
-import com.letv.portal.enumeration.BuildStatus;
-import com.letv.portal.model.BuildModel;
-import com.letv.portal.model.DbModel;
+import com.letv.portal.model.cbase.CbaseBucketModel;
+import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.slb.SlbCluster;
@@ -26,6 +24,8 @@ import com.letv.portal.model.task.TaskChainIndex;
 import com.letv.portal.model.task.TaskExecuteStatus;
 import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITaskChainService;
+import com.letv.portal.service.cbase.ICbaseBucketService;
+import com.letv.portal.service.cbase.ICbaseClusterService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
@@ -33,9 +33,11 @@ import com.letv.portal.service.slb.ISlbClusterService;
 import com.letv.portal.service.slb.ISlbServerService;
 
 @Service("taskChainService")
-public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements ITaskChainService{
-	
-	private final static Logger logger = LoggerFactory.getLogger(TaskChainServiceImpl.class);
+public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
+		ITaskChainService {
+
+	private final static Logger logger = LoggerFactory
+			.getLogger(TaskChainServiceImpl.class);
 
 	@Resource
 	private ITaskChainDao taskChainDao;
@@ -44,23 +46,28 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 	@Autowired
 	private ISlbServerService slbServerService;
 	@Autowired
+	private ICbaseBucketService cbaseBucketService;
+	@Autowired
 	private IGceClusterService gceClusterService;
 	@Autowired
 	private ISlbClusterService slbClusterService;
 	@Autowired
+	private ICbaseClusterService cbaseClusterService;
+	@Autowired
 	private ITaskChainIndexService taskChainIndexService;
-	
+
 	public TaskChainServiceImpl() {
 		super(TaskChain.class);
 	}
-	
+
 	@Override
 	public IBaseDao<TaskChain> getDao() {
 		return taskChainDao;
 	}
 
 	@Override
-	public TaskChain selectNextChainByIndexAndOrder(Long chainIndexId, int executeOrder) {
+	public TaskChain selectNextChainByIndexAndOrder(Long chainIndexId,
+			int executeOrder) {
 		TaskChain tc = new TaskChain();
 		tc.setChainIndexId(chainIndexId);
 		tc.setExecuteOrder(executeOrder);
@@ -83,56 +90,71 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements 
 	@Override
 	public void updateAfterDoingChainStatus(Map<String, Object> params) {
 		this.taskChainDao.updateAfterDoingChainStatus(params);
-		
+
 	}
 
 	@Override
 	public int getStepByGceId(Long gceId) {
-		if(gceId == null)
+		if (gceId == null)
 			throw new ValidateException("参数不合法");
 		GceServer gce = this.gceServerService.selectById(gceId);
-		GceCluster gceCluster = this.gceClusterService.selectById(gce.getGceClusterId());
-		if(gce == null)
+		GceCluster gceCluster = this.gceClusterService.selectById(gce
+				.getGceClusterId());
+		if (gce == null)
 			throw new ValidateException("参数不合法");
 		String serviceName = gce.getGceName();
 		String clusterName = gceCluster.getClusterName();
-		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
+		TaskChainIndex taskChainIndex = this.taskChainIndexService
+				.selectByServiceAndClusterName(serviceName, clusterName);
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
-	
+
 	@Override
 	public int getStepBySlbId(Long slbId) {
-		if(slbId == null)
+		if (slbId == null)
 			throw new ValidateException("参数不合法");
 		SlbServer slb = this.slbServerService.selectById(slbId);
-		SlbCluster slbCluster = this.slbClusterService.selectById(slb.getSlbClusterId());
-		if(slb == null)
+		SlbCluster slbCluster = this.slbClusterService.selectById(slb
+				.getSlbClusterId());
+		if (slb == null)
 			throw new ValidateException("参数不合法");
 		String serviceName = slb.getSlbName();
 		String clusterName = slbCluster.getClusterName();
-		TaskChainIndex taskChainIndex = this.taskChainIndexService.selectByServiceAndClusterName(serviceName,clusterName);
+		TaskChainIndex taskChainIndex = this.taskChainIndexService
+				.selectByServiceAndClusterName(serviceName, clusterName);
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
-	
-	private int getStepByTaskChainIndexId(Long taskChainIndexId){
-		List<TaskChain> taskChains = this.selectAllChainByIndexId(taskChainIndexId);
 
-		if(taskChains.get(taskChains.size()-1).getStatus() ==TaskExecuteStatus.SUCCESS){
-			return 0;//返回创建成功
+	private int getStepByTaskChainIndexId(Long taskChainIndexId) {
+		List<TaskChain> taskChains = this
+				.selectAllChainByIndexId(taskChainIndexId);
+
+		if (taskChains.get(taskChains.size() - 1).getStatus() == TaskExecuteStatus.SUCCESS) {
+			return 0;// 返回创建成功
 		}
-		for(TaskChain taskChain : taskChains){
-			if(taskChain.getStatus() == TaskExecuteStatus.FAILED){
-				return -1;//返回创建失败
-			}else if(taskChain.getStatus() == TaskExecuteStatus.DOING){
-				return taskChain.getExecuteOrder();//返回此步所在任务中的顺序
+		for (TaskChain taskChain : taskChains) {
+			if (taskChain.getStatus() == TaskExecuteStatus.FAILED) {
+				return -1;// 返回创建失败
+			} else if (taskChain.getStatus() == TaskExecuteStatus.DOING) {
+				return taskChain.getExecuteOrder();// 返回此步所在任务中的顺序
 			}
 		}
-		return 1;//都没有，则认为正在执行第一步
+		return 1;// 都没有，则认为正在执行第一步
 	}
 
 	@Override
 	public int getStepByCacheId(Long cacheId) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (cacheId == null)
+			throw new ValidateException("参数不合法");
+		CbaseBucketModel bucket = this.cbaseBucketService.selectById(cacheId);
+		if (bucket == null)
+			throw new ValidateException("参数不合法");
+		CbaseClusterModel cbaseCluster = this.cbaseClusterService
+				.selectById(bucket.getCbaseClusterId());
+		String serviceName = bucket.getBucketName();
+		String clusterName = cbaseCluster.getCbaseClusterName();
+		TaskChainIndex taskChainIndex = this.taskChainIndexService
+				.selectByServiceAndClusterName(serviceName, clusterName);
+		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
 }

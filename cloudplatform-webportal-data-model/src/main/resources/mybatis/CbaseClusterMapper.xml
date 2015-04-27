@@ -10,16 +10,19 @@
 		<result column="ADMIN_USER" property="adminUser" />
 		<result column="ADMIN_PASSWORD" property="adminPassword" />
 		<result column="HCLUSTER_ID" property="hclusterId" />
-		
 		<result column="STATUS" property="status" />
 		<result column="TYPE" property="type" />
-
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
-		
+		<association property="createUserModel" javaType="User">
+			<result column="USERNAME" property="userName" />
+		</association>
+		<association property="hcluster" javaType="Hcluster">
+			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+		</association>
 	</resultMap>
 	
 	
