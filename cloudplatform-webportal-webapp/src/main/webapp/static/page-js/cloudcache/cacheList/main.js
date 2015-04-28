@@ -75,9 +75,9 @@ define(function(require){
 	
 	//加载列表数据
 	function asyncData(page) {
-		var cacheName = $("#cacheName").val(),location = $("#location").val();
+		var cacheName = $("#cacheName").val();
 		if(!page) page = cn.currentPage;
-		var url = "/cache?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&bucketName=" + cacheName + "&&location=" + location;
+		var url = "/cache?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&bucketName=" + cacheName;
 		cn.GetData(url,refreshCtl);
 	// 	var data={"data":
 	// {
