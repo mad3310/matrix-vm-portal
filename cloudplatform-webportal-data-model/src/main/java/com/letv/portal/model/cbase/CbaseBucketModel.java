@@ -5,6 +5,7 @@ import java.util.List;
 import com.letv.common.model.BaseModel;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.gce.GceCluster;
 
 public class CbaseBucketModel extends BaseModel {
 
@@ -26,8 +27,6 @@ public class CbaseBucketModel extends BaseModel {
 	private String authType;    // 认证类型
 	
 	private UserModel createUserModel;
-
-	
 
 	private List<CbaseContainerModel> containers;
 

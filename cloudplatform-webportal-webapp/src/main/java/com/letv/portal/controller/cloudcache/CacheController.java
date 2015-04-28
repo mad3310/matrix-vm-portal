@@ -42,11 +42,9 @@ public class CacheController {
 			HttpServletRequest request, ResultObject result) {
 		Map<String, Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());
-
 		String cacheName = (String) params.get("cacheName");
 		if (!StringUtils.isEmpty(cacheName))
 			params.put("cacheName", StringUtil.transSqlCharacter(cacheName));
-
 		result.setData(this.cbaseBucketService.findPagebyParams(params, page));
 		return result;
 	}

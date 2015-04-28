@@ -24,22 +24,73 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
+		<association property="cbaseCluster" javaType="CbaseCluster">
+			<result column="CBASECLUSTER_NAME" property="cbaseClusterName" />
+		</association>
 		<association property="hcluster" javaType="Hcluster">
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
 		</association>
-		
 		<association property="createUserModel" javaType="User">
 			<result column="USERNAME" property="userName" />
 		</association>
 		
 	</resultMap>
 	
+	<sql id="Base_Column_List">
+		M.ID,
+		M.BUCKET_NAME,M.CBASECLUSTER_ID,M.HCLUSTER_ID,M.STATUS,M.DESCN,M.BUCKET_TYPE,M.RAMQUOTAMB,M.AUTH_TYPE,
+		M.DELETED,M.CREATE_TIME,M.CREATE_USER,M.UPDATE_TIME,M.UPDATE_USER
+	</sql>
+	
+		<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and M.ID=#{id}
+			</if>
+			
+			<if test="bucketName != null and bucketName != '' ">
+				and M.BUCKET_NAME like CONCAT('%','${bucketName}','%') escape '^'
+			</if>
+			
+			<if test="cbaseClusterId != null  ">
+				and M.CBASECLUSTER_ID=#{cbaseClusterId}
+			</if>
+			<if test="hclusterId != null  ">
+				and M.HCLUSTER_ID=#{hclusterId}
+			</if>
+			<if test="status != null and status != ''  ">
+				and M.STATUS=#{status}
+			</if>
+			<if test="bucketType != null and bucketType != ''  ">
+				and M.BUCKET_TYPE=#{bucketType}
+			</if>
+			
+			<if test="deleted != null  ">
+				and M.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and M.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and M.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and M.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and M.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+	
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="CbaseBucket" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_CBASE_BUCKET(BUCKET_NAME,CBASECLUSTER_ID,HCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,BUCKET_TYPE,RAMQUOTAMB,AUTH_TYPE)
 		values(
-		#{bucketName},#{cbaseClusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{bucketType},#{ramQuotaMB},#{authType})
+		#{bucketName},#{cbaseClusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{bucketType},#{ramQuotaMB},#{authType})
 	</insert>
 	
 	<!-- 根据id，修改记录 -->
@@ -65,6 +116,9 @@
 	<update id="updateBySelective" parameterType="CbaseBucket">
 		update WEBPORTAL_CBASE_BUCKET
 		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
 			<if test="bucketName != null  and bucketName != '' ">
 				BUCKET_NAME=#{bucketName},
 			</if>
@@ -86,7 +140,7 @@
 			<if test="createUser != null  ">
 				CREATE_USER=#{createUser},
 			</if>
-				UPDATE_TIME=now(),
+				UPDATE_TIME=#{updateTime},
 			<if test="updateUser != null  ">
 				UPDATE_USER=#{updateUser},
 			</if>
@@ -111,33 +165,28 @@
     
     <!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
-	        select
-			M.ID,
-			M.CBASECLUSTER_ID,
-			M.HCLUSTER_ID,
-			M.BUCKET_NAME,
-			M.STATUS,
-			M.DESCN,
-			M.BUCKET_TYPE,
-			M.DELETED,
-			M.RAMQUOTAMB,
-			M.AUTH_TYPE,
-			M.CREATE_TIME,
-			M.CREATE_USER,
-			M.UPDATE_TIME,
-			M.UPDATE_USER,
-			H.HCLUSTER_NAME,
-			H.HCLUSTER_NAME_ALIAS,
-			H.STATUS
-			from WEBPORTAL_CBASE_BUCKET M, WEBPORTAL_USER u, WEBPORTAL_HCLUSTER H
-			where M.CREATE_USER=u.id and M.ID = #{id} and M.HCLUSTER_ID = H.ID
+			select
+			<include refid="Base_Column_List" /> 
+			,n.CBASECLUSTER_NAME,u.USERNAME,H.HCLUSTER_NAME_ALIAS
+			from WEBPORTAL_CBASE_BUCKET M, WEBPORTAL_CBASECLUSTER_INFO n, WEBPORTAL_USER u, WEBPORTAL_HCLUSTER H
+			where M.CREATE_USER=u.id and M.ID = #{id} and M.CBASECLUSTER_ID = n.ID and M.HCLUSTER_ID = H.ID
 	</select>
 	
     
-    <!-- 列表总数 ? 待完善-->
+    <!-- 列表总数  -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_CBASE_BUCKET M
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+		<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASE_BUCKET M
+		<include refid="Example_Where_Clause" />
 	</select>
 	
 	<!-- 分页：根据条件查询 ? 待完善 -->
