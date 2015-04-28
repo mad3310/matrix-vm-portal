@@ -79,12 +79,6 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 	}
 
 	@Override
-	public void dbList(Long cbaseId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Page findPagebyParams(Map<String, Object> params, Page page) {
 
 		QueryParam param = new QueryParam(params, page);

@@ -10,8 +10,6 @@ public interface ICbaseBucketService extends IBaseService<CbaseBucketModel> {
 
 	Map<String, Object> save(CbaseBucketModel cbaseBucketModel);
 
-	public void dbList(Long cbaseId);
-
 	/**
 	 * Methods Name: findPagebyParams <br>
 	 * Description: 根据查询条件查出分页数据<br>
