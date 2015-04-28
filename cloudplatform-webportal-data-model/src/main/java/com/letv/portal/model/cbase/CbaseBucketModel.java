@@ -25,7 +25,7 @@ public class CbaseBucketModel extends BaseModel {
 	private String ramQuotaMB;  //大小
 	private String authType;    // 认证类型
 	
-	private UserModel user;
+	private UserModel createUserModel;
 
 	
 
@@ -37,14 +37,6 @@ public class CbaseBucketModel extends BaseModel {
 
 	public void setHclusterId(Long hclusterId) {
 		this.hclusterId = hclusterId;
-	}
-
-	public UserModel getUser() {
-		return user;
-	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
 	}
 
 	public List<CbaseContainerModel> getContainers() {
@@ -125,5 +117,13 @@ public class CbaseBucketModel extends BaseModel {
 
 	public void setAuthType(String authType) {
 		this.authType = authType;
+	}
+
+	public UserModel getCreateUserModel() {
+		return createUserModel;
+	}
+
+	public void setCreateUserModel(UserModel createUserModel) {
+		this.createUserModel = createUserModel;
 	}
 }

@@ -25,9 +25,11 @@
 		<result column="UPDATE_USER" property="updateUser" />
 		
 		<association property="hcluster" javaType="Hcluster">
-			<result column="HCLUSTER_NAME" property="hclusterName" />
-			<result column="HSTATUS" property="status" />
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+		</association>
+		
+		<association property="createUserModel" javaType="User">
+			<result column="USERNAME" property="userName" />
 		</association>
 		
 	</resultMap>
@@ -91,10 +93,10 @@
 			<if test="bucketType != null  ">
 				BUCKET_TYPE=#{bucketType},
 			</if>
-			<if test="bucketType != null  ">
+			<if test="ramQuotaMB != null  ">
 				RAMQUOTAMB=#{ramQuotaMB},
 			</if>
-			<if test="bucketType != null  ">
+			<if test="authType != null  ">
 				AUTH_TYPE=#{authType}
 			</if>
 		</set>
@@ -127,12 +129,12 @@
 			H.HCLUSTER_NAME,
 			H.HCLUSTER_NAME_ALIAS,
 			H.STATUS
-			from WEBPORTAL_CBASE_BUCKET M, WEBPORTAL_HCLUSTER H
-			where M.ID = #{id} and H.ID = M.HCLUSTER_ID
+			from WEBPORTAL_CBASE_BUCKET M, WEBPORTAL_USER u, WEBPORTAL_HCLUSTER H
+			where M.CREATE_USER=u.id and M.ID = #{id} and M.HCLUSTER_ID = H.ID
 	</select>
 	
     
-    <!-- 列表总数 -->
+    <!-- 列表总数 ? 待完善-->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_CBASE_BUCKET M

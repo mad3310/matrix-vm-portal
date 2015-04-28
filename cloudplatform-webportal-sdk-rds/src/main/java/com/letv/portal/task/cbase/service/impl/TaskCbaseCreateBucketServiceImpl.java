@@ -23,6 +23,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 
+	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
+
 	private final static Logger logger = LoggerFactory
 			.getLogger(TaskCbaseCreateBucketServiceImpl.class);
 
@@ -45,6 +47,16 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 					bucket.getAuthType(), bucket.getBucketName(),
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
+
+			while (!tr.isSuccess()) {
+				Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
+				result = this.cbasePythonService.createPersistentBucket(
+						nodeIp1, super.getCbaseManagePort(),
+						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getAuthType(), bucket.getBucketName(),
+						cluster.getAdminUser(), cluster.getAdminPassword());
+				tr = analyzeRestServiceResult(result);
+			}
 		} else if (bucket.getBucketType() == 1) {
 			String result = this.cbasePythonService.createUnPersistentBucket(
 					nodeIp1, super.getCbaseManagePort(),
@@ -52,6 +64,16 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 					bucket.getAuthType(), bucket.getBucketName(),
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
+
+			while (!tr.isSuccess()) {
+				Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
+				result = this.cbasePythonService.createUnPersistentBucket(
+						nodeIp1, super.getCbaseManagePort(),
+						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getAuthType(), bucket.getBucketName(),
+						cluster.getAdminUser(), cluster.getAdminPassword());
+				tr = analyzeRestServiceResult(result);
+			}
 		}
 
 		tr.setParams(params);
