@@ -16,7 +16,7 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-        DbListHandler : function(data){
+        CacheListHandler : function(data){
         	$(".data-tr").remove();
         	
             var $tby = $('#tby');
@@ -86,7 +86,7 @@ define(function(require,exports,module){
                     var td9 = $("<td><span>"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></td>")
                     var td10 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td11 = $("<td><a href=\"/detail/db/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|扩容|续费</span></td>");
+                    	var td11 = $("<td><a href=\"/detail/cache/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|扩容|续费</span></td>");
                     }else{
                     	var td11 = $("<td><span class=\"text-explode font-disabled\">管理|扩容|续费</span></td>");
                     }

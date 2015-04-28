@@ -10,7 +10,7 @@ define(function(require){
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbListHandler = new dataHandler();
+    var cacheListHandler = new dataHandler();
     /*
      * 初始化数据
      */
@@ -108,7 +108,7 @@ define(function(require){
 	// refreshCtl(data);		
 	}
 	function refreshCtl(data) {
-		dbListHandler.DbListHandler(data);
+		cacheListHandler.CacheListHandler(data);
 		if ($(".progress").length == 0){
 			if(pFresh){
 				clearInterval(pFresh);
@@ -133,7 +133,7 @@ define(function(require){
 		$("input[name = progress_db_id]").each(function(){
 			var cacheId = $(this).val();
 			function progress_func(data){
-				dbListHandler.progress(cacheId,data,asyncData);
+				cacheListHandler.progress(cacheId,data,asyncData);
 			}
 			// var url = "/build/cache/" + cacheId;
 			// cn.GetLocalData(url,progress_func);
