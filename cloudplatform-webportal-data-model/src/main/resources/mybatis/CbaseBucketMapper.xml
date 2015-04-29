@@ -175,7 +175,7 @@
 	<select id="selectByBucketNameForValidate" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CBASE_BUCKET m WHERE m.BUCKET_NAME = #{bucketName} and m.CREATE_USER = #{createUser}
+		from WEBPORTAL_CBASE_BUCKET M WHERE M.BUCKET_NAME = #{bucketName} and M.CREATE_USER = #{createUser}
 	</select>
     
     <!-- 列表总数  -->
