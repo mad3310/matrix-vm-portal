@@ -1,5 +1,6 @@
 package com.letv.portal.proxy.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -47,9 +48,17 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 	public void saveAndBuild(CbaseBucketModel cbaseBucketModel) {
 		if (cbaseBucketModel == null)
 			throw new ValidateException("参数不合法");
-		Map<String, Object> params = this.cbaseBucketService
-				.save(cbaseBucketModel);
-		this.build(params);
+		List<CbaseBucketModel> list = this.cbaseBucketService
+				.selectByBucketNameForValidate(
+						cbaseBucketModel.getBucketName(),
+						cbaseBucketModel.getCreateUser());
+		if (list.size() > 0) {
+			throw new ValidateException("缓存实例已存在!");
+		} else {
+			Map<String, Object> params = this.cbaseBucketService
+					.save(cbaseBucketModel);
+			this.build(params);
+		}
 	}
 
 	private void build(Map<String, Object> params) {

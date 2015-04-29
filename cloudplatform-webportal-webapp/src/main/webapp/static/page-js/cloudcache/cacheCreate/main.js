@@ -92,7 +92,7 @@ define(function(require) {
 						message : "请输入字母数字或'_',实例名称不能以数字开头且数据库名称不能命名为monitor."
 					},
 					remote : {
-						message : '缓存名已存在!',
+						message : '缓存实例已存在!',
 						url : '/cache/validate'
 					}
 				}
