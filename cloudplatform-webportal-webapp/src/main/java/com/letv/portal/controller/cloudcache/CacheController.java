@@ -47,7 +47,7 @@ public class CacheController {
 		String cacheName = (String) params.get("cacheName");
 		if (!StringUtils.isEmpty(cacheName))
 			params.put("cacheName", StringUtil.transSqlCharacter(cacheName));
-		result.setData(this.cbaseBucketService.findPagebyParams(params, page));
+		result.setData(this.cbaseBucketService.selectPageByParams(page, params));
 		return result;
 	}
 

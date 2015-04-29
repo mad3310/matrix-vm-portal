@@ -10,6 +10,4 @@ public interface ICbaseService extends IBaseService<CbaseClusterModel>{
 	public String getNodeDetail();
 	public String getBucketDetail();
 	
-	//public String createBucket(String name, String ramQuotaMB, String bucketType);
-	
 }

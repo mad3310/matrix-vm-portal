@@ -94,7 +94,7 @@ public class CbaseController {
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());	
-		obj.setData(this.cbaseBucketService.findPagebyParams(params, page));
+		obj.setData(this.cbaseBucketService.selectPageByParams(page, params));
 		
 		//lyh test
 		System.out.println("obj="+obj.getResult());
@@ -178,21 +178,6 @@ public class CbaseController {
 		cbaseclusterName.append(userId).append("_").append(cbaseBucketModel.getBucketName());
 		
 		System.out.println("cbaseclusterName="+cbaseclusterName);
-		
-		Boolean isExist= this.cbaseClusterService.isExistByName(cbaseclusterName.toString());
-		
-		System.out.println(isExist);
-		
-		/// 如果有重名的
-		int i = 0;
-		while(!isExist) {
-			isExist= this.cbaseClusterService.isExistByName(cbaseclusterName.toString() + i);
-			i++;
-		}
-		if(i>0)
-			cbaseclusterName.append(i);
-		
-		System.out.println(cbaseclusterName);
 		
 		params.put("cbaseclusterName", cbaseclusterName.toString());
 		params.put("status", DbStatus.BUILDDING.getValue());

@@ -24,18 +24,62 @@
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
 		</association>
 	</resultMap>
-	
-	
+
+	<sql id="Base_Column_List">
+		CBASE.ID,CBASE.CBASECLUSTER_NAME,CBASE.ADMIN_USER,CBASE.ADMIN_PASSWORD,CBASE.STATUS,CBASE.TYPE,CBASE.HCLUSTER_ID,CBASE.DELETED,CBASE.CREATE_TIME,CBASE.CREATE_USER,CBASE.UPDATE_TIME,CBASE.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and CBASE.ID=#{id}
+			</if>
+			<if
+				test="cbaseClusterName != null  and cbaseClusterName != '' and cbaseClusterName != 'null'">
+				and CBASE.CBASECLUSTER_NAME like
+				CONCAT('%','${cbaseClusterName}','%') escape '^'
+			</if>
+			<if test="status != null and status != ''">
+				and CBASE.STATUS=#{status}
+			</if>
+			<if test="type != null  ">
+				and CBASE.TYPE=#{type}
+			</if>
+			<if test="hclusterId != null  ">
+				and CBASE.HCLUSTER_ID=#{hclusterId}
+			</if>
+			<if test="deleted != null  ">
+				and CBASE.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and CBASE.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and CBASE.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and CBASE.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and CBASE.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="CbaseCluster" useGeneratedKeys="true" keyProperty="id">
+	<insert id="insert" parameterType="CbaseCluster"
+		useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_CBASECLUSTER_INFO(CBASECLUSTER_NAME,ADMIN_USER,ADMIN_PASSWORD,STATUS,TYPE,HCLUSTER_ID,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(#{cbaseClusterName},#{adminUser},#{adminPassword},#{status},#{type},#{hclusterId},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
-	
+
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="CbaseCluster">
-		update WEBPORTAL_CBASECLUSTER_INFO set
+		update
+		WEBPORTAL_CBASECLUSTER_INFO set
 		CBASECLUSTER_NAME=#{cbaseClusterName},
 		ADMIN_USER=#{adminUser},
 		ADMIN_PASSWORD=#{adminPassword},
@@ -49,7 +93,7 @@
 		UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
-	
+
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="CbaseCluster">
 		update WEBPORTAL_CBASECLUSTER_INFO
@@ -81,52 +125,25 @@
 			<if test="createUser != null  ">
 				CREATE_USER=#{createUser},
 			</if>
-				UPDATE_TIME=now(),
+			UPDATE_TIME=now(),
 			<if test="updateUser != null  ">
 				UPDATE_USER=#{updateUser}
 			</if>
 		</set>
 		where ID=#{id}
 	</update>
-	
+
 	<!-- 删除记录 -->
 	<delete id="delete" parameterType="CbaseCluster">
-		delete from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
+		delete from
+		WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
 	</delete>
-	
-	<!-- 根据id查询-->
+
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
-		ID,
-		CBASECLUSTER_NAME,
-		ADMIN_USER,
-		ADMIN_PASSWORD,
-		STATUS,
-		TYPE,
-		HCLUSTER_ID,
-		DELETED,
-		CREATE_TIME,
-		CREATE_USER,
-		UPDATE_TIME,
-		UPDATE_USER
-		from WEBPORTAL_CBASECLUSTER_INFO where ID = #{id}
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASECLUSTER_INFO CBASE
+		where CBASE.ID=#{id}
 	</select>
-	
-	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
-		select
-		ID,
-		CBASECLUSTER_NAME,
-		ADMIN_USER,
-		ADMIN_PASSWORD,
-		STATUS,
-		TYPE,
-		HCLUSTER_ID,
-		DELETED,
-		CREATE_TIME,
-		CREATE_USER,
-		UPDATE_TIME,
-		UPDATE_USER
-		from WEBPORTAL_CBASECLUSTER_INFO M WHERE M.CBASECLUSTER_NAME = #{cbaseClusterName}
-	</select>
-	
+
 </mapper>
