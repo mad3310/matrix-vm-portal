@@ -172,6 +172,11 @@
 			where M.CREATE_USER=u.id and M.ID = #{id} and M.CBASECLUSTER_ID = n.ID and M.HCLUSTER_ID = H.ID
 	</select>
 	
+	<select id="selectByBucketNameForValidate" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASE_BUCKET m WHERE m.BUCKET_NAME = #{bucketName} and m.CREATE_USER = #{createUser}
+	</select>
     
     <!-- 列表总数  -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"

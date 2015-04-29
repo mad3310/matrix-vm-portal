@@ -1,10 +1,12 @@
 package com.letv.portal.service.cbase.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
 import com.letv.portal.enumeration.CbaseBucketStatus;
@@ -87,5 +90,16 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 
 		return page;
 
+	}
+
+	@Override
+	public List<CbaseBucketModel> selectByBucketNameForValidate(
+			String bucketName, Long createUser) {
+		if (StringUtils.isEmpty(bucketName) || null == createUser)
+			throw new ValidateException("参数不合法");
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("bucketName", bucketName);
+		params.put("createUser", createUser);
+		return this.cbaseBucketDao.selectByBucketNameForValidate(params);
 	}
 }

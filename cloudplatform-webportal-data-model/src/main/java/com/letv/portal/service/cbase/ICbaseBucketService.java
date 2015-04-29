@@ -1,5 +1,6 @@
 package com.letv.portal.service.cbase;
 
+import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
@@ -20,5 +21,8 @@ public interface ICbaseBucketService extends IBaseService<CbaseBucketModel> {
 	 * @return
 	 */
 	public Page findPagebyParams(Map<String, Object> params, Page page);
+
+	public List<CbaseBucketModel> selectByBucketNameForValidate(
+			String bucketName, Long createUser);
 
 }

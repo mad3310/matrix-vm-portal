@@ -1,5 +1,7 @@
 package com.letv.portal.controller.cloudcache;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +65,19 @@ public class CacheController {
 				.getUserId());
 		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
 		return obj;
+	}
+
+	@RequestMapping(value = "/validate", method = RequestMethod.POST)
+	public @ResponseBody Map<String, Object> validate(String bucketName,
+			HttpServletRequest request) {
+		if (StringUtils.isEmpty(bucketName))
+			throw new ValidateException("参数不合法");
+		List<CbaseBucketModel> list = this.cbaseBucketService
+				.selectByBucketNameForValidate(bucketName, sessionService
+						.getSession().getUserId());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("valid", list.size() > 0 ? false : true);
+		return map;
 	}
 
 }
