@@ -79,34 +79,8 @@ define(function(require){
 		if(!page) page = cn.currentPage;
 		var url = "/cache?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&bucketName=" + cacheName;
 		cn.GetData(url,refreshCtl);
-	// 	var data={"data":
-	// {
-	// 	"data":[{
-	// 				"hclusterId":1,
-	// 				"cbaseCluster":null,
-	// 				"containers":null,
-	// 				"bucketName":"lyhtest",
-	// 				"status":6,
-	// 				"authType":null,
-	// 				"cbaseClusterId":null,
-	// 				"bucketType":0,
-	// 				"ramQuotaMB":null,
-	// 				"user":null,
-	// 				"descn":null,
-	// 				"hcluster":{
-	// 								"hclusterName":null,
-	// 								"status":null,
-	// 								"hclusterNameAlias":"TEST_15X"
-	// 							},
-	// 				"id":20,
-	// 				"createUser":14,
-	// 				"createTime":1429598254000,
-	// 				"updateTime":1429598254000,
-	// 				"updateUser":null,
-	// 				"deleted":false
-	// 			}],"nextId":-1,"lastPage":true,"preId":-1,"startRowPosition":0,"endRowPosition":15,"totalRecords":5,"tooManySearchReturn":false,"recordsPerPage":15,"currentPage":1,"totalPages":1,"currentRecord":0},"result":1,"callback":null,"msgs":[]}
-	// refreshCtl(data);		
 	}
+	
 	function refreshCtl(data) {
 		cacheListHandler.CacheListHandler(data);
 		if ($(".progress").length == 0){
@@ -135,8 +109,8 @@ define(function(require){
 			function progress_func(data){
 				cacheListHandler.progress(cacheId,data,asyncData);
 			}
-			// var url = "/build/cache/" + cacheId;
-			// cn.GetLocalData(url,progress_func);
+			 var url = "/build/cache/" + cacheId;
+			 cn.GetLocalData(url,progress_func);
 		})
 	}
 });

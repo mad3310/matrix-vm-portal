@@ -55,8 +55,6 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		cbaseClusterName.append(cbaseBucket.getCreateUser()).append("_")
 				.append(cbaseBucket.getBucketName());
 
-		/* function 验证cbaseClusterName是否存在 */
-
 		CbaseClusterModel cbaseCluster = new CbaseClusterModel();
 		cbaseCluster.setHclusterId(cbaseBucket.getHclusterId());
 		cbaseCluster.setCbaseClusterName(cbaseClusterName.toString());

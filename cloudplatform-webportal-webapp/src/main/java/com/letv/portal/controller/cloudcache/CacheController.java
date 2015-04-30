@@ -44,9 +44,9 @@ public class CacheController {
 			HttpServletRequest request, ResultObject result) {
 		Map<String, Object> params = HttpUtil.requestParam2Map(request);
 		params.put("createUser", sessionService.getSession().getUserId());
-		String cacheName = (String) params.get("cacheName");
-		if (!StringUtils.isEmpty(cacheName))
-			params.put("cacheName", StringUtil.transSqlCharacter(cacheName));
+		String bucketName = (String) params.get("bucketName");
+		if (!StringUtils.isEmpty(bucketName))
+			params.put("bucketName", StringUtil.transSqlCharacter(bucketName));
 		result.setData(this.cbaseBucketService.selectPageByParams(page, params));
 		return result;
 	}
