@@ -14,7 +14,7 @@ define(function(require,exports,module){
     	 */
         resCountHandler : function(data){
             if(cn.Displayable(data.data.status)){
-                $("#cacheName").html(data.data.dbName);
+                $("#cacheName").html(data.data.cacheName);
                 $("#cacheStatus").html("("+cn.TranslateStatus(data.data.status)+")");
             }else{
                 location.href = '/list/cache';
