@@ -656,7 +656,7 @@
                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;caiyinxiang@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
