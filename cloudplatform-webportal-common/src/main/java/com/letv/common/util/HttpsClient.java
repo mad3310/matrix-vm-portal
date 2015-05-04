@@ -9,6 +9,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -121,6 +122,76 @@ public class HttpsClient {
 		}
 		return strRep;
 	}
+	public static HttpResponse httpGet(String url,int connectionTimeout,int soTimeout) {
+		// 创建HttpClient实例
+		if (client == null) {
+			// Create HttpClient Object
+			client = getHttpclient(connectionTimeout, soTimeout);
+			enableSSL(client);
+		}
+		// 创建Get方法实例
+		HttpGet httpsgets = new HttpGet(url);
+		
+		HttpResponse response = null;
+		try {
+			response = client.execute(httpsgets);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return response;
+	}
+	public static HttpResponse httpPost(String url, String xmlData,int connectionTimeout,int soTimeout) {
+		if (client == null) {
+			// Create HttpClient Object
+			client = getHttpclient(connectionTimeout, soTimeout);
+			enableSSL(client);
+		}
+		client.getParams().setParameter("http.protocol.content-charset",
+				HTTP.UTF_8);
+		client.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
+		client.getParams().setParameter(HTTP.CHARSET_PARAM, HTTP.UTF_8);
+		client.getParams().setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET,
+				HTTP.UTF_8);
+
+		// System.out.println(HTTP.UTF_8);
+		// Send data by post method in HTTP protocol,use HttpPost instead of
+		// PostMethod which was occurred in former version
+		// System.out.println(url);
+		HttpPost post = new HttpPost(url);
+		post.getParams().setParameter("http.protocol.content-charset",
+				HTTP.UTF_8);
+		post.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
+		post.getParams().setParameter(HTTP.CHARSET_PARAM, HTTP.UTF_8);
+		post.getParams()
+				.setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET, HTTP.UTF_8);
+
+		// Construct a string entity
+		StringEntity entity = new StringEntity(getUTF8XMLString(xmlData),
+				"UTF-8");
+		entity.setContentType("text/xml;charset=UTF-8");
+		entity.setContentEncoding("UTF-8");
+		// Set XML entity
+		post.setEntity(entity);
+		// Set content type of request header
+		post.setHeader("Content-Type", "text/xml;charset=UTF-8");
+		// Execute request and get the response
+		HttpResponse response = null;
+		try {
+			response = client.execute(post);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
 
 	/**
 	 * Send a XML-Formed string to HTTP Server by post method
@@ -219,8 +290,15 @@ public class HttpsClient {
 	}
 	
 	public static void main(String[] args) {
-		String result = HttpsClient.sendXMLDataByGet("https://oauth.lecloud.com/cloud-oauth/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		String result = HttpsClient.sendXMLDataByGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
 		System.out.println(result);
-		
+		HttpResponse response = HttpsClient.httpGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		System.out.println(response);
+		Header[] headers = response.getAllHeaders();
+		for (Header header : headers) {
+			System.out.println(header.getName());
+			System.out.println(header.getValue());
+		}
+		System.out.println(response.getFirstHeader("Date").getValue());
 	}
 }
