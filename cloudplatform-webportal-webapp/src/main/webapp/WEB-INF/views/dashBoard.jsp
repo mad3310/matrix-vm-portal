@@ -389,14 +389,18 @@
 										</div>
 									</li>
 									<li class="clearfix">
-										<!-- <div class="pull-left">
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
-											<span>内容分发网络</span>
-											<span>CDN</span>
+											<span>container管理服务</span>
+											<span>SWIFT</span>
 										</div>
 										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
-										</div> -->
+											<div class="pull-left product-opt-wrap">
+												<a href="/detail/containerCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+										</div>
 									</li>
 									<!-- <li class="clearfix">
 										 <div class="pull-left">
