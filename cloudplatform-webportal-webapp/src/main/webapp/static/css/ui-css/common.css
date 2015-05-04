@@ -1634,4 +1634,53 @@ textarea {
 .pd30{
 	padding:30px;
 	}
+	
+@keyframes font-flicker {
+     0%   {color: red;}
+    50%  {color: greenyellow;}
+    100%  {color: red;}
+}
+@-webkit-keyframes font-flicker{
+	 0%   {color: red;}
+    50%  {color: greenyellow;}
+    100%  {color: red;}
+}
+.beta-font{
+	color:red;
+	position:relative;
+	top:-6px;
+	z-index:999999;
+	/*background:#ffffff;*/
+	border-radius:50%;
+	line-height:1;
+	/*border:1px solid #ffffff;*/
+	-webkit-animation-name: font-flicker;
+    -webkit-animation-duration: 4s;
+   /*  -webkit-animation-iteration-count: infinite; */
+    -webkit-animation-iteration-count: 3; 
+	animation-name: font-flicker;
+    animation-duration: 4s;
+    /* animation-iteration-count: infinite; */
+    animation-iteration-count: 3;
+}
 /* browser error page style end */
+/**
+ * tipTool css 
+ * Version 1.0
+ * author gm 2015-04-20
+ **/
+.tipbg{ padding:5px; position: relative;top:0px;z-index: 999999;background: #ffffff;border-radius: 50%;}
+.tiptool {min-width:220px;max-width:250px;position: absolute;z-index: 1070;display: block;font-size: 12px;line-height: 1.4;visibility: visible;filter: alpha(opacity=0);opacity: 0;box-shadow: 3px 3px 10px;}
+.tiptool.right {padding: 0;margin-left: 3px;}
+.tiptool.left {padding: 0;margin-left: -3px;}
+.tiptool.top {padding:0;margin-top: -3px;}
+.tiptool.bottom {padding:0;margin-top: 3px;}
+.tiptool.top .tiptool-arrow {bottom: -5px;left: 20%;margin-left: -5px;border-width: 5px 5px 0;border-top-color:rgba(255,255,255,.9);}
+.tiptool.bottom .tiptool-arrow {top: -5px;left: 20%;margin-left: -5px;border-width: 0 5px 5px;border-bottom-color: rgba(255,255,255,.9);}
+.tiptool.right .tiptool-arrow {top: 20%;left: -5px;margin-top: -5px;border-width: 5px 5px 5px 0;border-right-color: rgba(255,255,255,.9);}
+.tiptool.left .tiptool-arrow {top: 20%;right: -5px;margin-top: -5px;border-width: 5px 0 5px 5px;border-left-color: rgba(255,255,255,.9);}
+.tiptool-arrow {position: absolute;width: 0;height: 0;border-color: transparent;border-style: solid;}
+.tiptool-inner {min-width: 220px;padding: 10px 8px;color:#3BC53D;font-size:15px;font-weight:bold;line-height:1.5;text-align: left;text-decoration: none;background-color: rgba(255,255,255,.9);border-radius: 4px;}
+.btn-lucency{opacity:0;filter: alpha(opacity=0);}
+.tip-btngroup{margin-top: 10px;width:100%;padding:0 10px;}
+.shade{background:rgba(0,0,0,.4);position:absolute;top:0;left:0;width:100%;height:100%;overflow: hidden}

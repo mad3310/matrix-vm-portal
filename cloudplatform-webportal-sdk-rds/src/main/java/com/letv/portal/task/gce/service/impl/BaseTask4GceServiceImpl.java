@@ -20,6 +20,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
@@ -27,6 +28,7 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IZookeeperInfoService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -49,6 +51,8 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IZookeeperInfoService zookeeperInfoService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4GceServiceImpl.class);
 	
@@ -79,8 +83,12 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 
 	@Override
 	public void rollBack(TaskResult tr) {
-		//发送邮件
-		this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		Map<String,Object> params = (Map<String, Object>) tr.getParams();
+		boolean isContinue = (Boolean) params.get("isContinue");
+		if(!isContinue) {
+			//发送邮件
+			this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		}
 		//业务处理
 		this.serviceOver(tr);
 	}
@@ -99,6 +107,16 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		} else {
 			gce.setStatus(DbStatus.BUILDFAIL.getValue());
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
+			
+			Map<String,Object> nextParams = (Map<String, Object>) params.get("nextParams");
+			if(!nextParams.isEmpty()) {
+				GceServer nextGce = this.getGceServer(nextParams);
+				GceCluster nextCluster = this.getGceCluster(nextParams);
+				nextGce.setStatus(DbStatus.BUILDFAIL.getValue());
+				nextCluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
+				this.gceServerService.updateBySelective(nextGce);
+				this.gceClusterService.updateBySelective(nextCluster);
+			}
 		}
 		this.gceServerService.updateBySelective(gce);
 		this.gceClusterService.updateBySelective(cluster);
@@ -233,4 +251,12 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		return gceContainers;
 	}
 	
+	public ZookeeperInfo getMinusedZk() {
+		ZookeeperInfo zk = this.zookeeperInfoService.selectMinusedZk();
+		if(zk == null)
+			throw new ValidateException("zk is null");
+		zk.setUsed(zk.getUsed()+1);
+		this.zookeeperInfoService.updateBySelective(zk);
+		return zk;
+	}
 }

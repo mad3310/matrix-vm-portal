@@ -106,7 +106,7 @@ define(function(require,exports,module){
                 }
             },
             tooltip: {
-                valueSuffix: "",
+                valueSuffix: unit,
                 shared: true
             }
         });

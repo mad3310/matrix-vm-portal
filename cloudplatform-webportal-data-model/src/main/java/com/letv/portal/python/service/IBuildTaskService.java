@@ -176,5 +176,7 @@ public interface IBuildTaskService {
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date);
 
 	public BaseMonitor getMonitorData(String ip, Long monitorType);
+
+	public void getClusterServiceData(String clusterName,Long hclusterId, MonitorIndexModel index, Date date);
 	
 }

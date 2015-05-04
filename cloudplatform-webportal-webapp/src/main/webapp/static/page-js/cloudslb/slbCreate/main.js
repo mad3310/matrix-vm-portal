@@ -71,7 +71,7 @@ define(function(require){
     var createDbHandler = new dataHandler();
     GetHcluster();
     function GetHcluster(){
-        var url="/hcluster";
+        var url="/hcluster/slb";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
 });

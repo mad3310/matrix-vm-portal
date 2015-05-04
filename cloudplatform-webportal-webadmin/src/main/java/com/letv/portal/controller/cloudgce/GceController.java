@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceImageService;
@@ -48,9 +50,24 @@ public class GceController {
 	@RequestMapping(value="/image/{id}",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject delImage(@PathVariable Long id,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		GceImage gceImage = new GceImage();
-		gceImage.setId(id);
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		GceImage gceImage = this.gceImageService.selectById(id);
+		if(gceImage == null)
+			throw new ValidateException("参数不合法");
 		this.gceImageService.delete(gceImage);
+		return obj;
+	}
+	
+	@RequestMapping(value="/image/{id}",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject updateImage(@PathVariable Long id,GceImage gceImage,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		GceImage oldGceImage = this.gceImageService.selectById(id);
+		if(oldGceImage == null)
+			throw new ValidateException("参数不合法");
+		this.gceImageService.updateBySelective(gceImage);
 		return obj;
 	}
 	

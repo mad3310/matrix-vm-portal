@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -40,7 +41,9 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private IGceImageService gceImageService;
-
+	@Value("${gce.code}")
+	private String GCE_CODE;
+	
 	public GceServerServiceImpl() {
 		super(GceServer.class);
 	}
@@ -62,18 +65,26 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	public Map<String,Object> save(GceServer gceServer) {
 		gceServer.setStatus(GceStatus.BUILDDING.getValue());
 		
-		StringBuffer mclusterName = new StringBuffer();
-		mclusterName.append(gceServer.getCreateUser()).append("_").append(gceServer.getGceName());
+		StringBuffer clusterName = new StringBuffer();
+		clusterName.append(gceServer.getCreateUser()).append("_").append(GCE_CODE).append("_").append(gceServer.getGceName());
 		
-		/*function 验证mclusterName是否存在*/
+		/*function 验证clusterName是否存在*/
+		Boolean isExist= this.gceClusterService.isExistByName(clusterName.toString());
+		int i = 0;
+		while(!isExist) {
+			isExist= this.gceClusterService.isExistByName(clusterName.toString() +(i+1));
+			i++;
+		}
+		if(i>0)
+			clusterName.append(i);
 		
 		GceCluster gceCluster = new GceCluster();
 		gceCluster.setHclusterId(gceServer.getHclusterId());
-		gceCluster.setClusterName(mclusterName.toString());
+		gceCluster.setClusterName(clusterName.toString());
 		gceCluster.setStatus(GceStatus.BUILDDING.getValue());
 		gceCluster.setCreateUser(gceServer.getCreateUser());
 		gceCluster.setAdminUser("root");
-		gceCluster.setAdminPassword(mclusterName.toString());
+		gceCluster.setAdminPassword(clusterName.toString());
 		
 		this.gceClusterService.insert(gceCluster);
 		

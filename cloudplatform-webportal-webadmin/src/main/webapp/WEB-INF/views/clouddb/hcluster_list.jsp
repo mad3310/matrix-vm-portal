@@ -106,6 +106,7 @@
 								</th>
 								<th width="19%">物理机集群名称</th>
 								<th width="19%">编号</th>
+								<th width="19%">应用业务类型 </th>
 								<th width="19%">创建时间 </th>
 								<th width="19%" class="hidden-480">当前状态</th>
 								<th width="19%">操作</th>
@@ -167,6 +168,24 @@
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="hcluster_name">应用业务类型</label>
+								<div class="col-sm-6">
+									<select class="chosen-select" multiple="multiple"
+									name="type" id="typeOption"
+									data-placeholder="请选择应用业务类型...">
+									<option>rds</option>
+									<option>slb</option>
+									<option>gce</option>
+									<option>cbase</option>
+								</select>
+								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择应用业务类型..." style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>

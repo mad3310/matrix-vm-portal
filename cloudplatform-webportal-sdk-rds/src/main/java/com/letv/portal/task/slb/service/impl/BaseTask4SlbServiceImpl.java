@@ -20,8 +20,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.UserModel;
-import com.letv.portal.model.gce.GceCluster;
-import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.slb.SlbServer;
@@ -29,6 +28,7 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.common.IZookeeperInfoService;
 import com.letv.portal.service.slb.ISlbClusterService;
 import com.letv.portal.service.slb.ISlbContainerService;
 import com.letv.portal.service.slb.ISlbServerService;
@@ -51,6 +51,8 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 	private ISlbContainerService slbContainerService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IZookeeperInfoService zookeeperInfoService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseTask4SlbServiceImpl.class);
 	
@@ -235,4 +237,12 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 		return gceContainers;
 	}
 	
+	public ZookeeperInfo getMinusedZk() {
+		ZookeeperInfo zk = this.zookeeperInfoService.selectMinusedZk();
+		if(zk == null)
+			throw new ValidateException("build GCE service error:zk is null");
+		zk.setUsed(zk.getUsed()+1);
+		this.zookeeperInfoService.updateBySelective(zk);
+		return zk;
+	}
 }

@@ -43,6 +43,7 @@ public class ZookeeperInfoController {
 	
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject insert(ZookeeperInfo zk,ResultObject obj) {
+		zk.setUsed(0);
 		this.zookeeperInfoService.insert(zk);
 		return obj;
 	}

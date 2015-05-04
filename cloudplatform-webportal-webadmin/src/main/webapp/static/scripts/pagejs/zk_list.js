@@ -27,7 +27,7 @@ $(function(){
 function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
-			'recordsPerPage':recordsPerPage,
+			'recordsPerPage':recordsPerPage
 		}
 	
 	$("#tby tr").remove();
@@ -60,7 +60,7 @@ function queryByPage() {
 				var td4 = $("<td>"
 						+ array[i].port
 						+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td class=\"used\">"
 						+ array[i].used
 						+ "</td>");
 				var td6 = $("<td>"
@@ -70,8 +70,10 @@ function queryByPage() {
 						+ array[i].descn
 						+ "</td>");
 				var td8 = $("<td>"
-						+ "修改"
-						+ "</td>");
+						+"<a class=\"red\" href=\"#\" onclick=\"delZookeeper(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+						+"</a>"
+						+"</td>");
 				
 				var tr = $("<tr></tr>");
 				
@@ -161,9 +163,8 @@ function pageControl() {
 	    });
 	}
 	
-//创建Container集群表单验证
 function formValidate() {
-	$("#add-gce-image-form").bootstrapValidator({
+	$("#add-zk-form").bootstrapValidator({
 	  message: '无效的输入',
          feedbackIcons: {
              valid: 'glyphicon glyphicon-ok',
@@ -180,12 +181,11 @@ function formValidate() {
     		url : "/zk",
     		data: {
     			name:$('#name').val(),
-    			type:$('#type').val(),
     			descn:$('#descn').val(),
-    			tag:$('#tag').val(),
     			url:$('#url').val(),
     			status:$('#status').val(),
-    			owner:$('#owner').val()
+    			ip:$('#ip').val(),
+    			port:$('#port').val()
     		},
     		success : function(data) {
     			location.href = "/list/zk";
@@ -193,7 +193,31 @@ function formValidate() {
     	})
      });
 }
-
+function delZookeeper(obj){
+	if($(obj).closest("tr").find(".used").html() != '0'){
+	$.gritter.add({
+			title: '错误',
+			text: "该zookeeper正在被使用，请移除使用再删除！",
+			sticky: false,
+			time: 1000,
+			class_name: 'gritter-error'
+		});
+		return;
+	}
+	
+		var zkId = $(obj).closest("tr").find("input").val();
+		function delCmd(){
+			$.ajax({
+				cache:false,
+				type : "delete",
+				url : "/zk/"+zkId,
+				success : function(){
+					location.href = "/list/zk";
+				}
+			})
+		}
+		confirmframe("删除zookeeper","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
+}
 function page_init(){
 	$('[name = "popoverHelp"]').popover();
 	queryByPage();

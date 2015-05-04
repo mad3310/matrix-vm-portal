@@ -2,6 +2,7 @@ package com.letv.portal.model.common;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.GceImageStatus;
+import com.letv.portal.enumeration.ZookeeperStatus;
 import com.letv.portal.model.UserModel;
 
 public class ZookeeperInfo extends BaseModel {
@@ -12,7 +13,7 @@ public class ZookeeperInfo extends BaseModel {
 	private String ip;
 	private String port;
 	private Integer used;
-	private Integer status;
+	private ZookeeperStatus status;
 	private String descn;
 	
 	public String getName() {
@@ -39,17 +40,17 @@ public class ZookeeperInfo extends BaseModel {
 	public void setUsed(Integer used) {
 		this.used = used;
 	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
 	public String getDescn() {
 		return descn;
 	}
 	public void setDescn(String descn) {
 		this.descn = descn;
+	}
+	public ZookeeperStatus getStatus() {
+		return status;
+	}
+	public void setStatus(ZookeeperStatus status) {
+		this.status = status;
 	}
 	
 }

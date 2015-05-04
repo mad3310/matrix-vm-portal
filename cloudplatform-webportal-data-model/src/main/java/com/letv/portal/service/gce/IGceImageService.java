@@ -5,4 +5,5 @@ import com.letv.portal.service.IBaseService;
 
 public interface IGceImageService extends IBaseService<GceImage> {
 
+	public GceImage selectByUrl(String url);
 }

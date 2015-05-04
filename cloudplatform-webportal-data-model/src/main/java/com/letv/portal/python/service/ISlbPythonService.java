@@ -37,7 +37,7 @@ public interface ISlbPythonService {
 	 * @return
 	 */
 
-	public String initZookeeper(String nodeIp);
+	public String initZookeeper(String nodeIp,Map<String,String> params);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>

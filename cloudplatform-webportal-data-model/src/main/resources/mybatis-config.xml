@@ -30,6 +30,10 @@
         <typeAlias alias="GceCluster" type="com.letv.portal.model.gce.GceCluster" />
         <typeAlias alias="GceContainer" type="com.letv.portal.model.gce.GceContainer" />
         
+        <typeAlias alias="LogServer" type="com.letv.portal.model.log.LogServer" />
+        <typeAlias alias="LogCluster" type="com.letv.portal.model.log.LogCluster" />
+        <typeAlias alias="LogContainer" type="com.letv.portal.model.log.LogContainer" />
+        
         <typeAlias alias="TemplateTaskChain" type="com.letv.portal.model.task.TemplateTaskChain" />
         <typeAlias alias="TemplateTaskDetail" type="com.letv.portal.model.task.TemplateTaskDetail" />
         <typeAlias alias="TemplateTask" type="com.letv.portal.model.task.TemplateTask" />

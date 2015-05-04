@@ -307,6 +307,10 @@
 		$('#sidebar-image-mgr').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/image").html("镜像管理");
 		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/zk") >= 0){
+		$('#sidebar-zk-mgr').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
+		$('#main-content-header li:eq(1)').remove();
 	}
 	
 			

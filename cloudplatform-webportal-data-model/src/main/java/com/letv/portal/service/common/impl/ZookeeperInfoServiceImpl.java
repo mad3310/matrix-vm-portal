@@ -28,4 +28,9 @@ public class ZookeeperInfoServiceImpl extends BaseServiceImpl<ZookeeperInfo> imp
 	public IBaseDao<ZookeeperInfo> getDao() {
 		return this.zookeeperInfoDao;
 	}
+
+	@Override
+	public ZookeeperInfo selectMinusedZk() {
+		return this.zookeeperInfoDao.selectMinusedZk();
+	}
 }

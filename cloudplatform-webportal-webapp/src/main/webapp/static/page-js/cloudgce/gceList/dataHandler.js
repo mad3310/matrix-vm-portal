@@ -52,7 +52,7 @@ define(function(require,exports,module){
                     var td3 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
                     var td4 = $("<td><span>"+array[i].type+"</span></td>");
                     var td5 = $("<td class=\"padding-left-32\">"
-                            + "<span>"+getAccpetAddr(array[i].gceContainers)+"</span>"
+                            + "<span>"+getAccpetAddr(array[i].gceContainers,array[i].type)+"</span>"
                             +"</td>");
                     var td7="<td></td>";
                     if(array[i].hcluster != undefined && array[i].hcluster != null){
@@ -126,34 +126,19 @@ define(function(require,exports,module){
 	        }
 	    }
     }
-    function getAccpetAddr(data){
+    function getAccpetAddr(data,type){
         if(data == null || data.length == 0){
             return "-";
         }
-        
         var ret="";
         for(var i= 0,len=data.length;i<len;i++){
-        	var hostPortArr = data[i].bingHostPort.split(',');
-        	var containerPortArr = data[i].bindContainerPort.split(',');
-
-        	var servicePort = {
-        			hostPort:'',
-        			containerPort:''
-        	};
-        	for(var j = 0,jlen = hostPortArr.length;j<jlen;j++){
-        		if(containerPortArr[j] == "8080" ||containerPortArr[j] == "8001"){
-        			servicePort = {
-        					hostPort:servicePort.hostPort+hostPortArr[j],
-        					containerPort:servicePort.containerPort+containerPortArr[j]
-        			};
-        		}else{
-        			continue;
-        		}
-        	}
+        	var port = "8001";
+        	if(type == "jetty")
+        		port = "8080";
             ret = ret
-            +"<span class=\"text-success\">"+data[i].hostIp+"</span>"
+            +"<span class=\"text-success\">"+data[i].ipAddr+"</span>"
             +"<span class=\"text-success\">:</span>"
-            +"<span class=\"text-success\">"+servicePort.hostPort+"</span><br>"
+            +"<span class=\"text-success\">"+port+"</span><br>"
         }
         return ret;
     }
