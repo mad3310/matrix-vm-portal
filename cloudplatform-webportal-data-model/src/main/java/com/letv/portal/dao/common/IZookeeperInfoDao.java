@@ -5,4 +5,6 @@ import com.letv.portal.model.common.ZookeeperInfo;
 
 public interface IZookeeperInfoDao extends IBaseDao<ZookeeperInfo> {
 
+	ZookeeperInfo selectMinusedZk();
+
 }

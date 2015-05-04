@@ -10,7 +10,7 @@ import com.letv.portal.model.monitor.MonitorViewYModel;
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	public List<MonitorViewYModel> getMonitorViewData(Long MclusterId,Long chartId,Integer strategy);
-	public List<MonitorViewYModel> getDbData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging);
+	public List<MonitorViewYModel> getMonitorData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging,int format);
 	
 	public List<String> selectDistinct(Map map);
 	

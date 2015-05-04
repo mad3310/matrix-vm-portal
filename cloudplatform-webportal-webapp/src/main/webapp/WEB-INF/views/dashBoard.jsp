@@ -157,6 +157,9 @@
 						</div>
 					</div><!-- end cloud right-->
 				</div><!-- end user-profile -->
+				<style>
+				/*.hide{visibility:hidden;display:block !important;}*/
+				</style>
 				<div class="product-list product-list-opened"><!-- 已开通产品 begin -->
 					<div class="list-title">
 						<span class="list-title-em">已开通</span>
@@ -191,6 +194,7 @@
 								<p class="item-title">
 									<a href="${ctx}/list/slb">负载均衡&nbsp;<span class="item-title-short">SLB</span>
 									</a>
+									<span class="beta-font">Beta</span>
 								</p>
 							</div>
 							<div class="item-record">
@@ -211,6 +215,7 @@
 								<p class="item-title">
 									<a href="${ctx}/list/gce">云引擎&nbsp;<span class="item-title-short">GCE</span>
 									</a>
+									<span class="beta-font">Beta</span>
 								</p>
 							</div>
 							<div class="item-record">
@@ -291,13 +296,14 @@
 											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
-									<li  id="slb-not-opened" class="hide clearfix">
-										<div class="pull-left">
+									<li  id="slb-not-opened">
+										<div class="pull-left" class="hide clearfix" data-type='tip' data-order='1' data-content='负载均衡<br>对多台云服务器进行流量分发。<br>SLB可以通过流量分发扩展应用系统对外的服务能力。<br>通过消除单点故障提升应用系统的可用性。' data-position='top'>
 											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
+											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix">
+										<div class="pull-right clearfix" data-type='tip' data-order='2' data-content='负载均衡<br>购买负载均衡服务' data-position='right'>
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/slbCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -451,12 +457,13 @@
 								<p class="category-title ng-binding">应用服务</p>
 								<ul>
 									<li id="gce-not-opened" class="clearfix">
-										<div class="pull-left">
+										<div class="pull-left"  data-type='tip' data-order='3' data-content='云引擎<br>云引擎功能说明' data-position='top'>
 											<span class="glyphicon glyphicon-gift text-muted"></span> 
 											<span>云引擎</span>
 											<span>GCE</span>
+											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix">
+										<div class="pull-right clearfix"   data-type='tip' data-order='4' data-content='云引擎<br>购买云引擎' data-position='right'>
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/gceCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="gce-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -522,11 +529,12 @@
 			</div>
 		</div>
 	</div><!-- main-content end-->
+	<!-- tip 提示container，渲染容器是shade-->
+	<div class="shade-container"></div>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">
-
 // Set configuration
 seajs.config({
 base: "${ctx}/static/modules/",

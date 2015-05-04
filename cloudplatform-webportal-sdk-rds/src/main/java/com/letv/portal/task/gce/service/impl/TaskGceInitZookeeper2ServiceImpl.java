@@ -1,5 +1,6 @@
 package com.letv.portal.task.gce.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -31,7 +33,11 @@ public class TaskGceInitZookeeper2ServiceImpl extends BaseTask4GceServiceImpl im
 		List<GceContainer> containers = super.getContainers(params);
 		String nodeIp2 = containers.get(1).getHostIp();
 		String port = containers.get(1).getMgrBindHostPort();
-		String result = this.gcePythonService.initZookeeper(nodeIp2,port);
+		ZookeeperInfo zk = super.getMinusedZk();
+		Map<String, String> zkParm = new HashMap<String,String>();
+		zkParm.put("zkAddress", zk.getIp());
+		zkParm.put("zkPort", zk.getPort());
+		String result = this.gcePythonService.initZookeeper(nodeIp2,port,zkParm);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

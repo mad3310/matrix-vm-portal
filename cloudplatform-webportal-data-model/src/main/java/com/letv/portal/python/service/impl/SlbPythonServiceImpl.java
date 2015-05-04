@@ -37,15 +37,11 @@ public class SlbPythonServiceImpl implements ISlbPythonService{
 	}
 
 	@Override
-	public String initZookeeper(String nodeIp) {
+	public String initZookeeper(String nodeIp,Map<String,String> parmas) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(URL_PORT).append("/admin/conf");
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("zkAddress", "10.154.156.150");
-		map.put("zkPort", "2181");
-		
-		String result = HttpClient.post(url.toString(), map);
+		String result = HttpClient.post(url.toString(), parmas);
 		return result;
 	}
 

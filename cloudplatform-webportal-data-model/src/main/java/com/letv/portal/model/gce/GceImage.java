@@ -15,6 +15,7 @@ public class GceImage extends BaseModel {
 	private String name;
 	private String type;//jetty,nginx
 	private GceImageStatus status;
+	private String  logUrl;
 	private String descn;//镜像描述
 	
 	private UserModel createUserModel;
@@ -66,5 +67,11 @@ public class GceImage extends BaseModel {
 	}
 	public void setCreateUserModel(UserModel createUserModel) {
 		this.createUserModel = createUserModel;
+	}
+	public String getLogUrl() {
+		return logUrl;
+	}
+	public void setLogUrl(String logUrl) {
+		this.logUrl = logUrl;
 	}
 }

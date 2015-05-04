@@ -68,10 +68,8 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				BeanUtils.populate(container, map);
 				container.setGceClusterId(gceCluster.getId());
 				container.setIpMask((String) map.get("netMask"));
-				container.setContainerName((String) map.get("containerName"));
 				container.setStatus(MclusterStatus.RUNNING.getValue());
 				//物理机集群维护完成后，修改此处，需要关联物理机id
-				container.setHostIp((String) map.get("hostIp"));
 				HostModel hostModel = this.hostService.selectByIp((String) map.get("hostIp"));
 				if(null != hostModel) {
 					container.setHostId(hostModel.getId());

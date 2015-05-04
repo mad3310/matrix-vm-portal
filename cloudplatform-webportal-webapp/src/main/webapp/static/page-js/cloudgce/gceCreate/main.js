@@ -62,7 +62,7 @@ define(function(require){
             type:$("[name = type]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){
-			createGceData.put("gceImageName",gceImageName);
+			createGceData.gceImageName=gceImageName;
 		}
 		
 		var url = "/gce";
@@ -77,12 +77,9 @@ define(function(require){
     var createDbHandler = new dataHandler();
     GetHcluster();
     GetImageByType();
-    $("[name = type]").change(function(){
-    		setTimeout(GetImageByType,100);
-  	})
     
     function GetHcluster(){
-        var url="/hcluster";
+        var url="/hcluster/gce";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
     function GetImageByType(){
@@ -90,7 +87,13 @@ define(function(require){
     	if(type == null){
     		return;
     	}
+    	function rsyncImage(data){
+    		createDbHandler.GetImageHandler(data);
+    		$("[name = type]").unbind("change").change(function(){
+    		setTimeout(GetImageByType,100);
+  	})
+    	}
         var url="/gce/image/list/"+type;
-        cn.GetData(url,createDbHandler.GetImageHandler);
+        cn.GetData(url,rsyncImage);
     }
 });

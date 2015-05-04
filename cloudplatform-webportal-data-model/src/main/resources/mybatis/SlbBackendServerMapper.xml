@@ -8,7 +8,7 @@
 		<result column="ID" property="id" />
 	
 		<result column="SLB_ID" property="slbId" />
-		<result column="CONTAINER_ID" property="containerId" />
+		<result column="GCE_ID" property="gceId" />
 		<result column="SLB_CONFIG_ID" property="configId" />
 		<result column="TYPE" property="type" />
 		<result column="STATUS" property="status" />
@@ -31,7 +31,7 @@
 	
 	<sql id="Base_Column_List">
 		s.ID,
-		s.SLB_ID,s.CONTAINER_ID,s.SLB_CONFIG_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,s.STATUS,
+		s.SLB_ID,s.GCE_ID,s.SLB_CONFIG_ID,s.TYPE,s.SERVER_NAME,s.SERVER_IP,s.PORT,s.STATUS,
 		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
 	</sql>
 	
@@ -46,8 +46,8 @@
 			<if test="slbId != null  ">
 				and s.SLB_ID=#{slbId}
 			</if>
-			<if test="containerId != null  ">
-				and s.CONTAINER_ID=#{containerId}
+			<if test="gceId != null  ">
+				and s.GCE_ID=#{gceId}
 			</if>
 			<if test="configId != null  ">
 				and s.SLB_CONFIG_ID=#{configId}
@@ -91,10 +91,10 @@
 	<insert id="insert" parameterType="SlbBackendServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_SLB_BACKEND_SERVER(
-			SLB_ID,CONTAINER_ID,SLB_CONFIG_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,STATUS,
+			SLB_ID,GCE_ID,SLB_CONFIG_ID,TYPE,SERVER_NAME,SERVER_IP,PORT,STATUS,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{slbId},#{containerId},#{configId},#{type},#{serverName},#{serverIp},#{port},#{status},
+			#{slbId},#{gceId},#{configId},#{type},#{serverName},#{serverIp},#{port},#{status},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -109,8 +109,8 @@
 			<if test="slbId != null  ">
 				SLB_ID=#{slbId},
 			</if>
-			<if test="containerId != null  ">
-				CONTAINER_ID=#{containerId},
+			<if test="gceId != null  ">
+				GCE_ID=#{gceId},
 			</if>
 			<if test="type != null  ">
 				TYPE=#{type},
@@ -153,7 +153,8 @@
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 	        select
-			<include refid="Base_Column_List" /> 
+			<include refid="Base_Column_List" />
+			from WEBPORTAL_SLB_BACKEND_SERVER s
 			where s.ID = #{id}
 	</select>
 	
@@ -184,8 +185,8 @@
 			<if test="params != null and params.slbId != null  ">
 				and s.SLB_ID=#{params.slbId}
 			</if>
-			<if test="params != null and params.containerId != null  ">
-				and s.CONTAINER_ID=#{params.containerId}
+			<if test="params != null and params.gceId != null  ">
+				and s.GCE_ID=#{params.gceId}
 			</if>
 			<if test="params != null and params.type != null  ">
 				and s.TYPE=#{params.type}

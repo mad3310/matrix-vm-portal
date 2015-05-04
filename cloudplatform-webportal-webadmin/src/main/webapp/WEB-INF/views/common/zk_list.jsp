@@ -64,7 +64,7 @@
            				</button>
            				<h4 class="modal-title">添加zookeeper </h4>
             		</div>
-					<form id="add--image-form" name="add-zk-form" class="form-horizontal" role="form">
+					<form id="add-zk-form" name="add-zk-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
 								<label class="col-sm-4 control-label" for="taskUnitName">zookeeper名称</label>
@@ -78,25 +78,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="type">业务类型</label>
+								<label class="col-sm-4 control-label" for="beanName">zookeeper地址</label>
 								<div class="col-sm-6">
-									<select class="chosen-select" name="type" id="type" data-placeholder="请选择类型...">
-										<!-- <option value="">  </option> -->
-										<!-- <option value="xx">消息中间件</option> -->
-										<option value="jetty">jetty</option>
-										<option value="nginx">nginx</option>
-									</select>
-								</div>								
-								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="所属业务类型" style="cursor:pointer; text-decoration:none;">
-										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-									</a>
-								</label>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">zookeeper版本</label>
-								<div class="col-sm-6">
-									<input class="form-control" name="tag" id="tag" type="text" />
+									<input class="form-control" name="ip" id="ip" type="text" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传zookeeper的版本号tag" style="cursor:pointer; text-decoration:none;">
@@ -105,9 +89,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="url">下载地址</label>
+								<label class="col-sm-4 control-label" for="url">端口</label>
 								<div class="col-sm-6">
-									<input class="form-control" name="url" id="url" type="text" />
+									<input class="form-control" name="port" id="port" type="text" />
 								</div>								
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此zookeeper的地址" style="cursor:pointer; text-decoration:none;">
@@ -130,23 +114,6 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="retry">所属用户</label>
-								<div class="col-sm-6">
-									<select class="chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
-										<option value="2">liuhao1</option>
-										<option value="1">yaouo</option>
-										<option value="3">gaomin</option>
-										<option value="4">zhangzeng</option>
-										<option value="5">zhangxiang</option>
-									</select>
-								</div>
-								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="只有所属用户才能使用此zookeeper" style="cursor:pointer; text-decoration:none;">
-										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-									</a>
-								</label>
-							</div>
-							<div class="form-group">
 								<label class="col-sm-4 control-label" for="descn">描述</label>
 								<div class="col-sm-6">
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
@@ -160,12 +127,21 @@
             			</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button type="submit" class="btn btn-sm btn-primary">创建</button>
+						<button type="submit" class="btn btn-sm btn-primary">添加</button>
 					</div>
 				</form>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="dialog-confirm" class="hide">
+		<div id="dialog-confirm-content" class="alert alert-info bigger-110">
+			删除container集群将不能恢复！
+		</div>
+		<div class="space-6"></div>
+		<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
+			您确定要删除?
+		</p>
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />

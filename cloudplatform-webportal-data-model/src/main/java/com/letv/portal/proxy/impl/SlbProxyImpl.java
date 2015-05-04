@@ -14,8 +14,11 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
+import com.letv.portal.enumeration.SlbBackEndType;
 import com.letv.portal.enumeration.SlbBackendStatus;
 import com.letv.portal.enumeration.SlbStatus;
+import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.slb.SlbBackendServer;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbConfig;
@@ -27,6 +30,8 @@ import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.ISlbProxy;
 import com.letv.portal.python.service.ISlbPythonService;
 import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.gce.IGceContainerService;
+import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.slb.ISlbBackendServerService;
 import com.letv.portal.service.slb.ISlbClusterService;
 import com.letv.portal.service.slb.ISlbConfigService;
@@ -44,7 +49,11 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	@Autowired
 	private ISlbClusterService slbClusterService;
 	@Autowired
+	private IGceServerService gceServerService;
+	@Autowired
 	private ISlbContainerService slbContainerService;
+	@Autowired
+	private IGceContainerService gceContainerService;
 	@Autowired
 	private ISlbPythonService slbPythonService;
 	@Autowired
@@ -219,7 +228,20 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 				param.put("state", "MASTER");
 				StringBuffer sb = new StringBuffer();
 				for (SlbBackendServer backendServer : backendServers) {
-					sb.append(backendServer.getServerIp()).append(":").append(backendServer.getPort()).append(",");
+					if(SlbBackEndType.CUSTOM.equals(backendServer.getType())) {
+						sb.append(backendServer.getServerIp()).append(":").append(backendServer.getPort()).append(",");
+						
+					} else {
+						GceServer server = this.gceServerService.selectById(backendServer.getGceId());
+						List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(server.getGceClusterId());
+						String port = "8001";
+						if(SlbBackEndType.RDS.equals(backendServer.getType())) {
+							port="3306";
+						}
+						for (GceContainer gceContainer : gceContainers) {
+							sb.append(gceContainer.getIpAddr()).append(":").append(port).append(",");
+						}
+					}
 					backendServer.setStatus(SlbBackendStatus.WORK.getValue());
 					slbBackendServerService.updateBySelective(backendServer);
 				}

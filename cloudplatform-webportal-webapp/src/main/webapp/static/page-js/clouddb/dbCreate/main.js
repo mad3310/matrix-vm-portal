@@ -75,7 +75,7 @@ define(function(require){
     var createDbHandler = new dataHandler();
     GetHcluster();
     function GetHcluster(){
-        var url="/hcluster";
+        var url="/hcluster/rds";
         cn.GetData(url,createDbHandler.GetHclusterHandler);
     }
     /*创建数据库*/

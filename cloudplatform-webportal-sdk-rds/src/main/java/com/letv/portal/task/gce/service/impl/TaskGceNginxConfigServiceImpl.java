@@ -59,7 +59,7 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 		
 		for (GceContainer jettyContainer : jettyContainers) {
 			
-			String containerPorts = jettyContainer.getBindContainerPort();
+			/*String containerPorts = jettyContainer.getBindContainerPort();
 			String hostPorts = jettyContainer.getBingHostPort();
 			if(StringUtils.isEmpty(containerPorts) || StringUtils.isEmpty(hostPorts)) {
 				tr.setSuccess(false);
@@ -80,7 +80,9 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 				tr.setResult("jetty containerPorts or hostPorts is null");
 				return tr;
 			}
-			sb.append(jettyContainer.getHostIp()).append(":").append(hostPortArry[j]).append(",");
+			sb.append(jettyContainer.getHostIp()).append(":").append(hostPortArry[j]).append(",");*/
+			sb.append(jettyContainer.getIpAddr()).append(":").append("8080").append(",");
+			
 		}
 		
 		Map<String, String> param = new HashMap<String,String>();

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,6 +57,17 @@ public class SlbBackendController {
 		isAuthoritySlb(slbBackendServer.getSlbId());
 		slbBackendServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.slbBackendProxy.saveAndConfig(slbBackendServer);
+		return obj;
+	}
+	@RequestMapping( value="/{id}",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject save(@PathVariable Long id,ResultObject obj) {
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		SlbBackendServer back = this.slbBackendServerService.selectById(id);
+		if(back == null || back.getSlbId() == null)
+			throw new ValidateException("参数不合法");
+		isAuthoritySlb(back.getSlbId());
+		this.slbBackendServerService.delete(back);
 		return obj;
 	}
 	

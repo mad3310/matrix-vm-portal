@@ -95,6 +95,15 @@
 					<ul class="nav nav-sidebar li-underline">
 						<li class="active"><a class="text-sm" src="${ctx}/detail/gceBaseInfo/${gceId}" href="javascript:void(0)">应用详情</a></li>
 						<li><a class="text-sm" href="javascript:void(0)">版本管理<p class="pull-right home-orange">敬请期待...</p></a></li>
+						<li><a class="text-sm" id = "logUrl" src="" href="javascript:void(0)">服务日志<p class="pull-right home-orange" id="logUrlInst"></p></a></li>
+						 <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
+	                        <ul class="nav hide">
+	                            <li><a  class="text-sm" src="${ctx}/monitor/gce/cpu/${gceId}" href="javascript:void(0)">cpu使用率</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/gce/disk/${gceId}" href="javascript:void(0)">磁盘</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/gce/memory/${gceId}" href="javascript:void(0)">内存</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/gce/network/${gceId}" href="javascript:void(0)">网络</a></li>
+	                        </ul>
+	                    </li>
 					</ul>
 				</div>
 			</nav>

@@ -29,7 +29,7 @@ define(function(require,exports,module){
             div.find("li").remove();
             div.find("span").html('');
             
-            var defaultOption = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\"\">default</a></li>")
+            var defaultOption = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\"\">使用默认镜像</a></li>")
 			defaultOption.appendTo(ul);
             for(var i= 0,len=images.length;i<len;i++){
             	var imageName = images[i].name+'-'+images[i].tag

@@ -63,8 +63,8 @@ public class MonitorServiceImplByJdbc extends BaseServiceImpl<MonitorDetailModel
 	}
 
 	@Override
-	public List<MonitorViewYModel> getDbData(String ip, Long chartId,
-			Integer strategy, boolean isTimeAveraging) {
+	public List<MonitorViewYModel> getMonitorData(String ip, Long chartId,
+			Integer strategy, boolean isTimeAveraging,int format) {
 		// TODO Auto-generated method stub
 		return null;
 	}

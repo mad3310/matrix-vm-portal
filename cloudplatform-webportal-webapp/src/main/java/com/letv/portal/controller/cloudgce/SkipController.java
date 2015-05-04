@@ -80,6 +80,31 @@ public class SkipController {
 		return mav;
 	}
 	
+	@RequestMapping(value ="/monitor/gce/cpu/{gceId}",method=RequestMethod.GET)
+	public ModelAndView toCpuUsed(@PathVariable Long gceId,ModelAndView mav){
+		mav.addObject("gceId",gceId);
+		mav.setViewName("/cloudgce/monitor/cpu");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/gce/network/{gceId}",method=RequestMethod.GET)
+	public ModelAndView toNetwork(@PathVariable Long gceId,ModelAndView mav){
+		mav.addObject("gceId",gceId);
+		mav.setViewName("/cloudgce/monitor/network");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/gce/memory/{gceId}",method=RequestMethod.GET)
+	public ModelAndView toMemory(@PathVariable Long gceId,ModelAndView mav){
+		mav.addObject("gceId",gceId);
+		mav.setViewName("/cloudgce/monitor/memory");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/gce/disk/{gceId}",method=RequestMethod.GET)
+	public ModelAndView toDisk(@PathVariable Long gceId,ModelAndView mav){
+		mav.addObject("gceId",gceId);
+		mav.setViewName("/cloudgce/monitor/disk");
+		return mav;
+	}
+	
 	private void isAuthorityDb(Long dbId) {
 		if(dbId == null)
 			throw new ValidateException("参数不合法");

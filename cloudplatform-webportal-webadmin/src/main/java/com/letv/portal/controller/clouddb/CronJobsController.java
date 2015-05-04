@@ -52,6 +52,18 @@ public class CronJobsController {
 		this.monitorProxy.collectMclusterServiceData();
 		return obj;
 	}
+	/**Methods Name: collectMclusterMonitorData <br>
+	 * Description: 收集图表监控数据2<br>
+	 * @author name: liuhao1
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/cluster/monitor",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject collectClusterMonitorData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.collectClusterServiceData();
+		return obj;
+	}
 	/**Methods Name: checkMclusterStatus <br>
 	 * Description: 检查mcluster健康状况<br>
 	 * @author name: liuhao1

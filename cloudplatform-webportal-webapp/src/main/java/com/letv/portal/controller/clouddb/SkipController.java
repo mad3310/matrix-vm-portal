@@ -148,6 +148,13 @@ public class SkipController {
 		mav.setViewName("/clouddb/monitor/QPS_TPS");
 		return mav;
 	}
+	@RequestMapping(value ="/monitor/cpu/{dbId}",method=RequestMethod.GET)
+	public ModelAndView tocpuUsed(@PathVariable Long dbId,ModelAndView mav){
+		isAuthorityDb(dbId);
+		mav.addObject("dbId",dbId);
+		mav.setViewName("/clouddb/monitor/cpuUsed");
+		return mav;
+	}
 	/**
 	 * Methods Name: dbCreate<br>
 	 * Description: 跳转数据库创建页面

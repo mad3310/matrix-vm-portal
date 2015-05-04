@@ -971,7 +971,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Async
 	public void checkMclusterCount() {
 		Map params = new HashMap();
-		params.put("type", "0");
+		params.put("status", "1");
+		params.put("type", "rds");
 		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
 		for (HclusterModel hcluster : hclusters) {
 			List<HostModel> hosts = this.hostService.selectByHclusterId(hcluster.getId());
@@ -1287,7 +1288,41 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 	}
+
+	@Override
+	@Async
+	public void getClusterServiceData(String clusterName, Long hclusterId,MonitorIndexModel index,Date date) {
+		String ip = this.getHclusterMainIp(hclusterId);
+		Map result = transResult(this.pythonService.getMonitorData(ip, index.getDataFromApi().replace("{0}", clusterName)));
+		if(analysisResult(result)) {
+			List<Map<String,Object>>  data= (List<Map<String,Object>>) ((Map<String,Object>)result.get("response")).get("data");
+			for (Map<String, Object> containerData : data) {
+				Map<String,Object>  value = (Map<String, Object>) containerData.get("value");
+				String containerName = (String) containerData.get("containerName");
+				for(Iterator it =  value.keySet().iterator();it.hasNext();){
+					String key = (String) it.next();
+					MonitorDetailModel monitorDetail = new MonitorDetailModel();
+					monitorDetail.setDbName(index.getDetailTable());
+					monitorDetail.setDetailName(key);
+					monitorDetail.setMonitorDate(date);
+					monitorDetail.setDetailValue(Float.parseFloat(value.get(key).toString()));  
+					monitorDetail.setIp(containerName);
+					this.monitorService.insert(monitorDetail);
+				}
+			}
+		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		}
+	}
 	
+	private String getHclusterMainIp(Long hclusterId) {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("hclusterId", hclusterId);
+		params.put("type", HostType.MASTER.getValue());
+		List<HostModel> hosts = this.hostService.selectByMap(params);
+		if(hosts == null || hosts.isEmpty())
+			throw new ValidateException("hcluster's main host is null.");
+		return hosts.get(0).getHostIp();
+	}
 	private boolean isSelectVip(Long dbId) {
 		int step = this.buildService.getStepByDbId(dbId);
 		if(step == 0) {

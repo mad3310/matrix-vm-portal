@@ -54,6 +54,10 @@ public class JobFactory implements Job {
         	logger.info("collectMclusterServiceData");
         	this.monitorProxy.collectMclusterServiceData();
         }
+        if("collectClusterServiceData".equals(method)) {
+        	logger.info("collectClusterServiceData");
+        	this.monitorProxy.collectClusterServiceData();
+        }
         if("deleteMonitorMonthAgo".equals(method)) {
         	logger.info("deleteMonitorMonthAgo");
         	this.monitorProxy.deleteOutData();

@@ -108,7 +108,7 @@ define(function(require,exports,module){
                 }
             },
             tooltip: {
-                valueSuffix: "/s",
+                valueSuffix: unit,
                 shared: true
             }
         });

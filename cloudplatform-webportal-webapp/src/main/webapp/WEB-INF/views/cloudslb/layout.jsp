@@ -101,6 +101,14 @@
 						<li class="active"><a class="text-sm" src="${ctx}/detail/slbBaseInfo/${slbId}" href="javascript:void(0)">实例详情</a></li>
 						<li><a class="text-sm" src="${ctx}/detail/slbConfig/${slbId}" href="javascript:void(0)">服务监听配置</a></li>
 						<li><a class="text-sm" src="${ctx}/detail/backend/server/${slbId}" href="javascript:void(0)">后端服务配置</a></li>
+                        <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
+	                         <ul class="nav hide">
+	                            <li><a  class="text-sm" src="${ctx}/monitor/slb/cpu/${slbId}" href="javascript:void(0)">cpu使用率</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/slb/disk/${slbId}" href="javascript:void(0)">磁盘</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/slb/memory/${slbId}" href="javascript:void(0)">内存</a></li>
+	                            <li><a  class="text-sm" src="${ctx}/monitor/slb/network/${slbId}" href="javascript:void(0)">网络</a></li>
+	                        </ul>
+	                    </li>
 					</ul>
 				</div>
 			</nav>

@@ -17,7 +17,6 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	
 	private final static String URL_HEAD = "http://";
 	private final static String URL_PORT = ":8888";	
-	private final static String GCE_PORT = ":28930";	
 	
 	@Override
 	public String createContainer(Map<String,String> params,String ip,String username,String password) {
@@ -36,15 +35,11 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	}
 
 	@Override
-	public String initZookeeper(String nodeIp,String port) {
+	public String initZookeeper(String nodeIp,String port,Map<String,String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/conf");
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("zkAddress", "10.154.156.150");
-		map.put("zkPort", "2181");
-		
-		String result = HttpClient.post(url.toString(), map);
+		String result = HttpClient.post(url.toString(), params);
 		return result;
 	}
 

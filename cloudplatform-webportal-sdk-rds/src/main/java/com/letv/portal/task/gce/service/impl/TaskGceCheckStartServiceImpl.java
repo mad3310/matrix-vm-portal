@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.exception.TaskExecuteException;
+import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -34,10 +36,26 @@ public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implem
 		String nodeIp1 = containers.get(0).getHostIp();
 		String port = containers.get(0).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
+		String result = "";
 		
-		String result = this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
-		tr = analyzeRestServiceResult(result);
-		
+		for (int i = 0; i < 3; i++) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+			result = this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
+			tr = super.analyzeRestServiceResult(result);
+			if(tr.isSuccess()) {
+				Map<String,Object> response = (Map<String, Object>) tr.getParams();
+				result =  (String) ((Map<String,Object>)response.get("data")).get("status");
+				if("STARTED".equals(result))
+					break;
+			}
+		}
+		if(!"STARTED".equals(result)) {
+			tr.setSuccess(false);
+			tr.setResult("service start failed,the status was " + result);
+		}
 		tr.setParams(params);
 		return tr;
 	}

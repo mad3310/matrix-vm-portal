@@ -84,10 +84,10 @@
 		update WEBPORTAL_ZOOKEEPER_INFO
 		<set>
 			<if test="id != null  ">
-				ID=#{id}
+				ID=#{id},
 			</if>
 			<if test="name != null and name != '' ">
-				NAME like CONCAT('%','${name}','%') escape '^'
+				NAME=#{name},
 			</if>
 			<if test="ip != null and ip != ''  ">
 				IP=#{ip},
@@ -135,6 +135,13 @@
 			<include refid="Base_Column_List" /> 
 			from WEBPORTAL_ZOOKEEPER_INFO zk
 			where zk.ID = #{id}
+	</select>
+	
+	<select id="selectMinusedZk" resultMap="BaseResultMap" >
+	        select
+			<include refid="Base_Column_List" /> 
+			from WEBPORTAL_ZOOKEEPER_INFO zk
+			order by zk.USED limit 1
 	</select>
 	
 	

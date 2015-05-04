@@ -38,7 +38,7 @@ public interface IGcePythonService {
 	 * @return
 	 */
 
-	public String initZookeeper(String nodeIp,String port);
+	public String initZookeeper(String nodeIp,String port,Map<String,String> params);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>
