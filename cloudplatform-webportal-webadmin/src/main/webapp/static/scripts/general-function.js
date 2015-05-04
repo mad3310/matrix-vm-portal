@@ -282,23 +282,29 @@ function queryUrlBuilder(url,data){
 	return url+queryUrl;
 }
 //chosen 组件配置
-function initChosen(){
-	$('.chosen-select').trigger('chosen:updated');
+function initChosen(id,width){
+	var _id = ".chosen-select";
+	if(id) 
+		_id = "#"+id;
+	$(_id).trigger('chosen:updated');
 	var defOpt = {
 			allow_single_deselect:true,
 			search_contains:true,
 			no_results_text:"未找到匹配数据",
 			disable_search:false	
 	}
-	$('.chosen-select').chosen(defOpt); 
+	$(_id).chosen(defOpt); 
 	
 	//resize the chosen on window resize
+	var _width = width;
 	$(window)
 	.off('resize.chosen')
 	.on('resize.chosen', function() {
-		$('.chosen-select').each(function() {
-			 var $this = $(this);
-			 $this.next().css({'width': $this.parent().width()});
+		$(_id).each(function() {
+			var $this = $(this);
+			if(!_width)
+				_width = $this.parent().width();
+			$this.next().css({'width': _width});
 		})
 	}).trigger('resize.chosen');
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.SlbBackEndType;
-import com.letv.portal.enumeration.SlbBackendStatus;
+import com.letv.portal.model.gce.GceContainer;
 
 public class SlbBackendServer extends BaseModel {
 	
 	private static final long serialVersionUID = -6850281761807630222L;
 	
-	private Long containerId;
+	private Long gceId;
 	private SlbBackEndType type;
 	private String serverName;
 	private String serverIp;
@@ -20,6 +20,7 @@ public class SlbBackendServer extends BaseModel {
 	private Long configId;
 	
 	private SlbConfig slbConfig;
+	private List <GceContainer> gceContainers;
 	
 	public SlbConfig getSlbConfig() {
 		return slbConfig;
@@ -33,11 +34,11 @@ public class SlbBackendServer extends BaseModel {
 	public void setConfigId(Long configId) {
 		this.configId = configId;
 	}
-	public Long getContainerId() {
-		return containerId;
+	public Long getGceId() {
+		return gceId;
 	}
-	public void setContainerId(Long containerId) {
-		this.containerId = containerId;
+	public void setGceId(Long gceId) {
+		this.gceId = gceId;
 	}
 	public SlbBackEndType getType() {
 		return type;
@@ -75,4 +76,11 @@ public class SlbBackendServer extends BaseModel {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+	public List<GceContainer> getGceContainers() {
+		return gceContainers;
+	}
+	public void setGceContainers(List<GceContainer> gceContainers) {
+		this.gceContainers = gceContainers;
+	}
+	
 }

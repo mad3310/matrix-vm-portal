@@ -19,6 +19,18 @@ define(function(require,exports,module){
             if(cn.Displayable(data.data.status)){
                 $("#gceName").html(data.data.gceName);
                 $("#gceStatus").html("("+cn.TranslateStatus(data.data.status)+")");
+                var imageName =  data.data.gceImageName;
+                if(imageName) {
+                		cn.PostData( "/gce/log/url", {imageUrl:imageName}, function (data) {
+                			if(data.data) {
+                				$("#logUrl").attr("src",data.data);
+                			} else {
+                				$("#logUrlInst").html("镜像中未配置");
+                			}
+                		});
+                } else {
+                	$("#logUrlInst").html("镜像中未配置");
+                }
             }else{
                // location.href = '/list/gce';
             }

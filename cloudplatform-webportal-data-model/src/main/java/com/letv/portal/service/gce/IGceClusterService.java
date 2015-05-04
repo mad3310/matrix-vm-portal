@@ -5,4 +5,6 @@ import com.letv.portal.service.IBaseService;
 
 public interface IGceClusterService extends IBaseService<GceCluster> {
 
+	Boolean isExistByName(String string);
+
 }

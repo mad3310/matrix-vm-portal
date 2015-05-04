@@ -1,5 +1,6 @@
 package com.letv.portal.task.slb.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -30,8 +32,11 @@ public class TaskSlbInitZookeeper2ServiceImpl extends BaseTask4SlbServiceImpl im
 		//执行业务
 		List<SlbContainer> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(1).getIpAddr();
-		
-		String result = this.slbPythonService.initZookeeper(nodeIp1);
+		ZookeeperInfo zk = super.getMinusedZk();
+		Map<String, String> zkParm = new HashMap<String,String>();
+		zkParm.put("zkAddress", zk.getIp());
+		zkParm.put("zkPort", zk.getPort());
+		String result = this.slbPythonService.initZookeeper(nodeIp1,zkParm);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

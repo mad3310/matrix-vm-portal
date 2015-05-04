@@ -3,6 +3,7 @@
  */
 define(function(require,exports,module){
     var  $ = require('jquery');
+    var tempArry;
     require('bootstrap')($);
     var Common = function (){
 		this.totalAvailableTime = 365;
@@ -713,6 +714,170 @@ define(function(require,exports,module){
                 _downT.removeClass('bk-number-disabled');
             }
             _taiNum.val(val);
+        },
+        inite:function(){
+            var h=document.body.scrollHeight;
+            var ih=window.innerHeight?window.innerHeight:document.body.clientHeight;
+            var temph,tempw;
+            if(h>ih){
+                temph=h;
+            }else{
+                temph=ih;
+            }
+            tempw=$('body').width();
+            $('.shade').css({
+                width: tempw,
+                height: temph
+            });
+            var _target=$('.shade');
+            var _tiparray=$('[data-type="tip"]');
+            var length=_tiparray.length;
+            tempArry=new Array(length);
+            var content;
+            var left=0,top=0,rel=0;
+            _tiparray.each(function() {
+                content=$(this).attr('data-content');
+                var order=$(this).attr('data-order');
+                var position=$(this).attr('data-position');
+                left=$(this).offset().left+($(this).width())/2;//默认bottom配置
+                top=$(this).offset().top+$(this).height();
+                if(order=='1'){//初始化序号最先的显示
+                    // var html='<button class="btn btn-danger" style="position:absolute;top:'+(top-25)+'px;left:'+(left-25)+'px;><span class="badge">'+order+'</span></button><div class="tiptool '+position+'" data-order="'+order+'" style="top:'+top+'px;left:'+left+'px;opacity:1;filter:alpha(opacity=1);"><div class="tiptool-arrow"></div><div class="tiptool-inner">'+content+'<br><div class="tip-btngroup"><button class="btn btn-default btn-sm"> 跳出</button>&nbsp;<button class="btn btn-default btn-sm" disabled><i class="fa fa-long-arrow-left"></i> 上一步</button>&nbsp;<button class="btn btn-primary btn-sm step-nxt">下一步 <i class="fa fa-long-arrow-right"></i></button></div></div></div>';
+                    var html='<div class="tiptool '+position+'" data-order="'+order+'" style="top:'+top+'px;left:'+left+'px;opacity:1;filter:alpha(opacity=1);"><div class="tiptool-arrow"></div><div class="tiptool-inner">'+content+'<br><div class="tip-btngroup"><button class="btn btn-default btn-sm"> 跳出</button>&nbsp;<button class="btn btn-default btn-sm" disabled><i class="fa fa-long-arrow-left"></i> 上一步</button>&nbsp;<button class="btn btn-primary btn-sm step-nxt">下一步 <i class="fa fa-long-arrow-right"></i></button></div></div></div>';
+                }else{
+                    // var html='<button class="btn btn-danger btn-lucency" style="position:absolute;top:'+(top-25)+'px;left:'+(left-25)+'px;><span class="badge">'+order+'</span></button><div class="tiptool '+position+'" data-order="'+order+'" style="top:'+top+'px;left:'+left+'px;"><div class="tiptool-arrow"></div><div class="tiptool-inner">'+content+'<br><div class="tip-btngroup"><button class="btn btn-default btn-sm"> 跳出</button>&nbsp;<button class="btn btn-default btn-sm step-pre"><i class="fa fa-long-arrow-left"></i> 上一步</button>&nbsp;<button class="btn btn-primary btn-sm step-nxt">下一步 <i class="fa fa-long-arrow-right"></i></button></div></div></div>';
+                    var html='<div class="tiptool '+position+'" data-order="'+order+'" style="top:'+top+'px;left:'+left+'px;"><div class="tiptool-arrow"></div><div class="tiptool-inner">'+content+'<br><div class="tip-btngroup"><button class="btn btn-default btn-sm"> 跳出</button>&nbsp;<button class="btn btn-default btn-sm step-pre"><i class="fa fa-long-arrow-left"></i> 上一步</button>&nbsp;<button class="btn btn-primary btn-sm step-nxt">下一步 <i class="fa fa-long-arrow-right"></i></button></div></div></div>';
+                }
+                tempArry[order]=html;
+                _target.append(tempArry[order]);
+                if(position=='top'){
+                    rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().left-$('.tiptool[data-order='+order+']').offset().left;
+                    top=$(this).offset().top-$('.tiptool[data-order='+order+']').height();
+                    left=left-rela;
+                }else if(position=='bottom'){
+                    rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().left-$('.tiptool[data-order='+order+']').offset().left;
+                    left=left-rela;
+                }else if(position=='left'){
+                    rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().top-$('.tiptool[data-order='+order+']').offset().top;
+                    top=$(this).offset().top+($(this).height())/2-rela; 
+                    left=$(this).offset().left-250;
+                }else{
+                    rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().top-$('.tiptool[data-order='+order+']').offset().top;
+                    top=$(this).offset().top-rela;
+                    left=$(this).offset().left+$(this).width();
+                }
+                if(order=='1'){
+                    $('[data-type="tip"][data-order='+order+']').addClass('tipbg');
+                }
+                $('.tiptool[data-order='+order+']').css({
+                    left:left+"px",
+                    top:top+"px"
+                }).prev('button').css({
+                    left:left-25+"px",
+                    top:top-25+"px"
+                });
+            });
+        },
+        validate:function(){
+            var current;
+            $('.tiptool').find('button').click(function(event) {
+                var order=$(this).closest('.tiptool').attr('data-order');
+                var i;
+                if($(this).hasClass('step-nxt')){
+                    i=parseInt(order)+1;
+                    if(i==(tempArry.length-1)){
+                        $('.tiptool[data-order='+i+']').find('.step-nxt').attr('disabled', 'true');
+                    }
+                }else if($(this).hasClass('step-pre')){
+                    i=parseInt(order)-1;
+                }else{
+                    $('.shade').css('display', 'none');
+                    setCookie('tiptool','false');
+                }
+                $(this).closest('.tiptool').css({
+                    opacity: '0',
+                    filter: 'alpha(opacity=0)'
+                }).prev('button').addClass('btn-lucency');
+                $('[data-type="tip"][data-order='+i+']').addClass('tipbg');
+                current=i;
+                $('.tiptool[data-order='+i+']').css({
+                    opacity: '1',
+                    filter: 'alpha(opacity=1)'
+                }).prev('button').removeClass('btn-lucency');
+                var len=tempArry.length-1;
+                if(i<=len){
+                }else{
+                    $('.shade').css('display', 'none');
+                    setCookie('tiptool','false');
+                }
+                while(current>=0){
+                    current--;
+                    if(current!=i){
+                        $('[data-type="tip"][data-order='+current+']').removeClass('tipbg');
+                    }
+                }
+                while(current<=len){
+                    current++;
+                    if(current!=i){
+                        $('[data-type="tip"][data-order='+current+']').removeClass('tipbg');
+                    }
+                }
+            });
+        },
+        resizeUpdate:function(){
+            $(window).resize(function(event) {
+                setSize();
+                //重新定义位置
+                var oritipE=$('[data-type=tip]');
+                oritipE.each(function() {
+                    var order=$(this).attr('data-order');
+                    var rela;
+                    var left=$(this).offset().left+$(this).width()/2;//默认bottom配置
+                    var i=parseInt($(this).offset().top);var j=parseInt($(this).height());
+                    var top=i+j; 
+                    var position=$(this).attr('data-position');
+                    if(position=='top'){
+                        rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().left-$('.tiptool[data-order='+order+']').offset().left;
+                        top=$(this).offset().top-$('.tiptool[data-order='+order+']').height();
+                        left=left-rela;
+                    }else if(position=='bottom'){
+                        rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().left-$('.tiptool[data-order='+order+']').offset().left;
+                        left=left-rela;
+                    }else if(position=='left'){
+                        rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().top-$('.tiptool[data-order='+order+']').offset().top;
+                        top=$(this).offset().top+($(this).height())/2-rela; 
+                        left=$(this).offset().left-250;
+                    }else{
+                        rela=$('.tiptool[data-order='+order+']').find('.tiptool-arrow').offset().top-$('.tiptool[data-order='+order+']').offset().top;
+                        top=$(this).offset().top-rela;
+                        left=$(this).offset().left+$(this).width();
+                    }
+                    $('.tiptool[data-order='+order+']').css({
+                        left:left+"px",
+                        top:top+"px"
+                    }).prev('button').css({
+                        left:left-25+"px",
+                        top:top-25+"px"
+                    });
+                });
+
+            });
+        },
+        getCookie:function(name){//读取cookie值
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg)){
+                return unescape(arr[2]); 
+            }else{
+                return null;
+            }
+        },
+        deleteCookie:function(name){//删除cookie值
+            var exp = new Date(); 
+            exp.setTime(exp.getTime() - 1); 
+            var cval=getCookie(name); 
+            if(cval!=null){
+                document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+            }
         }
     }
     function drag(relaLen,options){
@@ -849,6 +1014,38 @@ define(function(require,exports,module){
         });
     } 
     //end 2015-04-10 by gm new add drag及相关 
+    //2015-04-20 tip提示
+    function setSize(){
+        var h=document.body.scrollHeight;
+        var ih=window.innerHeight?window.innerHeight:document.body.clientHeight;
+        var temph,tempw;
+        if(h>ih){
+            temph=h;
+        }else{
+            temph=ih;
+        }
+        tempw=$('body').width();
+        $('.shade').css({
+            width: tempw,
+            height: temph
+        });
+    }
+    function setCookie(name,value){ 
+        var Days = 60; 
+        var exp = new Date(); 
+        exp.setTime(exp.getTime() + Days*24*60*60*1000); 
+        document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString(); 
+    }
+    //删除cookies 
+    function delCookie(name) { 
+        var exp = new Date(); 
+        exp.setTime(exp.getTime() - 1); 
+        var cval=getCookie(name); 
+        if(cval!=null){
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+        }          
+    } 
+    //end tip 提示
 	var TopBtnInit = function(){
 		$("body",parent.document).find(".top-bar-btn").mouseenter(function(){
 			$(this).width(88);

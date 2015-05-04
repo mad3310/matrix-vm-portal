@@ -41,9 +41,9 @@
 		</div>
 		<ul class="nav nav-tabs" role="tablist" id="setab">
 			<li id="whitelist-tab" role="presentation" class="active">
-				<a data-toggle="tab" href="#addedServer">已添加的服务配置</a></li>
-			<!-- <li id="sqlInject-tab" role="presentation">
-				<a data-toggle="tab" href="#sqlInject">未添加的服务器</a></li> -->
+				<a data-toggle="tab" href="#addedServer">已添加的服务器</a></li>
+			<li id="inner-server-list-tab" role="presentation" class="hidden">
+				<a data-toggle="tab" href="#sqlInject">未添加的GCE服务器</a></li>
 		</ul>
 		<!-- <div class="panel-body pd0" id="whitelist"> -->
 		<div class="tab-content">
@@ -52,8 +52,7 @@
 					<thead>
 					<tr>
 						<th>云服务器ID/名称</th>
-						<th>公网/内网IP地址</th>
-						<th>服务端口</th>
+						<th>访问地址</th>
 						<th>SLB协议端口</th>
 						<th>状态</th>
 						<th>网络类型</th>
@@ -68,52 +67,28 @@
 					<tbody id="tby">
 					</tbody>
 				</table>
+				<div style="height: 40px; margin-top: 20px;">
+					<a class="btn btn-success hidden" id="add-custom-server" data-backdrop="false" data-toggle="modal" data-target="#myModal">添加自定义服务器</a>
+					<a class="btn btn-success hidden"  id="add-inner-server">添加GCE服务器</a>
+				</div>
 			</div>
 			<div id="sqlInject" role="tabpanel" class="tab-pane fade" aria-labelledby="sqlInject-tab">
-				<div class="col-sm-12 col-md-12" style="margin: 10px 0px 10px 0px; padding-left: 0px">
-					<div class="pull-left">
-						<form class="form-inline" role="form">
-							<div class="form-group">
-								<select class="form-control">
-									<option value="0" selected="selected">常规实例</option>
-								</select>
-							</div>
-							<div class="form-group">
-								<input type="text" class="form-control" size="48" placeholder="请输入实例名称或实例ID进行搜索">
-							</div>
-							<button type="submit" class="btn btn-default">搜索</button>
-						</form>
-					</div>
-				</div>
 				<table class="table table-hover table-se">
 					<thead>
 					<tr>
 						<th>云服务器ID/名称</th>
-						<th>公网/内网IP地址</th>
-						<th>状态</th>
+						<th>访问地址</th>
 						<th>网络类型</th>
 						<th>付款方式</th>
+						<th>健康检查状态</th>
 						<th class="text-right" width="200px">
 							<span style="padding-left:8px">操作</span>
 						</th>
 					</tr>
 					</thead>
-					<tbody>
-					<tr>
-						<td>h-28x6n5ua98</td>
-						<td>166.144.31.142(公网)</td>
-						<td><span class="text-success">运行中</span></td>
-						<td>经典网络</td>
-						<td>包年包月</td>
-						<td class="text-right">
-							<a class="j_slb_health_drop1 btn-text">添加</a>
-						</td>
-					</tr>
+					<tbody id="server-tby">
 					</tbody>
 				</table>
-			</div>
-			<div style="height: 40px; margin-top: 20px;">
-				<a class="btn btn-success" data-backdrop="false" data-toggle="modal" data-target="#myModal">添加</a>
 			</div>
 		</div>
 	</div>
@@ -163,6 +138,29 @@
 						</div>
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+	<!--确认对话框-->
+	<div id="dialog-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+			<!--	<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+					</button>-->
+					<h5 id="dialog-box-title" class="modal-title"></h5ashboard>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="col-sm-1 col-md-1 warning-sign">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+					</div>
+					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
 			</div>
 		</div>
 	</div>

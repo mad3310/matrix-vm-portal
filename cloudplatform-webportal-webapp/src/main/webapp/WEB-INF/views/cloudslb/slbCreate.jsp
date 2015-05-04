@@ -304,7 +304,7 @@
 											<label class="bk-form-row-name">数量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li">
-													<span class="bk-number"> <input type="text" class="bk-number-input" value="1"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
+													<span class="bk-number"> <input type="text" class="bk-number-input" value="2"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-up"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-down bk-number-disabled"> <i class="bk-number-arrow"></i>
 														</span> <span class="bk-number-down hide"> <i class="bk-number-arrow"></i>
@@ -322,7 +322,7 @@
 							<div class="bk-orders-menu  bk-mb4">
 								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">1台</span>
 							</div>
-							<div class="bk-scope bk-items">
+							<div class="bk-scope bk-items bk-mb4">
 								<div class="bk-items-title">当前配置</div>
 								<div>
 									<div class="bk-items-list">
@@ -359,6 +359,19 @@
 									</button>
 								</div>
 								<div class="bk-pb4"></div>
+							</div>
+							<div class="bk-scope bk-items">
+								<div class="bk-items-title">服务专员信息</div>
+							</div>
+							<div class="bk-scope bk-items">
+									<div class="bk-items-list">
+											<ul>
+												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">张祥</span></li>
+												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhangxiang@letv.com</span></li>
+												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15101188635</span></li>
+												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">2980726652</span></li>
+											</ul>
+								</div>
 							</div>
 						</div>
 				</div>

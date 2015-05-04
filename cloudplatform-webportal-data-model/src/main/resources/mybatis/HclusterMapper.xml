@@ -10,6 +10,7 @@
 		<result column="HCLUSTER_NAME" property="hclusterName" />
 		<result column="DESCN" property="descn" />
 		<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+		<result column="TYPE" property="type" />
 		
 		<result column="STATUS" property="status" />
 		<result column="DELETED" property="deleted" />
@@ -49,7 +50,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		m.id,m.hcluster_name,m.status,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn,m.HCLUSTER_NAME_ALIAS
+		m.id,m.hcluster_name,m.status,m.type,m.DELETED,m.update_user,m.update_time,m.create_user,m.create_time,m.descn,m.HCLUSTER_NAME_ALIAS
 	</sql>
 	
 	
@@ -68,6 +69,9 @@
 			</if>
 			<if test="status != null and status != '' ">
 				and m.STATUS=#{status}
+			</if>
+			<if test="type != null and type != '' ">
+				and m.TYPE like CONCAT('%','${type}','%') escape '^'
 			</if>
 			<if test="deleted != null  ">
 				and m.DELETED=#{deleted}
@@ -109,9 +113,9 @@
 	<insert id="insert" parameterType="Hcluster">
 		insert into
 		WEBPORTAL_HCLUSTER
-		(HCLUSTER_NAME,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN,HCLUSTER_NAME_ALIAS)
+		(HCLUSTER_NAME,STATUS,TYPE,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,DESCN,HCLUSTER_NAME_ALIAS)
 		values
-		(#{hclusterName},#{status},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn},#{hclusterNameAlias})
+		(#{hclusterName},#{status},#{type},#{deleted},now(),#{createUser},#{updateTime},#{updateUser},#{descn},#{hclusterNameAlias})
 	</insert>
 	
 	<!-- 物理删除 -->
@@ -138,10 +142,7 @@
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_HCLUSTER m
-		where 1=1
-		<if test="hclusterName != null  and hclusterName != '' ">
-			and m.HCLUSTER_NAME =#{hclusterName}
-		</if>
+		<include refid="Example_Where_Clause" />
 	</select>
 				<!-- 根据dbId查询-->
 	<select id="selectByHclusterId" resultMap="resultDetail" parameterType="java.lang.Long">

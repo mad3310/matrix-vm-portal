@@ -108,6 +108,20 @@ public class GceServerController {
 		obj.setData(gceImages);
 		return obj;
 	}	
+	@RequestMapping(value="/log/url",method=RequestMethod.POST)
+	public @ResponseBody ResultObject getImageByUrl(String imageUrl){
+		ResultObject obj = new ResultObject();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("owner", sessionService.getSession().getUserId());
+		map.put("url",imageUrl);
+		map.put("status", GceImageStatus.AVAILABLE);
+		
+		List<GceImage> gceImages= this.gceImageService.selectByMap(map);
+		if(gceImages ==null || gceImages.isEmpty())
+			return obj;
+		obj.setData(gceImages.get(0).getLogUrl());
+		return obj;
+	}	
 	
 	private void isAuthorityGce(Long id) {
 		if(id == null)

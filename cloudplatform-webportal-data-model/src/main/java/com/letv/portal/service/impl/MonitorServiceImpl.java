@@ -1,7 +1,7 @@
 package com.letv.portal.service.impl;
 
 
-import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,7 +12,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -99,7 +98,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	}
 	
 	@Override
-	public List<MonitorViewYModel> getDbData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging) {
+	public List<MonitorViewYModel> getMonitorData(String ip,Long chartId,Integer strategy,boolean isTimeAveraging,int format) {
 		List<MonitorViewYModel> ydatas = new ArrayList<MonitorViewYModel>();
 		
 		MonitorIndexModel monitorIndexModel  = this.monitorIndexService.selectById(chartId);	   
@@ -131,7 +130,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					point.add(beforData.get(i+1).getMonitorDate());
 					float diff = beforData.get(i+1).getDetailValue()-beforData.get(i).getDetailValue();
 					float time = (beforData.get(i+1).getMonitorDate().getTime()-beforData.get(i).getMonitorDate().getTime())/1000;
-					Long value = (long) (diff>0?diff/time:0);
+					float value = diff>0?diff/time:0;
+					value = monitorDataAdapter(value,format);
 					point.add(value);
 					datas.add(point);
 				}
@@ -139,7 +139,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				for (int i = 0; i < beforData.size()-1; i++) {
 					List<Object> point = new ArrayList<Object>();
 					point.add(beforData.get(i).getMonitorDate());
-					Long value = (long) (beforData.get(i).getDetailValue()>=0?beforData.get(i).getDetailValue():0);
+					float value = beforData.get(i).getDetailValue()>=0?beforData.get(i).getDetailValue():0;
+					value = monitorDataAdapter(value,format);
 					point.add(value);
 					datas.add(point);
 				}
@@ -152,6 +153,23 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return ydatas;
 	}
 	
+	private float monitorDataAdapter(float value, int format) {
+		DecimalFormat df=new DecimalFormat("##########.00");
+		switch(format) {
+			case 1: //B 转   M
+				value=value/1024/1024;
+				break;
+			case 2: //B 转  G
+				value = value/1024/1024/1024;
+				break;
+			default:
+				break;
+		}
+		return Float.valueOf(df.format(value));
+		
+	}
+
+
 	private Date getStartDate(Date end, Integer strategy) {
 		Calendar now = Calendar.getInstance();
 		now.setTime(end);

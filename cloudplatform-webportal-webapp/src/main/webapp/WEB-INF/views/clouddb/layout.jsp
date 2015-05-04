@@ -127,6 +127,7 @@
                             <li><a  class="text-sm" src="${ctx}/monitor/dbLink/${dbId}" href="javascript:void(0)">COMDML</a></li>
                             <li><a  class="text-sm" src="${ctx}/monitor/InnoDB/buffer/${dbId}" href="javascript:void(0)">InnoDB缓冲池</a></li>
                             <li><a  class="text-sm" src="${ctx}/monitor/QPS/TPS/${dbId}" href="javascript:void(0)">QPS/TPS</a></li>
+                            <%-- <li><a  class="text-sm" src="${ctx}/monitor/cpu/${dbId}" href="javascript:void(0)">cpu使用率</a></li> --%>
                         <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>

@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -40,7 +41,8 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 	private ISlbClusterService slbClusterService;
 	@Resource
 	private ISlbConfigService slbConfigService;
-
+	@Value("${slb.code}")
+	private String SLB_CODE;
 	public SlbServerServiceImpl() {
 		super(SlbServer.class);
 	}
@@ -63,10 +65,17 @@ public class SlbServerServiceImpl extends BaseServiceImpl<SlbServer> implements 
 		slbServer.setStatus(SlbStatus.BUILDDING.getValue());
 		
 		StringBuffer clusterName = new StringBuffer();
-		clusterName.append(slbServer.getCreateUser()).append("_").append(slbServer.getSlbName());
+		clusterName.append(slbServer.getCreateUser()).append("_").append(SLB_CODE).append("_").append(slbServer.getSlbName());
 		
-		/*function 验证mclusterName是否存在*/
-		
+		/*function 验证clusterName是否存在*/
+		Boolean isExist= this.slbClusterService.isExistByName(clusterName.toString());
+		int i = 0;
+		while(!isExist) {
+			isExist= this.slbClusterService.isExistByName(clusterName.toString() + (i+1));
+			i++;
+		}
+		if(i>0)
+			clusterName.append(i);
 		//数据库添加slbCluster
 		SlbCluster slbCluster = new SlbCluster();
 		slbCluster.setHclusterId(slbServer.getHclusterId());

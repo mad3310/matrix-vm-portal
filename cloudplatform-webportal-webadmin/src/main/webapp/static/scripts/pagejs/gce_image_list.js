@@ -41,32 +41,37 @@ function queryByPage() {
 							+"<span class=\"lbl\"></span>"
 							+"</label>"
 							+"</td>");
-				var td2 = $("<td>"
+				var td2 = $("<td class=\"td-name\" >"
 						+array[i].name
 						+ "</td>");
-				var td3 = $("<td>"
+				var td3 = $("<td class=\"td-type\" >"
 						+ array[i].type
 						+ "</td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class=\"td-tag\" >"
 						+ array[i].tag
-						+ "</td>");
-				var td5 = $("<td> - </td>");
-				if(array[i].createUserModel != undefined && array[i].createUserModel != null ){
-					td5.html(array[i].createUserModel.userName);
-				}
-				var td6 = $("<td>"
-						+ array[i].status
-						+ "</td>");
-				var td7 = $("<td>"
+						+ "</td> ");
+				var td5 = $("<td class=\"td-url\" >"
 						+ array[i].url
 						+ "</td>");
-				var td8 = $("<td>"
-						+ array[i].descn
+				var td6 = $("<td class=\"td-url\" >"
+						+ array[i].logUrl
 						+ "</td>");
+				var td7 = $("<td class=\"td-status\" >"
+						+ array[i].status
+						+ "</td>");
+				var td8= $("<td class=\"td-username\" user-id=\""+array[i].owner+"\"> - </td>");
+				if(array[i].createUserModel != undefined && array[i].createUserModel != null ){
+					td8.html(array[i].createUserModel.userName);
+				}
 				var td9 = $("<td>"
+						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+						+"<a class=\"green\" href=\"#\"  title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<i class=\"ace-icon fa fa-pencil bigger-120\" data-toggle=\"modal\" data-target=\"#modify-image-modal\"></i>"
+						+"</a>"
 						+"<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
+						+"</div>"
 						+"</td>");
 				var tr = $("<tr></tr>");
 				
@@ -76,6 +81,7 @@ function queryByPage() {
 			
 			/*初始化tooltip*/
 			$('[data-toggle = "tooltip"]').tooltip();
+			initModify();
 			
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
@@ -156,7 +162,6 @@ function pageControl() {
 	    });
 	}
 	
-//创建Container集群表单验证
 function formValidate() {
 	$("#add-gce-image-form").bootstrapValidator({
 	  message: '无效的输入',
@@ -169,23 +174,22 @@ function formValidate() {
          }
      }).on('success.form.bv', function(e) {
     	 e.preventDefault();
-    	$.ajax({
-    		cache:false,
-    		type : "post",
-    		url : "/gce/image",
-    		data: {
-    			name:$('#name').val(),
-    			type:$('#type').val(),
-    			descn:$('#descn').val(),
-    			tag:$('#tag').val(),
-    			url:$('#url').val(),
-    			status:$('#status').val(),
-    			owner:$('#owner').val()
-    		},
-    		success : function(data) {
-    			location.href = "/list/gce/image";
-    		}
-    	})
+    	addImage();
+     });
+}
+function updateFormValidate() {
+	$("#modify-gce-image-form").bootstrapValidator({
+	  message: '无效的输入',
+         feedbackIcons: {
+             valid: 'glyphicon glyphicon-ok',
+             invalid: 'glyphicon glyphicon-remove',
+             validating: 'glyphicon glyphicon-refresh'
+         },
+         fields: {
+         }
+     }).on('success.form.bv', function(e) {
+    	 e.preventDefault();
+    	updateImage();
      });
 }
 function getUser(){
@@ -200,19 +204,96 @@ function getUser(){
     				var option =$("<option value=\""+users[i].id+"\">"+users[i].userName+"</option>");
     				option.appendTo(select);
     			}
-    			initSelect();
+    			initChosen("","272px");
     		}
     	})
 }
-function initSelect(){
-	var options = {
-		allow_single_deselect:true,
-		search_contains:true,
-		no_results_text:"未找到匹配数据",
-		disable_search:true,	
-		width:'272px'
-	}
-	$('.chosen-select').chosen(options)
+function getModifyUser(ownerId){
+	var select = $("#modify-owner");
+	$.ajax({
+    		cache:false,
+    		type : "get",
+    		url : "/gce/user",
+    		success : function(data) {
+    			var users = data.data;
+    			for (var i=0,len = users.length;i < len; i++){
+    				if(users[i].id != ownerId){
+    					var option =$("<option value=\""+users[i].id+"\">"+users[i].userName+"</option>");
+    				}else{
+    					var option =$("<option value=\""+users[i].id+"\" selected=\"selected\">"+users[i].userName+"</option>");
+    				}
+    				option.appendTo(select);
+    			}
+    			initChosen("","272px");
+    		}
+    	})
+}
+
+function initModify(){
+	$(".fa-pencil").click(function(){
+		var tr = $(this).closest("tr");
+		var trData={
+		 		id : tr.find("input").val(),
+		 		name : tr.find(".td-name").html(),
+		 		url : tr.find(".td-url").html(),
+		 		tag : tr.find(".td-tag").html(),
+		 		status : tr.find(".td-status").html(),
+		 		type : tr.find(".td-type").html(),
+		 		descn : tr.find(".td-descn").html(),
+		 		owner : tr.find(".td-username").attr("user-id")
+		}
+		
+		getModifyUser(trData.owner);
+		$('#modify-imageId').val(trData.id);
+		$('#modify-name').val(trData.name);
+    	$('#modify-type').val(trData.type);
+    	$('#modify-descn').val(trData.descn);
+    	$('#modify-tag').val(trData.tag);
+    	$('#modify-url').val(trData.url);
+    	$('#modify-logUrl').val(trData.logUrl);
+    	$('#modify-status').val(trData.status);
+	})
+}
+function addImage(){
+	$.ajax({
+    		cache:false,
+    		type : "post",
+    		url : "/gce/image",
+    		data: {
+    			name:$('#name').val(),
+    			type:$('#type').val(),
+    			descn:$('#descn').val(),
+    			tag:$('#tag').val(),
+    			url:$('#url').val(),
+    			status:$('#status').val(),
+    			owner:$('#owner').val(),
+    			logUrl:$('#logUrl').val()
+    		},
+    		success : function(data) {
+    			location.href = "/list/gce/image";
+    		}
+    	})
+}
+function updateImage(){
+	$.ajax({
+    		cache:false,
+    		type : "post",
+    		url : "/gce/image/"+$('#modify-imageId').val(),
+    		data: {
+    			id:$('#modify-imageId').val(),
+    			name:$('#modify-name').val(),
+    			type:$('#modify-type').val(),
+    			descn:$('#modify-descn').val(),
+    			tag:$('#modify-tag').val(),
+    			url:$('#modify-url').val(),
+    			logUrl:$('#modify-logUrl').val(),
+    			status:$('#modify-status').val(),
+    			owner:$('#modify-owner').val()
+    		},
+    		success : function(data) {
+    			location.href = "/list/gce/image";
+    		}
+    	})
 }
 
 function delGceImage(obj){
@@ -229,10 +310,12 @@ function delGceImage(obj){
 		}
 		confirmframe("删除镜像","删除"+$(obj).closest("tr").find("td:eq(1)").html()+"后可重新添加","您确定要删除?",delCmd);
 }
+
 function page_init(){
 	$('[name = "popoverHelp"]').popover();
 	queryByPage();
 	formValidate();
+	updateFormValidate();
 	pageControl();
 	 getUser();
 }

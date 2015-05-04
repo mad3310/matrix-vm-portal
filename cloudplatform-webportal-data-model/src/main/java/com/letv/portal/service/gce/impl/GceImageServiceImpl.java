@@ -28,4 +28,9 @@ public class GceImageServiceImpl extends BaseServiceImpl<GceImage> implements IG
 	public IBaseDao<GceImage> getDao() {
 		return this.gceImageDao;
 	}
+
+	@Override
+	public GceImage selectByUrl(String url) {
+		return this.gceImageDao.selectByUrl(url);
+	}
 }

@@ -139,6 +139,14 @@ public class InitializingJob {
 			collectMclusterServiceData.setCronExpression("0 0/1 * * * ?");
 			collectMclusterServiceData.setDescn("获取监控数据");
 			jobs.add(collectMclusterServiceData);
+			ScheduleJobModel collectclusterServiceData = new ScheduleJobModel();
+			collectclusterServiceData.setJobName("collectClusterServiceData");
+			collectclusterServiceData.setJobMethod("collectClusterServiceData");
+			collectclusterServiceData.setJobGroup("webportal");
+			collectclusterServiceData.setJobStatus("1");
+			collectclusterServiceData.setCronExpression("0 0/1 * * * ?");
+			collectclusterServiceData.setDescn("获取集群层面监控数据");
+			jobs.add(collectclusterServiceData);
 			
 			//delete monitor data a month ago.
 			ScheduleJobModel deleteMonitorMonthAgo = new ScheduleJobModel();

@@ -139,5 +139,19 @@
 			from WEBPORTAL_SLBCLUSTER SCS
 			where SCS.ID=#{id}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLBCLUSTER SCS
+		 WHERE SCS.CLUSTER_NAME = #{clusterName}
+	</select>
 	
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLBCLUSTER SCS
+		<include refid="Example_Where_Clause" />
+	</select>
 </mapper>   

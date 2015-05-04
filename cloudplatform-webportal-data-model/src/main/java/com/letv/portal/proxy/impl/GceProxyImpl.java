@@ -56,7 +56,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
-
+	@Value("${nginx4jetty.code}")
+	private String NGINX4JETTY_CODE;
 	@Override
 	public void saveAndBuild(GceServer gceServer) {
 		if(gceServer == null)
@@ -66,7 +67,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		params.put("isConfig", false);
 		if("jetty".equals(gceServer.getType())) {
 			gceServer.setType("nginx");
-			gceServer.setGceName("n4j_" + gceServer.getGceName());
+			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
+			gceServer.setGceImageName("");
 			nextParams = this.gceServerService.save(gceServer);
 			nextParams.put("isContinue", false);
 			nextParams.put("isConfig", true);

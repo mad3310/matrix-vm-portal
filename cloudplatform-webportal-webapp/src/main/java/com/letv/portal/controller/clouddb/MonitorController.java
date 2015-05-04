@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import com.letv.portal.model.DbModel;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMonitorIndexService;
+import com.letv.portal.service.gce.IGceServerService;
+import com.letv.portal.service.slb.ISlbServerService;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -34,6 +37,10 @@ public class MonitorController {
 	@Resource
 	private IDbService dbService;
 	@Resource
+	private IGceServerService gceServerService;
+	@Resource
+	private ISlbServerService slbServerService;
+	@Resource
 	private IMonitorIndexService monitorIndexService;
 	
 	/**
@@ -46,17 +53,17 @@ public class MonitorController {
 	 */
 	@RequestMapping(value="/{dbId}/{chartId}/{strategy}/{isTimeAveraging}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject getDbConnMonitor(@PathVariable Long dbId,@PathVariable Long chartId,@PathVariable Integer strategy,@PathVariable boolean isTimeAveraging,ResultObject result) {
-		DbModel dbModel = this.dbService.selectById(dbId);
-		if(dbModel == null)
-			throw new ValidateException("参数不合法，相关数据不存在");
-		result.setData(this.monitorProxy.getDbData(dbModel.getMclusterId(), chartId, strategy,isTimeAveraging));
+		result.setData(this.monitorProxy.getDbData(dbId, chartId, strategy,isTimeAveraging,0));
 		return result;
 	}
-	
+	@RequestMapping(value="/{type}/{severId}/{chartId}/{strategy}/{isTimeAveraging}/{format}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getDbConnMonitor(@PathVariable String type,@PathVariable Long severId,@PathVariable Long chartId,@PathVariable Integer strategy,@PathVariable boolean isTimeAveraging,@PathVariable int format,ResultObject result) {
+		result.setData(this.monitorProxy.getData(type,severId, chartId, strategy,isTimeAveraging,format));
+		return result;
+	}
 	@RequestMapping(value="/index/{indexId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject mclusterMonitorChartsCount(@PathVariable Long indexId,ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("status", 1);
 		map.put("id", indexId);
 		result.setData(this.monitorIndexService.selectByMap(map));
 		return result;

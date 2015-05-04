@@ -32,7 +32,7 @@
 				</li>
 				<li id="sidebar-mcluster-list" >
 					<a href="${ctx}/list/mcluster"> 
-						<i class="menu-icon fa fa-caret-right"></i>乐视手机
+						<i class="menu-icon fa fa-caret-right"></i>
 						Container集群列表
 					</a>
 					<b class="arrow"></b>
@@ -152,6 +152,12 @@
 			<a href="${ctx}/list/gce/image">
 				<i class="menu-icon fa  fa-download"></i> 
 				<span class="menu-text">镜像管理</span> 
+			</a>
+		</li>
+		<li id="sidebar-zk-mgr" >
+			<a href="${ctx}/list/zk">
+				<i class="menu-icon fa  fa-cog"></i> 
+				<span class="menu-text">zookeeper管理</span> 
 			</a>
 		</li>
 	</ul>

@@ -17,6 +17,7 @@ define(function(require){
     $("#refresh").click(function(){
     	asyncData();
     });
+    
     $("#restart").click(function(){
     	var url = "/slb/restart";
     	var restartData = {
@@ -37,6 +38,17 @@ define(function(require){
     function asyncData() {
         var url = "/slbBackend?currentPage=1&&recordsPerPage=150&&slbId="+$("#slbId").val();
         cn.GetData(url,slbServerHandler.ServerHandler);
+    }
+    $("#inner-server-list-tab").click(function(){
+   		 asyncInnerServerData();
+    })
+    $("#add-inner-server").click(function(){
+    	 $('.nav-tabs a:last').tab('show');
+    	  asyncInnerServerData();
+    });
+    function asyncInnerServerData() {
+        var  url= "/gce?currentPage=1&&recordsPerPage=150";
+        cn.GetData(url,slbServerHandler.InnerServerHandler);
     }
 
     $('#addBackendServer').bootstrapValidator({
@@ -93,6 +105,7 @@ define(function(require){
             serverName :  $("[name = backendServerName]").val(),
             serverIp : $("[name = backendServerIp]").val(),
             port : $("[name = backendPort]").val(),
+            type : "CUSTOM",
             configId : $("[name = frontPort]").val()
         }
         var url = "/slbBackend";

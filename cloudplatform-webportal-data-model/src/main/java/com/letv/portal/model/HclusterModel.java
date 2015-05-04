@@ -17,7 +17,7 @@ public class HclusterModel extends BaseModel{
 	private Integer descn; //描述:
 	private String hclusterNameAlias;//别名
 	
-	
+	private String type;//集群用途
 	
 	public String getHclusterNameAlias() {
 		return hclusterNameAlias;
@@ -43,6 +43,11 @@ public class HclusterModel extends BaseModel{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }

@@ -119,7 +119,30 @@ public class SkipController {
 		mav.setViewName("/cloudslb/slbCreate");
 		return mav;
 	}
-	
+	@RequestMapping(value ="/monitor/slb/cpu/{slbId}",method=RequestMethod.GET)
+	public ModelAndView toCpuUsed(@PathVariable Long slbId,ModelAndView mav){
+		mav.addObject("slbId",slbId);
+		mav.setViewName("/cloudslb/monitor/cpu");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/slb/network/{slbId}",method=RequestMethod.GET)
+	public ModelAndView toNetwork(@PathVariable Long slbId,ModelAndView mav){
+		mav.addObject("slbId",slbId);
+		mav.setViewName("/cloudslb/monitor/network");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/slb/memory/{slbId}",method=RequestMethod.GET)
+	public ModelAndView toMemory(@PathVariable Long slbId,ModelAndView mav){
+		mav.addObject("slbId",slbId);
+		mav.setViewName("/cloudslb/monitor/memory");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/slb/disk/{slbId}",method=RequestMethod.GET)
+	public ModelAndView toDisk(@PathVariable Long slbId,ModelAndView mav){
+		mav.addObject("slbId",slbId);
+		mav.setViewName("/cloudslb/monitor/disk");
+		return mav;
+	}
 	private void isAuthorityDb(Long dbId) {
 		if(dbId == null)
 			throw new ValidateException("参数不合法");

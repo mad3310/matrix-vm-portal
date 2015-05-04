@@ -16,4 +16,5 @@ define(function(require){
      * 加载gce基础信息
      */
     cn.GetData("/gce/"+$("#gceId").val(),basicInfoHandler.resCountHandler);
+    
 });
