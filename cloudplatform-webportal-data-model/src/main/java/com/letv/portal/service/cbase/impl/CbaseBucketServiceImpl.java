@@ -1,5 +1,6 @@
 package com.letv.portal.service.cbase.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.letv.portal.enumeration.CbaseBucketStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
+import com.letv.portal.model.cbase.CbaseContainerModel;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.cbase.ICbaseClusterService;
@@ -95,4 +97,45 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		params.put("createUser", createUser);
 		return this.cbaseBucketDao.selectByBucketNameForValidate(params);
 	}
+
+	@Override
+	public CbaseBucketModel bucketList(Long cacheId) {
+		if (cacheId == null)
+			throw new ValidateException("参数不合法");
+		CbaseBucketModel bucket = this.selectById(cacheId);
+		if (bucket == null)
+			throw new ValidateException("参数不合法，相关数据不存在");
+		bucket.setContainers(this.cbaseContainerService
+				.selectByCbaseClusterId(bucket.getCbaseClusterId()));
+		return bucket;
+	}
+
+	@Override
+	public Map<String, Object> getMoxiConfig(Long cacheId) {
+		if (cacheId == null)
+			throw new ValidateException("参数不合法");
+
+		CbaseBucketModel bucket = this.selectById(cacheId);
+		if (bucket == null)
+			throw new ValidateException("参数不合法，相关数据不存在");
+
+		Map<String, Object> moxiParams = new HashMap<String, Object>();
+
+		List<CbaseContainerModel> containers = this.cbaseContainerService
+				.selectByCbaseClusterId(bucket.getCbaseClusterId());
+
+		List<String> cbaseHosts = new ArrayList<String>();
+		for (CbaseContainerModel container : containers) {
+			if ("cbase".equals(container.getType())) {
+				cbaseHosts.add(container.getIpAddr());
+			}
+		}
+
+		moxiParams.put("CBASE_HOST", cbaseHosts);
+		moxiParams.put("CBASE_BUCKET", bucket.getBucketName());
+		moxiParams.put("CBASE_PWD", bucket.getBucketName());
+
+		return moxiParams;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,6 +68,15 @@ public class CacheController {
 		return obj;
 	}
 
+	@RequestMapping(value = "/{cacheId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject detail(@PathVariable Long cacheId) {
+		isAuthorityCache(cacheId);
+		ResultObject obj = new ResultObject();
+		CbaseBucketModel bucket = this.cbaseBucketService.bucketList(cacheId);
+		obj.setData(bucket);
+		return obj;
+	}
+
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> validate(String bucketName,
 			HttpServletRequest request) {
@@ -78,6 +88,18 @@ public class CacheController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("valid", list.size() > 0 ? false : true);
 		return map;
+	}
+
+	private void isAuthorityCache(Long cacheId) {
+		if (cacheId == null)
+			throw new ValidateException("参数不合法");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", cacheId);
+		map.put("createUser", sessionService.getSession().getUserId());
+		List<CbaseBucketModel> cbases = this.cbaseBucketService
+				.selectByMap(map);
+		if (cbases == null || cbases.isEmpty())
+			throw new ValidateException("参数不合法");
 	}
 
 }
