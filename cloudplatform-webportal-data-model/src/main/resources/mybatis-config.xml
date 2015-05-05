@@ -53,5 +53,8 @@
         <typeAlias alias="CbaseCluster" type="com.letv.portal.model.cbase.CbaseClusterModel" />
         <typeAlias alias="CbaseContainer" type="com.letv.portal.model.cbase.CbaseContainerModel" />
         
+        <!-- swift -->
+        <typeAlias alias="SwiftServer" type="com.letv.portal.model.swift.SwiftServer" />
+        
     </typeAliases>
 </configuration>
