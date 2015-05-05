@@ -37,12 +37,15 @@ public class TaskCbaseMemQuotaServiceImpl extends BaseTask4CbaseServiceImpl
 		String nodeIp1 = containers.get(0).getIpAddr();
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 		CbaseBucketModel bucket = super.getCbaseBucket(params);
-		// cluster mem quota = bucket mem quota + 100MB
-		String clusterMemQuotaMB = String.valueOf(100 + Integer.valueOf(bucket
-				.getRamQuotaMB()));
+
+		Long hostCount = getLongFromObject(params.get("hostCount"));
+		// cluster mem quota = (bucket mem quota / hostCount) + 100MB
+		long tmpClusterMemQuotaMB = Integer.valueOf(bucket.getRamQuotaMB())
+				/ hostCount;
+		int clusterMemQuotaMB = (int) tmpClusterMemQuotaMB + 100;
 
 		String result = this.cbasePythonService.configClusterMemQuota(nodeIp1,
-				super.getCbaseManagePort(), clusterMemQuotaMB,
+				super.getCbaseManagePort(), String.valueOf(clusterMemQuotaMB),
 				cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 

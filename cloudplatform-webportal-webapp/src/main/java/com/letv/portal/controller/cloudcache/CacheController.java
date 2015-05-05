@@ -55,12 +55,12 @@ public class CacheController {
 	public @ResponseBody ResultObject save(CbaseBucketModel cbaseBucketModel,
 			ResultObject obj) {
 		if (cbaseBucketModel == null
-				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())) {
+				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())
+				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) < 300
+				|| cbaseBucketModel.getHclusterId() == null
+				|| cbaseBucketModel.getBucketType() == null) {
 			throw new ValidateException("参数不合法");
-		} else {
-
 		}
-
 		cbaseBucketModel.setCreateUser(this.sessionService.getSession()
 				.getUserId());
 		this.cbaseProxy.saveAndBuild(cbaseBucketModel);
