@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.util.ConfigUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.slb.SlbCluster;
@@ -41,6 +42,7 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		map.put("containerClusterName",cluster.getClusterName());
 		map.put("componentType", "gbalancerCluster");
 		map.put("networkMode", "ip");
+		map.put("image", ConfigUtil.getString("matrix.slb.default.image"));
 		String result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		

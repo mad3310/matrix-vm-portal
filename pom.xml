@@ -554,6 +554,7 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
@@ -602,7 +603,7 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                  <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                  <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
@@ -650,7 +651,7 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                  <webportal.local.http>http://rds3.et.letv.com</webportal.local.http>
                 <webportal.admin.http>http://rds2.et.letv.com</webportal.admin.http>
                 <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
@@ -700,7 +701,7 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <webportal.local.http>http://rds.et.letv.com</webportal.local.http>
                 <webportal.admin.http>http://rds1.et.letv.com</webportal.admin.http>
                  <oauth.auth.http>https://oauth.lecloud.com</oauth.auth.http>
