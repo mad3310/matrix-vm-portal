@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.task.service.ITaskEngine;
@@ -62,7 +63,11 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 	}
 
 	private void build(Map<String, Object> params) {
-		this.taskEngine.run("CBASE_BUY", params);
+		if ((Integer) params.get("hostSize") == 3) {
+			this.taskEngine.run("CBASE_BUY", params);
+		} else {
+			throw new TaskExecuteException("任务流模板未配置");
+		}
 	}
 
 	@Override

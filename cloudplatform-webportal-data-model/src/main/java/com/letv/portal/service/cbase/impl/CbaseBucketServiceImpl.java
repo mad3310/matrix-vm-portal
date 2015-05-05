@@ -16,8 +16,10 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.cbase.ICbaseBucketDao;
 import com.letv.portal.enumeration.CbaseBucketStatus;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
+import com.letv.portal.service.IHostService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.cbase.ICbaseClusterService;
 import com.letv.portal.service.cbase.ICbaseContainerService;
@@ -36,6 +38,8 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 	private ICbaseClusterService cbaseClusterService;
 	@Autowired
 	private ICbaseContainerService cbaseContainerService;
+	@Autowired
+	private IHostService hostService;
 
 	public CbaseBucketServiceImpl() {
 		super(CbaseBucketModel.class);
@@ -69,11 +73,15 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 
 		this.cbaseBucketDao.insert(cbaseBucket);
 
+		List<HostModel> hostList = hostService.selectByHclusterId(cbaseBucket
+				.getHclusterId());
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("cbaseClusterId", cbaseCluster.getId());
 		params.put("cacheId", cbaseBucket.getId());
 		params.put("serviceName", cbaseBucket.getBucketName());
 		params.put("clusterName", cbaseCluster.getCbaseClusterName());
+		params.put("hostCount", hostList.size());
 		return params;
 	}
 

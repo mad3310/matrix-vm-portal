@@ -82,10 +82,8 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 				if (null != hostModel) {
 					container.setHostId(hostModel.getId());
 				}
-
 				this.cbaseContainerService.insert(container);
 			}
-			params.put("cbaseContainerCount", containers.size());
 		}
 
 		tr.setParams(params);

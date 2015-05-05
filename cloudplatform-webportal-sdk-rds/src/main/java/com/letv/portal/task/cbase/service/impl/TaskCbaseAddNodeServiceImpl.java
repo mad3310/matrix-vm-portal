@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -34,15 +35,14 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 		// 执行业务
 		List<CbaseContainerModel> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(0).getIpAddr();
-		Long cbaseContainerCount = getLongFromObject(params
-				.get("cbaseContainerCount"));
-		String nodeIp2;
-		if (cbaseContainerCount > 2) {
-			nodeIp2 = containers.get(1).getIpAddr();
-			cbaseContainerCount--;
-			params.put("cbaseContainerCount", cbaseContainerCount);
+		Long hostCount = getLongFromObject(params.get("hostCount"));
+		String nodeIp2 = null;
+		if (hostCount != 1) {
+			nodeIp2 = containers.get((int) (hostCount - 1)).getIpAddr();
+			hostCount--;
+			params.put("hostCount", hostCount);
 		} else {
-			nodeIp2 = containers.get(2).getIpAddr();
+			throw new TaskExecuteException("task chain config error");
 		}
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
