@@ -901,7 +901,7 @@ define(function(require,exports,module){
                 //500-1000档
                 var tempL=parseInt(relaLen)-lev2;
                 // var temp=tempL*500/(lev2-lev1);
-                var temp=tempL*options.grade2/(lev2-lev1);
+                var temp=tempL*(options.grade3-options.grade2)/(lev3-lev2);
                 var i=Math.ceil(temp);
                 i=base*Math.ceil(i/base);
                 // temp=i+500;
@@ -918,7 +918,8 @@ define(function(require,exports,module){
                 //250-500
                 var tempL=parseInt(relaLen)-lev1;
                 // var temp=tempL*250/(lev2-lev1);
-                var temp=tempL*options.grade1/(lev2-lev1);
+                // var temp=tempL*options.grade1/(lev2-lev1);
+                var temp=tempL*(options.grade2-options.grade1)/(lev2-lev1);
                 var i=Math.ceil(temp);
                 i=base*Math.ceil(i/base);
                 // temp=i+250;
