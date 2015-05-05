@@ -63,7 +63,7 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 	}
 
 	private void build(Map<String, Object> params) {
-		if ((Integer) params.get("hostSize") == 3) {
+		if ((Integer) params.get("hostCount") == 3) {
 			this.taskEngine.run("CBASE_BUY", params);
 		} else {
 			throw new TaskExecuteException("任务流模板未配置");
