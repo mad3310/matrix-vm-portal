@@ -13,8 +13,7 @@ define(function(require){
     cn.center();
     
 /*加载数据*/
-    // var dataHandler = require('./dataHandler');
-    // var dbInfoHandler = new dataHandler();
-
-    // cn.GetData("/db/"+$("#dbId").val(),dbInfoHandler.DbInfoHandler);
+    var dataHandler = require('./dataHandler');
+    var cacheInfoHandler = new dataHandler();
+    cn.GetData("/cache/"+$("#cacheId").val(),cacheInfoHandler.cacheInfoHandler);
 });
