@@ -6,7 +6,6 @@
 <body>
 	<!-- 全局参数 start -->
     <input class="hidden" value="${cacheId}" name="cacheId" id="cacheId" type="text" />
-    <!-- <input class="hidden" value="702" name="cacheId" id="cacheId" type="text" /> -->
     <!-- 全局参数 end -->
     <!-- top bar begin -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
@@ -111,7 +110,7 @@
                     <li class="active"><a class="text-sm" src="${ctx}/detail/cacheBaseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/cache//${cacheId}" href="javascript:void(0)">监控</a></li>
+                            <li><a  class="text-sm" src="${ctx}/monitor/cache/${cacheId}" href="javascript:void(0)">监控</a></li>
                         <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
@@ -135,8 +134,7 @@
             </div>
         </nav>
         <div class="embed-responsive embed-responsive-16by9 col-sm-10">
-          <!-- <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe> -->
-          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/702"></iframe>
+          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${cacheId}"></iframe>
         </div>
     </div>
 </div>
