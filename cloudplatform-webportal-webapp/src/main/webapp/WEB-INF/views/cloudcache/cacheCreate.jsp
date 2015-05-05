@@ -120,16 +120,7 @@
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div class="disabled">
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">实例大小：</label>
-												<div class="bk-form-row-cell">
-													<!-- 原拖动效果注释 -->
-													<div class="bk-form-row-li">
-														<div class="self-dragBar"></div><!-- 拖动条生成容器 -->	
-													</div>	
-												</div>
-											</div>
-											<div class="bk-form-row">
+										<div class="bk-form-row">
 												<label class="bk-form-row-name">实例类型：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li">
@@ -147,6 +138,15 @@
 															</button>
 														</div>
 													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">实例大小：</label>
+												<div class="bk-form-row-cell">
+													<!-- 原拖动效果注释 -->
+													<div class="bk-form-row-li">
+														<div class="self-dragBar"></div><!-- 拖动条生成容器 -->	
+													</div>	
 												</div>
 											</div>
 										</div>
@@ -175,7 +175,7 @@
 														</span> <span class="bk-select-arrow"></span>
 													</div>
 												</div>
-												<!-- <div class="bk-form-row-txt">此功能暂时不开放</div> -->
+												<div class="bk-form-row-txt">此功能暂时不开放</div>
 											</div>
 										</div>
 										<div class="bk-form-row">

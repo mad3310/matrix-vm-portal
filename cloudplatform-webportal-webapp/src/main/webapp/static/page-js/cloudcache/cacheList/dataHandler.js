@@ -49,7 +49,7 @@ define(function(require,exports,module){
                     
                     var td3 = '';                
                     if(array[i].status == 2){
-                    	var td3 = $("<td>"
+                    	td3 = $("<td>"
                     			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\">"
                     			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
                     			+ "</div>"
@@ -58,7 +58,7 @@ define(function(require,exports,module){
                                 + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
                                 + "</td>");
                     }else{
-                    	var td3 = $("<td>"
+                    	td3 = $("<td>"
                                 + cn.TranslateStatus(array[i].status)
                                 +"</td>");
                     }
@@ -74,10 +74,11 @@ define(function(require,exports,module){
                             + "<span>非持久化</span>"
                             + "</td>");
                     }
-                    var td5 = $('<td><span><div class="progress" style="margin-bottom:0;"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40%</span></div></div></span></td>');
+                    // var td5 = $('<td><span><div class="progress" style="margin-bottom:0;"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40%</span></div></div></span></td>');
+                    var td5=$("<td><span>"+array[i].ramQuotaMB+"</span></td>");
                     var td6 = $("<td><span >北京</span></td>");
-                    var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-//                    var td7 = $("<td><span>可用区</span></td>");
+                    // var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
+                   var td7 = $("<td><span>可用区</span></td>");
                     if(array[i].cbaseCluster == null){//服务集群array[i].hcluster.***
                     	var td8 = $("<td></td>");
                     }else{
@@ -114,7 +115,8 @@ define(function(require,exports,module){
         },
         /*进度条进度控制*/
 	    progress : function(cacheId,data,asyncData){
-	    	var data = data.data;	    	
+	    	var data = data.data;
+        // console.log(data)	    	
    	        var unitLen = 100 / 9;
    	        var $obj = $("#prg" + cacheId);
    	        var $prg = $obj.find(".progress-bar");
