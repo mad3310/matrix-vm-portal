@@ -178,10 +178,11 @@
 									<select class="chosen-select" multiple="multiple"
 									name="type" id="typeOption"
 									data-placeholder="请选择应用业务类型...">
-									<option>rds</option>
-									<option>slb</option>
-									<option>gce</option>
-									<option>cbase</option>
+									<option>RDS</option>
+									<option>SLB</option>
+									<option>GCE</option>
+									<option>CBASE</option>
+									<option>OSS</option>
 								</select>
 								</div>
 								<label class="control-label">

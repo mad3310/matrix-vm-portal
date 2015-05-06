@@ -84,6 +84,7 @@
 										<option value="SLB">SLB</option>
 										<option value="GCE">GCE</option>
 										<option value="CBASE">CBASE</option>
+										<option value="OSS">OSS</option>
 										<!-- <option value="消息中间件">消息中间件</option> -->
 									</select>
 								</div>

@@ -16,6 +16,7 @@
 								<option value="RDS">RDS</option>
 								<option value="SLB">SLB</option>
 								<option value="CBASE">CBASE</option>
+								<option value="OSS">OSS</option>
 							</select>
 						</div>
 						<div class=" form-group">
