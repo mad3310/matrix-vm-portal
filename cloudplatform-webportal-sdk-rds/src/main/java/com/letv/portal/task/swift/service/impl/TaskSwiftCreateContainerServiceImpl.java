@@ -38,7 +38,7 @@ public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceIm
 		headParams.put("X-Container-Read", user.getUserName() + ":" + user.getUserName());
 		headParams.put("X-Container-Write", user.getUserName() + ":" + user.getUserName());
 		
-		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftGetTokenUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			tr.setSuccess(false);
 			return tr;
