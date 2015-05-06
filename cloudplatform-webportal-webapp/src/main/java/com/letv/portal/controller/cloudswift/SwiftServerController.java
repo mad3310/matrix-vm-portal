@@ -65,6 +65,13 @@ public class SwiftServerController {
 		obj.setData(swift);
 		return obj;
 	}	
+	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delete(@PathVariable Long id){
+		isAuthoritySwift(id);
+		ResultObject obj = new ResultObject();
+		this.swiftServerProxy.deleteAndBuild(id);
+		return obj;
+	}	
 	
 	private void isAuthoritySwift(Long id) {
 		if(id == null)

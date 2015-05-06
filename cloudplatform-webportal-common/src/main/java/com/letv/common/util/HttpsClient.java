@@ -16,6 +16,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -146,6 +147,30 @@ public class HttpsClient {
 		enableSSL(client);
 		// 创建Get方法实例
 		HttpPut httpsgets = new HttpPut(url);
+		for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
+			Map.Entry<String, String> entry = (Map.Entry<String, String>) it.next();
+			httpsgets.setHeader(entry.getKey(),entry.getValue());
+		}
+		HttpResponse response = null;
+		try {
+			response = client.execute(httpsgets);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			client.getConnectionManager().shutdown();
+		}
+		return response;
+	}
+	public static HttpResponse httpDeleteByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
+		// 创建HttpClient实例
+		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
+		enableSSL(client);
+		// 创建Get方法实例
+		HttpDelete httpsgets = new HttpDelete(url);
 		for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
 			Map.Entry<String, String> entry = (Map.Entry<String, String>) it.next();
 			httpsgets.setHeader(entry.getKey(),entry.getValue());
