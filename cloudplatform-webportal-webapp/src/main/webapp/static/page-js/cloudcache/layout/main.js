@@ -10,7 +10,7 @@ define(function(require){
     var index = [1,0];
     cn.Sidebar(index);//index为菜单中的排序(1-12)
     /*
-     * 加载db基础信息
+     * 加载cache基础信息
      */
     cn.GetData("/cache/"+$("#cacheId").val(),basicInfoHandler.resCountHandler);
 });

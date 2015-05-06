@@ -12,7 +12,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">开放缓存<font color="#FF9C17">OCS</font></a>
+      <a class="navbar-brand" href="javascript:void(0)">开放缓存服务<font color="#FF9C17">OCS</font></a>
     </div>
   </div>
 </div>
