@@ -35,7 +35,6 @@ import org.apache.http.util.EntityUtils;
  * 
  */
 public class HttpsClient {
-	private static DefaultHttpClient client;
 
 	/**
 	 * 访问https的网站
@@ -89,11 +88,8 @@ public class HttpsClient {
 	 */
 	public static String sendXMLDataByGet(String url,int connectionTimeout,int soTimeout) {
 		// 创建HttpClient实例
-		if (client == null) {
-			// Create HttpClient Object
-			client = getHttpclient(connectionTimeout, soTimeout);
-			enableSSL(client);
-		}
+		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
+		enableSSL(client);
 		// 创建Get方法实例
 		HttpGet httpsgets = new HttpGet(url);
 
@@ -116,16 +112,15 @@ public class HttpsClient {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			client.getConnectionManager().shutdown();
 		}
 		return strRep;
 	}
 	public static HttpResponse httpGetByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
 		// 创建HttpClient实例
-		if (client == null) {
-			// Create HttpClient Object
-			client = getHttpclient(connectionTimeout, soTimeout);
-			enableSSL(client);
-		}
+		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
+		enableSSL(client);
 		// 创建Get方法实例
 		HttpGet httpsgets = new HttpGet(url);
 	    for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
@@ -141,16 +136,14 @@ public class HttpsClient {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			client.getConnectionManager().shutdown();
 		}
-		
 		return response;
 	}
 	public static HttpResponse httpPostByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
-		if (client == null) {
-			// Create HttpClient Object
-			client = getHttpclient(connectionTimeout, soTimeout);
-			enableSSL(client);
-		}
+		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
+		enableSSL(client);
 		client.getParams().setParameter("http.protocol.content-charset",
 				HTTP.UTF_8);
 		client.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
@@ -175,6 +168,8 @@ public class HttpsClient {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			client.getConnectionManager().shutdown();
 		}
 		return response;
 	}
@@ -194,11 +189,8 @@ public class HttpsClient {
 	 */
 	public static String sendXMLDataByPost(String url, String xmlData,int connectionTimeout,int soTimeout)
 			throws ClientProtocolException, IOException {
-		if (client == null) {
-			// Create HttpClient Object
-			client = getHttpclient(connectionTimeout, soTimeout);
-			enableSSL(client);
-		}
+		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
+		enableSSL(client);
 		client.getParams().setParameter("http.protocol.content-charset",
 				HTTP.UTF_8);
 		client.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
@@ -236,6 +228,7 @@ public class HttpsClient {
 			// Do not need the rest
 			post.abort();
 		}
+		client.getConnectionManager().shutdown();
 		// Response Header - StatusLine - status code
 		// statusCode = response.getStatusLine().getStatusCode();
 		return strrep;

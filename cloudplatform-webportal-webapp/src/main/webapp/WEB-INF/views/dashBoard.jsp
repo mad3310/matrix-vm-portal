@@ -397,12 +397,12 @@
 									<li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
-											<span>container管理服务</span>
-											<span>SWIFT</span>
+											<span>对象存储服务</span>
+											<span>OSS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
-												<a href="/detail/containerCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
+												<a href="/buy/oss" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>

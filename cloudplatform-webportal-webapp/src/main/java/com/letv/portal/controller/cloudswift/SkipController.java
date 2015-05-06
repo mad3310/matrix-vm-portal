@@ -16,7 +16,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 
-@Controller("swiftSkip")
+@Controller("ossSkip")
 public class SkipController {
 
 	@Autowired(required = false)
@@ -24,56 +24,56 @@ public class SkipController {
 //	@Autowired
 //	private ICbaseBucketService cbaseBucketService;
 
-	@RequestMapping(value = "/detail/containerCreate", method = RequestMethod.GET)
+	@RequestMapping(value = "/buy/oss", method = RequestMethod.GET)
 	public ModelAndView toContainerCreate(ModelAndView mav) {
 		mav.setViewName("/cloudswift/containerCreate");
 		return mav;
 	}
 
-	@RequestMapping(value = "/list/container", method = RequestMethod.GET)
+	@RequestMapping(value = "/list/oss", method = RequestMethod.GET)
 	public ModelAndView toContainerList(ModelAndView mav) {
 		mav.setViewName("/cloudswift/containerList");
 		return mav;
 	}
 
-	@RequestMapping(value = "/detail/container/{containerId}", method = RequestMethod.GET)
-	public ModelAndView containerDetail(@PathVariable Long containerId, ModelAndView mav) {
+	@RequestMapping(value = "/detail/oss/{swiftId}", method = RequestMethod.GET)
+	public ModelAndView containerDetail(@PathVariable Long swiftId, ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", containerId);
+		mav.addObject("swiftId", swiftId);
 		mav.setViewName("/cloudswift/layout");
 		return mav;
 	}
 
-	@RequestMapping(value = "/detail/containerBaseInfo/{containerId}", method = RequestMethod.GET)
-	public ModelAndView containerBaseInfo(@PathVariable Long containerId,
+	@RequestMapping(value = "/detail/ossBaseInfo/{swiftId}", method = RequestMethod.GET)
+	public ModelAndView containerBaseInfo(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", containerId);
+		mav.addObject("swiftId", swiftId);
 		mav.setViewName("/cloudswift/baseInfo");
 		return mav;
 	}
-	@RequestMapping(value = "/detail/authorityInfo/{containerId}", method = RequestMethod.GET)
-	public ModelAndView containerauthInfo(@PathVariable Long containerId,
+	@RequestMapping(value = "/detail/authorityInfo/{swiftId}", method = RequestMethod.GET)
+	public ModelAndView containerauthInfo(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", containerId);
+		mav.addObject("swiftId", swiftId);
 		mav.setViewName("/cloudswift/authorityInfo");
 		return mav;
 	}
-	@RequestMapping(value = "/monitor/container/{containerId}", method = RequestMethod.GET)
-	public ModelAndView toContainerMonitor(@PathVariable Long containerId,
+	@RequestMapping(value = "/monitor/swift/{swiftId}", method = RequestMethod.GET)
+	public ModelAndView toContainerMonitor(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", containerId);
+		mav.addObject("containerId", swiftId);
 		mav.setViewName("/cloudswift/monitor/containerMonitor");
 		return mav;
 	}
 
-	@RequestMapping(value = "/detail/file/{containerId}", method = RequestMethod.GET)//文件管理
-	public ModelAndView toFileManage(@PathVariable Long containerId,
+	@RequestMapping(value = "/detail/file/{swiftId}", method = RequestMethod.GET)//文件管理
+	public ModelAndView toFileManage(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", containerId);
+		mav.addObject("containerId", swiftId);
 		mav.setViewName("/cloudswift/fileManage");
 		return mav;
 	}

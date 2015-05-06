@@ -78,22 +78,22 @@ define(function(require) {
 			validating : 'glyphicon glyphicon-refresh'
 		},
 		fields : {
-			bucketName : {
+			name : {
 				validMessage : '请按提示输入',
 				validators : {
 					notEmpty : {
-						message : '实例名称不能为空!'
+						message : '服务名称不能为空!'
 					},
 					stringLength : {
-						max : 16,
-						message : '实例名称过长!'
+						max : 20,
+						message : '服务名称过长!'
 					},
 					regexp : {
 						regexp : /^((?!^monitor$)([a-zA-Z_]+[a-zA-Z_0-9]*))$/,
-						message : "请输入字母数字或'_',实例名称不能以数字开头且数据库名称不能命名为monitor."
+						message : "请输入字母数字或'_',服务名称不能以数字开头"
 					},
 					// remote : {
-					// 	message : '缓存实例已存在!',
+					// 	message : 'OSS服务已存在!',
 					// 	url : '/cache/validate'
 					// }
 				}
@@ -101,17 +101,15 @@ define(function(require) {
 		}
 	}).on('success.form.bv', function(e) {
 		e.preventDefault();
-		var bucketName = $("[name = 'bucketName']").val();
+		var name = $("[name = 'name']").val();
 		var hclusterId = $("[name = 'hclusterId']").val();
-		var ramQuotaMB = $("[name='ramQuotaMB']").val();
-		var bucketType = $("[name = 'bucketType']").val();
+		var storeSize = $("[name='ramQuotaMB']").val();
 		var formData = {
-			"bucketName" : bucketName,
+			"name" : name,
 			"hclusterId" : hclusterId,
-			"ramQuotaMB" : ramQuotaMB,
-			"bucketType" : bucketType
+			"storeSize" : storeSize,
 		};
-		CreateCache(formData);
+		createOSS(formData);
 	});
 	/* 表单验证 --end */
 	var _up = $('.mem-num-up');
@@ -203,16 +201,15 @@ define(function(require) {
 	var createCacheHandler = new dataHandler();
 	GetHcluster();
 	function GetHcluster() {
-		var url = "/hcluster";
+		var url = "/hcluster/oss";
 		cn.GetData(url, createCacheHandler.GetHclusterHandler);
 	}
 	/* 创建cache */
-	function CreateCache(data) {
-		console.log(data)
-		location.href = "/list/container";
-		// var url = "/cache";
-		// cn.PostData(url, data, function() {
-		// 	location.href = "/list/cache";
-		// });
+	function createOSS(data) {
+		location.href = "/list/oss";
+		 var url = "/oss";
+		 cn.PostData(url, data, function() {
+		 	location.href = "/list/oss";
+		 });
 	}
 });

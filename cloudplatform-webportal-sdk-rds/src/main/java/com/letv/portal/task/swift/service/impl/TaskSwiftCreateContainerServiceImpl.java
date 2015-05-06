@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.HttpsClient;
@@ -20,9 +21,9 @@ import com.letv.portal.service.IUserService;
 public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskSwiftCreateContainerServiceImpl.class);
-	
+	@Autowired
 	private IUserService userService;
-	@Override
+	
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
