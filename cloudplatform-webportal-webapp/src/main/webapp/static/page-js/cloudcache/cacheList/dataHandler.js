@@ -4,7 +4,7 @@ define(function(require,exports,module){
 	 * 引入相关js，使用分页组件
 	 */
 	require('bootstrap');
-	require('paginator');
+	require('paginator')($);
 	
     var common = require('../../common');
     var cn = new common();

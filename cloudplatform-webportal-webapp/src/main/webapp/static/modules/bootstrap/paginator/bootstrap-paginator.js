@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-(function ($) {
+define(function(require, exports, module){
+  return function($){
+  (function ($) {
 
     "use strict"; // jshint ;_;
 
@@ -663,6 +664,6 @@
 
     $.fn.bootstrapPaginator.Constructor = BootstrapPaginator;
 
-
-
-}(window.jQuery));
+}($));
+  }
+})
