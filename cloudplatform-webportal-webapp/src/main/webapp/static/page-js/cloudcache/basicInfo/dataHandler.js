@@ -32,19 +32,29 @@ define(function(require,exports,module){
 
     			$("#cache_info_cache_id").html(cacheInfo.bucketName);
     			$("#cache_info_cache_name").html(cacheInfo.bucketName);
+                if(cacheInfo.bucketType==0){//持久化
+                  $('#cache_type').html('持久化');  
+                }else{
+                    $('#cache_type').html('非持久化');  
+                }
     			if(cacheInfo.hcluster) {
-    				$("#db_info_available_region").html(cacheInfo.hcluster.hclusterNameAlias);
+    				$("#cache_info_available_region").html(cacheInfo.hcluster.hclusterNameAlias);
     			}
     			$("#cache_info_net_addr").html(GetNetAddr(cacheInfo.containers));
                 $("#cache_info_running_state").html(cn.TranslateStatus(cacheInfo.status));
                 $("#cache_info_create_time").html(cn.TransDate('Y-m-d H:i:s',cacheInfo.createTime));
                 $("#cache_info_remain_days").html(cn.RemainAvailableTime(cacheInfo.createTime));
-                
-                
+                $('#cache-ramQuotaMB').html(cacheInfo.ramQuotaMB/1024+"GB")
+
+                if(cacheInfo.cbaseCluster == null){//服务集群
+                    $("#cache-cbaseCluster").html('');
+                }else{
+                    $("#cache-cbaseCluster").html(cacheInfo.cbaseCluster.cbaseClusterName)
+                }
                 var cacheconfig = new DataHandler();
                 $("#showConfigInfo").click(function(){
                 	//cn.GetData("/db/gbConfig/" + $("#cacheId").val(),cacheconfig.getInfo);
-                    cn.GetData("/cache/gbConfig/" + $("#cacheId").val(),cacheconfig.getInfo);
+                    cn.GetData("/cache/moxiConfig/" + $("#cacheId").val(),cacheconfig.getInfo);
                 });
         },
         getInfo: function(data){
