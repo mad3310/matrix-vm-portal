@@ -1,5 +1,6 @@
 package com.letv.portal.task.cbase.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 
+	private final static long PYTHON_CREATE_CHECK_TIME = 180000;
 	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
 
 	private final static Logger logger = LoggerFactory
@@ -48,8 +50,13 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 
+			Long start = new Date().getTime();
 			while (!tr.isSuccess()) {
 				Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
+				if (new Date().getTime() - start > PYTHON_CREATE_CHECK_TIME) {
+					tr.setResult("create time over");
+					break;
+				}
 				result = this.cbasePythonService.createPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
 						bucket.getBucketName(), bucket.getRamQuotaMB(),
@@ -65,8 +72,13 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 
+			Long start = new Date().getTime();
 			while (!tr.isSuccess()) {
 				Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
+				if (new Date().getTime() - start > PYTHON_CREATE_CHECK_TIME) {
+					tr.setResult("create time over");
+					break;
+				}
 				result = this.cbasePythonService.createUnPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
 						bucket.getBucketName(), bucket.getRamQuotaMB(),
