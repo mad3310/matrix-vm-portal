@@ -248,6 +248,26 @@
 								</a>
 							</div>
 						</li>
+						<li id="oss-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+							<div class="item-profile clearfix">
+								<a href="${ctx}/list/oss" class="pull-left">
+									<span class="item-icon product-icons-48 product-icons-oss"></span>
+								</a>
+								<p class="item-title">
+									<a href="${ctx}/list/oss">对象存储服务&nbsp;<span class="item-title-short">OSS</span>
+									</a>
+								</p>
+							</div>
+							<div class="item-record">
+								<span class="item-record-num">
+									<a class="item-record-num-count" href="${ctx}/list/oss"><span id="ossCount"></span></a>
+								</span>
+								<span class="item-record-unit">个</span>
+								<a data-toggle="tooltip" data-placement="top" title="oss数">
+									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+								</a>
+							</div>
+						</li>
 						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
@@ -353,7 +373,7 @@
 											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li> -->
-									<li class="clearfix">
+									<li id="ocs-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
 											<span>开放缓存服务</span>
@@ -394,7 +414,7 @@
 											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
-									<li class="clearfix">
+									<li id="oss-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
 											<span>对象存储服务</span>
@@ -403,7 +423,7 @@
 										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a href="/buy/oss" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
-													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+													<span id="oss-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
 										</div>

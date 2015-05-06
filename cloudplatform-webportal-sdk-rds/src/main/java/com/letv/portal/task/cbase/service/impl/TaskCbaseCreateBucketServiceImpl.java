@@ -67,7 +67,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 				}
 				result = this.cbasePythonService.createPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
-						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getBucketName(),
+						String.valueOf(perBucketNodeMemQuotaMB),
 						bucket.getAuthType(), bucket.getBucketName(),
 						cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = analyzeRestServiceResult(result);
@@ -90,7 +91,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 				}
 				result = this.cbasePythonService.createUnPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
-						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getBucketName(),
+						String.valueOf(perBucketNodeMemQuotaMB),
 						bucket.getAuthType(), bucket.getBucketName(),
 						cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = analyzeRestServiceResult(result);
