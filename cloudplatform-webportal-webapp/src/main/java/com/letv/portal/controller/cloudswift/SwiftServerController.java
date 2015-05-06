@@ -72,6 +72,13 @@ public class SwiftServerController {
 		this.swiftServerProxy.deleteAndBuild(id);
 		return obj;
 	}	
+	@RequestMapping(value="/{id}/file/{directory}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject delete(@PathVariable Long id,@PathVariable String directory){
+		isAuthoritySwift(id);
+		ResultObject obj = new ResultObject();
+		obj.setData(this.swiftServerProxy.getFiles(id,directory));
+		return obj;
+	}	
 	
 	private void isAuthoritySwift(Long id) {
 		if(id == null)
