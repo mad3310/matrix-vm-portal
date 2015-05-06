@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONArray;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
@@ -130,14 +131,14 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	}
 
 	@Override
-	public String getFiles(Long id, String directory) {
+	public Object getFiles(Long id, String directory) {
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
 		return this.getFiles(server,  this.getSuperToken(server),directory);
 	}
 	
-	private String getFiles(SwiftServer server,String token,String directory) {
+	private Object getFiles(SwiftServer server,String token,String directory) {
 		HostModel host = this.getHost(server.getHclusterId());
 		UserModel user = this.userService.selectById(server.getCreateUser());
 		
@@ -153,6 +154,6 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		}  catch (Exception e) {
 			throw new CommonException("get oss files failed :" + e.getMessage());
 		} 
-		return result;
+		return JSONArray.parse(result);
 	}
 }
