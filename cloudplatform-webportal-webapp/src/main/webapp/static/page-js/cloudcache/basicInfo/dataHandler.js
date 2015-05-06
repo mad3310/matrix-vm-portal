@@ -19,13 +19,9 @@ define(function(require,exports,module){
                 function GetNetAddr(containers){ //获取container IP地址,并拼成字符串返回
                     var ips='';
                     for(var i= 0,len=containers.length;i<len;i++){
-                        if(cacheInfo.containers[i].type == "mclustervip"){
+                        if(cacheInfo.containers[i].type == "cbase"){
                             ips = ips+cacheInfo.containers[i].ipAddr+' ';
                         }
-                        /*注释掉非VIP的IP
-                         else{
-                            ips = ips+cacheInfo.containers[i].ipAddr+' ';
-                        }*/
                     }
                     return ips;
                 }
@@ -53,7 +49,6 @@ define(function(require,exports,module){
                 }
                 var cacheconfig = new DataHandler();
                 $("#showConfigInfo").click(function(){
-                	//cn.GetData("/db/gbConfig/" + $("#cacheId").val(),cacheconfig.getInfo);
                     cn.GetData("/cache/moxiConfig/" + $("#cacheId").val(),cacheconfig.getInfo);
                 });
         },
