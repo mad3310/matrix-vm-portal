@@ -21,7 +21,6 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.ISwiftServerProxy;
 import com.letv.portal.service.swift.ISwiftServerService;

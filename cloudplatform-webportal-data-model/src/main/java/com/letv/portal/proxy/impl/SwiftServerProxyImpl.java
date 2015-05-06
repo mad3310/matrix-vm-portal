@@ -1,12 +1,9 @@
 package com.letv.portal.proxy.impl;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,6 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.HttpsClient;
-import com.letv.common.util.StringUtil;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.swift.SwiftServer;
@@ -151,11 +147,12 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
+		String result = "";
 		try {
-			return EntityUtils.toString(response.getEntity());
-		} catch (Exception e) {
+			result = EntityUtils.toString(response.getEntity());
+		}  catch (Exception e) {
 			throw new CommonException("get oss files failed :" + e.getMessage());
 		} 
+		return result;
 	}
-
 }
