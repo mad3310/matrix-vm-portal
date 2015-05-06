@@ -104,7 +104,7 @@ define(function(require) {
 		e.preventDefault();
 		var bucketName = $("[name = 'bucketName']").val();
 		var hclusterId = $("[name = 'hclusterId']").val();
-		var ramQuotaMB = $("[name='ramQuotaMB']").val();
+		var ramQuotaMB = $("[name='ramQuotaMB']").val()*1024;
 		var bucketType = $("[name = 'bucketType']").val();
 		var formData = {
 			"bucketName" : bucketName,

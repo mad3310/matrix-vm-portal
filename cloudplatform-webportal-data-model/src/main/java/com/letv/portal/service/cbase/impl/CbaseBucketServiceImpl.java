@@ -83,6 +83,7 @@ public class CbaseBucketServiceImpl extends BaseServiceImpl<CbaseBucketModel>
 		params.put("cacheId", cbaseBucket.getId());
 		params.put("serviceName", cbaseBucket.getBucketName());
 		params.put("clusterName", cbaseCluster.getCbaseClusterName());
+		params.put("hostSize", hostList.size());
 		params.put("hostCount", hostList.size());
 		return params;
 	}

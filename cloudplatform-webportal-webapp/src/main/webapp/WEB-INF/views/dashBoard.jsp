@@ -231,7 +231,7 @@
 						<li id="ocs-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/cache" class="pull-left">
-									<span class="item-icon product-icons-48 product-icons-ace"></span>
+									<span class="item-icon product-icons-48 product-icons-ocs"></span>
 								</a>
 								<p class="item-title">
 									<a href="${ctx}/list/cache">开放缓存&nbsp;<span class="item-title-short">OCS</span>
