@@ -31,7 +31,7 @@
 			<div class="col-sm-12 col-md-6">
 				<div class="pull-left">
 					<h4>
-						<span>创建container实例</span>
+						<span>创建OSS实例</span>
 					</h4>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 											<div class="form-group bk-form-row col-sm-12">
 												<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">实例名称：</label>
 												<div class="col-sm-4 row">
-													<input id="cacheName" class="form-control" name="bucketName" type="text">
+													<input id="name" class="form-control" name="name" type="text">
 												</div>
 											</div>
 										</form>
@@ -97,7 +97,7 @@
 													<div class="bk-form-row-txt">不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择</div>
 												</div>
 											</div>
-											<!-- <div class="bk-form-row">
+										    <div class="bk-form-row">
 												<label class="bk-form-row-name">可用区：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
@@ -115,7 +115,7 @@
 														</div>
 													</div>
 												</div>
-											</div> -->
+											</div>
 										</div>
 									</dd>
 								</dl>

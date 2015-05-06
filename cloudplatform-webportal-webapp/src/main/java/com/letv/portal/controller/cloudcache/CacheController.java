@@ -78,6 +78,16 @@ public class CacheController {
 		return obj;
 	}
 
+	@RequestMapping(value = "/moxiConfig/{cacheId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getMoxiConfig(@PathVariable Long cacheId) {
+		isAuthorityCache(cacheId);
+		ResultObject obj = new ResultObject();
+		Map<String, Object> config = this.cbaseBucketService
+				.getMoxiConfig(cacheId);
+		obj.setData(config);
+		return obj;
+	}
+
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> validate(String bucketName,
 			HttpServletRequest request) {

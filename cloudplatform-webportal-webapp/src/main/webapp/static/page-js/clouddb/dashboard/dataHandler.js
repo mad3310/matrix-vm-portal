@@ -46,6 +46,14 @@ define(function(require,exports,module){
                 $("#ocs-opened").addClass("hide");
                 $("#ocs-not-opened").removeClass("hide");
             }
+            if(data.data.oss > 0){
+                $("#oss-opened").removeClass("hide");
+                $("#oss-not-opened").addClass("hide");
+                $("#ossCount").html(data.data.oss);
+            }else{
+                $("#oss-opened").addClass("hide");
+                $("#oss-not-opened").removeClass("hide");
+            }
         }
     }
 });

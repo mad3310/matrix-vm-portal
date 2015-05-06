@@ -27,7 +27,7 @@
 	    	</div>
 		    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
 		      <div class="panel-body pd0">
-		        <table class="table table-bordered table-bi">
+		        <!-- <table class="table table-bordered table-bi">
 		        	<tbody>
 		        	<tr>
 		        		<td width="50%">
@@ -64,45 +64,28 @@
 			        	</td>
 		        	</tr>
 		        	</tbody>
-		        </table>
-		      </div>
-		    </div>
-	  	</div>
-	  	<div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
-		        <span class="panel-title">
-		          		运行状态
-				</span>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
-				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
-					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
-				</span>
-				</a>
-	    	</div>
-		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-		      <div class="panel-body pd0">
+		        </table> -->
 		        <table class="table table-bordered table-bi">
-		        	<tbody>
-		        	<tr>
-		        		<td width="50%">
-			        		<span class="text-muted pd-r8">运行状态:</span>
-			        		<span id="cache_info_running_state"></span>
-		        		</td>
-		        		<td width="50%">
-			        		<span class="text-muted pd-r8">锁定模式:</span>
-			        		<span>正常</span>
-		        		</td>
-		        	</tr> 
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">可用性:</span><span>100.0%</span>
-			        	</td> 
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">已用空间:</span><span></span>
-			        	</td>
-		        	</tr>
-		        	</tbody>
-		        </table>
+						<tbody>
+						<tr>
+							<td width="50%"><span class="text-muted pd-r8">实例名称:</span><span id="cache_info_cache_name"></span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">可用区:</span><span id="cache_info_available_region"></span></td>
+						</tr>
+						<tr>
+							<td width="50%">
+								<span class="text-muted pd-r8">服务集群:</span><span text-length="26" id="cache-cbaseCluster"></span>
+							</td>
+							<td width="50%">
+								<span class="text-muted pd-r8">地域:</span>北京
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<span class="text-muted pd-r8">状态:</span><span text-length="26" id="cache_info_running_state"></span>
+							</td>
+						</tr>
+						</tbody>
+					</table>
 		      </div>
 		    </div>
 	  	</div>
@@ -128,28 +111,11 @@
 		        	<tbody>
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">cache内存:</span><span>2048M</span>
+			        		<span class="text-muted pd-r8">实例类型:</span><span text-length="26" id="cache-type"></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">缓存空间:</span><span>10G</span>
-			        	</td>
-		        	</tr>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">实例类型:</span><span>专享</span>
-			        	</td>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">缓存类型:</span><span class="pd-r8">MySQL5.5</span>
-			        		<span class="font-disabled pd-r8">数据库升级</span>
-			        	</td>
-		        	</tr>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大连接数:</span><span></span>
-			        	</td>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大IOPS:</span><span></span>
-			        	</td>
+							<span class="text-muted pd-r8">缓存空间大小:</span><span text-length="26" id="cache-ramQuotaMB"></span>
+						</td>
 		        	</tr>
 		        	</tbody>
 		        </table>
@@ -159,7 +125,7 @@
 	  	<div class="panel panel-default panel-table">
 	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
 		        <span class="panel-title">
-		          		运行周期
+		          		付费信息
 				</span>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseFour"  aria-expanded="true" aria-controls="collapseFour">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
@@ -184,7 +150,7 @@
 		      </div>
 		    </div>
 	  	</div>
-	  	<div class="panel panel-default panel-table">
+	  	<!-- <div class="panel panel-default panel-table">
 	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
 		        <span class="panel-title">
 					可维护的时间段
@@ -210,7 +176,7 @@
 		        </table>
 		      </div>
 		    </div>
-	  	</div>
+	  	</div> -->
 	    <!-- /.modal config-->
 		<div class="modal" id="cacheConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">

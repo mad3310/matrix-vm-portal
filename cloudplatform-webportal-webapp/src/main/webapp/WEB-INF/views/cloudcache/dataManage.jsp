@@ -4,12 +4,15 @@
 <html lang="zh">
 <%@include file='main.jsp' %>
 <body>
+<!-- 全局参数 start -->
+	<input class="hidden" value="${cacheId}" name="cacheId" id="cacheId" type="text" />
 <div class="se-heading" id="headingOne">
 	<div class="pull-left">
 		<h5>实例数据管理</h5>
 	</div>
 	<div class="clearfix"></div>
 </div>
+
 <div class="container-fluid">
 	<div class="col-sm-12 col-md-offset-1 col-md-3">
 		<div role="tabpanel" style="margin-top:20px;">
@@ -156,10 +159,15 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"moment": "moment/2.9.0/moment-with-locales.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
+		"datetimepicker":"bootstrap/datetimepicker/bootstrap-datetimepicker.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/cloudcache/dataManage/main");
+// seajs.use("${ctx}/static/page-js/clouddb/backupRecover/main");
+
 /*self define*/
 
 </script>

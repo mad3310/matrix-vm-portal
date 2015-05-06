@@ -29,16 +29,18 @@ public class TaskSwiftGetSuperTokenServiceImpl extends BaseTask4SwiftServiceImpl
 		SwiftServer server = super.getServer(params);
 		HostModel host = super.getHost(server.getHclusterId());
 		Map<String,String> headParams = new HashMap<String,String>();
-		headParams.put("x-auth-key", SWIFT_SUPER_USER);
-		headParams.put("x-auth-user", SWIFT_SUPER_USER_PWD);
+		headParams.put("x-auth-key", "swauthkey");
+		headParams.put("x-auth-user", ".super_admin:.super_admin");
 		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,1000);
 		if(response == null || response.getFirstHeader("X-Auth-Token") == null) {
+			tr.setResult(response == null?"api connect failed":response.getStatusLine().toString());
 			tr.setSuccess(false);
 			return tr;
 		}
 		String authToken = response.getFirstHeader("X-Auth-Token").getValue();
 		params.put("X-Auth-Token", authToken);
 		tr.setParams(params);
+		tr.setResult(response.getStatusLine().toString());
 		return tr;
 	}
 	

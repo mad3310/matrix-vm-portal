@@ -46,7 +46,7 @@
 			<if test="status != null and status!='' ">
 				and s.STATUS=#{status}
 			</if>
-			<if test="storeSize != null and storeSize'' ">
+			<if test="storeSize != null and storeSize!='' ">
 				and s.STORE_SIZE=#{storeSize}
 			</if>
 			<if test="deleted != null  ">

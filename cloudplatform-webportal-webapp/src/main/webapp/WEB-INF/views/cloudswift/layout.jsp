@@ -14,7 +14,7 @@
         <div class="navbar-header">
     <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-    <a class="navbar-brand color" href="${ctx}/list/container" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-leaf text-10"></i>&nbsp;swift</a>
+    <a class="navbar-brand color" href="${ctx}/list/oss" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-leaf text-10"></i>&nbsp;OSS</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse pull-right">
         <ul class="nav navbar-nav">
@@ -41,7 +41,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">swift服务<font color="#FF9C17"></font></a>
+      <a class="navbar-brand" href="javascript:void(0)">对象存储服务<font color="#FF9C17">OSS</font></a>
     </div>
   </div>
 </div>
@@ -55,11 +55,11 @@
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
-                    <span id="dbName">container实例</span>
+                    <span id="ossName">oss实例</span>
                     <span style="display: inline-block;vertical-align:super;">
                         <small id="dbStatus" class="text-success text-xs"></small>
                     </span>
-                    <a class="btn btn-default btn-xs" href="${ctx}/list/container">
+                    <a class="btn btn-default btn-xs" href="${ctx}/list/oss">
                         <span class="glyphicon glyphicon-step-backward"></span>
                         返回实例列表
                     </a>
@@ -107,11 +107,11 @@
         <nav class="col-sm-2 col-md-2">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
-                    <li class="active"><a class="text-sm" src="${ctx}/detail/containerBaseInfo/${containerId}" href="javascript:void(0)">基本信息</a></li>
-                    <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${containerId}" href="javascript:void(0)">权限管理</a></li>
+                    <li class="active"><a class="text-sm" src="${ctx}/detail/ossBaseInfo/${swiftId}" href="javascript:void(0)">基本信息</a></li>
+                    <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${swiftId}" href="javascript:void(0)">权限管理</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/container/${containerId}" href="javascript:void(0)">监控</a></li>
+                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">监控</a></li>
                         <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
@@ -126,7 +126,7 @@
                             <li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li> -->
                         </ul>
                     </li>
-                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${containerId}">文件管理</a></li>
+                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a  class="text-sm" href="javascript:void(0)">性能优化<p class="pull-right home-orange">敬请期待...</p></a></li>
@@ -136,7 +136,7 @@
         </nav>
         <div class="embed-responsive embed-responsive-16by9 col-sm-10">
           <!-- <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe> -->
-          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/containerBaseInfo/${containerId}"></iframe>
+          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/ossBaseInfo/${swiftId}"></iframe>
         </div>
     </div>
 </div>

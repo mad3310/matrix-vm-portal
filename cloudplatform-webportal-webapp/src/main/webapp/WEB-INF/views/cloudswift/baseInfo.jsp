@@ -17,7 +17,7 @@
 
 <body> 
 <!-- 全局参数 start -->
-	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<input class="hidden" value="${swiftId}" name="dbId" id="swiftId" type="text" />
 	<div class="panel-group pd10" id="accordion" role="tablist" aria-multiselectable="true">
 	    <div class="panel panel-default panel-table ">
 	        <div class="panel-heading bdl-list overHidden panel-heading-mcluster" role="tab" id="headingOne" >

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.HttpsClient;
@@ -20,9 +21,9 @@ import com.letv.portal.service.IUserService;
 public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskSwiftCreateContainerServiceImpl.class);
-	
+	@Autowired
 	private IUserService userService;
-	@Override
+	
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
@@ -33,16 +34,18 @@ public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceIm
 		
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", (String)params.get("X-Auth-Token"));
-		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()));
+		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()*1024*1024));
 		headParams.put("X-Container-Read", user.getUserName() + ":" + user.getUserName());
 		headParams.put("X-Container-Write", user.getUserName() + ":" + user.getUserName());
 		
-		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftGetTokenUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			tr.setResult(response == null?"api connect failed":response.getStatusLine().toString());
 			tr.setSuccess(false);
 			return tr;
 		}
 		tr.setSuccess(true);
+		tr.setResult(response.getStatusLine().toString());
 		tr.setParams(params);
 		return tr;
 	}

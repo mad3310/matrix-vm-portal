@@ -75,10 +75,9 @@ define(function(require,exports,module){
                             + "</td>");
                     }
                     // var td5 = $('<td><span><div class="progress" style="margin-bottom:0;"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40%</span></div></div></span></td>');
-                    var td5=$("<td><span>"+array[i].ramQuotaMB+"</span></td>");
+                    var td5=$("<td><span>"+array[i].ramQuotaMB/1024+"GB</span></td>");
                     var td6 = $("<td><span >北京</span></td>");
                     var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                   // var td7 = $("<td><span>可用区</span></td>");
                     if(array[i].cbaseCluster == null){//服务集群array[i].hcluster.***
                     	var td8 = $("<td></td>");
                     }else{
@@ -117,18 +116,18 @@ define(function(require,exports,module){
 	    progress : function(cacheId,data,asyncData){
 	    	var data = data.data;
         // console.log(data)	    	
-   	        var unitLen = Math.ceil(100 / 9);
+   	        var unitLen = Math.ceil(100 / 10);
    	        var $obj = $("#prg" + cacheId);
    	        var $prg = $obj.find(".progress-bar");
    	       	var pWidth = unitLen * data;
            	if( data == 1){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.next().html("正在准备安装环境...");
+           		$obj.next().html("正在准备环境...");
            	}else if (data > 1 && data <= 2){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.next().html("正在检查安装环境...");
+           		$obj.next().html("正在检查环境...");
            	}else if (data > 2 && data <= 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");

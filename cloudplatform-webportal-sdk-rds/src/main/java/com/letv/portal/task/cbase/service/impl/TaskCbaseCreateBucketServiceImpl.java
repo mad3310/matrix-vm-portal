@@ -42,10 +42,18 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 		CbaseBucketModel bucket = super.getCbaseBucket(params);
 
+		Long hostSize = getLongFromObject(params.get("hostSize"));
+
+		// per bucket node mem quota = (bucket mem quota / hostSize) + 100MB
+		long tmpPerBucketNodeMemQuotaMB = Integer.valueOf(bucket
+				.getRamQuotaMB()) / hostSize;
+		int perBucketNodeMemQuotaMB = (int) tmpPerBucketNodeMemQuotaMB + 100;
+
 		if (bucket.getBucketType() == 0) {
 			String result = this.cbasePythonService.createPersistentBucket(
 					nodeIp1, super.getCbaseManagePort(),
-					bucket.getBucketName(), bucket.getRamQuotaMB(),
+					bucket.getBucketName(),
+					String.valueOf(perBucketNodeMemQuotaMB),
 					bucket.getAuthType(), bucket.getBucketName(),
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
@@ -59,7 +67,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 				}
 				result = this.cbasePythonService.createPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
-						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getBucketName(),
+						String.valueOf(perBucketNodeMemQuotaMB),
 						bucket.getAuthType(), bucket.getBucketName(),
 						cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = analyzeRestServiceResult(result);
@@ -67,7 +76,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 		} else if (bucket.getBucketType() == 1) {
 			String result = this.cbasePythonService.createUnPersistentBucket(
 					nodeIp1, super.getCbaseManagePort(),
-					bucket.getBucketName(), bucket.getRamQuotaMB(),
+					bucket.getBucketName(),
+					String.valueOf(perBucketNodeMemQuotaMB),
 					bucket.getAuthType(), bucket.getBucketName(),
 					cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
@@ -81,7 +91,8 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 				}
 				result = this.cbasePythonService.createUnPersistentBucket(
 						nodeIp1, super.getCbaseManagePort(),
-						bucket.getBucketName(), bucket.getRamQuotaMB(),
+						bucket.getBucketName(),
+						String.valueOf(perBucketNodeMemQuotaMB),
 						bucket.getAuthType(), bucket.getBucketName(),
 						cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = analyzeRestServiceResult(result);

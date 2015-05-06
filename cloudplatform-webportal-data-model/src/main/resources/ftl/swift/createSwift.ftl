@@ -35,10 +35,10 @@ p {
 <!-- Table goes in the document BODY -->
 
 <h3>${userName}您好：</h3>
-<p>您申请的SWIFT已创建成功。以下为相关创建信息：</p>
+<p>您申请的OSS已创建成功。以下为相关创建信息：</p>
 <table class="gridtable" style="margin: 20px">
 	<tr>
-		<th width="100px">swift名称</th>
+		<th width="100px">OSS名称</th>
 	</tr>
 	<tr>
 		<td>${swiftName}</td>

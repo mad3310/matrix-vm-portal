@@ -12,7 +12,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">缓存实例详情</a>
+      <a class="navbar-brand" href="javascript:void(0)">开放缓存<font color="#FF9C17">OCS</font></a>
     </div>
   </div>
 </div>
@@ -69,38 +69,13 @@
 						<th>运行状态</th>
 						<th>实例类型</th>
 						<th>已用空间及配额</th>
-						<th>地域
-							<!-- <a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域" data-content="dfadfadfads">
-								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
-							</a> -->
-						</th>
+						<th>地域</th>
 						<th>可用区</th>
 						<th>所在服务集群</th>
 						<th>创建时间</th>
 						<th>付费类型</th>
 						<th>操作</th>
 					</tr>
-					<!-- <tr>
-						<td width="10">
-							<input type="checkbox">
-						</td>
-						<td><span><a href="/detail/cache/702">cyxtest</a></span></td>
-						<td><span>正常</span></td>
-						<td><span>持久化</span></td>
-						<td>
-							<div class="progress" style="margin-bottom:0;">
-							  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-							    <span class="sr-only">40%</span>
-							  </div>
-							</div>
-						</td>
-						<td><span>北京</span></td>
-						<td><span>酒仙桥DC</span></td>
-						<td><span>2015-03-25</span></td>
-						<td><span>包年 365天后到期</span></td>
-						<td><span class="text-explode font-disabled">管理|续费|
-						扩容</span></td>
-					</tr> -->
 				</thead>
 				<tbody id="tby">
 				</tbody>
