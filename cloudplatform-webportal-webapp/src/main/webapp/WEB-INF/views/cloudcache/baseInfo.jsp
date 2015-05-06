@@ -138,7 +138,7 @@
 	    <!-- /.modal config-->
 		<div class="modal" id="cacheConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
+				<div class="modal-content" style="width:500px;">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>

@@ -54,17 +54,16 @@ define(function(require,exports,module){
         getInfo: function(data){
         	var $tby = $("#cacheconfigTby");
             $tby.find("tr").remove();
-        	$('#cacheconfigModal').modal({
+        	$('#cacheConfigModal').modal({
                 backdrop:false,
                 show:true
             });
-        	
         	$("#cacheconfigModalLabel").html("配置信息");
         	var data = data.data;
         	
         	/*添加配置信息*/
-        	$("#cacheConfigInfo").html("<br/>" + cn.formatJson(JSON.stringify(data)));
-        	
+        	// $("#cacheConfigInfo").html("<br/>" + cn.formatMoxiConfig(JSON.stringify(data)));
+            $("#cacheConfigInfo").html("<br/>CBASE_HOST='"+data.CBASE_HOST+"'"+"\n"+"CBASE_BUCKET='"+data.CBASE_BUCKET+"'\nCBASE_PWD='"+data.CBASE_PWD+"'");
         	/*初始化tooltip*/
         	$('#zclipCopy').hover(function(){
     			$("#zeroclipboardTooltip").data("placement", "top").attr("data-original-title", "复制到剪贴板").tooltip("show");
