@@ -4,6 +4,7 @@
 <html lang="zh">
 <%@include file='main.jsp' %>
 <body>
+<input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 <div class="se-heading" id="headingOne">
 	<div class="pull-left">
 		<h5>文件管理</h5>
@@ -11,6 +12,23 @@
 	<div class="clearfix"></div>
 </div>
 <div class="container-fluid">
+<div class="row">
+	<div class="col-sm-12 col-md-12 clearfix">
+		<div class="pull-left">
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<input onkeyup="value=value.replace(/[\W]/g,'') " 
+					onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" 
+					id="fileName" type="text" class="form-control" size="48" placeholder="请输入文件名称进行搜索">
+				</div>
+				<button id="search" type="button" class="btn btn-default">搜索</button>
+			</form>
+		</div>
+		<div class="pull-right">
+			<button class="btn-primary btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
+		</div>
+	</div>
+	</div>
 	<div class="row"><!-- main-content-center-begin -->
 		<div class="col-sm-12 col-md-12">
 			<table class="table table-hover table-se">
@@ -28,7 +46,7 @@
 					</tr>
 				</thead>
 				<tbody id="tby">
-					<tr>
+					<!-- <tr>
 						<td width="10">
 							<input type="checkbox">
 						</td>
@@ -39,9 +57,9 @@
 						<td><span>40 MB</span></td>
 						<td><span>未设置</span></td>
 						<td><span class="text-explode font-disabled">删除</span></td>
-					</tr>
+					</tr> -->
 				</tbody>
-				<tfoot id="paginatorBlock">
+				<!-- <tfoot id="paginatorBlock">
 					<tr class="tfoot">
 						<td width="10">
 							<input type="checkbox">
@@ -64,7 +82,7 @@
 							<div class="clearfix"></div>
 						</td>
 					</tr>
-				</tfoot>
+				</tfoot> -->
 			</table>
 		    
 		</div>
@@ -80,7 +98,7 @@ seajs.config({
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
 	}
 });
-// seajs.use("${ctx}/static/page-js/cloudswift/fileManage/main");
+seajs.use("${ctx}/static/page-js/cloudswift/fileManage/main");
 /*self define*/
 
 </script>

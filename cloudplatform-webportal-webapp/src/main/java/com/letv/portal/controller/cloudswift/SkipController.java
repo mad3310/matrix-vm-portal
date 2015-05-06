@@ -64,7 +64,7 @@ public class SkipController {
 	public ModelAndView toContainerMonitor(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", swiftId);
+		mav.addObject("swiftId", swiftId);
 		mav.setViewName("/cloudswift/monitor/containerMonitor");
 		return mav;
 	}
@@ -73,7 +73,7 @@ public class SkipController {
 	public ModelAndView toFileManage(@PathVariable Long swiftId,
 			ModelAndView mav) {
 		//isAuthorityCache(containerId);
-		mav.addObject("containerId", swiftId);
+		mav.addObject("swiftId", swiftId);
 		mav.setViewName("/cloudswift/fileManage");
 		return mav;
 	}
