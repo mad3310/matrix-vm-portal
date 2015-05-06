@@ -164,15 +164,15 @@
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left" style="height: 36px;">
 														<span class="sleBG">
-														<span class="sleHid"> 
-														<div class="divselect">
-																<span>1月</span>
-																<ul style="display:none;">
-																	<li class="bk-select-option"><a href="javascript:;">1月</a></li>
-																	<li class="bk-select-option"><a href="javascript:;">2月</a></li>
-																</ul>
-															</div>
-														</span>
+														<span class="sleHid">
+																<div class="divselect">
+																	<span>一年</span>
+																	<ul style="display: none;">
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1">一年</a></li>
+																	</ul>
+																	<input type="hidden" value="" />
+																</div>
+															</span>
 														</span> <span class="bk-select-arrow"></span>
 													</div>
 												</div>
@@ -205,7 +205,7 @@
 						</div>
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-orders-menu  bk-mb4">
-								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">3台</span>
+								<span class="bk-orders-menu-name">购买清单</span> <span class="bk-orders-menu-quantity bk-pale">1台</span>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">当前配置</div>
@@ -213,8 +213,7 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">10GB存储空间、2G内存、MySQL 5.5</span></li>
-											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年x 3台</span></li>
+											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年</span></li>
 										</ul>
 									</div>
 								</div>
@@ -249,6 +248,19 @@
 									<div class="bk-form-row-txt notice-block">您购买的缓存创建大约需要2分钟,请耐心等待...</div>
 								</div>
 								<div class="bk-pb4"></div>
+							</div>
+							<div class="bk-scope bk-items">
+								<div class="bk-items-title">服务专员信息</div>
+							</div>
+							<div class="bk-scope bk-items">
+									<div class="bk-items-list">
+											<ul>
+												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">张祥</span></li>
+												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhangxiang@letv.com</span></li>
+												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15101188635</span></li>
+												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">2980726652</span></li>
+											</ul>
+								</div>
 							</div>
 						</div>
 					</div>
