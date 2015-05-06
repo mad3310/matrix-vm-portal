@@ -17,6 +17,7 @@ import com.letv.common.exception.TaskExecuteException;
 import com.letv.portal.enumeration.SlbBackEndType;
 import com.letv.portal.enumeration.SlbBackendStatus;
 import com.letv.portal.enumeration.SlbStatus;
+import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.slb.SlbBackendServer;
@@ -129,6 +130,13 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		this.stop(slb,cluster,containers);
 		this.checkStatus(slb, cluster, containers,"STOP","SLB服务停止失败");
 	}
+	
+	@Override
+	@Async
+	public void delete(SlbServer slb) {
+		this.slbServerService.delete(slb);
+	}
+	
 	private boolean commitProxyConfig(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		List<Map<String,String>> params = getProxyConfig(slb);
 		
@@ -232,8 +240,9 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 						sb.append(backendServer.getServerIp()).append(":").append(backendServer.getPort()).append(",");
 						
 					} else {
-						GceServer server = this.gceServerService.selectById(backendServer.getGceId());
-						List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(server.getGceClusterId());
+						GceServer gceServer = gceServerService.selectGceAndProxyById(backendServer.getGceId());
+						Long gceClusterId = gceServer.getGceServerProxy()==null?gceServer.getGceClusterId():gceServer.getGceServerProxy().getGceClusterId();
+						List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceClusterId);
 						String port = "8001";
 						if(SlbBackEndType.RDS.equals(backendServer.getType())) {
 							port="3306";
@@ -251,5 +260,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		}
 		return params;
 	}
+	
+	
 	
 }

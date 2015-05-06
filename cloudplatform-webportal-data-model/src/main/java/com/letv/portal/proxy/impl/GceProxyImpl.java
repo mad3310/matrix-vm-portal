@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.GceType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
@@ -65,8 +66,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		params.put("isConfig", false);
-		if("jetty".equals(gceServer.getType())) {
-			gceServer.setType("nginx");
+		if(GceType.JETTY.equals(gceServer.getType())) {
+			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
 			gceServer.setGceImageName("");
 			nextParams = this.gceServerService.save(gceServer);
@@ -83,6 +84,15 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		this.build(params);
 	}
 
+	public void delete(GceServer gceServer) {
+		GceServer gceProxyServer=this.gceServerService. selectProxyServerByGce(gceServer);
+		if(gceProxyServer != null){
+			this.delete(gceProxyServer);
+		}
+		
+		this.gceServerService.delete(gceServer);
+	}
+	
 	private void build(Map<String,Object> params) {
     	this.taskEngine.run("GCE_BUY",params);
 	}

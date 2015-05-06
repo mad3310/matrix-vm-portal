@@ -172,12 +172,18 @@
 			where g.CREATE_USER=u.id and g.ID = #{id} and n.ID = g.GCECLUSTER_ID and g.HCLUSTER_ID = h.ID
 	</select>
 	
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_GCE g
+		where g.GCE_NAME=#{gceName}
+	</select>
 	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_GCE g
-		<include refid="Example_Where_Clause" />
+		<include refid="Example_Where_Clause" /> and g.TYPE != "NGINX_PROXY"
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -251,7 +257,7 @@
 		left join WEBPORTAL_GCECLUSTER n on n.ID = g.GCECLUSTER_ID 
 		left join WEBPORTAL_USER u on g.CREATE_USER = u.ID
 		left join WEBPORTAL_HCLUSTER h on g.HCLUSTER_ID = h.ID
-		<include refid="Example_Page_Where_Clause" />
+		<include refid="Example_Page_Where_Clause" /> and g.TYPE != "NGINX_PROXY"
 		ORDER BY g.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

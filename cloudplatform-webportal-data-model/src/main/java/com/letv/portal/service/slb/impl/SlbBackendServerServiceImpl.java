@@ -70,9 +70,9 @@ public class SlbBackendServerServiceImpl extends BaseServiceImpl<SlbBackendServe
 			for (SlbBackendServer slbBackendServer : data) {
 				if(slbBackendServer.getType().equals(type.WEB)){
 					if(slbBackendServer.getGceId() != null){
-						GceServer gceServer = gceServerService.selectById(slbBackendServer.getGceId());
-						GceCluster gceCluster = gceClusterService.selectById(gceServer.getGceClusterId());
-						List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceCluster.getId());
+						GceServer gceServer = gceServerService.selectGceAndProxyById(slbBackendServer.getGceId());
+						Long gceClusterId = gceServer.getGceServerProxy()==null?gceServer.getGceClusterId():gceServer.getGceServerProxy().getGceClusterId();
+						List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceClusterId);
 						slbBackendServer.setGceContainers(gceContainers);
 						page.setData(data);
 					}

@@ -234,7 +234,7 @@
 									<span class="item-icon product-icons-48 product-icons-ocs"></span>
 								</a>
 								<p class="item-title">
-									<a href="${ctx}/list/cache">开放缓存&nbsp;<span class="item-title-short">OCS</span>
+									<a href="${ctx}/list/cache">开放缓存服务&nbsp;<span class="item-title-short">OCS</span>
 									</a>
 								</p>
 							</div>

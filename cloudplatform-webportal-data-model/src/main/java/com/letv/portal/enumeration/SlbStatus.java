@@ -10,7 +10,8 @@ public enum SlbStatus implements ByteEnum{
 	NORMAL(6),
 	STARTING(7),
 	STOPPING(8),
-	STOPED(9);
+	STOPED(9),
+	DELETING(10);
 	
 	private final Integer value;
 	

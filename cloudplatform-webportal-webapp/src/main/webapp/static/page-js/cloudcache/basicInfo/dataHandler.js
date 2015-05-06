@@ -26,7 +26,6 @@ define(function(require,exports,module){
                     return ips;
                 }
 
-    			$("#cache_info_cache_id").html(cacheInfo.bucketName);
     			$("#cache_info_cache_name").html(cacheInfo.bucketName);
                 if(cacheInfo.bucketType==0){//持久化
                   $('#cache_type').html('持久化');  
@@ -40,7 +39,7 @@ define(function(require,exports,module){
                 $("#cache_info_running_state").html(cn.TranslateStatus(cacheInfo.status));
                 $("#cache_info_create_time").html(cn.TransDate('Y-m-d H:i:s',cacheInfo.createTime));
                 $("#cache_info_remain_days").html(cn.RemainAvailableTime(cacheInfo.createTime));
-                $('#cache-ramQuotaMB').html(cacheInfo.ramQuotaMB/1024+"GB")
+                $('#cache_ramQuotaMB').html(cacheInfo.ramQuotaMB/1024+"GB")
 
                 if(cacheInfo.cbaseCluster == null){//服务集群
                     $("#cache-cbaseCluster").html('');
@@ -64,7 +63,7 @@ define(function(require,exports,module){
         	var data = data.data;
         	
         	/*添加配置信息*/
-        	$("#cacheconfigInfo").html("<br/>" + cn.formatJson(JSON.stringify(data)));
+        	$("#cacheConfigInfo").html("<br/>" + cn.formatJson(JSON.stringify(data)));
         	
         	/*初始化tooltip*/
         	$('#zclipCopy').hover(function(){
@@ -77,7 +76,7 @@ define(function(require,exports,module){
         	$('#zclipCopy').zclip({
                 	path: '/static/modules/jquery/zclip/ZeroClipboard.swf',
                 	copy: function(){
-                		return $('#cacheconfigInfo').text();
+                		return $('#cacheConfigInfo').text();
                 	},
             		afterCopy:function(){
             			$("#zeroclipboardTooltip").attr("data-original-title", "复制成功").tooltip("show");

@@ -49,10 +49,19 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + gceName
                             +"</td>");
+                    var td6 = $("<td>-</td>");
+                   if(array[i].gceServerProxy != undefined && array[i].gceServerProxy!=null){
+	                   	 if(cn.Displayable(array[i].status) && cn.Displayable(array[i].gceServerProxy.status)){
+	                        gceProxyName = "<a href=\"/detail/gce/"+array[i].gceServerProxy.id+"\">" + array[i].gceServerProxy.gceName + "</a>"
+	                    }else{
+	                        gceProxyName = "<span class=\"text-explode font-disabled\">"+array[i].gceServerProxy.gceName +"</span>"
+	                    }
+                    	td6=$("<td>"+gceProxyName+"</td>");
+                    }
                     var td3 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
-                    var td4 = $("<td><span>"+array[i].type+"</span></td>");
+                    var td4 = $("<td><span>"+cn.gceTypeTranslation(array[i].type)+"</span></td>");
                     var td5 = $("<td class=\"padding-left-32\">"
-                            + "<span>"+getAccpetAddr(array[i].gceContainers,array[i].type)+"</span>"
+                            + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
                             +"</td>");
                     var td7="<td></td>";
                     if(array[i].hcluster != undefined && array[i].hcluster != null){
@@ -69,22 +78,26 @@ define(function(require,exports,module){
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                    			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>" 
+                    			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
                     }else if(array[i].status == 9){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>"
+                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
                     }else if(array[i].status == 5){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span></td>");
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>" 
+                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
                     }else{
-                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>");
+                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span>" 
+                    		+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
                     }
                      var tr = $("<tr class='data-tr'></tr>");
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);
+                    tr.append(td1).append(td2).append(td6).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
 	            }
 	             $(".gce-start").click(function(){
@@ -108,6 +121,13 @@ define(function(require,exports,module){
 	            			window.location.href = "/list/gce";
 	            		});
 	            	});
+	            	 $(".gce-delete").click(function () {    
+		            	var id =$(this).closest("tr").find("input").val();
+		            	var name = $(this).closest("tr").find("td:eq(1)").html();
+		                var title = "确认";
+		                var text = "您确定要删除("+name+")此应用";
+		                cn.DialogBoxInit(title,text,gceDelete,id);
+		            })
 	       
 	            /*
 	             * 设置分页数据
@@ -141,5 +161,11 @@ define(function(require,exports,module){
             +"<span class=\"text-success\">"+port+"</span><br>"
         }
         return ret;
+    }
+      function gceDelete(id){
+    	var url = "/gce/"+id;
+            cn.DeleteData(url, function () {
+                location.href="/list/gce";
+            });
     }
 });
