@@ -67,26 +67,25 @@ define(function(require,exports,module){
                                 +"</td>");
                     }
                     var td4 = $("<td>"
-                            + "<span>专享</span>"
+                            + "<span>"+array[i].storeSize+"MB</span>"
                             + "</td>");
-                    var td5 = $("<td><span>MySQL5.5</span></td>");
-                    var td6 = $("<td><span >单可用区</span></td>");
-                    var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                    if(array[i].mcluster == null){
-                    	var td8 = $("<td></td>");
-                    }else{
-                    	var td8 = $("<td><span>"+cn.FilterNull(array[i].mcluster.mclusterName)+"</span></td>")
-                    }
-                    
-                    var td9 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    var td5 = $("<td><span>北京</span></td>");
+                    var td6 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
+                    // if(array[i].mcluster == null){
+                    // 	var td8 = $("<td></td>");
+                    // }else{
+                    // 	var td8 = $("<td><span>"+cn.FilterNull(array[i].mcluster.mclusterName)+"</span></td>")
+                    // }
+                    var td7 = $("<td><span><span></span><span class=\"text-success\">"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></span></td>");
+                    var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td10 = $("<td class=\"text-right\"><a href=\"/detail/container/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\"></span></td>");
+                    	var td9 = $("<td><a href=\"/detail/container/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\"></span></td>");
                     }else{
-                    	var td10 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span></td>");
+                    	var td9 = $("<td><span class=\"text-explode font-disabled\">管理</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
                     
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9).append(td10);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
                  }
             }
