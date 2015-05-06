@@ -27,7 +27,7 @@ define(function(require){
 	$("#refresh").click(function() {		
 		asyncData();
 	});
-	$("#dbName").keydown(function(e){
+	$("#name").keydown(function(e){
 		if(e.keyCode==13){
 			cn.currentPage = 1;
 			asyncData();
@@ -38,7 +38,7 @@ define(function(require){
 	$(".btn-region-display").click(function(){
 		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
 		$(this).removeClass("btn-default").addClass("btn-success");
-		$("#dbName").val("");
+		$("#name").val("");
 		asyncData();
 	})
 	
@@ -79,42 +79,10 @@ define(function(require){
 	
 	//加载列表数据
 	function asyncData(page) {
-		var dbName = $("#dbName").val(),location = $("#location").val();
+		var name = $("#name").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
-		var url = "/oss?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		cn.GetData(url,refreshCtl);
+		var url = "/oss?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&name=" + name + "&&location=" + location;
+		cn.GetData(url,dbListHandler.DbListHandler);
 		
 	}
-	function refreshCtl(data) {
-		dbListHandler.DbListHandler(data);
-		if ($(".progress").length == 0){
-			if(pFresh){
-				clearInterval(pFresh);
-			}
-			if(iFresh){
-				clearInterval(iFresh);
-			}
-			iFresh = setInterval(asyncData,cn.dbListRefreshTime);
-		}else{
-			asyncProgressData();
-			if(iFresh){
-				clearInterval(iFresh);
-			}
-			if(pFresh){
-				clearInterval(pFresh);
-			}
-			pFresh = setInterval(asyncProgressData,10000);
-		}
-	}	
-	 /*进度条数据刷新*/
-	// function asyncProgressData(){
-	// 	$("input[name = progress_db_id]").each(function(){
-	// 		var dbId = $(this).val();
-	// 		function progress_func(data){
-	// 			dbListHandler.progress(dbId,data,asyncData);
-	// 		}
-	// 		var url = "/build/db/" + dbId;
-	// 		cn.GetLocalData(url,progress_func);
-	// 	})
-	// }
 });

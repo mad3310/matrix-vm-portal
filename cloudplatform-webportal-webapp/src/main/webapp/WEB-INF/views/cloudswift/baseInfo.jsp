@@ -12,22 +12,18 @@
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
 
-	<title>Container基本信息</title>
+	<title>OSS实例基本信息</title>
 </head>
 
 <body> 
 <!-- 全局参数 start -->
-	<input class="hidden" value="${swiftId}" name="dbId" id="swiftId" type="text" />
+	<input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 	<div class="panel-group pd10" id="accordion" role="tablist" aria-multiselectable="true">
 	    <div class="panel panel-default panel-table ">
 	        <div class="panel-heading bdl-list overHidden panel-heading-mcluster" role="tab" id="headingOne" >
 		        <span class="panel-title">
 		          		基本信息
 		        </span>						
-				<!-- <div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">只读实例文档</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">购买只读实例</a>
-				</div> -->
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
 					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
@@ -40,8 +36,8 @@
 		        	<tbody>
 		        	<tr>
 		        		<td width="50%">
-		        			<span class="text-muted pd-r8">containerID:</span>
-		        			<span id="db_info_db_id"></span>
+		        			<span class="text-muted pd-r8">实例名称:</span>
+		        			<span id="oss_info_db_id"></span>
 		        		</td>
 		        		<td width="50%">
 		        			<span class="text-muted pd-r8">地域:</span>
@@ -50,26 +46,14 @@
 		        	</tr> 
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">名称:</span>
-		        			<span id="db_info_db_name"></span>
+			        		<span class="text-muted pd-r8">访问地址:</span>
+		        			<span id="oss_info_db_name"></span>
 		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 			        	</td> 
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">可用区:</span>
-		        			<span class="pd-r8" id="db_info_available_region"></span>
+		        			<span class="pd-r8" id="oss_info_available_region"></span>
 			        		<span class="font-disabled pd-r8">[迁移可用区]</span>
-			        	</td>
-		        	</tr>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">内网地址:</span>
-		        			<span id="db_info_net_addr"></span>
-			        	</td> 
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">端口:</span>
-		        			<span id="db_info_db_port" class="pd-r8">3306</span>
-		        			<span class="font-disabled pd-r8">如何连接RDS</span>
-		        			<span class="font-disabled pd-r8">如何设置白名单</span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
@@ -95,7 +79,7 @@
 		        	<tr>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">运行状态:</span>
-			        		<span id="db_info_running_state"></span>
+			        		<span id="oss_info_running_state"></span>
 		        		</td>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">锁定模式:</span>
@@ -107,7 +91,8 @@
 			        		<span class="text-muted pd-r8">可用性:</span><span>100.0%</span>
 			        	</td> 
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">已用空间:</span><span></span>
+			        		<span class="text-muted pd-r8">配额:</span><span></span>
+			        		<span id="oss_info_sotre_size"></span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
@@ -115,56 +100,7 @@
 		      </div>
 		    </div>
 	  	</div>
-	  	<div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
-		        <span class="panel-title">
-		          		配置信息
-				</span>
-				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
-					<a class="btn btn-xs btn-primary" id="showConfigInfo" href="javascript:void(0)">配置信息</a>
-				</div>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
-				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
-					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
-				</span>
-				</a>
-	    	</div>
-		    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-		      <div class="panel-body pd0">
-		        <table class="table table-bordered table-bi">
-		        	<tbody>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库内存:</span><span>2048M</span>
-			        	</td>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库空间:</span><span>10G</span>
-			        	</td>
-		        	</tr>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">实例类型:</span><span>专享</span>
-			        	</td>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库类型:</span><span class="pd-r8">MySQL5.5</span>
-			        		<span class="font-disabled pd-r8">数据库升级</span>
-			        	</td>
-		        	</tr>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大连接数:</span><span></span>
-			        	</td>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">最大IOPS:</span><span></span>
-			        	</td>
-		        	</tr>
-		        	</tbody>
-		        </table>
-		      </div>
-		    </div>
-	  	</div>
+	  	
 	  	<div class="panel panel-default panel-table">
 	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
 		        <span class="panel-title">
@@ -182,10 +118,10 @@
 		        	<tbody>
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">创建时间:</span><span id="db_info_create_time"></span>
+			        		<span class="text-muted pd-r8">创建时间:</span><span id="oss_info_create_time"></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">付费类型:</span><span>包年  <span id="db_info_remain_days"></span>天后到期</span>
+			        		<span class="text-muted pd-r8">付费类型:</span><span>包年  <span id="oss_info_remain_days"></span>天后到期</span>
 			        	</td>
 		        	</tr>
 		        	</tbody>
