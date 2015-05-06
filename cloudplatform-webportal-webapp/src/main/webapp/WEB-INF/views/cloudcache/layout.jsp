@@ -108,9 +108,9 @@
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/cacheBaseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
-                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
+                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控<p class="pull-right home-orange">敬请期待...</p></a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/cache/${cacheId}" href="javascript:void(0)">监控</a></li>
+                            <!-- <li><a  class="text-sm" src="${ctx}/monitor/cache/${cacheId}" href="javascript:void(0)">监控</a></li> -->
                         <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
                             <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
