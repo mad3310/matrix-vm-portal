@@ -41,14 +41,14 @@ define(function(require,exports,module){
                     var td1 = $("<td width=\"10\">"
                             + "<input type=\"checkbox\" name=\"mcluster_id\" value= \""+array[i].id+"\">"
                             + "</td>");
-                    var dbName = "";
+                    var swiftName = "";
                     if(cn.Displayable(array[i].status)){
-                        dbName = "<a href=\"/detail/container/"+array[i].id+"\">" + array[i].dbName + "</a>"
+                        swiftName = "<a href=\"/detail/oss/"+array[i].id+"\">" + array[i].name + "</a>"
                     }else{
-                        dbName = "<span class=\"text-explode font-disabled\">"+array[i].dbName+"</span>"
+                        swiftName = "<span class=\"text-explode font-disabled\">"+array[i].name+"</span>"
                     }
                     var td2 = $("<td class=\"padding-left-32\">"
-                            + dbName
+                            + swiftName
                             +"</td>");
                     
                     var td3 = '';                

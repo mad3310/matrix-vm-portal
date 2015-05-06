@@ -81,8 +81,8 @@ define(function(require){
 	function asyncData(page) {
 		var dbName = $("#dbName").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
-		var url = "/container?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
-		//cn.GetData(url,refreshCtl);
+		var url = "/oss?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&dbName=" + dbName + "&&location=" + location;
+		cn.GetData(url,refreshCtl);
 		
 	}
 	function refreshCtl(data) {

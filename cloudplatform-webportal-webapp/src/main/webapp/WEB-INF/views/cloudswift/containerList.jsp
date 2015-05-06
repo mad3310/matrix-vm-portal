@@ -12,7 +12,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">container实例详情</a>
+      <a class="navbar-brand" href="javascript:void(0)">oss实例详情</a>
     </div>
   </div>
 </div>
@@ -25,7 +25,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>container实例列表</span>
+				<span>实例列表</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
 				<button class="btn btn-default btn-md btn-region-display">北京</button>
 				<!-- <button class="btn btn-default btn-md btn-region-display">杭州</button>
@@ -38,7 +38,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
-				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/buy/oss')">新建container实例</button>
+				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/buy/oss')">新建oss实例</button>
 				<!-- <button class="btn-warning btn btn-md" onclick="">删除缓存实例</button> -->
 				</h5>
 			</div>
@@ -49,7 +49,7 @@
 					<div class="form-group">
 						<input onkeyup="value=value.replace(/[\W]/g,'') " 
 						onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" 
-						id="cacheName" type="text" class="form-control" size="48" placeholder="请输入container实例名称进行搜索">
+						id="cacheName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
@@ -82,7 +82,7 @@
 					</tr>
 				</thead>
 				<tbody id="tby">
-					<tr>
+					<!-- <tr>
 						<td width="10">
 							<input type="checkbox">
 						</td>
@@ -102,7 +102,7 @@
 						<td><span>2015-05-04</span></td>
 						<td><span>包年 365天后到期</span></td>
 						<td><span class="text-explode font-disabled">管理</span></td>
-					</tr>
+					</tr> -->
 				</tbody>
 				<tfoot id="paginatorBlock">
 					<tr class="tfoot">
