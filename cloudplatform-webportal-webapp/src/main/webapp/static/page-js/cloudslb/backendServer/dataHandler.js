@@ -100,14 +100,14 @@ define(function(require,exports,module){
             var tby = $('#server-tby');
             var array = data.data.data;
             for(var i= 0, len= array.length;i<len;i++){
-            	if(array[i].type == "nginx" && innerServerIds.every(function(gceId){
+            	if(innerServerIds.every(function(gceId){
             		return array[i].id != gceId;$("<tr class='data-tr'></tr>")
             	})){
             		 var td1 = $("<td class=\"name\">"
 	                + array[i].gceName
 	                + "</td>");
 	                var td3 = $("<td class=\"padding-left-32\">"
-                            + "<span>"+getAccpetAddr(array[i].gceContainers,"nginx")+"</span>"
+                            + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
                             +"</td>");
 	                var td4 = $("<td>"
 	                + "<span>经典网路</span>"
@@ -134,7 +134,7 @@ define(function(require,exports,module){
             		continue;
             	}
             }
-              /*初始化移除按钮*/
+             
             $(".backend-server-add").click(function () {    
             	var data={
             		serverName:$(this).closest("tr").find(".name").html(),

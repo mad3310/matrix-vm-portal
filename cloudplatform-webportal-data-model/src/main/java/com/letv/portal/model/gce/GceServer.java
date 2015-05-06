@@ -3,6 +3,7 @@ package com.letv.portal.model.gce;
 import java.util.List;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.UserModel;
 
@@ -20,18 +21,19 @@ public class GceServer extends BaseModel {
 	private String portForward;//端口转发规则
 	private Integer status;
 	private String descn;
-	private String type;//container类型：nginx、jetty
+	private GceType type;//container类型：nginx、jetty
 	
 	private HclusterModel hcluster;
 	private GceCluster gceCluster;
 	private UserModel createUserModel;
 	private List<GceContainer> gceContainers;
+	private GceServer gceServerProxy;
 	
 
-	public String getType() {
+	public GceType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(GceType type) {
 		this.type = type;
 	}
 	public String getGceName() {
@@ -106,4 +108,11 @@ public class GceServer extends BaseModel {
 	public void setGceContainers(List<GceContainer> gceContainers) {
 		this.gceContainers = gceContainers;
 	}
+	public GceServer getGceServerProxy() {
+		return gceServerProxy;
+	}
+	public void setGceServerProxy(GceServer gceServerProxy) {
+		this.gceServerProxy = gceServerProxy;
+	}
+	
 }

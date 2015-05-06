@@ -166,8 +166,8 @@
 																<div class="divselect">
 																	<span></span>
 																	<ul>
-																	<li class="bk-select-option"><a href="javascript:;" selectid="nginx">nginx</a></li>
-																	<li class="bk-select-option"><a href="javascript:;" selectid="jetty">jetty</a></li>
+																	<li class="bk-select-option"><a href="javascript:;" selectid="NGINX">nginx</a></li>
+																	<li class="bk-select-option"><a href="javascript:;" selectid="JETTY">java</a></li>
 																	</ul>
 																	<input name="type" type="hidden" value="nginx" />
 																</div>

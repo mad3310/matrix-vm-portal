@@ -10,4 +10,12 @@ import com.letv.portal.service.IBaseService;
 public interface IGceServerService extends IBaseService<GceServer> {
 
 	Map<String, Object> save(GceServer gceServer);
+
+	Boolean isExistByName(String gceName);
+
+	List<GceServer> selectByName(String gceName);
+
+	GceServer selectProxyServerByGce(GceServer gce);
+
+	GceServer selectGceAndProxyById(Long id);
 }

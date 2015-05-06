@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
@@ -36,7 +37,16 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", gceCluster.getClusterName());
-		map.put("componentType", gceServer.getType());
+		
+		GceType gceType = gceServer.getType();
+		String type = "";
+		if(gceType.equals(GceType.NGINX) || gceType.equals(GceType.NGINX_PROXY)){
+			type = "nginx";
+		}else{
+			type = gceType.toString().toLowerCase();
+		}
+		
+		map.put("componentType", type);
 		map.put("networkMode", "bridge");
 		if(!StringUtils.isEmpty(gceServer.getGceImageName()))
 			map.put("image", gceServer.getGceImageName());

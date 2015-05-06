@@ -26,6 +26,7 @@ import com.letv.portal.enumeration.GceImageStatus;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -123,14 +124,26 @@ public class GceServerController {
 		return obj;
 	}	
 	
+	@RequestMapping( value="/{id}",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject delete(@PathVariable Long id,ResultObject obj) {
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		GceServer gce = this.gceServerService.selectById(id);
+		if(gce == null || gce.getId()== null)
+			throw new ValidateException("参数不合法");
+		isAuthorityGce(gce.getId());
+		this.gceProxy.delete(gce);
+		return obj;
+	}
+	
 	private void isAuthorityGce(Long id) {
 		if(id == null)
 			throw new ValidateException("参数不合法");
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("id", id);
 		map.put("createUser", sessionService.getSession().getUserId());
-		List<GceServer> slbs = this.gceServerService.selectByMap(map);
-		if(slbs == null || slbs.isEmpty())
+		List<GceServer> gces = this.gceServerService.selectByMap(map);
+		if(gces == null || gces.isEmpty())
 			throw new ValidateException("参数不合法");
 	}
 }

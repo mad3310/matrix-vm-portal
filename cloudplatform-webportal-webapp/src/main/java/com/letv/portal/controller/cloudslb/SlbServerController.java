@@ -22,6 +22,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.model.slb.SlbBackendServer;
 import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.proxy.ISlbProxy;
 import com.letv.portal.service.slb.ISlbServerService;
@@ -88,7 +89,17 @@ public class SlbServerController {
 		return obj;
 	}	
 	
-	
+	@RequestMapping( value="/{id}",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject delete(@PathVariable Long id,ResultObject obj) {
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		SlbServer slb = this.slbServerService.selectById(id);
+		if(slb == null || slb.getId()== null)
+			throw new ValidateException("参数不合法");
+		isAuthoritySlb(slb.getId());
+		this.slbProxy.delete(slb);
+		return obj;
+	}
 	
 	private void isAuthoritySlb(Long id) {
 		if(id == null)

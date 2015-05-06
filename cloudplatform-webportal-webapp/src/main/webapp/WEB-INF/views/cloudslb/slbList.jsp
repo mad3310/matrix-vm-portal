@@ -186,6 +186,29 @@
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
+<!--确认对话框-->
+	<div id="dialog-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+			<!--	<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+					</button>-->
+					<h5 id="dialog-box-title" class="modal-title"></h5ashboard>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="col-sm-1 col-md-1 warning-sign">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+					</div>
+					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

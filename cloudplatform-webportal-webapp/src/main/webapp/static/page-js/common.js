@@ -885,6 +885,17 @@ define(function(require,exports,module){
             if(cval!=null){
                 document.cookie= name + "="+cval+";expires="+exp.toGMTString();
             }
+        },
+        gceTypeTranslation:function(type){
+        	if(type == "JETTY"){
+        		return "java";
+        	}else if(type == "NGINX"){
+        		return "nginx";
+        	}else if(type == "NGINX_PROXY"){
+        		return "nginx_proxy";
+        	}else{
+        		return "-";
+        	}
         }
     }
     function drag(relaLen,options){

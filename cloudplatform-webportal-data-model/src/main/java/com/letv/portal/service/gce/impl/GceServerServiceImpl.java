@@ -18,6 +18,8 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.gce.IGceServerDao;
 import com.letv.portal.enumeration.GceStatus;
+import com.letv.portal.enumeration.GceType;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceImage;
@@ -43,6 +45,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	private IGceImageService gceImageService;
 	@Value("${gce.code}")
 	private String GCE_CODE;
+	@Value("${nginx4jetty.code}")
+	private String NGINX4JETTY_CODE;
 	
 	public GceServerServiceImpl() {
 		super(GceServer.class);
@@ -108,12 +112,20 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	}
 	
 	public <K, V> Page selectPageByParams(Page page, Map<K, V> params){
-		page = super.selectPageByParams(page, params);
+		page = super.selectPageByParams(page, params);//获取非代理应用
 		List<GceServer> gceServers = (List<GceServer>) page.getData();
 		
 		for(GceServer gceServer : gceServers){
 			List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceServer.getGceClusterId());
 			gceServer.setGceContainers(gceContainers);
+			if(GceType.JETTY.equals(gceServer.getType())){
+				GceServer gceServerPorxy = this.selectProxyServerByGce(gceServer);//获取该应用的代理服务
+				
+				List<GceContainer> gceProxyContainers = this.gceContainerService.selectByGceClusterId(gceServerPorxy.getGceClusterId());
+				gceServerPorxy.setGceContainers(gceProxyContainers);
+				
+				gceServer.setGceServerProxy(gceServerPorxy);
+			}
 		}
 		page.setData(gceServers);
 		return page;
@@ -123,6 +135,47 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 		GceServer gceServer = this.gceServerDao.selectById(id);
 		List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceServer.getGceClusterId());
 		gceServer.setGceContainers(gceContainers);
+		
 		return gceServer;
+	}
+	
+	@Override
+	public GceServer selectGceAndProxyById(Long id){
+		GceServer gceServer = this.gceServerDao.selectById(id);
+		List<GceContainer> gceContainers = this.gceContainerService.selectByGceClusterId(gceServer.getGceClusterId());
+		gceServer.setGceContainers(gceContainers);
+		
+		GceServer gceProxyServer = this.selectProxyServerByGce(gceServer);
+		if(gceProxyServer != null ){
+			gceServer.setGceServerProxy(gceProxyServer);
+		}
+		
+		return gceServer;
+	}
+	
+	@Override
+	public Boolean isExistByName(String gceName) {
+		List<GceServer> gces = this.gceServerDao.selectByName(gceName);
+		return gces.size() == 0?true:false;
+	}
+	
+	@Override
+	public List<GceServer> selectByName(String gceName) {
+		return  this.gceServerDao.selectByName(gceName);
+	}
+	
+	@Override
+	public GceServer selectProxyServerByGce(GceServer gce){
+		Map<String,Object> gceServerPorxyParams = new HashMap<String,Object>();
+		gceServerPorxyParams.put("gceName",NGINX4JETTY_CODE+"_" + gce.getGceName());
+		gceServerPorxyParams.put("createUser",gce.getCreateUser());
+		gceServerPorxyParams.put("type",GceType.NGINX_PROXY);
+		
+		List<GceServer> gceProxyServers =  this.selectByMap(gceServerPorxyParams);
+		if(gceProxyServers.size() > 0){
+			return gceProxyServers.get(0);
+		}else{
+			return null;
+		}
 	}
 }
