@@ -4,20 +4,22 @@ define(function(require) {
 	var Common = require('../../common');
 	var cn = new Common();
 	var options = {// 拖动条初始化参数 全局变量
-		'stepSize' : 100,// 步长
+		'stepSize' : 1,// 步长
 		'lev1' : 206,// 拖动条第一块长度==css width
 		'lev2' : 309,// 拖动条第二块长度==css width
 		'lev3' : 412,// 拖动条第三块长度==css width
-		'grade1' : 300,// 三段设置
-		'grade2' : 4500,
-		'grade3' : 9000,
-		'unit' : 'MB'
+		'min':1,
+		'grade1' : 5,// 三段设置
+		'grade2' : 8,
+		'grade3' : 10,
+		'unit' : 'GB'
 	};
 	cn.divselect();
 	// drag bar
 	cn.dragBarInite(options);
 	cn.barClickDrag(options);
 	cn.barDrag(options);
+	$('.self-dragBar').closest('.bk-form-row-li').next().text('最小值为'+options.min+options.unit+'；步长为'+options.stepSize+options.unit);
 	/* 禁用退格键退回网页 */
 	window.onload = cn.DisableBackspaceEnter();
 	if (document.getElementById("monthPurchaseBotton").form == null) { // 兼容IE

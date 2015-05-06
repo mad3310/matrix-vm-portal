@@ -146,7 +146,8 @@
 													<!-- 原拖动效果注释 -->
 													<div class="bk-form-row-li">
 														<div class="self-dragBar"></div><!-- 拖动条生成容器 -->	
-													</div>	
+													</div>
+													<div class="bk-form-row-txt"></div>	
 												</div>
 											</div>
 										</div>

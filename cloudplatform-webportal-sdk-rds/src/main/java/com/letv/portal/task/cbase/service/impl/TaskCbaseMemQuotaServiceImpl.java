@@ -39,6 +39,7 @@ public class TaskCbaseMemQuotaServiceImpl extends BaseTask4CbaseServiceImpl
 		CbaseBucketModel bucket = super.getCbaseBucket(params);
 
 		Long hostCount = getLongFromObject(params.get("hostCount"));
+
 		// cluster mem quota = (bucket mem quota / hostCount) + 100MB
 		long tmpClusterMemQuotaMB = Integer.valueOf(bucket.getRamQuotaMB())
 				/ hostCount;

@@ -212,20 +212,20 @@
 		    </div>
 	  	</div>
 	    <!-- /.modal config-->
-		<div class="modal" id="dbConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal" id="cacheConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
+						<h4 class="modal-title" id="cacheConfigModalLabel"></h4>
 					</div>
-					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
+					<div class="modal-body clearfix" id="cacheConfigInfoWrap" >
 						<div class="zero-clipboard">
 							<a id= "zclipCopy" class="btn-clipboard">复制</a>
 						</div>
 						<pre>
-							<code id="dbConfigInfo" class="language-html"></code>
+							<code id="cacheConfigInfo" class="language-html"></code>
 						</pre>
 						<div id="zeroclipboardTooltip" data-toggle="tooltip" title="" style="position: absolute; right: 50px; top:10px; z-index: 999999999;">
 						</div>

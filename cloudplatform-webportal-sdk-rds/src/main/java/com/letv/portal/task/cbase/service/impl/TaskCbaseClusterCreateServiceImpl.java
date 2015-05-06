@@ -36,7 +36,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("containerClusterName", cbaseCluster.getCbaseClusterName());
 		map.put("componentType", "cbase");
 		map.put("networkMode", "ip");
-		map.put("image", "10.160.140.32:5000/lihanlin1/cbase:V3");
+		map.put("nodeCount", "3");
 		String result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);

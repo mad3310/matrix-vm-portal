@@ -610,18 +610,20 @@ define(function(require,exports,module){
             });
         },
         dragBarInite:function(options){
-            var len=options.stepSize;
+            // var len=options.stepSize;
+            var len=options.min;
             var width=len*options.lev1/options.grade1;
             var html='<div class="bk-slider"><div class="bk-slider-range" id="bar0"><span class="bk-slider-block bk-slider-l2"><span class="bk-slider-block-box"><span class="bk-slider-txt">'+options.grade1+options.unit+'</span></span></span><span class="bk-slider-block bk-slider-l1"><span class="bk-slider-block-box">'
                     +'<span class="bk-slider-txt">'+options.grade2+options.unit+'</span></span></span> <span class="bk-slider-block bk-slider-l1" style="margin-left:-4px;"><span class="bk-slider-block-box bk-slider-block-box-last bk-select-action"><span class="bk-slider-txt">'+options.grade3+options.unit+'</span>'
                     +'</span></span><span class="bk-slider-container bk-slider-transition" id="layer2" style="width:'+width+'px;"><span class="bk-slider-current"><span class="bk-slider-unit bk-slider-l2"><span class="bk-slider-unit-box">'
                     +'<span class="bk-slider-txt">'+options.grade1+options.unit+'</span></span></span><span class="bk-slider-unit bk-slider-l1"><span class="bk-slider-unit-box"><span class="bk-slider-txt">'+options.grade2+options.unit+'</span></span></span>'
                     +'<span class="bk-slider-unit bk-slider-l1"><span class="bk-slider-unit-box bk-slider-unit-box-last"><span class="bk-slider-txt">'+options.grade3+options.unit+'</span></span>'
-                    +'</span></span></span><span class="awCursor" style="left:'+width+'px;"><div style="position: relative" class="ng-scope"><div class="bk-tip-gray hide" style="top: -44px;left: -18px"><span class="ng-binding">1</span> <span class="bk-tip-arrow"></span>'
+                    +'</span></span></span><span class="awCursor" style="left:'+width+'px;"><div style="position: relative" class="ng-scope"><div class="bk-tip-gray hide" style="top: -44px;left: -18px"><span class="ng-binding">'+options.min+'</span> <span class="bk-tip-arrow"></span>'
                     +'</div></div></span></div></div><span class="bk-number bk-ml2"><input type="text" class="bk-number-input memSize" id="value2" name="ramQuotaMB"><span class="bk-number-unit">'+options.unit+'</span><span class="bk-number-control"><span class="bk-number-up mem-num-up"> <i class="bk-number-arrow"></i> </span>' 
                     +'<span class="bk-number-down mem-num-down bk-number-disabled"> <i class="bk-number-arrow"></i></span> </span></span>';
             $('.self-dragBar').append(html);
-            $('.memSize').val(options.stepSize);
+            // $('.memSize').val(options.stepSize);
+            $('.memSize').val(options.min);
         },
         dragBarUpdate:function(options){
             var _this=$('.bk-slider-range').children('.bk-slider-l2');
@@ -658,16 +660,21 @@ define(function(require,exports,module){
                     var left=event.pageX;
                     var left2=_slider.offset().left;
                     temp=parseInt(left)-parseInt(left2);
+
                     if(temp>414){
                         //拖拽过最右界
+                        $('.mem-num-up').addClass('bk-number-disabled');
                         temp=412;
                     }else{
                          if(temp<=0){
                             //拖拽过最左界
-                            //temp=5;
-                            temp=options.stepSize*options.lev1/options.grade1;
+                            $('.mem-num-down').addClass('bk-number-disabled');
+                            // temp=options.stepSize*options.lev1/options.grade1;
+                            temp=options.min*options.lev1/options.grade1;
                          }else{
                             //允许范围之内
+                            $('.mem-num-up').removeClass('bk-number-disabled');
+                            $('.mem-num-down').removeClass('bk-number-disabled');
                         }               
                     }
                     drag(temp,options);
@@ -887,13 +894,13 @@ define(function(require,exports,module){
         var _up=$('.mem-num-up');
         var _down=$('.mem-num-down');
         var base=options.stepSize;
-        var baseL=base*options.lev1/options.grade1;
+        var baseL=options.min*options.lev1/options.grade1;
         var lev1=options.lev1;//0-250:206 grade1
         var lev2=options.lev2;//250-500:206+103 grade2
         var lev3=options.lev3;//500-1000:206+103+103 grade3
         if(relaLen>lev3){
             //不合适
-            _up.addClass('bk-number-disabled')
+            _up.addClass('bk-number-disabled');
         }else{
             _up.removeClass('bk-number-disabled');
             _down.removeClass('bk-number-disabled');
@@ -966,8 +973,8 @@ define(function(require,exports,module){
         var i=Math.ceil(val/base);
         val=i*base;
         _memSize.val(val);
-        if(val<base){
-            _memSize.val(base);
+        if(val<options.min){
+            _memSize.val(options.min);
             // lenPerc=_memSize.val()*lev1/250;
             lenPerc=_memSize.val()*lev1/options.grade1;
             _awCursor.css({
