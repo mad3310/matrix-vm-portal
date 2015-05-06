@@ -12,7 +12,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">container实例详情</a>
+      <a class="navbar-brand" href="javascript:void(0)">oss实例详情</a>
     </div>
   </div>
 </div>
@@ -25,7 +25,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>container实例列表</span>
+				<span>实例列表</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
 				<button class="btn btn-default btn-md btn-region-display">北京</button>
 				<!-- <button class="btn btn-default btn-md btn-region-display">杭州</button>
@@ -38,7 +38,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
-				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/buy/oss')">新建container实例</button>
+				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/buy/oss')">新建oss实例</button>
 				<!-- <button class="btn-warning btn btn-md" onclick="">删除缓存实例</button> -->
 				</h5>
 			</div>
@@ -49,7 +49,7 @@
 					<div class="form-group">
 						<input onkeyup="value=value.replace(/[\W]/g,'') " 
 						onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" 
-						id="cacheName" type="text" class="form-control" size="48" placeholder="请输入container实例名称进行搜索">
+						id="cacheName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<button id="search" type="button" class="btn btn-default">搜索</button>
 				</form>
@@ -67,42 +67,19 @@
 						</th>
 						<th class="padding-left-32">实例名称</th>
 						<th>运行状态</th>
-						<th>实例类型</th>
-						<th>已用空间及配额</th>
+						<th>配额</th>
 						<th>地域
 							<!-- <a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域" data-content="dfadfadfads">
 								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 							</a> -->
 						</th>
 						<th>可用区</th>
-						<th>所在服务集群</th>
 						<th>创建时间</th>
 						<th>付费类型</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
-					<tr>
-						<td width="10">
-							<input type="checkbox">
-						</td>
-						<td><span><a href="/detail/oss/234">containertest</a></span></td>
-						<td><span>正常</span></td>
-						<td><span>持久化</span></td>
-						<td>
-							<div class="progress" style="margin-bottom:0;">
-							  <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-							    <span class="sr-only">40%</span>
-							  </div>
-							</div>
-						</td>
-						<td><span>北京</span></td>
-						<td><span>酒仙桥DC</span></td>
-						<td><span>所在服务集群</span></td>
-						<td><span>2015-05-04</span></td>
-						<td><span>包年 365天后到期</span></td>
-						<td><span class="text-explode font-disabled">管理</span></td>
-					</tr>
 				</tbody>
 				<tfoot id="paginatorBlock">
 					<tr class="tfoot">

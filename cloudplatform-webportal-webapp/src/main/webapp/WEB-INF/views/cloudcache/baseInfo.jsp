@@ -68,8 +68,8 @@
 		        <table class="table table-bordered table-bi">
 						<tbody>
 						<tr>
-							<td width="50%"><span class="text-muted pd-r8">实例名称:</span><span id="cache_info_cache_name">webportal-img</span></td>
-							<td width="50%"><span class="text-muted" style="padding-right:8px">状态:</span><span id="cache_info_running_state"></span></td>
+							<td width="50%"><span class="text-muted pd-r8">实例名称:</span><span id="cache_info_cache_name"></span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">可用区:</span><span id="cache_info_available_region"></span></td>
 						</tr>
 						<tr>
 							<td width="50%">
@@ -81,7 +81,7 @@
 						</tr>
 						<tr>
 							<td colspan="2">
-								<span class="text-muted pd-r8">可用区:</span><span text-length="26" id="cache_info_available_region"></span>
+								<span class="text-muted pd-r8">状态:</span><span text-length="26" id="cache_info_running_state"></span>
 							</td>
 						</tr>
 						</tbody>
@@ -89,44 +89,6 @@
 		      </div>
 		    </div>
 	  	</div>
-	  	<!-- <div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
-		        <span class="panel-title">
-		          		运行状态
-				</span>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
-				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
-					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
-				</span>
-				</a>
-	    	</div>
-		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-		      <div class="panel-body pd0">
-		        <table class="table table-bordered table-bi">
-		        	<tbody>
-		        	<tr>
-		        		<td width="50%">
-			        		<span class="text-muted pd-r8">运行状态:</span>
-			        		<span id="cache_info_running_state"></span>
-		        		</td>
-		        		<td width="50%">
-			        		<span class="text-muted pd-r8">锁定模式:</span>
-			        		<span>正常</span>
-		        		</td>
-		        	</tr> 
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">可用性:</span><span>100.0%</span>
-			        	</td> 
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">已用空间:</span><span></span>
-			        	</td>
-		        	</tr>
-		        	</tbody>
-		        </table>
-		      </div>
-		    </div>
-	  	</div> -->
 	  	<div class="panel panel-default panel-table">
 	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
 		        <span class="panel-title">
@@ -149,10 +111,10 @@
 		        	<tbody>
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">缓存空间:</span><span text-length="26" id="cache-ramQuotaMB"></span>
+			        		<span class="text-muted pd-r8">实例类型:</span><span text-length="26" id="cache-type"></span>
 			        	</td>
 			        	<td width="50%">
-							<span class="text-muted pd-r8">实例类型:</span><span text-length="26" id="cache_type"></span>
+							<span class="text-muted pd-r8">缓存空间大小:</span><span text-length="26" id="cache-ramQuotaMB"></span>
 						</td>
 		        	</tr>
 		        	</tbody>
