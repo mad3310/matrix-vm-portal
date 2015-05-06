@@ -55,7 +55,7 @@
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
-                    <span id="ossName">oss实例</span>
+                    <span id="ossName">OSS实例</span>
                     <span style="display: inline-block;vertical-align:super;">
                         <small id="dbStatus" class="text-success text-xs"></small>
                     </span>
@@ -79,21 +79,6 @@
                     </small>
                     <small>
                         <span>
-                            <button class="btn-warning btn btn-sm disabled">内外网切换</button>
-                        </span>
-                    </small>
-                    <small>
-                        <span>
-                            <button class="btn-danger btn btn-sm disabled">重启实例</button>
-                        </span>
-                    </small>
-                    <small>
-                        <span>
-                            <button class="btn-default btn btn-sm disabled">备份实例</button>
-                        </span>
-                    </small>
-                    <small>
-                        <span>
                             <button class="btn-default btn btn-sm glyphicon glyphicon-list disabled"></button>
                         </span>
                     </small>
@@ -109,28 +94,13 @@
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/ossBaseInfo/${swiftId}" href="javascript:void(0)">基本信息</a></li>
                     <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${swiftId}" href="javascript:void(0)">权限管理</a></li>
+                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">监控</a></li>
-                        <!--<li><a  class="text-sm" href="javascript:void(0)">磁盘空间</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">IOPS</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">CPU利用率</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">网络流量</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">InnoDB读写量</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">InnoDB读写次数</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">InnoDB日志</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">临时表</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">MyISAM key Buffer</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">MyISAM读写次数</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">COMDML</a></li>
-                            <li><a  class="text-sm" href="javascript:void(0)">ROWDML</a></li> -->
+                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">请求数</a></li>
+                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">吞吐量</a></li>
                         </ul>
                     </li>
-                    <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
-                    <li><a  class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
-                    <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
-                    <li><a  class="text-sm" href="javascript:void(0)">性能优化<p class="pull-right home-orange">敬请期待...</p></a></li>
-                    <li><a class="text-sm" href="javascript:void(0)">阈值报警<p class="pull-right home-orange">敬请期待...</p></a></li>
                 </ul>
             </div>
         </nav>

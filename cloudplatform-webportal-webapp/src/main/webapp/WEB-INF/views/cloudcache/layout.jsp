@@ -103,8 +103,8 @@
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/cacheBaseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
-                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/monitor/cache/${cacheId}">监控信息</a></li>
-                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/detail/data/${cacheId}">数据管理</a></li>
+                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/monitor/cache/${cacheId}">监控信息<p class="pull-right home-orange">敬请期待...</p></a></li>
+                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/detail/data/${cacheId}">数据管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">阈值报警<p class="pull-right home-orange">敬请期待...</p></a></li>

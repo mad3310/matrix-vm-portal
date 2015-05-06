@@ -154,9 +154,6 @@
 						<div id="zeroclipboardTooltip" data-toggle="tooltip" title="" style="position: absolute; right: 50px; top:10px; z-index: 999999999;">
 						</div>
 					</div>
-					<!-- <div class="modal-footer">
-						<button type="button" id="fortest" class="btn btn-default" >测试</button>
-					</div> -->
 				</div>
 				<!-- /.modal-content -->
 			</div>

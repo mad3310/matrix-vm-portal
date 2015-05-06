@@ -4,15 +4,15 @@ define(function(require) {
 	var Common = require('../../common');
 	var cn = new Common();
 	var options = {// 拖动条初始化参数 全局变量
-		'stepSize' : 100,// 步长
+		'stepSize' : 50,// 步长
 		'lev1' : 206,// 拖动条第一块长度==css width
 		'lev2' : 309,// 拖动条第二块长度==css width
 		'lev3' : 412,// 拖动条第三块长度==css width
-		'min':100,
-		'grade1' : 2500,// 三段设置，倍数关系2
-		'grade2' : 5000,
-		'grade3' : 10000,
-		'unit' : 'MB'
+		'min':1,
+		'grade1' : 500,// 三段设置，倍数关系2
+		'grade2' : 800,
+		'grade3' : 1024,
+		'unit' : 'GB'
 	};
 	cn.divselect();
 	// drag bar

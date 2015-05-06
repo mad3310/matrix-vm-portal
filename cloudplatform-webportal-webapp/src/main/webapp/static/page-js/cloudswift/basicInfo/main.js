@@ -18,7 +18,7 @@ define(function(require){
     
 /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbInfoHandler = new dataHandler();
+    var ossInfoHandler = new dataHandler();
 
-    // cn.GetData("/db/"+$("#dbId").val(),dbInfoHandler.DbInfoHandler);
+    cn.GetData("/oss/"+$("#swiftId").val(),ossInfoHandler.DbInfoHandler);
 });

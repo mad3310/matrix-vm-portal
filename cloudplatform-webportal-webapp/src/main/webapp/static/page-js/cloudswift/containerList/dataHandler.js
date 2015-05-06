@@ -50,41 +50,22 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + swiftName
                             +"</td>");
-                    
-                    var td3 = '';                
-                    if(array[i].status == 2){
-                    	var td3 = $("<td>"
-                    			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\">"
-                    			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
-                    			+ "</div>"
-                    			+ "</div>"
-                    			+ "<span class=\"progress-info\"></span>"
-                                + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
-                                + "</td>");
-                    }else{
                     	var td3 = $("<td>"
                                 + cn.TranslateStatus(array[i].status)
                                 +"</td>");
-                    }
                     var td4 = $("<td>"
-                            + "<span>"+array[i].storeSize+"MB</span>"
+                            + "<span>"+array[i].storeSize+"GB</span>"
                             + "</td>");
                     var td5 = $("<td><span>北京</span></td>");
                     var td6 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                    // if(array[i].mcluster == null){
-                    // 	var td8 = $("<td></td>");
-                    // }else{
-                    // 	var td8 = $("<td><span>"+cn.FilterNull(array[i].mcluster.mclusterName)+"</span></td>")
-                    // }
                     var td7 = $("<td><span><span></span><span class=\"text-success\">"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></span></td>");
                     var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td9 = $("<td><a href=\"/detail/container/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\"></span></td>");
+                    	var td9 = $("<td><a href=\"/detail/oss/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\"></span></td>");
                     }else{
                     	var td9 = $("<td><span class=\"text-explode font-disabled\">管理</span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
-                    
                     tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
                     tr.appendTo($tby);
                  }
@@ -104,8 +85,8 @@ define(function(require,exports,module){
                 currentPage: data.data.currentPage,
                 totalPages:data.data.totalPages
             });
-        },
-        /*进度条进度控制*/
+        }/*,
+        进度条进度控制
 	    progress : function(dbId,data,asyncData){
 	    	var data = data.data;	    	
    	        var unitLen = 100 / 8;
@@ -141,6 +122,6 @@ define(function(require,exports,module){
            	}else{
            		asyncData();
            	}
-	   	}
+	   	}*/
     }
 });
