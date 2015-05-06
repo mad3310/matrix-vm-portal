@@ -17,6 +17,7 @@
     <import resource="classpath*:email-applicationContext.xml" />
     <import resource="classpath*:freemarker-applicationContext.xml" />
    
+    <import resource="classpath*:sdk-applicationContext.xml" />
    
        
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

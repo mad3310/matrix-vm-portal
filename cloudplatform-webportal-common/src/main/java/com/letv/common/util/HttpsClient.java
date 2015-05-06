@@ -2,8 +2,12 @@ package com.letv.common.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -12,25 +16,18 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-
-import com.mysql.jdbc.StringUtils;
 
 /*
  * author:haungxuebin
@@ -122,7 +119,7 @@ public class HttpsClient {
 		}
 		return strRep;
 	}
-	public static HttpResponse httpGet(String url,int connectionTimeout,int soTimeout) {
+	public static HttpResponse httpGetByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
 		// 创建HttpClient实例
 		if (client == null) {
 			// Create HttpClient Object
@@ -131,7 +128,10 @@ public class HttpsClient {
 		}
 		// 创建Get方法实例
 		HttpGet httpsgets = new HttpGet(url);
-		
+	    for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<String, String> entry = (Map.Entry<String, String>) it.next();
+            httpsgets.setHeader(entry.getKey(),entry.getValue());
+         }
 		HttpResponse response = null;
 		try {
 			response = client.execute(httpsgets);
@@ -145,7 +145,7 @@ public class HttpsClient {
 		
 		return response;
 	}
-	public static HttpResponse httpPost(String url, String xmlData,int connectionTimeout,int soTimeout) {
+	public static HttpResponse httpPostByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
 		if (client == null) {
 			// Create HttpClient Object
 			client = getHttpclient(connectionTimeout, soTimeout);
@@ -158,27 +158,13 @@ public class HttpsClient {
 		client.getParams().setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET,
 				HTTP.UTF_8);
 
-		// System.out.println(HTTP.UTF_8);
-		// Send data by post method in HTTP protocol,use HttpPost instead of
-		// PostMethod which was occurred in former version
-		// System.out.println(url);
 		HttpPost post = new HttpPost(url);
-		post.getParams().setParameter("http.protocol.content-charset",
-				HTTP.UTF_8);
-		post.getParams().setParameter(HTTP.CONTENT_ENCODING, HTTP.UTF_8);
-		post.getParams().setParameter(HTTP.CHARSET_PARAM, HTTP.UTF_8);
-		post.getParams()
-				.setParameter(HTTP.DEFAULT_PROTOCOL_CHARSET, HTTP.UTF_8);
-
-		// Construct a string entity
-		StringEntity entity = new StringEntity(getUTF8XMLString(xmlData),
-				"UTF-8");
-		entity.setContentType("text/xml;charset=UTF-8");
-		entity.setContentEncoding("UTF-8");
-		// Set XML entity
-		post.setEntity(entity);
 		// Set content type of request header
 		post.setHeader("Content-Type", "text/xml;charset=UTF-8");
+		 for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
+	            Map.Entry<String, String> entry = (Map.Entry<String, String>) it.next();
+	            post.setHeader(entry.getKey(),entry.getValue());
+	         }
 		// Execute request and get the response
 		HttpResponse response = null;
 		try {
@@ -290,15 +276,32 @@ public class HttpsClient {
 	}
 	
 	public static void main(String[] args) {
-		String result = HttpsClient.sendXMLDataByGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
-		System.out.println(result);
-		HttpResponse response = HttpsClient.httpGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		/*String result = HttpsClient.sendXMLDataByGet("https://login.lecloud.com/getfield?client_id=client_id-liuhao1-1420627685913&client_secret=45860d612fc62e85423389aafaf100e7",1000,1000);
+		System.out.println(result);*/
+		System.out.println("in");
+		Map<String,String> headParams = new HashMap<String,String>();
+		headParams.put("x-auth-key", "swauthkey");
+		headParams.put("x-auth-user", ".super_admin:.super_admin");
+//		HttpResponse response = HttpsClient.httpGetByHeader("http://10.150.110.216:8081/auth/v1.0",headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpGetByHeader("https://10.150.110.216:443/auth/v1.0",headParams,1000,1000);
+		System.out.println("end");
 		System.out.println(response);
 		Header[] headers = response.getAllHeaders();
 		for (Header header : headers) {
 			System.out.println(header.getName());
 			System.out.println(header.getValue());
 		}
-		System.out.println(response.getFirstHeader("Date").getValue());
+		try {
+			System.out.println("---------------------------"+EntityUtils.toString(response.getEntity()));
+			System.out.println("---------------------------"+response.getStatusLine());
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }
