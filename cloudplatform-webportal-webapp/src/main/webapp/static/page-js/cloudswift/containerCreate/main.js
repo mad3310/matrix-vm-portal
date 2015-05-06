@@ -8,6 +8,7 @@ define(function(require) {
 		'lev1' : 206,// 拖动条第一块长度==css width
 		'lev2' : 309,// 拖动条第二块长度==css width
 		'lev3' : 412,// 拖动条第三块长度==css width
+		'min':100,
 		'grade1' : 2500,// 三段设置，倍数关系2
 		'grade2' : 5000,
 		'grade3' : 10000,
