@@ -31,6 +31,7 @@ import com.letv.portal.service.IMonitorService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.slb.ISlbServerService;
+import com.letv.portal.service.swift.ISwiftServerService;
 
 @Component
 public class DashBoardProxyImpl implements IDashBoardProxy {
@@ -62,6 +63,8 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 	private IGceServerService gceServerService;
 	@Autowired
 	private ICbaseBucketService cbaseBucketService;
+	@Autowired
+	private ISwiftServerService swiftServerService;
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
@@ -168,6 +171,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 		statistics.put("slb", this.slbServerService.selectByMapCount(map));
 		statistics.put("gce", this.gceServerService.selectByMapCount(map));
 		statistics.put("cache", this.cbaseBucketService.selectByMapCount(map));
+		statistics.put("oss", this.swiftServerService.selectByMapCount(map));
 		return statistics;
 	}
 

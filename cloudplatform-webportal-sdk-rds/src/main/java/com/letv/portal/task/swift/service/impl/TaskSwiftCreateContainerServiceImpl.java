@@ -40,10 +40,12 @@ public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceIm
 		
 		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftGetTokenUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			tr.setResult(response == null?"api connect failed":response.getStatusLine().toString());
 			tr.setSuccess(false);
 			return tr;
 		}
 		tr.setSuccess(true);
+		tr.setResult(response.getStatusLine().toString());
 		tr.setParams(params);
 		return tr;
 	}
