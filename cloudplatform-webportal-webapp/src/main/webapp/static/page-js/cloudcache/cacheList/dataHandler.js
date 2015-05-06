@@ -78,7 +78,6 @@ define(function(require,exports,module){
                     var td5=$("<td><span>"+array[i].ramQuotaMB/1024+"GB</span></td>");
                     var td6 = $("<td><span >北京</span></td>");
                     var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
-                   // var td7 = $("<td><span>可用区</span></td>");
                     if(array[i].cbaseCluster == null){//服务集群array[i].hcluster.***
                     	var td8 = $("<td></td>");
                     }else{
@@ -124,11 +123,11 @@ define(function(require,exports,module){
            	if( data == 1){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.next().html("正在准备安装环境...");
+           		$obj.next().html("正在准备环境...");
            	}else if (data > 1 && data <= 2){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
-           		$obj.next().html("正在检查安装环境...");
+           		$obj.next().html("正在检查环境...");
            	}else if (data > 2 && data <= 8){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
