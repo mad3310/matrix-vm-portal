@@ -54,7 +54,7 @@ define(function(require,exports,module){
                                 + cn.TranslateStatus(array[i].status)
                                 +"</td>");
                     var td4 = $("<td>"
-                            + "<span>"+array[i].storeSize+"MB</span>"
+                            + "<span>"+array[i].storeSize+"GB</span>"
                             + "</td>");
                     var td5 = $("<td><span>北京</span></td>");
                     var td6 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");

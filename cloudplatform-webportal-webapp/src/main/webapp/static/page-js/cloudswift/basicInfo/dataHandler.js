@@ -23,7 +23,7 @@ define(function(require,exports,module){
                 $("#oss_info_running_state").html(cn.TranslateStatus(swift.status));
                 $("#oss_info_create_time").html(cn.TransDate('Y-m-d H:i:s',swift.createTime));
                 $("#oss_info_remain_days").html(cn.RemainAvailableTime(swift.createTime));
-                $("#oss_info_sotre_size").html(swift.storeSize + "MB");
+                $("#oss_info_sotre_size").html(swift.storeSize + "GB");
         }
         
     }
