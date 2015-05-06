@@ -34,7 +34,7 @@ public class TaskSwiftCreateContainerServiceImpl extends BaseTask4SwiftServiceIm
 		
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", (String)params.get("X-Auth-Token"));
-		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()));
+		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()*1024*1024));
 		headParams.put("X-Container-Read", user.getUserName() + ":" + user.getUserName());
 		headParams.put("X-Container-Write", user.getUserName() + ":" + user.getUserName());
 		
