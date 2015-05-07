@@ -25,14 +25,6 @@
 			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
 		</association>
 	</resultMap>
-	<!-- other map -->
-	<resultMap id="createParams" type="java.util.Map">
-		<result column="DB_NAME" property="dbName" />
-		<result column="IP_ADDR" property="nodeIp" />
-		<result column="CREATE_USER" property="createUser" />
-		<result column="ADMIN_USER" property="username" />
-		<result column="ADMIN_PASSWORD" property="password" />
-	</resultMap>
 	<sql id="Base_Column_List">
 		LCS.ID,LCS.CLUSTER_NAME,LCS.ADMIN_USER,LCS.ADMIN_PASSWORD,LCS.STATUS,LCS.TYPE,LCS.SST_PASSWORD,LCS.HCLUSTER_ID,LCS.DELETED,LCS.CREATE_TIME,LCS.CREATE_USER,LCS.UPDATE_TIME,LCS.UPDATE_USER
 	</sql>

@@ -18,6 +18,10 @@
 		<result column="CORES_NUMBER" property="coresNumber" />
 		<result column="CPU_SPEED" property="cpuSpeed" />
 		<result column="MEMORY_SIZE" property="memorySize" />
+		<result column="BIND_HOST_PORT" property="bingHostPort" />
+		<result column="BIND_HOST_IP" property="bingHostIp" />
+		<result column="BIND_PROTOCOL" property="bingProtocol" />
+		<result column="MGR_BIND_HOST_PORT" property="mgrBindHostPort" />
 		<result column="CONTAINER_UUID" property="containerUuid" />
 		<result column="HOST_ID" property="hostId" />
 		<result column="HOST_IP" property="hostIp" />
@@ -48,8 +52,9 @@
 	
 	<!-- WEBPORTAL_LOGCONTAINER GC table all fields -->
 	<sql id="Base_Column_List">
-		LCT.ID,LCT.CONTAINER_NAME,LCT.MOUNT_DIR,LCT.ZOOKEEPER_ID,LCT.IP_ADDR,LCT.GATE_ADDR,LCT.IP_MASK,LCT.TYPE,LCT.ZABBIXHOSTS,
-		LCT.CONTAINER_UUID,LCT.DISK_SIZE,LCT.CORES_NUMBER,LCT.MEMORY_SIZE,LCT.CPU_SPEED,LCT.HOST_ID,LCT.HOST_IP,LCT.LOGCLUSTER_ID,LCT.STATUS,LCT.DELETED,LCT.CREATE_TIME,LCT.CREATE_USER,LCT.UPDATE_TIME,LCT.UPDATE_USER
+		LCT.ID,LCT.CONTAINER_NAME,LCT.MOUNT_DIR,LCT.ZOOKEEPER_ID,LCT.IP_ADDR,LCT.GATE_ADDR,LCT.IP_MASK,LCT.TYPE,LCT.ZABBIXHOSTS,LCT.BIND_HOST_IP,
+		LCT.BIND_PROTOCOL,LCT.CONTAINER_UUID,LCT.MGR_BIND_HOST_PORT,
+		LCT.DISK_SIZE,LCT.CORES_NUMBER,LCT.MEMORY_SIZE,LCT.CPU_SPEED,LCT.HOST_ID,LCT.HOST_IP,LCT.LOGCLUSTER_ID,LCT.STATUS,LCT.DELETED,LCT.CREATE_TIME,LCT.CREATE_USER,LCT.UPDATE_TIME,LCT.UPDATE_USER
 	</sql>
 	<!-- 查询条件 -->
 	<sql id="Example_Where_Clause">
@@ -79,7 +84,7 @@
 	<insert id="insert" parameterType="LogContainer" useGeneratedKeys="true" keyProperty="id">
 		insert into
 		WEBPORTAL_LOGCONTAINER
-		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,CONTAINER_UUID,
+		(CONTAINER_NAME,MOUNT_DIR,ZOOKEEPER_ID,IP_ADDR,GATE_ADDR,IP_MASK,TYPE,BIND_HOST_PORT,BIND_HOST_IP,BIND_PROTOCOL,CONTAINER_UUID,MGR_BIND_HOST_PORT,
 		DISK_SIZE,CORES_NUMBER,MEMORY_SIZE,CPU_SPEED,HOST_ID,HOST_IP,LOGCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{containerName},#{mountDir},#{zookeeperId},#{ipAddr},#{gateAddr},#{ipMask},#{type},#{bindContainerPort},#{bingHostPort},#{bingHostIp},#{bingProtocol},#{containerUuid},#{mgrBindHostPort},
@@ -89,8 +94,8 @@
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="LogContainer">
 		update WEBPORTAL_LOGCONTAINER set
-		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},
-		CONTAINER_UUID=#{containerUuid},
+		CONTAINER_NAME=#{containerName},MOUNT_DIR=#{mountDir},ZOOKEEPER_ID=#{zookeeperId},IP_ADDR=#{ipAddr},GATE_ADDR=#{gateAddr},IP_MASK=#{ipMask},MGR_BIND_HOST_PORT=#{mgrBindHostPort},
+		BIND_HOST_PORT=#{bingHostPort},BIND_HOST_IP=#{bingHostIp},BIND_PROTOCOL=#{bingProtocol},CONTAINER_UUID=#{containerUuid},
 		TYPE=#{type},DISK_SIZE=#{diskSize},CORES_NUMBER=#{coresNumber},MEMORY_SIZE=#{memorySize},CPU_SPEED=#{cpuSpeed},HOST_ID=#{hostId},HOST_IP=#{hostIp},LOGCLUSTER_ID=#{logClusterId},
 		STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
