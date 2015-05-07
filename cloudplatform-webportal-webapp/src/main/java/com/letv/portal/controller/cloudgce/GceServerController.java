@@ -81,7 +81,6 @@ public class GceServerController {
 		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName())){
 			throw new ValidateException("参数不合法");
 		}else{
-			
 		}
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
 		this.gceProxy.saveAndBuild(gceServer);
