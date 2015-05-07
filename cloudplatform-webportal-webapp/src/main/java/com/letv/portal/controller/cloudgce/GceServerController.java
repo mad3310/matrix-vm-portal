@@ -26,10 +26,17 @@ import com.letv.portal.enumeration.GceImageStatus;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.log.LogCluster;
+import com.letv.portal.model.log.LogServer;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.model.task.service.ITaskChainIndexService;
+import com.letv.portal.model.task.service.ITaskChainService;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
+import com.letv.portal.service.log.ILogClusterService;
+import com.letv.portal.service.log.ILogServerService;
 
 @Controller
 @RequestMapping("/gce")
@@ -43,6 +50,18 @@ public class GceServerController {
 	private IGceImageService gceImageService;
 	@Autowired
 	private IGceProxy gceProxy;
+	
+	@Autowired
+	private ITaskEngine taskEngine;
+	
+	@Autowired
+	private ITaskChainIndexService taskChainIndexService;
+	@Autowired
+	private ITaskChainService taskChainService;
+	@Autowired
+	private ILogClusterService logClusterService;
+	@Autowired
+	private ILogServerService logServerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceServerController.class);
 	
@@ -145,5 +164,33 @@ public class GceServerController {
 		List<GceServer> gces = this.gceServerService.selectByMap(map);
 		if(gces == null || gces.isEmpty())
 			throw new ValidateException("参数不合法");
+	}
+	
+	@RequestMapping(value="/log/post",method=RequestMethod.GET)
+	public @ResponseBody ResultObject detail(){
+		LogCluster cluster = new LogCluster();
+    	cluster.setClusterName("testLogCluster");
+    	cluster.setAdminUser(cluster.getClusterName());
+    	cluster.setAdminPassword(cluster.getClusterName());
+    	cluster.setStatus(0);
+    	cluster.setHclusterId(1L);
+    	cluster.setCreateUser(sessionService.getSession().getUserId());
+    	this.logClusterService.insert(cluster);
+    	
+    	LogServer log = new LogServer();
+    	log.setLogName("testLog");
+    	log.setLogClusterId(cluster.getId());
+    	log.setHclusterId(1L);
+    	log.setCreateUser(sessionService.getSession().getUserId());
+    	log.setType("logstash");
+    	this.logServerService.insert(log);
+    	
+    	Map<String,Object> params = new HashMap<String,Object>();
+    	params.put("logClusterId", cluster.getId());
+    	params.put("logId", log.getId());
+    	this.taskEngine.run("LOG_BUY",params);
+    	
+		ResultObject obj = new ResultObject();
+		return obj;
 	}
 }

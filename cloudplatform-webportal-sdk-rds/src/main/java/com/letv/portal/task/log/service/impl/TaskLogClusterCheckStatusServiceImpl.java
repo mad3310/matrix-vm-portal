@@ -46,7 +46,6 @@ public class TaskLogClusterCheckStatusServiceImpl extends BaseTask4LogServiceImp
 		
 		LogCluster logCluster = super.getLogCluster(params);
 		HostModel host = super.getHost(logCluster.getHclusterId());
-		LogServer logServer = super.getLogServer(params);
 		
 		String result = logPythonService.checkContainerCreateStatus(logCluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
