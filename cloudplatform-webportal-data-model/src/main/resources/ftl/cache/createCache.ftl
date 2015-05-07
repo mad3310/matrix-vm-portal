@@ -47,7 +47,7 @@ p {
 <br/>
 <table class="gridtable" style="margin: 20px">
 	<tr>
-		<th width="100px">moxi配置文件</th>
+		<th width="100px">moxi配置信息</th>
 	</tr>
 	<tr>
 		<td>${moxiStr}</td>
