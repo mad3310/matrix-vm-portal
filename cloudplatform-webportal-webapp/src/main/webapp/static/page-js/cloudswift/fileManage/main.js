@@ -23,11 +23,15 @@ define(function(require){
 	// 	cn.currentPage = 1;
 	// 	asyncData();
 	// });
-	// $("#refresh").click(function() {		
-	// 	// asyncData();
-	// 	// var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
-	// 	// cn.GetData(url,refreshCtl);
-	// });
+	$("#refresh").click(function() {		
+		var dirname=$('#dirName').val();var url;
+		if(dirname){
+			url="/oss/"+$("#swiftId").val()+"/file?directory="+dirname;
+		}else{
+			url="/oss/"+$("#swiftId").val()+"/file?directory=root";
+		}
+		cn.GetData(url,refreshCtl);
+	});
 	// $("#fileName").keydown(function(e){
 	// 	if(e.keyCode==13){
 	// 		cn.currentPage = 1;
