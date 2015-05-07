@@ -68,6 +68,13 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 		if (tr.isSuccess()) {
 			List<Map> containers = (List<Map>) ((Map) transToMap(result).get(
 					"response")).get("containers");
+			if (containers.size() != getLongFromObject(params.get("hostSize"))
+					.intValue()) {
+				tr.setSuccess(false);
+				tr.setResult("container count != nodeCount");
+				tr.setParams(params);
+				return tr;
+			}
 			for (Map map : containers) {
 				CbaseContainerModel container = new CbaseContainerModel();
 				BeanUtils.populate(container, map);
@@ -75,7 +82,6 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 				container.setIpMask((String) map.get("netMask"));
 				container.setContainerName((String) map.get("containerName"));
 				container.setStatus(MclusterStatus.RUNNING.getValue());
-				// 物理机集群维护完成后，修改此处，需要关联物理机id
 				container.setHostIp((String) map.get("hostIp"));
 				HostModel hostModel = this.hostService.selectByIp((String) map
 						.get("hostIp"));
