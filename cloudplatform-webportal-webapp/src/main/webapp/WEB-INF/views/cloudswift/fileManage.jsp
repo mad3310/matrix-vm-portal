@@ -11,6 +11,7 @@
 </style>
 <input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 <input class="hidden" value="" id="dirName" type="text" />
+<input class="hidden" value="" id="baseLocation" type="text" />
 <div class="se-heading" id="headingOne">
 	<div class="pull-left">
 		<h5>文件管理</h5>
@@ -54,8 +55,9 @@
 						<th>类型</th>
 						<th>上传日期</th>
 						<th>大小</th>
-						<th>缓存过期</th>
-						<th>操作</th>
+						<th>下载地址</th>
+						<!-- <th>缓存过期</th>
+						<th>操作</th> -->
 					</tr>
 				</thead>
 				<tbody id="tby">

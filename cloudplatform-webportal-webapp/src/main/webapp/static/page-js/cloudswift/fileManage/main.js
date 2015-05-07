@@ -86,7 +86,10 @@ define(function(require){
 	function asyncData() {
 		var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
 		cn.GetData(url,refreshCtl);
-		
+		var url2='/oss/'+$("#swiftId").val()+'/file/prefixUrl';
+		cn.GetData(url2,function(data){
+			$('#baseLocation').val(data.data);
+		});
 	}
 	function refreshCtl(data) {
 		fileListHandler.fileListHandler(data);
@@ -94,11 +97,14 @@ define(function(require){
 		// returnDir();
 	}
 	function dirClick(){
-      var _target=$('table').find('a');
+      var _target=$('table').find('.dir-a');
       _target.each(function() {
         $(this).click(function(event) {
 	    	var dirname=$(this).parent().prev().children('input').val();
-	    	var dirarry=dirname.split('/');
+	    	var dirarry='';
+	    	if(dirname){
+	    		dirarry=dirname.split('/');
+	    	}
 	    	var location='<span class="dirPath" name="root">当前位置：根目录 /</span> ';
 	    	for(i in dirarry){
 	    		location=location+'<span class="dirPath" name="'+dirarry[i]+'">'+dirarry[i]+' /</span> '
@@ -114,7 +120,6 @@ define(function(require){
       	var url,dirname,location;
       	var tempname=$(this).attr('name');var j=tempname.length;
       	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
-      	console.log(tempdir.substring(0,i)+"  "+i)
       	$(this).nextAll('.dirPath').addClass('hidden')
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
