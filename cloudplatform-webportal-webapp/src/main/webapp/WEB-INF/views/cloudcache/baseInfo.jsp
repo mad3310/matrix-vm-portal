@@ -38,7 +38,10 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td width="50%">
+								<span class="text-muted pd-r8">集群地址:</span><span text-length="26" id="cache_info_net_addr"></span>
+							</td>
+							<td width="50%">
 								<span class="text-muted pd-r8">状态:</span><span text-length="26" id="cache_info_running_state"></span>
 							</td>
 						</tr>
