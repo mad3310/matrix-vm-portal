@@ -78,7 +78,7 @@ public class TaskLogClusterCheckStatusServiceImpl extends BaseTask4LogServiceImp
 				StringBuffer containerPort = new StringBuffer();
 				StringBuffer protocol = new StringBuffer();
 				for (Map portBinding : portBindings) {
-					if("manager".equals(portBinding.get("type"))) {
+					if("9999".equals(portBinding.get("containerPort"))) {
 						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
 						continue;
 					}

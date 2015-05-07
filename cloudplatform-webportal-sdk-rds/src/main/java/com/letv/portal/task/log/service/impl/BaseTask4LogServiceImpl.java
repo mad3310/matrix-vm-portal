@@ -84,11 +84,8 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 	@Override
 	public void rollBack(TaskResult tr) {
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
-		boolean isContinue = (Boolean) params.get("isContinue");
-		if(!isContinue) {
-			//发送邮件
-			this.buildResultToMgr("log服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
-		}
+		//发送邮件
+		this.buildResultToMgr("log服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}
@@ -103,7 +100,7 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 			Map<String, Object> emailParams = new HashMap<String,Object>();
 			emailParams.put("logName", log.getLogName());
-			this.email4User(emailParams, log.getCreateUser(),"log/createGce.ftl");
+			this.email4User(emailParams, log.getCreateUser(),"log/createLog.ftl");
 		} else {
 			log.setStatus(DbStatus.BUILDFAIL.getValue());
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());

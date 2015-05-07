@@ -169,7 +169,7 @@ public class GceServerController {
 	@RequestMapping(value="/log/post",method=RequestMethod.GET)
 	public @ResponseBody ResultObject detail(){
 		LogCluster cluster = new LogCluster();
-    	cluster.setClusterName("testLogCluster");
+    	cluster.setClusterName("abcd1");
     	cluster.setAdminUser(cluster.getClusterName());
     	cluster.setAdminPassword(cluster.getClusterName());
     	cluster.setStatus(0);
@@ -178,7 +178,7 @@ public class GceServerController {
     	this.logClusterService.insert(cluster);
     	
     	LogServer log = new LogServer();
-    	log.setLogName("testLog");
+    	log.setLogName("testLog1");
     	log.setLogClusterId(cluster.getId());
     	log.setHclusterId(1L);
     	log.setCreateUser(sessionService.getSession().getUserId());

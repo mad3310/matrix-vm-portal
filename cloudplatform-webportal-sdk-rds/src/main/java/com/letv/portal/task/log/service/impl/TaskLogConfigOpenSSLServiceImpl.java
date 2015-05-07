@@ -34,10 +34,10 @@ public class TaskLogConfigOpenSSLServiceImpl extends BaseTask4LogServiceImpl imp
 		String nodeIp1 = containers.get(0).getHostIp();
 		String port = containers.get(0).getMgrBindHostPort();
 		LogCluster cluster = super.getLogCluster(params);
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,String> map = new HashMap<String,String>();
 		map.put("ip", containers.get(0).getIpAddr());
 		
-		String result = this.logPythonService.initUserAndPwd4Manager(nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.logPythonService.configOpenSSL(map,nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

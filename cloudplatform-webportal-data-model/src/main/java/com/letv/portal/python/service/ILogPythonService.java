@@ -49,5 +49,8 @@ public interface ILogPythonService {
 	 * @return
 	 */
 	public String initUserAndPwd4Manager(String nodeIp,String port,String username,String password);
+
+	public String configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,
+			String adminPassword);
 	
 }
