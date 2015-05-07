@@ -1690,3 +1690,6 @@ textarea {
 .btn-lucency{opacity:0;filter: alpha(opacity=0);}
 .tip-btngroup{margin-top: 10px;width:100%;padding:0 10px;}
 .shade{background:rgba(0,0,0,.4);position:absolute;top:0;left:0;width:100%;height:100%;overflow: hidden}
+
+.alertool{position: absolute;z-index: 9;}
+.alertool div{margin-bottom: 5px;padding: 2px 25px 2px 15px;}

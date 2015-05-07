@@ -60,6 +60,7 @@ define(function(require){
 	$('.memSize').change(function(event) {
 		cn.inputChge(options);
 	});
+	
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();
@@ -74,8 +75,17 @@ define(function(require){
    			visibilityLevel:$("[name = visibilityLevel]").parent().parent().find(":checked").val(),
    			storeSize:$(".memSize").val()
    		}
-   		cn.PostData("/oss/config",data,function(){
-			location.href="/detail/oss/"+$(swiftId).val();
+   		cn.PostData("/oss/config",data,function(data){
+   			if(data.result == 1){
+	   			$("#myModal").modal('hide');
+				cn.alertoolSuccess("配置已生效.");
+	   			getSwiftConfig();
+	   			cn.RefreshIfame();
+   			}else{
+   				$("#myModal").modal('hide');
+				cn.alertoolWarnning(data.msgs);
+	   			getSwiftConfig();
+   			}
    		});
    })
 /*获取swift当前配置信息*/

@@ -91,6 +91,8 @@
                 </h3>
             </div>
         </div>
+         <div class="col-md-offset-4 col-md-4 alertool" id="alertool">
+          </div>
     </div>
     <!-- main-content-header end-->
     <div class="row">

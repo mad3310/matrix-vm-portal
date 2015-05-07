@@ -896,6 +896,28 @@ define(function(require,exports,module){
         	}else{
         		return "-";
         	}
+        },
+        alertoolWarnning:function(msg,time){
+        	if(time == null){
+        		time=3000;
+        	}
+        	var html =$("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\">"
+			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
+			+ "<strong>WARNING!   </strong>"+msg
+			+ "</div>");
+			html.appendTo($("#alertool"));
+			window.setTimeout(function(){html.fadeOut(1000)},time);
+        },
+         alertoolSuccess:function(msg,time){
+        	if(time == null){
+        		time=3000;
+        	}
+        	var html =$("<div class=\"alert alert-success alert-dismissible\" role=\"alert\">"
+			+ "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
+			+ "<strong>SUCCESS!   </strong>"+msg
+			+ "</div>");
+			html.appendTo($("#alertool"));
+			window.setTimeout(function(){html.fadeOut(1000)},time);
         }
     }
     function drag(relaLen,options){
