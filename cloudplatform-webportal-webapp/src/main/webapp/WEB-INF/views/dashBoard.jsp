@@ -254,7 +254,7 @@
 									<span class="item-icon product-icons-48 product-icons-oss"></span>
 								</a>
 								<p class="item-title">
-									<a href="${ctx}/list/oss">对象存储服务&nbsp;<span class="item-title-short">OSS</span>
+									<a href="${ctx}/list/oss">开放存储服务&nbsp;<span class="item-title-short">OSS</span>
 									</a>
 								</p>
 							</div>
@@ -417,7 +417,7 @@
 									<li id="oss-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
-											<span>对象存储服务</span>
+											<span>开放存储服务</span>
 											<span>OSS</span>
 										</div>
 										<div class="pull-right clearfix">

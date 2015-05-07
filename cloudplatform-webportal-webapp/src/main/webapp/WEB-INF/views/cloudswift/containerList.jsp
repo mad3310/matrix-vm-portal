@@ -12,7 +12,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">  
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">对象存储服务<font color="#FF9C17">OSS</font></a>
+      <a class="navbar-brand" href="javascript:void(0)">开放存储服务<font color="#FF9C17">OSS</font></a>
 		<ul class="nav navbar-nav">
 			<li class="active">
 				<a class="navbar-brand" href="javascript:void(0)">应用列表</a>
@@ -30,7 +30,7 @@
 		<div class="col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>对象存储服务管理</span>
+				<span>开放存储服务管理</span>
 				<button class="btn btn-success btn-md btn-region-display">全部</button>
 				<button class="btn btn-default btn-md btn-region-display">北京</button>
 				<!-- <button class="btn btn-default btn-md btn-region-display">杭州</button>
