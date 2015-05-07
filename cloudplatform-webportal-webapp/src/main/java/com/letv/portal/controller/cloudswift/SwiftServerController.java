@@ -86,6 +86,17 @@ public class SwiftServerController {
 		obj.setData(this.swiftServerProxy.getFiles(id,directory));
 		return obj;
 	}	
+	@RequestMapping(value="/{id}/file/prefixUrl",method=RequestMethod.GET)
+	public @ResponseBody ResultObject prefixUrl(@PathVariable Long id){
+		isAuthoritySwift(id);
+		ResultObject obj = new ResultObject();
+		SwiftServer  server = this.swiftServerService.selectById(id);
+		server.setHosts(this.hostService.selectByHclusterId(server.getHclusterId()));
+		StringBuffer sb = new StringBuffer();
+		sb.append("https://").append(server.getHosts().get(0).getHostIp()).append(":443/").append("v1/AUTH_").append(sessionService.getSession().getUserName()).append("/").append(server.getName()).append("/");
+		obj.setData(sb);
+		return obj;
+	}	
 	@RequestMapping(value="/config",method=RequestMethod.POST)
 	public @ResponseBody ResultObject config(Long id,Long storeSize,String visibilityLevel){
 		if(storeSize ==null || StringUtils.isEmpty(visibilityLevel))
