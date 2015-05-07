@@ -12,7 +12,7 @@
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 	
 	<!-- <import resource="classpath:converter-applicationContext.xml"/> -->
-	<import resource="classpath*:data-applicationContext.xml"/>
+	<import resource="classpath:data-applicationContext.xml"/>
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 	    <property name="locations">
 		    <list> 

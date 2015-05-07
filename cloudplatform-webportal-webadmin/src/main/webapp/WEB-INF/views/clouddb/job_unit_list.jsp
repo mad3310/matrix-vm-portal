@@ -87,6 +87,7 @@
 										<option value="GCE">GCE</option>
 										<option value="CBASE">CBASE</option>								
 										<option value="OSS">OSS</option>								
+										<option value="LOG">LOG</option>								
 									</select>
 								</div>								
 								<label class="control-label">
