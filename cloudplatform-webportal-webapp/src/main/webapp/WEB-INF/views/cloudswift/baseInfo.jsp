@@ -82,8 +82,8 @@
 			        		<span id="oss_info_running_state"></span>
 		        		</td>
 		        		<td width="50%">
-			        		<span class="text-muted pd-r8">锁定模式:</span>
-			        		<span>正常</span>
+			        		<span class="text-muted pd-r8">公开(匿名访问):</span>
+			        		<span id="oss_info_visibilityLevel"></span>
 		        		</td>
 		        	</tr> 
 		        	<tr>
