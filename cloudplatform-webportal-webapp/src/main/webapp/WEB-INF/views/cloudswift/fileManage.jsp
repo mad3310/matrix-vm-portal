@@ -32,7 +32,7 @@
 			<span name='dirName' style="color:#428bca">当前位置：根目录 /</span>
 		</div>
 		<div class="pull-right" style="padding-bottom:10px;">
-			<button class="btn-primary btn btn-md disabled " id="refresh"><span class="glyphicon glyphicon-refresh"></span> 刷新</button>
+			<button class="btn-primary btn btn-md " id="refresh"><span class="glyphicon glyphicon-refresh"></span> 刷新</button>
 		</div>
 		<div class="clearfix"></div>
 		<!-- <div style="padding:15px 0 0 10px;">
