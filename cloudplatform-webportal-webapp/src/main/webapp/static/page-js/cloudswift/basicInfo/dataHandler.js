@@ -20,6 +20,9 @@ define(function(require,exports,module){
     			if(swift.hcluster) {
     				$("#oss_info_available_region").html(swift.hcluster.hclusterNameAlias);
     			}
+    			if(swift.hosts) {
+    				$("#oss_info_url").html(swift.hosts[0].hostIp);
+    			}
                 $("#oss_info_running_state").html(cn.TranslateStatus(swift.status));
                 $("#oss_info_create_time").html(cn.TransDate('Y-m-d H:i:s',swift.createTime));
                 $("#oss_info_remain_days").html(cn.RemainAvailableTime(swift.createTime));

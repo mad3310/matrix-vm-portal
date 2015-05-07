@@ -47,7 +47,7 @@
 		        	<tr>
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">访问地址:</span>
-		        			<span id="oss_info_db_name"></span>
+		        			<span id="oss_info_url"></span>
 		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 			        	</td> 
 			        	<td width="50%">
