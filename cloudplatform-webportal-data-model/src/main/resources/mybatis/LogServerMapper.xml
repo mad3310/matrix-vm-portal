@@ -57,12 +57,6 @@
 			<if test="hclusterId != null  ">
 				and l.HCLUSTER_ID=#{hclusterId}
 			</if>
-			<if test="portForward != null and portForward != ''">
-				and l.HCLUSTER_ID=#{portForward}
-			</if>
-			<if test="logImageName != null and logImageName != '' ">
-				and l.HCLUSTER_ID=#{logImageName}
-			</if>
 			<if test="type != null and type != ''  ">
 				and l.TYPE=#{type}
 			</if>
@@ -102,7 +96,7 @@
 			LOG_NAME,LOGCLUSTER_ID,HCLUSTER_ID,TYPE,STATUS,DESCN,IP,ACCESS_URL,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{logName},#{logClusterId},#{hclusterId},#{portForward},#{logImageName},#{type},#{status},#{descn},#{ip},#{accessUrl},
+			#{logName},#{logClusterId},#{hclusterId},#{type},#{status},#{descn},#{ip},#{accessUrl},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -200,12 +194,6 @@
 			</if>
 			<if test="params != null and params.hclusterId != null  ">
 				and l.HCLUSTER_ID=#{params.hclusterId}
-			</if>
-			<if test="params != null and params.portForward != null and params.portForward != ''">
-				and l.HCLUSTER_ID=#{params.portForward}
-			</if>
-			<if test="params != null and params.logImageName != null and params.logImageName != '' ">
-				and l.HCLUSTER_ID=#{params.logImageName}
 			</if>
 			<if test="params != null and params.type != null  ">
 				and l.TYPE=#{params.type}
