@@ -1,6 +1,7 @@
 package com.letv.portal.model.swift;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.HclusterModel;
 
 /**Program Name: SwiftServer <br>
@@ -17,6 +18,7 @@ public class SwiftServer extends BaseModel {
 	private String name;
 	private Long storeSize;
 	private Integer status;
+	private OssServerVisibility visibilityLevel;
 	private String descn;
 	
 	private Long hclusterId;
@@ -68,6 +70,18 @@ public class SwiftServer extends BaseModel {
 
 	public void setHcluster(HclusterModel hcluster) {
 		this.hcluster = hcluster;
+	}
+
+	public OssServerVisibility getVisibilityLevel() {
+		return visibilityLevel;
+	}
+
+	public void setVisibilityLevel(OssServerVisibility visibilityLevel) {
+		this.visibilityLevel = visibilityLevel;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

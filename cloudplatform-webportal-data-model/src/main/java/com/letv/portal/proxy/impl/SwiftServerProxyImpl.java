@@ -16,6 +16,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.HttpsClient;
+import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.swift.SwiftServer;
@@ -155,5 +156,34 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 			throw new CommonException("get oss files failed :" + e.getMessage());
 		} 
 		return JSONArray.parse(result);
+	}
+
+	@Override
+	public void changeService(Long id, String level,Long storeSize) {
+			
+		SwiftServer server = this.selectById(id);
+		HostModel host = this.getHost(server.getHclusterId());
+		UserModel user = this.userService.selectById(server.getCreateUser());
+		
+		server.setStoreSize(storeSize);
+		server.setVisibilityLevel(OssServerVisibility.PRIVATE);
+		
+		Map<String,String> headParams = new HashMap<String,String>();
+		headParams.put("X-Auth-Token", getSuperToken(server));
+		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()*1024*1024*1024));
+		headParams.put("X-Container-Write", user.getUserName() + ":" + user.getUserName());
+		headParams.put("X-Container-Read", user.getUserName() + ":" + user.getUserName());
+		if("public".equals(level)) {
+			server.setVisibilityLevel(OssServerVisibility.PUBLIC);
+			headParams.put("X-Container-Read", ".r:*,.rlistings");
+		}
+		if(storeSize != null)
+			headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(storeSize*1024*1024*1024));
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftMainUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
+		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
+		}
+		
+		this.updateBySelective(server);
 	}
 }

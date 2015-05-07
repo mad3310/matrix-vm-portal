@@ -22,6 +22,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.ISwiftServerProxy;
 import com.letv.portal.service.swift.ISwiftServerService;
@@ -54,6 +55,7 @@ public class SwiftServerController {
 			throw new ValidateException("参数不合法");
 		swift.setCreateUser(this.sessionService.getSession().getUserId());
 		swift.setStatus(DbStatus.BUILDDING.getValue());
+		swift.setVisibilityLevel(OssServerVisibility.PRIVATE);
 		this.swiftServerProxy.saveAndBuild(swift);
 		return obj;
 	}
@@ -78,6 +80,15 @@ public class SwiftServerController {
 		isAuthoritySwift(id);
 		ResultObject obj = new ResultObject();
 		obj.setData(this.swiftServerProxy.getFiles(id,directory));
+		return obj;
+	}	
+	@RequestMapping(value="/config",method=RequestMethod.POST)
+	public @ResponseBody ResultObject config(@PathVariable Long id,Long storeSize,String level){
+		if(storeSize ==null || StringUtils.isEmpty(level))
+			throw new ValidateException("参数不合法");
+		isAuthoritySwift(id);
+		ResultObject obj = new ResultObject();
+		this.swiftServerProxy.changeService(id,level,storeSize);
 		return obj;
 	}	
 	

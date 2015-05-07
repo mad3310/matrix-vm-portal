@@ -7,4 +7,5 @@ public interface ISwiftServerProxy extends IBaseProxy<SwiftServer> {
 	public void saveAndBuild(SwiftServer swift);
 	public void deleteAndBuild(Long swiftId);
 	public Object getFiles(Long id, String directory);
+	public void changeService(Long id, String level,Long storeSize);
 }

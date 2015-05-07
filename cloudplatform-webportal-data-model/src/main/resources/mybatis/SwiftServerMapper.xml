@@ -9,6 +9,7 @@
 		<result column="NAME" property="name" />
 		<result column="STORE_SIZE" property="storeSize" />
 		<result column="STATUS" property="status" />
+		<result column="VISIBILITY_LEVEL" property="visibilityLevel" />
 		<result column="DESCN" property="descn" />
 		<result column="HCLUSTER_ID" property="hclusterId" />
 		
@@ -26,7 +27,7 @@
 	
 	<!-- WEBPORTAL_SWIFT table all fields -->
 	<sql id="Base_Column_List">
-		s.ID,s.NAME,s.HCLUSTER_ID,s.STORE_SIZE,s.STATUS,s.DESCN,
+		s.ID,s.NAME,s.HCLUSTER_ID,s.STORE_SIZE,s.STATUS,s.DESCN,s.VISIBILITY_LEVEL,
 		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
 	</sql>
 	
@@ -48,6 +49,9 @@
 			</if>
 			<if test="storeSize != null and storeSize!='' ">
 				and s.STORE_SIZE=#{storeSize}
+			</if>
+			<if test="visibilityLevel != null and visibilityLevel'' ">
+				and s.VISIBILITY_LEVEL=#{visibilityLevel}
 			</if>
 			<if test="deleted != null  ">
 				and s.DELETED=#{deleted}
@@ -71,16 +75,16 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="SwiftServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_SWIFT(NAME,STORE_SIZE,STATUS,DESCN,HCLUSTER_ID,
+		WEBPORTAL_SWIFT(NAME,STORE_SIZE,STATUS,DESCN,HCLUSTER_ID,VISIBILITY_LEVEL,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{name},#{storeSize},#{status},#{descn},#{hclusterId},#{deleted},now(),#{createUser},now(),#{updateUser})
+		#{name},#{storeSize},#{status},#{descn},#{hclusterId},#{visibilityLevel},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="SwiftServer">
 		update WEBPORTAL_SWIFT set
-		ID=#{id},NAME=#{name},STORE_SIZE=#{storeSize},HCLUSTER_ID=#{hclusterId},STATUS=#{status},DESCN=#{descn},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},NAME=#{name},STORE_SIZE=#{storeSize},HCLUSTER_ID=#{hclusterId},VISIBILITY_LEVEL=#{visibilityLevel},STATUS=#{status},DESCN=#{descn},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -98,6 +102,9 @@
 			</if>
 			<if test="storeSize != null  ">
 				STORE_SIZE=#{storeSize},
+			</if>
+			<if test="visibilityLevel != null  ">
+				VISIBILITY_LEVEL=#{visibilityLevel},
 			</if>
 			<if test="deleted != null  ">
 				DELETED=#{deleted},
@@ -175,6 +182,9 @@
 			</if>
 			<if test="params != null and params.storeSize != null  ">
 				and s.STORE_SIZE=#{params.storeSize}
+			</if>
+			<if test="params != null and params.visibilityLevel != null  ">
+				and s.VISIBILITY_LEVEL=#{params.visibilityLevel}
 			</if>
 			<if test="params != null and params.deleted != null  ">
 				and s.DELETED=#{params.deleted}
