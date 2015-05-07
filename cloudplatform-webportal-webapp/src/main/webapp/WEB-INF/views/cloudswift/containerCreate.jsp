@@ -169,10 +169,9 @@
 														<span class="sleBG">
 														<span class="sleHid"> 
 														<div class="divselect">
-																<span>1月</span>
+																<span>1年</span>
 																<ul style="display:none;">
-																	<li class="bk-select-option"><a href="javascript:;">1月</a></li>
-																	<li class="bk-select-option"><a href="javascript:;">2月</a></li>
+																	<li class="bk-select-option"><a href="javascript:;">1年</a></li>
 																</ul>
 															</div>
 														</span>
@@ -216,7 +215,6 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value">10GB存储空间、2G内存、MySQL 5.5</span></li>
 											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年x 3台</span></li>
 										</ul>
 									</div>
@@ -249,7 +247,7 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
-									<div class="bk-form-row-txt notice-block">您购买的container实例创建大约需要2分钟,请耐心等待...</div>
+									<div class="bk-form-row-txt notice-block"></div>
 								</div>
 								<div class="bk-pb4"></div>
 							</div>

@@ -1,8 +1,11 @@
 package com.letv.portal.model.swift;
 
+import java.util.List;
+
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 
 /**Program Name: SwiftServer <br>
  * Description:  swift服务<br>
@@ -23,6 +26,8 @@ public class SwiftServer extends BaseModel {
 	
 	private Long hclusterId;
 	private HclusterModel hcluster;
+	
+	private List <HostModel> hosts;
 
 	public String getName() {
 		return name;
@@ -83,5 +88,12 @@ public class SwiftServer extends BaseModel {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
+	public List<HostModel> getHosts() {
+		return hosts;
+	}
+
+	public void setHosts(List<HostModel> hosts) {
+		this.hosts = hosts;
+	}
 }

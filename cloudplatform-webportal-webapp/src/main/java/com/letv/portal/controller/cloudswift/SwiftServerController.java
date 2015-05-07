@@ -25,6 +25,7 @@ import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.ISwiftServerProxy;
+import com.letv.portal.service.IHostService;
 import com.letv.portal.service.swift.ISwiftServerService;
 
 @Controller
@@ -38,6 +39,8 @@ public class SwiftServerController {
 	private ISwiftServerService swiftServerService;
 	@Autowired
 	private ISwiftServerProxy swiftServerProxy;
+	@Autowired
+	private IHostService hostService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SwiftServerController.class);
 	
@@ -65,6 +68,7 @@ public class SwiftServerController {
 		isAuthoritySwift(id);
 		ResultObject obj = new ResultObject();
 		SwiftServer swift = this.swiftServerService.selectById(id);
+		swift.setHosts(this.hostService.selectByHclusterId(swift.getHclusterId()));
 		obj.setData(swift);
 		return obj;
 	}	
@@ -80,6 +84,17 @@ public class SwiftServerController {
 		isAuthoritySwift(id);
 		ResultObject obj = new ResultObject();
 		obj.setData(this.swiftServerProxy.getFiles(id,directory));
+		return obj;
+	}	
+	@RequestMapping(value="/{id}/file/prefixUrl",method=RequestMethod.GET)
+	public @ResponseBody ResultObject prefixUrl(@PathVariable Long id){
+		isAuthoritySwift(id);
+		ResultObject obj = new ResultObject();
+		SwiftServer  server = this.swiftServerService.selectById(id);
+		server.setHosts(this.hostService.selectByHclusterId(server.getHclusterId()));
+		StringBuffer sb = new StringBuffer();
+		sb.append("https://").append(server.getHosts().get(0).getHostIp()).append(":443/").append("v1/AUTH_").append(sessionService.getSession().getUserName()).append("/").append(server.getName()).append("/");
+		obj.setData(sb);
 		return obj;
 	}	
 	@RequestMapping(value="/config",method=RequestMethod.POST)
