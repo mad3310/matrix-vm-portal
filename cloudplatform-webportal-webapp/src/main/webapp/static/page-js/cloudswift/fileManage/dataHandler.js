@@ -38,7 +38,7 @@ define(function(require,exports,module){
                             + "</td>");
                       var td2='';
                       if(array[i].content_type=='application/directory'){//是目录，下级链接
-                        td2 = $("<td class=\"padding-left-32\"><a href='#'>"
+                        td2 = $("<td class=\"padding-left-32\"><a href='javascript:void(0)'>"
                               + fileName
                               +"</a></td>");
                       }else{ 

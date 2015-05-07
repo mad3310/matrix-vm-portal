@@ -24,7 +24,9 @@ define(function(require){
 	// 	asyncData();
 	// });
 	// $("#refresh").click(function() {		
-	// 	asyncData();
+	// 	// asyncData();
+	// 	// var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
+	// 	// cn.GetData(url,refreshCtl);
 	// });
 	// $("#fileName").keydown(function(e){
 	// 	if(e.keyCode==13){
@@ -109,7 +111,7 @@ define(function(require){
       	var tempname=$(this).attr('name');var j=tempname.length;
       	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
       	console.log(tempdir.substring(0,i)+"  "+i)
-      	$(this).addClass('hidden').nextAll('.dirPath').addClass('hidden')
+      	$(this).nextAll('.dirPath').addClass('hidden')
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
       			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);

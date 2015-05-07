@@ -16,7 +16,7 @@
 		<h5>文件管理</h5>
 	</div>
 	<div class="clearfix"></div>
-	<div class="row">
+	<div class="">
 	<div class="col-sm-12 col-md-12 clearfix">
 		<!-- <div class="pull-left">
 			<form class="form-inline" role="form">
@@ -29,7 +29,7 @@
 			</form>
 		</div> -->
 		<div class="pull-left" style="padding:15px 0 0 10px;">
-			<span class="font-disabled" name='dirName'></span>
+			<span name='dirName' style="color:#428bca">当前位置：根目录 /</span>
 		</div>
 		<div class="pull-right" style="padding-bottom:10px;">
 			<button class="btn-primary btn btn-md disabled " id="refresh"><span class="glyphicon glyphicon-refresh"></span> 刷新</button>
