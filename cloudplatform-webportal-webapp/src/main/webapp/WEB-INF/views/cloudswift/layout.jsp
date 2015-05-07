@@ -80,7 +80,7 @@
                     </small>
                      <small>
                         <span>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' data-target='#myModal'>配置</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' data-target='#myModal'>配  置</button>
                         </span>
                     </small>
                   <!--   <small>
@@ -99,13 +99,13 @@
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/ossBaseInfo/${swiftId}" href="javascript:void(0)">基本信息</a></li>
-                    <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${swiftId}" href="javascript:void(0)">权限管理</a></li>
+                    <%-- <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${swiftId}" href="javascript:void(0)">权限管理</a></li> --%>
                   <!--  <li><a  class="text-sm" href="javascript:void(0)">权限管理 <p class="pull-right home-orange">敬请期待...</p></a></li> -->
                     <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
-                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
+                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控<p class="pull-right home-orange">敬请期待...</p></a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">请求数</a></li>
-                            <li><a  class="text-sm" src="${ctx}/monitor/swift/${swiftId}" href="javascript:void(0)">吞吐量</a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)">请求数<p class="pull-right home-orange">敬请期待...</p></a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)">吞吐量<p class="pull-right home-orange">敬请期待...</p></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -123,7 +123,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">权限设置 </h4>
+        <h4 class="modal-title" id="myModalLabel">配置 </h4>
       </div>
       <div class="modal-body">
       	<form>
@@ -138,8 +138,8 @@
 	    		<div class="form-group clearfix">
 	    			<label class="col-sm-3 control-label text-muted" style="font-weight:normal">公开（匿名只读）:</label>
 	    			<div class="col-sm-9 clearfix">
-	    				<div class="pull-left"><input id="level-public" name="visibilityLevel" type="radio" value="PUBLIC"><label>公开</label></div>
-	    				<div class="pull-left padding-left-32"><input id="level-private" name="visibilityLevel" type="radio" value="PRIVATE"><label>不公开</label></div>
+	    				<div class="pull-left"><input id="level-public" name="visibilityLevel" type="radio" value="PUBLIC"><label>PUBLIC</label></div>
+	    				<div class="pull-left padding-left-32"><input id="level-private" name="visibilityLevel" type="radio" value="PRIVATE"><label>PRIVATE</label></div>
 	    			</div>
 	    		</div>
 	    		<div class="form-group clearfix">
@@ -157,7 +157,6 @@
 	    		</div>	 -->
 			</div>
 		</form>
-		<div class="alert alert-warning"> 注：权限设置需注意问题。</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="modifyCommit">确定</button>
