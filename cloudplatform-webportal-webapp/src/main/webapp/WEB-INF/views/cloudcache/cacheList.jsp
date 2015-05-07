@@ -68,7 +68,7 @@
 						<th class="padding-left-32">实例名称</th>
 						<th>运行状态</th>
 						<th>实例类型</th>
-						<th>已用空间及配额</th>
+						<th>实例大小</th>
 						<th>地域</th>
 						<th>可用区</th>
 						<th>所在服务集群</th>
