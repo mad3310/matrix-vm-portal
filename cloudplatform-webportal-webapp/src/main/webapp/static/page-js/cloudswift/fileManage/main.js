@@ -78,12 +78,52 @@ define(function(require){
 	
 	//加载列表数据
 	function asyncData() {
-		var url = "/oss/"+$("#swiftId").val()+"/file/root";
-		// var url = "/oss/19/file/root";
+		var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
 		cn.GetData(url,refreshCtl);
 		
 	}
 	function refreshCtl(data) {
 		fileListHandler.fileListHandler(data);
-	}	
+		dirClick();
+		// returnDir();
+	}
+	function dirClick(){
+      var _target=$('table').find('a');
+      _target.each(function() {
+        $(this).click(function(event) {
+	    	var dirname=$(this).parent().prev().children('input').val();
+	    	var dirarry=dirname.split('/');
+	    	var location='<span class="dirPath" name="root">当前位置：根目录 /</span> ';
+	    	for(i in dirarry){
+	    		location=location+'<span class="dirPath" name="'+dirarry[i]+'">'+dirarry[i]+' /</span> '
+	    	}
+          $('#dirName').val(dirname);
+          $('[name="dirName"]').html(location);
+          var url = "/oss/"+$("#swiftId").val()+"/file?directory="+$('#dirName').val();
+          cn.GetData(url,refreshCtl);
+        });
+      });
+      var _location=$('.dirPath');
+      _location.click(function(event) {
+      	var url,dirname,location;
+      	var tempname=$(this).attr('name');var j=tempname.length;
+      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
+      	console.log(tempdir.substring(0,i)+"  "+i)
+      	$(this).addClass('hidden').nextAll('.dirPath').addClass('hidden')
+      	if(tempdir.substring(0,i)){
+      		if(tempdir.substring(0,i)!='dir'){
+      			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);
+      			dirname=tempdir.substring(0,i);
+      		}else{
+      			url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
+      			dirname='';
+      		}
+      	}else{
+      		url="/oss/"+$("#swiftId").val()+"/file?directory=root";
+
+      	}
+      	$('#dirName').val(dirname);
+        cn.GetData(url,refreshCtl);
+      });
+    }
 });
