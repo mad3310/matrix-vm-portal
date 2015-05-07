@@ -71,7 +71,7 @@ define(function(require){
    $("#modifyCommit").click(function(){
    		var data={
    			id:$(swiftId).val(),
-   			visibilityLevel:$("[name = visibilityLevel]").val(),
+   			visibilityLevel:$("[name = visibilityLevel]").parent().parent().find(":checked").val(),
    			storeSize:$(".memSize").val()
    		}
    		cn.PostData("/oss/config",data,function(){
