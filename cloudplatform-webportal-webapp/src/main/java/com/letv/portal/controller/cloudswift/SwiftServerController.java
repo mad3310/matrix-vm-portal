@@ -83,12 +83,12 @@ public class SwiftServerController {
 		return obj;
 	}	
 	@RequestMapping(value="/config",method=RequestMethod.POST)
-	public @ResponseBody ResultObject config(@PathVariable Long id,Long storeSize,String level){
-		if(storeSize ==null || StringUtils.isEmpty(level))
+	public @ResponseBody ResultObject config(@PathVariable Long id,Long storeSize,String visibilityLevel){
+		if(storeSize ==null || StringUtils.isEmpty(visibilityLevel))
 			throw new ValidateException("参数不合法");
 		isAuthoritySwift(id);
 		ResultObject obj = new ResultObject();
-		this.swiftServerProxy.changeService(id,level,storeSize);
+		this.swiftServerProxy.changeService(id,visibilityLevel,storeSize);
 		return obj;
 	}	
 	
