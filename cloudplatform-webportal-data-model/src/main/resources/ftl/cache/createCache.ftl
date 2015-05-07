@@ -45,6 +45,14 @@ p {
 	</tr>
 </table>
 <br/>
+<table class="gridtable" style="margin: 20px">
+	<tr>
+		<th width="100px">moxi配置文件</th>
+	</tr>
+	<tr>
+		<td>${moxiStr}</td>
+	</tr>
+</table>
 <p>本邮件由系统发出，请勿回复。<br/>如有问题，联系系统管理员。</p>
 <hr/>
 <p>乐视云计算公司<br/>

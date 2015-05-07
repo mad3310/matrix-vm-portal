@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.util.JsonUtils;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.CbaseBucketStatus;
 import com.letv.portal.enumeration.MclusterStatus;
@@ -98,6 +100,14 @@ public class BaseTask4CbaseServiceImpl implements IBaseTaskService {
 			cluster.setStatus(MclusterStatus.RUNNING.getValue());
 			Map<String, Object> emailParams = new HashMap<String, Object>();
 			emailParams.put("cacheName", bucket.getBucketName());
+			Map<String, Object> moxiParams = cbaseBucketService
+					.getMoxiConfig(bucket.getId());
+			try {
+				emailParams.put("moxiStr", JsonUtils.writeObject(moxiParams));
+			} catch (Exception e) {
+				throw new TaskExecuteException(
+						"email params exception with moxi config");
+			}
 			this.email4User(emailParams, bucket.getCreateUser(),
 					"cache/createCache.ftl");
 		} else {
