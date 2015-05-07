@@ -173,7 +173,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(server.getStoreSize()*1024*1024*1024));
 		headParams.put("X-Container-Write", user.getUserName() + ":" + user.getUserName());
 		headParams.put("X-Container-Read", user.getUserName() + ":" + user.getUserName());
-		if("public".equals(level)) {
+		if("PUBLIC".equals(level)) {
 			server.setVisibilityLevel(OssServerVisibility.PUBLIC);
 			headParams.put("X-Container-Read", ".r:*,.rlistings");
 		}

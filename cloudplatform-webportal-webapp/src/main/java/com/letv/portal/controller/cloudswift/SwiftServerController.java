@@ -83,7 +83,7 @@ public class SwiftServerController {
 		return obj;
 	}	
 	@RequestMapping(value="/config",method=RequestMethod.POST)
-	public @ResponseBody ResultObject config(@PathVariable Long id,Long storeSize,String visibilityLevel){
+	public @ResponseBody ResultObject config(Long id,Long storeSize,String visibilityLevel){
 		if(storeSize ==null || StringUtils.isEmpty(visibilityLevel))
 			throw new ValidateException("参数不合法");
 		isAuthoritySwift(id);

@@ -20,8 +20,16 @@ define(function(require,exports,module){
                 $("#dbName").html(data.data.dbName);
                 $("#dbStatus").html("("+cn.TranslateStatus(data.data.status)+")");
             }else{
-                location.href = '/list/db';
+                location.href = '/list/oss';
             }
+        },
+        SwiftConfigHandler:function(data){
+        	if(data.data.visibilityLevel == "PUBLIC"){
+        		$("#level-public").click();
+        	}else{
+        		$("#level-private").click();
+        	}
+        	$(".memSize").val(data.data.storeSize).change();
         }
     }
 });
