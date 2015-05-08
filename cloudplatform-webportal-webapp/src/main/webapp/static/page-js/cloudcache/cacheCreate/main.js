@@ -87,7 +87,8 @@ define(function(require) {
 					},
 					stringLength : {
 						max : 16,
-						message : '实例名称过长!'
+						min : 4,
+						message : '实例名称长度4-16位!'
 					},
 					regexp : {
 						regexp : /^((?!^monitor$)([a-zA-Z_]+[a-zA-Z_0-9]*))$/,
