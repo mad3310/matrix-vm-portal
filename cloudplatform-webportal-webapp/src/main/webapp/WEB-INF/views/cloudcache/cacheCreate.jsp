@@ -159,7 +159,7 @@
 										<div class="bk-group-control"></div>
 										<!-- <div class="disabled"> -->
 										<div class="bk-form-row">
-											<label class="bk-form-row-name">购买时长：</label>
+											<label class="bk-form-row-name">购买量：</label>
 											<div class="bk-form-row-cell">
 												<div class="bk-form-row-li clearfix">
 													<div class="pull-left" style="height: 36px;">
@@ -213,7 +213,7 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">地域：</span> <span class="bk-items-item-value">北京</span></li>
-											<li><span class="bk-items-item-name">购买时长：</span> <span class="bk-items-item-value">1年</span></li>
+											<li><span class="bk-items-item-name">购买量：</span> <span class="bk-items-item-value">1年</span></li>
 										</ul>
 									</div>
 								</div>
