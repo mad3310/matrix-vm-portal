@@ -114,6 +114,26 @@
                 </li>
             </ul>
         </div>
+        <div class="vnavbar OSS" style="display:block;">
+            <h3 class="title">开放存储OSS</h3>
+            <ul class="main-level">
+                <li data-haschild="true" data-id="3-1">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">运维技术分享<span class="arrow-up"></span></h3>
+                    <ul class="sub-level">
+                        <li data-haschild="false" data-id="3-1-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
+                            <a href="#">OSS使用方法</a></li>
+                        <li data-haschild="false" data-id="3-1-2" class="help-Osstool" data-spm-click="help-Osstool.jsp" >
+                            <a href="#">OSS客户端工具</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="vnavbar OCS" style="display:block;">
+            <h3 class="title">开放缓存OCS</h3>
+            <ul class="main-level">
+                <li data-haschild="false" data-id="4-1" class="help-OCSuse" data-spm-click="help-OCSuse.jsp">OCS服务使用</li>
+            </ul>
+        </div>
         <!-- <input type="hidden" id="parentCategoryId" value="">
         <input type="hidden" id="currentCategoryId" value=""> -->
     </div>
@@ -139,8 +159,8 @@
                 <span><a href="#" class="helpDetail-findpas" data-spm-click="helpDetail-findpas.jsp">忘记登录密码怎么办</a></span>
                 <span><a href="#" class="help-connect" data-spm-click="help-connect.jsp">个人办公电脑怎么连接数据库？</a></span>
                 <span><a href="#" class="help-userLink" data-spm-click="help-userLink.jsp">用户连接不上数据库？</a></span>
-                <!-- <span><a href="#" >RDS实例CPU超过100%的分析</a></span>
-                <span><a href="#" >排查连接数过多的方法</a></span> -->
+                <span><a href="#" class="help-OSStool" data-spm-click="help-OSStool.jsp">OSS客户端工具</a></span>
+                <span><a href="#" class="help-OCSuse" data-spm-click="help-OCSuse.jsp">OCS服务使用</a></span>
             </div>
         </div>      
         <!-- start of 热点问题TMS区块-->
@@ -160,13 +180,13 @@
                         <a href="#" title="个人办公电脑怎么连接数据库" class="help-connect" data-spm-click="help-connect.jsp">个人办公电脑怎么连接数据库</a>
                         <a href="#" title="创建数据库用户" class="help-userLink" data-spm-click="help-userLink.jsp">创建数据库用户</a>
                     </div>
-                    <!-- <div class="sub-section-content">
-                        <a href="#" title="远程连接服务器For Windows 2003 &amp; 2008" >远程连接服务器For Windows 2003 &amp; 2008</a>
-                        <a href="#" title="使用RDS不得不知的注意事项" >使用RDS不得不知的注意事项</a>
-                        <a href="#" title="OSS如何进行大文件上传？" >OSS如何进行大文件上传？</a>
-                        <a href="#" title="云盾端口安全检测端口列表" >云盾端口安全检测端口列表</a>
-                        <a href="#" title="乐视云CDN带宽处理能力" >阿里云CDN带宽处理能力</a>       
-                    </div>  -->                           
+                    <div class="sub-section-content">
+                        <a href="#" class="help-OSStool" data-spm-click="help-OSStool.jsp">OSS客户端工具</a>
+                        <a href="#" class="help-OCSuse" data-spm-click="help-OCSuse.jsp">OCS服务使用</a>
+                        <a href="#" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">OSS使用方法</a>
+                        <!-- <a href="#" title="云盾端口安全检测端口列表" >云盾端口安全检测端口列表</a>
+                        <a href="#" title="乐视云CDN带宽处理能力" >阿里云CDN带宽处理能力</a>      -->  
+                    </div>                            
                 </div>
                 <div class="sub-section">
                     <h4 class="sub-section-title">
@@ -443,6 +463,10 @@ htmlLoad('help-connect');
 htmlLoad('help-datastructure');
 htmlLoad('help-gbalancerDB');
 htmlLoad('help-userLink');
+htmlLoad('help-OSSuse');
+htmlLoad('help-OSStool');
+htmlLoad('help-OCSuse');
+
 function htmlLoad(container){
     $('.'+container).click(function(event) {
         event.preventDefault();
