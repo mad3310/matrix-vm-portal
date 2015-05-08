@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.ConfigUtil;
@@ -19,8 +20,10 @@ import com.letv.portal.model.task.service.IBaseTaskService;
 public class TaskSwiftGetSuperTokenServiceImpl extends BaseTask4SwiftServiceImpl implements IBaseTaskService{
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskSwiftGetSuperTokenServiceImpl.class);
-	private static String SWIFT_SUPER_USER = ConfigUtil.getString("matrix.swift.super.user");
-	private static String SWIFT_SUPER_USER_PWD = ConfigUtil.getString("matrix.swift.super.password");
+	@Value("${matrix.swift.super.user}")
+	private String SWIFT_SUPER_USER;
+	@Value("${matrix.swift.super.password}")
+	private String SWIFT_SUPER_USER_PWD;
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
@@ -29,8 +32,8 @@ public class TaskSwiftGetSuperTokenServiceImpl extends BaseTask4SwiftServiceImpl
 		SwiftServer server = super.getServer(params);
 		HostModel host = super.getHost(server.getHclusterId());
 		Map<String,String> headParams = new HashMap<String,String>();
-		headParams.put("x-auth-key", "swauthkey");
-		headParams.put("x-auth-user", ".super_admin:.super_admin");
+		headParams.put("x-auth-key", SWIFT_SUPER_USER);
+		headParams.put("x-auth-user", SWIFT_SUPER_USER_PWD);
 		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,1000);
 		if(response == null || response.getFirstHeader("X-Auth-Token") == null) {
 			tr.setResult(response == null?"api connect failed":response.getStatusLine().toString());
