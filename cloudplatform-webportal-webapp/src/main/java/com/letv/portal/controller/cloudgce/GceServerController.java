@@ -165,31 +165,4 @@ public class GceServerController {
 			throw new ValidateException("参数不合法");
 	}
 	
-	@RequestMapping(value="/log/post",method=RequestMethod.GET)
-	public @ResponseBody ResultObject detail(){
-		LogCluster cluster = new LogCluster();
-    	cluster.setClusterName("abcd1");
-    	cluster.setAdminUser(cluster.getClusterName());
-    	cluster.setAdminPassword(cluster.getClusterName());
-    	cluster.setStatus(0);
-    	cluster.setHclusterId(1L);
-    	cluster.setCreateUser(sessionService.getSession().getUserId());
-    	this.logClusterService.insert(cluster);
-    	
-    	LogServer log = new LogServer();
-    	log.setLogName("testLog1");
-    	log.setLogClusterId(cluster.getId());
-    	log.setHclusterId(1L);
-    	log.setCreateUser(sessionService.getSession().getUserId());
-    	log.setType("logstash");
-    	this.logServerService.insert(log);
-    	
-    	Map<String,Object> params = new HashMap<String,Object>();
-    	params.put("logClusterId", cluster.getId());
-    	params.put("logId", log.getId());
-    	this.taskEngine.run("LOG_BUY",params);
-    	
-		ResultObject obj = new ResultObject();
-		return obj;
-	}
 }
