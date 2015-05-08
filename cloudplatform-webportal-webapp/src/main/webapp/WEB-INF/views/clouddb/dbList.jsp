@@ -71,7 +71,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
-				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/dbCreate')">新建数据库</button>
+				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/dbCreate')">购买数据库</button>
 				</h5>
 			</div>
 		</div>

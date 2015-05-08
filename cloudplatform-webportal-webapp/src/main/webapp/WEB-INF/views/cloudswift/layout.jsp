@@ -15,7 +15,7 @@
         <div class="navbar-header">
     <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
      <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-    <a class="navbar-brand color" href="${ctx}/list/oss" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-leaf text-10"></i>&nbsp;OSS</a>
+    <a class="navbar-brand color" href="${ctx}/list/oss" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-database text-10"></i>&nbsp;开放存储服务OSS</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse pull-right">
         <ul class="nav navbar-nav">
@@ -56,9 +56,9 @@
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
-                    <span id="ossName">OSS实例</span>
+                    <span id="ossName"></span>
                     <span style="display: inline-block;vertical-align:super;">
-                        <small id="dbStatus" class="text-success text-xs"></small>
+                        <small id="ossStatus" class="text-success text-xs"></small>
                     </span>
                     <a class="btn btn-default btn-xs" href="${ctx}/list/oss">
                         <span class="glyphicon glyphicon-step-backward"></span>
@@ -80,7 +80,7 @@
                     </small>
                      <small>
                         <span>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' data-target='#myModal'>配  置</button>
+                            <button type="button" class="btn btn-success btn-md" data-toggle='modal' data-target='#myModal'>配  置</button>
                         </span>
                     </small>
                   <!--   <small>

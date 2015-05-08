@@ -57,6 +57,8 @@ public class CacheController {
 			ResultObject obj) {
 		if (cbaseBucketModel == null
 				|| StringUtils.isEmpty(cbaseBucketModel.getBucketName())
+				|| cbaseBucketModel.getBucketName().length() < 4
+				|| cbaseBucketModel.getBucketName().length() > 16
 				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) < 1 * 1024
 				|| Integer.valueOf(cbaseBucketModel.getRamQuotaMB()) > 10 * 1024
 				|| cbaseBucketModel.getHclusterId() == null

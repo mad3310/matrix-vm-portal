@@ -80,7 +80,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
-				<button class="btn-primary btn btn-md"  onclick="window.open('${ctx}/detail/gceCreate')">创建云引擎</button>
+				<button class="btn-primary btn btn-md"  onclick="window.open('${ctx}/detail/gceCreate')">购买云引擎</button>
 				</h5>
 			</div>
 		</div>

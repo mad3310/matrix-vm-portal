@@ -27,7 +27,7 @@
 			<div class="col-sm-12 col-md-6">
 				<div class="pull-left">
 					<h4>
-						<span>创建缓存实例</span>
+						<span>开放缓存服务OCS</span>
 					</h4>
 				</div>
 			</div>
@@ -268,7 +268,6 @@
 			</div>
 		</div>
 		<!-- main-content-center-end -->
-	</div>
 	<!-- main-content end-->
 </body>
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
