@@ -42,7 +42,7 @@
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">对象存储服务<font color="#FF9C17">OSS</font></a>
+      <a class="navbar-brand" href="javascript:void(0)">开放存储服务<font color="#FF9C17">OSS</font></a>
     </div>
   </div>
 </div>

@@ -254,7 +254,7 @@
 									<span class="item-icon product-icons-48 product-icons-oss"></span>
 								</a>
 								<p class="item-title">
-									<a href="${ctx}/list/oss">对象存储服务&nbsp;<span class="item-title-short">OSS</span>
+									<a href="${ctx}/list/oss">开放存储服务&nbsp;<span class="item-title-short">OSS</span>
 									</a>
 								</p>
 							</div>
@@ -317,13 +317,13 @@
 										</div>
 									</li>
 									<li  id="slb-not-opened">
-										<div class="pull-left" class="hide clearfix" data-type='tip' data-order='1' data-content='负载均衡<br>对多台云服务器进行流量分发。<br>SLB可以通过流量分发扩展应用系统对外的服务能力。<br>通过消除单点故障提升应用系统的可用性。' data-position='top'>
+										<div class="pull-left" class="hide clearfix">
 											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
 											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix" data-type='tip' data-order='2' data-content='负载均衡<br>购买负载均衡服务' data-position='right'>
+										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/slbCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -374,12 +374,12 @@
 										</div>
 									</li> -->
 									<li id="ocs-not-opened" class="clearfix">
-										<div class="pull-left">
+										<div class="pull-left" data-type='tip' data-order='1' data-content='开发缓存服务<br>' data-position='top'>
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
 											<span>开放缓存服务</span>
 											<span>OCS</span>
 										</div>
-										<div class="pull-right clearfix">
+										<div class="pull-right clearfix" data-type='tip' data-order='2' data-content='开放缓存服务<br>购买开放缓存服务' data-position='right'> 
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/cacheCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -405,7 +405,7 @@
 								<p class="category-title ng-binding">存储与CDN</p>
 								<ul>
 									<li class="clearfix">
-										<div class="pull-left">
+										<div class="pull-left" data-type='tip' data-order='3' data-content='开放存储服务<br>开放存储服务功能说明' data-position='top'>
 											<span class="glyphicon glyphicon-cloud-upload text-muted"></span> 
 											<span>开放存储服务</span>
 											<span>OSS</span>
@@ -417,10 +417,10 @@
 									<li id="oss-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
-											<span>对象存储服务</span>
+											<span>开放存储服务</span>
 											<span>OSS</span>
 										</div>
-										<div class="pull-right clearfix">
+										<div class="pull-right clearfix"    data-type='tip' data-order='4' data-content='开放存储服务<br>购买开放存储服务' data-position='right'>
 											<div class="pull-left product-opt-wrap">
 												<a href="/buy/oss" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="oss-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -481,13 +481,13 @@
 								<p class="category-title ng-binding">应用服务</p>
 								<ul>
 									<li id="gce-not-opened" class="clearfix">
-										<div class="pull-left"  data-type='tip' data-order='3' data-content='云引擎<br>云引擎功能说明' data-position='top'>
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-gift text-muted"></span> 
 											<span>云引擎</span>
 											<span>GCE</span>
 											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix"   data-type='tip' data-order='4' data-content='云引擎<br>购买云引擎' data-position='right'>
+										<div class="pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/gceCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="gce-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>

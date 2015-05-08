@@ -37,55 +37,50 @@ define(function(require,exports,module){
                             + "<input type=\"checkbox\" name=\"mcluster_id\" value= \""+array[i].name+"\">"
                             + "</td>");
                       var td2='';
-                      if(array[i].content_type=='application/directory'){//是目录，下级链接
-                        td2 = $("<td class=\"padding-left-32\"><a href='javascript:void(0)'>"
-                              + fileName
-                              +"</a></td>");
-                      }else{ 
-                        td2 = $("<td class=\"padding-left-32\">"
-                              + fileName
-                              +"</td>");
-                      }
                       var td3 = '';
                       var td5='';
+                      var td6='';
                       if(array[i].content_type=='application/directory') {//目录
-                         td3 = $("<td>文件夹</td>");
-                         td5=$("<td></td>");
+                        // td2 = $("<td class=\"padding-left-32\"><a href='javascript:void(0)'><img src='/static/img/folder.png'/> "
+                        //           + fileName
+                        //           +"</a></td>");
+                        td2 = $("<td class=\"padding-left-32\"><a class='dir-a' href='javascript:void(0)'><i class='fa fa-folder text-warning'></i> "
+                                  + fileName
+                                  +"</a></td>");
+                        td3 = $("<td>文件夹</td>");
+                        td5=$("<td></td>");
+                        td6=$("<td>-</td>");
                       }else{
                           var filetypeindex=fileName;
                           var filetype=filetypeindex.substring(filetypeindex.indexOf('.')+1);
+                          td2 = $("<td class=\"padding-left-32\"><i class='text-muted "+iconSort(filetype.toLowerCase())+"'></i> "
+                                  + fileName
+                                  +"</td>");
                           td3 = $("<td>"+filetype+"</td>");
                           if(array[i].bytes/Math.pow(2,30)>=1){//GB
-                          td5 = $("<td><span>"+array[i].bytes/Math.pow(2,30)+"GB</span></td>");
-                        }else if(array[i].bytes/Math.pow(2,20)>=1){//MB
-                          td5 = $("<td><span>"+array[i].bytes/Math.pow(2,20)+"MB</span></td>");
-                        }else if(array[i].bytes/Math.pow(2,10)>=1){//KB
-                          td5 = $("<td><span>"+array[i].bytes/Math.pow(2,10)+"KB</span></td>");
-                        }else{//B
-                          td5 = $("<td><span>"+array[i].bytes+"B</span></td>");
-                        }
+                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,30)+"GB</span></td>");
+                          }else if(array[i].bytes/Math.pow(2,20)>=1){//MB
+                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,20)+"MB</span></td>");
+                          }else if(array[i].bytes/Math.pow(2,10)>=1){//KB
+                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,10)+"KB</span></td>");
+                          }else{//B
+                            td5 = $("<td><span>"+array[i].bytes+"B</span></td>");
+                          }
+                          var hrefstr=$('#baseLocation').val()+array[i].name;
+                          td6= $("<td><a href='"+hrefstr+"' target='_blank'><span>"+hrefstr+"</span></a></td>");
                       }
                       var lasttime=array[i].last_modified;var indexT=lasttime.indexOf('T');var indexpoint=lasttime.indexOf('.');
                       var td4 = $("<td>"
                             + "<span>"+lasttime.substring(0,indexT)+" "+lasttime.substring(indexT+1,indexpoint)+"</span>"
                             + "</td>");
                       
-                      var td6 = $("<td><span >未设置</span></td>");
-                      var td7 = $("<td><span class='text-explode font-disabled'>删除</span></td>");
+                      // var td6 = $("<td><span >未设置</span></td>");
+                      // var td7 = $("<td><span class='text-explode font-disabled'>删除</span></td>");
                       var tr = $("<tr class='data-tr'></tr>");
-                      // tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
-                      // tr.appendTo($tby);
                     }else{//子目录
                       
                     }            
-                    // var td4 = $("<td>"
-                    //         + "<span>"+array[i].last_modified+"</span>"
-                    //         + "</td>");
-                    // var td5 = $("<td><span>"+array[i].bytes+"</span></td>");
-                    // var td6 = $("<td><span >未设置</span></td>");
-                    // var td7 = $("<td><span>删除</span></td>");
-                    // var tr = $("<tr class='data-tr'></tr>");
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
                     tr.appendTo($tby);
                  }   
             }
@@ -105,5 +100,49 @@ define(function(require,exports,module){
          //        totalPages:data.data.totalPages
          //    });
         }
+    }
+    function iconSort(type){
+      var iconclass='fa fa-file';
+      var icon={
+        'exe':'fa fa-cog',
+
+        'pdf':'fa fa-file-pdf-o',
+        'txt':'fa fa-file-text',
+        'docx':'fa fa-file-word-o',
+        'doc':'fa fa-file-word-o',
+        'xlsx':'fa fa-file-excel-o',
+        'xls':'fa fa-file-excel-o',
+        'pptx':'fa fa-file-powerpoint-o',
+        'ppt':'fa fa-file-powerpoint-o',
+      
+        'png':'fa fa-file-photo-o',
+        'jpg':'fa fa-file-photo-o',
+        'gif':'fa fa-file-photo-o',
+        'bmp':'fa fa-file-photo-o',
+
+        'rar':'fa fa-file-zip-o',
+        'zip':'fa fa-file-zip-o',
+        'tar':'fa fa-file-zip-o',
+        'jar':'fa fa-file-zip-o',
+        'z':'fa fa-file-zip-o',
+        'gz':'fa fa-file-zip-o',
+
+        'avi':'fa fa-file-movie-o',
+        'mov':'fa fa-file-movie-o',
+        'wmv':'fa fa-file-movie-o',
+        '3gp':'fa fa-file-movie-o',
+        'flv':'fa fa-file-movie-o',
+
+        'mp3':'fa fa-file-audio-o',
+        'rm':'fa fa-file-audio-o',
+        'swf':'fa fa-file-audio-o',
+        'wma':'fa fa-file-audio-o',
+        'wav':'fa fa-file-audio-o',
+        'mp3pro':'fa fa-file-audio-o'
+      }
+      if(icon[type]){
+        iconclass=icon[type];
+      }
+      return iconclass;
     }
 });
