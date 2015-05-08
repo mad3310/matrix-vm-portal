@@ -236,6 +236,7 @@
 								<p class="item-title">
 									<a href="${ctx}/list/cache">开放缓存服务&nbsp;<span class="item-title-short">OCS</span>
 									</a>
+									<span class="beta-font">Beta</span>
 								</p>
 							</div>
 							<div class="item-record">
@@ -256,6 +257,7 @@
 								<p class="item-title">
 									<a href="${ctx}/list/oss">开放存储服务&nbsp;<span class="item-title-short">OSS</span>
 									</a>
+									<span class="beta-font">Beta</span>
 								</p>
 							</div>
 							<div class="item-record">
@@ -334,7 +336,16 @@
 											<span class="home-orange">敬请期待...</span>
 										</div> -->
 									</li>
-									<li class="clearfix">
+									<li class="clearfix"><li class="clearfix">
+										<div class="pull-left" data-type='tip' data-order='3' data-content='开放存储服务<br>开放存储服务功能说明' data-position='top'>
+											<span class="glyphicon glyphicon-cloud-upload text-muted"></span> 
+											<span>开放存储服务</span>
+											<span>OSS</span>
+										</div>
+										<div class="pull-right clearfix">
+											<span class="home-orange">敬请期待...</span>
+										</div>
+									</li>
 										<div class="pull-left">
 											<!-- <span class="glyphicon glyphicon-random text-muted"></span> 
 											<span>弹性伸缩服务</span>
@@ -378,6 +389,7 @@
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
 											<span>开放缓存服务</span>
 											<span>OCS</span>
+											<span class="beta-font">Beta</span>
 										</div>
 										<div class="pull-right clearfix" data-type='tip' data-order='2' data-content='开放缓存服务<br>购买开放缓存服务' data-position='right'> 
 											<div class="pull-left product-opt-wrap">
@@ -401,24 +413,15 @@
 							</div>
 						</li>
 						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
-							<div class="product-category">
+							<div id="store-and-CDN" class="product-category">
 								<p class="category-title ng-binding">存储与CDN</p>
 								<ul>
-									<li class="clearfix">
-										<div class="pull-left" data-type='tip' data-order='3' data-content='开放存储服务<br>开放存储服务功能说明' data-position='top'>
-											<span class="glyphicon glyphicon-cloud-upload text-muted"></span> 
-											<span>开放存储服务</span>
-											<span>OSS</span>
-										</div>
-										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
-										</div>
-									</li>
 									<li id="oss-not-opened" class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
 											<span>开放存储服务</span>
 											<span>OSS</span>
+											<span class="beta-font">Beta</span>
 										</div>
 										<div class="pull-right clearfix"    data-type='tip' data-order='4' data-content='开放存储服务<br>购买开放存储服务' data-position='right'>
 											<div class="pull-left product-opt-wrap">

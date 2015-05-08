@@ -50,6 +50,7 @@ define(function(require,exports,module){
                 $("#oss-opened").removeClass("hide");
                 $("#oss-not-opened").addClass("hide");
                 $("#ossCount").html(data.data.oss);
+                $("#store-and-CDN").addClass("hide");
             }else{
                 $("#oss-opened").addClass("hide");
                 $("#oss-not-opened").removeClass("hide");
