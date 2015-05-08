@@ -268,7 +268,6 @@
 			</div>
 		</div>
 		<!-- main-content-center-end -->
-	</div>
 	<!-- main-content end-->
 </body>
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
