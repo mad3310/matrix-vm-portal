@@ -38,10 +38,20 @@ p {
 <p>您申请的OSS已创建成功。以下为相关创建信息：</p>
 <table class="gridtable" style="margin: 20px">
 	<tr>
-		<th width="100px">OSS名称</th>
+		<th width="200px">OSS名称</th>
+		<th width="100px">配额</th>
+		<th width="300px">公开(匿名可见)</th>
+		<th width="100px">地域</th>
+		<th width="200px">可用区</th>
+		<th width="400px">创建时间</th>
 	</tr>
 	<tr>
 		<td>${swiftName}</td>
+		<td>${storeSize}</td>
+		<td>${visibilityLevel}</td>
+		<td>${area}</td>
+		<td>${hclusterNameAlias}</td>
+		<td>${createTime}</td>
 	</tr>
 </table>
 <br/>
