@@ -80,7 +80,7 @@
                     </small>
                      <small>
                         <span>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle='modal' data-target='#myModal'>配  置</button>
+                            <button type="button" class="btn btn-success btn-md" data-toggle='modal' data-target='#myModal'>配  置</button>
                         </span>
                     </small>
                   <!--   <small>

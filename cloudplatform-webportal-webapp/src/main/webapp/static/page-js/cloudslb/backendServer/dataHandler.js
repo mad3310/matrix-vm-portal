@@ -91,7 +91,7 @@ define(function(require,exports,module){
             	var id =$(this).attr("slb-config-id");
             	var name = $(this).closest("tr").find("td:first").html();
                 var title = "确认";
-                var text = "您确定要删除("+name+")此服务器";
+                var text = "您确定要删除("+name+")服务器";
                 cn.DialogBoxInit(title,text,backendServerDel,id);
             })
         },
