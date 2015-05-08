@@ -48,6 +48,10 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
+	@Value("${matrix.swift.super.user}")
+	private String SWIFT_SUPER_USER;
+	@Value("${matrix.swift.super.password}")
+	private String SWIFT_SUPER_USER_PWD;
 	@Override
 	public IBaseService<SwiftServer> getService() {
 		return swiftServerService;
@@ -89,8 +93,8 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	private String getSuperToken(SwiftServer server) {
 		HostModel host = this.getHost(server.getHclusterId());
 		Map<String,String> headParams = new HashMap<String,String>();
-		headParams.put("x-auth-key", "swauthkey");
-		headParams.put("x-auth-user", ".super_admin:.super_admin");
+		headParams.put("x-auth-user", SWIFT_SUPER_USER);
+		headParams.put("x-auth-key", SWIFT_SUPER_USER_PWD);
 		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,1000);
 		if(response == null || response.getFirstHeader("X-Auth-Token") == null) {
 			throw new CommonException("oss delete exception:get super token failed");
