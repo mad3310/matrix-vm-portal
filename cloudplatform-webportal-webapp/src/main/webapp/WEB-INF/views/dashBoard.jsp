@@ -339,8 +339,8 @@
 									<li class="clearfix"><li class="clearfix">
 										<div class="pull-left" data-type='tip' data-order='3' data-content='开放存储服务<br>开放存储服务功能说明' data-position='top'>
 											<span class="glyphicon glyphicon-cloud-upload text-muted"></span> 
-											<span>开放存储服务</span>
-											<span>OSS</span>
+											<span>弹性伸缩服务</span>
+											<span>ESS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
