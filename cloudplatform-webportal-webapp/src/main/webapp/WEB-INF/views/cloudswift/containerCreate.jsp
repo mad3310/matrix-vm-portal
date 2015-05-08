@@ -157,7 +157,7 @@
 									</dd>
 								</dl>
 								<dl class="bk-group">
-									<dt class="bk-group-title">购买量</dt>
+									<dt class="bk-group-title">购买时长</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<!-- <div class="disabled"> -->
@@ -257,10 +257,10 @@
 							<div class="bk-scope bk-items">
 									<div class="bk-items-list">
 											<ul>
-												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">张祥</span></li>
-												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhangxiang@letv.com</span></li>
-												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15101188635</span></li>
-												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">2980726652</span></li>
+												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">钟健男</span></li>
+												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhongjiannan@letv.com</span></li>
+												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15210219856</span></li>
+												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">123102027</span></li>
 											</ul>
 								</div>
 						</div>
