@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.letv.common.result.ResultObject;
 import com.letv.portal.junitBase.AbstractTest;
 import com.letv.portal.model.log.LogCluster;
 import com.letv.portal.model.log.LogServer;
@@ -38,10 +39,11 @@ public class TaskEngineLog extends AbstractTest{
      * Description: 创建流程并执行,带参数<br>
      * @author name: liuhao1
      */
+	
     @Test
     public void testRun5() {
     	LogCluster cluster = new LogCluster();
-    	cluster.setClusterName("testLogCluster");
+    	cluster.setClusterName("abcd1");
     	cluster.setAdminUser(cluster.getClusterName());
     	cluster.setAdminPassword(cluster.getClusterName());
     	cluster.setStatus(0);
@@ -50,8 +52,11 @@ public class TaskEngineLog extends AbstractTest{
     	this.logClusterService.insert(cluster);
     	
     	LogServer log = new LogServer();
-    	log.setLogName("testLog");
+    	log.setLogName("testLog1");
     	log.setLogClusterId(cluster.getId());
+    	log.setHclusterId(1L);
+    	log.setCreateUser(4L);
+    	log.setType("logstash");
     	this.logServerService.insert(log);
     	
     	Map<String,Object> params = new HashMap<String,Object>();

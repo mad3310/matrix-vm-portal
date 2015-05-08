@@ -85,6 +85,11 @@ public class BaseTask4SwiftServiceImpl implements IBaseTaskService{
 			swift.setStatus(DbStatus.NORMAL.getValue());
 			Map<String, Object> emailParams = new HashMap<String,Object>();
 			emailParams.put("swiftName", swift.getName());
+			emailParams.put("storeSize", swift.getStoreSize() + "GB");
+			emailParams.put("visibilityLevel", swift.getVisibilityLevel());
+			emailParams.put("area", "北京");
+			emailParams.put("hclusterNameAlias", swift.getHcluster().getHclusterNameAlias());
+			emailParams.put("createTime", swift.getCreateTime());
 			this.email4User(emailParams, swift.getCreateUser(),"swift/createSwift.ftl");
 		} else {
 			swift.setStatus(DbStatus.BUILDFAIL.getValue());
