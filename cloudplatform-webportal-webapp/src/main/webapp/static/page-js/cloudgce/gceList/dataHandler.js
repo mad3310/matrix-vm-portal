@@ -78,23 +78,23 @@ define(function(require,exports,module){
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                    			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>" 
-                    			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+                    			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 9){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>"
-                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 5){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级</span>" 
-                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else{
-                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级</span>" 
-                    		+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>");
+                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span>" 
+                    		/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }
                      var tr = $("<tr class='data-tr'></tr>");
                     tr.append(td1).append(td2).append(td6).append(td3).append(td4).append(td5).append(td7).append(td8).append(td9);

@@ -73,23 +73,23 @@ define(function(require,exports,module){
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
-                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|</span>"
-                    			+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>");
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+                    			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 9){
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
 	                    		+ "<span class=\"text-explode font-disabled\">|</span>"
 	                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-start\">启动</span></a>"
-	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|</span>" 
-	                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>");
+	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+	                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 5){
                     	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
 	                    		+ "<span class=\"text-explode font-disabled\">|</span>"
 	                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
-	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|</span>"
-	                			+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>");
+	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+	                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else{
-                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级|</span>" 
-                    			+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td></td>");
+                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span>" 
+                    			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td></td>"*/);
                     }
                     
                     var tr = $("<tr class='data-tr'></tr>");
