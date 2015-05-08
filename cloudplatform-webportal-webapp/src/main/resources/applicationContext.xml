@@ -14,8 +14,11 @@
 	<!-- <import resource="classpath:converter-applicationContext.xml"/> -->
 	<import resource="classpath:data-applicationContext.xml"/>
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-	    <property name="locations">
+	      <property name="locations">
 		    <list> 
+			    <value>classpath*:jdbc.properties</value>
+			    <value>classpath*:config.properties</value> 
+			    <!-- 重新加载本地文件，可以在web配置文件中，覆盖jar中的配置文件 -->
 			    <value>classpath:jdbc.properties</value>
 			    <value>classpath:config.properties</value> 
 		    </list> 
