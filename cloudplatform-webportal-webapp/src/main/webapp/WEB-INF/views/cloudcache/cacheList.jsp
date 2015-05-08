@@ -39,7 +39,7 @@
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
 				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/cacheCreate')">购买缓存实例</button>
-				<button class="btn-warning btn btn-md" onclick="">删除缓存实例</button>
+				<!-- <button class="btn-warning btn btn-md disabled" onclick="">删除缓存实例</button> -->
 				</h5>
 			</div>
 		</div>

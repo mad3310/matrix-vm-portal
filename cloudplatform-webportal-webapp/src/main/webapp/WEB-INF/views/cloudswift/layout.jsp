@@ -56,9 +56,9 @@
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
-                    <span id="ossName">OSS实例</span>
+                    <span id="ossName"></span>
                     <span style="display: inline-block;vertical-align:super;">
-                        <small id="dbStatus" class="text-success text-xs"></small>
+                        <small id="ossStatus" class="text-success text-xs"></small>
                     </span>
                     <a class="btn btn-default btn-xs" href="${ctx}/list/oss">
                         <span class="glyphicon glyphicon-step-backward"></span>

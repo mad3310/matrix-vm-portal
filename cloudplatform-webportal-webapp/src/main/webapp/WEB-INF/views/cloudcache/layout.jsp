@@ -55,9 +55,9 @@
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
-                    <span id="dbName"></span>
+                    <span id="ocsName"></span>
                     <span style="display: inline-block;vertical-align:super;">
-                        <small id="dbStatus" class="text-success text-xs"></small>
+                        <small id="ocsStatus" class="text-success text-xs"></small>
                     </span>
                     <a class="btn btn-default btn-xs" href="${ctx}/list/cache">
                         <span class="glyphicon glyphicon-step-backward"></span>
@@ -103,8 +103,8 @@
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/cacheBaseInfo/${cacheId}" href="javascript:void(0)">基本信息</a></li>
-                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/monitor/cache/${cacheId}">监控信息<p class="pull-right home-orange">敬请期待...</p></a></li>
-                    <li><a class="text-sm" href="javascript:void(0)" src="${ctx}/detail/data/${cacheId}">数据管理<p class="pull-right home-orange">敬请期待...</p></a></li>
+                    <li><a class="text-sm" href="javascript:void(0)" <%-- src="${ctx}/monitor/cache/${cacheId}" --%>>监控信息<p class="pull-right home-orange">敬请期待...</p></a></li>
+                    <li><a class="text-sm" href="javascript:void(0)" <%-- src="${ctx}/detail/data/${cacheId}" --%>>数据管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">参数设置 <p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">日志管理<p class="pull-right home-orange">敬请期待...</p></a></li>
                     <li><a class="text-sm" href="javascript:void(0)">阈值报警<p class="pull-right home-orange">敬请期待...</p></a></li>

@@ -97,5 +97,4 @@ define(function(require){
 		var url = "/oss/"+$("#swiftId").val();
 		cn.GetData(url, ossHandler.SwiftConfigHandler);
 	}
-	
 });
