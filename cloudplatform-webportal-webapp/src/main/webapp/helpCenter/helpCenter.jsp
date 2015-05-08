@@ -131,7 +131,7 @@
         <div class="vnavbar OCS" style="display:block;">
             <h3 class="title">开放缓存OCS</h3>
             <ul class="main-level">
-                <li data-haschild="false" data-id="4-1" class="help-OCSuse" data-spm-click="help-OCSuse.jsp">OCS服务使用</li>
+                <li data-haschild="false" data-id="4-1" class="help-OCSuse" data-spm-click="help-OCSuse.jsp"><a>OCS服务使用</a></li>
             </ul>
         </div>
         <!-- <input type="hidden" id="parentCategoryId" value="">
