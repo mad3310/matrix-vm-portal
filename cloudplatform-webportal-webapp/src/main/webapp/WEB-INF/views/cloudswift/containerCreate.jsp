@@ -31,7 +31,7 @@
 			<div class="col-sm-12 col-md-6">
 				<div class="pull-left">
 					<h4>
-						<span>创建OSS实例</span>
+						<span>开放存储服务OSS</span>
 					</h4>
 				</div>
 			</div>
