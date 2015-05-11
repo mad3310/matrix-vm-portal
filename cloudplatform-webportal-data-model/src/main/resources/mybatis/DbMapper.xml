@@ -243,7 +243,7 @@
 		</if>
 		join WEBPORTAL_HCLUSTER h on m.HCLUSTER_ID = h.ID
 		<if test="hclusterName != null  and hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 		</if>
 		<include refid="Example_Where_Clause" />
 	</select>

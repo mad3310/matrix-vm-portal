@@ -31,6 +31,11 @@ public class SkipController {
 		mav.setViewName("/clouddb/mcluster_list");
 		return mav;
 	}
+	@RequestMapping(value ="/list/container",method=RequestMethod.GET)
+	public ModelAndView toContainerList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/container_list");
+		return mav;
+	}
 	@RequestMapping(value ="/list/job/stream",method=RequestMethod.GET)
 	public ModelAndView toJobStreamList(ModelAndView mav,HttpServletRequest request){
 		mav.setViewName("/clouddb/job_stream_list");
