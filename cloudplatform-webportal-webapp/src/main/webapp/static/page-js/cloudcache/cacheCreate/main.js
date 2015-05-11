@@ -205,7 +205,7 @@ define(function(require) {
 	var createCacheHandler = new dataHandler();
 	GetHcluster();
 	function GetHcluster() {
-		var url = "/hcluster";
+		var url = "/hcluster/cbase";
 		cn.GetData(url, createCacheHandler.GetHclusterHandler);
 	}
 	/* 创建cache */
