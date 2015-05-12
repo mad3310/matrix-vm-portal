@@ -56,6 +56,7 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 * @return
 	 */
 	public List<MclusterModel> selectValidMclusters(int count);
+	public List<MclusterModel> selectValidMclusters(int count,Map<String,Object> params);
 	
 	/**Methods Name: selectValidMclusters <br>
 	 * Description: 选择有效的mcluster集群，并包含MclusterName和HclusterName: RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).<br>
@@ -64,7 +65,7 @@ public interface IMclusterService extends IBaseService<MclusterModel> {
 	 */
 	public List<MclusterModel> selectValidMclustersByMap(Map<String, Object> params);
 
-	public List<MclusterModel> selectNextValidMclusterById(Long mclusterId,
+	public List<MclusterModel> selectNextValidMclusterById(Long mclusterId,Long hclusterId,
 			int addNewCount);
 
 

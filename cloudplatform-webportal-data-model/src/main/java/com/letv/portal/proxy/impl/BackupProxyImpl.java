@@ -1,7 +1,7 @@
 package com.letv.portal.proxy.impl;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -22,14 +22,15 @@ import com.letv.portal.enumeration.BackupStatus;
 import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.MclusterModel;
-import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBackupService;
 import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IMclusterService;
 import com.mysql.jdbc.StringUtils;
 
@@ -45,6 +46,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private IMclusterService mclusterService;
 	@Autowired
 	private IContainerService containerService;
+	@Autowired
+	private IHclusterService hclusterService;
 	@Autowired
 	private IDbService dbService;
 	@Autowired
@@ -68,7 +71,18 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
 		if(count == 0)
 			count = 5;
-		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count);
+		
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("type", "rds");
+		
+		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
+		params.clear();
+		
+		List<MclusterModel> mclusters = new ArrayList<MclusterModel>();
+		for (HclusterModel hcluster : hclusters) {
+			params.put("hclusterId", hcluster.getId());
+			mclusters.addAll(this.mclusterService.selectValidMclusters(count,params));
+		}
 		for (MclusterModel mclusterModel : mclusters) {
 			//进行备份。
 			this.wholeBackup4Db(mclusterModel);
@@ -76,7 +90,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-//	@Async
+	@Async
 	public void wholeBackup4Db(MclusterModel mcluster) {
 		Date date = new Date();
 		if(mcluster == null)
@@ -137,9 +151,10 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
-		int addNewCount = 5-results.size();
+		int addNewCount = count-results.size();
 		if(addNewCount>0)
 			this.backupTask4addNew(addNewCount);
+		
 		for (BackupResultModel backup : results) {
 			this.checkBackupStatus(backup);
 		}
@@ -147,7 +162,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-//	@Async
+	@Async
 	public void checkBackupStatus(BackupResultModel backup) {
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
@@ -186,15 +201,24 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 	
 	private void backupTask4addNew(int addNewCount) {
-		BackupResultModel recentBackup = this.selectRecentBackup();
-		List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), addNewCount);
-		for (MclusterModel mclusterModel : mclusters) {
-			this.wholeBackup4Db(mclusterModel);
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("type","rds");
+		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
+		params.clear();
+		for (HclusterModel hcluster : hclusters) {
+			params.put("hclusterId", hcluster.getId());
+			BackupResultModel recentBackup = this.selectRecentBackup(params);
+			if(recentBackup == null)
+				continue;
+			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),addNewCount);
+			for (MclusterModel mclusterModel : mclusters) {
+				this.wholeBackup4Db(mclusterModel);
+			}
+			
 		}
 	}
-	private BackupResultModel selectRecentBackup() {
+	private BackupResultModel selectRecentBackup(Map<String,Object> params) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Map<String, Object> params = new HashMap<String,Object>();
 		Calendar curDate = Calendar.getInstance();
 		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
 		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));

@@ -231,7 +231,7 @@
 	<select id="selectNextValidMclusterById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14) and M.ID>#{mclusterId} order by ID asc limit #{addNewCount}
+		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14) and M.ID>#{mclusterId} and M.HCLUSTER_ID=#{hclusterId} order by ID asc limit #{addNewCount}
 	</select>
 	<select id="selectValidMclustersByMap" resultMap="BaseResultMap">
 		select
@@ -247,10 +247,13 @@
 		<include refid="Example_Where_Clause" />
 		 and M.STATUS IN(1,7,8,9,13,14)
 	</select>
-	<select id="selectValidMclustersByPage" resultMap="BaseResultMap" parameterType="com.letv.common.paging.impl.Page">
+	<select id="selectValidMclustersByPage" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14) limit #{startRowPosition},#{recordsPerPage}
+		from WEBPORTAL_MCLUSTER_INFO M  
+		<include refid="Example_Page_Where_Clause" />
+		and M.STATUS IN(1,7,8,9,13,14) 
+		limit #{page.startRowPosition},#{page.recordsPerPage}
 	</select>
 	<select id="selectLastValidMclustersByPage" resultMap="BaseResultMap" parameterType="com.letv.common.paging.impl.Page">
 		select

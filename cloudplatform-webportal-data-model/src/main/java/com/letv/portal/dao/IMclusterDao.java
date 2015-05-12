@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.MclusterModel;
 
@@ -42,11 +43,10 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 */
 	List<MclusterModel> selectValidMclusters();
 
-	List<MclusterModel> selectValidMclustersByPage(Page page);
-
-	List<MclusterModel> selectLastValidMclustersByPage(Page page);
+	List<MclusterModel> selectValidMclustersByPage(QueryParam<String, Object> param);
 	
 	List<MclusterModel> selectValidMclustersByMap(Map<String, Object> params);
 
 	List<MclusterModel> selectNextValidMclusterById(Map<String, Object> map);
+
 }

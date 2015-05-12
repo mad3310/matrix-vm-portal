@@ -100,20 +100,35 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		if(count == 0)
 			return this.mclusterDao.selectValidMclusters();
 		Page page = new Page(1,count);
-		return this.mclusterDao.selectValidMclustersByPage(page);
+		QueryParam<String,Object> param = new QueryParam<String, Object>();
+		param.setPage(page);
+		return this.mclusterDao.selectValidMclustersByPage(param);
 	}
-
+	@Override
+	public List<MclusterModel> selectValidMclusters(int count,Map<String, Object> params) {
+		if(params.isEmpty())
+			return selectValidMclusters(count);
+		if(count == 0)
+			return this.mclusterDao.selectValidMclustersByMap(params);
+		QueryParam<String,Object> param = new QueryParam<String, Object>();
+		param.setParams(params);
+		Page page = new Page(1,count);
+		param.setPage(page);
+		return this.mclusterDao.selectValidMclustersByPage(param);
+	}
 	@Override
 	public List<MclusterModel> selectValidMclusters() {
 		return this.mclusterDao.selectValidMclusters();
 	}
 	
 	@Override
-	public List<MclusterModel> selectNextValidMclusterById(Long mclusterId,
+	public List<MclusterModel> selectNextValidMclusterById(Long mclusterId,Long hclusterId,
 			int addNewCount) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("mclusterId", mclusterId);
+		map.put("hclusterId", hclusterId);
 		map.put("addNewCount", addNewCount);
 		return this.mclusterDao.selectNextValidMclusterById(map);
 	}
+
 }

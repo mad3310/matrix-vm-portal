@@ -17,6 +17,7 @@ public class BackupResultModel extends BaseModel {
 	private static final long serialVersionUID = -1054236468505005030L;
 
 	private Long mclusterId;
+	private Long hclusterId;
 	private Long dbId;
 	private String backupIp;
 	private Date startTime;
@@ -116,5 +117,11 @@ public class BackupResultModel extends BaseModel {
 	}
 	public void setDb(DbModel db) {
 		this.db = db;
+	}
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
 	}
 }
