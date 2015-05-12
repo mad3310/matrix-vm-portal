@@ -274,6 +274,11 @@
 		$('#sidebar-cluster-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/hcluster").html("物理机集群管理");
 		$('#main-content-header li:eq(1)').html("物理机集群列表");
+	}else if(path.indexOf("/list/container") >= 0){
+		$('#sidebar-cluster-mgr').addClass("active open hsub");
+		$('#sidebar-cluster-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/container").html("container管理");
+		$('#main-content-header li:eq(1)').html("Container列表");
 	}else if(path.indexOf("/list/dbUser") >= 0){
 		$('#sidebar-db-mgr').addClass("active open hsub");
 		$('#sidebar-db-mgr ul li:eq(1)').addClass("active");

@@ -30,7 +30,7 @@ define(function(require,exports,module){
 	        var ret="";
 	        for(var i= 0,len=data.length;i<len;i++){
 	        	var port = "8001";
-	        	if(type == "jetty")
+	        	if(type == "JETTY")
 	        		port = "8080";
 	            ret = ret
 	            +"<span class=\"text-success\">"+data[i].ipAddr+"</span>"

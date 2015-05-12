@@ -37,6 +37,13 @@
 					</a>
 					<b class="arrow"></b>
 				</li>
+				<li id="sidebar-container-list" >
+					<a href="${ctx}/list/container"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						Container列表
+					</a>
+					<b class="arrow"></b>
+				</li>
 			</ul>
 		</li>
 		<li id="sidebar-db-mgr" >

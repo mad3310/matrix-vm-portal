@@ -38,6 +38,7 @@
 		
 	    <association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
+	    	<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -57,7 +58,7 @@
 		where 1=1
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
-				and C.ID=#{id}
+				and C.ID=#{id}selectValidVipContianer
 			</if>
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
 				and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
@@ -219,6 +220,42 @@
 		delete from WEBPORTAL_CONTAINER where MCLUSTER_ID = #{mclusterId}
 	</update>	
 	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_CONTAINER C
+		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = C.MCLUSTER_ID 
+		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
+			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+		</if>
+		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+		</if>
+		where 1=1
+		<if test="id != null  ">
+			and C.ID=#{id}
+		</if>
+		<if test="containerName != null  and containerName != '' and containerName != 'null'">
+			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+		</if>
+		<if test="type != null ">
+			and C.TYPE=#{type}
+		</if>
+		<if test="ipAddr != null ">
+			and C.IP_ADDR like CONCAT('%','${ipAddr}','%')
+		</if>
+		<if test="mclusterId != null ">
+			and C.MCLUSTER_ID=#{mclusterId}
+		</if>
+		<if test="zookeeperId != null ">
+			and C.ZOOKEEPER_ID=#{zookeeperId}
+		</if>
+		<if test="status != null and status != '' ">
+				and C.STATUS=#{status}
+		</if>
+	</select>
+	
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
@@ -263,5 +300,53 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_CONTAINER C ,WEBPORTAL_MCLUSTER_INFO M 
 		where C.MCLUSTER_ID=M.ID and M.ID=#{mclusterId}
+	</select>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params !=null and params.id != null  ">
+				and C.ID=#{params.id}
+			</if>
+			<if test="params !=null and params.containerName != null  and params.containerName != '' and params.containerName != 'null'">
+				and C.CONTAINER_NAME like CONCAT('%','${params.containerName}','%')
+			</if>
+			<if test="params !=null and params.type != null ">
+				and C.TYPE=#{params.type}
+			</if>
+			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
+				and C.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
+			</if>
+			<if test="params !=null and params.mclusterId != null ">
+				and C.MCLUSTER_ID=#{params.mclusterId}
+			</if>
+			<if test="params !=null and params.zookeeperId != null ">
+				and C.ZOOKEEPER_ID=#{params.zookeeperId}
+			</if>
+			<if test="params !=null and params.status != null and params.status != '' ">
+				and C.STATUS=#{params.status}
+			</if>
+		</trim>
+	</sql>
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		,n.MCLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
+		from WEBPORTAL_CONTAINER C
+		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = C.MCLUSTER_ID 
+		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
+			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
+		</if>
+		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+		</if>
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY C.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
 	</select>
 </mapper>   

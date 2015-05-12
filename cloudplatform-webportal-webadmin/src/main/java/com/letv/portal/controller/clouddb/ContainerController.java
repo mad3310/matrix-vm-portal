@@ -1,6 +1,9 @@
 package com.letv.portal.controller.clouddb;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.service.IContainerService;
 
@@ -32,10 +37,22 @@ public class ContainerController {
 	 * @param result
 	 * @return
 	 */
+	
 	@RequestMapping(value="/{mclusterId}",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(@PathVariable Long mclusterId,ResultObject result) {
 		result.setData(this.containerService.selectByMclusterId(mclusterId));
 		return result;
+	}
+	/**Methods Name: list <br>
+	 * Description: 查询container列表<br>
+	 * @author name: yaokuo
+	 * @param request
+	 */
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.containerService.selectPageByParams(page, params));
+		return obj;
 	}
 	
 
