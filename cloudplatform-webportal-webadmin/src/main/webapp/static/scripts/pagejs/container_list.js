@@ -45,16 +45,14 @@ $(function(){
 });
 
 function queryByPage() {
-	var mclusterName = $("#containerName").val()?$("#containerName").val():'';
-	var hclusterName = $("#Physicalcluster").val()?$("#Physicalcluster").val():'';
-	var userName = $("#containeruser").val()?$("#containeruser").val():'';
+	var containerName = $("#containerName").val()?$("#containerName").val():'';
+	var  ipAddr= $("#ipAddr").val()?$("#ipAddr").val():'';
 	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'mclusterName':mclusterName,
-			'hclusterName':hclusterName,
-			'userName':userName,
+			'containerName':containerName,
+			'ipAddr':ipAddr,
 			/*'createTime':createTime,*/
 			'status':status
 		}
@@ -81,86 +79,34 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].containerName+"</a>"
 						+ "</td>");
-				if(array[i].hcluster){
+				if(array[i].mcluster){
 					var td3 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td> </td>");
 				} 
-				var type = "";
-				if(array[i].type) {
-					type="后台创建";
+				if(array[i].hcluster){
+					var td4 = $("<td>"
+							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].mcluster.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+							+ "</td>");
 				} else {
-					type = "系统创建";
-				}
-				var td4 = $("<td>"
-						+ type
-						+ "</td>");
-				
-				var userName='system';
-				if(array[i].createUserModel) {
-					userName = array[i].createUserModel.userName;
+					var td4= $("<td> </td>");
 				}
 				var td5 = $("<td>"
-						+ userName
+						+ array[i].ipAddr
 						+ "</td>");
 				var td6 = $("<td>"
+						+ array[i].hostIp
+						+ "</td>");
+				var td9 = $("<td>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
-				if(array[i].status == 2){
-					var td7 = $("<td>"
-							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-							+"<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"/>"
-							+"创建中...</a>"
-							+ "</td>");
-				}else if(array[i].status == 3){
-					var td7 = $("<td>"
-							+"<a name=\"buildStatusBoxLink\" data-toggle=\"modal\" data-target=\"#create-mcluster-status-modal\" style=\"cursor:pointer; text-decoration:none;\">"
-							+translateStatus(array[i].status)
-							+"</a>"
-							+ "</td>");
-				}else{
-					var td7 = $("<td>"
-							+translateStatus(array[i].status)
-							+ "</td>");
-					
-				}
-				
-				if(array[i].status == 3){
-					var td8 = $("<td>"
-							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-							+"</a>"
-							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-								+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-							+"</a>"
-							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</a>"
-							+"</div>"
-							+ "</td>"
-					);
-				}else{
-					var td8 = $("<td>"
-							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-							+"</a>"
-							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-							+"</a>"
-							/*+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</a>"*/
-							+"</div>"
-							+ "</td>"
-					);
-				}
-				
+				var td7 = $("<td>"
+						+translateStatus(array[i].status)
+						+ "</td>");
 					
 				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"default-danger\"></tr>");
@@ -170,7 +116,7 @@ function queryByPage() {
 					var tr = $("<tr></tr>");
 				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td9).append(td7);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			
@@ -246,7 +192,6 @@ function pageControl() {
 		queryByPage();
 	});
 }
-
 function page_init(){
 	queryByPage();
 	pageControl();

@@ -11,16 +11,11 @@
 				</div> -->
 				<div class="form-group">
 					<input type="text" class="form-control" id="containerName"
-						placeholder="container集群名称">
+						placeholder="container名称">
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" id="Physicalcluster"
-						placeholder="所属物理机集群">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="containeruser"
-						placeholder="所属用户">
-
+					<input type="text" class="form-control" id="ipAddr"
+						placeholder="IP地址">
 				</div>
 				<div class="form-group">
 					<select class="form-control" id="containerStatus">
@@ -41,15 +36,8 @@
 	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">Container集群列表</h5>
-				<div class="widget-toolbar no-border">
-					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
-						<i class="ace-icont fa fa-plus"></i>
-						 创建Container集群
-					</button>
-				</div>
+				<h5 class="widget-title">Container列表</h5>
 			</div>
-		
 			<div class="widget-body">
 				<div class="widget-main no-padding">
 					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
@@ -61,13 +49,13 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width="13%">Container集群名称</th>
-								<th width="16%">所属物理机集群</th>
-								<th width="13%">类型</th>
-								<th width="13%">所属用户</th>
-								<th width="13%">创建时间 </th>
-								<th width="13%" class="hidden-480">当前状态</th>
-								<th width="13%">操作</th>
+								<th width="16%">Container名称</th>
+								<th width="16%">所属container集群</th>
+								<th width="15%">所属物理机集群</th>
+								<th width="15%">ip</th>
+								<th width="15%">宿主机ip</th>
+								<th width="15%">创建时间 </th>
+								<th width="15%" class="hidden-480">当前状态</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
@@ -76,7 +64,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="pageControlBar" class="col-xs-6">
+		<div id="pageControlBar" class="col-xs-12">
 			<input type="hidden" id="totalPage_input" />
 			<ul class="pager">
 				<li><a href="javascript:void(0);" id="firstPage">&laquo&nbsp;首页</a></li>

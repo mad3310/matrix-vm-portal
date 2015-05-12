@@ -38,6 +38,7 @@
 		
 	    <association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
+	    	<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -227,17 +228,13 @@
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
 			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
 		</if>
-		join WEBPORTAL_USER u on C.CREATE_USER = u.ID
-		<if test="params != null and params.userName != null  and params.userName != ''">
-			and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
-		</if>
-		join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 		</if>
 		where 1=1
 		<if test="id != null  ">
-			and C.ID=#{id}selectValidVipContianer
+			and C.ID=#{id}
 		</if>
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">
 			and C.CONTAINER_NAME like CONCAT('%','${containerName}','%')
@@ -246,13 +243,16 @@
 			and C.TYPE=#{type}
 		</if>
 		<if test="ipAddr != null ">
-			and C.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
+			and C.IP_ADDR like CONCAT('%','${ipAddr}','%')
 		</if>
 		<if test="mclusterId != null ">
 			and C.MCLUSTER_ID=#{mclusterId}
 		</if>
 		<if test="zookeeperId != null ">
 			and C.ZOOKEEPER_ID=#{zookeeperId}
+		</if>
+		<if test="status != null and status != '' ">
+				and C.STATUS=#{status}
 		</if>
 	</select>
 	
@@ -315,7 +315,7 @@
 			<if test="params !=null and params.type != null ">
 				and C.TYPE=#{params.type}
 			</if>
-			<if test="params !=null and params.ipAddr != null ">
+			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
 				and C.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
 			</if>
 			<if test="params !=null and params.mclusterId != null ">
@@ -324,23 +324,22 @@
 			<if test="params !=null and params.zookeeperId != null ">
 				and C.ZOOKEEPER_ID=#{params.zookeeperId}
 			</if>
+			<if test="params !=null and params.status != null and params.status != '' ">
+				and C.STATUS=#{params.status}
+			</if>
 		</trim>
 	</sql>
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
 		select
 		<include refid="Base_Column_List" />
-		,n.MCLUSTER_NAME,u.USERNAME,h.HCLUSTER_NAME_ALIAS
+		,n.MCLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
 		from WEBPORTAL_CONTAINER C
 		left join WEBPORTAL_MCLUSTER_INFO n on n.ID = C.MCLUSTER_ID 
 		<if test="params != null and params.mclusterName != null  and params.mclusterName != ''">
 			and n.MCLUSTER_NAME like CONCAT('%','${params.mclusterName}','%') escape '^'
 		</if>
-		join WEBPORTAL_USER u on C.CREATE_USER = u.ID
-		<if test="params != null and params.userName != null  and params.userName != ''">
-			and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
-		</if>
-		join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+		left join WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 			and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 		</if>
