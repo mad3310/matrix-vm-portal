@@ -245,7 +245,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("backupIp", backupIp);
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
-//		defaultEmailSender.sendMessage(mailMessage);
+		defaultEmailSender.sendMessage(mailMessage);
 	}
 	
 	@Override
