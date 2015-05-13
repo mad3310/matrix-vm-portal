@@ -121,6 +121,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			//将备份记录写入数据库。
 			BackupResultModel backup = new BackupResultModel();
 			backup.setMclusterId(mcluster.getId());
+			backup.setHclusterId(mcluster.getHclusterId());
 			backup.setDbId(dbModel.getId());
 			backup.setBackupIp(container.getIpAddr());
 			backup.setStartTime(date);
@@ -161,7 +162,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	@Async
+    @Async
 	public void checkBackupStatus(BackupResultModel backup) {
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
@@ -214,7 +215,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			params.clear();
 			params.put("hclusterId", hcluster.getId());
 			BackupResultModel recentBackup = this.selectRecentBackup(params);
-			if(recentBackup == null)
+			if(recentBackup == null || count<=0)
 				continue;
 			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),count);
 			for (MclusterModel mclusterModel : mclusters) {
@@ -245,7 +246,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("backupIp", backupIp);
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
-		defaultEmailSender.sendMessage(mailMessage);
+     	defaultEmailSender.sendMessage(mailMessage);
 	}
 	
 	@Override
