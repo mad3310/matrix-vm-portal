@@ -26,4 +26,10 @@ public class SkipController {
 		mav.setViewName("/common/zk_list");
 		return mav;
 	}
+	
+	@RequestMapping(value ="/list/timingTask",method=RequestMethod.GET)
+	public ModelAndView toTimingTask(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/common/timing_task_list");
+		return mav;
+	}
 }

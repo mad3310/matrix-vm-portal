@@ -6,10 +6,6 @@ $(function(){
 	//初始化 
 	page_init();
 	
-	/*动态加载界面下拉列表值*/
-	var sltArray = [1,2,3,5,7,8,9,10,11,12,13,14];
-	addSltOpt(sltArray,$("#containerStatus"));
-	
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -23,7 +19,7 @@ $(function(){
 		queryByPage();
 	});
 	$("#mclusterClearSearch").click(function(){
-		var clearList = ["containerName","ipAddr","containerStatus"];
+		var clearList = ["containerName","Physicalcluster","containeruser","containerStatus"];
 		clearSearch(clearList);
 	});
 	
@@ -31,16 +27,13 @@ $(function(){
 });
 
 function queryByPage() {
-	var containerName = $("#containerName").val()?$("#containerName").val():'';
-	var  ipAddr= $("#ipAddr").val()?$("#ipAddr").val():'';
-	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
+	var name = $("#timingTaskName").val()?$("#timingTaskName").val():'';
+	var  descn= $("#timingTaskDescn").val()?$("#timingTaskDescn").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'containerName':containerName,
-			'ipAddr':ipAddr,
-			/*'createTime':createTime,*/
-			'status':status
+			'name':name,
+			'descn':descn
 		}
 	
 	$("#tby tr").remove();
@@ -48,7 +41,7 @@ function queryByPage() {
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : queryUrlBuilder("/container",queryCondition),
+		url : queryUrlBuilder("/timingTask",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -65,44 +58,29 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].containerName+"</a>"
+						+array[i].name
 						+ "</td>");
-				if(array[i].mcluster){
-					var td3 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
-							+ "</td>");
-				} else {
-					var td3 = $("<td> </td>");
-				} 
-				if(array[i].hcluster){
-					var td4 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].mcluster.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
-							+ "</td>");
-				} else {
-					var td4= $("<td> </td>");
-				}
+				var td3 = $("<td>"
+						+array[i].uuid
+						+" </td>");
+				var td4 = $("<td>"
+						+ array[i].execType
+						+ "</td>");
 				var td5 = $("<td>"
-						+ array[i].ipAddr
+						+ array[i].httpMethod
 						+ "</td>");
 				var td6 = $("<td>"
-						+ array[i].hostIp
-						+ "</td>");
-				var td9 = $("<td>"
-						+ date('Y-m-d H:i:s',array[i].createTime)
+						+ array[i].url
 						+ "</td>");
 				var td7 = $("<td>"
-						+translateStatus(array[i].status)
+						+ array[i].timingRule
 						+ "</td>");
-					
-				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
-					var tr = $("<tr class=\"default-danger\"></tr>");
-				}else if(array[i].status == 5||array[i].status == 13){
-					var tr = $("<tr class=\"warning\"></tr>");
-				}else{
+				var td8 = $("<td>"
+						+array[i].descn
+						+ "</td>");
 					var tr = $("<tr></tr>");
-				}
 				
-				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td9).append(td7);
+				tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
 				tr.appendTo(tby);
 			}//循环json中的数据 
 			

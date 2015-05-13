@@ -42,6 +42,8 @@
         
         <typeAlias alias="ZookeeperInfo" type="com.letv.portal.model.common.ZookeeperInfo" />
         
+        <typeAlias alias="BaseTimingTask" type="com.letv.portal.model.timing.task.BaseTimingTask" />
+        
         <!-- for testing lyh -->
         <typeAlias alias="Contact" type="com.letv.portal.model.Contact" />
         <typeAlias alias="ContactHobbyDetail" type="com.letv.portal.model.ContactHobbyDetail" />
