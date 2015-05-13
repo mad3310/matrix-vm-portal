@@ -121,6 +121,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			//将备份记录写入数据库。
 			BackupResultModel backup = new BackupResultModel();
 			backup.setMclusterId(mcluster.getId());
+			backup.setHclusterId(mcluster.getHclusterId());
 			backup.setDbId(dbModel.getId());
 			backup.setBackupIp(container.getIpAddr());
 			backup.setStartTime(date);
@@ -151,18 +152,16 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
-		int addNewCount = count-results.size();
-		if(addNewCount>0)
-			this.backupTask4addNew(addNewCount);
 		
 		for (BackupResultModel backup : results) {
 			this.checkBackupStatus(backup);
 		}
+		this.backupTask4addNew(count);
 		
 	}
 
 	@Override
-	@Async
+    @Async
 	public void checkBackupStatus(BackupResultModel backup) {
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
@@ -200,17 +199,24 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 	}
 	
-	private void backupTask4addNew(int addNewCount) {
+	private void backupTask4addNew(int count) {
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("type","rds");
 		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
 		params.clear();
 		for (HclusterModel hcluster : hclusters) {
+			params.clear();
+			params.put("status", BackupStatus.BUILDING);
+			params.put("hclusterId", hcluster.getId());
+			List<BackupResultModel> results = this.selectByMap(params);
+			if(!results.isEmpty())
+				count -= results.size();
+			params.clear();
 			params.put("hclusterId", hcluster.getId());
 			BackupResultModel recentBackup = this.selectRecentBackup(params);
-			if(recentBackup == null)
+			if(recentBackup == null || count<=0)
 				continue;
-			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),addNewCount);
+			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),count);
 			for (MclusterModel mclusterModel : mclusters) {
 				this.wholeBackup4Db(mclusterModel);
 			}
@@ -239,7 +245,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("backupIp", backupIp);
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
-//		defaultEmailSender.sendMessage(mailMessage);
+     	defaultEmailSender.sendMessage(mailMessage);
 	}
 	
 	@Override
