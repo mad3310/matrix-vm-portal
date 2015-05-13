@@ -125,7 +125,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/db/backup",method=RequestMethod.GET)   
+	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
 		if(count ==0 || count<0) {

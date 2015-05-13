@@ -152,12 +152,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
-	
-		this.backupTask4addNew(count);
 		
 		for (BackupResultModel backup : results) {
 			this.checkBackupStatus(backup);
 		}
+		this.backupTask4addNew(count);
 		
 	}
 
