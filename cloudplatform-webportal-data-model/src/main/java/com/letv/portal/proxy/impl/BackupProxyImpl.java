@@ -151,9 +151,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("status", BackupStatus.BUILDING);
 		List<BackupResultModel> results = this.selectByMap(params);
-		int addNewCount = count-results.size();
-		if(addNewCount>0)
-			this.backupTask4addNew(addNewCount);
+	
+		this.backupTask4addNew(count);
 		
 		for (BackupResultModel backup : results) {
 			this.checkBackupStatus(backup);
@@ -200,17 +199,24 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 	}
 	
-	private void backupTask4addNew(int addNewCount) {
+	private void backupTask4addNew(int count) {
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("type","rds");
 		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
 		params.clear();
 		for (HclusterModel hcluster : hclusters) {
+			params.clear();
+			params.put("status", BackupStatus.BUILDING);
+			params.put("hclusterId", hcluster.getId());
+			List<BackupResultModel> results = this.selectByMap(params);
+			if(!results.isEmpty())
+				count -= results.size();
+			params.clear();
 			params.put("hclusterId", hcluster.getId());
 			BackupResultModel recentBackup = this.selectRecentBackup(params);
 			if(recentBackup == null)
 				continue;
-			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),addNewCount);
+			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),count);
 			for (MclusterModel mclusterModel : mclusters) {
 				this.wholeBackup4Db(mclusterModel);
 			}
