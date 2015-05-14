@@ -13,6 +13,10 @@
 		<result column="TIMING_RULE" property="timingRule" />
 		<result column="EXEC_TYPE" property="execType" />
 		<result column="DESCN" property="descn" />
+		<result column="TYPE" property="type" />
+		<result column="TIME_POINT" property="timePoint" />
+		<result column="TIME_INTERVAL" property="timeInterval" />
+		
 		
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -23,7 +27,7 @@
 	
 	<!-- WEBPORTAL_TIMING_TASK table all fields -->
 	<sql id="Base_Column_List">
-		tt.ID,tt.NAME,tt.UUID,tt.HTTP_METHOD,tt.URL,tt.TIMING_RULE,tt.EXEC_TYPE,tt.DESCN,
+		tt.ID,tt.NAME,tt.UUID,tt.HTTP_METHOD,tt.URL,tt.TIMING_RULE,tt.EXEC_TYPE,tt.DESCN,TYPE,TIME_POINT,TIME_INTERVAL,
 		tt.DELETED,tt.CREATE_TIME,tt.CREATE_USER,tt.UPDATE_TIME,tt.UPDATE_USER
 	</sql>
 	
@@ -55,6 +59,15 @@
 			<if test="descn != null  and descn != ''  and descn != 'null'">
 				and tt.DESCN like CONCAT('%','${descn}','%') escape '^'
 			</if>
+			<if test="type != null and type != '' ">
+				and tt.TYPE=#{type}
+			</if>
+			<if test="timePoint != null and timePoint != '' ">
+				and tt.TIME_POINT=#{timePoint}
+			</if>
+			<if test="timeInterval != null and timeInterval != '' ">
+				and tt.TIME_INTERVAL=#{timeInterval}
+			</if>
 			<if test="deleted != null  ">
 				and tt.DELETED=#{deleted}
 			</if>
@@ -77,16 +90,17 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="BaseTimingTask" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_TIMING_TASK(NAME,UUID,HTTP_METHOD,URL,TIMING_RULE,EXEC_TYPE,DESCN,
+		WEBPORTAL_TIMING_TASK(NAME,UUID,HTTP_METHOD,URL,TIMING_RULE,EXEC_TYPE,DESCN,TYPE,TIME_POINT,TIME_INTERVAL,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{name},#{uuid},#{httpMethod},#{url},#{timingRule},#{execType},#{descn},#{deleted},now(),#{createUser},now(),#{updateUser})
+		#{name},#{uuid},#{httpMethod},#{url},#{timingRule},#{execType},#{descn},#{type},#{timePoint},#{timeInterval},#{deleted},now(),#{createUser},now(),#{updateUser})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="BaseTimingTask">
 		update WEBPORTAL_TIMING_TASK set
-		ID=#{id},NAME=#{name},UUID=#{uuid},HTTP_METHOD=#{httpMethod},URL=#{url},TIMING_RULE=#{timingRule},EXEC_TYPE=#{execType},DESCN=#{descn},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},NAME=#{name},UUID=#{uuid},HTTP_METHOD=#{httpMethod},URL=#{url},TIMING_RULE=#{timingRule},EXEC_TYPE=#{execType},DESCN=#{descn},TYPE=#{type},TIME_POINT=#{timePoint},TIME_INTERVAL=#{timeInterval},
+		DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 
@@ -113,6 +127,15 @@
 			</if>
 			<if test="descn != null  ">
 				DESCN=#{descn},
+			</if>
+			<if test="type != null and type != '' ">
+			 	tt.TYPE=#{type},
+			</if>
+			<if test="timePoint != null and timePoint != '' ">
+				tt.TIME_POINT=#{timePoint},
+			</if>
+			<if test="timeInterval != null and timeInterval != '' ">
+				tt.TIME_INTERVAL=#{timeInterval},
 			</if>
 			<if test="deleted != null  ">
 				DELETED=#{deleted},
@@ -186,6 +209,15 @@
 			</if>
 			<if test="params != null and params.descn != null  and params.descn != ''  and params.descn != 'null'">
 				and tt.DESCN like CONCAT('%','${params.descn}','%') escape '^'
+			</if>
+			<if test="params != null and params.type != null and params.type != '' ">
+				and tt.TYPE=#{params.type}
+			</if>
+			<if test="params != null and params.timePoint != null and params.timePoint != '' ">
+				and tt.TIME_POINT=#{params.timePoint}
+			</if>
+			<if test="params != null and params.timeInterval != null and params.timeInterval != '' ">
+				and tt.TIME_INTERVAL=#{params.timeInterval}
 			</if>
 			<if test="params != null and params.deleted != null  ">
 				and tt.DELETED=#{params.deleted}

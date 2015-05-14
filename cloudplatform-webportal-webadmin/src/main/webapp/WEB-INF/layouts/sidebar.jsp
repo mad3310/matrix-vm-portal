@@ -124,6 +124,12 @@
 				<span class="menu-text">备份与恢复</span> 
 			</a>
 		</li>
+		<li id="sidebar-timing-task-mgr" >
+			<a href="${ctx}/list/timingTask">
+				<i class="menu-icon fa  fa-clock-o"></i> 
+				<span class="menu-text">定时任务管理</span> 
+			</a>
+		</li>
 		<li id="sidebar-task-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-tasks"></i> 

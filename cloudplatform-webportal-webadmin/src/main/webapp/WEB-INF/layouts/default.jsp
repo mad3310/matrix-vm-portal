@@ -316,6 +316,10 @@
 		$('#sidebar-zk-mgr').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
 		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/timingTask") >= 0){
+		$('#sidebar-timing-task-mgr').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/timingTask").html("定时任务管理");
+		$('#main-content-header li:eq(1)').remove();
 	}
 	
 			

@@ -17,7 +17,10 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.enumeration.TimingTaskExecType;
 import com.letv.portal.model.common.ZookeeperInfo;
+import com.letv.portal.model.gce.GceImage;
+import com.letv.portal.model.timing.task.BaseTimingTask;
 import com.letv.portal.service.common.IZookeeperInfoService;
 import com.letv.portal.timing.task.IBaseTimingTaskService;
 @Controller
@@ -35,5 +38,22 @@ public class TimingTaskController {
 		obj.setData(this.baseTimingTaskService.selectPageByParams(page, params));
 		return obj;
 	}
-	
+	@RequestMapping(method=RequestMethod.POST)   
+	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		baseTimingTask.setExecType(TimingTaskExecType.PYTHON);
+		this.baseTimingTaskService.insert(baseTimingTask);
+		return obj;
+	}
+	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject delTimingTask(@PathVariable Long id,HttpServletRequest request) {
+		ResultObject obj = new ResultObject();
+		if(id == null)
+			throw new ValidateException("参数不合法");
+		BaseTimingTask baseTimingTask = this.baseTimingTaskService.selectById(id);
+		if(baseTimingTask == null)
+			throw new ValidateException("参数不合法");
+		this.baseTimingTaskService.delete(baseTimingTask);
+		return obj;
+	}
 }

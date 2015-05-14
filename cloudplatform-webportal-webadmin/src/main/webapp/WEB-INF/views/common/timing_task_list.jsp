@@ -29,6 +29,12 @@
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">定时任务列表</h5>
+				<div class="widget-toolbar no-border">
+					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" data-target="#add-timing-task-modal">
+						<i class="ace-icont fa fa-plus"></i>
+						 添加定时任务
+					</button>
+				</div>
 			</div>
 			<div class="widget-body">
 				<div class="widget-main no-padding">
@@ -41,13 +47,14 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width="16%">名称</th>
-								<th width="16%">任务uuid</th>
-								<th width="15%">调度方式</th>
-								<th width="15%">执行接口</th>
-								<th width="15%">接口调用方式</th>
-								<th width="15%" >调度规则</th>
-								<th width="15%">描述</th>
+								<th>名称</th>
+								<th>任务uuid</th>
+								<th>调度方式</th>
+								<th>执行接口</th>
+								<th>接口调用方式</th>
+								<th>调度规则</th>
+								<th>描述</th>
+								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
@@ -69,6 +76,91 @@
 			</ul>
 		</div>
 	</div>
+	<div class="modal fade" id="add-timing-task-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal">
+            					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
+            					<span class="sr-only">关闭</span>
+            				</button>
+            				<h4 class="modal-title">添加定时任务</h4>
+            		</div>
+					<form id="add-timing-task-form" name="add-timing-task-form" class="form-horizontal" role="form">
+					<div class="modal-body">            				
+            					<div class="form-group">
+										<label class="col-sm-4 control-label" for="mcluster_name">名称</label>
+										<div class="col-sm-6">
+											<input class="form-control" name="addTimingTaskName" id="addTimingTaskName" type="text" />
+										</div>
+										<label class="control-label">
+											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">执行接口</label>
+										<div class="col-sm-6">
+											<input class="form-control" name="timingTaskUrl" id="timingTaskUrl" type="text" />
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="需要定时调用url" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">接口调用方式</label>
+										<div class="col-sm-3">
+											<select class="form-control" name="httpMethod" id="httpMethod">
+												<option>get</option>
+												<option>post</option>
+											</select>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="url调用方式" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">调度规则</label>
+										<div class="col-sm-6">
+											<button class="btn btn-xs btn-default" type="button">定点执行</button>
+											<button class="btn btn-xs btn-default" type="button">周期执行</button>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="url调用规则,如：（1）cron=0hour,每天0点调用，（2）interval=5seconds,没五秒执行一次。" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">任务描述</label>
+										<div class="col-sm-6">
+											<textarea class="form-control" name="addTimingTaskDescn" id="addTimingTaskDescn" type="text" ></textarea>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+            			</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+						<button id="add-timing-task-botton" type="submit" class="btn btn-sm btn-primary">创建</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+		<div id="dialog-confirm" class="hide">
+			<div id="dialog-confirm-content" class="alert alert-info bigger-110"></div>
+			<div class="space-6"></div>
+			<p id="dialog-confirm-question" class="bigger-110 bolder center grey"></p>
+		</div>
 </div>
 <!-- /.page-content-area -->
 

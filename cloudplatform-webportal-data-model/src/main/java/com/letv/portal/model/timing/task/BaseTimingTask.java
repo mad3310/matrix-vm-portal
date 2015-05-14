@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.OssServerVisibility;
+import com.letv.portal.enumeration.TimingTaskExecType;
+import com.letv.portal.enumeration.TimingTaskType;
 
 /**Program Name: BaseTimingTask <br>
  * Description:  定时任务<br>
@@ -21,8 +23,11 @@ public class BaseTimingTask extends BaseModel {
 	private String httpMethod;
 	private String url;
 	private String timingRule;
-	private String execType;
+	private TimingTaskExecType execType;
 	private String descn;
+	private TimingTaskType type;
+	private String timePoint;
+	private String timeInterval;
 	
 	public String getName() {
 		return name;
@@ -54,10 +59,10 @@ public class BaseTimingTask extends BaseModel {
 	public void setTimingRule(String timingRule) {
 		this.timingRule = timingRule;
 	}
-	public String getExecType() {
+	public TimingTaskExecType getExecType() {
 		return execType;
 	}
-	public void setExecType(String execType) {
+	public void setExecType(TimingTaskExecType execType) {
 		this.execType = execType;
 	}
 	public String getDescn() {
@@ -66,4 +71,23 @@ public class BaseTimingTask extends BaseModel {
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
+	public TimingTaskType getType() {
+		return type;
+	}
+	public void setType(TimingTaskType type) {
+		this.type = type;
+	}
+	public String getTimePoint() {
+		return timePoint;
+	}
+	public void setTimePoint(String timePoint) {
+		this.timePoint = timePoint;
+	}
+	public String getTimeInterval() {
+		return timeInterval;
+	}
+	public void setTimeInterval(String timeInterval) {
+		this.timeInterval = timeInterval;
+	}
+	
 }
