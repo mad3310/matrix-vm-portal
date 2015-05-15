@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,8 +211,17 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			params.put("status", BackupStatus.BUILDING);
 			params.put("hclusterId", hcluster.getId());
 			List<BackupResultModel> results = this.selectByMap(params);
+			/*if(!results.isEmpty())
+				count -= results.size();*/
+			//以集群名为单位，计算当前building个数。
+			Set<Long> set = new HashSet<Long>();
+			for (BackupResultModel result : results) {
+				set.add(result.getMclusterId());
+			}
 			if(!results.isEmpty())
-				count -= results.size();
+				count -= set.size();
+			set = null;
+			
 			params.clear();
 			params.put("hclusterId", hcluster.getId());
 			BackupResultModel recentBackup = this.selectRecentBackup(params);
