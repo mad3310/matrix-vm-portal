@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.ConfigUtil;
@@ -25,7 +26,8 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 	
 	@Autowired
 	private ISlbPythonService slbPythonService;
-	
+	@Value("${matrix.slb.default.image}")
+	private String MATRIX_SLB_DEFAULT_IMAGE;
 	private final static Logger logger = LoggerFactory.getLogger(TaskSlbCreateServiceImpl.class);
 	
 	@Override
@@ -42,7 +44,7 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		map.put("containerClusterName",cluster.getClusterName());
 		map.put("componentType", "gbalancerCluster");
 		map.put("networkMode", "ip");
-		map.put("image", ConfigUtil.getString("matrix.slb.default.image"));
+		map.put("image", MATRIX_SLB_DEFAULT_IMAGE);
 		String result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
