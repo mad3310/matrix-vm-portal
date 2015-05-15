@@ -126,12 +126,20 @@
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label" for="hcluster">调度规则</label>
-										<div class="col-sm-6">
-											<button class="btn btn-xs btn-default" type="button">定点执行</button>
-											<button class="btn btn-xs btn-default" type="button">周期执行</button>
+										<div class="col-sm-6 timing-default">
+											<button class="btn btn-xs btn-primary" type="button" id="timing-task-cron-btn">定点执行</button>
+											<button class="btn btn-xs btn-default" type="button" id="timing-task-interval-btn">周期执行</button>
+											<div class="timing-set" id="timing-task-btn-input">
+												<span id="timing-task-span-start">每</span>
+												<input class="timing-input" type="text" id="timing-hour" name="timingHour"/><span>时</span>
+												<input class="timing-input"  type="text" id="timing-min" name="timingMin"/><span>分</span>
+												<input class="timing-input"  type="text" id="timing-second" name="timingSecond"/><span>秒</span>
+												<span id="timing-task-span-end">时运行</span>
+											</div>
 										</div>
+										
 										<label class="control-label" for="hcluster">
-											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="url调用规则,如：（1）cron=0hour,每天0点调用，（2）interval=5seconds,没五秒执行一次。" style="cursor:pointer; text-decoration:none;">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="url调用规则,如：（1）每天0时0分0秒执行一次接口，（2）每隔0时0分5秒执行一次接口" style="cursor:pointer; text-decoration:none;">
 												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 											</a>
 										</label>

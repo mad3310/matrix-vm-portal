@@ -1094,3 +1094,14 @@ edit by jinglinlin@letv.com
 	background: inherit;
 }
 /* pageinator input style end */
+.timing-input{
+    padding: 0px !important;
+    height:17px !important;
+    width: 19px;
+}
+.timing-default>button{
+	margin-top: 6px;
+}
+.timing-set{
+	padding-top: 6px !important;
+}

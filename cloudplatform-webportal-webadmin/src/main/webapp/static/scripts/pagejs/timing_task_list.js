@@ -1,6 +1,6 @@
 var currentPage = 1; //第几页 
 var recordsPerPage = 15; //每页显示条数
-var queryBuildStatusrefresh;//刷新handler
+var timingTaskType="CRON";
 	
 $(function(){
 	//初始化 
@@ -66,9 +66,16 @@ function queryByPage() {
 				var td6 = $("<td>"
 						+ array[i].url
 						+ "</td>");
-				var td7 = $("<td>"
-						+ array[i].type+"="+(array[i].timePoint != null?array[i].timePoint : array[i].timeInterval)
-						+ "</td>");
+				var td7= $("<td>"-"</td>");
+				if(array[i].type=="CRON"){
+					var td7 = $("<td>"
+							+"每"+array[i].timePoint+"时执行"
+							+ "</td>");
+				}else if(array[i].type=="INTERVAL"){
+					var td7 = $("<td>"
+							+"每隔"+array[i].timeInterval+"执行一次"
+							+ "</td>");
+				}
 						
 				var td8 = $("<td>"
 						+array[i].descn
@@ -154,9 +161,6 @@ function formValidate(){
 	$("#add-timing-task-form").bootstrapValidator({
 	  message: '无效的输入',
          feedbackIcons: {
-             valid: 'glyphicon glyphicon-ok',
-             invalid: 'glyphicon glyphicon-remove',
-             validating: 'glyphicon glyphicon-refresh'
          },
          fields: {
        	  addTimingTaskName: {
@@ -182,28 +186,79 @@ function formValidate(){
                      }
 	             }
          	},
-         	timingTaskRule: {
+         	timingHour: {
                  validMessage: '请按提示输入',
                  validators: {
-                     notEmpty: {
-                         message: '调度规则不能为空!'
-                     }
+                     integer: {
+                        message: '请输入数字'
+                    },between:{
+                        min:0,
+                        max:23,
+                        message:'时范围0-23'
+                    }
+	             }
+         	},
+         	timingMin: {
+                 validMessage: '请按提示输入',
+                 validators: {
+                     integer: {
+                        message: '请输入数字'
+                    },between:{
+                        min:0,
+                        max:59,
+                        message:'分范围0-59'
+                    }
+	             }
+         	},
+         	timingSecond: {
+                 validMessage: '请按提示输入',
+                 validators: {
+                     integer: {
+                        message: '请输入数字'
+                    },between:{
+                        min:0,
+                        max:59,
+                        message:'秒范围0-59'
+                    },callback: {
+                        message: '时分秒不能全为空',
+                        callback: function() {
+                            if($("#timing-hour").val()!=''||$("#timing-min").val()!=''||$("#timing-second").val()!=''){
+	                            return true;
+                            }else{
+                            	 return false;
+                            }
+                        }
+                    }
 	             }
          	}
          }
-     }).on('success.form.bv', function(e) {
+     }).on('keyup', '[name="timingHour"]', function () {
+            $('#add-timing-task-form').bootstrapValidator('revalidateField', 'timingSecond');
+    }).on('keyup', '[name="timingMin"]', function () {
+            $('#add-timing-task-form').bootstrapValidator('revalidateField', 'timingSecond');
+    }).on('success.form.bv', function(e) {
         e.preventDefault();
+        var timingHour=$("#timing-hour").val();
+        var timingmin=$("#timing-min").val();
+        var timingSecond=$("#timing-second").val();
+        
+        var postData= {
+    			name:$('#addTimingTaskName').val(),
+    			url:$('#timingTaskUrl').val(),
+    			type:timingTaskType,
+    			httpMethod:$('#httpMethod').val(),
+    			descn:$('#addTimingTaskDescn').val()
+    		};
+    		if(timingTaskType=="CRON"){
+    			postData.timePoint=(timingHour==''? '':timingHour+"hour")+(timingmin==''? '':timingmin+"minute")+(timingSecond==''? '':timingSecond+"second");
+    		}else if(timingTaskType=="INTERVAL"){
+    			postData.timeInterval=(timingHour==''? '':timingHour+"hours")+(timingmin==''? '':timingmin+"minutes")+(timingSecond==''? '':timingSecond+"seconds");
+    		}
         $.ajax({
     		cache:false,
     		type : "post",
     		url : "/timingTask",
-    		data: {
-    			name:$('#addTimingTaskName').val(),
-    			url:$('#timingTaskUrl').val(),
-    			timingRule:$('#timingTaskRule').val(),
-    			httpMethod:$('#httpMethod').val(),
-    			descn:$('#addTimingTaskDescn').val()
-    		},
+    		data:postData,
     		success : function(data) {
     			location.href = "/list/timingTask";
     		}
@@ -227,9 +282,27 @@ function delTimingTask(obj){
 	}
 	confirmframe("删除","您确定要删除此任务","删除后可以重新创建",delCmd);
 }
+function initTimingTaskSetBtn(){
+	$("#timing-task-cron-btn").click(function(){
+		$("#timing-task-interval-btn").removeClass("btn-primary").addClass("btn-default");
+		$(this).removeClass("btn-default").addClass("btn-primary");
+		$("#timing-task-span-start").text("每");
+		$("#timing-task-span-end").text("时运行");
+		timingTaskType="CRON";
+	});
+	$("#timing-task-interval-btn").click(function(){
+		$("#timing-task-cron-btn").removeClass("btn-primary").addClass("btn-default");
+		$(this).removeClass("btn-default").addClass("btn-primary");
+		$("#timing-task-span-start").text("每隔");
+		$("#timing-task-span-end").text("运行一次");
+		timingTaskType="INTERVAL";
+	});
+	
+}
 function page_init(){
 	queryByPage();
 	pageControl();
 	formValidate();
+	initTimingTaskSetBtn();
 	$('[name = "popoverHelp"]').popover();
 }
