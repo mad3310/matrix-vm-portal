@@ -100,6 +100,19 @@
 										</label>
 									</div>
 									<div class="form-group">
+										<label class="col-sm-4 control-label" for="hcluster">调度方式</label>
+										<div class="col-sm-3">
+											<select class="form-control" name="timingTaskExecType" id="timingTaskExecType">
+												<option>PYTHON</option>
+											</select>
+										</div>
+										<label class="control-label" for="hcluster">
+											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="选择负责调度的选项" style="cursor:pointer; text-decoration:none;">
+												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+											</a>
+										</label>
+									</div>
+									<div class="form-group">
 										<label class="col-sm-4 control-label" for="hcluster">执行接口</label>
 										<div class="col-sm-6">
 											<input class="form-control" name="timingTaskUrl" id="timingTaskUrl" type="text" />
@@ -116,6 +129,9 @@
 											<select class="form-control" name="httpMethod" id="httpMethod">
 												<option>get</option>
 												<option>post</option>
+												<option>delete</option>
+												<option>put</option>
+												<option>input</option>
 											</select>
 										</div>
 										<label class="control-label" for="hcluster">

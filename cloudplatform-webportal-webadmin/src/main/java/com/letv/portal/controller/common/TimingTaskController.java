@@ -41,7 +41,6 @@ public class TimingTaskController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		baseTimingTask.setExecType(TimingTaskExecType.PYTHON);
 		this.baseTimingTaskService.insert(baseTimingTask);
 		return obj;
 	}

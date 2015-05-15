@@ -247,7 +247,8 @@ function formValidate(){
     			url:$('#timingTaskUrl').val(),
     			type:timingTaskType,
     			httpMethod:$('#httpMethod').val(),
-    			descn:$('#addTimingTaskDescn').val()
+    			descn:$('#addTimingTaskDescn').val(),
+    			execType:$("#timingTaskExecType").val()
     		};
     		if(timingTaskType=="CRON"){
     			postData.timePoint=(timingHour==''? '':timingHour+"hour")+(timingmin==''? '':timingmin+"minute")+(timingSecond==''? '':timingSecond+"second");
