@@ -261,6 +261,7 @@ function formValidate(){
     		type : "post",
     		url : "/timingTask",
     		data:postData,
+    		dataType : "json",
     		success : function(data) {
     			if(error(data)) return;
     			location.href = "/list/timingTask";
