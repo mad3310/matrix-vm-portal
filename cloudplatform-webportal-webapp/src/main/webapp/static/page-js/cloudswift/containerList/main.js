@@ -77,7 +77,7 @@ define(function(require){
 	 * 可封装公共方法 end
 	 */
 	
-	setInterval(asyncData,10000);
+	setInterval(asyncData,5000);
 	//加载列表数据
 	function asyncData(page) {
 		var name = $("#name").val(),location = $("#location").val();
