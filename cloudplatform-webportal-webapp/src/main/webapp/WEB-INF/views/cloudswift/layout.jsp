@@ -104,10 +104,10 @@
                     <%-- <li><a class="text-sm" src="${ctx}/detail/authorityInfo/${swiftId}" href="javascript:void(0)">权限管理</a></li> --%>
                   <!--  <li><a  class="text-sm" href="javascript:void(0)">权限管理 <p class="pull-right home-orange">敬请期待...</p></a></li> -->
                     <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
-                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控<p class="pull-right home-orange">敬请期待...</p></a>
+                    <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm"  href="javascript:void(0)">请求数<p class="pull-right home-orange">敬请期待...</p></a></li>
-                            <li><a  class="text-sm"  href="javascript:void(0)">吞吐量<p class="pull-right home-orange">敬请期待...</p></a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/oss/cpu/${ossId}">请求数</a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/oss/throughput/${ossId}">吞吐量</a></li>
                         </ul>
                     </li>
                 </ul>

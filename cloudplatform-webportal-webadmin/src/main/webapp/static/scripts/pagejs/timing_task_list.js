@@ -238,6 +238,7 @@ function formValidate(){
             $('#add-timing-task-form').bootstrapValidator('revalidateField', 'timingSecond');
     }).on('success.form.bv', function(e) {
         e.preventDefault();
+       $("#add-timing-task-modal").modal("hide");
         var timingHour=$("#timing-hour").val();
         var timingmin=$("#timing-min").val();
         var timingSecond=$("#timing-second").val();
@@ -261,6 +262,7 @@ function formValidate(){
     		url : "/timingTask",
     		data:postData,
     		success : function(data) {
+    			if(error(data)) return;
     			location.href = "/list/timingTask";
     		}
     	})
