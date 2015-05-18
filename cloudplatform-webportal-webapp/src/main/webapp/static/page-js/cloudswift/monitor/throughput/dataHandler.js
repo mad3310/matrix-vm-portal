@@ -16,21 +16,23 @@ define(function(require,exports,module){
             InitChart(div,data.titleText,data.yAxisText,data.tooltipSuffix);
         },
         SetChartData:function(data){
-            var dbId= $('#dbId').val();
+            var swiftId= $('#swiftId').val();
             var chart = $("#chart-container").highcharts();
             var ydata = data.data;
             for(var i=chart.series.length-1;i>=0;i--){
                 chart.series[i].remove(false);
             }
             for(var i=0;i<ydata.length;i++){
-            	if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_inserts"){
-            		ydata[i].name = "平均每秒insert语句执行次数";
-            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_deletes"){
-            		ydata[i].name = "平均每秒delete语句执行次数";
-            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_updates"){
-            		ydata[i].name = "平均每秒update语句执行次数";
-            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "num_reads"){
-            		ydata[i].name = "平均每秒select语句执行次数";
+            	if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "throughput_put"){
+            		ydata[i].name = "PUT请求吞吐量";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "throughput_head"){
+            		ydata[i].name = "HEAD请求吞吐量";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "throughput_post"){
+            		ydata[i].name = "POST请求吞吐量";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "throughput_delete"){
+            		ydata[i].name = "DELETE请求吞吐量";
+            	}else if(ydata[i].name != undefined && ydata[i].name != null && ydata[i].name == "throughput_get"){
+            		ydata[i].name = "GET请求吞吐量";
             	}
                 chart.addSeries(ydata[i],false);
             }
@@ -44,7 +46,7 @@ define(function(require,exports,module){
                 zoomType: 'x',
                 spacingRight: 20
             },
-            colors: ['#ff66cc','#66ff66','#66ffff','#FFBB33'],
+            colors: ['#ff66cc','#66ff66','#66ffff','#FFBB33','#C9C'],
             title: {
                 text: title
             },

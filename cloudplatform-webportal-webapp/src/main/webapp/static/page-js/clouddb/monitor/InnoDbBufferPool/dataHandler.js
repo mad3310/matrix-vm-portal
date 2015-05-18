@@ -41,7 +41,7 @@ define(function(require,exports,module){
                 zoomType: 'x',
                 spacingRight: 20
             },
-            colors: ['#ff66cc','#66ff66','#66ffff','#FFBB33'],
+            colors: ['#ff66cc','#66ff66','#66ffff'],
             title: {
                 text: title
             },

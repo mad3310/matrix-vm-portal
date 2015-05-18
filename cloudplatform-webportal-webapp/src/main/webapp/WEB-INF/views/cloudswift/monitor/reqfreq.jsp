@@ -20,7 +20,7 @@
 	<!-- 全局参数 end -->
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">reqfreq</h5>
+			<h5 class="">请求数</h5>
 		</div>
 		<div class="pull-right">
 			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
