@@ -35,10 +35,16 @@
 												<span class="lbl"></span>
 											</label>
 										</th>
-										<th width=25%>任务单元名称</th>
+										<!-- <th width=25%>任务单元名称</th>
 										<th>业务类型</th>
 										<th style="width:8%">失败重试次数</th>
 										<th>功能描述</th>
+										<th>执行顺序</th>
+										<th>操作</th> -->
+										<th>任务单元名称</th>
+										<th>业务类型</th>
+										<th  class="hidden-480">失败重试次数</th>
+										<th  class="hidden-480">功能描述</th>
 										<th>执行顺序</th>
 										<th>操作</th>
 									</tr>

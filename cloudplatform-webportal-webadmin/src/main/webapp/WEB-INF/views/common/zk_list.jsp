@@ -23,11 +23,11 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th>名称</th>
+								<th class="hidden-480">名称</th>
 								<th>ip</th>
 								<th>端口</th>
-								<th class="hidden-480">使用次数</th>
-								<th>状态</th>
+								<th>使用次数</th>
+								<th  class="hidden-480">状态</th>
 								<th class="hidden-480">描述</th>
 								<th>操作</th>
 							</tr>

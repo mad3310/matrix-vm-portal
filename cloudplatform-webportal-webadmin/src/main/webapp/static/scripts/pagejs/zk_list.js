@@ -51,7 +51,7 @@ function queryByPage() {
 							+"<span class=\"lbl\"></span>"
 							+"</label>"
 							+"</td>");
-				var td2 = $("<td>"
+				var td2 = $("<td class='hidden-480'>"
 						+array[i].name
 						+ "</td>");
 				var td3 = $("<td>"
@@ -60,10 +60,10 @@ function queryByPage() {
 				var td4 = $("<td>"
 						+ array[i].port
 						+ "</td>");
-				var td5 = $("<td class=\"used hidden-480\">"
+				var td5 = $("<td class=\"used\">"
 						+ array[i].used
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ array[i].status
 						+ "</td>");
 				var td7 = $("<td class='hidden-480'>"
