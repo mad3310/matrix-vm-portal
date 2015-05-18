@@ -77,6 +77,18 @@ public class SkipController {
 		mav.setViewName("/cloudswift/fileManage");
 		return mav;
 	}
+	@RequestMapping(value ="/monitor/throughput/{swiftId}",method=RequestMethod.GET)
+	public ModelAndView toThroughput(@PathVariable Long swiftId,ModelAndView mav){
+		mav.addObject("swiftId",swiftId);
+		mav.setViewName("/cloudswift/monitor/throughput");
+		return mav;
+	}
+	@RequestMapping(value ="/monitor/reqfreq/{swiftId}",method=RequestMethod.GET)
+	public ModelAndView toReqfreq(@PathVariable Long swiftId,ModelAndView mav){
+		mav.addObject("swiftId",swiftId);
+		mav.setViewName("/cloudswift/monitor/reqfreq");
+		return mav;
+	}
 
 //	private void isAuthorityCache(Long containerId) {
 //		if (containerId == null)

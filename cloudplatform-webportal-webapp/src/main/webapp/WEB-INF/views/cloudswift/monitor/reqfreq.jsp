@@ -11,16 +11,16 @@
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/ui-css/common.css"/>
-	<title>数据库连接数</title>
+	<title>请求数</title>
 </head>
 
 <body>
 	<!-- 全局参数 start -->
-	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 	<!-- 全局参数 end -->
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">MYSQL_COMDML</h5>
+			<h5 class="">reqfreq</h5>
 		</div>
 		<div class="pull-right">
 			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
@@ -69,7 +69,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/clouddb/monitor/COMDML/main");
+seajs.use("${ctx}/static/page-js/cloudswift/monitor/request/main");
 
 </script>
 </html>

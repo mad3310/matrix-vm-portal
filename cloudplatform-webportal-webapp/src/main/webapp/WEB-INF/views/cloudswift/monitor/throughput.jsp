@@ -22,61 +22,10 @@
 </style>
 <body>
 <!-- 全局参数 start -->
-	<input class="hidden" value="${cacheId}" name="cacheId" id="cacheId" type="text" />
-	<!-- 全局参数 end -->
-	<!-- <div class="se-heading" style="padding:10px;">
-		<div class="row main-header">
-			<div class="col-sm-12 col-md-6">
-				<div class="pull-left">
-					<h4>
-						<span>缓存实例监控</span>
-					</h4>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-12 col-md-12">
-			<div class="time-range-unit-header">
-				<span class="time-range-title">监控指标:</span>
-				<div class="bk-form-row-cell">
-					<div class="bk-form-row-li clearfix">
-						<div class="pull-left">
-							<span class="sleBG"> <span class="sleHid"> 
-							<div class="divselect">
-								<span>实例使用容量（KB）</span>
-								<ul style="display:none;">
-								<li class="bk-select-option"><a href="javascript:;" selectid="14">实例使用容量（KB）</a></li></ul>
-								<input name="cacheId" type="hidden" value="">
-							</div>
-							<select name="hclusterId" class="form-control w217 wcolor">
-							<option>实例使用容量（KB）</option>
-								</select>
-							</span>
-							</span>
-							<span class="" style="position:relative;"><span class="bk-select-arrow"></span></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-12 col-md-12">
-			<div class="time-range-unit-header">
-	    		<span class="time-range-title">选择时间范围：</span>
-	    		<div class="bk-form-row-cell">
-		    		<div class="date-unit">
-	        			<input type="date" class="form-control datetimepicker" id="startTime">
-		    		</div>
-		    		<span class="date-step-span">至</span>
-		    		<div class="date-unit">
-		    		     <input type="date" class="form-control datetimepicker" id="endTime">
-		    	    </div>
-		    	    <div class="date-unit"><button id="bksearch" class="btn btn-primary btn-search">查询</button></div>
-	    	    </div>
-	    	</div>
-		</div>
-	</div> -->
+	<input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">缓存实例监控</h5>
+			<h5 class="">吞吐量</h5>
 		</div>
 		<div class="pull-right">
 			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
@@ -121,7 +70,7 @@ seajs.config({
 		"highcharts": "highcharts/highcharts.src.js"
 	}
 });
-seajs.use("${ctx}/static/page-js/cloudcache/cacheMonitor/main");
+seajs.use("${ctx}/static/page-js/cloudswift/monitor/throughput/main");
 // self define
 </script>
 </html>
