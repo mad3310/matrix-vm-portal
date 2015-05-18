@@ -54,16 +54,16 @@ function queryByPage() {
 				var td2 = $("<td>"
 						+array[i].name
 						+ "</td>");
-				var td3 = $("<td>"
+				var td3 = $("<td class='hidden-480'>"
 						+array[i].uuid
 						+" </td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ array[i].execType
 						+ "</td>");
 				var td5 = $("<td>"
 						+ array[i].httpMethod
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ array[i].url
 						+ "</td>");
 				var td7= $("<td>"-"</td>");
@@ -77,11 +77,11 @@ function queryByPage() {
 							+ "</td>");
 				}
 						
-				var td8 = $("<td>"
+				var td8 = $("<td class='hidden-480'>"
 						+array[i].descn
 						+ "</td>");
 				var td9 = $("<td>"
-						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+						+"<div class=\"action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"delTimingTask(this)\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-130\"></i>"
 						+"</a>"

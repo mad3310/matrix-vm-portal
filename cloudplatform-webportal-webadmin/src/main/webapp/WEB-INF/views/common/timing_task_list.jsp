@@ -1,31 +1,53 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- /section:settings.box -->
 <div class="page-content-area">
-	<div class="page-header">
-		<!-- <h3>Container集群列表</h3> -->
-		<div class="input-group pull-right">
-			<form class="form-inline">
-				<!-- <div class="form-group">
-					<input type="text" class="form-control" id="containerType"
-						placeholder="类型">
-				</div> -->
-				<div class="form-group">
-					<input type="text" class="form-control" id="timingTaskName"
-						placeholder="任务名称">
+	<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">定时任务查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="page-header">
+				<!-- <h3>Container集群列表</h3> -->
+				<div class="input-group pull-right">
+					<form class="form-inline">
+						<!-- <div class="form-group">
+							<input type="text" class="form-control" id="containerType"
+								placeholder="类型">
+						</div> -->
+						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+							<input type="text" class="form-control" id="timingTaskName"
+								placeholder="任务名称">
+						</div>
+						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+							<input type="text" class="form-control" id="timingTaskDescn"
+								placeholder="任务描述">
+						</div>
+						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+							<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
+								<i class="ace-icon fa fa-search"></i>搜索
+							</button>
+							<button class="btn btn-sm" type="button" id="mclusterClearSearch">清空</button>
+						</div>
+					</form>
 				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="timingTaskDescn"
-						placeholder="任务描述">
-				</div>
-				<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
-					<i class="ace-icon fa fa-search"></i>搜索
-				</button>
-				<button class="btn btn-sm" type="button" id="mclusterClearSearch">清空</button>
-			</form>
+			</div>
 		</div>
 	</div>
 	<!-- /.page-header -->
-	<div class="row">
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">定时任务列表</h5>
@@ -48,12 +70,12 @@
 									</label>
 								</th>
 								<th>名称</th>
-								<th>任务uuid</th>
-								<th>调度方式</th>
+								<th class="hidden-480">任务uuid</th>
+								<th class="hidden-480">调度方式</th>
 								<th>执行接口</th>
-								<th>接口调用方式</th>
+								<th class="hidden-480">接口调用方式</th>
 								<th>调度规则</th>
-								<th>描述</th>
+								<th  class="hidden-480">描述</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -70,9 +92,9 @@
 				<li><a href="javascript:void(0);" id="prevPage" >上一页</a></li>
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&nbsp;&raquo</a></li>
-				<li><a>共<lable id="totalPage"></lable>页</a></li>
-				<li><a>第<lable id="currentPage"></lable>页</a></li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a></li>
+				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a></li>
+				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a></li>
+				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a></li>
 			</ul>
 		</div>
 	</div>
