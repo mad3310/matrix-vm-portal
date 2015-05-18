@@ -106,8 +106,8 @@
                     <li><a  class="text-sm" href="javascript:void(0)" src="${ctx}/detail/file/${swiftId}">文件管理</a></li>
                     <li><a  class="text-sm" href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-chevron-right"></span>系统资源监控</a>
                         <ul class="nav hide">
-                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/oss/cpu/${ossId}">请求数</a></li>
-                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/oss/throughput/${ossId}">吞吐量</a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/reqfreq/${swiftId}">请求数</a></li>
+                            <li><a  class="text-sm"  href="javascript:void(0)" src="${ctx}/monitor/throughput/${swiftId}">吞吐量</a></li>
                         </ul>
                     </li>
                 </ul>
