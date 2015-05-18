@@ -29,6 +29,8 @@ public class TimingTaskController {
 	
 	@Autowired
 	private IBaseTimingTaskService baseTimingTaskService;
+	@Autowired
+	private IBaseTimingTaskService pythonTimingTaskService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TimingTaskController.class);
 
@@ -41,7 +43,7 @@ public class TimingTaskController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		this.baseTimingTaskService.insert(baseTimingTask);
+		this.pythonTimingTaskService.insert(baseTimingTask);
 		return obj;
 	}
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)   
@@ -49,10 +51,10 @@ public class TimingTaskController {
 		ResultObject obj = new ResultObject();
 		if(id == null)
 			throw new ValidateException("参数不合法");
-		BaseTimingTask baseTimingTask = this.baseTimingTaskService.selectById(id);
+		BaseTimingTask baseTimingTask = this.pythonTimingTaskService.selectById(id);
 		if(baseTimingTask == null)
 			throw new ValidateException("参数不合法");
-		this.baseTimingTaskService.delete(baseTimingTask);
+		this.pythonTimingTaskService.delete(baseTimingTask);
 		return obj;
 	}
 }
