@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.TimingTaskExecType;
 import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceImage;
@@ -42,6 +44,9 @@ public class TimingTaskController {
 	}
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
+		if(StringUtils.isEmpty(baseTimingTask.getUrl()) || null == baseTimingTask.getType()|| StringUtils.isEmpty(baseTimingTask.getTimeInterval()))
+			throw new ValidateException("参数不合法");
+			
 		ResultObject obj = new ResultObject();
 		this.pythonTimingTaskService.insert(baseTimingTask);
 		return obj;
