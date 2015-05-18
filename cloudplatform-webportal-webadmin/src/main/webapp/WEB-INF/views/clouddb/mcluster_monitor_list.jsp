@@ -1,34 +1,58 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
-	<div class="page-header">
-		<!-- <h3> 
-			cluster监控列表
-		</h3> -->
-		<div class="input-group pull-right">
-			<form class="form-inline">
-				<div class="form-group ">
-					<input type="text" class="form-control" id="monitorContainer"
-						placeholder="container集群名称">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="VipAddress"
-						placeholder="Vip节点地址">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="monitorPhyM"
-						placeholder="所属物理机集群">
-				</div>
-				<!-- <div class="form-group">
-					<select class="form-control" id="PhyMechineRunStatus">
-						<option value="">请选择运行状态</option>
-					</select>
-				</div> -->
-				<button class="btn btn-sm btn-primary btn-search" id="monitorClusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
-				<button class="btn btn-sm " type="button" id="monitorClusterClear">清空</button>
-			</form>
+	<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">container集群监控查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+				<div class="page-header">
+				<!-- <h3> 
+					cluster监控列表
+				</h3> -->
+				<div class="input-group pull-right">
+					<form class="form-inline">
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+							<input type="text" class="form-control" id="monitorContainer"
+								placeholder="container集群名称">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+							<input type="text" class="form-control" id="VipAddress"
+								placeholder="Vip节点地址">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+							<input type="text" class="form-control" id="monitorPhyM"
+								placeholder="所属物理机集群">
+						</div>
+						<!-- <div class="form-group">
+							<select class="form-control" id="PhyMechineRunStatus">
+								<option value="">请选择运行状态</option>
+							</select>
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<button class="btn btn-sm btn-primary btn-search" id="monitorClusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+						<button class="btn btn-sm " type="button" id="monitorClusterClear">清空</button>
+						</div>
+					</form>
 
+				</div>
+			</div>
 		</div>
 	</div>
+
 	<!-- /.page-header -->
             <!-- <div class="modal fade" id="dbuseradvancedSearch">
             	<div class="modal-dialog">
@@ -86,7 +110,7 @@
             		</div>
             	</div>
             </div> -->
-	<div class="row">
+
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">container集群监控列表</h5>
@@ -96,11 +120,16 @@
 					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th width="20%">container集群名称</th>
+							<!-- <th width="20%">container集群名称</th>
 							<th width="20%">VIP节点地址</th>
 							<th width="20%">所属物理机集群</th>
 							<th width="20%" class="hidden-480">当前状态</th>
-							<th width="20%">操作</th>
+							<th width="20%">操作</th> -->
+							<th>container集群名称</th>
+							<th>VIP节点地址</th>
+							<th class="hidden-480">所属物理机集群</th>
+							<th>当前状态</th>
+							<th>操作</th>
 						</tr>
 					</thead>
 						<tbody id="tby">
@@ -109,7 +138,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-12 col-sm-12">
 			<small><font color="gray">*注：监控数据每分钟刷新一次.</font></small>
 		</div>
 

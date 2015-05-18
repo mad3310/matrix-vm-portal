@@ -8,20 +8,20 @@
 				<div class="row">
 					<div class="col-sm-12 col-xs-12 ">
 						<form>
-							<div class="col-sm-1"></div>
-							<div class="col-sm-2">
+							<div class="col-md-1"></div>
+							<div class="col-sm-6 col-xs-12 col-md-2">
 								<select class="chosen-select" data-placeholder="请选择物理机集群..."
 									id="monitorHclusterOption">
 									<option></option>
 								</select>
 							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-6 col-xs-12 col-md-2">
 								<select class="chosen-select" single id="mclusterOption"
 									name="mclusterId" data-placeholder="请选择集群...">
 									<option></option>
 								</select>
 							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-6 col-xs-12 col-md-2">
 								<select id="queryTime" name="queryTime" class="form-control">
 									<option value="">请选择时段...</option>
 									<option value="1">一小时</option>
@@ -30,14 +30,14 @@
 									<option value="4">一周</option>
 								</select>
 							</div>
-							<div class="col-sm-4">
+							<div class="col-sm-6 col-xs-12 col-md-2">
 								<select class="chosen-select" multiple="multiple"
 									name="monitorPoint" id="monitorPointOption"
 									data-placeholder="请选择监控点...">
 									<option></option>
 								</select>
 							</div>
-							<div class="col-sm-1">
+							<div class="col-sm-6 col-xs-12 col-md-2">
 								<button class="pull-right btn btn-sm btn-primary btn-search"
 									id="refresh-data" type="button"
 									onclick="refreshChartForSelect()">

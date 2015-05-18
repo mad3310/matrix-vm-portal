@@ -1,30 +1,53 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- /section:settings.box -->
 <div class="page-content-area">
-	<div class="page-header">
-		<!-- <h3> 物理机集群列表 </h3> -->
-		<div class="input-group pull-right">
-			<form class="form-inline">
-				<div class="form-group">
-					<input type="text" class="form-control" id="hclusterName"
-						placeholder="物理机集群名称">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="hclusterIndex"
-						placeholder="编号">
-				</div>
-				<!-- <div class="form-group">
-					<input type="date" class="form-control" id="PhyMechineDate"
-						placeholder="创建时间">
-				</div> -->
-				<div class="form-group">
-					<select class="form-control" id="hclusterStatus">
-					    <option value="">请选择状态</option>
-					</select>
-				</div>
-				<button class="btn btn-sm btn-primary btn-search" id="hclusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
-				<button class="btn btn-sm " type="button" id="hclusterSearchClear">清空</button>
-			</form>
+<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">物理机集群查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-up"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="page-header col-sm-12 col-xs-12">
+			<!-- <h3> 物理机集群列表 </h3> -->
+			<div class="input-group pull-right">
+				<form class="form-inline">
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<input type="text" class="form-control" id="hclusterName"
+							placeholder="物理机集群名称">
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<input type="text" class="form-control" id="hclusterIndex"
+							placeholder="编号">
+					</div>
+					<!-- <div class="form-group">
+						<input type="date" class="form-control" id="PhyMechineDate"
+							placeholder="创建时间">
+					</div> -->
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<select class="form-control" id="hclusterStatus">
+						    <option value="">请选择状态</option>
+						</select>
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
+					<button class="btn btn-sm btn-primary btn-search" id="hclusterSearch" type="button"><i class="ace-icon fa fa-search"></i>搜索</button>
+					<button class="btn btn-sm " type="button" id="hclusterSearchClear">清空</button>
+					</div>
+				</form>
+			</div>
+		</div>
 		</div>
 	</div>
 	<!-- /.page-header -->
@@ -82,7 +105,7 @@
     		</div>
     	</div>
     </div> -->
-	<div class="row">
+	<!-- <div class="row"> -->
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">物理机集群列表</h5>
@@ -104,12 +127,18 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width="19%">物理机集群名称</th>
+								<!-- <th width="19%">物理机集群名称</th>
 								<th width="19%">编号</th>
-								<th width="19%">应用业务类型 </th>
-								<th width="19%">创建时间 </th>
-								<th width="19%" class="hidden-480">当前状态</th>
-								<th width="19%">操作</th>
+								<th width="19%" class="hidden-480">应用业务类型 </th>
+								<th width="19%" class="hidden-480">创建时间 </th>
+								<th width="19%">当前状态</th>
+								<th width="19%">操作</th> -->
+								<th>物理机集群名称</th>
+								<th>编号</th>
+								<th class="hidden-480">应用业务类型 </th>
+								<th class="hidden-480">创建时间 </th>
+								<th>当前状态</th>
+								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody id="tby">
@@ -118,10 +147,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-12 col-sm-12">
 			<small><font color="gray">*注：点击编号可查看详情.</font></small>
 		</div>
-		<div id="pageControlBar" class="col-xs-6">
+		<div id="pageControlBar" class="col-xs-12 col-sm-12">
 			<input type="hidden" id="totalPage_input" />
 			<ul class="pager">
 				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
@@ -129,11 +158,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -151,9 +180,9 @@
 					<form id="create-hcluster-form" name="create-hcluster-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">物理机集群名称</label>
-								<div class="col-sm-6">
-									<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hclusterNameAlias">物理机集群名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<input class="form-control" name="hclusterNameAlias" id="hclusterNameAlias" type="text" />	
 								</div>
 								<label class="control-label">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="集群名称应能概括此集群的信息，可用汉字!" style="cursor:pointer; text-decoration:none;">
@@ -162,8 +191,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">编号</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster_name">编号</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="hclusterName" id="hclusterName" type="text" />
 								</div>
 								<label class="control-label">
@@ -173,8 +202,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="hcluster_name">应用业务类型</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster_name">应用业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" multiple="multiple"
 									name="type" id="typeOption"
 									data-placeholder="请选择应用业务类型...">
@@ -185,7 +214,7 @@
 									<option>OSS</option>
 								</select>
 								</div>
-								<label class="control-label">
+								<label class="control-label hidden-sm hidden-xs">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择应用业务类型..." style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>

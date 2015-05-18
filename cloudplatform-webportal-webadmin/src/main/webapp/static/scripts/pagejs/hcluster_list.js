@@ -63,19 +63,26 @@ function queryByPage() {
 						+ array[i].hclusterNameAlias
 						+ "</td>");
 				var td3 = $("<td>"
-						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/hcluster/" + array[i].id+"\">"+array[i].hclusterName+"</a>"
 						+ "</td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ array[i].type
 						+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				var td6 = $("<td><a>"
 						+ translateStatus(array[i].status)
 						+ "</a></td>");
+//				var td7 = $("<td>"
+//						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+//						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+//					    +"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+//						+"</a>"
+//						+"</div>"
+//						+ "</td>"
 				var td7 = $("<td>"
-						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
+						+"<div class=\"action-buttons\">"
 						+"<a class=\"red\" href=\"#\" onclick=\"deleteHcluster(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 					    +"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"

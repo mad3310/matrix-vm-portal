@@ -25,8 +25,8 @@
 								</th>
 								<th>任务流名称</th>
 								<th>业务类型</th>
-								<th>创建时间</th>
-								<th>描述</th>
+								<th class="hidden-480">创建时间</th>
+								<th class="hidden-480">描述</th>
 								<!-- <th>操作</th> -->
 							</tr>
 						</thead>
@@ -44,11 +44,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -65,8 +65,8 @@
 					<form id="create-task-stream-form" name="create-task-stream-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskStreamName">任务流名称</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskStreamName">任务流名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="name" id="taskStreamName" type="text" />
 								</div>
 								<label class="control-label">
@@ -76,8 +76,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskType">业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择业务类型">
 									    <option value=""> </option>
 										<option value="RDS">RDS</option>
@@ -96,8 +96,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="descn">描述</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea name="descn" id="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">

@@ -29,7 +29,7 @@
 				<div class="widget-main padding-12 no-padding-left no-padding-right">
 					<div class="tab-content padding-4">
 						<div id="db-detail-info" class="tab-pane  active">
-							<div id="db-detail-table" class="col-xs-6">
+							<div id="db-detail-table" class="col-xs-12 col-sm-12 col-md-6">
 								<table class="table table-bordered table-striped table-hover" id="db_detail_table">
 									<tr>
 										<th width="50%">数据库名</th>
@@ -47,7 +47,7 @@
 							</div>
 						</div>
 						<div id="db-detail-user-mgr" class="tab-pane">
-							<div class="widget-box widget-color-blue ui-sortable-handle col-xs-10">
+							<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12 col-sm-12 col-md-10">
 								<div class="widget-header">
 									<div class="widget-toolbar no-border pull-right">
 										<button type="button" class="btn btn-white btn-primary btn-xs hide" data-toggle="modal" data-target="#create-dbuser-form">

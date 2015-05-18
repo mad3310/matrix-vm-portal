@@ -24,12 +24,12 @@
 									</label>
 								</th>
 								<th>镜像名称</th>
-								<th>类型</th>
+								<th class="hidden-480">类型</th>
 								<th>版本</th>
-								<th>下载地址</th>
-								<th>应用日志地址</th>
+								<th class="hidden-480">下载地址</th>
+								<th class="hidden-480">应用日志地址</th>
 								<th>可用性</th>
-								<th>所属用户</th>
+								<th class="hidden-480">所属用户</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -47,11 +47,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -68,8 +68,8 @@
 					<form id="add-gce-image-form" name="add-gce-image-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskUnitName">镜像名称</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="name" id="name" type="text" />
 								</div>
 								<label class="control-label">
@@ -79,8 +79,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="type">业务类型</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="type" id="type" data-placeholder="请选择类型...">
 										<!-- <option value="">  </option> -->
 										<!-- <option value="xx">消息中间件</option> -->
@@ -95,8 +95,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">镜像版本</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">镜像版本</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="tag" id="tag" type="text" />
 								</div>								
 								<label class="control-label">
@@ -106,8 +106,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="url">下载地址</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">下载地址</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="url" id="url" type="text" />
 								</div>								
 								<label class="control-label">
@@ -117,8 +117,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="logUrl">应用日志地址</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="logUrl" id="logUrl" type="text" />
 								</div>								
 								<label class="control-label">
@@ -128,8 +128,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">可用性</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="status" id="status" data-placeholder="该镜像是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
 										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
@@ -142,8 +142,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="retry">所属用户</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
 									</select>
 								</div>
@@ -154,8 +154,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="descn">描述</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">

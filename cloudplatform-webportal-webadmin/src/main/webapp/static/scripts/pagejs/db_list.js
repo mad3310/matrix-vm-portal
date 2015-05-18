@@ -102,35 +102,35 @@ function queryByPage() {
 				var td2;
 				if(array[i].status == 6){
 					td2 = $("<td>"
-							+ "<a class=\"link\"  target=\"_blank\" href=\"/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\"  href=\"/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a class=\"link\" class=\"danger\" target=\"_blank\" href=\"/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\" class=\"danger\" href=\"/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}else{
 					td2 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
 							+ "</td>");
 				}
 				if(array[i].mcluster){
-					var td3 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
+					var td3 = $("<td class='hidden-480'>"
+							+ "<a class=\"link\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
  							+ "</td>");
 				} else {
-					var td3 = $("<td> </td>");
+					var td3 = $("<td class='hidden-480'> </td>");
 				}
 				if(array[i].hcluster){
-					var td4 = $("<td>"
+					var td4 = $("<td class='hidden-480'>"
  							+ array[i].hcluster.hclusterNameAlias
 							+ "</td>");
 				} else {
-					var td4 = $("<td> </td>");
+					var td4 = $("<td class='hidden-480'> </td>");
 				}
 				var td5 = $("<td>"
 						+ array[i].user.userName
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				if(array[i].status == 4){

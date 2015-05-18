@@ -23,12 +23,12 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th>zookeeper名称</th>
+								<th>名称</th>
 								<th>ip</th>
 								<th>端口</th>
-								<th>使用次数</th>
+								<th class="hidden-480">使用次数</th>
 								<th>状态</th>
-								<th>描述</th>
+								<th class="hidden-480">描述</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -46,11 +46,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -67,8 +67,8 @@
 					<form id="add-zk-form" name="add-zk-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskUnitName">zookeeper名称</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">zookeeper名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="name" id="name" type="text" />
 								</div>
 								<label class="control-label">
@@ -78,8 +78,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">zookeeper地址</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">zookeeper地址</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="ip" id="ip" type="text" />
 								</div>								
 								<label class="control-label">
@@ -89,8 +89,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="url">端口</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">端口</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="port" id="port" type="text" />
 								</div>								
 								<label class="control-label">
@@ -100,8 +100,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">可用性</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="status" id="status" data-placeholder="该zookeeper是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
 										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
@@ -114,8 +114,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="descn">描述</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">

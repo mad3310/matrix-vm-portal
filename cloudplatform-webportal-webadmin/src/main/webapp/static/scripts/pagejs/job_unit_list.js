@@ -54,16 +54,16 @@ function queryByPage() {
 				var td2 = $("<td>"
 						+array[i].name
 						+ "</td>");
-				var td3 = $("<td>"
+				var td3 = $("<td class='hidden-480'>"
 						+ array[i].taskType
 						+ "</td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ array[i].descn
 						+ "</td>");
 				var td5 = $("<td>"
 						+ array[i].beanName
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ array[i].retry
 						+ "</td>");
 				/*var td5 = $("<td>"

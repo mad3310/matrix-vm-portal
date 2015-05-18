@@ -40,13 +40,13 @@ function queryByPage() {
 							+array[i].templateTask.name
 							+ "</td>");
 					}
-					var td2 =$("<td>"
+					var td2 =$("<td class='hidden-480'>"
 							+date('Y-m-d H:i:s',array[i].startTime)
 							+"</td>");
 					var td3 =$("<td>"						
 							+FilterNull(array[i].serviceName)
 							+"</td>");
-					var td4 =$("<td>"						
+					var td4 =$("<td class='hidden-480'>"						
 							+FilterNull(array[i].clusterName)
 							+"</td>");					
 					var td5 = $("<td class=\"status\" width=\"80px\">"
@@ -193,16 +193,16 @@ function queryTaskDetail(taskId,type){
 						+ array[i].templateTaskDetail.name
 						+ "</td>");
 				};
-				var td2 = $("<td>"
+				var td2 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].startTime)
 						+ "</td>");
-				var td3 = $("<td>"
+				var td3 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].endTime)
 						+ "</td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ array[i].retry
 						+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td class='hidden-480'>"
 						+ FilterNull(array[i].result)
 						+ "</td>");
 				var td6 = $("<td>"

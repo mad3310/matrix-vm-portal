@@ -60,13 +60,13 @@ function queryByPage() {
 				var td4 = $("<td>"
 						+ array[i].port
 						+ "</td>");
-				var td5 = $("<td class=\"used\">"
+				var td5 = $("<td class=\"used hidden-480\">"
 						+ array[i].used
 						+ "</td>");
 				var td6 = $("<td>"
 						+ array[i].status
 						+ "</td>");
-				var td7 = $("<td>"
+				var td7 = $("<td class='hidden-480'>"
 						+ array[i].descn
 						+ "</td>");
 				var td8 = $("<td>"

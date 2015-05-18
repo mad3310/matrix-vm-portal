@@ -44,22 +44,22 @@ function queryByPage() {
 				var td2 = $("<td class=\"td-name\" >"
 						+array[i].name
 						+ "</td>");
-				var td3 = $("<td class=\"td-type\" >"
+				var td3 = $("<td class=\"td-type hidden-480\" >"
 						+ array[i].type
 						+ "</td>");
 				var td4 = $("<td class=\"td-tag\" >"
 						+ array[i].tag
 						+ "</td> ");
-				var td5 = $("<td class=\"td-url\" >"
+				var td5 = $("<td class=\"td-url hidden-480\" >"
 						+ array[i].url
 						+ "</td>");
-				var td6 = $("<td class=\"td-url\" >"
+				var td6 = $("<td class=\"td-url hidden-480\" >"
 						+ array[i].logUrl
 						+ "</td>");
 				var td7 = $("<td class=\"td-status\" >"
 						+ array[i].status
 						+ "</td>");
-				var td8= $("<td class=\"td-username\" user-id=\""+array[i].owner+"\"> - </td>");
+				var td8= $("<td class=\"td-username hidden-480\" user-id=\""+array[i].owner+"\"> - </td>");
 				if(array[i].createUserModel != undefined && array[i].createUserModel != null ){
 					td8.html(array[i].createUserModel.userName);
 				}
@@ -72,6 +72,26 @@ function queryByPage() {
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
+						+'<div class="hidden-md hidden-lg">'
+							+'<div class="inline pos-rel">'
+							+'<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">'
+								+'<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>'
+							+'</button>'
+							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
+								+'<li>'
+									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="blue">'
+											+'<i class="ace-icon fa fa-pencil bigger-120"></i>'
+										+'</span>'
+									+'</a>'
+								+'</li>'
+								+'<li>'
+									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="green">'
+											+'<i class="ace-icon fa fa-trash-o bigger-120"></i>'
+										+'</span>'
+									+'</a></li>'
+									+'</ul></div></div>'
 						+"</td>");
 				var tr = $("<tr></tr>");
 				

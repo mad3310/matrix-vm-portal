@@ -7,7 +7,7 @@
 		}
 </script>
 
-<div id="sidebar" class="sidebar responsive">
+<div id="sidebar" class="sidebar responsive" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
 	<ul id="sidebar-list" class="nav nav-list">
 		<li id="sidebar-dashboard" >
 			<a href="${ctx}/dashboard">

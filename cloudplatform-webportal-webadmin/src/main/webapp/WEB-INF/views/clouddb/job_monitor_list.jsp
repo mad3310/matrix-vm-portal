@@ -2,15 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
 	<div class="row">		
-		<div class="task-monitor-menu col-xs-4 dataTables_wrapper form-inline no-footer">
+		<div class="task-monitor-menu col-xs-12 col-sm-12 col-md-4 dataTables_wrapper form-inline no-footer">
 			<div class="table-header" style="margin-bottom:10px;background-color:#333;">
 			任务流执行记录
 			</div>
 			<div class="row">
 				<div class="input-group pull-right">
-					<form class="form-inline">
-						<div class="form-group"></div>
-						<div class="form-group ">
+					<form>
+						<div class="form-group col-xs-6 col-sm-6">
 							<select class="" id="jobstatus" style="height:34px;width:150px;">
 								<option value="GCE">GCE</option>
 								<option value="RDS">RDS</option>
@@ -20,7 +19,7 @@
 								<option value="LOG">LOG</option>
 							</select>
 						</div>
-						<div class=" form-group">
+						<div class=" form-group col-xs-6 col-sm-6">
 							<button class="btn btn-sm btn-primary btn-search pull-right " id="jobSearch"
 								type="button">
 								<i class="ace-icon fa fa-search"></i>搜索
@@ -33,9 +32,9 @@
 				 <thead>
 					<tr>
 						<th>名称</th>
-						<th>起始时间</th>
+						<th class="hidden-480">起始时间</th>
 						<th>应用名称</th>
-						<th>集群名称</th>						
+						<th class="hidden-480">集群名称</th>						
 						<th>状态</th>
 					</tr>
 				</thead>
@@ -65,7 +64,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-8">
+		<div class="widget-box widget-color-blue ui-sortable-handle task-monitor-table col-xs-12 col-sm-12 col-md-8">
 			<div class="widget-header">
 				<h5 class="widget-title">任务监控</h5>
 			</div>
@@ -75,10 +74,10 @@
 						<thead>
 							<tr>
 								<th>任务单元名称</th>
-								<th>起始时间</th>
-								<th>结束时间</th>
-								<th>重试次数</th>
-								<th width=25%>执行结果</th>
+								<th class="hidden-480">起始时间</th>
+								<th class="hidden-480">结束时间</th>
+								<th class="hidden-480">重试次数</th>
+								<th class="hidden-480">执行结果</th>
 								<th>当期状态</th>
 								<th>操作</th>
 							</tr>

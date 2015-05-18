@@ -10,7 +10,7 @@
 	<!-- /.page-header -->
 	<input type="text" class="form-control hide" id="clusterId" name="clusterId"/>
 	<div class="row clearfix">
-		<div class="col-md-5 column">
+		<div class="col-xs-12 col-sm-12 col-md-5 column">
 			<div class="col-sm-12">
 				<table class="table table-bordered table-striped table-hover" id="db_detail_table">	
 					<caption>用户申请单</caption>
@@ -37,13 +37,15 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-md-7 column">
+		<div class="col-xs-12 col-sm-12 col-md-7 column">
 			<ul id="myTab" class="nav nav-tabs">
 			   <li class="active">
-			      <a href="#create_on_cluster" data-toggle="tab">在已有Container集群创建</a>
+			      <a class="hidden-480" href="#create_on_cluster" data-toggle="tab">在已有Container集群创建</a>
+			      <a class="hidden-md hidden-lg" href="#create_on_cluster" data-toggle="tab">已有集群</a>
 			   </li>
 			   <li>
-			   	  <a href="#create_on_new_cluster" data-toggle="tab">在新Container集群创建</a>
+			   	  <a class="hidden-480" href="#create_on_new_cluster" data-toggle="tab">在新Container集群创建</a>
+			   	  <a class="hidden-md hidden-lg" href="#create_on_new_cluster" data-toggle="tab">新集群</a>
 			   </li>
 			   <li>
 			   	  <a href="#disagree" data-toggle="tab">不同意</a>
@@ -55,13 +57,13 @@
 						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 						<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label class="col-sm-3 control-label" for="mclusterOption">选择Container集群</label>
-							<div class="col-sm-8">
+							<label class="col-xs-12 col-sm-12 col-md-3 control-label" for="mclusterOption">选择Container集群</label>
+							<div class="col-xs-12 col-sm-12 col-md-8">
 								<select class="chosen-select" id="mclusterOption" name="mclusterId" data-placeholder="请选择集群...">
 									<option value="">  </option>
 								</select>
 							</div>
-							<div class="col-sm-1">
+							<div class="col-xs-12 col-sm-12 col-md-1">
 								<button id="create_on_old_mcluster_botton" type="submit" class="pull-right btn btn-sm btn-info">创建</button>
 							</div>
 						</div>
@@ -72,11 +74,11 @@
 						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 						<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label for="text" class="control-label col-sm-3">Container集群名称</label>
-							<div class="col-sm-7">
+							<label for="text" class="control-label col-xs-12 col-sm-12 col-md-3 ">Container集群名称</label>
+							<div class="col-xs-12 col-sm-12 col-md-6 ">
 								<input class="form-control" name="mclusterName" id="mclusterName" type="text"/>
 							</div>
-							<div class="col-sm-2">
+							<div class="col-xs-12 col-sm-12 col-md-3 ">
 								<button id="create-mcluster-botton" type="submit" class="btn btn-sm btn-info">创建</button>
 							</div>
 						</div>

@@ -164,12 +164,13 @@ edit by jinglinlin@letv.com
   border-width: 0;
   background-color: #f0f0f0;
 }
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .skin-custom .breadcrumbs.breadcrumbs-fixed {
     border-bottom-width: 1px;
   }
 }
 @media only screen and (max-width: 991px) {
+.skin-custom .btn-search {margin-left:0;}
   .skin-custom .sidebar {
     border-width: 0;
     -webkit-box-shadow: none;
@@ -178,7 +179,7 @@ edit by jinglinlin@letv.com
   .skin-custom .nav-list li.active > a:after {
     display: none;
   }
-}
+} */
 .skin-custom .sidebar.menu-min .nav-list > li.open > a {
   background-color: #222a2d;
   color: #b1bac1;
@@ -516,19 +517,22 @@ edit by jinglinlin@letv.com
   -moz-border-top-colors: #5d82a2;
 }
 .skin-custom .navbar .navbar-toggle {
-  background-color: #4D9DCC;
+  /*background-color: #4D9DCC;*/
+  background-color: #5D6061;
 }
 .skin-custom .navbar .navbar-toggle:focus {
-  background-color: #4D9DCC;
+  /*background-color: #4D9DCC;*/background-color: #5D6061;
   border-color: transparent;
 }
 .skin-custom .navbar .navbar-toggle:hover {
-  background-color: #3992c6;
+  /*background-color: #3992c6;*/
+  background-color: #7B7F81;
   border-color: rgba(255, 255, 255, 0.1);
 }
 .skin-custom .navbar .navbar-toggle.display,
 .skin-custom .navbar .navbar-toggle[data-toggle=collapse]:not(.collapsed) {
-  background-color: #3384b3;
+  /*background-color: #3384b3;*/
+  background-color: #7B7F81;
   box-shadow: inset 1px 1px 2px 0 rgba(0, 0, 0, 0.25);
   border-color: rgba(255, 255, 255, 0.35);
 }
@@ -1107,4 +1111,31 @@ edit by jinglinlin@letv.com
 }
 .timing-set{
 	padding-top: 6px !important;
+}
+/* pageinator input style end */
+table{table-layout:automatic;}
+td,th{word-break: break-all; word-wrap:break-word;}
+@media (min-width: 992px) {
+  .skin-custom .breadcrumbs.breadcrumbs-fixed {
+    border-bottom-width: 1px;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .skin-custom .sidebar {
+    border-width: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+  .skin-custom .nav-list li.active > a:after {
+    display: none;
+  }
+}
+@media only screen and ( max-width:1024px){
+	.skin-custom .btn-search {margin-left:0;}
+}
+@media only screen and (max-width: 479px){
+.navbar:not(.navbar-collapse) .navbar-header {
+   float: left !important; 
+   display: inline-block; 
+}
 }

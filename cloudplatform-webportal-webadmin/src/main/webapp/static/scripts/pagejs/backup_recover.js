@@ -77,16 +77,16 @@ function queryByPage(currentPage, recordsPerPage) {
 		        		if(array[i].db) {
 		        			dbName = array[i].db.dbName;
 		        		}
-		                var td1 = $("<td><a>"
-		                		+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId +"\">"+FilterNull(mclusterName)+"</a>"
+		                var td1 = $("<td class='hidden-480'><a>"
+		                		+ "<a class=\"link\" href=\"/detail/mcluster/" + array[i].mclusterId +"\">"+FilterNull(mclusterName)+"</a>"
 		                		+"</a></td>");
 		                var td2 = $("<td>"
-		                		+ "<a class=\"link\" class=\"danger\" target=\"_blank\" href=\"/audit/db/"+array[i].dbId+"\">"+FilterNull(dbName)+"</a>"
+		                		+ "<a class=\"link\" class=\"danger\" href=\"/audit/db/"+array[i].dbId+"\">"+FilterNull(dbName)+"</a>"
 		                		+"</td>");
-		                var td3 = $("<td>"
+		                var td3 = $("<td class='hidden-480'>"
 		                        + date('Y-m-d H:i:s',array[i].startTime)
 		                        + "</td>");
-		                var td4 = $("<td>"
+		                var td4 = $("<td class='hidden-480'>"
 	                            + date('Y-m-d H:i:s',array[i].endTime)
 		                        + "</td>");
 		                if(array[i].status == 'FAILD'){

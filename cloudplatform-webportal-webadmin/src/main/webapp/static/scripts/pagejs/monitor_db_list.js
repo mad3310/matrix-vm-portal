@@ -47,16 +47,16 @@ function queryMclusterMonitor() {
 				var td1 = $("<td>"
 						+ "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+ mclusterName +"</a>"
 						+ "</td>");
-				var td2 = $("<td name=\"vip\">"
+				var td2 = $("<td class='hidden-480' name=\"vip\">"
 						+ array[i].ipAddr
 						+ "</td>");
 
 			    if(array[i].hcluster.hclusterNameAlias){
-					var td3 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].host.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+					var td3 = $("<td class='hidden-480'>"
+							+ "<a class=\"link\" href=\"/detail/hcluster/" + array[i].host.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				}else{
-					var td3 = $("<td>"
+					var td3 = $("<td class='hidden-480'>"
  							+ "-"
 							+ "</td>");
 				}

@@ -25,10 +25,10 @@ function queryContainer(){
 				var td1 = $("<td>"
 					    + array[i].containerName
 				        + "</td>");
-				var	td2 = $("<td>"
+				var	td2 = $("<td class='hidden-480'>"
 						+ array[i].type
 						+ "</td>");
-				var	td3 = $("<td>"
+				var	td3 = $("<td class='hidden-480'>"
 						+ array[i].hostIp
 						+ "</td>");
 				var	td4 = $("<td>"
@@ -41,20 +41,20 @@ function queryContainer(){
 					for (var j = 0; j < jsonArr.length; j++){						
 						mountDir += jsonArr[j]+"<br/>";					
 					}
-					var	td5 = $("<td>"
+					var	td5 = $("<td  class='hidden-480'>"
 							+ mountDir
 							+ "</td>");
 				}else{
-					var	td5 = $("<td>"
+					var	td5 = $("<td class='hidden-480'>"
 							+ '-'
 							+ "</td>");
 				}
 				if(array[i].zookeeperId != null){
-					var	td6 = $("<td>"
+					var	td6 = $("<td class='hidden-480'>"
 							+ array[i].zookeeperId
 							+ "</td>");
 				}else{
-					var	td6 = $("<td>"
+					var	td6 = $("<td class='hidden-480'>"
 							+ '-'
 							+ "</td>");
 				}
@@ -70,6 +70,25 @@ function queryContainer(){
 							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
+						+'<div class="hidden-md hidden-lg">'
+							+'<div class="inline pos-rel">'
+							+'<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">'
+								+'<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>'
+							+'</button>'
+							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
+								+'<li>'
+									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="blue">'
+											+'<i class="ace-icon fa fa-play-circle-o bigger-120"></i>'
+										+'</span>'
+									+'</a>'
+								+'</li>'
+								+'<li>'
+									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="green">'
+											+'<i class="ace-icon fa fa-power-off bigger-120"></i>'
+										+'</span>'
+									+'</a></li></ul></div></div>'
 						+ "</td>"
 				);
 				var tr = $("<tr></tr>");;				

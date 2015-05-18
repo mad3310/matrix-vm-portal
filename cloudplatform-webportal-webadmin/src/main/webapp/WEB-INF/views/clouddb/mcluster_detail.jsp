@@ -22,11 +22,11 @@
 						<tr
 							style="background-image: none; background-color: #307ECC; color: #FFFFFF;">
 							<th>container名称</th>
-							<th>类型</th>
-							<th>宿主机ip</th>
+							<th class="hidden-480">类型</th>
+							<th class="hidden-480">宿主机ip</th>
 							<th>ip</th>
-							<th>挂载路径</th>
-							<th>zookeepId</th>
+							<th class="hidden-480">挂载路径</th>
+							<th class="hidden-480">zookeepId</th>
 							<th>状态</th>
 							<th>操作</th>
 						</tr>

@@ -23,11 +23,11 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<th width=25%>任务单元名称</th>
-								<th>业务类型</th>
-								<th>功能描述</th>
+								<th>任务单元名称</th>
+								<th class="hidden-480">业务类型</th>
+								<th class="hidden-480">功能描述</th>
 								<th>实现接口</th>
-								<th>重试次数</th>
+								<th class="hidden-480">重试次数</th>
 								<!-- <th>操作</th> -->
 							</tr>
 						</thead>
@@ -45,11 +45,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class='hidden-480'><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class='hidden-480'><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class='hidden-480'><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>
@@ -66,8 +66,8 @@
 					<form id="create-task-unit-form" name="create-task-unit-form" class="form-horizontal" role="form">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskUnitName">任务单元名称</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">任务单元名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="taskUnitName" id="taskUnitName" type="text" />
 								</div>
 								<label class="control-label">
@@ -77,8 +77,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskType">业务类型</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskType">业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择类型...">
 										<!-- <option value="">  </option> -->
 										<!-- <option value="xx">消息中间件</option> -->
@@ -97,8 +97,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">实现接口</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">实现接口</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="beanName" id="beanName" type="text" />
 								</div>								
 								<label class="control-label">
@@ -108,8 +108,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="retry">失败重试次数</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">失败重试次数</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" name="retry" id="retry" data-placeholder="请选择重试次数">
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -130,8 +130,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="descn">描述</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">

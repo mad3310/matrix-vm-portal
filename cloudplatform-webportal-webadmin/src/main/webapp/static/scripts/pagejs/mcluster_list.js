@@ -99,14 +99,14 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" target=\"_blank\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
-					var td3 = $("<td>"
-							+ "<a class=\"link\" target=\"_blank\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+					var td3 = $("<td class='hidden-480'>"
+							+ "<a class=\"link\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				} else {
-					var td3 = $("<td> </td>");
+					var td3 = $("<td class='hidden-480'> </td>");
 				} 
 				var type = "";
 				if(array[i].type) {
@@ -114,7 +114,7 @@ function queryByPage() {
 				} else {
 					type = "系统创建";
 				}
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ type
 						+ "</td>");
 				
@@ -125,7 +125,7 @@ function queryByPage() {
 				var td5 = $("<td>"
 						+ userName
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
 				if(array[i].status == 2){
@@ -160,6 +160,28 @@ function queryByPage() {
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 							+"</a>"
 							+"</div>"
+							+'<div class="hidden-md hidden-lg">'
+							+'<div class="inline pos-rel">'
+							+'<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">'
+								+'<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>'
+							+'</button>'
+							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
+								+'<li>'
+									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="blue">'
+											+'<i class="ace-icon fa fa-play-circle-o bigger-120"></i>'
+										+'</span>'
+									+'</a>'
+								+'</li>'
+								+'<li>'
+									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="green">'
+											+'<i class="ace-icon fa fa-power-off bigger-120"></i>'
+										+'</span>'
+									+'</a></li><li>'
+									+'<a  class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span>'
+									+'</a></li></ul></div></div>'
 							+ "</td>"
 					);
 				}else{
@@ -175,6 +197,26 @@ function queryByPage() {
 							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 							+"</a>"*/
 							+"</div>"
+							+'<div class="hidden-md hidden-lg">'
+							+'<div class="inline pos-rel">'
+							+'<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">'
+								+'<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>'
+							+'</button>'
+							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
+								+'<li>'
+									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="blue">'
+											+'<i class="ace-icon fa fa-play-circle-o bigger-120"></i>'
+										+'</span>'
+									+'</a>'
+								+'</li>'
+								+'<li>'
+									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="green">'
+											+'<i class="ace-icon fa fa-power-off bigger-120"></i>'
+										+'</span>'
+									+'</a></li>'
+									+'</ul></div></div>'
 							+ "</td>"
 					);
 				}

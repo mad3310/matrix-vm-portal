@@ -9,14 +9,27 @@
 
 <div id="navbar" class="navbar navbar-default">
 	<div class="navbar-container" id="navbar-container">
+		<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+			<span class="sr-only">Toggle sidebar</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
 		<div class="navbar-header pull-left">
 			<a href="#" class="navbar-brand logo"> 
-				<img src="${ctx}/static/image/site.logo.png" alt="paas云管理平台" style="max-width:112px;margin-top:-5px;"/> 
+				<img src="${ctx}/static/image/site.logo-sm.png" alt="paas云管理平台" style="max-width:50px;margin-top:-5px;"/> 
 				<b><small>PAAS portal</small></b> 
 				<span><small style="font-size: 25%;">beta</small></span>
 			</a>
 		</div>
-
+<script>
+	$(window).load(function() {
+		var iw=document.body.clientWidth;
+		if(iw<375){
+			$('.logo img').remove();
+		}
+	});
+</script>
 		<!-- #section:basics/navbar.dropdown -->
 		<div class="navbar-buttons navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">

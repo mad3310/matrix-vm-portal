@@ -1,48 +1,71 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
-	<div class="page-header">
-		<!-- <h3>数据库用户列表</h3> -->
-	    <div class="input-group pull-right">
-			<form class="form-inline">
-				<div class="form-group">
-					<input type="text" class="form-control" id="userName"
-						placeholder="用户名">
+	<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">数据库用户查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="page-header">
+				<!-- <h3>数据库用户列表</h3> -->
+			    <div class="input-group pull-right">
+					<form class="form-inline">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="userName"
+								placeholder="用户名">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="userDb"
+								placeholder="所属数据库">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
+							<select class="form-control" id="userAuthority">
+								<option value="">请选择用户权限</option>
+								<option value="1">管理员</option>
+								<option value="2">只读用户</option>
+								<option value="3">读写用户</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="userIp" placeholder="ip地址">
+						</div>
+						<!-- <div class="form-group">
+							<select class="form-control" id="userLimit">
+								<option value="">频次限制</option>
+								<option value="">50</option>
+								<option value="">100</option>
+								<option value="">。。。</option>
+							</select>
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<select class="form-control" id="dbuserStatus">
+								<option value="">请选择状态</option>
+							</select>
+						</div>
+						<div class="form-group  col-sm-6 col-xs-12 col-md-2" style="padding-right:0;">
+						<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
+							<i class="ace-icon fa fa-search"></i>搜索
+						</button>
+						<button class="btn btn-sm " type="button" id="dbuseClearSearch">清空</button>
+						</div>
+					</form>
 				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="userDb"
-						placeholder="所属数据库">
-				</div>
-				<div class="form-group">
-					<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
-					<select class="form-control" id="userAuthority">
-						<option value="">请选择用户权限</option>
-						<option value="1">管理员</option>
-						<option value="2">只读用户</option>
-						<option value="3">读写用户</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="userIp" placeholder="ip地址">
-				</div>
-				<!-- <div class="form-group">
-					<select class="form-control" id="userLimit">
-						<option value="">频次限制</option>
-						<option value="">50</option>
-						<option value="">100</option>
-						<option value="">。。。</option>
-					</select>
-				</div> -->
-				<div class="form-group">
-					<select class="form-control" id="dbuserStatus">
-						<option value="">请选择状态</option>
-					</select>
-				</div>
-				<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
-					<i class="ace-icon fa fa-search"></i>搜索
-				</button>
-				<button class="btn btn-sm " type="button" id="dbuseClearSearch">清空</button>
-			</form>
+			</div>
 		</div>
 	</div>
 <!-- /.page-header -->
@@ -125,7 +148,7 @@
             		</div>
             	</div>
             </div> -->
-	<div class="row">
+
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">数据库用户列表</h5>
@@ -151,7 +174,7 @@
 								<th>所属数据库</th>
 								<th>用户权限</th>
 								<th>ip地址</th>
-								<th>频次限制</th>
+								<th class="hidden-480">频次限制</th>
 								<th>
 									当前状态
 								</th>
@@ -171,11 +194,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class='hidden-480'><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class='hidden-480'><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class='hidden-480'><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>

@@ -145,7 +145,7 @@ function queryByPage(){
 				var td5 = $("<td>"
 						+ array[i].acceptIp
 						+ "</td>");
-				var td6 = $("<td>"
+				var td6 = $("<td class='hidden-480'>"
 						+ array[i].maxConcurrency
 						+ "</td>");
 				var td7 = $("<td><a>"

@@ -61,9 +61,9 @@
 					class="form-horizontal" role="form">
 					<div class="modal-body">
 						<div class="form-group">
-							<label class="col-sm-offset-1 col-sm-2 control-label"
+							<label class="col-sm-12 col-xs-12  col-md-4 control-label"
 								for="hostNameAlias">物理机名称</label>
-							<div class="col-sm-5">
+							<div class="col-sm-10 col-xs-10 col-md-6">
 								<input class="form-control" name="hostNameAlias"
 									id="hostNameAlias" type="text" />
 							</div>
@@ -79,9 +79,9 @@
 						</div>
 						<div class="form-group">
 							<input class="hidden" value="${hclusterId}" name="hclusterId"
-								id="hclusterId" type="text" /> <label
-								class="col-sm-offset-1 col-sm-2 control-label" for="hostName">编号</label>
-							<div class="col-sm-5">
+								id="hclusterId" type="text" />
+							<label class="col-sm-12 col-xs-12  col-md-4 control-label" for="hostName">编号</label>
+							<div class="col-sm-10 col-xs-10 col-md-6">
 								<input class="form-control" name="hostName" id="hostName"
 									type="text" />
 							</div>
@@ -96,9 +96,9 @@
 							</label>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-offset-1 col-sm-2 control-label"
+							<label class="col-sm-12 col-xs-12  col-md-4 control-label"
 								for="connection_type">物理机类型</label>
-							<div class="col-sm-5">
+							<div class="col-sm-10 col-xs-10 col-md-6">
 								<select class="form-control" name="type" id="type">
 									<option value="1">从机</option>
 									<option value="0">主机</option>
@@ -115,8 +115,8 @@
 							</label>
 						</div>
 						<div class="form-group" name="dynamic-ip-input-mod">
-							<label class="col-sm-offset-1 col-sm-2 control-label">IP地址</label>
-							<div class="col-sm-5">
+							<label class="col-sm-12 col-xs-12  col-md-4 control-label">IP地址</label>
+							<div class="col-sm-10 col-xs-10 col-md-6">
 								<input type="text" class="form-control" name="hostIp" />
 							</div>
 							<label class="control-label" for="maximum_concurrency"> <a
@@ -130,8 +130,8 @@
 							</label>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-offset-1 col-sm-2 control-label">描述</label>
-							<div class="col-sm-5">
+							<label class="col-sm-12 col-xs-12  col-md-4 control-label">描述</label>
+							<div class="col-sm-10 col-xs-10 col-md-6">
 								<textarea id="descn" name="descn" class="form-control" rows="3"
 									placeholder=""></textarea>
 							</div>

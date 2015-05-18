@@ -56,10 +56,10 @@ function queryByPage() {
 				var td3 = $("<td>"
 						+ array[i].taskType
 						+ "</td>");
-				var td4 = $("<td>"
+				var td4 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)
 						+ "</td>");
-				var td5 = $("<td>"
+				var td5 = $("<td class='hidden-480'>"
 						+ array[i].descn
 						+ "</td>");
 				/*var td6 = $("<td>"

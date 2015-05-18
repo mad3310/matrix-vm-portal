@@ -1,40 +1,62 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
-	<div class="page-header">
-		<!-- <h3>数据库列表	</h3> -->
-	    <div class="input-group pull-right">
-			<form class="form-inline">
-				<div class="form-group ">
-					<input type="text" class="form-control" id="dbName"
-						placeholder="数据库名称">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="dbMcluster"
-						placeholder="所属Mcluster">
-				</div>
-				<div class="form-group">
-					<input type="text" class="form-control" id="dbPhyMcluster"
-						placeholder="所属物理机集群">
-				</div>
-				<div class="form-group ">
-					<input type="text" class="form-control" id="dbuser"
-						placeholder="所属用户">
-				</div>
-				<!-- <div class="form-group">
-					<input type="date" class="form-control" id="PhyMechineDate"
-						placeholder="创建时间">
-				</div> -->
-				<div class="form-group">
-					<select class="form-control" id="dbStatus">
-						<option value="">请选择状态</option>
-					</select>
-				</div>
-				
-				<button class="btn btn-sm btn-primary btn-search" type="button" id="dbSearch"><i class="ace-icon fa fa-search"></i>搜索
-				</button>
-				<button class="btn btn-sm" type="button" id="dbSearchClear">清空</button>
-			</form>
-		</div>	
+	<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">数据库查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="page-header">
+				<!-- <h3>数据库列表	</h3> -->
+			    <div class="input-group pull-right">
+					<form class="form-inline">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbName"
+								placeholder="数据库名称">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbMcluster"
+								placeholder="所属Mcluster">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbPhyMcluster"
+								placeholder="所属物理机集群">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbuser"
+								placeholder="所属用户">
+						</div>
+						<!-- <div class="form-group">
+							<input type="date" class="form-control" id="PhyMechineDate"
+								placeholder="创建时间">
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<select class="form-control" id="dbStatus">
+								<option value="">请选择状态</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2" style="padding-right:0;">
+							<button class="btn btn-sm btn-primary btn-search" type="button" id="dbSearch"><i class="ace-icon fa fa-search"></i>搜索
+							</button>
+							<button class="btn btn-sm" type="button" id="dbSearchClear">清空</button>
+						</div>
+					</form>
+				</div>	
+			</div>
+		</div>
 	</div>
     <!-- /.page-header -->
             <!-- <div class="modal fade" id="dbadvancedSearch">
@@ -106,7 +128,7 @@
             		</div>
             	</div>
             </div> -->
-	<div class="row">
+
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">数据库列表</h5>
@@ -123,13 +145,13 @@
 								</label>
 							</th>
 							<th>数据库名称</th>
-							<th>所属Mcluster</th>
-							<th>所属物理机集群</th>
+							<th  class="hidden-480">所属Mcluster</th>
+							<th  class="hidden-480">所属物理机集群</th>
 							<th>所属用户</th>
-							<th>
+							<th  class="hidden-480">
 								创建时间 
 							</th>
-							<th class="hidden-480">当前状态</th>
+							<th>当前状态</th>
 							<!-- <th></th> -->
 						</tr>
 					</thead>
@@ -147,11 +169,11 @@
 				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
 	
-				<li><a>共<lable id="totalPage"></lable>页</a>
+				<li class='hidden-480'><a>共<lable id="totalPage"></lable>页</a>
 				</li>
-				<li><a>第<lable id="currentPage"></lable>页</a>
+				<li class='hidden-480'><a>第<lable id="currentPage"></lable>页</a>
 				</li>
-				<li><a>共<lable id="totalRows"></lable>条记录</a>
+				<li class='hidden-480'><a>共<lable id="totalRows"></lable>条记录</a>
 				</li>
 			</ul>
 		</div>

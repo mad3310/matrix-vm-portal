@@ -4,42 +4,63 @@
 <input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 
 <div class="page-content-area">
-		<!-- <h3>备份恢复列表</h3> -->
-		<div class="input-group pull-right">
-			<div class="form-inline">
-				<div class="form-group time-range-unit-header">
-					<span class="time-range-title">选择时间范围：</span>
+<div class="row">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>767){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">备份恢复查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="input-group col-sm-12 col-xs-12 col-md-12">
+				<div class="form-group time-range-unit-header col-xs-12 col-sm-12 col-md-12">
+					<span class="time-range-title hidden-480">选择时间范围：</span>
+					<span class="time-range-title hidden-md hidden-lg">开始时间：</span>
 					<div class="date-unit">
 						<input type='text' class="form-control datetimepicker" id='startTime' />
 					</div>
-					<span class="date-step-span">至</span>
+					<br class="hidden-md hidden-lg">
+					<span class="date-step-span hidden-480">至</span>
+					<span class="time-range-title hidden-md hidden-lg">结束时间：</span>
 					<div class="date-unit">
 						<input type='text' class="form-control datetimepicker" id='endTime' />
 					</div>
+					
 				</div>
 				<script type="text/javascript">
-				$(function () {
-	                $('#startTime').datetimepicker({
-	            		viewMode: 'months',
-	            		format: 'L',
-	            		locale: 'zh-cn'
-	            	});
-	                $('#endTime').datetimepicker({
-	            		viewMode: 'months',
-	            		format: 'L',
-	            		locale: 'zh-cn'
-	            	});
-	            });
+					$(function () {
+		                $('#startTime').datetimepicker({
+		            		viewMode: 'months',
+		            		format: 'L',
+		            		locale: 'zh-cn'
+		            	});
+		                $('#endTime').datetimepicker({
+		            		viewMode: 'months',
+		            		format: 'L',
+		            		locale: 'zh-cn'
+		            	});
+		            });
 				</script>
-				<div class="form-group">
-					<input id="dbName" type="input" class="form-control margin-left-5"
+				<div class="form-group col-xs-12 col-sm-6 col-md-3">
+					<input id="dbName" type="input" class="form-control"
 						placeholder="请输入数据库名称">
 				</div>
-				<div class="form-group ">
+				<div class="form-group col-xs-12 col-sm-6 col-md-3">
 					<input id="mclusterName" type="input"
-						class="form-control margin-left-5" placeholder="请输入集群名称">
+						class="form-control" placeholder="请输入集群名称">
 				</div>
-				<div class="form-group margin-left-5">
+				<div class="form-group col-xs-12 col-sm-6 col-md-3">
 					<select id="backupStatus" class="form-control">
 					    <option value="4"  selected="selected">全部</option>
 						<option value="0">备份成功</option>
@@ -47,13 +68,14 @@
 						<option value="2">备份中...</option>
 					</select>
 				</div>
-				<button id="bksearch" class="btn btn-primary btn-sm btn-search"><i class="ace-icon fa fa-search"></i>搜索</button>
-				<button class="btn btn-sm" type="button" id="clear">清空</button>
+				<div class="form-group col-xs-12 col-sm-6 col-md-3">
+					<button id="bksearch" class="btn btn-primary btn-sm btn-search"><i class="ace-icon fa fa-search"></i>搜索</button>
+					<button class="btn btn-sm" type="button" id="clear">清空</button>
+				</div>
 			</div>
 		</div>
-	
 	</div>
-		<div class="row">
+	<!-- </div> -->
 			<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 				<div class="widget-header">
 					<h5 class="widget-title">备份恢复列表</h5>
@@ -63,12 +85,18 @@
 						<table class="table table-hover table-striped">
 							<thead>
 								<tr class="text-muted">
-									<td style="width: 15%">container集群名称</td>
+									<!-- <td style="width: 15%">container集群名称</td>
 									<td style="width: 15%">数据库名称</td>
 									<td style="width: 20%">开始时间</td>
 									<td style="width: 20%">结束时间</td>
 									<td style="width: 10%">状态</td>
-									<td style="width: 20%">详情</td>
+									<td style="width: 20%">详情</td> -->
+									<td class="hidden-480">container集群名称</td>
+									<td>数据库名称</td>
+									<td class="hidden-480">开始时间</td>
+									<td class="hidden-480">结束时间</td>
+									<td>状态</td>
+									<td>详情</td>
 								</tr> 
 							</thead>
 							<tbody id="backupTbody">
@@ -87,11 +115,11 @@
 					<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
 					<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 					<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-                    <li><a>共<lable id="totalPage"></lable>页
+                    <li class="hidden-480"><a>共<lable id="totalPage"></lable>页
 					</a></li>
-					<li><a>第<lable id="currentPage"></lable>页
+					<li class="hidden-480"><a>第<lable id="currentPage"></lable>页
 					</a></li>
-					<li><a>共<lable id="totalRows"></lable>条记录
+					<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录
 					</a></li>
 				</ul>
 	        </div>
