@@ -148,10 +148,11 @@
 											<button class="btn btn-xs btn-primary" type="button" id="timing-task-cron-btn">定点执行</button>
 											<button class="btn btn-xs btn-default" type="button" id="timing-task-interval-btn">周期执行</button>
 											<div class="timing-set" id="timing-task-btn-input">
-												<span id="timing-task-span-start">每</span>
-												<input class="timing-input" type="text" id="timing-hour" name="timingHour"/><span>时</span>
-												<input class="timing-input"  type="text" id="timing-min" name="timingMin"/><span>分</span>
-												<input class="timing-input"  type="text" id="timing-second" name="timingSecond"/><span>秒</span>
+												<span id="timing-task-span-start">每天</span>
+												<input class="timing-input" type="text" id="timingTaskVal" name="timingTaskVal"/>
+												<select class="timing-input timing-select" name="timingTaskValUnit" id="timingTaskValUnit">
+													<option value="hour">时</option>
+												</select>
 												<span id="timing-task-span-end">时运行</span>
 											</div>
 										</div>

@@ -69,7 +69,7 @@ function queryByPage() {
 				var td7= $("<td>"-"</td>");
 				if(array[i].type=="CRON"){
 					var td7 = $("<td>"
-							+"每"+array[i].timePoint+"时执行"
+							+"每天"+array[i].timePoint+"时执行"
 							+ "</td>");
 				}else if(array[i].type=="INTERVAL"){
 					var td7 = $("<td>"
@@ -186,50 +186,15 @@ function formValidate(){
                      }
 	             }
          	},
-         	timingHour: {
-                 validMessage: '请按提示输入',
+         	timingTaskVal:{
+         		validMessage: '请按提示输入',
                  validators: {
-                     integer: {
-                        message: '请输入数字'
-                    },between:{
-                        min:0,
-                        max:23,
-                        message:'时范围0-23'
-                    }
-	             }
-         	},
-         	timingMin: {
-                 validMessage: '请按提示输入',
-                 validators: {
-                     integer: {
-                        message: '请输入数字'
-                    },between:{
-                        min:0,
-                        max:59,
-                        message:'分范围0-59'
-                    }
-	             }
-         	},
-         	timingSecond: {
-                 validMessage: '请按提示输入',
-                 validators: {
-                     integer: {
-                        message: '请输入数字'
-                    },between:{
-                        min:0,
-                        max:59,
-                        message:'秒范围0-59'
-                    },callback: {
-                        message: '时分秒不能全为空',
-                        callback: function() {
-                            if($("#timing-hour").val()!=''||$("#timing-min").val()!=''||$("#timing-second").val()!=''){
-	                            return true;
-                            }else{
-                            	 return false;
-                            }
-                        }
-                    }
-	             }
+                     notEmpty: {
+                         message: '执行接口不能为空	!'
+                     },integer: {
+	                        message: '请输入数字'
+	                 }
+                 }
          	}
          }
      }).on('keyup', '[name="timingHour"]', function () {
@@ -252,9 +217,9 @@ function formValidate(){
     			execType:$("#timingTaskExecType").val()
     		};
     		if(timingTaskType=="CRON"){
-    			postData.timePoint=(timingHour==''? '':timingHour+"hour")+(timingmin==''? '':timingmin+"minute")+(timingSecond==''? '':timingSecond+"second");
+    			postData.timePoint=$("#timingTaskVal").val()+$("#timingTaskValUnit").val();
     		}else if(timingTaskType=="INTERVAL"){
-    			postData.timeInterval=(timingHour==''? '':timingHour+"hours")+(timingmin==''? '':timingmin+"minutes")+(timingSecond==''? '':timingSecond+"seconds");
+    			postData.timeInterval=$("#timingTaskVal").val()+$("#timingTaskValUnit").val();
     		}
         $.ajax({
     		cache:false,
@@ -290,13 +255,17 @@ function initTimingTaskSetBtn(){
 	$("#timing-task-cron-btn").click(function(){
 		$("#timing-task-interval-btn").removeClass("btn-primary").addClass("btn-default");
 		$(this).removeClass("btn-default").addClass("btn-primary");
-		$("#timing-task-span-start").text("每");
+		$("#timingTaskValUnit").html("<option value=\"hour\">时</option>");
+		$("#timing-task-span-start").text("每天");
 		$("#timing-task-span-end").text("时运行");
 		timingTaskType="CRON";
 	});
 	$("#timing-task-interval-btn").click(function(){
 		$("#timing-task-cron-btn").removeClass("btn-primary").addClass("btn-default");
 		$(this).removeClass("btn-default").addClass("btn-primary");
+		$("#timingTaskValUnit").html("<option value=\"hours\">时</option>"
+													+"<option value=\"minutes\">分</option>"
+													+"<option value=\"seconds\">秒</option>");
 		$("#timing-task-span-start").text("每隔");
 		$("#timing-task-span-end").text("运行一次");
 		timingTaskType="INTERVAL";

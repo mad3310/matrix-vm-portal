@@ -27,8 +27,14 @@ public class PythonTimingTaskServiceImpl extends BaseTimingTaskServiceImpl imple
 	public void insert(BaseTimingTask t) {
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("url", t.getUrl());
-		map.put(t.getType().toString().toLowerCase(), t.getTimeInterval());
 		map.put("http_method", t.getHttpMethod().toLowerCase());
+		
+		String timingTaskType = t.getType().toString().toLowerCase();
+		if("interval".equals(timingTaskType)){
+			map.put(timingTaskType, t.getTimeInterval());
+		}else if("cron".equals(timingTaskType)){
+			map.put(timingTaskType, t.getTimePoint());
+		}
 		
 		String result = HttpClient.post(TIMING_TASK_PYTHON_URL, map,TIMING_TASK_PYTHON_USER, TIMING_TASK_PYTHON_PWD); //参数化
 		
