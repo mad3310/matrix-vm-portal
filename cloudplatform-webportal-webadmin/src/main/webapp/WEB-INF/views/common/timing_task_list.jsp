@@ -127,11 +127,13 @@
 										<label class="col-sm-4 control-label" for="hcluster">接口调用方式</label>
 										<div class="col-sm-3">
 											<select class="form-control" name="httpMethod" id="httpMethod">
-												<option>get</option>
-												<option>post</option>
-												<option>delete</option>
-												<option>put</option>
-												<option>input</option>
+												<option>GET</option>
+												<option>POST</option>
+												<option>DELETE</option>
+												<option>PUT</option>
+												<option>HEAD</option>
+												<option>OPTIONS</option>
+												<option>CONNECT</option>
 											</select>
 										</div>
 										<label class="control-label" for="hcluster">
