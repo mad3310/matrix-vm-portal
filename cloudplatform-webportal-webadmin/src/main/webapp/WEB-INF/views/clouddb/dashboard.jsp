@@ -93,10 +93,10 @@
 								</h4>
 							</div>
 						</div>
-						<div id="statistics" class="col-md-12 col-xs-12 mt10">
-							<div id="monitorNode" style="height: 300px"></div>	
-							<div class="hr hr8 hr-double"></div>
-						</div>
+					</div>
+					<div id="statistics" class="col-md-12 col-xs-12 mt10">
+						<div id="monitorNode" style="height: 300px"></div>	
+						<div class="hr hr8 hr-double"></div>
 					</div>
 				</div>
 				<div class="col-sm-4">
