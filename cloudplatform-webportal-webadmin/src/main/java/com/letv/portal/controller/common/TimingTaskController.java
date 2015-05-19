@@ -44,9 +44,9 @@ public class TimingTaskController {
 	}
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
-		if(StringUtils.isEmpty(baseTimingTask.getUrl()) || null == baseTimingTask.getType()|| StringUtils.isEmpty(baseTimingTask.getTimeInterval()))
+		
+		if(StringUtils.isEmpty(baseTimingTask.getUrl()) || null == baseTimingTask.getType()|| (StringUtils.isEmpty(baseTimingTask.getTimeInterval())&& StringUtils.isEmpty(baseTimingTask.getTimePoint())))
 			throw new ValidateException("参数不合法");
-			
 		ResultObject obj = new ResultObject();
 		this.pythonTimingTaskService.insert(baseTimingTask);
 		return obj;
