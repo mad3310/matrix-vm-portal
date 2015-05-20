@@ -188,29 +188,62 @@
 			ace.settings.check('sidebar', 'collapsed')
 		} catch (e) {
 		}
-		function IsPC()  
-		{  
-		   var userAgentInfo = navigator.userAgent;  
-		   var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");  
-		   var flag = true;  
-		   for (var v = 0; v < Agents.length; v++) {  
-		       if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
-		   }  
-		   return flag;  
-		}
 		if(!IsPC()){
-			function initMobileSider(){
-				$(document).on("swipeleft",function(){
-					  $("#menu-toggler").removeClass("display");
-					  $("#sidebar").removeClass("display");
-				});
-				$(document).on("swiperight",function(){
-					  $("#menu-toggler").addClass("display");
-					  $("#sidebar").addClass("display");
-				});
+		//判断是否支持触摸事件
+			function isTouchDevice() {
+				try {
+					document.createEvent("TouchEvent");
+					bindEvent(); //绑定事件
+					initMobileSider();
+				} catch (e) {
+				}
 			}
-			dynamicLoadJs("${ctx}/static/scripts/jquery.mobile-1.3.2.min.js",initMobileSider);
+			//全局变量，触摸开始位置
+			var startX = 0, startY = 0;
+			//touchstart事件
+			function touchSatrtFunc(evt) {
+				try {
+					//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+					var touch = evt.touches[0]; //获取第一个触点
+					var x = Number(touch.pageX); //页面触点X坐标
+					var y = Number(touch.pageY); //页面触点Y坐标
+					//记录触点初始位置
+					startX = x;
+					startY = y;
+				} catch (e) {
+				}
+			}
+			//touchmove事件，这个事件无法获取坐标
+			function touchMoveFunc(evt) {
+				try {
+					//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+					var touch = evt.touches[0]; //获取第一个触点
+					var x = Number(touch.pageX); //页面触点X坐标
+					var y = Number(touch.pageY); //页面触点Y坐标
+					//判断滑动方向
+					if (x - startX > 100) {
+						  $("#menu-toggler").addClass("display");
+						  $("#sidebar").addClass("display");
+					}else if(x - startX < -100){
+						$("#menu-toggler").removeClass("display");
+						  $("#sidebar").removeClass("display");
+					}
+				} catch (e) {
+				}
+			}
+			//touchend事件
+			function touchEndFunc(evt) {
+				try {
+				} catch (e) {
+				}
+			}
+			//绑定事件
+			function bindEvent() {
+				document.addEventListener('touchstart', touchSatrtFunc, false);
+				document.addEventListener('touchmove', touchMoveFunc, false);
+                document.addEventListener('touchend', touchEndFunc, false);
+			}
+			isTouchDevice() ;
 		}
-
 	</script>
 </div>
