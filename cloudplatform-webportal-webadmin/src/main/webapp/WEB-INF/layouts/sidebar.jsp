@@ -188,5 +188,29 @@
 			ace.settings.check('sidebar', 'collapsed')
 		} catch (e) {
 		}
+		function IsPC()  
+		{  
+		   var userAgentInfo = navigator.userAgent;  
+		   var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");  
+		   var flag = true;  
+		   for (var v = 0; v < Agents.length; v++) {  
+		       if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
+		   }  
+		   return flag;  
+		}
+		if(!IsPC()){
+			function initMobileSider(){
+				$(document).on("swipeleft",function(){
+					  $("#menu-toggler").removeClass("display");
+					  $("#sidebar").removeClass("display");
+				});
+				$(document).on("swiperight",function(){
+					  $("#menu-toggler").addClass("display");
+					  $("#sidebar").addClass("display");
+				});
+			}
+			dynamicLoadJs("${ctx}/static/scripts/jquery.mobile-1.3.2.min.js",initMobileSider);
+		}
+
 	</script>
 </div>
