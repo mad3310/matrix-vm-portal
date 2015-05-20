@@ -114,20 +114,20 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 	}
 	
 	@Override
-	@Async
+//	@Async
 	public void run(String taskName,Object params) {
 		run(init(taskName,params));
 	}
 	
 	@Override
-	@Async
+//	@Async
 	public void run(TaskChainIndex tci) {
 		TaskChain tc = this.taskChainService.selectNextChainByIndexAndOrder(tci.getId(),1); //select first TaskChain or doing TaskChain from table by taskChain order。
 		run(tc,tci);
 	}
 	
 	@Override
-	@Async
+//	@Async
 	public void run(TaskChain tc) {
 		TaskChainIndex tci = this.taskChainIndexService.selectById(tc.getChainIndexId());
 		run(tc,tci);

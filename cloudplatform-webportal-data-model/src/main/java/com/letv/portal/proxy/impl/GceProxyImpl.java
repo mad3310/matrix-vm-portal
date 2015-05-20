@@ -20,6 +20,7 @@ import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.log.LogServer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.model.task.service.ITaskEngine;
@@ -29,6 +30,7 @@ import com.letv.portal.service.IBaseService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
+import com.letv.portal.service.log.ILogServerService;
 
 @Component
 public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
@@ -44,6 +46,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private IGceClusterService gceClusterService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private ILogServerService logServerService;
 	@Autowired
 	private IBaseTaskService baseGceTaskService;
 	@Autowired
@@ -63,7 +67,20 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	public void saveAndBuild(GceServer gceServer) {
 		if(gceServer == null)
 			throw new ValidateException("参数不合法");
+		
+		//create logstash
+		LogServer log = new LogServer();
+		log.setLogName(gceServer.getGceName());
+		log.setHclusterId(gceServer.getHclusterId());
+		log.setCreateUser(gceServer.getCreateUser());
+		log.setType("logstash");
+		Map<String,Object> logParams = this.logServerService.save(log);
+		
+		this.taskEngine.run("LOG_BUY",logParams);
+		
 		Map<String,Object> params = this.gceServerService.save(gceServer);
+		
+		params.put("logIp", log.getIp());
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		params.put("isConfig", false);
 		if(GceType.JETTY.equals(gceServer.getType())) {
@@ -73,6 +90,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			nextParams = this.gceServerService.save(gceServer);
 			nextParams.put("isContinue", false);
 			nextParams.put("isConfig", true);
+			nextParams.put("logIp", log.getIp());
 			nextParams.put("pGceId", params.get("gceId"));
 			nextParams.put("pGceClusterId", params.get("gceClusterId"));
 			

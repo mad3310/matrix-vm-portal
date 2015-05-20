@@ -320,9 +320,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+			if(dbUserModel == null) 
+				throw new ValidateException("参数不合法，相关数据不存在。");
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			
-			if(dbUserModel == null || params.isEmpty()) 
+			if(params.isEmpty()) 
 				throw new ValidateException("参数不合法，相关数据不存在。");
 				
 			String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));

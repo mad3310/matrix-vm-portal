@@ -66,5 +66,31 @@ public class LogPythonServiceImpl implements ILogPythonService{
 		return result;
 	}
 
+	@Override
+	public String cpOpenSSL(Map<String, String> params, String nodeIp1,
+			String port, String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/openssl/copy");
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+	@Override
+	public String configLogStashForwarder(Map<String, String> params, String nodeIp1,
+			String port, String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash_forwarder/config");
+		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String startLogStashForwarder(Map<String, String> map,
+			String nodeIp1, String port, String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash_forwarder/restart");
+		String result = HttpClient.post(url.toString(), map,adminUser,adminPassword);
+		return result;
+	}
+
 	
 }
