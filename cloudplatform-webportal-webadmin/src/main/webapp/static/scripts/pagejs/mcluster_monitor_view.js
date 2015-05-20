@@ -32,7 +32,7 @@ function queryHcluster(){
 			var hclusterInfo = data.data;
 			for(var i=0,len=hclusterInfo.length;i<len;i++){
 				var option = $("<option value=\""+hclusterInfo[i].id+"\">"+hclusterInfo[i].hclusterNameAlias+"</option>");
-				$("#monitorHclusterOption").append(option);
+				$(".monitorHclusterOption").append(option);
 			}
 			initChosen();
 			queryMonitorPoint();
@@ -41,9 +41,9 @@ function queryHcluster(){
 }
 function queryMcluster(){
 	//getLoading();
-	var hclusterId = $('#monitorHclusterOption').val();
-	$("#mclusterOption").empty();
-	$("#mclusterOption").append("<option></option>");
+	var hclusterId = $('.monitorHclusterOption').val();
+	$(".mclusterOption").empty();
+	$(".mclusterOption").append("<option></option>");
 	$.ajax({
 		cache:false,
 		type:"get",		
@@ -55,7 +55,7 @@ function queryMcluster(){
 			var mclustersInfo = data.data;
 			for(var i=0,len=mclustersInfo.length;i<len;i++){
 				var option = $("<option value=\""+mclustersInfo[i].id+"\">"+mclustersInfo[i].mclusterName+"</option>");
-				$("#mclusterOption").append(option);
+				$(".mclusterOption").append(option);
 			}
 			initChosen();
 		}
@@ -181,7 +181,7 @@ function initChart(obj,title,ytitle,unit){
 } 
 
 function setChartData(indexId,chart){
-	var mclusterId= $('#mclusterOption').val();
+	var mclusterId= $('.mclusterOption').val();
 	var queryTime= $('#queryTime').val();
 	if(queryTime == ''){
 		var queryTime = 1;
@@ -254,7 +254,7 @@ function updateChartSize(obj){
 $(function(){
 	$('#nav-search').addClass("hidden");
 	queryHcluster();
-	$("#monitorHclusterOption").change(function() {
+	$(".monitorHclusterOption").change(function() {
 		queryMcluster();
 	})
 });
