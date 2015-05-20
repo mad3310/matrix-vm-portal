@@ -24,6 +24,8 @@ public class TaskSwiftGetSuperTokenServiceImpl extends BaseTask4SwiftServiceImpl
 	private String SWIFT_SUPER_USER;
 	@Value("${matrix.swift.super.password}")
 	private String SWIFT_SUPER_USER_PWD;
+	@Value("${matrix.swift.auth.source}")
+	private String SWIFT_SUPER_AUTH_SOURCE;
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
@@ -34,6 +36,7 @@ public class TaskSwiftGetSuperTokenServiceImpl extends BaseTask4SwiftServiceImpl
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("x-auth-user", SWIFT_SUPER_USER);
 		headParams.put("x-auth-key", SWIFT_SUPER_USER_PWD);
+		headParams.put("x-auth-source", SWIFT_SUPER_AUTH_SOURCE);
 		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,1000);
 		if(response == null || response.getFirstHeader("X-Auth-Token") == null) {
 			tr.setResult(response == null?"api connect failed":response.getStatusLine().toString());
