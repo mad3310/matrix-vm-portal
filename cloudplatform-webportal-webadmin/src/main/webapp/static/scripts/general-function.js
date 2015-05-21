@@ -491,3 +491,35 @@ function enterKeydown(obj,func){
 	    });
 	})	
 }
+
+function dynamicLoadJs(src,callback,args) {
+	var _doc = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.setAttribute('type', 'text/javascript');
+	script.setAttribute('src',src);
+	_doc.appendChild(script);
+	script.onload = script.onreadystatechange = function() {
+		if (!this.readyState || this.readyState == 'loaded'
+				|| this.readyState == 'complete') {
+			if(args == null){
+				callback();
+			}else{
+				callback(args);
+			}
+		}
+		script.onload = script.onreadystatechange = null;
+	}
+}
+
+function IsPC() {
+	var userAgentInfo = navigator.userAgent;
+	var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+	var flag = true;
+	for (var v = 0; v < Agents.length; v++) {
+		if (userAgentInfo.indexOf(Agents[v]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}

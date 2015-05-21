@@ -1,10 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
-		try {
-			ace.settings.check('sidebar', 'fixed')
-		} catch (e) {
-		}
 </script>
 
 <div id="sidebar" class="sidebar responsive" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
@@ -184,9 +180,67 @@
 	
 	<!-- /section:basics/sidebar.layout.minimize -->
 	<script type="text/javascript">
-		try {
+	/* 	try {
 			ace.settings.check('sidebar', 'collapsed')
 		} catch (e) {
-		}
+		} */
+		 if(!IsPC()){
+		//判断是否支持触摸事件
+			ace.settings.navbar_fixed(true);
+			ace.settings.sidebar_fixed(true);
+			function isTouchDevice() {
+				try {
+					document.createEvent("TouchEvent");
+					bindEvent(); //绑定事件
+				} catch (e) {
+				}
+			}
+			//全局变量，触摸开始位置
+			var startX = 0, startY = 0;
+			//touchstart事件
+			function touchSatrtFunc(evt) {
+				try {
+					//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+					var touch = evt.touches[0]; //获取第一个触点
+					var x = Number(touch.pageX); //页面触点X坐标
+					var y = Number(touch.pageY); //页面触点Y坐标
+					//记录触点初始位置
+					startX = x;
+					startY = y;
+				} catch (e) {
+				}
+			}
+			//touchmove事件，这个事件无法获取坐标
+			function touchMoveFunc(evt) {
+				try {
+					//evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+					var touch = evt.touches[0]; //获取第一个触点
+					var x = Number(touch.pageX); //页面触点X坐标
+					var y = Number(touch.pageY); //页面触点Y坐标
+					//判断滑动方向
+					if (x - startX > 100) {
+						  $("#sidebar").addClass("display ");
+						  $("#menu-toggler").addClass("display");
+					}else if(x - startX < -100){
+						  $("#sidebar").removeClass("display");
+						  $("#menu-toggler").removeClass("display");
+					}
+				} catch (e) {
+				}
+			}
+			//touchend事件
+			function touchEndFunc(evt) {
+				try {
+				} catch (e) {
+				}
+			}
+			//绑定事件
+			function bindEvent() {
+				document.addEventListener('touchstart', touchSatrtFunc, true);
+				document.addEventListener('touchmove', touchMoveFunc, true);
+                document.addEventListener('touchend', touchEndFunc, true);
+			}
+			isTouchDevice() ;//touchDevice添加touch事件
+		} 
 	</script>
 </div>

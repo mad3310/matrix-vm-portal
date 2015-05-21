@@ -1134,8 +1134,15 @@ td,th{word-break: break-all; word-wrap:break-word;}
 	.skin-custom .btn-search {margin-left:0;}
 }
 @media only screen and (max-width: 479px){
-.navbar:not(.navbar-collapse) .navbar-header {
-   float: left !important; 
-   display: inline-block; 
+	.navbar:not(.navbar-collapse) .navbar-header {
+	   float: left !important; 
+	   display: inline-block; 
+	}
+	.navbar-fixed-top+.main-container{
+		padding-top: 45px;
+	}
+	body.mob-safari .navbar-fixed-top+.main-container .sidebar.responsive{
+		top:45px;
+	}
 }
-}
+.queryBadge{position:absolute;top:-5px;right:-5px;color:rgba(255,255,255,.7);cursor:pointer;}

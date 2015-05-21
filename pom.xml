@@ -604,8 +604,8 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                  <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                 <webportal.local.http>http://localhost:8081</webportal.local.http>
-                <webportal.admin.http>http://localhost:8080</webportal.admin.http>
+                 <webportal.local.http>http://10.58.165.45:8081</webportal.local.http>
+                <webportal.admin.http>http://10.58.165.45:8080</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;caiyinxiang@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>

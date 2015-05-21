@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- /section:settings.box -->
+<link rel="stylesheet" href="${ctx}/static/ace/css/select2.css" />
 <div class="page-content-area">
 <div class="row">
 	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
@@ -201,7 +202,7 @@
 									</a>
 								</label>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster_name">应用业务类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
 									<select class="chosen-select" multiple="multiple"
@@ -213,6 +214,24 @@
 									<option>CBASE</option>
 									<option>OSS</option>
 								</select>
+								</div>
+								<label class="control-label hidden-sm hidden-xs">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择应用业务类型..." style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div> -->
+							
+							<div class="form-group">
+								<label class="control-label col-sm-12 col-xs-12 col-md-4  no-padding-right"> 应用业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select multiple=""  class="select2" data-placeholder="请选择应用业务类型...">
+										<option>RDS</option>
+										<option>SLB</option>
+										<option>GCE</option>
+										<option>CBASE</option>
+										<option>OSS</option>
+									</select>
 								</div>
 								<label class="control-label hidden-sm hidden-xs">
 									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请选择应用业务类型..." style="cursor:pointer; text-decoration:none;">
@@ -276,5 +295,9 @@
 
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
-
+<script src="${ctx}/static/ace/js/select2.min.js"></script>
 <script src="${ctx}/static/scripts/pagejs/hcluster_list.js"></script>
+
+<script type="text/javascript">
+	$('.select2').css('width','100%').select2({allowClear:true});
+</script>

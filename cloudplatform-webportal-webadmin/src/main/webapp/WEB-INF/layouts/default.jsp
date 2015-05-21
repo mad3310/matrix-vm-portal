@@ -207,14 +207,14 @@
 
 					</div>
 				</div>
-			</div> -->
+			</div>  -->
 
 			<!-- /.ace-settings-container -->
 			<sitemesh:body/>			
 		</div>
 	</div>
 	<!-- /.内容显示  -->
-	<%-- <%@ include file="/WEB-INF/layouts/footer.jsp"%> --%>
+	<%@ include file="/WEB-INF/layouts/footer.jsp"%>
 	</div>
 	
 
