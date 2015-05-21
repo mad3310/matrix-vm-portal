@@ -186,8 +186,8 @@
 		} */
 		 if(!IsPC()){
 		//判断是否支持触摸事件
-		ace.settings.navbar_fixed(true);
-		ace.settings.sidebar_fixed(true);
+			ace.settings.navbar_fixed(true);
+			ace.settings.sidebar_fixed(true);
 			function isTouchDevice() {
 				try {
 					document.createEvent("TouchEvent");
@@ -241,13 +241,6 @@
                 document.addEventListener('touchend', touchEndFunc, true);
 			}
 			isTouchDevice() ;//touchDevice添加touch事件
-			
-			$(document.body).on('touchmove.nav', function(event) {
-				if( is_scrolling && $.contains(sidebar, event.target) ) {
-					event.preventDefault();
-					return false;
-				}
-			});
 		} 
 	</script>
 </div>
