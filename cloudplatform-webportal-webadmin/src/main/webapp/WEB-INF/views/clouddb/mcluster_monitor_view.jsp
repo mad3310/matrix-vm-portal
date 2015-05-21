@@ -17,7 +17,7 @@
 					<h5 class="widget-title">查询条件</h5>
 					<div class="widget-toolbar">
 						<a href="#" data-action="collapse">
-							<i class="ace-icon fa fa-chevron-up"></i>
+							<i class="ace-icon fa fa-chevron-down"></i>
 						</a>
 					</div>
 				</div>

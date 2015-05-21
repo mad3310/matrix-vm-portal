@@ -1139,3 +1139,4 @@ td,th{word-break: break-all; word-wrap:break-word;}
    display: inline-block; 
 }
 }
+.queryBadge{position:absolute;top:-5px;right:-5px;color:rgba(255,255,255,.7);cursor:pointer;}

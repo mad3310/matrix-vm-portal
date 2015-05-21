@@ -16,7 +16,7 @@
 			<h5 class="widget-title">物理机集群查询条件</h5>
 			<div class="widget-toolbar">
 				<a href="#" data-action="collapse">
-					<i class="ace-icon fa fa-chevron-up"></i>
+					<i class="ace-icon fa fa-chevron-down"></i>
 				</a>
 			</div>
 		</div>
@@ -299,5 +299,5 @@
 <script src="${ctx}/static/scripts/pagejs/hcluster_list.js"></script>
 
 <script type="text/javascript">
-	$('.select2').css('width','100%').select2({allowClear:true})
+	$('.select2').css('width','100%').select2({allowClear:true});
 </script>
