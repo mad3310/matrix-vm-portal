@@ -76,13 +76,13 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		log.setType("logstash");
 		Map<String,Object> logParams = this.logServerService.save(log);
 		
-		this.taskEngine.run("LOG_BUY",logParams);
-		
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		
-		params.put("logIp", log.getIp());
 		Map<String,Object> nextParams = new HashMap<String,Object>();
+		params.put("logParams", logParams);
+		params.put("isCreateLog", true);
 		params.put("isConfig", false);
+		
 		if(GceType.JETTY.equals(gceServer.getType())) {
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
@@ -93,7 +93,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			nextParams.put("logIp", log.getIp());
 			nextParams.put("pGceId", params.get("gceId"));
 			nextParams.put("pGceClusterId", params.get("gceClusterId"));
-			
+			nextParams.put("logParams", logParams);
+			nextParams.put("isCreateLog", false);
 			params.put("isContinue", true);
 			params.put("nextParams", nextParams);
 		} else {
@@ -112,7 +113,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	
 	private void build(Map<String,Object> params) {
-    	this.taskEngine.run("GCE_BUY",params);
+    	this.taskEngine.run("GCE_BUY_EXT",params);
 	}
 	
 	@Override

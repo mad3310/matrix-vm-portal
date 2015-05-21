@@ -73,8 +73,8 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
 		TaskResult tr = new TaskResult();
-		if(params == null || params.isEmpty()) {
-			tr.setResult("params is empty");
+		if(params == null || params.isEmpty() || params.get("logParams") == null || params.get("isCreateLog") == null) {
+			tr.setResult("params is not valid.");
 			tr.setSuccess(false);
 		}
 		tr.setParams(params);
@@ -195,7 +195,8 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 	}
 	
 	public LogServer getLogServer(Map<String, Object> params) {
-		Long logId = getLongFromObject(params.get("logId"));
+		Map<String, Object> logParams = (Map<String, Object>) params.get("logParams");
+		Long logId = getLongFromObject(logParams.get("logId"));
 		if(logId == null)
 			throw new ValidateException("params's logId is null");
 		
@@ -207,7 +208,8 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 	}
 	
 	public LogCluster getLogCluster(Map<String, Object> params) {
-		Long logClusterId = getLongFromObject(params.get("logClusterId"));
+		Map<String, Object> logParams = (Map<String, Object>) params.get("logParams");
+		Long logClusterId = getLongFromObject(logParams.get("logClusterId"));
 		if(logClusterId == null)
 			throw new ValidateException("params's logClusterId is null");
 		
@@ -228,7 +230,8 @@ public class BaseTask4LogServiceImpl implements IBaseTaskService{
 		return host;
 	}
 	public List<LogContainer> getContainers(Map<String, Object> params) {
-		Long LogClusterId = getLongFromObject(params.get("logClusterId"));
+		Map<String, Object> logParams = (Map<String, Object>) params.get("logParams");
+		Long LogClusterId = getLongFromObject(logParams.get("logClusterId"));
 		if(LogClusterId == null)
 			throw new ValidateException("params's logClusterId is null");
 		

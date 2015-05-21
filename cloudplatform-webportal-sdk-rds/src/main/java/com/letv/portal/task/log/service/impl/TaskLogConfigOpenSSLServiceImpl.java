@@ -28,7 +28,11 @@ public class TaskLogConfigOpenSSLServiceImpl extends BaseTask4LogServiceImpl imp
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
-		
+		if(!(Boolean) params.get("isCreateLog"))  {
+			tr.setSuccess(true);
+			tr.setResult("no need to create Log");
+			return tr;
+		}
 		//执行业务
 		List<LogContainer> containers = super.getContainers(params);
 		String nodeIp1 = containers.get(0).getHostIp();

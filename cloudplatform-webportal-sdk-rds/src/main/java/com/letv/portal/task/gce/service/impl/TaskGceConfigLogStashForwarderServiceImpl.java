@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.log.LogContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IGcePythonService;
@@ -39,7 +40,9 @@ public class TaskGceConfigLogStashForwarderServiceImpl extends BaseTask4GceServi
 		GceCluster cluster = super.getGceCluster(params);
 		
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("ip", (String)params.get("logIp"));
+		List<LogContainer> logContainers = super.getLogContainers(params);
+		map.put("ip", logContainers.get(0).getIpAddr());
+		map.put("paths", "/var/log/test/*.log");
 		
 		String result = this.logPythonService.configLogStashForwarder(map,nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
