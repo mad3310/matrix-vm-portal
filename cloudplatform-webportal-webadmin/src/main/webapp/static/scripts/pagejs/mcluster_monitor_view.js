@@ -1,4 +1,63 @@
 function refreshChartForSelect(){
+	var iw=document.body.clientWidth;
+	if(iw>767){//md&&lg
+	}else{
+		$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
+		$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
+		var qryStr='';
+		var qryStr1=$('.monitorHclusterOption:last').val();var qryStr2=$('.mclusterOption:last').val();var qryStr3=$('#queryTime').val();var qryStr4=$('#monitorPointOption').val();
+		if(qryStr1){
+			var temp=$('.monitorHclusterOption:last option[value="'+qryStr1+'"]').text();
+			qryStr+='<span class="label label-success arrowed">'+temp+'</span>&nbsp;'
+		}
+		if(qryStr2){
+			var temp=$('.mclusterOption:last option[value="'+qryStr2+'"]').text();
+			qryStr+='<span class="label label-warning arrowed">'+temp+'</span>&nbsp;'
+		}
+		if(qryStr3){
+			var temp=$('#queryTime').find("option:selected").text();
+			qryStr+='<span class="label label-purple arrowed">'+temp+'</span>&nbsp;'
+		}
+		if(qryStr4){
+			var obj=$('#monitorPointOption').val()
+			for(i in obj){
+				var index=obj[i];
+				var temp=$("#monitorPointOption option[value='"+index+"']").text();
+				qryStr+='<span class="label label-yellow arrowed">'+temp+'<span class="queryBadge" data-rely-index="'+index+'"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+		}
+		if(qryStr){
+			$('.queryOption').find('.widget-title').html(qryStr);
+			$('.queryBadge').click(function(event) {
+				var index=$(this).attr('data-rely-index');
+				$("#monitorPointOption option[value='"+index+"']").removeAttr('selected');
+				$(this).parent().remove();
+				//查询
+				var monitorPoint = $('#monitorPointOption').val();
+				$('#monitor-view [name="monitor-view"]').each(function(){
+					if (monitorPoint != null){
+						for (var i = 0,len = monitorPoint.length; i < len ; i++){
+							if($(this).attr('id') == (monitorPoint[i]+"-monitor-view")){
+								$(this).removeClass('hide');
+								var chart = $("#"+monitorPoint[i]).highcharts();
+								setChartData(monitorPoint[i],chart);
+								break
+							}
+							$(this).addClass('hide');
+						}
+					}else{
+						$(this).addClass('hide');
+					}
+				});//end 查询
+				if($('.queryBadge').length<=0){
+					$('.queryOption').find('.widget-title').html('查询条件');
+				}
+				return;
+			});
+		}else{
+			$('.queryOption').find('.widget-title').html('查询条件');
+		}
+	}
 	var monitorPoint = $('#monitorPointOption').val();
 	$('#monitor-view [name="monitor-view"]').each(function(){
 		if (monitorPoint != null){
@@ -13,9 +72,6 @@ function refreshChartForSelect(){
 			}
 		}else{
 			$(this).addClass('hide');
-			/*monitorPointId=$(this).find('[name="data-chart"]').attr('id');
-			var chart = $("#"+monitorPointId).highcharts();
-			setChartData(monitorPointId,chart);*/
 		}
 	});
 }
@@ -41,7 +97,7 @@ function queryHcluster(){
 }
 function queryMcluster(){
 	//getLoading();
-	var hclusterId = $('.monitorHclusterOption').val();
+	var hclusterId = $('.monitorHclusterOption:visible').val();
 	$(".mclusterOption").empty();
 	$(".mclusterOption").append("<option></option>");
 	$.ajax({

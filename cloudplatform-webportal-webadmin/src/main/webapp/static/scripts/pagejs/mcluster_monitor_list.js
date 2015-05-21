@@ -2,6 +2,39 @@
 	page_init();
 	
 	$("#monitorClusterSearch").click(function(){
+		var iw=document.body.clientWidth;
+		if(iw>767){//md&&lg
+		}else{
+			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
+			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
+			var qryStr='';
+			var qryStr1=$('#monitorContainer').val();var qryStr2=$('#VipAddress').val();var qryStr3=$('#monitorPhyM').val();
+			if(qryStr1){
+				qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="monitorContainer"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr2){
+				qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="VipAddress"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr3){
+				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="monitorPhyM"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr){
+				$('.queryOption').find('.widget-title').html(qryStr);
+				$('.queryBadge').click(function(event) {
+					var id=$(this).attr('data-rely-id');
+					$('#'+id).val('');
+					$(this).parent().remove();
+					queryMclusterMonitor();
+					if($('.queryBadge').length<=0){
+						$('.queryOption').find('.widget-title').html('container集群监控列表');
+					}
+					return;
+				});
+			}else{
+				$('.queryOption').find('.widget-title').html('container集群监控列表');
+			}
+
+		}
 		queryMclusterMonitor();
 	});
 	$("#monitorClusterClear").click(function(){

@@ -48,6 +48,48 @@ var currentSelectedLineDbName = 1;
 	
 	/*查询功能*/
 	$("#dbSearch").click(function(){
+		var iw=document.body.clientWidth;
+		if(iw>767){//md&&lg
+		}else{
+			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
+			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
+			var qryStr='';
+			var qryStr1=$('#dbName').val();var qryStr2=$('#dbMcluster').val();var qryStr3=$('#dbPhyMcluster').val();var qryStr4=$('#dbuser').val();var qryStr5;
+			if($('#dbStatus').val()){
+				qryStr5=translateStatus($('#dbStatus').val());
+			}
+			if(qryStr1){
+				qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="dbName"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr2){
+				qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="dbMcluster"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr3){
+				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="dbPhyMcluster"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr4){
+				qryStr+='<span class="label label-yellow arrowed">'+qryStr4+'<span class="queryBadge" data-rely-id="dbuser"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr5){
+				qryStr+='<span class="label label-pink arrowed">'+qryStr5+'<span class="queryBadge" data-rely-id="dbStatus"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr){
+				$('.queryOption').find('.widget-title').html(qryStr);
+				$('.queryBadge').click(function(event) {
+					var id=$(this).attr('data-rely-id');
+					$('#'+id).val('');
+					$(this).parent().remove();
+					queryByPage();
+					if($('.queryBadge').length<=0){
+						$('.queryOption').find('.widget-title').html('数据库查询条件');
+					}
+					return;
+				});
+			}else{
+				$('.queryOption').find('.widget-title').html('数据库查询条件');
+			}
+
+		}
 		queryByPage();
 	});
 	$("#dbSearchClear").click(function(){
