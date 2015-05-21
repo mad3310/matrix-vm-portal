@@ -52,6 +52,7 @@ import com.letv.portal.model.monitor.DbMonitorModel;
 import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.model.monitor.NodeModel.DetailModel;
 import com.letv.portal.model.monitor.NodeMonitorModel;
+import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
@@ -1331,5 +1332,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void getClusterServiceData(SwiftServer swift,
+			MonitorIndexModel index, Date date) {
+		// TODO Auto-generated method stub
+		
 	}
 }

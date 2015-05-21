@@ -24,6 +24,7 @@ import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
@@ -36,6 +37,7 @@ import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.slb.ISlbClusterService;
 import com.letv.portal.service.slb.ISlbContainerService;
 import com.letv.portal.service.slb.ISlbServerService;
+import com.letv.portal.service.swift.ISwiftServerService;
 
 @Component("monitorProxy")
 public class MonitorProxyImpl implements IMonitorProxy{
@@ -59,6 +61,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Autowired
 	private IGceServerService gceServerService;
 	@Autowired
+	private ISwiftServerService swiftServerService;
+	@Autowired
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private ISlbServerService slbServerService;
@@ -68,7 +72,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
 	
-//	@Override
+	@Override
 	public void collectMclusterServiceData() {
 		Map<String,String> map = new  HashMap<String,String>();
 		map.put("type", "mclusternode");
@@ -105,6 +109,21 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			}
 		}
 		logger.info("collectClusterServiceData end");
+	}
+	@Override
+	public void collectOSSServiceData() {
+		/*List<SwiftServer> swifts = this.swiftServerService.selectByMap(null);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 3);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectClusterServiceData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (SwiftServer swift : swifts) {
+				this.buildTaskService.getClusterServiceData(swift, index,date);
+			}
+		}*/
 	}
 	
 	@Override
