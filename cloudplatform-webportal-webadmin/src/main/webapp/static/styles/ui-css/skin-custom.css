@@ -1138,4 +1138,10 @@ td,th{word-break: break-all; word-wrap:break-word;}
    float: left !important; 
    display: inline-block; 
 }
+.navbar-fixed-top+.main-container{
+	padding-top: 45px;
+}
+body.mob-safari .navbar-fixed-top+.main-container .sidebar.responsive{
+	top:45px;
+}
 }

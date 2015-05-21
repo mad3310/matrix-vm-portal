@@ -1,10 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
-		try {
-			ace.settings.check('sidebar', 'fixed')
-		} catch (e) {
-		}
 </script>
 
 <div id="sidebar" class="sidebar responsive" data-sidebar="true" data-sidebar-scroll="true" data-sidebar-hover="true">
@@ -184,17 +180,18 @@
 	
 	<!-- /section:basics/sidebar.layout.minimize -->
 	<script type="text/javascript">
-		try {
+	/* 	try {
 			ace.settings.check('sidebar', 'collapsed')
 		} catch (e) {
-		}
-		if(!IsPC()){
+		} */
+		 if(!IsPC()){
 		//判断是否支持触摸事件
+		ace.settings.navbar_fixed(true);
+		ace.settings.sidebar_fixed(true);
 			function isTouchDevice() {
 				try {
 					document.createEvent("TouchEvent");
 					bindEvent(); //绑定事件
-					initMobileSider();
 				} catch (e) {
 				}
 			}
@@ -222,11 +219,11 @@
 					var y = Number(touch.pageY); //页面触点Y坐标
 					//判断滑动方向
 					if (x - startX > 100) {
+						  $("#sidebar").addClass("display ");
 						  $("#menu-toggler").addClass("display");
-						  $("#sidebar").addClass("display");
 					}else if(x - startX < -100){
-						$("#menu-toggler").removeClass("display");
 						  $("#sidebar").removeClass("display");
+						  $("#menu-toggler").removeClass("display");
 					}
 				} catch (e) {
 				}
@@ -239,11 +236,18 @@
 			}
 			//绑定事件
 			function bindEvent() {
-				document.addEventListener('touchstart', touchSatrtFunc, false);
-				document.addEventListener('touchmove', touchMoveFunc, false);
-                document.addEventListener('touchend', touchEndFunc, false);
+				document.addEventListener('touchstart', touchSatrtFunc, true);
+				document.addEventListener('touchmove', touchMoveFunc, true);
+                document.addEventListener('touchend', touchEndFunc, true);
 			}
-			isTouchDevice() ;
-		}
+			isTouchDevice() ;//touchDevice添加touch事件
+			
+			$(document.body).on('touchmove.nav', function(event) {
+				if( is_scrolling && $.contains(sidebar, event.target) ) {
+					event.preventDefault();
+					return false;
+				}
+			});
+		} 
 	</script>
 </div>
