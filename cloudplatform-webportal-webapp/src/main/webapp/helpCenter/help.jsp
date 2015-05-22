@@ -287,4 +287,26 @@ $('.wizard .y-tab li').on('click', function(){
     $('.wizard .guide-bd').hide();
     $('.wizard .guide-bd[data-id='+id+']').show();
 });
+var containers = ["helpDetail-login",
+								"helpDetail-reg",
+								"helpDetail-findpas",
+								"help-createDb",
+								"help-createUser",
+								"help-connect",
+								"help-datastructure",
+								"help-gbalancerDB",
+								"help-userLink",
+								"help-OSSuse",
+								"help-OSStool",
+								"help-OCSuse"];
+(function htmlLoad(containers){
+$('.'+containers.join(",.")).unbind("click").click(function(event) {
+	event.preventDefault();
+	$('.GeneralQues').parent().removeClass('current');
+	$('.serviceCenter').parent().removeClass('current');
+	$('.vnavbar').find('.current').removeClass('current');
+	var source=$(this).attr('data-spm-click');
+	$('.content-right').load(source);
+});
+})(containers);
 </script>

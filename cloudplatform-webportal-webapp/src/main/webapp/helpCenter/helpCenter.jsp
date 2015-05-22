@@ -198,26 +198,17 @@ var containers = ["helpDetail-login",
         $('.GeneralQues').parent().removeClass('current');
         $('.serviceCenter').parent().removeClass('current');
         $('.vnavbar').find('.current').removeClass('current');
-        //$(this).addClass('current');
-        // $(this).addClass('current')
-        //         .parent().siblings().find('a').removeClass('current');
-        // var _sublevel=$(this).closest('.sub-level');
-        // if(_sublevel.length>0){//存在二级目录
-        //     console.log(_sublevel.attr('class'))
-        //     _sublevel.removeClass('hidden');
-        //     _sublevel.prev().children('span').removeClass('arrow-down').addClass('arrow-up');
-        // }
         var source=$(this).attr('data-spm-click');
         $('.content-right').load(source);
     });
 })(containers);
-
+//获取链接中的参数
 function GetQueryString(name) { 
 	var reg = new RegExp("(^|&)" +name+ "=([^&]*)(&|$)","i"); 
 	var r = window.location.search.substr(1).match(reg); 
 	if (r!=null) return (r[2]); return null; 
 } 
-	 
+//判断加载哪个内部页面	 
 var container = GetQueryString("container"); 
 if(container == ""){
 	$(".GeneralQues").click();
