@@ -287,37 +287,26 @@ $('.wizard .y-tab li').on('click', function(){
     $('.wizard .guide-bd').hide();
     $('.wizard .guide-bd[data-id='+id+']').show();
 });
-htmlLoad('helpDetail-login');
-htmlLoad('helpDetail-reg');
-htmlLoad('helpDetail-findpas');
-htmlLoad('help-createDb');
-htmlLoad('help-createUser');
-htmlLoad('help-connect');
-htmlLoad('help-datastructure');
-htmlLoad('help-gbalancerDB');
-htmlLoad('help-userLink');
-htmlLoad('help-OSSuse');
-htmlLoad('help-OSStool');
-htmlLoad('help-OCSuse');
-function htmlLoad(container){
-    $('.'+container).click(function(event) {
-        event.preventDefault();
-        $('.GeneralQues').parent().removeClass('current');
-        $('.serviceCenter').parent().removeClass('current');
-        $('.vnavbar').find('.current').removeClass('current');
-        //$(this).addClass('current');
-        // $(this).addClass('current')
-        //         .parent().siblings().find('a').removeClass('current');
-        // var _sublevel=$(this).closest('.sub-level');
-        // if(_sublevel.length>0){//存在二级目录
-        //     console.log(_sublevel.attr('class'))
-        //     _sublevel.removeClass('hidden');
-        //     _sublevel.prev().children('span').removeClass('arrow-down').addClass('arrow-up');
-        // }
-        var source=$(this).attr('data-spm-click');
-        $('.content-right').html('');
-        $('.content-right').load(source);
-        
-    });
-}
+var containers = ["helpDetail-login",
+								"helpDetail-reg",
+								"helpDetail-findpas",
+								"help-createDb",
+								"help-createUser",
+								"help-connect",
+								"help-datastructure",
+								"help-gbalancerDB",
+								"help-userLink",
+								"help-OSSuse",
+								"help-OSStool",
+								"help-OCSuse"];
+(function htmlLoad(containers){
+$('.'+containers.join(",.")).unbind("click").click(function(event) {
+	event.preventDefault();
+	$('.GeneralQues').parent().removeClass('current');
+	$('.serviceCenter').parent().removeClass('current');
+	$('.vnavbar').find('.current').removeClass('current');
+	var source=$(this).attr('data-spm-click');
+	$('.content-right').load(source);
+});
+})(containers);
 </script>

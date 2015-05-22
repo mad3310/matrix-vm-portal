@@ -331,6 +331,11 @@
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
+											<div class="pull-left product-opt-wrap">
+												<a href="/helpCenter/helpCenter.jsp" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
+												</a>
+											</div>
 										</div>
 										<!-- <div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
@@ -370,6 +375,11 @@
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/dbCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+											<div class="pull-left product-opt-wrap">
+												<a href="/helpCenter/helpCenter.jsp?container=help-createDb" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
 										</div>
@@ -431,6 +441,11 @@
 											<div class="pull-left product-opt-wrap">
 												<a href="/buy/oss" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="oss-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+											<div class="pull-left product-opt-wrap">
+												<a href="/helpCenter/helpCenter.jsp?container=help-OSSuse" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
 										</div>
@@ -498,6 +513,11 @@
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/gceCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="gce-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
+												</a>
+											</div>
+											<div class="pull-left product-opt-wrap">
+												<a href="/helpCenter/helpCenter.jsp" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
 										</div>

@@ -21,7 +21,7 @@
     $('li[data-id='+target+']').closest('ul').prev().find('span').removeClass('arrow-down').addClass('arrow-up');
     htmlLoad('help-createUser');
 function htmlLoad(container){
-    $('.'+container).click(function(event) {
+    $('.'+container).unbind("click").click(function(event) {
         event.preventDefault();
         $('.GeneralQues').parent().removeClass('current');
         $('.serviceCenter').parent().removeClass('current');
