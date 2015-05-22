@@ -203,7 +203,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		HostModel host = this.hostService.getHostByHclusterId(swift.getHclusterId());
 		
 		StringBuilder key = new StringBuilder();
-		key.append(host.getHostIp()).append("/").append(swift.getCreateUser()).append("/").append(swift.getId());
+		UserModel user = this.userService.selectById(swift.getCreateUser());
+		key.append(user.getUserName()).append("/").append(swift.getName());
 		
 		List<MonitorViewYModel> data = this.monitorService.getMonitorData(key.toString(), chartId, strategy,isTimeAveraging,format);
 		return data;

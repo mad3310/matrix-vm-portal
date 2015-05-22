@@ -52,7 +52,8 @@
 	</div>
 	<div class="monitor-charts">
 		<div class="chart-content" style="width:100%">
-			<div class="chart"></div>
+			<div id="chart-container" class="chart-container">							
+			</div>
 		</div>
 		<div class="footer" style="width:100%;height:200px;">						
 		</div>

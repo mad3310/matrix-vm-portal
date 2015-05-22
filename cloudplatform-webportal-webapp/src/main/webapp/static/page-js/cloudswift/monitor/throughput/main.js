@@ -23,10 +23,10 @@ define(function(require){
 	UpdateChartData();
 
 	function InitChart(){
-		cn.GetData("/monitor/index/32",monitor.InitCharts);
+		cn.GetData("/monitor/index/36",monitor.InitCharts);
 	}
 	function UpdateChartData(){
-		var url = "/monitor/"+$("#swiftId").val()+"/32/"+$("#strategy").val()+"/true";
+		var url = "/monitor/oss/"+$("#swiftId").val()+"/36/"+$("#strategy").val()+"/false/0";
 		cn.GetData(url,monitor.SetChartData); 
 	}
 });
