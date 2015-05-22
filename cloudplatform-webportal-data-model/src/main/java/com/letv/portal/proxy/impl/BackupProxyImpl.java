@@ -176,7 +176,12 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				if(result.contains("backup success")) { 
 					status = BackupStatus.SUCCESS;
 				} else if(result.contains("backup is processing")) {
-					status = BackupStatus.BUILDING;
+					if(new Date().getHours()-backup.getStartTime().getHours()>1) {
+						status = BackupStatus.FAILD;
+						resultDetail = "more than one hour for bakcup";
+					} else {
+						status = BackupStatus.BUILDING;
+					}
 				}
 			} else if(result.contains("\"code\": 411")) {
 				status = BackupStatus.FAILD;
@@ -192,7 +197,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		backup.setResultDetail(resultDetail);
 		backup.setEndTime(date);
 		this.backupService.updateBySelective(backup);
-		
 		
 		if(status.equals(BackupStatus.FAILD)) {
 			logger.info("check backup faild");
