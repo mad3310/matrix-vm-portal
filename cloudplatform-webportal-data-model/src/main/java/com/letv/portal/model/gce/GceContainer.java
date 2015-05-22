@@ -27,6 +27,7 @@ public class GceContainer extends BaseModel {
 	private String bingHostIp;//物理机映射IP
 	private String bingProtocol;//
 	private String mgrBindHostPort;//物理机映射端口
+	private String logBindHostPort;
 	private String containerUuid;//调用container用的UUID
 	
 	private ServiceType serviceType;
@@ -194,5 +195,11 @@ public class GceContainer extends BaseModel {
 	}
 	public void setMgrBindHostPort(String mgrBindHostPort) {
 		this.mgrBindHostPort = mgrBindHostPort;
+	}
+	public String getLogBindHostPort() {
+		return logBindHostPort;
+	}
+	public void setLogBindHostPort(String logBindHostPort) {
+		this.logBindHostPort = logBindHostPort;
 	}
 }

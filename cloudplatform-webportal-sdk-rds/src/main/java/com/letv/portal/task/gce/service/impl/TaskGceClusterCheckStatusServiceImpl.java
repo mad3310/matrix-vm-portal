@@ -83,6 +83,10 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
 						continue;
 					}
+					if("9999".equals(portBinding.get("containerPort"))) {
+						container.setLogBindHostPort((String)portBinding.get("hostPort"));
+						continue;
+					}
 					hostPort.append((String)portBinding.get("hostPort")).append(",");
 					containerPort.append((String)portBinding.get("containerPort")).append(",");
 					protocol.append((String)portBinding.get("protocol")).append(",");

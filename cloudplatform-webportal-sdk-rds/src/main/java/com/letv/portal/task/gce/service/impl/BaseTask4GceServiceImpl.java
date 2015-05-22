@@ -24,6 +24,8 @@ import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.log.LogCluster;
+import com.letv.portal.model.log.LogContainer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IHostService;
@@ -32,6 +34,8 @@ import com.letv.portal.service.common.IZookeeperInfoService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
+import com.letv.portal.service.log.ILogClusterService;
+import com.letv.portal.service.log.ILogContainerService;
 
 @Component("baseGceTaskService")
 public class BaseTask4GceServiceImpl implements IBaseTaskService{
@@ -49,6 +53,10 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 	private IGceServerService gceServerService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private ILogClusterService logClusterService;
+	@Autowired
+	private ILogContainerService logContainerService;
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -230,6 +238,18 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		
 		return gceCluster;
 	}
+	public LogCluster getLogCluster(Map<String, Object> params) {
+		Map<String, Object> logParams = (Map<String, Object>) params.get("logParams");
+		Long logClusterId = getLongFromObject(logParams.get("logClusterId"));
+		if(logClusterId == null)
+			throw new ValidateException("params's logClusterId is null");
+		
+		LogCluster logCluster = this.logClusterService.selectById(logClusterId);
+		if(logCluster == null)
+			throw new ValidateException("logCluster is null by logClusterId:" + logClusterId);
+		
+		return logCluster;
+	}
 	
 	public HostModel getHost(Long hclusterId) {
 		if(hclusterId == null)
@@ -249,6 +269,17 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		if(gceContainers == null || gceContainers.isEmpty())
 			throw new ValidateException("gceCluster is null by gceClusterId:" + gceClusterId);
 		return gceContainers;
+	}
+	public List<LogContainer> getLogContainers(Map<String, Object> params) {
+		Map<String, Object> logParams = (Map<String, Object>) params.get("logParams");
+		Long logClusterId = getLongFromObject(logParams.get("logClusterId"));
+		if(logClusterId == null)
+			throw new ValidateException("params's logClusterId is null");
+		
+		List<LogContainer> logContainers = this.logContainerService.selectByLogClusterId(logClusterId);
+		if(logContainers == null || logContainers.isEmpty())
+			throw new ValidateException("gceCluster is null by logClusterId:" + logClusterId);
+		return logContainers;
 	}
 	
 	public ZookeeperInfo getMinusedZk() {

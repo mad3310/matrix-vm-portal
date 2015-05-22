@@ -12,7 +12,7 @@
 		<result column="MASK" property="mask" />
 		
 		<result column="STATUS" property="status" />
-		<result column="IS_DELETED" property="isDeleted" />
+		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
@@ -35,7 +35,7 @@
 	<!-- WEBPORTAL_IP_RESOURCE table all fields -->
 	<sql id="Base_Column_List">
 		ID,IP,GATE_WAY,MASK,
-		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER
 	</sql>
 	
 	<!-- 插入记录 -->
@@ -43,7 +43,7 @@
 		insert into
 		WEBPORTAL_IP_RESOURCE
 		(IP,GATE_WAY,MASK,
-		STATUS,IS_DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values
 		(#{ip},#{gateWay},#{mask},
 		'0','1',now(),#{createUser},now(),#{updateUser})
@@ -59,7 +59,7 @@
 	</update>
 	
 	<!-- 根据id查询-->
-	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_IP_RESOURCE where ID = #{id}

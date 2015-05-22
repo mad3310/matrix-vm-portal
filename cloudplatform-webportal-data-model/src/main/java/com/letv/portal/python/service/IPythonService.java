@@ -256,7 +256,7 @@ public interface IPythonService {
 	 * @param ip
 	 * @return
 	 */
-	public String getMclusterStatus(String ip)throws Exception;
+	public String getMclusterStatus(String ip);
     /**
      * Methods Name: getMclusterMonitor <br>
      * Description: 通过vip结点ip抓取集群数据库状态<br>
@@ -264,7 +264,7 @@ public interface IPythonService {
      * @param ip
      * @return
      */
-	public String getMclusterMonitor(String ip)throws Exception;
+	public String getMclusterMonitor(String ip);
 	
 	
 	/**Methods Name: getMonitorData <br>
@@ -293,6 +293,7 @@ public interface IPythonService {
 	 * @param password
 	 */
 	public String checkBackup4Db(String ipAddr);
+	String getOSSData(String ip, String index);
 	
 	
 	

@@ -567,10 +567,10 @@
 							<div class="bk-scope bk-items">
 									<div class="bk-items-list">
 											<ul>
-												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">张祥</span></li>
-												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhangxiang@letv.com</span></li>
-												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15101188635</span></li>
-												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">2980726652</span></li>
+												<li><span class="bk-items-item-name">姓名：</span> <span class="bk-items-item-value">周秉政</span></li>
+												<li><span class="bk-items-item-name">邮箱：</span> <span class="bk-items-item-value">zhoubingzheng@letv.com</span></li>
+												<li><span class="bk-items-item-name">电话：</span> <span class="bk-items-item-value">15901422865</span></li>
+												<li><span class="bk-items-item-name">Q  Q：</span> <span class="bk-items-item-value">473877850</span></li>
 											</ul>
 								</div>
 							</div>

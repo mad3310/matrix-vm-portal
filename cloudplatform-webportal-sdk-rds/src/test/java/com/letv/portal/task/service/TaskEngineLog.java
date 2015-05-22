@@ -43,7 +43,7 @@ public class TaskEngineLog extends AbstractTest{
     @Test
     public void testRun5() {
     	LogCluster cluster = new LogCluster();
-    	cluster.setClusterName("abcd1");
+    	cluster.setClusterName("abcdabcd2");
     	cluster.setAdminUser(cluster.getClusterName());
     	cluster.setAdminPassword(cluster.getClusterName());
     	cluster.setStatus(0);
@@ -52,7 +52,7 @@ public class TaskEngineLog extends AbstractTest{
     	this.logClusterService.insert(cluster);
     	
     	LogServer log = new LogServer();
-    	log.setLogName("testLog1");
+    	log.setLogName("testLogabcd2");
     	log.setLogClusterId(cluster.getId());
     	log.setHclusterId(1L);
     	log.setCreateUser(4L);

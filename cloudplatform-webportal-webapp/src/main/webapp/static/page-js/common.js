@@ -460,6 +460,12 @@ define(function(require,exports,module){
 			$('.divselect').closest('.pull-left').unbind("click").click(function(event){
 				event.stopPropagation();
 				var ul = $(this).find('ul');
+                var index=document.body.clientHeight-event.clientY;
+                if(index<=100){//下拉框适配位置，或上或下显示
+                    ul.css({
+                        top: '-36px'
+                    });
+                }
 				if(ul.css("display")=="none"){
 					$('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
 					ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");

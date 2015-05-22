@@ -30,4 +30,5 @@ public interface IMonitorProxy {
 	public void deleteOutData();
 
 	void collectClusterServiceData();
+	void collectOSSServiceData();
 }

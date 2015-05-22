@@ -1326,7 +1326,7 @@ position: relative;
 .bk-form-row .pull-left .sleHid { 
 	display:block; 
 	width:226px;
-	overflow:hidden; 
+	/*overflow:hidden; */
 }    
 .bk-form-row .pull-left .sleBG { 
 	width:226px; 
@@ -1493,6 +1493,8 @@ textarea {
 .divselect{
 	cursor: pointer;
 	width:226px;
+	/*修改下拉框适配位置显示*/
+	position:relative;
 }
 .divselect span{
 	line-height:36px;
@@ -1505,6 +1507,8 @@ textarea {
 	margin:0;
 	padding:0;
 	border:1px solid #eeeeee;
+	/*修改下拉框适配位置显示*/
+	position:absolute;
 }
 .bk-select-option{
 	cursor: pointer;

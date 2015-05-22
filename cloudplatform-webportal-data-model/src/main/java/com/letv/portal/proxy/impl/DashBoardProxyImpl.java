@@ -107,11 +107,12 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 		int serious = 0;
 		int crash = 0;
 		int timeout = 0;
+		int except = 0;
 		for (MclusterModel mcluster : mclusters) {
 			ContainerModel container = this.selectValidVipContianer(
 					mcluster.getId(), "mclustervip");
 			if (container == null) {
-				timeout++;
+				except++;
 				continue;
 			}
 			BaseMonitor monitor = this.buildTaskService.getMonitorData(
@@ -131,6 +132,9 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 			if (MonitorStatus.TIMEOUT.getValue() == monitor.getResult()) {
 				timeout++;
 			}
+			if (MonitorStatus.EXCEPTION.getValue() == monitor.getResult()) {
+				except++;
+			}
 		}
 		Map<String, Integer> data = new HashMap<String, Integer>();
 		/*
@@ -141,6 +145,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 		data.put("serious", serious);
 		data.put("crash", crash);
 		data.put("timeout", timeout);
+		data.put("except", except);
 		return data;
 	}
 

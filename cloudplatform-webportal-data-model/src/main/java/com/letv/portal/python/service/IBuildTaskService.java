@@ -10,6 +10,7 @@ import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.monitor.BaseMonitor;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
+import com.letv.portal.model.swift.SwiftServer;
 
 
 /**Program Name: IBuildTaskService <br>
@@ -178,5 +179,7 @@ public interface IBuildTaskService {
 	public BaseMonitor getMonitorData(String ip, Long monitorType);
 
 	public void getClusterServiceData(String clusterName,Long hclusterId, MonitorIndexModel index, Date date);
+	public void getOSSServiceData(String hostIp, String string,
+			MonitorIndexModel index, Date date);
 	
 }

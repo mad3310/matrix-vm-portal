@@ -64,6 +64,11 @@ public class CronJobsController {
 		this.monitorProxy.collectClusterServiceData();
 		return obj;
 	}
+	@RequestMapping(value="/oss/monitor",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject collectOSSMonitorData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.collectOSSServiceData();
+		return obj;
+	}
 	/**Methods Name: checkMclusterStatus <br>
 	 * Description: 检查mcluster健康状况<br>
 	 * @author name: liuhao1

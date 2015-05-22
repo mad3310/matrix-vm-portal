@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.UserModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
@@ -24,18 +26,22 @@ import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.slb.ISlbClusterService;
 import com.letv.portal.service.slb.ISlbContainerService;
 import com.letv.portal.service.slb.ISlbServerService;
+import com.letv.portal.service.swift.ISwiftServerService;
 
 @Component("monitorProxy")
 public class MonitorProxyImpl implements IMonitorProxy{
@@ -59,16 +65,21 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Autowired
 	private IGceServerService gceServerService;
 	@Autowired
+	private ISwiftServerService swiftServerService;
+	@Autowired
 	private IGceContainerService gceContainerService;
 	@Autowired
 	private ISlbServerService slbServerService;
 	@Autowired
 	private ISlbContainerService slbContainerService;
-	
+	@Autowired
+	private IHostService hostService;
+	@Autowired
+	private IUserService userService;
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
 	
-//	@Override
+	@Override
 	public void collectMclusterServiceData() {
 		Map<String,String> map = new  HashMap<String,String>();
 		map.put("type", "mclusternode");
@@ -105,6 +116,25 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			}
 		}
 		logger.info("collectClusterServiceData end");
+	}
+	@Override
+	public void collectOSSServiceData() {
+		List<SwiftServer> swifts = this.swiftServerService.selectByMap(null);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 3);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectClusterServiceData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (SwiftServer swift : swifts) {
+				HostModel host = this.hostService.getHostByHclusterId(swift.getHclusterId());
+				StringBuilder key = new StringBuilder();
+				UserModel user = this.userService.selectById(swift.getCreateUser());
+				key.append(user.getUserName()).append("/").append(swift.getName());
+				this.buildTaskService.getOSSServiceData(host.getHostIp(),key.toString(), index,date);
+			}
+		}
 	}
 	
 	@Override
@@ -161,7 +191,22 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			return this.getGceData(serverId, chartId, strategy, isTimeAveraging,format);
 		if("SLB".equals(type.toUpperCase()))
 			return this.getSlbData(serverId, chartId, strategy, isTimeAveraging,format);
+		if("OSS".equals(type.toUpperCase()))
+			return this.getOSSData(serverId, chartId, strategy, isTimeAveraging,format);
 		return null;
+	}
+	private List<MonitorViewYModel> getOSSData(Long serverId, Long chartId,Integer strategy, boolean isTimeAveraging, int format) {
+		SwiftServer swift = this.swiftServerService.selectById(serverId);
+		if(swift == null || swift.getHclusterId() == null)
+			throw new ValidateException("参数不合法");
+		
+		HostModel host = this.hostService.getHostByHclusterId(swift.getHclusterId());
+		
+		StringBuilder key = new StringBuilder();
+		key.append(host.getHostIp()).append("/").append(swift.getCreateUser()).append("/").append(swift.getId());
+		
+		List<MonitorViewYModel> data = this.monitorService.getMonitorData(key.toString(), chartId, strategy,isTimeAveraging,format);
+		return data;
 	}
 	@Override
 	public List<MonitorViewYModel> getDbData(Long serverId,Long chartId, Integer strategy,boolean isTimeAveraging,int format) {

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.util.JsonUtils;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.BuildStatus;
@@ -52,6 +55,7 @@ import com.letv.portal.model.monitor.DbMonitorModel;
 import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.model.monitor.NodeModel.DetailModel;
 import com.letv.portal.model.monitor.NodeMonitorModel;
+import com.letv.portal.model.swift.SwiftServer;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
@@ -320,9 +324,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
+			if(dbUserModel == null) 
+				throw new ValidateException("参数不合法，相关数据不存在。");
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			
-			if(dbUserModel == null || params.isEmpty()) 
+			if(params.isEmpty()) 
 				throw new ValidateException("参数不合法，相关数据不存在。");
 				
 			String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
@@ -1071,60 +1077,69 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 	
-	@SuppressWarnings("finally")
 	@Override
 	public BaseMonitor getMonitorData(String ip, Long monitorType) {
-		BaseMonitor monitor = new BaseMonitor();
-		try {
+		BaseMonitor monitor = null;
 			String result = "";
 			if(monitorType == 1) {
+				monitor = new ClusterModel();
 				result = this.pythonService.getMclusterMonitor(ip);
-				monitor = analysisClusterData(result);
-			} else if(monitorType == 2) {
+			} else {
+				monitor = new NodeModel();
 				result = this.pythonService.getMclusterStatus(ip);
-				monitor = analysisNodeData(result);
-			} else if(monitorType == 3) {
-				result = this.pythonService.getMclusterStatus(ip);
-				monitor = analysisDbData(result);
 			}
-		} catch (Exception e) {
-		} finally {
+			
+			if(StringUtils.isNullOrEmpty(result)) {
+				monitor.setResult(MonitorStatus.TIMEOUT.getValue());
+				return monitor;
+			} 
+			
+			if(monitorType == 1) {
+					monitor = analysisClusterData(result);
+			} else if(monitorType == 2) {
+					monitor = analysisNodeData(result);
+			} else if(monitorType == 3) {
+					monitor = analysisDbData(result);
+			}
 			return monitor;
-		}
 	}
 	
-	@SuppressWarnings("finally")
 	private ClusterModel analysisClusterData(String result){
 		Map<String,Object> data = transResult(result);
 		ClusterModel monitor = new ClusterModel();
-		try {
-			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
-				ObjectMapper resultMapper = new ObjectMapper();
+		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
+			ObjectMapper resultMapper = new ObjectMapper();
+			try {
 				monitor = resultMapper.readValue(result, ClusterModel.class);
-				String[] lostIp = monitor.getResponse().getNode().getNode_size().getLost_ip();
-				if(lostIp == null) {
-					monitor.setResult(MonitorStatus.CRASH.getValue());
-					if("nothing".equals(monitor.getResponse().getNode().getNode_size().getAlarm())) {
-						monitor.setResult(MonitorStatus.NORMAL.getValue());
-					}
-				} else {
-					monitor.setResult(lostIp.length);
-				}
+			} catch (Exception e) {
+				logger.error("解析数据异常：" + e.getMessage());
+				monitor.setResult(MonitorStatus.EXCEPTION.getValue());
+				return monitor;
 			}
-		}catch (Exception e) {
-			throw new RuntimeException("解析api参数出错");
-		} finally {
-			return monitor;
+			String[] lostIp = monitor.getResponse().getNode().getNode_size().getLost_ip();
+			if(lostIp == null) {
+				monitor.setResult(MonitorStatus.CRASH.getValue());
+				if("nothing".equals(monitor.getResponse().getNode().getNode_size().getAlarm())) {
+					monitor.setResult(MonitorStatus.NORMAL.getValue());
+				}
+			} else {
+				monitor.setResult(lostIp.length);
+			}
 		}
+		return monitor;
 	}
-	@SuppressWarnings("finally")
 	private NodeModel analysisDbData(String result){
 		Map<String,Object> data = transResult(result);
 		NodeModel monitor = new NodeModel();
-		try {
 			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
 				ObjectMapper resultMapper = new ObjectMapper();
-				monitor = resultMapper.readValue(result, NodeModel.class);
+				try {
+					monitor = resultMapper.readValue(result, NodeModel.class);
+				} catch (Exception e) {
+					logger.error("解析数据异常：" + e.getMessage());
+					monitor.setResult(MonitorStatus.EXCEPTION.getValue());
+					return monitor;
+				}
 				Date now = new Date();
 				//处理
 				boolean timeout = false;
@@ -1147,20 +1162,20 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					monitor.setResult(MonitorStatus.CRASH.getValue());
 				}
 			}
-		}catch (Exception e) {
-			throw new RuntimeException("解析api参数出错");
-		} finally {
 			return monitor;
-		}
 	}
-	@SuppressWarnings("finally")
 	private NodeModel analysisNodeData(String result){
 		Map<String,Object> data = transResult(result);
 		NodeModel monitor = new NodeModel();
-		try {
 			if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)(data.get("meta"))).get("code")))) {
 				ObjectMapper resultMapper = new ObjectMapper();
-				monitor = resultMapper.readValue(result, NodeModel.class);
+				try {
+					monitor = resultMapper.readValue(result, NodeModel.class);
+				} catch (Exception e) {
+					logger.error("解析数据异常：" + e.getMessage());
+					monitor.setResult(MonitorStatus.EXCEPTION.getValue());
+					return monitor;
+				}
 				Date now = new Date();
 				//处理
 				boolean timeout = false;
@@ -1183,11 +1198,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					monitor.setResult(MonitorStatus.CRASH.getValue());
 				}
 			}
-		}catch (Exception e) {
-			throw new RuntimeException("解析api参数出错");
-		} finally {
 			return monitor;
-		}
 	}
 	public boolean isTimeout(Date now,DetailModel detailModel) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1329,5 +1340,23 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void getOSSServiceData(String url,String ip, MonitorIndexModel index, Date date) {
+		Map result = transResult(this.pythonService.getOSSData(url, index.getDataFromApi().replace("{0}", ip)));
+		if(analysisResult(result)) {
+			Map<String,Object>  data= (Map<String,Object>) ((Map<String,Object>)result.get("response")).get("data");
+			for(Iterator it =  data.keySet().iterator();it.hasNext();){
+				String key = (String) it.next();
+				MonitorDetailModel monitorDetail = new MonitorDetailModel();
+				monitorDetail.setDbName(index.getDetailTable());
+				monitorDetail.setDetailName(key);
+				monitorDetail.setMonitorDate(date);
+				monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
+				monitorDetail.setIp(ip);
+				this.monitorService.insert(monitorDetail);
+			}
+		}
 	}
 }

@@ -36,7 +36,8 @@ public class LogServerServiceImpl extends BaseServiceImpl<LogServer> implements 
 	private ILogClusterService logClusterService;
 	@Autowired
 	private ILogContainerService logContainerService;
-	
+	@Value("${log.code}")
+	private String LOG_CODE;
 	public LogServerServiceImpl() {
 		super(LogServer.class);
 	}
@@ -59,7 +60,7 @@ public class LogServerServiceImpl extends BaseServiceImpl<LogServer> implements 
 		logServer.setStatus(LogStatus.BUILDDING.getValue());
 		
 		StringBuffer clusterName = new StringBuffer();
-		clusterName.append(logServer.getCreateUser()).append("_").append(logServer.getLogName());
+		clusterName.append(logServer.getCreateUser()).append("_").append(LOG_CODE).append("_").append(logServer.getLogName());
 		
 		/*function 验证clusterName是否存在*/
 		Boolean isExist= this.logClusterService.isExistByName(clusterName.toString());

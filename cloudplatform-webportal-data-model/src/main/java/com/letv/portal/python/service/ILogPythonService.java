@@ -52,5 +52,9 @@ public interface ILogPythonService {
 
 	public String configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,
 			String adminPassword);
-	
+	public String cpOpenSSL(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
+
+	public String configLogStashForwarder(Map<String, String> map, String nodeIp1,String port, String adminUser, String adminPassword);
+
+	public String startLogStashForwarder(Map<String, String> map,String nodeIp1, String port, String adminUser, String adminPassword);
 }
