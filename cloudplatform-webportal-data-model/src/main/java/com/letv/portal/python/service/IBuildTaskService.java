@@ -179,8 +179,7 @@ public interface IBuildTaskService {
 	public BaseMonitor getMonitorData(String ip, Long monitorType);
 
 	public void getClusterServiceData(String clusterName,Long hclusterId, MonitorIndexModel index, Date date);
-
-	public void getClusterServiceData(SwiftServer swift,
+	public void getOSSServiceData(String hostIp, String string,
 			MonitorIndexModel index, Date date);
 	
 }

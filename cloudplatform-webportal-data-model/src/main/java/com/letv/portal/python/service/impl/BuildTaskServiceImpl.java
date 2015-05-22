@@ -1343,9 +1343,23 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
-	public void getClusterServiceData(SwiftServer swift,
-			MonitorIndexModel index, Date date) {
-		// TODO Auto-generated method stub
+	public void getOSSServiceData(String url,String ip, MonitorIndexModel index, Date date) {
+		Map result = transResult(this.pythonService.getOSSData(url, index.getDataFromApi().replace("{0}", ip)));
+		if(analysisResult(result)) {
+			List<Map<String,Object>>  data= (List<Map<String,Object>>) ((Map<String,Object>)result.get("response")).get("data");
+			for (Map<String, Object> containerData : data) {
+				for(Iterator it =  containerData.keySet().iterator();it.hasNext();){
+					String key = (String) it.next();
+					MonitorDetailModel monitorDetail = new MonitorDetailModel();
+					monitorDetail.setDbName(index.getDetailTable());
+					monitorDetail.setDetailName(key);
+					monitorDetail.setMonitorDate(date);
+					monitorDetail.setDetailValue(Float.parseFloat(containerData.get(key).toString()));  
+					monitorDetail.setIp(ip);
+					this.monitorService.insert(monitorDetail);
+				}
+			}
+		}
 		
 	}
 }

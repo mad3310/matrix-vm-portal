@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.util.HttpClient;
+import com.letv.common.util.HttpsClient;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
@@ -21,6 +22,7 @@ public class PythonServiceImpl implements IPythonService{
 	
 	private final static String URL_HEAD = "http://";
 	private final static String URL_PORT = ":8888";	
+	private final static String OSS_URL_PORT = ":8887";	
 	private final static String GBALANCER_PORT = ":9888";	
 	
 	@Override
@@ -329,6 +331,13 @@ public class PythonServiceImpl implements IPythonService{
 	public String getMonitorData(String ip, String index) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		String result = HttpClient.get(url.toString(),1000,1000);
+		return result;
+	}
+	@Override
+	public String getOSSData(String ip, String index) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(OSS_URL_PORT).append(index);
 		String result = HttpClient.get(url.toString(),1000,1000);
 		return result;
 	}
