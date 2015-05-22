@@ -179,6 +179,12 @@ function getMclusterStatus(ip,obj) {
 				$(obj).addClass("default-danger timeoutCluster");
 				$(obj).parent().find(".timeoutClusterTag").after($(obj));
 				addControlButton();
+			}else if(result == "5"){
+				$(obj).removeClass();
+				$(obj).find('[name="mclusterStatus"]').html("<a>解析出错，请联系管理员</a>");
+				$(obj).addClass("default-danger timeoutCluster");
+				$(obj).parent().find(".timeoutClusterTag").after($(obj));
+				addControlButton();
 			}
 			$('[data-toggle = "tooltip"]').tooltip();
 		}	

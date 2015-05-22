@@ -89,12 +89,14 @@ function setPieChartData(divName,type){
 			pieChartData[0].data.push({name:'严重危险',color:'#FDC43E',y:status.serious,url:url});
 			pieChartData[0].data.push({name:'集群不可用',color:'#D15A06',y:status.crash,url:url});
 			pieChartData[0].data.push({name:'获取数据超时',color:'#CC0032',y:status.timeout,url:url});
+			pieChartData[0].data.push({name:'解析数据错误',color:'#CC0032',y:status.except,url:url});
 			
 			$('#'+divName+'-nothing').html(status.nothing);
 			$('#'+divName+'-general').html(status.general);
 			$('#'+divName+'-serious').html(status.serious);
 			$('#'+divName+'-crash').html(status.crash);
 			$('#'+divName+'-timeout').html(status.timeout);
+			$('#'+divName+'-except').html(status.except);
 			
 			if(chart.series.length != 0){
 				chart.series[0].remove(false);

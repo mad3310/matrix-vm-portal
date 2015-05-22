@@ -143,6 +143,7 @@ public class NodeModel extends BaseMonitor {
 		private String message;
 		private Object error_record;
 		private String ctime;
+		private int timeout_num;
 		
 		public String getAlarm() {
 			return alarm;
@@ -167,6 +168,12 @@ public class NodeModel extends BaseMonitor {
 		}
 		public void setError_record(Object error_record) {
 			this.error_record = error_record;
+		}
+		public int getTimeout_num() {
+			return timeout_num;
+		}
+		public void setTimeout_num(int timeout_num) {
+			this.timeout_num = timeout_num;
 		}
 		
 	}

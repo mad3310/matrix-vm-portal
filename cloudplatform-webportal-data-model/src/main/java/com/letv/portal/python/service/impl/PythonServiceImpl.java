@@ -312,14 +312,13 @@ public class PythonServiceImpl implements IPythonService{
 		return result;
 	}
 
-	public String getMclusterStatus(String ip)throws Exception{
+	public String getMclusterStatus(String ip){
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/mcluster/status");
 		String result = HttpClient.get(url.toString(),1000,1000);
 		return result;
-		
 	}
-	public String getMclusterMonitor(String ip)throws Exception{
+	public String getMclusterMonitor(String ip){
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/mcluster/monitor");
 	    String result = HttpClient.get(url.toString(),1000,1000);
