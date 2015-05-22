@@ -214,6 +214,9 @@ vertical-align: middle;
 .left-section .article-wrapper {
 margin: 0 5% 0 15%;
 }
+/*.right-section .article-wrapper {
+margin: 0 15% 0 5%;
+}*/
 .left-section, .right-section {
 display: table-cell;
 height: 100%;
@@ -323,7 +326,8 @@ margin: 10px 10px 0 0;
 padding: 3px;
 border: 1px solid #CCC;
 border-radius: 3px;
-background: #FFF;
+/*background: #FFF;*/
+background-color:transparent;
 }
 /*自定义*/
 .screenshot img{width:120px;height:68px;position:relative;z-index:101;cursor:pointer}
@@ -338,12 +342,10 @@ height: 680px;
 margin: auto;
 position: relative;
 }
-.red.doted-circle {
-border-color: #f07373;
-}
-.blue.doted-circle {
-border-color: #6dabd6;
-}
+.red.doted-circle {border-color: #f07373;}
+.blue.doted-circle {border-color: #6dabd6;}
+.green.doted-circle{border-color:#3AB052;}
+.pink.doted-circle{border-color:#DB5789;}
 .right-section .doted-circle, .right-section .filled-circle {
 margin-left: -10%;
 }
@@ -365,12 +367,10 @@ border-radius: 50%;
 -moz-background-clip: padding;
 background-clip: padding-box;
 }
-.red.filled-circle {
-background: #f07373;
-}
-.blue.filled-circle {
-background: #6dabd6;
-}
+.red.filled-circle {background: #f07373;}
+.blue.filled-circle{background: #6dabd6;}
+.green.filled-circle{background:#3AB052;}
+.pink.filled-circle{background:#DB5789;}
 .filled-circle {
 top: 3%;
 left: 3%;
@@ -588,6 +588,37 @@ animation-name: swashOut;
 @-moz-keyframes slideRightRetourn{0%{-moz-transform-origin:0 0;-moz-transform:translateX(100%)}100%{-moz-transform-origin:0 0;-moz-transform:translateX(0%)}}@-webkit-keyframes slideRightRetourn{0%{-webkit-transform-origin:0 0;-webkit-transform:translateX(100%)}100%{-webkit-transform-origin:0 0;-webkit-transform:translateX(0%)}}@-o-keyframes slideRightRetourn{0%{-o-transform-origin:0 0;-o-transform:translateX(100%)}100%{-o-transform-origin:0 0;-o-transform:translateX(0%)}}@-ms-keyframes slideRightRetourn{0%{-ms-transform-origin:0 0;-ms-transform:translateX(100%)}100%{-ms-transform-origin:0 0;-ms-transform:translateX(0%)}}@keyframes slideRightRetourn{0%{transform-origin:0 0;transform:translateX(100%)}100%{transform-origin:0 0;transform:translateX(0%)}}
 @-moz-keyframes slideUpRetourn{0%{-moz-transform-origin:0 0;-moz-transform:translateY(-100%)}100%{-moz-transform-origin:0 0;-moz-transform:translateY(0%)}}@-webkit-keyframes slideUpRetourn{0%{-webkit-transform-origin:0 0;-webkit-transform:translateY(-100%)}100%{-webkit-transform-origin:0 0;-webkit-transform:translateY(0%)}}@-o-keyframes slideUpRetourn{0%{-o-transform-origin:0 0;-o-transform:translateY(-100%)}100%{-o-transform-origin:0 0;-o-transform:translateY(0%)}}@-ms-keyframes slideUpRetourn{0%{-ms-transform-origin:0 0;-ms-transform:translateY(-100%)}100%{-ms-transform-origin:0 0;-ms-transform:translateY(0%)}}@keyframes slideUpRetourn{0%{transform-origin:0 0;transform:translateY(-100%)}100%{transform-origin:0 0;transform:translateY(0%)}}
 </style>
+<style>
+  .circle{display:inline-block;width:48px;height:48px;border-radius:24px;border:1px solid #323A45;text-align:center;line-height:48px;
+    transition:all ease-in-out .3s;color:#323A45;float:left}
+  .circle:hover{color:#fff;background-color:#323A45;text-decoration:none;}
+  .circle i{line-height:1;}
+  p.description{font-size:13px;opacity:.7;line-height:1.4em;text-align:justify;color:rgba(50,58,69,.7);}
+  ul.half{padding:0;background-color:transparent;}
+  ul.half li.noborder{width:50%;border:0;margin:0;}
+  li.noborder h4{font-size:17px;margin:5px 0;font-weight:700;}
+  article{opacity:.7;line-height: 24px;margin: 25px 0;text-align: justify;}
+  .sub-div{width:80%;float:left;padding-left:10px;word-break:break-all; word-wrap:break-word;}
+  .screen-img{width:100%;height:100%;position: relative;display: inline-block;margin:0 auto;text-align:center;}
+  img.lazy,.updown-tip {
+    -webkit-transition: all ease-in-out .4s;
+    -moz-transition: all ease-in-out .4s;
+    -ms-transition: all ease-in-out .4s;
+    -o-transition: all ease-in-out .4s;
+    transition: all ease-in-out .4s;
+    opacity: 0;
+  }
+  img.screen {position:absolute;left:0;top:50%;bottom:0;right:0;opacity:0;margin-top:-175px;
+  transform: translateX(-50px);
+  -webkit-transition: all ease-in-out .3s;
+  -moz-transition: all ease-in-out .3s;
+  -ms-transition: all ease-in-out .3s;
+  -o-transition: all ease-in-out .3s;
+  transition: all ease-in-out .3s;
+}
+img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
+
+</style>
 <!-- <div class="zw" style="height:5px;width:100%"></div> -->
 <div class="oauth_container">
 	<div class="fullpage" style="height: 100%; position: relative;top:0;">
@@ -731,10 +762,10 @@ animation-name: swashOut;
 	                </div>
 	                <div class="right-section">
 	                    <div class="article-wrapper frame-3">
-	                        <h1 class="magictime slideLeftRetourn" style="opacity: 1;">数据监控</h1>
+	                        <h1 class="magictime slideLeftRetourn" style="opacity: 1;">云引擎 GCE</h1>
 	                        <p class="show">
-	                           云监控，开放性监控平台，可实时监控您的站点和服务<br>
-                             并提供多种告警方式以保证及时预警<br>
+	                           云引擎，基于弹性扩展的网络应用托管平台<br>
+                             安全可靠、快捷开发、自动弹性、扩展服务<br>
 	                        </p>
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
@@ -758,6 +789,169 @@ animation-name: swashOut;
 	            </div>
 	        </div>
 	    </div>
+      
+      <div class="section table hidden for-sect" style="background-color: rgb(255, 255, 255);">
+        <div class="tableCell">
+            <div class="section-inner">
+              <div class="left-section">
+                  <div class="article-wrapper frame-3">
+                      <h2 class="magictime slideLeftRetourn" style="opacity: 1;">负载均衡 SLB</h2>
+                      <ul class="screenshot half clearfix">
+                        <li class="noborder" data-screen="screen_fuzai1">
+                          <a href="javascript:void(0);" class="circle">特性一</a>
+                          <div class="sub-div">
+                            <h4>负载均衡</h4>
+                            <p class="show description">管理 / 共享你的代码，无限私有库</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_fuzai2">
+                          <a href="javascript:void(0);" class="circle">特性二</a>
+                          <div class="sub-div">
+                            <h4>CodeInsight 代码阅读</h4>
+                            <p class="show description">精准高亮，交叉引用分析，随时随地阅读</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_fuzai3">
+                          <a href="javascript:void(0);" class="circle">特性三</a>
+                          <div class="sub-div">
+                            <h4>质量管理</h4>
+                            <p class="show description">提供质量报告，保证代码符合最佳实践</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_fuzai4">
+                          <a href="javascript:void(0);" class="circle">特性四</a>
+                          <div class="sub-div">
+                            <h4>演示平台</h4>
+                            <p class="show description">一键部署应用，云端演示</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <article>
+                        SLB是Server Load Balance（负载均衡）的简称，是对多台云服务器进行流量分发的负载均衡服务。SLB可以通过流量分发扩展应用系统对外的服务能力，通过消除单点故障提升应用系统的可用性。
+                      </article>
+                  </div>
+              </div>
+              <div class="right-section">
+                  <div class="circle-wrapper">
+                      <div class="screen-img">
+                        <img class="screen lazy active" data-image-src="screen_fuzai1" src="${ctx}/static/img/fuzai1.png">
+                        <img class="screen lazy" data-image-src="screen_fuzai2" src="${ctx}/static/img/fuzai2.png">
+                        <img class="screen lazy" data-image-src="screen_fuzai3" src="${ctx}/static/img/fuzai3.png">
+                        <img class="screen lazy" data-image-src="screen_fuzai4" src="${ctx}/static/img/fuzai4.png">
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="section table hidden fiv-sect" style=" background-color: rgb(257, 256, 242);">
+        <div class="tableCell">
+              <div class="section-inner">
+                  <div class="left-section">
+                    <div class="circle-wrapper">
+                          <div class="screen-img">
+                            <img class="screen lazy active" data-image-src="screen_oss1" src="${ctx}/static/img/oss1.png">
+                            <img class="screen lazy" data-image-src="screen_oss2" src="${ctx}/static/img/oss2.png">
+                            <img class="screen lazy" data-image-src="screen_oss3" src="${ctx}/static/img/oss3.png">
+                            <img class="screen lazy" data-image-src="screen_oss4" src="${ctx}/static/img/oss4.png">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="right-section">
+                      <div class="article-wrapper frame-3">
+                        <h2 class="magictime swashIn" style="opacity: 1;">开放存储服务 OSS</h2>
+                        <ul class="screenshot half magictime swashIn clearfix">
+                          <li class="noborder" data-screen="screen_oss1">
+                            <a href="javascript:void(0);" class="circle">特性一</a>
+                            <div class="sub-div">
+                              <h4>安全稳定，数据可靠</h4>
+                              <p class="show description">提供访问日志记录，及时掌握流量动向；分布式存储，保障存储数据安全</p>
+                            </div>
+                          </li>
+                          <li class="noborder" data-screen="screen_oss2">
+                            <a href="javascript:void(0);" class="circle">特性二</a>
+                            <div class="sub-div">
+                              <h4>海量存储</h4>
+                              <p class="show description">基于云计算平台动态扩展，存储容量与流量按实际用量自由伸缩，无需手动扩容；</p>
+                            </div>
+                          </li>
+                          <li class="noborder" data-screen="screen_oss3">
+                            <a href="javascript:void(0);" class="circle">特性三</a>
+                            <div class="sub-div">
+                              <h4>性能卓越</h4>
+                              <p class="show description">大规模数据处理，文件读写、I/O性能更强；</p>
+                            </div>
+                          </li>
+                          <li class="noborder" data-screen="screen_oss4">
+                            <a href="javascript:void(0);" class="circle">特性四</a>
+                            <div class="sub-div">
+                              <h4>弹性计费</h4>
+                              <p class="show description">阶梯式计费模式，越用越省钱；</p>
+                            </div>
+                          </li>
+                        </ul>
+                        <article>
+                          OSS为open storage service（开放存储服务），用户使用http请求即可使用存储服务，通过matrix、swiftclient及cyberduck客户端工具使用。
+                        </article>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="section table hidden six-sect" style="background-color: rgb(255, 255, 255);">
+        <div class="tableCell">
+            <div class="section-inner">
+              <div class="left-section">
+                  <div class="article-wrapper frame-3">
+                      <h2 class="magictime twisterInDown" style="opacity: 1;">开放缓存服务 OCS</h2>
+                      <ul class="screenshot half clearfix">
+                        <li class="noborder" data-screen="screen_ocs1">
+                          <a href="javascript:void(0);" class="circle">特性一</a>
+                          <div class="sub-div">
+                            <h4>兼容性</h4>
+                            <p class="show description">memcache binary protocol，符合该协议的客户端(binary SASL)都可使用OCS</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_ocs2">
+                          <a href="javascript:void(0);" class="circle">特性二</a>
+                          <div class="sub-div">
+                            <h4>弹性伸缩</h4>
+                            <p class="show description">随时根据需要修改OCS实例的配置，并且在配置变更过程中，OCS实例不会停止服务</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_ocs3">
+                          <a href="javascript:void(0);" class="circle">特性三</a>
+                          <div class="sub-div">
+                            <h4>性能优越</h4>
+                            <p class="show description">缓存数据存储在内存中，数据访问在数毫秒内返回</p>
+                          </div>
+                        </li>
+                        <li class="noborder" data-screen="screen_ocs4">
+                          <a href="javascript:void(0);" class="circle">特性四</a>
+                          <div class="sub-div">
+                            <h4>安全保障</h4>
+                            <p class="show description">OCS仅支持ECS访问，并可以限制源服务器的IP地址，避免外部攻击</p>
+                          </div>
+                        </li>
+                      </ul>
+                      <article class="magictime twisterInDown">
+                        Coding 的代码托管功能除了基本的 Git 仓库以外，还有保护分支，分屏对比， Code Review 等高级功能。并且整合了 CodeInsight，质量管理，演示平台等开发工具，提升研发效率。
+                      </article>
+                  </div>
+              </div>
+              <div class="right-section">
+                  <div class="circle-wrapper">
+                      <div class="screen-img">
+                        <img class="screen lazy active" data-image-src="screen_ocs1" src="${ctx}/static/img/oss1.png">
+                        <img class="screen lazy" data-image-src="screen_ocs2" src="${ctx}/static/img/oss2.png">
+                        <img class="screen lazy" data-image-src="screen_ocs3" src="${ctx}/static/img/oss3.png">
+                        <img class="screen lazy" data-image-src="screen_ocs4" src="${ctx}/static/img/oss4.png">
+                      </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
       <div class="section table footer hidden lastSn">
         <div class="tableCell">
             <div class="wrapper">
@@ -773,9 +967,11 @@ animation-name: swashOut;
       </div>
     </div>
     <div class="down">
+      <div class="updown-tip">下一页</div>
       <span class="glyphicon glyphicon-chevron-down"></span>
     </div>
     <div class="up hide">
+    <div class="updown-tip">上一页</div>
     <span class="glyphicon glyphicon-chevron-up"></span>
     </div>
 
@@ -787,6 +983,12 @@ animation-name: swashOut;
     			<a href="#" class="sec-a"><span></span></a></li>
     		<li>
     			<a href="#" class="thi-a"><span></span></a></li>
+          <li>
+          <a href="#" class="for-a"><span></span></a></li>
+          <li>
+          <a href="#" class="fiv-a"><span></span></a></li>
+          <li>
+          <a href="#" class="six-a"><span></span></a></li>
     		<li>
     			<a href="#" class="ft-a"><span></span></a></li>
     		<!-- <li>
@@ -981,6 +1183,36 @@ $('.thi-a').click(function(event) {
           .parent().siblings().find('a').removeClass('activel');
   switchAni();
 });
+$('.for-a').click(function(event) {
+  _down.removeClass('hide');
+  _up.removeClass('hide');  
+  $('.for-sect').addClass('activeSn').removeClass('hidden')
+              .siblings().removeClass('activeSn').addClass('hidden');
+  _fpnav.removeClass('light-nav');
+  $('.for-a').addClass('activel')
+          .parent().siblings().find('a').removeClass('activel');
+  switchAni();
+});
+$('.fiv-a').click(function(event) {
+  _down.removeClass('hide');
+  _up.removeClass('hide');  
+  $('.fiv-sect').addClass('activeSn').removeClass('hidden')
+              .siblings().removeClass('activeSn').addClass('hidden');
+  _fpnav.removeClass('light-nav');
+  $('.fiv-a').addClass('activel')
+          .parent().siblings().find('a').removeClass('activel');
+  switchAni();
+});
+$('.six-a').click(function(event) {
+  _down.removeClass('hide');
+  _up.removeClass('hide');  
+  $('.six-sect').addClass('activeSn').removeClass('hidden')
+              .siblings().removeClass('activeSn').addClass('hidden');
+  _fpnav.removeClass('light-nav');
+  $('.six-a').addClass('activel')
+          .parent().siblings().find('a').removeClass('activel');
+  switchAni();
+});
 $('.ft-a').click(function(event) {
   _down.addClass('hide');
     _up.removeClass('hide');  
@@ -1127,5 +1359,33 @@ function imgClick(){
   });
 }
 imgClick();//无法自适应
+function imgHover(){
+ var _target=$('.circle').parent();
+ _target.hover(function() {
+   var temp=$(this).attr('data-screen');
+   var imgarry=$('.screen-img').find('img');
+   imgarry.each(function(index) {
+    var imgtarget=$(this).attr('data-image-src');
+    if(index==0){      
+    }else{
+      if(imgtarget==temp){
+        $(this).addClass('active').siblings().removeClass('active');
+      }
+    }
+   });
+ }, function() {
+   $('.screen-img').find('img:first').addClass('active').siblings().removeClass('active');
+ });
+}
+imgHover();
+function updowntip(){
+ var _target=$('.updown-tip').parent();
+ _target.hover(function() {
+   $(this).children('.updown-tip').addClass('active');
+ }, function() {
+  $(this).children('.updown-tip').removeClass('active');
+ });
+}
+updowntip();
 </script>
 </body>
