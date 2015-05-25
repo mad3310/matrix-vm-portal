@@ -57,14 +57,14 @@
 						<input type="text" class="form-control hide" id="dbId" name="dbId" value="${dbId}"/>
 						<input type="text" class="form-control hide" value="2" id="auditType" name="auditType"/>
 						<div class="form-group">
-							<label class="col-xs-12 col-sm-12 col-md-3 control-label" for="mclusterOption">选择Container集群</label>
-							<div class="col-xs-12 col-sm-12 col-md-8">
-								<select class="chosen-select" id="mclusterOption" name="mclusterId" data-placeholder="请选择集群...">
+							<label class="col-xs-12 col-sm-12 col-md-4 control-label" for="mclusterOption">选择Container集群</label>
+							<div class="col-xs-12 col-sm-12 col-md-6">
+								<select class="form-control" id="mclusterOption" name="mclusterId" data-placeholder="请选择集群...">
 									<option value="">  </option>
 								</select>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-1">
-								<button id="create_on_old_mcluster_botton" type="submit" class="pull-right btn btn-sm btn-info">创建</button>
+							<div class="col-xs-12 col-sm-12 col-md-2">
+								<button id="create_on_old_mcluster_botton" type="submit" class="btn btn-sm btn-info">创建</button>
 							</div>
 						</div>
 					</form>
