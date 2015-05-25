@@ -26,6 +26,7 @@
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5>账号管理</h5>
+				<a href="/helpCenter/helpCenter.jsp?container=help-createUser" target="_blank">如何创建用户</a>
 			</div>
 			<div class="pull-right">
 				<button id="refresh" class="btn btn-default">

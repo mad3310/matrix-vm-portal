@@ -122,7 +122,7 @@
                     <ul class="sub-level">
                         <li data-haschild="false" data-id="3-1-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
                             <a href="#">OSS使用方法</a></li>
-                        <li data-haschild="false" data-id="3-1-2" class="help-Osstool" data-spm-click="help-Osstool.jsp" >
+                        <li data-haschild="false" data-id="3-1-2" class="help-OSStool" data-spm-click="help-OSStool.jsp" >
                             <a href="#">OSS客户端工具</a></li>
                     </ul>
                 </li>
