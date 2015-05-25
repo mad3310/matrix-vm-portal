@@ -78,7 +78,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskType">业务类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择业务类型">
+									<select class="form-control" name="taskType" id="taskType" data-placeholder="请选择业务类型">
 									    <option value=""> </option>
 										<option value="RDS">RDS</option>
 										<option value="SLB">SLB</option>

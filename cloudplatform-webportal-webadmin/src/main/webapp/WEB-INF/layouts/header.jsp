@@ -17,19 +17,12 @@
 		</button>
 		<div class="navbar-header pull-left">
 			<a href="#" class="navbar-brand logo"> 
-				<img src="${ctx}/static/image/site.logo-sm.png" alt="paas云管理平台" style="max-width:50px;margin-top:-5px;"/> 
+				<img class="hidden-xs hidden-sm" src="${ctx}/static/image/site.logo-sm.png" alt="paas云管理平台" style="max-width:50px;margin-top:-5px;"/> 
 				<b><small>PAAS portal</small></b> 
 				<span><small style="font-size: 25%;">beta</small></span>
 			</a>
 		</div>
-<script>
-	$(window).load(function() {
-		var iw=document.body.clientWidth;
-		if(iw<375){
-			$('.logo img').remove();
-		}
-	});
-</script>
+
 		<!-- #section:basics/navbar.dropdown -->
 		<div class="navbar-buttons navbar-header pull-right" role="navigation">
 			<ul class="nav ace-nav">

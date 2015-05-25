@@ -59,7 +59,7 @@ function queryByPage() {
 					td2 = $("<td>"
 							+array[i].templateTaskDetail.name
 							+ "</td>");
-					td5 = $("<td>"
+					td5 = $("<td class='hidden-480'>"
 							+ array[i].templateTaskDetail.descn
 							+ "</td>");
 				}

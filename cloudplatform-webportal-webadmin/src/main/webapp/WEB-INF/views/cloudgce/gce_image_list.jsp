@@ -81,7 +81,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">业务类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="type" id="type" data-placeholder="请选择类型...">
+									<select class="form-control" name="type" id="type" data-placeholder="请选择类型...">
 										<!-- <option value="">  </option> -->
 										<!-- <option value="xx">消息中间件</option> -->
 										<option value="jetty">jetty</option>
@@ -130,7 +130,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="status" id="status" data-placeholder="该镜像是否可用">
+									<select class="form-control" name="status" id="status" data-placeholder="该镜像是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
 										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
 									</select>
@@ -144,7 +144,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
+									<select class="form-control" name="owner" id="owner" data-placeholder="请选择所属用户">
 									</select>
 								</div>
 								<label class="control-label">
@@ -187,8 +187,8 @@
 						<input id="modify-imageId" type="hidden" value="">
 						<div class="modal-body">            				
             				<div class="form-group">
-								<label class="col-sm-4 control-label" for="taskUnitName">镜像名称</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="modify-name" id="modify-name" type="text" />
 								</div>
 								<label class="control-label">
@@ -198,9 +198,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="type">业务类型</label>
-								<div class="col-sm-6">
-									<select class="chosen-select" name="modify-type" id="modify-type" data-placeholder="请选择类型...">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">业务类型</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select class="form-control" name="modify-type" id="modify-type" data-placeholder="请选择类型...">
 										<option value="jetty">jetty</option>
 										<option value="nginx">nginx</option>
 									</select>
@@ -212,8 +212,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">镜像版本</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">镜像版本</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="modify-tag" id="modify-tag" type="text" />
 								</div>								
 								<label class="control-label">
@@ -223,8 +223,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="url">下载地址</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">下载地址</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="modify-url" id="modify-url" type="text" />
 								</div>								
 								<label class="control-label">
@@ -234,8 +234,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="logUrl">应用日志地址</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<input class="form-control" name="modify-logUrl" id="modify-logUrl" type="text" />
 								</div>								
 								<label class="control-label">
@@ -245,9 +245,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="beanName">可用性</label>
-								<div class="col-sm-6">
-									<select class="chosen-select" name="modify-status" id="modify-status" data-placeholder="该镜像是否可用">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select class="form-control" name="modify-status" id="modify-status" data-placeholder="该镜像是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
 										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
 									</select>
@@ -259,9 +259,9 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="retry">所属用户</label>
-								<div class="col-sm-6">
-									<select class="chosen-select" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select class="form-control" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
 									</select>
 								</div>
 								<label class="control-label">
@@ -271,8 +271,8 @@
 								</label>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="descn">描述</label>
-								<div class="col-sm-6">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="descn">描述</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
 									<textarea id="modify-descn" name="modify-descn" class="form-control" rows="4"></textarea>
 								</div>
 								<label class="control-label">
