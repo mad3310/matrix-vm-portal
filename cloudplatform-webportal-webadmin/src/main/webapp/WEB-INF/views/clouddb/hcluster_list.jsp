@@ -225,7 +225,7 @@
 							<div class="form-group">
 								<label class="control-label col-sm-12 col-xs-12 col-md-4  no-padding-right"> 应用业务类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select multiple=""  class="select2" data-placeholder="请选择应用业务类型...">
+									<select multiple="" name="type" class="select2" data-placeholder="请选择应用业务类型...">
 										<option>RDS</option>
 										<option>SLB</option>
 										<option>GCE</option>
