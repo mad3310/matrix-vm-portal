@@ -79,7 +79,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskType">业务类型</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="taskType" id="taskType" data-placeholder="请选择类型...">
+									<select class="form-control" name="taskType" id="taskType" data-placeholder="请选择类型...">
 										<!-- <option value="">  </option> -->
 										<!-- <option value="xx">消息中间件</option> -->
 										<option value="RDS">RDS</option>
@@ -110,7 +110,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">失败重试次数</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="retry" id="retry" data-placeholder="请选择重试次数">
+									<select class="form-control" name="retry" id="retry" data-placeholder="请选择重试次数">
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>

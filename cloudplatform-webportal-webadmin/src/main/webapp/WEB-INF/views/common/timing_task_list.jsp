@@ -111,8 +111,8 @@
 					<form id="add-timing-task-form" name="add-timing-task-form" class="form-horizontal" role="form">
 					<div class="modal-body">            				
             					<div class="form-group">
-										<label class="col-sm-4 control-label" for="mcluster_name">名称</label>
-										<div class="col-sm-6">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="mcluster_name">名称</label>
+										<div class="col-sm-10 col-xs-10 col-md-6">
 											<input class="form-control" name="addTimingTaskName" id="addTimingTaskName" type="text" />
 										</div>
 										<label class="control-label">
@@ -122,8 +122,8 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">调度方式</label>
-										<div class="col-sm-3">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">调度方式</label>
+										<div class="col-sm-10 col-xs-10 col-md-6">
 											<select class="form-control" name="timingTaskExecType" id="timingTaskExecType">
 												<option>PYTHON</option>
 											</select>
@@ -135,8 +135,8 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">执行接口</label>
-										<div class="col-sm-6">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">执行接口</label>
+										<div class="col-sm-10 col-xs-10 col-md-6">
 											<input class="form-control" name="timingTaskUrl" id="timingTaskUrl" type="text" />
 										</div>
 										<label class="control-label" for="hcluster">
@@ -146,8 +146,8 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">接口调用方式</label>
-										<div class="col-sm-3">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">接口调用方式</label>
+										<div class="col-sm-10 col-xs-10 col-md-6">
 											<select class="form-control" name="httpMethod" id="httpMethod">
 												<option>GET</option>
 												<option>POST</option>
@@ -165,8 +165,8 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">调度规则</label>
-										<div class="col-sm-6 timing-default">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">调度规则</label>
+										<div class="col-sm-10 col-xs-10 col-md-6 timing-default">
 											<button class="btn btn-xs btn-primary" type="button" id="timing-task-cron-btn">定点执行</button>
 											<button class="btn btn-xs btn-default" type="button" id="timing-task-interval-btn">周期执行</button>
 											<div class="timing-set" id="timing-task-btn-input">
@@ -186,8 +186,8 @@
 										</label>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">任务描述</label>
-										<div class="col-sm-6">
+										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">任务描述</label>
+										<div class="col-sm-10 col-xs-10 col-md-6">
 											<textarea class="form-control" name="addTimingTaskDescn" id="addTimingTaskDescn" type="text" ></textarea>
 										</div>
 										<label class="control-label" for="hcluster">

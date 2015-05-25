@@ -65,10 +65,10 @@ function queryByPage() {
 				}
 				var td9 = $("<td>"
 						+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-						+"<a class=\"green\" href=\"#\"  title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<a class=\"green\"  title=\"修改\" style=\"cursor:pointer\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-pencil bigger-120\" data-toggle=\"modal\" data-target=\"#modify-image-modal\"></i>"
 						+"</a>"
-						+"<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+						+"<a class=\"red\" onclick=\"delGceImage(this)\" style=\"cursor:pointer\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 						+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 						+"</a>"
 						+"</div>"
@@ -79,15 +79,15 @@ function queryByPage() {
 							+'</button>'
 							+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
 								+'<li>'
-									+'<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">'
+									+'<a class=\"green\" title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">'
 										+'<span class="blue">'
-											+'<i class="ace-icon fa fa-pencil bigger-120"></i>'
+											+'<i class="ace-icon fa fa-pencil bigger-120" data-toggle=\"modal\" data-target=\"#modify-image-modal\"></i>'
 										+'</span>'
 									+'</a>'
 								+'</li>'
 								+'<li>'
-									+'<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">'
-										+'<span class="green">'
+									+'<a class=\"red\" href=\"#\" onclick=\"delGceImage(this)\" onfocus=\"this.blur();\" title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">'
+										+'<span class="red">'
 											+'<i class="ace-icon fa fa-trash-o bigger-120"></i>'
 										+'</span>'
 									+'</a></li>'
