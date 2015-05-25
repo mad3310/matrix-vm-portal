@@ -131,12 +131,12 @@ function getMclusterStatus(ip,obj) {
 				//$(obj).parent().find(".normalTag").after($(obj));
 			}else if(result == "1"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>单节点故障</a>");
 				$(obj).addClass("default-danger lightDanger");
 				$(obj).parent().find(".lightDangerTag").after($(obj));
 			}else if(result == "2"){
 				$(obj).removeClass();
-				$(obj).find('[name="mclusterStatus"]').html("<a>严重危险</a>");
+				$(obj).find('[name="mclusterStatus"]').html("<a>危险</a>");
 				$(obj).addClass("default-danger serious");
 				$(obj).parent().find(".seriousTag").after($(obj));
 			}else if(result == "3"){

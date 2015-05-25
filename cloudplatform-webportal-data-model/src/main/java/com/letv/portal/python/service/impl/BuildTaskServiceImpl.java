@@ -1215,7 +1215,14 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	public int compareFailCount(int failCount,DetailModel detailModel) {
 		String message = detailModel.getMessage();
-		int next = Integer.parseInt(message.substring(message.length()-1, message.length()));
+		int next = 0;
+		
+		String alarm = detailModel.getAlarm();
+		if(null != alarm && alarm.contains("tel:sms:email"))
+			next = 2;
+		if(null != alarm && alarm.contains("sms:email"))
+			next = 1;
+		
 		failCount = next - failCount>0?next:failCount;
 		return failCount;
 	}
