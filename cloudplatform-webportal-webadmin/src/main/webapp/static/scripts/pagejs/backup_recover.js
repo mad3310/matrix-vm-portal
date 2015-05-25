@@ -24,13 +24,15 @@ $("#bksearch").click(function() {
 		if($('#backupStatus').val()){
 			var status={0:'SUCCESS',1:'FAILD',2:'BUILDING'};
 			var temp=$('#backupStatus').val();
-			qryStr5=translateStatus(status[temp]);
+			if(status[temp]){
+				qryStr5=translateStatus(status[temp]);
+			}else{}
 		}
 		if(qryStr1){
-			qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="startTime"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			qryStr+='<span class="label label-success arrowed">开始时间：'+qryStr1+'<span class="queryBadge" data-rely-id="startTime"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
 		}
 		if(qryStr2){
-			qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="endTime"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			qryStr+='<span class="label label-warning arrowed">结束时间：'+qryStr2+'<span class="queryBadge" data-rely-id="endTime"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
 		}
 		if(qryStr3){
 			qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="dbName"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'

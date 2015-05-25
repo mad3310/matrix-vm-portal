@@ -27,7 +27,7 @@ var currentSelectedLineDbName = 1;
 			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
 			var qryStr='';
 			var qryStr1=$('#userName').val();var qryStr2=$('#userDb').val();var qryStr3=$('#userAuthority').val();var qryStr4=$('#userIp').val();var qryStr5;
-			if($('#dbStatus').val()){
+			if($('#dbuserStatus').val()){
 				qryStr5=translateStatus($('#dbuserStatus').val());
 			}
 			if(qryStr1){

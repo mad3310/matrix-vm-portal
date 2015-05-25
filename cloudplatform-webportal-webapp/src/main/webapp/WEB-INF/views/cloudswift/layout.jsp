@@ -72,10 +72,12 @@
                 <h3>
                     <small>
                         <span class="pd-r8">
-                            <span class="font-disabled">功能指南</span>
-                            <button class="btn btn-default btn-xs disabled">
-                                <span class="glyphicon glyphicon-eject" id="rds-icon-guide"></span>
-                            </button>
+                            <span>功能指南</span>
+                            <a href="/helpCenter/helpCenter.jsp?container=help-OSSuse" target="_black" style="text-decoration:none;">
+	                            <button class="btn btn-default btn-xs">
+	                                <span class="glyphicon glyphicon-eject" id="rds-icon-guide"></span>
+	                            </button>
+                            </a>
                         </span>
                     </small>
                      <small>

@@ -102,7 +102,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="chosen-select" name="status" id="status" data-placeholder="该zookeeper是否可用">
+									<select class="form-control" name="status" id="status" data-placeholder="该zookeeper是否可用">
 										<option value="AVAILABLE">AVAILABLE</option>
 										<option value="NOTAVAILABLE">NOTAVAILABLE</option>
 									</select>
