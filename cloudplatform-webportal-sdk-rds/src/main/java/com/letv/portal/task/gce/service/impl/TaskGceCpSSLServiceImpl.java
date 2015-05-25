@@ -42,6 +42,7 @@ public class TaskGceCpSSLServiceImpl extends BaseTask4GceServiceImpl implements 
 		Map<String,String> map = new HashMap<String,String>();
 		List<LogContainer> logContainers = super.getLogContainers(params);
 		map.put("ip", logContainers.get(0).getHostIp());
+		map.put("port", logContainers.get(0).getMgrBindHostPort());
 		
 		String result = this.logPythonService.cpOpenSSL(map,nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
