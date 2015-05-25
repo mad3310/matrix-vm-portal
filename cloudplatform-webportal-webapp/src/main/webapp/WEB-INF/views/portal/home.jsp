@@ -770,17 +770,17 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
 	                                <a title="数据库RDS">
-	                                    <img src="${ctx}/static/img/img-aL.jpg" alt="">
+	                                    <img src="${ctx}/static/img/gce1-lg.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a title="缓存服务">
-	                                    <img src="${ctx}/static/img/img-bL.jpg" alt="">
+	                                    <img src="${ctx}/static/img/gce2-lg.jpg" alt="">
 	                                </a>
 	                            </li>
 	                            <li data-position="right middle">
 	                                <a title="分布式RDS">
-	                                    <img src="${ctx}/static/img/img-cL.jpg" alt="">
+	                                    <img src="${ctx}/static/img/gce3-lg.jpg" alt="">
 	                                </a>
 	                            </li>
 	                        </ul>
@@ -801,28 +801,21 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
                           <a href="javascript:void(0);" class="circle">特性一</a>
                           <div class="sub-div">
                             <h4>负载均衡</h4>
-                            <p class="show description">管理 / 共享你的代码，无限私有库</p>
+                            <p class="show description">流量分发 / 消除单点故障，提升应用系统的可用性</p>
                           </div>
                         </li>
                         <li class="noborder" data-screen="screen_fuzai2">
                           <a href="javascript:void(0);" class="circle">特性二</a>
                           <div class="sub-div">
-                            <h4>CodeInsight 代码阅读</h4>
-                            <p class="show description">精准高亮，交叉引用分析，随时随地阅读</p>
+                            <h4>虚拟服务IP</h4>
+                            <p class="show description">虚拟服务地址，提供高性能、高可用的应用服务池</p>
                           </div>
                         </li>
                         <li class="noborder" data-screen="screen_fuzai3">
                           <a href="javascript:void(0);" class="circle">特性三</a>
                           <div class="sub-div">
-                            <h4>质量管理</h4>
-                            <p class="show description">提供质量报告，保证代码符合最佳实践</p>
-                          </div>
-                        </li>
-                        <li class="noborder" data-screen="screen_fuzai4">
-                          <a href="javascript:void(0);" class="circle">特性四</a>
-                          <div class="sub-div">
-                            <h4>演示平台</h4>
-                            <p class="show description">一键部署应用，云端演示</p>
+                            <h4>配套服务</h4>
+                            <p class="show description">SLB服务是面向多机方案的一个配套服务</p>
                           </div>
                         </li>
                       </ul>
@@ -837,7 +830,6 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
                         <img class="screen lazy active" data-image-src="screen_fuzai1" src="${ctx}/static/img/fuzai1.png">
                         <img class="screen lazy" data-image-src="screen_fuzai2" src="${ctx}/static/img/fuzai2.png">
                         <img class="screen lazy" data-image-src="screen_fuzai3" src="${ctx}/static/img/fuzai3.png">
-                        <img class="screen lazy" data-image-src="screen_fuzai4" src="${ctx}/static/img/fuzai4.png">
                       </div>
                   </div>
               </div>
@@ -852,8 +844,6 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
                           <div class="screen-img">
                             <img class="screen lazy active" data-image-src="screen_oss1" src="${ctx}/static/img/oss1.png">
                             <img class="screen lazy" data-image-src="screen_oss2" src="${ctx}/static/img/oss2.png">
-                            <img class="screen lazy" data-image-src="screen_oss3" src="${ctx}/static/img/oss3.png">
-                            <img class="screen lazy" data-image-src="screen_oss4" src="${ctx}/static/img/oss4.png">
                           </div>
                       </div>
                   </div>
@@ -864,41 +854,28 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
                           <li class="noborder" data-screen="screen_oss1">
                             <a href="javascript:void(0);" class="circle">特性一</a>
                             <div class="sub-div">
-                              <h4>安全稳定，数据可靠</h4>
-                              <p class="show description">提供访问日志记录，及时掌握流量动向；分布式存储，保障存储数据安全</p>
+                              <h4>实时监控</h4>
+                              <p class="show description">实时监控，及时掌握流量动向；分布式存储，保障存储数据安全</p>
                             </div>
                           </li>
                           <li class="noborder" data-screen="screen_oss2">
                             <a href="javascript:void(0);" class="circle">特性二</a>
                             <div class="sub-div">
-                              <h4>海量存储</h4>
-                              <p class="show description">基于云计算平台动态扩展，存储容量与流量按实际用量自由伸缩，无需手动扩容；</p>
-                            </div>
-                          </li>
-                          <li class="noborder" data-screen="screen_oss3">
-                            <a href="javascript:void(0);" class="circle">特性三</a>
-                            <div class="sub-div">
-                              <h4>性能卓越</h4>
-                              <p class="show description">大规模数据处理，文件读写、I/O性能更强；</p>
-                            </div>
-                          </li>
-                          <li class="noborder" data-screen="screen_oss4">
-                            <a href="javascript:void(0);" class="circle">特性四</a>
-                            <div class="sub-div">
-                              <h4>弹性计费</h4>
-                              <p class="show description">阶梯式计费模式，越用越省钱；</p>
+                              <h4>动态按需扩容</h4>
+                              <p class="show description">基于云计算平台动态扩展，存储容量与流量按实际用量自由伸缩；</p>
                             </div>
                           </li>
                         </ul>
                         <article>
-                          OSS为open storage service（开放存储服务），用户使用http请求即可使用存储服务，通过matrix、swiftclient及cyberduck客户端工具使用。
+                          OSS为open storage service（开放存储服务），用户使用http请求即可使用存储服务，通过matrix、swiftclient及cyberduck客户端工具使用。<br>
+                          安全稳定，数据可靠&nbsp;海量存储&nbsp;性能卓越&nbsp;弹性计费
                         </article>
                     </div>
                   </div>
               </div>
           </div>
       </div>
-      <div class="section table hidden six-sect" style="background-color: rgb(255, 255, 255);">
+      <!-- <div class="section table hidden six-sect" style="background-color: rgb(255, 255, 255);">
         <div class="tableCell">
             <div class="section-inner">
               <div class="left-section">
@@ -951,7 +928,7 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
               </div>
             </div>
           </div>
-      </div>
+      </div> -->
       <div class="section table footer hidden lastSn">
         <div class="tableCell">
             <div class="wrapper">
@@ -987,8 +964,8 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
           <a href="#" class="for-a"><span></span></a></li>
           <li>
           <a href="#" class="fiv-a"><span></span></a></li>
-          <li>
-          <a href="#" class="six-a"><span></span></a></li>
+          <!-- <li>
+          <a href="#" class="six-a"><span></span></a></li> -->
     		<li>
     			<a href="#" class="ft-a"><span></span></a></li>
     		<!-- <li>
@@ -1203,16 +1180,16 @@ $('.fiv-a').click(function(event) {
           .parent().siblings().find('a').removeClass('activel');
   switchAni();
 });
-$('.six-a').click(function(event) {
-  _down.removeClass('hide');
-  _up.removeClass('hide');  
-  $('.six-sect').addClass('activeSn').removeClass('hidden')
-              .siblings().removeClass('activeSn').addClass('hidden');
-  _fpnav.removeClass('light-nav');
-  $('.six-a').addClass('activel')
-          .parent().siblings().find('a').removeClass('activel');
-  switchAni();
-});
+// $('.six-a').click(function(event) {
+//   _down.removeClass('hide');
+//   _up.removeClass('hide');  
+//   $('.six-sect').addClass('activeSn').removeClass('hidden')
+//               .siblings().removeClass('activeSn').addClass('hidden');
+//   _fpnav.removeClass('light-nav');
+//   $('.six-a').addClass('activel')
+//           .parent().siblings().find('a').removeClass('activel');
+//   switchAni();
+// });
 $('.ft-a').click(function(event) {
   _down.addClass('hide');
     _up.removeClass('hide');  
