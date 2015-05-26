@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -19,7 +19,7 @@
 <!-- main-content begin-->
 <div class="container-fluid">
 	<div class="row main-header overHidden"> <!-- main-content-header begin -->
-		<div class="col-sm-12 col-md-6">
+		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
 				<span>关系型数据库管理</span>
@@ -28,7 +28,7 @@
 				</h5> 
 			</div>
 		</div>
-		<div class="col-sm-12 col-md-6">
+		<div class="col-xs-12 col-sm-12 col-md-6 hidden-xs hidden-sm">
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
@@ -36,13 +36,15 @@
 				</h5>
 			</div>
 		</div>
-		<div class="col-sm-12 col-md-12">
+		<div class="">
 			<div class="pull-left">
 				<form class="form-inline" role="form">
-					<div class="form-group">
+					<div class="form-group col-xs-9 col-sm-10">
 						<input  id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
-					<button id="search" type="button" class="btn btn-default">搜索</button>
+					<div class="col-xs-3 col-sm-2">
+						<button id="search" type="button" class="btn btn-default">搜索</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -57,28 +59,29 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">实例名称</th>
-						<th style="width:20%">运行状态</th>
-						<th>实例类型</th>
-						<th>数据库类型</th>
-						<th>可用区类型
+						<th style="width:20%">状态</th>
+						<th class="hidden-xs">实例类型</th>
+						<th class="hidden-xs">数据库类型</th>
+						<th class="hidden-xs">可用区类型
 							<a data-toggle="tooltip" data-placement="top" title="单可用区指数据库集群位于同一个域,多可用区指数据库集群位于多个域">
 								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 							</a>
 						</th>
-						<th>所在可用区</th>
-						<th>所在服务集群</th>
-						<th>付费类型</th>
+						<th class="hidden-xs">所在可用区</th>
+						<th class="hidden-xs">所在服务集群</th>
+						<th class="hidden-xs">付费类型</th>
 						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
 				</tbody>
 				<tfoot id="paginatorBlock">
-					<tr class="tfoot" >
+					<!-- <tr class="tfoot" > -->
 						<td width="10">
 							<input type="checkbox">
 						</td>
-						<td colspan=" 9">
+						<td colspan="9" class="row">
+							<div class="col-xs-12 col-sm-6" style="margin:2px 0;">
 							<div class="pull-left">
 									<div pagination-info="paginationInfo">
 										<div class="pull-left">
@@ -86,15 +89,19 @@
 										</div>
 									</div>
 							</div>
+							</div>
+							<div class="col-xs-12 col-sm-6" style="margin:2px 0;">
 							<div class="pull-right">
-								<div class="pagination-info">
+								<div class="pagination-info hidden-xs">
 									<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
 									<span class="ng-binding">每页显示：<span id="recordsPerPage"></span>条</span>&nbsp;
-								    <ul id='paginator'></ul>
 								</div>
+								<ul id='paginator'></ul>
 							</div>
+							</div>
+							<div class="clearfix"></div>
 						</td>
-					</tr>
+					<!-- </tr> -->
 				</tfoot>
 			</table>
 		    <!-- <div class="help-block hidden" id="noData">没有记录</div> -->
