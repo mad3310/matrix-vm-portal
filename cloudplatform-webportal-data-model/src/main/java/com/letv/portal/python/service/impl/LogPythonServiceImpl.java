@@ -92,5 +92,32 @@ public class LogPythonServiceImpl implements ILogPythonService{
 		return result;
 	}
 
+	@Override
+	public String startLogStash(String nodeIp1, String port, String adminUser,
+			String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash/start");
+		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String startElesticSearch(String nodeIp1, String port,
+			String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/elasticsearch/start");
+		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
+		return result;
+	}
+
+	@Override
+	public String startKibana(String nodeIp1, String port, String adminUser,
+			String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/kibana/start");
+		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
+		return result;
+	}
+
 	
 }

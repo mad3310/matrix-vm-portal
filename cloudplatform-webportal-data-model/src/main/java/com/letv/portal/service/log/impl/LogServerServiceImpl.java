@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import junit.framework.Assert;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +113,23 @@ public class LogServerServiceImpl extends BaseServiceImpl<LogServer> implements 
 		List<LogContainer> logContainers = this.logContainerService.selectByLogClusterId(logServer.getLogClusterId());
 		logServer.setLogContainers(logContainers);
 		return logServer;
+	}
+
+	@Override
+	public String selectKibanaById(Long logId) {
+		if(null == logId)
+			throw new ValidateException("参数不合法");
+		LogServer log = super.selectById(logId);
+		if(null == log)
+			throw new ValidateException("参数不合法");
+		LogCluster cluster = this.logClusterService.selectById(log.getLogClusterId());
+		if(null == cluster)
+			throw new ValidateException("参数不合法");
+		List<LogContainer> containers = this.logContainerService.selectByLogClusterId(cluster.getId());
+		if(null == containers && containers.isEmpty())
+			throw new ValidateException("参数不合法");
+		StringBuilder url = new StringBuilder();
+		url.append("http://").append(containers.get(0).getHostIp()).append(":").append(containers.get(0).getBingHostPort());
+		return url.toString();
 	}
 }

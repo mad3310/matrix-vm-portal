@@ -45,7 +45,7 @@ public class TaskLogClusterCheckStatusServiceImpl extends BaseTask4LogServiceImp
 			return tr;
 		if(!(Boolean) params.get("isCreateLog"))  {
 			tr.setSuccess(true);
-			tr.setResult("no need to create Log");
+			tr.setResult("no need to check Log");
 			return tr;
 		}
 		LogCluster logCluster = super.getLogCluster(params);

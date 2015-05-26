@@ -110,7 +110,8 @@ public class TaskGceNginxConfigServiceImpl extends BaseTask4GceServiceImpl imple
 			return;
 		}
 		Map<String,Object> nextParams = (Map<String, Object>) params.get("nextParams");
-		this.taskEngine.run("GCE_BUY", nextParams);
+//		this.taskEngine.run("GCE_BUY", nextParams);
+		this.taskEngine.run("GCE_BUY_EXT", nextParams);
 	}
 	
 }

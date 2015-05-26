@@ -57,4 +57,10 @@ public interface ILogPythonService {
 	public String configLogStashForwarder(Map<String, String> map, String nodeIp1,String port, String adminUser, String adminPassword);
 
 	public String startLogStashForwarder(Map<String, String> map,String nodeIp1, String port, String adminUser, String adminPassword);
+
+	public String startLogStash(String nodeIp1, String port, String adminUser,String adminPassword);
+
+	public String startElesticSearch(String nodeIp1, String port,String adminUser, String adminPassword);
+
+	public String startKibana(String nodeIp1, String port, String adminUser,String adminPassword);
 }

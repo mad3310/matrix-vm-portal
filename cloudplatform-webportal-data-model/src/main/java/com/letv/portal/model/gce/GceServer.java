@@ -15,6 +15,7 @@ public class GceServer extends BaseModel {
 	
 	private Long gceClusterId;
 	private Long hclusterId;
+	private Long logId;
 
 	private String gceImageName;//gce镜像名称
 	private String ip;
@@ -113,6 +114,12 @@ public class GceServer extends BaseModel {
 	}
 	public void setGceServerProxy(GceServer gceServerProxy) {
 		this.gceServerProxy = gceServerProxy;
+	}
+	public Long getLogId() {
+		return logId;
+	}
+	public void setLogId(Long logId) {
+		this.logId = logId;
 	}
 	
 }

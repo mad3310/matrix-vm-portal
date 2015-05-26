@@ -10,6 +10,7 @@
 		<result column="GCE_NAME" property="gceName" />
 		<result column="GCECLUSTER_ID" property="gceClusterId" />
 		<result column="HCLUSTER_ID" property="hclusterId" />
+		<result column="LOG_ID" property="logId" />
 		<result column="PORT_FORWARD" property="portForward" />
 		<result column="GCE_IMAGE_NAME" property="gceImageName" />
 		<result column="TYPE" property="type" />
@@ -37,7 +38,7 @@
 	
 	<sql id="Base_Column_List">
 		g.ID,
-		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.TYPE,g.STATUS,g.DESCN,g.IP,
+		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.TYPE,g.STATUS,g.DESCN,g.IP,g.LOG_ID,
 		g.DELETED,g.CREATE_TIME,g.CREATE_USER,g.UPDATE_TIME,g.UPDATE_USER
 	</sql>
 	
@@ -58,6 +59,9 @@
 			</if>
 			<if test="hclusterId != null  ">
 				and g.HCLUSTER_ID=#{hclusterId}
+			</if>
+			<if test="logId != null  ">
+				and g.LOG_ID=#{logId}
 			</if>
 			<if test="portForward != null and portForward != ''">
 				and g.HCLUSTER_ID=#{portForward}
@@ -99,10 +103,10 @@
 	<insert id="insert" parameterType="GceServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_GCE(
-			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,TYPE,STATUS,DESCN,IP,
+			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,TYPE,STATUS,DESCN,IP,LOG_ID,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{type},#{status},#{descn},#{ip},
+			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{type},#{status},#{descn},#{ip},#{logId},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -121,6 +125,9 @@
 			</if>
 			<if test="hclusterId != null  ">
 				HCLUSTER_ID=#{hclusterId},
+			</if>
+			<if test="logId != null  ">
+				LOG_ID=#{logId},
 			</if>
 			<if test="portForward != null ">
 				PORT_FORWARD=#{portForward},
@@ -210,6 +217,9 @@
 			</if>
 			<if test="params != null and params.hclusterId != null  ">
 				and g.HCLUSTER_ID=#{params.hclusterId}
+			</if>
+			<if test="params != null and params.logId != null  ">
+				and g.LOG_ID=#{params.logId}
 			</if>
 			<if test="params != null and params.portForward != null and params.portForward != ''">
 				and g.HCLUSTER_ID=#{params.portForward}

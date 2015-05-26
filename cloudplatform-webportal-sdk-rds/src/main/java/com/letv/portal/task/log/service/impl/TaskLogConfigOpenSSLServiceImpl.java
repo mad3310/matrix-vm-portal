@@ -30,7 +30,7 @@ public class TaskLogConfigOpenSSLServiceImpl extends BaseTask4LogServiceImpl imp
 			return tr;
 		if(!(Boolean) params.get("isCreateLog"))  {
 			tr.setSuccess(true);
-			tr.setResult("no need to create Log");
+			tr.setResult("no need to config Log");
 			return tr;
 		}
 		//执行业务

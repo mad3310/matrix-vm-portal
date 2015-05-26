@@ -1,5 +1,6 @@
 package com.letv.portal.task.log.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +15,13 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.ILogPythonService;
 
-@Service("taskLogInitAdminUserAndPwdService")
-public class TaskLogInitAdminUserAndPwdServiceImpl extends BaseTask4LogServiceImpl implements IBaseTaskService{
+@Service("taskLogStartLogStashService")
+public class TaskLogStartLogStashServiceImpl extends BaseTask4LogServiceImpl implements IBaseTaskService{
 
 	@Autowired
 	private ILogPythonService logPythonService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(TaskLogInitAdminUserAndPwdServiceImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(TaskLogStartLogStashServiceImpl.class);
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception {
@@ -29,7 +30,7 @@ public class TaskLogInitAdminUserAndPwdServiceImpl extends BaseTask4LogServiceIm
 			return tr;
 		if(!(Boolean) params.get("isCreateLog"))  {
 			tr.setSuccess(true);
-			tr.setResult("no need to init Log");
+			tr.setResult("no need to start Log");
 			return tr;
 		}
 		//执行业务
@@ -38,7 +39,7 @@ public class TaskLogInitAdminUserAndPwdServiceImpl extends BaseTask4LogServiceIm
 		String port = containers.get(0).getMgrBindHostPort();
 		LogCluster cluster = super.getLogCluster(params);
 		
-		String result = this.logPythonService.initUserAndPwd4Manager(nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
+		String result = this.logPythonService.startLogStash(nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

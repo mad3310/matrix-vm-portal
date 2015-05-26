@@ -8,4 +8,6 @@ import com.letv.portal.service.IBaseService;
 public interface ILogServerService extends IBaseService<LogServer> {
 
 	Map<String, Object> save(LogServer logServer);
+
+	String selectKibanaById(Long logId);
 }

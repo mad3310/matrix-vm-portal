@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import junit.framework.Assert;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,17 +130,11 @@ public class GceServerController {
 		return obj;
 	}	
 	@RequestMapping(value="/log/url",method=RequestMethod.POST)
-	public @ResponseBody ResultObject getImageByUrl(String imageUrl){
+	public @ResponseBody ResultObject getImageByUrl(Long logId){
+		if(logId == null)
+			throw new ValidateException("参数不合法");
 		ResultObject obj = new ResultObject();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("owner", sessionService.getSession().getUserId());
-		map.put("url",imageUrl);
-		map.put("status", GceImageStatus.AVAILABLE);
-		
-		List<GceImage> gceImages= this.gceImageService.selectByMap(map);
-		if(gceImages ==null || gceImages.isEmpty())
-			return obj;
-		obj.setData(gceImages.get(0).getLogUrl());
+		obj.setData(this.logServerService.selectKibanaById(logId));
 		return obj;
 	}	
 	
