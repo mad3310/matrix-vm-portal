@@ -117,7 +117,7 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 			cluster.setStatus(MclusterStatus.BUILDFAIL.getValue());
 			
 			Map<String,Object> nextParams = (Map<String, Object>) params.get("nextParams");
-			if(!nextParams.isEmpty()) {
+			if(null != nextParams && !nextParams.isEmpty()) {
 				GceServer nextGce = this.getGceServer(nextParams);
 				GceCluster nextCluster = this.getGceCluster(nextParams);
 				nextGce.setStatus(DbStatus.BUILDFAIL.getValue());
