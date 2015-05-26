@@ -41,7 +41,7 @@ public class TaskGceConfigLogStashForwarderServiceImpl extends BaseTask4GceServi
 		for (GceContainer gceContainer : containers) {
 			map.put("ip", gceContainer.getIpAddr());
 			map.put("paths", "/var/log/test/*.log");
-			String result = this.logPythonService.cpOpenSSL(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			String result = this.logPythonService.configLogStashForwarder(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 			tr = analyzeRestServiceResult(result);
 			if(!tr.isSuccess())
 				break;
