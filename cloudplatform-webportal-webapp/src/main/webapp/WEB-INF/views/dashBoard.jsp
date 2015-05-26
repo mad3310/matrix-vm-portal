@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -63,7 +63,7 @@
 		<div class="home">
 			<div class="home-content">
 				<div class="user-profile row"><!-- begin user-profile -->
-					<div class="col-xs-6 col-md-6"><!-- begin userinfo left-->
+					<div class="col-xs-12 col-sm-12 col-md-6"><!-- begin userinfo left-->
 						<div class="info clearfix">
 							<div class="user-info pull-left">
 								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
@@ -78,7 +78,7 @@
 										<span class="balance-unit">元</span>
 									</p>
 								</div>
-								<div class="account-opt pull-left">
+								<div class="account-opt pull-left hidden-xs hidden-sm">
 									<div class="account-opt-row">
 										<a href="javascript:void(0)" target="_self" class="btn btn-default btn-sm disabled disabled">充值</a>
 										<a href="javascript:void(0)" target="_self" class="btn btn-default btn-sm disabled">提现</a>
@@ -91,7 +91,7 @@
 							</div> 
 						</div>
 					</div><!-- end userinfo left-->
-					<div class="col-xs-6 col-md-6 yundun-wrap"><!-- begin cloud right-->
+					<div class="hidden-xs hidden-sm col-md-6 yundun-wrap"><!-- begin cloud right-->
 						<div class="yundun-bg  yundun-bg-notopen"></div>
 						<div class="yundun">
 							<div class="yundun-inner clearfix">
@@ -121,16 +121,13 @@
 						</div>
 					</div><!-- end cloud right-->
 				</div><!-- end user-profile -->
-				<style>
-				/*.hide{visibility:hidden;display:block !important;}*/
-				</style>
 				<div class="product-list product-list-opened"><!-- 已开通产品 begin -->
 					<div class="list-title">
 						<span class="list-title-em">已开通</span>
 						的产品与服务:
 					</div>
 					<ul class="row">
-						<li id="rds-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="rds-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/db" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
@@ -150,7 +147,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="slb-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="slb-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/slb" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-slb"></span>
@@ -171,7 +168,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="gce-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="gce-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/gce" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-ace"></span>
@@ -192,7 +189,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="ocs-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="ocs-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/cache" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-ocs"></span>
@@ -213,7 +210,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="oss-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="oss-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/oss" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-oss"></span>
@@ -234,7 +231,7 @@
 								</a>
 							</div>
 						</li>
-						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-jiankong"></span>
@@ -251,7 +248,7 @@
 								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="监控点"></span>
 							</div>
 						</li>
-						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-toolsimage"></span>
@@ -268,7 +265,7 @@
 						<span class="list-title-em">未开通</span>的产品与服务:
 					</div>
 					<ul class="row">
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div class="product-category">
 								<p class="category-title ng-binding">弹性计算</p>
 								<ul>
@@ -390,7 +387,7 @@
 								</ul>
 							</div>
 						</li>
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div id="store-and-CDN" class="product-category">
 								<p class="category-title ng-binding">存储与CDN</p>
 								<ul>
@@ -462,7 +459,7 @@
 								</ul>
 							</div>
 						</li>
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div class="product-category">
 								<p class="category-title ng-binding">应用服务</p>
 								<ul>
