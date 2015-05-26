@@ -218,10 +218,10 @@
 					var x = Number(touch.pageX); //页面触点X坐标
 					var y = Number(touch.pageY); //页面触点Y坐标
 					//判断滑动方向
-					if (x - startX > 30) {
+					if (x - startX > 60) {
 						  $("#sidebar").addClass("display ");
 						  $("#menu-toggler").addClass("display");
-					}else if(x - startX < -100){
+					}else if(x - startX < -60){
 						  $("#sidebar").removeClass("display");
 						  $("#menu-toggler").removeClass("display");
 					}

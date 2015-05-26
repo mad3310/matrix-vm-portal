@@ -10,10 +10,17 @@ define(function(require,exports,module){
 		this.dbListRefreshTime = 60000; //单位ms
 		this.maxConcurrency = 2000; //数据库最大并发量
 		
+		var  testIsPCVal = IsPC();
+		this.isPC = testIsPCVal;
+		
 		TopBtnInit();//初始化顶部菜单按钮
+		if($(".nav-sidebar-div").length > 0 ){
+			sidebarMenuInit(testIsPCVal);//初始化siderbarmenu
+		}
     };
     module.exports = Common;
-
+    
+ /*common原型属性方法end*/
     Common.prototype = {    		
     	currentPage:1,
     	recordsPerPage:10,
@@ -926,6 +933,8 @@ define(function(require,exports,module){
 			window.setTimeout(function(){html.fadeOut(1000)},time);
         }
     }
+    /*common原型属性方法end*/
+    /*common 私有方法start*/
     function drag(relaLen,options){
         var _memSize=$('.memSize');
         var _awCursor=$('.awCursor');
@@ -1102,6 +1111,66 @@ define(function(require,exports,module){
 			$(this).html("<i class=\"fa fa-home text-20\"></i>");
 		})
 	}
+	var sidebarMenuInit = function(isPC) {
+		if (!isPC) {
+			function isTouchDevice() {
+				try {
+					document.createEvent("TouchEvent");
+					bindEvent(); // 绑定事件
+				} catch (e) {
+				}
+			}
+			var startX = 0, startY = 0;
+			function touchSatrtFunc(evt) {
+				try {
+					var touch = evt.touches[0]; // 获取第一个触点
+					var x = Number(touch.pageX); // 页面触点X坐标
+					var y = Number(touch.pageY); // 页面触点Y坐标
+					startX = x;
+					startY = y;
+				} catch (e) {
+				}
+			}
+			function touchMoveFunc(evt) {
+				try {
+					var touch = evt.touches[0]; // 获取第一个触点
+					var x = Number(touch.pageX); // 页面触点X坐标
+					var y = Number(touch.pageY); // 页面触点Y坐标
+					if (x - startX > 60) {
+						$(".nav-sidebar-div").addClass("nav-sidebar-display");
+					} else if (x - startX < -60) {
+						$(".nav-sidebar-div").removeClass("nav-sidebar-display");
+					}
+				} catch (e) {
+				}
+			}
+			function touchEndFunc(evt) {
+				try {
+				} catch (e) {
+				}
+			}
+			function bindEvent() {
+				document.addEventListener('touchstart', touchSatrtFunc, true);
+				document.addEventListener('touchmove', touchMoveFunc, true);
+				document.addEventListener('touchend', touchEndFunc, true);
+			}
+			isTouchDevice();// touchDevice添加touch事件
+		}
+	}
+	var IsPC = function() {
+		var userAgentInfo = navigator.userAgent;
+		var Agents = new Array("Android", "iPhone", "SymbianOS",
+				"Windows Phone", "iPad", "iPod");
+		var flag = true;
+		for (var v = 0; v < Agents.length; v++) {
+			if (userAgentInfo.indexOf(Agents[v]) > 0) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
+	/*common私有方法end*/
 });
 
 

@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -120,7 +120,7 @@
     <!-- main-content-header end-->
     <div class="row">
         <!-- main-content-center-begin -->
-        <nav class="col-sm-2 col-md-2">
+        <nav class="col-sm-2 col-md-2 nav-sidebar-div">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${dbId}" href="javascript:void(0)">基本信息</a></li>
