@@ -29,14 +29,15 @@ public class TaskGceInitLogUserAndPwdServiceImpl extends BaseTask4GceServiceImpl
 			return tr;
 
 		//执行业务
-		List<GceContainer> containers = super.getContainers(params);
-		String nodeIp1 = containers.get(0).getHostIp();
-		String port = containers.get(0).getLogBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
+		List<GceContainer> containers = super.getContainers(params);
 		
-		String result = this.gcePythonService.initUserAndPwd4Manager(nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
-		tr = analyzeRestServiceResult(result);
-		
+		for (GceContainer gceContainer : containers) {
+			String result = this.gcePythonService.initUserAndPwd4Manager(gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			tr = analyzeRestServiceResult(result);
+			if(!tr.isSuccess())
+				break;
+		}
 		tr.setParams(params);
 		return tr;
 	}
