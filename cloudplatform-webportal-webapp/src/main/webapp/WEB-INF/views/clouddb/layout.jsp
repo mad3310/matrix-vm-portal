@@ -20,7 +20,7 @@
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
-	<!-- top bar begin -->
+	<%-- <!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -58,7 +58,8 @@
     </div>
   </div>
 </div>
-<!-- navbar end -->
+<!-- navbar end --> --%>
+<%@ include file="../../layouts/header.jsp"%>
 
 <!-- main-content begin-->
 <div class="container-fluid">
