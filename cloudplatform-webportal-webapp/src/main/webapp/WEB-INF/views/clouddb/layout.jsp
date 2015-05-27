@@ -155,10 +155,9 @@
             </div>
         </nav>
         
-        <iframe class="embed-responsive-item col-sm-10" id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0 scrolling="no"></iframe>
-        <%-- <div class="embed-responsive embed-responsive-16by9 col-sm-10" id="frame-content-div">
-          <iframe class="embed-responsive-item" id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0></iframe>
-        </div> --%>
+        <div class="embed-responsive embed-responsive-16by9 col-sm-10 col-xm-12"  id="frame-content-div">
+        <iframe class="embed-responsive-item " id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0 scrolling="no"></iframe>
+        </div> 
     </div>
 </div>
 <%@ include file="../../layouts/rToolbar.jsp"%>

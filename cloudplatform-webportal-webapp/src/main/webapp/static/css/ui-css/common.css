@@ -1704,7 +1704,7 @@ textarea {
  * Version 1.0
  * author yaokuo 2015-05-26
  **/
-@media only screen and (max-width: 479px){
+@media only screen and (max-width: 769px){
 	.nav-sidebar-div{z-index: 1;background: white;padding: 0px;position: fixed;top:37px;left:-200px;-webkit-transition: all .3s ease-in;-moz-transition: all .3s ease-in;transition: all .3s ease-in;}
 	.nav-sidebar-display{left:0px;}
 }

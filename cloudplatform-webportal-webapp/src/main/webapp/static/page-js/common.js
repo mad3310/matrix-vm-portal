@@ -26,10 +26,12 @@ define(function(require,exports,module){
 		/*iframe自适应高度start*/
 		if(document.getElementsByTagName("iframe").length>0 && monitorFrameHeight.interval ==null){
 			var iframe = document.getElementById("frame-content");
+			var iframeDiv = document.getElementById("frame-content-div");
 			function adaptiveFunction(){
-				var bodyHeight = iframe.contentWindow.document.body.offsetHeight+20;
+				var bodyHeight = iframe.contentWindow.document.body.offsetHeight+40;
 				if(monitorFrameHeight.oldFrameHeight != bodyHeight){
 					iframe.height = bodyHeight;
+					iframeDiv.style.height = bodyHeight+"px";
 					monitorFrameHeight.oldFrameHeight = bodyHeight;
 				}
 			}
