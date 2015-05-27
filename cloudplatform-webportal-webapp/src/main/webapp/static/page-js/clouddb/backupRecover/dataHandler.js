@@ -41,20 +41,20 @@ define(function(require,exports,module){
                              + "/"
                              + cn.TransDate('Y-m-d H:i:s',array[i].endTime)
                              + "</td>");
-                     var td2 = $("<td class=\"padding-left-32\">"
+                     var td2 = $("<td class=\"padding-left-32 hidden-xs\">"
                              + array[i].backupProxy
                              +"</td>");
-                     var td3 = $("<td>"
+                     var td3 = $("<td class='hidden-xs'>"
                      		+ "---"
                              //+ cn.FilterNull(array[i].size)
                              +"</td>");
-                     var td4 = $("<td>"
+                     var td4 = $("<td class='hidden-xs'>"
                              + array[i].backupMethod
                              + "</td>");
-                     var td5 = $("<td>"
+                     var td5 = $("<td class='hidden-xs'>"
                      		+ array[i].backupType
                      		+"</td>");
-                     var td6 = $("<td>"
+                     var td6 = $("<td class='hidden-xs'>"
                      		+ array[i].workType
                      		+ "</td>");
                      var td7 = $("<td><span>"

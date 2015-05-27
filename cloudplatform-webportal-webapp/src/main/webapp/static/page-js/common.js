@@ -1170,6 +1170,14 @@ define(function(require,exports,module){
 		}
 		return flag;
 	}
+    var sidebar=function(){
+        $('a.am-icon-btn').toggle(function() {
+            
+        }, function() {
+            
+        });
+        
+    }
 	/*common私有方法end*/
 });
 

@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap-datetimepicker.min.css"/>
@@ -243,18 +243,22 @@
 </div><!-- modal end -->
 	<div class="panel-group pd10"  role="tablist" aria-multiselectable="true">
 	    <div class="se-heading" id="headingOne" >
-	        <div class="pull-left">
-	        	<h5>
-	        	备份与恢复
-	        	<!-- <a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
-					<i class="fa fa-question-circle text-muted"></i>
-				</a> -->
-		        </h5>
-	        </div>				      
-		    <div class="pull-right">
-		       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
-		       	一键清除Binlog
-		        </button>
+	    	<div class="col-xs-12 col-sm-6">
+		        <div class="pull-left">
+		        	<h5>
+		        	备份与恢复
+		        	<!-- <a id="back_a" data-toggle="tooltip" data-placement="top" title="在同一时间只能有一个临时实例，若需回滚到另一个临时实例，请先删除当前临时实例。">
+						<i class="fa fa-question-circle text-muted"></i>
+					</a> -->
+			        </h5>
+		        </div>
+	        </div>
+	        <div class="col-xs-12 col-sm-6 hidden-xs">				      
+			    <div class="pull-right">
+			       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
+			       	一键清除Binlog
+			        </button>
+			    </div>
 		    </div>
 	    </div>
 	    <ul class="nav nav-tabs" role="tablist" id="setab">
@@ -268,31 +272,33 @@
 			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
 			<div class="row" style="margin-right:0;"> 
 				<div class="col-sm-12 col-md-12">
-				<div class="time-range-unit-header">
-		    		<span class="time-range-title">选择时间范围：</span>
-		    		<div class="date-unit">
-            			<input type='text' class="form-control datetimepicker" id='startTime' />
-		    		</div>
-		    		<span class="date-step-span">至</span>
-		    		<div class="date-unit">
-		    		     <input type='text' class="form-control datetimepicker" id='endTime' />
-		    	    </div>
-		    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
-		    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
-		    	    </select>	 -->
-		    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
-		    	</div>
+					<div class="time-range-unit-header">
+			    		<span class="time-range-title">选择时间范围：</span>
+			    		<div class="date-unit">
+	            			<input type='text' class="form-control datetimepicker" id='startTime' />
+			    		</div>
+			    		<span class="date-step-span">至</span>
+			    		<div class="date-unit">
+			    		     <input type='text' class="form-control datetimepicker" id='endTime' />
+			    	    </div>
+			    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
+			    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
+			    	    </select>	 -->
+			    	    <div class="date-unit">
+			    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
+			    	    </div>
+			    	</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
 			        <table class="table table-hover table-se " style="margin-top:10px;">
 			        	<thead>
 			        		<tr class="text-muted">
 			        			<th>备份开始/结束时间</th>
-			        			<th>备份策略</th>
-			        			<th>备份大小</th>
-			        			<th>备份方法</th>
-			        			<th>备份类型</th>
-			        			<th>工作模式</th>
+			        			<th class="hidden-xs">备份策略</th>
+			        			<th class="hidden-xs">备份大小</th>
+			        			<th class="hidden-xs">备份方法</th>
+			        			<th class="hidden-xs">备份类型</th>
+			        			<th class="hidden-xs">工作模式</th>
 			        			<th>状态</th>
 			        			<th class="text-right">操作</th>
 			        		</tr>
