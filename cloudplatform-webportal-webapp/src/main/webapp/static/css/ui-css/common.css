@@ -1709,9 +1709,12 @@ textarea {
 	.nav-sidebar-display{left:0px;}
 }
 /*iframe*/
+.m-authorize{text-align:center;height:183px;padding-top:60px;margin:0 -30px;}
 @media only screen and (max-width:769px){
 	.embed-responsive .embed-responsive-item{padding-right:0 !important;}
 	.btn-search{margin-left:0;}
-	.m-pr10{padding-left:10px;}
+	.m-pr10{padding-left:10px;padding-right:10px;}
 	.m-overflow{overflow:hidden;}
+	.table-responsive{border:0;}
+	.m-authorize{margin:0;padding:60px 0 0 0;}
 }
