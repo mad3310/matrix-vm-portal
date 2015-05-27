@@ -17,6 +17,7 @@ define(function(require,exports,module){
 		if($(".nav-sidebar-div").length > 0 ){
 			sidebarMenuInit(testIsPCVal);//初始化siderbarmenu
 		}
+        sidebarR();
     };
     module.exports = Common;
     
@@ -1170,13 +1171,15 @@ define(function(require,exports,module){
 		}
 		return flag;
 	}
-    var sidebar=function(){
-        $('a.am-icon-btn').toggle(function() {
-            
-        }, function() {
-            
+    var sidebarR=function(){
+        $('.am-icon-btn').unbind('click').click(function(event) {
+            var _target=$('.nav-sidebar-div');
+            if(_target.hasClass('nav-sidebar-display')){
+                _target.removeClass('nav-sidebar-display');
+            }else{
+                _target.addClass('nav-sidebar-display');
+            }
         });
-        
     }
 	/*common私有方法end*/
 });
