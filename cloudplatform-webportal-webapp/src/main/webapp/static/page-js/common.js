@@ -9,15 +9,16 @@ define(function(require,exports,module){
 		this.totalAvailableTime = 365;
 		this.dbListRefreshTime = 60000; //单位ms
 		this.maxConcurrency = 2000; //数据库最大并发量
-		
 		var  testIsPCVal = IsPC();
 		this.isPC = testIsPCVal;
-		
+        // var tempH=document.body.scrollHeight;
+        // $('#frame-content',window.parent.document).height(tempH);
+        // console.log($('#frame-content',window.parent.document).height())
 		TopBtnInit();//初始化顶部菜单按钮
 		if($(".nav-sidebar-div").length > 0 ){
 			sidebarMenuInit(testIsPCVal);//初始化siderbarmenu
+            sidebarR();
 		}
-        sidebarR();
     };
     module.exports = Common;
     

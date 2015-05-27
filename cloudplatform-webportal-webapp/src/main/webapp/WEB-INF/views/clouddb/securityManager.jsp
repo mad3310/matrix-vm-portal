@@ -16,12 +16,12 @@
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
-	<div class="panel-group pd10" role="tablist" aria-multiselectable="true">
+	<div class="panel-group m-pr10" role="tablist" aria-multiselectable="true">
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5>安全控制</h5>
 			</div>
-			<div class="pull-right">
+			<div class="pull-right hidden-xs">
 				<button id="refresh" class="btn btn-default">
 					<span class="glyphicon glyphicon-refresh"></span> 刷新
 				</button>
@@ -49,13 +49,13 @@
 						<button id="modifyIpList" class="btn btn-primary">手动修改</button>
 					</div>
 				</div>
-				<form id="ipForm" class="form-horizontal ng-pristine ng-valid ng-scope hide" role="form" novalidate="" name="security_form" security-list-man="">
-					<div class="form-group">
+				<form id="ipForm" class="form-horizontal ng-pristine ng-valid ng-scope hide col-xs-12 col-sm-12" role="form" novalidate="" name="security_form" security-list-man="">
+					<div class="form-group" style="padding-top:10px;">
 						<label class="col-sm-2">允许访问IP名单：</label>
 					</div>
 					<div ng-hide="!loadingState" aliyun-loading="" size="48" style="margin-top: 10px" class="ng-hide"></div>
 					<div class="form-group">
-						<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-6 m-overflow">
 							<textarea id="iplist-textarea" name="iplist-textarea" class="form-control" rows="6"></textarea>
 						</div>
 						<div class="help-block ng-hide" style="padding-top: 30px"></div>
@@ -63,10 +63,7 @@
 					<div class="form-group">
 						<div class="col-sm-10">
 							<span class="text-danger">*注意:如果删除IP,会同时删除与该IP相关的账户权限!</span>
-							<pre class="mclpre">
-							请以逗号隔开或换行，不可重复，最多100个。支持格式如：	10.23.12.24,10.23.34.%
-														10.23.12.25
-							</pre>
+							<pre class="mclpre clearfix"><div class="pull-left">请以逗号隔开或换行，不可重复，最多100个。支持格式如：&nbsp;&nbsp;</div>	<div class="pull-left">10.23.12.24,10.23.34.%<br>10.23.12.25</div></pre>
 						</div>
 					</div>
 					<div class="form-group">

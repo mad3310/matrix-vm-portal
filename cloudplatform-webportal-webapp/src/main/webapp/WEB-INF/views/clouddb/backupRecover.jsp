@@ -31,7 +31,7 @@
 	    		<div class="form-group clearfix">
 	    			<label class="col-sm-3 text-muted" style="font-weight:normal">备份周期:</label>
 	    			<div class="col-sm-9">
-	    				<div class="checkbox checkbox-inline" style="margin-top:0px;">
+	    				<div class="checkbox checkbox-inline" style="margin-top:0px;margin-left: 10px;">
 	    					<label><input type="checkbox">星期一</label>
 	    				</div>
 	    				<div class="checkbox checkbox-inline">
@@ -241,9 +241,8 @@
     </div>
   </div>
 </div><!-- modal end -->
-	<div class="panel-group pd10"  role="tablist" aria-multiselectable="true">
+	<div class="panel-group m-pr10"  role="tablist" aria-multiselectable="true">
 	    <div class="se-heading" id="headingOne" >
-	    	<div class="col-xs-12 col-sm-6">
 		        <div class="pull-left">
 		        	<h5>
 		        	备份与恢复
@@ -252,8 +251,7 @@
 					</a> -->
 			        </h5>
 		        </div>
-	        </div>
-	        <div class="col-xs-12 col-sm-6 hidden-xs">				      
+	        <div class="hidden-xs">				      
 			    <div class="pull-right">
 			       	<button id="refresh" disabled="true" class="btn btn-primary" data-toggle="modal" data-target="#cleanBinlog">
 			       	一键清除Binlog
@@ -263,30 +261,31 @@
 	    </div>
 	    <ul class="nav nav-tabs" role="tablist" id="setab">
 	    	<li id="backlist-tab" role="presentation" class="active">
-	    	<a data-toggle="tab" href="#backlist">备份列表</a></li>
-                  <li id="backsetting-tab" role="presentation">
-                  <a data-toggle="tab" href="#backsetting">备份设置</a></li> 	
+	    		<a data-toggle="tab" href="#backlist">备份列表</a></li>
+			<li id="backsetting-tab" role="presentation">
+				<a data-toggle="tab" href="#backsetting">备份设置</a></li> 	
 	    </ul>
 		<!-- <div class="panel-body pd0" id="backlist"> -->
 		<div class="tab-content">				
 			<div id="backlist" role="tabpanel" class="tab tab-pane fade active in"  aria-labelledby="backlist-tab">
 			<div class="row" style="margin-right:0;"> 
-				<div class="col-sm-12 col-md-12">
-					<div class="time-range-unit-header">
-			    		<span class="time-range-title">选择时间范围：</span>
+				<div class="input-group">
+					<div class="time-range-unit-header form-group col-sm-12 col-md-12">
+			    		<span class="time-range-title hidden-xs">选择时间范围：</span>
+			    		<span class="time-range-title hidden-sm hidden-md hidden-lg">开始时间：</span>
 			    		<div class="date-unit">
 	            			<input type='text' class="form-control datetimepicker" id='startTime' />
 			    		</div>
-			    		<span class="date-step-span">至</span>
+			    		<br class="hidden-sm hidden-md hidden-lg">
+			    		<span class="date-step-span hidden-xs">至</span>
+			    		<span class="time-range-title hidden-sm hidden-md hidden-lg">结束时间：</span>
 			    		<div class="date-unit">
 			    		     <input type='text' class="form-control datetimepicker" id='endTime' />
 			    	    </div>
 			    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 			    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
 			    	    </select>	 -->
-			    	    <div class="date-unit">
 			    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
-			    	    </div>
 			    	</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
@@ -322,30 +321,30 @@
 			        </table>
 			       <!--  <div class="help-block hidden" id="noData">没有记录</div> -->
 				    <div class="tfoot" id="paginatorBlock">
-								<div class="pull-right">
-									<div class="pagination-info">
-										<span>共有<span id="totalRecords">3</span>条</span>， 
-										<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
-									    <ul id="paginator" class="pagination pagination-sm">
-									    	<li class="">
-									    		<a href="#">«</a>
-									    	</li>
-									    	<li class="disabled">
-									    		<a href="#" title="Go to previous page">‹</a>
-									    	</li>
-									    	<li class="active">
-									    		<a href="#">1</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">›</a>
-									    	</li>
-									    	<li class="">
-									    		<a href="#">»</a>
-									    	</li>
-									    </ul>
-									</div>
-								</div>
-						</div>   
+						<div class="pull-right">
+							<div class="pagination-info">
+								<span>共有<span id="totalRecords">3</span>条</span>， 
+								<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
+							    <ul id="paginator" class="pagination pagination-sm">
+							    	<li class="">
+							    		<a href="#">«</a>
+							    	</li>
+							    	<li class="disabled">
+							    		<a href="#" title="Go to previous page">‹</a>
+							    	</li>
+							    	<li class="active">
+							    		<a href="#">1</a>
+							    	</li>
+							    	<li class="">
+							    		<a href="#">›</a>
+							    	</li>
+							    	<li class="">
+							    		<a href="#">»</a>
+							    	</li>
+							    </ul>
+							</div>
+						</div>
+					</div>   
 				</div>
 			</div>
 				

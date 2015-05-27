@@ -154,8 +154,10 @@
                 </ul>
             </div>
         </nav>
+        
+        <!-- <iframe class="embed-responsive-item col-sm-10" id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0 scrolling="no"></iframe> -->
         <div class="embed-responsive embed-responsive-16by9 col-sm-10">
-          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe>
+          <iframe class="embed-responsive-item" id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0></iframe>
         </div>
     </div>
 </div>

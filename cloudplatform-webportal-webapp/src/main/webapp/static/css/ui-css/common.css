@@ -1430,13 +1430,14 @@ textarea {
 .mclpre{
 	display: block;
 	font-family: monospace;
-	white-space: pre;
+	white-space:normal;
 	margin: 1em 0;
 	background-color:#FFFFFF;
 	border:0px;
 	font-size:10px;
 	color: #737373;
 	padding: 0px;
+	word-break: break-all; word-wrap:break-word;
 }
 
 /*loadding style*/
@@ -1710,4 +1711,7 @@ textarea {
 /*iframe*/
 @media only screen and (max-width:769px){
 	.embed-responsive .embed-responsive-item{padding-right:0 !important;}
+	.btn-search{margin-left:0;}
+	.m-pr10{padding-left:10px;}
+	.m-overflow{overflow:hidden;}
 }
