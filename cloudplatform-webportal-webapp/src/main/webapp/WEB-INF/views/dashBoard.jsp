@@ -562,6 +562,7 @@
 	</div><!-- main-content end-->
 	<!-- tip 提示container，渲染容器是shade-->
 	<div class="shade-container"></div>
+	<%@ include file="../layouts/rToolbar.jsp"%>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
