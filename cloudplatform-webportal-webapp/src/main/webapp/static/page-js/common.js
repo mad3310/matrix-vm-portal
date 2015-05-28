@@ -1168,7 +1168,6 @@ define(function(require,exports,module){
 				var x = Number(touch.pageX); // 页面触点X坐标
 				var y = Number(touch.pageY); // 页面触点Y坐标
 				if (x - startX > 60) {
-					alert("yes");
 					$(".nav-sidebar-div", parent.document)
 							.addClass("nav-sidebar-display");
 				} else if (x - startX < -60) {
