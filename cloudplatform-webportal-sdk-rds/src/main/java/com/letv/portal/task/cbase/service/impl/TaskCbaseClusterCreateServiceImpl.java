@@ -34,7 +34,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		CbaseBucketModel bucket = super.getCbaseBucket(params);
 		HostModel host = super.getHost(cbaseCluster.getHclusterId());
 		Long hostSize = getLongFromObject(params.get("hostSize"));
-		String mountDir = "[{'/opt/letv/cbase':'/opt/letv/cbase/"
+		String mountDir = "[{'/opt/letv/cbase/var/lib/couchbase/data':'/opt/letv/cbase/var/lib/couchbase/data"
 				+ cbaseCluster.getCbaseClusterName() + "', 'ro':False}]";
 
 		// per cluster node mem quota = (bucket mem quota / hostSize) + 100MB
