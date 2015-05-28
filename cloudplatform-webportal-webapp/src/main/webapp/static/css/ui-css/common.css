@@ -1,6 +1,6 @@
 body{font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei";
 	font-size: 12px;}
-.mt30{marin-top:30px;}
+.mt30{margin-top:30px;}
 .mt50{margin-top:50px;}
 .mt40{margin-top:40px;}
 .mt20{margin-top: 20px;}
@@ -517,12 +517,10 @@ width: 30px;
 .select .select-list .select-item .pull-left{
 	margin:0px;
 	padding:0px;
-	width:50%;
 }
 .select .select-list .select-item .pull-right{
 	padding:0px;
 	margin:0px;
-	width:auto;
 }
 .select .select-list .select-item .pull-right span{
 	padding-right:10px;
@@ -1722,4 +1720,7 @@ textarea {
 	.m-info{margin:20px 0;}
 	.m-userimg{margin:0 auto;padding: 0;width:50px;height:50px;background:#e4e8eb;border-radius:50%;overflow: hidden;}
 	.m-userimg img{width: 60px;height: 60px;margin-left: -4px;margin-top: -4px;}
+	.m-tgbtn{position:relative;}
+	.m-tgbtn button{background-color:#F90;color:rgba(255,255,255,.7);padding:1px 6px;margin:0;}
+	.m-dropdown-caret{position:absolute;top:25px;right:-5px;border:1px solid rgba(0,0,0,.15);background:#fff;z-index:100;box-shadow:3px 3px 3px #ccc;padding:0 10px 10px;font-size:14px;}
 }

@@ -36,11 +36,14 @@ define(function(require,exports,module){
             		 $("#paginatorBlock").show();
             	 }
             	 for(var i= 0, len= array.length;i<len;i++){
-                     var td1 = $("<td>"
+                     var td1 = $("<td class='hidden-xs'>"
                              + cn.TransDate('Y-m-d H:i:s',array[i].startTime) 
                              + "/"
                              + cn.TransDate('Y-m-d H:i:s',array[i].endTime)
-                             + "</td>");
+                             + "</td><td class='hidden-sm hidden-md hidden-lg'>"
+                             + cn.TransDate('Y-m-d H:i:s',array[i].startTime) 
+                             + "<br>"
+                             + cn.TransDate('Y-m-d H:i:s',array[i].endTime)+"</td>");
                      var td2 = $("<td class=\"padding-left-32 hidden-xs\">"
                              + array[i].backupProxy
                              +"</td>");
@@ -60,11 +63,16 @@ define(function(require,exports,module){
                      var td7 = $("<td><span>"
                      		+ cn.TranslateStatus(array[i].status)
                      		+ "</span></td>");
-                     var td8 = $("<td class=\"text-right\"> <div>"
+                     var td8 = $("<td class=\"text-right\"> <div class='hidden-xs'>"
                              + "<span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">下载</span><span class=\"text-explode\">"
                              + "|</span><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</span><span class=\"text-explode\">"
                              + "|</span><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</span><span class=\"text-explode\">"
-                             + "</div></td>");
+                             + "</div><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn'><button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#operation'><i class='fa fa-navicon'></i></button>"
+                             +"<div id='operation' class='navbar-collapse collapse m-dropdown-caret'>"
+                             +"<div style='border-bottom: 6px solid #000;-moz-border-bottom-colors: #000;border-left: 6px solid transparent;border-right: 6px solid transparent;position:relative; top:-6px;x-index:100;'></div>"
+                             +"<ul class='nav'><li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-download'></i></span></li>"
+                             +"<li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-plus-square'></i></span></li>"
+                             +"<li><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\"><i class='fa fa-power-off'></i></span></li></ul></div></div></td>");
                      var tr = $("<tr class='data-tr'></tr>");
                      tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
                      tr.appendTo($tby);

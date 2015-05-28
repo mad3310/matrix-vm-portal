@@ -285,7 +285,7 @@
 			    	    <!-- <select class="form-control margin-left-5 inline-block" style="width:160px">
 			    	    	<option value="0" selected="selected">备份在OSS上的备份集</option>
 			    	    </select>	 -->
-			    	    <button id="bksearch" class="btn btn-primary btn-search">查询</button>
+			    	    <button id="bksearch" class="btn btn-primary btn-search"><span class='hidden-xs'>查询</span><i class='hidden-sm hidden-md hidden-lg fa fa-search'></i></button>
 			    	</div>
 				</div>
 				<div class="col-sm-12 col-md-12">
@@ -322,27 +322,27 @@
 			       <!--  <div class="help-block hidden" id="noData">没有记录</div> -->
 				    <div class="tfoot" id="paginatorBlock">
 						<div class="pull-right">
-							<div class="pagination-info">
+							<div class="pagination-info hidden-xs">
 								<span>共有<span id="totalRecords">3</span>条</span>， 
 								<span>每页显示：<span id="recordsPerPage">30</span>条</span>&nbsp;
-							    <ul id="paginator" class="pagination pagination-sm">
-							    	<li class="">
-							    		<a href="#">«</a>
-							    	</li>
-							    	<li class="disabled">
-							    		<a href="#" title="Go to previous page">‹</a>
-							    	</li>
-							    	<li class="active">
-							    		<a href="#">1</a>
-							    	</li>
-							    	<li class="">
-							    		<a href="#">›</a>
-							    	</li>
-							    	<li class="">
-							    		<a href="#">»</a>
-							    	</li>
-							    </ul>
 							</div>
+							<ul id="paginator" class="pagination pagination-sm">
+						    	<li class="">
+						    		<a href="#">«</a>
+						    	</li>
+						    	<li class="disabled">
+						    		<a href="#" title="Go to previous page">‹</a>
+						    	</li>
+						    	<li class="active">
+						    		<a href="#">1</a>
+						    	</li>
+						    	<li class="">
+						    		<a href="#">›</a>
+						    	</li>
+						    	<li class="">
+						    		<a href="#">»</a>
+						    	</li>
+						    </ul>
 						</div>
 					</div>   
 				</div>
