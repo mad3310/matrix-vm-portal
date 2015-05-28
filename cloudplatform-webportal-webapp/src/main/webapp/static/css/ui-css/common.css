@@ -1710,6 +1710,7 @@ textarea {
 }
 /*iframe*/
 .m-authorize{text-align:center;height:183px;padding-top:60px;margin:0 -30px;}
+.trans-easein{-webkit-transition: all .3s ease-in;-moz-transition: all .3s ease-in;transition: all .3s ease-in;}
 @media only screen and (max-width:769px){
 	.embed-responsive .embed-responsive-item{padding-right:0 !important;}
 	.btn-search{margin-left:0;}
@@ -1718,4 +1719,7 @@ textarea {
 	.table-responsive{border:0;}
 	.m-authorize{margin:0;padding:60px 0 0 0;}
 	.m-fltPage{float:left !important;}
+	.m-info{margin:20px 0;}
+	.m-userimg{margin:0 auto;padding: 0;width:50px;height:50px;background:#e4e8eb;border-radius:50%;overflow: hidden;}
+	.m-userimg img{width: 60px;height: 60px;margin-left: -4px;margin-top: -4px;}
 }

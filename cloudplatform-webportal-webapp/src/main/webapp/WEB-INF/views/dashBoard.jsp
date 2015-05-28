@@ -64,7 +64,7 @@
 			<div class="home-content">
 				<div class="user-profile row"><!-- begin user-profile -->
 					<div class="col-xs-12 col-sm-12 col-md-6"><!-- begin userinfo left-->
-						<div class="info clearfix">
+						<div class="info clearfix hidden-xs">
 							<div class="user-info pull-left">
 								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
 								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
@@ -89,6 +89,23 @@
 									</div>
 								</div>
 							</div> 
+						</div>
+						<div class="m-info hidden-sm hidden-md hidden-lg">
+							<div class="text-center">
+								<div class='m-userimg'><img src="${ctx}/static/img/help/header.png"></div>
+								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
+								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
+							</div>
+							<!-- <div class="account pull-left">
+								<div class="mlt-4 pull-left">
+									<p class="balance-title">账户余额:</p>
+									<p class="balance-num ellipsis" >
+										<span>100</span>
+										<span class="balance-after-point">.00</span>
+										<span class="balance-unit">元</span>
+									</p>
+								</div>
+							</div> --> 
 						</div>
 					</div><!-- end userinfo left-->
 					<div class="hidden-xs hidden-sm col-md-6 yundun-wrap"><!-- begin cloud right-->
@@ -125,6 +142,7 @@
 					<div class="list-title">
 						<span class="list-title-em">已开通</span>
 						的产品与服务:
+						<span class='hidden-sm hidden-md hidden-lg pull-right pd-r8'><span class='glyphicon glyphicon-chevron-up'></span></span>
 					</div>
 					<ul class="row">
 						<li id="rds-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
@@ -144,7 +162,7 @@
 								<span class="item-record-unit">个</span>
 								<a data-toggle="tooltip" data-placement="top" title="数据库数">
 									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
-								</a>
+								</a><!-- 已开通产品 begin -->
 							</div>
 						</li>
 						<li id="slb-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
@@ -263,6 +281,7 @@
 				<div class="product-list product-list-notopen"><!-- 未开通产品 begin -->
 					<div class="list-title">
 						<span class="list-title-em">未开通</span>的产品与服务:
+						<span class="hidden-sm hidden-md hidden-lg pull-right pd-r8"><span class="glyphicon glyphicon-chevron-up"></span></span>
 					</div>
 					<ul class="row">
 						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">

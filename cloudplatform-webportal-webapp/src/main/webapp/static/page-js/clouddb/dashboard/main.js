@@ -38,4 +38,14 @@ define(function(require){
             }
         },500);
     }
+    $('.list-title .glyphicon').click(function(event) {
+        var _target=$(this).closest('.product-list').children('ul');
+        if($(this).hasClass('glyphicon-chevron-down')){
+            $(this).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            _target.fadeIn('400', function() {_target.css('display', 'block');});
+        }else{
+            $(this).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            _target.fadeOut('400', function() {_target.css('display', 'none');});
+        }
+    });
 });
