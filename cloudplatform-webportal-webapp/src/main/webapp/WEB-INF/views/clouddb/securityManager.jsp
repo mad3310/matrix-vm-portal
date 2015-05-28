@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1" />
-<meta name="viewpoint" content="width=device-width,initial-scale=1" />
+<meta name="viewpoint" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <!-- bootstrap css -->
 <link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css" />
 <!-- ui-css -->

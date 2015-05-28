@@ -20,7 +20,7 @@
 	<!-- 全局参数 end -->
 	<div class="se-heading">
 		<div class="pull-left">
-			<h5 class="">QPS（平均每秒SQL语句执行次数）/TPS（平均每秒事务数）</h5>
+			<h5 class="">QPS/TPS</h5>
 		</div>
 		<div class="pull-right">
 			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
