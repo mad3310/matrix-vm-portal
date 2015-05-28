@@ -9,6 +9,7 @@ define(function(require,exports,module){
                 oldFrameHeight:0    
             };
     var  testIsPCVal;
+    var mobileEndInited = false;
     
     require('bootstrap')($);
     var Common = function (){
@@ -29,7 +30,11 @@ define(function(require,exports,module){
             var iframe = document.getElementById("frame-content");
             var iframeDiv = document.getElementById("frame-content-div");
             function adaptiveFunction(){
-                var bodyHeight = iframe.contentWindow.document.body.offsetHeight+40;
+                try{
+					var bodyHeight = iframe.contentWindow.document.getElementsByTagName("html")[0].offsetHeight;
+				}catch(ex){
+					var bodyHeight = 800;
+				}
                 if(monitorFrameHeight.oldFrameHeight != bodyHeight){
                     iframe.height = bodyHeight;
                     iframeDiv.style.height = bodyHeight+"px";
@@ -286,6 +291,9 @@ define(function(require,exports,module){
                     $("#frame-content").attr("src",str);
                     $('.sidebar-selector').find(".active").removeClass("active");
                     $parent.addClass("active");
+                    if($('.nav-sidebar-div').hasClass("nav-sidebar-display")){
+						$('.nav-sidebar-div').removeClass("nav-sidebar-display");
+					}
                 }else {
                     if($parent.children("ul")){
                         //判断菜单是否展开
