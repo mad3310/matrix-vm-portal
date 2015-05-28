@@ -10,6 +10,7 @@ define(function(require,exports,module){
             };
     var  testIsPCVal;
     var mobileEndInited = false;
+    var iframeMobileEndInited= false;
     
     require('bootstrap')($);
     var Common = function (){
@@ -23,6 +24,11 @@ define(function(require,exports,module){
             $('.amz-sidebar-toggle').removeClass('hide')
             sidebarR();
         }
+      	/*iframe页面添加滑出菜单事件*/
+        if(top.location != location &&!iframeMobileEndInited){
+        	sidebarMenuInit(testIsPCVal);
+        }
+        
         gotop();
         this.isPC = testIsPCVal;
         /*iframe自适应高度start*/
@@ -293,6 +299,7 @@ define(function(require,exports,module){
                     $parent.addClass("active");
                     if($('.nav-sidebar-div').hasClass("nav-sidebar-display")){
 						$('.nav-sidebar-div').removeClass("nav-sidebar-display");
+						iframeMobileEndInited = false;
 					}
                 }else {
                     if($parent.children("ul")){
@@ -1144,51 +1151,60 @@ define(function(require,exports,module){
         })
     }
     var sidebarMenuInit = function(isPC) {
-        if (!isPC) {
-            function isTouchDevice() {
-                try {
-                    document.createEvent("TouchEvent");
-                    bindEvent(); // 绑定事件
-                } catch (e) {
-                }
-            }
-            var startX = 0, startY = 0;
-            function touchSatrtFunc(evt) {
-                try {
-                    var touch = evt.touches[0]; // 获取第一个触点
-                    var x = Number(touch.pageX); // 页面触点X坐标
-                    var y = Number(touch.pageY); // 页面触点Y坐标
-                    startX = x;
-                    startY = y;
-                } catch (e) {
-                }
-            }
-            function touchMoveFunc(evt) {
-                try {
-                    var touch = evt.touches[0]; // 获取第一个触点
-                    var x = Number(touch.pageX); // 页面触点X坐标
-                    var y = Number(touch.pageY); // 页面触点Y坐标
-                    if (x - startX > 60) {
-                        $(".nav-sidebar-div").addClass("nav-sidebar-display");
-                    } else if (x - startX < -60) {
-                        $(".nav-sidebar-div").removeClass("nav-sidebar-display");
-                    }
-                } catch (e) {
-                }
-            }
-            function touchEndFunc(evt) {
-                try {
-                } catch (e) {
-                }
-            }
-            function bindEvent() {
-                document.addEventListener('touchstart', touchSatrtFunc, true);
-                document.addEventListener('touchmove', touchMoveFunc, true);
-                document.addEventListener('touchend', touchEndFunc, true);
-            }
-            isTouchDevice();// touchDevice添加touch事件
-        }
-    }
+		var startX = 0, startY = 0;
+		function touchSatrtFunc(evt) {
+			try {
+				var touch = evt.touches[0]; // 获取第一个触点
+				var x = Number(touch.pageX); // 页面触点X坐标
+				var y = Number(touch.pageY); // 页面触点Y坐标
+				startX = x;
+				startY = y;
+			} catch (e) {
+			}
+		}
+		function touchMoveFunc(evt) {
+			try {
+				var touch = evt.touches[0]; // 获取第一个触点
+				var x = Number(touch.pageX); // 页面触点X坐标
+				var y = Number(touch.pageY); // 页面触点Y坐标
+				if (x - startX > 60) {
+					alert("yes");
+					$(".nav-sidebar-div", parent.document)
+							.addClass("nav-sidebar-display");
+				} else if (x - startX < -60) {
+					$(".nav-sidebar-div", parent.document)
+							.removeClass("nav-sidebar-display");
+				}
+			} catch (e) {
+			}
+		}
+		function touchEndFunc(evt) {
+			try {
+			} catch (e) {
+			}
+		}
+		function bindEvent() {
+			document.addEventListener('touchstart', touchSatrtFunc, true);
+			document.addEventListener('touchmove', touchMoveFunc, true);
+			document.addEventListener('touchend', touchEndFunc, true);
+		}
+		function initTouchDevice() {
+			try {
+				document.createEvent("TouchEvent");
+				bindEvent(); // 绑定事件
+			} catch (e) {
+			}
+		}
+		if (!isPC) {
+			if (top.location != location && !iframeMobileEndInited) {
+				initTouchDevice();
+				iframeMobileEndInited = true;
+			} else if (top.location == location && !mobileEndInited) {
+				initTouchDevice();
+				mobileEndInited = true;
+			}
+		}
+	}
     var IsPC = function() {
         var userAgentInfo = navigator.userAgent;
         var Agents = new Array("Android", "iPhone", "SymbianOS",
