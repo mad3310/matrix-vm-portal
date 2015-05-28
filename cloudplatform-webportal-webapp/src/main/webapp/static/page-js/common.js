@@ -11,6 +11,7 @@ define(function(require,exports,module){
     var  testIsPCVal;
     var mobileEndInited = false;
     var iframeMobileEndInited= false;
+    var scrollInited = false;
     
     require('bootstrap')($);
     var Common = function (){
@@ -1195,10 +1196,10 @@ define(function(require,exports,module){
 			}
 		}
 		if (!isPC) {
-			if (top.location != location && !iframeMobileEndInited) {
+			if (top.location != location && !iframeMobileEndInited) { //layout页面滑出事件初始化
 				initTouchDevice();
 				iframeMobileEndInited = true;
-			} else if (top.location == location && !mobileEndInited) {
+			} else if (top.location == location && !mobileEndInited) {//iframe页面滑出事件初始化
 				initTouchDevice();
 				mobileEndInited = true;
 			}
@@ -1231,15 +1232,18 @@ define(function(require,exports,module){
         $("#amz-go-top").click(function(){
             $('html,body').animate({scrollTop:0},500);
         });
-        min_height ? min_height=min_height : min_height=400;
-        $(window).scroll(function(){
-          var s=$(window).scrollTop()||$('html,body').scrollTop();
-          if(s>min_height){
-              $("#amz-go-top").fadeIn(100,function(){$('#amz-go-top').css('display', 'block');});
-          }else{
-              $("#amz-go-top").fadeOut(200,function(){$('#amz-go-top').css('display', 'none');});
-          }
-        });
+        min_height ? min_height=min_height : min_height=256;
+        if(top.location == location && !scrollInited){
+	        $(window).scroll(function(){
+	          var s=$(window).scrollTop()||$('html,body').scrollTop();
+	          if(s>min_height){
+	              $("#amz-go-top").fadeIn(100,function(){$('#amz-go-top').css('display', 'block');});
+	          }else{
+	              $("#amz-go-top").fadeOut(200,function(){$('#amz-go-top').css('display', 'none');});
+	          }
+	        });
+	        scrollInited=true;
+        }
     }
     /*common私有方法end*/
 });
