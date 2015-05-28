@@ -230,7 +230,7 @@
 						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
 					</div>
 					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
-						<div class="zero-clipboard">
+						<div class="zero-clipboard hidden-xs hidden-sm">
 							<a id= "zclipCopy" class="btn-clipboard">复制</a>
 						</div>
 						<pre>

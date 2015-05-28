@@ -1168,10 +1168,10 @@ define(function(require,exports,module){
 				var touch = evt.touches[0]; // 获取第一个触点
 				var x = Number(touch.pageX); // 页面触点X坐标
 				var y = Number(touch.pageY); // 页面触点Y坐标
-				if (x - startX > 60) {
+				if (x - startX > 100) {
 					$(".nav-sidebar-div", parent.document)
 							.addClass("nav-sidebar-display");
-				} else if (x - startX < -60) {
+				} else if (x - startX < -100) {
 					$(".nav-sidebar-div", parent.document)
 							.removeClass("nav-sidebar-display");
 				}
