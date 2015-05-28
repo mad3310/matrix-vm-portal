@@ -81,11 +81,11 @@ define(function(require,exports,module){
                     var td9 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
                     	var td10 = $("<td class=\"text-right hidden-xs\"><a href=\"/detail/db/"+array[i].id+"\">管理</a>&nbsp;<span class=\"text-explode font-disabled\">|续费|升级</span></td>"
-                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><a href=\"/detail/db/"+array[i].id+"\"><span class='glyphicon glyphicon-cog'></span></a><span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-usd'></span>&nbsp;"
+                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><a href=\"/detail/db/"+array[i].id+"\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;<span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-shopping-cart'></span>&nbsp;"
                         +"<span class='glyphicon glyphicon-upload'></span></span></td>");
                     }else{
                     	var td10 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>"
-                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-usd'></span>&nbsp;"
+                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-shopping-cart'></span>&nbsp;"
                         +"<span class='glyphicon glyphicon-upload'></span></span></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");

@@ -23,12 +23,14 @@
 			<div class="pull-left">
 				<h5>
 				<span>关系型数据库管理</span>
-				<button class="btn btn-success btn-md btn-region-display">全部</button>
-				<button class="btn btn-default btn-md btn-region-display">北京</button>
+				<button class="btn btn-success btn-md btn-region-display hidden-xs">全部</button>
+				<button class="btn btn-default btn-md btn-region-display hidden-xs">北京</button>
+				<button class="btn btn-success btn-sm btn-region-display hidden-sm hidden-md hidden-lg">全部</button>
+				<button class="btn btn-default btn-sm btn-region-display hidden-sm hidden-md hidden-lg">北京</button>
 				</h5> 
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-12 col-md-6 hidden-xs hidden-sm">
+		<div class="col-xs-12 col-sm-12 col-md-6 hidden-xs">
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
@@ -43,7 +45,7 @@
 						<input  id="dbName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<div class="col-xs-3 col-sm-2">
-						<button id="search" type="button" class="btn btn-default">搜索</button>
+						<button id="search" type="button" class="btn btn-default"><span class='hidden-xs'>搜索</span><span class='glyphicon glyphicon-search hidden-sm hidden-md hidden-lg'></span></button>
 					</div>
 				</form>
 			</div>
@@ -59,7 +61,7 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">实例名称</th>
-						<th style="width:20%">状态</th>
+						<th>状态</th>
 						<th class="hidden-xs">实例类型</th>
 						<th class="hidden-xs">数据库类型</th>
 						<th class="hidden-xs">可用区类型
@@ -81,17 +83,18 @@
 							<input type="checkbox">
 						</td>
 						<td colspan="9" class="row">
-							<div class="col-xs-12 col-sm-6" style="margin:2px 0;">
+							<div class="col-xs-4 col-sm-6" style="margin:2px 0;padding:0;">
 							<div class="pull-left">
 									<div pagination-info="paginationInfo">
 										<div class="pull-left">
-											<button class="btn btn-default" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
+											<button class="btn btn-default hidden-xs" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
+											<button class="btn btn-default btn-sm hidden-sm hidden-md hidden-lg" disabled="disabled"><span class='glyphicon glyphicon-shopping-cart'></span> 续费</button>
 										</div>
 									</div>
 							</div>
 							</div>
-							<div class="col-xs-12 col-sm-6" style="margin:2px 0;">
-							<div class="pull-right">
+							<div class="col-xs-8 col-sm-6" style="margin:2px 0;padding:0;">
+							<div class="pull-right m-fltPage">
 								<div class="pagination-info hidden-xs">
 									<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
 									<span class="ng-binding">每页显示：<span id="recordsPerPage"></span>条</span>&nbsp;
