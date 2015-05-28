@@ -121,8 +121,8 @@
 		          		配置信息
 				</span>
 				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">续费</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">变更配置</a>
 					<a class="btn btn-xs btn-primary" id="showConfigInfo" href="javascript:void(0)">配置信息</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">

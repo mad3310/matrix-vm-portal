@@ -30,7 +30,7 @@ define(function(require,exports,module){
 			var iframeDiv = document.getElementById("frame-content-div");
 			function adaptiveFunction(){
 				try{
-					var bodyHeight = iframe.contentWindow.document.body.offsetHeight+40;
+					var bodyHeight = iframe.contentWindow.document.getElementsByTagName("html")[0].offsetHeight;
 				}catch(ex){
 					var bodyHeight = 800;
 				}
