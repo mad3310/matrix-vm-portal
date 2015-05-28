@@ -81,12 +81,18 @@ define(function(require,exports,module){
                     var td9 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
                     	var td10 = $("<td class=\"text-right hidden-xs\"><a href=\"/detail/db/"+array[i].id+"\">管理</a>&nbsp;<span class=\"text-explode font-disabled\">|续费|升级</span></td>"
-                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><a href=\"/detail/db/"+array[i].id+"\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;<span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-shopping-cart'></span>&nbsp;"
-                        +"<span class='glyphicon glyphicon-upload'></span></span></td>");
+                        +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                       +"<div class='pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                             +"<ul class='dropdown-menu m-dropdown-caret'><li><a href=\"/detail/db/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a></li>"
+                             +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                             +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li></ul></div></td>");
                     }else{
                     	var td10 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理|续费|升级</span></td>"
-                        +"<td class=\"text-right hidden-sm hidden-md hidden-lg\"><span class=\"text-explode font-disabled\"><span class='glyphicon glyphicon-cog'></span>&nbsp;<span class='glyphicon glyphicon-shopping-cart'></span>&nbsp;"
-                        +"<span class='glyphicon glyphicon-upload'></span></span></td>");
+                        +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                        +"<div class='m-tgbtn dropdown pull-right'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                             +"<ul class='dropdown-menu m-dropdown-caret text-center'><li><a><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                             +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                             +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li></ul></div></td>");
                     }
                     var tr = $("<tr class='data-tr'></tr>");
                     
