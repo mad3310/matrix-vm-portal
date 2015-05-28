@@ -9,6 +9,7 @@ define(function(require,exports,module){
 				oldFrameHeight:0	
 			};
 	var  testIsPCVal;
+	var mobileEndInited = false;
 	
     require('bootstrap')($);
     var Common = function (){
@@ -28,7 +29,11 @@ define(function(require,exports,module){
 			var iframe = document.getElementById("frame-content");
 			var iframeDiv = document.getElementById("frame-content-div");
 			function adaptiveFunction(){
-				var bodyHeight = iframe.contentWindow.document.body.offsetHeight+40;
+				try{
+					var bodyHeight = iframe.contentWindow.document.body.offsetHeight+40;
+				}catch(ex){
+					var bodyHeight = 800;
+				}
 				if(monitorFrameHeight.oldFrameHeight != bodyHeight){
 					iframe.height = bodyHeight;
 					iframeDiv.style.height = bodyHeight+"px";
@@ -285,6 +290,9 @@ define(function(require,exports,module){
 	    			$("#frame-content").attr("src",str);
 	    			$('.sidebar-selector').find(".active").removeClass("active");
 	    			$parent.addClass("active");
+					if($('.nav-sidebar-div').hasClass("nav-sidebar-display")){
+						$('.nav-sidebar-div').removeClass("nav-sidebar-display");
+					}
         		}else {
         			if($parent.children("ul")){
         				//判断菜单是否展开
@@ -1135,14 +1143,15 @@ define(function(require,exports,module){
 		})
 	}
 	var sidebarMenuInit = function(isPC) {
-		if (!isPC) {
-			function isTouchDevice() {
+		if (!isPC && !mobileEndInited) {
+			(function isTouchDevice() {
 				try {
 					document.createEvent("TouchEvent");
 					bindEvent(); // 绑定事件
+					mobileEndInited = true;
 				} catch (e) {
 				}
-			}
+			})();
 			var startX = 0, startY = 0;
 			function touchSatrtFunc(evt) {
 				try {
@@ -1173,11 +1182,10 @@ define(function(require,exports,module){
 				}
 			}
 			function bindEvent() {
-				document.addEventListener('touchstart', touchSatrtFunc, true);
-				document.addEventListener('touchmove', touchMoveFunc, true);
-				document.addEventListener('touchend', touchEndFunc, true);
+				document.addEventListener('touchstart', touchSatrtFunc, false);
+				document.addEventListener('touchmove', touchMoveFunc, false);
+				document.addEventListener('touchend', touchEndFunc, false);
 			}
-			isTouchDevice();// touchDevice添加touch事件
 		}
 	}
 	var IsPC = function() {
