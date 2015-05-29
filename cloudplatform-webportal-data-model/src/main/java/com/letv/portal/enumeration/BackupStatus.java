@@ -4,7 +4,8 @@ public enum BackupStatus implements ByteEnum{
 	FAILD(0),
 	SUCCESS(1),
 	BUILDING(2),
-	WAITTING(3);
+	WAITTING(3),
+	ABNORMAL(4);
 	
 	private final Integer value;
 	

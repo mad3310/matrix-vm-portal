@@ -80,27 +80,19 @@ function queryByPage(currentPage, recordsPerPage) {
 		var dbName = $("#dbName").val();
 		
 		var backupStatus = $("#backupStatus").val();
-		if(backupStatus == 0){
-			var status = "SUCCESS";
-		}else if(backupStatus == 1){
-			var status = "FAILD";
-		}else if(backupStatus == 2){
-			var status = "BUILDING";
-		}else{
-			var status = '';
-		}
+		
 	}else{
 		var startTime = '';
 		var endTime = '';
 		var mclusterName = '';
 		var dbName = '';
-		var status = '';
+		var backupStatus = '';
 	}
 	
 	getLoading();
 	$.ajax({ 
 		type : "get",
-		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName +'&&status=' + status,
+		url : "/backup?" + "&&startTime=" + startTime + "&&endTime=" + endTime + "&&currentPage=" + currentPage + "&&recordsPerPage=" + recordsPerPage + "&&dbName=" + dbName +"&&mclusterName=" + mclusterName +'&&status=' + backupStatus,
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {

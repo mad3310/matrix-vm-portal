@@ -62,10 +62,11 @@
 				</div>
 				<div class="form-group col-xs-12 col-sm-6 col-md-3">
 					<select id="backupStatus" class="form-control">
-					    <option value="4"  selected="selected">全部</option>
-						<option value="0">备份成功</option>
-						<option value="1">备份失败</option>
-						<option value="2">备份中...</option>
+					    <option value=""  selected="selected">全部</option>
+						<option value="SUCCESS">备份成功</option>
+						<option value="FAILD">备份失败</option>
+						<option value="BUILDING">备份中...</option>
+						<option value="ABNORMAL">备份异常</option>
 					</select>
 				</div>
 				<div class="form-group col-xs-12 col-sm-6 col-md-3">

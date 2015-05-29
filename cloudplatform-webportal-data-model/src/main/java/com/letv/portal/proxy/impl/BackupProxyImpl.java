@@ -168,29 +168,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		BackupStatus status = BackupStatus.BUILDING;
 		String resultDetail = "";
 		String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
-		if(StringUtils.isNullOrEmpty(result)) {
-			status = BackupStatus.FAILD;
-			resultDetail = "Connection refused";
-		} else {
-			if(result.contains("\"code\": 200")) {
-				if(result.contains("backup success")) { 
-					status = BackupStatus.SUCCESS;
-				} else if(result.contains("backup is processing")) {
-					if(new Date().getHours()-backup.getStartTime().getHours()>1) {
-						status = BackupStatus.FAILD;
-						resultDetail = "more than one hour for bakcup";
-					} else {
-						status = BackupStatus.BUILDING;
-					}
-				}
-			} else if(result.contains("\"code\": 411")) {
-				status = BackupStatus.FAILD;
-				resultDetail = result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},"));
-			} else {
-				status = BackupStatus.FAILD;
-				resultDetail = "api not found";
-			}
-		}
+		backup = analysisBackupResult(backup, result);
 		
 		Date date = new Date();
 		backup.setStatus(status);
@@ -203,6 +181,40 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			//发送邮件通知
 			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
 		}
+	}
+	
+	private BackupResultModel analysisBackupResult(BackupResultModel backup,String result) {
+		if(StringUtils.isNullOrEmpty(result)) {
+			backup.setStatus( BackupStatus.FAILD);
+			backup.setResultDetail("Connection refused");
+			return backup;
+		}
+		if(result.contains("\"code\": 200") && result.contains("backup success")) {
+			backup.setStatus( BackupStatus.SUCCESS);
+			backup.setResultDetail("backup success");
+			return backup;
+		}
+		if(result.contains("\"code\": 200") && result.contains("processing")) {
+			backup.setStatus( BackupStatus.BUILDING);
+			backup.setResultDetail("backup is processing");
+			
+			int hours = new Date().getHours();
+			int startHours = backup.getStartTime().getHours();
+			if(hours-startHours>1 || hours-startHours<0) {
+				backup.setStatus( BackupStatus.ABNORMAL);
+				backup.setResultDetail("more than one hour for bakcup");
+			}
+			return backup;
+		}
+		if(result.contains("\"code\": 200") && result.contains("expired")) {
+			backup.setStatus( BackupStatus.FAILD);
+			backup.setResultDetail(result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},")));
+			return backup;
+		}
+		backup.setStatus( BackupStatus.FAILD);
+		backup.setResultDetail("api not found");
+
+		return backup;
 	}
 	
 	private void backupTask4addNew(int count) {
@@ -292,8 +304,5 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		map.put("min", max-100);
 		map.put("max", max);
 		this.backupService.deleteOutDataByIndex(map);
-		
-		
-		
 	}
 }
