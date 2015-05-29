@@ -136,7 +136,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					datas.add(point);
 				}
 			} else {
-				for (int i = 0; i < beforData.size()-1; i++) {
+				for (int i = 0; i <= beforData.size()-1; i++) {
 					List<Object> point = new ArrayList<Object>();
 					point.add(beforData.get(i).getMonitorDate());
 					float value = beforData.get(i).getDetailValue()>=0?beforData.get(i).getDetailValue():0;

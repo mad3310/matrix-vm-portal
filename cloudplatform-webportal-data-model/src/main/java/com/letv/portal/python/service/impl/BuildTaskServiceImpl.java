@@ -1354,6 +1354,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		Map result = transResult(this.pythonService.getOSSData(url, index.getDataFromApi().replace("{0}", ip)));
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String,Object>) ((Map<String,Object>)result.get("response")).get("data");
+			 String time = (String) ((Map<String,Object>)result.get("response")).get("time");
+			 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			 try {
+				date = sdf.parse(time);
+			} catch (ParseException e) {
+				throw new ValidateException("api time error");
+			}
 			for(Iterator it =  data.keySet().iterator();it.hasNext();){
 				String key = (String) it.next();
 				MonitorDetailModel monitorDetail = new MonitorDetailModel();

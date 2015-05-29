@@ -23,13 +23,10 @@
 			<h5 class="">请求数</h5>
 		</div>
 		<div class="pull-right">
-			<input class="hidden" value="1" name="strategy" id="strategy" type="text" />
+			<input class="hidden" value="2" name="strategy" id="strategy" type="text" />
 			<span class="monitor-date-block">
 				<ul class="nav nav-pills">
-					<li class="time-block active" value="1">
-						<a>1小时</a>
-					</li>
-					<li class="time-block" value="2">
+					<li class="time-block active" value="2">
 						<a>3小时</a>
 					</li>
 					<li class="time-block" value="3">
