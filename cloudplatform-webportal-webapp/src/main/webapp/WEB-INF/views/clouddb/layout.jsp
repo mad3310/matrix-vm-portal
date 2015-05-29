@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -20,7 +20,7 @@
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
-	<!-- top bar begin -->
+	<%-- <!-- top bar begin -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -58,13 +58,14 @@
     </div>
   </div>
 </div>
-<!-- navbar end -->
+<!-- navbar end --> --%>
+<%@ include file="../../layouts/header.jsp"%>
 
 <!-- main-content begin-->
 <div class="container-fluid">
     <div class="row main-header">
         <!-- main-content-header begin -->
-        <div class="col-sm-12 col-md-6">
+        <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
@@ -79,7 +80,7 @@
                 </h3>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-6 col-md-6 hidden-xs">
             <div class="pull-right">
                 <h3>
                     <small>
@@ -119,7 +120,7 @@
     <!-- main-content-header end-->
     <div class="row">
         <!-- main-content-center-begin -->
-        <nav class="col-sm-2 col-md-2">
+        <nav id="sidebar" class="col-sm-2 col-md-2 nav-sidebar-div">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/baseInfo/${dbId}" href="javascript:void(0)">基本信息</a></li>
@@ -153,11 +154,13 @@
                 </ul>
             </div>
         </nav>
-        <div class="embed-responsive embed-responsive-16by9 col-sm-10">
-          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe>
-        </div>
+        
+        <div class="embed-responsive embed-responsive-16by9 col-sm-10 col-xm-12"  id="frame-content-div">
+        <iframe class="embed-responsive-item " id="frame-content" src="${ctx}/detail/baseInfo/${dbId}" frameBorder=0 scrolling="no"></iframe>
+        </div> 
     </div>
 </div>
+<%@ include file="../../layouts/rToolbar.jsp"%>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

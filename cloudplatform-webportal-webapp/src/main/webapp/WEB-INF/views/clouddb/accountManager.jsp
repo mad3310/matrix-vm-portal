@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
@@ -22,18 +22,21 @@
 	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
 	<!-- 账号管理主界面div -->
-	<div id="accountList" class="" role="tablist" aria-multiselectable="true">
+	<div id="accountList" class="m-pr10" role="tablist" aria-multiselectable="true">
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5>账号管理</h5>
-				<a href="/helpCenter/helpCenter.jsp?container=help-createUser" target="_blank">如何创建用户</a>
+				<a href="/helpCenter/helpCenter.jsp?container=help-createUser" target="_blank" class="hidden-xs">如何创建用户</a>
 			</div>
-			<div class="pull-right">
+			<div class="pull-right hidden-xs">
 				<button id="refresh" class="btn btn-default">
 					<span class="glyphicon glyphicon-refresh"></span>
 					刷新
 				</button>
 				<button class="btn btn-primary toCreateAccount">创建帐号</button>
+			</div>
+			<div class="pull-right hidden-sm hidden-md hidden-lg">
+				<button class="btn btn-xs btn-primary toCreateAccount"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 			</div>
 		</div>
 		<div class="table-responsive">
@@ -45,10 +48,10 @@
 						<th width="15%" class="hide">读写比例
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="10%">最大并发量
+						<th width="10%" class="hidden-xs">最大并发量
 							<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 						</th>
-						<th width="20%" >备注说明</th>
+						<th width="20%" class="hidden-xs">备注说明</th>
 						<th class="text-right" width="25%">
 							<span style="padding-left:8px">操作</span>
 						</th>
@@ -60,27 +63,27 @@
 		</div>
 	</div>
 	<!-- 点击“创建账号”后加载的div 去掉mc-hide既可以显示此div-->
-	<div id="newAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
+	<div id="newAccountTab" class="mc-hide m-pr10" role="tablist" aria-multiselectable="true">
 		<!-- heading部分 -->
 		<div class="se-heading">
 			<div class="pull-left">
-				<h4>创建新账号</h4>
+				<h5>创建新账号</h5>
+				<a class="toAccountList">返回帐号管理</a>
 			</div>
-			<a class="pull-left toAccountList">返回帐号管理</a>
 		</div>
 		<!-- 内容部分，由一个form承载 -->
-		<div style="width:auto;height:auto;">
+		<div class="">
 			<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
 				<!-- 数据库账号模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						数据库帐号：
 					</label>
-					<div class="col-sm-8 row">						
-						<div class="col-sm-4">							
+					<div class="">						
+						<div class="col-xs-12 col-sm-4">							
 							<input name="username" class="form-control input-radius-2" type="text"></div>
-						<div class="col-sm-12 notice-block">
+						<div class="col-xs-12 col-sm-offset-2 col-sm-10 notice-block">
 							<p class="text-correct">由小写字母，数字、下划线组成、字母开头，字母或数字结尾，最长16个字符</p>
 						</div>
 					</div>
@@ -88,14 +91,14 @@
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						授权IP：
 					</label>
-					<div class="inline-block mcluster-select" style="width:180px">
+					<div class="inline-block mcluster-select col-xs-10 col-sm-2">
 						<div class="select-head clearfix">
-							<p class="pull-left">未授权IP</p>
-							<p class="pull-right">
+							<p class="inline-block">未授权IP</p>
+							<p class="inline-block">
 							<a id="manager-ip-list">管理IP名单</a>
 							</p>
 						</div>
@@ -108,7 +111,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="inline-block" style="width: 60px;text-align:center;height:183px;padding-top:60px">
+					<div class="inline-block col-xs-2 col-sm-1 m-authorize">
 						<div style="margin-bottom:5px">
 							<a class="btn_db_add">授权&nbsp;&gt;</a>
 						</div>
@@ -116,10 +119,10 @@
 							<a class="btn_db_remove">&lt;&nbsp;移除</a>
 						</div>
 					</div>
-					<div class="inline-block mcluster-select" style="width:380px;height:100%">
+					<div class="inline-block mcluster-select col-xs-12 col-sm-3">
 						<div class="select-head clearfix">
-							<p class="pull-left">已授权IP</p>
-							<p class="pull-right">
+							<p class="inline-block">已授权IP</p>
+							<p class="inline-block">
 								<span style="padding-right: 5px;color:#bbb">权限</span>
 								<a class="select-all-rw">全部设读写</a>
 							</p>
@@ -151,16 +154,16 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						最大并发量：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input name="maxConcurrency" class="form-control input-radius-2"/>
 						</div>
-						<div class="col-sm-1" style="padding-top : 8px">
+						<div class="col-sm-1 hidden-xs" style="padding-top : 8px">
 							<a data-container="body" data-toggle="popover" data-placement="right" data-html="true"
 								data-content="
 								<!-- 横向显示表格数据<table border='1' style='width:100%'>
@@ -235,17 +238,17 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						密码：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input name="newPwd1" class="form-control input-radius-2" type="password"/>
 						</div>
 						<!-- 密码规则提示 -->
-						<div class="notice-block col-sm-12">
+						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
 							<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
 						</div>
 					</div>
@@ -253,13 +256,13 @@
 				<!-- 密码输入模块end -->
 				<!-- 确认密码模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						确认密码：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 确认密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input name="newPwd2" class="form-control input-radius-2" type="password"/>
 						</div>
 					</div>
@@ -267,10 +270,10 @@
 				<!-- 密码确认模块end -->
 				<!-- 备注说明模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label">备注说明：</label>
+					<label class="col-xs-12 col-sm-2 control-label">备注说明：</label>
 					<!-- 备注输入框 -->
-					<div class="col-sm-10 row">
-						<div class="col-sm-4">
+					<div class="">
+						<div class="col-xs-12 col-sm-4">
 							<textarea name="descn" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
 						</div>
 						<!-- 备注输入超过长度限制提示 -->
@@ -281,7 +284,7 @@
 							</small>
 						</div>
 						<!-- 备注信息规则静态提示 -->
-						<div class="col-sm-12 notice-block">
+						<div class="col-sm-10 col-sm-offset-2 col-xs-12 notice-block">
 							<p class="text-correct">请输入备注说明，输入长度不超过100个字符!</p>
 						</div>
 					</div>
@@ -289,8 +292,8 @@
 				<!-- 备注说明模块end -->
 				<!-- 按钮模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label"></label>
-					<div class="col-sm-4">
+					<label class="col-xs-12 col-sm-2 control-label"></label>
+					<div class="col-xs-12 col-sm-4">
 						<button type="submit" id="submitCreateUserForm" class="btn btn-primary">提交</button>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
@@ -299,13 +302,13 @@
 			</form>
 		</div>
 	</div>
-	<div id="modifyAccountTab" class="mc-hide" role="tablist" aria-multiselectable="true">
+	<div id="modifyAccountTab" class="mc-hide m-pr10" role="tablist" aria-multiselectable="true">
 		<!-- heading部分 -->
 		<div class="se-heading">
 			<div class="pull-left">
-				<h4>编辑账号</h4>
+				<h5>编辑账号</h5>
+				<a class="toAccountList">返回帐号管理</a>
 			</div>
-			<a class="pull-left toAccountList">返回帐号管理</a>
 		</div>
 		<!-- 内容部分，由一个form承载 -->
 		<div style="width:auto;height:auto;">
@@ -314,23 +317,24 @@
 
 				<!-- 数据库账号模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label">
+					<label class="col-xs-6 col-sm-2 control-label">
 						数据库帐号：
 					</label>
-					<div class="col-sm-8 row">
-						<div class="col-sm-4">
-							<label id="modifyFormDbUsername" style="padding-top:7px"></label>
+					<label id="modifyFormDbUsername" class="col-xs-6 col-sm-4 control-label"></label>
+					<div class="">
+						<div class="col-xs-6 col-sm-4">
+							<label id="modifyFormDbUsername" style="padding-top:7px;"></label>
 						</div>
 					</div>
 				</div>
 				<!-- 数据库账号模块end -->
 				<!-- 授权数据库模块 -->
 				<div class="form-group modify-multi-select">
-					<label class="col-sm-2 control-label" style="height:190px;margin-right:15px">
+					<label class="col-xs-12 col-sm-2 control-label">
 						<span class="text-danger">*</span>
 						授权IP：
 					</label>
-					<div class="inline-block mcluster-select" style="width:180px">
+					<div class="inline-block mcluster-select col-xs-10 col-sm-2">
 						<div class="select-head clearfix">
 							<p class="pull-left">未授权IP</p>
 						</div>
@@ -343,7 +347,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="inline-block" style="width: 60px;text-align:center;height:183px;padding-top:60px">
+					<div class="inline-block col-xs-2 col-sm-1 m-authorize">
 						<div style="margin-bottom:5px">
 							<a class="btn_db_add">授权&nbsp;&gt;</a>
 						</div>
@@ -351,7 +355,7 @@
 							<a class="btn_db_remove">&lt;&nbsp;移除</a>
 						</div>
 					</div>
-					<div class="inline-block mcluster-select" style="width:380px;height:100%">
+					<div class="inline-block mcluster-select col-xs-12 col-sm-3">
 						<div class="select-head clearfix">
 							<p class="pull-left">已授权IP</p>
 							<p class="pull-right">
@@ -372,14 +376,14 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 最大并发量：
+					<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 最大并发量：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input id="modifydbUserMaxConcurrency" name="modifydbUserMaxConcurrency" class="form-control input-radius-2" />
 						</div>
-						<div class="col-sm-1" style="padding-top : 8px">
+						<div class="col-sm-1 hidden-xs" style="padding-top : 8px">
 							<a data-container="body" data-toggle="popover" data-placement="right" data-html="true"
 								data-content="
 								<table border='1' style='width:100%;font-size:12px;color:gray;border:1px solid gray;'>
@@ -421,15 +425,15 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
+					<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 密码：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="password" />
 						</div>
 						<!-- 密码规则提示 -->
-						<div class="notice-block col-sm-12">
+						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
 							<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
 						</div>
 					</div>
@@ -437,27 +441,27 @@
 				<!-- 密码输入模块end -->
 				<!-- 确认密码模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label"> <span class="text-danger">*</span> 确认密码：
+					<label class="col-xs-12 col-sm-2 control-label"> <span class="text-danger">*</span> 确认密码：
 					</label>
-					<div class="col-sm-8 row">
+					<div class="">
 						<!-- 确认密码输入框 -->
-						<div class="col-sm-4">
+						<div class="col-xs-12 col-sm-4">
 							<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="password" />
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label">备注说明：</label>
-					<div class="col-sm-10 row">
-						<div class="col-sm-4">
+					<label class="col-xs-12 col-sm-2 control-label">备注说明：</label>
+					<div class="">
+						<div class="col-xs-12 col-sm-4">
 							<label id="modifyFormDbDesc" style="padding-top:7px"></label>
 						</div>
 					</div>
 				</div>
 				<!-- 按钮模块 -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label"></label>
-					<div class="col-sm-4">
+					<label class="col-xs-12 col-sm-2 control-label"></label>
+					<div class="col-xs-12 col-sm-4">
 						<button type="submit" id="submitModifyUserForm" class="btn btn-primary">提交</button>
 						<button type="button" class="btn btn-default toAccountList">返回</button>
 					</div>
@@ -509,10 +513,10 @@
 					<h5 id="dialog-box-title" class="modal-title"></h5>
 				</div>
 				<div class="modal-body clearfix">
-					<div class="col-sm-1 col-md-1 warning-sign">
+					<div class="col-xs-1 col-sm-1 col-md-1 warning-sign">
 						<span class="glyphicon glyphicon-exclamation-sign"></span>
 					</div>
-					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
+					<div id="dialog-box-text" class="col-xs-11 col-sm-10 "></div>
 				</div>
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>

@@ -6,7 +6,6 @@ define(function(require){
     var cn = new common();
     var $ = require("jquery");
     require("bootstrapValidator")($);
-    
     /*初始化标签页*/
 	$('#setab a').click(function (e) {
 		e.preventDefault()
@@ -18,7 +17,6 @@ define(function(require){
    $("#whitelist-tab").click(function() {
       $("#refresh").show();
 	});
-
     /*初始化按钮 --begin*/
     $("#modifyIpList").click(function () {
         $("#ipList").addClass("hide");

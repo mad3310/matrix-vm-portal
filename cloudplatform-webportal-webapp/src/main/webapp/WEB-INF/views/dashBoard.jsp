@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -58,49 +58,13 @@
 	</script>
 </head>
 <body> 
-	<!-- top bar begin -->
-	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
-		  <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse pull-right">
-            <ul class="nav navbar-nav">
-	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
-	            <li class="dropdown">
-	              <a href="javascript:void(0)" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
-	              <ul class="dropdown-menu" role="menu">
-	                <li><a href="javascript:void(0)">用户中心</a></li>
-	                <li><a href="javascript:void(0)">我的订单</a></li>
-	                <li><a href="javascript:void(0)">账户管理</a></li>
-	                <li class="divider"></li>
-	                <li><a href="${ctx}/account/logout">退出</a></li>
-	              </ul>
-	            </li>
-	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
-	            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-<!-- top bar end -->
-
-<!-- navbar begin -->
-<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;"> 
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
-    </div>
-  </div>
-</div>
-    <!-- navbar end -->
+	<%@ include file="../layouts/header.jsp"%>
 	<div class="container-fluid bodycolor"><!-- main-content begin-->
 		<div class="home">
 			<div class="home-content">
 				<div class="user-profile row"><!-- begin user-profile -->
-					<div class="col-xs-6 col-md-6"><!-- begin userinfo left-->
-						<div class="info clearfix">
+					<div class="col-xs-12 col-sm-12 col-md-6"><!-- begin userinfo left-->
+						<div class="info clearfix hidden-xs">
 							<div class="user-info pull-left">
 								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
 								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
@@ -114,7 +78,7 @@
 										<span class="balance-unit">元</span>
 									</p>
 								</div>
-								<div class="account-opt pull-left">
+								<div class="account-opt pull-left hidden-xs hidden-sm">
 									<div class="account-opt-row">
 										<a href="javascript:void(0)" target="_self" class="btn btn-default btn-sm disabled disabled">充值</a>
 										<a href="javascript:void(0)" target="_self" class="btn btn-default btn-sm disabled">提现</a>
@@ -126,8 +90,25 @@
 								</div>
 							</div> 
 						</div>
+						<div class="m-info hidden-sm hidden-md hidden-lg">
+							<div class="text-center">
+								<div class='m-userimg'><img src="${ctx}/static/img/help/header.png"></div>
+								<p class="text-muted user-name ellipsis">Hi,<span target="_self" class="home-orange" text-length="8">${sessionScope.userSession.userName}</span></p>
+								<p class="user-email ellipsis">${sessionScope.userSession.email}</p>
+							</div>
+							<!-- <div class="account pull-left">
+								<div class="mlt-4 pull-left">
+									<p class="balance-title">账户余额:</p>
+									<p class="balance-num ellipsis" >
+										<span>100</span>
+										<span class="balance-after-point">.00</span>
+										<span class="balance-unit">元</span>
+									</p>
+								</div>
+							</div> --> 
+						</div>
 					</div><!-- end userinfo left-->
-					<div class="col-xs-6 col-md-6 yundun-wrap"><!-- begin cloud right-->
+					<div class="hidden-xs hidden-sm col-md-6 yundun-wrap"><!-- begin cloud right-->
 						<div class="yundun-bg  yundun-bg-notopen"></div>
 						<div class="yundun">
 							<div class="yundun-inner clearfix">
@@ -157,16 +138,14 @@
 						</div>
 					</div><!-- end cloud right-->
 				</div><!-- end user-profile -->
-				<style>
-				/*.hide{visibility:hidden;display:block !important;}*/
-				</style>
 				<div class="product-list product-list-opened"><!-- 已开通产品 begin -->
 					<div class="list-title">
 						<span class="list-title-em">已开通</span>
 						的产品与服务:
+						<span class='hidden-sm hidden-md hidden-lg pull-right pd-r8'><span class='glyphicon glyphicon-chevron-up'></span></span>
 					</div>
 					<ul class="row">
-						<li id="rds-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="rds-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/db" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-rds"></span>
@@ -183,10 +162,10 @@
 								<span class="item-record-unit">个</span>
 								<a data-toggle="tooltip" data-placement="top" title="数据库数">
 									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
-								</a>
+								</a><!-- 已开通产品 begin -->
 							</div>
 						</li>
-						<li id="slb-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="slb-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/slb" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-slb"></span>
@@ -207,7 +186,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="gce-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="gce-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/gce" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-ace"></span>
@@ -228,7 +207,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="ocs-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="ocs-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/cache" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-ocs"></span>
@@ -249,7 +228,7 @@
 								</a>
 							</div>
 						</li>
-						<li id="oss-opened" class="hide product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li id="oss-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="${ctx}/list/oss" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-oss"></span>
@@ -270,7 +249,7 @@
 								</a>
 							</div>
 						</li>
-						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-jiankong"></span>
@@ -287,7 +266,7 @@
 								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="监控点"></span>
 							</div>
 						</li>
-						<li class="product-item col-xs-3 col-sm-3 col-md-3 col-lg-3">
+						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-toolsimage"></span>
@@ -302,9 +281,10 @@
 				<div class="product-list product-list-notopen"><!-- 未开通产品 begin -->
 					<div class="list-title">
 						<span class="list-title-em">未开通</span>的产品与服务:
+						<span class="hidden-sm hidden-md hidden-lg pull-right pd-r8"><span class="glyphicon glyphicon-chevron-up"></span></span>
 					</div>
 					<ul class="row">
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div class="product-category">
 								<p class="category-title ng-binding">弹性计算</p>
 								<ul>
@@ -426,7 +406,7 @@
 								</ul>
 							</div>
 						</li>
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div id="store-and-CDN" class="product-category">
 								<p class="category-title ng-binding">存储与CDN</p>
 								<ul>
@@ -498,7 +478,7 @@
 								</ul>
 							</div>
 						</li>
-						<li class="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-col">
+						<li class="col-xs-12 col-sm-12 col-md-3 col-lg-3 product-col">
 							<div class="product-category">
 								<p class="category-title ng-binding">应用服务</p>
 								<ul>
@@ -582,6 +562,7 @@
 	</div><!-- main-content end-->
 	<!-- tip 提示container，渲染容器是shade-->
 	<div class="shade-container"></div>
+	<%@ include file="../layouts/rToolbar.jsp"%>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

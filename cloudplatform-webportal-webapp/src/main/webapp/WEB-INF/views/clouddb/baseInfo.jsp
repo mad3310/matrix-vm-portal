@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
@@ -121,8 +121,8 @@
 		          		配置信息
 				</span>
 				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">续费</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">变更配置</a>
 					<a class="btn btn-xs btn-primary" id="showConfigInfo" href="javascript:void(0)">配置信息</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
@@ -230,7 +230,7 @@
 						<h4 class="modal-title" id="dbConfigModalLabel"></h4>
 					</div>
 					<div class="modal-body clearfix" id="dbConfigInfoWrap" >
-						<div class="zero-clipboard">
+						<div class="zero-clipboard hidden-xs hidden-sm">
 							<a id= "zclipCopy" class="btn-clipboard">复制</a>
 						</div>
 						<pre>

@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewpoint" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
@@ -46,11 +46,9 @@
 		</div>
 	</div>
 	<div class="monitor-charts">
-		<div class="chart-content" style="width:100%">
-			<div id="chart-container" class="chart-container">							
+		<div class="chart-content ">
+			<div id="chart-container" class="chart-container chart-container-xs">								
 			</div>
-		</div>
-		<div class="footer" style="width:100%;height:200px;">						
 		</div>
 	</div>
 	<!-- main-content-center-end -->			
