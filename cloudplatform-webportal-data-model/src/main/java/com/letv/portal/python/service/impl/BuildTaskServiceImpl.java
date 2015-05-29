@@ -328,7 +328,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				throw new ValidateException("参数不合法，相关数据不存在。");
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
 			
-			if(params.isEmpty()) 
+			if(params == null || params.isEmpty()) 
 				throw new ValidateException("参数不合法，相关数据不存在。");
 				
 			String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
