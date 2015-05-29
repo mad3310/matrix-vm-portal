@@ -69,18 +69,18 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			throw new ValidateException("参数不合法");
 		
 		//create logstash
-		LogServer log = new LogServer();
+		/*LogServer log = new LogServer();
 		log.setLogName(gceServer.getGceName());
 		log.setHclusterId(gceServer.getHclusterId());
 		log.setCreateUser(gceServer.getCreateUser());
 		log.setType("logstash");
 		Map<String,Object> logParams = this.logServerService.save(log);
 		
-		gceServer.setLogId(log.getId());
+		gceServer.setLogId(log.getId());*/
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		
-		params.put("logParams", logParams);
+	/*	params.put("logParams", logParams);*/
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);
 		
@@ -94,8 +94,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			nextParams.put("pGceId", params.get("gceId"));
 			nextParams.put("pGceClusterId", params.get("gceClusterId"));
 			
-			nextParams.put("logIp", log.getIp());
-			nextParams.put("logParams", logParams);
+		/*	nextParams.put("logIp", log.getIp());
+			nextParams.put("logParams", logParams);*/
 			nextParams.put("isCreateLog", false);
 			
 			params.put("isContinue", true);
@@ -116,8 +116,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	
 	private void build(Map<String,Object> params) {
-//    	this.taskEngine.run("GCE_BUY",params);
-    	this.taskEngine.run("GCE_BUY_EXT",params);
+    	this.taskEngine.run("GCE_BUY",params);
+//    	this.taskEngine.run("GCE_BUY_EXT",params);
 	}
 	
 	@Override
