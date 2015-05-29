@@ -46,11 +46,9 @@
 		</div>
 	</div>
 	<div class="monitor-charts">
-		<div class="chart-content" style="width:100%">
-			<div id="chart-container" class="chart-container">							
+		<div class="chart-content ">
+			<div id="chart-container" class="chart-container chart-container-xs">								
 			</div>
-		</div>
-		<div class="footer" style="width:100%;height:200px;">						
 		</div>
 	</div>
 	<!-- main-content-center-end -->			
