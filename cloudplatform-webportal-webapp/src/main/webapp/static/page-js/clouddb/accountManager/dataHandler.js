@@ -308,8 +308,8 @@ define(function(require,exports,module){
     function AddToRightFrame($sr,data){
     	var ipName = selectNameDist++;
         var $li = $("<li class=\"select-item\"> "
-        + "<p class=\"inline-block\">"+data.addr+"</p>"
-        + "<p class=\"inline-block pull-right\" style=\"margin-right:5px\">"
+        + "<p class=\"pull-left\">"+data.addr+"</p>"
+        + "<p class=\"pull-right\" style=\"margin-right:5px\">"
         + "<span>"
         + "<input type=\"radio\" name=\""+ipName+"\" value=\"1\" >"
         + "<label class=\"mgr\">管理</label>"
