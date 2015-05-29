@@ -1,4 +1,4 @@
-/*翻译时间戳为时间格式*/
+/*翻译时间戳为时间格式*/ 
 function date(format, timestamp){
     //var a, jsdate=((timestamp) ? new Date(timestamp) : new Date());
 	var a;
