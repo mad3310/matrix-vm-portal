@@ -382,16 +382,16 @@
 											<span>OCS</span>
 											<!-- <span class="beta-font">Beta</span> -->
 										</div>
-										<%-- <div class="pull-right clearfix" data-type='tip' data-order='2' data-content='开放缓存服务<br>购买开放缓存服务' data-position='right'> 
+										 <div class="pull-right clearfix" data-type='tip' data-order='2' data-content='开放缓存服务<br>购买开放缓存服务' data-position='right'> 
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/cacheCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
-										</div> --%>
-										<div class="pull-right clearfix">
-											<span class="home-orange">敬请期待...</span>
 										</div>
+										<%--<div class="pull-right clearfix">
+											<span class="home-orange">敬请期待...</span>
+										</div> --%>
 									</li>
 									<li class="clearfix">
 										<div class="pull-left">
