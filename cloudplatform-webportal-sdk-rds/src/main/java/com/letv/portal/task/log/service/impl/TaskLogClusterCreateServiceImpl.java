@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.portal.model.HostModel;
@@ -20,6 +21,8 @@ public class TaskLogClusterCreateServiceImpl extends BaseTask4LogServiceImpl imp
 	
 	@Autowired
 	private ILogPythonService logPythonService;
+	@Value("${matrix.logstash.default.image}")
+	private String MATRIX_LOGSTASH_DEFAULT_IMAGE;
 	private final static Logger logger = LoggerFactory.getLogger(TaskLogClusterCreateServiceImpl.class);
 	
 	@Override
@@ -42,6 +45,7 @@ public class TaskLogClusterCreateServiceImpl extends BaseTask4LogServiceImpl imp
 		map.put("containerClusterName", logCluster.getClusterName());
 		map.put("componentType", logServer.getType());
 		map.put("networkMode", "bridge");
+		map.put("image", MATRIX_LOGSTASH_DEFAULT_IMAGE);
 		String result = this.logPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
