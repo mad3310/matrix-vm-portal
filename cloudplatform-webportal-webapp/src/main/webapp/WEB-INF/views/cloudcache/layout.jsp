@@ -111,7 +111,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="embed-responsive embed-responsive-16by9 col-sm-10">
+        <div class="embed-responsive embed-responsive-16by9 col-sm-10" id="frame-content-div">
           <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/cacheBaseInfo/${cacheId}"></iframe>
         </div>
     </div>
