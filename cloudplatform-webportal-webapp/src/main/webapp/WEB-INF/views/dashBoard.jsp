@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- fontawesome css -->
@@ -561,7 +561,7 @@
 		</div>
 	</div><!-- main-content end-->
 	<!-- tip 提示container，渲染容器是shade-->
-	<div class="shade-container"></div>
+	<div class="shade-container hidden-xs"></div>
 	<%@ include file="../layouts/rToolbar.jsp"%>
 </body>
 <!-- js -->

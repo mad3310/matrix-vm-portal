@@ -8,6 +8,11 @@ define(function(require){
     var cn = new common();
     
     cn.Tooltip();
+     /* 初始化navbar-header-menu */
+	cn.initNavbarMenu([{
+				name : "RDS关系型数据库",
+				herf : "/list/db"
+			}]);
     
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();

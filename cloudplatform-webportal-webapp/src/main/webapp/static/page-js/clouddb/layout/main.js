@@ -5,6 +5,11 @@ define(function(require){
     var common = require('../../common');
     var cn = new common();
 
+     /* 初始化navbar-header-menu */
+	cn.initNavbarMenu([{
+				name : "RDS关系型数据库",
+				herf : "/list/db"
+			}]);
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();

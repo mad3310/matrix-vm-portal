@@ -7,6 +7,11 @@ define(function(require){
 
     /*初始化工具提示*/
     cn.Tooltip();
+    /*初始化navbar-header-menu*/
+    cn.initNavbarMenu([{
+						name : "Le云控制台首页",
+						herf : "/dashboard"
+					}]);
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

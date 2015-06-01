@@ -39,6 +39,9 @@ define(function(require,exports,module){
             function adaptiveFunction(){
                 try{
 					var bodyHeight = iframe.contentWindow.document.getElementsByTagName("html")[0].offsetHeight;
+					if(bodyHeight<320){
+						bodyHeight = 320;
+					}
 				}catch(ex){
 					var bodyHeight = 800;
 				}
@@ -52,7 +55,7 @@ define(function(require,exports,module){
             monitorFrameHeight.interval = window.setInterval(adaptiveFunction,300);
         }
         /*iframe自适应高度end*/
-        TopBtnInit();//初始化顶部菜单按钮
+        if(testIsPCVal){TopBtnInit()};//初始化顶部菜单按钮
     };
     module.exports = Common;
     
@@ -971,6 +974,11 @@ define(function(require,exports,module){
             + "</div>");
             html.appendTo($("#alertool"));
             window.setTimeout(function(){html.fadeOut(1000)},time);
+        },
+        initNavbarMenu:function(data){
+        	for(var i=0,len=data.length;i<len;i++){
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        	}
         }
     }
     /*common原型属性方法end*/
@@ -1184,9 +1192,9 @@ define(function(require,exports,module){
 			}
 		}
 		function bindEvent() {
-			document.addEventListener('touchstart', touchSatrtFunc, true);
-			document.addEventListener('touchmove', touchMoveFunc, true);
-			document.addEventListener('touchend', touchEndFunc, true);
+			document.addEventListener('touchstart', touchSatrtFunc, false);
+			document.addEventListener('touchmove', touchMoveFunc, false);
+			document.addEventListener('touchend', touchEndFunc, false);
 		}
 		function initTouchDevice() {
 			try {

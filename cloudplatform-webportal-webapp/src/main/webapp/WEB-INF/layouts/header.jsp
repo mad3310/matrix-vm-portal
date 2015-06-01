@@ -42,9 +42,8 @@
 
 <!-- navbar begin -->
 <div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;"> 
-  <div class="container-fluid">
+  <div id="navbar-menu" class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="${ctx}/dashboard">Le云控制台首页</a>
     </div>
   </div>
 </div>

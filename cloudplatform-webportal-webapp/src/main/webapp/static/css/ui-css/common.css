@@ -1708,6 +1708,9 @@ textarea {
 	.chart-container-xs{height:300px;width:80%;margin: 0 auto;}
 	.se-heading .nav-pills li a{padding: 3px 6px;}
 	.se-heading .nav-pills >li{height:26px;}
+	.main-header h3{margin:0px;}
+	.navbar-brand{padding: 5px;height:auto;}
+	.navbar{min-height:0px;}
 }
 /*iframe*/
 .m-authorize{text-align:center;height:183px;padding-top:60px;margin:0 -30px;}
