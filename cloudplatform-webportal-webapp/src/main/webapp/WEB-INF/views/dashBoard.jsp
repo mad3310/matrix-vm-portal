@@ -380,7 +380,7 @@
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
 											<span>开放缓存服务</span>
 											<span>OCS</span>
-											<!-- <span class="beta-font">Beta</span> -->
+											<span class="beta-font">Beta</span>
 										</div>
 										 <div class="pull-right clearfix" data-type='tip' data-order='2' data-content='开放缓存服务<br>购买开放缓存服务' data-position='right'> 
 											<div class="pull-left product-opt-wrap">
