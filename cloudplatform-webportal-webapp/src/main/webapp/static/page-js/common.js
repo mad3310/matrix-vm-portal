@@ -1243,7 +1243,12 @@ define(function(require,exports,module){
         document.body.addEventListener('touchmove',function(event){event.preventDefault();if(flag){
             _x=event.touches[0].clientX;_y=event.touches[0].clientY;
             //var _rit=_width-_x; _rit<58?_rit=10:_rit;_rit>_width-58?_rit=_width-58:_rit;//不做随时追踪
-            var _botm=_height-_y;_botm<58?_botm=10:_botm;_botm>_height-98?_botm=_height-98:_botm;
+            var _botm=_height-_y-48;
+            if(_botm>_height-182){
+            	_botm=_height-182;
+            }else if(_botm<10){
+	            _botm= 10;
+            }
             if(_x>_width/2){
                 $('.amz-sidebar-toggle').css({right:10,bottom: _botm});
             }else{
