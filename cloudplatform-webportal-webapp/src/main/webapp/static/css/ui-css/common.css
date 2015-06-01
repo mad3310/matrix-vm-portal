@@ -1658,7 +1658,7 @@ textarea {
 	color:red;
 	position:relative;
 	top:-6px;
-	z-index:999999;
+	z-index:3;
 	/*background:#ffffff;*/
 	border-radius:50%;
 	line-height:1;
