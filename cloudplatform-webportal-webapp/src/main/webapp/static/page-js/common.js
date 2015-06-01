@@ -1235,6 +1235,23 @@ define(function(require,exports,module){
                 _target.addClass('nav-sidebar-display');
             }
         });
+
+        //小图标拖放
+        var flag=false;var _x,_y;var _width=document.body.clientWidth;var _height=window.screen.height;
+        var _target=document.getElementsByClassName('amz-sidebar-toggle')[0];
+        _target.addEventListener('touchstart',function(){flag=true;$('.amz-sidebar-toggle').css('color', 'red');},false);
+        document.body.addEventListener('touchmove',function(event){event.preventDefault();if(flag){
+            _x=event.touches[0].clientX;_y=event.touches[0].clientY;
+            //var _rit=_width-_x; _rit<58?_rit=10:_rit;_rit>_width-58?_rit=_width-58:_rit;//不做随时追踪
+            var _botm=_height-_y;_botm<58?_botm=10:_botm;_botm>_height-98?_botm=_height-98:_botm;
+            if(_x>_width/2){
+                $('.amz-sidebar-toggle').css({right:10,bottom: _botm});
+            }else{
+                $('.amz-sidebar-toggle').css({right:_width-58,bottom: _botm});
+            } 
+            event.stopPropagation();
+        }},false);
+        document.addEventListener('touchend',function(){flag=false;$('.amz-sidebar-toggle').css('color', '#555');},false);        
     }
     var gotop=function(min_height){
         $("#amz-go-top").click(function(){

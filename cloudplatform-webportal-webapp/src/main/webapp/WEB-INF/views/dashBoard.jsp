@@ -388,6 +388,11 @@
 													<span id="ocs-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
 												</a>
 											</div>
+											<div class="pull-left product-opt-wrap">
+												<a href="/helpCenter/helpCenter.jsp?container=help-OCSuse" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
+												</a>
+											</div>
 										</div>
 										<%--<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>

@@ -68,10 +68,14 @@ define(function(require,exports,module){
                              + "|</span><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\">创建临时实例</span><span class=\"text-explode\">"
                              + "|</span><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\">恢复</span><span class=\"text-explode\">"
                              + "</div>"
-                             +"<div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
-                             +"<ul class='dropdown-menu m-dropdown-caret'><li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-download'></i></span></li>"
-                             +"<li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-plus-square'></i></span></li>"
-                             +"<li><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\"><i class='fa fa-power-off'></i></span></li></ul></div></td>");
+                             +"<div class='hidden-sm hidden-md hidden-lg pull-right'>"                 
+                             +"<span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-download'></i></span>&nbsp;&nbsp;"
+                             +"<span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-plus-square'></i></span>&nbsp;&nbsp;"
+                             +"<span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\"><i class='fa fa-power-off'></i></span></div></td>");
+                             // +"<div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                             // +"<ul class='dropdown-menu m-dropdown-caret'><li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-download'></i></span></li>"
+                             // +"<li><span class=\"text-explode font-disabled\" href=\"javascript:void(0);\"><i class='fa fa-plus-square'></i></span></li>"
+                             // +"<li><span class=\"text-explode font-disabled\"  href=\"javascript:void(0);\"><i class='fa fa-power-off'></i></span></li></ul></div></td>");
                      var tr = $("<tr class='data-tr'></tr>");
                      tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
                      tr.appendTo($tby);
