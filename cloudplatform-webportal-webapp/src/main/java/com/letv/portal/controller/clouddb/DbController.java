@@ -101,6 +101,12 @@ public class DbController {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
+	@RequestMapping(value="/1/1/1/1",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject test(DbModel dbModel,boolean isCreateAdmin) {
+		this.dbProxy.saveAndBuild(dbModel,isCreateAdmin);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
 	
 	/**Methods Name: detail <br>
 	 * Description: 根据id获取db信息 http://localhost:8080/db/detail/{dbId}<br>

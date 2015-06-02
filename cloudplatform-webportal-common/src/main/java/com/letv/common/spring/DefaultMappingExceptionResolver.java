@@ -10,10 +10,14 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -21,15 +25,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
-import com.letv.common.exception.NoSessionException;
+import com.letv.common.exception.ApiNotFoundException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.WebUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -56,33 +56,38 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
     	String error = e.getMessage();
-    	if(e instanceof ValidateException) {
-    	} else {
-    		if(Boolean.valueOf(ERROR_MAIL_ENABLED)) {
-    			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
-    			String exceptionMessage = e.getMessage();
-    			sendErrorMail(req,exceptionMessage,stackTraceStr);
-    		}
-        	logger.error(error, e);
-    	}
-    	String viewName = determineViewName(e, req);
-		if (viewName != null) {
-			boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
-			if (isAjaxRequest) {
-				responseJson(req,res,error);
-				return null;
-			} else {
-				Integer statusCode = determineStatusCode(req, viewName);
-				if (statusCode != null) {
-					applyStatusCodeIfPossible(req, res, statusCode);
-				}
-				ModelAndView mav =  getModelAndView(viewName, e, req);
-				mav.addObject("exception", error);
-				return mav;
-			}
-		} else {
-			return null;
+		e = transE(e);
+		if(Boolean.valueOf(ERROR_MAIL_ENABLED) ) {
+			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
+			String exceptionMessage = e.getMessage();
+			sendErrorMail(req,exceptionMessage,stackTraceStr);
 		}
+    	logger.error(error, e);
+    	String viewName = determineViewName(e, req);
+		if (viewName == null) 
+			return null;
+		boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
+		if (isAjaxRequest) {
+			responseJson(req,res,error);
+			return null;
+		} else {
+			Integer statusCode = determineStatusCode(req, viewName);
+			if (statusCode != null) {
+				applyStatusCodeIfPossible(req, res, statusCode);
+			}
+			ModelAndView mav =  getModelAndView(viewName, e, req);
+			mav.addObject("exception", error);
+			return mav;
+		}
+    }
+    private Exception transE(Exception e) {
+    	if(e instanceof TypeMismatchException) {
+    		e = new ApiNotFoundException("参数传递异常");
+    	} 
+    	if(e instanceof HttpRequestMethodNotSupportedException) {
+    		e = new ApiNotFoundException("请求URL方法不支持");
+    	} 
+    	return e;
     }
 
 	/**
