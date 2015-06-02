@@ -165,21 +165,17 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	@Override
     @Async
 	public void checkBackupStatus(BackupResultModel backup) {
-		BackupStatus status = BackupStatus.BUILDING;
-		String resultDetail = "";
 		String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
 		backup = analysisBackupResult(backup, result);
 		
 		Date date = new Date();
-		backup.setStatus(status);
-		backup.setResultDetail(resultDetail);
 		backup.setEndTime(date);
 		this.backupService.updateBySelective(backup);
 		
-		if(status.equals(BackupStatus.FAILD)) {
+		if(BackupStatus.FAILD.equals(backup.getStatus())) {
 			logger.info("check backup faild");
 			//发送邮件通知
-			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),resultDetail,backup.getStartTime(),backup.getBackupIp());
+			sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
 		}
 	}
 	
@@ -208,9 +204,14 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 		if(result.contains("\"code\": 200") && result.contains("expired")) {
 			backup.setStatus( BackupStatus.FAILD);
-			backup.setResultDetail(result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},")));
+			backup.setResultDetail("backup expired");
 			return backup;
 		}
+		if(result.contains("\"code\": 411")) {
+			backup.setStatus( BackupStatus.FAILD);
+			backup.setResultDetail(result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},")));
+			return backup;
+		} 
 		backup.setStatus( BackupStatus.FAILD);
 		backup.setResultDetail("api not found");
 
