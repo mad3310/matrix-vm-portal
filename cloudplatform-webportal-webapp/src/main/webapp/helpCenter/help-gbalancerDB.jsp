@@ -6,7 +6,6 @@
     <h2 style="text-align: center;color: #333;font-size: 18px;">gbalancer连接数据库</h2>
     <div class="article-content">
         <p>
-            <span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;"></span>
             <span style="font-family:microsoft yahei;">客户端安装gbalancer代理服务，后端其中一台或者两台mysql服务故障后，前端依然可以连接数据库,如下图:</span>
         </p>
         <p><img title="" src="${ctx}/static/img/help/22.jpg"></p>

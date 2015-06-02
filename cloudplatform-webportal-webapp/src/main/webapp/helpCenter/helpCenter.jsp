@@ -96,7 +96,7 @@
             <h3 class="title">云数据库RDS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="2-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">运维技术分享<span class="arrow-up"></span></h3>
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
                     <ul class="sub-level">
                         <li data-haschild="false" data-id="2-1-1" class="help-createDb" data-spm-click="help-createDb.jsp">
                             <a href="#">创建数据库实例</a></li>
@@ -118,7 +118,7 @@
             <h3 class="title">开放存储OSS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="3-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">运维技术分享<span class="arrow-up"></span></h3>
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
                     <ul class="sub-level">
                         <li data-haschild="false" data-id="3-1-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
                             <a href="#">OSS使用方法</a></li>
@@ -132,6 +132,21 @@
             <h3 class="title">开放缓存OCS</h3>
             <ul class="main-level">
                 <li data-haschild="false" data-id="4-1" class="help-OCSuse" data-spm-click="help-OCSuse.jsp"><a>OCS服务使用</a></li>
+            </ul>
+        </div>
+        <div class="vnavbar GCE" style="display:block;">
+            <h3 class="title">云引擎GCE</h3>
+            <ul class="main-level">
+                <li data-haschild="false" data-id="5-1" class="" data-spm-click=""><a>GCE产品介绍</a></li>
+                <li data-haschild="true" data-id="5-2">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
+                    <ul class="sub-level">
+                        <li data-haschild="false" data-id="5-2-1" class="help-createGce" data-spm-click="help-createGce.jsp">
+                            <a href="#">创建GCE实例</a></li>
+                        <li data-haschild="false" data-id="5-2-2" class="help-gceAccess" data-spm-click="help-gceAccess.jsp" >
+                            <a href="#">GCE的多个访问地址含义</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- <input type="hidden" id="parentCategoryId" value="">
@@ -191,7 +206,7 @@ var containers = ["helpDetail-login",
 								"help-userLink",
 								"help-OSSuse",
 								"help-OSStool",
-								"help-OCSuse"];
+								"help-OCSuse",'help-createGce','help-gceAccess'];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();
