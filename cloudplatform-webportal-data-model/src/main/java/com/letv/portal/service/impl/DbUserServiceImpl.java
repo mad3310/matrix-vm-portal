@@ -35,6 +35,11 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserServiceImpl.class);
 	
+	private final static int MAX_QUERIES_PERHOUR = 1000;
+	private final static int MAX_UPDATES_PERHOUR = 1000;
+	private final static int MAX_CONNECTIONS_PERHOUR = 100;
+	private final static int MAX_USERCONNECTIONS = 10;
+	
 	@Resource
 	private IDbUserDao dbUserDao;
 	
@@ -96,50 +101,27 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	@Override
 	public void insert(DbUserModel dbUserModel){
-		
-		
-		//计算相关参数
-		int maxQueriesPerHour = 1000;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
-		int maxUpdatesPerHour=1000;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
-		int maxConnectionsPerHour=100;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
-		int maxUserConnections=10;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
-		
-		int maxConcurrency = dbUserModel.getMaxConcurrency();
-		
-		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
-			maxUserConnections = maxConcurrency;
-			maxConnectionsPerHour = maxConcurrency*2*60*60;
-			maxQueriesPerHour = maxConcurrency*2*60*60;
-			maxUpdatesPerHour = maxConcurrency*60*60;
-		} 
-		dbUserModel.setMaxUserConnections(maxUserConnections);
-		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
-		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);
-		dbUserModel.setMaxUpdatesPerHour(maxUpdatesPerHour);
-		
+		dbUserModel = setConnectionsParams(dbUserModel);
 		super.insert(dbUserModel);
 	}
 	@Override
 	public void update(DbUserModel dbUserModel) {
-		//计算相关参数
-		int maxQueriesPerHour = 1000;   //每小时最大查询数(用户可填,系统自动填充,管理员审核修改)
-		int maxUpdatesPerHour=1000;   //每小时最大更新数(用户可填,系统自动填充,管理员审核修改)
-		int maxConnectionsPerHour=100;   //每小时最大连接数(用户可填,系统自动填充,管理员审核修改)
-		int maxUserConnections=10;   //用户最大链接数(用户可填,系统自动填充,管理员审核修改)
-		
-		int maxConcurrency = dbUserModel.getMaxConcurrency();
-		
-		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
-			maxUserConnections = maxConcurrency;
-			maxConnectionsPerHour = maxConcurrency*2*60*60;
-			maxQueriesPerHour = maxConcurrency*2*60*60;
-			maxUpdatesPerHour = maxConcurrency*60*60;
-		} 
-		dbUserModel.setMaxUserConnections(maxUserConnections);
-		dbUserModel.setMaxConnectionsPerHour(maxConnectionsPerHour);
-		dbUserModel.setMaxQueriesPerHour(maxQueriesPerHour);
-		dbUserModel.setMaxUpdatesPerHour(maxUpdatesPerHour);
+		dbUserModel = setConnectionsParams(dbUserModel);
 		super.update(dbUserModel);
+	}
+	private DbUserModel setConnectionsParams(DbUserModel dbUserModel){
+		dbUserModel.setMaxUserConnections(MAX_USERCONNECTIONS);
+		dbUserModel.setMaxConnectionsPerHour(MAX_CONNECTIONS_PERHOUR);
+		dbUserModel.setMaxQueriesPerHour(MAX_QUERIES_PERHOUR);
+		dbUserModel.setMaxUpdatesPerHour(MAX_UPDATES_PERHOUR);
+		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
+			int maxConcurrency = dbUserModel.getMaxConcurrency();
+			dbUserModel.setMaxUserConnections(maxConcurrency);
+			dbUserModel.setMaxConnectionsPerHour(maxConcurrency*2*60*60);
+			dbUserModel.setMaxQueriesPerHour(maxConcurrency*2*60*60);
+			dbUserModel.setMaxUpdatesPerHour(maxConcurrency*60*60);
+		} 
+		return dbUserModel;
 	}
 	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel){
 		String[] ips = dbUserModel.getAcceptIp().split(",");		

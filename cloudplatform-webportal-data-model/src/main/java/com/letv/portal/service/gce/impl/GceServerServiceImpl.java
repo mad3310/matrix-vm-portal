@@ -17,13 +17,14 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.gce.IGceServerDao;
+import com.letv.portal.dao.gce.IGceServerExtDao;
 import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.enumeration.GceType;
-import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceImageService;
@@ -37,6 +38,8 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	
 	@Resource
 	private IGceServerDao gceServerDao;
+	@Resource
+	private IGceServerExtDao gceServerExtDao;
 	@Autowired
 	private IGceClusterService gceClusterService;
 	@Autowired
@@ -178,4 +181,10 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 			return null;
 		}
 	}
+
+	@Override
+	public void saveGceExt(GceServerExt gse) {
+		this.gceServerExtDao.insert(gse);
+	}
+	
 }

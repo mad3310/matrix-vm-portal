@@ -20,6 +20,7 @@ import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -64,7 +65,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	@Value("${nginx4jetty.code}")
 	private String NGINX4JETTY_CODE;
 	@Override
-	public void saveAndBuild(GceServer gceServer) {
+	public void saveAndBuild(GceServer gceServer,Long rdsId,Long ocsId) {
 		if(gceServer == null)
 			throw new ValidateException("参数不合法");
 		
@@ -80,7 +81,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		Map<String,Object> params = this.gceServerService.save(gceServer);
 		Map<String,Object> nextParams = new HashMap<String,Object>();
 		
-	params.put("logParams", logParams);
+	    params.put("logParams", logParams);
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);
 		
@@ -102,6 +103,15 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			params.put("nextParams", nextParams);
 		} else {
 			params.put("isContinue", false);
+		}
+		
+		if(null != rdsId)
+			params.put("rdsId", rdsId);
+		if(null != ocsId)
+			params.put("ocsId", ocsId);
+		if(null !=rdsId ||null !=ocsId) {
+			GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
+			this.gceServerService.saveGceExt(gse);
 		}
 		this.build(params);
 	}

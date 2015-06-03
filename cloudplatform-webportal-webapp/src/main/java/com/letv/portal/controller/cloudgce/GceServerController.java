@@ -79,13 +79,12 @@ public class GceServerController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(GceServer gceServer,ResultObject obj) {
+	public @ResponseBody ResultObject save(GceServer gceServer,Long rdsId,Long ocsId,ResultObject obj) {
 		if(gceServer == null || StringUtils.isEmpty(gceServer.getGceName())){
 			throw new ValidateException("参数不合法");
-		}else{
 		}
 		gceServer.setCreateUser(this.sessionService.getSession().getUserId());
-		this.gceProxy.saveAndBuild(gceServer);
+		this.gceProxy.saveAndBuild(gceServer,rdsId,ocsId);
 		return obj;
 	}
 	

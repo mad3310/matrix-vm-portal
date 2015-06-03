@@ -1,0 +1,14 @@
+CREATE TABLE `WEBPORTAL_GCE_EXT` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `GCE_ID` bigint(20) unsigned DEFAULT NULL,
+  `RDS_ID` bigint(20) unsigned DEFAULT NULL,
+  `OCS_ID` bigint(20) unsigned DEFAULT NULL,
+  
+  `DELETED` tinyint(4) DEFAULT NULL,
+  `CREATE_TIME` datetime DEFAULT NULL,
+  `UPDATE_TIME` datetime DEFAULT NULL,
+  `CREATE_USER` bigint(20) unsigned DEFAULT NULL,
+  `UPDATE_USER` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+SELECT * FROM paascloud_test.WEBPORTAL_GCE;

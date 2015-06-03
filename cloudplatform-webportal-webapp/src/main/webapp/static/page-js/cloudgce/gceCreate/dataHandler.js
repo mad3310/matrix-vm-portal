@@ -21,6 +21,24 @@ define(function(require,exports,module){
             }
             cn.divselect();
         },
+        getRdsHandler : function(data){
+            var rds = data.data.data;
+            var ul = $("[name='rdsId']").parent('div').find('ul');
+            for(var i= 0,len=rds.length;i<len;i++){
+                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+rds[i].id+"\">"+rds[i].dbName+"</a></li>");
+                li.appendTo(ul);
+            }
+            cn.divselect();
+        },
+        getOcsHandler : function(data){
+            var ocs = data.data.data;
+            var ul = $("[name='ocsId']").parent('div').find('ul');
+            for(var i= 0,len=ocs.length;i<len;i++){
+                var li = $("<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+ocs[i].id+"\">"+ocs[i].bucketName+"</a></li>");
+                li.appendTo(ul);
+            }
+            cn.divselect();
+        },
         GetImageHandler : function(data){
             var images = data.data;
             var div = $("[name='gceImageName']").parent('div');

@@ -157,6 +157,7 @@
 												</div>
 											</div>
 										</div>
+										
 										<div class="bk-form-row">
 											<label class="bk-form-row-name">服务类型：</label>
 											<div class="bk-form-row-cell">
@@ -199,7 +200,51 @@
 										</div>
 									</dd>
 								</dl>
-								<dl class="bk-group">
+								<!-- <dl class="bk-group">
+									<dt class="bk-group-title">关联服务</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+											<div class="bk-form-row">
+											<label class="bk-form-row-name">RDS服务：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left">
+														<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span></span>
+																	<ul>
+																	<li class="bk-select-option"><a href="javascript:;" selectid="">不进行关联</a></li>
+																	</ul>
+																	<input name="rdsId" type="hidden" value="" />
+																</div>
+														</span>
+														</span> <span class="bk-select-arrow"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bk-form-row">
+											<label class="bk-form-row-name">OCS服务：</label>
+											<div class="bk-form-row-cell">
+												<div class="bk-form-row-li clearfix">
+													<div class="pull-left">
+														<span class="sleBG"> <span class="sleHid">
+																<div class="divselect">
+																	<span></span>
+																	<ul>
+																	<li class="bk-select-option"><a href="javascript:;" selectid="">不进行关联</a></li>
+																	</ul>
+																	<input name="ocsId" type="hidden" value="" />
+																</div>
+														</span>
+														</span> <span class="bk-select-arrow"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</dd>
+								</dl> -->
+								<dl class="bk-group" >
 									<dt class="bk-group-title">购买量</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>

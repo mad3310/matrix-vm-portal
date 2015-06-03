@@ -59,6 +59,8 @@ define(function(require){
 		var createGceData = {
 			gceName : $("[name = gceName]").val(),
 			hclusterId : $("[name = 'hclusterId']").val(),
+			ocsId : $("[name = 'ocsId']").val(),
+			rdsId : $("[name = 'rdsId']").val(),
             type:$("[name = type]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){
@@ -75,12 +77,16 @@ define(function(require){
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var createDbHandler = new dataHandler();
-    GetHcluster();
+    initSelect();
     GetImageByType();
     
-    function GetHcluster(){
-        var url="/hcluster/gce";
-        cn.GetData(url,createDbHandler.GetHclusterHandler);
+    function initSelect(){
+    	var url="/hcluster/gce";
+    	cn.GetData(url,createDbHandler.GetHclusterHandler);
+    	/*var url="/db";
+    	cn.GetData(url,createDbHandler.getRdsHandler);
+    	var url="/cbase";
+    	cn.GetData(url,createDbHandler.getOcsHandler);*/
     }
     function GetImageByType(){
     	var type = $("[name = type]").val();

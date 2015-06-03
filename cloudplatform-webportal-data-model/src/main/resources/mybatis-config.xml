@@ -29,6 +29,7 @@
         <typeAlias alias="GceImage" type="com.letv.portal.model.gce.GceImage" />
         <typeAlias alias="GceCluster" type="com.letv.portal.model.gce.GceCluster" />
         <typeAlias alias="GceContainer" type="com.letv.portal.model.gce.GceContainer" />
+        <typeAlias alias="GceServerExt" type="com.letv.portal.model.gce.GceServerExt" />
         
         <typeAlias alias="LogServer" type="com.letv.portal.model.log.LogServer" />
         <typeAlias alias="LogCluster" type="com.letv.portal.model.log.LogCluster" />
