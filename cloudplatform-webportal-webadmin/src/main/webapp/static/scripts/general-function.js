@@ -163,6 +163,8 @@ function translateStatus(status){
 		return "备份成功";
 	}else if(status == 'BUILDING'){
 		return "备份中...";
+	}else if(status == 'ABNORMAL'){
+		return "备份异常";
 	}else if(status == null){
 		return "未知";
 	}
