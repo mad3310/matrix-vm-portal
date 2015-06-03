@@ -16,9 +16,9 @@ background-color: transparent;width: 97%;overflow: auto;margin-left: 9px;padding
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">OSS客户端工具</h2>
     <div class="article-content">
-        <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">可使用cyberduck来使用服务：</p>
-        <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">1.从http://cyberduck.io下载cyberduck客户端工具。</p>
-        <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">2. 安装cyberduck后，新建配置文件：Openstack Swift (le) .cyberduckprofile（记事本即可）内容为：</p>
+        <p><span>可使用cyberduck来使用服务：</p>
+        <p><span>1.从http://cyberduck.io下载cyberduck客户端工具。</p>
+        <p><span>2. 安装cyberduck后，新建配置文件：Openstack Swift (le) .cyberduckprofile（记事本即可）内容为：</p>
         <div class="dp-highlighter" id="">
             <div class="bar">
                 <div class="tools">
@@ -57,16 +57,16 @@ background-color: transparent;width: 97%;overflow: auto;margin-left: 9px;padding
             </ol>
         </div>
     </div>
-    <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">保存完成后，文件图标变成:<img src="${ctx}/static/img/help/27.jpg">
+    <p><span>保存完成后，文件图标变成:<img src="${ctx}/static/img/help/27.jpg">
 双击该文件导入cyberduck。
     </p>
-    <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">3. 导入完成后，打开cbyerduck，新建连接，选择openstack swift (le)，如下图：
+    <p><span>3. 导入完成后，打开cbyerduck，新建连接，选择openstack swift (le)，如下图：
     </p>
     <p><img src="${ctx}/static/img/help/28.jpg"></p>
-    <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">4. 在服务器文本框中输入OSS->“基本信息” 中显示的访问地址，及登录matrix使用的用户名与密码，点击连接即可,如下图：
+    <p><span>4. 在服务器文本框中输入OSS->“基本信息” 中显示的访问地址，及登录matrix使用的用户名与密码，点击连接即可,如下图：
     </p>
     <p><img src="${ctx}/static/img/help/29.jpg"></p>
-    <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">5. 5） 连接成功后即可查看、上传/下载文件，如下图：
+    <p><span>5. 5） 连接成功后即可查看、上传/下载文件，如下图：
     </p>
     <p><img src="${ctx}/static/img/help/30.jpg"></p>
 <!-- </div> -->

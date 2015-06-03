@@ -5,7 +5,7 @@
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">矩阵系统用户注册</h2>
     <div class="article-content">
-        <p><span style="text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;">1. 矩阵系统是通过oauth用户验证,注册地址：<a href="http://matrix.lecloud.com/">http://matrix.lecloud.com/</a> (旧域名 <a href="http://rds.et.letv.com">http://rds.et.letv.com</a>)  建议使用chrome和firefox浏览器注册用户 ,注册第一步【<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">完善资料】</span>邮箱、用户名、密码、重复密码及验证码均为必填项，如下图：</span></p>
+        <p><span>1. 矩阵系统是通过oauth用户验证,注册地址：<a href="http://matrix.lecloud.com/">http://matrix.lecloud.com/</a> (旧域名 <a href="http://rds.et.letv.com">http://rds.et.letv.com</a>)  建议使用chrome和firefox浏览器注册用户 ,注册第一步【<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">完善资料】</span>邮箱、用户名、密码、重复密码及验证码均为必填项，如下图：</span></p>
         <p><img title="" src="${ctx}/static/img/help/01.jpg"></p>
         <p><span style="font-family:微软雅黑,Microsoft YaHei;font-size:14px;">2. 注册第二步【<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">完善资料】</span>可不填或选填</span><span style="font-family:微软雅黑,Microsoft YaHei;font-size:14px;"><span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">如下图：</span></span></p>
         <p><img title="" src="${ctx}/static/img/help/02.jpg"></p>
