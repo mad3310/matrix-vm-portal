@@ -138,13 +138,34 @@
             <h3 class="title">云引擎GCE</h3>
             <ul class="main-level">
                 <li data-haschild="false" data-id="5-1" class="" data-spm-click=""><a>GCE产品介绍</a></li>
-                <li data-haschild="true" data-id="5-2">
+                <li data-haschild="false" data-id="5-2" class="help-gcequikcrt" data-spm-click="help-gcequikcrt.jsp"><a>快速创建</a></li>
+                <li data-haschild="true" data-id="5-3">
                     <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
                     <ul class="sub-level">
-                        <li data-haschild="false" data-id="5-2-1" class="help-createGce" data-spm-click="help-createGce.jsp">
-                            <a href="#">创建GCE实例</a></li>
-                        <li data-haschild="false" data-id="5-2-2" class="help-gceAccess" data-spm-click="help-gceAccess.jsp" >
+                        <li data-haschild="false" data-id="5-3-1" class="help-createGce" data-spm-click="help-createGce.jsp">
+                            <a href="#">购买帮助</a></li>
+                        <li data-haschild="false" data-id="5-3-2" class="help-gceAccess" data-spm-click="help-gceAccess.jsp" >
                             <a href="#">GCE的多个访问地址含义</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="vnavbar SLB" style="display:block;">
+            <h3 class="title">负载均衡 SLB</h3>
+            <ul class="main-level">
+                <li data-haschild="false" data-id="6-1" class="" data-spm-click=""><a>SLB产品介绍</a></li>
+                <li data-haschild="false" data-id="6-2" class="help-slbquikcrt" data-spm-click="help-slbquikcrt.jsp"><a>快速创建</a></li>
+                <li data-haschild="true" data-id="6-3">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
+                    <ul class="sub-level">
+                        <li data-haschild="false" data-id="6-3-1" class="help-createSlb" data-spm-click="help-createSlb.jsp">
+                            <a href="#">购买帮助</a></li>
+                        <li data-haschild="false" data-id="6-3-2" class="help-slblist" data-spm-click="help-slblist.jsp" >
+                            <a href="#">SLB实例列表字段说明</a></li>
+                        <li data-haschild="false" data-id="6-3-3" class="help-slblisten" data-spm-click="help-slblisten.jsp" >
+                            <a href="#">SLB服务监听配置设置</a></li>
+                        <li data-haschild="false" data-id="6-3-4" class="help-slbadservice" data-spm-click="help-slbadservice.jsp" >
+                            <a href="#">如何添加SLB后端服务</a></li>
                     </ul>
                 </li>
             </ul>
@@ -206,7 +227,7 @@ var containers = ["helpDetail-login",
 								"help-userLink",
 								"help-OSSuse",
 								"help-OSStool",
-								"help-OCSuse",'help-createGce','help-gceAccess'];
+								"help-OCSuse",'help-createGce','help-gceAccess','help-createSlb','help-slblist','help-slblisten','help-slbadservice','help-gcequikcrt','help-slbquikcrt'];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();
