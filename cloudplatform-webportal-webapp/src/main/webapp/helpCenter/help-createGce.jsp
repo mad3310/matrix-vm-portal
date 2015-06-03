@@ -1,9 +1,9 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- <div class="content-right" data-spm="2"> -->
     <div class="bread-crumb">
-        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">云引擎GCE</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="5-2-1">创建云引擎GCE实例</span>
+        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">云引擎GCE</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="5-3-1">云引擎GCE购买帮助</span>
     </div>
-    <h2 style="text-align: center;color: #333;font-size: 18px;">创建云引擎GCE实例</h2>
+    <h2 style="text-align: center;color: #333;font-size: 18px;">云引擎GCE购买帮助</h2>
     <div class="article-content">
         <p><span>1. 购买云引擎GCE，<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【云应用名称】【可用区】【服务类型】【镜像】【数量】</span>为必填字段，下文中会对每个必填项给出填写说明，如下图，红框为必填处：</p>
         <p><img src="${ctx}/static/img/help/gce-crt1.jpg"></p>
