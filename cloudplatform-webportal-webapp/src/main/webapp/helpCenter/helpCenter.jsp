@@ -137,7 +137,19 @@
         <div class="vnavbar GCE" style="display:block;">
             <h3 class="title">云引擎GCE</h3>
             <ul class="main-level">
-                <li data-haschild="false" data-id="5-1" class="" data-spm-click=""><a>GCE产品介绍</a></li>
+            	<li data-haschild="true" data-id="5-2">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">GCE产品介绍<span class="arrow-up"></span></h3>
+                    <ul class="sub-level">
+                        <li data-haschild="false" data-id="5-1-1" class="product-GCEIntro" data-spm-click="product-GCEIntro.jsp">
+                            <a href="#">GCE简介</a></li>
+                        <li data-haschild="false" data-id="5-1-2" class="product-GCEArch" data-spm-click="product-GCEArch.jsp" >
+                            <a href="#">GCE基础架构</a></li>
+                         <li data-haschild="false" data-id="5-1-3" class="product-GCEAdvantage" data-spm-click="product-GCEAdvantage.jsp" >
+                            <a href="#">GCE优势</a></li>
+                         <li data-haschild="false" data-id="5-1-4" class="product-GCExten" data-spm-click="product-GCExten.jsp" >
+                            <a href="#">GCE扩展服务</a></li>
+                    </ul>
+                </li>
                 <li data-haschild="true" data-id="5-2">
                     <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
                     <ul class="sub-level">
@@ -195,18 +207,12 @@ $('.nav-content').find('a').click(function(event) {
         $('.content-right').load('help.jsp');  
     }
 });
-var containers = ["helpDetail-login",
-								"helpDetail-reg",
-								"helpDetail-findpas",
-								"help-createDb",
-								"help-createUser",
-								"help-connect",
-								"help-datastructure",
-								"help-gbalancerDB",
-								"help-userLink",
-								"help-OSSuse",
-								"help-OSStool",
-								"help-OCSuse",'help-createGce','help-gceAccess'];
+var containers = ["helpDetail-login","helpDetail-reg","helpDetail-findpas",
+								"help-createDb","help-createUser","help-connect",
+								"help-datastructure","help-gbalancerDB","help-userLink",
+								"help-OSSuse","help-OSStool","help-OCSuse",
+								'help-createGce','help-gceAccess',"product-GCEAdvantage",
+								"product-GCEArch","product-GCEIntro","product-GCExten"];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();

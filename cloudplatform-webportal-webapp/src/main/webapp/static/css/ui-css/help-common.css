@@ -119,3 +119,12 @@ body, button, input, select, textarea {font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1","Mi
 .highlight {padding: 9px 14px;margin-bottom: 14px;background-color: #f7f7f9;border: 1px solid #e1e1e8;border-radius: 4px;}
 #msg{position:absolute;top:30px;right:0;color:green; }
 /* copy plug-in style end */
+/* product-intro-css  start*/
+.dispaly-4div{width:24%;display:inline-block;vertical-align:text-top}
+.product-title{margin-bottom:46px;border-bottom: solid 1px #e1e1df;height: 20px;}
+.product-title h1{  font-size: 24px;float: left;padding-right: 10px;background: #fff;}
+.approve-detail,.function-panel { margin-top: 24px;}
+.approve-detail .list { margin-top: 6px; line-height: 24px;font-size: 12px;color: #666;}
+.function .head-title,.sub-head-title {color: #000;font-size: 24px;text-align: center;line-height: 24px;padding-top: 10px;margin-top: -2px;}
+.function-panel .dispaly-4div{padding-right: 50px;}
+/* product-intro-css  end*/
