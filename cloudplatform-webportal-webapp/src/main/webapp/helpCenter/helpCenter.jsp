@@ -172,7 +172,7 @@
                             <a href="#">SLB简介</a></li>
                         <li data-haschild="false" data-id="6-1-2" class="product-SLBArch" data-spm-click="product-SLBArch.jsp" >
                             <a href="#">SLB基础架构</a></li>
-                        <li data-haschild="false" data-id="6-1-2" class="product-SLBLimit" data-spm-click="product-SLBLimit.jsp" >
+                        <li data-haschild="false" data-id="6-1-3" class="product-SLBLimit" data-spm-click="product-SLBLimit.jsp" >
                             <a href="#">SLB使用限制</a></li>
                     </ul>
                 </li>
