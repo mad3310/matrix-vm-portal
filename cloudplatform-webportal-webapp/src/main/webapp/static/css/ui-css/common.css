@@ -1733,3 +1733,5 @@ textarea {
 }
 /*帮助中心*/
 .article-content span{text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;}
+/* 购买页帮助链接 */
+.main-header .help-buy{padding-top: 32px;font-size: 16px;}

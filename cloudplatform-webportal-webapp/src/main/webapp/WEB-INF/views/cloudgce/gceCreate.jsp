@@ -77,6 +77,11 @@
 					</h4>
 				</div>
 			</div>
+			<div class="col-sm-12 col-md-6">
+				<div class="pull-right help-buy">
+						<a href="/helpCenter/helpCenter.jsp?container=help-createGce">购买帮助</a>
+				</div>
+			</div>
 		</div>
 		<!-- main-content-header end-->
 
