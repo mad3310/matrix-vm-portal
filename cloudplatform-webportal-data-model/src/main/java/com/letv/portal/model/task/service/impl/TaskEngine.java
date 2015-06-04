@@ -215,7 +215,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 			
 			int retry = 1;
 			while(retry < ttd.getRetry() && !tr.isSuccess()) {
-				Thread.sleep(10000);
+				Thread.sleep(1000);
 				tr = baseTask.execute(params);
 				retry++;
 			}

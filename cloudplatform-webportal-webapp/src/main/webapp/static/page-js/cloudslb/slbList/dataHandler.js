@@ -49,46 +49,71 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + slbName
                             +"</td>");
-                    var td8 = $("<td class=\"padding-left-32\">"
+                    var td8 = $("<td class=\"padding-left-32 hidden-xs\">"
                             + "<span>"+cn.TableFilterNull(array[i].ip)+"</span>"
                             +"</td>");
-                    var td9=$("<td>-</td>");
+                    var td9=$("<td class='hidden-xs'>-</td>");
                     if(array[i].slbConfigs != undefined || array[i].slbConfigs !=null){
-                        td9 = $("<td>"
+                        td9 = $("<td class='hidden-xs'>"
                             +addPort(array[i].slbConfigs)
                             +"</td>")
                     }
-                    var td4="<td></td>";
+                    var td4="<td class='hidden-xs'></td>";
                     if(array[i].hcluster != undefined && array[i].hcluster != null){
-                        var td4 = $("<td>"
+                        var td4 = $("<td class='hidden-xs'>"
                         + "<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>"
                         + "</td>");
                     }
                     var td5 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
-                    var td6 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    var td6 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     var td7 = $("<td></td>");
                     if(array[i].status == 6){
-                    	td7 = $("<td class=\"text-right\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
+                    	td7 = $("<td class=\"text-right hidden-xs\"><a href=\"/detail/slb/"+array[i].id+"\">管理</a>"
                         		+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
-                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
+                                +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                                +"<div class='pull-right'>"                 
+                                +"<a href=\"/detail/slb/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class=\"text-explode\"><i class='fa fa-dot-circle-o'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-repeat'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></div></td>"
                     			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 9){
-                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    	td7 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理</span>"
 	                    		+ "<span class=\"text-explode font-disabled\">|</span>"
 	                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-start\">启动</span></a>"
-	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>" 
+                                +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                                +"<div class='pull-right'>"                 
+                                +"<a href=\"/detail/slb/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode slb-start text-success'><i class='fa fa-play-circle'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></div></td>"
 	                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 5){
-                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    	td7 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理</span>"
 	                    		+ "<span class=\"text-explode font-disabled\">|</span>"
 	                			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode slb-restart\">重启</span></a>"
-	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+	                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
+                                +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                                +"<div class='pull-right'>"                 
+                                +"<a href=\"/detail/slb/"+array[i].id+"\"><span class='font-disabled'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode slb-restart text-success'><i class='fa fa-repeat'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></div></td>"
 	                			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td>"*/);
                     }else{
-                    	td7 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span>" 
+                    	td7 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span></td>" 
+                                +"<td class=\"hidden-sm hidden-md hidden-lg\">"
+                                +"<div class='pull-right'>"                 
+                                +"<a href=\"/detail/slb/"+array[i].id+"\"><span class='font-disabled'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-repeat'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                                +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></div></td>"
                     			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode slb-delete\">删除</span></a></td></td>"*/);
                     }
                     

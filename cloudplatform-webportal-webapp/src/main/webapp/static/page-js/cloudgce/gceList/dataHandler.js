@@ -49,51 +49,91 @@ define(function(require,exports,module){
                     var td2 = $("<td class=\"padding-left-32\">"
                             + gceName
                             +"</td>");
-                    var td6 = $("<td>-</td>");
+                    var td6 = $("<td class='hidden-xs'>-</td>");
                    if(array[i].gceServerProxy != undefined && array[i].gceServerProxy!=null){
 	                   	 if(cn.Displayable(array[i].status) && cn.Displayable(array[i].gceServerProxy.status)){
 	                        gceProxyName = "<a href=\"/detail/gce/"+array[i].gceServerProxy.id+"\">" + array[i].gceServerProxy.gceName + "</a>"
 	                    }else{
 	                        gceProxyName = "<span class=\"text-explode font-disabled\">"+array[i].gceServerProxy.gceName +"</span>"
 	                    }
-                    	td6=$("<td>"+gceProxyName+"</td>");
+                    	td6=$("<td  class='hidden-xs'>"+gceProxyName+"</td>");
                     }
                     var td3 = $("<td><span>"+cn.TranslateStatus(array[i].status)+"</span></td>");
-                    var td4 = $("<td><span>"+cn.gceTypeTranslation(array[i].type)+"</span></td>");
-                    var td5 = $("<td class=\"padding-left-32\">"
+                    var td4 = $("<td class='hidden-xs'><span>"+cn.gceTypeTranslation(array[i].type)+"</span></td>");
+                    var td5 = $("<td class=\"padding-left-32 hidden-xs\">"
                             + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
                             +"</td>");
-                    var td7="<td></td>";
+                    var td7="<td class='hidden-xs'></td>";
                     if(array[i].hcluster != undefined && array[i].hcluster != null){
-                        var td7 = $("<td>"
+                        var td7 = $("<td class='hidden-xs'>"
                         + "<span>"+array[i].hcluster.hclusterNameAlias+"</span></td>"
                         + "</td>");
                     }
                     
-                    var td8 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    var td8 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     var td9 = $("<td></td>");
                     if(array[i].status == 6){
-                    	td9 = $("<td class=\"text-right\"><a href=\"/detail/gce/"+array[i].id+"\">管理</a>"
+                    	td9 = $("<td class=\"text-right hidden-xs\"><a href=\"/detail/gce/"+array[i].id+"\">管理</a>"
                         		+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-stop\" >停止</span></a>"
                     			+ "<span class=\"text-explode font-disabled\">|</span>"
                     			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+                    			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>" 
+                                // +"<td class='text-right hidden-sm hidden-md hidden-lg'><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                                // +"<a href><span class=\"text-explode gce-stop text-warning\"><i class='fa fa-dot-circle-o'></i></span></a>&nbsp;&nbsp;"
+                                // +"<a href><span class=\"text-explode gce-restart\"><i class='fa fa-repeat'></i></span></a>&nbsp;&nbsp;"
+                                // +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                                // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
+
+                                +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                                +"<ul class='dropdown-menu'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a></li>"
+                                +"<li><a href><span class=\"text-explode gce-stop text-warning\"><i class='fa fa-dot-circle-o'></i></span></a></li>"
+                                +"<li><a href><span class=\"text-explode gce-restart text-primary\"><i class='fa fa-repeat'></i></span></a></li>"
+                                +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                                +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                     			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 9){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>"
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
+                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a href><span class=\"text-explode gce-start text-success\"><i class='fa fa-play-circle'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
+
+                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                            // +"<ul class='dropdown-menu m-dropdown-caret'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                            // +"<li><a href><span class=\"text-explode gce-start text-success\"><i class='fa fa-play-circle'></i></span></a></li>"
+                            // +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                            // +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                 			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 5){
                     	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
-                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span>" 
+                			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
+                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a href><span class=\"text-explode gce-restart text-success\"><i class='fa fa-repeat'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
+
+                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                            // +"<ul class='dropdown-menu m-dropdown-caret'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                            // +"<li><a href><span class=\"text-explode gce-restart text-success\"><i class='fa fa-repeat'></i></span></a></li>"
+                            // +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                            // +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                 			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else{
-                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span>" 
+                    	td9 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span></td>"
+                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><a href><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
+                            // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
+
+                             +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                             +"<ul class='dropdown-menu'><li><a href='https://www.baidu.com/'><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                             +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                             +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>"
                     		/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }
                      var tr = $("<tr class='data-tr'></tr>");

@@ -33,6 +33,7 @@ public class LoginController{
 	private static String WEB_URL = "http://www.letv.com";
 	
 	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private final static int OAUTH_API_RETRY_COUNT = 3;
 	
 	@Autowired
 	private ILoginService loginManager;
@@ -106,14 +107,24 @@ public class LoginController{
 		return mav;
 	}
 	
+	private String retryOauthApi(String result,String url){
+		int i = 1;
+		while(StringUtils.isNullOrEmpty(result) && i<=OAUTH_API_RETRY_COUNT) {
+			result = HttpsClient.sendXMLDataByGet(url,1000,1000);
+			i++;
+		}
+		return result;
+	}
 	
 	private String getAuthorize(String clientId) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		logger.debug("getAuthorize :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("getAuthorize connection timeout");
+	
 		Map<String,Object> resultMap = this.transResult(result);
 		return (String) resultMap.get("code");
 	}
@@ -122,6 +133,7 @@ public class LoginController{
 		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
 		logger.debug("getAccessToken :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("getAccessToken connection timeout");
 		Map<String,Object> resultMap = this.transResult(result);
@@ -132,6 +144,7 @@ public class LoginController{
 		buffer.append(OAUTH_AUTH_HTTP).append("/userdetailinfo?access_token=").append(accessToken);
 		logger.debug("getUserdetailinfo :" + buffer.toString());
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
+		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("getUserdetailinfo connection timeout");
 		Map<String,Object> resultMap = this.transResult(result);

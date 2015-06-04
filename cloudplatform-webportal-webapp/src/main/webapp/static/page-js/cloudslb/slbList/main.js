@@ -3,7 +3,10 @@ define(function(require){
     var cn = new common();
     
     cn.Tooltip();
-    
+    cn.initNavbarMenu([{
+				name : "负载均衡SLB",
+				herf : "/list/slb"
+			}]);
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 

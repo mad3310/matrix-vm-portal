@@ -6,7 +6,7 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!-- bootstrap css -->
 	<link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css"/>
 	<!-- ui-css -->
@@ -22,20 +22,24 @@
 	<input class="hidden" value="${slbId}" name="slbId" id="slbId" type="text" />
 	<!-- 全局参数 end -->
 	<!-- 账号管理主界面div -->
-	<div id="accountList" class="" role="tablist" aria-multiselectable="true">
+	<div id="accountList" class="m-pr10" role="tablist" aria-multiselectable="true">
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
-				<h5>负载均衡服务器池</h5>
-				<span class="ng-binding">所在地域：北京</span>
+				<h5 class="hidden-xs">负载均衡服务器池</h5>
+				<span class="ng-binding hidden-xs">所在地域：北京</span>
+				<h5 class="hidden-sm hidden-md hidden-lg">SLB服务器池</h5>
+				<span class="ng-binding hidden-sm hidden-md hidden-lg">地域：北京</span>
 			</div>
-			<div class="pull-right">
+			<div class="pull-right hidden-xs">
 				<button id="refresh" class="btn btn-default">
 					<span>刷新</span>
 				</button>
 			</div>
+			<div class="hidden-sm hidden-md hidden-lg clearfix"></div>
 			<div class="pull-right">
 				<button id="restart" class="btn btn-primary">
-					<span>重启服务</span>
+					<span class='hidden-xs'>重启服务</span>
+					<span class='hidden-sm hidden-md hidden-lg glyphicon glyphicon-expand'></span>
 				</button>
 			</div>
 		</div>
@@ -52,14 +56,14 @@
 					<thead>
 					<tr>
 						<th>云服务器ID/名称</th>
-						<th>访问地址</th>
-						<th>SLB协议端口</th>
+						<th class="hidden-xs">访问地址</th>
+						<th class="hidden-xs">SLB协议端口</th>
 						<th>状态</th>
-						<th>网络类型</th>
-						<th>付款方式</th>
-						<th>健康检查状态</th>
-						<th>权重</th>
-						<th class="text-right" width="200px">
+						<th class="hidden-xs">网络类型</th>
+						<th class="hidden-xs">付款方式</th>
+						<th class="hidden-xs">健康检查状态</th>
+						<th class="hidden-xs">权重</th>
+						<th class="text-right">
 							<span style="padding-left:8px">操作</span>
 						</th>
 					</tr>
@@ -77,11 +81,11 @@
 					<thead>
 					<tr>
 						<th>云服务器ID/名称</th>
-						<th>访问地址</th>
-						<th>网络类型</th>
-						<th>付款方式</th>
+						<th class="hidden-xs">访问地址</th>
+						<th class="hidden-xs">网络类型</th>
+						<th class="hidden-xs">付款方式</th>
 						<th>健康检查状态</th>
-						<th class="text-right" width="200px">
+						<th class="text-right">
 							<span style="padding-left:8px">操作</span>
 						</th>
 					</tr>
@@ -152,10 +156,10 @@
 					<h5 id="dialog-box-title" class="modal-title"></h5ashboard>
 				</div>
 				<div class="modal-body clearfix">
-					<div class="col-sm-1 col-md-1 warning-sign">
+					<div class="col-xs-2 col-sm-1 col-md-1 warning-sign">
 						<span class="glyphicon glyphicon-exclamation-sign"></span>
 					</div>
-					<div id="dialog-box-text" class="col-sm-10 table-responsive"></div>
+					<div id="dialog-box-text" class="col-xs-10 col-sm-10"></div>
 				</div>
 				<div class="modal-footer">
 					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
