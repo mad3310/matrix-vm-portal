@@ -172,8 +172,8 @@
                             <a href="#">SLB简介</a></li>
                         <li data-haschild="false" data-id="6-1-2" class="product-SLBArch" data-spm-click="product-SLBArch.jsp" >
                             <a href="#">SLB基础架构</a></li>
-                        <li data-haschild="false" data-id="6-1-3" class="product-SLBLimit" data-spm-click="product-SLBLimit.jsp" >
-                            <a href="#">SLB使用限制</a></li>
+                        <li data-haschild="false" data-id="6-1-3" class="product-SLBAdvantage" data-spm-click="product-SLBAdvantage.jsp" >
+                            <a href="#">SLB优势</a></li>
                     </ul>
                 </li>
                 <li data-haschild="false" data-id="6-2" class="help-slbquikcrt" data-spm-click="help-slbquikcrt.jsp"><a>快速创建</a></li>
