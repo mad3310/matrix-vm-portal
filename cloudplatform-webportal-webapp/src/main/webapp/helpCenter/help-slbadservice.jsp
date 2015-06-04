@@ -9,7 +9,7 @@
         <p><img src="${ctx}/static/img/help/slb-add1.jpg"></p>
         <p><span>可通过两种方式添加后端服务<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【添加自定义服务器】【添加GCE服务器】</span></p>
         <br>
-        <p><span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【添加GCE服务器】:</span><span>添加GCE服务器，首先要开通GCE服务，添加相应服务后，返回SLB服务，点击&nbsp;【添加GCE服务器】按钮，进入GCE服务器列表，可添加相应服务。如果您对于SLB和GCE如何配合服务不清楚，可参考&nbsp;<a>GCE架构设计</a></span></p>
+        <p><span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【添加GCE服务器】:</span><span>添加GCE服务器，首先要开通GCE服务，添加相应服务后，返回SLB服务，点击&nbsp;【添加GCE服务器】按钮，进入GCE服务器列表，可添加相应服务。如果您对于SLB和GCE如何配合服务不清楚，可参考&nbsp;<a href="/helpCenter/helpCenter.jsp?container=product-SLBArch">SLB架构设计</a></span></p>
         <p><span>举例说明添加GCE服务器的具体步骤,如下图所示：</span>
             <ul>
                 <li>点击‘添加GCE服务器按钮’（若您已添加一个后端服务，那么添加服务按钮会消失）</li>

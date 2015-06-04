@@ -312,7 +312,7 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+												<a href="/helpCenter/helpCenter.jsp?container=product-SLBIntro" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
 													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
@@ -501,7 +501,7 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+												<a href="/helpCenter/helpCenter.jsp?container=product-GCEIntro" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
 													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
