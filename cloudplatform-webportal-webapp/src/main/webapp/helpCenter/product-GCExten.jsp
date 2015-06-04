@@ -5,25 +5,8 @@
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">GCE扩展服务</h2>
 <div class="article-content">
-	<div class="markdown-body ng-scope" ui-view="doc"
-		style="margin: 0 10px; margin-bottom: 25px;">
-		<div id="doc" doc-preloader="isload"
-			style="padding-top: 10px; min-height: 400px; font-size: 14px; line-height: 26px;"
-			class="ng-scope doc-preloader-hide">
-			<url class="doc-menu">
-			<li style="color: #ccc; padding-top: 10px; margin-left: 0px;"><a
-				class="menu-a doc-top-title" menuid="menu0" style="color: #333;">扩展服务简介</a></li>
-			<li style="color: #ccc; padding-top: 10px; margin-left: 15px;"><a
-				class="menu-a doc-top-title" menuid="menu1" style="color: #333;">分布式Session</a></li>
-			<li style="color: #ccc; padding-top: 10px; margin-left: 15px;"><a
-				class="menu-a doc-top-title" menuid="menu2" style="color: #333;">数据库（MySQL）</a></li>
-			<li style="color: #ccc; padding-top: 10px; margin-left: 15px;"><a
-				class="menu-a doc-top-title" menuid="menu3" style="color: #333;">缓存（Cache）</a></li>
-			<li style="color: #ccc; padding-top: 10px; margin-left: 15px;"><a
-				class="menu-a doc-top-title" menuid="menu4" style="color: #333;">存储（Storage）</a></li>
-			<li style="color: #ccc; padding-top: 10px; margin-left: 15px;"><a
-				class="menu-a doc-top-title" menuid="menu5" style="color: #333;">定时任务（Cron）</a></li>
-			</url>
+	<div class="markdown-body">
+		<div id="doc">
 			<h1 id="menu0">扩展服务简介</h1>
 			<h2 id="menu1">分布式Session</h2>
 			<p>
@@ -68,8 +51,8 @@
 			</p>
 			<p>
 				<code>GCE</code>
-				控制台创建的缓存服务不支持管控功能，若您需要完整的缓存服务管控功能，可在乐视云官网<a
-					href="http://www.aliyun.com/product/ocs/">开通<code>OCS</code></a>，在
+				控制台创建的缓存服务不支持管控功能，若您需要完整的缓存服务管控功能，可在登录控制台后，<a
+					href="http://matrix.lecloud.com">开通<code>OCS</code></a>，在
 				<code>GCE</code>
 				中配置使用，详细对应语言的
 				<code>SDK</code>
@@ -92,8 +75,8 @@
 			</p>
 			<p>
 				<code>GCE</code>
-				控制台仅提供5个存储空间且不支持管控功能，若您需要完整的存储服务管控功能，可在乐视云官网<a
-					href="http://www.aliyun.com/product/oss">开通<code>OSS</code></a>，在
+				控制台仅提供5个存储空间且不支持管控功能，若您需要完整的存储服务管控功能，可在登录控制台后，<a
+					href="http://matrix.lecloud.com">开通<code>OCS</code></a>，在
 				<code>GCE</code>
 				中配置使用，详细对应语言的
 				<code>SDK</code>
@@ -108,8 +91,10 @@
 				<code>HTTP</code>
 				协议的
 				<code>GET</code>
-				方式的请求，仅支持通过控制台定义定时任务。
+				方式的请求，仅支持通过控制台定义定时任务。SLB与GCE的关系，如下图所示：
 			</p>
+			<br>
+			<p><img src="${ctx}/static/img/help/product/7.jpg" alt=""></p>
 		</div>
 	</div>
 </div>

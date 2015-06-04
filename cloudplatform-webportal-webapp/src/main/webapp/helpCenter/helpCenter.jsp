@@ -165,17 +165,15 @@
         <div class="vnavbar SLB" style="display:block;">
             <h3 class="title">负载均衡 SLB</h3>
             <ul class="main-level">
-                <li data-haschild="true" data-id="6-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">SLB产品介绍<span class="arrow-up"></span></h3>
+                <li data-haschild="true" data-id="6-1" class="" data-spm-click="">
+                    <h3 data-spm-anchor-id="">SLB产品介绍<span class="arrow-up"></span></h3>
                     <ul class="sub-level">
                         <li data-haschild="false" data-id="6-1-1" class="product-SLBIntro" data-spm-click="product-SLBIntro.jsp">
                             <a href="#">SLB简介</a></li>
                         <li data-haschild="false" data-id="6-1-2" class="product-SLBArch" data-spm-click="product-SLBArch.jsp" >
                             <a href="#">SLB基础架构</a></li>
-                         <li data-haschild="false" data-id="6-1-3" class="product-SLBAdvantage" data-spm-click="product-SLBAdvantage.jsp" >
-                            <a href="#">SLB优势</a></li>
-                         <li data-haschild="false" data-id="6-1-4" class="product-SLBExten" data-spm-click="product-SLBExten.jsp" >
-                            <a href="#">SLB扩展服务</a></li>
+                        <li data-haschild="false" data-id="6-1-3" class="product-SLBLimit" data-spm-click="product-SLBLimit.jsp" >
+                            <a href="#">SLB使用限制</a></li>
                     </ul>
                 </li>
                 <li data-haschild="false" data-id="6-2" class="help-slbquikcrt" data-spm-click="help-slbquikcrt.jsp"><a>快速创建</a></li>
@@ -249,7 +247,7 @@ var containers = ["helpDetail-login","helpDetail-reg","helpDetail-findpas",
 								'help-gcequikcrt','help-slbquikcrt',"product-GCEAdvantage",
 								"product-GCEArch","product-GCEIntro","product-GCExten",
 								"product-SLBAdvantage","product-SLBArch","product-SLBIntro",
-								"product-SLBExten"];
+								"product-SLBExten",'product-SLBLimit'];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();
