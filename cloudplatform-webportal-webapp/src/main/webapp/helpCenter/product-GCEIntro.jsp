@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- <div class="content-right" data-spm="2"> -->
 <div class="bread-crumb">
-	<span class="item"><a href="#">通用云引擎GCE</a></span>&nbsp;&gt;&nbsp;<span
+	<span class="item"><a href="#">云引擎GCE</a></span>&nbsp;&gt;&nbsp;<span
 		class="data-spm-click" data-id="5-1-1">GCE产品介绍</span>
 </div>
 <h2 style="text-align: center; color: #333; font-size: 18px;">GCE产品介绍</h2>
@@ -61,7 +61,6 @@
 		</div>
 	</div>
 	<div class="function" data-spm="6">
-		<a class="" id="Ability" name="Ability" hidefocus="">&nbsp;</a>
 		<div class="product-title">
 			<h1>产品功能</h1>
 		</div>
@@ -92,7 +91,7 @@
 			<div class="help-cell cell">
 				<h4>操作指南</h4>
 				<ul class="link-list">
-					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=product-GCEIntro" target="_blank" >GCE快速创建指南</a></li>
+					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=product-gcequikcrt" target="_blank" >GCE快速创建指南</a></li>
 					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-createGce" target="_blank" >常见问题</a></li>
 				</ul>
 			</div>
