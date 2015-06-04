@@ -5,7 +5,7 @@
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">SLB服务监听配置设置</h2>
     <div class="article-content">
-        <p><span>1. SLB的<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【服务监听配置】</span>页面，可修改SLB服务的监听端口</p>
+        <p><span>1. SLB的<span style="line-height:1.5;font-family:微软雅黑,Microsoft YaHei;font-size:10.5pt;">【服务监听配置】</span>页面，可修改SLB服务的监听协议</p>
         <p><img src="${ctx}/static/img/help/slb-listen1.jpg"></p>
         <br>
         

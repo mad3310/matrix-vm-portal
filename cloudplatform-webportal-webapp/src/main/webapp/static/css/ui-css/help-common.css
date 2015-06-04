@@ -14,7 +14,7 @@ a, a:link, a:visited, a:hover {color: #00a2ca;}
 a, a:link, a:visited, a:hover {color: #00a2ca;}
 .header .search-wrap {margin-left: 228px;position: relative;}
 input, select, textarea {font-size: 100%;}
-body, button, input, select, textarea {font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"\5B8B\4F53";}
+body, button, input, select, textarea,table {font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"\5B8B\4F53";}
 .header .search-wrap .search-frame {margin-right: 473px;}
 .header .search-wrap .search-frame .search-input {width: 100%;border: 2px solid #00a2ca;height: 36px;height: 28px \9;margin-top: 10px;float: left;padding-left: 10px;padding-top: 8px\9;}
 .header .search-wrap .search-btn {position: absolute;right: 430px;top: 0;font-size: 16px;/*background-color: #00a2ca;*/background-color:rgba(109,171,204,.8);color: #fff;padding: 10px 12px;margin-top: 10px;/*cursor: pointer;*/}
@@ -34,7 +34,7 @@ body, button, input, select, textarea {font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1","Mi
 .main-navbar-wrap .main-navbar .nav-content li.separator {padding-left: 30px;border-left: 2px solid #999;}
 /*content-left*/
 .content {position: relative;}
-.content .content-left {position: absolute;width: 179px;float: left;height: 100%;border-right: 1px solid #dfe3e6;background-color: #edf0f2;}
+.content .content-left {position: absolute;width: 179px;float: left;border-right: 1px solid #dfe3e6;background-color: #edf0f2;}
 .hnavbar {width: 180px;color: #333;cursor: default;position: relative;overflow: visible;height: 100%;}
 .hnavbar, .hnavbar h3 {font-size: 12px;}
 .hnavbar .nav-level0, .hnavbar .nav-level2, .hnavbar .nav-level3 {position: absolute;top: 0;width: 179px;height: 100%;background-color: #edf0f2;border-right: 1px solid #dfe3e6;background-color: #edf0f2;}
@@ -121,10 +121,20 @@ body, button, input, select, textarea {font: 12px/1.5 "\5FAE\8F6F\96C5\9ED1","Mi
 /* copy plug-in style end */
 /* product-intro-css  start*/
 .dispaly-4div{width:24%;display:inline-block;vertical-align:text-top}
+.dispaly-4div h3{color:#333;font-size:16px;}
+.dispaly-4div p{color:#666;line-height:1.5;}
 .product-title{margin-bottom:46px;border-bottom: solid 1px #e1e1df;height: 20px;}
 .product-title h1{  font-size: 24px;float: left;padding-right: 10px;background: #fff;}
+.intro{text-indent:2em;}
 .approve-detail,.function-panel { margin-top: 24px;}
 .approve-detail .list { margin-top: 6px; line-height: 24px;font-size: 12px;color: #666;}
-.function .head-title,.sub-head-title {color: #000;font-size: 24px;text-align: center;line-height: 24px;padding-top: 10px;margin-top: -2px;}
+.function .head-title {color:#000;font-size:24px;text-align:center;line-height:24px;padding-top:10px;margin-top:-2px;}
+.function .sub-head-title {margin-top:16px;font-size:18px;line-height:18px;color:#000;text-align:center;}
 .function-panel .dispaly-4div{padding-right: 50px;}
+.link-list li{text-decoration:none;display:inline-block;margin:0 5px;}
+.markdown-body h1 {padding-bottom:12px;font-size: 2.25em;line-height: 1.2;border-bottom:1px solid #eee;margin:0 0 20px 0;}
+.markdown-body h2 {padding-bottom:12px;font-size:1.75em;line-height:1.2;border-bottom:1px solid #eee;margin:10px 0 20px 0;}
+.markdown-body table {display:table;width:100%;overflow: auto;border-collapse: collapse;border-spacing:0;}
+.markdown-body table tr {background-color: #fff;border-top: 1px solid #ccc;}
+.markdown-body table td, .markdown-body table th {padding: 10px 13px;border: 1px solid #ddd;}
 /* product-intro-css  end*/

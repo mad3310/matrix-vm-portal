@@ -96,8 +96,8 @@
             <h3 class="title">云数据库RDS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="2-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
-                    <ul class="sub-level">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="2-1-1" class="help-createDb" data-spm-click="help-createDb.jsp">
                             <a href="#">创建数据库实例</a></li>
                         <li data-haschild="false" data-id="2-1-2" class="help-createUser" data-spm-click="help-createUser.jsp" >
@@ -118,8 +118,8 @@
             <h3 class="title">开放存储OSS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="3-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
-                    <ul class="sub-level">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="3-1-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
                             <a href="#">OSS使用方法</a></li>
                         <li data-haschild="false" data-id="3-1-2" class="help-OSStool" data-spm-click="help-OSStool.jsp" >
@@ -138,8 +138,8 @@
             <h3 class="title">云引擎GCE</h3>
             <ul class="main-level">
             	<li data-haschild="true" data-id="5-1">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">GCE产品介绍<span class="arrow-up"></span></h3>
-                    <ul class="sub-level">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">GCE产品介绍<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="5-1-1" class="product-GCEIntro" data-spm-click="product-GCEIntro.jsp">
                             <a href="#">GCE简介</a></li>
                         <li data-haschild="false" data-id="5-1-2" class="product-GCEArch" data-spm-click="product-GCEArch.jsp" >
@@ -152,8 +152,8 @@
                 </li>
                 <li data-haschild="false" data-id="5-2" class="help-gcequikcrt" data-spm-click="help-gcequikcrt.jsp"><a>快速创建</a></li>
                 <li data-haschild="true" data-id="5-3">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
-                    <ul class="sub-level">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="5-3-1" class="help-createGce" data-spm-click="help-createGce.jsp">
                             <a href="#">购买帮助</a></li>
                         <li data-haschild="false" data-id="5-3-2" class="help-gceAccess" data-spm-click="help-gceAccess.jsp" >
@@ -165,11 +165,21 @@
         <div class="vnavbar SLB" style="display:block;">
             <h3 class="title">负载均衡 SLB</h3>
             <ul class="main-level">
-                <li data-haschild="false" data-id="6-1" class="" data-spm-click=""><a>SLB产品介绍</a></li>
+                <li data-haschild="true" data-id="6-1" class="" data-spm-click="">
+                    <h3 data-spm-anchor-id="">SLB产品介绍<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
+                        <li data-haschild="false" data-id="6-1-1" class="product-SLBIntro" data-spm-click="product-SLBIntro.jsp">
+                            <a href="#">SLB简介</a></li>
+                        <li data-haschild="false" data-id="6-1-2" class="product-SLBArch" data-spm-click="product-SLBArch.jsp" >
+                            <a href="#">SLB基础架构</a></li>
+                        <li data-haschild="false" data-id="6-1-3" class="product-SLBLimit" data-spm-click="product-SLBLimit.jsp" >
+                            <a href="#">SLB使用限制</a></li>
+                    </ul>
+                </li>
                 <li data-haschild="false" data-id="6-2" class="help-slbquikcrt" data-spm-click="help-slbquikcrt.jsp"><a>快速创建</a></li>
                 <li data-haschild="true" data-id="6-3">
-                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-up"></span></h3>
-                    <ul class="sub-level">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="6-3-1" class="help-createSlb" data-spm-click="help-createSlb.jsp">
                             <a href="#">购买帮助</a></li>
                         <li data-haschild="false" data-id="6-3-2" class="help-slblist" data-spm-click="help-slblist.jsp" >
@@ -235,7 +245,9 @@ var containers = ["helpDetail-login","helpDetail-reg","helpDetail-findpas",
 								'help-createGce','help-gceAccess','help-createSlb',
 								'help-slblist','help-slblisten','help-slbadservice',
 								'help-gcequikcrt','help-slbquikcrt',"product-GCEAdvantage",
-								"product-GCEArch","product-GCEIntro","product-GCExten"];
+								"product-GCEArch","product-GCEIntro","product-GCExten",
+								"product-SLBAdvantage","product-SLBArch","product-SLBIntro",
+								"product-SLBExten",'product-SLBLimit'];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();
