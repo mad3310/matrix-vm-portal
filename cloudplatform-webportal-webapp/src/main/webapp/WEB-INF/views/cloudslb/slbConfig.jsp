@@ -22,7 +22,7 @@
 	<input class="hidden" value="${slbId}" name="slbId" id="slbId" type="text" />
 	<!-- 全局参数 end -->
 	<!-- 账号管理主界面div -->
-	<div id="accountList" class="" role="tablist" aria-multiselectable="true">
+	<div id="accountList" class="m-pr10" role="tablist" aria-multiselectable="true">
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5>负载均衡服务配置</h5>
@@ -34,11 +34,11 @@
 					<tr>
 						<th>SLB协议：端口</th>
 						<th>状态</th>
-						<th>转发规则</th>
-						<th>获取真实IP</th>
-						<th>会话保持</th>
-						<th>健康检查</th>
-						<th>带宽峰值</th>
+						<th class="hidden-xs">转发规则</th>
+						<th class="hidden-xs">获取真实IP</th>
+						<th class="hidden-xs">会话保持</th>
+						<th class="hidden-xs">健康检查</th>
+						<th class="hidden-xs">带宽峰值</th>
 						<th class="text-right" width="200px"><span style="padding-left: 8px">操作</span></th>
 					</tr>
 				</thead>
@@ -103,9 +103,9 @@
 				<form id="modifyHealthBase" name="modifyHealthBase" class="form-horizontal" role="form">
 					<div class="modal-body">
 						<div class="form-inline form-group">
-							<label class="col-sm-4 control-label"> <span class="text-danger">*</span>协议：
+							<label class="col-xs-3 col-sm-4 control-label m-pdt"> <span class="text-danger">*</span>协议：
 							</label>
-							<div class="col-sm-8 ng-scope">
+							<div class="col-xs-9 col-sm-8 ng-scope">
 								<select name="modifyAgentType" class="form-control ng-pristine ng-valid" style="width: 90px">
 									<option value="HTTP">HTTP</option>
 									<option value="TCP">TCP</option>

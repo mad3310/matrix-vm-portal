@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1" />
-<meta name="viewpoint" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- bootstrap css -->
 <link type="text/css" rel="stylesheet" href="${ctx}/static/css/bootstrap.min.css" />
 <!-- fontawesome css -->
@@ -15,6 +15,9 @@
 <title>SLB管理控制台</title>
 </head>
 <body>
+<style>
+/*table{table-layout: fixed;}*/
+td{word-break: break-all; word-wrap:break-word;}</style>
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${gceId}" name="gceId" id="gceId" type="text" />
 		<div class="panel-group pd10" id="accordion" role="tablist" aria-multiselectable="true">

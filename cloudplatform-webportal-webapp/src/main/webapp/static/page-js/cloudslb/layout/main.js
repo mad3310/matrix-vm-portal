@@ -4,7 +4,10 @@
 define(function(require){
     var common = require('../../common');
     var cn = new common();
-
+    cn.initNavbarMenu([{
+                name : "负载均衡SLB",
+                herf : "/list/slb"
+            }]);
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();

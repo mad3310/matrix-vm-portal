@@ -18,7 +18,7 @@
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${gceId}" name="dbId" id="dbId" type="text" />
 	<!-- 全局参数 end -->
-	<div class="se-heading">
+	<div class="se-heading m-pr10">
 		<div class="pull-left">
 			<h5 class="">内存使用量</h5>
 		</div>
@@ -46,8 +46,8 @@
 		</div>
 	</div>
 	<div class="monitor-charts">
-		<div class="chart-content" style="width:100%">
-			<div id="chart-container" class="chart-container">							
+		<div class="chart-content">
+			<div id="chart-container" class="chart-container chart-container chart-container-xs">							
 			</div>
 		</div>
 		<div class="footer" style="width:100%;height:200px;">						

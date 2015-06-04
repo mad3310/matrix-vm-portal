@@ -35,21 +35,21 @@ define(function(require,exports,module){
                 var td1 = $("<td>"
                 + array[i].serverName
                 + "</td>");
-                var td2=$("<td>-</td>");
+                var td2=$("<td class='hidden-xs'>-</td>");
                 if(array[i].gceContainers != undefined && array[i].gceContainers != null){
-                	td2 = $("<td class=\"padding-left-32\">"
+                	td2 = $("<td class=\"padding-left-32 hidden-xs\">"
                             + "<span>"+getAccpetAddr(array[i].gceContainers,array[i].type)+"</span>"
                             +"</td>");
                 }else{
-                	td2 = $("<td>"
+                	td2 = $("<td  class='hidden-xs'>"
                  	+"<span class=\"text-success\">"+array[i].serverIp+"</span>"
                 	+"<span class=\"text-success\">:</span>"
                 	+"<span class=\"text-success\">"+array[i].port+"</span><br>"
                		+ "</td>");
                 }
-                var td10="<td>-</td>"
+                var td10="<td  class='hidden-xs'>-</td>"
                 if(array[i].slbConfig != undefined && array[i].slbConfig != null){
-                    td10="<td>"
+                    td10="<td  class='hidden-xs'>"
                     +"<span class=\"text-success\">"+array[i].slbConfig.agentType+"</span>"
                     +"<span class=\"text-success\">:</span>"
                     +"<span class=\"text-success\">"+array[i].slbConfig.frontPort+"</span><br>"
@@ -61,21 +61,23 @@ define(function(require,exports,module){
                 var td4 = $("<td>"
                 + "<span class=\"text-success\">"+status+"</span>"
                 + "</td>");
-                var td5 = $("<td>"
+                var td5 = $("<td  class='hidden-xs'>"
                 + "<span>经典网络</span>"
                 + "</td>");
-                var td6 = $("<td>"
+                var td6 = $("<td  class='hidden-xs'>"
                 + "<span>包年</span>"
                 + "</td>");
-                var td7 = $("<td>"
+                var td7 = $("<td  class='hidden-xs'>"
                 + "<span class=\"text-success\">正常</span>"
                 + "</td>");
-                var td8 = $("<td>"
+                var td8 = $("<td  class='hidden-xs'>"
                 + "<span>100</span>"
                 + "</td>");
-                var td9 = $("<td class=\"text-right\">" 
+                var td9 = $("<td class=\"text-right hidden-xs\">" 
                 +"<a href=\"javascript:void(0)\"><span class=\"backend-server-delete text-explode\" slb-config-id=\""+array[i].id+"\">移除</span></a>" 
-                +"</td>");
+                +"</td>"
+                +"<td class='text-right hidden-sm hidden-md hidden-lg'><a href=\"javascript:void(0)\"><span class=\"backend-server-delete text-explode text-danger glyphicon glyphicon-trash\" slb-config-id=\""+array[i].id+"\"></span></a></td>"
+                );
                 var tr = $("<tr class='data-tr'></tr>");
 
                 tr.append(td1).append(td2).append(td10).append(td4).append(td5).append(td6).append(td7).append(td8).append(td9);
@@ -106,26 +108,30 @@ define(function(require,exports,module){
             		 var td1 = $("<td class=\"name\">"
 	                + array[i].gceName
 	                + "</td>");
-	                var td3 = $("<td class=\"padding-left-32\">"
+	                var td3 = $("<td class=\"padding-left-32 hidden-xs\">"
                             + "<span>"+getAccpetAddr(array[i].gceServerProxy?array[i].gceServerProxy.gceContainers:array[i].gceContainers)+"</span>"
                             +"</td>");
-	                var td4 = $("<td>"
+	                var td4 = $("<td class='hidden-xs'>"
 	                + "<span>经典网路</span>"
 	                + "</td>");
-	                var td5 = $("<td>"
+	                var td5 = $("<td class='hidden-xs'>"
 	                + "<span>包年</span>"
 	                + "</td>");
 	                var td6 = $("<td>"
 	                + "<span>"+cn.TranslateStatus(array[i].status)+"</span>"
 	                + "</td>");
 	                if(array[i].status == 6){
-		                var td7 = $("<td class=\"text-right\">" 
+		                var td7 = $("<td class=\"text-right hidden-xs\">" 
 		                +"<a href=\"javascript:void(0)\"><span class=\"backend-server-add text-explode\" gce-id=\""+array[i].id+"\">添加</span></a>" 
-		                +"</td>");
+		                +"</td><td class='text-right hidden-sm hidden-md hidden-lg'>"
+                        +"<a href=\"javascript:void(0)\"><span class=\"backend-server-add text-explode glyphicon glyphicon-plus\" gce-id=\""+array[i].id+"\"></span></a></td>" 
+                        );
 	                }else{
-	                	 var td7 = $("<td class=\"text-right\">" 
+	                	 var td7 = $("<td class=\"text-right hidden-xs\">" 
 		                +"<span class=\"text-explode\" inner-server-id=\""+array[i].id+"\">添加</span>" 
-		                +"</td>");
+		                +"</td><td class='text-right hidden-sm hidden-md hidden-lg'>"
+                        +"<span class=\"text-explode glyphicon glyphicon-plus\" inner-server-id=\""+array[i].id+"\"></span></td>" 
+                        );
 	                }
 	                var tr = $("<tr class='inner-server-data-tr'></tr>");
 	                tr.append(td1).append(td3).append(td4).append(td5).append(td6).append(td7);
