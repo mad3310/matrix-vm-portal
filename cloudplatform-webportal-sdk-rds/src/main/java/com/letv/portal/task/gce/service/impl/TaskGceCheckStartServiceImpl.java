@@ -36,21 +36,11 @@ public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implem
 		String nodeIp1 = containers.get(0).getHostIp();
 		String port = containers.get(0).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
-		String result = "";
-		
-		for (int i = 0; i < 3; i++) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-			result = this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
-			tr = super.analyzeRestServiceResult(result);
-			if(tr.isSuccess()) {
-				Map<String,Object> response = (Map<String, Object>) tr.getParams();
-				result =  (String) ((Map<String,Object>)response.get("data")).get("status");
-				if("STARTED".equals(result))
-					break;
-			}
+		String result =  this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		tr = super.analyzeRestServiceResult(result);
+		if(tr.isSuccess()) {
+			Map<String,Object> response = (Map<String, Object>) tr.getParams();
+			result =  (String) ((Map<String,Object>)response.get("data")).get("status");
 		}
 		if(!"STARTED".equals(result)) {
 			tr.setSuccess(false);
