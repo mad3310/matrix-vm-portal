@@ -4,7 +4,10 @@
 define(function(require){
     var common = require('../../common');
     var cn = new common();
-
+    cn.initNavbarMenu([{
+            name : "云引擎GCE",
+            herf : "/list/gce"
+        }]);
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();

@@ -1,7 +1,10 @@
 define(function(require){
     var Common = require('../../common');
     var cn = new Common();
-
+    cn.initNavbarMenu([{
+        name : "开放缓存服务 OCS",
+        herf : "/list/cache"
+    }]);
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var basicInfoHandler = new dataHandler();

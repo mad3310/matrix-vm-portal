@@ -93,7 +93,7 @@ define(function(require,exports,module){
                                 +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                     			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 9){
-                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    	td9 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-start\">启动</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
@@ -103,13 +103,13 @@ define(function(require,exports,module){
                             // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
 
                             // +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
-                            // +"<ul class='dropdown-menu m-dropdown-caret'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                            // +"<ul class='dropdown-menu'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
                             // +"<li><a href><span class=\"text-explode gce-start text-success\"><i class='fa fa-play-circle'></i></span></a></li>"
                             // +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
                             // +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                 			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else if(array[i].status == 5){
-                    	td9 = $("<td class=\"text-right\"><span class=\"text-explode font-disabled\">管理</span>"
+                    	td9 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理</span>"
                     		+ "<span class=\"text-explode font-disabled\">|</span>"
                 			+ "<a href=\"javascript:void(0)\"><span class=\"text-explode gce-restart\">重启</span></a>"
                 			+ "<span class=\"text-explode font-disabled\">|续费|升级|删除</span></td>"
@@ -118,11 +118,11 @@ define(function(require,exports,module){
                             // +"<a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a>&nbsp;&nbsp;"
                             // +"<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></td>"
 
-                            // +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
-                            // +"<ul class='dropdown-menu m-dropdown-caret'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
-                            // +"<li><a href><span class=\"text-explode gce-restart text-success\"><i class='fa fa-repeat'></i></span></a></li>"
-                            // +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
-                            // +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
+                            +"<td class='text-right hidden-sm hidden-md hidden-lg'><div class='hidden-sm hidden-md hidden-lg pull-right m-tgbtn dropdown'><button type='button' class='dropdown-toggle' data-toggle='dropdown'><i class='fa fa-navicon'></i></button>"                 
+                            +"<ul class='dropdown-menu'><li><a href=\"/detail/gce/"+array[i].id+"\"><span class='text-explode font-disabled'><i class='fa fa-cogs'></i></span></a></li>"
+                            +"<li><a href><span class=\"text-explode gce-restart text-success\"><i class='fa fa-repeat'></i></span></a></li>"
+                            +"<li><a><span class=\"text-explode font-disabled\"><i class='fa fa-shopping-cart'></i></span></a></li>"
+                            +"<li><a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a></li><li><a><span class='text-explode font-disabled'><i class='fa fa-trash'></i></span></a></li></ul></div></td>" 
                 			/*+"<a href=\"javascript:void(0)\"><span class=\"text-explode gce-delete\">删除</span></a></td>"*/);
                     }else{
                     	td9 = $("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">管理|续费|升级|删除</span></td>"

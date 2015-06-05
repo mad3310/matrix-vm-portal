@@ -4,7 +4,9 @@
 <html lang="zh">
 
 <%@include file='main.jsp'%>
-
+<style>
+/*table{table-layout: fixed;}*/
+td{word-break: break-all; word-wrap:break-word;}</style>
 <body> 
 <!-- 全局参数 start -->
 	<input class="hidden" value="${cacheId}" name="cacheId" id="cacheId" type="text" />
@@ -56,8 +58,8 @@
 		          		配置信息
 				</span>
 				<div class="pull-right table-viewer-topbar-content">
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">续费</a>
-					<a class="disabled btn btn-xs btn-primary" target="_blank" href="javascript:void(0)">变更配置</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">续费</a>
+					<a class="disabled btn btn-xs btn-primary hidden-xs" target="_blank" href="javascript:void(0)">变更配置</a>
 					<a class="btn btn-xs btn-primary" id="showConfigInfo" href="javascript:void(0)">配置信息</a>
 				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
@@ -111,44 +113,17 @@
 		      </div>
 		    </div>
 	  	</div>
-	  	<!-- <div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
-		        <span class="panel-title">
-					可维护的时间段
-				</span>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseFive"  aria-expanded="true" aria-controls="collapseFive">
-				<span class="toggle-drop-down-icon" toggle-show="toggleShow">
-					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
-				</span>
-				</a>
-	    	</div>
-		    <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
-		      <div class="panel-body pd0">
-		        <table class="table table-bordered table-bi">
-		        	<tbody>
-		        	<tr>
-			        	<td width="50%">
-			        		<span class="text-muted pd-r8">可维护的时间段:</span>
-			        		<span class="pd-r8">未设置</span>
-			        		<span class="font-disabled pd-r8">设置</span>
-			        	</td>
-		        	</tr>
-		        	</tbody>
-		        </table>
-		      </div>
-		    </div>
-	  	</div> -->
 	    <!-- /.modal config-->
 		<div class="modal" id="cacheConfigModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm">
-				<div class="modal-content" style="width:500px;">
-					<div class="modal-header">
+				<div class="modal-content m-cachewidth">
+					<div class="modal-header" style="border-bottom:none;">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="cacheConfigModalLabel"></h4>
 					</div>
 					<div class="modal-body clearfix" id="cacheConfigInfoWrap" >
-						<div class="zero-clipboard">
+						<div class="zero-clipboard hidden-xs">
 							<a id= "zclipCopy" class="btn-clipboard">复制</a>
 						</div>
 						<pre>

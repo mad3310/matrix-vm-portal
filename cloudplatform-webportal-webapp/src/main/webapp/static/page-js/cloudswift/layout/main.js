@@ -4,7 +4,10 @@
 define(function(require){
     var common = require('../../common');
     var cn = new common();
-
+    cn.initNavbarMenu([{
+			name : "开放存储服务 OSS",
+			herf : "/list/oss"
+		}]);
     var options = {// 拖动条初始化参数 全局变量
 		'stepSize' : 50,// 步长
 		'lev1' : 206,// 拖动条第一块长度==css width
