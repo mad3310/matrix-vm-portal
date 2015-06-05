@@ -60,10 +60,24 @@
 						<th width="10">
 							<input type="checkbox">
 						</th>
-						<th class="padding-left-32">实例名称</th>
-						<th class="hidden-xs">服务地址</th>
-						<th class="hidden-xs">服务端口</th>
-						<th class="hidden-xs">所在可用区</th>
+						<th class="padding-left-32">实例名称
+							<a href="/helpCenter/helpCenter.jsp?container=help-slblist" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a>
+						</th>
+						<th class="hidden-xs">服务地址
+							<a href="/helpCenter/helpCenter.jsp?container=help-slblist" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a></th>
+						<th class="hidden-xs">服务端口
+							<a href="/helpCenter/helpCenter.jsp?container=help-slblist" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a>
+						</th>
+						<th class="hidden-xs">所在可用区
+							<a href="/helpCenter/helpCenter.jsp?container=help-slblist" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a></th>
 						<th>状态</th>
 						<th class="hidden-xs">付费方式</th>
 						<th class="text-right">操作</th>

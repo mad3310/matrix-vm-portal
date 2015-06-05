@@ -42,7 +42,7 @@
 			</div>
 			<div class="col-sm-6 col-md-6 hidden-xs" style="margin-top: 35px;">
 				<div class="pull-right">
-					<span class="glyphicon glyphicon-paperclip font-disabled"></span><span class="font-disabled">使用限制和注意事项</span>
+					<a href="/helpCenter/helpCenter.jsp?container=product-SLBIntro"  target="_black"><span class="glyphicon glyphicon-paperclip "></span><span>SLB帮助中心</span></a>
 				</div>
 			</div>
 		</div>

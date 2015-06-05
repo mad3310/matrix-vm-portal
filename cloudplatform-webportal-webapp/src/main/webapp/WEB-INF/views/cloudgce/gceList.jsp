@@ -65,7 +65,7 @@
 						<th>状态</th>
 						<th class="hidden-xs">服务类型</th>
 						<th class="hidden-xs">访问地址
-							<a href="/helpCenter/helpCenter.jsp?container=help-gceAccess" data-toggle="tooltip" data-placement="top" title="点击查看'访问地址'介绍">
+							<a href="/helpCenter/helpCenter.jsp?container=help-gceAccess" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
 								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
 							</a>
 						</th>

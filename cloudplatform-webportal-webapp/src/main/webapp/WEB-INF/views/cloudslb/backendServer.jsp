@@ -26,6 +26,9 @@
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5 class="hidden-xs">负载均衡服务器池</h5>
+				<a href="/helpCenter/helpCenter.jsp?container=help-slbadservice"  target="_black" data-toggle="tooltip" data-placement="top" title="如何配置">
+					<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+				</a>
 				<span class="ng-binding hidden-xs">所在地域：北京</span>
 				<h5 class="hidden-sm hidden-md hidden-lg">SLB服务器池</h5>
 				<span class="ng-binding hidden-sm hidden-md hidden-lg">地域：北京</span>
