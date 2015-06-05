@@ -52,7 +52,7 @@ function queryByPage() {
 				var td2 = $("<td>-</td>");
 				var td3 = $("<td>-</td>");
 				var td4 = $("<td class='hidden-480'>"
-						+ array[i].retry
+						+ array[i].templateTaskDetail.retry
 						+ "</td>");
 				var td5 = $("<td class='hidden-480'>-</td>");
 				if(array[i].templateTaskDetail != undefined && array[i].templateTaskDetail != null){
