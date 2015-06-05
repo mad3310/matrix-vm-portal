@@ -23,7 +23,7 @@
                 <img class="img" src="${ctx}/static/img/help/product/8.jpg" width="190" height="60">
                 <ul class="list">
                     <li>冗余设计，无单点，可用性达99.99%</li>
-                    <li>根据应用负载进行弹性扩容</li>
+                    <li>根据应用负载进行弹性扩容(敬请期待...)</li>
                     <li>流量波动情况下不中断对外服务</li>
                 </ul>
             </div>
@@ -32,7 +32,6 @@
                 <img class="img" src="${ctx}/static/img/help/product/9.jpg" width="190" height="60">
                 <ul class="list">
                     <li>与传统模式相比成本下降60%</li>
-                    <li>免费使用私网类型实例</li>
                     <li>无需采购昂贵的设备，免运维</li>
                 </ul>
             </div>
@@ -40,8 +39,7 @@
                 <h3 class="title">安全</h3>
                 <img class="img" src="${ctx}/static/img/help/product/10.jpg" width="190" height="60">
                 <ul class="list">
-                    <li>LVS SYNPROXY技术防攻击能力</li>
-                    <li>结合云盾提供防DDoS攻击</li>
+                    <li>结合云盾提供防DDoS攻击(敬请期待...)</li>
                     <li>多用户资源隔离</li>
                 </ul>
             </div>
@@ -61,7 +59,7 @@
 			<div class="dispaly-4div">
 				<h3 class="">健康检查</h3>
 				<p class="">
-					对后端云服务器进行健康检查，自动屏蔽异常状态云服务器，恢复正常后自动解除屏蔽。</p>
+					对后端云服务器进行健康检查，自动屏蔽异常状态云服务器，恢复正常后自动解除屏蔽。(敬请期待...	)</p>
 			</div>
 			<div class="dispaly-4div">
 				<h3 class="">会话保持</h3>
@@ -82,8 +80,8 @@
 			<div class="help-cell cell">
 				<h4>操作指南</h4>
 				<ul class="link-list">
-					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=product-slbquikcrt" target="_blank" >SLB快速创建指南</a></li>
-					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-createGce" target="_blank" >常见问题</a></li>
+					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-slbquikcrt" target="_blank" >SLB快速创建指南</a></li>
+					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-createSlb" target="_blank" >常见问题</a></li>
 				</ul>
 			</div>
 		</div>

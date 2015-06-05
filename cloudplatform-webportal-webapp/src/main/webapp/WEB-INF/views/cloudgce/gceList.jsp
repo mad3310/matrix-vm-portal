@@ -64,7 +64,11 @@
 						<th class="hidden-xs">nginx代理应用名称</th>
 						<th>状态</th>
 						<th class="hidden-xs">服务类型</th>
-						<th class="hidden-xs">访问地址</th>
+						<th class="hidden-xs">访问地址
+							<a href="/helpCenter/helpCenter.jsp?container=help-gceAccess" target="_black" data-toggle="tooltip" data-placement="top" title="点击查看详细介绍">
+								<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+							</a>
+						</th>
 						<th class="hidden-xs">所在可用区</th>
 						<th class="hidden-xs">付费方式</th>
 						<th class="text-right">操作</th>

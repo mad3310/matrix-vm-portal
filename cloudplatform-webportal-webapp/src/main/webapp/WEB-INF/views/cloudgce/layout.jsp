@@ -40,6 +40,11 @@
 					</h3>
 				</div>
 			</div>
+			<div class="col-sm-6 col-md-6 hidden-xs" style="margin-top: 35px;">
+				<div class="pull-right">
+					<a href="/helpCenter/helpCenter.jsp?container=product-GCEIntro"  target="_black"><span class="glyphicon glyphicon-paperclip "></span><span>GCE帮助中心</span></a>
+				</div>
+			</div>
 		</div>
 		<!-- main-content-header end-->
 

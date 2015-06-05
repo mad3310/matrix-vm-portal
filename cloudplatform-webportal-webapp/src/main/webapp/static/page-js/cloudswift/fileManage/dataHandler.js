@@ -58,19 +58,19 @@ define(function(require,exports,module){
                                   +"</td>");
                           td3 = $("<td>"+filetype+"</td>");
                           if(array[i].bytes/Math.pow(2,30)>=1){//GB
-                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,30)+"GB</span></td>");
+                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,30)+"GB</span></td>");
                           }else if(array[i].bytes/Math.pow(2,20)>=1){//MB
-                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,20)+"MB</span></td>");
+                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,20)+"MB</span></td>");
                           }else if(array[i].bytes/Math.pow(2,10)>=1){//KB
-                            td5 = $("<td><span>"+array[i].bytes/Math.pow(2,10)+"KB</span></td>");
+                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,10)+"KB</span></td>");
                           }else{//B
-                            td5 = $("<td><span>"+array[i].bytes+"B</span></td>");
+                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes+"B</span></td>");
                           }
                           var hrefstr=$('#baseLocation').val()+array[i].name;
-                          td6= $("<td><a href='"+hrefstr+"' target='_blank'><span>"+hrefstr+"</span></a></td>");
+                          td6= $("<td class='hidden-xs'><a href='"+hrefstr+"' target='_blank'><span>"+hrefstr+"</span></a></td>");
                       }
                       var lasttime=array[i].last_modified;var indexT=lasttime.indexOf('T');var indexpoint=lasttime.indexOf('.');
-                      var td4 = $("<td>"
+                      var td4 = $("<td class='hidden-xs'>"
                             + "<span>"+lasttime.substring(0,indexT)+" "+lasttime.substring(indexT+1,indexpoint)+"</span>"
                             + "</td>");
                       

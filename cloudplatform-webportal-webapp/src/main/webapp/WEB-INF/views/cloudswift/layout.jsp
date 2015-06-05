@@ -9,50 +9,13 @@
     <input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
     <!-- <input class="hidden" value="702" name="cacheId" id="cacheId" type="text" /> -->
     <!-- 全局参数 end -->
-    <!-- top bar begin -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="min-height:40px;height:40px;">
-      <div class="container-fluid">
-        <div class="navbar-header">
-    <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
-     <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
-    <a class="navbar-brand color" href="${ctx}/list/oss" style="margin-left:0px;height:40px !important; font-size:13px"><i class="fa fa-database text-10"></i>&nbsp;开放存储服务OSS</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse pull-right">
-        <ul class="nav navbar-nav">
-            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle hlight" data-toggle="dropdown">${sessionScope.userSession.userName}<span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="javascript:void(0)">用户中心</a></li>
-                <li><a href="javascript:void(0)">我的订单</a></li>
-                <li><a href="javascript:void(0)">账户管理</a></li>
-                <li class="divider"></li>
-                <li><a href="${ctx}/account/logout">退出</a></li>
-              </ul>
-            </li>
-            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-lock"></span></a></li>
-            <li><a href="javascript:void(0)" class="hlight"><span class="glyphicon glyphicon-pencil"></span></a></li>
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
-<!-- top bar end -->
-
-<!-- navbar begin -->
-<div class="navbar navbar-default mt40" style="margin-bottom: 0px !important;">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="javascript:void(0)">开放存储服务<font color="#FF9C17">OSS</font></a>
-    </div>
-  </div>
-</div>
-<!-- navbar end -->
+<%@ include file="../../layouts/header.jsp"%>
 
 <!-- main-content begin-->
 <div class="container-fluid">
     <div class="row main-header">
         <!-- main-content-header begin -->
-        <div class="col-sm-12 col-md-6">
+        <div class="col-xs-10 col-sm-6 col-md-6">
             <div class="pull-left">
                 <h3>
                     <span class="fa  fa-cubes"></span>
@@ -67,10 +30,10 @@
                 </h3>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-xs-2 col-sm-6 col-md-6">
             <div class="pull-right">
                 <h3>
-                    <small>
+                    <small class='hidden-xs'>
                         <span class="pd-r8">
                             <span>功能指南</span>
                             <a href="/helpCenter/helpCenter.jsp?container=help-OSSuse" target="_black" style="text-decoration:none;">
@@ -82,14 +45,9 @@
                     </small>
                      <small>
                         <span>
-                            <button type="button" class="btn btn-success btn-md" data-toggle='modal' data-target='#myModal'>配  置</button>
+                            <button type="button" class="btn btn-success btn-md" data-toggle='modal' data-target='#myModal'><span class='hidden-xs'>配  置</span><span class='hidden-sm hidden-md hidden-lg glyphicon glyphicon-cog'></span></button>
                         </span>
                     </small>
-                  <!--   <small>
-                        <span>
-                            <button class="btn-default btn btn-sm glyphicon glyphicon-list disabled"></button>
-                        </span>
-                    </small> -->
                 </h3>
             </div>
         </div>
@@ -99,7 +57,7 @@
     <!-- main-content-header end-->
     <div class="row">
         <!-- main-content-center-begin -->
-        <nav class="col-sm-2 col-md-2">
+        <nav id="sidebar" class="col-sm-2 col-md-2 nav-sidebar-div">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/ossBaseInfo/${swiftId}" href="javascript:void(0)">基本信息</a></li>
@@ -114,9 +72,9 @@
                 </ul>
             </div>
         </nav>
-        <div class="embed-responsive embed-responsive-16by9 col-sm-10" id="frame-content-div">
+        <div class="embed-responsive embed-responsive-16by9 col-sm-10 col-xm-12" id="frame-content-div">
           <!-- <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/baseInfo/${dbId}"></iframe> -->
-          <iframe class="embed-responsive-item" id = "frame-content" src="${ctx}/detail/ossBaseInfo/${swiftId}"></iframe>
+          <iframe class="embed-responsive-item" id="frame-content" src="${ctx}/detail/ossBaseInfo/${swiftId}" frameBorder=0 scrolling="no"></iframe>
         </div>
     </div>
 </div>
@@ -139,15 +97,15 @@
 	    			</div>
 	    		</div> -->
 	    		<div class="form-group clearfix">
-	    			<label class="col-sm-3 control-label text-muted" style="font-weight:normal">公开（匿名只读）:</label>
-	    			<div class="col-sm-9 clearfix">
+	    			<label class="col-xs-12 col-sm-3 control-label text-muted" style="font-weight:normal">公开（匿名只读）:</label>
+	    			<div class="col-xs-12 col-sm-9 clearfix">
 	    				<div class="pull-left"><input id="level-public" name="visibilityLevel" type="radio" value="PUBLIC"><label>PUBLIC</label></div>
 	    				<div class="pull-left padding-left-32"><input id="level-private" name="visibilityLevel" type="radio" value="PRIVATE"><label>PRIVATE</label></div>
 	    			</div>
 	    		</div>
-	    		<div class="form-group clearfix">
-	    			<label class="col-sm-3 control-label text-muted" style="font-weight:normal">配额 :</label>
-	    			<div class="col-sm-9 clearfix">
+	    		<div class="form-group clearfix  hidden-xs">
+	    			<label class="col-xs-12 col-sm-3 control-label text-muted" style="font-weight:normal">配额 :</label>
+	    			<div class="col-xs-12 col-sm-9 clearfix">
 	    				<div class="self-dragBar"></div><!-- 拖动条生成容器 -->	
 	    			</div>
 	    		</div>
@@ -168,6 +126,7 @@
     </div>
   </div>
 </div><!-- modal end -->
+  <%@ include file="../../layouts/rToolbar.jsp"%>
 </body>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

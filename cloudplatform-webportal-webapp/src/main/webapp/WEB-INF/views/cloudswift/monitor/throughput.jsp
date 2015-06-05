@@ -15,15 +15,15 @@
 <link rel="stylesheet" href="${ctx}/static/css/ui-css/cbase.css" />
 </head>
 <style>
- .bk-select-arrow {position: absolute;left:200px;top: -35px;float: right;display: inline;width: 0;height: 0;border: solid 6px transparent;border-top-color: #fff;margin: 15px 0 0 10px;-webkit-transform-origin: 50% 20% 0;-moz-transform-origin: 50% 20% 0;-ms-transform-origin: 50% 20% 0;-o-transform-origin: 50% 20% 0;-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg);-ms-transform: rotate(0deg);-o-transform: rotate(0deg);
+/* .bk-select-arrow {position: absolute;left:200px;top: -35px;float: right;display: inline;width: 0;height: 0;border: solid 6px transparent;border-top-color: #fff;margin: 15px 0 0 10px;-webkit-transform-origin: 50% 20% 0;-moz-transform-origin: 50% 20% 0;-ms-transform-origin: 50% 20% 0;-o-transform-origin: 50% 20% 0;-webkit-transform: rotate(0deg);-moz-transform: rotate(0deg);-ms-transform: rotate(0deg);-o-transform: rotate(0deg);
 }
 .btn-search{vertical-align:top;}
-.chart{padding:10px;}
+.chart{padding:10px;}*/
 </style>
 <body>
 <!-- 全局参数 start -->
 	<input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
-	<div class="se-heading">
+	<div class="se-heading m-pr10">
 		<div class="pull-left">
 			<h5 class="">吞吐量</h5>
 		</div>
@@ -48,8 +48,8 @@
 		</div>
 	</div>
 	<div class="monitor-charts">
-		<div class="chart-content" style="width:100%">
-			<div id="chart-container" class="chart-container">							
+		<div class="chart-content">
+			<div id="chart-container" class="chart-container chart-container chart-container-xs">							
 			</div>
 		</div>
 		<div class="footer" style="width:100%;height:200px;">						

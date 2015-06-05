@@ -12,7 +12,7 @@
 .bk-slider .bk-slider-container{padding:0;}
 .bk-slider .bk-slider-l1 {margin-left:-3px;}
 </style>
-	<%@include file='header.jsp' %>
+	<%@ include file="../../layouts/header.jsp"%>
 
 	<!-- navbar begin -->
 	<div class="navbar navbar-default mt40"

@@ -8,7 +8,10 @@ define(function(require){
     var cn = new common();
     
     cn.Tooltip();
-    
+    cn.initNavbarMenu([{
+			name : "开放存储服务 OSS",
+			herf : "/list/oss"
+		}]);
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
@@ -50,7 +53,7 @@ define(function(require){
 		size:"small",
     	alignment:'right',
 		bootstrapMajorVersion:3,
-		numberOfPages: 5,
+		numberOfPages: 1,
 		onPageClicked: function(e,originalEvent,type,page){
 			cn.currentPage = page;
         	asyncData(page);

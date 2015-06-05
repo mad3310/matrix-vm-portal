@@ -49,46 +49,50 @@ define(function(require,exports,module){
                     
                     var td3 = '';                
                     if(array[i].status == 2){
-                    	td3 = $("<td>"
+                    	td3 = $("<td class='hidden-xs'>"
                     			+ "<div class=\"progress\" id= \"prg"+ array[i].id + "\">"
                     			+ "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 0;\">"
                     			+ "</div>"
                     			+ "</div>"
                     			+ "<span class=\"progress-info\"></span>"
                                 + "<input class=\"hide\" type=\"text\" name=\"progress_db_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"
-                                + "</td>");
+                                + "</td><td class='hidden-sm hidden-md hidden-lg'>"+cn.TranslateStatus(array[i].status)+"</td>");
                     }else{
                     	td3 = $("<td>"
                                 + cn.TranslateStatus(array[i].status)
                                 +"</td>");
                     }
-                    var td4=$("<td>"
+                    var td4=$("<td class='hidden-xs'>"
                             + "<span>实例类型</span>"
                             + "</td>");
                     if(array[i].bucketType==0){
-                      td4=$("<td>"
+                      td4=$("<td class='hidden-xs'>"
                             + "<span>持久化</span>"
                             + "</td>");
                     }else if(array[i].bucketType==1){
-                      td4=$("<td>"
+                      td4=$("<td class='hidden-xs'>"
                             + "<span>非持久化</span>"
                             + "</td>");
                     }
                     // var td5 = $('<td><span><div class="progress" style="margin-bottom:0;"><div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%"><span class="sr-only">40%</span></div></div></span></td>');
-                    var td5=$("<td><span>"+array[i].ramQuotaMB/1024+"GB</span></td>");
-                    var td6 = $("<td><span >北京</span></td>");
-                    var td7 = $("<td><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
+                    var td5=$("<td class='hidden-xs'><span>"+array[i].ramQuotaMB/1024+"GB</span></td>");
+                    var td6 = $("<td class='hidden-xs'><span >北京</span></td>");
+                    var td7 = $("<td class='hidden-xs'><span>"+array[i].hcluster.hclusterNameAlias+"</span></td>");
                     if(array[i].cbaseCluster == null){//服务集群array[i].hcluster.***
-                    	var td8 = $("<td></td>");
+                    	var td8 = $("<td class='hidden-xs'></td>");
                     }else{
-                    	var td8 = $("<td><span>"+cn.FilterNull(array[i].cbaseCluster.cbaseClusterName)+"</span></td>")
+                    	var td8 = $("<td class='hidden-xs'><span>"+cn.FilterNull(array[i].cbaseCluster.cbaseClusterName)+"</span></td>")
                     }
-                    var td9 = $("<td><span>"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></td>")
-                    var td10 = $("<td><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
+                    var td9 = $("<td class='hidden-xs'><span>"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></td>")
+                    var td10 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td11 = $("<td><a href=\"/detail/cache/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|扩容|续费</span></td>");
+                    	var td11 = $("<td class='hidden-xs'><a href=\"/detail/cache/"+array[i].id+"\">管理</a><span class=\"text-explode font-disabled\">|扩容|续费</span></td>"
+                        +"<td class='hidden-sm hidden-md hidden-lg'><a href=\"/detail/cache/"+array[i].id+"\"><span class='glyphicon glyphicon-cog'></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-shopping-cart'></i></span></a></td>"
+                        );
                     }else{
-                    	var td11 = $("<td><span class=\"text-explode font-disabled\">管理|扩容|续费</span></td>");
+                    	var td11 = $("<td class='hidden-xs'><span class=\"text-explode font-disabled\">管理|扩容|续费</span></td>"
+                        +"<td class='hidden-sm hidden-md hidden-lg'><a href><span class='glyphicon glyphicon-cog text-explode font-disabled'></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-upload'></i></span></a>&nbsp;&nbsp;<a><span class='text-explode font-disabled'><i class='fa fa-shopping-cart'></i></span></a></td>"
+                        );
                     }
                     var tr = $("<tr class='data-tr'></tr>");
                     

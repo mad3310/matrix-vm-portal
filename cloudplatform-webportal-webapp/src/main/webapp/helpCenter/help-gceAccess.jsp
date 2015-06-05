@@ -11,7 +11,7 @@
         <p>列表、nginx代理服务基本信息页中给出的访问地址，是运行nginx的container的Ip，应用基本信息页中的访问地址，是运行容器的container的Ip</p>
         <p>对应上图中的例子，列表中<span>【172.17.0.163:8001&nbsp;&nbsp;172.17.2.192:8001】</span>是运行nginx的container的Ip。</p>
         <p><span>基本信息页中给出的IP,【172.17.0.157:8080&nbsp;&nbsp;172.17.2.191:8080 】</span>，是运行容器的container的Ip。</p>
-        <p>可以参考<a>GCE服务架构</a>，更清晰的理解GCE的整个服务架构</p>
+        <p>可以参考<a href="/helpCenter/helpCenter.jsp?container=product-GCEArch">GCE服务架构</a>，更清晰的理解GCE的整个服务架构</p>
     </div>
 <!-- </div> -->
 <script>

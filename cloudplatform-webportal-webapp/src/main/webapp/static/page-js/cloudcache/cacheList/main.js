@@ -4,7 +4,10 @@ define(function(require){
     var cn = new common();
     
     cn.Tooltip();
-    
+    cn.initNavbarMenu([{
+		name : "开放缓存服务 OCS",
+		herf : "/list/cache"
+	}]);
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
@@ -46,7 +49,7 @@ define(function(require){
 		size:"small",
     	alignment:'right',
 		bootstrapMajorVersion:3,
-		numberOfPages: 5,
+		numberOfPages: 1,
 		onPageClicked: function(e,originalEvent,type,page){
 			cn.currentPage = page;
         	asyncData(page);

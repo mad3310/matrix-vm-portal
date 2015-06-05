@@ -88,7 +88,7 @@
 			<div class="help-cell cell">
 				<h4>操作指南</h4>
 				<ul class="link-list">
-					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=product-gcequikcrt" target="_blank" >GCE快速创建指南</a></li>
+					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-gcequikcrt" target="_blank" >GCE快速创建指南</a></li>
 					<li><a class="grey-font" href="${ctx}/helpCenter/helpCenter.jsp?container=help-createGce" target="_blank" >常见问题</a></li>
 				</ul>
 			</div>

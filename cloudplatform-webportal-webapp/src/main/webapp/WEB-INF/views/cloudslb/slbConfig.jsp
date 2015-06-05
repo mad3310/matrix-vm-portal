@@ -26,6 +26,9 @@
 		<div class="se-heading" id="headingOne">
 			<div class="pull-left">
 				<h5>负载均衡服务配置</h5>
+				<a href="/helpCenter/helpCenter.jsp?container=help-slblisten"  target="_black" data-toggle="tooltip" data-placement="top" title="如何配置">
+					<span class="glyphicon glyphicon-question-sign text-muted" ></span>
+				</a>
 			</div>
 		</div>
 		<div class="table-responsive">
