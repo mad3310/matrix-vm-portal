@@ -19,6 +19,7 @@
 		
 		<association property="templateTaskDetail" javaType="TemplateTaskDetail">
 			<result column="NAME" property="name" />
+			<result column="DETAIL_RETRY" property="retry" />
 			<result column="DESCN" property="descn" />
 		</association>
 		<association property="templateTask" javaType="TemplateTask">
@@ -81,7 +82,7 @@
 	
 	<select id="selectByTemplateTaskId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select 
-		<include refid="Base_Column_List" />,ttd.NAME,ttd.DESCN,tt.TASK_TYPE
+		<include refid="Base_Column_List" />,ttd.NAME,ttd.RETRY DETAIL_RETRY,ttd.DESCN,tt.TASK_TYPE
 		from WEBPORTAL_TEMPLATE_TASK_CHAIN ttc
 		left join WEBPORTAL_TEMPLATE_TASK_DETAIL ttd on ttd.ID = ttc.TASK_DETAIL_ID
 		left join WEBPORTAL_TEMPLATE_TASK tt on tt.ID = ttc.TASK_ID
