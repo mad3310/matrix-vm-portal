@@ -679,6 +679,7 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
 	                            即开即用、稳定可靠、可弹性在线伸缩、完善的性能监控体系、并提供专业的数据库备份、恢复及优化方案
 <br>
 	                        </p>
+	                        <a href="/helpCenter/helpCenter.jsp?container=help-createDb" target="_black"><span class="glyphicon glyphicon-hand-right"></span>了解更多</a>
 	                        <ul class="screenshot">
 	                            <li data-position="right middle">
 	                                <a  title="数据库RDS">
@@ -869,7 +870,7 @@ img.screen.active,.updown-tip.active{opacity: 1;transform: translateX(0);}
                         </ul>
                         <article>
                           OSS为open storage service（开放存储服务），用户使用http请求即可使用存储服务，通过matrix、swiftclient及cyberduck客户端工具使用。<br>
-                          安全稳定，数据可靠&nbsp;海量存储&nbsp;性能卓越&nbsp;弹性计费
+                          安全稳定，数据可靠&nbsp;海量存储&nbsp;性能卓越&nbsp;弹性计费<a href="/helpCenter/helpCenter.jsp?container=help-OSSuse" target="_black"><span class="glyphicon glyphicon-hand-right"></span>了解更多</a>
                         </article>
                     </div>
                   </div>
