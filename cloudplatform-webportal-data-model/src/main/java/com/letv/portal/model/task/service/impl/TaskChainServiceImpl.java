@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.task.ITaskChainDao;
+import com.letv.portal.model.DbModel;
+import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.gce.GceCluster;
@@ -24,6 +26,8 @@ import com.letv.portal.model.task.TaskChainIndex;
 import com.letv.portal.model.task.TaskExecuteStatus;
 import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITaskChainService;
+import com.letv.portal.service.IDbService;
+import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.cbase.ICbaseBucketService;
 import com.letv.portal.service.cbase.ICbaseClusterService;
 import com.letv.portal.service.gce.IGceClusterService;
@@ -55,7 +59,11 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 	private ICbaseClusterService cbaseClusterService;
 	@Autowired
 	private ITaskChainIndexService taskChainIndexService;
-
+	@Autowired
+	private IDbService dbService;
+	@Autowired
+	private IMclusterService mclusterService;
+	
 	public TaskChainServiceImpl() {
 		super(TaskChain.class);
 	}
@@ -93,6 +101,23 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 
 	}
 
+	private int getStepByTaskChainIndexId(Long taskChainIndexId) {
+		List<TaskChain> taskChains = this
+				.selectAllChainByIndexId(taskChainIndexId);
+
+		if (taskChains.get(taskChains.size() - 1).getStatus() == TaskExecuteStatus.SUCCESS) {
+			return 0;// 返回创建成功
+		}
+		for (TaskChain taskChain : taskChains) {
+			if (taskChain.getStatus() == TaskExecuteStatus.FAILED) {
+				return -1;// 返回创建失败
+			} else if (taskChain.getStatus() == TaskExecuteStatus.DOING) {
+				return taskChain.getExecuteOrder();// 返回此步所在任务中的顺序
+			}
+		}
+		return 1;// 都没有，则认为正在执行第一步
+	}
+	
 	@Override
 	public int getStepByGceId(Long gceId) {
 		if (gceId == null)
@@ -124,24 +149,6 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 				.selectByServiceAndClusterName(serviceName, clusterName);
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
-
-	private int getStepByTaskChainIndexId(Long taskChainIndexId) {
-		List<TaskChain> taskChains = this
-				.selectAllChainByIndexId(taskChainIndexId);
-
-		if (taskChains.get(taskChains.size() - 1).getStatus() == TaskExecuteStatus.SUCCESS) {
-			return 0;// 返回创建成功
-		}
-		for (TaskChain taskChain : taskChains) {
-			if (taskChain.getStatus() == TaskExecuteStatus.FAILED) {
-				return -1;// 返回创建失败
-			} else if (taskChain.getStatus() == TaskExecuteStatus.DOING) {
-				return taskChain.getExecuteOrder();// 返回此步所在任务中的顺序
-			}
-		}
-		return 1;// 都没有，则认为正在执行第一步
-	}
-
 	@Override
 	public int getStepByCacheId(Long cacheId) {
 		if (cacheId == null)
@@ -153,6 +160,21 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 				.selectById(bucket.getCbaseClusterId());
 		String serviceName = bucket.getBucketName();
 		String clusterName = cbaseCluster.getCbaseClusterName();
+		TaskChainIndex taskChainIndex = this.taskChainIndexService
+				.selectByServiceAndClusterName(serviceName, clusterName);
+		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
+	}
+
+	@Override
+	public int getStepByDbId(Long dbId) {
+		if (dbId == null)
+			throw new ValidateException("参数不合法");
+		DbModel db = this.dbService.selectById(dbId);
+		if (db == null)
+			throw new ValidateException("参数不合法");
+		MclusterModel mcluster = this.mclusterService.selectById(db.getMclusterId());
+		String serviceName = db.getDbName();
+		String clusterName = mcluster.getMclusterName();
 		TaskChainIndex taskChainIndex = this.taskChainIndexService
 				.selectByServiceAndClusterName(serviceName, clusterName);
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());

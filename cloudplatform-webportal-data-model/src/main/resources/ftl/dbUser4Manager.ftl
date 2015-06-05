@@ -34,27 +34,22 @@ p {
 <body>
 <!-- Table goes in the document BODY -->
 
-<h3>${userName}您好：</h3>
-<p>您申请的数据库用户已删除成功。以下为相关删除信息：</p>
+<h3>管理员您好：</h3>
+<p>矩阵系统用户数据库用户${type}成功。以下为相关创建信息：</p>
 <table class="gridtable" style="margin: 20px">
 	<tr>
 		<th width="100px">所属数据库</th>
 		<th width="100px">用户名</th>
-		<th width="100px">密码</th>
-		<th width="100px">访问IP</th>
+		<th width="300px">访问IP</th>
 		<th width="100px">最大并发量</th>
 	</tr>
 	<tr>
 		<td>${dbName}</td>
 		<td>${dbUserName}</td>
-		<td>${dbUserPassword}</td>
-		<td>${ip}</td>
+		<td align="left">${ip}</td>
 		<td>${maxConcurrency}</td>
 	</tr>
 </table>
-<p>本邮件由系统发出，请勿回复。<br/>如有问题，联系系统管理员。</p>
 <hr/>
-<p>乐视云计算公司<br/>
-PAAS云开发团队</p>
 </body>
 </html>

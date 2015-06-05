@@ -322,6 +322,15 @@ public class HttpClient {
 		httpclient.getConnectionManager().shutdown();
 		return body;
 	}
+	public static String detele(String url, String username, String password,int connectionTimeout, int soTimeout) {
+		DefaultHttpClient httpclient = getHttpclient(connectionTimeout,soTimeout,username, password);
+		String body = null;
+		logger.info("create httpdelete:" + url);
+		HttpDelete delete = new HttpDelete(url);
+		body = invoke(httpclient, delete);
+		httpclient.getConnectionManager().shutdown();
+		return body;
+	}
 
 	private static HttpPost postForm(String url, Map<String, String> params) {
 		HttpPost httpost = new HttpPost(url);

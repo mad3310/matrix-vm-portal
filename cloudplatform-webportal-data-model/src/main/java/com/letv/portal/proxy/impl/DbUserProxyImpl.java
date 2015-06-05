@@ -20,6 +20,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.enumeration.DbUserRoleStatus;
+import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -72,19 +73,13 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 		StringBuffer ids = new StringBuffer();
 		for (DbUserModel dbUser : users) {
 			dbUser.setCreateUser(sessionService.getSession().getUserId());
+			dbUser.setStatus(DbUserStatus.DEFAULT.getValue());
 			this.dbUserService.insert(dbUser);
 			ids.append(dbUser.getId()).append(",");
 		}
 		this.buildTaskService.buildUser(ids.substring(0, ids.length()-1));
 	}
-	
-	public void updateDbUser(DbUserModel dbUserModel){
-		DbUserModel dbUser = this.selectById(dbUserModel.getId());
-		if(dbUser == null)
-			return;
-		this.dbUserService.update(dbUserModel);
-		this.buildTaskService.updateUser(dbUserModel.getId().toString());
-	}
+
 	
 	@Override
 	public void saveAndBuild(DbUserModel dbUserModel, String ips, String types) {
@@ -166,9 +161,13 @@ public class DbUserProxyImpl extends BaseProxyImpl<DbUserModel> implements
 	
 	@Override
 	public void updateDbUser(List<DbUserModel> users) {
+		StringBuffer ids = new StringBuffer();
 		for (DbUserModel dbUser : users) {
-			this.updateDbUser(dbUser);
+			this.dbUserService.update(dbUser);
+			ids.append(dbUser.getId()).append(",");
 		}
+		this.buildTaskService.updateUser(ids.toString());
+		
 	}
 	
 	public void deleteDbUser(String dbUserId){

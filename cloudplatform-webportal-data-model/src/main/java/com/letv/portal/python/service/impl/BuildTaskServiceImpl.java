@@ -31,6 +31,7 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.BuildStatus;
 import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.enumeration.HostType;
 import com.letv.portal.enumeration.MclusterStatus;
@@ -314,130 +315,89 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			} 
 		}
 	}
-    
 
 	@Override
 	public void buildUser(String ids) {
+		this.buildUser(ids, "create");
+	}
+	@Override
+	public void updateUser(String ids) {
+		this.buildUser(ids,"update");
+	}
+	@Override
+	public void deleteDbUser(String ids) {
+		this.buildUser(ids,"delete");
+	}
+	private void buildUser(String ids,String type) {
+		if(StringUtils.isNullOrEmpty(ids))
+			throw new ValidateException("参数不合法");
 		String[] str = ids.split(",");
-		String resultMsg = "";
-		String detail = "";
+	
+		List<DbUserModel> buildResult = new ArrayList<DbUserModel>();
+		List<DbUserModel> errorResult = new ArrayList<DbUserModel>();
 		for (String id : str) {
 			//查询所属db 所属mcluster 及container数据
 			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
 			if(dbUserModel == null) 
-				throw new ValidateException("参数不合法，相关数据不存在。");
+				throw new ValidateException("参数不合法");
 			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
-			
 			if(params == null || params.isEmpty()) 
-				throw new ValidateException("参数不合法，相关数据不存在。");
-				
-			String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
-			
-			
-			if(!StringUtils.isNullOrEmpty(result) && analysisResult(transResult(result))) {
-				resultMsg="成功";
-				dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
-				Map response = (Map) transResult(result).get("response");
-				String userPwd = (String) response.get("user_password");
-				
-				Map<String,Object> emailParams = new HashMap<String,Object>();
-				emailParams.put("dbUserName", dbUserModel.getUsername());
-				emailParams.put("dbUserPassword", dbUserModel.getPassword());
-				emailParams.put("ip", dbUserModel.getAcceptIp());
-				emailParams.put("dbName", params.get("dbName"));
-				emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
-				this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"createDbUser.ftl");
+				throw new ValidateException("参数不合法");
+			String result = "";
+			if("delete".equals(type)) {
+				result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 			} else {
-				resultMsg="失败";
-				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
+				result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 			}
-			
-			this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
-			this.dbUserService.updateStatus(dbUserModel);
-		}
-		
-	}
-	@Override
-	public void updateUser(String ids) {
-		if(StringUtils.isNullOrEmpty(ids))
-			return;
-		String[] str = ids.split(",");
-		String resultMsg = "";
-		String detail = "";
-		
-		for (String id : str) {
-			//查询所属db 所属mcluster 及container数据
-			DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-			if(dbUserModel == null)
-				continue;
-			Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
-			try {
-				String result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
-				if(analysisResult(transResult(result))) {
-					resultMsg="成功";
-					dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
-					Map<String,Object> emailParams = new HashMap<String,Object>();
-					emailParams.put("dbUserName", dbUserModel.getUsername());
-					emailParams.put("dbUserPassword", dbUserModel.getPassword());
-					emailParams.put("ip", dbUserModel.getAcceptIp());
-					emailParams.put("dbName", params.get("dbName"));
-					emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
-					this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"updateDbUser.ftl");
-				} else {
-					resultMsg="失败";
-					dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
-				}
-			} catch (Exception e) {
-				resultMsg="失败";
-				detail = e.getMessage();
-				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
-			} finally {
-				this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "修改", resultMsg, detail, ERROR_MAIL_ADDRESS);
-				this.dbUserService.updateStatus(dbUserModel);
+			if(analysisResult(transResult(result))) {
+				//修改成功
+				dbUserModel.setStatus(DbUserStatus.NORMAL.getValue());
+				this.dbUserService.updateDbUser(dbUserModel);
+			} else {
+				errorResult.add(dbUserModel);
 			}
+			buildResult.add(dbUserModel);
 		}
-		
-	}
-	/**
-	 * Methods Name: deleteDbUser <br>
-	 * Description: 删除 DbUser<br>
-	 * @author name: wujun
-	 * @param dbUserId
-	 */
-	@Override
-	public void deleteDbUser(String ids){
-		String[] str = ids.split(",");	
-		String resultMsg = "";
-		String detail = "";
-		
-		for (String id : str) {
-		    DbUserModel dbUserModel = this.dbUserService.selectById(Long.parseLong(id));
-		    if(DbStatus.NORMAL.getValue() == dbUserModel.getStatus()) {
-		    	Map<String,Object> params = this.dbUserService.selectCreateParams(Long.parseLong(id),isSelectVip(dbUserModel.getDbId()));
-		    	try {
-		    		String result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
-		    		if(analysisResult(transResult(result))) {
-		    			resultMsg="用户删除成功";
-		    			Map<String,Object> emailParams = new HashMap<String,Object>();
-						emailParams.put("dbUserName", dbUserModel.getUsername());
-						emailParams.put("dbUserPassword", "-");
-						emailParams.put("ip", dbUserModel.getAcceptIp());
-						emailParams.put("dbName", params.get("dbName"));
-						emailParams.put("maxConcurrency", dbUserModel.getMaxConcurrency());
-						this.email4User(emailParams,((BigInteger)params.get("createUser")).longValue(),"deleteDbUser.ftl");
-		    		} else {
-		    			resultMsg="用户删除失败";
-		    		}
-		    	} catch (Exception e) {
-		    		detail = e.getMessage();
-		    		resultMsg="用户删除失败";
-		    	}finally{
-		    		this.buildResultToMgr("DB数据库("+params.get("dbName")+")用户" + dbUserModel.getUsername() + "删除", resultMsg, detail, ERROR_MAIL_ADDRESS);
-		    	}
-		    }
+		if(!errorResult.isEmpty()) {
+			for (DbUserModel dbUserModel : buildResult) {
+				dbUserModel.setStatus(DbUserStatus.BUILDFAIL.getValue());
+				this.dbUserService.updateDbUser(dbUserModel);
+			}
+			DbModel db = this.dbService.selectById(errorResult.get(0).getDbId());
+			this.buildResultToMgr("DB数据库("+db.getDbName()+")用户" + errorResult.get(0).getUsername() + " "+type +"失败", "", "call python api failed", ERROR_MAIL_ADDRESS);
+		} else {
+			this.sendEmail4DbUserBuild(buildResult,type);
 		}
 	}
-	
+	private void sendEmail4DbUserBuild(List<DbUserModel> buildResult,String type) {
+		Map<String,Object> emailParams = new HashMap<String,Object>();
+		StringBuffer ipAndRole = new StringBuffer();
+		for (int i = 0; i < buildResult.size(); i++) {
+			DbUserModel dbUser = buildResult.get(i);
+			if(i == 0) {
+				DbModel db = this.dbService.selectById(dbUser.getDbId());
+				emailParams.put("type", type);
+				emailParams.put("dbUserName", dbUser.getUsername());
+				emailParams.put("dbUserPassword", dbUser.getPassword());
+				emailParams.put("dbName", db.getDbName());
+				emailParams.put("maxConcurrency", dbUser.getMaxConcurrency());
+			}
+			ipAndRole.append(dbUser.getAcceptIp()).append(":").append(getUserRole(dbUser.getType())).append("<br>");
+		}
+		emailParams.put("ip",ipAndRole.toString());
+		this.email4User(emailParams,buildResult.get(0).getCreateUser(),"dbUser.ftl");
+		this.email4User(emailParams,buildResult.get(0).getCreateUser(),"dbUser4Manager.ftl");
+	}
+	private String getUserRole(Integer roleId) {
+		if(DbUserRoleStatus.MANAGER.getValue().equals(roleId))
+			return "管理员";
+		if(DbUserRoleStatus.WR.getValue().equals(roleId))
+			return "读写用户";
+		if(DbUserRoleStatus.RO.getValue().equals(roleId))
+			return "只读用户";
+		return "";
+	}
+
 	@Override
 	public boolean initContainer(MclusterModel mclusterModel,Long dbId) {
 		
@@ -685,7 +645,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private boolean analysisResult(Map result){
 		boolean flag = false;
 		Map meta = (Map) result.get("meta");
-		if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
+		if(null!=meta &&Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")))) {
 			flag = true;
 		} 
 		return flag;
