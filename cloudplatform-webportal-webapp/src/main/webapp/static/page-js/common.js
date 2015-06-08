@@ -979,7 +979,7 @@ define(function(require,exports,module){
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
-        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
         }
     }

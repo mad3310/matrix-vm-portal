@@ -16,7 +16,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand color" href="${ctx}/dashboard" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
+        <a class="navbar-brand color" href="${ctx}/" style="padding-top:2px;height:40px !important;"><img src="${ctx}/static/img/logo.png"/></a>
         <a class="navbar-brand color top-bar-btn" href="${ctx}/dashboard" style="white-space:nowrap; font-size:13px"><i class="fa fa-home text-20"></i></a>
       </div>
       <div id="navbar" class="navbar-collapse collapse pull-right mobile-nav">
