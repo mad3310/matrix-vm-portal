@@ -49,9 +49,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Autowired
 	private IMonitorService monitorService;
 	@Autowired
-	private IMonitorService monitorServiceByJdbc;
-	
-	@Autowired
 	private IBuildTaskService buildTaskService;
 	
 	@Autowired
@@ -141,6 +138,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public List<MonitorViewYModel> getMonitorViewData(Long mclusterId,Long chartId, Integer strategy) {
 		return this.monitorService.getMonitorViewData(mclusterId, chartId, strategy);
 	}
+	
 	@Override
 	@Async
 	public void deleteOutData() {
@@ -152,37 +150,46 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		cal.add(Calendar.MONTH, -1);    //得到前一个月
 		long date = cal.getTimeInMillis();
 		Date monthAgo = new Date(date);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
 		for (MonitorIndexModel monitorIndexModel : indexs) {
-			
-			//get max id and min id from table where monitor_date<monthAgo
-			//for in  min and max, delete every 5000 by id.
-			
-			map.put("dbName", monitorIndexModel.getDetailTable());
-			map.put("monitorDate", monthAgo);
-			List<Map<String,Object>> ids = this.monitorService.selectExtremeIdByMonitorDate(map);
-			if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
-				continue;
-			}
-			Map<String, Object> extremeIds = ids.get(0);
-			Long max = ((BigInteger)extremeIds.get("maxId")).longValue();
-			Long min = ((BigInteger)extremeIds.get("minId")).longValue();
-			if(max == null || max == 0 || max == min)
-				return;
-			Long j = min;
-			for (Long i = min; i <= max; i+=100) {
-				j = i-100;
-				map.put("min", j);
-				map.put("max", i);
-//				this.monitorService.deleteOutDataByIndex(map);
-				this.monitorServiceByJdbc.deleteOutDataByIndex(map);
-			}
-			map.put("min", max-100);
-			map.put("max", max);
-			this.monitorServiceByJdbc.deleteOutDataByIndex(map);
+			this.deleteOutData(monitorIndexModel,monthAgo);
 		}
 	}
+	
+	@Override
+	@Async
+	public void deleteOutData(MonitorIndexModel monitorIndexModel,Date date) {
+		//get max id and min id from table where monitor_date<monthAgo
+		//for in  min and max, delete every 5000 by id.
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dbName", monitorIndexModel.getDetailTable());
+		map.put("monitorDate", date);
+		List<Map<String,Object>> ids = this.monitorService.selectExtremeIdByMonitorDate(map);
+		if(ids.isEmpty() || ids.get(0) == null || ids.get(0).isEmpty()) {
+			return;
+		}
+		Map<String, Object> extremeIds = ids.get(0);
+		Long max = ((BigInteger)extremeIds.get("maxId")).longValue();
+		Long min = ((BigInteger)extremeIds.get("minId")).longValue();
+		if(max == null || max == 0 || max == min)
+			return;
+		Long j = min;
+		for (Long i = min; i <= max; i+=100) {
+			j = i-100;
+			map.put("min", j);
+			map.put("max", i);
+			try {
+				this.monitorService.deleteOutDataByIndex(map);
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+		}
+		map.put("min", max-100);
+		map.put("max", max);
+		this.monitorService.deleteOutDataByIndex(map);
+	}
+	
+	
 	@Override
 	public List<MonitorViewYModel> getData(String type, Long serverId,Long chartId, Integer strategy, boolean isTimeAveraging,int format) {
 		if("RDS".equals(type.toUpperCase()))
