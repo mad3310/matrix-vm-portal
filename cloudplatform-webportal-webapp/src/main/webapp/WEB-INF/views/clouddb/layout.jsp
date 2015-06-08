@@ -56,7 +56,7 @@
                     </small>
                     <small>
                         <span>
-                            <button class="btn-warning btn btn-sm disabled">内外网切换</button>
+                            <button class="btn-success btn btn-sm">登录数据库</button>
                         </span>
                     </small>
                     <small>
