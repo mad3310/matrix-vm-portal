@@ -39,8 +39,8 @@ define(function(require,exports,module){
             function adaptiveFunction(){
                 try{
 					var bodyHeight = iframe.contentWindow.document.getElementsByTagName("html")[0].offsetHeight;
-					if(bodyHeight<320){
-						bodyHeight = 320;
+					if(bodyHeight<520){
+						bodyHeight = 520;
 					}
 				}catch(ex){
 					var bodyHeight = 800;
