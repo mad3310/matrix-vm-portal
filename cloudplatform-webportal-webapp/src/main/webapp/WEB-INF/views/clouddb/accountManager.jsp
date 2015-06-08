@@ -98,7 +98,7 @@
 					<div class="inline-block mcluster-select col-xs-10 col-sm-2">
 						<div class="select-head clearfix">
 							<p class="inline-block">未授权IP</p>
-							<p class="inline-block">
+							<p class="inline-block pull-right">
 							<a id="manager-ip-list">管理IP名单</a>
 							</p>
 						</div>
@@ -119,10 +119,10 @@
 							<a class="btn_db_remove">&lt;&nbsp;移除</a>
 						</div>
 					</div>
-					<div class="inline-block mcluster-select col-xs-12 col-sm-3">
+					<div class="inline-block mcluster-select col-xs-12 col-sm-5 col-md-4">
 						<div class="select-head clearfix">
 							<p class="inline-block">已授权IP</p>
-							<p class="inline-block">
+							<p class="inline-block pull-right">
 								<span style="padding-right: 5px;color:#bbb">权限</span>
 								<a class="select-all-rw">全部设读写</a>
 							</p>
@@ -358,7 +358,7 @@
 							<a class="btn_db_remove">&lt;&nbsp;移除</a>
 						</div>
 					</div>
-					<div class="inline-block mcluster-select col-xs-12 col-sm-3">
+					<div class="inline-block mcluster-select col-xs-12 col-sm-5 col-md-4">
 						<div class="select-head clearfix">
 							<p class="pull-left">已授权IP</p>
 							<p class="pull-right">
