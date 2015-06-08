@@ -711,8 +711,8 @@
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
                  <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.7</matrix.gce.jetty.default.image>
+                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
