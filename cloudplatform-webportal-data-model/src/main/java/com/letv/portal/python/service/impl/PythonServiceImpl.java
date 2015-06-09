@@ -191,7 +191,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("max_connections_per_hour", String.valueOf(dbUser.getMaxConnectionsPerHour()));
 		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
 		
-		String result = HttpClient.post(url.toString(), map,1000,1000,username,password);
+		String result = HttpClient.post(url.toString(), map,username,password);
 		return result;
 	}
 
@@ -215,7 +215,7 @@ public class PythonServiceImpl implements IPythonService{
 	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser/").append(dbName).append("/").append(dbUserModel.getUsername()).append("/").append(URLEncoder.encode(dbUserModel.getAcceptIp()));
-		String result = HttpClient.detele(url.toString(), username, password,1000,1000);
+		String result = HttpClient.detele(url.toString(), username, password);
 		return result;
 	}
 
