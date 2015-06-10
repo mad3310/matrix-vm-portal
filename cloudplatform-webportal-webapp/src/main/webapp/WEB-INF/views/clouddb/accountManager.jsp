@@ -236,7 +236,7 @@
 							</a>
 						</div>
 						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-							<p class="">管理角色不受并发量影响，业务产品建议使用读写用户</p>
+							<p class="" style="color:red">管理角色不受并发量影响，业务产品建议使用读写用户</p>
 						</div>
 					</div>
 				</div>
