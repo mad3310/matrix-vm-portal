@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +42,20 @@ public class GfsController {
 	@RequestMapping(value="/volume",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject volumeList(ResultObject obj) {
 		Map<String,Object> data =  transResult(gfsProxy.getGfsVolumes(IP));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/process/{name}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getVolProcessInfo(@PathVariable String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.getVolProcessByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/capacity/{name}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getVolCapacityInfo(@PathVariable String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.getVolCapacityByName(IP, name));
 		obj.setData(data);
 		return obj;
 	}

@@ -30,4 +30,20 @@ public class GfsProxyImpl implements IGfsProxy{
 		String result = HttpClient.get(url.toString());
 		return result;
 	}
+	
+	@Override
+	public String getVolProcessByName(String ip,String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/status/").append(name);
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
+	
+	@Override
+	public String getVolCapacityByName(String ip,String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/df/").append(name);
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
 }

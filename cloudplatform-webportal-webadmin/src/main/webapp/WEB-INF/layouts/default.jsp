@@ -325,7 +325,7 @@
 		$('#sidebar-gfs-mgr ul li:first').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");
 		$('#main-content-header li:eq(1)').html("节点列表");
-	}else if(path.indexOf("/list/gfs/volume") >= 0){
+	}else if(path.indexOf("/list/gfs/volume") >= 0 ||path.indexOf("/detail/gfs/volume") >= 0){
 		$('#sidebar-gfs-mgr').addClass("active open hsub");
 		$('#sidebar-gfs-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");

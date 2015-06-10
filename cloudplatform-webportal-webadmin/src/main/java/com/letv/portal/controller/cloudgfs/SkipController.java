@@ -31,8 +31,9 @@ public class SkipController {
 		mav.setViewName("/cloudgfs/volume_list");
 		return mav;
 	}
-	@RequestMapping(value ="/list/gfs/volume/detail",method=RequestMethod.GET)
-	public ModelAndView toGfsVolumeDetail(ModelAndView mav,HttpServletRequest request){
+	@RequestMapping(value ="/detail/gfs/volume/{volName}",method=RequestMethod.GET)
+	public ModelAndView toGfsVolumeDetail(@PathVariable String volName,ModelAndView mav,HttpServletRequest request){
+		mav.addObject("volName",volName);
 		mav.setViewName("/cloudgfs/volume_detail");
 		return mav;
 	}

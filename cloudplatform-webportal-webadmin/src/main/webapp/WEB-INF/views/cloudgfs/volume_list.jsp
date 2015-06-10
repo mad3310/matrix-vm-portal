@@ -24,10 +24,10 @@
 									</label>
 								</th>
 								<th>名称</th>
-								<th class="hidden-480">节点ID</th>
-								<th class="hidden-480">端口</th>
-								<th class="hidden-480">进程ID</th>
-								<th>路径</th>
+								<th class="hidden-480">UUID</th>
+								<th class="hidden-480">传输协议</th>
+								<th>类型</th>
+								<th>板块个数</th>
 								<th>状态</th>
 								<th>操作</th>
 							</tr>
@@ -37,22 +37,6 @@
 					</table>
 				</div>
 			</div>
-		</div>
-		<div id="pageControlBar">
-			<input type="hidden" id="totalPage_input" />
-			<ul class="pager">
-				<li><a href="javascript:void(0);" id="firstPage">&laquo首页</a></li>
-				<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
-				<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
-				<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-	
-				<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
-				</li>
-				<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
-				</li>
-				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a>
-				</li>
-			</ul>
 		</div>
 		<div class="modal fade" id="create-job-unit-modal" tabindex="-1" aria-labelledby="myModalLabel" style="margin-top:157px">
 			<div class="modal-dialog">
