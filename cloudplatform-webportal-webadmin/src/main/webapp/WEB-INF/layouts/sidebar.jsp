@@ -169,6 +169,30 @@
 				<span class="menu-text">zookeeper管理</span> 
 			</a>
 		</li>
+		<li id="sidebar-gfs-mgr" >
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-tasks"></i> 
+				<span class="menu-text">GFS管理</span> 
+				<b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-task-unit-view" >
+					<a href="${ctx}/list/gfs/peer"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						节点列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+				<li id="sidebar-task-stream-view" >
+					<a href="${ctx}/list/gfs/volume"> 
+						<i class="menu-icon fa fa-caret-right"></i>
+						卷列表
+					</a>
+					<b class="arrow"></b>
+				</li>
+			</ul>
+		</li>
 	</ul>
 
 	<!-- #section:basics/sidebar.layout.minimize -->
