@@ -1,5 +1,5 @@
 package com.letv.portal.service.openstack.resource;
 
-public interface NetworkResource extends Resource{
+public interface FlavorResource extends Resource{
 	public String getName();
 }

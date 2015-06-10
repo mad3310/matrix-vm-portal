@@ -1,5 +1,14 @@
 package com.letv.portal.service.openstack.resource.manager;
 
-public interface NetworkManager extends ResourceManager{
+import java.util.List;
 
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.resource.NetworkResource;
+
+public interface NetworkManager extends ResourceManager {
+	List<NetworkResource> list(String region) throws RegionNotFoundException;
+
+	NetworkResource get(String region, String id)
+			throws RegionNotFoundException, ResourceNotFoundException;
 }

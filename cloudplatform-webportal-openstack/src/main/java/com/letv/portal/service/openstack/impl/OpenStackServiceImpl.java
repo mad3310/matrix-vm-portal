@@ -73,13 +73,15 @@ public class OpenStackServiceImpl implements OpenStackService {
 		keystoneApi.close();
 	}
 
+	@Override
 	public OpenStackSession createSession(String userId)
 			throws OpenStackException {
 		User user = userApi.get(userId);
 		try {
+			String password = passwordService.userIdToPassword(userId);
 			if (user == null) {
 				UserRegister userRegister = new UserRegister(endpoint, userId,
-						passwordService.userIdToPassword(userId));
+						password);
 				userRegister.run();
 				user = userApi.get(userId);
 				if (user == null) {
@@ -87,8 +89,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 							"can not create openstack user:" + userId);
 				}
 			}
-			return new OpenStackSessionImpl(endpoint, user,
-					passwordService.userIdToPassword(userId));
+			return new OpenStackSessionImpl(endpoint, user, password);
 		} catch (NoSuchAlgorithmException e) {
 			throw new OpenStackException(e);
 		}

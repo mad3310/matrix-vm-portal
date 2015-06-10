@@ -198,6 +198,14 @@
 			<artifactId>jclouds-all</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.jclouds.labs</groupId>
+			<artifactId>openstack-glance</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jclouds.labs</groupId>
+			<artifactId>openstack-neutron</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.jclouds.driver</groupId>
 			<artifactId>jclouds-slf4j</artifactId>
 		</dependency>

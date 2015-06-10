@@ -380,7 +380,16 @@
 				<artifactId>jclouds-all</artifactId>
 				<version>1.9.0</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.apache.jclouds.labs</groupId>
+				<artifactId>openstack-glance</artifactId>
+				<version>1.9.0</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.jclouds.labs</groupId>
+			    <artifactId>openstack-neutron</artifactId>
+			    <version>1.9.0</version>
+			</dependency>
 			<dependency>
 				<groupId>org.jclouds.driver</groupId>
 				<artifactId>jclouds-slf4j</artifactId>

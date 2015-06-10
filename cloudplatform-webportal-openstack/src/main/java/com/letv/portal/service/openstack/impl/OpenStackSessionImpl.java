@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.impl;
 
+import java.io.IOException;
+
 import org.jclouds.openstack.keystone.v2_0.domain.User;
 
 import com.letv.portal.service.openstack.OpenStackSession;
@@ -19,20 +21,33 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private User user;
 	private String password;
 
-	private ImageManager imageManager;
-	private NetworkManager networkManager;
-	private VMManager vmManager;
+	private ImageManagerImpl imageManager;
+	private NetworkManagerImpl networkManager;
+	private VMManagerImpl vmManager;
+
+	private Object imageManagerLock;
+	private Object networkManagerLock;
+	private Object vmManagerLock;
 
 	public OpenStackSessionImpl(String endpoint, User user, String password) {
 		this.endpoint = endpoint;
 		this.user = user;
 		this.password = password;
+
+		this.imageManagerLock = new Object();
+		this.networkManagerLock = new Object();
+		this.vmManagerLock = new Object();
 	}
 
 	@Override
 	public ImageManager getImageManager() {
 		if (imageManager == null) {
-			imageManager = new ImageManagerImpl(endpoint, user, password);
+			synchronized (this.imageManagerLock) {
+				if (imageManager == null) {
+					imageManager = new ImageManagerImpl(endpoint, user,
+							password);
+				}
+			}
 		}
 		return imageManager;
 	}
@@ -40,7 +55,12 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	@Override
 	public NetworkManager getNetworkManager() {
 		if (networkManager == null) {
-			networkManager = new NetworkManagerImpl(endpoint, user, password);
+			synchronized (this.networkManagerLock) {
+				if (networkManager == null) {
+					networkManager = new NetworkManagerImpl(endpoint, user,
+							password);
+				}
+			}
 		}
 		return networkManager;
 	}
@@ -48,9 +68,26 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	@Override
 	public VMManager getVMManager() {
 		if (vmManager == null) {
-			vmManager = new VMManagerImpl(endpoint, user, password);
+			synchronized (this.vmManagerLock) {
+				if (vmManager == null) {
+					vmManager = new VMManagerImpl(endpoint, user, password);
+				}
+			}
 		}
 		return vmManager;
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (imageManager != null) {
+			imageManager.close();
+		}
+		if (networkManager != null) {
+			networkManager.close();
+		}
+		if (vmManager != null) {
+			vmManager.close();
+		}
 	}
 
 	// private NovaApi novaApi;
