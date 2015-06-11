@@ -1,6 +1,9 @@
 package com.letv.portal.controller.clouddb;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
+import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
 
 @Controller
@@ -35,8 +40,7 @@ public class CronJobsController {
 	@Autowired
 	private IMonitorService monitorService;
 	@Autowired
-	private IMonitorService monitorServiceByJdbc;
-	
+	private IMonitorIndexService monitorIndexService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(CronJobsController.class);
 		
@@ -118,7 +122,17 @@ public class CronJobsController {
 	@RequestMapping(value="/mcluster/monitor",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject deleteMonitorMonthAgo(HttpServletRequest request,ResultObject obj) {
 		logger.info("deleteMonitorMonthAgo");
-    	this.monitorProxy.deleteOutData();
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 1);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);    //得到前一个月
+		long date = cal.getTimeInMillis();
+		Date monthAgo = new Date(date);
+		for (MonitorIndexModel monitorIndexModel : indexs) {
+			this.monitorProxy.deleteOutData(monitorIndexModel,monthAgo);
+		}
     	return obj;
 	}
 	

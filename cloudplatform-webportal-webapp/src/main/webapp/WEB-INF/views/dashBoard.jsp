@@ -375,8 +375,7 @@
 										</div>
 									</li> -->
 									<li id="ocs-not-opened" class="clearfix">
-										<%-- <div class="pull-left" data-type='tip' data-order='1' data-content='开发缓存服务<br>' data-position='top'> --%>
-										<div class="pull-left">
+										<div class="pull-left" data-type='tip' data-order='1' data-content='开发缓存服务<br>' data-position='top'>
 											<span class="glyphicon glyphicon-leaf text-muted"></span> 
 											<span>开放缓存服务</span>
 											<span>OCS</span>
@@ -416,13 +415,13 @@
 								<p class="category-title ng-binding">存储与CDN</p>
 								<ul>
 									<li id="oss-not-opened" class="clearfix">
-										<div class="pull-left" data-type='tip' data-order='1' data-content='开放存储服务<br>' data-position='top'>
+										<div class="pull-left" data-type='tip' data-order='3' data-content='开放存储服务<br>' data-position='top'>
 											<span class="glyphicon glyphicon-qrcode text-muted"></span> 
 											<span>开放存储服务</span>
 											<span>OSS</span>
 											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix"    data-type='tip' data-order='2' data-content='开放存储服务<br>购买开放存储服务' data-position='right'>
+										<div class="pull-right clearfix"    data-type='tip' data-order='4' data-content='开放存储服务<br>购买开放存储服务' data-position='right'>
 											<div class="pull-left product-opt-wrap">
 												<a href="/buy/oss" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="oss-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>

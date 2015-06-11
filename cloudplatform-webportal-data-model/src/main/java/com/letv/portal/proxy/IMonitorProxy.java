@@ -28,6 +28,7 @@ public interface IMonitorProxy {
 	 * @author name: liuhao1
 	 */
 	public void deleteOutData();
+	public void deleteOutData(MonitorIndexModel monitorIndexModel,Date date);
 
 	void collectClusterServiceData();
 	void collectOSSServiceData();

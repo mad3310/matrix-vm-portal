@@ -39,8 +39,8 @@ define(function(require,exports,module){
             function adaptiveFunction(){
                 try{
 					var bodyHeight = iframe.contentWindow.document.getElementsByTagName("html")[0].offsetHeight;
-					if(bodyHeight<320){
-						bodyHeight = 320;
+					if(bodyHeight<520){
+						bodyHeight = 520;
 					}
 				}catch(ex){
 					var bodyHeight = 800;
@@ -979,7 +979,7 @@ define(function(require,exports,module){
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
-        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
         }
     }

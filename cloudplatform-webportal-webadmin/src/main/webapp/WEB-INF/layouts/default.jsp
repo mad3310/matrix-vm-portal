@@ -320,6 +320,16 @@
 		$('#sidebar-timing-task-mgr').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/timingTask").html("定时任务管理");
 		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/gfs/peer") >= 0){
+		$('#sidebar-gfs-mgr').addClass("active open hsub");
+		$('#sidebar-gfs-mgr ul li:first').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");
+		$('#main-content-header li:eq(1)').html("节点列表");
+	}else if(path.indexOf("/list/gfs/volume") >= 0 ||path.indexOf("/detail/gfs/volume") >= 0){
+		$('#sidebar-gfs-mgr').addClass("active open hsub");
+		$('#sidebar-gfs-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gfs/peer").html("GFS管理");
+		$('#main-content-header li:eq(1)').html("卷列表");
 	}
 	
 			

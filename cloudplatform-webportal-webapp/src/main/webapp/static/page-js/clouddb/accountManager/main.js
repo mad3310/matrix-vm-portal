@@ -120,6 +120,7 @@ define(function(require){
         var createUserData = dbUser.GetCreateDbUserData();
         if(createUserData.ips != '' && createUserData.type != ''){
             var url = "/dbUser";
+            $("#submitCreateUserForm").text("提交中...");
            cn.PostData(url, createUserData, function () {
                 /*刷新本身ifame*/
                 var $iframe = $("body", parent.document).find("iframe");
@@ -188,6 +189,8 @@ define(function(require){
         var modifyUserData = dbUser.GetModifyDbUserData();
         if(modifyUserData.ips != '' && modifyUserData.type != ''){
             var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+            $("#submitModifyUserForm").addClass("disabled").text("提交中...");
+            debugger
             cn.PostData(url,modifyUserData,function(){
                 /*刷新本身ifame*/
                 var $iframe = $("body",parent.document).find("iframe");

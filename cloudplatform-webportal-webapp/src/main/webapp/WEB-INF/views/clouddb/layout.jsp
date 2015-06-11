@@ -54,11 +54,11 @@
                             </a>
                         </span>
                     </small>
-                    <small>
+                    <!-- <small>
                         <span>
-                            <button class="btn-warning btn btn-sm disabled">内外网切换</button>
+                            <button class="btn-success btn btn-sm" onclick="window.open('http://10.154.28.164/phpMyAdmin')">登录数据库</button>
                         </span>
-                    </small>
+                    </small> -->
                     <small>
                         <span>
                             <button class="btn-danger btn btn-sm disabled">重启实例</button>
