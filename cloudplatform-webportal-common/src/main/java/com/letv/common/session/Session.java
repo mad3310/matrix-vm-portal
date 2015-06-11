@@ -2,6 +2,8 @@ package com.letv.common.session;
 
 import java.io.Serializable;
 
+import com.letv.portal.service.openstack.OpenStackSession;
+
 public class Session implements Serializable{
 	
 		
@@ -23,6 +25,8 @@ public class Session implements Serializable{
 	private String email;
 	
 	private boolean isAdmin;
+	
+	private OpenStackSession openStackSession;
 	
 	public Long getUserId() {
 		return userId;
@@ -87,4 +91,11 @@ public class Session implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
+	public void setOpenStackSession(OpenStackSession openStackSession) {
+		this.openStackSession = openStackSession;
+	}
+	
+	public OpenStackSession getOpenStackSession() {
+		return openStackSession;
+	}
 }

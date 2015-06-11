@@ -1,0 +1,169 @@
+package com.letv.portal.controller.cloudvm;
+
+import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.ImageResource;
+import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.manager.ImageManager;
+import com.letv.portal.service.openstack.resource.manager.NetworkManager;
+import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VMManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+@RequestMapping("osv")
+public class VMController {
+
+    @Autowired
+    private SessionServiceImpl sessionService;
+
+    @RequestMapping(method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResultObject regions() {
+        ResultObject result = new ResultObject();
+        result.setData(sessionService.getSession().getOpenStackSession().getVMManager().getRegions().toArray(new String[0]));
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResultObject list(@PathVariable String region) {
+        ResultObject result = new ResultObject();
+        try {
+            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().list(region));
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}/vm/{vmId}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResultObject get(@PathVariable String region, @PathVariable String vmId) {
+        ResultObject result = new ResultObject();
+        try {
+            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().get(region, vmId));
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}/vm-create", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject create(@PathVariable String region,
+                        @RequestParam String name,
+                        @RequestParam String imageId,
+                        @RequestParam String flavorId,
+                        @RequestParam(value = "networkIds[]") String[] networkIds) {
+        ResultObject result = new ResultObject();
+        try {
+            OpenStackSession openStackSession = sessionService.getSession().getOpenStackSession();
+
+            ImageManager imageManager = openStackSession.getImageManager();
+            NetworkManager networkManager = openStackSession.getNetworkManager();
+            VMManager vmManager = openStackSession.getVMManager();
+
+            ImageResource imageResource = imageManager.get(region, imageId);
+
+            FlavorResource flavorResource = vmManager.getFlavorResource(region, flavorId);
+
+            List<NetworkResource> networkResources = new ArrayList<NetworkResource>(networkIds.length);
+            for (String networkId : networkIds) {
+                networkResources.add(networkManager.get(region, networkId));
+            }
+
+            VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource, flavorResource, networkResources);
+            VMResource vmResource = vmManager.create(region, vmCreateConf);
+
+            result.setData(vmResource);
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}/vm-delete", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject delete(@PathVariable String region, @RequestParam String vmId) {
+        ResultObject result = new ResultObject();
+        try {
+            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMResource vmResource = vmManager.get(region, vmId);
+            vmManager.delete(region, vmResource);
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (VMDeleteException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}/vm-start", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject start(@PathVariable String region, @RequestParam String vmId) {
+        ResultObject result = new ResultObject();
+        try {
+            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMResource vmResource = vmManager.get(region, vmId);
+            vmManager.start(region, vmResource);
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/region/{region}/vm-stop", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    ResultObject stop(@PathVariable String region, @RequestParam String vmId) {
+        ResultObject result = new ResultObject();
+        try {
+            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMResource vmResource = vmManager.get(region, vmId);
+            vmManager.stop(region, vmResource);
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+}
