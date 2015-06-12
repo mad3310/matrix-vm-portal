@@ -88,8 +88,9 @@ public class VMController {
 
             FlavorResource flavorResource = vmManager.getFlavorResource(region, flavorId);
 
-            List<NetworkResource> networkResources = new ArrayList<NetworkResource>(networkIds.length);
-            for (String networkId : networkIds.split("__")) {
+            String[] networkIdArray = networkIds.split("__");
+            List<NetworkResource> networkResources = new ArrayList<NetworkResource>(networkIdArray.length);
+            for (String networkId : networkIdArray) {
                 networkResources.add(networkManager.get(region, networkId));
             }
 
