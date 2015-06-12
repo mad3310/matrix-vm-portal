@@ -23,7 +23,7 @@ public abstract class AbstractResourceManager implements ResourceManager,
 	public void checkRegion(String region) throws RegionNotFoundException {
 		if (!getRegions().contains(region)) {
 			throw new RegionNotFoundException(MessageFormat.format(
-					"Region '{0}' is not found.", region));
+					"Region \"{0}\" is not found.", region));
 		}
 	}
 }

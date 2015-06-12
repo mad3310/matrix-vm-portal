@@ -3,14 +3,15 @@ package com.letv.portal.service.openstack.resource.impl;
 import org.jclouds.openstack.glance.v1_0.domain.Image;
 
 import com.letv.portal.service.openstack.resource.ImageResource;
+import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 
 public class ImageResourceImpl extends AbstractResource implements
 		ImageResource {
 
 	private String region;
-	private Image image;
+	private ImageDetails image;
 
-	public ImageResourceImpl(String region, Image image) {
+	public ImageResourceImpl(String region, ImageDetails image) {
 		this.region = region;
 		this.image = image;
 	}

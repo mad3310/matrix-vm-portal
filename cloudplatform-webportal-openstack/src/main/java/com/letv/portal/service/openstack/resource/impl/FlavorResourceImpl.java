@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
 import com.letv.portal.service.openstack.resource.FlavorResource;
@@ -8,9 +9,9 @@ public class FlavorResourceImpl extends AbstractResource implements
 		FlavorResource {
 
 	private String region;
-	private Resource flavor;
+	private Flavor flavor;
 
-	public FlavorResourceImpl(String region, Resource flavor) {
+	public FlavorResourceImpl(String region, Flavor flavor) {
 		this.region = region;
 		this.flavor = flavor;
 	}
@@ -28,6 +29,21 @@ public class FlavorResourceImpl extends AbstractResource implements
 	@Override
 	public String getName() {
 		return flavor.getName();
+	}
+
+	@Override
+	public int getVcpus() {
+		return this.flavor.getVcpus();
+	}
+
+	@Override
+	public int getDisk() {
+		return flavor.getDisk();
+	}
+
+	@Override
+	public int getRam() {
+		return flavor.getRam();
 	}
 
 }

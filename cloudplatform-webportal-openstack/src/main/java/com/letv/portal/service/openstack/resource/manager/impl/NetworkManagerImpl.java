@@ -21,6 +21,7 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
+import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 public class NetworkManagerImpl extends AbstractResourceManager implements
 		NetworkManager {
@@ -55,7 +56,9 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 		checkRegion(region);
 
 		NetworkApi networkApi = neutronApi.getNetworkApi(region);
+		SubnetApi subnetApi=neutronApi.getSubnetApi(region);
 		FluentIterable<Network> networks = networkApi.list().concat();
+		subnetApi.get("ss").
 		List<NetworkResource> networkResources = new ArrayList<NetworkResource>(
 				networks.size());
 		for (Network network : networks) {
@@ -75,7 +78,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 			return new NetworkResourceImpl(region, network);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
-					"Network '{0}' is not found.", id));
+					"Network \"{0}\" is not found.", id));
 		}
 	}
 

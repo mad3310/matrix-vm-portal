@@ -63,10 +63,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
-		FluentIterable<Resource> resources = serverApi.list().concat();
+		FluentIterable<Server> resources = serverApi.listInDetail().concat();
 		List<VMResource> vmResources = new ArrayList<VMResource>(
 				resources.size());
-		for (Resource resource : resources) {
+		for (Server resource : resources) {
 			vmResources.add(new VMResourceImpl(region, resource));
 		}
 		return vmResources;
@@ -83,7 +83,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			return new VMResourceImpl(region, server);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
-					"VM '{0}' is not found.", id));
+					"VM \"{0}\" is not found.", id));
 		}
 	}
 
@@ -102,7 +102,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerCreated serverCreated = serverApi.create(conf.getName(), conf
 				.getImageResource().getId(), conf.getFlavorResource().getId(),
 				CreateServerOptions.Builder.networks(networks));
-		return new VMResourceImpl(region, serverCreated);
+		Server server=serverApi.get(serverCreated.getId());
+		return new VMResourceImpl(region, server);
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
 			throw new VMDeleteException(MessageFormat.format(
-					"VM '{0}' delete failed.", vm.getId()));
+					"VM \"{0}\" delete failed.", vm.getId()));
 		}
 	}
 
@@ -142,10 +143,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		FlavorApi flavorApi = novaApi.getFlavorApi(region);
-		FluentIterable<Resource> resources = flavorApi.list().concat();
+		FluentIterable<Flavor> resources = flavorApi.listInDetail().concat();
 		List<FlavorResource> flavorResources = new ArrayList<FlavorResource>(
 				resources.size());
-		for (Resource resource : resources) {
+		for (Flavor resource : resources) {
 			flavorResources.add(new FlavorResourceImpl(region, resource));
 		}
 		return flavorResources;
@@ -162,7 +163,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			return new FlavorResourceImpl(region, flavor);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
-					"Flavor '{0}' is not found.", id));
+					"Flavor \"{0}\" is not found.", id));
 		}
 	}
 

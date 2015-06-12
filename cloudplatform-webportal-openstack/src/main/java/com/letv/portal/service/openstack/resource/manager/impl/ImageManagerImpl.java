@@ -56,10 +56,10 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 		checkRegion(region);
 
 		ImageApi imageApi = glanceApi.getImageApi(region);
-		FluentIterable<Image> images = imageApi.list().concat();
+		FluentIterable<ImageDetails> images = imageApi.listInDetail().concat();
 		List<ImageResource> imageResources = new ArrayList<ImageResource>(
 				images.size());
-		for (Image image : images) {
+		for (ImageDetails image : images) {
 			imageResources.add(new ImageResourceImpl(region, image));
 		}
 		return imageResources;
@@ -76,7 +76,7 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 			return new ImageResourceImpl(region, imageDetails);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
-					"Image '{0}' is not found.", id));
+					"Image \"{0}\" is not found.", id));
 		}
 	}
 
