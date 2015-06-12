@@ -28,7 +28,7 @@ public class VMController {
     @Autowired
     private SessionServiceImpl sessionService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="/regions",method = RequestMethod.GET)
     public
     @ResponseBody
     ResultObject regions() {

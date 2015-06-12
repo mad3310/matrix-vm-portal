@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.password.impl;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.letv.common.util.ConfigUtil;
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,10 @@ public class PasswordServiceImpl implements PasswordService {
 
 	@Value("${openstack.user.password.salt}")
 	private String userPasswordSalt;
+
+	PasswordServiceImpl(){
+		ConfigUtil.class.getName();
+	}
 
 	@SuppressWarnings("deprecation")
 	public String userIdToPassword(String userId)
