@@ -23,7 +23,7 @@ public class FlavorController {
     @ResponseBody
     ResultObject regions() {
         ResultObject result = new ResultObject();
-        result.setData(sessionService.getSession().getOpenStackSession().getVMManager().getRegions().toArray(new String[0]));
+        result.setData(Util.session(sessionService).getVMManager().getRegions().toArray(new String[0]));
         return result;
     }
 
@@ -33,7 +33,7 @@ public class FlavorController {
     ResultObject list(@PathVariable String region) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().listFlavorResources(region));
+            result.setData(Util.session(sessionService).getVMManager().listFlavorResources(region));
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
@@ -47,7 +47,7 @@ public class FlavorController {
     ResultObject get(@PathVariable String region, @PathVariable String flavorId) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().getFlavorResource(region, flavorId));
+            result.setData(Util.session(sessionService).getVMManager().getFlavorResource(region, flavorId));
         } catch (RegionNotFoundException e1) {
             result.setResult(0);
             result.addMsg(e1.getMessage());

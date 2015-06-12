@@ -23,7 +23,7 @@ public class NetworkController {
     @ResponseBody
     ResultObject regions(){
         ResultObject result=new ResultObject();
-        result.setData(sessionService.getSession().getOpenStackSession().getNetworkManager().getRegions().toArray(new String[0]));
+        result.setData(Util.session(sessionService).getNetworkManager().getRegions().toArray(new String[0]));
         return result;
     }
 
@@ -33,7 +33,7 @@ public class NetworkController {
     ResultObject list(@PathVariable String region){
         ResultObject result=new ResultObject();
         try{
-            result.setData(sessionService.getSession().getOpenStackSession().getNetworkManager().list(region));
+            result.setData(Util.session(sessionService).getNetworkManager().list(region));
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
@@ -47,7 +47,7 @@ public class NetworkController {
     ResultObject get(@PathVariable String region, @PathVariable String networkId) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(sessionService.getSession().getOpenStackSession().getNetworkManager().get(region, networkId));
+            result.setData(Util.session(sessionService).getNetworkManager().get(region, networkId));
         } catch (RegionNotFoundException e1) {
             result.setResult(0);
             result.addMsg(e1.getMessage());

@@ -33,7 +33,7 @@ public class VMController {
     @ResponseBody
     ResultObject regions() {
         ResultObject result = new ResultObject();
-        result.setData(sessionService.getSession().getOpenStackSession().getVMManager().getRegions().toArray(new String[0]));
+        result.setData(Util.session(sessionService).getVMManager().getRegions().toArray(new String[0]));
         return result;
     }
 
@@ -43,7 +43,7 @@ public class VMController {
     ResultObject list(@PathVariable String region) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().list(region));
+            result.setData(Util.session(sessionService).getVMManager().list(region));
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
@@ -57,7 +57,7 @@ public class VMController {
     ResultObject get(@PathVariable String region, @PathVariable String vmId) {
         ResultObject result = new ResultObject();
         try {
-            result.setData(sessionService.getSession().getOpenStackSession().getVMManager().get(region, vmId));
+            result.setData(Util.session(sessionService).getVMManager().get(region, vmId));
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
@@ -78,7 +78,7 @@ public class VMController {
                         @RequestParam(value = "networkIds[]") String[] networkIds) {
         ResultObject result = new ResultObject();
         try {
-            OpenStackSession openStackSession = sessionService.getSession().getOpenStackSession();
+            OpenStackSession openStackSession = Util.session(sessionService);
 
             ImageManager imageManager = openStackSession.getImageManager();
             NetworkManager networkManager = openStackSession.getNetworkManager();
@@ -113,7 +113,7 @@ public class VMController {
     ResultObject delete(@PathVariable String region, @RequestParam String vmId) {
         ResultObject result = new ResultObject();
         try {
-            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMManager vmManager = Util.session(sessionService).getVMManager();
             VMResource vmResource = vmManager.get(region, vmId);
             vmManager.delete(region, vmResource);
         } catch (RegionNotFoundException e) {
@@ -135,7 +135,7 @@ public class VMController {
     ResultObject start(@PathVariable String region, @RequestParam String vmId) {
         ResultObject result = new ResultObject();
         try {
-            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMManager vmManager = Util.session(sessionService).getVMManager();
             VMResource vmResource = vmManager.get(region, vmId);
             vmManager.start(region, vmResource);
         } catch (RegionNotFoundException e) {
@@ -154,7 +154,7 @@ public class VMController {
     ResultObject stop(@PathVariable String region, @RequestParam String vmId) {
         ResultObject result = new ResultObject();
         try {
-            VMManager vmManager = sessionService.getSession().getOpenStackSession().getVMManager();
+            VMManager vmManager = Util.session(sessionService).getVMManager();
             VMResource vmResource = vmManager.get(region, vmId);
             vmManager.stop(region, vmResource);
         } catch (RegionNotFoundException e) {
