@@ -5,7 +5,8 @@ define(function(require){
 	var pFresh,iFresh;
     var common = require('../../common');
     var cn = new common();
-    
+    var $ = require("jquery");
+    require("bootstrapValidator")($);
     cn.Tooltip();
     
 	/*禁用退格键退回网页*/
@@ -18,7 +19,43 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	
+	//文件上传
+	$('#upload').change(function(event) {
+		//调用接口
+		//传入数据 当前路径+file对象
+		if(cn.uploadfile(this)){//文件要求后缀和大小均否和
+			var file=cn.getFile(this);
+			console.log(file);
+			var dir=$('#dirName').val();
+			var baseLocation=$('#baseLocation').val()
+			console.log(dir+"  "+baseLocation)
+		}
+	});
+	//新建文件夹验证，提交
+	$('#createDirform').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	folderName:{
+        		validators: {
+                    notEmpty: {
+                        message: '文件夹名不能为空!'
+                    },
+                    stringLength: {
+                        max: 254,
+                        message: '文件夹名过长!'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9\u4e00-\u9fa5_.-]*$/,
+                        message: " 只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）"
+                    }//重名则覆盖 新建和更新
+                }
+        	}
+        }
+    })
+
 	// $("#search").click(function() {
 	// 	cn.currentPage = 1;
 	// 	asyncData();
