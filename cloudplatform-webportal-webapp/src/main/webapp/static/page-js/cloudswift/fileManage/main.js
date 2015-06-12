@@ -25,9 +25,8 @@ define(function(require){
 			var file=cn.getFile(this);
 			var pathvalue=$('.dirPath').text();var path='root';
 			if(pathvalue){
-				path=pathvalue.substring(pathvalue.indexOf('/'));
+				path=$('#dirName').val();
 			}
-			
 			$('body').append("<div class=\"spin\"></div>");
             $('body').append("<div class=\"far-spin\"></div>");
             var url='/oss/'+$("#swiftId").val()+'/file';
@@ -71,7 +70,7 @@ define(function(require){
     	var folderName=$('#floderName').val();
     	var pathvalue=$('.dirPath').text();var path='root';
 		if(pathvalue){
-			path=pathvalue.substring(pathvalue.indexOf('/'));
+			path=$('#dirName').val();
 		}
 		var data={
 			'file':folderName,
@@ -86,7 +85,7 @@ define(function(require){
 	// 	cn.currentPage = 1;
 	// 	asyncData();
 	// });
-	$("#refresh").click(function() {		
+	$("#refresh").unbind('click').click(function() {		
 		var dirname=$('#dirName').val();var url;
 		if(dirname){
 			url="/oss/"+$("#swiftId").val()+"/file?directory="+dirname;
@@ -162,7 +161,7 @@ define(function(require){
 	function dirClick(){
       var _target=$('table').find('.dir-a');
       _target.each(function() {
-        $(this).click(function(event) {
+        $(this).unbind('click').click(function(event) {
 	    	var dirname=$(this).parent().prev().children('input').val();
 	    	var dirarry='';
 	    	if(dirname){
@@ -179,11 +178,12 @@ define(function(require){
         });
       });
       var _location=$('.dirPath');
-      _location.click(function(event) {
+      _location.unbind('click').click(function(event) {
       	var url,dirname,location;
       	var tempname=$(this).attr('name');var j=tempname.length;
-      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
-      	$(this).nextAll('.dirPath').addClass('hidden')
+      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;console.log(tempdir)
+      	$(this).nextAll('.dirPath').addClass('hidden');
+      	console.log(tempdir.substring(0,i))
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
       			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);
@@ -194,7 +194,6 @@ define(function(require){
       		}
       	}else{
       		url="/oss/"+$("#swiftId").val()+"/file?directory=root";
-
       	}
       	$('#dirName').val(dirname);
         cn.GetData(url,refreshCtl);
