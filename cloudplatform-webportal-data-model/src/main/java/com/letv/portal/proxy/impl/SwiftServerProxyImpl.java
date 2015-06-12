@@ -1,9 +1,11 @@
 package com.letv.portal.proxy.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,7 +189,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		}
 		if(storeSize != null)
 			headParams.put("X-Container-Meta-Quota-Bytes", String.valueOf(storeSize*1024*1024*1024));
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftMainUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftMainUrl(host.getHostIp(),user.getUserName(),server.getName()),headParams,null,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
@@ -201,12 +203,32 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
 		
+		//save file to local
+		File localFile = this.saveFileToLocal(file);
+		
+		//update file to OSS server
+		FileEntity entity = new FileEntity(localFile);
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getName()),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getName()),headParams,entity,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
+	}
+	private File saveFileToLocal(MultipartFile file) {
+        String path = "/tmp/ossfile";  
+        String fileName = file.getOriginalFilename();  
+        File targetFile = new File(path, fileName);  
+        if(!targetFile.exists()){  
+            targetFile.mkdirs();  
+        }  
+  
+        try {  
+            file.transferTo(targetFile);  
+        } catch (Exception e) {  
+        	throw new CommonException("save oss file to local failed:"+e.getMessage());
+        }  
+		return targetFile;
 	}
 
 	@Override
@@ -219,7 +241,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		headParams.put("X-Auth-Token", getSuperToken(server));
 		headParams.put("Content-Type", "application/directory");
 		
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,null,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
