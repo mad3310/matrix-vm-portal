@@ -31,7 +31,17 @@
 			<span name='dirName' style="color:#428bca">当前位置：根目录 /</span>
 		</div>
 		<div class="pull-right" style="padding-bottom:10px;">
-			<button class="btn-primary btn btn-md " id="refresh"><span class="glyphicon glyphicon-refresh"></span> <span class="hidden-xs">刷新</span></button>
+		<!-- 文件上传-->
+		<style>
+		.btn-file{position:relative;cursor:pointer;}
+		.btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}
+		.help-tip{padding-top:7px;}
+		</style>
+		<form enctype="multipart/form-data" id='form-upload' method="">
+			<div class="btn btn-success btn-file"> <i class="fa fa-cloud-upload"></i> &nbsp;上传文件<input id="upload" type="file" class="file"></div>
+			<button type="button" class="btn btn-primary" data-backdrop="false" data-toggle="modal" data-target="#addDirModal" id="test"><i class="fa fa-plus"></i> 新建文件夹</button>
+			<button class="btn-default btn btn-md " id="refresh"><span class="glyphicon glyphicon-refresh"></span> <span class="hidden-xs">刷新</span></button>
+		</form>
 		</div>
 		<div class="clearfix"></div>
 	</div>
@@ -86,6 +96,43 @@
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
+<div class="modal fade in" id="addDirModal" role="dialog" aria-labelledby="addDirModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="modal-title">新建文件夹<a class="anchorjs-link" href="#modal-title"><span class="anchorjs-icon"></span></a></h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" name="form" id="createDirform">
+        	<div class="form-group">
+        		<label class="col-xs-3 col-sm-3 control-label">文件夹名：</label>
+        		<div class="col-xs-9 col-sm-9">
+        			<div class="row">
+        				<div class="col-xs-7 col-sm-7">
+        					<input type="text" class="form-control" name="folderName">
+        				</div>
+        			<!-- <div class="col-xs-5 col-sm-5 text-danger">
+        				<div class="help-tip">
+        					<i class='fa fa-exclamation-circle'></i>&nbsp;<span class="">文件夹名不能为空</span>
+        				</div>
+        			</div> -->
+        		</div>
+        	<div class="row">
+        		<div class="col-xs-12 col-sm-12">
+        			<p class="help-tip">文件夹命名规范：<br>» 1. 只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）<br>» 2. 只能以字母、数字或者中文开头<br>» 3. 文件夹的长度限制在1-254之间<br>» 4. Object总长度必须在1-1023之间</p></div>
+        		</div>
+        	</div>
+        </div>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="add-dir" >新建</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script>
 //Set configuration
@@ -93,12 +140,12 @@ seajs.config({
 	base: "${ctx}/static/modules/",
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
-		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 seajs.use("${ctx}/static/page-js/cloudswift/fileManage/main");
 /*self define*/
-
 </script>
 </body>
 </html>

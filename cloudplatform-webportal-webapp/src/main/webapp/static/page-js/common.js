@@ -981,6 +981,65 @@ define(function(require,exports,module){
         	for(var i=0,len=data.length;i<len;i++){
         		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
+        },
+        uploadfile:function(target){
+            var isIE = /msie/i.test(navigator.userAgent) && !window.opera; 
+            var flag=false;
+            var filePath=target.value;
+            var fileType={
+                '.exe':'exe',
+                '.pdf':'pdf','.txt':'txt','.docx':'docx','.doc':'doc','.xlsx':'xlsx','.xls':'xls','.pptx':'pptx','.ppt':'ppt',
+                '.png':'png','.jpg':'jpg','.gif':'gif','.bmp':'bmp',
+                '.rar':'rar','.zip':'zip','.tar':'tar','.jar':'jar','.z':'z','.gz':'gz',
+                '.avi':'avi','.mov':'mov','.wmv':'wmv','.3gp':'3gp','.flv':'flv',
+                '.mp3':'mp3','.rm':'rm','.swf':'swf','.wma':'wma','.wav':'wav','.mp3pro':'mp3pro'
+            }
+            var filemaxsize=1024*2;//M
+            var filesuffix=filePath.substring(filePath.indexOf('.'));
+            if(fileType[filesuffix]){
+                //符合要求
+            }else{
+                alert('不允许此种类型');
+                return false;
+            }
+            if (isIE && !target.files) { 
+                var filePath = target.value; 
+                var fileSystem = new ActiveXObject("Scripting.FileSystemObject"); 
+                if(!fileSystem.FileExists(filePath)){ 
+                    alert("附件不存在，请重新输入！"); 
+                    return false; 
+                } 
+                var file = fileSystem.GetFile (filePath); 
+                fileSize = file.Size; 
+            }else { 
+                fileSize = target.files[0].size; 
+            } 
+            var size = fileSize / 1024; 
+            if(size>filemaxsize){ 
+                alert("附件大小不能大于"+filemaxsize/1024+"M！"); 
+                target.value =""; 
+                return false; 
+            } 
+            if(size<=0){ 
+                alert("附件大小不能为0M！"); 
+                target.value =""; 
+                return false; 
+            }
+            return true;
+        },
+        getFile:function(target){
+            var filePath=target.value;
+            var file;
+            var isIE = /msie/i.test(navigator.userAgent) && !window.opera; 
+            if(isIE&& !target.files){
+                var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+                if(fileSystem.FileExists(filePath)){ 
+                    file=fileSystem.GetFile(filePath);
+                } 
+            }else{
+                file=target.files[0];
+            }
+            return file;
         }
     }
     /*common原型属性方法end*/
