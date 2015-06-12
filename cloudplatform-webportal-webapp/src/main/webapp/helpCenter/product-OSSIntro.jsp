@@ -10,7 +10,7 @@
 		<h1 class="">
 			<i class="icons-64 icons-ace icons-64-ace "></i>开放存储OSS
 		</h1>
-		<div class="intro">开放存储服务（Open Storage Service，OSS），是乐视云平台对外提供的海量、安全和高可靠的云存储服务。RESTFul API的平台无关性，容量和处理能力的弹性扩展，按实际容量付费真正使您专注于核心业务。</div>
+		<div class="intro">开放存储服务（Open Storage Service，OSS），是乐视云平台对外提供的海量、安全和高可靠的云存储服务。API的平台无关性，容量和处理能力的弹性扩展，按实际容量付费真正使您专注于核心业务。</div>
 	</div>
 	<div class="approve" data-spm="5">
 		<a class="" id="Approve" name="Approve" hidefocus="">&nbsp;</a>
@@ -64,8 +64,8 @@
 					能支持同时间内高并发、大流量的读写访问。</p>
 			</div>
 			<div class="dispaly-4div">
-				<h3 class="">图片处理</h3>
-				<p class="">对存储在OSS上的图片，支持缩略、裁剪、水印、压缩和格式转换等图片处理功能。</p>
+				<h3 class="">文件管理</h3>
+				<p class="">文件上传下载删除功能、目录操作。</p>
 			</div>
 			<div class="dispaly-4div">
 				<h3>按需付费</h3>

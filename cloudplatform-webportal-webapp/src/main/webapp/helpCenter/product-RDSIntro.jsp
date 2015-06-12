@@ -56,7 +56,7 @@
 		<div class="approve-detail y-clear">
 			<div class="dispaly-4div">
 				<h3 class="">专业的数据库管理平台</h3>
-				<p class="">iDB Cloud是专为RDS定制的数据库管理平台，使用户通过浏览器即可安全、方便的进行数据库管理和维护。</p>
+				<p class="">RDS数据库管理平台，使用户通过浏览器即可安全、方便的进行数据库管理和维护。</p>
 			</div>
 			<div class="dispaly-4div">
 				<h3 class="">轻松实现数据回溯</h3>
@@ -69,7 +69,7 @@
 			</div>
 			<div class="dispaly-4div">
 				<h3>完善的监控体系</h3>
-				<p>RDS展示近20种性能资源监控视图，可对部分资源项设置阈值报警，并提供WEB操作、SQL审计等多种日志。</p>
+				<p>RDS展示近多种性能资源监控视图，可对部分资源项设置阈值报警，并提供WEB操作、SQL审计等多种日志。</p>
 			</div>
 		</div>
 	</div>
