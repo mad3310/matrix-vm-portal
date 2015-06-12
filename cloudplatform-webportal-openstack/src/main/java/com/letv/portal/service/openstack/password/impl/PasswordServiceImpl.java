@@ -12,7 +12,7 @@ import com.letv.portal.service.openstack.password.PasswordService;
 @Service("passwordService")
 public class PasswordServiceImpl implements PasswordService {
 
-	@Value("openstack.user.password.salt")
+	@Value("${openstack.user.password.salt}")
 	private String userPasswordSalt;
 
 	@SuppressWarnings("deprecation")

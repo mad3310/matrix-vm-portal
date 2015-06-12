@@ -61,7 +61,7 @@ public class UserRegister {
             Params bodyTenant = new Params();
             body.p("tenant", bodyTenant);
             bodyTenant.p("enabled", true).p("name", this.userName)
-                    .p("description", "matrix "+this.userName).p("email",this.email);
+                    .p("description", "matrix "+this.userName);
 
             ObjectMapper objectMapper = new ObjectMapper();
             StringWriter stringWriter = new StringWriter();

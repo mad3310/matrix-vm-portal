@@ -180,6 +180,7 @@
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.letv.cloudplatform</groupId>
 			<artifactId>webportal-common</artifactId>
