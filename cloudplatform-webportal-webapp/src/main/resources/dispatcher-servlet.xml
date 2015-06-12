@@ -56,6 +56,8 @@
         <property name="contentType" value="text/xml;charset=UTF-8"></property>
         <property name="viewNames" value="*.xml"/>
     </bean>
+    <!-- springMVC upload file. -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
     
 	 <mvc:interceptors>
 	  <mvc:interceptor>

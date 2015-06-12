@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONArray;
 import com.letv.common.email.ITemplateMessageSender;
@@ -193,4 +194,48 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		
 		this.updateBySelective(server);
 	}
+
+	@Override
+	public void postFiles(Long id, MultipartFile file, String directory) {
+		SwiftServer server = this.selectById(id);
+		if(server == null)
+			throw new ValidateException("oss 服务不存在");
+		
+		Map<String,String> headParams = new HashMap<String,String>();
+		headParams.put("X-Auth-Token", getSuperToken(server));
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getName()),headParams,1000,1000);
+		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
+		}
+	}
+
+	@Override
+	public void addDir(Long id, String file, String directory) {
+		SwiftServer server = this.selectById(id);
+		if(server == null)
+			throw new ValidateException("oss 服务不存在");
+		
+		Map<String,String> headParams = new HashMap<String,String>();
+		headParams.put("X-Auth-Token", getSuperToken(server));
+		headParams.put("Content-Type", "application/directory");
+		
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,1000,1000);
+		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
+		}
+	}
+	private String getSwiftDetailFileUrl(SwiftServer server,String directory,String fileName) {
+		if("root".equals(directory)) {
+			directory = "";
+		} else {
+			directory +="/";
+		}
+		HostModel host = this.getHost(server.getHclusterId());
+		UserModel user = this.userService.selectById(server.getCreateUser());
+		StringBuffer sb = new StringBuffer();
+		sb.append("https://").append(host.getHostIp()).append(":443").append("/v1/AUTH_").append(user.getUserName()).append("/").append(server.getName()).append("/").append(directory).append(fileName);
+		logger.info("getSwiftDetailFileUrl:{}",sb);
+		return sb.toString();
+	}
+	
 }

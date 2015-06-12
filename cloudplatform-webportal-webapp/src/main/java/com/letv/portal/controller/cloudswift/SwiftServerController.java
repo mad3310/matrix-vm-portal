@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
@@ -80,10 +81,24 @@ public class SwiftServerController {
 		return obj;
 	}	
 	@RequestMapping(value="/{id}/file",method=RequestMethod.GET)
-	public @ResponseBody ResultObject delete(@PathVariable Long id, String directory){
+	public @ResponseBody ResultObject getFile(@PathVariable Long id, String directory){
 		isAuthoritySwift(id);
 		ResultObject obj = new ResultObject();
 		obj.setData(this.swiftServerProxy.getFiles(id,directory));
+		return obj;
+	}	
+	@RequestMapping(value="/{id}/file",method=RequestMethod.POST)
+	public @ResponseBody ResultObject postFile(@PathVariable Long id, MultipartFile file,String directory){
+		isAuthoritySwift(id);
+        this.swiftServerProxy.postFiles(id,file,directory);
+		ResultObject obj = new ResultObject();
+		return obj;
+	}	
+	@RequestMapping(value="/{id}/dir",method=RequestMethod.GET)
+	public @ResponseBody ResultObject addDir(@PathVariable Long id, String file,String directory){
+		isAuthoritySwift(id);
+		this.swiftServerProxy.addDir(id,file,directory);
+		ResultObject obj = new ResultObject();
 		return obj;
 	}	
 	@RequestMapping(value="/{id}/file/prefixUrl",method=RequestMethod.GET)
