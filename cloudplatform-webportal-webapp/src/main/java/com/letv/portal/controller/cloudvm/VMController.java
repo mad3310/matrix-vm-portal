@@ -75,7 +75,7 @@ public class VMController {
                         @RequestParam String name,
                         @RequestParam String imageId,
                         @RequestParam String flavorId,
-                        @RequestParam(value = "networkIds[]") String[] networkIds) {
+                        @RequestParam String networkIds) {
         ResultObject result = new ResultObject();
         try {
             OpenStackSession openStackSession = Util.session(sessionService);
@@ -89,7 +89,7 @@ public class VMController {
             FlavorResource flavorResource = vmManager.getFlavorResource(region, flavorId);
 
             List<NetworkResource> networkResources = new ArrayList<NetworkResource>(networkIds.length);
-            for (String networkId : networkIds) {
+            for (String networkId : networkIds.split("__")) {
                 networkResources.add(networkManager.get(region, networkId));
             }
 
