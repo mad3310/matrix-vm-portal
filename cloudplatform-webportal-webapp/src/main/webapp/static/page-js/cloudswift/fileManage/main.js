@@ -181,9 +181,12 @@ define(function(require){
       _location.unbind('click').click(function(event) {
       	var url,dirname,location;
       	var tempname=$(this).attr('name');var j=tempname.length;
-      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;console.log(tempdir)
+      	var tempdir=$('#dirName').val();var i=0;
+      	i=tempdir.indexOf(tempname,0);
+      	if(i>=0){//root
+			i=tempdir.indexOf(tempname,0)+j;
+      	}else{i=-1}
       	$(this).nextAll('.dirPath').addClass('hidden');
-      	console.log(tempdir.substring(0,i))
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
       			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);
