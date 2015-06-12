@@ -2,10 +2,12 @@ package com.letv.portal.service.openstack.impl;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import com.letv.portal.service.openstack.internal.UserExists;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.keystone.v2_0.KeystoneApi;
@@ -30,69 +32,53 @@ import com.letv.portal.service.openstack.password.PasswordService;
 @Service("openStackService")
 public class OpenStackServiceImpl implements OpenStackService {
 
-	@Value("openstack.endpoint")
-	private String endpoint;
+    @Value("openstack.keystone.host")
+    private String keystoneHost;
 
-	@Value("openstack.admin.tenantName")
-	private String adminTenantName;
+    @Value("openstack.keystone.version")
+    private String keystoneVersion;
 
-	@Value("openstack.admin.userName")
-	private String adminUserName;
+    @Value("openstack.public.port")
+    private String publicPort;
 
-	@Value("openstack.admin.credential")
-	private String adminCredential;
+    @Value("openstack.admin.port")
+    private String adminPort;
 
-	@Autowired
-	private PasswordService passwordService;
+    @Value("openstack.protocol")
+    private String protocol;
 
-	private KeystoneApi keystoneApi;
-	private UserApi userApi;
+    @Value("openstack.user.register.token")
+    private String userRegisterToken;
 
-	@PostConstruct
-	public void open() throws OpenStackException {
-		Iterable<Module> modules = ImmutableSet
-				.<Module> of(new SLF4JLoggingModule());
-		keystoneApi = ContextBuilder
-				.newBuilder("openstack-keystone")
-				.endpoint(endpoint)
-				.credentials(adminTenantName + ":" + adminUserName,
-						adminCredential).modules(modules)
-				.buildApi(KeystoneApi.class);
+    private String publicEndpoint;
 
-		Optional<? extends UserApi> userApiOptional = keystoneApi.getUserApi();
-		if (userApiOptional.isPresent()) {
-			this.userApi = userApiOptional.get();
-		} else {
-			throw new OpenStackException(
-					"The user api of OpenStack does not exist.");
-		}
-	}
+    private String adminEndpoint;
 
-	@PreDestroy
-	public void close() throws IOException {
-		keystoneApi.close();
-	}
+    @Autowired
+    private PasswordService passwordService;
 
-	@Override
-	public OpenStackSession createSession(String userId)
-			throws OpenStackException {
-		User user = userApi.get(userId);
-		try {
-			String password = passwordService.userIdToPassword(userId);
-			if (user == null) {
-				UserRegister userRegister = new UserRegister(endpoint, userId,
-						password);
-				userRegister.run();
-				user = userApi.get(userId);
-				if (user == null) {
-					throw new OpenStackException(
-							"can not create openstack user:" + userId);
-				}
-			}
-			return new OpenStackSessionImpl(endpoint, user, password);
-		} catch (NoSuchAlgorithmException e) {
-			throw new OpenStackException(e);
-		}
-	}
+    @PostConstruct
+    public void open() {
+        publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, publicPort, keystoneVersion);
+        adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, adminPort, keystoneVersion);
+    }
+
+    @Override
+    public OpenStackSession createSession(String userId, String email)
+            throws OpenStackException {
+        try {
+            final String password = passwordService.userIdToPassword(userId);
+            if(!new UserExists(publicEndpoint,userId,password).run()){
+                new UserRegister(adminEndpoint,userId,password,email,userRegisterToken).run();
+                if(!new UserExists(publicEndpoint,userId,password).run()){
+                    throw new OpenStackException(
+                            "can not create openstack user:" + userId);
+                }
+            }
+            return new OpenStackSessionImpl(publicEndpoint, userId, password);
+        } catch (NoSuchAlgorithmException e) {
+            throw new OpenStackException(e);
+        }
+    }
 
 }

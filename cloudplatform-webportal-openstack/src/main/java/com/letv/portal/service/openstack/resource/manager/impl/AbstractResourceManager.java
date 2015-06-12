@@ -11,12 +11,12 @@ import com.letv.portal.service.openstack.resource.manager.ResourceManager;
 public abstract class AbstractResourceManager implements ResourceManager,
 		Closeable {
 	protected String endpoint;
-	protected User user;
+	protected String userId;
 	protected String password;
 
-	public AbstractResourceManager(String endpoint, User user, String password) {
+	public AbstractResourceManager(String endpoint, String userId, String password) {
 		this.endpoint = endpoint;
-		this.user = user;
+		this.userId = userId;
 		this.password = password;
 	}
 

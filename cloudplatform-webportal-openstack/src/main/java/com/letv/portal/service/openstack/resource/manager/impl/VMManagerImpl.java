@@ -36,15 +36,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private NovaApi novaApi;
 
-	public VMManagerImpl(String endpoint, User user, String password) {
-		super(endpoint, user, password);
+	public VMManagerImpl(String endpoint, String userId, String password) {
+		super(endpoint, userId, password);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
 		novaApi = ContextBuilder.newBuilder("openstack-nova")
 				.endpoint(endpoint)
-				.credentials(user.getTenantId() + ":" + user.getId(), password)
+				.credentials(userId + ":" + userId, password)
 				.modules(modules).buildApi(NovaApi.class);
 	}
 

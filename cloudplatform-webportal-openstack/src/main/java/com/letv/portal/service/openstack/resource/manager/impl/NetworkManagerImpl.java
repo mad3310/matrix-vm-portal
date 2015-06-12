@@ -27,15 +27,15 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 
 	private NeutronApi neutronApi;
 
-	public NetworkManagerImpl(String endpoint, User user, String password) {
-		super(endpoint, user, password);
+	public NetworkManagerImpl(String endpoint, String userId, String password) {
+		super(endpoint, userId, password);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
 		neutronApi = ContextBuilder.newBuilder("openstack-neutron")
 				.endpoint(endpoint)
-				.credentials(user.getTenantId() + ":" + user.getId(), password)
+				.credentials(userId + ":" + userId, password)
 				.modules(modules).buildApi(NeutronApi.class);
 	}
 

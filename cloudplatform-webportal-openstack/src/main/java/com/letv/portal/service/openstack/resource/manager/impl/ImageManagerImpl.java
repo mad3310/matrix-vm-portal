@@ -28,15 +28,15 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 
 	private GlanceApi glanceApi;
 
-	public ImageManagerImpl(String endpoint, User user, String password) {
-		super(endpoint, user, password);
+	public ImageManagerImpl(String endpoint, String userId, String password) {
+		super(endpoint, userId, password);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
 		glanceApi = ContextBuilder.newBuilder("openstack-glance")
 				.endpoint(endpoint)
-				.credentials(user.getTenantId() + ":" + user.getId(), password)
+				.credentials(userId + ":" + userId, password)
 				.modules(modules).buildApi(GlanceApi.class);
 	}
 

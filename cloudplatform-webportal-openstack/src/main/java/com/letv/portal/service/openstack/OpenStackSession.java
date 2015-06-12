@@ -31,8 +31,3 @@ public interface OpenStackSession extends Closeable{
     // vm image network identify
     
 }
-
-/**
- * nova
- * keystore
- **/

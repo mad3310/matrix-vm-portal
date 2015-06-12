@@ -1,9 +1,8 @@
 package com.letv.portal.service.openstack.internal;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.Params;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -18,50 +17,46 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Params;
+import java.io.InputStream;
+import java.io.StringWriter;
 
+/**
+ * Created by zhouxianguang on 2015/6/11.
+ */
 @SuppressWarnings("deprecation")
-public class UserRegister {
+public class UserExists {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(UserRegister.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserExists.class);
 
     private final String endpoint;
     private final String userName;
     private final String password;
-    private final String email;
-    private final String registerToken;
 
-    public UserRegister(String adminEndpoint, String userName, String password, String email, String registerToken) {
-        this.endpoint = adminEndpoint;
+    public UserExists(String publicEndpoint, String userName, String password) {
+        this.endpoint = publicEndpoint;
         this.userName = userName;
         this.password = password;
-        this.email = email;
-        this.registerToken = registerToken;
     }
 
     @SuppressWarnings("resource")
-    public void run() throws OpenStackException {
+    public boolean run() throws OpenStackException {
+        boolean status = false;
         HttpClient client = new DefaultHttpClient();
         try {
             HttpPost req = new HttpPost(this.endpoint
-                    + "OS-KSREG/register/project/user");
+                    + "tokens");
 
             req.addHeader("User-Agent", Contants.OPEN_STACK_USER_AGENT);
             req.addHeader("Content-Type", "application/json");
             req.addHeader("Accept", "application/json");
-            req.addHeader("X-Auth-Token", this.registerToken);
 
             Params body = new Params();
-            Params bodyUser = new Params();
-            body.p("user", bodyUser);
-            bodyUser.p("enabled", true).p("name", this.userName)
-                    .p("password", password).p("description", "matrix "+this.userName).p("email",this.email);
-            Params bodyTenant = new Params();
-            body.p("tenant", bodyTenant);
-            bodyTenant.p("enabled", true).p("name", this.userName)
-                    .p("description", "matrix "+this.userName).p("email",this.email);
+            Params body_Auth = new Params();
+            body.p("auth", body_Auth);
+            Params body_Auth_PasswordCredentials = new Params();
+            body_Auth.p("passwordCredentials", body_Auth_PasswordCredentials);
+            body_Auth_PasswordCredentials.p("username", this.userName).p("password", this.password);
+            body_Auth.p("tenantName", this.userName);
 
             ObjectMapper objectMapper = new ObjectMapper();
             StringWriter stringWriter = new StringWriter();
@@ -72,7 +67,11 @@ public class UserRegister {
 
             HttpResponse resp = client.execute(req);
             int statusCode = resp.getStatusLine().getStatusCode();
-            if (statusCode != 200) {
+            if (statusCode == 200) {
+                status = true;
+            } else if (statusCode == 401) {
+                status = false;
+            } else {
                 try {
                     HttpEntity httpEntity = resp.getEntity();
                     if (httpEntity != null) {
@@ -109,5 +108,6 @@ public class UserRegister {
         } finally {
             client.getConnectionManager().shutdown();
         }
+        return status;
     }
 }
