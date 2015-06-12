@@ -16,6 +16,8 @@ public interface OpenStackSession extends Closeable{
     
     VMManager getVMManager();
 
+    boolean isClosed();
+
 //    Set<String> listRegions();
 //
 //    VM createVM(String region, VMConf conf);

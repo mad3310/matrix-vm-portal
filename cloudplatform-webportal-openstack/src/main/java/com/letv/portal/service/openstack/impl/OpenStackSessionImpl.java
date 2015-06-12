@@ -28,6 +28,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private Object networkManagerLock;
 	private Object vmManagerLock;
 
+	private boolean isClosed;
+
 	public OpenStackSessionImpl(String endpoint, String userId, String password) {
 		this.endpoint = endpoint;
 		this.userId = userId;
@@ -36,6 +38,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		this.imageManagerLock = new Object();
 		this.networkManagerLock = new Object();
 		this.vmManagerLock = new Object();
+
+		isClosed = false;
 	}
 
 	@Override
@@ -77,7 +81,13 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	}
 
 	@Override
+	public boolean isClosed() {
+		return isClosed;
+	}
+
+	@Override
 	public void close() throws IOException {
+		isClosed = true;
 		if (imageManager != null) {
 			Closeables.close(imageManager, true);
 		}
