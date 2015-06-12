@@ -2,8 +2,6 @@ package com.letv.common.session;
 
 import java.io.Serializable;
 
-import com.letv.portal.service.openstack.OpenStackSession;
-
 public class Session implements Serializable{
 	
 		
