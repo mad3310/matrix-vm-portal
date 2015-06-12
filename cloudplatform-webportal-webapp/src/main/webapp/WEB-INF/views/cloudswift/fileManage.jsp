@@ -32,13 +32,8 @@
 		</div>
 		<div class="pull-right" style="padding-bottom:10px;">
 		<!-- 文件上传-->
-		<style>
-		.btn-file{position:relative;cursor:pointer;}
-		.btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}
-		.help-tip{padding-top:7px;}
-		</style>
-		<form enctype="multipart/form-data" id='form-upload' method="">
-			<div class="btn btn-success btn-file"> <i class="fa fa-cloud-upload"></i> &nbsp;上传文件<input id="upload" type="file" class="file"></div>
+		<form enctype="multipart/form-data" id='form-upload' method="post">
+			<div class="btn btn-success btn-file"> <i class="fa fa-cloud-upload"></i> &nbsp;上传文件<input id="upload" type="file" name="file" class="file"></div>
 			<button type="button" class="btn btn-primary" data-backdrop="false" data-toggle="modal" data-target="#addDirModal" id="test"><i class="fa fa-plus"></i> 新建文件夹</button>
 			<button class="btn-default btn btn-md " id="refresh"><span class="glyphicon glyphicon-refresh"></span> <span class="hidden-xs">刷新</span></button>
 		</form>
@@ -103,14 +98,14 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="modal-title">新建文件夹<a class="anchorjs-link" href="#modal-title"><span class="anchorjs-icon"></span></a></h4>
       </div>
+      <form class="form-horizontal" name="form" id="createDirform">
       <div class="modal-body">
-        <form class="form-horizontal" name="form" id="createDirform">
         	<div class="form-group">
         		<label class="col-xs-3 col-sm-3 control-label">文件夹名：</label>
         		<div class="col-xs-9 col-sm-9">
         			<div class="row">
         				<div class="col-xs-7 col-sm-7">
-        					<input type="text" class="form-control" name="folderName">
+        					<input type="text" class="form-control" name="folderName" id="floderName">
         				</div>
         			<!-- <div class="col-xs-5 col-sm-5 text-danger">
         				<div class="help-tip">
@@ -124,12 +119,12 @@
         		</div>
         	</div>
         </div>
-       </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" id="add-dir" >新建</button>
+        <button type="submit" class="btn btn-primary" id="add-dir" >新建</button>
       </div>
+    </form>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
