@@ -1697,6 +1697,10 @@ textarea {
 .alertool{position: absolute;z-index: 9;}
 .alertool div{margin-bottom: 5px;padding: 2px 25px 2px 15px;}
 
+/*2015-6-12 gm file upload*/
+.btn-file{position:relative;cursor:pointer;}
+.btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}
+.help-tip{padding-top:7px;}
 /**
  * layouts menu css 
  * Version 1.0

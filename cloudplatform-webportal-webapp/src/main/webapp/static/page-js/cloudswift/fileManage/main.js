@@ -21,16 +21,27 @@ define(function(require){
 	asyncData();
 	//文件上传
 	$('#upload').change(function(event) {
-		//调用接口
-		//传入数据 当前路径+file对象
-		if(cn.uploadfile(this)){//文件要求后缀和大小均否和
+		if(cn.uploadfile(this)){//文件要求后缀和大小均符合
 			var file=cn.getFile(this);
-			console.log(file);
-			var dir=$('#dirName').val();
-			var baseLocation=$('#baseLocation').val()
-			console.log(dir+"  "+baseLocation)
+			var pathvalue=$('.dirPath').text();var path='root';
+			if(pathvalue){
+				path=$('#dirName').val();
+			}
+			$('body').append("<div class=\"spin\"></div>");
+            $('body').append("<div class=\"far-spin\"></div>");
+            var url='/oss/'+$("#swiftId").val()+'/file';
+            var data={
+            	'file':file,
+            	'directory':path
+            }
+            console.log('文件上传：file:'+file+"   路径："+path)
+            cn.PostData(url,data,successback);
 		}
 	});
+	function successback(){
+		$('body').find('.spin').remove();
+        $('body').find('.far-spin').remove();
+	}
 	//新建文件夹验证，提交
 	$('#createDirform').bootstrapValidator({
         feedbackIcons: {
@@ -54,20 +65,34 @@ define(function(require){
                 }
         	}
         }
-    })
+    }).on('success.form.bv', function(e) {
+    	event.preventDefault();
+    	var folderName=$('#floderName').val();
+    	var pathvalue=$('.dirPath').text();var path='root';
+		if(pathvalue){
+			path=$('#dirName').val();
+		}
+		var data={
+			'file':folderName,
+			'directory':path
+		}
+		var url='/oss/'+$("#swiftId").val()+'/dir';
+		console.log('文件夹创建：folder:'+folderName+"   路径："+path)
+		cn.PostData(url,data,refreshCtl)
+    });
 
 	// $("#search").click(function() {
 	// 	cn.currentPage = 1;
 	// 	asyncData();
 	// });
-	$("#refresh").click(function() {		
+	$("#refresh").unbind('click').click(function() {		
 		var dirname=$('#dirName').val();var url;
 		if(dirname){
 			url="/oss/"+$("#swiftId").val()+"/file?directory="+dirname;
 		}else{
 			url="/oss/"+$("#swiftId").val()+"/file?directory=root";
 		}
-		cn.GetData(url,refreshCtl);
+		cn.PostData(url,refreshCtl);
 	});
 	// $("#fileName").keydown(function(e){
 	// 	if(e.keyCode==13){
@@ -136,7 +161,7 @@ define(function(require){
 	function dirClick(){
       var _target=$('table').find('.dir-a');
       _target.each(function() {
-        $(this).click(function(event) {
+        $(this).unbind('click').click(function(event) {
 	    	var dirname=$(this).parent().prev().children('input').val();
 	    	var dirarry='';
 	    	if(dirname){
@@ -153,11 +178,12 @@ define(function(require){
         });
       });
       var _location=$('.dirPath');
-      _location.click(function(event) {
+      _location.unbind('click').click(function(event) {
       	var url,dirname,location;
       	var tempname=$(this).attr('name');var j=tempname.length;
-      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
-      	$(this).nextAll('.dirPath').addClass('hidden')
+      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;console.log(tempdir)
+      	$(this).nextAll('.dirPath').addClass('hidden');
+      	console.log(tempdir.substring(0,i))
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
       			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);
@@ -168,7 +194,6 @@ define(function(require){
       		}
       	}else{
       		url="/oss/"+$("#swiftId").val()+"/file?directory=root";
-
       	}
       	$('#dirName').val(dirname);
         cn.GetData(url,refreshCtl);
