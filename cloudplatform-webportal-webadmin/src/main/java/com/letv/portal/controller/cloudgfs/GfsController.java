@@ -60,6 +60,41 @@ public class GfsController {
 		return obj;
 	}
 	
+	@RequestMapping(value="/volume/config/{name}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getVolConfigInfo(@PathVariable String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.getVolConfigByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/log/{name}/splitbrain",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getVolSplitbrainInfo(@PathVariable String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.getVolSplitbrainByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/info/{name}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject getVolHealInfo(@PathVariable String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.getVolHealInfoByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/start",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject volStart(String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.volStartByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
+	@RequestMapping(value="/volume/stop",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject volStop(String name,ResultObject obj) {
+		Map<String,Object> data =  transResult(gfsProxy.volStopByName(IP, name));
+		obj.setData(data);
+		return obj;
+	}
+	
 	private Map<String,Object> transResult(String result){
 		ObjectMapper resultMapper = new ObjectMapper();
 		Map<String,Object> jsonResult = new HashMap<String,Object>();
