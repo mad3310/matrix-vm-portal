@@ -1,7 +1,5 @@
 package com.letv.portal.service.openstack.resource.impl;
 
-import org.jclouds.openstack.glance.v1_0.domain.Image;
-
 import com.letv.portal.service.openstack.resource.ImageResource;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 

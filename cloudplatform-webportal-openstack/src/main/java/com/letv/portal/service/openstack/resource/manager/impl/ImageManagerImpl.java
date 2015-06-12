@@ -1,19 +1,5 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
-import org.jclouds.openstack.glance.v1_0.GlanceApi;
-import org.jclouds.openstack.glance.v1_0.domain.Image;
-import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
-import org.jclouds.openstack.glance.v1_0.features.ImageApi;
-import org.jclouds.openstack.keystone.v2_0.domain.User;
-
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -22,6 +8,17 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.impl.ImageResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
+import org.jclouds.ContextBuilder;
+import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+import org.jclouds.openstack.glance.v1_0.GlanceApi;
+import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+import org.jclouds.openstack.glance.v1_0.features.ImageApi;
+
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class ImageManagerImpl extends AbstractResourceManager implements
 		ImageManager {

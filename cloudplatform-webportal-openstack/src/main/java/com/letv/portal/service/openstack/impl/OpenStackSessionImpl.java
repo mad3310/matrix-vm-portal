@@ -1,10 +1,6 @@
 package com.letv.portal.service.openstack.impl;
 
-import java.io.IOException;
-
 import com.google.common.io.Closeables;
-import org.jclouds.openstack.keystone.v2_0.domain.User;
-
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
@@ -12,6 +8,8 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
+
+import java.io.IOException;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

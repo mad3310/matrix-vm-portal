@@ -1,9 +1,8 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 import org.jclouds.openstack.neutron.v2.domain.Network;
-
-import com.letv.portal.service.openstack.resource.NetworkResource;
 
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class NetworkResourceImpl extends AbstractResource implements
         return this.network.getName();
     }
 
+    @Override
     public List<SubnetResource> getSubnetResources() {
         return subnetResources;
     }

@@ -1,9 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
-import org.jclouds.openstack.nova.v2_0.domain.Flavor;
-import org.jclouds.openstack.v2_0.domain.Resource;
-
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 
 public class FlavorResourceImpl extends AbstractResource implements
 		FlavorResource {

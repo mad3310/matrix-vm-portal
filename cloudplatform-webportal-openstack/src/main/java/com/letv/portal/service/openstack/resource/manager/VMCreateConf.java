@@ -1,10 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager;
 
-import java.util.List;
-
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
+
+import java.util.List;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

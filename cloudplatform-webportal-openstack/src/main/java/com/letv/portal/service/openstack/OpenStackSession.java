@@ -1,10 +1,10 @@
 package com.letv.portal.service.openstack;
 
-import java.io.Closeable;
-
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+
+import java.io.Closeable;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

@@ -1,12 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import java.io.Closeable;
-import java.text.MessageFormat;
-
-import org.jclouds.openstack.keystone.v2_0.domain.User;
-
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.resource.manager.ResourceManager;
+
+import java.io.Closeable;
+import java.text.MessageFormat;
 
 public abstract class AbstractResourceManager implements ResourceManager,
 		Closeable {

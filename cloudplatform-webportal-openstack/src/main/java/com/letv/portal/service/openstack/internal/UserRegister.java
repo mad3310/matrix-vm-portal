@@ -1,9 +1,8 @@
 package com.letv.portal.service.openstack.internal;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.Params;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -18,8 +17,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Params;
+import java.io.InputStream;
+import java.io.StringWriter;
 
 @SuppressWarnings("deprecation")
 public class UserRegister {
@@ -61,7 +60,7 @@ public class UserRegister {
             Params bodyTenant = new Params();
             body.p("tenant", bodyTenant);
             bodyTenant.p("enabled", true).p("name", this.userName)
-                    .p("description", "matrix "+this.userName);
+                    .p("description", "matrix " + this.userName);
 
             ObjectMapper objectMapper = new ObjectMapper();
             StringWriter stringWriter = new StringWriter();

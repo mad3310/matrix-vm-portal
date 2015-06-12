@@ -1,14 +1,13 @@
 package com.letv.portal.service.openstack.password.impl;
 
-import java.security.NoSuchAlgorithmException;
-
 import com.letv.common.util.ConfigUtil;
+import com.letv.portal.service.openstack.password.PasswordService;
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.letv.portal.service.openstack.password.PasswordService;
+import java.security.NoSuchAlgorithmException;
 
 @Service("passwordService")
 public class PasswordServiceImpl implements PasswordService {
