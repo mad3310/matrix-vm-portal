@@ -23,8 +23,11 @@ define(function(require){
 	$('#upload').change(function(event) {
 		if(cn.uploadfile(this)){//文件要求后缀和大小均符合
 			var file=cn.getFile(this);
-			var pathvalue=$('span[name=dirName]').text();
-			var path=pathvalue.substring(pathvalue.indexOf('/'));
+			var pathvalue=$('.dirPath').text();var path='root';
+			if(pathvalue){
+				path=pathvalue.substring(pathvalue.indexOf('/'));
+			}
+			
 			$('body').append("<div class=\"spin\"></div>");
             $('body').append("<div class=\"far-spin\"></div>");
             var url='/oss/'+$("#swiftId").val()+'/file';
@@ -66,8 +69,10 @@ define(function(require){
     }).on('success.form.bv', function(e) {
     	event.preventDefault();
     	var folderName=$('#floderName').val();
-    	var pathvalue=$('span[name=dirName]').text();
-		var path=pathvalue.substring(pathvalue.indexOf('/'));
+    	var pathvalue=$('.dirPath').text();var path='root';
+		if(pathvalue){
+			path=pathvalue.substring(pathvalue.indexOf('/'));
+		}
 		var data={
 			'file':folderName,
 			'directory':path

@@ -98,7 +98,7 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="modal-title">新建文件夹<a class="anchorjs-link" href="#modal-title"><span class="anchorjs-icon"></span></a></h4>
       </div>
-      <form class="form-horizontal" name="form" id="createDirform">
+      <form class="form-horizontal" name="form" id="createDirform" method="post">
       <div class="modal-body">
         	<div class="form-group">
         		<label class="col-xs-3 col-sm-3 control-label">文件夹名：</label>
