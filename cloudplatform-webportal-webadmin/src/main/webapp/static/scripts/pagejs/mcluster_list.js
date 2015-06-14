@@ -21,7 +21,7 @@ $(function(){
 	var mclusterId;
 	var status;
 	//modal显示创建进度
-	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+	/*$(document).on('click', "[name='buildStatusBoxLink']" , function(){
 		mclusterId = $(this).closest('tr').find('td:first input').val();
 		
 		if($(this).html().indexOf("运行中")>=0){
@@ -36,7 +36,7 @@ $(function(){
 			status = "3";
 		}
 		queryBuildStatus(mclusterId,"new");
-	});
+	});*/
 	
 	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
 		if(status == "2") {
