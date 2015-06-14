@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
@@ -27,6 +28,8 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
+	@Value("${matrix.rds.vip.default.image}")
+	private String MATRIX_RDS_VIP_DEFAULT_IMAGE;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateVIPServiceImpl.class);
 	
@@ -50,6 +53,7 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX);
 		map.put("componentType", "gbalancer");
 		map.put("networkMode", "ip");
+		map.put("image", MATRIX_RDS_VIP_DEFAULT_IMAGE);
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
