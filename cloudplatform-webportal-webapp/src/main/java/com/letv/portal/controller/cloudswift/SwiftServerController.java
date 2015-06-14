@@ -94,10 +94,10 @@ public class SwiftServerController {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}	
-	@RequestMapping(value="/{id}/dir",method=RequestMethod.GET)
-	public @ResponseBody ResultObject addDir(@PathVariable Long id, String file,String directory){
+	@RequestMapping(value="/{id}/folder",method=RequestMethod.POST)
+	public @ResponseBody ResultObject addFolder(@PathVariable Long id, String file,String directory){
 		isAuthoritySwift(id);
-		this.swiftServerProxy.addDir(id,file,directory);
+		this.swiftServerProxy.addFolder(id,file,directory);
 		ResultObject obj = new ResultObject();
 		return obj;
 	}	

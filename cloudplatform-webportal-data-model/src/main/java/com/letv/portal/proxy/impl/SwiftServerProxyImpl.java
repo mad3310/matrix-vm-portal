@@ -232,7 +232,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	}
 
 	@Override
-	public void addDir(Long id, String file, String directory) {
+	public void addFolder(Long id, String file, String directory) {
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");

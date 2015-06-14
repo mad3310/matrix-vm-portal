@@ -76,7 +76,7 @@ define(function(require){
 			'file':folderName,
 			'directory':path
 		}
-		var url='/oss/'+$("#swiftId").val()+'/dir';
+		var url='/oss/'+$("#swiftId").val()+'/folder';
 		console.log('文件夹创建：folder:'+folderName+"   路径："+path)
 		cn.PostData(url,data,refreshCtl)
     });
