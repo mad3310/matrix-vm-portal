@@ -17,6 +17,7 @@ import com.letv.common.exception.ValidateException;
 import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.enumeration.DbUserStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.UserModel;
 import com.letv.portal.model.task.TaskResult;
@@ -99,27 +100,18 @@ public class TaskDbUserCreateServiceImpl extends BaseTask4RDSServiceImpl impleme
 			if(tr.isSuccess()) {
 				dbUser.setStatus(DbUserStatus.NORMAL.getValue());
 				this.dbUserService.updateStatus(dbUser);
-				
-				String userPwd = (String) ((Map) transToMap(result).get("response")).get("user_password");
 				Map<String,Object> emailParams = new HashMap<String,Object>();
+				emailParams.put("type", "create");
 				emailParams.put("dbUserName", dbUser.getUsername());
 				emailParams.put("dbUserPassword", dbUser.getPassword());
-				emailParams.put("ip", dbUser.getAcceptIp());
+				emailParams.put("ip", dbUser.getAcceptIp()+":管理员");
 				emailParams.put("dbName", createUserParams.get("dbName"));
 				emailParams.put("maxConcurrency", dbUser.getMaxConcurrency());
-				this.email4User(emailParams,((BigInteger)createUserParams.get("createUser")).longValue(),"createDbUser.ftl");
+				this.email4User(emailParams,((BigInteger)createUserParams.get("createUser")).longValue(),"dbUser.ftl");
 			} 
 		}
 		tr.setParams(params);
 		return tr;
-	}
-	
-	private boolean isSelectVip(Long dbId) {
-		int step = this.buildService.getStepByDbId(dbId);
-		if(step == 0) {
-			return true;
-		}
-		return false;
 	}
 	
 	public void email4User(Map<String,Object> params,Long to,String ftlName){

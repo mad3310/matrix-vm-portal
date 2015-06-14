@@ -62,7 +62,7 @@ public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceI
 		HostModel host = this.hostService.getHostByHclusterId(mclusterModel.getHclusterId());
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
-		String mclusterDataName = mclusterModel.getMclusterName() +  Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX;
+		String mclusterDataName = mclusterModel.getMclusterName();
 		String result = pythonService.checkContainerCreateStatus(mclusterDataName,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
@@ -82,6 +82,7 @@ public class TaskMclusterCheckDataStatusServiceImpl extends BaseTask4RDSServiceI
 				ContainerModel container = new ContainerModel();
 				BeanUtils.populate(container, map);
 				container.setMclusterId(mclusterModel.getId());
+				container.setType("mclusternode");
 				container.setIpMask((String) map.get("netMask"));
 				container.setContainerName((String) map.get("containerName"));
 				container.setStatus(MclusterStatus.RUNNING.getValue());

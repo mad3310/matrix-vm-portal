@@ -57,6 +57,7 @@ import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.model.monitor.NodeModel.DetailModel;
 import com.letv.portal.model.monitor.NodeMonitorModel;
 import com.letv.portal.model.swift.SwiftServer;
+import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IBuildService;
@@ -112,6 +113,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private IZabbixPushService zabbixPushService;
 	@Autowired 
 	private IMonitorIndexService monitorIndexService;
+	@Autowired
+	private ITaskChainService taskChainService;
 	@Autowired 
 	private IMonitorService monitorService;
 	@Value("${error.email.to}")
@@ -386,7 +389,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		emailParams.put("ip",ipAndRole.toString());
 		this.email4User(emailParams,buildResult.get(0).getCreateUser(),"dbUser.ftl");
-		this.email4User(emailParams,buildResult.get(0).getCreateUser(),"dbUser4Manager.ftl");
+		this.email4User(emailParams,ERROR_MAIL_ADDRESS,"dbUser4Manager.ftl");
 	}
 	private String getUserRole(Integer roleId) {
 		if(DbUserRoleStatus.MANAGER.getValue().equals(roleId))
@@ -772,10 +775,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 	}
 
-	public void email4User(Map<String,Object> params,Long to,String ftlName){
+	private void email4User(Map<String,Object> params,Long to,String ftlName){
 		UserModel user = this.userService.selectById(to);
-		if(null != user) {
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知",ftlName,params);
+		this.email4User(params, user.getEmail(), ftlName);
+	}
+	private void email4User(Map<String,Object> params,String to,String ftlName){
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",to,"乐视云平台web-portal系统通知",ftlName,params);
 			mailMessage.setHtml(true);
 			try {
 				defaultEmailSender.sendMessage(mailMessage);
@@ -783,8 +788,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
-			
-		}
 	}
 	
 	@Override
@@ -794,6 +797,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		List<ContainerModel> list = this.containerService.selectContainerByMclusterId(mcluster.getId());
 		String result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());		
 		if(analysisResult(transResult(result))) {
+			this.pythonService.removeMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());		
 			if(this.zabbixPushService.deleteMutilContainerPushZabbixInfo(list)){
 				logger.info("invoke remove mcluster api success");
 			}
@@ -822,6 +826,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		String result = this.pythonService.stopMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result))) {
+			this.pythonService.stopMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
 			logger.info("invoke stop mcluster api success");
 		} else {
 			logger.error("invoke stop mcluster api error");
@@ -879,10 +884,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			Integer status = transStatus((String)((Map)map.get("response")).get("status"));
 			container.setStatus(status);
 			this.containerService.updateBySelective(container);
-			//container单节点丢失，数据库不删除。等待整个集群一块删除
-			/*if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
-				this.containerService.delete(container);
-			}*/
 		}
 	}
 	
@@ -936,51 +937,60 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void checkMclusterCount() {
-		Map params = new HashMap();
-		params.put("status", "1");
-		params.put("type", "rds");
-		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
-		for (HclusterModel hcluster : hclusters) {
+		List<HclusterModel> rdsHcluster = this.getRdsHcluster();
+		for (HclusterModel hcluster : rdsHcluster) {
 			List<HostModel> hosts = this.hostService.selectByHclusterId(hcluster.getId());
-			if(hosts.size()>0) {
-				HostModel host = hosts.get(0);
-				String result = this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword());
-				Map map = this.transResult(result);
-				if(Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map)map.get("meta")).get("code")))) {
-					List<Map> data = (List<Map>) ((Map) map.get("response")).get("data");
-					
-					for (Map mm : data) {
-						String mclusterName = (String) mm.get("clusterName");
-						List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
-						if(list.size() <= 0) {
-							this.addHandMcluster(mm,hcluster.getId());
-						} else {
-							MclusterModel mcluster = list.get(0);
-							if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()
-									|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus()) {
-							} else {
-								List<Map> cms = (List<Map>) mm.get("nodeInfo");
-								for (Map cm : cms) {
-									ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
-									if(null == container) {
-										this.addHandContainer(cm, mcluster.getId());
-									} else {
-										if(!cm.get("hostIp").equals(container.getHostIp())) {
-											container.setContainerName((String) cm.get("containerName"));
-											container.setHostIp((String) cm.get("hostIp"));
-											HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
-											if(null != hostModel) {
-												container.setHostId(hostModel.getId());
-											}
-											this.containerService.updateHostIpByName(container);
-										}
-									}
-								}
-								
-							}
-						}
-					}
+			if(null == hosts || hosts.isEmpty())
+				continue;
+			HostModel host = hosts.get(0);
+			Map map = this.transResult( this.pythonService.checkMclusterCount(host.getHostIp(),host.getName(),host.getPassword()));
+			if(null == map || map.isEmpty())
+				continue;
+			if(!Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(((Map<String,Object>)map.get("meta")).get("code")))) 
+				continue;
+			List<Map<String,Object>> data = (List<Map<String,Object>>) ((Map) map.get("response")).get("data");
+			asyncMclusterCount(data,hcluster);
+		}
+	}
+	private List<HclusterModel>getRdsHcluster() {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("type", "rds");
+		return this.hclusterService.selectByMap(params);
+	}
+	private void asyncMclusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
+		for (Map<String,Object> mm : data) {
+			String mclusterName = (String) mm.get("clusterName");
+			if(StringUtils.isNullOrEmpty(mclusterName))
+				continue;
+			if(mclusterName.contains("_vip"))
+				mclusterName = mclusterName.substring(0,mclusterName.lastIndexOf(Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX));
+			List<MclusterModel> list = this.mclusterService.selectByName(mclusterName);
+			if(null == list || list.isEmpty()) {
+				this.addHandMcluster(mm,hcluster.getId());
+				continue;
+			} 
+			MclusterModel mcluster = list.get(0);
+			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus())
+				continue;
+			addOrUpdateContainer(mm,mcluster);
+		}
+	}
+	private void addOrUpdateContainer(Map<String,Object> mm,MclusterModel mcluster) {
+		List<Map<String,Object>> cms = (List<Map<String,Object>>) mm.get("nodeInfo");
+		for (Map<String,Object> cm : cms) {
+			ContainerModel container  = this.containerService.selectByName((String) cm.get("containerName"));
+			if(null == container) {
+				this.addHandContainer(cm, mcluster.getId());
+				continue;
+			} 
+			if(!cm.get("hostIp").equals(container.getHostIp())) {
+				container.setContainerName((String) cm.get("containerName"));
+				container.setHostIp((String) cm.get("hostIp"));
+				HostModel hostModel = this.hostService.selectByIp((String) cm.get("hostIp"));
+				if(null != hostModel) {
+					container.setHostId(hostModel.getId());
 				}
+				this.containerService.updateHostIpByName(container);
 			}
 		}
 	}
@@ -1302,7 +1312,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		return hosts.get(0).getHostIp();
 	}
 	private boolean isSelectVip(Long dbId) {
-		int step = this.buildService.getStepByDbId(dbId);
+		int step = this.taskChainService.getStepByDbId(dbId);
 		if(step == 0) {
 			return true;
 		}

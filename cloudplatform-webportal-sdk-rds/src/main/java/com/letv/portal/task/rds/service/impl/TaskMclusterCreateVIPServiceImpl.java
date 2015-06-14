@@ -48,7 +48,7 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX);
-		map.put("componentType", "mclustervip");
+		map.put("componentType", "gbalancer");
 		map.put("networkMode", "ip");
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);

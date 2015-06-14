@@ -47,8 +47,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX);
-		map.put("componentType", "mclusternode");
+		map.put("containerClusterName", mclusterModel.getMclusterName());
+		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);

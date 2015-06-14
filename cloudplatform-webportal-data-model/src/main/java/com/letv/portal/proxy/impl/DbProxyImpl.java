@@ -19,6 +19,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
@@ -49,6 +50,9 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	
+	@Autowired
+	private ITaskEngine taskEngine;
 	
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -96,7 +100,13 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 				this.mclusterProxy.insert(mcluster);
 				dbModel.setMclusterId(mcluster.getId());
 				this.dbService.updateBySelective(dbModel);
-				this.buildTaskService.buildMcluster(mcluster,dbId);
+//				this.buildTaskService.buildMcluster(mcluster,dbId);
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("dbId", dbId);
+				map.put("mclusterId", mcluster.getId());
+				map.put("serviceName", db.getDbName());
+				map.put("clusterName", mcluster.getMclusterName());
+				this.taskEngine.run("RDS_BUY", map);
 			} else {
 				dbModel.setMclusterId(mclusterId);
 				this.dbService.updateBySelective(dbModel);
