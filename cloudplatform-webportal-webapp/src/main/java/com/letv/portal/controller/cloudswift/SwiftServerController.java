@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
@@ -88,11 +90,12 @@ public class SwiftServerController {
 		return obj;
 	}	
 	@RequestMapping(value="/{id}/file",method=RequestMethod.POST)
-	public @ResponseBody ResultObject postFile(@PathVariable Long id, MultipartFile file,String directory){
+	public ModelAndView postFile(@PathVariable Long id, @RequestParam MultipartFile file,@RequestParam String directory,ModelAndView mav){
 		isAuthoritySwift(id);
         this.swiftServerProxy.postFiles(id,file,directory);
-		ResultObject obj = new ResultObject();
-		return obj;
+        mav.addObject("swiftId", id);
+		mav.setViewName("/cloudswift/fileManage");
+		return mav;
 	}	
 	@RequestMapping(value="/{id}/folder",method=RequestMethod.POST)
 	public @ResponseBody ResultObject addFolder(@PathVariable Long id, String file,String directory){

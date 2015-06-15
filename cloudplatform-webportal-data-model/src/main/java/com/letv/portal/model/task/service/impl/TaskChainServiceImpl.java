@@ -177,6 +177,8 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 		String clusterName = mcluster.getMclusterName();
 		TaskChainIndex taskChainIndex = this.taskChainIndexService
 				.selectByServiceAndClusterName(serviceName, clusterName);
+		if(taskChainIndex == null)
+			return 0;
 		return this.getStepByTaskChainIndexId(taskChainIndex.getId());
 	}
 }

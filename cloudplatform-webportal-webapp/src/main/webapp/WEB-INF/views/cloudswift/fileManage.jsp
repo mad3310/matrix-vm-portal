@@ -8,7 +8,7 @@
 .dirPath{color:#428bca;}.dirPath:hover{cursor: pointer;}a:hover{cursor: pointer;}
 </style>
 <input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
-<input class="hidden" value="" id="dirName" type="text" />
+<input class="hidden" value="${directory}" id="dirName" type="text" />
 <input class="hidden" value="" id="baseLocation" type="text" />
 <div class="se-heading m-pr10" id="headingOne">
 	<div class="pull-left">
@@ -32,8 +32,12 @@
 		</div>
 		<div class="pull-right" style="padding-bottom:10px;">
 		<!-- 文件上传-->
-		<form enctype="multipart/form-data" id='form-upload' method="post">
-			<div class="btn btn-success btn-file"> <i class="fa fa-cloud-upload"></i> &nbsp;上传文件<input id="upload" type="file" name="file" class="file"></div>
+		<form enctype="multipart/form-data" id='form-upload' method="post" action="/oss/${swiftId}/file">
+			<div class="btn btn-success btn-file"> 
+				<i class="fa fa-cloud-upload"></i> &nbsp;上传文件
+				<input id="upload" type="file" name="file" class="file">
+				<input id="dir" type="hidden" name="directory" >
+			</div>
 			<button type="button" class="btn btn-primary" data-backdrop="false" data-toggle="modal" data-target="#addDirModal" id="test"><i class="fa fa-plus"></i> 新建文件夹</button>
 			<button class="btn-default btn btn-md " id="refresh"><span class="glyphicon glyphicon-refresh"></span> <span class="hidden-xs">刷新</span></button>
 		</form>
