@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 @Service("passwordService")
 public class PasswordServiceImpl implements PasswordService {
@@ -24,5 +25,14 @@ public class PasswordServiceImpl implements PasswordService {
 			throws NoSuchAlgorithmException {
 		return DigestUtils.sha512Hex((userId + userPasswordSalt)
 				.getBytes(Charsets.UTF_8));
+	}
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		PasswordServiceImpl i=new PasswordServiceImpl();
+		i.userPasswordSalt="abcdefg12345";
+		Scanner scanner=new Scanner(System.in);
+		String line=scanner.nextLine();
+		String pw=i.userIdToPassword(line);
+		System.out.println(pw);
 	}
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("ecs")
+@RequestMapping("/ecs")
 public class VMController {
 
     @Autowired
