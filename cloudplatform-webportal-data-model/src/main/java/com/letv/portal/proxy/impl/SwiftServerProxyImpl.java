@@ -264,5 +264,22 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		logger.info("getSwiftDetailFileUrl:{}",sb);
 		return sb.toString();
 	}
+
+	@Override
+	public void deleteFile(Long id, String file, String directory) {
+		SwiftServer server = this.selectById(id);
+		if(server == null)
+			throw new ValidateException("oss 服务不存在");
+		
+		Map<String,String> headParams = new HashMap<String,String>();
+		headParams.put("X-Auth-Token", getSuperToken(server));
+		headParams.put("Content-Type", "application/directory");
+		
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,null,1000,1000);
+		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
+			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
+		}
+		
+	}
 	
 }

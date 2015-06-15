@@ -12,4 +12,5 @@ public interface ISwiftServerProxy extends IBaseProxy<SwiftServer> {
 	public void changeService(Long id, String level,Long storeSize);
 	public void postFiles(Long id, MultipartFile file, String directory);
 	public void addFolder(Long id, String file, String directory);
+	public void deleteFile(Long id, String file, String directory);
 }
