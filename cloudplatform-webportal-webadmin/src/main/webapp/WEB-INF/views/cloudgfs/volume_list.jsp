@@ -26,8 +26,8 @@
 								<th>名称</th>
 								<th class="hidden-480">UUID</th>
 								<th class="hidden-480">传输协议</th>
-								<th>类型</th>
-								<th>板块个数</th>
+								<th class="hidden-480">类型</th>
+								<th class="hidden-480">板块个数</th>
 								<th>状态</th>
 								<th>操作</th>
 							</tr>

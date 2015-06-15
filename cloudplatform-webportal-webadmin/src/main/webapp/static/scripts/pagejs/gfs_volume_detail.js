@@ -27,11 +27,11 @@ function getVolSpaceInfo() {
 			var info = data.data.data;
 			var tby = $("#space-tby");
 			
-			var td2 = "<td class='hidden-480'>" + info.volume + "</td>";
-			var td3 = "<td>" + info.size + "</td>";
-			var td4 = "<td>" + info.used + "</td>";
-			var td5 = "<td class=\"used\">" + info.available + "</td>";
-			var td6 = "<td class='hidden-480'>" + info.capacity + "</td>";
+			var td2 = "<td>" + info.volume + "</td>";
+			var td3 = "<td class='hidden-480'>" + parseInt(info.size/1024)+"MB"+ "</td>";
+			var td4 = "<td>" + parseInt(info.used/1024)+"MB" + "</td>";
+			var td5 = "<td class='hidden-480'>" + parseInt(info.available/1024)+"MB" + "</td>";
+			var td6 = "<td>" + info.capacity + "</td>";
 			var trStart = "<tr>";
 			var trEnd = "</tr>";
 
@@ -61,16 +61,28 @@ function getVolProcessInfo() {
 			var tby = $("#process-tby");
 			var trs= [];
 			for (var i = 0, len = array.length; i < len; i++) {
-				var td1 ="<td class='hidden-480'>" + array[i].hostname + "</td>"
-				var td2 = "<td>" + array[i].path + "</td>";
-				var td3 = "<td>" + array[i].peerid + "</td>";
+				var prefix =""; 
+				if(array[i].hostname.indexOf("lab")>=0){
+					prefix = "Brick "+array[i].hostname+":";
+				}else{
+					prefix = array[i].hostname+" on ";
+				}
+				var td2 = "<td>" + prefix +array[i].path + "</td>";
+				var td3 = "<td class='hidden-480'>" + array[i].peerid + "</td>";
 				var td4 = "<td class=\"used\">" + array[i].pid + "</td>";
 				var td5 = "<td class='hidden-480'>" + array[i].port + "</td>";
-				var td6 = "<td class='hidden-480'>" + array[i].status
+				
+				var stat = "";
+				if(array[i].status = 1){
+					stat = "Y"
+				}else{
+					stat = "N"
+				}
+				var td6 = "<td>" + stat
 						+ "</td>";
 				var trStart = "<tr>";
 				var trEnd= "</tr>";
-				trs.push(trStart+td1+td2+td3+td4+td5+td6+trEnd);
+				trs.push(trStart+td2+td3+td4+td5+td6+trEnd);
 			}// 循环json中的数据
 			tby.html(trs.join(""));
 		},

@@ -48,11 +48,11 @@ function queryGfsVolume() {
 						+ "\" type=\"checkbox\" class=\"ace\"/>"
 						+ "<span class=\"lbl\"></span>" + "</label>" + "</td>";
 				var td2 = "<td><a class=\"link\" href=\"/detail/gfs/volume/"+array[i].name+"\">" + array[i].name + "</a></td>";
-				var td3 = "<td>" + array[i].uuid + "</td>";
-				var td4 = "<td>" + array[i].transport + "</td>";
+				var td3 = "<td class='hidden-480'>" + array[i].uuid + "</td>";
+				var td4 = "<td class='hidden-480'>" + array[i].transport + "</td>";
 				var td5 = "<td class='hidden-480'>" + array[i].type + "</td>";
 				var td6 = "<td class='hidden-480'>" + array[i].num_bricks + "</td>";
-				var td7 = "<td class='hidden-480'>" + array[i].status
+				var td7 = "<td>" + array[i].status
 						+ "</td>";
 				var td8 = "<td>"
 						+ "<div class=\"action-buttons\">"

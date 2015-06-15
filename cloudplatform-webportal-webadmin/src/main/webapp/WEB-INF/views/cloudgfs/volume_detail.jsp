@@ -42,9 +42,9 @@
 											<thead>
 												<tr>
 													<th>名称</th>
-													<th>空间大小</th>
+													<th class="hidden-480">空间大小</th>
 													<th>已用空间</th>
-													<th>可用空间</th>
+													<th class="hidden-480">可用空间</th>
 													<th>使用比例</th>
 												</tr>
 											</thead>
@@ -65,11 +65,10 @@
 										<table class="table table-bordered  table-striped table-hover" id="vol_process_info_talbe">
 											<thead>
 												<tr>
-													<th>主机名</th>
-													<th>路径</th>
-													<th>节点id</th>
+													<th>Gluster进程名</th>
+													<th class='hidden-480'>节点id</th>
 													<th>进程id</th>
-													<th>端口</th>
+													<th class='hidden-480'>端口</th>
 													<th>状态</th>
 												</tr>
 											</thead>
