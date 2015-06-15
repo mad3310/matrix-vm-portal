@@ -97,8 +97,8 @@ public class SwiftServerController {
 		mav.setViewName("/cloudswift/fileManage");
 		return mav;
 	}	
-	@RequestMapping(value="/{id}/file",method=RequestMethod.DELETE)
-	public  @ResponseBody ResultObject  deleteFile(@PathVariable Long id,@RequestParam String file,String directory){
+	@RequestMapping(value="/{id}/file/del",method=RequestMethod.POST)
+	public  @ResponseBody ResultObject  deleteFile(@PathVariable Long id,@RequestParam String file,@RequestParam String directory){
 		ResultObject obj = new ResultObject();
 		isAuthoritySwift(id);
 		this.swiftServerProxy.deleteFile(id,file,directory);

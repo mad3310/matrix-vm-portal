@@ -103,7 +103,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		headParams.put("x-auth-user", SWIFT_SUPER_USER);
 		headParams.put("x-auth-key", SWIFT_SUPER_USER_PWD);
 		headParams.put("x-auth-source", SWIFT_SUPER_AUTH_SOURCE);
-		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftGetTokenUrl(host.getHostIp()),headParams,1000,2000);
 		if(response == null || response.getFirstHeader("X-Auth-Token") == null) {
 			throw new CommonException("oss exception:get super token failed");
 		}
@@ -273,9 +273,8 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
-		headParams.put("Content-Type", "application/directory");
 		
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,null,1000,1000);
+		HttpResponse response = HttpsClient.httpDeleteByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
