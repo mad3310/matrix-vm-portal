@@ -27,16 +27,16 @@ public class OpenStackServiceImpl implements OpenStackService {
     @Value("${openstack.keystone.version}")
     private String keystoneVersion;
 
-    @Value("${openstack.public.port}")
+    @Value("${openstack.keystone.public.port}")
     private String publicPort;
 
-    @Value("${openstack.admin.port}")
+    @Value("${openstack.keystone.admin.port}")
     private String adminPort;
 
-    @Value("${openstack.protocol}")
+    @Value("${openstack.keystone.protocol}")
     private String protocol;
 
-    @Value("${openstack.user.register.token}")
+    @Value("${openstack.keystone.user.register.token}")
     private String userRegisterToken;
 
     private String publicEndpoint;

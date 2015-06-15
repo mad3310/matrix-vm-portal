@@ -13,7 +13,7 @@ import java.util.Scanner;
 @Service("passwordService")
 public class PasswordServiceImpl implements PasswordService {
 
-	@Value("${openstack.user.password.salt}")
+	@Value("${openstack.keystone.user.password.salt}")
 	private String userPasswordSalt;
 
 	PasswordServiceImpl(){
