@@ -60,8 +60,8 @@
 						<th class="hidden-xs">上传日期</th>
 						<th class="hidden-xs">大小</th>
 						<th class="hidden-xs">下载地址</th>
-						<!-- <th>缓存过期</th>
-						<th>操作</th> -->
+						<!-- <th>缓存过期</th>-->
+						<th class="text-right">操作</th> 
 					</tr>
 				</thead>
 				<tbody id="tby">

@@ -19,6 +19,22 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
+	/*
+	 * 操作按钮初始化
+	 */
+	$("#tby").click(function(e){
+		e = e? e:window.event;
+		var target = e.target || e.srcElement;
+		var filePath = $(target).attr("file-path");
+		if(filePath != undefined && filePath != null){
+			var url = "/oss/"+$("#swiftId").val()+"/file/del";
+			var data = {
+					file : filePath
+			}
+			debugger
+			cn.PostData(url,data,asyncData);
+		}
+	})
 	//文件上传
 	$('#upload').change(function(event) {
 		if(cn.uploadfile(this)){//文件要求后缀和大小均符合
@@ -64,6 +80,7 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
+    	$("#add-dir").html("创建中...");
     	var folderName=$('#floderName').val();
     	var pathvalue=$('.dirPath').text();var path='root';
 		if(pathvalue){
@@ -74,7 +91,14 @@ define(function(require){
 			'directory':path
 		}
 		var url='/oss/'+$("#swiftId").val()+'/folder';
-		cn.PostData(url,data,asyncData);
+		cn.PostData(url,data,function(){
+			asyncData();
+			$("#addDirModal").modal("hide");
+			console.log($("#createDirform").data("bootstrapValidator"));
+			$("#createDirform").data("bootstrapValidator").resetForm();
+			$("#createDirform")[0].reset();
+			$("#add-dir").html("创建");
+		});
     });
 
 	// $("#search").click(function() {
@@ -145,7 +169,11 @@ define(function(require){
 	
 	//加载列表数据
 	function asyncData() {
-		var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
+		var directory = $('#dirName').val();
+		if(!directory){
+			directory="root";
+		}
+		var url = "/oss/"+$("#swiftId").val()+"/file?directory="+directory;
 		cn.GetData(url,refreshCtl);
 		var url2='/oss/'+$("#swiftId").val()+'/file/prefixUrl';
 		cn.GetData(url2,function(data){

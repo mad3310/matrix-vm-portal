@@ -40,6 +40,7 @@ define(function(require,exports,module){
                       var td3 = '';
                       var td5='';
                       var td6='';
+                      var td7='';
                       if(array[i].content_type=='application/directory') {//目录
                         // td2 = $("<td class=\"padding-left-32\"><a href='javascript:void(0)'><img src='/static/img/folder.png'/> "
                         //           + fileName
@@ -50,6 +51,7 @@ define(function(require,exports,module){
                         td3 = $("<td>文件夹</td>");
                         td5=$("<td></td>");
                         td6=$("<td>-</td>");
+                        td7=$("<td class=\"text-right hidden-xs\"><span class=\"text-explode font-disabled\">删除</span></td>");
                       }else{
                           var filetypeindex=fileName;
                           var filetype=filetypeindex.substring(filetypeindex.indexOf('.')+1);
@@ -57,17 +59,19 @@ define(function(require,exports,module){
                                   + fileName
                                   +"</td>");
                           td3 = $("<td>"+filetype+"</td>");
-                          if(array[i].bytes/Math.pow(2,30)>=1){//GB
-                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,30)+"GB</span></td>");
-                          }else if(array[i].bytes/Math.pow(2,20)>=1){//MB
-                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,20)+"MB</span></td>");
-                          }else if(array[i].bytes/Math.pow(2,10)>=1){//KB
-                            td5 = $("<td class='hidden-xs'><span>"+array[i].bytes/Math.pow(2,10)+"KB</span></td>");
+                          if(array[i].bytes/1073741824>=1){//GB 1024*1024*1024=1073741824
+                            td5 = $("<td class='hidden-xs'><span>"+(array[i].bytes/1073741824).toFixed(2)+"GB</span></td>");
+                          }else if(array[i].bytes/1048576>=1){//MB 1024*1024=1048576
+                            td5 = $("<td class='hidden-xs'><span>"+(array[i].bytes/1048576).toFixed(2)+"MB</span></td>");
+                          }else if(array[i].bytes/1024>=1){//KB
+                            td5 = $("<td class='hidden-xs'><span>"+(array[i].bytes/1024).toFixed(2)+"KB</span></td>");
                           }else{//B
                             td5 = $("<td class='hidden-xs'><span>"+array[i].bytes+"B</span></td>");
                           }
                           var hrefstr=$('#baseLocation').val()+array[i].name;
                           td6= $("<td class='hidden-xs'><a href='"+hrefstr+"' target='_blank'><span>"+hrefstr+"</span></a></td>");
+                          td7=$("<td class=\"text-right hidden-xs\"><a href=\"javascript:void(0)\"><span class=\"text-explode\"  file-path=\""+array[i].name+"\">删除</span></a></td>");
+                          
                       }
                       var lasttime=array[i].last_modified;var indexT=lasttime.indexOf('T');var indexpoint=lasttime.indexOf('.');
                       var td4 = $("<td class='hidden-xs'>"
@@ -80,7 +84,7 @@ define(function(require,exports,module){
                     }else{//子目录
                       
                     }            
-                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6);
+                    tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
                     tr.appendTo($tby);
                  }   
             }

@@ -36,6 +36,15 @@ define(function(require){
 			asyncData();
 		}
 	});
+	$("#tby").click(function(e){
+		e = e? e:window.event;
+		var target = e.target || e.srcElement;
+		var ossId = $(target).attr("oss-id");
+		if(ossId != undefined && ossId != null){
+			var url = "/oss/"+ossId;
+			cn.DeleteData(url,asyncDataHander);
+		}
+	})
 	
 	/*初始化按钮*/
 	$(".btn-region-display").click(function(){
@@ -87,5 +96,8 @@ define(function(require){
 		if(!page) page = cn.currentPage;
 		var url = "/oss?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&name=" + name + "&&location=" + location;
 		cn.GetData(url,dbListHandler.DbListHandler);
+	}
+	function asyncDataHander(){
+		asyncData();
 	}
 });
