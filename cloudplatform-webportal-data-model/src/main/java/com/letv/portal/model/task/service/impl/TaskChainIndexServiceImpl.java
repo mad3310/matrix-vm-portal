@@ -38,7 +38,10 @@ public class TaskChainIndexServiceImpl extends BaseServiceImpl<TaskChainIndex> i
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("serviceName", serviceName);
 		map.put("clusterName", clusterName);
-		return this.taskChainIndexDao.selectByMap(map).get(0);
+		List<TaskChainIndex> buildSteps = this.taskChainIndexDao.selectByMap(map);
+		if(buildSteps.isEmpty())
+			return null;
+		return buildSteps.get(0);
 	}
 	
 }

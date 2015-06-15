@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.service.IBuildService;
 
 @Controller
@@ -17,7 +18,7 @@ import com.letv.portal.service.IBuildService;
 public class BuildController {
 	
 	@Autowired
-	private IBuildService buildService;
+	private ITaskChainService taskChainService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(BuildController.class);
 	
@@ -30,7 +31,7 @@ public class BuildController {
 	 */
 	@RequestMapping(value="/db/{dbId}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list4Db(@PathVariable Long dbId,ResultObject result) {
-		result.setData(this.buildService.getStepByDbId(dbId));
+		result.setData(this.taskChainService.getStepByDbId(dbId));
 		return result;
 	}	
 }

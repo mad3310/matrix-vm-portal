@@ -42,7 +42,7 @@ function queryGfsPeer() {
 							+"<span class=\"lbl\"></span>"
 							+"</label>"
 							+"</td>");
-				var td2 = $("<td class='hidden-480'>"
+				var td2 = $("<td>"
 						+array[i].hostname
 						+ "</td>");
 				var td3 = $("<td>"

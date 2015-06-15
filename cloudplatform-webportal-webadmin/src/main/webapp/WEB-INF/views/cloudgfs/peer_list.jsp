@@ -20,7 +20,7 @@
 									</label>
 								</th>
 								<th>名称</th>
-								<th class="hidden-480">uuid</th>
+								<th>uuid</th>
 								<th>状态</th>
 							</tr>
 						</thead>

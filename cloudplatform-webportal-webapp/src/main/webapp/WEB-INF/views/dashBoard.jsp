@@ -57,7 +57,7 @@
 	    browserVersion(); //浏览器检测初始化
 	</script>
 </head>
-<body> 
+<body class="bodycolor"> 
 	<%@ include file="../layouts/header.jsp"%>
 	<div class="container-fluid bodycolor"><!-- main-content begin-->
 		<div class="home">
@@ -321,7 +321,7 @@
 											<span class="home-orange">敬请期待...</span>
 										</div> -->
 									</li>
-									<li class="clearfix"><li class="clearfix">
+									<li class="clearfix">
 										<div class="pull-left">
 											<span class="glyphicon glyphicon-cloud-upload text-muted"></span> 
 											<span>弹性伸缩服务</span>
@@ -330,7 +330,7 @@
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
 										</div>
-									</li>
+									
 										<div class="pull-left">
 											<!-- <span class="glyphicon glyphicon-random text-muted"></span> 
 											<span>弹性伸缩服务</span>
@@ -358,7 +358,7 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp?container=help-createDb" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+												<a href="/helpCenter/helpCenter.jsp?container=help-RDSIntro" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
 													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
@@ -388,7 +388,7 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp?container=help-OCSuse" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+												<a href="/helpCenter/helpCenter.jsp?container=help-OCSIntro" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
 													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
@@ -428,7 +428,7 @@
 												</a>
 											</div>
 											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp?container=help-OSSuse" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
+												<a href="/helpCenter/helpCenter.jsp?container=help-OSSIntro" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
 													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
 												</a>
 											</div>
@@ -529,33 +529,33 @@
 											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
-									<li class="clearfix">
-										<!-- <div class="pull-left">
+									<!-- <li class="clearfix">
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-search text-muted"></span> 
 											<span>开放搜索服务</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div> -->
-									</li>
-									<li class="clearfix">
-										<!-- <div class="pull-left">
+										</div>
+									</li> -->
+									<!-- <li class="clearfix">
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-sound-dolby text-muted"></span> 
 											<span>性能测试服务 PTS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div> -->
-									</li>
-									<li class="clearfix">
-										<!-- <div class="pull-left">
+										</div>
+									</li> -->
+									<!-- <li class="clearfix">
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-list-alt text-muted"></span> 
 											<span>开放消息服务 ONS</span>
 										</div>
 										<div class="pull-right clearfix">
 											<span class="home-orange">敬请期待...</span>
-										</div> -->
-									</li>
+										</div>
+									</li> -->
 								</ul>
 							</div>
 						</li>

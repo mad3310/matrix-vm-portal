@@ -6,6 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
@@ -27,6 +28,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
+	@Value("${matrix.rds.data.default.image}")
+	private String MATRIX_RDS_DATA_DEFAULT_IMAGE;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateDataServiceImpl.class);
 	
@@ -47,9 +50,10 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_DATA_SUFFIX);
-		map.put("componentType", "mclusternode");
+		map.put("containerClusterName", mclusterModel.getMclusterName());
+		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
+		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		

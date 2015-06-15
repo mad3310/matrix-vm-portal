@@ -127,7 +127,7 @@ define(function(require,exports,module){
         /*进度条进度控制*/
 	    progress : function(dbId,data,asyncData){
 	    	var data = data.data;	    	
-   	        var unitLen = 100 / 8;
+   	        var unitLen = 100 / 10;
    	        var $obj = $("#prg" + dbId);
    	        var $prg = $obj.find(".progress-bar");
    	       	var pWidth = unitLen * data;
@@ -143,11 +143,11 @@ define(function(require,exports,module){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
            		$obj.next().html("正在初始化数据库服务...");
-           	}else if (data > 6 && data < 8){
+           	}else if (data > 6 && data < 10){
            		$prg.css({"width": pWidth + '%'});
            		$prg.html( pWidth + "%");
            		$obj.next().html("正在创建数据库...");
-           	}else if (data == 0 || data >= 8){
+           	}else if (data == 0 || data >= 10){
            		$prg.css({"width": "100%"});
            		$prg.html("100%");
            		$obj.next().html("创建完成");

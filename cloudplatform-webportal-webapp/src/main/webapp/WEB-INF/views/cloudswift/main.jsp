@@ -9,3 +9,4 @@
 <link rel="stylesheet" href="${ctx}/static/css/font-awesome.min.css" />
 <!-- ui-css -->
 <link rel="stylesheet" href="${ctx}/static/css/ui-css/common.css" />
+<title>OSS管理控制台</title>

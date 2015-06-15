@@ -82,6 +82,7 @@ public class TaskMclusterCheckVIPStatusServiceImpl extends BaseTask4RDSServiceIm
 				ContainerModel container = new ContainerModel();
 				BeanUtils.populate(container, map);
 				container.setMclusterId(mclusterModel.getId());
+				container.setType("mclustervip");
 				container.setIpMask((String) map.get("netMask"));
 				container.setContainerName((String) map.get("containerName"));
 				container.setStatus(MclusterStatus.RUNNING.getValue());

@@ -45,7 +45,7 @@ public class PythonServiceImpl implements IPythonService{
 	@Override
 	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createStatus/").append(mclusterName);
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(mclusterName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return result;
 	}
