@@ -871,6 +871,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(mcluster);
 			}
+			this.pythonService.checkMclusterStatus(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
 		}
 	}
 
