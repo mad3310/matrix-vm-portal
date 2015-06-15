@@ -6,12 +6,26 @@ define(function(require){
     var common = require('../../common');
     var cn = new common();
     var $ = require("jquery");
+    require("jquery.form")($);
     require("bootstrapValidator")($);
     cn.Tooltip();
     
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
+	/* $('#form-upload').submit(function(){  
+         $(this).ajaxSubmit(); 
+         alert("123");
+         return false;
+     });*/
+	(function () {
+        $("#form-upload").ajaxForm({
+        	success: function (data) {
+        		asyncData();
+            }
+        });
+    })();
+	
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var fileListHandler = new dataHandler();
@@ -31,7 +45,6 @@ define(function(require){
 			var data = {
 					file : filePath
 			}
-			debugger
 			cn.PostData(url,data,asyncData);
 		}
 	})
@@ -45,10 +58,8 @@ define(function(require){
 			}
 			$('body').append("<div class=\"spin\"></div>");
             $('body').append("<div class=\"far-spin\"></div>");
-            
             $("#dir").val(path);
             $("#form-upload").submit();
-            console.log('文件上传：file:'+file+"   路径："+path)
 		}
 	});
 	function successback(){
@@ -94,7 +105,6 @@ define(function(require){
 		cn.PostData(url,data,function(){
 			asyncData();
 			$("#addDirModal").modal("hide");
-			console.log($("#createDirform").data("bootstrapValidator"));
 			$("#createDirform").data("bootstrapValidator").resetForm();
 			$("#createDirform")[0].reset();
 			$("#add-dir").html("创建");
