@@ -29,13 +29,10 @@ define(function(require){
 			}
 			$('body').append("<div class=\"spin\"></div>");
             $('body').append("<div class=\"far-spin\"></div>");
-            var url='/oss/'+$("#swiftId").val()+'/file';
-            var data={
-            	'file':file,
-            	'directory':path
-            }
+            
+            $("#dir").val(path);
+            $("#form-upload").submit();
             console.log('文件上传：file:'+file+"   路径："+path)
-            cn.PostData(url,data,successback);
 		}
 	});
 	function successback(){
@@ -66,7 +63,7 @@ define(function(require){
         	}
         }
     }).on('success.form.bv', function(e) {
-    	event.preventDefault();
+    	e.preventDefault();
     	var folderName=$('#floderName').val();
     	var pathvalue=$('.dirPath').text();var path='root';
 		if(pathvalue){
@@ -77,8 +74,7 @@ define(function(require){
 			'directory':path
 		}
 		var url='/oss/'+$("#swiftId").val()+'/folder';
-		console.log('文件夹创建：folder:'+folderName+"   路径："+path)
-		cn.PostData(url,data,refreshCtl)
+		cn.PostData(url,data,asyncData);
     });
 
 	// $("#search").click(function() {
@@ -86,6 +82,9 @@ define(function(require){
 	// 	asyncData();
 	// });
 	$("#refresh").unbind('click').click(function() {		
+		refreshFile();
+	});
+	function refreshFile(){
 		var dirname=$('#dirName').val();var url;
 		if(dirname){
 			url="/oss/"+$("#swiftId").val()+"/file?directory="+dirname;
@@ -93,7 +92,7 @@ define(function(require){
 			url="/oss/"+$("#swiftId").val()+"/file?directory=root";
 		}
 		cn.PostData(url,refreshCtl);
-	});
+	}
 	// $("#fileName").keydown(function(e){
 	// 	if(e.keyCode==13){
 	// 		cn.currentPage = 1;

@@ -57,6 +57,8 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	private String SWIFT_SUPER_USER_PWD;
 	@Value("${matrix.swift.auth.source}")
 	private String SWIFT_SUPER_AUTH_SOURCE;
+	@Value("${matrix.swift.file.default.local}")
+	private String MATRIX_SWIFT_FILE_DEFAULT_LOCAL;
 	@Override
 	public IBaseService<SwiftServer> getService() {
 		return swiftServerService;
@@ -205,30 +207,33 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		
 		//save file to local
 		File localFile = this.saveFileToLocal(file);
-		
 		//update file to OSS server
 		FileEntity entity = new FileEntity(localFile);
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
-		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getName()),headParams,entity,1000,1000);
+		HttpResponse response = HttpsClient.httpPutByHeader(getSwiftDetailFileUrl(server,directory,file.getOriginalFilename()),headParams,entity,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
+		//delete from local
+		this.removeFileFromLocal(file.getOriginalFilename());
 	}
 	private File saveFileToLocal(MultipartFile file) {
-        String path = "/tmp/ossfile";  
         String fileName = file.getOriginalFilename();  
-        File targetFile = new File(path, fileName);  
+        File targetFile = new File(MATRIX_SWIFT_FILE_DEFAULT_LOCAL, fileName);  
         if(!targetFile.exists()){  
             targetFile.mkdirs();  
         }  
-  
         try {  
             file.transferTo(targetFile);  
         } catch (Exception e) {  
         	throw new CommonException("save oss file to local failed:"+e.getMessage());
         }  
 		return targetFile;
+	}
+	private boolean removeFileFromLocal(String fileName) {
+		File targetFile = new File(MATRIX_SWIFT_FILE_DEFAULT_LOCAL, fileName);  
+		return targetFile.delete();
 	}
 
 	@Override
