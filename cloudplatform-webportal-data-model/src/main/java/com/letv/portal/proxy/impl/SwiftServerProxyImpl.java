@@ -266,7 +266,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	}
 
 	@Override
-	public void deleteFile(Long id, String file, String directory) {
+	public void deleteFile(Long id, String file) {
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
@@ -274,7 +274,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
 		
-		HttpResponse response = HttpsClient.httpDeleteByHeader(getSwiftDetailFileUrl(server,directory,file),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpDeleteByHeader(getSwiftDetailFileUrl(server,"root",file),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
