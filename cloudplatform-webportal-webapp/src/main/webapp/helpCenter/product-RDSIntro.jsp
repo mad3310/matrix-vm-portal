@@ -10,7 +10,7 @@
 		<h1 class="">
 			<i class="icons-64 icons-ace icons-64-ace "></i>云数据库RDS
 		</h1>
-		<div class="intro">云数据库是构建在SSD盘上，完全兼容MySQL，SQLServer，PostgreSQL协议的关系型数据库服务（Relational Database Service，简称RDS）。采取多主架构，具有多重安全防护措施和完善的性能监控体系，并提供专业的数据库备份、恢复及优化方案，使您能专注于应用开发和业务发展。</div>
+		<div class="intro">云数据库是构建在SSD盘上，采取多主架构，具有多重安全防护措施和完善的性能监控体系，并提供专业的数据库备份、恢复及优化方案，使您能专注于应用开发和业务发展。</div>
 	</div>
 	<div class="approve" data-spm="5">
 		<a class="" id="Approve" name="Approve" hidefocus="">&nbsp;</a>
@@ -23,8 +23,8 @@
                 <img class="img" src="${ctx}/static/img/help/rdsintro1.jpg" width="190" height="60">
                 <ul class="list">
                     <li>每台RDS拥有三个物理节点多主架构</li>
-                    <li>主节点1发生故障，秒级切换至其他主节点</li>
-                    <li>服务可用性高达99.95%</li>
+                    <li>1或2节点故障，不需切换，仍能提供服务</li>
+                    <li>服务可用性高达99.99%</li>
                 </ul>
             </div>
             <div class="dispaly-4div">
@@ -40,8 +40,8 @@
                 <h3 class="title">简单易用</h3>
                 <img class="img" src="${ctx}/static/img/help/rdsintro3.jpg" width="190" height="60">
                 <ul class="list">
-                    <li>完全兼容MySQL，SQL Server协议</li>
-                    <li>一键式数据迁移</li>
+                    <li>完全兼容MySQL协议</li>
+                    <li>一键式数据迁移（敬请期待...）</li>
                     <li>可视化管理面板操作</li>
                 </ul>
             </div>

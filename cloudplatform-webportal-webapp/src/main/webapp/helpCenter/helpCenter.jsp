@@ -160,10 +160,10 @@
                     <ul class="sub-level hidden">
                         <li data-haschild="false" data-id="4-1-1" class="product-OCSIntro" data-spm-click="product-OCSIntro.jsp">
                             <a href="#">OCS简介</a></li>
-                        <li data-haschild="false" data-id="4-1-2" class="product-OCSArch" data-spm-click="product-OCSArch.jsp">
+                        <!-- <li data-haschild="false" data-id="4-1-2" class="product-OCSArch" data-spm-click="product-OCSArch.jsp">
                             <a href="#">OCS与自建存储对比</a></li>
                         <li data-haschild="false" data-id="4-1-3" class="product-OCSAdvantage" data-spm-click="product-OCSAdvantage.jsp">
-                            <a href="#">OCS优势</a></li>
+                            <a href="#">OCS优势</a></li> -->
                     </ul>
                 </li>
                 <li data-haschild="false" data-id="4-2" class="help-OCSuse" data-spm-click="help-OCSuse.jsp"><a>快速创建</a></li>
