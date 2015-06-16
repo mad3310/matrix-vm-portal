@@ -76,11 +76,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	public void delete(MclusterModel mcluster) {
 		this.containerService.deleteByMclusterId(mcluster.getId());
 		this.buildService.deleteByMclusterId(mcluster.getId());
-		List<DbModel> selectDbByMclusterId = this.dbService.selectDbByMclusterId(mcluster.getId());
-		for (DbModel dbModel : selectDbByMclusterId) {
-			dbModel.setStatus(DbStatus.ABNORMAL.getValue());
-			this.dbService.updateBySelective(dbModel);
-		}
+		this.dbService.deleteByMclusterId(mcluster.getId());
 		this.backupService.deleteByMclusterId(mcluster.getId());
 		this.mclusterDao.delete(mcluster);
 	}

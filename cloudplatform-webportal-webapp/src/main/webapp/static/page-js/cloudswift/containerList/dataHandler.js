@@ -61,7 +61,7 @@ define(function(require,exports,module){
                     var td7 = $("<td class='hidden-xs'><span><span></span><span class=\"text-success\">"+cn.TransDate('Y-m-d H:i:s',array[i].createTime)+"</span></span></td>");
                     var td8 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
-                    	var td9 = $("<td class='hidden-xs'><a href=\"/detail/oss/"+array[i].id+"\">管理</a></td>"
+                    	var td9 = $("<td class='hidden-xs'><a href=\"/detail/oss/"+array[i].id+"\">管理</a><span>|</span><a href=\"javascript:void(0)\" oss-id=\""+array[i].id+"\">删除</a></td>"
                         +"<td class='hidden-sm hidden-md hidden-lg'><a href=\"/detail/oss/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a></td>"
                         );
                     }else{
