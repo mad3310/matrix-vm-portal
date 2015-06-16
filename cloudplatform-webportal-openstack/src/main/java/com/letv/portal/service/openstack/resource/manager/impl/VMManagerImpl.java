@@ -1,5 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.jclouds.ContextBuilder;
+import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
+import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
+import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
+import org.slf4j.Logger;
+
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -13,24 +30,11 @@ import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
-import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
-import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Flavor;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
-import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
-import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
-import org.jclouds.openstack.nova.v2_0.features.ServerApi;
-import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
-
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
+	private static final Logger logger=org.slf4j.LoggerFactory.getLogger(VMManager.class);
+	
 	private NovaApi novaApi;
 
 	public VMManagerImpl(String endpoint, String userId, String password) {
@@ -60,7 +64,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
-		FluentIterable<Server> resources = serverApi.listInDetail().concat();
+		List<Server> resources = serverApi.listInDetail().concat().toList();
 		List<VMResource> vmResources = new ArrayList<VMResource>(
 				resources.size());
 		for (Server resource : resources) {
@@ -140,9 +144,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		FlavorApi flavorApi = novaApi.getFlavorApi(region);
-		FluentIterable<Flavor> resources = flavorApi.listInDetail().concat();
+		List<Flavor> resources = flavorApi.listInDetail().concat().toList();
 		List<FlavorResource> flavorResources = new ArrayList<FlavorResource>(
-				resources.size());
+			resources.size());
 		for (Flavor resource : resources) {
 			flavorResources.add(new FlavorResourceImpl(region, resource));
 		}
