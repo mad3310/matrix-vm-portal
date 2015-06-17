@@ -35,11 +35,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	
 	private final static Logger logger = LoggerFactory.getLogger(DbUserServiceImpl.class);
 	
-	private final static int MAX_QUERIES_PERHOUR = 1000;
-	private final static int MAX_UPDATES_PERHOUR = 1000;
-	private final static int MAX_CONNECTIONS_PERHOUR = 100;
-	private final static int MAX_USERCONNECTIONS = 10;
-	
 	@Resource
 	private IDbUserDao dbUserDao;
 	
@@ -110,17 +105,11 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 		super.update(dbUserModel);
 	}
 	private DbUserModel setConnectionsParams(DbUserModel dbUserModel){
-		dbUserModel.setMaxUserConnections(MAX_USERCONNECTIONS);
-		dbUserModel.setMaxConnectionsPerHour(MAX_CONNECTIONS_PERHOUR);
-		dbUserModel.setMaxQueriesPerHour(MAX_QUERIES_PERHOUR);
-		dbUserModel.setMaxUpdatesPerHour(MAX_UPDATES_PERHOUR);
-		if( DbUserRoleStatus.MANAGER.getValue() != dbUserModel.getType()) {
-			int maxConcurrency = dbUserModel.getMaxConcurrency();
-			dbUserModel.setMaxUserConnections(maxConcurrency);
-			dbUserModel.setMaxConnectionsPerHour(maxConcurrency*2*60*60);
-			dbUserModel.setMaxQueriesPerHour(maxConcurrency*2*60*60);
-			dbUserModel.setMaxUpdatesPerHour(maxConcurrency*60*60);
-		} 
+		int maxConcurrency = dbUserModel.getMaxConcurrency();
+		dbUserModel.setMaxUserConnections(maxConcurrency);
+		dbUserModel.setMaxConnectionsPerHour(maxConcurrency*2*60*60);
+		dbUserModel.setMaxQueriesPerHour(maxConcurrency*2*60*60);
+		dbUserModel.setMaxUpdatesPerHour(maxConcurrency*60*60);
 		return dbUserModel;
 	}
 	public void insertDbUserAndAcceptIp(DbUserModel dbUserModel){
