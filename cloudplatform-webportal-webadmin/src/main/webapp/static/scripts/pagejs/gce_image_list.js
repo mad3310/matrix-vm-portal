@@ -4,7 +4,10 @@ var recordsPerPage = 15; //每页显示条数
 $(function(){
 	//初始化 
 	page_init();
-	
+	//chosen-select 组件兼容 2015-06-16
+	if(!IsPC()){
+		$('.chosen-select').removeClass('chosen-select');
+	}
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')

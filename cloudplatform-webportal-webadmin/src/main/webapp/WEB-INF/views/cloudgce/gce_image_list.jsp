@@ -144,7 +144,7 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="form-control" name="owner" id="owner" data-placeholder="请选择所属用户">
+									<select class="form-control chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
 									</select>
 								</div>
 								<label class="control-label">
@@ -261,7 +261,8 @@
 							<div class="form-group">
 								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
 								<div class="col-sm-10 col-xs-10 col-md-6">
-									<select class="form-control" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
+									<select class="form-control chosen-select" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
+									<option></option>
 									</select>
 								</div>
 								<label class="control-label">
