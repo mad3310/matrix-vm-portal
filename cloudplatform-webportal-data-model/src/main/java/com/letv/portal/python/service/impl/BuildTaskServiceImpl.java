@@ -348,7 +348,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				throw new ValidateException("参数不合法");
 			String result = "";
 			if("delete".equals(type)) {
-				result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
+				result = this.pythonService.deleteDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 			} else {
 				result = this.pythonService.createDbUser(dbUserModel, (String)params.get("dbName"), (String)params.get("nodeIp"), (String)params.get("username"), (String)params.get("password"));
 			}
