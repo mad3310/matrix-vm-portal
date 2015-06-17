@@ -66,11 +66,6 @@
                     </small>
                     <small>
                         <span>
-                            <button class="btn-danger btn btn-sm disabled">删除实例</button>
-                        </span>
-                    </small>
-                    <small>
-                        <span>
                             <button class="btn-default btn btn-sm glyphicon glyphicon-list disabled"></button>
                         </span>
                     </small>
@@ -97,7 +92,7 @@
 <%@ include file="../../layouts/rToolbar.jsp"%>
 	<script type="text/javascript" src="${ctx}/static/modules/jquery/2.0.3/jquery.min.js"></script>
 	<script type="text/javascript">
-		$('.navbar-header').append('<a class="navbar-brand m-brand" href="/list/vm">云主机</a>');
+		$('#navbar-menu .navbar-header').append('<a class="navbar-brand m-brand" href="/list/vm">云主机</a>');
 	</script>
 </body>
 

@@ -52,7 +52,7 @@
 						<th class="padding-left-32">云主机名称</th>
 						<th class="hidden-xs">镜像名称</th>
 						<th class="hidden-xs">IP 地址</th>
-						<th class="hidden-xs">规格</th>						
+						<th class="hidden-xs">配置</th>						
 						<th class="hidden-xs">状态</th>
 						<th class="hidden-xs">区域</th>
 						<th class="text-right">操作</th>
@@ -64,10 +64,10 @@
 					<td class="hidden-xs"><a href="/detail/vm/789">matrix-test</a></td>
 					<td class="hidden-xs"><span>cirros-0.3.2-x86_64</span></td>
 					<td class="hidden-xs"><span>172.16.0.6</span></td>
-					<td class="hidden-xs"><span>nova</span></td>
+					<td class="hidden-xs"><span>nano | 64MB 内存| 1 虚拟内核 | 1.0GB 盘</span></td>
 					<td class="hidden-xs"><span>Active</span></td>
 					<td class="hidden-xs"><span>惠普DC</span></td>
-					<td class="text-right hidden-xs"><a href="/detail/db/619">管理</a>&nbsp;<span class="text-explode font-disabled">|续费|升级</span></td>
+					<td class="text-right hidden-xs"><a href="/detail/db/619">管理</a>&nbsp;<a href="/detail/db/619">删除</a></td>
 				</tr>
 				</tbody>				
 			</table>

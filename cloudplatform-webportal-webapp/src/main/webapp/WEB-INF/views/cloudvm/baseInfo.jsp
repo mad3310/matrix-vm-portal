@@ -55,18 +55,10 @@
 		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 			        	</td> 
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">规格:</span>
-		        			<span>nova</span>
+			        		<span class="text-muted pd-r8">镜像:</span>
+		        			<span>cirros-0.3.2-x86_64</span>
 			        	</td>
-		        	</tr>		
-		        	<tr>
-			        	<td width="50%">
-		        			<span class="text-muted pd-r8">IP 地址:</span>
-		        			<span>网络1，网络2</span>
-			        	</td> 
-			        	<td width="50%">
-			        	</td>
-		        	</tr>        	
+		        	</tr>		        	
 		        	</tbody>
 		        </table>
 		      </div>
@@ -100,8 +92,81 @@
 		        </table>
 		      </div>
 		    </div>
+		    
+	  	</div>
+		<div class="panel panel-default panel-table">
+	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+		        <span class="panel-title">
+		          		配置
+				</span>
+				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
+				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
+					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
+				</span>
+				</a>
+	    	</div>
+		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+		      <div class="panel-body pd0">
+		        <table class="table table-bordered table-bi">
+		        	<tbody>
+		        	<tr>
+		        		<td width="50%">
+			        		<span class="text-muted pd-r8">规格:</span>
+			        		<span id="db_info_running_state">nano</span>
+		        		</td>
+		        		<td width="50%">
+		        			<span class="text-muted pd-r8">内存:</span>
+			        		<span id="db_info_running_state">64MB</span>
+		        		</td>
+		        	</tr> 
+		        	<tr>
+		        		<td width="50%">
+			        		<span class="text-muted pd-r8">虚拟内核:</span>
+			        		<span id="db_info_running_state">1 虚拟内核</span>
+		        		</td>
+		        		<td width="50%">
+		        			<span class="text-muted pd-r8">磁盘:</span>
+			        		<span id="db_info_running_state">1GB</span>
+		        		</td>
+		        	</tr> 
+		        	</tbody>
+		        </table>
+		      </div>
+		    </div>		   
+		    
 	  	</div>
 		
+		<div class="panel panel-default panel-table">
+	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+		        <span class="panel-title">
+		          		网络
+				</span>
+				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
+				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
+					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
+				</span>
+				</a>
+	    	</div>
+		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+		      <div class="panel-body pd0">
+		        <table class="table table-bordered table-bi">
+		        	<tbody>
+		        	<tr>
+		        		<td width="50%">
+			        		<span class="text-muted pd-r8">ip:</span>
+			        		<span id="db_info_running_state">172.16.0.14</span>
+		        		</td>
+		        		<td width="50%">		        			
+		        		</td>
+		        	</tr> 
+		        	
+		        	</tbody>
+		        </table>
+		      </div>
+		    </div>
+		    
+		    
+	  	</div>
 		
 	</div>
 </body>
