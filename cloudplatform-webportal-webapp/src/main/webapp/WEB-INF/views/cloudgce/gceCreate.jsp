@@ -176,7 +176,7 @@
 																	<li class="bk-select-option"><a href="javascript:;" selectid="PHP">php</a></li> -->
 																	<li class="bk-select-option"><a href="javascript:;" selectid="JETTY">java</a></li>
 																	</ul>
-																	<input name="type" type="hidden" value="nginx" />
+																	<input name="type" type="hidden" value="JETTY" />
 																</div>
 														</span>
 														</span> <span class="bk-select-arrow"></span>
