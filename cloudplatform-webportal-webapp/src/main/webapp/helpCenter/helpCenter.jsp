@@ -96,19 +96,31 @@
             <h3 class="title">云数据库RDS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="2-1">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">RDS产品介绍<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
+                        <li data-haschild="false" data-id="2-1-1" class="product-RDSIntro" data-spm-click="product-RDSIntro.jsp">
+                            <a href="#">RDS简介</a></li>
+                        <li data-haschild="false" data-id="2-1-2" class="product-RDSArch" data-spm-click="product-RDSArch.jsp">
+                            <a href="#">RDS基础架构</a></li>
+                        <li data-haschild="false" data-id="2-1-3" class="product-RDSAdvantage" data-spm-click="product-RDSAdvantage.jsp">
+                            <a href="#">RDS优势</a></li>
+                    </ul>
+                </li>
+                <li data-haschild="false" data-id="2-2" class="help-rdsquikcrt" data-spm-click="help-rdsquikcrt.jsp"><a>快速创建</a></li>
+                <li data-haschild="true" data-id="2-3">
                     <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
                     <ul class="sub-level hidden">
-                        <li data-haschild="false" data-id="2-1-1" class="help-createDb" data-spm-click="help-createDb.jsp">
+                        <li data-haschild="false" data-id="2-3-1" class="help-createDb" data-spm-click="help-createDb.jsp">
                             <a href="#">创建数据库实例</a></li>
-                        <li data-haschild="false" data-id="2-1-2" class="help-createUser" data-spm-click="help-createUser.jsp" >
+                        <li data-haschild="false" data-id="2-3-2" class="help-createUser" data-spm-click="help-createUser.jsp" >
                             <a href="#">创建数据库用户</a></li>
-                        <li data-haschild="false" data-id="2-1-3" class="help-connect" data-spm-click="help-connect.jsp">
+                        <li data-haschild="false" data-id="2-3-3" class="help-connect" data-spm-click="help-connect.jsp">
                             <a href="#">个人办公电脑怎么连接数据库</a></li>
-                        <li data-haschild="false" data-id="2-1-4" class="help-datastructure" data-spm-click="help-datastructure.jsp" >
+                        <li data-haschild="false" data-id="2-3-4" class="help-datastructure" data-spm-click="help-datastructure.jsp" >
                             <a href="#">mcluster数据库架构</a></li>
-                        <li data-haschild="false" data-id="2-1-5">
+                        <li data-haschild="false" data-id="2-3-5">
                             <a class="help-gbalancerDB" data-spm-click="help-gbalancerDB.jsp" href="#">gbalancer连接数据库</a></li>
-                        <li data-haschild="false" data-id="2-1-6"  class="help-userLink" data-spm-click="help-userLink.jsp">
+                        <li data-haschild="false" data-id="2-3-6"  class="help-userLink" data-spm-click="help-userLink.jsp">
                             <a href="#">用户连接不上数据库</a></li>
                     </ul>
                 </li>
@@ -118,11 +130,23 @@
             <h3 class="title">开放存储OSS</h3>
             <ul class="main-level">
                 <li data-haschild="true" data-id="3-1">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">OSS产品介绍<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
+                        <li data-haschild="false" data-id="3-1-1" class="product-OSSIntro" data-spm-click="product-OSSIntro.jsp">
+                            <a href="#">OSS简介</a></li>
+                        <li data-haschild="false" data-id="3-1-2" class="product-OSSArch" data-spm-click="product-OSSArch.jsp">
+                            <a href="#">OSS与自建存储对比</a></li>
+                        <li data-haschild="false" data-id="3-1-3" class="product-OSSAdvantage" data-spm-click="product-OSSAdvantage.jsp">
+                            <a href="#">OSS优势</a></li>
+                    </ul>
+                </li>
+                <li data-haschild="false" data-id="3-2" class="help-ossquikcrt" data-spm-click="help-ossquikcrt.jsp"><a>快速创建</a></li>
+                <li data-haschild="true" data-id="3-3">
                     <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">常见问题分享<span class="arrow-down"></span></h3>
                     <ul class="sub-level hidden">
-                        <li data-haschild="false" data-id="3-1-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
+                        <li data-haschild="false" data-id="3-3-1" class="help-OSSuse" data-spm-click="help-OSSuse.jsp">
                             <a href="#">OSS使用方法</a></li>
-                        <li data-haschild="false" data-id="3-1-2" class="help-OSStool" data-spm-click="help-OSStool.jsp" >
+                        <li data-haschild="false" data-id="3-3-2" class="help-OSStool" data-spm-click="help-OSStool.jsp" >
                             <a href="#">OSS客户端工具</a></li>
                     </ul>
                 </li>
@@ -131,7 +155,18 @@
         <div class="vnavbar OCS" style="display:block;">
             <h3 class="title">开放缓存OCS</h3>
             <ul class="main-level">
-                <li data-haschild="false" data-id="4-1" class="help-OCSuse" data-spm-click="help-OCSuse.jsp"><a>OCS服务使用</a></li>
+                <li data-haschild="true" data-id="4-1">
+                    <h3 data-spm-click="gostr=/aliyun;locaid=d8314861" data-spm-anchor-id="">OCS产品介绍<span class="arrow-down"></span></h3>
+                    <ul class="sub-level hidden">
+                        <li data-haschild="false" data-id="4-1-1" class="product-OCSIntro" data-spm-click="product-OCSIntro.jsp">
+                            <a href="#">OCS简介</a></li>
+                        <!-- <li data-haschild="false" data-id="4-1-2" class="product-OCSArch" data-spm-click="product-OCSArch.jsp">
+                            <a href="#">OCS与自建存储对比</a></li>
+                        <li data-haschild="false" data-id="4-1-3" class="product-OCSAdvantage" data-spm-click="product-OCSAdvantage.jsp">
+                            <a href="#">OCS优势</a></li> -->
+                    </ul>
+                </li>
+                <li data-haschild="false" data-id="4-2" class="help-OCSuse" data-spm-click="help-OCSuse.jsp"><a>快速创建</a></li>
             </ul>
         </div>
         <div class="vnavbar GCE" style="display:block;">
@@ -247,7 +282,9 @@ var containers = ["helpDetail-login","helpDetail-reg","helpDetail-findpas",
 								'help-gcequikcrt','help-slbquikcrt',"product-GCEAdvantage",
 								"product-GCEArch","product-GCEIntro","product-GCExten",
 								"product-SLBAdvantage","product-SLBArch","product-SLBIntro",
-								"product-SLBExten",'product-SLBLimit'];
+								"product-SLBExten",'product-SLBLimit','product-RDSIntro','product-RDSArch','product-RDSAdvantage','help-rdsquikcrt',
+                                'help-ossquikcrt','product-OSSIntro','product-OSSAdvantage','product-OSSArch','product-OCSIntro','product-OCSArch',
+                                'product-OCSAdvantage'];
 (function htmlLoad(containers){
 	$('.'+containers.join(",.")).click(function(event) {
         event.preventDefault();

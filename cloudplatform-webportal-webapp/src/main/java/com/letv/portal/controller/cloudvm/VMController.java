@@ -19,16 +19,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
-@RequestMapping("ecs")
+@RequestMapping("/ecs")
 public class VMController {
 
     @Autowired
     private SessionServiceImpl sessionService;
 
-    @RequestMapping(value="/regions",method = RequestMethod.GET)
+    @RequestMapping(value = "/regions", method = RequestMethod.GET)
     public
     @ResponseBody
     ResultObject regions() {
@@ -44,6 +46,26 @@ public class VMController {
         ResultObject result = new ResultObject();
         try {
             result.setData(Util.session(sessionService).getVMManager().list(region));
+        } catch (RegionNotFoundException e) {
+            result.setResult(0);
+            result.addMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/all-region", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    ResultObject listAll() {
+        ResultObject result = new ResultObject();
+        try {
+            VMManager vmManager = Util.session(sessionService).getVMManager();
+            Set<String> regions = vmManager.getRegions();
+            List<VMResource> vmResources = new LinkedList<VMResource>();
+            for (String region : regions) {
+                vmResources.addAll(vmManager.list(region));
+            }
+            result.setData(vmResources);
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());

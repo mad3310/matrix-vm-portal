@@ -12,7 +12,7 @@ background-color: transparent;width: 97%;overflow: auto;margin-left: 9px;padding
 </style>
 <!-- <div class="content-right" data-spm="2"> -->
     <div class="bread-crumb">
-        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">开放存储OSS</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="3-1-2">OSS客户端工具</span>
+        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">开放存储OSS</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="3-3-2">OSS客户端工具</span>
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">OSS客户端工具</h2>
     <div class="article-content">

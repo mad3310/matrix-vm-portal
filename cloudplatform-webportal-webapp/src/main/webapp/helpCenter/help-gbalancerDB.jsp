@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- <div class="content-right" data-spm="2"> -->
     <div class="bread-crumb">
-        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">云数据库RDS</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="2-1-5">gbalancer连接数据库</span>
+        <span class="item"><a href="#" data-spm-anchor-id="5176.788314868.2.1">云数据库RDS</a></span>&nbsp;&gt;&nbsp;<span class="data-spm-click" data-id="2-3-5">gbalancer连接数据库</span>
     </div>
     <h2 style="text-align: center;color: #333;font-size: 18px;">gbalancer连接数据库</h2>
     <div class="article-content">

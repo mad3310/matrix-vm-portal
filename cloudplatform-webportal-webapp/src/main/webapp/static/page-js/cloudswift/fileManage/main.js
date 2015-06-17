@@ -5,12 +5,27 @@ define(function(require){
 	var pFresh,iFresh;
     var common = require('../../common');
     var cn = new common();
-    
+    var $ = require("jquery");
+    require("jquery.form")($);
+    require("bootstrapValidator")($);
     cn.Tooltip();
     
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 
+	/* $('#form-upload').submit(function(){  
+         $(this).ajaxSubmit(); 
+         alert("123");
+         return false;
+     });*/
+	(function () {
+        $("#form-upload").ajaxForm({
+        	success: function (data) {
+        		asyncData();
+            }
+        });
+    })();
+	
     /*加载数据*/
     var dataHandler = require('./dataHandler');
     var fileListHandler = new dataHandler();
@@ -18,20 +33,100 @@ define(function(require){
      * 初始化数据
      */
 	asyncData();
-	
+	/*
+	 * 操作按钮初始化
+	 */
+	$("#tby").click(function(e){
+		e = e? e:window.event;
+		var target = e.target || e.srcElement;
+		var filePath = $(target).attr("file-path");
+		if(filePath != undefined && filePath != null){
+			var url = "/oss/"+$("#swiftId").val()+"/file/del";
+			var data = {
+					file : filePath
+			}
+			cn.PostData(url,data,asyncData);
+		}
+	})
+	//文件上传
+	$('#upload').change(function(event) {
+		if(cn.uploadfile(this)){//文件要求后缀和大小均符合
+			var file=cn.getFile(this);
+			var pathvalue=$('.dirPath').text();var path='root';
+			if(pathvalue){
+				path=$('#dirName').val();
+			}
+			$('body').append("<div class=\"spin\"></div>");
+            $('body').append("<div class=\"far-spin\"></div>");
+            $("#dir").val(path);
+            $("#form-upload").submit();
+		}
+	});
+	function successback(){
+		$('body').find('.spin').remove();
+        $('body').find('.far-spin').remove();
+	}
+	//新建文件夹验证，提交
+	$('#createDirform').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	folderName:{
+        		validators: {
+                    notEmpty: {
+                        message: '文件夹名不能为空!'
+                    },
+                    stringLength: {
+                        max: 254,
+                        message: '文件夹名过长!'
+                    },regexp: {
+                        regexp: /^[a-zA-Z0-9\u4e00-\u9fa5_.-]*$/,
+                        message: " 只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）"
+                    }//重名则覆盖 新建和更新
+                }
+        	}
+        }
+    }).on('success.form.bv', function(e) {
+    	e.preventDefault();
+    	$("#add-dir").html("创建中...");
+    	var folderName=$('#floderName').val();
+    	var pathvalue=$('.dirPath').text();var path='root';
+		if(pathvalue){
+			path=$('#dirName').val();
+		}
+		var data={
+			'file':folderName,
+			'directory':path
+		}
+		var url='/oss/'+$("#swiftId").val()+'/folder';
+		cn.PostData(url,data,function(){
+			asyncData();
+			$("#addDirModal").modal("hide");
+			$("#createDirform").data("bootstrapValidator").resetForm();
+			$("#createDirform")[0].reset();
+			$("#add-dir").html("创建");
+		});
+    });
+
 	// $("#search").click(function() {
 	// 	cn.currentPage = 1;
 	// 	asyncData();
 	// });
-	$("#refresh").click(function() {		
+	$("#refresh").unbind('click').click(function() {		
+		refreshFile();
+	});
+	function refreshFile(){
 		var dirname=$('#dirName').val();var url;
 		if(dirname){
 			url="/oss/"+$("#swiftId").val()+"/file?directory="+dirname;
 		}else{
 			url="/oss/"+$("#swiftId").val()+"/file?directory=root";
 		}
-		cn.GetData(url,refreshCtl);
-	});
+		cn.PostData(url,refreshCtl);
+	}
 	// $("#fileName").keydown(function(e){
 	// 	if(e.keyCode==13){
 	// 		cn.currentPage = 1;
@@ -84,7 +179,11 @@ define(function(require){
 	
 	//加载列表数据
 	function asyncData() {
-		var url = "/oss/"+$("#swiftId").val()+"/file?directory=root";
+		var directory = $('#dirName').val();
+		if(!directory){
+			directory="root";
+		}
+		var url = "/oss/"+$("#swiftId").val()+"/file?directory="+directory;
 		cn.GetData(url,refreshCtl);
 		var url2='/oss/'+$("#swiftId").val()+'/file/prefixUrl';
 		cn.GetData(url2,function(data){
@@ -99,7 +198,7 @@ define(function(require){
 	function dirClick(){
       var _target=$('table').find('.dir-a');
       _target.each(function() {
-        $(this).click(function(event) {
+        $(this).unbind('click').click(function(event) {
 	    	var dirname=$(this).parent().prev().children('input').val();
 	    	var dirarry='';
 	    	if(dirname){
@@ -116,11 +215,15 @@ define(function(require){
         });
       });
       var _location=$('.dirPath');
-      _location.click(function(event) {
+      _location.unbind('click').click(function(event) {
       	var url,dirname,location;
       	var tempname=$(this).attr('name');var j=tempname.length;
-      	var tempdir=$('#dirName').val();var i=tempdir.indexOf(tempname,0)+j;
-      	$(this).nextAll('.dirPath').addClass('hidden')
+      	var tempdir=$('#dirName').val();var i=0;
+      	i=tempdir.indexOf(tempname,0);
+      	if(i>=0){//root
+			i=tempdir.indexOf(tempname,0)+j;
+      	}else{i=-1}
+      	$(this).nextAll('.dirPath').addClass('hidden');
       	if(tempdir.substring(0,i)){
       		if(tempdir.substring(0,i)!='dir'){
       			url = "/oss/"+$("#swiftId").val()+"/file?directory="+tempdir.substring(0,i);
@@ -131,7 +234,6 @@ define(function(require){
       		}
       	}else{
       		url="/oss/"+$("#swiftId").val()+"/file?directory=root";
-
       	}
       	$('#dirName').val(dirname);
         cn.GetData(url,refreshCtl);

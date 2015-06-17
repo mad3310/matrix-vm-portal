@@ -11,6 +11,8 @@ import com.letv.common.dao.IBaseDao;
 import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.IMclusterDao;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.service.IBackupService;
 import com.letv.portal.service.IBuildService;
@@ -74,7 +76,7 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 	public void delete(MclusterModel mcluster) {
 		this.containerService.deleteByMclusterId(mcluster.getId());
 		this.buildService.deleteByMclusterId(mcluster.getId());
-//		this.dbService.deleteByMclusterId(mcluster.getId());
+		this.dbService.deleteByMclusterId(mcluster.getId());
 		this.backupService.deleteByMclusterId(mcluster.getId());
 		this.mclusterDao.delete(mcluster);
 	}

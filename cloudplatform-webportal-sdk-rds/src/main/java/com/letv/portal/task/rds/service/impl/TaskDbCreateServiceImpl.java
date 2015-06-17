@@ -108,14 +108,6 @@ public class TaskDbCreateServiceImpl extends BaseTask4RDSServiceImpl implements 
 		return emailParams;
 	}
 	
-	private boolean isSelectVip(Long dbId) {
-		int step = this.buildService.getStepByDbId(dbId);
-		if(step == 0) {
-			return true;
-		}
-		return false;
-	}
-	
 	public void email4User(Map<String,Object> params,Long to,String ftlName){
 		UserModel user = this.userService.selectById(to);
 		if(null != user) {

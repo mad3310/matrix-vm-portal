@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -141,19 +142,21 @@ public class HttpsClient {
 		}
 		return response;
 	}
-	public static HttpResponse httpPutByHeader(String url,Map<String,String> headParams,int connectionTimeout,int soTimeout) {
+	public static HttpResponse httpPutByHeader(String url,Map<String,String> headParams,AbstractHttpEntity entity,int connectionTimeout,int soTimeout) {
 		// 创建HttpClient实例
 		DefaultHttpClient client = getHttpclient(connectionTimeout, soTimeout);
 		enableSSL(client);
 		// 创建Get方法实例
-		HttpPut httpsgets = new HttpPut(url);
+		HttpPut httpPut = new HttpPut(url);
 		for (Iterator<Map.Entry<String, String>> it = headParams.entrySet().iterator(); it.hasNext();) {
 			Map.Entry<String, String> entry = (Map.Entry<String, String>) it.next();
-			httpsgets.setHeader(entry.getKey(),entry.getValue());
+			httpPut.setHeader(entry.getKey(),entry.getValue());
 		}
+		if(entity !=null)
+			httpPut.setEntity(entity);
 		HttpResponse response = null;
 		try {
-			response = client.execute(httpsgets);
+			response = client.execute(httpPut);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,6 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import com.google.common.collect.FluentIterable;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.jclouds.ContextBuilder;
+import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Subnet;
+import org.jclouds.openstack.neutron.v2.features.NetworkApi;
+import org.jclouds.openstack.neutron.v2.features.SubnetApi;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -10,17 +26,6 @@ import com.letv.portal.service.openstack.resource.SubnetResource;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
-import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.Subnet;
-import org.jclouds.openstack.neutron.v2.features.NetworkApi;
-import org.jclouds.openstack.neutron.v2.features.SubnetApi;
-
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.*;
 
 public class NetworkManagerImpl extends AbstractResourceManager implements
         NetworkManager {
@@ -57,8 +62,8 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         NetworkApi networkApi = neutronApi.getNetworkApi(region);
         SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 
-        FluentIterable<Network> networks = networkApi.list().concat();
-        FluentIterable<Subnet> subnets = subnetApi.list().concat();
+        List<Network> networks = networkApi.list().concat().toList();
+        List<Subnet> subnets = subnetApi.list().concat().toList();
 
         Map<String, NetworkResourceImpl> idToNetwork = new HashMap<String, NetworkResourceImpl>();
         for (Network network : networks) {
@@ -90,7 +95,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
             NetworkResourceImpl networkResourceImpl = new NetworkResourceImpl(region, network, new LinkedList<SubnetResource>());
 
             ImmutableSet<String> subnetIds = network.getSubnets();
-            FluentIterable<Subnet> allSubnets = neutronApi.getSubnetApi(region).list().concat();
+            List<Subnet> allSubnets = neutronApi.getSubnetApi(region).list().concat().toList();
 
             for (Subnet subnet : allSubnets) {
                 if (subnetIds.contains(subnet.getId())) {

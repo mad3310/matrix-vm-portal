@@ -46,4 +46,44 @@ public class GfsProxyImpl implements IGfsProxy{
 		String result = HttpClient.get(url.toString());
 		return result;
 	}
+
+	@Override
+	public String getVolConfigByName(String ip, String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/get/config/").append(name);
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
+	
+	@Override
+	public String getVolSplitbrainByName(String ip, String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/heal/").append(name).append("/info/split-brain");
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
+	
+	@Override
+	public String getVolHealInfoByName(String ip, String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/heal/").append(name).append("/info");
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
+	
+	@Override
+	public String volStopByName(String ip, String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/stop/").append(name);
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
+	
+	@Override
+	public String volStartByName(String ip, String name) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/api/v1/volume/start/").append(name);
+		String result = HttpClient.get(url.toString());
+		return result;
+	}
 }

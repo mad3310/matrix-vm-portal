@@ -20,7 +20,7 @@ var currentSelectedLineDbName = 1;
 	
 	//modal显示创建进度
 	var mclusterId;
-	$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+	/*$(document).on('click', "[name='buildStatusBoxLink']" , function(){
 		mclusterId = $(this).closest('tr').find('input').val();
 		if($(this).html().indexOf("正常")>=0){
 			$('#buildStatusHeader').html("创建成功");
@@ -33,7 +33,7 @@ var currentSelectedLineDbName = 1;
 			status = "3";
 		}
 		queryBuildStatus(mclusterId,"new");
-	});
+	});*/
 	
 	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
 		if(status == "2") {
