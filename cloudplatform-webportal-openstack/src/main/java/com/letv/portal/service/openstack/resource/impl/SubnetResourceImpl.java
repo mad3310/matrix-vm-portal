@@ -1,7 +1,9 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
@@ -19,7 +21,12 @@ public class SubnetResourceImpl extends AbstractResource implements
 	public SubnetResourceImpl(String region, Subnet subnet) {
 		this.region = region;
 		this.subnet = subnet;
-		this.dnsNameservers = subnet.getDnsNameservers().asList();
+		ImmutableSet<String> dnsNameservers = subnet.getDnsNameservers();
+		if (dnsNameservers != null) {
+			this.dnsNameservers = dnsNameservers.asList();
+		} else {
+			this.dnsNameservers = new ArrayList<String>();
+		}
 	}
 
 	@Override

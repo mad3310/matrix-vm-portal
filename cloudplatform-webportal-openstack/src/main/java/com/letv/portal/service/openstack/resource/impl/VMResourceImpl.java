@@ -33,6 +33,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		this.flavorResource = flavorResource;
 		this.imageResource = imageResource;
 		// this.networkResource = networkManager.get(region, resource.get);
+		
 		Collection<Address> addresses = server.getAddresses().values();
 		ipAddresses = new ArrayList<String>(addresses.size());
 		for (Address address : addresses) {

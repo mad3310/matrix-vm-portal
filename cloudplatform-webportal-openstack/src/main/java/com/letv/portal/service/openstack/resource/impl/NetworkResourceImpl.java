@@ -9,6 +9,7 @@ import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
 import org.jclouds.openstack.neutron.v2.domain.NetworkType;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.NetworkSegmentResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
@@ -26,13 +27,19 @@ public class NetworkResourceImpl extends AbstractResource implements
 		this.region = region;
 		this.network = network;
 		this.subnetResources = subnetResources;
-		ImmutableList<NetworkSegment> networkSegments = network.getSegments()
-				.asList();
-		this.networkSegmentResources = new ArrayList<NetworkSegmentResource>(
-				networkSegments.size());
-		for (NetworkSegment networkSegment : networkSegments) {
-			this.networkSegmentResources.add(new NetworkSegmentResourceImpl(
-					region, networkSegment));
+
+		ImmutableSet<NetworkSegment> networkSegmentsSet = network.getSegments();
+		if (networkSegmentsSet != null) {
+			ImmutableList<NetworkSegment> networkSegments = networkSegmentsSet.asList();
+			this.networkSegmentResources = new ArrayList<NetworkSegmentResource>(
+					networkSegments.size());
+			for (NetworkSegment networkSegment : networkSegments) {
+				this.networkSegmentResources
+						.add(new NetworkSegmentResourceImpl(region,
+								networkSegment));
+			}
+		} else {
+			this.networkSegmentResources = new ArrayList<NetworkSegmentResource>();
 		}
 	}
 
