@@ -54,7 +54,7 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/all-region", method = RequestMethod.GET)
+	@RequestMapping(value = "/region", method = RequestMethod.GET)
 	public @ResponseBody ResultObject listAll() {
 		ResultObject result = new ResultObject();
 		try {
