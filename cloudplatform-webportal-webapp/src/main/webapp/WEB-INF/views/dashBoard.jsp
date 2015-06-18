@@ -269,6 +269,23 @@
 						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
+									<span class="item-icon product-icons-48 product-icons-yunzhuji"></span>
+								</a>
+								<p class="item-title">
+									<a href="/list/vm">云主机&nbsp;<span class="item-title-short"></span></a>
+								</p>
+							</div>
+							<div class="item-record">
+								<span class="item-record-num">
+									<span class="font-disabled">1</span>
+								</span> 
+								<span class="item-record-unit">个</span> 
+								<span class="glyphicon glyphicon-question-sign text-muted" data-toggle="tooltip" data-placement="top" title="监控点"></span>
+							</div>
+						</li>
+						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
+							<div class="item-profile clearfix">
+								<a href="javascript:void(0)" class="pull-left">
 									<span class="item-icon product-icons-48 product-icons-toolsimage"></span>
 								</a>
 								<p class="item-title">
