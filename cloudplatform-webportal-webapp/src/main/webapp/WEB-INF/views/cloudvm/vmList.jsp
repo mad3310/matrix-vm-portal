@@ -23,10 +23,7 @@
 			<div class="pull-left">
 				<h5>
 				<span>云主机管理</span>&nbsp;&nbsp;
-				<select>
-				  <option>全部</option>
-				  <option>酒仙桥电信通</option>
-				  <option>惠普DC</option>
+				<select id="region_selector">
 				</select>				
 				</h5> 
 			</div>
@@ -51,33 +48,36 @@
 						</th>
 						<th class="padding-left-32">云主机名称</th>
 						<th class="hidden-xs">镜像名称</th>
-						<th class="hidden-xs">IP 地址</th>
-						<th class="hidden-xs">配置</th>						
+						<th class="hidden-xs">IP地址</th>
+						<th class="hidden-xs">配置</th>
 						<th class="hidden-xs">状态</th>
 						<th class="hidden-xs">区域</th>
 						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
-				<tr class="data-tr">
-					<td width="10"><input type="checkbox" name="mcluster_id" value="789"></td>
-					<td class="hidden-xs"><a href="/detail/vm/789">matrix-test</a></td>
-					<td class="hidden-xs"><span>cirros-0.3.2-x86_64</span></td>
-					<td class="hidden-xs"><span>172.16.0.6</span></td>
-					<td class="hidden-xs"><span>nano | 64MB 内存| 1 虚拟内核 | 1.0GB 盘</span></td>
-					<td class="hidden-xs"><span>Active</span></td>
-					<td class="hidden-xs"><span>惠普DC</span></td>
-					<td class="text-right hidden-xs"><a href="/detail/db/619">管理</a>&nbsp;<a href="/detail/db/619">删除</a></td>
-				</tr>
 				</tbody>				
 			</table>
 		    <!-- <div class="help-block hidden" id="noData">没有记录</div> -->
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
-<script type="text/javascript" src="${ctx}/static/modules/jquery/2.0.3/jquery.min.js"></script>
-	<script type="text/javascript">
-		$('#navbar-menu .navbar-header').append('<a class="navbar-brand m-brand" href="/list/vm">云主机</a>');
-	</script>
+<!-- js -->
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+<script type="text/javascript">
+
+// Set configuration
+seajs.config({
+	base: "${ctx}/static/modules/",
+	alias: {
+		"jquery": "jquery/2.0.3/jquery.min.js",
+		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
+	}
+});
+
+seajs.use("${ctx}/static/page-js/cloudvm/vmList/main");
+
+</script>
 </body>
 </html>
