@@ -166,77 +166,31 @@
 						<div class="col-sm-1 hidden-xs" style="padding-top : 8px">
 							<a data-container="body" data-toggle="popover" data-placement="right" data-html="true"
 								data-content="
-								<!-- 横向显示表格数据<table border='1' style='width:100%'>
-								  <tr>
-								    <td>用户权限</td>				
-								    <td>并发数</td> 
-								    <td>MAX_QUERIES_PER_HOUR</td>
-								    <td>MAX_UPDATES_PER_HOUR</td>
-								    <td>MAX_CONNECTIONS_PER_HOUR</td> 
-								    <td>MAX_USER_CONNECTIONS</td>
-								  </tr>
-								  <tr>
-								    <td>管理用户</td>
-								    <td>默认</td> 
-								    <td>1000</td>
-								    <td>1000</td>
-								    <td>100</td> 
-								    <td>10</td>
-								  </tr>
-								  <tr>			
-								    <td>读写、只读</td>
-								    <td>1</td>
-								    <td>7200=60*60*2*1(并发数1)</td> 
-								    <td>3600=60*60*1(并发数1)</td>
-								    <td>7200=60*60*2*1(并发数1)</td>
-								    <td>1 = 1(并发数1)</td> 
-								  </tr>
-								  <tr>
-								  	<td colspan='6'>注：管理用户不受并发数设置影响；只读用户项'MAX_UPDATES_PER_HOUR'值为1不受并发数设置影响</td> 
-								  </tr>
-								</table> -->
-
-
 								<table border='1' style='width:100%;font-size:12px;color:gray;border:1px solid gray;'>
 									<tr>
-										<th>用户权限</th>
-									    <th>管理用户</th>
-									    <th>读写、只读</th>
-									    <td rowspan='6'>注：管理用户不受并发<br>数设置影响；只读用户项<br>'MAX_UPDATES_PER_HOUR'<br>值为1不受并发数设置影响</td>
-								    </tr>
-									<tr>
-										<th>并发数</th>
-									    <td>默认</td> 
-									    <td>1</td>
-								    </tr>
-									<tr>
-										<th>MAX_QUERIES_PER_HOUR</th>
-									    <td>1000</td> 
-									    <td>7200=60*60*2*1(并发数1)</td>
-								    </tr>
-									<tr>
-										<th>MAX_UPDATES_PER_HOUR</th>
-									    <td>1000</td> 
-									    <td>3600=60*60*1(并发数1)</td>
-								    </tr>
-									<tr>
-										<th>MAX_CONNECTIONS_PER_HOUR</th>
-									    <td>100</td> 
-									    <td>7200=60*60*2*1(并发数1)</td>
-								    </tr>
-									<tr>
-										<th>MAX_USER_CONNECTIONS</th>
-									    <td>10</td> 
-									    <td>1 = 1(并发数1)</td>
-								    </tr>
+									<th>并发量</th>
+									<td>maxConcurrency</td>
+								</tr>
+								<tr>
+									<th>MAX_QUERIES_PER_HOUR</th>
+									<td>maxConcurrency*7200</td>
+								</tr>
+								<tr>
+									<th>MAX_UPDATES_PER_HOUR</th>
+									<td>maxConcurrency*3600</td>
+								</tr>
+								<tr>
+									<th>MAX_CONNECTIONS_PER_HOUR</th>
+									<td>maxConcurrency*7200</td>
+								</tr>
+								<tr>
+									<th>MAX_USER_CONNECTIONS</th>
+									<td>maxConcurrency</td>
+								</tr>
 								</table>
-								
 								">
-								<span class="glyphicon glyphicon-question-sign text-muted"></span>
-							</a>
-						</div>
-						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-							<p class="" style="color:red">管理角色不受并发量影响，业务产品建议使用读写用户</p>
+								<span>查看计算公式</span>
+							</a>	
 						</div>
 					</div>
 				</div>
@@ -390,43 +344,30 @@
 							<a data-container="body" data-toggle="popover" data-placement="right" data-html="true"
 								data-content="
 								<table border='1' style='width:100%;font-size:12px;color:gray;border:1px solid gray;'>
-								<tr>
-									<th>用户权限</th>
-									<th>管理用户</th>
-									<th>读写、只读</th>
-									<td rowspan='6'>注：管理用户不受并发<br>数设置影响；只读用户项<br>'MAX_UPDATES_PER_HOUR'<br>值为1不受并发数设置影响</td>
-								</tr>
-								<tr>
-									<th>并发数</th>
-									<td>默认</td>
-									<td>1</td>
+									<tr>
+									<th>并发量</th>
+									<td>maxConcurrency</td>
 								</tr>
 								<tr>
 									<th>MAX_QUERIES_PER_HOUR</th>
-									<td>1000</td>
-									<td>7200=60*60*2*1(并发数1)</td>
+									<td>maxConcurrency*7200</td>
 								</tr>
 								<tr>
 									<th>MAX_UPDATES_PER_HOUR</th>
-									<td>1000</td>
-									<td>3600=60*60*1(并发数1)</td>
+									<td>maxConcurrency*3600</td>
 								</tr>
 								<tr>
 									<th>MAX_CONNECTIONS_PER_HOUR</th>
-									<td>100</td>
-									<td>7200=60*60*2*1(并发数1)</td>
+									<td>maxConcurrency*7200</td>
 								</tr>
 								<tr>
 									<th>MAX_USER_CONNECTIONS</th>
-									<td>10</td>
-									<td>1 = 1(并发数1)</td>
+									<td>maxConcurrency</td>
 								</tr>
 								</table>
-								"> <span class="glyphicon glyphicon-question-sign text-muted"></span>
-							</a>
-						</div>
-						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-							<p class="" style="color:red">管理角色不受并发量影响，业务产品建议使用读写用户</p>
+								">
+								<span>查看计算公式</span>
+							</a>	
 						</div>
 					</div>
 				</div>

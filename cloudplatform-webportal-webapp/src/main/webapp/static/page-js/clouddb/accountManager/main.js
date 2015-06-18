@@ -89,7 +89,7 @@ define(function(require){
                     },stringLength: {
                         min:6,
                         max: 32,
-                        message: '数据库名名过长!'
+                        message: '密码长度为6-32之间'
                     },regexp: {
                         regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,32}$/,
                         message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
