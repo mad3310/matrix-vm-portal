@@ -15,17 +15,19 @@ public class VMCreateConf {
 	private ImageResource imageResource;
 	private FlavorResource flavorResource;
 	private List<NetworkResource> networkResources;
+	private String adminPass;
 
 	public VMCreateConf() {
 	}
 
 	public VMCreateConf(String name,
 			ImageResource imageResource, FlavorResource flavorResource,
-			List<NetworkResource> networkResources) {
+			List<NetworkResource> networkResources,String adminPass) {
 		this.name = name;
 		this.imageResource = imageResource;
 		this.flavorResource = flavorResource;
 		this.networkResources = networkResources;
+		this.adminPass=adminPass;
 	}
 
 	public String getName() {
@@ -58,6 +60,14 @@ public class VMCreateConf {
 
 	public List<NetworkResource> getNetworkResources() {
 		return networkResources;
+	}
+	
+	public String getAdminPass() {
+		return adminPass;
+	}
+	
+	public void setAdminPass(String adminPass) {
+		this.adminPass = adminPass;
 	}
 
 	// // 区域

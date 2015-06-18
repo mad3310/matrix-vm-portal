@@ -5,4 +5,7 @@ public interface FlavorResource extends Resource{
 	int getVcpus();
 	int getDisk();
 	int getRam();
+	int getEphemeral();
+	double getRxtxFactor();
+	String getSwap();
 }

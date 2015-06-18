@@ -17,7 +17,6 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -28,14 +27,21 @@ import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.ImageManager;
+import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
-	private static final Logger logger=org.slf4j.LoggerFactory.getLogger(VMManager.class);
-	
+	private static final Logger logger = org.slf4j.LoggerFactory
+			.getLogger(VMManager.class);
+
 	private NovaApi novaApi;
+
+	private ImageManager imageManager;
+
+	private NetworkManager networkManager;
 
 	public VMManagerImpl(String endpoint, String userId, String password) {
 		super(endpoint, userId, password);
@@ -45,8 +51,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		novaApi = ContextBuilder.newBuilder("openstack-nova")
 				.endpoint(endpoint)
-				.credentials(userId + ":" + userId, password)
-				.modules(modules).buildApi(NovaApi.class);
+				.credentials(userId + ":" + userId, password).modules(modules)
+				.buildApi(NovaApi.class);
 	}
 
 	@Override
@@ -60,7 +66,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> list(String region) throws RegionNotFoundException {
+	public List<VMResource> list(String region) throws RegionNotFoundException, ResourceNotFoundException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -68,7 +74,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		List<VMResource> vmResources = new ArrayList<VMResource>(
 				resources.size());
 		for (Server resource : resources) {
-			vmResources.add(new VMResourceImpl(region, resource));
+			vmResources.add(new VMResourceImpl(region, resource,this,imageManager));
 		}
 		return vmResources;
 	}
@@ -81,7 +87,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server);
+			return new VMResourceImpl(region, server,this,imageManager);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"VM \"{0}\" is not found.", id));
@@ -90,7 +96,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource create(String region, VMCreateConf conf)
-			throws RegionNotFoundException {
+			throws RegionNotFoundException, ResourceNotFoundException {
 		checkRegion(region);
 
 		List<NetworkResource> networkResources = conf.getNetworkResources();
@@ -98,13 +104,20 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		for (int i = 0; i < networks.length; i++) {
 			networks[i] = networkResources.get(i).getId();
 		}
+		CreateServerOptions createServerOptions = CreateServerOptions.Builder
+				.networks(networks);
+
+		String adminPass = conf.getAdminPass();
+		if (adminPass != null) {
+			createServerOptions.adminPass(adminPass);
+		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		ServerCreated serverCreated = serverApi.create(conf.getName(), conf
 				.getImageResource().getId(), conf.getFlavorResource().getId(),
-				CreateServerOptions.Builder.networks(networks));
-		Server server=serverApi.get(serverCreated.getId());
-		return new VMResourceImpl(region, server);
+				createServerOptions);
+		Server server = serverApi.get(serverCreated.getId());
+		return new VMResourceImpl(region, server,this,imageManager);
 	}
 
 	@Override
@@ -146,7 +159,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		FlavorApi flavorApi = novaApi.getFlavorApi(region);
 		List<Flavor> resources = flavorApi.listInDetail().concat().toList();
 		List<FlavorResource> flavorResources = new ArrayList<FlavorResource>(
-			resources.size());
+				resources.size());
 		for (Flavor resource : resources) {
 			flavorResources.add(new FlavorResourceImpl(region, resource));
 		}
@@ -166,6 +179,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"Flavor \"{0}\" is not found.", id));
 		}
+	}
+
+	public void setImageManager(ImageManager imageManager) {
+		this.imageManager = imageManager;
+	}
+
+	public void setNetworkManager(NetworkManager networkManager) {
+		this.networkManager = networkManager;
 	}
 
 }

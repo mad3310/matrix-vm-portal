@@ -24,9 +24,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private NetworkManagerImpl networkManager;
 	private VMManagerImpl vmManager;
 
-	private Object imageManagerLock;
-	private Object networkManagerLock;
-	private Object vmManagerLock;
+//	private Object imageManagerLock;
+//	private Object networkManagerLock;
+//	private Object vmManagerLock;
 
 	private boolean isClosed;
 
@@ -35,48 +35,56 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		this.userId = userId;
 		this.password = password;
 
-		this.imageManagerLock = new Object();
-		this.networkManagerLock = new Object();
-		this.vmManagerLock = new Object();
+//		this.imageManagerLock = new Object();
+//		this.networkManagerLock = new Object();
+//		this.vmManagerLock = new Object();
+		
+		imageManager = new ImageManagerImpl(endpoint, userId,
+				password);
+		networkManager = new NetworkManagerImpl(endpoint, userId,
+				password);
+		vmManager = new VMManagerImpl(endpoint, userId, password);
+		vmManager.setImageManager(imageManager);
+		vmManager.setNetworkManager(networkManager);
 
 		isClosed = false;
 	}
 
 	@Override
 	public ImageManager getImageManager() {
-		if (imageManager == null) {
-			synchronized (this.imageManagerLock) {
-				if (imageManager == null) {
-					imageManager = new ImageManagerImpl(endpoint, userId,
-							password);
-				}
-			}
-		}
+//		if (imageManager == null) {
+//			synchronized (this.imageManagerLock) {
+//				if (imageManager == null) {
+//					imageManager = new ImageManagerImpl(endpoint, userId,
+//							password);
+//				}
+//			}
+//		}
 		return imageManager;
 	}
 
 	@Override
 	public NetworkManager getNetworkManager() {
-		if (networkManager == null) {
-			synchronized (this.networkManagerLock) {
-				if (networkManager == null) {
-					networkManager = new NetworkManagerImpl(endpoint, userId,
-							password);
-				}
-			}
-		}
+//		if (networkManager == null) {
+//			synchronized (this.networkManagerLock) {
+//				if (networkManager == null) {
+//					networkManager = new NetworkManagerImpl(endpoint, userId,
+//							password);
+//				}
+//			}
+//		}
 		return networkManager;
 	}
 
 	@Override
 	public VMManager getVMManager() {
-		if (vmManager == null) {
-			synchronized (this.vmManagerLock) {
-				if (vmManager == null) {
-					vmManager = new VMManagerImpl(endpoint, userId, password);
-				}
-			}
-		}
+//		if (vmManager == null) {
+//			synchronized (this.vmManagerLock) {
+//				if (vmManager == null) {
+//					vmManager = new VMManagerImpl(endpoint, userId, password);
+//				}
+//			}
+//		}
 		return vmManager;
 	}
 

@@ -9,13 +9,13 @@ import com.letv.portal.service.openstack.resource.VMResource;
 import java.util.List;
 
 public interface VMManager extends ResourceManager {
-	List<VMResource> list(String region) throws RegionNotFoundException;
+	List<VMResource> list(String region) throws RegionNotFoundException, ResourceNotFoundException;
 
 	VMResource get(String region, String id) throws RegionNotFoundException,
 			ResourceNotFoundException;
 
 	VMResource create(String region, VMCreateConf conf)
-			throws RegionNotFoundException;
+			throws RegionNotFoundException, ResourceNotFoundException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException;

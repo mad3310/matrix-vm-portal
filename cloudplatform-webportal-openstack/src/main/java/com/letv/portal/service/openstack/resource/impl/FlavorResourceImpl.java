@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import com.letv.portal.service.openstack.resource.FlavorResource;
+
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 
 public class FlavorResourceImpl extends AbstractResource implements
@@ -42,6 +43,21 @@ public class FlavorResourceImpl extends AbstractResource implements
 	@Override
 	public int getRam() {
 		return flavor.getRam();
+	}
+
+	@Override
+	public int getEphemeral() {
+		return flavor.getEphemeral().get();
+	}
+
+	@Override
+	public double getRxtxFactor() {
+		return flavor.getRxtxFactor().get();
+	}
+
+	@Override
+	public String getSwap() {
+		return flavor.getSwap().get();
 	}
 
 }

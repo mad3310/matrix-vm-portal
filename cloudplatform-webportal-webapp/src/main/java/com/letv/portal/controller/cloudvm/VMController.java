@@ -49,7 +49,10 @@ public class VMController {
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
-        }
+        } catch (ResourceNotFoundException e) {
+        	result.setResult(0);
+            result.addMsg(e.getMessage());
+		}
         return result;
     }
 
@@ -69,7 +72,10 @@ public class VMController {
         } catch (RegionNotFoundException e) {
             result.setResult(0);
             result.addMsg(e.getMessage());
-        }
+        } catch (ResourceNotFoundException e) {
+        	result.setResult(0);
+            result.addMsg(e.getMessage());
+		}
         return result;
     }
 
@@ -97,7 +103,8 @@ public class VMController {
                         @RequestParam String name,
                         @RequestParam String imageId,
                         @RequestParam String flavorId,
-                        @RequestParam String networkIds) {
+                        @RequestParam String networkIds,
+                        @RequestParam(required=false) String adminPass) {
         ResultObject result = new ResultObject();
         try {
             OpenStackSession openStackSession = Util.session(sessionService);
@@ -116,7 +123,7 @@ public class VMController {
                 networkResources.add(networkManager.get(region, networkId));
             }
 
-            VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource, flavorResource, networkResources);
+            VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource, flavorResource, networkResources,adminPass);
             VMResource vmResource = vmManager.create(region, vmCreateConf);
 
             result.setData(vmResource);

@@ -71,7 +71,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         }
 
         for (Subnet subnet : subnets) {
-            idToNetwork.get(subnet.getNetworkId()).getSubnetResources().add(new SubnetResourceImpl(region, subnet));
+            idToNetwork.get(subnet.getNetworkId()).getSubnets().add(new SubnetResourceImpl(region, subnet));
         }
 
         List<NetworkResource> networkResources = new ArrayList<NetworkResource>(
@@ -99,7 +99,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 
             for (Subnet subnet : allSubnets) {
                 if (subnetIds.contains(subnet.getId())) {
-                    networkResourceImpl.getSubnetResources().add(new SubnetResourceImpl(region, subnet));
+                    networkResourceImpl.getSubnets().add(new SubnetResourceImpl(region, subnet));
                 }
             }
             return networkResourceImpl;
