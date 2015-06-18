@@ -66,7 +66,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> list(String region) throws RegionNotFoundException, ResourceNotFoundException {
+	public List<VMResource> list(String region) throws RegionNotFoundException,
+			ResourceNotFoundException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -74,7 +75,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		List<VMResource> vmResources = new ArrayList<VMResource>(
 				resources.size());
 		for (Server resource : resources) {
-			vmResources.add(new VMResourceImpl(region, resource,this,imageManager));
+			vmResources.add(new VMResourceImpl(region, resource, this,
+					imageManager));
 		}
 		return vmResources;
 	}
@@ -87,7 +89,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server,this,imageManager);
+			return new VMResourceImpl(region, server, this, imageManager);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"VM \"{0}\" is not found.", id));
@@ -99,13 +101,16 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws RegionNotFoundException, ResourceNotFoundException {
 		checkRegion(region);
 
+		CreateServerOptions createServerOptions = new CreateServerOptions();
+
 		List<NetworkResource> networkResources = conf.getNetworkResources();
-		String[] networks = new String[networkResources.size()];
-		for (int i = 0; i < networks.length; i++) {
-			networks[i] = networkResources.get(i).getId();
+		if (networkResources != null) {
+			String[] networks = new String[networkResources.size()];
+			for (int i = 0; i < networks.length; i++) {
+				networks[i] = networkResources.get(i).getId();
+			}
+			createServerOptions.networks(networks);
 		}
-		CreateServerOptions createServerOptions = CreateServerOptions.Builder
-				.networks(networks);
 
 		String adminPass = conf.getAdminPass();
 		if (adminPass != null) {
@@ -117,7 +122,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				.getImageResource().getId(), conf.getFlavorResource().getId(),
 				createServerOptions);
 		Server server = serverApi.get(serverCreated.getId());
-		return new VMResourceImpl(region, server,this,imageManager);
+		return new VMResourceImpl(region, server, this, imageManager);
 	}
 
 	@Override
