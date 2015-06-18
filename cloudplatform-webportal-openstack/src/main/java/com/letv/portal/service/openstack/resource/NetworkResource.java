@@ -4,19 +4,19 @@ import java.util.List;
 
 public interface NetworkResource extends Resource{
 	public String getName();
-	boolean getAdminStateUp();
-	boolean getExternal();
+	Boolean getAdminStateUp();
+	Boolean getExternal();
 	String getMemberSegments();
 	String getMulticastIp();
 	String getNetworkFlavor();
 	String getNetworkType();
 	String getPhysicalNetworkName();
-	boolean getPortSecurity();
+	Boolean getPortSecurity();
 	String getProfileId();
 	String getSegmentAdd();
-	int getSegmentationId();
+	Integer getSegmentationId();
 	String getSegmentDel();
-	boolean getShared();
+	Boolean getShared();
 	String getStatus();
 	List<NetworkSegmentResource> getNetworkSegments();
 	List<SubnetResource> getSubnets();

@@ -31,33 +31,33 @@ public class FlavorResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public int getVcpus() {
+	public Integer getVcpus() {
 		return this.flavor.getVcpus();
 	}
 
 	@Override
-	public int getDisk() {
+	public Integer getDisk() {
 		return flavor.getDisk();
 	}
 
 	@Override
-	public int getRam() {
+	public Integer getRam() {
 		return flavor.getRam();
 	}
 
 	@Override
-	public int getEphemeral() {
-		return flavor.getEphemeral().get();
+	public Integer getEphemeral() {
+		return flavor.getEphemeral().orNull();
 	}
 
 	@Override
-	public double getRxtxFactor() {
-		return flavor.getRxtxFactor().get();
+	public Double getRxtxFactor() {
+		return flavor.getRxtxFactor().orNull();
 	}
 
 	@Override
 	public String getSwap() {
-		return flavor.getSwap().get();
+		return flavor.getSwap().orNull();
 	}
 
 }

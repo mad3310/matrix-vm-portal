@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import org.jclouds.openstack.neutron.v2.domain.NetworkSegment;
+import org.jclouds.openstack.neutron.v2.domain.NetworkType;
 
 import com.letv.portal.service.openstack.resource.NetworkSegmentResource;
 
@@ -19,7 +20,12 @@ public class NetworkSegmentResourceImpl extends AbstractResource implements
 
 	@Override
 	public String getNetworkType() {
-		return networkSegment.getNetworkType().toString();
+		NetworkType type = networkSegment.getNetworkType();
+		if (type != null) {
+			return type.toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -28,7 +34,7 @@ public class NetworkSegmentResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public int getSegmentationId() {
+	public Integer getSegmentationId() {
 		return networkSegment.getSegmentationId();
 	}
 

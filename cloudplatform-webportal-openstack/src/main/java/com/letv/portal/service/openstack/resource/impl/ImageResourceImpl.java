@@ -1,8 +1,13 @@
 package com.letv.portal.service.openstack.resource.impl;
 
-import com.letv.portal.service.openstack.resource.ImageResource;
+import java.util.Date;
 
+import org.jclouds.openstack.glance.v1_0.domain.ContainerFormat;
+import org.jclouds.openstack.glance.v1_0.domain.DiskFormat;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
+
+import com.google.common.base.Optional;
+import com.letv.portal.service.openstack.resource.ImageResource;
 
 public class ImageResourceImpl extends AbstractResource implements
 		ImageResource {
@@ -32,57 +37,72 @@ public class ImageResourceImpl extends AbstractResource implements
 
 	@Override
 	public String getChecksum() {
-		return image.getChecksum().get();
+		return image.getChecksum().orNull();
 	}
 
 	@Override
 	public String getContainerFormat() {
-		return image.getContainerFormat().get().toString();
+		Optional<ContainerFormat> optional = image.getContainerFormat();
+		if (optional.isPresent()) {
+			return optional.get().toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	public long getCreatedAt() {
+	public Long getCreatedAt() {
 		return image.getCreatedAt().getTime();
 	}
 
 	@Override
-	public long getUpdatedAt() {
+	public Long getUpdatedAt() {
 		return image.getUpdatedAt().getTime();
 	}
 
 	@Override
-	public long getDeletedAt() {
-		return image.getDeletedAt().get().getTime();
+	public Long getDeletedAt() {
+		Optional<Date> optional = image.getDeletedAt();
+		if (optional.isPresent()) {
+			return optional.get().getTime();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public String getDiskFormat() {
-		return image.getDiskFormat().get().toString();
+		Optional<DiskFormat> optional = image.getDiskFormat();
+		if (optional.isPresent()) {
+			return optional.get().toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public String getLocation() {
-		return image.getLocation().get();
+		return image.getLocation().orNull();
 	}
 
 	@Override
-	public long getMinDisk() {
+	public Long getMinDisk() {
 		return image.getMinDisk();
 	}
 
 	@Override
-	public long getMinRam() {
+	public Long getMinRam() {
 		return image.getMinRam();
 	}
 
 	@Override
 	public String getOwner() {
-		return image.getOwner().get();
+		return image.getOwner().orNull();
 	}
 
 	@Override
-	public long getSize() {
-		return image.getSize().get();
+	public Long getSize() {
+		return image.getSize().orNull();
 	}
 
 	@Override

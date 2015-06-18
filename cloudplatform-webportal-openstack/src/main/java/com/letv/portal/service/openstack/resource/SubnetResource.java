@@ -10,11 +10,11 @@ public interface SubnetResource extends Resource {
 
 	String getCidr();
 
-	boolean getEnableDhcp();
+	Boolean getEnableDhcp();
 
 	String getGatewayIp();
 
-	int getIpVersion();
+	Integer getIpVersion();
 
 	List<String> getDnsNameservers();
 }

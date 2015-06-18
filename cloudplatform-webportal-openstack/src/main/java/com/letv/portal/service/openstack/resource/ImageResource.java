@@ -4,14 +4,14 @@ public interface ImageResource extends Resource{
 	public String getName();
 	String getChecksum();
 	String getContainerFormat();
-	long getCreatedAt();
-	long getUpdatedAt();
-	long getDeletedAt();
+	Long getCreatedAt();
+	Long getUpdatedAt();
+	Long getDeletedAt();
 	String getDiskFormat();
 	String getLocation();
-	long getMinDisk();
-	long getMinRam();
+	Long getMinDisk();
+	Long getMinRam();
 	String getOwner();
-	long getSize();
+	Long getSize();
 	String getStatus();
 }

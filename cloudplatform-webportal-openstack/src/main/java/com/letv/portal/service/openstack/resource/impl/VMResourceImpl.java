@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.jclouds.openstack.nova.v2_0.domain.Address;
@@ -111,7 +112,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	@Override
 	public String getAvailabilityZone() {
-		return server.getAvailabilityZone().get();
+		return server.getAvailabilityZone().orNull();
 	}
 
 	@Override
@@ -120,18 +121,23 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	}
 
 	@Override
-	public long getCreated() {
+	public Long getCreated() {
 		return server.getCreated().getTime();
 	}
 
 	@Override
-	public long getUpdated() {
-		return server.getUpdated().getTime();
+	public Long getUpdated() {
+		Date date=server.getUpdated();
+		if(date!=null){
+			return date.getTime();
+		}else{
+			return null;
+		}
 	}
 
 	@Override
 	public String getDiskConfig() {
-		return server.getDiskConfig().get();
+		return server.getDiskConfig().orNull();
 	}
 
 	@Override

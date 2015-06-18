@@ -13,8 +13,8 @@ public interface VMResource extends Resource{
 	List<String> getIpAddresses();
 	String getAvailabilityZone();
 	String getConfigDrive();
-	long getCreated();
-	long getUpdated();
+	Long getCreated();
+	Long getUpdated();
 	String getDiskConfig();
 	String getHostId();
 	String getKeyName();

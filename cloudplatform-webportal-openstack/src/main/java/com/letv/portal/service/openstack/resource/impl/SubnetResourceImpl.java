@@ -43,7 +43,7 @@ public class SubnetResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public boolean getEnableDhcp() {
+	public Boolean getEnableDhcp() {
 		return subnet.getEnableDhcp();
 	}
 
@@ -53,7 +53,7 @@ public class SubnetResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public int getIpVersion() {
+	public Integer getIpVersion() {
 		return subnet.getIpVersion();
 	}
 

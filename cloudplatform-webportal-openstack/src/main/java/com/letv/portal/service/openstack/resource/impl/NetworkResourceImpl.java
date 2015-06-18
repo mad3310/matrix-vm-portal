@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.NetworkSegment;
+import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
+import org.jclouds.openstack.neutron.v2.domain.NetworkType;
 
 import com.google.common.collect.ImmutableList;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -55,12 +57,12 @@ public class NetworkResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public boolean getAdminStateUp() {
+	public Boolean getAdminStateUp() {
 		return network.getAdminStateUp();
 	}
 
 	@Override
-	public boolean getExternal() {
+	public Boolean getExternal() {
 		return network.getExternal();
 	}
 
@@ -81,7 +83,12 @@ public class NetworkResourceImpl extends AbstractResource implements
 
 	@Override
 	public String getNetworkType() {
-		return network.getNetworkType().toString();
+		NetworkType type = network.getNetworkType();
+		if (type != null) {
+			return type.toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -90,7 +97,7 @@ public class NetworkResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public boolean getPortSecurity() {
+	public Boolean getPortSecurity() {
 		return network.getPortSecurity();
 	}
 
@@ -105,7 +112,7 @@ public class NetworkResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public int getSegmentationId() {
+	public Integer getSegmentationId() {
 		return network.getSegmentationId();
 	}
 
@@ -115,13 +122,18 @@ public class NetworkResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public boolean getShared() {
+	public Boolean getShared() {
 		return network.getShared();
 	}
 
 	@Override
 	public String getStatus() {
-		return network.getStatus().toString();
+		NetworkStatus status = network.getStatus();
+		if (status != null) {
+			return status.toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override

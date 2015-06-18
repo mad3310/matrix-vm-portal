@@ -5,5 +5,5 @@ public interface NetworkSegmentResource {
 
 	String getPhysicalNetwork();
 
-	int getSegmentationId();
+	Integer getSegmentationId();
 }
