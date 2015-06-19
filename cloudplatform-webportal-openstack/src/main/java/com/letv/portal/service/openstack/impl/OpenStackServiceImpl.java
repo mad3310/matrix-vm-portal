@@ -21,54 +21,60 @@ import java.text.MessageFormat;
 @Service("openStackService")
 public class OpenStackServiceImpl implements OpenStackService {
 
-    @Value("${openstack.keystone.host}")
-    private String keystoneHost;
+	@Value("${openstack.keystone.host}")
+	private String keystoneHost;
 
-    @Value("${openstack.keystone.version}")
-    private String keystoneVersion;
+	@Value("${openstack.keystone.version}")
+	private String keystoneVersion;
 
-    @Value("${openstack.keystone.public.port}")
-    private String publicPort;
+	@Value("${openstack.keystone.public.port}")
+	private String publicPort;
 
-    @Value("${openstack.keystone.admin.port}")
-    private String adminPort;
+	@Value("${openstack.keystone.admin.port}")
+	private String adminPort;
 
-    @Value("${openstack.keystone.protocol}")
-    private String protocol;
+	@Value("${openstack.keystone.protocol}")
+	private String protocol;
 
-    @Value("${openstack.keystone.user.register.token}")
-    private String userRegisterToken;
+	@Value("${openstack.keystone.user.register.token}")
+	private String userRegisterToken;
 
-    private String publicEndpoint;
+	private String publicEndpoint;
 
-    private String adminEndpoint;
+	private String adminEndpoint;
 
-    @Autowired
-    private PasswordService passwordService;
+	@Autowired
+	private PasswordService passwordService;
 
-    @PostConstruct
-    public void open() {
-        ConfigUtil.class.getName();
-        publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, publicPort, keystoneVersion);
-        adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, adminPort, keystoneVersion);
-    }
+	@PostConstruct
+	public void open() {
+		ConfigUtil.class.getName();
+		publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
+				keystoneHost, publicPort, keystoneVersion);
+		adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
+				keystoneHost, adminPort, keystoneVersion);
+	}
 
-    @Override
-    public OpenStackSession createSession(String userId, String email)
-            throws OpenStackException {
-        try {
-            final String password = passwordService.userIdToPassword(userId);
-            if(!new UserExists(publicEndpoint,userId,password).run()){
-                new UserRegister(adminEndpoint,userId,password,email,userRegisterToken).run();
-                if(!new UserExists(publicEndpoint,userId,password).run()){
-                    throw new OpenStackException(
-                            "can not create openstack user:" + userId);
-                }
-            }
-            return new OpenStackSessionImpl(publicEndpoint, userId, password);
-        } catch (NoSuchAlgorithmException e) {
-            throw new OpenStackException(e);
-        }
-    }
+	@Override
+	public OpenStackSession createSession(String userId, String email)
+			throws OpenStackException {
+		try {
+			boolean firstLogin = false;
+			final String password = passwordService.userIdToPassword(userId);
+			if (!new UserExists(publicEndpoint, userId, password).run()) {
+				firstLogin = true;
+				new UserRegister(adminEndpoint, userId, password, email,
+						userRegisterToken).run();
+				if (!new UserExists(publicEndpoint, userId, password).run()) {
+					throw new OpenStackException(
+							"can not create openstack user:" + userId);
+				}
+			}
+			return new OpenStackSessionImpl(publicEndpoint, userId, password,
+					firstLogin);
+		} catch (NoSuchAlgorithmException e) {
+			throw new OpenStackException(e);
+		}
+	}
 
 }

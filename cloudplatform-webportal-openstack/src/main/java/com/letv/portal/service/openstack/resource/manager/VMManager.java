@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager;
 
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
@@ -15,7 +17,7 @@ public interface VMManager extends ResourceManager {
 			ResourceNotFoundException;
 
 	VMResource create(String region, VMCreateConf conf)
-			throws RegionNotFoundException, ResourceNotFoundException;
+			throws RegionNotFoundException, ResourceNotFoundException, APINotAvailableException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException;

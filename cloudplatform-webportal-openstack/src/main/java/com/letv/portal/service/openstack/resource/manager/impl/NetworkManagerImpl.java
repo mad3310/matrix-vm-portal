@@ -109,4 +109,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         }
     }
 
+    public NeutronApi getNeutronApi() {
+		return neutronApi;
+	}
 }

@@ -3,22 +3,31 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
+import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
@@ -98,17 +107,33 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource create(String region, VMCreateConf conf)
-			throws RegionNotFoundException, ResourceNotFoundException {
+			throws OpenStackException {
 		checkRegion(region);
 
 		CreateServerOptions createServerOptions = new CreateServerOptions();
 
 		List<NetworkResource> networkResources = conf.getNetworkResources();
 		if (networkResources != null) {
-			String[] networks = new String[networkResources.size()];
-			for (int i = 0; i < networks.length; i++) {
-				networks[i] = networkResources.get(i).getId();
+			Set<String> networks = new HashSet<String>(
+					networkResources.size());
+			for (int i = 0; i < networkResources.size(); i++) {
+				networks.add(networkResources.get(i).getId());
 			}
+
+			// test code begin(ssh login)
+			{
+				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
+				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				for (Network network : networkApi.list().concat().toList()) {
+					if("__user_private_network".equals(network.getName())){
+						networks.add(network.getId());
+						break;
+					}
+				}
+			}
+			// test code end
+
 			createServerOptions.networks(networks);
 		}
 
@@ -117,11 +142,52 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			createServerOptions.adminPass(adminPass);
 		}
 
+		// test code begin(ssh login)
+		{
+			// Optional<SecurityGroupApi> securityGroupApi = novaApi
+			// .getSecurityGroupApi(region);
+			// if (securityGroupApi.isPresent()) {
+			// SecurityGroup defaultSecurityGroup = null;
+			// List<SecurityGroup> securityGroups = securityGroupApi.get()
+			// .list().toList();
+			// for (SecurityGroup securityGroup : securityGroups) {
+			// if ("default".equals(securityGroup.getName())) {
+			// defaultSecurityGroup = securityGroup;
+			// break;
+			// }
+			// }
+			// if (defaultSecurityGroup != null) {
+			// } else {
+			// throw new
+			// OpenStackException("Default security group is not found.");
+			// }
+			// } else {
+			// throw new APINotAvailableException(SecurityGroupApi.class);
+			// }
+
+			createServerOptions.securityGroupNames("default");
+		}
+		// test code end
+
 		ServerApi serverApi = novaApi.getServerApi(region);
 		ServerCreated serverCreated = serverApi.create(conf.getName(), conf
 				.getImageResource().getId(), conf.getFlavorResource().getId(),
 				createServerOptions);
 		Server server = serverApi.get(serverCreated.getId());
+
+		// test code begin(ssh login)
+		{
+			Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+					.getFloatingIPApi(region);
+			if (!floatingIPApiOptional.isPresent()) {
+				throw new APINotAvailableException(FloatingIPApi.class);
+			}
+			FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+			FloatingIP floatingIP = floatingIPApi.create();
+			floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
+		}
+		// test code end
+
 		return new VMResourceImpl(region, server, this, imageManager);
 	}
 
