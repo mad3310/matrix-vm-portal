@@ -42,6 +42,7 @@ public interface IMclusterDao extends IBaseDao<MclusterModel> {
 	 * @return
 	 */
 	List<MclusterModel> selectValidMclusters();
+	Integer selectValidMclusterCount();
 
 	List<MclusterModel> selectValidMclustersByPage(QueryParam<String, Object> param);
 	

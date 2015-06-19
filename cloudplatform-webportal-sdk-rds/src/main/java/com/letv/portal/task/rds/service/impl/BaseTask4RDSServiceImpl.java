@@ -50,8 +50,11 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Override
 	public void rollBack(TaskResult tr) {
+		String serverName = "";
+		if(tr.getParams() !=null)
+			serverName =  (String) ((Map<String, Object>) tr.getParams()).get("serviceName");
 		//发送错误邮件
-		this.buildResultToMgr("RDS服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("RDS服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}

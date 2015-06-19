@@ -95,6 +95,13 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 				}
 				mcluster.setMclusterName(mclusterName);
 				DbModel db = this.dbService.selectById(dbId);
+				int i = 1;
+				while(i<=3 && db==null) {
+					db = this.dbService.selectById(dbId);
+					i++;
+				}
+				if(db == null)
+					throw new ValidateException("参数不合法");
 				mcluster.setHclusterId(hclusterId == null?db.getHclusterId():hclusterId);
 				mcluster.setCreateUser(db.getCreateUser());
 				this.mclusterProxy.insert(mcluster);

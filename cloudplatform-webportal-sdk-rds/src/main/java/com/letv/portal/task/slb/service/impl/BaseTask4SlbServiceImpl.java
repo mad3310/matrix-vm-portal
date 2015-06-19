@@ -83,8 +83,11 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 
 	@Override
 	public void rollBack(TaskResult tr) {
+		String serverName = "";
+		if(tr.getParams() !=null)
+			serverName =  (String) ((Map<String, Object>) tr.getParams()).get("serviceName");
 		//发送邮件
-		this.buildResultToMgr("Slb服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("Slb服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}

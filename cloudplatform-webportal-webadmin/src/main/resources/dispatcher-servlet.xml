@@ -75,6 +75,7 @@
 	          <value>/oauth/callback</value>
 	          <value>/403</value>
 	          <value>/kaptcha</value>
+	          <value>/manualApi</value>
 	        </list>
 	      </property>
 	    </bean>
