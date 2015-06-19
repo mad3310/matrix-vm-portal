@@ -90,6 +90,7 @@
 					<!--<li role="presentation"><a href="#dosage" role="tab" data-toggle="tab">按量付费</a></li>-->
 				</ul>
 				<div class="tab-content mt20">
+					<form id="monthPurchaseForm">
 						<div role="tabpanel" class="tab-pane fade active in" id="year">
 							<div class="col-sm-12 col-md-9">
 								<dl class="bk-group">
@@ -100,7 +101,7 @@
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">云主机名称：</label>
 													<div class="col-sm-4 row">
-														<input id="dbName" class="form-control" name="dbName" type="text">
+														<input id="vmName" class="form-control" name="vmName" type="text">
 													</div>
 											</div>
 											<div class="bk-form-row">
@@ -110,10 +111,10 @@
 														<div class="pull-left">
 															<span class="sleBG"> <span class="sleHid">
 																	<div class="divselect">
-																		<span>惠普DC</span>
+																		<span>选择可用区</span>
 																		<ul style="display: none;">
-																		<li class="bk-select-option"><a href="javascript:;" selectid="14">惠普DC</a></li></ul>
-																		<input name="hclusterId" type="hidden" value="14">
+																		</ul>
+																		<input name="regionName" type="hidden" value="">
 																	</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
@@ -128,13 +129,10 @@
 														<div class="pull-left">
 															<span class="sleBG"> <span class="sleHid">
 																	<div class="divselect">
-																		<span>nano</span>
+																		<span>选择主机类型</span>
 																		<ul style="display: none;">
-																			<li class="bk-select-option"><a href="javascript:;" selectid="1">nano</a></li>
-																			<li class="bk-select-option"><a href="javascript:;" selectid="2">m1.tiny</a></li>
-																			<li class="bk-select-option"><a href="javascript:;" selectid="3">m1.small</a></li>
 																		</ul>
-																		<input name="mysql" type="hidden" value="" />
+																		<input name="vmType" type="hidden" value="" />
 																	</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
@@ -149,11 +147,10 @@
 													<div class="pull-left">
 														<span class="sleBG"> <span class="sleHid">
 																<div class="divselect">
-																	<span>cirros-0.3.2-x86_64 (12.6 MB)</span>
+																	<span>选择镜像</span>
 																	<ul style="display: none;">
-																		<li class="bk-select-option"><a href="javascript:;" selectid="1">cirros-0.3.2-x86_64 (12.6 MB)</a></li>
 																	</ul>
-																	<input name="mysql" type="hidden" value="" />
+																	<input name="vmImageName" type="hidden" value="" />
 																</div>
 														</span>
 														</span> <span class="bk-select-arrow"></span>
@@ -164,7 +161,7 @@
 										</div>
 									</dd>
 								</dl>
-								<dl class="bk-group">
+								<!-- <dl class="bk-group">
 									<dt class="bk-group-title">网络</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
@@ -172,11 +169,9 @@
 											<div class="bk-form-row">
 												<label class="bk-form-row-name">选择网络：</label>
 												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix">
+													<div class="bk-form-row-li clearfix ">
 														<div style="margin-top: 5px;">
 															<select id="networkSelecter" multiple="multiple">
-														        <option value="1">网络1</option>
-														        <option value="12">网络2</option>
 														    </select>
 														</div>
 													</div>
@@ -184,7 +179,7 @@
 											</div>
 										</div>
 									</dd>
-								</dl>
+								</dl> -->
 								<dl class="bk-group">
 									<dt class="bk-group-title">安全</dt>
 									<dd class="bk-group-detail">
@@ -192,14 +187,14 @@
 										<div>
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">管理员密码：</label>
-													<div class="col-sm-4 row">
-														<input id="dbName" class="form-control" name="dbName" type="text">
+													<div class="col-sm-2 row">
+														<input id="vmpw1" class="form-control" name="vmpw1" type="password">
 													</div>
 											</div>																						
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">确认密码：</label>
-													<div class="col-sm-4 row">
-														<input id="dbName" class="form-control" name="dbName" type="text">
+													<div class="col-sm-2 row">
+														<input id="vmpw2" class="form-control" name="vmpw2" type="password">
 													</div>
 											</div>	
 										</div>
@@ -207,6 +202,7 @@
 								</dl>
 							</div>
 						</div>
+						</form>
 						<div class="col-sm-12 col-md-3">
 							<div class="bk-scope bk-items bk-mb4">
 								<div class="bk-items-title">当前配置</div>
@@ -270,13 +266,18 @@
 		</div>
 	</div>
 	<!-- main-content end-->
-	<script type="text/javascript" src="${ctx}/static/modules/jquery/2.0.3/jquery.min.js"></script>
-	<script type="text/javascript" src="${ctx}/static/modules/multiple-select/jquery.multiple.select.js"></script>
+	<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 	<script type="text/javascript">
-		$('#networkSelecter').multipleSelect({
-            placeholder: "请选择",
-            selectAll: false
-        });
+		seajs.config({
+			base: "${ctx}/static/modules/",
+			alias: {
+				"jquery": "jquery/2.0.3/jquery.min.js",
+				"jquery.multiple": "multiple-select/jquery.multiple.select.js",
+				"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+				"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
+			}
+		});
+		seajs.use("${ctx}/static/page-js/cloudvm/vmCreate/main");
 	</script>
 </body>
 </html>

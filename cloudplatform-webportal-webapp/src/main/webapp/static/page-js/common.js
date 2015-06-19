@@ -541,6 +541,44 @@ define(function(require,exports,module){
                 }
             })
         },
+        divSelect: function () {
+            $('.divselect').closest('.pull-left').click(function(event){
+                event.stopPropagation();
+                var ul = $(this).find('ul');
+                var index=document.body.clientHeight-event.clientY;
+                if(index<=100){//下拉框适配位置，或上或下显示
+                    ul.css({
+                        top: '-36px'
+                    });
+                }
+                if(ul.css("display")=="none"){
+                    $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
+                    ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");
+                }else{
+                    ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+                }
+            })
+            $(document).click(function () {
+                $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+            })
+
+            $(".divselect").click(function(e) {
+						e = e ? e : window.event;
+						var target = e.target || e.srcElement;
+						if ($(target).is('li')) {
+							target = $(target).find('a');
+						}
+						if($(target).is('a')){
+							$(this).find('span').html($(target).text());//设置select显示标签
+							$(this).find('input').val($(target).attr("selectid")).change();//设置select input 值，并处发change事件
+						}
+					})
+            $(".divselect").each(function () {
+                if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+                    $(this).find('ul li').first().click();
+                }
+            })
+        },
         getBackupDate:function(){
             var myDate = new Date();            
             var timestamp = myDate.valueOf();           
