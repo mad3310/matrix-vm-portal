@@ -16,12 +16,8 @@ define(function(require,exports,module){
     	 * 相关资源量赋值
     	 */
         resCountHandler : function(data){
-            if(cn.Displayable(data.data.status)){
-                $("#dbName").html(data.data.dbName);
-                $("#dbStatus").html("("+cn.TranslateStatus(data.data.status)+")");
-            }else{
-                location.href = '/list/db';
+                $("#vmName").html(data.data.name);
+                $("#vmStatus").html("("+cn.TranslateStatus(data.data.status)+")");
             }
-        }
     }
 });
