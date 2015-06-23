@@ -994,7 +994,7 @@ define(function(require,exports,module){
                 '.avi':'avi','.mov':'mov','.wmv':'wmv','.3gp':'3gp','.flv':'flv',
                 '.mp3':'mp3','.rm':'rm','.swf':'swf','.wma':'wma','.wav':'wav','.mp3pro':'mp3pro'
             }
-            var filemaxsize=1024*2;//M
+            var filemaxsize=1024*1024*1024*2;//G
             var filesuffix=filePath.substring(filePath.indexOf('.'));
             if(fileType[filesuffix]){
                 //符合要求

@@ -21,6 +21,9 @@ define(function(require){
 	(function () {
         $("#form-upload").ajaxForm({
         	success: function (data) {
+        		$("#progress").width("101%").delay(200).fadeOut(400, function() {
+				    $(this).remove();
+				});
         		asyncData();
             }
         });
@@ -56,16 +59,15 @@ define(function(require){
 			if(pathvalue){
 				path=$('#dirName').val();
 			}
-			$('body').append("<div class=\"spin\"></div>");
-            $('body').append("<div class=\"far-spin\"></div>");
+			if ($("#progress").length === 0) {
+			    $("body").append($("<div><dt/><dd/></div>").attr("id", "progress"));
+			    $("#progress").width((50 + Math.random() * 30) + "%");
+			}
             $("#dir").val(path);
             $("#form-upload").submit();
 		}
 	});
-	function successback(){
-		$('body').find('.spin').remove();
-        $('body').find('.far-spin').remove();
-	}
+	
 	//新建文件夹验证，提交
 	$('#createDirform').bootstrapValidator({
         feedbackIcons: {
