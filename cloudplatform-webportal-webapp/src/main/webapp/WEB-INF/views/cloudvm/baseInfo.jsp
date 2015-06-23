@@ -17,7 +17,8 @@
 
 <body> 
 <!-- 全局参数 start -->
-	<input class="hidden" value="${dbId}" name="dbId" id="dbId" type="text" />
+	<input class="hidden" value="${vmId}" name="vmId" id="vmId" type="text" />
+	<input class="hidden" value="${region}" name="region_id" id="region_id" type="text" />
 	<div class="panel-group pd10" id="accordion" role="tablist" aria-multiselectable="true">
 	    <div class="panel panel-default panel-table ">
 	        <div class="panel-heading bdl-list overHidden panel-heading-mcluster" role="tab" id="headingOne" >
@@ -41,22 +42,22 @@
 		        	<tr>
 		        		<td width="50%">
 		        			<span class="text-muted pd-r8">云主机ID:</span>
-		        			<span id="db_info_db_id">365</span>
+		        			<span id="vm_info_vm_id"></span>
 		        		</td>
 		        		<td width="50%">
 		        			<span class="text-muted pd-r8">区域:</span>
-		        			<span>惠普DC</span>
+		        			<span id="vm_info_vm_region"></span>
 		        		</td>
 		        	</tr> 
 		        	<tr>
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">名称:</span>
-		        			<span id="db_info_db_name">主机一</span>
+		        			<span id="vm_info_vm_name"></span>
 		        			<a class="hide btn btn-default btn-xs glyphicon glyphicon-pencil" href="javascript:void(0)"></a>
 			        	</td> 
 			        	<td width="50%">
 			        		<span class="text-muted pd-r8">镜像:</span>
-		        			<span>cirros-0.3.2-x86_64</span>
+		        			<span id="vm_info_vm_image"></span>
 			        	</td>
 		        	</tr>		        	
 		        	</tbody>
@@ -83,7 +84,7 @@
 		        	<tr>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">运行状态:</span>
-			        		<span id="db_info_running_state">正常</span>
+			        		<span id="vm_info_running_state">正常</span>
 		        		</td>
 		        		<td width="50%">
 		        		</td>
@@ -112,21 +113,21 @@
 		        	<tr>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">规格:</span>
-			        		<span id="db_info_running_state">nano</span>
+			        		<span id="vm_info_config_flavor"></span>
 		        		</td>
 		        		<td width="50%">
 		        			<span class="text-muted pd-r8">内存:</span>
-			        		<span id="db_info_running_state">64MB</span>
+			        		<span id="vm_info_config_ram"></span>
 		        		</td>
 		        	</tr> 
 		        	<tr>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">虚拟内核:</span>
-			        		<span id="db_info_running_state">1 虚拟内核</span>
+			        		<span id="vm_info_config_vcpu"></span>
 		        		</td>
 		        		<td width="50%">
 		        			<span class="text-muted pd-r8">磁盘:</span>
-			        		<span id="db_info_running_state">1GB</span>
+			        		<span id="vm_info_config_disk"></span>
 		        		</td>
 		        	</tr> 
 		        	</tbody>
@@ -154,7 +155,7 @@
 		        	<tr>
 		        		<td width="50%">
 			        		<span class="text-muted pd-r8">ip:</span>
-			        		<span id="db_info_running_state">172.16.0.14</span>
+			        		<span id="vm_info_network_ip"></span>
 		        		</td>
 		        		<td width="50%">		        			
 		        		</td>
