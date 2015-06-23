@@ -2,6 +2,7 @@ package com.letv.portal.proxy.impl;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpResponse;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.CommonException;
 import com.letv.common.exception.ValidateException;
@@ -121,7 +123,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		return sb.toString();
 		
 	}
-	private String getSwiftMainFileUrl(String ip,String username,String containerName,String directory) {
+	private String getSwiftMainFileUrl(String ip,String username,String containerName,String directory,boolean isDelimiter) {
 		StringBuffer sb = new StringBuffer();
 		if("root".equals(directory)) {
 			directory = "";
@@ -129,7 +131,9 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 			directory +="/";
 		}
 		sb.append("https://").append(ip).append(":443").append("/v1/AUTH_").append(username).append("/").append(containerName)
-		.append("?format=json&prefix=").append(directory).append("&delimiter=/");
+		.append("?format=json&prefix=").append(directory);
+		if(isDelimiter)
+			sb.append("&delimiter=/");
 		return sb.toString();
 		
 	}
@@ -148,16 +152,16 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
-		return this.getFiles(server,  this.getSuperToken(server),directory);
+		return this.getFiles(server,  this.getSuperToken(server),directory,true);
 	}
 	
-	private Object getFiles(SwiftServer server,String token,String directory) {
+	private Object getFiles(SwiftServer server,String token,String directory,boolean isDelimiter) {
 		HostModel host = this.getHost(server.getHclusterId());
 		UserModel user = this.userService.selectById(server.getCreateUser());
 		
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", token);
-		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftMainFileUrl(host.getHostIp(),user.getUserName(),server.getName(),directory),headParams,1000,1000);
+		HttpResponse response = HttpsClient.httpGetByHeader(getSwiftMainFileUrl(host.getHostIp(),user.getUserName(),server.getName(),directory,isDelimiter),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
@@ -266,19 +270,29 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	}
 
 	@Override
-	public void deleteFile(Long id, String file) {
+	public void deleteFile(Long id, String file,boolean isFolder) {
 		SwiftServer server = this.selectById(id);
 		if(server == null)
 			throw new ValidateException("oss 服务不存在");
+		String superToken = getSuperToken(server);
+		this.deleteFile(server, file, superToken,isFolder);
+		
+	}
+
+	private void deleteFile(SwiftServer server, String file,String superToken,boolean isFolder) {
+		if(isFolder) {
+			List<Map<String,Object>> files =(List<Map<String, Object>>) this.getFiles(server, superToken, file,false);
+			for (Map<String,Object> object : files) {
+				this.deleteFile(server.getId(),  (String) object.get("name"), false);
+			}
+		}
 		
 		Map<String,String> headParams = new HashMap<String,String>();
 		headParams.put("X-Auth-Token", getSuperToken(server));
-		
 		HttpResponse response = HttpsClient.httpDeleteByHeader(getSwiftDetailFileUrl(server,"root",file),headParams,1000,1000);
 		if(response == null || response.getStatusLine() == null || response.getStatusLine().getStatusCode()>300) {
 			throw new CommonException(response == null?"api connect failed":response.getStatusLine().toString());
 		}
-		
 	}
 	
 }
