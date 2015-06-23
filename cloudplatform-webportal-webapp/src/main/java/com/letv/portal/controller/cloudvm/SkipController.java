@@ -59,7 +59,7 @@ public class SkipController {
 	 * @return
 	 */
 	@RequestMapping(value ="/detail/vm/{vmId}",method=RequestMethod.GET)
-	public ModelAndView vmDetail(@PathVariable Long vmId,ModelAndView mav){
+	public ModelAndView vmDetail(@PathVariable String vmId,ModelAndView mav){
 		mav.addObject("vmId",vmId);
 		mav.setViewName("/cloudvm/layout");
 		return mav;
