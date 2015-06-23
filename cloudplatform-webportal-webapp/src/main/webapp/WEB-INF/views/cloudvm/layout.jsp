@@ -80,13 +80,13 @@
         <nav id="sidebar" class="col-sm-2 col-md-2 nav-sidebar-div">
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
-                    <li class="active"><a class="text-sm" src="${ctx}/detail/vmBaseInfo/${vmId}" href="javascript:void(0)">基本信息</a></li>
+                    <li class="active"><a class="text-sm" src="${ctx}/detail/vmBaseInfo/${vmId}?region=${region}" href="javascript:void(0)">基本信息</a></li>
                 </ul>
             </div>
         </nav>
         
         <div class="embed-responsive embed-responsive-16by9 col-sm-10 col-xm-12"  id="frame-content-div">
-        <iframe class="embed-responsive-item " id="frame-content" src="${ctx}/detail/vmBaseInfo/${vmId}" frameBorder=0 scrolling="no"></iframe>
+        <iframe class="embed-responsive-item " id="frame-content" src="${ctx}/detail/vmBaseInfo/${vmId}?region=${region}" frameBorder=0 scrolling="no"></iframe>
         </div> 
     </div>
 </div>
