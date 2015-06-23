@@ -14,6 +14,7 @@ import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.io.Closeables;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -26,9 +27,8 @@ import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
  */
 public class OpenStackSessionImpl implements OpenStackSession {
 
-	private String endpoint;
-	private String userId;
-	private String password;
+	private OpenStackConf openStackConf;
+	private OpenStackUser openStackUser;
 
 	private ImageManagerImpl imageManager;
 	private NetworkManagerImpl networkManager;
@@ -40,50 +40,48 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 	private boolean isClosed;
 
-	public OpenStackSessionImpl(String endpoint, String userId,
-			String password, boolean firstLogin) {
-		this.endpoint = endpoint;
-		this.userId = userId;
-		this.password = password;
+	public OpenStackSessionImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) throws OpenStackException{
+		this.openStackConf = openStackConf;
+		this.openStackUser = openStackUser;
 
 		// this.imageManagerLock = new Object();
 		// this.networkManagerLock = new Object();
 		// this.vmManagerLock = new Object();
 
-		imageManager = new ImageManagerImpl(endpoint, userId, password);
-		networkManager = new NetworkManagerImpl(endpoint, userId, password);
-		vmManager = new VMManagerImpl(endpoint, userId, password);
+		imageManager = new ImageManagerImpl(openStackConf, openStackUser);
+		networkManager = new NetworkManagerImpl(openStackConf, openStackUser);
+		vmManager = new VMManagerImpl(openStackConf, openStackUser);
 		vmManager.setImageManager(imageManager);
 		vmManager.setNetworkManager(networkManager);
 
 		isClosed = false;
 
-		if (firstLogin) {
+		if (openStackUser.getFirstLogin()) {
 			NeutronApi neutronApi = networkManager.getNeutronApi();
 			for (String region : neutronApi.getConfiguredRegions()) {
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-				Network publicNetwork = null;
-				for (Network network : networkApi.list().concat().toList()) {
-					if ("__public_network".equals(network.getName())) {
-						publicNetwork = network;
-						break;
-					}
-				}
+				Network publicNetwork = networkApi.get(openStackConf.getGlobalPublicNetworkId());
+//				for (Network network : networkApi.list().concat().toList()) {
+//					if ("__public_network".equals(network.getName())) {
+//						publicNetwork = network;
+//						break;
+//					}
+//				}
 				if (publicNetwork == null) {
-					throw new RuntimeException("can not find public network");
+					throw new OpenStackException("can not find public network");
 				}
 
 				Network privateNetwork = networkApi.create(Network.CreateNetwork
-						.createBuilder("").name("__user_private_network")
+						.createBuilder("").name(openStackConf.getUserPrivateNetworkName())
 						.networkType(NetworkType.VLAN).build());
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 				Subnet privateSubnet = subnetApi.create(Subnet.CreateSubnet
-						.createBuilder(privateNetwork.getId(), "192.168.100.0/24")
+						.createBuilder(privateNetwork.getId(), openStackConf.getUserPrivateNetworkSubnetCidr())
 						.enableDhcp(true).build());
 				RouterApi routerApi = neutronApi.getRouterApi(region).get();
 				Router router = routerApi.create(Router.CreateRouter
-						.createBuilder()
+						.createBuilder().name(openStackConf.getUserPrivateRouterName())
 						.externalGatewayInfo(
 								ExternalGatewayInfo.builder().enableSnat(true)
 										.networkId(publicNetwork.getId())

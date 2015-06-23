@@ -1,21 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.resource.manager.ResourceManager;
-
 import java.io.Closeable;
 import java.text.MessageFormat;
 
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.resource.manager.ResourceManager;
+
 public abstract class AbstractResourceManager implements ResourceManager,
 		Closeable {
-	protected String endpoint;
-	protected String userId;
-	protected String password;
+	protected OpenStackConf openStackConf;
+	protected OpenStackUser openStackUser;
 
-	public AbstractResourceManager(String endpoint, String userId, String password) {
-		this.endpoint = endpoint;
-		this.userId = userId;
-		this.password = password;
+	public AbstractResourceManager(OpenStackConf openStackConf,
+			OpenStackUser openStackUser) {
+		this.openStackConf = openStackConf;
+		this.openStackUser = openStackUser;
 	}
 
 	public void checkRegion(String region) throws RegionNotFoundException {

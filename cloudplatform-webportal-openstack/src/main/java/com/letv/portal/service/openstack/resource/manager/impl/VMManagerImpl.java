@@ -31,6 +31,8 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -52,15 +54,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private NetworkManager networkManager;
 
-	public VMManagerImpl(String endpoint, String userId, String password) {
-		super(endpoint, userId, password);
+	public VMManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
+		super(openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
 		novaApi = ContextBuilder.newBuilder("openstack-nova")
-				.endpoint(endpoint)
-				.credentials(userId + ":" + userId, password).modules(modules)
+				.endpoint(openStackConf.getPublicEndpoint())
+				.credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword()).modules(modules)
 				.buildApi(NovaApi.class);
 	}
 
@@ -126,10 +128,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
 				for (Network network : networkApi.list().concat().toList()) {
-					if("__user_private_network".equals(network.getName())){
+					if(openStackConf.getUserPrivateNetworkName().equals(network.getName())){
 						networks.add(network.getId());
 						break;
 					}
+				}
+				
+				if(openStackUser.getInternalUser()){
+					networks.add(openStackConf.getGlobalSharedNetworkId());
 				}
 			}
 			// test code end
