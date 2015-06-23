@@ -140,7 +140,24 @@ define(function(require,exports,module){
                 return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
             }else if(status == 'ABNORMAL'){
                 return "<font color=\"red\">备份异常</font>";
-            }else{
+            }
+            //cvm status
+            else if(status == 'ACTIVE'){
+                return '活跃';
+            }
+            else if(status == 'BUILD'){
+                return '创建'
+            }
+            else if(status == 'PAUSED'){
+                return '已暂停';
+            }
+            else if(status == 'SUSPENDED'){
+                return '已挂起'
+            }
+            else if(status == 'DELETED'){
+                return '已删除'
+            }
+            else{
                 return 'null';
             }   
         },
@@ -324,7 +341,7 @@ define(function(require,exports,module){
                $('body').append("<div class=\"spin\"></div>");
                $('body').append("<div class=\"far-spin\"></div>");
             }
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"get",
@@ -354,7 +371,7 @@ define(function(require,exports,module){
             });
         },
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"post",

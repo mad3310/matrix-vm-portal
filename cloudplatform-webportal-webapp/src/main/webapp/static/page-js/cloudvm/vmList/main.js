@@ -19,24 +19,15 @@ define(function(require){
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
-    var dbListHandler = new dataHandler();
+    var vmListHandler = new dataHandler();
     /*
      * 初始化数据
      */
     initComponents();
-	asyncData();
 	
 	$("#refresh").click(function() {		
 		asyncData();
-	});
-	
-	/*初始化按钮*/
-	$(".btn-region-display").click(function(){
-		$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
-		$(this).removeClass("btn-default").addClass("btn-success");
-		$("#dbName").val("");
-		asyncData();
-	});
+	});	
 	
 	/*
 	 * 可封装公共方法 begin
@@ -50,27 +41,43 @@ define(function(require){
 			$(this).closest('tr').toggleClass('selected');
 		});
 	});
-	$(document).on('click', 'tfoot input:checkbox' , function(){
-		var that = this;
-		$(this).closest('table').find('tr > td:first-child input:checkbox,th input:checkbox ')
-		.each(function(){
-			this.checked = that.checked;
-			$(this).closest('tr').toggleClass('selected');
-		});
-	});
 	/*
 	 * 可封装公共方法 end
 	 */
 	
 	//加载列表数据
 	function asyncData(page) {
-		var url = '/ecs/region/matrix-dev-beijing';
-		cn.GetData(url,refreshCtl);
-		
+		var currentRegion=vmListHandler.getSelectedRegion();
+		var baseUrl = '/ecs/region';	
+		var url = currentRegion!='All' ? baseUrl+'/'+currentRegion:baseUrl;
+		cn.GetData(url,refreshCtl);		
 	}
 	function refreshCtl(data) {
-		dbListHandler.DbListHandler(data);
-		if ($(".progress").length == 0){
+		vmListHandler.VmListHandler(data);
+        $('.vm-remove').each(function(index,element){
+        	$(element).on('click',function(e){
+        		var vmId= $(e.currentTarget.closest('tr')).find('input:checkbox[name=vm_id]').val();
+                var title = "确认";
+                var text = "您确定要删除该虚拟机吗？";
+                cn.DialogBoxInit(title,text,function(){
+            		var currentRegion=vmListHandler.getSelectedRegion();
+            		var removeVmUrl = '/ecs/region/'+currentRegion+'/vm-delete';
+            		cn.PostData(removeVmUrl,{
+            	        vmId: vmId
+            	    },function(data){
+            	    	var refresh =setInterval(function(){
+            	    		if($('#tby input:checkbox[value='+vmId+']').length){
+                	    		asyncData();
+            	    		}else{
+            	    			clearInterval(refresh);
+            	    		}
+            	    	},200);
+            		});
+                    	
+                });
+        	});
+        });
+		if ($(".vm-building").length == 0){
 			if(pFresh){
 				clearInterval(pFresh);
 			}
@@ -91,21 +98,27 @@ define(function(require){
 	}	
 	 /*进度条数据刷新*/
 	function asyncProgressData(){
-		$("input[name = progress_db_id]").each(function(){
-			var dbId = $(this).val();
+		$("input[name = progress_vm_id]").each(function(){
+			var vmId = $(this).val();
+			var currentRegion=vmListHandler.getSelectedRegion();
 			function progress_func(data){
-				dbListHandler.progress(dbId,data,asyncData);
+				vmListHandler.progress(vmId,data,asyncData);
 			}
-			var url = "/build/db/" + dbId;
+			var url = '/ecs/region/'+currentRegion+'/vm/' + vmId;
 			cn.GetLocalData(url,progress_func);
-		})
+		});
 	}
     function initComponents(){
-    	initRegionSelector();
+    	initRegionSelector().then(function(data){
+    		$('#region_selector').on('change',function(e){
+    			asyncData();
+    		});
+    		asyncData();
+    	});
     }
     function initRegionSelector(){
     	var url = '/ecs/regions';
-		cn.GetData(url,dbListHandler.initRegionSelectorHandler);
+		return cn.GetData(url,vmListHandler.initRegionSelectorHandler);
     }
 
 });

@@ -133,4 +133,9 @@ public class MclusterServiceImpl extends BaseServiceImpl<MclusterModel> implemen
 		return this.mclusterDao.selectNextValidMclusterById(map);
 	}
 
+	@Override
+	public Integer selectValidMclusterCount() {
+		return this.mclusterDao.selectValidMclusterCount();
+	}
+
 }

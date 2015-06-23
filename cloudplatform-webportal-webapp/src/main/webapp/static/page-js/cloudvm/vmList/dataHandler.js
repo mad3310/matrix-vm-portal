@@ -20,7 +20,7 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-        DbListHandler : function(data){
+        VmListHandler : function(data){
         	$(".data-tr").remove();
         	
             var $tby = $('#tby');
@@ -36,19 +36,25 @@ define(function(require,exports,module){
                 	tdList.push("<td width=\"10\">"+ 
                             		"<input type=\"checkbox\" name=\"vm_id\" value= \""+array[i].id+"\">"+
                             	"</td>");
-                    var vmName = "";
-                    if(cn.Displayable(array[i].status)){
-                    	vmName = "<a href=\"/detail/vm/"+array[i].id+"\">" + array[i].name + "</a>"
-                    }else{
-                    	vmName = "<span class=\"text-explode font-disabled\">"+array[i].name+"</span>"
-                    }
+                    var	vmName = "<a href=\"/detail/vm/"+array[i].id+"\">" + array[i].name + "</a>";
                     tdList.push("<td class=\"padding-left-32\">"+ vmName+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAddresses.join(',')+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
                     			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
                     			"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+ array[i].status+"</td>");
+                    var vmStatus = '';                
+                    if(array[i].status == 'BUILD'){
+                    	var vmStatus = "<td class='hidden-xs'>"+
+			                    			"<span class=\"vm-building\">创建中...</span>"+
+			                    			"<input class=\"hide\" type=\"text\" name=\"progress_vm_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"+
+		                                "</td>";
+                    }else{
+                    	var vmStatus = "<td>"+
+		                                	cn.TranslateStatus(array[i].status)+
+		                               "</td>";
+                    }
+                    tdList.push(vmStatus);
                     tdList.push("<td class='hidden-xs'>"+
                             		"<span>"+array[i].region+"</span>"+
                              	"</td>");
@@ -57,17 +63,6 @@ define(function(require,exports,module){
                     tdList.push("</tr>");
                     
                     $tby.append(tdList.join(""));
-                    $('.vm-remove').each(function(index,element){
-                    	$(element).on('click',function(e){
-                    		var vmId= e.currentTarget.colset('tr').find('input:checkbox[name=vm_id]').val();
-                    		var currentRegion=$('select#region_selector').val();
-                    		var removeVmUrl = '/ecs/region/'+currentRegion+'/vm-delete';
-                    		cn.PostData(removeVmUrl,{},function(data){
-                    			//TODO 修改删除提示
-                    			alert('删除成功');
-                    		});
-                    	});
-                    });
                  }
             }
        
@@ -75,37 +70,7 @@ define(function(require,exports,module){
         /*进度条进度控制*/
 	    progress : function(dbId,data,asyncData){
 	    	var data = data.data;	    	
-   	        var unitLen = 100 / 10;
-   	        var $obj = $("#prg" + dbId);
-   	        var $prg = $obj.find(".progress-bar");
-   	       	var pWidth = unitLen * data;
-           	if( data == 1){
-           		$prg.css({"width": pWidth + '%'});
-           		$prg.html( pWidth + "%");
-           		$obj.next().html("正在准备安装环境...");
-           	}else if (data > 1 && data <= 3){
-           		$prg.css({"width": pWidth + '%'});
-           		$prg.html( pWidth + "%");
-           		$obj.next().html("正在检查安装环境...");
-           	}else if (data > 3 && data <= 6){
-           		$prg.css({"width": pWidth + '%'});
-           		$prg.html( pWidth + "%");
-           		$obj.next().html("正在初始化数据库服务...");
-           	}else if (data > 6 && data < 10){
-           		$prg.css({"width": pWidth + '%'});
-           		$prg.html( pWidth + "%");
-           		$obj.next().html("正在创建数据库...");
-           	}else if (data == 0 || data >= 10){
-           		$prg.css({"width": "100%"});
-           		$prg.html("100%");
-           		$obj.next().html("创建完成");
-           		asyncData();
-           	}else if(data == -1){
-           		$prg.css({"width": "100%"});
-           		$prg.html("100%");
-           		$obj.next().html("创建失败");
-           		asyncData();
-           	}else{
+           	if( data.status !== 'BUILD'){
            		asyncData();
            	}
 	   	},
@@ -113,11 +78,15 @@ define(function(require,exports,module){
    			$('#region_selector').empty();
 	   		if(data.result==1&&data.data.length){
 	   			var optionList=[];
+	   			optionList.push('<option value="All" selected="selected">全部</option>');
 	   			for(var i=0,len=data.data.length;i<len;i++){
-		   			optionList.push('<option value="'+data.data[i]+'">'+data.data[i]+'</option>');
+	   				optionList.push('<option value="'+data.data[i]+'">'+data.data[i]+'</option>');	
 	   			}
 	   			$('#region_selector').append(optionList.join(''));
 	   		}
+	   	},
+	   	getSelectedRegion:function(){
+	   		return $('select#region_selector').val();
 	   	}
     }
 });
