@@ -77,7 +77,7 @@ public class DashBoardProxyImpl implements IDashBoardProxy {
 		Map<String, Integer> statistics = new HashMap<String, Integer>();
 		statistics.put("db", this.dbService.selectByMapCount(null));
 		statistics.put("dbUser", this.dbUserService.selectByMapCount(null));
-		statistics.put("mcluster", this.mclusterService.selectByMapCount(null));
+		statistics.put("mcluster", this.mclusterService.selectValidMclusterCount());
 		statistics.put("hcluster", this.hclusterService.selectByMapCount(null));
 		statistics.put("host", this.hostService.selectByMapCount(null));
 

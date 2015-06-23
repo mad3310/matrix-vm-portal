@@ -95,7 +95,8 @@ public class BaseTask4GceServiceImpl implements IBaseTaskService{
 		boolean isContinue = (Boolean) params.get("isContinue");
 		if(!isContinue) {
 			//发送邮件
-			this.buildResultToMgr("Gce服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+			String serverName =  (String) params.get("serviceName");
+			this.buildResultToMgr("Gce服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), ERROR_MAIL_ADDRESS);
 		}
 		//业务处理
 		this.serviceOver(tr);

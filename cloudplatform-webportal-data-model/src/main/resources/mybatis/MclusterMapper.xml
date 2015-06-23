@@ -228,6 +228,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14)
 	</select>
+	<select id="selectValidMclusterCount" resultType="java.lang.Integer">
+		select
+		count(1)
+		from WEBPORTAL_MCLUSTER_INFO M where M.STATUS IN(1,7,8,9,13,14)
+	</select>
 	<select id="selectNextValidMclusterById" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />

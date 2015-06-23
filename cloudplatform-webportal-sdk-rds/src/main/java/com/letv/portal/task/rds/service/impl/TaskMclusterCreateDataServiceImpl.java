@@ -53,6 +53,7 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
+		map.put("memory","2147483648");
 		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
