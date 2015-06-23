@@ -25,13 +25,6 @@ define(function(require){
 				    $(this).remove();
 				});
         		asyncData();
-            },
-            error:function(data){
-            	alert('文件上传出错了！')
-            	//$("#progress").fadeOut(400, function() {
-				    //$(this).remove();
-				//});
-            	// alertoolWarnning('文件上传出错了！');
             }
         });
     })();

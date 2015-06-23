@@ -1040,6 +1040,33 @@ define(function(require,exports,module){
                 file=target.files[0];
             }
             return file;
+        },
+        //删除文件夹弹窗
+        DelFolderModal:function(title,content){
+            var html='<div class="modal fade in" id="DelFolderModal">'
+                        +'<div class="modal-dialog">'
+                        +'<div class="modal-content">'
+                        +'<div class="modal-header">'
+                        +'<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>'
+                        +'<h4 class="modal-title">'+title+'</h4>'
+                        +'</div>'
+                        +'<div class="modal-body clearfix">'
+                        +'<div class="col-xs-2 col-sm-1 text-center">'
+                        +'<i class="text-warning fa fa-warning text-size-32"></i>'
+                        +'</div>'
+                        +'<div class="col-xs-10 col-sm-11">'
+                        +'<p class="help-tip">'+content+'</p>'
+                        +'</div>'
+                        +'</div>'
+                        +'<div class="modal-footer">'
+                        +'<button type="submit" class="btn btn-primary" id="delfolder">确定</button>'
+                        +'<button class="btn btn-default" data-dismiss="modal">取消</button>'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>';
+            $('body').append(html);
+            $('#DelFolderModal').modal('show')
         }
     }
     /*common原型属性方法end*/
