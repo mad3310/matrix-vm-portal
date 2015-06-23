@@ -3,7 +3,6 @@
  */
 define(function(require,exports,module){
     var jQuery = $ = require('jquery');
-    require('zclip');
     var common = require('../../common');
     var cn = new common();
    
@@ -15,20 +14,23 @@ define(function(require,exports,module){
     DataHandler.prototype = {
     		VmInfoHandler : function(data){
                 var vmInfo = data.data;
-                var evaluateField=function(fieldId,fieldValue){
-        			$("#"+fieldId).html(fieldValue);
+                if(!vmInfo){
+                	return;
+                }
+                var evaluateField=function(fieldId,fieldValue,fieldSuffix){
+                	var value=(fieldValue===null||fieldValue===undefined || fieldValue==='')? '--':fieldValue+fieldSuffix;
+        			$("#"+fieldId).html(value);
                 };
-                evaluateField('vm_info_vm_id',vmInfo.id);
-                evaluateField('vm_info_vm_region',vmInfo.region);
-                evaluateField('vm_info_vm_name',vmInfo.name);
-                evaluateField('vm_info_vm_image',vmInfo.image.name);
-                evaluateField('vm_info_running_state',cn.TranslateStatus(vmInfo.status));
-                evaluateField('vm_info_config_flavor',vmInfo.flavor.name);
-                evaluateField('vm_info_config_ram',vmInfo.flavor.ram+'MB');
-                evaluateField('vm_info_config_vcpu',vmInfo.flavor.vcpus+'虚拟内核');
-                
-                evaluateField('vm_info_config_disk',vmInfo.flavor.disk+'GB');
-                evaluateField('vm_info_network_ip',vmInfo.ipAddresses.join(','));
+                evaluateField('vm_info_vm_id',vmInfo.id,'');
+                evaluateField('vm_info_vm_region',vmInfo.region,'');
+                evaluateField('vm_info_vm_name',vmInfo && vmInfo.name  ,'');
+                evaluateField('vm_info_vm_image',vmInfo.image && vmInfo.image.name,'');
+                evaluateField('vm_info_running_state',cn.TranslateStatus(vmInfo.status),'');
+                evaluateField('vm_info_config_flavor',vmInfo.flavor && vmInfo.flavor.name,'');
+                evaluateField('vm_info_config_ram',vmInfo.flavor && vmInfo.flavor.ram,'MB');
+                evaluateField('vm_info_config_vcpu',vmInfo.flavor && vmInfo.flavor.vcpus,'虚拟内核');                
+                evaluateField('vm_info_config_disk',vmInfo.flavor && vmInfo.flavor.disk,'GB');
+                evaluateField('vm_info_network_ip',vmInfo.ipAddresses.join(','),'');
                                
         }        
     }
