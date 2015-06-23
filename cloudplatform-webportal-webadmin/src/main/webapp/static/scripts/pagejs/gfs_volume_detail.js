@@ -175,7 +175,7 @@ function page_init(){
 		e = e? e:window.event;
 		var target = e.target || e.srcElement;
 		switch(target.id){
-			case "vol-space":getVolSplitbrainInfo
+			case "vol-space":
 				getVolSpaceInfo();
 				break;
 			case "vol-process":

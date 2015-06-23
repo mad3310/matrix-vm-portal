@@ -157,6 +157,9 @@ define(function(require,exports,module){
             else if(status == 'DELETED'){
                 return '已删除'
             }
+            else if(status == 'SHUTOFF'){
+                return '已停止'
+            }
             else{
                 return 'null';
             }   
@@ -350,6 +353,7 @@ define(function(require,exports,module){
                     $('body').find('.spin').remove();
                     $('body').find('.far-spin').remove();
                     if(data.result == 0){
+                    	debugger;
                          window.location.href="/500";
                     }else{
                         /*添加当handler为空时的异常处理*/
