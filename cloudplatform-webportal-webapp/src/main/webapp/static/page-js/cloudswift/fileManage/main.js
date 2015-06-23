@@ -25,6 +25,13 @@ define(function(require){
 				    $(this).remove();
 				});
         		asyncData();
+            },
+            error:function(data){
+            	alert('文件上传出错了！')
+            	//$("#progress").fadeOut(400, function() {
+				    //$(this).remove();
+				//});
+            	// alertoolWarnning('文件上传出错了！');
             }
         });
     })();
@@ -43,10 +50,16 @@ define(function(require){
 		e = e? e:window.event;
 		var target = e.target || e.srcElement;
 		var filePath = $(target).attr("file-path");
+		var filetype=$(target).attr('file-type');
+		var isfolder;
+		if(filetype=='application/directory'){
+			isfolder=true;
+		}else{isFolder=false;}
 		if(filePath != undefined && filePath != null){
 			var url = "/oss/"+$("#swiftId").val()+"/file/del";
 			var data = {
-					file : filePath
+					file : filePath,
+					isFolder:isFolder
 			}
 			cn.PostData(url,data,asyncData);
 		}

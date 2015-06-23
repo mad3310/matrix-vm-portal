@@ -51,7 +51,7 @@ define(function(require,exports,module){
                         td3 = $("<td>文件夹</td>");
                         td5=$("<td></td>");
                         td6=$("<td>-</td>");
-                        td7=$("<td class=\"text-right\"><span class=\"text-explode font-disabled\">删除</span></td>");
+                        td7=$("<td class=\"text-right\"><a href=\"javascript:void(0)\"><span class=\"text-explode\" file-path=\""+array[i].name+"\" file-type=\""+array[i].content_type+"\">删除</span></a></td>");
                       }else{
                           var filetypeindex=fileName;
                           var filetype=filetypeindex.substring(filetypeindex.indexOf('.')+1);
@@ -70,7 +70,7 @@ define(function(require,exports,module){
                           }
                           var hrefstr=$('#baseLocation').val()+array[i].name;
                           td6= $("<td class='hidden-xs'><a href='"+hrefstr+"' target='_blank'><span>"+hrefstr+"</span></a></td>");
-                          td7=$("<td class=\"text-right\"><a href=\"javascript:void(0)\"><span class=\"text-explode\"  file-path=\""+array[i].name+"\">删除</span></a></td>");
+                          td7=$("<td class=\"text-right\"><a href=\"javascript:void(0)\"><span class=\"text-explode\"  file-path=\""+array[i].name+"\" file-type=\""+array[i].content_type+"\">删除</span></a></td>");
                           
                       }
                       var lasttime=array[i].last_modified;var indexT=lasttime.indexOf('T');var indexpoint=lasttime.indexOf('.');
