@@ -159,16 +159,25 @@
 		        		<td width="50%">		        			
 		        		</td>
 		        	</tr> 
-		        	
 		        	</tbody>
 		        </table>
 		      </div>
 		    </div>
-		    
-		    
 	  	</div>
-		
 	</div>
+		<!-- main-content end-->
+	<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+	<script type="text/javascript">
+		seajs.config({
+			base: "${ctx}/static/modules/",
+			alias: {
+				"jquery": "jquery/2.0.3/jquery.min.js",
+				"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
+				"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
+			}
+		});
+		seajs.use("${ctx}/static/page-js/cloudvm/baseInfo/main");
+	</script>
 </body>
 
 </html>

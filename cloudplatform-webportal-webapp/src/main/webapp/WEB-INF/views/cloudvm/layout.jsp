@@ -19,6 +19,7 @@
 <body>
 	<!-- 全局参数 start -->
 	<input class="hidden" value="${vmId}" name="vmId" id="vmId" type="text" />
+	<input class="hidden" value="${region}" name="region" id="region" type="text" />
 	<!-- 全局参数 end -->
 <%@ include file="../../layouts/header.jsp"%>
 
@@ -90,10 +91,19 @@
     </div>
 </div>
 <%@ include file="../../layouts/rToolbar.jsp"%>
-	<script type="text/javascript" src="${ctx}/static/modules/jquery/2.0.3/jquery.min.js"></script>
-	<script type="text/javascript">
-		$('#navbar-menu .navbar-header').append('<a class="navbar-brand m-brand" href="/list/vm">云主机</a>');
-	</script>
+<script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
+<script type="text/javascript">
+// Set configuration
+seajs.config({
+base: "${ctx}/static/modules/",
+alias: {
+    "jquery": "jquery/2.0.3/jquery.min.js",
+    "bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js"
+}
+});
+seajs.use("${ctx}/static/page-js/cloudvm/layout/main");
+</script>
+	
 </body>
 
 </html>
