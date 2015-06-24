@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.portal.service.openstack.OpenStackService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,8 @@ public class LoginController{
 	private ILoginService loginManager;
 	@Autowired
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private OpenStackService openStackService;
 	
 	@Autowired
 	private ILoginProxy loginProxy;
@@ -94,6 +97,7 @@ public class LoginController{
 		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		session.setClientId(clientId);
 		session.setClientSecret(clientSecret);
+		session.setOpenStackSession(openStackService.createSession(email,email));
 		
 		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
 		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){

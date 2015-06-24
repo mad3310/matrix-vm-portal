@@ -239,6 +239,13 @@
         	<type>jar</type>
         	<scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.letv.cloudplatform</groupId>
+            <artifactId>webportal-openstack</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     
     <build>
