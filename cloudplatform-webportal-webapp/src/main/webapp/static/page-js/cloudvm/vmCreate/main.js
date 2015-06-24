@@ -101,9 +101,16 @@ define(function(require){
     }
     $("[name='regionName']").change(function (){
     	var regionName= $(this).val();
+    	$("#buy-region").html(regionName);
     	getVmType(regionName);
     	getImages(regionName);
     	getNetwork(regionName);
+    })
+     $("[name='vmType']").change(function (){
+     	$("#buy-type").html($(this).parent().find("span").html());
+    })
+     $("[name='vmImageName']").change(function (){
+     	$("#buy-image").html($(this).parent().find("span").html());
     })
     function getVmType(region){
     	var url = "/osf/region/"+ region;
