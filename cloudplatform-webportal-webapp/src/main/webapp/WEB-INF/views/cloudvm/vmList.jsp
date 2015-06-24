@@ -23,7 +23,7 @@
 			<div class="pull-left">
 				<h5>
 				<span>云主机管理</span>&nbsp;&nbsp;				
-				<select id="region_selector">
+				<select id="region_selector" class="bootstrap-select">
 				</select>				
 				</h5> 
 			</div>
@@ -47,9 +47,9 @@
 							<input type="checkbox">
 						</th>
 						<th class="padding-left-32">云主机名称</th>
-						<th class="hidden-xs">镜像名称</th>
 						<th class="hidden-xs">状态</th>
 						<th class="hidden-xs">区域</th>
+						<th class="hidden-xs">镜像名称</th>
 						<th class="hidden-xs">内网IP地址</th>
 						<th class="hidden-xs">配置</th>
 						<th class="text-right">操作</th>

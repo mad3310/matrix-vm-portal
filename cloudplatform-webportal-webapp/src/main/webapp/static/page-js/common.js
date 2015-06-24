@@ -143,7 +143,7 @@ define(function(require,exports,module){
             }
             //cvm status
             else if(status == 'ACTIVE'){
-                return '活跃';
+                return '<span class=\"text-success\">活跃<span>';
             }
             else if(status == 'BUILD'){
                 return '创建'
@@ -161,7 +161,7 @@ define(function(require,exports,module){
                 return '已停止'
             }
             else{
-                return 'null';
+                return status;
             }   
         },
         Displayable : function (status) {
