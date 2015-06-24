@@ -39,11 +39,6 @@ define(function(require,exports,module){
                             	"</td>");
                     var	vmName = "<a href=\""+baseInfoUrl+"\">" + array[i].name + "</a>";
                     tdList.push("<td class=\"padding-left-32\">"+ vmName+"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAddresses.join(',')+"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+
-                    			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
-                    			"</td>");
                     var vmStatus = '';                
                     if(array[i].status == 'BUILD'){
                     	var vmStatus = "<td class='hidden-xs'>"+
@@ -59,7 +54,17 @@ define(function(require,exports,module){
                     tdList.push("<td class='hidden-xs'>"+
                             		"<span class='field-region'>"+array[i].region+"</span>"+
                              	"</td>");
-                    tdList.push('<td class="text-right hidden-xs"><a href="'+baseInfoUrl+'">管理</a>|<a class="vm-remove" href="javascript:void(0);">删除</a></td>');
+                    tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
+                    tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAddresses.join(',')+"</td>");
+                    tdList.push("<td class=\"padding-left-32\">"+
+                    			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
+                    			"</td>");
+                    tdList.push('<td class="text-right hidden-xs">'+
+		                    		'<a href="'+baseInfoUrl+'">管理</a>|'+
+		                    		'<a class="vm-operation vm-start" href="javascript:void(0);">启动</a>|'+
+		                    		'<a class="vm-operation vm-stop" href="javascript:void(0);">停止</a>|'+
+		                    		'<a class="vm-operation vm-remove" href="javascript:void(0);">删除</a>'+
+		                    	'</td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
                     
@@ -88,6 +93,59 @@ define(function(require,exports,module){
 	   	},
 	   	getSelectedRegion:function(){
 	   		return $('select#region_selector').val();
+	   	},
+	   	operateVm:function(vmId,fieldRegion,operationType,asyncData){
+	   		var title = "确认";
+            var text = '';
+            var operationUrl='';
+            var operationCallback=null;
+    		switch(operationType){
+        		case 'vm-remove':
+        			text='您确定要删除该虚拟机吗？';
+        			operationUrl='/ecs/region/'+fieldRegion+'/vm-delete';
+        			operationCallback=function(data){
+            	    	var refresh =setInterval(function(){
+            	    		if($('#tby input:checkbox[value='+vmId+']').length){
+                	    		asyncData();
+            	    		}else{
+            	    			clearInterval(refresh);
+            	    		}
+            	    	},1000);
+            		};
+            		doOperation();
+            		break;
+        		case 'vm-start':
+        			text='您确定要开始该虚拟机吗？';
+        			operationUrl='/ecs/region/'+fieldRegion+'/vm-start';
+        			operationCallback=function(data){
+        				cn.alertoolSuccess("虚拟机已启动");
+        				asyncData();
+            		};
+            		doOperation();
+            		break;
+        		case 'vm-stop':
+        			text='您确定要停止该虚拟机吗？';
+        			operationUrl='/ecs/region/'+fieldRegion+'/vm-stop';
+        			operationCallback=function(data){
+        				cn.alertoolSuccess("虚拟机已停止");
+        				asyncData();
+            		};
+            		doOperation();
+            		break;
+            	default:
+            		break;
+    		}
+
+    		function doOperation(){
+                cn.DialogBoxInit(title,text,function(){
+            		cn.PostData(operationUrl,{
+            	        vmId: vmId
+            	    },function(data){
+            	    	operationCallback(data);
+            		});
+                    	
+                });
+    		}
 	   	}
     }
 });
