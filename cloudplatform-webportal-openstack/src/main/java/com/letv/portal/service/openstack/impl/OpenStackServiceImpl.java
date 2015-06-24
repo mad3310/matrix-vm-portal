@@ -21,54 +21,98 @@ import java.text.MessageFormat;
 @Service("openStackService")
 public class OpenStackServiceImpl implements OpenStackService {
 
-    @Value("${openstack.keystone.host}")
-    private String keystoneHost;
+	@Value("${openstack.keystone.host}")
+	private String keystoneHost;
 
-    @Value("${openstack.keystone.version}")
-    private String keystoneVersion;
+	@Value("${openstack.keystone.version}")
+	private String keystoneVersion;
 
-    @Value("${openstack.keystone.public.port}")
-    private String publicPort;
+	@Value("${openstack.keystone.public.port}")
+	private String publicPort;
 
-    @Value("${openstack.keystone.admin.port}")
-    private String adminPort;
+	@Value("${openstack.keystone.admin.port}")
+	private String adminPort;
 
-    @Value("${openstack.keystone.protocol}")
-    private String protocol;
+	@Value("${openstack.keystone.protocol}")
+	private String protocol;
 
-    @Value("${openstack.keystone.user.register.token}")
-    private String userRegisterToken;
+	@Value("${openstack.keystone.user.register.token}")
+	private String userRegisterToken;
 
-    private String publicEndpoint;
+	@Value("${openstack.neutron.network.global.public.id}")
+	private String globalPublicNetworkId;
 
-    private String adminEndpoint;
+	@Value("${openstack.neutron.network.global.shared.id}")
+	private String globalSharedNetworkId;
 
-    @Autowired
-    private PasswordService passwordService;
+	@Value("${openstack.neutron.network.user.private.name}")
+	private String userPrivateNetworkName;
 
-    @PostConstruct
-    public void open() {
-        ConfigUtil.class.getName();
-        publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, publicPort, keystoneVersion);
-        adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol, keystoneHost, adminPort, keystoneVersion);
-    }
+	@Value("${openstack.neutron.network.user.private.subnet.name}")
+	private String userPrivateNetworkSubnetName;
 
-    @Override
-    public OpenStackSession createSession(String userId, String email)
-            throws OpenStackException {
-        try {
-            final String password = passwordService.userIdToPassword(userId);
-            if(!new UserExists(publicEndpoint,userId,password).run()){
-                new UserRegister(adminEndpoint,userId,password,email,userRegisterToken).run();
-                if(!new UserExists(publicEndpoint,userId,password).run()){
-                    throw new OpenStackException(
-                            "can not create openstack user:" + userId);
-                }
-            }
-            return new OpenStackSessionImpl(publicEndpoint, userId, password);
-        } catch (NoSuchAlgorithmException e) {
-            throw new OpenStackException(e);
-        }
-    }
+	@Value("${openstack.neutron.network.user.private.subnet.cidr}")
+	private String userPrivateNetworkSubnetCidr;
+
+	@Value("${openstack.neutron.router.user.private.name}")
+	private String userPrivateRouterName;
+
+	private String publicEndpoint;
+
+	private String adminEndpoint;
+
+	private OpenStackConf openStackConf;
+
+	@Autowired
+	private PasswordService passwordService;
+
+	@PostConstruct
+	public void open() {
+		ConfigUtil.class.getName();
+		publicEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
+				keystoneHost, publicPort, keystoneVersion);
+		adminEndpoint = MessageFormat.format("{0}://{1}:{2}/v{3}/", protocol,
+				keystoneHost, adminPort, keystoneVersion);
+		openStackConf = new OpenStackConf();
+		openStackConf.setGlobalPublicNetworkId(globalPublicNetworkId);
+		openStackConf.setGlobalSharedNetworkId(globalSharedNetworkId);
+		openStackConf.setPublicEndpoint(publicEndpoint);
+		openStackConf.setUserPrivateNetworkName(userPrivateNetworkName);
+		openStackConf
+				.setUserPrivateNetworkSubnetCidr(userPrivateNetworkSubnetCidr);
+		openStackConf
+				.setUserPrivateNetworkSubnetName(userPrivateNetworkSubnetName);
+		openStackConf.setUserPrivateRouterName(userPrivateRouterName);
+	}
+
+	@Override
+	public OpenStackSession createSession(String userId, String email)
+			throws OpenStackException {
+		try {
+			OpenStackUser openStackUser = new OpenStackUser();
+			openStackUser.setUserId(userId);
+			openStackUser.setFirstLogin(false);
+			openStackUser.setInternalUser(false);
+
+			final String password = passwordService.userIdToPassword(userId);
+			openStackUser.setPassword(password);
+
+			if (!new UserExists(publicEndpoint, userId, password).run()) {
+				openStackUser.setFirstLogin(true);
+				new UserRegister(adminEndpoint, userId, password, email,
+						userRegisterToken).run();
+				if (!new UserExists(publicEndpoint, userId, password).run()) {
+					throw new OpenStackException(
+							"can not create openstack user:" + userId);
+				}
+			}
+			if (email.endsWith("@letv.com")) {
+				openStackUser.setInternalUser(true);
+			}
+			return new OpenStackSessionImpl(openStackConf, openStackUser);
+		} catch (NoSuchAlgorithmException e) {
+			throw new OpenStackException(e);
+		}
+	}
 
 }
