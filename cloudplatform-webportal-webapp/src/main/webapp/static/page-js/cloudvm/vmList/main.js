@@ -54,27 +54,12 @@ define(function(require){
 	}
 	function refreshCtl(data) {
 		vmListHandler.VmListHandler(data);
-        $('.vm-remove').each(function(index,element){
+        $('.vm-operation').each(function(index,element){
         	$(element).on('click',function(e){
         		var vmId= $(e.currentTarget.closest('tr')).find('input:checkbox[name=vm_id]').val();
         		var fieldRegion= $(e.currentTarget.closest('tr')).find('.field-region').text();
-                var title = "确认";
-                var text = "您确定要删除该虚拟机吗？";
-                cn.DialogBoxInit(title,text,function(){
-            		var removeVmUrl = '/ecs/region/'+fieldRegion+'/vm-delete';
-            		cn.PostData(removeVmUrl,{
-            	        vmId: vmId
-            	    },function(data){
-            	    	var refresh =setInterval(function(){
-            	    		if($('#tby input:checkbox[value='+vmId+']').length){
-                	    		asyncData();
-            	    		}else{
-            	    			clearInterval(refresh);
-            	    		}
-            	    	},1000);
-            		});
-                    	
-                });
+        		var operationType=$(e.currentTarget).attr('class').split(' ')[1];
+        		vmListHandler.operateVm(vmId,fieldRegion,operationType,asyncData);
         	});
         });
 		if ($(".vm-building").length == 0){

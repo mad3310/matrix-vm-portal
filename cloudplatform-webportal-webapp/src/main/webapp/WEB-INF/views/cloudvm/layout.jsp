@@ -62,7 +62,7 @@
                     </small>
                     <small>
                         <span>
-                            <button id="stop-vm-btn" class="btn-danger btn btn-sm">终止实例</button>
+                            <button id="stop-vm-btn" class="btn-danger btn btn-sm">停止实例</button>
                         </span>
                     </small>
                     <small>

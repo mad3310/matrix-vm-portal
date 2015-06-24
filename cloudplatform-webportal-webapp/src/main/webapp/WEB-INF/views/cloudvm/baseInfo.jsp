@@ -154,7 +154,7 @@
 		        	<tbody>
 		        	<tr>
 		        		<td width="50%">
-			        		<span class="text-muted pd-r8">ip:</span>
+			        		<span class="text-muted pd-r8">内网ip:</span>
 			        		<span id="vm_info_network_ip"></span>
 		        		</td>
 		        		<td width="50%">		        			
