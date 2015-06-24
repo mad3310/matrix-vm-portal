@@ -114,7 +114,7 @@ public class VMController {
 			FlavorResource flavorResource = vmManager.getFlavorResource(region,
 					flavorId);
 
-			List<NetworkResource> networkResources=null;
+			List<NetworkResource> networkResources = null;
 			if (networkIds != null) {
 				String[] networkIdArray = networkIds.split("__");
 				networkResources = new ArrayList<NetworkResource>(
@@ -129,6 +129,21 @@ public class VMController {
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
+		} catch (OpenStackException e) {
+			result.setResult(0);
+			result.addMsg(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/vm-publish", method = RequestMethod.POST)
+	public @ResponseBody ResultObject publish(@PathVariable String region,
+			@RequestParam String vmId) {
+		ResultObject result = new ResultObject();
+		try {
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			VMResource vmResource = vmManager.get(region, vmId);
+			vmManager.publish(region, vmResource);
 		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());

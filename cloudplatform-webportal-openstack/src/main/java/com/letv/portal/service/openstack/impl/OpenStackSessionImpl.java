@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.NetworkType;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
@@ -56,7 +55,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 		isClosed = false;
 
-		if (openStackUser.getFirstLogin()) {
+//		if (openStackUser.getFirstLogin()) {
 			NeutronApi neutronApi = networkManager.getNeutronApi();
 			for (String region : neutronApi.getConfiguredRegions()) {
 				NetworkApi networkApi = neutronApi.getNetworkApi(region);
@@ -69,26 +68,71 @@ public class OpenStackSessionImpl implements OpenStackSession {
 //					}
 //				}
 				if (publicNetwork == null) {
-					throw new OpenStackException("can not find public network");
+					throw new OpenStackException("can not find public network under region: "+region);
 				}
 
-				Network privateNetwork = networkApi.create(Network.CreateNetwork
-						.createBuilder("").name(openStackConf.getUserPrivateNetworkName())
-						.networkType(NetworkType.VLAN).build());
+				Network privateNetwork = null;
+				for(Network network:networkApi.list().concat().toList()){
+					if(openStackConf.getUserPrivateNetworkName().equals(network.getName())){
+						privateNetwork=network;
+						break;
+					}
+				}
+				if(privateNetwork==null){
+					privateNetwork = networkApi.create(Network.CreateNetwork
+							.createBuilder("").name(openStackConf.getUserPrivateNetworkName())
+							.build());
+				}
+				
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-				Subnet privateSubnet = subnetApi.create(Subnet.CreateSubnet
-						.createBuilder(privateNetwork.getId(), openStackConf.getUserPrivateNetworkSubnetCidr())
-						.enableDhcp(true).build());
+				
+				Subnet privateSubnet = null;
+				for(Subnet subnet:subnetApi.list().concat().toList()){
+					if(openStackConf.getUserPrivateNetworkSubnetName().equals(subnet.getName())){
+						privateSubnet=subnet;
+						break;
+					}
+				}
+				if(privateSubnet==null){
+					privateSubnet = subnetApi.create(Subnet.CreateSubnet
+							.createBuilder(privateNetwork.getId(), openStackConf.getUserPrivateNetworkSubnetCidr())
+							.enableDhcp(true).name(openStackConf.getUserPrivateNetworkSubnetName()).ipVersion(4).build());
+				}
+				
 				RouterApi routerApi = neutronApi.getRouterApi(region).get();
-				Router router = routerApi.create(Router.CreateRouter
-						.createBuilder().name(openStackConf.getUserPrivateRouterName())
-						.externalGatewayInfo(
-								ExternalGatewayInfo.builder().enableSnat(true)
-										.networkId(publicNetwork.getId())
-										.build()).build());
-				routerApi.addInterfaceForSubnet(router.getId(), privateSubnet.getId());
+
+				Router privateRouter =null;
+				for(Router router:routerApi.list().concat().toList()){
+					if(openStackConf.getUserPrivateRouterName().equals(router.getName())){
+						privateRouter=router;
+						break;
+					}
+				}
+				if(privateRouter==null){
+					privateRouter = routerApi.create(Router.CreateRouter
+							.createBuilder().name(openStackConf.getUserPrivateRouterName())
+							.externalGatewayInfo(
+									ExternalGatewayInfo.builder()//.enableSnat(true)
+											.networkId(publicNetwork.getId())
+											.build()).build());
+					try{
+						routerApi.addInterfaceForSubnet(privateRouter.getId(), privateSubnet.getId());
+					}catch(Exception ex){
+						routerApi.delete(privateRouter.getId());
+						throw new OpenStackException(ex);
+					}
+				}
+				
+//				Router router = routerApi.create(Router.CreateRouter
+//						.createBuilder().name(openStackConf.getUserPrivateRouterName())
+//						.build());
+//				.externalGatewayInfo(
+//						ExternalGatewayInfo.builder().enableSnat(true)
+//								.networkId(publicNetwork.getId())
+//								.build())
+				
 			}
-		}
+//		}
 	}
 
 	@Override
