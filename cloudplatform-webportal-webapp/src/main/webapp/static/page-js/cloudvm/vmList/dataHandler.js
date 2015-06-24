@@ -33,10 +33,11 @@ define(function(require,exports,module){
             	 }
                 for(var i= 0, len= array.length;i<len;i++){
                 	var tdList= [];
+                	var baseInfoUrl='/detail/vm/'+array[i].id+'?region='+array[i].region;
                 	tdList.push("<td width=\"10\">"+ 
                             		"<input type=\"checkbox\" name=\"vm_id\" value= \""+array[i].id+"\">"+
                             	"</td>");
-                    var	vmName = "<a href=\"/detail/vm/"+array[i].id+"\">" + array[i].name + "</a>";
+                    var	vmName = "<a href=\""+baseInfoUrl+"\">" + array[i].name + "</a>";
                     tdList.push("<td class=\"padding-left-32\">"+ vmName+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAddresses.join(',')+"</td>");
@@ -56,9 +57,9 @@ define(function(require,exports,module){
                     }
                     tdList.push(vmStatus);
                     tdList.push("<td class='hidden-xs'>"+
-                            		"<span>"+array[i].region+"</span>"+
+                            		"<span class='field-region'>"+array[i].region+"</span>"+
                              	"</td>");
-                    tdList.push('<td class="text-right hidden-xs"><a href="/detail/vm/'+array[i].id+'">管理</a>|<a class="vm-remove" href="javascript:void(0);">删除</a></td>');
+                    tdList.push('<td class="text-right hidden-xs"><a href="'+baseInfoUrl+'">管理</a>|<a class="vm-remove" href="javascript:void(0);">删除</a></td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
                     

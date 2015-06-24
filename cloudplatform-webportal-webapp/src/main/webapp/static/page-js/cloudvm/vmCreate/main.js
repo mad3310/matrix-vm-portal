@@ -4,8 +4,11 @@
 define(function(require){
     var common = require('../../common');
     var cn = new common();
-    var $ = require("jquery");
+    var $ = jQuery  = require("jquery");
+    require("jquery.multiple")(jQuery); 
     require("bootstrapValidator")($);
+    
+    cn.divSelect();//初始化创建页select功能
 
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
@@ -16,19 +19,6 @@ define(function(require){
         })
     }
 
-    /*按钮组件封装 --begin*/
-    $(".bk-button-primary").click(function () {
-        if(!$(this).hasClass("disabled")){
-            $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
-            $(this).addClass("bk-button-current");
-            if($(this).parent().find(".hide").length > 0 ){
-                var val = $(this).val();
-                $(this).parent().find(".hide").val(val);
-            }
-        }
-    })
-    /*按钮组件封装 --end*/
-
     /*表单验证 --begin*/
     $("#monthPurchaseForm").bootstrapValidator({
         message: 'This value is not valid',
@@ -38,51 +28,95 @@ define(function(require){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            dbName: {
+            vmName: {
                 validMessage: '请按提示输入',
                 validators: {
                     notEmpty: {
-                        message: '数据库名称不能为空!'
+                        message: '虚拟机名称不能为空!'
                     },
                     stringLength: {
                         max: 16,
-                        message: '数据库名名过长!'
+                        message: '虚拟机名过长!'
                     }, regexp: {
-                        regexp: /^((?!^monitor$)([a-zA-Z_]+[a-zA-Z_0-9]*))$/,
-                        message: "请输入字母数字或'_',数据库名不能以数字开头且数据库名称不能命名为monitor."
-                    }/*,
-                    remote: {
-                        message: '数据库名已存在!',
-                        url: '/db/validate'
-                    }*/
+                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+                        message: "请输入字母数字或'_',虚拟机名不能以数字开头."
+                    }
+                }
+            },
+            vmpw1:{
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },different: {
+                        field: 'vmName',
+                        message: '密码不能与账户名相同'
+                    },stringLength: {
+                        min:6,
+                        max: 32,
+                        message: '密码长度为6-32之间!'
+                    },regexp: {
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,32}$/,
+                        message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
+                    }
+                }
+            },
+            vmpw2:{
+                validators: {
+                    notEmpty: {
+                        message:'密码不能为空'
+                    },identical: {
+                        field: 'vmpw1',
+                        message: '两次输入密码不同'
+                    }
                 }
             }
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
-        var dbName = $("[name = 'dbName']").val();
-        var hclusterId = $("[name = 'hclusterId']").val();
-        var engineType = $("[name = 'engineType']").val();
-        var linkType = $("[name = 'linkType']").val();
-        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin};
-        CreateDb(formData);
+        var regionName = $("[name = regionName]").val();
+        var url = '/ecs/region/'+regionName+'/vm-create';
+    	var data =  {
+						        name: $("#vmName").val(),
+						        imageId: $("[name = vmImageName]").val(),
+						        flavorId: $("[name = vmType]").val(),
+						       // networkIds: $("#networkSelecter").val(),
+						        adminPass:$("#vmpw1").val()
+						    }
+		cn.PostData(url, data, function (data) {
+               location.href = "/list/vm";
+         });
+    }).on('keyup', '[name="vmpw1"]', function () {
+        if($("[name = 'vmpw2']").val() != ''){
+            $('#monthPurchaseForm').bootstrapValidator('revalidateField', 'vmpw2');
+        }
     });
     /*表单验证 --end*/
 
     /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var createDbHandler = new dataHandler();
-    GetHcluster();
-    function GetHcluster(){
-        var url="/hcluster/rds";
-        cn.GetData(url,createDbHandler.GetHclusterHandler);
+    var DataHandler = require('./dataHandler');
+    var dataHandler = new DataHandler(require);
+    function getRegion(){
+    	var url = "/ecs/regions";
+    	cn.GetData(url,dataHandler.getRegion);
     }
-    /*创建数据库*/
-    function CreateDb(data){
-        var url="/db";
-        cn.PostData(url,data, function () {
-            location.href = "/list/db";
-        });
+    $("[name='regionName']").change(function (){
+    	var regionName= $(this).val();
+    	getVmType(regionName);
+    	getImages(regionName);
+    	getNetwork(regionName);
+    })
+    function getVmType(region){
+    	var url = "/osf/region/"+ region;
+    	cn.GetData(url,dataHandler.getVmType);
     }
+    function getImages(region){
+    	var url="/osi/region/"+region;
+    	cn.GetData(url,dataHandler.getImage);
+    }
+     function getNetwork(region){
+    	var url="/osn/region/"+region;
+    	cn.GetData(url,dataHandler.getNetwork);
+    }
+    
+     getRegion();//获取可用区
 });
