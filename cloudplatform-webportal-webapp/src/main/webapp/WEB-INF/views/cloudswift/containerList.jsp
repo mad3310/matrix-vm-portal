@@ -12,6 +12,7 @@
 <!-- main-content begin-->
 <div class="container-fluid">
 	<div class="row main-header overHidden"> <!-- main-content-header begin -->
+	<div id='alertool' class="col-md-offset-10 col-md-2 alertool"></div>
 		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
@@ -109,6 +110,7 @@
 		    
 		</div>
 	</div><!-- main-content-center-end -->
+
 </div>
 </body>
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>

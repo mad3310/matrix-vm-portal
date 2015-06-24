@@ -1723,6 +1723,14 @@ textarea {
 .m-authorize{text-align:center;height:183px;padding-top:60px;margin:0 -30px;}
 .trans-easein{-webkit-transition: all .3s ease-in;-moz-transition: all .3s ease-in;transition: all .3s ease-in;}
 .m-cachewidth{width:500px;}
+/*文件进度条*/
+#progress {position:fixed;z-index:2147483647;top:0;left:-6px;width:1%;height:2px;background: #c7332f;-moz-border-radius: 1px;-webkit-border-radius: 1px;
+border-radius: 1px;-moz-transition: width 500ms ease-out,opacity 400ms linear;-ms-transition: width 500ms ease-out,opacity 400ms linear;
+-o-transition: width 500ms ease-out,opacity 400ms linear;-webkit-transition: width 500ms ease-out,opacity 400ms linear;transition: width 500ms ease-out,opacity 400ms linear;}
+#progress dd, #progress dt {position:absolute;top:0;height:2px;-moz-box-shadow: #c7332f 1px 0 6px 1px;-ms-box-shadow: #c7332f 1px 0 6px 1px;-webkit-box-shadow: #c7332f 1px 0 6px 1px;box-shadow: #c7332f 1px 0 6px 1px;
+-moz-border-radius:100%;-webkit-border-radius:100%;border-radius:100%;}
+#progress dt {opacity:.6;width:180px;right:-80px;clip:rect(-6px,90px,14px,-6px);}
+#progress dd {opacity:.6;width:20px;right:0;clip:rect(-6px,22px,14px,10px);}
 @media only screen and (max-width:769px){
 	.embed-responsive .embed-responsive-item{padding-right:0 !important;}
 	.btn-search{margin-left:0;}
@@ -1739,6 +1747,10 @@ textarea {
 	.m-tgbtn button{background-color:#F90;color:rgba(255,255,255,.7);padding:1px 6px;margin:0;border:0;}
 	.m-dropdown-caret{position:absolute;top:25px;right:-7px !important;border:1px solid rgba(0,0,0,.15);background:#fff;z-index:100;box-shadow:3px 3px 3px #ccc;padding:0 10px 10px;font-size:14px;min-width:0;}
 	.m-cachewidth{width:auto;}
+	.config-buy{display:none;}
+	.bk-form-row{padding:0 5px;}
+	#year>div{padding-left:0;}
+	.connect-help{border-bottom:0 !important;border-top:solid 1px #ddd;margin-left:0 !important;}
 }
 /*帮助中心*/
 .article-content span{text-transform:none;text-indent:0px;display:inline !important;font:14px/21px 微软雅黑,Microsoft YaHei;white-space:normal;float:none;letter-spacing:normal;color:rgb(0,0,0);word-spacing:0px;}

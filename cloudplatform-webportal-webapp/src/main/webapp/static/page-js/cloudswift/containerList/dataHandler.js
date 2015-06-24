@@ -62,7 +62,7 @@ define(function(require,exports,module){
                     var td8 = $("<td class='hidden-xs'><span><span>包年  </span><span class=\"text-success\">"+cn.RemainAvailableTime(array[i].createTime)+"</span><span>天后到期</span></span></td>");
                     if(cn.Displayable(array[i].status)){
                     	var td9 = $("<td class='hidden-xs'><a href=\"/detail/oss/"+array[i].id+"\">管理</a><span>|</span><a href=\"javascript:void(0)\" oss-id=\""+array[i].id+"\">删除</a></td>"
-                        +"<td class='hidden-sm hidden-md hidden-lg'><a href=\"/detail/oss/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a></td>"
+                        +"<td class='hidden-sm hidden-md hidden-lg'><a href=\"/detail/oss/"+array[i].id+"\"><span class='text-success'><i class='fa fa-cogs'></i></span></a>&nbsp;&nbsp;<a href=\"javascript:void(0)\" oss-id=\""+array[i].id+"\"><i class='fa fa-trash text-warning'></i></a></td>"
                         );
                     }else{
                     	var td9 = $("<td><span class=\"text-explode font-disabled\">管理</span></td>"

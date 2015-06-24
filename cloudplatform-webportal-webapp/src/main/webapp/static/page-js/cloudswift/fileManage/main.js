@@ -21,6 +21,9 @@ define(function(require){
 	(function () {
         $("#form-upload").ajaxForm({
         	success: function (data) {
+        		$("#progress").width("101%").delay(200).fadeOut(400, function() {
+				    $(this).remove();
+				});
         		asyncData();
             }
         });
@@ -40,10 +43,16 @@ define(function(require){
 		e = e? e:window.event;
 		var target = e.target || e.srcElement;
 		var filePath = $(target).attr("file-path");
+		var filetype=$(target).attr('file-type');
+		var isfolder;
+		if(filetype=='application/directory'){
+			isfolder=true;
+		}else{isFolder=false;}
 		if(filePath != undefined && filePath != null){
 			var url = "/oss/"+$("#swiftId").val()+"/file/del";
 			var data = {
-					file : filePath
+					file : filePath,
+					isFolder:isFolder
 			}
 			cn.PostData(url,data,asyncData);
 		}
@@ -56,16 +65,15 @@ define(function(require){
 			if(pathvalue){
 				path=$('#dirName').val();
 			}
-			$('body').append("<div class=\"spin\"></div>");
-            $('body').append("<div class=\"far-spin\"></div>");
+			if ($("#progress").length === 0) {
+			    $("body").append($("<div><dt/><dd/></div>").attr("id", "progress"));
+			    $("#progress").width((50 + Math.random() * 30) + "%");
+			}
             $("#dir").val(path);
             $("#form-upload").submit();
 		}
 	});
-	function successback(){
-		$('body').find('.spin').remove();
-        $('body').find('.far-spin').remove();
-	}
+	
 	//新建文件夹验证，提交
 	$('#createDirform').bootstrapValidator({
         feedbackIcons: {

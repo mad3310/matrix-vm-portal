@@ -6,7 +6,10 @@ define(function(require){
     var cn = new common();
     var $ = require("jquery");
     require("bootstrapValidator")($);
-
+    cn.initNavbarMenu([{
+                name : "Le云控制台",
+                herf : "/dashboard"
+            }]);
     /*禁用退格键退回网页*/
     window.onload=cn.DisableBackspaceEnter();
 
@@ -85,4 +88,23 @@ define(function(require){
             location.href = "/list/db";
         });
     }
+
+    // 手机端 购买页面 适配
+    $('.step-next').unbind('click').click(function(event) {
+        $(this).parent().addClass('hide').next().removeClass('config-buy');
+        $('body').scrollTop(0)
+    });
+    $('.step-forward').unbind('click').click(function(event) {
+        $('.step-next').parent().removeClass('hide');
+        $(this).parent().addClass('config-buy');
+    });
+    $('.connect-help a').unbind('click').click(function(event) {
+        var _target=$(this).parent().next();
+        if(_target.hasClass('hide')){
+            _target.removeClass('hide')
+        }else{
+            _target.addClass('hide')
+        }
+        
+    });
 });

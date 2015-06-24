@@ -7,6 +7,7 @@
 <style>
 .dirPath{color:#428bca;}.dirPath:hover{cursor: pointer;}a:hover{cursor: pointer;}
 </style>
+
 <input class="hidden" value="${swiftId}" name="swiftId" id="swiftId" type="text" />
 <input class="hidden" value="${directory}" id="dirName" type="text" />
 <input class="hidden" value="" id="baseLocation" type="text" />
