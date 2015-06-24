@@ -1,12 +1,24 @@
 package com.letv.portal.controller.cloudvm;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.exception.VMDeleteException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -15,15 +27,6 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/ecs")
@@ -158,14 +161,8 @@ public class VMController {
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
-			vmManager.delete(region, vmResource);
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (VMDeleteException e) {
+			vmManager.deleteSync(region, vmResource);
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}
@@ -179,11 +176,8 @@ public class VMController {
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
-			vmManager.start(region, vmResource);
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+			vmManager.startSync(region, vmResource);
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}
@@ -197,11 +191,8 @@ public class VMController {
 		try {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
-			vmManager.stop(region, vmResource);
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+			vmManager.stopSync(region, vmResource);
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}

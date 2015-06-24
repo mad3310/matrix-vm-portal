@@ -21,14 +21,24 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;
 
-	void publish(String region, VMResource vm) throws RegionNotFoundException, APINotAvailableException, OpenStackException;
+	void publish(String region, VMResource vm) throws RegionNotFoundException,
+			APINotAvailableException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException;
 
+	void deleteSync(String region, VMResource vm) throws OpenStackException,
+			VMDeleteException;
+
 	void start(String region, VMResource vm) throws RegionNotFoundException;
 
+	void startSync(String region, VMResource vm) throws OpenStackException;
+
 	void stop(String region, VMResource vm) throws RegionNotFoundException;
+
+	void stopSync(String region, VMResource vm) throws OpenStackException;
+
+	int totalNumber() throws OpenStackException;
 
 	List<FlavorResource> listFlavorResources(String region)
 			throws RegionNotFoundException;

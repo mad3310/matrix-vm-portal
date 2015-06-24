@@ -46,6 +46,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		// this.imageManagerLock = new Object();
 		// this.networkManagerLock = new Object();
 		// this.vmManagerLock = new Object();
+		
+		openStackUser.setPrivateNetworkName(openStackConf.getUserPrivateNetworkName());
 
 		imageManager = new ImageManagerImpl(openStackConf, openStackUser);
 		networkManager = new NetworkManagerImpl(openStackConf, openStackUser);
@@ -69,6 +71,11 @@ public class OpenStackSessionImpl implements OpenStackSession {
 //				}
 				if (publicNetwork == null) {
 					throw new OpenStackException("can not find public network under region: "+region);
+				}
+				openStackUser.setPublicNetworkName(publicNetwork.getName());
+				
+				if(openStackUser.getInternalUser()){
+					openStackUser.setSharedNetworkName(networkApi.get(openStackConf.getGlobalSharedNetworkId()).getName());
 				}
 
 				Network privateNetwork = null;

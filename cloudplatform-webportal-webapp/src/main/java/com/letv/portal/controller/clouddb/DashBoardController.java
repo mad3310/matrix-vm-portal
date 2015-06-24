@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.proxy.IDashBoardProxy;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -19,12 +22,19 @@ public class DashBoardController {
 	@Resource
 	private IDashBoardProxy dashBoardProxy;
 
+	@Resource
+	private SessionServiceImpl sessionService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(DashBoardController.class);
 	
 	@RequestMapping(value="/statistics",method=RequestMethod.GET)
 	public @ResponseBody ResultObject list(ResultObject result) {
-		result.setData(this.dashBoardProxy.selectAppResource());
+		try {
+			result.setData(this.dashBoardProxy.selectAppResource().put("vmtn", ((OpenStackSession)sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber()));
+		} catch (OpenStackException e) {
+			result.setResult(0);
+			result.addMsg(e.getMessage());
+		}
 		return result;
 	}
 	

@@ -3,7 +3,6 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,15 +10,13 @@ import java.util.Set;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.FloatingIP.CreateFloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.Port.CreatePort;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
@@ -96,7 +93,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				resources.size());
 		for (Server resource : resources) {
 			vmResources.add(new VMResourceImpl(region, resource, this,
-					imageManager));
+					imageManager, openStackUser));
 		}
 		return vmResources;
 	}
@@ -109,7 +106,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server, this, imageManager);
+			return new VMResourceImpl(region, server, this, imageManager, openStackUser);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"VM \"{0}\" is not found.", id));
@@ -205,7 +202,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// }
 		// test code end
 
-		return new VMResourceImpl(region, server, this, imageManager);
+		return new VMResourceImpl(region, server, this, imageManager, openStackUser);
 	}
 
 	@Override
@@ -213,38 +210,40 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		Server server = ((VMResourceImpl) (vm)).server;
-//		Collection<Address> addresses = server.getAddresses().get(
-//				openStackConf.getUserPrivateNetworkName());
-//		// for (Entry<String, Address> entry : ((VMResourceImpl) (vm)).server
-//		// .getAddresses().entries()) {
-//		// System.out.println(MessageFormat.format("server address: {0} => {1}",
-//		// entry.getKey(), entry.getValue().getAddr()));
-//		// }
-//		if (addresses.isEmpty()) {
-//			throw new OpenStackException(
-//					"Virtual machine is not assigned IP address of user private network.");
-//		}
-//		Address address = addresses.iterator().next();
-//		String ip = address.getAddr();
+		// Collection<Address> addresses = server.getAddresses().get(
+		// openStackConf.getUserPrivateNetworkName());
+		// // for (Entry<String, Address> entry : ((VMResourceImpl) (vm)).server
+		// // .getAddresses().entries()) {
+		// //
+		// System.out.println(MessageFormat.format("server address: {0} => {1}",
+		// // entry.getKey(), entry.getValue().getAddr()));
+		// // }
+		// if (addresses.isEmpty()) {
+		// throw new OpenStackException(
+		// "Virtual machine is not assigned IP address of user private network.");
+		// }
+		// Address address = addresses.iterator().next();
+		// String ip = address.getAddr();
 
-		 Optional<FloatingIPApi> floatingIPApiOptional = novaApi
-		 .getFloatingIPApi(region);
-		 if (!floatingIPApiOptional.isPresent()) {
-		 throw new APINotAvailableException(FloatingIPApi.class);
-		 }
-		 FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-		 FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
-		 .getGlobalPublicNetworkId());
-		 floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
-		
-//		NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
-//		NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
-//		neutronApi.getPortApi(region).create(CreatePort.createBuilder(""))
-//		neutronApi
-//				.getFloatingIPApi(region)
-//				.get()
-//				.create(CreateFloatingIP.createBuilder(
-//						openStackConf.getGlobalPublicNetworkId()).portId("sss").build());
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
+				.getGlobalPublicNetworkId());
+		floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
+
+		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
+		// networkManager;
+		// NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
+		// neutronApi.getPortApi(region).create(CreatePort.createBuilder(""))
+		// neutronApi
+		// .getFloatingIPApi(region)
+		// .get()
+		// .create(CreateFloatingIP.createBuilder(
+		// openStackConf.getGlobalPublicNetworkId()).portId("sss").build());
 	}
 
 	@Override
@@ -314,6 +313,91 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	public void setNetworkManager(NetworkManager networkManager) {
 		this.networkManager = networkManager;
+	}
+
+	@Override
+	public void deleteSync(String region, VMResource vm)
+			throws OpenStackException, VMDeleteException {
+		checkRegion(region);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		boolean isSuccess = serverApi.delete(vm.getId());
+		if (!isSuccess) {
+			throw new VMDeleteException(MessageFormat.format(
+					"VM \"{0}\" delete failed.", vm.getId()));
+		}
+
+		try {
+			Server server = null;
+			while (true) {
+				server = serverApi.get(vm.getId());
+				if (server == null || server.getStatus() == Status.ERROR) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new OpenStackException(e);
+		}
+	}
+
+	@Override
+	public void startSync(String region, VMResource vm)
+			throws OpenStackException {
+		checkRegion(region);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		serverApi.start(vm.getId());
+
+		try {
+			Server server = null;
+			while (true) {
+				server = serverApi.get(vm.getId());
+				if (server == null
+						|| Server.Status.ACTIVE == server.getStatus()
+						|| server.getStatus() == Status.ERROR) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new OpenStackException(e);
+		}
+	}
+
+	@Override
+	public void stopSync(String region, VMResource vm)
+			throws OpenStackException {
+		checkRegion(region);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		serverApi.stop(vm.getId());
+
+		try {
+			Server server = null;
+			while (true) {
+				server = serverApi.get(vm.getId());
+				if (server == null
+						|| Server.Status.SHUTOFF == server.getStatus()
+						|| server.getStatus() == Status.ERROR) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new OpenStackException(e);
+		}
+	}
+
+	@Override
+	public int totalNumber() throws OpenStackException {
+		int total = 0;
+		Set<String> regions = getRegions();
+		for (String region : regions) {
+			ServerApi serverApi = novaApi.getServerApi(region);
+			total += serverApi.list().concat().toList().size();
+		}
+		return total;
 	}
 
 }

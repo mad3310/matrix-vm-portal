@@ -1,16 +1,17 @@
 package com.letv.portal.service.openstack.resource.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Map.Entry;
 
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
+import com.google.common.collect.Multimap;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
@@ -23,30 +24,44 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	private ImageResource imageResource;
 	private FlavorResource flavorResource;
 	// private NetworkResource networkResource;
-	private List<String> ipAddresses;
+	private IPAddresses ipAddresses;
 
 	public VMResourceImpl(String region, Server server,
-			ImageResource imageResource, FlavorResource flavorResource)
-			throws RegionNotFoundException, ResourceNotFoundException {
+			ImageResource imageResource, FlavorResource flavorResource,
+			OpenStackUser user) throws RegionNotFoundException,
+			ResourceNotFoundException {
 		this.region = region;
 		this.server = server;
 		this.flavorResource = flavorResource;
 		this.imageResource = imageResource;
 		// this.networkResource = networkManager.get(region, resource.get);
-		
-		Collection<Address> addresses = server.getAddresses().values();
-		ipAddresses = new ArrayList<String>(addresses.size());
-		for (Address address : addresses) {
-			ipAddresses.add(address.getAddr());
+
+		ipAddresses = new IPAddresses();
+		Multimap<String, Address> addresses = server.getAddresses();
+		for (Entry<String, Address> entry : addresses.entries()) {
+			final String networkName = entry.getKey();
+			final String ip = entry.getValue().getAddr();
+			if (user.getPublicNetworkName().equals(networkName)) {
+				ipAddresses.getPublicIP().add(ip);
+			} else if (user.getPrivateNetworkName().equals(networkName)) {
+				ipAddresses.getPrivateIP().add(ip);
+			} else {
+				if (user.getInternalUser()) {
+					if (user.getSharedNetworkName().equals(networkName)) {
+						ipAddresses.getSharedIP().add(ip);
+					}
+				}
+			}
 		}
 	}
 
 	public VMResourceImpl(String region, Server server, VMManager vmManager,
-			ImageManager imageManager) throws RegionNotFoundException,
-			ResourceNotFoundException {
+			ImageManager imageManager, OpenStackUser openStackUser)
+			throws RegionNotFoundException, ResourceNotFoundException {
 		this(region, server, imageManager
 				.get(region, server.getImage().getId()), vmManager
-				.getFlavorResource(region, server.getFlavor().getId()));
+				.getFlavorResource(region, server.getFlavor().getId()),
+				openStackUser);
 	}
 
 	@Override
@@ -107,7 +122,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	// }
 
 	@Override
-	public List<String> getIpAddresses() {
+	public IPAddresses getIpAddresses() {
 		return ipAddresses;
 	}
 
@@ -128,10 +143,10 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	@Override
 	public Long getUpdated() {
-		Date date=server.getUpdated();
-		if(date!=null){
+		Date date = server.getUpdated();
+		if (date != null) {
 			return date.getTime();
-		}else{
+		} else {
 			return null;
 		}
 	}
