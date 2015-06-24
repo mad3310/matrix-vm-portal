@@ -22,7 +22,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>云主机管理</span>&nbsp;&nbsp;
+				<span>云主机管理</span>&nbsp;&nbsp;				
 				<select id="region_selector">
 				</select>				
 				</h5> 
@@ -62,6 +62,29 @@
 		</div>
 	</div><!-- main-content-center-end -->
 </div>
+<!--确认对话框-->
+	<div id="dialog-box" class="modal">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+			<!--	<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+					</button>-->
+					<h5 id="dialog-box-title" class="modal-title"></h5>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="col-xs-1 col-sm-1 col-md-1 warning-sign">
+						<span class="glyphicon glyphicon-exclamation-sign"></span>
+					</div>
+					<div id="dialog-box-text" class="col-xs-11 col-sm-10 "></div>
+				</div>
+				<div class="modal-footer">
+					<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+					<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
 <!-- js -->
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">

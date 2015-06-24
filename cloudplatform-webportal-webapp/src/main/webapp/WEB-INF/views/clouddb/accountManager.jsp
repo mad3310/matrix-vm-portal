@@ -206,7 +206,7 @@
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-							<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
+							<p class="">由字母、数字或特殊字符如：@#$%^&*!~_- 组成，长度6~32位</p>
 						</div>
 					</div>
 				</div>

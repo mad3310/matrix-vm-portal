@@ -140,7 +140,24 @@ define(function(require,exports,module){
                 return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
             }else if(status == 'ABNORMAL'){
                 return "<font color=\"red\">备份异常</font>";
-            }else{
+            }
+            //cvm status
+            else if(status == 'ACTIVE'){
+                return '活跃';
+            }
+            else if(status == 'BUILD'){
+                return '创建'
+            }
+            else if(status == 'PAUSED'){
+                return '已暂停';
+            }
+            else if(status == 'SUSPENDED'){
+                return '已挂起'
+            }
+            else if(status == 'DELETED'){
+                return '已删除'
+            }
+            else{
                 return 'null';
             }   
         },
@@ -324,7 +341,7 @@ define(function(require,exports,module){
                $('body').append("<div class=\"spin\"></div>");
                $('body').append("<div class=\"far-spin\"></div>");
             }
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"get",
@@ -354,7 +371,7 @@ define(function(require,exports,module){
             });
         },
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"post",
@@ -994,7 +1011,7 @@ define(function(require,exports,module){
                 '.avi':'avi','.mov':'mov','.wmv':'wmv','.3gp':'3gp','.flv':'flv',
                 '.mp3':'mp3','.rm':'rm','.swf':'swf','.wma':'wma','.wav':'wav','.mp3pro':'mp3pro'
             }
-            var filemaxsize=1024*2;//M
+            var filemaxsize=1024*1024*1024*2;//G
             var filesuffix=filePath.substring(filePath.indexOf('.'));
             if(fileType[filesuffix]){
                 //符合要求
@@ -1040,6 +1057,33 @@ define(function(require,exports,module){
                 file=target.files[0];
             }
             return file;
+        },
+        //删除文件夹弹窗
+        DelFolderModal:function(title,content){
+            var html='<div class="modal fade in" id="DelFolderModal">'
+                        +'<div class="modal-dialog">'
+                        +'<div class="modal-content">'
+                        +'<div class="modal-header">'
+                        +'<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>'
+                        +'<h4 class="modal-title">'+title+'</h4>'
+                        +'</div>'
+                        +'<div class="modal-body clearfix">'
+                        +'<div class="col-xs-2 col-sm-1 text-center">'
+                        +'<i class="text-warning fa fa-warning text-size-32"></i>'
+                        +'</div>'
+                        +'<div class="col-xs-10 col-sm-11">'
+                        +'<p class="help-tip">'+content+'</p>'
+                        +'</div>'
+                        +'</div>'
+                        +'<div class="modal-footer">'
+                        +'<button type="submit" class="btn btn-primary" id="delfolder">确定</button>'
+                        +'<button class="btn btn-default" data-dismiss="modal">取消</button>'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>';
+            $('body').append(html);
+            $('#DelFolderModal').modal('show')
         }
     }
     /*common原型属性方法end*/

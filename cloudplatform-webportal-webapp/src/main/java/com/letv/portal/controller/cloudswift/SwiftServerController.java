@@ -98,10 +98,10 @@ public class SwiftServerController {
 		return mav;
 	}	
 	@RequestMapping(value="/{id}/file/del",method=RequestMethod.POST)
-	public  @ResponseBody ResultObject  deleteFile(@PathVariable Long id,@RequestParam String file){
+	public  @ResponseBody ResultObject  deleteFile(@PathVariable Long id,@RequestParam String file,@RequestParam boolean isFolder){
 		ResultObject obj = new ResultObject();
 		isAuthoritySwift(id);
-		this.swiftServerProxy.deleteFile(id,file);
+		this.swiftServerProxy.deleteFile(id,file,isFolder);
 		return obj;
 	}	
 	@RequestMapping(value="/{id}/folder",method=RequestMethod.POST)
