@@ -3,6 +3,7 @@ package com.letv.portal.controller.cloudvm;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
@@ -14,6 +15,7 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -112,7 +114,7 @@ public class VMController {
 			FlavorResource flavorResource = vmManager.getFlavorResource(region,
 					flavorId);
 
-			List<NetworkResource> networkResources=null;
+			List<NetworkResource> networkResources = null;
 			if (networkIds != null) {
 				String[] networkIdArray = networkIds.split("__");
 				networkResources = new ArrayList<NetworkResource>(
@@ -127,10 +129,22 @@ public class VMController {
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
-		} catch (RegionNotFoundException e) {
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/vm-publish", method = RequestMethod.POST)
+	public @ResponseBody ResultObject publish(@PathVariable String region,
+			@RequestParam String vmId) {
+		ResultObject result = new ResultObject();
+		try {
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			VMResource vmResource = vmManager.get(region, vmId);
+			vmManager.publish(region, vmResource);
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}

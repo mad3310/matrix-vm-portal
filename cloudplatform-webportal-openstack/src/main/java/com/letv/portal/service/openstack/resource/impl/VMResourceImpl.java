@@ -19,7 +19,7 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	private String region;
-	private Server server;
+	public Server server;
 	private ImageResource imageResource;
 	private FlavorResource flavorResource;
 	// private NetworkResource networkResource;

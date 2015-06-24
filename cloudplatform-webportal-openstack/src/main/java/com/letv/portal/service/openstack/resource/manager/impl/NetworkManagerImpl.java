@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
@@ -32,15 +34,15 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 
     private NeutronApi neutronApi;
 
-    public NetworkManagerImpl(String endpoint, String userId, String password) {
-        super(endpoint, userId, password);
+    public NetworkManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
+        super(openStackConf, openStackUser);
 
         Iterable<Module> modules = ImmutableSet
                 .<Module>of(new SLF4JLoggingModule());
 
         neutronApi = ContextBuilder.newBuilder("openstack-neutron")
-                .endpoint(endpoint)
-                .credentials(userId + ":" + userId, password)
+                .endpoint(openStackConf.getPublicEndpoint())
+                .credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword())
                 .modules(modules).buildApi(NeutronApi.class);
     }
 
@@ -109,4 +111,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         }
     }
 
+    public NeutronApi getNeutronApi() {
+		return neutronApi;
+	}
 }

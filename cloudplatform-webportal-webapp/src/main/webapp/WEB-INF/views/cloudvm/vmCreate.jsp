@@ -105,7 +105,7 @@
 													</div>
 											</div>
 											<div class="bk-form-row">
-												<label class="bk-form-row-name">可用区：</label>
+												<label class="bk-form-row-name">区域：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left">
@@ -209,10 +209,10 @@
 								<div>
 									<div class="bk-items-list">
 										<ul>
-											<li><span class="bk-items-item-name">区域：</span> <span class="bk-items-item-value">惠普DC</span></li>
-											<li><span class="bk-items-item-name">类型：</span> <span class="bk-items-item-value">nano</span></li>
-											<li><span class="bk-items-item-name">镜像：</span> <span class="bk-items-item-value">cirros-0.3.2-x86_64 (12.6 MB)</span></li>
-											<li><span class="bk-items-item-name">网络：</span> <span class="bk-items-item-value">网络1</span></li>
+											<li><span class="bk-items-item-name">区域：</span> <span class="bk-items-item-value" id="buy-region">惠普DC</span></li>
+											<li><span class="bk-items-item-name">类型：</span> <span class="bk-items-item-value" id="buy-type">nano</span></li>
+											<li><span class="bk-items-item-name">镜像：</span> <span class="bk-items-item-value" id= "buy-image">cirros-0.3.2-x86_64 (12.6 MB)</span></li>
+											<!-- <li><span class="bk-items-item-name">网络：</span> <span class="bk-items-item-value">网络1</span></li> -->
 										</ul>
 									</div>
 								</div>
@@ -241,7 +241,7 @@
 											<span class="ng-scope">加入清单</span>
 										</div>
 									</button>
-									<div class="bk-form-row-txt notice-block">您购买的云主机创建大约需要2分钟,请耐心等待...</div>
+									<!-- <div class="bk-form-row-txt notice-block">您购买的云主机创建大约需要2分钟,请耐心等待...</div> -->
 								</div>
 								<div class="bk-pb4"></div>
 							</div>

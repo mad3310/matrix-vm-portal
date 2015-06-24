@@ -16,6 +16,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.impl.ImageResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
@@ -25,15 +27,15 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 
 	private GlanceApi glanceApi;
 
-	public ImageManagerImpl(String endpoint, String userId, String password) {
-		super(endpoint, userId, password);
+	public ImageManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
+		super(openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
 		glanceApi = ContextBuilder.newBuilder("openstack-glance")
-				.endpoint(endpoint)
-				.credentials(userId + ":" + userId, password)
+				.endpoint(openStackConf.getPublicEndpoint())
+				.credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword())
 				.modules(modules).buildApi(GlanceApi.class);
 	}
 
