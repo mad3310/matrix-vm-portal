@@ -4,7 +4,8 @@
  *
  * http://wenzhixin.net.cn/p/multiple-select/
  */
-
+define(function(require, exports, module){
+     return function($){
 (function ($) {
 
     'use strict';
@@ -587,3 +588,5 @@
         }
     };
 })(jQuery);
+    }
+});

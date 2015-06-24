@@ -157,6 +157,9 @@ define(function(require,exports,module){
             else if(status == 'DELETED'){
                 return '已删除'
             }
+            else if(status == 'SHUTOFF'){
+                return '已停止'
+            }
             else{
                 return 'null';
             }   
@@ -350,6 +353,7 @@ define(function(require,exports,module){
                     $('body').find('.spin').remove();
                     $('body').find('.far-spin').remove();
                     if(data.result == 0){
+                    	debugger;
                          window.location.href="/500";
                     }else{
                         /*添加当handler为空时的异常处理*/
@@ -552,6 +556,44 @@ define(function(require,exports,module){
                 var value = $(this).find('a').attr("selectid");
                 $(this).closest('.divselect').find('input').val(value).change();
             });
+            $(".divselect").each(function () {
+                if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+                    $(this).find('ul li').first().click();
+                }
+            })
+        },
+        divSelect: function () {
+            $('.divselect').closest('.pull-left').click(function(event){
+                event.stopPropagation();
+                var ul = $(this).find('ul');
+                var index=document.body.clientHeight-event.clientY;
+                if(index<=100){//下拉框适配位置，或上或下显示
+                    ul.css({
+                        top: '-36px'
+                    });
+                }
+                if(ul.css("display")=="none"){
+                    $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
+                    ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");
+                }else{
+                    ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+                }
+            })
+            $(document).click(function () {
+                $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+            })
+
+            $(".divselect").click(function(e) {
+						e = e ? e : window.event;
+						var target = e.target || e.srcElement;
+						if ($(target).is('li')) {
+							target = $(target).find('a');
+						}
+						if($(target).is('a')){
+							$(this).find('span').html($(target).text());//设置select显示标签
+							$(this).find('input').val($(target).attr("selectid")).change();//设置select input 值，并处发change事件
+						}
+					})
             $(".divselect").each(function () {
                 if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
                     $(this).find('ul li').first().click();
