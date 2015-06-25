@@ -5,6 +5,7 @@ define(function(require,exports,module){
     var $ = require('jquery');
     var common = require('../../common');
     var cn = new common();
+    var vmStatus = '';
     
     var DataHandler = function(){
     };
@@ -18,6 +19,10 @@ define(function(require,exports,module){
         resCountHandler : function(data){
                 $("#vmName").html(data.data.name);
                 $("#vmStatus").html("("+cn.TranslateStatus(data.data.status)+")");
-            }
+                vmStatus = data.data.status;
+        },
+		getVmStatus:function(){
+			return vmStatus;
+		}
     }
 });
