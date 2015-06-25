@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 
@@ -25,12 +26,12 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
-			VMDeleteException;
+			VMDeleteException, APINotAvailableException;
 
 	void deleteSync(String region, VMResource vm) throws OpenStackException,
 			VMDeleteException;
 
-	void start(String region, VMResource vm) throws RegionNotFoundException;
+	void start(String region, VMResource vm) throws RegionNotFoundException, VMStatusException;
 
 	void startSync(String region, VMResource vm) throws OpenStackException;
 
