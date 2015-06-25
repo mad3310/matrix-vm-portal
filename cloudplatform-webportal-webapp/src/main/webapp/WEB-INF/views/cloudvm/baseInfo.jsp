@@ -142,6 +142,9 @@
 		        <span class="panel-title">
 		          		网络
 				</span>
+				<div class="pull-right table-viewer-topbar-content">
+					<a class="btn btn-xs btn-primary" id="getPublicIp" href="javascript:void(0)">获取公网IP</a>
+				</div>
 				<a class="collapse-selector" data-toggle="collapse" href="#collapseFour"  aria-expanded="true" aria-controls="collapseFour">					
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
 					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
