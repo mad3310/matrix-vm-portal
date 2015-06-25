@@ -96,17 +96,17 @@
 		    
 	  	</div>
 		<div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingThree">
 		        <span class="panel-title">
 		          		配置
 				</span>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
+				<a class="collapse-selector" data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="headingThree">					
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
 					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
 				</span>
 				</a>
 	    	</div>
-		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+		    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
 		      <div class="panel-body pd0">
 		        <table class="table table-bordered table-bi">
 		        	<tbody>
@@ -138,26 +138,36 @@
 	  	</div>
 		
 		<div class="panel panel-default panel-table">
-	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingTwo">
+	        <div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingFour">
 		        <span class="panel-title">
 		          		网络
 				</span>
-				<a class="collapse-selector" data-toggle="collapse" href="#collapseTwo"  aria-expanded="true" aria-controls="collapseTwo">					
+				<a class="collapse-selector" data-toggle="collapse" href="#collapseFour"  aria-expanded="true" aria-controls="collapseFour">					
 				<span class="toggle-drop-down-icon" toggle-show="toggleShow">		
 					<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>						  
 				</span>
 				</a>
 	    	</div>
-		    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+		    <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
 		      <div class="panel-body pd0">
 		        <table class="table table-bordered table-bi">
 		        	<tbody>
 		        	<tr>
 		        		<td width="50%">
-			        		<span class="text-muted pd-r8">内网ip:</span>
-			        		<span id="vm_info_network_ip"></span>
+			        		<span class="text-muted pd-r8">私网ip:</span>
+			        		<span id="vm_info_network_privateip"></span>
 		        		</td>
-		        		<td width="50%">		        			
+		        		<td width="50%">	
+		        			<span class="text-muted pd-r8">公网ip:</span>
+			        		<span id="vm_info_network_publicip"></span>	        			
+		        		</td>
+		        	</tr> 
+		        	<tr>
+		        		<td width="50%">
+			        		<span class="text-muted pd-r8">公司内网ip:</span>
+			        		<span id="vm_info_network_sharedip"></span>
+		        		</td>
+		        		<td width="50%">	        			
 		        		</td>
 		        	</tr> 
 		        	</tbody>
