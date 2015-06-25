@@ -1188,7 +1188,10 @@ define(function(require,exports,module){
                         +'</div>'
                         +'</div>';
             $('body').append(html);
-            $('#DelFolderModal').modal('show')
+            $('#DelFolderModal').modal({
+                show:true,
+                backdrop:false
+            })
         }
     }
     /*common原型属性方法end*/
