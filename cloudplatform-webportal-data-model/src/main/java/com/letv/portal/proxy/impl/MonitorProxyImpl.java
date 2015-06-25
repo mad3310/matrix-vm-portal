@@ -78,9 +78,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	
 	@Override
 	public void collectMclusterServiceData() {
-		Map<String,String> map = new  HashMap<String,String>();
-		map.put("type", "mclusternode");
-		List<ContainerModel> contianers = this.containerService.selectByMap(map);
+		Map<String,Object> map = new  HashMap<String,Object>();
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 1);

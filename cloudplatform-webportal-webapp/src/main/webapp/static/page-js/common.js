@@ -140,8 +140,28 @@ define(function(require,exports,module){
                 return "<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>备份中...";
             }else if(status == 'ABNORMAL'){
                 return "<font color=\"red\">备份异常</font>";
-            }else{
-                return 'null';
+            }
+            //cvm status
+            else if(status == 'ACTIVE'){
+                return '<span class=\"text-success\">活跃<span>';
+            }
+            else if(status == 'BUILD'){
+                return '创建'
+            }
+            else if(status == 'PAUSED'){
+                return '已暂停';
+            }
+            else if(status == 'SUSPENDED'){
+                return '已挂起'
+            }
+            else if(status == 'DELETED'){
+                return '已删除'
+            }
+            else if(status == 'SHUTOFF'){
+                return '已停止'
+            }
+            else{
+                return status;
             }   
         },
         Displayable : function (status) {
@@ -324,7 +344,7 @@ define(function(require,exports,module){
                $('body').append("<div class=\"spin\"></div>");
                $('body').append("<div class=\"far-spin\"></div>");
             }
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"get",
@@ -333,6 +353,7 @@ define(function(require,exports,module){
                     $('body').find('.spin').remove();
                     $('body').find('.far-spin').remove();
                     if(data.result == 0){
+                    	debugger;
                          window.location.href="/500";
                     }else{
                         /*添加当handler为空时的异常处理*/
@@ -354,7 +375,7 @@ define(function(require,exports,module){
             });
         },
         PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
-            $.ajax({
+            return $.ajax({
                 url:url,
                 cache:false,
                 type:"post",
@@ -374,6 +395,10 @@ define(function(require,exports,module){
                 type:"delete",
                 dataType:'json',
                 success:function(data){
+                    if(data.result==0){
+                        var cn=new Common();
+                        cn.alertoolDanger('操作出错了！'+data.msgs);
+                    }
                     /*添加当handler为空时的异常处理*/
                     if(handler){
                         handler(data);
@@ -535,6 +560,44 @@ define(function(require,exports,module){
                 var value = $(this).find('a').attr("selectid");
                 $(this).closest('.divselect').find('input').val(value).change();
             });
+            $(".divselect").each(function () {
+                if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
+                    $(this).find('ul li').first().click();
+                }
+            })
+        },
+        divSelect: function () {
+            $('.divselect').closest('.pull-left').click(function(event){
+                event.stopPropagation();
+                var ul = $(this).find('ul');
+                var index=document.body.clientHeight-event.clientY;
+                if(index<=100){//下拉框适配位置，或上或下显示
+                    ul.css({
+                        top: '-36px'
+                    });
+                }
+                if(ul.css("display")=="none"){
+                    $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");//关闭所有select
+                    ul.show().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-o-transform:rotate(180deg);-ms-transform: rotate(180deg);");
+                }else{
+                    ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+                }
+            })
+            $(document).click(function () {
+                $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+            })
+
+            $(".divselect").click(function(e) {
+						e = e ? e : window.event;
+						var target = e.target || e.srcElement;
+						if ($(target).is('li')) {
+							target = $(target).find('a');
+						}
+						if($(target).is('a')){
+							$(this).find('span').html($(target).text());//设置select显示标签
+							$(this).find('input').val($(target).attr("selectid")).change();//设置select input 值，并处发change事件
+						}
+					})
             $(".divselect").each(function () {
                 if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
                     $(this).find('ul li').first().click();
@@ -955,27 +1018,86 @@ define(function(require,exports,module){
                 return "-";
             }
         },
+        alertoolDanger:function(msg,time){
+            if(time == null){
+                time=4000;
+            }
+            var html =$("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">"
+            + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
+            + "<strong>DANGER!   </strong>"+msg
+            + "</div>");
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time)
+            window.setTimeout(function(){html.remove();},time+500);
+        },
         alertoolWarnning:function(msg,time){
             if(time == null){
-                time=3000;
+                time=4000;
             }
             var html =$("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
             + "<strong>WARNING!   </strong>"+msg
             + "</div>");
-            html.appendTo($("#alertool"));
-            window.setTimeout(function(){html.fadeOut(1000)},time);
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time);
+            window.setTimeout(function(){html.remove();},time+500);
         },
          alertoolSuccess:function(msg,time){
             if(time == null){
-                time=3000;
+                time=4000;
             }
             var html =$("<div class=\"alert alert-success alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
             + "<strong>SUCCESS!   </strong>"+msg
             + "</div>");
-            html.appendTo($("#alertool"));
-            window.setTimeout(function(){html.fadeOut(1000)},time);
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time);
+            window.setTimeout(function(){html.remove();},time+500);
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){

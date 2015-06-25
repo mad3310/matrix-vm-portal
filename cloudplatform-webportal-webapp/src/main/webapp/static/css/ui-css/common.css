@@ -379,6 +379,9 @@ background-position: 0 -300px;
 .product-icons-48.product-icons-oss {
 background-position: 0 -200px;
 }
+.product-icons-48.product-icons-yunzhuji {
+background-position: 0 0;
+}
 .home .product-list ul li.product-item .item-profile .item-title {
 line-height: 1em;
 }
@@ -1526,6 +1529,25 @@ textarea {
 .bk-select-option a{
 	text-decoration:none;
 }
+/*begin bootstrap-select style*/
+.bootstrap-select{
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+/*end bootstrap-select style*/
 
 /*  nodata div style*/
 #noData{
@@ -1694,7 +1716,7 @@ textarea {
 .tip-btngroup{margin-top: 10px;width:100%;padding:0 10px;}
 .shade{background:rgba(0,0,0,.4);position:absolute;top:0;left:0;width:100%;height:100%;overflow: hidden}
 
-.alertool{position: absolute;z-index: 9;}
+.alertool{position: absolute;z-index: 9;top:45px;}
 .alertool div{margin-bottom: 5px;padding: 2px 25px 2px 15px;}
 
 /*2015-6-12 gm file upload*/

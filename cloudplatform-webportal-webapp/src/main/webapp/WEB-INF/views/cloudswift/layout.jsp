@@ -10,7 +10,6 @@
     <!-- <input class="hidden" value="702" name="cacheId" id="cacheId" type="text" /> -->
     <!-- 全局参数 end -->
 <%@ include file="../../layouts/header.jsp"%>
-
 <!-- main-content begin-->
 <div class="container-fluid">
     <div class="row main-header">
@@ -51,8 +50,6 @@
                 </h3>
             </div>
         </div>
-         <div class="col-md-offset-4 col-md-4 alertool" id="alertool">
-          </div>
     </div>
     <!-- main-content-header end-->
     <div class="row">
