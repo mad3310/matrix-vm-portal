@@ -61,7 +61,7 @@ define(function(require,exports,module){
                     				"<span>内网："+array[i].ipAddresses.shared.join(', ')+"</span>"+
 		                    	 "</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
-                    			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
+                    			[array[i].flavor.name,array[i].flavor.ram+'M 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
                     			"</td>");
                     tdList.push('<td class="text-right hidden-xs">'+
 		                    		'<a href="'+baseInfoUrl+'">管理</a>|'+
