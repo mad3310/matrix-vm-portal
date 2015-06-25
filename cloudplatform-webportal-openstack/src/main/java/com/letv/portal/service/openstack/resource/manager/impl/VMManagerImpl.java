@@ -84,7 +84,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public List<VMResource> list(String region) throws RegionNotFoundException,
-			ResourceNotFoundException {
+			ResourceNotFoundException, APINotAvailableException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -100,13 +100,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource get(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException {
+			throws RegionNotFoundException, ResourceNotFoundException, APINotAvailableException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server, this, imageManager, openStackUser);
+			return new VMResourceImpl(region, server, this, imageManager,
+					openStackUser);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"VM \"{0}\" is not found.", id));
@@ -202,7 +203,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// }
 		// test code end
 
-		return new VMResourceImpl(region, server, this, imageManager, openStackUser);
+		return new VMResourceImpl(region, server, this, imageManager,
+				openStackUser);
 	}
 
 	@Override
@@ -398,6 +400,19 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			total += serverApi.list().concat().toList().size();
 		}
 		return total;
+	}
+
+	public List<FloatingIP> listFloatingIPs(String region)
+			throws RegionNotFoundException, APINotAvailableException {
+		checkRegion(region);
+
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		return floatingIPApi.list().toList();
 	}
 
 }

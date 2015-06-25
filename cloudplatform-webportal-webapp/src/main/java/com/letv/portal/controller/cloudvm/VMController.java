@@ -17,8 +17,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -49,10 +47,7 @@ public class VMController {
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
 					.list(region));
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}
@@ -70,10 +65,7 @@ public class VMController {
 				vmResources.addAll(vmManager.list(region));
 			}
 			result.setData(vmResources);
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}
@@ -87,10 +79,7 @@ public class VMController {
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
 					.get(region, vmId));
-		} catch (RegionNotFoundException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		} catch (ResourceNotFoundException e) {
+		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}

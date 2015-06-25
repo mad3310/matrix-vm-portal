@@ -6,11 +6,11 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class IPAddresses {
-	@JsonProperty("private")
+	
 	private List<String> privateIP;
-	@JsonProperty("public")
+	
 	private List<String> publicIP;
-	@JsonProperty("shared")
+	
 	private List<String> sharedIP;
 
 	public IPAddresses() {
@@ -19,6 +19,7 @@ public class IPAddresses {
 		sharedIP = new LinkedList<String>();
 	}
 
+	@JsonProperty("private")
 	public List<String> getPrivateIP() {
 		return privateIP;
 	}
@@ -27,6 +28,7 @@ public class IPAddresses {
 		this.privateIP = privateIP;
 	}
 
+	@JsonProperty("public")
 	public List<String> getPublicIP() {
 		return publicIP;
 	}
@@ -35,6 +37,7 @@ public class IPAddresses {
 		this.publicIP = publicIP;
 	}
 
+	@JsonProperty("shared")
 	public List<String> getSharedIP() {
 		return sharedIP;
 	}

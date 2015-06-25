@@ -1,12 +1,17 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.jclouds.openstack.nova.v2_0.domain.Address;
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 import com.google.common.collect.Multimap;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -15,7 +20,7 @@ import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class VMResourceImpl extends AbstractResource implements VMResource {
 
@@ -28,8 +33,8 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	public VMResourceImpl(String region, Server server,
 			ImageResource imageResource, FlavorResource flavorResource,
-			OpenStackUser user) throws RegionNotFoundException,
-			ResourceNotFoundException {
+			List<FloatingIP> floatingIPs, OpenStackUser user)
+			throws RegionNotFoundException, ResourceNotFoundException {
 		this.region = region;
 		this.server = server;
 		this.flavorResource = flavorResource;
@@ -37,14 +42,26 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		// this.networkResource = networkManager.get(region, resource.get);
 
 		ipAddresses = new IPAddresses();
+		Set<String> publicIPs = new HashSet<String>();
+		Set<String> privateIPs = new HashSet<String>();
+		for (FloatingIP floatingIP : floatingIPs) {
+			if (server.getId().equals(floatingIP.getInstanceId())
+					&& user.getPublicNetworkName().equals(floatingIP.getPool())) {
+				publicIPs.add(floatingIP.getIp());
+				privateIPs.add(floatingIP.getFixedIp());
+			}
+		}
 		Multimap<String, Address> addresses = server.getAddresses();
 		for (Entry<String, Address> entry : addresses.entries()) {
 			final String networkName = entry.getKey();
 			final String ip = entry.getValue().getAddr();
-			if (user.getPublicNetworkName().equals(networkName)) {
-				ipAddresses.getPublicIP().add(ip);
-			} else if (user.getPrivateNetworkName().equals(networkName)) {
-				ipAddresses.getPrivateIP().add(ip);
+			if (user.getPrivateNetworkName().equals(networkName)) {
+				if (publicIPs.contains(ip)) {
+					ipAddresses.getPublicIP().add(ip);
+				}
+				if (privateIPs.contains(ip)) {
+					ipAddresses.getPrivateIP().add(ip);
+				}
 			} else {
 				if (user.getInternalUser()) {
 					if (user.getSharedNetworkName().equals(networkName)) {
@@ -55,13 +72,14 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		}
 	}
 
-	public VMResourceImpl(String region, Server server, VMManager vmManager,
-			ImageManager imageManager, OpenStackUser openStackUser)
-			throws RegionNotFoundException, ResourceNotFoundException {
+	public VMResourceImpl(String region, Server server,
+			VMManagerImpl vmManager, ImageManager imageManager,
+			OpenStackUser openStackUser) throws RegionNotFoundException,
+			ResourceNotFoundException, APINotAvailableException {
 		this(region, server, imageManager
 				.get(region, server.getImage().getId()), vmManager
 				.getFlavorResource(region, server.getFlavor().getId()),
-				openStackUser);
+				vmManager.listFloatingIPs(region), openStackUser);
 	}
 
 	@Override
