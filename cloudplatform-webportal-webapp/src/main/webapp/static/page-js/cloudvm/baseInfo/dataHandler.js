@@ -30,7 +30,10 @@ define(function(require,exports,module){
                 evaluateField('vm_info_config_ram',vmInfo.flavor && vmInfo.flavor.ram,'MB');
                 evaluateField('vm_info_config_vcpu',vmInfo.flavor && vmInfo.flavor.vcpus,'虚拟内核');                
                 evaluateField('vm_info_config_disk',vmInfo.flavor && vmInfo.flavor.disk,'GB');
-                evaluateField('vm_info_network_ip',vmInfo.ipAddresses.join(','),'');
+                evaluateField('vm_info_network_privateip',vmInfo.ipAddresses.private.join(', '),'');
+                evaluateField('vm_info_network_publicip',vmInfo.ipAddresses.public.join(', '),'');
+                evaluateField('vm_info_network_sharedip',vmInfo.ipAddresses.shared.join(', '),'');
+                
                                
         }        
     }
