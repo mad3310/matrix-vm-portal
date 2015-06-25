@@ -55,7 +55,11 @@ define(function(require,exports,module){
                             		"<span class='field-region'>"+array[i].region+"</span>"+
                              	"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAddresses.join(',')+"</td>");
+                    tdList.push("<td class=\"padding-left-32\">"+
+                    				"<span>私网："+array[i].ipAddresses.private.join(', ')+"</span><br>"+
+                    				"<span>公网："+array[i].ipAddresses.public.join(', ')+"</span><br>"+
+                    				"<span>内网："+array[i].ipAddresses.shared.join(', ')+"</span>"+
+		                    	 "</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
                     			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
                     			"</td>");
