@@ -1,4 +1,4 @@
-package com.letv.portal.controller.cloudslb;
+package com.letv.portal.controller.cloudocs;
 
 import java.util.Map;
 
@@ -15,21 +15,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.service.slb.ISlbServerService;
+import com.letv.portal.service.cbase.ICbaseBucketService;
 
 
 @Controller
-@RequestMapping("/slb")
-public class SlbController {
+@RequestMapping("/ocs")
+public class OcsController {
 	
 	@Autowired
-	private ISlbServerService slbServerService;
+	private ICbaseBucketService cbaseBucketService;
 	
-	private final static Logger logger = LoggerFactory.getLogger(SlbController.class);
+	private final static Logger logger = LoggerFactory.getLogger(OcsController.class);
 
 	/**
 	  * @Title: list
-	  * @Description: 获取指定页数指定条数的slbServer列表
+	  * @Description: 获取指定页数指定条数的ocsServer列表
 	  * @param page
 	  * @param request
 	  * @param obj
@@ -41,7 +41,7 @@ public class SlbController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		obj.setData(this.slbServerService.selectPageByParams(page, params));
+		obj.setData(this.cbaseBucketService.selectPageByParams(page, params));
 		return obj;
 	}
 	

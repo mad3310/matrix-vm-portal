@@ -50,6 +50,31 @@
 		CCT.ID,CCT.CONTAINER_NAME,CCT.MOUNT_DIR,CCT.IP_ADDR,CCT.GATE_ADDR,CCT.IP_MASK,CCT.TYPE,CCT.ZABBIXHOSTS,
 		CCT.DISK_SIZE,CCT.CORES_NUMBER,CCT.MEMORY_SIZE,CCT.CPU_SPEED,CCT.HOST_ID,CCT.HOST_IP,CCT.CBASECLUSTER_ID,CCT.STATUS,CCT.DELETED,CCT.CREATE_TIME,CCT.CREATE_USER,CCT.UPDATE_TIME,CCT.UPDATE_USER
 	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and CCT.ID=#{id}
+			</if>
+			<if test="containerName != null  and containerName != '' and containerName != 'null'">
+				and CCT.CONTAINER_NAME like CONCAT('%','${containerName}','%')
+			</if>
+			<if test="type != null ">
+				and CCT.TYPE=#{type}
+			</if>
+			<if test="ipAddr != null ">
+				and CCT.IP_ADDR=#{ipAddr}
+			</if>
+			<if test="cbaseClusterId != null ">
+				and CCT.CBASECLUSTER_ID=#{cbaseClusterId}
+			</if>
+			<if test="status != null and status != '' ">
+				and CCT.STATUS=#{status}
+			</if>
+		</trim>
+	</sql>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="CbaseContainer"
@@ -195,6 +220,77 @@
 		from WEBPORTAL_CBASE_CONTAINER CCT
 		where
 		CCT.CBASECLUSTER_ID=#{cbaseClusterId}
+	</select>
+	
+	
+	
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params !=null and params.id != null  ">
+				and CCT.ID=#{params.id}
+			</if>
+			<if test="params !=null and params.containerName != null  and params.containerName != '' and params.containerName != 'null'">
+				and CCT.CONTAINER_NAME like CONCAT('%','${params.containerName}','%')
+			</if>
+			<if test="params !=null and params.type != null ">
+				and CCT.TYPE=#{params.type}
+			</if>
+			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
+				and CCT.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
+			</if>
+			<if test="params !=null and params.cbaseClusterId != null ">
+				and CCT.CBASECLUSTER_ID=#{params.cbaseClusterId}
+			</if>
+			<if test="params !=null and params.status != null and params.status != '' ">
+				and CCT.STATUS=#{params.status}
+			</if>
+		</trim>
+	</sql>
+	
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />,n.CBASECLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
+		from 
+			WEBPORTAL_CBASE_CONTAINER CCT
+		left join 
+			WEBPORTAL_CBASECLUSTER_INFO n on n.ID = CCT.CBASECLUSTER_ID 
+		left join 
+			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != ''">
+				and n.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			</if>
+			<include refid="Example_Page_Where_Clause" />
+		ORDER BY CCT.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_CBASE_CONTAINER CCT
+		left join 
+			WEBPORTAL_CBASECLUSTER_INFO n on n.ID = CCT.CBASECLUSTER_ID 
+		left join 
+			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<if test="cbaseClusterName != null  and cbaseClusterName != ''">
+				and n.CBASECLUSTER_NAME like CONCAT('%','${cbaseClusterName}','%') escape '^'
+			</if>
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			</if>
+			<include refid="Example_Where_Clause" />
 	</select>
 
 </mapper>
