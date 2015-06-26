@@ -28,7 +28,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
@@ -120,7 +120,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource create(String region, VMCreateConf conf)
-			throws OpenStackException {
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException {
 		checkRegion(region);
 
 		CreateServerOptions createServerOptions = new CreateServerOptions();
@@ -212,11 +213,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void publish(String region, VMResource vm) throws OpenStackException {
+	public void publish(String region, VMResource vm)
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException, APINotAvailableException {
 		checkRegion(region);
 
 		Server server = ((VMResourceImpl) (vm)).server;
-		
+
 		if (vm.getTaskState() != null) {
 			throw new TaskNotFinishedException();
 		}
@@ -224,7 +227,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		if (currentServerStatus != Server.Status.ACTIVE) {
 			throw new VMStatusException("The status of vm is not active.");
 		}
-		
+
 		// Collection<Address> addresses = server.getAddresses().get(
 		// openStackConf.getUserPrivateNetworkName());
 		// // for (Entry<String, Address> entry : ((VMResourceImpl) (vm)).server
@@ -366,8 +369,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void deleteSync(String region, VMResource vm)
 			throws VMDeleteException, RegionNotFoundException,
-			APINotAvailableException, OpenStackException,
-			TaskNotFinishedException {
+			APINotAvailableException, TaskNotFinishedException,
+			PollingInterruptedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -392,13 +395,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {
-			throw new OpenStackException(e);
+			throw new PollingInterruptedException(e);
 		}
 	}
 
 	@Override
 	public void startSync(String region, VMResource vm)
-			throws OpenStackException {
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException, PollingInterruptedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -423,13 +427,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {
-			throw new OpenStackException(e);
+			throw new PollingInterruptedException(e);
 		}
 	}
 
 	@Override
 	public void stopSync(String region, VMResource vm)
-			throws OpenStackException {
+			throws PollingInterruptedException, RegionNotFoundException,
+			TaskNotFinishedException, VMStatusException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -456,12 +461,12 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {
-			throw new OpenStackException(e);
+			throw new PollingInterruptedException(e);
 		}
 	}
 
 	@Override
-	public int totalNumber() throws OpenStackException {
+	public int totalNumber() {
 		int total = 0;
 		Set<String> regions = getRegions();
 		for (String region : regions) {

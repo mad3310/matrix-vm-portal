@@ -3,9 +3,10 @@ package com.letv.portal.service.openstack.resource.manager;
 import java.util.List;
 
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
 import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
@@ -20,26 +21,31 @@ public interface VMManager extends ResourceManager {
 
 	VMResource create(String region, VMCreateConf conf)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, OpenStackException;
+			APINotAvailableException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
-			APINotAvailableException, OpenStackException;
+			APINotAvailableException, TaskNotFinishedException,
+			VMStatusException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException, APINotAvailableException;
 
-	void deleteSync(String region, VMResource vm) throws OpenStackException,
-			VMDeleteException;
+	void deleteSync(String region, VMResource vm) throws VMDeleteException,
+			RegionNotFoundException, APINotAvailableException,
+			TaskNotFinishedException, PollingInterruptedException;
 
-	void start(String region, VMResource vm) throws RegionNotFoundException, VMStatusException;
+	void start(String region, VMResource vm) throws RegionNotFoundException,
+			VMStatusException;
 
-	void startSync(String region, VMResource vm) throws OpenStackException;
+	void startSync(String region, VMResource vm)
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException, PollingInterruptedException;
 
 	void stop(String region, VMResource vm) throws RegionNotFoundException;
 
-	void stopSync(String region, VMResource vm) throws OpenStackException;
+	void stopSync(String region, VMResource vm) throws PollingInterruptedException, RegionNotFoundException, TaskNotFinishedException, VMStatusException;
 
-	int totalNumber() throws OpenStackException;
+	int totalNumber();
 
 	List<FlavorResource> listFlavorResources(String region)
 			throws RegionNotFoundException;

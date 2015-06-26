@@ -15,7 +15,6 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.exception.OpenStackException;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -32,17 +31,12 @@ public class DashBoardController {
 
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(ResultObject result) {
-		try {
-			Map<String, Integer> appResource = this.dashBoardProxy
-					.selectAppResource();
-			int totalVMNumber = ((OpenStackSession) sessionService.getSession()
-					.getOpenStackSession()).getVMManager().totalNumber();
-			appResource.put("vm", totalVMNumber);
-			result.setData(appResource);
-		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
-		}
+		Map<String, Integer> appResource = this.dashBoardProxy
+				.selectAppResource();
+		int totalVMNumber = ((OpenStackSession) sessionService.getSession()
+				.getOpenStackSession()).getVMManager().totalNumber();
+		appResource.put("vm", totalVMNumber);
+		result.setData(appResource);
 		return result;
 	}
 
