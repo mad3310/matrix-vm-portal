@@ -71,6 +71,7 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 		this.swiftServerService.insert(swift);
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("swiftId", swift.getId());
+		params.put("serviceName", swift.getName());
 		this.build(params);
 	}
 
