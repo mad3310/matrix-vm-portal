@@ -134,6 +134,16 @@
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
+				<li id="sidebar-slb-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/slb/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/slb/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
 				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> SLB列表</a><b class="arrow"></b></li>
 			</ul>
 		</li>
@@ -162,6 +172,16 @@
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
+				<li id="sidebar-oss-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/oss/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/oss/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
 				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> OSS列表</a><b class="arrow"></b></li>
 			</ul>
 		</li>
