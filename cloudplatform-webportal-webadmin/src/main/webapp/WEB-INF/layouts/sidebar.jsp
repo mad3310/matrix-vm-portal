@@ -11,7 +11,28 @@
 				<span class="menu-text">Dashboard</span> 
 			</a>
 		</li>
-		<li id="sidebar-cluster-mgr" >
+		<li id="sidebar-common-mgr">
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-cogs"></i><span class="menu-text">通用管理</span><b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class='arrow'></b>
+			<ul class="submenu">
+				<li><a href="${ctx}/list/hcluster"><i class="menu-icon fa fa-caret-right"></i> 物理机集群列表</a><b class="arrow"></b></li>
+				<li><a href="${ctx}/list/timingTask"><i class="menu-icon fa fa-caret-right"></i> 定时任务管理</a><b class="arrow"></b></li>
+				<li id="sidebar-task-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-cogs"></i><span class="menu-text">任务管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class='arrow'></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/job/unit"><i class="menu-icon fa fa-caret-right"></i> 任务单元列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/job/stream"><i class="menu-icon fa fa-caret-right"></i> 任务流列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/job/monitor"><i class="menu-icon fa fa-caret-right"></i> 任务监控</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<!-- <li id="sidebar-cluster-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> 
 				<span class="menu-text"> 集群管理 </span> 
@@ -41,32 +62,130 @@
 					<b class="arrow"></b>
 				</li>
 			</ul>
-		</li>
-		<li id="sidebar-db-mgr" >
+		</li> -->
+		<li id="sidebar-rds-mgr">
 			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-database"></i> 
-				<span class="menu-text"> 数据库管理 </span> 
-				<b class="arrow fa fa-angle-down"></b>
+				<i class="menu-icon fa fa-database"></i> <span class="menu-text"> RDS 管理 </span> <b class="arrow fa fa-angle-down"></b>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
-				<li id="sidebar-db-list" >
-					<a href="${ctx}/list/db"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						数据库列表
-					</a>
+				<li id="sidebar-cluster-mgr">
+					<a class="dropdown-toggle" href="#"><i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理 </span><b class="arrow fa fa-angle-down"></b></a>
 					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/mcluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b>
+						</li>
+						<li><a href="${ctx}/list/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
 				</li>
-				<li id="sidebar-db-list" >
-					<a href="${ctx}/list/dbUser"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						数据库用户列表
-					</a>
+				<li id="sidebar-db-mgr">
+					<a class="dropdown-toggle" href="#"><i class="menu-icon fa fa-database"></i><span class="menu-text">数据库管理 </span><b class="arrow fa fa-angle-down"></b></a>
 					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/db"> <i class="menu-icon fa fa-caret-right"></i>数据库列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/dbUser"> <i class="menu-icon fa fa-caret-right"></i>数据库用户列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li><a href="${ctx}/list/backup"><i class="menu-icon fa fa-clipboard"></i>备份与恢复</a><b class="arrow"></b></li>
+				<li id="sidebar-monitor-view">
+					<a class="dropdown-toggle" href="#"><i></i><span class="menu-text">监控管理 </span><b class="arrow fa fa-angle-down"></b></a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/view/mcluster/monitor"><i class="menu-icon fa fa-caret-right"></i>container集群监控图</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li id="sidebar-forewarning-monitor-mgr">
+					<a class="dropdown-toggle" href="#"><i class="menu-icon fa fa-list"></i><span class="menu-text">预警管理 </span><b class="arrow fa fa-angle-down"></b></a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/mcluster/monitor/1"><i class="menu-icon fa fa-caret-right"></i>cluster监控列表</a>
+							<b class="arrow"></b></li>
+						<li><a href="${ctx}/list/mcluster/monitor/2"><i class="menu-icon fa fa-caret-right"></i>node监控列表</a>
+							<b class="arrow"></b></li>
+						<li><a href="${ctx}/list/mcluster/monitor/3"><i class="menu-icon fa fa-caret-right"></i>db监控列表</a>
+							<b class="arrow"></b></li>
+					</ul>
 				</li>
 			</ul>
 		</li>
-		<li id="sidebar-forewarning-monitor-mgr" >
+		<li id='sidebar-gce-mgr'>
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-gce-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/gce/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/gce/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li><a href="${ctx}/list/gce/image"><i class="menu-icon fa fa-download"></i> 镜像管理</a><b class="arrow"></b></li>
+				<li><a href="${ctx}/list/zk"><i class="menu-icon fa fa-cog"></i> zookeeper管理</a><b class="arrow"></b></li>
+			</ul>
+		</li>
+		<li id="sidebar-slb-mgr">
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-share-alt-square"></i> <span class="menu-text">SLB 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-slb-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/slb/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/slb/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> SLB列表</a><b class="arrow"></b></li>
+			</ul>
+		</li>
+		<li id="sidebar-ocs-mgr">
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-ocs-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i> <span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/ocs/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/ocs/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li><a href=""><i class="menu-icon fa fa-cube"></i> Bucket列表</a><b class="arrow"></b></li>
+			</ul>
+		</li>
+		<li id="sidebar-oss-mgr">
+			<a href="#" class="dropdown-toggle">
+				<i class="menu-icon fa fa-cubes"></i> <span class="menu-text">OSS 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a>
+			<b class="arrow"></b>
+			<ul class="submenu">
+				<li id="sidebar-oss-cluster-mgr">
+					<a href="#" class="dropdown-toggle">
+						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
+					</a>
+					<b class="arrow"></b>
+					<ul class="submenu">
+						<li><a href="${ctx}/list/oss/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
+						<li><a href="${ctx}/list/oss/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
+					</ul>
+				</li>
+				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> OSS列表</a><b class="arrow"></b></li>
+			</ul>
+		</li>
+		<!-- <li id="sidebar-forewarning-monitor-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-list"></i> 
 				<span class="menu-text"> 预警管理 </span> 
@@ -96,8 +215,8 @@
 					<b class="arrow"></b>
 				</li>
 			</ul>
-		</li>
-		<li id="sidebar-monitor-mgr" >
+		</li> -->
+		<!-- <li id="sidebar-monitor-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-bar-chart-o"></i> 
 				<span class="menu-text"> 监控管理 </span> 
@@ -113,20 +232,20 @@
 					<b class="arrow"></b>
 				</li>
 			</ul>
-		</li>
-		<li id="backupRecover" >
+		</li> -->
+		<!-- <li id="backupRecover" >
 			<a href="${ctx}/list/backup">
 				<i class="menu-icon fa  fa-university"></i> 
 				<span class="menu-text">备份与恢复</span> 
 			</a>
-		</li>
-		<li id="sidebar-timing-task-mgr" >
+		</li> -->
+		<!-- <li id="sidebar-timing-task-mgr" >
 			<a href="${ctx}/list/timingTask">
 				<i class="menu-icon fa  fa-clock-o"></i> 
 				<span class="menu-text">定时任务管理</span> 
 			</a>
-		</li>
-		<li id="sidebar-task-mgr" >
+		</li> -->
+		<!-- <li id="sidebar-task-mgr" >
 			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-tasks"></i> 
 				<span class="menu-text">任务管理</span> 
@@ -156,40 +275,30 @@
 					<b class="arrow"></b>
 				</li>
 			</ul>
-		</li>
-		<li id="sidebar-image-mgr" >
+		</li> -->
+		<!-- <li id="sidebar-image-mgr" >
 			<a href="${ctx}/list/gce/image">
 				<i class="menu-icon fa  fa-download"></i> 
 				<span class="menu-text">镜像管理</span> 
 			</a>
-		</li>
-		<li id="sidebar-zk-mgr" >
+		</li> -->
+		<!-- <li id="sidebar-zk-mgr" >
 			<a href="${ctx}/list/zk">
 				<i class="menu-icon fa  fa-cog"></i> 
 				<span class="menu-text">zookeeper管理</span> 
 			</a>
-		</li>
+		</li> -->
 		<li id="sidebar-gfs-mgr" >
 			<a href="#" class="dropdown-toggle">
-				<i class="menu-icon fa fa-tasks"></i> 
-				<span class="menu-text">GFS管理</span> 
-				<b class="arrow fa fa-angle-down"></b>
+				<i class="menu-icon fa fa-tasks"></i> <span class="menu-text">GFS管理</span> <b class="arrow fa fa-angle-down"></b>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-task-unit-view" >
-					<a href="${ctx}/list/gfs/peer"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						节点列表
-					</a>
-					<b class="arrow"></b>
+					<a href="${ctx}/list/gfs/peer"> <i class="menu-icon fa fa-caret-right"></i>节点列表</a><b class="arrow"></b>
 				</li>
 				<li id="sidebar-task-stream-view" >
-					<a href="${ctx}/list/gfs/volume"> 
-						<i class="menu-icon fa fa-caret-right"></i>
-						卷列表
-					</a>
-					<b class="arrow"></b>
+					<a href="${ctx}/list/gfs/volume"> <i class="menu-icon fa fa-caret-right"></i>卷列表</a><b class="arrow"></b>
 				</li>
 			</ul>
 		</li>

@@ -395,6 +395,10 @@ define(function(require,exports,module){
                 type:"delete",
                 dataType:'json',
                 success:function(data){
+                    if(data.result==0){
+                        var cn=new Common();
+                        cn.alertoolDanger('操作出错了！'+data.msgs);
+                    }
                     /*添加当handler为空时的异常处理*/
                     if(handler){
                         handler(data);
@@ -1014,27 +1018,86 @@ define(function(require,exports,module){
                 return "-";
             }
         },
+        alertoolDanger:function(msg,time){
+            if(time == null){
+                time=4000;
+            }
+            var html =$("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">"
+            + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
+            + "<strong>DANGER!   </strong>"+msg
+            + "</div>");
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time)
+            window.setTimeout(function(){html.remove();},time+500);
+        },
         alertoolWarnning:function(msg,time){
             if(time == null){
-                time=3000;
+                time=4000;
             }
             var html =$("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
             + "<strong>WARNING!   </strong>"+msg
             + "</div>");
-            html.appendTo($("#alertool"));
-            window.setTimeout(function(){html.fadeOut(1000)},time);
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time);
+            window.setTimeout(function(){html.remove();},time+500);
         },
          alertoolSuccess:function(msg,time){
             if(time == null){
-                time=3000;
+                time=4000;
             }
             var html =$("<div class=\"alert alert-success alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
             + "<strong>SUCCESS!   </strong>"+msg
             + "</div>");
-            html.appendTo($("#alertool"));
-            window.setTimeout(function(){html.fadeOut(1000)},time);
+            var _target=$('#alertool',parent.document);
+            if (top.location != location) { //iframe
+                if(_target.length>0){//有alertool
+                    $('#alertool',parent.document).append(html);
+                }else{
+                    $('body',parent.document).append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool',parent.document).append(html);
+                }
+            } else if (top.location == location) {//layout
+                if(_target.length>0){//有alertool
+                    $('#alertool').append(html);
+                }else{
+                    $('body').append("<div id='alertool' class='col-xs-12 col-md-offset-10 col-md-2 alertool'></div>")
+                    $('#alertool').append(html);
+                }
+            }
+            html.fadeOut(time);
+            window.setTimeout(function(){html.remove();},time+500);
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
@@ -1125,7 +1188,10 @@ define(function(require,exports,module){
                         +'</div>'
                         +'</div>';
             $('body').append(html);
-            $('#DelFolderModal').modal('show')
+            $('#DelFolderModal').modal({
+                show:true,
+                backdrop:false
+            })
         }
     }
     /*common原型属性方法end*/

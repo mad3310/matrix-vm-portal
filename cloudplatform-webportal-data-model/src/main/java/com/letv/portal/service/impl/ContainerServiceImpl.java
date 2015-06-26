@@ -103,6 +103,17 @@ public class ContainerServiceImpl extends BaseServiceImpl<ContainerModel> implem
 		}
 		return containers;
 	}
+	@Override
+	public List<ContainerModel> selectVaildNormalContainers(Map<String,Object> params) {
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclustersByMap(params);
+		List<ContainerModel> containers = new ArrayList<ContainerModel>();
+		params.put("type", "mclusternode");
+		for (MclusterModel mclusterModel : mclusters) {
+			params.put("mclusterId", mclusterModel.getId());
+			containers.addAll(this.selectAllByMap(params));
+		}
+		return containers;
+	}
 	
 	@Override
 	public ContainerModel selectValidVipContianer(Long mclusterId,String type,Map<String,Object> params){

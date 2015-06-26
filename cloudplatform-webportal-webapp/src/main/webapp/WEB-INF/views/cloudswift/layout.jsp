@@ -10,7 +10,6 @@
     <!-- <input class="hidden" value="702" name="cacheId" id="cacheId" type="text" /> -->
     <!-- 全局参数 end -->
 <%@ include file="../../layouts/header.jsp"%>
-
 <!-- main-content begin-->
 <div class="container-fluid">
     <div class="row main-header">
@@ -45,14 +44,12 @@
                     </small>
                      <small>
                         <span>
-                            <button type="button" class="btn btn-success btn-md" data-toggle='modal' data-target='#myModal'><span class='hidden-xs'>配  置</span><span class='hidden-sm hidden-md hidden-lg glyphicon glyphicon-cog'></span></button>
+                            <button type="button" class="btn btn-success btn-md" data-backdrop="false" data-toggle='modal' data-target='#myModal'><span class='hidden-xs'>配  置</span><span class='hidden-sm hidden-md hidden-lg glyphicon glyphicon-cog'></span></button>
                         </span>
                     </small>
                 </h3>
             </div>
         </div>
-         <div class="col-md-offset-4 col-md-4 alertool" id="alertool">
-          </div>
     </div>
     <!-- main-content-header end-->
     <div class="row">
@@ -79,7 +76,7 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="height:500px;">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" style="height:500px;">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
