@@ -38,9 +38,9 @@ public class OcsContainerController {
 	  * @author lisuxiao
 	  * @date 2015年6月26日 下午2:07:32
 	  */
-	@RequestMapping(value="/{gceClusterId}",method=RequestMethod.GET)
-	public @ResponseBody ResultObject list(@PathVariable Long gceClusterId,ResultObject result) {
-		result.setData(this.cbaseContainerService.selectByCbaseClusterId(gceClusterId));
+	@RequestMapping(value="/{ocsClusterId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject list(@PathVariable Long ocsClusterId,ResultObject result) {
+		result.setData(this.cbaseContainerService.selectByCbaseClusterId(ocsClusterId));
 		return result;
 	}
 	
