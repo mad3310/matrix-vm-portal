@@ -56,10 +56,16 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 			final String networkName = entry.getKey();
 			final String ip = entry.getValue().getAddr();
 			if (user.getPrivateNetworkName().equals(networkName)) {
+				boolean isIPInSet = false;
 				if (publicIPs.contains(ip)) {
+					isIPInSet = true;
 					ipAddresses.getPublicIP().add(ip);
 				}
 				if (privateIPs.contains(ip)) {
+					isIPInSet = true;
+					ipAddresses.getPrivateIP().add(ip);
+				}
+				if (isIPInSet == false) {
 					ipAddresses.getPrivateIP().add(ip);
 				}
 			} else {

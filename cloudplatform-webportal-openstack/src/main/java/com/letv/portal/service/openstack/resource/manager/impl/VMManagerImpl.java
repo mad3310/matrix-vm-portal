@@ -47,6 +47,7 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
@@ -251,13 +252,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	/**
-	 * call after deleted vm
+	 * call before deleting vm
 	 * 
 	 * @param region
 	 * @param vmId
 	 * @throws APINotAvailableException
 	 */
-	private void deleteFloatingIPOfVM(String region, VMResource vm)
+	private void removeAndDeleteFloatingIPOfVM(String region, VMResource vm)
 			throws APINotAvailableException {
 		final String vmId = vm.getId();
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
@@ -268,11 +269,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
 			if (vmId.equals(floatingIP.getInstanceId())) {
+				floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
 				floatingIPApi.delete(floatingIP.getId());
 			}
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void delete(String region, VMResource vm)
 			throws RegionNotFoundException, VMDeleteException,
@@ -280,14 +283,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
+		removeAndDeleteFloatingIPOfVM(region, vm);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
 			throw new VMDeleteException(MessageFormat.format(
 					"VM \"{0}\" delete failed.", vm.getId()));
 		}
-		deleteFloatingIPOfVM(region, vm);
 	}
 
+	@Deprecated
 	@Override
 	public void start(String region, VMResource vm)
 			throws RegionNotFoundException, VMStatusException {
@@ -301,6 +305,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		serverApi.start(vm.getId());
 	}
 
+	@Deprecated
 	@Override
 	public void stop(String region, VMResource vm)
 			throws RegionNotFoundException {
@@ -354,6 +359,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			APINotAvailableException, OpenStackException {
 		checkRegion(region);
 
+		removeAndDeleteFloatingIPOfVM(region, vm);
 		ServerApi serverApi = novaApi.getServerApi(region);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
@@ -366,9 +372,6 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			while (true) {
 				server = serverApi.get(vm.getId());
 				if (server == null || server.getStatus() == Status.ERROR) {
-					if (server == null) {
-						deleteFloatingIPOfVM(region, vm);
-					}
 					break;
 				}
 				Thread.sleep(1000);
