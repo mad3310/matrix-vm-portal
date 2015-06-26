@@ -6,72 +6,66 @@
 	<script>
 		$(window).load(function() {
 			var iw=document.body.clientWidth;
-			if(iw>767){//md&&lg
+			if(iw>991){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+		$(window).resize(function(event) {
+			var iw=document.body.clientWidth;
+			if(iw>991){//md&&lg
 				$('.queryOption').removeClass('collapsed');
 			}
 		});
 	</script>
-		<div class="widget-header hidden-md hidden-lg">
-			<h5 class="widget-title">Container集群查询条件</h5>
-			<div class="widget-toolbar">
-				<a href="#" data-action="collapse">
-					<i class="ace-icon fa fa-chevron-down"></i>
-				</a>
-			</div>
+	<div class="widget-header hidden-md hidden-lg">
+		<h5 class="widget-title">Container集群查询条件</h5>
+		<div class="widget-toolbar">
+			<a href="#" data-action="collapse">
+				<i class="ace-icon fa fa-chevron-down"></i>
+			</a>
 		</div>
-		<div class="widget-body">
+	</div>
+	<div class="widget-body">
 		<div class="page-header col-sm-12 col-xs-12 col-md-12">
-				<!-- <h3>Container集群列表</h3> -->
-				<div class="input-group pull-right">
-					<form class="form-inline">
-						<!-- <div class="form-group">
-							<input type="text" class="form-control" id="containerType"
-								placeholder="类型">
-						</div> -->
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
-							<input type="text" class="form-control" id="containerName"
-								placeholder="container集群名称">
-						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="Physicalcluster"
-								placeholder="所属物理机集群">
-						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="containeruser"
-								placeholder="所属用户">
+			<div class="input-group pull-right">
+				<form class="form-inline">
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<input type="text" class="form-control" id="containerName"
+							placeholder="container集群名称">
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<input type="text" class="form-control" id="Physicalcluster"
+							placeholder="所属物理机集群">
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<input type="text" class="form-control" id="containeruser"
+							placeholder="所属用户">
 
-						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<select class="form-control" id="containerStatus">
-								<option value="">请选择状态</option>
-							</select>
-						</div>
-						<!-- <div class="form-group">
-							<input type="date" class="form-control" placeholder="yyyy-MM-dd">
-						</div> -->
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<select class="form-control" id="containerStatus">
+							<option value="">请选择状态</option>
+						</select>
+					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
 						<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
 							<i class="ace-icon fa fa-search"></i>搜索
 						</button>
 						<button class="btn btn-sm" type="button" id="mclusterClearSearch">清空</button>
-						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 	
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">Container集群列表</h5>
 				<div class="widget-toolbar no-border">
-					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
-						<i class="ace-icont fa fa-plus"></i>
-						 创建Container集群
-					</button>
+					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal"><i class="ace-icont fa fa-plus"></i>创建Container集群</button>
 				</div>
 			</div>
-		
 			<div class="widget-body">
 				<div class="widget-main no-padding">
 					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
@@ -83,13 +77,6 @@
 										<span class="lbl"></span>
 									</label>
 								</th>
-								<!-- <th width="13%">Container集群名称</th>
-								<th width="16%">所属物理机集群</th>
-								<th width="13%">类型</th>
-								<th width="13%">所属用户</th>
-								<th width="13%">创建时间 </th>
-								<th width="13%" class="hidden-480">当前状态</th>
-								<th width="13%">操作</th> -->
 								<th>Container集群名称</th>
 								<th class="hidden-480">所属物理机集群</th>
 								<th class="hidden-480">类型</th>
@@ -99,8 +86,7 @@
 								<th>操作</th>
 							</tr>
 						</thead>
-						<tbody id="tby">
-						</tbody>
+						<tbody id="tby"></tbody>
 					</table>
 				</div>
 			</div>
@@ -120,7 +106,6 @@
 				<li class="hidden-480"><a>共<lable id="totalRows"></lable>条记录</a></li>
 			</ul>
 		</div>
-		
 		<div class="modal fade" id="create-mcluster-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:157px">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -132,70 +117,36 @@
             				<h4 class="modal-title">创建Container集群</h4>
             		</div>
 					<form id="create-mcluster-form" name="create-mcluster-form" class="form-horizontal" role="form">
-					<!-- <div class="col-xs-12">
-						<h4 class="lighter">
-							<a href="#modal-wizard" data-toggle="modal" class="blue"> 创建Container集群 </a>
-						</h4>
-						<div class="widget-box">
-							<div class="widget-body">
-								<div class="widget-main">
-									<div class="form-group">
-										<label class="col-sm-4 control-label" for="mcluster_name">Container集群名称</label>
-										<div class="col-sm-6">
-											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
-										</div>
-										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-4 control-label" for="hcluster">物理机集群</label>
-										<div class="col-sm-6">
-											<select class="form-control" name="hclusterId" id="hcluster_select">
-											</select>
-										</div>
-										<label class="control-label" for="hcluster">
-											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
+						<div class="modal-body">            				
+        					<div class="form-group">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="mcluster_name">Container集群名称</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
 								</div>
+								<label class="control-label">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
 							</div>
-						</div>
-					</div> -->
-					<div class="modal-body">            				
-            					<div class="form-group">
-										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="mcluster_name">Container集群名称</label>
-										<div class="col-sm-10 col-xs-10 col-md-6">
-											<input class="form-control" name="mclusterName" id="mclusterName" type="text" />
-										</div>
-										<label class="control-label">
-											<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请输入字母数字或'_'." style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">物理机集群</label>
-										<div class="col-sm-10 col-xs-10 col-md-6">
-											<select class="form-control" name="hclusterId" id="hcluster_select">
-											</select>
-										</div>
-										<label class="control-label" for="hcluster">
-											<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
-												<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-											</a>
-										</label>
-									</div>
+							<div class="form-group">
+								<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">物理机集群</label>
+								<div class="col-sm-10 col-xs-10 col-md-6">
+									<select class="form-control" name="hclusterId" id="hcluster_select">
+									</select>
+								</div>
+								<label class="control-label" for="hcluster">
+									<a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="请保证您的应用与数据库在同一地域,以保证连接速度." style="cursor:pointer; text-decoration:none;">
+										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+									</a>
+								</label>
+							</div>
             			</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
-						<button id="create-mcluster-botton" type="button" class="btn btn-sm btn-primary disabled" onclick="createMcluster()">创建</button>
-					</div>
-				</form>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>
+							<button id="create-mcluster-botton" type="button" class="btn btn-sm btn-primary disabled" onclick="createMcluster()">创建</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -229,13 +180,9 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		<div id="dialog-confirm" class="hide">
-			<div id="dialog-confirm-content" class="alert alert-info bigger-110">
-				删除container集群将不能恢复！
-			</div>
+			<div id="dialog-confirm-content" class="alert alert-info bigger-110">删除container集群将不能恢复！</div>
 			<div class="space-6"></div>
-			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">
-				您确定要删除?
-			</p>
+			<p id="dialog-confirm-question" class="bigger-110 bolder center grey">您确定要删除?</p>
 		</div>
 	</div>
 </div>
@@ -247,4 +194,4 @@
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
 
-<script src="${ctx}/static/scripts/pagejs/gce/gce_mcluster_list.js"></script>
+<script src="${ctx}/static/scripts/pagejs/gce/gce_cluster_list.js"></script>

@@ -40,8 +40,8 @@ define(function(require){
 		e = e? e:window.event;
 		var target = e.target || e.srcElement;
 		var ossId = $(target).attr("oss-id");
-		cn.DelFolderModal('删除Object','您确定要删除该文件夹 及 文件夹下的全部内容吗?');
 		if(ossId != undefined && ossId != null){
+			cn.DelFolderModal('删除Object','您确定要删除该文件夹 及 文件夹下的全部内容吗?');
 			$('#delfolder').unbind('click').click(function(event) {
 				$('#DelFolderModal').modal('hide').remove();
 				var url = "/oss/"+ossId;

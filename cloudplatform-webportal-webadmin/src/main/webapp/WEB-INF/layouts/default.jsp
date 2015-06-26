@@ -379,6 +379,42 @@
 		$('#sidebar-gce-cluster-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/container").html("container管理");
 		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/slb/cluster") >= 0||path.indexOf("/detail/slb/cluster") >= 0){//------------------------新添 slb 集群管理
+		$('#sidebar-slb-mgr').addClass("active open hsub");
+		$('#sidebar-slb-cluster-mgr').addClass("active open");
+		$('#sidebar-slb-cluster-mgr ul li:eq(0)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb/cluster").html("container集群管理");
+		$('#main-content-header li:eq(1)').html("Container集群列表");
+	}else if(path.indexOf("/list/slb/container") >= 0){
+		$('#sidebar-slb-mgr').addClass("active open hsub");
+		$('#sidebar-slb-cluster-mgr').addClass("active open");
+		$('#sidebar-slb-cluster-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/container").html("container管理");
+		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/ocs/cluster") >= 0||path.indexOf("/detail/ocs/cluster") >= 0){//------------------------新添 ocs 集群管理
+		$('#sidebar-ocs-mgr').addClass("active open hsub");
+		$('#sidebar-ocs-cluster-mgr').addClass("active open");
+		$('#sidebar-ocs-cluster-mgr ul li:eq(0)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/ocs/cluster").html("container集群管理");
+		$('#main-content-header li:eq(1)').html("Container集群列表");
+	}else if(path.indexOf("/list/ocs/container") >= 0){
+		$('#sidebar-ocs-mgr').addClass("active open hsub");
+		$('#sidebar-ocs-cluster-mgr').addClass("active open");
+		$('#sidebar-ocs-cluster-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/ocs/container").html("container管理");
+		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/oss/cluster") >= 0||path.indexOf("/detail/oss/cluster") >= 0){//------------------------新添 oss 集群管理
+		$('#sidebar-oss-mgr').addClass("active open hsub");
+		$('#sidebar-oss-cluster-mgr').addClass("active open");
+		$('#sidebar-oss-cluster-mgr ul li:eq(0)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/oss/cluster").html("container集群管理");
+		$('#main-content-header li:eq(1)').html("Container集群列表");
+	}else if(path.indexOf("/list/oss/container") >= 0){
+		$('#sidebar-oss-mgr').addClass("active open hsub");
+		$('#sidebar-oss-cluster-mgr').addClass("active open");
+		$('#sidebar-oss-cluster-mgr ul li:eq(1)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/oss/container").html("container管理");
+		$('#main-content-header li:eq(1)').html("Container列表");
 	}
 	
 			

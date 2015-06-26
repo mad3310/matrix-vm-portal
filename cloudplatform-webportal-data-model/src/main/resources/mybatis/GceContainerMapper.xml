@@ -199,4 +199,76 @@
 			from WEBPORTAL_GCECONTAINER GCT
 			where GCT.GCECLUSTER_ID=#{gceClusterId}
 	</select>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params !=null and params.id != null  ">
+				and GCT.ID=#{params.id}
+			</if>
+			<if test="params !=null and params.containerName != null  and params.containerName != '' and params.containerName != 'null'">
+				and GCT.CONTAINER_NAME like CONCAT('%','${params.containerName}','%')
+			</if>
+			<if test="params !=null and params.type != null ">
+				and GCT.TYPE=#{params.type}
+			</if>
+			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
+				and GCT.IP_ADDR like CONCAT('%','${params.ipAddr}','%')
+			</if>
+			<if test="params !=null and params.gceClusterId != null ">
+				and GCT.GCECLUSTER_ID=#{params.gceClusterId}
+			</if>
+			<if test="params !=null and params.zookeeperId != null ">
+				and GCT.ZOOKEEPER_ID=#{params.zookeeperId}
+			</if>
+			<if test="params !=null and params.status != null and params.status != '' ">
+				and GCT.STATUS=#{params.status}
+			</if>
+		</trim>
+	</sql>
+	
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />,n.CLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
+		from 
+			WEBPORTAL_GCECONTAINER GCT
+		left join 
+			WEBPORTAL_GCECLUSTER n on n.ID = GCT.GCECLUSTER_ID 
+		left join 
+			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<if test="params != null and params.gceClusterName != null  and params.gceClusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${params.gceClusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			</if>
+			<include refid="Example_Page_Where_Clause" />
+		ORDER BY GCT.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_GCECONTAINER GCT
+		left join 
+			WEBPORTAL_GCECLUSTER n on n.ID = GCT.GCECLUSTER_ID 
+		left join 
+			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<if test="gceClusterName != null  and gceClusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${gceClusterName}','%') escape '^'
+			</if>
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			</if>
+		<include refid="Example_Where_Clause" />
+	</select>
+	
 </mapper>   
