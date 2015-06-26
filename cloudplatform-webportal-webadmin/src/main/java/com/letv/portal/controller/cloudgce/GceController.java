@@ -18,10 +18,10 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceImageService;
+import com.letv.portal.service.gce.IGceServerService;
 @Controller
 @RequestMapping("/gce")
 public class GceController {
@@ -30,6 +30,8 @@ public class GceController {
 	private IGceImageService gceImageService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IGceServerService gceServerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceController.class);
 
@@ -79,4 +81,23 @@ public class GceController {
 		obj.setData(this.userService.selectByMap(map));
 		return obj;
 	}
+	
+	/**
+	  * @Title: list
+	  * @Description: 获取指定页数指定条数的gceServer列表
+	  * @param page
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年6月26日 下午1:47:31
+	  */
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.gceServerService.selectPageByParams(page, params));
+		return obj;
+	}
+	
 }
