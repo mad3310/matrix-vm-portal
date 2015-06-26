@@ -31,6 +31,7 @@ import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
 import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -215,6 +216,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		Server server = ((VMResourceImpl) (vm)).server;
+		
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+		Status currentServerStatus = server.getStatus();
+		if (currentServerStatus != Server.Status.ACTIVE) {
+			throw new VMStatusException("The status of vm is not active.");
+		}
+		
 		// Collection<Address> addresses = server.getAddresses().get(
 		// openStackConf.getUserPrivateNetworkName());
 		// // for (Entry<String, Address> entry : ((VMResourceImpl) (vm)).server
@@ -356,11 +366,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void deleteSync(String region, VMResource vm)
 			throws VMDeleteException, RegionNotFoundException,
-			APINotAvailableException, OpenStackException {
+			APINotAvailableException, OpenStackException,
+			TaskNotFinishedException {
 		checkRegion(region);
-		
-		// TODO check status of server
-		
+
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
 
 		removeAndDeleteFloatingIPOfVM(region, vm);
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -389,8 +401,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws OpenStackException {
 		checkRegion(region);
 
-		// TODO check status of server
-		
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
+			throw new VMStatusException("The status of vm is not bootable.");
+		}
+
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
 
@@ -414,8 +431,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	public void stopSync(String region, VMResource vm)
 			throws OpenStackException {
 		checkRegion(region);
-		
-		// TODO check status of server
+
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+		Status currentServerStatus = ((VMResourceImpl) vm).server.getStatus();
+		if (currentServerStatus != Server.Status.ACTIVE
+				&& currentServerStatus != Server.Status.ERROR) {
+			throw new VMStatusException("The status of vm is not stoppable.");
+		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.stop(vm.getId());
