@@ -358,6 +358,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws VMDeleteException, RegionNotFoundException,
 			APINotAvailableException, OpenStackException {
 		checkRegion(region);
+		
+		// TODO check status of server
+		
 
 		removeAndDeleteFloatingIPOfVM(region, vm);
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -386,6 +389,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws OpenStackException {
 		checkRegion(region);
 
+		// TODO check status of server
+		
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
 
@@ -409,6 +414,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	public void stopSync(String region, VMResource vm)
 			throws OpenStackException {
 		checkRegion(region);
+		
+		// TODO check status of server
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.stop(vm.getId());

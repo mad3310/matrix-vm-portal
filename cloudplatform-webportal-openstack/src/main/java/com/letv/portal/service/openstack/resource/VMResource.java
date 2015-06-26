@@ -5,6 +5,9 @@ public interface VMResource extends Resource{
 	public String getAccessIPv4();
 	public String getAccessIPv6();
 	public String getStatus();
+	String getTaskState();
+	int getPowerState();
+	String getVmState();
 	ImageResource getImage();
 	FlavorResource getFlavor();
 //	NetworkResource getNetwork();

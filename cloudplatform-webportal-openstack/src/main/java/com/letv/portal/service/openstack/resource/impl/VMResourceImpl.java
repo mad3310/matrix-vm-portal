@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -25,6 +28,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	private String region;
+	@JsonIgnore
 	public Server server;
 	private ImageResource imageResource;
 	private FlavorResource flavorResource;
@@ -188,5 +192,38 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	@Override
 	public String getKeyName() {
 		return server.getKeyName();
+	}
+
+	@Override
+	public String getTaskState() {
+		Optional<ServerExtendedStatus> extendedStatus = server
+				.getExtendedStatus();
+		if (!extendedStatus.isPresent()) {
+			return null;
+		} else {
+			return extendedStatus.get().getTaskState();
+		}
+	}
+
+	@Override
+	public int getPowerState() {
+		Optional<ServerExtendedStatus> extendedStatus = server
+				.getExtendedStatus();
+		if (!extendedStatus.isPresent()) {
+			return -1;
+		} else {
+			return extendedStatus.get().getPowerState();
+		}
+	}
+
+	@Override
+	public String getVmState() {
+		Optional<ServerExtendedStatus> extendedStatus = server
+				.getExtendedStatus();
+		if (!extendedStatus.isPresent()) {
+			return null;
+		} else {
+			return extendedStatus.get().getVmState();
+		}
 	}
 }
