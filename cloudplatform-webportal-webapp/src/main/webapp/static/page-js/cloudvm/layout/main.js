@@ -6,6 +6,8 @@ define(function(require){
     var cn = new common();
 	var vmId = $("#vmId").val();
 	var region = $("#region").val();
+	var operState = 'free';
+	var vmStatus = '';
      /* 初始化navbar-header-menu */
 	cn.initNavbarMenu([{
 				name : "云主机",
@@ -17,12 +19,28 @@ define(function(require){
 		var target = e.target || e.srcElement;
 		switch(target.id){
 			case "stop-vm-btn":
-				stopVm();
-				break;
+				if(operState == 'free'&& vmStatus!="SHUTOFF"){
+					stopVm();
+					break;
+				}else if(vmStatus == "SHUTOFF"){
+					cn.alertoolWarnning("虚拟机已经停止，不能执行此操作。");
+					break;
+				}else{
+					cn.alertoolWarnning("虚拟机正在"+operState+",请稍后再试.");
+					break;
+				}
 			case "start-vm-btn":
-				startVm();
-				break;	
-		}
+				if(operState == 'free'&& vmStatus!="ACTIVE"){
+					startVm();
+					break;	
+				}else if(vmStatus == "ACTIVE"){
+					cn.alertoolWarnning("虚拟机已经运行，不能执行此操作。");
+					break;
+				}else{
+					cn.alertoolWarnning("虚拟机正在"+operState+",请稍后再试.");
+					break;
+				}
+	}
 	});	
 			
 	    
@@ -30,12 +48,15 @@ define(function(require){
 		var title = "确认";
         var text = "您确定要停止虚拟机（"+$("#vmName").html()+"）？";
         cn.DialogBoxInit(title,text,function(){
+        	operState = "停止";
+        	cn.alertoolSuccess("正在停止虚拟机...");
     		var url="/ecs/region/"+region+"/vm-stop";
 			var data={
 				vmId:vmId
 			};
 			cn.PostData(url,data,function(){
 				cn.alertoolSuccess("虚拟机已停止");
+				operState = "free";
 				 getVmInfo();
 			});
         });
@@ -44,12 +65,15 @@ define(function(require){
 		var title = "确认";
         var text = "您确定要启动虚拟机（"+$("#vmName").html()+"）？";
         cn.DialogBoxInit(title,text,function(){
+        	operState = "启动";
+        	cn.alertoolSuccess("正在启动虚拟机...");
     		var url="/ecs/region/"+region+"/vm-start";
 			var data={
 				vmId:vmId
 			};
 			cn.PostData(url,data,function(){
 				cn.alertoolSuccess("虚拟机已启动");
+				operState = "free";
 				 getVmInfo();
 			});
         });
@@ -68,6 +92,9 @@ define(function(require){
     getVmInfo();
     function getVmInfo(){
 	    var url = "/ecs/region/"+region+"/vm/"+vmId;
-	    cn.GetData(url,basicInfoHandler.resCountHandler);
-    }
+	    var ajax = cn.GetData(url,basicInfoHandler.resCountHandler);
+	    ajax.done(function(){
+	    	vmStatus = basicInfoHandler.getVmStatus();
+	    });
+    };
 });

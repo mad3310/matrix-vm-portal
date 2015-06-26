@@ -33,8 +33,9 @@ define(function(require,exports,module){
                 evaluateField('vm_info_network_privateip',vmInfo.ipAddresses.private.join(', '),'');
                 evaluateField('vm_info_network_publicip',vmInfo.ipAddresses.public.join(', '),'');
                 evaluateField('vm_info_network_sharedip',vmInfo.ipAddresses.shared.join(', '),'');
-                
-                               
+                if(vmInfo.ipAddresses.public.length > 0){
+                	$("#getPublicIp").hide();
+                }
         }        
     }
 });

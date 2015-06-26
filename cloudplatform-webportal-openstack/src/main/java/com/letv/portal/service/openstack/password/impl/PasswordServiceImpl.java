@@ -16,7 +16,7 @@ public class PasswordServiceImpl implements PasswordService {
 	@Value("${openstack.keystone.user.password.salt}")
 	private String userPasswordSalt;
 
-	PasswordServiceImpl(){
+	PasswordServiceImpl() {
 		ConfigUtil.class.getName();
 	}
 
@@ -28,11 +28,15 @@ public class PasswordServiceImpl implements PasswordService {
 	}
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
-		PasswordServiceImpl i=new PasswordServiceImpl();
-		i.userPasswordSalt="abcdefg12345";
-		Scanner scanner=new Scanner(System.in);
-		String line=scanner.nextLine();
-		String pw=i.userIdToPassword(line);
-		System.out.println(pw);
+		PasswordServiceImpl i = new PasswordServiceImpl();
+		i.userPasswordSalt = "abcdefg12345";
+		Scanner scanner = new Scanner(System.in);
+		try {
+			String line = scanner.nextLine();
+			String pw = i.userIdToPassword(line);
+			System.out.println(pw);
+		} finally {
+			scanner.close();
+		}
 	}
 }

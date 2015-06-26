@@ -32,6 +32,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
@@ -46,6 +47,7 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
@@ -84,7 +86,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public List<VMResource> list(String region) throws RegionNotFoundException,
-			ResourceNotFoundException {
+			ResourceNotFoundException, APINotAvailableException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -100,13 +102,15 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource get(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException {
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server, this, imageManager, openStackUser);
+			return new VMResourceImpl(region, server, this, imageManager,
+					openStackUser);
 		} else {
 			throw new ResourceNotFoundException(MessageFormat.format(
 					"VM \"{0}\" is not found.", id));
@@ -202,7 +206,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// }
 		// test code end
 
-		return new VMResourceImpl(region, server, this, imageManager, openStackUser);
+		return new VMResourceImpl(region, server, this, imageManager,
+				openStackUser);
 	}
 
 	@Override
@@ -246,12 +251,39 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// openStackConf.getGlobalPublicNetworkId()).portId("sss").build());
 	}
 
+	/**
+	 * call before deleting vm
+	 * 
+	 * @param region
+	 * @param vmId
+	 * @throws APINotAvailableException
+	 */
+	private void removeAndDeleteFloatingIPOfVM(String region, VMResource vm)
+			throws APINotAvailableException {
+		final String vmId = vm.getId();
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
+			if (vmId.equals(floatingIP.getInstanceId())) {
+				floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
+				floatingIPApi.delete(floatingIP.getId());
+			}
+		}
+	}
+
+	@Deprecated
 	@Override
 	public void delete(String region, VMResource vm)
-			throws RegionNotFoundException, VMDeleteException {
+			throws RegionNotFoundException, VMDeleteException,
+			APINotAvailableException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
+		removeAndDeleteFloatingIPOfVM(region, vm);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
 			throw new VMDeleteException(MessageFormat.format(
@@ -259,15 +291,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void start(String region, VMResource vm)
-			throws RegionNotFoundException {
+			throws RegionNotFoundException, VMStatusException {
 		checkRegion(region);
+
+		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
+			throw new VMStatusException("");
+		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
 	}
 
+	@Deprecated
 	@Override
 	public void stop(String region, VMResource vm)
 			throws RegionNotFoundException {
@@ -317,9 +355,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public void deleteSync(String region, VMResource vm)
-			throws OpenStackException, VMDeleteException {
+			throws VMDeleteException, RegionNotFoundException,
+			APINotAvailableException, OpenStackException {
 		checkRegion(region);
+		
+		// TODO check status of server
+		
 
+		removeAndDeleteFloatingIPOfVM(region, vm);
 		ServerApi serverApi = novaApi.getServerApi(region);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
@@ -346,6 +389,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws OpenStackException {
 		checkRegion(region);
 
+		// TODO check status of server
+		
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
 
@@ -369,6 +414,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	public void stopSync(String region, VMResource vm)
 			throws OpenStackException {
 		checkRegion(region);
+		
+		// TODO check status of server
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.stop(vm.getId());
@@ -398,6 +445,19 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			total += serverApi.list().concat().toList().size();
 		}
 		return total;
+	}
+
+	public List<FloatingIP> listFloatingIPs(String region)
+			throws RegionNotFoundException, APINotAvailableException {
+		checkRegion(region);
+
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		return floatingIPApi.list().toList();
 	}
 
 }

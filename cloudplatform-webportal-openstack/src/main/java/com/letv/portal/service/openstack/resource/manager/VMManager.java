@@ -1,21 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager;
 
+import java.util.List;
+
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 
-import java.util.List;
-
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
-			ResourceNotFoundException;
+			ResourceNotFoundException, APINotAvailableException;
 
 	VMResource get(String region, String id) throws RegionNotFoundException,
-			ResourceNotFoundException;
+			ResourceNotFoundException, APINotAvailableException;
 
 	VMResource create(String region, VMCreateConf conf)
 			throws RegionNotFoundException, ResourceNotFoundException,
@@ -25,12 +26,12 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
-			VMDeleteException;
+			VMDeleteException, APINotAvailableException;
 
 	void deleteSync(String region, VMResource vm) throws OpenStackException,
 			VMDeleteException;
 
-	void start(String region, VMResource vm) throws RegionNotFoundException;
+	void start(String region, VMResource vm) throws RegionNotFoundException, VMStatusException;
 
 	void startSync(String region, VMResource vm) throws OpenStackException;
 

@@ -1,5 +1,7 @@
 package com.letv.portal.controller.clouddb;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -18,32 +20,39 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 @Controller
 @RequestMapping("/dashboard")
 public class DashBoardController {
-	
+
 	@Resource
 	private IDashBoardProxy dashBoardProxy;
 
 	@Resource
 	private SessionServiceImpl sessionService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(DashBoardController.class);
-	
-	@RequestMapping(value="/statistics",method=RequestMethod.GET)
+
+	private final static Logger logger = LoggerFactory
+			.getLogger(DashBoardController.class);
+
+	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(ResultObject result) {
 		try {
-			result.setData(this.dashBoardProxy.selectAppResource().put("vmtn", ((OpenStackSession)sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber()));
+			Map<String, Integer> appResource = this.dashBoardProxy
+					.selectAppResource();
+			int totalVMNumber = ((OpenStackSession) sessionService.getSession()
+					.getOpenStackSession()).getVMManager().totalNumber();
+			appResource.put("vm", totalVMNumber);
+			result.setData(appResource);
 		} catch (OpenStackException e) {
 			result.setResult(0);
 			result.addMsg(e.getMessage());
 		}
 		return result;
 	}
-	
-	@RequestMapping(value="/monitor/db/storage",method=RequestMethod.GET)
+
+	@RequestMapping(value = "/monitor/db/storage", method = RequestMethod.GET)
 	public @ResponseBody ResultObject dbStorage(ResultObject result) {
 		result.setData(this.dashBoardProxy.selectDbStorage());
 		return result;
 	}
-	@RequestMapping(value="/monitor/db/connect",method=RequestMethod.GET)
+
+	@RequestMapping(value = "/monitor/db/connect", method = RequestMethod.GET)
 	public @ResponseBody ResultObject dbConnect(ResultObject result) {
 		result.setData(this.dashBoardProxy.selectDbConnect());
 		return result;

@@ -26,7 +26,9 @@ import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
  */
 public class OpenStackSessionImpl implements OpenStackSession {
 
+	@SuppressWarnings("unused")
 	private OpenStackConf openStackConf;
+	@SuppressWarnings("unused")
 	private OpenStackUser openStackUser;
 
 	private ImageManagerImpl imageManager;
