@@ -26,6 +26,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ApiNotFoundException;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
@@ -56,11 +57,15 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     protected ModelAndView doResolveException(HttpServletRequest req, HttpServletResponse res, Object handler,
             Exception e) {
     	String error = e.getMessage();
+    	if(e instanceof MatrixException) {
+    		error = ((MatrixException) e).getUserMessage();
+    		e = ((MatrixException) e).getE();
+    	}
 		e = transE(e);
 		if(Boolean.valueOf(ERROR_MAIL_ENABLED) ) {
 			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
 			String exceptionMessage = e.getMessage();
-			sendErrorMail(req,exceptionMessage,stackTraceStr);
+			sendErrorMail(req,error +":" +exceptionMessage,stackTraceStr);
 		}
     	logger.error(error, e);
     	String viewName = determineViewName(e, req);
