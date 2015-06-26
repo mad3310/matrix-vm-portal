@@ -56,9 +56,9 @@ define(function(require,exports,module){
                              	"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
-                    				"<span>私网："+array[i].ipAddresses.private.join(', ')+"</span><br>"+
-                    				"<span>公网："+array[i].ipAddresses.public.join(', ')+"</span><br>"+
-                    				"<span>内网："+array[i].ipAddresses.shared.join(', ')+"</span>"+
+                    				"<span>私网："+(array[i].ipAddresses.private.join(', ') || '--')+"</span><br>"+
+                    				"<span>公网："+(array[i].ipAddresses.public.join(', ')|| '--')+"</span><br>"+
+                    				"<span>内网："+(array[i].ipAddresses.shared.join(', ')|| '--')+"</span>"+
 		                    	 "</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
                     			[array[i].flavor.name,array[i].flavor.ram+' 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
@@ -108,13 +108,8 @@ define(function(require,exports,module){
         			text='您确定要删除该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-delete';
         			operationCallback=function(data){
-            	    	var refresh =setInterval(function(){
-            	    		if($('#tby input:checkbox[value='+vmId+']').length){
-                	    		asyncData();
-            	    		}else{
-            	    			clearInterval(refresh);
-            	    		}
-            	    	},1000);
+        				cn.alertoolSuccess("虚拟机删除成功。");
+        				asyncData();
             		};
             		doOperation();
             		break;
