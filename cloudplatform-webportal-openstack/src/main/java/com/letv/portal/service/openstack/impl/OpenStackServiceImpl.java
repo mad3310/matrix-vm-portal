@@ -103,7 +103,8 @@ public class OpenStackServiceImpl implements OpenStackService {
 						userRegisterToken).run();
 				if (!new UserExists(publicEndpoint, userId, password).run()) {
 					throw new OpenStackException(
-							"can not create openstack user:" + userId);
+							"can not create openstack user:" + userId,
+							"不能创建用户：" + email);
 				}
 			}
 			if (email.endsWith("@letv.com")) {
@@ -111,7 +112,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 			}
 			return new OpenStackSessionImpl(openStackConf, openStackUser);
 		} catch (NoSuchAlgorithmException e) {
-			throw new OpenStackException(e);
+			throw new OpenStackException("后台服务不可用", e);
 		}
 	}
 

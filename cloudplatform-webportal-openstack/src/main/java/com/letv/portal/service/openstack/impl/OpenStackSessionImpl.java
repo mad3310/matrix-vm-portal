@@ -72,7 +72,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 //					}
 //				}
 				if (publicNetwork == null) {
-					throw new OpenStackException("can not find public network under region: "+region);
+					throw new OpenStackException("can not find public network under region: "+region,"后台服务异常");
 				}
 				openStackUser.setPublicNetworkName(publicNetwork.getName());
 				
@@ -128,7 +128,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 						routerApi.addInterfaceForSubnet(privateRouter.getId(), privateSubnet.getId());
 					}catch(Exception ex){
 						routerApi.delete(privateRouter.getId());
-						throw new OpenStackException(ex);
+						throw new OpenStackException("后台服务异常",ex);
 					}
 				}
 				

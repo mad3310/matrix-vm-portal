@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -106,8 +105,7 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
             }
             return networkResourceImpl;
         } else {
-            throw new ResourceNotFoundException(MessageFormat.format(
-                    "Network \"{0}\" is not found.", id));
+            throw new ResourceNotFoundException("Network","网络",id);
         }
     }
 

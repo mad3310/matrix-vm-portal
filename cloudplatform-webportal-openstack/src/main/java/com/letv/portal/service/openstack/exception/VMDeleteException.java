@@ -1,18 +1,14 @@
 package com.letv.portal.service.openstack.exception;
 
+import java.text.MessageFormat;
+
 @SuppressWarnings("serial")
 public class VMDeleteException extends OpenStackException {
 
-	public VMDeleteException(String msg, Throwable t) {
-		super(msg, t);
-	}
-
-	public VMDeleteException(String msg) {
-		super(msg);
-	}
-
-	public VMDeleteException(Throwable t) {
-		super(t);
+	public VMDeleteException(String vmId) {
+		super(MessageFormat.format(
+				"VM \"{0}\" delete failed.", vmId),MessageFormat.format(
+						"虚拟机“{0}”删除失败。", vmId));
 	}
 
 }

@@ -99,12 +99,12 @@ public class UserExists {
                 }
 
                 throw new OpenStackException("OpenStack response status code:"
-                        + Integer.toString(statusCode));
+                        + Integer.toString(statusCode),"后台服务异常");
             }
         } catch (OpenStackException ose) {
             throw ose;
         } catch (Exception ex) {
-            throw new OpenStackException(ex);
+            throw new OpenStackException("后台服务异常",ex);
         } finally {
             client.getConnectionManager().shutdown();
         }

@@ -1,15 +1,16 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.common.result.ResultObject;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.letv.common.result.ResultObject;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("/osi")
@@ -35,8 +36,7 @@ public class ImageController {
         try {
             result.setData(Util.session(sessionService).getImageManager().list(region));
         } catch (RegionNotFoundException e) {
-            result.setResult(0);
-            result.addMsg(e.getMessage());
+        	throw e.matrixException();
         }
         return result;
     }
@@ -48,12 +48,10 @@ public class ImageController {
         ResultObject result = new ResultObject();
         try {
             result.setData(Util.session(sessionService).getImageManager().get(region, imageId));
-        } catch (RegionNotFoundException e1) {
-            result.setResult(0);
-            result.addMsg(e1.getMessage());
-        } catch (ResourceNotFoundException e2) {
-            result.setResult(0);
-            result.addMsg(e2.getMessage());
+        } catch (RegionNotFoundException e) {
+        	throw e.matrixException();
+        } catch (ResourceNotFoundException e) {
+        	throw e.matrixException();
         }
         return result;
     }

@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -47,9 +50,12 @@ public class VMController {
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
 					.list(region));
-		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+		} catch (RegionNotFoundException e) {
+			throw e.matrixException();
+		} catch (ResourceNotFoundException e) {
+			throw e.matrixException();
+		} catch (APINotAvailableException e) {
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -66,8 +72,7 @@ public class VMController {
 			}
 			result.setData(vmResources);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -80,8 +85,7 @@ public class VMController {
 			result.setData(Util.session(sessionService).getVMManager()
 					.get(region, vmId));
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -122,8 +126,7 @@ public class VMController {
 
 			result.setData(vmResource);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -137,8 +140,7 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.publish(region, vmResource);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -152,8 +154,7 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.deleteSync(region, vmResource);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -167,8 +168,7 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}
@@ -182,8 +182,7 @@ public class VMController {
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
 		} catch (OpenStackException e) {
-			result.setResult(0);
-			result.addMsg(e.getMessage());
+			throw e.matrixException();
 		}
 		return result;
 	}

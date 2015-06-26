@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -113,8 +112,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			return new VMResourceImpl(region, server, this, imageManager,
 					openStackUser);
 		} else {
-			throw new ResourceNotFoundException(MessageFormat.format(
-					"VM \"{0}\" is not found.", id));
+			throw new ResourceNotFoundException("VM", "虚拟机", id);
 		}
 	}
 
@@ -225,7 +223,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 		Status currentServerStatus = server.getStatus();
 		if (currentServerStatus != Server.Status.ACTIVE) {
-			throw new VMStatusException("The status of vm is not active.");
+			throw new VMStatusException("The status of vm is not active.",
+					"虚拟机的状态不是活跃的，不能绑定公网IP。");
 		}
 
 		// Collection<Address> addresses = server.getAddresses().get(
@@ -299,8 +298,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		removeAndDeleteFloatingIPOfVM(region, vm);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
-			throw new VMDeleteException(MessageFormat.format(
-					"VM \"{0}\" delete failed.", vm.getId()));
+			throw new VMDeleteException(vm.getId());
 		}
 	}
 
@@ -311,7 +309,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		checkRegion(region);
 
 		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
-			throw new VMStatusException("");
+			throw new VMStatusException("The status of vm is not shut off.",
+					"虚拟机的状态不是关闭的。");
 		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -353,8 +352,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		if (flavor != null) {
 			return new FlavorResourceImpl(region, flavor);
 		} else {
-			throw new ResourceNotFoundException(MessageFormat.format(
-					"Flavor \"{0}\" is not found.", id));
+			throw new ResourceNotFoundException("Flavor", "规格", id);
 		}
 	}
 
@@ -381,8 +379,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		boolean isSuccess = serverApi.delete(vm.getId());
 		if (!isSuccess) {
-			throw new VMDeleteException(MessageFormat.format(
-					"VM \"{0}\" delete failed.", vm.getId()));
+			throw new VMDeleteException(vm.getId());
 		}
 
 		try {
@@ -409,7 +406,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throw new TaskNotFinishedException();
 		}
 		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
-			throw new VMStatusException("The status of vm is not bootable.");
+			throw new VMStatusException("The status of vm is not shut off.",
+					"虚拟机的状态不是关闭的，不能启动。");
 		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);
@@ -443,7 +441,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		Status currentServerStatus = ((VMResourceImpl) vm).server.getStatus();
 		if (currentServerStatus != Server.Status.ACTIVE
 				&& currentServerStatus != Server.Status.ERROR) {
-			throw new VMStatusException("The status of vm is not stoppable.");
+			throw new VMStatusException("The status of vm is not stoppable.",
+					"虚拟机的状态不是可关闭的，不能关闭。");
 		}
 
 		ServerApi serverApi = novaApi.getServerApi(region);

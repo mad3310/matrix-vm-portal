@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.Closeable;
-import java.text.MessageFormat;
 
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -21,8 +20,7 @@ public abstract class AbstractResourceManager implements ResourceManager,
 
 	public void checkRegion(String region) throws RegionNotFoundException {
 		if (!getRegions().contains(region)) {
-			throw new RegionNotFoundException(MessageFormat.format(
-					"Region \"{0}\" is not found.", region));
+			throw new RegionNotFoundException(region);
 		}
 	}
 }

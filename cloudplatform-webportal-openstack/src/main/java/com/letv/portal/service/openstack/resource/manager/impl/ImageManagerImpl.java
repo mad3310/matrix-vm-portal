@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,16 +26,21 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 
 	private GlanceApi glanceApi;
 
-	public ImageManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
+	public ImageManagerImpl(OpenStackConf openStackConf,
+			OpenStackUser openStackUser) {
 		super(openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());
 
-		glanceApi = ContextBuilder.newBuilder("openstack-glance")
+		glanceApi = ContextBuilder
+				.newBuilder("openstack-glance")
 				.endpoint(openStackConf.getPublicEndpoint())
-				.credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword())
-				.modules(modules).buildApi(GlanceApi.class);
+				.credentials(
+						openStackUser.getUserId() + ":"
+								+ openStackUser.getUserId(),
+						openStackUser.getPassword()).modules(modules)
+				.buildApi(GlanceApi.class);
 	}
 
 	@Override
@@ -74,8 +78,7 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 		if (imageDetails != null) {
 			return new ImageResourceImpl(region, imageDetails);
 		} else {
-			throw new ResourceNotFoundException(MessageFormat.format(
-					"Image \"{0}\" is not found.", id));
+			throw new ResourceNotFoundException("Image", "镜像", id);
 		}
 	}
 
