@@ -16,7 +16,7 @@ $(function(){
 	var status = $("#dbStatus").val()?$("#dbStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
-			'recordsPerPage':recordsPerPage,
+			'recordsPerPage':recordsPerPage
 			//'dbName':dbName,
 			//'mclusterName':mclusterName,
 			//'hclusterName':hclusterName,
@@ -62,12 +62,12 @@ $(function(){
 	      + "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].slbName+"</a>"
 	      + "</td>");
 	  }
-	  if(array[i].mcluster){
+	  if(array[i].slbCluster){
 	    var td3 = $("<td class='hidden-480'>"
-	      + "<a class=\"link\" href='#'>"+array[i].mcluster.mclusterName+"</a>"
+	      + "<a class=\"link\" href='#'>"+array[i].slbCluster.clusterName+"</a>"
 	      + "</td>");//href=\"/detail/mcluster/" + array[i].mclusterId+"\"
 	  } else {
-	    var td3 = $("<td class='hidden-480'> </td>");
+	    var td3 = $("<td class='hidden-480'> -</td>");
 	  }
 	  if(array[i].hcluster){
 	    var td4 = $("<td class='hidden-480'>"

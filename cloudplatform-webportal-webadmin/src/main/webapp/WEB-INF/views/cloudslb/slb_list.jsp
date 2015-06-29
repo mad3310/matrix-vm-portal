@@ -33,7 +33,7 @@
 		  </label>
 		</th>
 		<th>slb名称</th>
-		<th  class="hidden-480">所属Mcluster</th>
+		<th  class="hidden-480">所属slbCluster</th>
 		<th  class="hidden-480">所属物理机集群</th>
 		<th>所属用户</th>
 		<th  class="hidden-480">
