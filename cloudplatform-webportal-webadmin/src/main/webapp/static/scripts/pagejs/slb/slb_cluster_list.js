@@ -92,7 +92,7 @@ function queryByPage() {
 				}
 				
 				if(array[i].status == 3){
-					var td8 = $("<td>"
+					var td8 = $("<td class='hidden'>"
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
@@ -129,7 +129,7 @@ function queryByPage() {
 							+ "</td>"
 					);
 				}else{
-					var td8 = $("<td>"
+					var td8 = $("<td class='hidden'>"
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"

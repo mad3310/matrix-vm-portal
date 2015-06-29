@@ -65,7 +65,7 @@ function queryContainer(){
 					var	td7 = $("<td>"
 							+ translateStatus(array[i].status)
 							+ "</td>");
-					var td8 = $("<td>"
+					var td8 = $("<td class='hidden'>"
 							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
 							+"<a class=\"green\" href=\"#\" onclick=\"startContainer(this)\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
