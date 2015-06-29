@@ -97,7 +97,7 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 		for (ImageDetails image : images) {
 			ImageResource imageResource = new ImageResourceImpl(region, image);
 
-			String[] imageNameFragments = imageResource.getName().split("-", 3);
+			String[] imageNameFragments = imageResource.getName().split("-");
 			if (imageNameFragments.length != 3) {
 				throw new OpenStackException("Image name format error.",
 						"镜像名称格式错误");
