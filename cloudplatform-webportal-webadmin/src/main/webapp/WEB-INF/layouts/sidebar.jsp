@@ -144,7 +144,7 @@
 						<li><a href="${ctx}/list/slb/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
 					</ul>
 				</li>
-				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> SLB列表</a><b class="arrow"></b></li>
+				<li id="sidebar-slb-server-mgr"><a href="${ctx}/list/slb"><i class="menu-icon fa fa-caret-right"></i> SLB列表</a><b class="arrow"></b></li>
 			</ul>
 		</li>
 		<li id="sidebar-ocs-mgr">

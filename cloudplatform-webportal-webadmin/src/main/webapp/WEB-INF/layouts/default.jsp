@@ -389,8 +389,13 @@
 		$('#sidebar-slb-mgr').addClass("active open hsub");
 		$('#sidebar-slb-cluster-mgr').addClass("active open");
 		$('#sidebar-slb-cluster-mgr ul li:eq(1)').addClass("active");
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/container").html("container管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb/container").html("container管理");
 		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/slb") >= 0){
+		$('#sidebar-slb-mgr').addClass("active open hsub");
+		$('#sidebar-slb-server-mgr').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/slb").html("slb管理");
+		$('#main-content-header li:eq(1)').html("slb列表");
 	}else if(path.indexOf("/list/ocs/cluster") >= 0||path.indexOf("/detail/ocs/cluster") >= 0){//------------------------新添 ocs 集群管理
 		$('#sidebar-ocs-mgr').addClass("active open hsub");
 		$('#sidebar-ocs-cluster-mgr').addClass("active open");
