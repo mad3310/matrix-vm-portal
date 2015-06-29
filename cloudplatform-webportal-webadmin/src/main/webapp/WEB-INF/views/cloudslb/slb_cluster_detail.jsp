@@ -28,7 +28,7 @@
 							<th class="hidden-480">挂载路径</th>
 							<th class="hidden-480">zookeepId</th>
 							<th>状态</th>
-							<th>操作</th>
+							<th class='hidden'>操作</th>
 						</tr>
 					</thead>
 					<tbody id="tby"></tbody>
