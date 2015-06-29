@@ -97,13 +97,15 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 		for (ImageDetails image : images) {
 			ImageResource imageResource = new ImageResourceImpl(region, image);
 
-			String[] imageNameFragments = imageResource.getName().split(" ", 2);
-			if (imageNameFragments.length != 2) {
+			String[] imageNameFragments = imageResource.getName().split("-", 3);
+			if (imageNameFragments.length != 3) {
 				throw new OpenStackException("Image name format error.",
 						"镜像名称格式错误");
 			}
 			String osName = imageNameFragments[0];
-			String osVersionAndType = imageNameFragments[1];
+			String osVersion = imageNameFragments[1];
+			String osArch = imageNameFragments[2];
+			String osVersionAndArch = osVersion + " " + osArch;
 
 			Map<String, ImageResource> nameImageResources = imageResources
 					.get(osName);
@@ -112,7 +114,7 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 				imageResources.put(osName, nameImageResources);
 			}
 
-			nameImageResources.put(osVersionAndType, imageResource);
+			nameImageResources.put(osVersionAndArch, imageResource);
 		}
 		return imageResources;
 	}
