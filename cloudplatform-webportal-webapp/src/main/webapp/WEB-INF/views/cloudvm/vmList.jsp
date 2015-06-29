@@ -18,6 +18,8 @@
 <%@ include file="../../layouts/header.jsp"%>
 <!-- main-content begin-->
 <div class="container-fluid">
+				<div class="col-md-offset-4 col-md-4 alertool" id="alertool">
+      		</div>
 	<div class="row main-header overHidden"> <!-- main-content-header begin -->
 		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="pull-left">
