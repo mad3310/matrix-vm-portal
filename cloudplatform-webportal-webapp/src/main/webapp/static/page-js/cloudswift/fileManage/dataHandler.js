@@ -49,8 +49,8 @@ define(function(require,exports,module){
                                   + fileName
                                   +"</a></td>");
                         td3 = $("<td>文件夹</td>");
-                        td5=$("<td></td>");
-                        td6=$("<td>-</td>");
+                        td5=$("<td class='hidden-xs'></td>");
+                        td6=$("<td class='hidden-xs'>-</td>");
                         td7=$("<td class=\"text-right\"><a href=\"javascript:void(0)\"><span class=\"text-explode\" file-path=\""+array[i].name+"\" file-type=\""+array[i].content_type+"\">删除</span></a></td>");
                       }else{
                           var filetypeindex=fileName;
