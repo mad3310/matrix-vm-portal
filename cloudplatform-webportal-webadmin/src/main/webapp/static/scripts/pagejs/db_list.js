@@ -6,7 +6,7 @@ var currentSelectedLineDbName = 1;
 	//初始化
 	page_init();
     /*动态添加select内容*/
-	var sltArray = [0,2,3,4,5,6,7,8,9,10,11,12,13,14];
+	var sltArray = [0,2,3,5,6,7,8,9,10,13,14];
 	addSltOpt(sltArray,$("#dbStatus"));
 	
 	$(document).on('click', 'th input:checkbox' , function(){
