@@ -109,8 +109,11 @@
 			</ul>
 		</li>
 		<li id='sidebar-gce-mgr'>
-			<a href="#" class="dropdown-toggle">
+			<!-- <a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a> -->
+			<a href="#" class="">
+				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理 (敬请期待...)</span>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
@@ -148,8 +151,11 @@
 			</ul>
 		</li>
 		<li id="sidebar-ocs-mgr">
-			<a href="#" class="dropdown-toggle">
+			<!-- <a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a> -->
+			<a href="#" class="">
+				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理(敬请期待...)</span>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
@@ -167,8 +173,11 @@
 			</ul>
 		</li>
 		<li id="sidebar-oss-mgr">
-			<a href="#" class="dropdown-toggle">
+			<!-- <a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> <span class="menu-text">OSS 管理</span><b class="arrow fa fa-angle-down"></b>
+			</a> -->
+			<a href="#" class="">
+				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OSS 管理(敬请期待...)</span>
 			</a>
 			<b class="arrow"></b>
 			<ul class="submenu">
