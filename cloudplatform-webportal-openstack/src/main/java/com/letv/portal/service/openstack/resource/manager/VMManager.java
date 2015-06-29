@@ -1,8 +1,10 @@
 package com.letv.portal.service.openstack.resource.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
@@ -43,7 +45,9 @@ public interface VMManager extends ResourceManager {
 
 	void stop(String region, VMResource vm) throws RegionNotFoundException;
 
-	void stopSync(String region, VMResource vm) throws PollingInterruptedException, RegionNotFoundException, TaskNotFinishedException, VMStatusException;
+	void stopSync(String region, VMResource vm)
+			throws PollingInterruptedException, RegionNotFoundException,
+			TaskNotFinishedException, VMStatusException;
 
 	int totalNumber();
 
@@ -52,4 +56,7 @@ public interface VMManager extends ResourceManager {
 
 	FlavorResource getFlavorResource(String region, String id)
 			throws RegionNotFoundException, ResourceNotFoundException;
+
+	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
+			String region) throws OpenStackException;
 }

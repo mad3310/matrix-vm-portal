@@ -2,8 +2,10 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
@@ -27,6 +29,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
@@ -252,16 +255,16 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			VMStatusException, APINotAvailableException {
 		checkRegion(region);
 
-//		Server server = ((VMResourceImpl) (vm)).server;
+		// Server server = ((VMResourceImpl) (vm)).server;
 
 		if (vm.getTaskState() != null) {
 			throw new TaskNotFinishedException();
 		}
-//		Status currentServerStatus = server.getStatus();
-//		if (currentServerStatus != Server.Status.ACTIVE) {
-//			throw new VMStatusException("The status of vm is not active.",
-//					"虚拟机的状态不是活跃的，不能绑定公网IP。");
-//		}
+		// Status currentServerStatus = server.getStatus();
+		// if (currentServerStatus != Server.Status.ACTIVE) {
+		// throw new VMStatusException("The status of vm is not active.",
+		// "虚拟机的状态不是活跃的，不能绑定公网IP。");
+		// }
 
 		// Collection<Address> addresses = server.getAddresses().get(
 		// openStackConf.getUserPrivateNetworkName());
@@ -514,6 +517,47 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 		return floatingIPApi.list().toList();
+	}
+
+	@Override
+	public Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
+			String region) throws OpenStackException {
+		checkRegion(region);
+
+		FlavorApi flavorApi = novaApi.getFlavorApi(region);
+		List<Flavor> resources = flavorApi.listInDetail().concat().toList();
+
+		Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> flavorResources = new HashMap<Integer, Map<Integer, Map<Integer, FlavorResource>>>();
+		for (Flavor resource : resources) {
+			FlavorResource flavorResource = new FlavorResourceImpl(region,
+					resource);
+
+			Map<Integer, Map<Integer, FlavorResource>> vcpusFlavorResources = flavorResources
+					.get(flavorResource.getVcpus());
+			if (vcpusFlavorResources == null) {
+				vcpusFlavorResources = new HashMap<Integer, Map<Integer, FlavorResource>>();
+				flavorResources.put(flavorResource.getVcpus(),
+						vcpusFlavorResources);
+			}
+
+			Map<Integer, FlavorResource> vcpusRamFlavorResources = vcpusFlavorResources
+					.get(flavorResource.getRam());
+			if (vcpusRamFlavorResources == null) {
+				vcpusRamFlavorResources = new HashMap<Integer, FlavorResource>();
+				vcpusFlavorResources.put(flavorResource.getRam(),
+						vcpusRamFlavorResources);
+			}
+
+			if (vcpusRamFlavorResources.get(flavorResource.getDisk()) != null) {
+				throw new OpenStackException("There are repeated flavors.",
+						"存在重复的规格");
+			} else {
+				vcpusRamFlavorResources.put(flavorResource.getDisk(),
+						flavorResource);
+			}
+		}
+
+		return flavorResources;
 	}
 
 }
