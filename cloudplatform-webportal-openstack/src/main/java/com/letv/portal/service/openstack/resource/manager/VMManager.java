@@ -21,7 +21,7 @@ public interface VMManager extends ResourceManager {
 
 	VMResource create(String region, VMCreateConf conf)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException;
+			APINotAvailableException, PollingInterruptedException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,

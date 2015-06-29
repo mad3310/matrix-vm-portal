@@ -47,7 +47,6 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
@@ -117,9 +116,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public VMResource create(String region, VMCreateConf conf)
+	public VMResource create(final String region, VMCreateConf conf)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException {
+			APINotAvailableException, PollingInterruptedException {
 		checkRegion(region);
 
 		CreateServerOptions createServerOptions = new CreateServerOptions();
@@ -183,16 +182,36 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 		// test code end
 
-		ServerApi serverApi = novaApi.getServerApi(region);
-		ServerCreated serverCreated = serverApi.create(conf.getName(), conf
-				.getImageResource().getId(), conf.getFlavorResource().getId(),
-				createServerOptions);
-		
-		if(conf.getBindFloatingIP()){
-			bindFloatingIP(region, serverCreated.getId());
-		}
-		
+		final ServerApi serverApi = novaApi.getServerApi(region);
+		final ServerCreated serverCreated = serverApi.create(conf.getName(),
+				conf.getImageResource().getId(), conf.getFlavorResource()
+						.getId(), createServerOptions);
 		Server server = serverApi.get(serverCreated.getId());
+		VMResourceImpl vmResourceImpl = new VMResourceImpl(region, server,
+				this, imageManager, openStackUser);
+
+		if (conf.getBindFloatingIP()) {
+			new Thread() {
+				public void run() {
+					try {
+						Server server = serverApi.get(serverCreated.getId());
+						while (server.getAddresses()
+								.get(openStackConf.getUserPrivateNetworkName())
+								.isEmpty()) {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								throw new PollingInterruptedException(e);
+							}
+							server = serverApi.get(serverCreated.getId());
+						}
+						bindFloatingIP(region, serverCreated.getId());
+					} catch (Exception e) {
+						logger.error(e.getMessage(), e);
+					}
+				}
+			}.start();
+		}
 
 		// test code begin(ssh login)
 		// {
@@ -210,12 +229,12 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// // floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
 		// }
 		// test code end
-		
-		return new VMResourceImpl(region, server, this, imageManager,
-				openStackUser);
+
+		return vmResourceImpl;
 	}
-	
-	private void bindFloatingIP(String region,String vmId) throws APINotAvailableException{
+
+	private void bindFloatingIP(String region, String vmId)
+			throws APINotAvailableException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
@@ -235,9 +254,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 //		Server server = ((VMResourceImpl) (vm)).server;
 
-//		if (vm.getTaskState() != null) {
-//			throw new TaskNotFinishedException();
-//		}
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
 //		Status currentServerStatus = server.getStatus();
 //		if (currentServerStatus != Server.Status.ACTIVE) {
 //			throw new VMStatusException("The status of vm is not active.",
