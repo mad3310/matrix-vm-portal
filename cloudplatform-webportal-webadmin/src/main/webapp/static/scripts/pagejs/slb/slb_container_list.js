@@ -18,12 +18,24 @@ $(function(){
 });
 
 function queryByPage() {
+	var containerName = $("#containerName").val()?$("#containerName").val():'';
+	var  ipAddr= $("#ipAddr").val()?$("#ipAddr").val():'';
+	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
+	var queryCondition = {
+		'currentPage':currentPage,
+		'recordsPerPage':recordsPerPage,
+		// 'containerName':containerName,
+		// 'ipAddr':ipAddr,
+		// /*'createTime':createTime,*/
+		// 'status':status
+	}
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/slb/container",
+		// url : "/slb/container",
+		url : queryUrlBuilder("/slb/container",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -40,19 +52,19 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\"  href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].containerName+"</a>"
-						+ "</td>");
+						+  "<a class=\"link\" href='#'>"+array[i].containerName+"</a>"
+						+ "</td>");//href=\"/detail/mcluster/" + array[i].id+"\"
 				if(array[i].slbCluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/mcluster/" + array[i].slbClusterId+"\">"+array[i].slbCluster.clusterName+"</a>"
-							+ "</td>");
+							+ "<a class=\"link\" href='#'>"+array[i].slbCluster.clusterName+"</a>"
+							+ "</td>");//href=\"/detail/mcluster/" + array[i].slbClusterId+"\"
 				} else {
 					var td3 = $("<td class='hidden-480'> </td>");
 				} 
 				if(array[i].hcluster){
 					var td4 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/hcluster/" + array[i].slbCluster.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
-							+ "</td>");
+							+ "<a class=\"link\" href='#'>"+array[i].hcluster.hclusterNameAlias+"</a>"
+							+ "</td>");//href=\"/detail/hcluster/" + array[i].slbCluster.hclusterId+"\"
 				} else {
 					var td4= $("<td class='hidden-480'> </td>");
 				}

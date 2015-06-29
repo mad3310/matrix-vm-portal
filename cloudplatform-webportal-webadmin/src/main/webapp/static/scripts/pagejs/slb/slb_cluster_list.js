@@ -7,12 +7,26 @@ $(function(){
 });
 
 function queryByPage() {
+	var clusterName = $("#containerName").val()?$("#containerName").val():'';
+	var hclusterName = $("#Physicalcluster").val()?$("#Physicalcluster").val():'';
+	var userName = $("#containeruser").val()?$("#containeruser").val():'';
+	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+			'clusterName':clusterName,
+			// 'hclusterName':hclusterName,
+			// 'userName':userName,
+			// 'createTime':createTime,
+			// 'status':status
+	}
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : "/slb/cluster",
+		// url : "/slb/cluster",
+		url : queryUrlBuilder("/slb/cluster",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -29,12 +43,12 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].clusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/slb/cluster/"+array[i].id+"\">"+array[i].clusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
 					var td3 = $("<td class='hidden-480'>"
 							+ "<a class=\"link\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
-							+ "</td>");
+							+ "</td>");//
 				} else {
 					var td3 = $("<td class='hidden-480'> </td>");
 				} 

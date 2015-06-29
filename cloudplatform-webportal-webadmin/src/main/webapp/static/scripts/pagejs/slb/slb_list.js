@@ -8,21 +8,38 @@ $(function(){
 })
 
   function queryByPage() {
+  	var dbName = $("#dbName").val()?$("#dbName").val():'';
+	var mclusterName = $("#dbMcluster").val()?$("#dbMcluster").val():'';
+	var hclusterName = $("#dbPhyMcluster").val()?$("#dbPhyMcluster").val():'';
+	var userName = $("#dbuser").val()?$("#dbuser").val():'';
+	/*var createTime = $("#PhyMechineDate").val()?$("#PhyMechineDate").val():'null';*/
+	var status = $("#dbStatus").val()?$("#dbStatus").val():'';
+	var queryCondition = {
+			'currentPage':currentPage,
+			'recordsPerPage':recordsPerPage,
+			//'dbName':dbName,
+			//'mclusterName':mclusterName,
+			//'hclusterName':hclusterName,
+			//'userName':userName,
+			/*'createTime':createTime,*/
+			//'status':status
+	}
     $("#tby tr").remove();
     getLoading();
     $.ajax({
       cache:false,
       type : "get",
-      url : '/slb',
+      // url : '/slb',
+      url : queryUrlBuilder("/slb",queryCondition),
       dataType : "json", /*这句可用可不用，没有影响*/
       contentType : "application/json; charset=utf-8",
       success : function(data) {
+      	console.log(data)
 	removeLoading();
 	error(data);
 	var array = data.data.data;
 	var tby = $("#tby");
 	var totalPages = data.data.totalPages;
-
 	for (var i = 0, len = array.length; i < len; i++) {
 	  var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
 	  var td1 = $("<td class=\"center\">"
@@ -34,12 +51,12 @@ $(function(){
 	  var td2;
 	  if(array[i].status == 6){
 	    td2 = $("<td>"
-	      + "<a class=\"link\"  href=\"/detail/db/"+array[i].id+"\">"+array[i].slbName+"</a>"
-	      + "</td>");
+	      + "<a class=\"link\" href='#'>"+array[i].slbName+"</a>"
+	      + "</td>");//href=\"/detail/db/"+array[i].id+"\"
 	  }else if(array[i].status == 0 ||array[i].status == 3){
 	    td2 = $("<td>"
-	      + "<a class=\"link\" class=\"danger\" href=\"/audit/db/"+array[i].id+"\">"+array[i].slbName+"</a>"
-	      + "</td>");
+	      + "<a class=\"link\" class=\"danger\" href='#'>"+array[i].slbName+"</a>"
+	      + "</td>");//href=\"/audit/db/"+array[i].id+"\"
 	  }else{
 	    td2 = $("<td>"
 	      + "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].slbName+"</a>"
@@ -47,8 +64,8 @@ $(function(){
 	  }
 	  if(array[i].mcluster){
 	    var td3 = $("<td class='hidden-480'>"
-	      + "<a class=\"link\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
-	      + "</td>");
+	      + "<a class=\"link\" href='#'>"+array[i].mcluster.mclusterName+"</a>"
+	      + "</td>");//href=\"/detail/mcluster/" + array[i].mclusterId+"\"
 	  } else {
 	    var td3 = $("<td class='hidden-480'> </td>");
 	  }

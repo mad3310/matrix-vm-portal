@@ -26,6 +26,12 @@ public class SkipController {
 		mav.setViewName("/cloudslb/slb_cluster_list");
 		return mav;
 	}
+	@RequestMapping(value="/detail/slb/cluster/{clusterId}", method=RequestMethod.GET)   
+	public ModelAndView toMclusterDetail(@PathVariable Long clusterId,ModelAndView mav) {
+		mav.addObject("clusterId",clusterId);
+		mav.setViewName("/cloudslb/slb_cluster_detail");
+		return mav;
+	}
 	@RequestMapping(value ="/list/slb/container",method=RequestMethod.GET)
 	public ModelAndView toContainerList(ModelAndView mav,HttpServletRequest request){
 		mav.setViewName("/cloudslb/slb_container_list");
