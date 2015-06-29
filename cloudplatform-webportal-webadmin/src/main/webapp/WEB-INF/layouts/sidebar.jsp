@@ -87,7 +87,7 @@
 					</ul>
 				</li>
 				<li><a href="${ctx}/list/backup"><i class="menu-icon fa fa-clipboard"></i>备份与恢复</a><b class="arrow"></b></li>
-				<li id="sidebar-monitor-view">
+				<li id="sidebar-monitor-mgr">
 					<a class="dropdown-toggle" href="#"><i></i><span class="menu-text">监控管理 </span><b class="arrow fa fa-angle-down"></b></a>
 					<b class="arrow"></b>
 					<ul class="submenu">
