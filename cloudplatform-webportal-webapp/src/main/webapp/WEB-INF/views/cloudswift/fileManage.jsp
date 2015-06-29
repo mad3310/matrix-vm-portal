@@ -36,7 +36,7 @@
 		<form enctype="multipart/form-data" id='form-upload' method="post" action="/oss/${swiftId}/file">
 			<div class="btn btn-success btn-file"> 
 				<i class="fa fa-cloud-upload"></i> &nbsp;上传文件
-				<input id="upload" type="file" name="file" class="file">
+				<input id="upload" type="file" name="file" class="file" autocomplete="off">
 				<input id="dir" type="hidden" name="directory" >
 			</div>
 			<button type="button" class="btn btn-primary" data-backdrop="false" data-toggle="modal" data-target="#addDirModal" id="test"><i class="fa fa-plus"></i> 新建文件夹</button>

@@ -93,13 +93,23 @@ define(function(require){
 	 * 可封装公共方法 end
 	 */
 	
-	setInterval(asyncData,5000);
+	// setInterval(asyncData,5000);
+
 	//加载列表数据
 	function asyncData(page) {
 		var name = $("#name").val(),location = $("#location").val();
 		if(!page) page = cn.currentPage;
 		var url = "/oss?currentPage=" + page +"&&recordsPerPage=" + cn.recordsPerPage + "&&name=" + name + "&&location=" + location;
-		cn.GetData(url,dbListHandler.DbListHandler);
+		// cn.GetData(url,dbListHandler.DbListHandler);
+		cn.GetData(url,refreshData);
+	}
+	function refreshData(data) {
+		dbListHandler.DbListHandler(data);
+		var interval=$('#waitTime').val();
+		if(iFresh){
+			clearInterval(iFresh);
+		}
+		iFresh=setInterval(asyncData,interval)
 	}
 	function asyncDataHander(){
 		asyncData();
