@@ -2,7 +2,9 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
@@ -13,6 +15,7 @@ import org.jclouds.openstack.glance.v1_0.features.ImageApi;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -80,6 +83,38 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 		} else {
 			throw new ResourceNotFoundException("Image", "镜像", id);
 		}
+	}
+
+	@Override
+	public Map<String, Map<String, ImageResource>> group(String region)
+			throws RegionNotFoundException, OpenStackException {
+		checkRegion(region);
+
+		ImageApi imageApi = glanceApi.getImageApi(region);
+		List<ImageDetails> images = imageApi.listInDetail().concat().toList();
+
+		Map<String, Map<String, ImageResource>> imageResources = new HashMap<String, Map<String, ImageResource>>();
+		for (ImageDetails image : images) {
+			ImageResource imageResource = new ImageResourceImpl(region, image);
+
+			String[] imageNameFragments = imageResource.getName().split(" ", 2);
+			if (imageNameFragments.length != 2) {
+				throw new OpenStackException("Image name format error.",
+						"镜像名称格式错误");
+			}
+			String osName = imageNameFragments[0];
+			String osVersionAndType = imageNameFragments[1];
+
+			Map<String, ImageResource> nameImageResources = imageResources
+					.get(osName);
+			if (nameImageResources == null) {
+				nameImageResources = new HashMap<String, ImageResource>();
+				imageResources.put(osName, nameImageResources);
+			}
+
+			nameImageResources.put(osVersionAndType, imageResource);
+		}
+		return imageResources;
 	}
 
 }
