@@ -41,12 +41,14 @@ define(function(require,exports,module){
                     tdList.push("<td class=\"padding-left-32\">"+ vmName+"</td>");
                     var vmStatus = '';                
                     if(array[i].status == 'BUILD'){
-                    	var vmStatus = "<td class='hidden-xs'>"+
+                    	var vmStatus = "<td class='hidden-xs'>"+	
+                    						"<input type=\"hidden\" name=\"vm_status\" value= \""+ array[i].status + "\" />"+
 			                    			"<span class=\"vm-building\">创建中...</span>"+
 			                    			"<input class=\"hide\" type=\"text\" name=\"progress_vm_id\" id= \""+ array[i].id + "\" value= \""+ array[i].id + "\" >"+
 		                                "</td>";
                     }else{
                     	var vmStatus = "<td>"+
+                    						"<input type=\"hidden\" name=\"vm_status\" value= \""+ array[i].status + "\" />"+
 		                                	cn.TranslateStatus(array[i].status)+
 		                               "</td>";
                     }
@@ -103,8 +105,34 @@ define(function(require,exports,module){
             var text = '';
             var operationUrl='';
             var operationCallback=null;
+            var getVmStatusRef=function(){
+            	return $($('input:checkbox[value='+vmId+']').closest('tr')).find('input:hidden[name=vm_status]');
+            };
+            var vmStatus=getVmStatusRef().val();
+            var setVmStatus=function(value){
+            	getVmStatusRef().val(value);
+            };
+            var doOperation=function(){
+                cn.DialogBoxInit(title,text,function(){
+            		cn.PostData(operationUrl,{
+            	        vmId: vmId
+            	    },function(data){
+            	    	operationCallback(data);
+            		});
+                    	
+                });
+    		};
+    		if(vmStatus=='BUILD'){
+    			cn.alertoolSuccess("虚拟机正在创建中，不允许操作。");
+    			return;
+    		}
+			if(vmStatus=='REMOVEING' || vmStatus=='ACTIVEING' || vmStatus=='SHUTOFFING'){
+				cn.alertoolSuccess("虚拟机正在操作中，请稍后再试。");
+				return;
+			}
     		switch(operationType){
         		case 'vm-remove':
+        			setVmStatus('REMOVEING');
         			text='您确定要删除该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-delete';
         			operationCallback=function(data){
@@ -114,15 +142,25 @@ define(function(require,exports,module){
             		doOperation();
             		break;
         		case 'vm-start':
+        			if(vmStatus=='ACTIVE'){
+        				cn.alertoolWarnning("虚拟机已经是启动状态。");
+        				return;
+        			}
+        			setVmStatus('ACTIVEING');
         			text='您确定要开始该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-start';
         			operationCallback=function(data){
-        				cn.alertoolSuccess("虚拟机已启动");
+        				cn.alertoolWarnning("虚拟机已启动");
         				asyncData();
             		};
             		doOperation();
             		break;
         		case 'vm-stop':
+        			if(vmStatus=='SHUTOFF'){
+        				cn.alertoolSuccess("虚拟机已经是关闭状态。");
+        				return;
+        			}
+        			setVmStatus('SHUTOFFING');
         			text='您确定要停止该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-stop';
         			operationCallback=function(data){
@@ -135,16 +173,7 @@ define(function(require,exports,module){
             		break;
     		}
 
-    		function doOperation(){
-                cn.DialogBoxInit(title,text,function(){
-            		cn.PostData(operationUrl,{
-            	        vmId: vmId
-            	    },function(data){
-            	    	operationCallback(data);
-            		});
-                    	
-                });
-    		}
+    		
 	   	}
     }
 });
