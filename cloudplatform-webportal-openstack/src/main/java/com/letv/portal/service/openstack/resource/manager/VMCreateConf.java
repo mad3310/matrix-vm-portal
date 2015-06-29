@@ -16,18 +16,21 @@ public class VMCreateConf {
 	private FlavorResource flavorResource;
 	private List<NetworkResource> networkResources;
 	private String adminPass;
+	private boolean bindFloatingIP;
 
 	public VMCreateConf() {
 	}
 
-	public VMCreateConf(String name,
-			ImageResource imageResource, FlavorResource flavorResource,
-			List<NetworkResource> networkResources,String adminPass) {
+	public VMCreateConf(String name, ImageResource imageResource,
+			FlavorResource flavorResource,
+			List<NetworkResource> networkResources, String adminPass,
+			boolean bindFloatingIP) {
 		this.name = name;
 		this.imageResource = imageResource;
 		this.flavorResource = flavorResource;
 		this.networkResources = networkResources;
-		this.adminPass=adminPass;
+		this.adminPass = adminPass;
+		this.bindFloatingIP = bindFloatingIP;
 	}
 
 	public String getName() {
@@ -61,13 +64,21 @@ public class VMCreateConf {
 	public List<NetworkResource> getNetworkResources() {
 		return networkResources;
 	}
-	
+
 	public String getAdminPass() {
 		return adminPass;
 	}
-	
+
 	public void setAdminPass(String adminPass) {
 		this.adminPass = adminPass;
+	}
+
+	public boolean getBindFloatingIP() {
+		return bindFloatingIP;
+	}
+
+	public void setBindFloatingIP(boolean bindFloatingIP) {
+		this.bindFloatingIP = bindFloatingIP;
 	}
 
 	// // 区域

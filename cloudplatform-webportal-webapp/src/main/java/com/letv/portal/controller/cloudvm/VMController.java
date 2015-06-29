@@ -91,11 +91,14 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region/{region}/vm-create", method = RequestMethod.POST)
-	public @ResponseBody ResultObject create(@PathVariable String region,
-			@RequestParam String name, @RequestParam String imageId,
+	public @ResponseBody ResultObject create(
+			@PathVariable String region,
+			@RequestParam String name,
+			@RequestParam String imageId,
 			@RequestParam String flavorId,
 			@RequestParam(required = false) String networkIds,
-			@RequestParam(required = false) String adminPass) {
+			@RequestParam(required = false) String adminPass,
+			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP) {
 		ResultObject result = new ResultObject();
 		try {
 			OpenStackSession openStackSession = Util.session(sessionService);
@@ -121,7 +124,7 @@ public class VMController {
 			}
 
 			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
-					flavorResource, networkResources, adminPass);
+					flavorResource, networkResources, adminPass, bindFloatingIP);
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);

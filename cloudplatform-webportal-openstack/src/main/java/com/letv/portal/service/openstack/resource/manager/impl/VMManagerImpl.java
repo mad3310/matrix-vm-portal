@@ -187,6 +187,11 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerCreated serverCreated = serverApi.create(conf.getName(), conf
 				.getImageResource().getId(), conf.getFlavorResource().getId(),
 				createServerOptions);
+		
+		if(conf.getBindFloatingIP()){
+			bindFloatingIP(region, serverCreated.getId());
+		}
+		
 		Server server = serverApi.get(serverCreated.getId());
 
 		// test code begin(ssh login)
@@ -205,9 +210,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// // floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
 		// }
 		// test code end
-
+		
 		return new VMResourceImpl(region, server, this, imageManager,
 				openStackUser);
+	}
+	
+	private void bindFloatingIP(String region,String vmId) throws APINotAvailableException{
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
+				.getGlobalPublicNetworkId());
+		floatingIPApi.addToServer(floatingIP.getIp(), vmId);
 	}
 
 	@Override
@@ -216,16 +233,16 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			VMStatusException, APINotAvailableException {
 		checkRegion(region);
 
-		Server server = ((VMResourceImpl) (vm)).server;
+//		Server server = ((VMResourceImpl) (vm)).server;
 
-		if (vm.getTaskState() != null) {
-			throw new TaskNotFinishedException();
-		}
-		Status currentServerStatus = server.getStatus();
-		if (currentServerStatus != Server.Status.ACTIVE) {
-			throw new VMStatusException("The status of vm is not active.",
-					"虚拟机的状态不是活跃的，不能绑定公网IP。");
-		}
+//		if (vm.getTaskState() != null) {
+//			throw new TaskNotFinishedException();
+//		}
+//		Status currentServerStatus = server.getStatus();
+//		if (currentServerStatus != Server.Status.ACTIVE) {
+//			throw new VMStatusException("The status of vm is not active.",
+//					"虚拟机的状态不是活跃的，不能绑定公网IP。");
+//		}
 
 		// Collection<Address> addresses = server.getAddresses().get(
 		// openStackConf.getUserPrivateNetworkName());
@@ -242,15 +259,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// Address address = addresses.iterator().next();
 		// String ip = address.getAddr();
 
-		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
-				.getFloatingIPApi(region);
-		if (!floatingIPApiOptional.isPresent()) {
-			throw new APINotAvailableException(FloatingIPApi.class);
-		}
-		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
-				.getGlobalPublicNetworkId());
-		floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
+		bindFloatingIP(region, vm.getId());
 
 		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
 		// networkManager;
