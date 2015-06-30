@@ -109,12 +109,12 @@
 			</ul>
 		</li>
 		<li id='sidebar-gce-mgr'>
-			<!-- <a href="#" class="dropdown-toggle">
+			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理</span><b class="arrow fa fa-angle-down"></b>
-			</a> -->
-			<a href="#" class="">
-				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理 (敬请期待...)</span>
 			</a>
+			<!-- <a href="#" class="">
+				<i class="menu-icon fa fa-inbox"></i><span class="menu-text"> GCE 管理 (敬请期待...)</span>
+			</a> -->
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-gce-cluster-mgr">
@@ -127,6 +127,7 @@
 						<li><a href="${ctx}/list/gce/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
 					</ul>
 				</li>
+				<li><a href="${ctx}/list/gce/server"><i class="menu-icon fa fa-unlink"></i> GCE列表</a><b class="arrow"></b></li>
 				<li><a href="${ctx}/list/gce/image"><i class="menu-icon fa fa-download"></i> 镜像管理</a><b class="arrow"></b></li>
 				<li><a href="${ctx}/list/zk"><i class="menu-icon fa fa-cog"></i> zookeeper管理</a><b class="arrow"></b></li>
 			</ul>

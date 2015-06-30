@@ -342,13 +342,13 @@
 	}else if(path.indexOf("/list/gce/image") >= 0){
 		// $('#sidebar-image-mgr').addClass("active");
 		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-mgr ul:first').children('li:eq(1)').addClass('active');
+		$('#sidebar-gce-mgr ul:first').children('li:eq(2)').addClass('active');
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/image").html("镜像管理");
 		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/zk") >= 0){
 		// $('#sidebar-zk-mgr').addClass("active");
 		$('#sidebar-gce-mgr').addClass("active open hsub");
-		$('#sidebar-gce-mgr ul:first').children('li:eq(2)').addClass('active');
+		$('#sidebar-gce-mgr ul:first').children('li:eq(3)').addClass('active');
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/zk").html("zookeeper管理");
 		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/timingTask") >= 0){
@@ -379,6 +379,12 @@
 		$('#sidebar-gce-cluster-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/container").html("container管理");
 		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/gce/server") >= 0){
+		// $('#sidebar-image-mgr').addClass("active");
+		$('#sidebar-gce-mgr').addClass("active open hsub");
+		$('#sidebar-gce-mgr ul:first').children('li:eq(1)').addClass('active');
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce").html("GCE管理");
+		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/slb/cluster") >= 0||path.indexOf("/detail/slb/cluster") >= 0){//------------------------新添 slb 集群管理
 		$('#sidebar-slb-mgr').addClass("active open hsub");
 		$('#sidebar-slb-cluster-mgr').addClass("active open");
