@@ -104,19 +104,13 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> listByRegionPrefix(String regionPrefix)
+	public List<VMResource> listByRegionGroup(String regionGroup)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException {
-		Set<String> regions = getRegions();
-		Set<String> matchedRegions = new HashSet<String>();
-		for (String region : regions) {
-			if (region.startsWith(regionPrefix)) {
-				matchedRegions.add(region);
-			}
-		}
+			APINotAvailableException, OpenStackException {
+		Set<String> groupRegions = getGroupRegions(regionGroup);
 
 		List<VMResource> vmResources = new LinkedList<VMResource>();
-		for (String region : matchedRegions) {
+		for (String region : groupRegions) {
 			ServerApi serverApi = novaApi.getServerApi(region);
 			List<Server> resources = serverApi.listInDetail().concat().toList();
 			for (Server resource : resources) {

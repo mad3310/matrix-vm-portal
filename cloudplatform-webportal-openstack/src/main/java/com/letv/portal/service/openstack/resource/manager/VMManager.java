@@ -18,9 +18,9 @@ public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException;
 
-	List<VMResource> listByRegionPrefix(String regionPrefix)
+	List<VMResource> listByRegionGroup(String regionGroup)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException;
+			APINotAvailableException, OpenStackException;
 
 	VMResource get(String region, String id) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException;

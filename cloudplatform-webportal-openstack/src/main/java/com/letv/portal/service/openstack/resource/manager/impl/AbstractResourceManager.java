@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.Closeable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,4 +69,33 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		return groupRegions;
 	}
 
+	public Set<String> getGroupRegions(String regionGroup)
+			throws OpenStackException {
+		String[] regionGroupFragments = regionGroup.split("-");
+		if (regionGroupFragments.length > 3 || regionGroupFragments.length < 1) {
+			throw new OpenStackException("Region group name format error.",
+					"区域组名称格式错误");
+		}
+
+		Set<String> regions = getRegions();
+		Set<String> matchedRegions = new HashSet<String>();
+		for (String region : regions) {
+			String[] regionFragments = region.split("-");
+			if (regionFragments.length != 3) {
+				throw new OpenStackException("Region name format error.",
+						"区域名称格式错误");
+			}
+
+			for (int i = 0; i < regionGroupFragments.length; i++) {
+				if (regionGroupFragments[i].equals(regionFragments[i])) {
+					if (i == regionGroupFragments.length - 1) {
+						matchedRegions.add(region);
+					}
+				} else {
+					break;
+				}
+			}
+		}
+		return matchedRegions;
+	}
 }
