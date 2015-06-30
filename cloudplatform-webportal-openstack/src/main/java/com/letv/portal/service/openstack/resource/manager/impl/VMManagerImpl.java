@@ -237,13 +237,20 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	private void bindFloatingIP(String region, String vmId)
-			throws APINotAvailableException {
+			throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
 			throw new APINotAvailableException(FloatingIPApi.class);
 		}
 		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		
+		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
+			if (vmId.equals(floatingIP.getInstanceId())) {
+				throw new OpenStackException("Virtual machine has been binding public IP, cannot repeat binding.", "虚拟机已经绑定公网IP，不能重复绑定。");
+			}
+		}
+		
 		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
 				.getGlobalPublicNetworkId());
 		floatingIPApi.addToServer(floatingIP.getIp(), vmId);
@@ -251,8 +258,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public void publish(String region, VMResource vm)
-			throws RegionNotFoundException, TaskNotFinishedException,
-			VMStatusException, APINotAvailableException {
+			throws OpenStackException {
 		checkRegion(region);
 
 		// Server server = ((VMResourceImpl) (vm)).server;
