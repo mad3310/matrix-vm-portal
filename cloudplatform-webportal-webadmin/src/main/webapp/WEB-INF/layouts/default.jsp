@@ -383,7 +383,7 @@
 		// $('#sidebar-image-mgr').addClass("active");
 		$('#sidebar-gce-mgr').addClass("active open hsub");
 		$('#sidebar-gce-mgr ul:first').children('li:eq(1)').addClass('active');
-		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce").html("GCE管理");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/gce/server").html("GCE管理");
 		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/slb/cluster") >= 0||path.indexOf("/detail/slb/cluster") >= 0){//------------------------新添 slb 集群管理
 		$('#sidebar-slb-mgr').addClass("active open hsub");
