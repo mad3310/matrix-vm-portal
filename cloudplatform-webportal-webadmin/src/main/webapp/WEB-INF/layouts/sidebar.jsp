@@ -151,12 +151,12 @@
 			</ul>
 		</li>
 		<li id="sidebar-ocs-mgr">
-			<!-- <a href="#" class="dropdown-toggle">
+			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理</span><b class="arrow fa fa-angle-down"></b>
-			</a> -->
-			<a href="#" class="">
-				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理(敬请期待...)</span>
 			</a>
+			<!-- <a href="#" class="">
+				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OCS 管理(敬请期待...)</span>
+			</a> -->
 			<b class="arrow"></b>
 			<ul class="submenu">
 				<li id="sidebar-ocs-cluster-mgr">
@@ -173,25 +173,15 @@
 			</ul>
 		</li>
 		<li id="sidebar-oss-mgr">
-			<!-- <a href="#" class="dropdown-toggle">
+			<a href="#" class="dropdown-toggle">
 				<i class="menu-icon fa fa-cubes"></i> <span class="menu-text">OSS 管理</span><b class="arrow fa fa-angle-down"></b>
-			</a> -->
-			<a href="#" class="">
-				<i class="menu-icon fa fa-cloud-download"></i> <span class="menu-text">OSS 管理(敬请期待...)</span>
 			</a>
+			<!-- <a href="#" class="">
+				<i class="menu-icon fa fa-cubes"></i> <span class="menu-text">OSS 管理(敬请期待...)</span>
+			</a> -->
 			<b class="arrow"></b>
 			<ul class="submenu">
-				<li id="sidebar-oss-cluster-mgr">
-					<a href="#" class="dropdown-toggle">
-						<i class="menu-icon fa fa-sitemap"></i><span class="menu-text">集群管理</span><b class="arrow fa fa-angle-down"></b>
-					</a>
-					<b class="arrow"></b>
-					<ul class="submenu">
-						<li><a href="${ctx}/list/oss/cluster"><i class="menu-icon fa fa-caret-right"></i>Container集群列表</a><b class="arrow"></b></li>
-						<li><a href="${ctx}/list/oss/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
-					</ul>
-				</li>
-				<li><a href=""><i class="menu-icon fa fa-caret-right"></i> OSS列表</a><b class="arrow"></b></li>
+				<li><a href="${ctx}/list/oss"><i class="menu-icon fa fa-caret-right"></i> OSS服务列表</a><b class="arrow"></b></li>
 			</ul>
 		</li>
 		<!-- <li id="sidebar-forewarning-monitor-mgr" >
