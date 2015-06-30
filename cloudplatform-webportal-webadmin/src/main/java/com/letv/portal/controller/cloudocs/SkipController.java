@@ -31,5 +31,27 @@ public class SkipController {
 		mav.setViewName("/cloudocs/ocs_container_list");
 		return mav;
 	}
-	
+	@RequestMapping(value="/detail/ocs/cluster/{clusterId}", method=RequestMethod.GET)   
+	public ModelAndView toMclusterDetail(@PathVariable Long clusterId,ModelAndView mav) {
+		mav.addObject("clusterId",clusterId);
+		mav.setViewName("/cloudocs/ocs_cluster_detail");
+		return mav;
+	}
+	@RequestMapping(value="/list/bucket",method=RequestMethod.GET)
+	public ModelAndView toDbList(ModelAndView mav){
+		mav.setViewName("/cloudocs/ocs_bucket_list");
+		return mav;
+	}
+	@RequestMapping(value="/detail/bucket/{bucketId}",method=RequestMethod.GET)
+	public ModelAndView toDbDetail(@PathVariable Long bucketId,ModelAndView mav){
+		mav.addObject("bucketId",bucketId);
+		mav.setViewName("/cloudocs/ocs_bucket_detail");
+		return mav;
+	}
+	@RequestMapping(value="/audit/bucket/{bucketId}",method=RequestMethod.GET)
+	public ModelAndView toDbAudit(@PathVariable Long bucketId, ModelAndView mav){
+		mav.addObject("bucketId",bucketId);
+		mav.setViewName("/cloudocs/ocs_bucket_audit");
+		return mav;
+	}
 }

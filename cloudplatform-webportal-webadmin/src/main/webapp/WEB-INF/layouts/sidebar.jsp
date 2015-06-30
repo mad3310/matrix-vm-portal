@@ -169,7 +169,7 @@
 						<li><a href="${ctx}/list/ocs/container"><i class="menu-icon fa fa-caret-right"></i>Container列表</a><b class="arrow"></b></li>
 					</ul>
 				</li>
-				<li><a href=""><i class="menu-icon fa fa-cube"></i> Bucket列表</a><b class="arrow"></b></li>
+				<li><a href="${ctx}/list/bucket"><i class="menu-icon fa fa-cube"></i> Bucket列表</a><b class="arrow"></b></li>
 			</ul>
 		</li>
 		<li id="sidebar-oss-mgr">

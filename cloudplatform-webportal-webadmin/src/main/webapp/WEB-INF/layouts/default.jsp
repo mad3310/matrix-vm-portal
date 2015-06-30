@@ -408,6 +408,11 @@
 		$('#sidebar-ocs-cluster-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/ocs/container").html("container管理");
 		$('#main-content-header li:eq(1)').html("Container列表");
+	}else if(path.indexOf("/list/bucket") >= 0 ||path.indexOf("/audit/bucket") >= 0||path.indexOf("/detail/bucket") >= 0){
+		$('#sidebar-ocs-mgr').addClass("active open hsub");
+		$('#sidebar-ocs-mgr').children('ul').children('li:eq(1)').addClass('active');
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/bucket").html("Bucket管理");
+		$('#main-content-header li:eq(1)').html("bucket列表");
 	}else if(path.indexOf("/list/oss/cluster") >= 0||path.indexOf("/detail/oss/cluster") >= 0){//------------------------新添 oss 集群管理
 		$('#sidebar-oss-mgr').addClass("active open hsub");
 		$('#sidebar-oss-cluster-mgr').addClass("active open");
