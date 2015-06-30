@@ -62,9 +62,11 @@ define(function(require){
 	$('#upload').change(function(event) {
 		if(cn.uploadfile(this)){//文件要求后缀和大小均符合
 			var file=cn.getFile(this);
-			var pathvalue=$('.dirPath').text();var path='root';
+			var pathvalue=$('.dirPath:visible').text();var path='root';
 			if(pathvalue){
-				path=$('#dirName').val();
+				if(pathvalue!='当前位置：根目录 /'){
+					path=$('#dirName').val();
+				}
 			}
 			if ($("#progress").length === 0) {
 			    $("body").append($("<div><dt/><dd/></div>").attr("id", "progress"));
