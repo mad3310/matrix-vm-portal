@@ -275,6 +275,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
 			if (vm.getId().equals(floatingIP.getInstanceId())) {
 				floatingIPApi.removeFromServer(floatingIP.getIp(), vm.getId());
+				floatingIPApi.delete(floatingIP.getId());
 			}
 		}
 	}
