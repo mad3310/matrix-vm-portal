@@ -18,6 +18,33 @@ define(function(require){
             $("#monthPurchaseForm").submit();
         })
     }
+    
+    /*按钮组件封装 --begin*/
+    $(".bk-button-primary").click(function () {
+        if(!$(this).hasClass("disabled")){
+            $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
+            $(this).addClass("bk-button-current");
+            if($(this).parent().find(".hide").length > 0 ){
+                var val = $(this).val();
+                $(this).parent().find(".hide").val(val);
+            }
+        }
+        return false;
+    });
+    /*按钮组件封装 --end*/
+    
+    $('.bk-buttontab-password').find('button').on('click',function(e){
+    	var buttonValue = $(e.currentTarget).attr('value');
+    	if(buttonValue==='1'){
+    		$('#vmpw1').closest('.bk-form-row').css('display','block');
+    		$('#vmpw2').closest('.bk-form-row').css('display','block');
+    	}
+    	else{
+    		$('#vmpw1').closest('.bk-form-row').css('display','none');
+    		$('#vmpw2').closest('.bk-form-row').css('display','none');
+    	}
+    	return false;
+    });
 
     /*表单验证 --begin*/
     $("#monthPurchaseForm").bootstrapValidator({
@@ -95,30 +122,55 @@ define(function(require){
     /*加载数据*/
     var DataHandler = require('./dataHandler');
     var dataHandler = new DataHandler(require);
+    var imageGroupData,imageOSLastName;
     function getRegion(){
     	var url = "/ecs/regions";
     	cn.GetData(url,dataHandler.getRegion);
     }
-    $("[name='regionName']").change(function (){
+    $("input[name='regionName']").change(function (){
     	var regionName= $(this).val();
     	$("#buy-region").html(regionName);
     	getVmType(regionName);
-    	getImages(regionName);
+    	initImageOSs(regionName);
     	getNetwork(regionName);
-    })
+    });
+    $("input[name='vmImageOSName']").change(function (){
+    	var imageOSName= $(this).val();
+    	if(imageOSLastName===imageOSName) return;
+    	$('.image-os-selector').removeClass('divselect-unselected');
+		$('.image-version-selector').removeClass('divselect-disabled');
+    	initImageVersions(imageOSName);
+		$('input[name=vmImageVersionName]').val('');
+		$('input[name=vmImageVersionName]').trigger('change');
+		imageOSLastName=imageOSName;
+    });
+    $("input[name='vmImageVersionName']").change(function (){
+    	var imageVersionName= $(this).val();
+    	if(!imageVersionName){
+    		$('.image-version-selector').addClass('divselect-unselected');
+    		$(this).parent().find("span").html('选择版本');
+    	}
+    	else{
+    		$('.image-version-selector').removeClass('divselect-unselected');
+        	$("#buy-image").html(imageOSLastName+' ' +imageVersionName);
+        	$('#vmImageId').val(imageGroupData.data[imageOSLastName][imageVersionName].id);
+    	}
+    });
      $("[name='vmType']").change(function (){
      	$("#buy-type").html($(this).parent().find("span").html());
-    })
-     $("[name='vmImageName']").change(function (){
-     	$("#buy-image").html($(this).parent().find("span").html());
-    })
+    });
     function getVmType(region){
     	var url = "/osf/region/"+ region;
     	cn.GetData(url,dataHandler.getVmType);
     }
-    function getImages(region){
-    	var url="/osi/region/"+region;
-    	cn.GetData(url,dataHandler.getImage);
+    function initImageOSs(region){
+    	var url='/osi/region/'+region+'/group';
+    	cn.GetData(url,dataHandler.getImageOSs).then(function(data){
+    		imageGroupData=data;
+    	});
+    }
+    function initImageVersions(imageOSName){
+    	dataHandler.getImageVersions(imageOSName,imageGroupData);
     }
      function getNetwork(region){
     	var url="/osn/region/"+region;
