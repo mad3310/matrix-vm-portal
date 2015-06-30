@@ -46,7 +46,8 @@ public abstract class AbstractResourceManager implements ResourceManager,
 			final String city = regionStrFragments[1];
 			final int number = Integer.parseInt(regionStrFragments[2]);
 
-			final Region region = new Region(regionStr, country, city, number);
+			final Region region = new Region(regionStr, regionStr, country,
+					country, city, city, number);
 
 			Map<String, Map<Integer, Region>> countryGroupRegions = groupRegions
 					.get(country);

@@ -61,7 +61,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
-					.list(region));
+					.listByRegionPrefix(region));
 		} catch (RegionNotFoundException e) {
 			throw e.matrixException();
 		} catch (ResourceNotFoundException e) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +99,30 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		for (Server resource : resources) {
 			vmResources.add(new VMResourceImpl(region, resource, this,
 					imageManager, openStackUser));
+		}
+		return vmResources;
+	}
+
+	@Override
+	public List<VMResource> listByRegionPrefix(String regionPrefix)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException {
+		Set<String> regions = getRegions();
+		Set<String> matchedRegions = new HashSet<String>();
+		for (String region : regions) {
+			if (region.startsWith(regionPrefix)) {
+				matchedRegions.add(region);
+			}
+		}
+
+		List<VMResource> vmResources = new LinkedList<VMResource>();
+		for (String region : matchedRegions) {
+			ServerApi serverApi = novaApi.getServerApi(region);
+			List<Server> resources = serverApi.listInDetail().concat().toList();
+			for (Server resource : resources) {
+				vmResources.add(new VMResourceImpl(region, resource, this,
+						imageManager, openStackUser));
+			}
 		}
 		return vmResources;
 	}
@@ -244,21 +269,22 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throw new APINotAvailableException(FloatingIPApi.class);
 		}
 		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-		
+
 		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
 			if (vmId.equals(floatingIP.getInstanceId())) {
-				throw new OpenStackException("Virtual machine has been binding public IP, cannot repeat binding.", "虚拟机已经绑定公网IP，不能重复绑定。");
+				throw new OpenStackException(
+						"Virtual machine has been binding public IP, cannot repeat binding.",
+						"虚拟机已经绑定公网IP，不能重复绑定。");
 			}
 		}
-		
+
 		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
 				.getGlobalPublicNetworkId());
 		floatingIPApi.addToServer(floatingIP.getIp(), vmId);
 	}
 
 	@Override
-	public void publish(String region, VMResource vm)
-			throws OpenStackException {
+	public void publish(String region, VMResource vm) throws OpenStackException {
 		checkRegion(region);
 
 		// Server server = ((VMResourceImpl) (vm)).server;

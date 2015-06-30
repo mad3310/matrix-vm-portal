@@ -18,6 +18,10 @@ public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException;
 
+	List<VMResource> listByRegionPrefix(String regionPrefix)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException;
+
 	VMResource get(String region, String id) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException;
 
