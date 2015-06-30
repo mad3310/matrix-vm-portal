@@ -666,12 +666,14 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
                  <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
+                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
+                
                  <webportal.local.http>http://rds3.et.letv.com</webportal.local.http>
                 <webportal.admin.http>http://rds2.et.letv.com</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
@@ -721,18 +723,188 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
                  <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
                  <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
+                
                 <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
                 <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <start.timing.jobs>N</start.timing.jobs>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
+                
+                <!-- fixed and zabbix config -->
+                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
+                <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
+                
+                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.name>cloude_api</zabbix.name>
+                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
+                <zabbix.template.normal>23187</zabbix.template.normal>
+                <zabbix.template.vip>65134</zabbix.template.vip>
+                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
+                
+                <task.executor.size>150</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+            </properties>
+        </profile>
+          <profile>
+            <id>production-app</id>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>wr_app</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
+                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
+                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
+                
+                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
+                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
+                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <start.timing.jobs>N</start.timing.jobs>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
+                
+                <!-- fixed and zabbix config -->
+                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
+                <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
+                
+                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.name>cloude_api</zabbix.name>
+                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
+                <zabbix.template.normal>23187</zabbix.template.normal>
+                <zabbix.template.vip>65134</zabbix.template.vip>
+                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
+                
+                <task.executor.size>150</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+            </properties>
+        </profile>
+          <profile>
+            <id>production-admin</id>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>wr_admin</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
+                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
+                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
+                
+                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
+                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
+                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <start.timing.jobs>N</start.timing.jobs>
+                
+                <webportal.log.path>/var/log</webportal.log.path>
+                
+                <!-- fixed and zabbix config -->
+                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
+                <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
+                
+                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.name>cloude_api</zabbix.name>
+                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
+                <zabbix.template.normal>23187</zabbix.template.normal>
+                <zabbix.template.vip>65134</zabbix.template.vip>
+                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
+                
+                <task.executor.size>150</task.executor.size>
+                
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+            </properties>
+        </profile>
+          <profile>
+            <id>production-task</id>
+            <properties>
+                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
+                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>wr_task</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
+                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
+                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
+                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
+                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
+                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
+                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
+                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
+                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
+                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
+                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
+                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
+                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.9</matrix.gce.jetty.default.image>
+                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
+                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
+                
+                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
+                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
+                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
