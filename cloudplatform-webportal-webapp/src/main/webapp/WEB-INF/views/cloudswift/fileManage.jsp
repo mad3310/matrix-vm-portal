@@ -36,7 +36,7 @@
 		<form enctype="multipart/form-data" id='form-upload' method="post" action="/oss/${swiftId}/file">
 			<div class="btn btn-success btn-file"> 
 				<i class="fa fa-cloud-upload"></i> &nbsp;上传文件
-				<input id="upload" type="file" name="file" class="file">
+				<input id="upload" type="file" name="file" class="file" autocomplete="off">
 				<input id="dir" type="hidden" name="directory" >
 			</div>
 			<button type="button" class="btn btn-primary" data-backdrop="false" data-toggle="modal" data-target="#addDirModal" id="test"><i class="fa fa-plus"></i> 新建文件夹</button>
@@ -106,10 +106,10 @@
       <form class="form-horizontal" name="form" id="createDirform" method="post" >
       <div class="modal-body">
         	<div class="form-group">
-        		<label class="col-xs-3 col-sm-3 control-label">文件夹名：</label>
-        		<div class="col-xs-9 col-sm-9">
+        		<label class="col-xs-12 col-sm-3 control-label">文件夹名：</label>
+        		<div class="col-xs-12 col-sm-9">
         			<div class="row">
-        				<div class="col-xs-7 col-sm-7">
+        				<div class="col-xs-10 col-sm-7">
         					<input type="text" class="form-control" name="folderName" id="floderName">
         				</div>
         			<!-- <div class="col-xs-5 col-sm-5 text-danger">
@@ -118,10 +118,10 @@
         				</div>
         			</div> -->
         		</div>
-        	<div class="row">
-        		<div class="col-xs-12 col-sm-12">
-        			<p class="help-tip">文件夹命名规范：<br>» 1. 只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）<br>» 2. 只能以字母、数字或者中文开头<br>» 3. 文件夹的长度限制在1-254之间<br>» 4. Object总长度必须在1-1023之间</p></div>
-        		</div>
+	        	<div class="row">
+	        		<div class="col-xs-12 col-sm-12">
+	        			<p class="help-tip">文件夹命名规范：<br>» 1. 只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）<br>» 2. 只能以字母、数字或者中文开头<br>» 3. 文件夹的长度限制在1-254之间<br>» 4. Object总长度必须在1-1023之间</p></div>
+	        	</div>
         	</div>
         </div>
       </div>

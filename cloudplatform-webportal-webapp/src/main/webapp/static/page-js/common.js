@@ -1118,12 +1118,12 @@ define(function(require,exports,module){
             }
             var filemaxsize=1024*1024*1024*2;//G
             var filesuffix=filePath.substring(filePath.indexOf('.'));
-            if(fileType[filesuffix]){
-                //符合要求
-            }else{
-                alert('不允许此种类型');
-                return false;
-            }
+            // if(fileType[filesuffix]){
+            //     //符合要求
+            // }else{
+            //     alert('不允许此种类型');
+            //     return false;
+            // }
             if (isIE && !target.files) { 
                 var filePath = target.value; 
                 var fileSystem = new ActiveXObject("Scripting.FileSystemObject"); 

@@ -17,7 +17,7 @@
 		});
 	</script>
 		<div class="widget-header hidden-md hidden-lg">
-			<h5 class="widget-title">Bucket查询条件</h5>
+			<h5 class="widget-title">OSS查询条件</h5>
 			<div class="widget-toolbar">
 				<a href="#" data-action="collapse">
 					<i class="ace-icon fa fa-chevron-down"></i>
@@ -26,17 +26,14 @@
 		</div>
 		<div class="widget-body">
 			<div class="page-header">
-				<!-- <h3>Bucket列表	</h3> -->
+				<!-- <h3>OSS列表	</h3> -->
 			    <div class="input-group pull-right">
 					<form class="form-inline">
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="dbName"
-								placeholder="Bucket名称">
+								placeholder="OSS名称">
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbMcluster"
-								placeholder="所属cluster">
-						</div>
+						
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="dbPhyMcluster"
 								placeholder="所属物理机集群">
@@ -79,9 +76,9 @@
             				<form class="form-horizontal" role="form">
             					
             					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="dbName"><b>Bucket名称</b></lable>
+            						<lable class="col-sm-4 control-label" for="dbName"><b>OSS名称</b></lable>
             						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="dbName" placeholder="Bucket名称">
+            							<input type="text" class="form-control" id="dbName" placeholder="OSS名称">
             						</div>
             						<label class="control-label"><i class="ace-icon fa fa-database blue bigger-125"></i></label>
             					</div>
@@ -137,7 +134,7 @@
 
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
-				<h5 class="widget-title">Bucket列表</h5>
+				<h5 class="widget-title">OSS列表</h5>
 			</div>
 			<div class="widget-body">
 				<div class="widget-main no-padding">
@@ -150,8 +147,7 @@
 									<span class="lbl"></span>
 								</label>
 							</th>
-							<th>Bucket名称</th>
-							<th  class="hidden-480">所属cluster</th>
+							<th>OSS名称</th>
 							<th  class="hidden-480">所属物理机集群</th>
 							<th>所属用户</th>
 							<th  class="hidden-480">
@@ -216,4 +212,4 @@
 </div>
 <!-- /.page-content-area -->
 
-<script src="${ctx}/static/scripts/pagejs/ocs/ocs_bucket_list.js"></script>
+<script src="${ctx}/static/scripts/pagejs/oss/oss_list.js"></script>

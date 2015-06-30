@@ -110,12 +110,12 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'dbName':dbName,
-			'mclusterName':mclusterName,
-			'hclusterName':hclusterName,
-			'userName':userName,
-			/*'createTime':createTime,*/
-			'status':status
+			// 'dbName':dbName,
+			// 'mclusterName':mclusterName,
+			// 'hclusterName':hclusterName,
+			// 'userName':userName,
+			// /*'createTime':createTime,*/
+			// 'status':status
 		}
 	
 	$("#tby tr").remove();
@@ -123,7 +123,7 @@ function queryByPage() {
 	$.ajax({
 		cache:false,
 		type : "get",
-		url : queryUrlBuilder("/db",queryCondition),
+		url : queryUrlBuilder("/ocs",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		contentType : "application/json; charset=utf-8",
 		success : function(data) {
@@ -134,7 +134,7 @@ function queryByPage() {
 			var totalPages = data.data.totalPages;
 			
 			for (var i = 0, len = array.length; i < len; i++) {
-				var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
+				var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].cbaseClusterId+"\"\> ");
 				var td1 = $("<td class=\"center\">"
 								+"<label class=\"position-relative\">"
 								+"<input type=\"checkbox\" class=\"ace\"/>"
@@ -144,20 +144,20 @@ function queryByPage() {
 				var td2;
 				if(array[i].status == 6){
 					td2 = $("<td>"
-							+ "<a class=\"link\"  href=\"/detail/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
-							+ "</td>");
+							+ "<a class=\"link\" href='#'>"+array[i].bucketName+"</a>"
+							+ "</td>");//href=\"/detail/bucket/"+array[i].id+"\"
 				}else if(array[i].status == 0 ||array[i].status == 3){	
 					td2 = $("<td>"
-							+ "<a class=\"link\" class=\"danger\" href=\"/audit/db/"+array[i].id+"\">"+array[i].dbName+"</a>"
-							+ "</td>");
+							+ "<a class=\"link\" class=\"danger\" href='#'>"+array[i].bucketName+"</a>"
+							+ "</td>");//href=\"/audit/bucket/"+array[i].id+"\"
 				}else{
 					td2 = $("<td>"
-							+ "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].dbName+"</a>"
+							+ "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].bucketName+"</a>"
 							+ "</td>");
 				}
-				if(array[i].mcluster){
+				if(array[i].cbaseCluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\" href=\"/detail/mcluster/" + array[i].mclusterId+"\">"+array[i].mcluster.mclusterName+"</a>"
+							+ "<a class=\"link\" href=\"/detail/ocs/cluster/" + array[i].cbaseClusterId+"\">"+array[i].cbaseCluster.cbaseClusterName+"</a>"
  							+ "</td>");
 				} else {
 					var td3 = $("<td class='hidden-480'> </td>");
@@ -170,7 +170,7 @@ function queryByPage() {
 					var td4 = $("<td class='hidden-480'> </td>");
 				}
 				var td5 = $("<td>"
-						+ array[i].user.userName
+						+ array[i].createUserModel.userName
 						+ "</td>");
 				var td6 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)

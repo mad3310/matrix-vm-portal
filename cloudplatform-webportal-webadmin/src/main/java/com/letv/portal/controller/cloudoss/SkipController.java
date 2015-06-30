@@ -20,16 +20,9 @@ import com.letv.common.result.ResultObject;
  */
 @Controller("ossSkip")
 public class SkipController {
-	
-	@RequestMapping(value ="/list/oss/cluster",method=RequestMethod.GET)
-	public ModelAndView toMclusterList(ModelAndView mav,HttpServletRequest request){
-		mav.setViewName("/cloudoss/oss_cluster_list");
+	@RequestMapping(value ="/list/oss",method=RequestMethod.GET)
+	public ModelAndView toOssList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/cloudoss/oss_list");
 		return mav;
 	}
-	@RequestMapping(value ="/list/oss/container",method=RequestMethod.GET)
-	public ModelAndView toContainerList(ModelAndView mav,HttpServletRequest request){
-		mav.setViewName("/cloudoss/oss_container_list");
-		return mav;
-	}
-	
 }

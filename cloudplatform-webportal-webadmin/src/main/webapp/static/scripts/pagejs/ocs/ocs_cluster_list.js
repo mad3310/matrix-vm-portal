@@ -107,11 +107,11 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'mclusterName':mclusterName,
-			'hclusterName':hclusterName,
-			'userName':userName,
-			/*'createTime':createTime,*/
-			'status':status
+			// 'mclusterName':mclusterName,
+			// 'hclusterName':hclusterName,
+			// 'userName':userName,
+			// /*'createTime':createTime,*/
+			// 'status':status
 		}
 	
 	$("#tby tr").remove();
@@ -121,7 +121,7 @@ function queryByPage() {
 		cache:false,
 		type : "get",
 		//url : "/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
-		url : queryUrlBuilder("/mcluster/list",queryCondition),
+		url : queryUrlBuilder("/ocs/cluster",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -138,7 +138,7 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/ocs/cluster/"+array[i].id+"\">"+array[i].cbaseClusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
 					var td3 = $("<td class='hidden-480'>"
@@ -187,7 +187,7 @@ function queryByPage() {
 				}
 				
 				if(array[i].status == 3){
-					var td8 = $("<td>"
+					var td8 = $("<td class='hidden'>"
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
@@ -224,7 +224,7 @@ function queryByPage() {
 							+ "</td>"
 					);
 				}else{
-					var td8 = $("<td>"
+					var td8 = $("<td class='hidden'>"
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
 							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"

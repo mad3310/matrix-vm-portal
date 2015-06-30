@@ -22,9 +22,9 @@ define(function(require,exports,module){
     DataHandler.prototype = {
         DbListHandler : function(data){
         	$(".data-tr").remove();
-        	
             var $tby = $('#tby');
             var array = data.data.data;
+            $('#waitTime').val(cn.dbListRefreshTime);
             if(array.length == 0){
             	cn.emptyBlock($tby);
             	if($("#paginatorBlock").length > 0){
@@ -53,6 +53,9 @@ define(function(require,exports,module){
                     	var td3 = $("<td>"
                                 + cn.TranslateStatus(array[i].status)
                                 +"</td>");
+                      if(array[i].status==2){
+                        $('#waitTime').val(5000);
+                      }
                     var td4 = $("<td class='hidden-xs'>"
                             + "<span>"+array[i].storeSize+"GB</span>"
                             + "</td>");
