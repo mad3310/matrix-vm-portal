@@ -104,8 +104,43 @@
 														<input id="vmName" class="form-control" name="vmName" type="text">
 													</div>
 											</div>
+											<div class="bk-form-row col-xs-12 col-sm-12">
+												<label class="bk-form-row-name">地域：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab bk-buttontab-regioncitys">
+															<button class=" bk-button bk-button-primary bk-button-current">
+																<div>
+																	<span>北京</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled hidden-xs">
+																<div>
+																	<span>成都</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled hidden-xs">
+																<div>
+																	<span>青岛</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled hidden-xs">
+																<div>
+																	<span>香港</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary disabled hidden-xs">
+																<div>
+																	<span>深圳</span>
+																</div>
+															</button>
+															<input id="regionCityName" type="hidden" value="">
+														</div>
+													</div>
+												</div>
+											</div>
 											<div class="bk-form-row">
-												<label class="bk-form-row-name">区域：</label>
+												<label class="bk-form-row-name">可用区：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left">
@@ -140,51 +175,101 @@
 													</div>
 												</div>
 											</div>
-											<div class="bk-form-row">
-											<label class="bk-form-row-name">镜像名称：</label>
-											<div class="bk-form-row-cell">
-												<div class="bk-form-row-li clearfix">
-													<div class="pull-left">
-														<span class="sleBG"> <span class="sleHid">
-																<div class="divselect">
-																	<span>选择镜像</span>
-																	<ul style="display: none;">
-																	</ul>
-																	<input name="vmImageName" type="hidden" value="" />
-																</div>
-														</span>
-														</span> <span class="bk-select-arrow"></span>
-													</div>
-												</div>
-											</div>
-										</div>
+											
 										</div>
 									</dd>
 								</dl>
-								<!-- <dl class="bk-group">
+								<dl class="bk-group">
 									<dt class="bk-group-title">网络</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">选择网络：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix ">
-														<div style="margin-top: 5px;">
-															<select id="networkSelecter" multiple="multiple">
-														    </select>
+											<div class="bk-form-row form-group col-xs-12 col-sm-12 hidden-xs">
+												<label class="bk-form-row-name col-xs-12 col-sm-2" style="padding-left: 0px;">公网IP：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab">
+															<input name="isCreatePublicIP" type="text" class="hide" value="0">
+															<button class="bk-button bk-button-primary bk-button-current" value="0">
+																<div>
+																	<span>创建后设置</span>
+																</div>
+															</button>
+															<button class=" bk-button bk-button-primary" value="1">
+																<div>
+																	<span>立即设置</span>
+																</div>
+															</button>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</dd>
-								</dl> -->
+								</dl>
+								<dl class="bk-group">
+									<dt class="bk-group-title">镜像</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">镜像名称：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left image-os-selector divselect-unselected">
+															<span class="sleBG"> <span class="sleHid">
+																	<div class="divselect">
+																		<span>选择操作系统类别</span>
+																		<ul class="bk-select-options">
+																		</ul>
+																		<input name="vmImageOSName" type="hidden" value="" />
+																	</div>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+														<div class="pull-left image-version-selector divselect-disabled">
+															<span class="sleBG"> <span class="sleHid">
+																	<div class="divselect">
+																		<span>选择版本</span>
+																		<ul class="bk-select-options">
+																		</ul>
+																		<input name="vmImageVersionName" type="hidden" value="" />
+																	</div>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+														<input id="vmImageId" type="hidden" value="" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</dd>
+								</dl>
 								<dl class="bk-group">
 									<dt class="bk-group-title">安全</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div>
+											<div class="bk-form-row form-group col-xs-12 col-sm-12 hidden-xs">
+												<label class="bk-form-row-name col-xs-12 col-sm-2" style="padding-left: 0px;">设置密码：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab bk-buttontab-password">
+															<input name="isCreatePassword" type="text" class="hide" value="1">
+															<button class=" bk-button bk-button-primary bk-button-current" value="1">
+																<div>
+																	<span>立即设置</span>
+																</div>
+															</button>
+															<button class="bk-button bk-button-primary" value="0">
+																<div>
+																	<span>创建后设置</span>
+																</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">管理员密码：</label>
 													<div class="col-sm-2 row">
@@ -200,6 +285,7 @@
 										</div>
 									</dd>
 								</dl>
+																
 							</div>
 						</div>
 						</form>

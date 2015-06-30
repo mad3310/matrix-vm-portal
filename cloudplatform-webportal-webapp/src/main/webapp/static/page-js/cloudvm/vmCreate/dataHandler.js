@@ -32,16 +32,30 @@ define(function(require,exports,module){
             ul.html(lis);
              ul.click().find("li").first().click();
         },
-        getImage:function(data){
-        	var images = data.data;
-           var ul = $("[name='vmImageName']").parent('div').find('ul');
+        getImageOSs:function(data){
+        	if(!data || !data.data) return;
+        	var imageOSs = Object.keys(data.data);//data.data;
+           var ul = $("[name='vmImageOSName']").parent('div').find('ul');
            var lis = '';
-            for(var i= 0,len=images.length;i<len;i++){
-                var li = "<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+images[i].id+"\">"+images[i].name+"</a></li>";
+            for(var i= 0,len=imageOSs.length;i<len;i++){
+                var li = "<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+imageOSs[i]+"\">"+imageOSs[i]+"</a></li>";
                 lis=lis+li;
             }
             ul.html(lis);
-             ul.click().find("li").first().click();
+            return data;
+            //ul.click().find("li").first().click();
+        },
+        getImageVersions:function(imageOSName,data){
+        	if(!data || !data.data) return;
+        	var imageVersions = Object.keys(data.data[imageOSName]);
+           var ul = $("[name='vmImageVersionName']").parent('div').find('ul');
+           var lis = '';
+            for(var i= 0,len=imageVersions.length;i<len;i++){
+                var li = "<li class=\"bk-select-option\"><a href=\"javascript:;\" selectid=\""+imageVersions[i]+"\">"+imageVersions[i]+"</a></li>";
+                lis=lis+li;
+            }
+            ul.html(lis);
+            //ul.click().find("li").first().click();
         },
         getNetwork:function(data){
         	var network = data.data;
