@@ -255,6 +255,30 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		return vmResourceImpl;
 	}
 
+	@Override
+	public void unpublish(String region, VMResource vm)
+			throws RegionNotFoundException, APINotAvailableException,
+			TaskNotFinishedException, VMStatusException, OpenStackException {
+		checkRegion(region);
+
+		if (vm.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
+			if (vm.getId().equals(floatingIP.getInstanceId())) {
+				floatingIPApi.removeFromServer(floatingIP.getIp(), vm.getId());
+			}
+		}
+	}
+
 	private void bindFloatingIP(String region, String vmId)
 			throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi

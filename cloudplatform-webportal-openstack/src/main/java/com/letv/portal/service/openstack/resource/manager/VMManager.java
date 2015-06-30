@@ -33,6 +33,10 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, TaskNotFinishedException,
 			VMStatusException, OpenStackException;
 
+	void unpublish(String region, VMResource vm)
+			throws RegionNotFoundException, APINotAvailableException,
+			TaskNotFinishedException, VMStatusException, OpenStackException;
+
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException, APINotAvailableException;
 

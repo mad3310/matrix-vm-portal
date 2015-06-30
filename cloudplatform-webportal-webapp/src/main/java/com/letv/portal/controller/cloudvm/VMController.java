@@ -153,6 +153,20 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/vm-unpublish", method = RequestMethod.POST)
+	public @ResponseBody ResultObject unpublish(@PathVariable String region,
+			@RequestParam String vmId) {
+		ResultObject result = new ResultObject();
+		try {
+			VMManager vmManager = Util.session(sessionService).getVMManager();
+			VMResource vmResource = vmManager.get(region, vmId);
+			vmManager.unpublish(region, vmResource);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/region/{region}/vm-delete", method = RequestMethod.POST)
 	public @ResponseBody ResultObject delete(@PathVariable String region,
 			@RequestParam String vmId) {
