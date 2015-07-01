@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.log.LogCluster;
 import com.letv.portal.model.log.LogContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -41,7 +42,7 @@ public class TaskLogConfigOpenSSLServiceImpl extends BaseTask4LogServiceImpl imp
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("ip", containers.get(0).getIpAddr());
 		
-		String result = this.logPythonService.configOpenSSL(map,nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
+		ApiResultObject result = this.logPythonService.configOpenSSL(map,nodeIp1,port, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -55,7 +56,7 @@ public class TaskContainerPostInfo2ServiceImpl extends BaseTask4RDSServiceImpl i
 		
 		String nodeName3 = containers.get(2).getContainerName();
 		
-		String result = this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password);
+		ApiResultObject result = this.pythonService.postContainerInfo(nodeIp3, nodeName3, username, password);
 		
 		tr = analyzeRestServiceResult(result);
 		

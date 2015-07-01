@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
@@ -46,7 +47,7 @@ public class TaskMclusterInitZookeeperServiceImpl extends BaseTask4RDSServiceImp
 			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
 		String nodeIp1 = containers.get(0).getIpAddr();
 		
-		String result = this.pythonService.initZookeeper(nodeIp1);
+		ApiResultObject result = this.pythonService.initZookeeper(nodeIp1);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

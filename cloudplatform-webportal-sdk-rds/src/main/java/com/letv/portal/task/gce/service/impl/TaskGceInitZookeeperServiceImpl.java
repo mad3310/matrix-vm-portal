@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -37,8 +38,8 @@ public class TaskGceInitZookeeperServiceImpl extends BaseTask4GceServiceImpl imp
 		Map<String, String> zkParm = new HashMap<String,String>();
 		zkParm.put("zkAddress", zk.getIp());
 		zkParm.put("zkPort", zk.getPort());
-		String result = this.gcePythonService.initZookeeper(nodeIp1,port,zkParm);
-		tr = analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.initZookeeper(nodeIp1,port,zkParm);
+		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);
 		return tr;

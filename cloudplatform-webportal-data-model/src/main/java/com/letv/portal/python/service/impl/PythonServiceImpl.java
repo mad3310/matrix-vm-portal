@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.HttpClient;
-import com.letv.common.util.HttpsClient;
 import com.letv.portal.enumeration.DbUserRoleStatus;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
@@ -26,32 +26,32 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String GBALANCER_PORT = ":9888";	
 	
 	@Override
-	public String createContainer(String mclusterName,String ip,String username,String password) {
+	public ApiResultObject createContainer(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String createContainer(Map<String,String> params,String ip,String username,String password) {
+	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
+	public ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(mclusterName);
 		String result = HttpClient.get(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initZookeeper(String nodeIp) {
+	public ApiResultObject initZookeeper(String nodeIp) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/conf");
 		
@@ -59,11 +59,11 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("zkAddress", "127.0.0.1");
 		
 		String result = HttpClient.post(url.toString(), map);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initUserAndPwd4Manager(String nodeIp,String username,String password) {
+	public ApiResultObject initUserAndPwd4Manager(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/admin/user");
 		
@@ -72,11 +72,11 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("adminPassword", password);
 		
 		String result = HttpClient.post(url.toString(), map);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password) {
+	public ApiResultObject postMclusterInfo(String mclusterName,String nodeIp,String nodeName,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster");
 		
@@ -86,20 +86,20 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dataNodeName", nodeName);
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initMcluster(String nodeIp,String username,String password) {
+	public ApiResultObject initMcluster(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/init?forceInit=false");
 	
 		String result = HttpClient.get(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String postContainerInfo(String nodeIp,String nodeName,String username,String password) {
+	public ApiResultObject postContainerInfo(String nodeIp,String nodeName,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/node");
 		
@@ -108,19 +108,19 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dataNodeName", nodeName);
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String syncContainer(String nodeIp,String username,String password) {
+	public ApiResultObject syncContainer(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/sync");
 		String result = HttpClient.get(url.toString());
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startMcluster(String nodeIp,String username,String password) {
+	public ApiResultObject startMcluster(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/start");
 
@@ -128,10 +128,10 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("cluster_flag", "new");
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String restartMcluster(String nodeIp,String username,String password) {
+	public ApiResultObject restartMcluster(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/start");
 		
@@ -139,20 +139,20 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("cluster_flag", "old");
 		
 		String result = HttpClient.post(url.toString(), map,1000,2000,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String checkContainerStatus(String nodeIp,String username,String password) {
+	public ApiResultObject checkContainerStatus(String nodeIp,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/cluster/check/online_node");
 		String result = HttpClient.get(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 		
 	}
 
 	@Override
-	public String createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
+	public ApiResultObject createDb(String nodeIp,String dbName,String dbUserName,String ipAddress,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/db");
 		
@@ -162,12 +162,12 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("ip_address", "127.0.0.1");
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 
 	@Override
-	public String createDbUser(DbUserModel dbUser, String dbName,String nodeIp,String username, String password) {
+	public ApiResultObject createDbUser(DbUserModel dbUser, String dbName,String nodeIp,String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser");
 				
@@ -192,11 +192,11 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("max_user_connections", String.valueOf(dbUser.getMaxUserConnections()));
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password) {
+	public ApiResultObject startGbalancer(String nodeIp,String user,String pwd,String server,String ipListPort,String port,String args,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(GBALANCER_PORT).append("/glb/start");
 		
@@ -209,62 +209,62 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("service",server);
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
-	public String deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
+	public ApiResultObject deleteDbUser(DbUserModel dbUserModel,String dbName,String nodeIp,String username, String password){
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(URL_PORT).append("/dbUser/").append(dbName).append("/").append(dbUserModel.getUsername()).append("/").append(URLEncoder.encode(dbUserModel.getAcceptIp()));
 		String result = HttpClient.detele(url.toString(), username, password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String removeMcluster(String mclusterName,String ip,String username,String password) {
+	public ApiResultObject removeMcluster(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster?containerClusterName=").append(mclusterName);
 		String result = HttpClient.detele(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startMcluster(String mclusterName,String ip,String username,String password) {
+	public ApiResultObject startMcluster(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/start");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String stopMcluster(String mclusterName,String ip,String username,String password) {
+	public ApiResultObject stopMcluster(String mclusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/stop");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerClusterName", mclusterName);
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startContainer(String containerName,String ip,String username,String password) {
+	public ApiResultObject startContainer(String containerName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/start");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String stopContainer(String containerName,String ip,String username,String password) {
+	public ApiResultObject stopContainer(String containerName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/container/stop");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("containerName", containerName);
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
@@ -284,18 +284,18 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
-	public String initHcluster(String hostIp) {
+	public ApiResultObject initHcluster(String hostIp) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(hostIp).append(URL_PORT).append("/admin/user");
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("adminUser", "root");
 		map.put("adminPassword", "root");
 		String result = HttpClient.post(url.toString(), map);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String createHost(HostModel hostModel) {
+	public ApiResultObject createHost(HostModel hostModel) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(hostModel.getHostIp()).append(URL_PORT).append("/serverCluster");
 		Map<String,String> map = new HashMap<String,String>();
@@ -303,7 +303,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
 		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());	
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override

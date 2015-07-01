@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -42,7 +43,7 @@ public class TaskCbaseRebalanceServiceImpl extends BaseTask4CbaseServiceImpl
 
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		String result = this.cbasePythonService.rebalanceCluster(nodeIp1,
+		ApiResultObject result = this.cbasePythonService.rebalanceCluster(nodeIp1,
 				super.getCbaseManagePort(), knownNodes.toString(),
 				cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
@@ -52,19 +53,19 @@ public class TaskCbaseRebalanceServiceImpl extends BaseTask4CbaseServiceImpl
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
 		if (result == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
+		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result.getResult());
 		if (isSucess) {
 			tr.setResult("Rebalance Operation SUCCESS");
 		} else {
-			tr.setResult("Rebalance Operation FAILURE");
+			tr.setResult("Rebalance Operation FAILURE:" + result.getUrl());
 		}
 		tr.setSuccess(isSucess);
 		return tr;

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.python.service.ILogPythonService;
  
@@ -19,32 +20,32 @@ public class LogPythonServiceImpl implements ILogPythonService{
 	private final static String URL_PORT = ":8888";	
 	
 	@Override
-	public String createContainer(Map<String,String> params,String ip,String username,String password) {
+	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
+	public ApiResultObject checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(gceClusterName);
 		String result = HttpClient.get(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initZookeeper(String nodeIp,String port,Map<String,String> params) {
+	public ApiResultObject initZookeeper(String nodeIp,String port,Map<String,String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/conf");
 		
 		String result = HttpClient.post(url.toString(), params);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initUserAndPwd4Manager(String nodeIp,String port,String username,String password) {
+	public ApiResultObject initUserAndPwd4Manager(String nodeIp,String port,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/user");
 		
@@ -53,70 +54,70 @@ public class LogPythonServiceImpl implements ILogPythonService{
 		map.put("adminPassword", password);
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,
+	public ApiResultObject configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,
 			String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/openssl/config");
 		
 		String result = HttpClient.post(url.toString(), map,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String cpOpenSSL(Map<String, String> params, String nodeIp1,
+	public ApiResultObject cpOpenSSL(Map<String, String> params, String nodeIp1,
 			String port, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/openssl/copy");
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String configLogStashForwarder(Map<String, String> params, String nodeIp1,
+	public ApiResultObject configLogStashForwarder(Map<String, String> params, String nodeIp1,
 			String port, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash_forwarder/config");
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startLogStashForwarder(Map<String, String> map,
+	public ApiResultObject startLogStashForwarder(Map<String, String> map,
 			String nodeIp1, String port, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash_forwarder/restart");
 		String result = HttpClient.post(url.toString(), map,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startLogStash(String nodeIp1, String port, String adminUser,
+	public ApiResultObject startLogStash(String nodeIp1, String port, String adminUser,
 			String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/logstash/start");
 		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startElesticSearch(String nodeIp1, String port,
+	public ApiResultObject startElesticSearch(String nodeIp1, String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/elasticsearch/start");
 		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startKibana(String nodeIp1, String port, String adminUser,
+	public ApiResultObject startKibana(String nodeIp1, String port, String adminUser,
 			String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/kibana/start");
 		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	

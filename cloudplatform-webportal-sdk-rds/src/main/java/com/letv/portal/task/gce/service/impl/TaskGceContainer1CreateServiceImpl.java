@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
@@ -47,11 +48,10 @@ public class TaskGceContainer1CreateServiceImpl extends BaseTask4GceServiceImpl 
 		map.put("dataNodeName", container.getContainerName());
 		map.put("dataNodeIp", container.getHostIp());
 		map.put("dataNodeExternalPort", container.getMgrBindHostPort());
-		
-		String result = this.gcePythonService.createContainer1(map,nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
-		tr = analyzeRestServiceResult(result);
+		ApiResultObject resultObject =this.gcePythonService.createContainer1(map,nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		tr = analyzeRestServiceResult(resultObject);
 		if(tr.isSuccess()) {
-			Map data = (Map) ((Map)transToMap(result).get("response")).get("data");
+			Map data = (Map) ((Map)transToMap(resultObject.getResult()).get("response")).get("data");
 			container.setContainerUuid((String)data.get("uuid"));
 			this.gceContainerService.updateBySelective(container);
 		}

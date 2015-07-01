@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
@@ -63,7 +64,7 @@ public class TaskContainerCheckStatusServiceImpl extends BaseTask4RDSServiceImpl
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String result = pythonService.checkContainerStatus(nodeIp1, username, password);
+		ApiResultObject result = pythonService.checkContainerStatus(nodeIp1, username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		Long start = new Date().getTime();
@@ -82,12 +83,12 @@ public class TaskContainerCheckStatusServiceImpl extends BaseTask4RDSServiceImpl
 	}
 	
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result);
+		Map<String, Object> map = transToMap(result.getResult());
 		if(map == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 		Map<String,Object> meta = (Map<String, Object>) map.get("meta");
@@ -101,7 +102,7 @@ public class TaskContainerCheckStatusServiceImpl extends BaseTask4RDSServiceImpl
 		if(isSucess) {
 			tr.setResult((String) response.get("message"));
 		} else {
-			tr.setResult((String) meta.get("errorType") +":"+ (String) meta.get("errorDetail"));
+			tr.setResult((String) meta.get("errorType") +",the api url:" + result.getUrl());
 		}
 		tr.setSuccess(isSucess);
 		return tr;

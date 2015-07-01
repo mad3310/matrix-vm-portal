@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
@@ -172,43 +173,43 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	
 	private boolean restart(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.restart(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
-		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.restart(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.gceServerService.updateBySelective(slb);
-			throw new TaskExecuteException("SLB service restart error:" + tr.getResult());
+			throw new TaskExecuteException("SLB service restart error:" + tr.getResult()+",api url:" + resultObject.getUrl());
 		}
 		return tr.isSuccess();
 	}
 	private boolean stop(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.stop(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
-		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.stop(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.gceServerService.updateBySelective(slb);
-			throw new TaskExecuteException("GCE service stop error:" + tr.getResult());
+			throw new TaskExecuteException("GCE service stop error:" + tr.getResult()+",api url:" + resultObject.getUrl());
 		}
 		return tr.isSuccess();
 	}
 	private boolean start(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
-		String result = this.gcePythonService.start(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
-		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.start(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
 		if(!tr.isSuccess()) {
 			gce.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.gceServerService.updateBySelective(gce);
-			throw new TaskExecuteException("GCE service start error:" + tr.getResult());
+			throw new TaskExecuteException("GCE service start error:" + tr.getResult()+",api url:" + resultObject.getUrl());
 		}
 		return tr.isSuccess();
 	}
 	private String checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
 		 TaskResult tr = new TaskResult();
-		String result = this.gcePythonService.checkStatus(containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
-		tr = this.baseGceTaskService.analyzeRestServiceResult(result);
+		 ApiResultObject resultObject =  this.gcePythonService.checkStatus(containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+		tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
 		if(!tr.isSuccess()) {
 			gce.setStatus(SlbStatus.ABNORMAL.getValue());
 			this.gceServerService.updateBySelective(gce);
-			throw new TaskExecuteException("GCE service check start error:" + tr.getResult());
+			throw new TaskExecuteException("GCE service check start error:" + tr.getResult() +",api url:" + resultObject.getUrl());
 		}
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		return (String) ((Map<String,Object>)params.get("data")).get("status");

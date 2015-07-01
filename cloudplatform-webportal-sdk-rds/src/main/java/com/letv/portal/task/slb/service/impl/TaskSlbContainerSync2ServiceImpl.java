@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -36,7 +37,7 @@ public class TaskSlbContainerSync2ServiceImpl extends BaseTask4SlbServiceImpl im
 		
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("clusterUUID", containers.get(0).getContainerUuid());
-		String result = this.slbPythonService.syncContainer2(map,nodeIp2,cluster.getAdminUser(),cluster.getAdminPassword());
+		ApiResultObject result = this.slbPythonService.syncContainer2(map,nodeIp2,cluster.getAdminUser(),cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

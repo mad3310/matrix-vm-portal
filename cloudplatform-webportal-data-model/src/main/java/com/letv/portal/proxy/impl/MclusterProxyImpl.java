@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.exception.PythonException;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.enumeration.MclusterType;
@@ -72,7 +73,6 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 	public void insertAndBuild(MclusterModel mclusterModel) {
 		mclusterModel.setCreateUser(sessionService.getSession().getUserId());
 		this.insert(mclusterModel);
-		buildTaskService.buildMcluster(mclusterModel);
 	}
 
 	@Override
@@ -126,7 +126,8 @@ public class MclusterProxyImpl extends BaseProxyImpl<MclusterModel> implements
 		ContainerModel container = this.containerService.selectValidVipContianer(mclusterId, "mclustervip",null);
 		if(container == null)
 			throw new ValidateException("vip节点不存在");
-		String result = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+		ApiResultObject resultObject = this.pythonService.restartMcluster(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+		String result = resultObject.getResult();
 		if(StringUtils.isEmpty(result)) {
 			throw new PythonException("call restart db service API error:connect out");
 		}

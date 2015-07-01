@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -54,7 +55,7 @@ public class TaskContainerSyncServiceImpl extends BaseTask4RDSServiceImpl implem
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String result = this.pythonService.syncContainer(nodeIp2, username, password);
+		ApiResultObject result = this.pythonService.syncContainer(nodeIp2, username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

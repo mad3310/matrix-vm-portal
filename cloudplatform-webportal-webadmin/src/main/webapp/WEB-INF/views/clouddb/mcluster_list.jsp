@@ -65,10 +65,10 @@
 			<div class="widget-header">
 				<h5 class="widget-title">Container集群列表</h5>
 				<div class="widget-toolbar no-border">
-					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
+					<!-- <button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal">
 						<i class="ace-icont fa fa-plus"></i>
 						 创建Container集群
-					</button>
+					</button> -->
 				</div>
 			</div>
 		

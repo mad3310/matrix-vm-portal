@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -58,7 +59,7 @@ public class TaskMclusterStartGlb8888ServiceImpl extends BaseTask4RDSServiceImpl
 		
 		StringBuffer ipListPort = new StringBuffer();
 		ipListPort.append(nodeIp1).append(":8888,").append(nodeIp2).append(":8888,").append(nodeIp3).append(":8888");
-		String result = this.pythonService.startGbalancer(vipNodeIp, "monitor", mclusterModel.getSstPwd(),"http", ipListPort.toString(), "8888", "-daemon", username, password);
+		ApiResultObject result = this.pythonService.startGbalancer(vipNodeIp, "monitor", mclusterModel.getSstPwd(),"http", ipListPort.toString(), "8888", "-daemon", username, password);
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

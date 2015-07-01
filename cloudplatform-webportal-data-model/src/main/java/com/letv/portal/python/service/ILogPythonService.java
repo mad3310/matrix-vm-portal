@@ -2,6 +2,7 @@ package com.letv.portal.python.service;
 
 import java.util.Map;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.model.DbUserModel;
 import com.letv.portal.model.HostModel;
@@ -22,14 +23,14 @@ public interface ILogPythonService {
 	 * @param mclusterName
 	 * @return
 	 */
-	public String createContainer(Map<String,String> params,String ip,String username,String password);
+	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password);
 	
 	/**Methods Name: checkContainerCreateStatus <br>
 	 * Description: 检查container创建状态,通过检查策略进行检查<br>
 	 * @author name: liuhao1
 	 * @return
 	 */
-	public String checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
+	public ApiResultObject checkContainerCreateStatus(String mclusterName,String ip,String username,String password);
 	
 	/**Methods Name: initZookeeper <br>
 	 * Description: 初始化zookeeper节点<br>
@@ -38,7 +39,7 @@ public interface ILogPythonService {
 	 * @return
 	 */
 
-	public String initZookeeper(String nodeIp,String port,Map<String,String> params);
+	public ApiResultObject initZookeeper(String nodeIp,String port,Map<String,String> params);
 	
 	/**Methods Name: initUserAndPwd4Manager <br>
 	 * Description: 初始化mcluster管理用户名密码<br>
@@ -48,19 +49,18 @@ public interface ILogPythonService {
 	 * @param password 集群密码
 	 * @return
 	 */
-	public String initUserAndPwd4Manager(String nodeIp,String port,String username,String password);
+	public ApiResultObject initUserAndPwd4Manager(String nodeIp,String port,String username,String password);
 
-	public String configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,
-			String adminPassword);
-	public String cpOpenSSL(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
+	public ApiResultObject configOpenSSL(Map<String, String> map, String nodeIp1, String port, String adminUser,String adminPassword);
+	public ApiResultObject cpOpenSSL(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
 
-	public String configLogStashForwarder(Map<String, String> map, String nodeIp1,String port, String adminUser, String adminPassword);
+	public ApiResultObject configLogStashForwarder(Map<String, String> map, String nodeIp1,String port, String adminUser, String adminPassword);
 
-	public String startLogStashForwarder(Map<String, String> map,String nodeIp1, String port, String adminUser, String adminPassword);
+	public ApiResultObject startLogStashForwarder(Map<String, String> map,String nodeIp1, String port, String adminUser, String adminPassword);
 
-	public String startLogStash(String nodeIp1, String port, String adminUser,String adminPassword);
+	public ApiResultObject startLogStash(String nodeIp1, String port, String adminUser,String adminPassword);
 
-	public String startElesticSearch(String nodeIp1, String port,String adminUser, String adminPassword);
+	public ApiResultObject startElesticSearch(String nodeIp1, String port,String adminUser, String adminPassword);
 
-	public String startKibana(String nodeIp1, String port, String adminUser,String adminPassword);
+	public ApiResultObject startKibana(String nodeIp1, String port, String adminUser,String adminPassword);
 }

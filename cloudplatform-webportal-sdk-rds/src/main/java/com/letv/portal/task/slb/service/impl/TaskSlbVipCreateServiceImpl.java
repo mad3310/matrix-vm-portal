@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbServer;
@@ -41,11 +42,11 @@ public class TaskSlbVipCreateServiceImpl extends BaseTask4SlbServiceImpl impleme
 		Map<String,String> map = new HashMap<String,String>();
 		map.put("num", "1");
 		
-		String result = this.slbPythonService.getVipIp(map,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = this.slbPythonService.getVipIp(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		if(tr.isSuccess()) {
-			Map data = (Map) ((Map)transToMap(result).get("response"));
+			Map data = (Map) ((Map)transToMap(result.getResult()).get("response"));
 			StringBuffer ipBuffer = new StringBuffer();
 			List<String> ips = (List<String>) data.get("ip");
 			for (String ip : ips) {

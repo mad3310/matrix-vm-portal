@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -57,7 +58,7 @@ public class TaskMclusterPostInfoServiceImpl extends BaseTask4RDSServiceImpl imp
 		String nodeName1 = containers.get(0).getContainerName();
 		String mclusterName = mclusterModel.getMclusterName();
 		
-		String result = this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password);
+		ApiResultObject result = this.pythonService.postMclusterInfo(mclusterName, nodeIp1, nodeName1, username, password);
 		
 		tr = analyzeRestServiceResult(result);
 		

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -54,13 +55,13 @@ public class TaskMclusterInitServiceImpl extends BaseTask4RDSServiceImpl impleme
 		String username = mclusterModel.getAdminUser();
 		String password = mclusterModel.getAdminPassword();
 		
-		String result = this.pythonService.initMcluster(nodeIp1, username, password);
+		ApiResultObject result = this.pythonService.initMcluster(nodeIp1, username, password);
 		
 		tr = analyzeRestServiceResult(result);
 		
 		if(tr.isSuccess()) {
 			//保存sstPwd，启动启动gbalancer时使用。
-			String sstPwd = (String) ((Map)transToMap(result).get("response")).get("sst_user_password");
+			String sstPwd = (String) ((Map)transToMap(result.getResult()).get("response")).get("sst_user_password");
 			MclusterModel mcluster = new MclusterModel();
 			mcluster.setId(mclusterModel.getId());
 			mcluster.setSstPwd(sstPwd);

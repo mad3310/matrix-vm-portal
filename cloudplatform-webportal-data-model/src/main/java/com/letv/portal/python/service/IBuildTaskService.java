@@ -22,20 +22,6 @@ import com.letv.portal.model.swift.SwiftServer;
  */
 public interface IBuildTaskService { 
 	
-	/**Methods Name: buildMcluster <br>
-	 * Description: 创建mcluster,并创建db<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 */
-	public void buildMcluster(MclusterModel mclusterModel,Long dbId);
-	
-	/**Methods Name: buildMcluster <br>
-	 * Description: 创建mcluster<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 */
-	public void buildMcluster(MclusterModel mclusterModel);
-
 	/**Methods Name: buildUser <br>
 	 * Description: 创建用户<br>
 	 * @author name: liuhao1
@@ -55,22 +41,6 @@ public interface IBuildTaskService {
 	 * @param dbId
 	 */
 	public void buildDb(Long dbId);
-	
-	/**Methods Name: createContainer <br>
-	 * Description: 创建container<br>
-	 * @author name: liuhao1
-	 * @param mclusterModel
-	 * @return
-	 */
-	public boolean createContainer(MclusterModel mclusterModel,Long dbId,HostModel host);
-	
-	/**Methods Name: initContainer <br>
-	 * Description: 初始化contianer,组合各分步骤<br>
-	 * @author name: liuhao1
-	 * @param params
-	 * @return
-	 */
-	public boolean initContainer(MclusterModel mclusterModel,Long dbId);
 	
 	/**Methods Name: removeMcluster <br>
 	 * Description: <br>

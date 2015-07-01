@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.JsonUtils;
 import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.ContainerModel;
@@ -69,7 +70,7 @@ public class TaskDbCreateServiceImpl extends BaseTask4RDSServiceImpl implements 
 		if(createParams.isEmpty())
 			throw new ValidateException("create params's is null by dbId");
 		
-		String result = this.pythonService.createDb((String)createParams.get("nodeIp"), (String)createParams.get("dbName"), (String)createParams.get("dbName"), null, (String)createParams.get("username"), (String)createParams.get("password"));
+		ApiResultObject result = this.pythonService.createDb((String)createParams.get("nodeIp"), (String)createParams.get("dbName"), (String)createParams.get("dbName"), null, (String)createParams.get("username"), (String)createParams.get("password"));
 		tr = analyzeRestServiceResult(result);
 		
 		if(tr.isSuccess()) {

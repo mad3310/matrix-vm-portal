@@ -25,6 +25,7 @@ import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.service.BaseTaskServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IUserService;
@@ -34,7 +35,7 @@ import com.letv.portal.service.slb.ISlbContainerService;
 import com.letv.portal.service.slb.ISlbServerService;
 
 @Component("baseSlbTaskService")
-public class BaseTask4SlbServiceImpl implements IBaseTaskService{
+public class BaseTask4SlbServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -116,86 +117,6 @@ public class BaseTask4SlbServiceImpl implements IBaseTaskService{
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	public TaskResult analyzeRestServiceResult(String result){
-		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result);
-		if(map == null) {
-			tr.setSuccess(false);
-			tr.setResult("api connect failed");
-			return tr;
-		}
-		Map<String,Object> meta = (Map<String, Object>) map.get("meta");
-		
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")));
-		tr.setSuccess(isSucess);
-		if(isSucess) {
-			Map<String,Object> response = (Map<String, Object>) map.get("response");
-			tr.setResult((String) response.get("message"));
-			tr.setParams(response);
-		} else {
-			tr.setResult((String) meta.get("errorType") +":"+ (String) meta.get("errorDetail"));
-		}
-		return tr;
-		
-	}
-	
-	public void buildResultToMgr(String buildType,String result,String detail,String to){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("buildType", buildType);
-		map.put("buildResult", result);
-		map.put("errorDetail", detail);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
-		defaultEmailSender.sendMessage(mailMessage);
-	}
-	public void email4User(Map<String,Object> params,Long to,String ftlName){
-		UserModel user = this.userService.selectById(to);
-		if(null != user) {
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",user.getEmail(),"乐视云平台web-portal系统通知",ftlName,params);
-			mailMessage.setHtml(true);
-			defaultEmailSender.sendMessage(mailMessage);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Map<String,Object> transToMap(String params){
-		if(StringUtils.isEmpty(params))
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		Map<String,Object> jsonResult = new HashMap<String,Object>();
-		try {
-			jsonResult = resultMapper.readValue(params, Map.class);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonResult;
-	}
-	
-	public String transToString(Object params){
-		if(params == null)
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		String jsonResult = "";
-		try {
-			jsonResult = resultMapper.writeValueAsString(params);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonResult;
-	}
-	
-	public Long getLongFromObject(Object o) {
-		Long value = null;
-		if(o instanceof String)
-			value = Long.parseLong((String) o);
-		if(o instanceof Integer)
-			value = Long.parseLong(((Integer)o).toString());
-		if(o instanceof Long)
-			value = (Long) o;
-		
-		return value;
-	}
-	
 	public SlbServer getServer(Map<String, Object> params) {
 		Long gceId = getLongFromObject(params.get("slbId"));
 		if(gceId == null)

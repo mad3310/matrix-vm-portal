@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.python.service.IGcePythonService;
  
@@ -19,32 +20,32 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	private final static String URL_PORT = ":8888";	
 	
 	@Override
-	public String createContainer(Map<String,String> params,String ip,String username,String password) {
+	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster");
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
+	public ApiResultObject checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(gceClusterName);
 		String result = HttpClient.get(url.toString(),username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initZookeeper(String nodeIp,String port,Map<String,String> params) {
+	public ApiResultObject initZookeeper(String nodeIp,String port,Map<String,String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/conf");
 		
 		String result = HttpClient.post(url.toString(), params);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String initUserAndPwd4Manager(String nodeIp,String port,String username,String password) {
+	public ApiResultObject initUserAndPwd4Manager(String nodeIp,String port,String username,String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port).append("/admin/user");
 		
@@ -53,103 +54,103 @@ public class GcePythonServiceImpl implements IGcePythonService{
 		map.put("adminPassword", password);
 		
 		String result = HttpClient.post(url.toString(), map,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String createContainer1(Map<String, String> params, String ip,String port,
+	public ApiResultObject createContainer1(Map<String, String> params, String ip,String port,
 			String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster");
 		
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String syncContainer2(Map<String, String> params,String nodeIp1,String port,
+	public ApiResultObject syncContainer2(Map<String, String> params,String nodeIp1,String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster/sync");
 		
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String startCluster(String nodeIp1,String port, String adminUser,
+	public ApiResultObject startCluster(String nodeIp1,String port, String adminUser,
 			String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster/start");
 		
 		String result = HttpClient.post(url.toString(), null,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String createContainer2(Map<String, String> params, String ip,
+	public ApiResultObject createContainer2(Map<String, String> params, String ip,
 			String port, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster/node");
 		
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String CheckClusterStatus(String nodeIp1, String port,
+	public ApiResultObject CheckClusterStatus(String nodeIp1, String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster");
 		
 		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String nginxProxyConfig(Map<String, String> params, String ip,
+	public ApiResultObject nginxProxyConfig(Map<String, String> params, String ip,
 			String port, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster/node/config");
 		
 		String result = HttpClient.post(url.toString(), params,username,password);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String stop(Map<String, String> params, String nodeIp1,String port,
+	public ApiResultObject stop(Map<String, String> params, String nodeIp1,String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster/stop");
 		
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String start(Map<String, String> params, String nodeIp1,String port,
+	public ApiResultObject start(Map<String, String> params, String nodeIp1,String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster/start");
 		
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 	@Override
-	public String restart(Map<String, String> params, String nodeIp1,String port,
+	public ApiResultObject restart(Map<String, String> params, String nodeIp1,String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster/reload");
 		
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 
 	@Override
-	public String checkStatus(String nodeIp1,String port,
+	public ApiResultObject checkStatus(String nodeIp1,String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port).append("/cluster");
 		
 		String result = HttpClient.get(url.toString(),adminUser,adminPassword);
-		return result;
+		return new ApiResultObject(result,url.toString());
 	}
 }

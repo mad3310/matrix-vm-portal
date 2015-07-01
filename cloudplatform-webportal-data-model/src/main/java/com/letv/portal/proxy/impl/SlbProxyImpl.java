@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.SlbBackEndType;
 import com.letv.portal.enumeration.SlbBackendStatus;
 import com.letv.portal.enumeration.SlbStatus;
@@ -146,7 +147,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 			for (Map<String,String> param : params) {
 				if(i > 0)
 					param.put("state", "BACKUP");
-				String result = this.slbPythonService.commitProxyConfig(param, container.getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+				ApiResultObject result = this.slbPythonService.commitProxyConfig(param, container.getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 				tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 				if(!tr.isSuccess()) {
 					slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -158,7 +159,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		return tr.isSuccess();
 	}
 	private boolean restart(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.restart(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		ApiResultObject result = this.slbPythonService.restart(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -168,7 +169,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		return tr.isSuccess();
 	}
 	private boolean stop(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		ApiResultObject result = this.slbPythonService.stop(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -178,7 +179,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 		return tr.isSuccess();
 	}
 	private boolean start(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
-		String result = this.slbPythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		ApiResultObject result = this.slbPythonService.start(null,containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());
@@ -189,7 +190,7 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	}
 	private String checkStatus(SlbServer slb,SlbCluster cluster,List<SlbContainer> containers) {
 		 TaskResult tr = new TaskResult();
-		String result = this.slbPythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
+		 ApiResultObject result = this.slbPythonService.checkStatus(containers.get(0).getIpAddr(), cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = this.baseSlbTaskService.analyzeRestServiceResult(result);
 		if(!tr.isSuccess()) {
 			slb.setStatus(SlbStatus.ABNORMAL.getValue());

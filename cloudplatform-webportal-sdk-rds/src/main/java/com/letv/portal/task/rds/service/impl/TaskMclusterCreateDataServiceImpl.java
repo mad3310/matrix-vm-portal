@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
@@ -58,7 +59,7 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		map.put("networkMode", "ip");
 		map.put("memory",CONTAINER_MEMORY_SIZE);
 		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
-		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

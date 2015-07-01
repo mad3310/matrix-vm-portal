@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -47,7 +48,7 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		String result = this.cbasePythonService.checkClusterRebalanceStatus(
+		ApiResultObject result = this.cbasePythonService.checkClusterRebalanceStatus(
 				nodeIp1, super.getCbaseManagePort(), cluster.getAdminUser(),
 				cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
@@ -70,12 +71,12 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result);
+		Map<String, Object> map = transToMap(result.getResult());
 		if (map == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 
