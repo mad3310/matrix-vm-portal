@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.exception.ValidateException;
@@ -119,7 +120,7 @@ public class GceController {
 		return obj;
 	}
 	@RequestMapping(value="/memory",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject capacity(Long id,Long memorySize,ResultObject obj) {
+	public @ResponseBody ResultObject capacity(@RequestParam Long id,@RequestParam Long memorySize,ResultObject obj) {
 		this.gceProxy.capacity(id,memorySize);
 		return obj;
 	}

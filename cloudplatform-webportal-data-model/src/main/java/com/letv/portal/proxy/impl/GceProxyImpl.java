@@ -238,6 +238,8 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		GceServer gce = this.selectById(id);
 		if(gce == null)
 			throw new ValidateException("GCE服务不存在");
+		if(memorySize == null)
+			throw new ValidateException("内存大小不能为空");
 		gce.setMemorySize(memorySize);
 		this.gceServerService.updateBySelective(gce);
 		
