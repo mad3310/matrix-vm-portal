@@ -255,6 +255,27 @@
 										<div class="bk-group-control"></div>
 										<div class="disabled">
 											<div class="bk-form-row">
+												<label class="bk-form-row-name">内存大小：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li clearfix">
+														<div class="pull-left">
+															<span class="sleBG"> <span class="sleHid">
+																	<div class="divselect">
+																		<span></span>
+																		<ul>
+																		<li class="bk-select-option"><a href="javascript:;" selectid="1073741824">1G</a></li>
+																		<li class="bk-select-option"><a href="javascript:;" selectid="2147483648">2G</a></li>
+																		<li class="bk-select-option"><a href="javascript:;" selectid="4294967296">4G</a></li>
+																		</ul>
+																		<input name="memorySize" type="hidden" value="1073741824" />
+																	</div>
+															</span>
+															</span> <span class="bk-select-arrow"></span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row">
 												<label class="bk-form-row-name">购买时长：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">

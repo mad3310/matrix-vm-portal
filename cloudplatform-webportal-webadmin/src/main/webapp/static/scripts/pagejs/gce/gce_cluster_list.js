@@ -121,7 +121,7 @@ function queryByPage() {
 		cache:false,
 		type : "get",
 		//url : "/mcluster/" + currentPage + "/" + recordsPerPage + "/" + mclusterName,
-		url : queryUrlBuilder("/mcluster/list",queryCondition),
+		url : queryUrlBuilder("/gce/cluster",queryCondition),
 		dataType : "json", /*这句可用可不用，没有影响*/
 		success : function(data) {
 			removeLoading();
@@ -138,7 +138,7 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].mclusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].clusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
 					var td3 = $("<td class='hidden-480'>"

@@ -232,4 +232,16 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			gce.setStatus(SlbStatus.STOPED.getValue());
 		this.gceServerService.updateBySelective(gce);
 	}
+
+	@Override
+	public void capacity(Long id, int multiple) {
+		GceServer gce = this.selectById(id);
+		if(gce == null)
+			throw new ValidateException("GCE服务不存在");
+		if(multiple == 0)
+			throw new ValidateException("内存扩容倍数不能为空");
+		gce.setMemorySize(gce.getMemorySize()*multiple);
+		this.gceServerService.updateBySelective(gce);
+		
+	}
 }

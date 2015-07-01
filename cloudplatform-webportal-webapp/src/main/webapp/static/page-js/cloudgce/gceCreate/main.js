@@ -61,6 +61,7 @@ define(function(require){
 			hclusterId : $("[name = 'hclusterId']").val(),
 			ocsId : $("[name = 'ocsId']").val(),
 			rdsId : $("[name = 'rdsId']").val(),
+			memorySize : $("[name = 'memorySize']").val(),
             type:$("[name = type]").val()
 		}
 		if(gceImageName != null && gceImageName != ''){

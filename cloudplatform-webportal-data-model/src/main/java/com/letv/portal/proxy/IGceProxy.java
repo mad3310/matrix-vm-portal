@@ -8,4 +8,5 @@ public interface IGceProxy extends IBaseProxy<GceServer> {
 	public void start(Long id);
 	public void stop(Long id);
 	public void restart(Long id);
+	public void capacity(Long id, int multiple);
 }

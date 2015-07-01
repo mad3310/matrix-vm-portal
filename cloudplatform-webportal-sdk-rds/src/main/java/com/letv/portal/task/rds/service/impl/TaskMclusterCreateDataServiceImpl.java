@@ -18,6 +18,7 @@ import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.task.gce.service.impl.TaskGceClusterCreateServiceImpl;
 
 @Service("taskMclusterCreateDataService")
 public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
@@ -32,6 +33,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 	private String MATRIX_RDS_DATA_DEFAULT_IMAGE;
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateDataServiceImpl.class);
+
+	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
 	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
@@ -53,7 +56,7 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
-		map.put("memory","2147483648");
+		map.put("memory",CONTAINER_MEMORY_SIZE);
 		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
 		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
