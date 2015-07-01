@@ -59,5 +59,7 @@
         <!-- swift -->
         <typeAlias alias="SwiftServer" type="com.letv.portal.model.swift.SwiftServer" />
         
+        <typeAlias alias="Dictionary" type="com.letv.portal.model.dictionary.Dictionary" />
+        
     </typeAliases>
 </configuration>
