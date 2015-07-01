@@ -138,11 +138,11 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\" href=\"/detail/mcluster/" + array[i].id+"\">"+array[i].clusterName+"</a>"
+						+  "<a class=\"link\" href=\"/detail/gce/cluster/" + array[i].id+"\">"+array[i].clusterName+"</a>"
 						+ "</td>");
 				if(array[i].hcluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\" href=\"/detail/hcluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
+							+ "<a class=\"link\" href=\"/detail/gce/cluster/" + array[i].hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td class='hidden-480'> </td>");
@@ -226,15 +226,18 @@ function queryByPage() {
 				}else{
 					var td8 = $("<td>"
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+//							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
+//							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+//							+"</a>"
+//							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
+//							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+//							+"</a>"
+//							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+//							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+//							+"</a>"
+							+"<a class=\"black\" href=\"#\" onclick=\"(this);\" onfocus=\"this.blur();\"  title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-database bigger-120\"></i>"
 							+"</a>"
-							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-							+"</a>"
-							/*+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
-							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-							+"</a>"*/
 							+"</div>"
 							+'<div class="hidden-md hidden-lg">'
 							+'<div class="inline pos-rel">'
