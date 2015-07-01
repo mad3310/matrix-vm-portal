@@ -141,6 +141,7 @@
 	        select
 			<include refid="Base_Column_List" /> 
 			from WEBPORTAL_ZOOKEEPER_INFO zk
+			where STATUS = 'AVAILABLE'
 			order by zk.USED limit 1
 	</select>
 	

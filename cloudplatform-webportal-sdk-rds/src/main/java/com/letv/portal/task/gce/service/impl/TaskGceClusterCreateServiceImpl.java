@@ -29,6 +29,8 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 	private String MATRIX_GCE_NGINX_DEFAULT_IMAGE;
 	private final static Logger logger = LoggerFactory.getLogger(TaskGceClusterCreateServiceImpl.class);
 	
+	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
+	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
@@ -48,6 +50,7 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("componentType", gceType.toString().toLowerCase());
 		map.put("image", gceServer.getGceImageName());
 		map.put("networkMode", "bridge");
+		map.put("memory",gceServer.getMemorySize()!=0?String.valueOf(gceServer.getMemorySize()):CONTAINER_MEMORY_SIZE);
 		
 		if(isNginx)
 			map.put("componentType", "nginx");

@@ -17,6 +17,7 @@
 		<result column="STATUS" property="status" />
 		<result column="DESCN" property="descn" />
 		<result column="IP" property="ip" />
+		<result column="MERORY_SIZE" property="merorySize" />
 			
 		<result column="DELETED" property="deleted" />
 		<result column="CREATE_TIME" property="createTime" />
@@ -38,7 +39,7 @@
 	
 	<sql id="Base_Column_List">
 		g.ID,
-		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.TYPE,g.STATUS,g.DESCN,g.IP,g.LOG_ID,
+		g.GCE_NAME,g.GCECLUSTER_ID,g.HCLUSTER_ID,g.PORT_FORWARD,g.GCE_IMAGE_NAME,g.TYPE,g.STATUS,g.DESCN,g.IP,g.LOG_ID,g.MERORY_SIZE,
 		g.DELETED,g.CREATE_TIME,g.CREATE_USER,g.UPDATE_TIME,g.UPDATE_USER
 	</sql>
 	
@@ -103,10 +104,10 @@
 	<insert id="insert" parameterType="GceServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
 		WEBPORTAL_GCE(
-			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,TYPE,STATUS,DESCN,IP,LOG_ID,
+			GCE_NAME,GCECLUSTER_ID,HCLUSTER_ID,PORT_FORWARD,GCE_IMAGE_NAME,TYPE,STATUS,DESCN,IP,LOG_ID,MERORY_SIZE,
 			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{type},#{status},#{descn},#{ip},#{logId},
+			#{gceName},#{gceClusterId},#{hclusterId},#{portForward},#{gceImageName},#{type},#{status},#{descn},#{ip},#{logId},#{merorySize},
 			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
 	</insert>
 
@@ -125,6 +126,9 @@
 			</if>
 			<if test="hclusterId != null  ">
 				HCLUSTER_ID=#{hclusterId},
+			</if>
+			<if test="merorySize != null  ">
+				MERORY_SIZE=#{merorySize},
 			</if>
 			<if test="logId != null  ">
 				LOG_ID=#{logId},
