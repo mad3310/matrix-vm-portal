@@ -120,8 +120,8 @@ public class GceController {
 		return obj;
 	}
 	@RequestMapping(value="/memory",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject capacity(@RequestParam Long id,@RequestParam Long memorySize,ResultObject obj) {
-		this.gceProxy.capacity(id,memorySize);
+	public @ResponseBody ResultObject capacity(@RequestParam Long id,@RequestParam int multiple,ResultObject obj) {
+		this.gceProxy.capacity(id,multiple);
 		return obj;
 	}
 	

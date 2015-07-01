@@ -234,13 +234,13 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 
 	@Override
-	public void capacity(Long id, Long memorySize) {
+	public void capacity(Long id, int multiple) {
 		GceServer gce = this.selectById(id);
 		if(gce == null)
 			throw new ValidateException("GCE服务不存在");
-		if(memorySize == null)
-			throw new ValidateException("内存大小不能为空");
-		gce.setMemorySize(memorySize);
+		if(multiple == 0)
+			throw new ValidateException("内存扩容倍数不能为空");
+		gce.setMemorySize(gce.getMemorySize()*multiple);
 		this.gceServerService.updateBySelective(gce);
 		
 	}
