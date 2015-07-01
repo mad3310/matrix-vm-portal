@@ -23,7 +23,7 @@ public class GceServer extends BaseModel {
 	private Integer status;
 	private String descn;
 	private GceType type;//container类型：nginx、jetty
-	private int memorySize;
+	private Long memorySize;
 	
 	private HclusterModel hcluster;
 	private GceCluster gceCluster;
@@ -121,12 +121,10 @@ public class GceServer extends BaseModel {
 	public void setLogId(Long logId) {
 		this.logId = logId;
 	}
-	
-	public int getMemorySize() {
+	public Long getMemorySize() {
 		return memorySize;
 	}
-	public void setMemorySize(int memorySize) {
+	public void setMemorySize(Long memorySize) {
 		this.memorySize = memorySize;
 	}
-	
 }

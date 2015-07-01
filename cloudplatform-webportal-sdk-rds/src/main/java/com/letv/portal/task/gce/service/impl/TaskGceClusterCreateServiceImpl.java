@@ -50,7 +50,7 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("componentType", gceType.toString().toLowerCase());
 		map.put("image", gceServer.getGceImageName());
 		map.put("networkMode", "bridge");
-		map.put("memory",gceServer.getMemorySize()!=0?String.valueOf(gceServer.getMemorySize()):CONTAINER_MEMORY_SIZE);
+		map.put("memory",gceServer.getMemorySize()!=null?String.valueOf(gceServer.getMemorySize()):CONTAINER_MEMORY_SIZE);
 		
 		if(isNginx)
 			map.put("componentType", "nginx");
