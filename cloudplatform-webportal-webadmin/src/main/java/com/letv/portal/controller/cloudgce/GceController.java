@@ -19,6 +19,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.gce.GceImage;
+import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
@@ -32,6 +33,8 @@ public class GceController {
 	private IUserService userService;
 	@Autowired
 	private IGceServerService gceServerService;
+	@Autowired
+	private IGceProxy gceProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(GceController.class);
 
@@ -97,6 +100,27 @@ public class GceController {
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.gceServerService.selectPageByParams(page, params));
+		return obj;
+	}
+	
+	@RequestMapping(value="/restart",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject restart(Long id,ResultObject obj) {
+		this.gceProxy.restart(id);
+		return obj;
+	}
+	@RequestMapping(value="/start",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject start(Long id,ResultObject obj) {
+		this.gceProxy.start(id);
+		return obj;
+	}
+	@RequestMapping(value="/stop",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject stop(Long id,ResultObject obj) {
+		this.gceProxy.stop(id);
+		return obj;
+	}
+	@RequestMapping(value="/memory",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject capacity(Long id,Long memorySize,ResultObject obj) {
+		this.gceProxy.capacity(id,memorySize);
 		return obj;
 	}
 	
