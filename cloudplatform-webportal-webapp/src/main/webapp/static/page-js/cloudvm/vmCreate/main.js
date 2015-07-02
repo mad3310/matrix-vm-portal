@@ -18,20 +18,24 @@ define(function(require){
             $("#monthPurchaseForm").submit();
         })
     }
-    
     /*按钮组件封装 --begin*/
-    $(".bk-button-primary").click(function () {
+	$(document).on('click', '.bk-buttontab .bk-button-primary' , function(e){
+		e.preventDefault();
         if(!$(this).hasClass("disabled")){
             $(this).parent().find(".bk-button-primary").removeClass("bk-button-current");
             $(this).addClass("bk-button-current");
             if($(this).parent().find(".hide").length > 0 ){
                 var val = $(this).val();
-                $(this).parent().find(".hide").val(val);
+                var hiddenInput=$(this).parent().find(".hide");
+                if(val!==hiddenInput.val()){
+                    hiddenInput.val(val);
+                    hiddenInput.trigger('change');
+                }	
             }
         }
-        return false;
-    });
-    /*按钮组件封装 --end*/
+	});
+	/*按钮组件封装 --end*/
+    
     
     $('.bk-buttontab-password').find('button').on('click',function(e){
     	var buttonValue = $(e.currentTarget).attr('value');
@@ -43,7 +47,6 @@ define(function(require){
     		$('#vmpw1').closest('.bk-form-row').css('display','none');
     		$('#vmpw2').closest('.bk-form-row').css('display','none');
     	}
-    	return false;
     });
 
     /*表单验证 --begin*/
@@ -67,6 +70,13 @@ define(function(require){
                     }, regexp: {
                         regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
                         message: "请输入字母数字或'_',虚拟机名不能以数字开头."
+                    }
+                }
+            },
+            vmImageOSName: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择镜像操作系统!'
                     }
                 }
             },
@@ -100,14 +110,28 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
+        var imageInvalidTipRef=$('.image-invalid-tip');
+        imageInvalidTipRef.css('display','none');
+        if($('input[name=vmImageOSName]').val()==''){
+        	imageInvalidTipRef.css('display','inline');
+        	imageInvalidTipRef.text('请选择镜像操作系统！');
+        	return;
+        }
+        if($('input[name=vmImageVersionName]').val()==''){
+        	imageInvalidTipRef.css('display','inline');
+        	imageInvalidTipRef.text('请选择镜像版本！');
+        	return;
+        }
         var regionName = $("[name = regionName]").val();
         var url = '/ecs/region/'+regionName+'/vm-create';
+        var pwd= $('input[name=isCreatePassword]')==='1'?$("#vmpw1").val():'';
     	var data =  {
 						        name: $("#vmName").val(),
-						        imageId: $("[name = vmImageName]").val(),
-						        flavorId: $("[name = vmType]").val(),
+						        imageId: $('#vmImageId').val(),
+						        flavorId: $('#flavorId').val(),
 						       // networkIds: $("#networkSelecter").val(),
-						        adminPass:$("#vmpw1").val()
+						        adminPass:pwd,
+						        publish: !!parseInt($('input[name=isCreatePublicIP]'))
 						    }
 		cn.PostData(url, data, function (data) {
                location.href = "/list/vm";
@@ -122,60 +146,81 @@ define(function(require){
     /*加载数据*/
     var DataHandler = require('./dataHandler');
     var dataHandler = new DataHandler(require);
-    var imageGroupData,imageOSLastName;
-    function getRegion(){
-    	var url = "/ecs/regions";
-    	cn.GetData(url,dataHandler.getRegion);
-    }
+    var imageOSLastName='';
+    $(".bk-buttontab-regioncitys input").change(function (){
+    	var regionCityName= $(this).val();
+    	dataHandler.getRegion(regionCityName);
+    });
     $("input[name='regionName']").change(function (){
     	var regionName= $(this).val();
     	$("#buy-region").html(regionName);
-    	getVmType(regionName);
+    	$(".bk-buttontab-flavorCPUs input").val('');
+    	initFlavorCPUs(regionName);
     	initImageOSs(regionName);
-    	getNetwork(regionName);
+    });
+    $(".bk-buttontab-flavorCPUs input").change(function (){
+    	var flavorCPU= $(this).val();
+    	$(".bk-buttontab-flavorRams input").val('');
+    	dataHandler.getFlavorRam(flavorCPU);
+    });
+    $(".bk-buttontab-flavorRams input").change(function (){
+    	var flavorCPU= $(".bk-buttontab-flavorCPUs input").val();
+    	var flavorRam= $(this).val();
+    	$(".bk-buttontab-flavorDisks input").val('');
+    	dataHandler.getFlavorDisk(flavorCPU,flavorRam);
+    });
+    $(".bk-buttontab-flavorDisks input").change(function (){
+    	var flavorCPU= $(".bk-buttontab-flavorCPUs input").val();
+    	var flavorRam= $(".bk-buttontab-flavorRams input").val();
+    	var flavorDisk= $(this).val();
+    	var buyFlavorHtmlArray=[];
+    	buyFlavorHtmlArray.push(flavorCPU + '核');
+    	buyFlavorHtmlArray.push(flavorRam + 'MB');
+    	buyFlavorHtmlArray.push(flavorDisk + 'G');
+    	$('#buy-flavor').html(buyFlavorHtmlArray.join(' '));
+    	dataHandler.setFlavorId(flavorCPU,flavorRam,flavorDisk);
     });
     $("input[name='vmImageOSName']").change(function (){
     	var imageOSName= $(this).val();
     	if(imageOSLastName===imageOSName) return;
-    	$('.image-os-selector').removeClass('divselect-unselected');
-		$('.image-version-selector').removeClass('divselect-disabled');
-    	initImageVersions(imageOSName);
+    	if(imageOSName===''){
+    		$('.image-os-selector').addClass('divselect-unselected');
+    		$('.image-version-selector').addClass('divselect-disabled');
+    		$(this).parent().find("span").html('选择操作系统');
+    	}
+    	else{
+        	$('.image-os-selector').removeClass('divselect-unselected');
+    		$('.image-version-selector').removeClass('divselect-disabled');	
+    		dataHandler.getImageVersions(imageOSName);
+    	}
+		imageOSLastName=imageOSName;
 		$('input[name=vmImageVersionName]').val('');
 		$('input[name=vmImageVersionName]').trigger('change');
-		imageOSLastName=imageOSName;
     });
     $("input[name='vmImageVersionName']").change(function (){
     	var imageVersionName= $(this).val();
     	if(!imageVersionName){
     		$('.image-version-selector').addClass('divselect-unselected');
     		$(this).parent().find("span").html('选择版本');
+    		$("#buy-image").html('--');
     	}
     	else{
     		$('.image-version-selector').removeClass('divselect-unselected');
         	$("#buy-image").html(imageOSLastName+' ' +imageVersionName);
-        	$('#vmImageId').val(imageGroupData.data[imageOSLastName][imageVersionName].id);
     	}
+    	dataHandler.setImageId(imageOSLastName,imageVersionName);
     });
-     $("[name='vmType']").change(function (){
-     	$("#buy-type").html($(this).parent().find("span").html());
-    });
-    function getVmType(region){
-    	var url = "/osf/region/"+ region;
-    	cn.GetData(url,dataHandler.getVmType);
+    function initRegionCityNames(){
+    	var url='/ecs/regions/group';
+    	cn.GetData(url,dataHandler.getRegionCityname);
+    }
+    function initFlavorCPUs(region){
+    	var url='/osf/region/'+region+'/group';
+    	cn.GetData(url,dataHandler.getFlavorCPUs);
     }
     function initImageOSs(region){
     	var url='/osi/region/'+region+'/group';
-    	cn.GetData(url,dataHandler.getImageOSs).then(function(data){
-    		imageGroupData=data;
-    	});
+    	cn.GetData(url,dataHandler.getImageOSs);
     }
-    function initImageVersions(imageOSName){
-    	dataHandler.getImageVersions(imageOSName,imageGroupData);
-    }
-     function getNetwork(region){
-    	var url="/osn/region/"+region;
-    	cn.GetData(url,dataHandler.getNetwork);
-    }
-    
-     getRegion();//获取可用区
+     initRegionCityNames();
 });

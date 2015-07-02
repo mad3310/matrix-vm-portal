@@ -1495,11 +1495,24 @@ textarea {
 .image-version-selector{
 	margin-left:5px !important;
 }
+.image-invalid-tip{
+	display: inline;
+  	line-height: 36px;
+  	margin-left: 10px;
+	color: #a94442;
+}
 .divselect-unselected .sleBG{
 	background-color: rgb(232, 232, 232) !important;
+	color:black !important;
+}
+.divselect-unselected .divselect span{
+	color: #666 !important;
 }
 .divselect-disabled .sleBG{
 	background-color: rgb(232, 232, 232) !important;
+}
+.divselect-disabled .divselect span{
+	color: #666 !important;
 }
 .divselect-disabled .bk-select-arrow{
 	display:none !important;
