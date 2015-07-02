@@ -225,17 +225,18 @@ function queryByPage() {
 					);
 				}else{
 					var td8 = $("<td>"
+							
 							+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-//							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
-//							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
-//							+"</a>"
-//							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
-//							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
-//							+"</a>"
-//							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
-//							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
-//							+"</a>"
-							+"<a class=\"black\" href=\"#\" onclick=\"(this);\" onfocus=\"this.blur();\"  title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<a class=\"green\" href=\"#\" onclick=\"startMcluster(this)\" onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
+							+"</a>"
+							+"<a class=\"blue\" href=\"#\" onclick=\"stopMcluster(this)\" onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
+							+"</a>"
+							+"<a class=\"red\" href=\"#\" onclick=\"deleteMcluster(this);\" onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
+							+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
+							+"</a>"
+							+"<a class=\"black\" href=\"#\" onclick=\"addMemory(this);\" onfocus=\"this.blur();\"  title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">"
 							+"<i class=\"ace-icon fa fa-database bigger-120\"></i>"
 							+"</a>"
 							+"</div>"
@@ -658,6 +659,118 @@ function deleteMcluster(obj){
 	/*setInterval(refreshCode,60000);*/
 }
 
+
+function addMemory(obj){
+	
+	/*warn("危险操作，本版本不启用...",3000);
+	return;*/
+	
+	var tr = $(obj).parents("tr").html();
+	if (tr.indexOf("扩容中") >= 0){
+		warn("正在扩容集群,请耐心等待...",3000);
+		return 0;
+	}
+	
+	function deleteCmd(){
+		var value=$("[name='kaptcha']").val();
+		$.ajax({
+			cache:false,
+			url:'/kaptcha',
+			type:'post',
+			data:{'kaptcha': value},	
+			success:function(data){
+				if(data.data == true){
+					var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+					$.ajax({
+						cache:false,
+						url:'/mcluster/'+mclusterId,
+						type:'delete',
+						success:function(data){
+							if(typeof(data) == 'string'){
+								data = JSON.parse(data)
+							};
+							if(error(data)) return;
+							queryByPage();
+						}
+					});		
+					$('#dialog-confirm').dialog("close");
+				}else if(data.data == false){
+					refreshCode();
+					$('.warning-info').remove();
+					$('.success-info').remove();
+					if($('.warning-info').length == 0){						
+						if($('.warning-info').length == 0){
+							var _block = $(' <i class="red warning-info fa fa-exclamation-circle"></i>');
+							$("#infoBlock").html(_block);
+						}	
+					}					
+				}
+			}
+		})
+		
+	}
+	
+	/*验证码DOM*/
+	var form = $("<form>"
+			 + "<div class=\"form-group\">"
+			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
+			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
+             + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"
+			 + "</div>"
+             + "</form>");
+	
+	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
+	
+	/*刷新验证码*/
+	function refreshCode(){
+		var dt = new Date();
+		$("#kaptchaImage").attr('src', '/kaptcha?t='+ dt);
+	}
+	
+	/*输入框改变时绑定事件*/
+	$("input[name='kaptcha']").on('input',function(e){  
+		$('.warning-info').remove();
+		$('.success-info').remove();
+		var value=$("[name='kaptcha']").val();
+		
+		$.ajax({
+			cache:false,
+			url:'/kaptcha',
+			type:'post',
+			data:{'kaptcha': value},	
+			success:function(data){
+				if(data.data == false){
+					$('.success-info').remove();
+					if($('.warning-info').length == 0){
+						var _block = $(' <i class="red warning-info fa fa-exclamation-circle"></i>');
+						$("#infoBlock").html(_block);
+					}	
+				}else if(data.data==true){
+					$('.warning-info').remove();
+					if($('.success-info').length == 0){
+						var _block = $(' <i class="green success-info fa  fa-check"></i>')
+						$("#infoBlock").html(_block);
+					}					
+				}		
+			}	
+		});
+		
+	});
+	/*焦点移开事件*/
+	/*$("input[name='kaptcha']").blur(function(){
+		$('.warning-info').remove();
+		$('.success-info').remove();
+		var value=$("[name='kaptcha']").val('');
+	});*/
+	
+	/*点击验证码刷新验证码*/	
+	$(".kaptcha").bind('click',function(){
+		refreshCode();
+	});
+	
+	/*setInterval(refreshCode,60000);*/
+}
+// function of 扩容
 function queryHcluster(){
 	var options = $('#hcluster_select');
 	getLoading();
