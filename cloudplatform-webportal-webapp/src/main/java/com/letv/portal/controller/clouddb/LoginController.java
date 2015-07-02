@@ -97,7 +97,7 @@ public class LoginController{
 		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		session.setClientId(clientId);
 		session.setClientSecret(clientSecret);
-		session.setOpenStackSession(openStackService.createSession(email,email));
+		session.setOpenStackSession(openStackService.createSession(email,email,username));
 		
 		request.getSession().setAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE, session);
 		sessionService.runWithSession(session, "Usersession changed", new Executable<Session>(){

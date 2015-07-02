@@ -1,7 +1,9 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -29,6 +31,7 @@ import org.slf4j.Logger;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -49,6 +52,7 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.util.Util;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
@@ -61,8 +65,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private NetworkManager networkManager;
 
-	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup, OpenStackConf openStackConf,
-			OpenStackUser openStackUser) {
+	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
+			OpenStackConf openStackConf, OpenStackUser openStackUser) {
 		super(openStackServiceGroup, openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
@@ -140,8 +144,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public VMResource create(final String region, VMCreateConf conf)
-			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, PollingInterruptedException {
+			throws OpenStackException {
 		checkRegion(region);
 
 		CreateServerOptions createServerOptions = new CreateServerOptions();
@@ -173,10 +176,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// test code end
 		createServerOptions.networks(networks);
 
-		String adminPass = conf.getAdminPass();
-		if (adminPass != null) {
-			createServerOptions.adminPass(adminPass);
+		if (conf.getAdminPass() == null) {
+			conf.setAdminPass(Util.generateRandomPassword(10));
 		}
+		createServerOptions.adminPass(conf.getAdminPass());
 
 		// test code begin(ssh login)
 		{
@@ -213,6 +216,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		VMResourceImpl vmResourceImpl = new VMResourceImpl(region, server,
 				this, imageManager, openStackUser);
 
+		emailVmCreated(vmResourceImpl, conf);
+
 		if (conf.getBindFloatingIP()) {
 			new Thread() {
 				public void run() {
@@ -228,7 +233,12 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 							}
 							server = serverApi.get(serverCreated.getId());
 						}
-						bindFloatingIP(region, serverCreated.getId());
+						String floatingIP = bindFloatingIP(region,
+								serverCreated.getId());
+						emailBindIP(
+								new VMResourceImpl(region, server,
+										VMManagerImpl.this, imageManager,
+										openStackUser), floatingIP);
 					} catch (Exception e) {
 						logger.error(e.getMessage(), e);
 					}
@@ -256,6 +266,50 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		return vmResourceImpl;
 	}
 
+	/**
+	 * send email to user after vm creating
+	 */
+	private void emailVmCreated(VMResource vm, VMCreateConf conf)
+			throws OpenStackException {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userName", openStackUser.getUserName());
+		params.put("region", getRegionDisplayName(vm.getRegion()));
+		params.put("vmId", vm.getId());
+		params.put("vmName", vm.getName());
+		params.put("adminUserName", "root");
+		params.put("password", conf.getAdminPass());
+		params.put("createTime", format.format(new Date(vm.getCreated())));
+
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",
+				openStackUser.getEmail(), "乐视云平台web-portal系统通知",
+				"cloudvm/createVm.ftl", params);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+	}
+
+	/**
+	 * send email to user after vm binding floating IP
+	 */
+	private void emailBindIP(VMResource vm, String floatingIP)
+			throws OpenStackException {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userName", openStackUser.getUserName());
+		params.put("region", getRegionDisplayName(vm.getRegion()));
+		params.put("vmId", vm.getId());
+		params.put("vmName", vm.getName());
+		params.put("ip", floatingIP);
+		params.put("port", 22);
+		params.put("bindTime", format.format(new Date()));
+
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",
+				openStackUser.getEmail(), "乐视云平台web-portal系统通知",
+				"cloudvm/bindFloatingIp.ftl", params);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+	}
+
 	@Override
 	public void unpublish(String region, VMResource vm)
 			throws RegionNotFoundException, APINotAvailableException,
@@ -281,7 +335,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	private void bindFloatingIP(String region, String vmId)
+	private String bindFloatingIP(String region, String vmId)
 			throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
@@ -301,6 +355,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
 				.getGlobalPublicNetworkId());
 		floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+		return floatingIP.getIp();
 	}
 
 	@Override
@@ -333,8 +388,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// Address address = addresses.iterator().next();
 		// String ip = address.getAddr();
 
-		bindFloatingIP(region, vm.getId());
-
+		String floatingIP = bindFloatingIP(region, vm.getId());
+		emailBindIP(vm, floatingIP);
+		
 		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
 		// networkManager;
 		// NeutronApi neutronApi = networkManagerImpl.getNeutronApi();

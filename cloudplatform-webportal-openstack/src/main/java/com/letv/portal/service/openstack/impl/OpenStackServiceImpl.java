@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.impl;
 
+import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.util.ConfigUtil;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.openstack.OpenStackService;
@@ -71,6 +72,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private ICloudvmRegionService cloudvmRegionService;
+	
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 
 	private OpenStackServiceGroup openStackServiceGroup;
 
@@ -94,14 +98,17 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 		openStackServiceGroup = new OpenStackServiceGroup();
 		openStackServiceGroup.setCloudvmRegionService(cloudvmRegionService);
+		openStackServiceGroup.setDefaultEmailSender(defaultEmailSender);
 	}
 
 	@Override
-	public OpenStackSession createSession(String userId, String email)
+	public OpenStackSession createSession(String userId, String email, String userName)
 			throws OpenStackException {
 		try {
 			OpenStackUser openStackUser = new OpenStackUser();
 			openStackUser.setUserId(userId);
+			openStackUser.setEmail(email);
+			openStackUser.setUserName(userName);
 			openStackUser.setFirstLogin(false);
 			openStackUser.setInternalUser(false);
 

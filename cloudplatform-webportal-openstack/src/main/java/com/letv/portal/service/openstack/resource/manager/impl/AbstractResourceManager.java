@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.common.email.ITemplateMessageSender;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -23,6 +24,7 @@ public abstract class AbstractResourceManager implements ResourceManager,
 	protected OpenStackUser openStackUser;
 
 	protected ICloudvmRegionService cloudvmRegionService;
+	protected ITemplateMessageSender defaultEmailSender;
 
 	public AbstractResourceManager(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
@@ -31,6 +33,7 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		this.openStackUser = openStackUser;
 		this.cloudvmRegionService = openStackServiceGroup
 				.getCloudvmRegionService();
+		this.defaultEmailSender = openStackServiceGroup.getDefaultEmailSender();
 	}
 
 	public void checkRegion(String region) throws RegionNotFoundException {
@@ -119,5 +122,16 @@ public abstract class AbstractResourceManager implements ResourceManager,
 			}
 		}
 		return matchedRegions;
+	}
+
+	protected String getRegionDisplayName(String regionCode)
+			throws OpenStackException {
+		CloudvmRegion region = this.cloudvmRegionService
+				.selectByCode(regionCode);
+		if (region == null) {
+			throw new OpenStackException("Lack of region Chinese name",
+					"缺少地域的中文名");
+		}
+		return region.getDisplayName();
 	}
 }
