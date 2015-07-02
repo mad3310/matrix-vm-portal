@@ -503,7 +503,7 @@
 		</form>
 	</div>
 </div>
-<div id="modifyAccountTab" class="mc-hide m-pr10" role="tablist" aria-multiselectable="true">
+<div id="modifyAccountTab" class="hide m-pr10" role="tablist" aria-multiselectable="true">
 	<!-- heading部分 -->
 	<div class="se-heading">
 		<div class="pull-left">
