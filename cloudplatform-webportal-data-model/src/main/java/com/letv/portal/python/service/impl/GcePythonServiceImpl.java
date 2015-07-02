@@ -30,7 +30,7 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	@Override
 	public ApiResultObject checkContainerCreateStatus(String gceClusterName,String ip,String username,String password) {
 		StringBuffer url = new StringBuffer();
-		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/status/").append(gceClusterName);
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/containerCluster/createResult/").append(gceClusterName);
 		String result = HttpClient.get(url.toString(),username,password);
 		return new ApiResultObject(result,url.toString());
 	}
