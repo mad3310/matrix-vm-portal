@@ -48,12 +48,12 @@ define(function(require){
 		var isfolder;
 		if(filetype=='application/directory'){
 			isfolder=true;
-		}else{isFolder=false;}
+		}else{isfolder=false;}
 		if(filePath != undefined && filePath != null){
 			var url = "/oss/"+$("#swiftId").val()+"/file/del";
 			var data = {
 					file : filePath,
-					isFolder:isFolder
+					isFolder:isfolder
 			}
 			cn.PostData(url,data,asyncData);
 		}
