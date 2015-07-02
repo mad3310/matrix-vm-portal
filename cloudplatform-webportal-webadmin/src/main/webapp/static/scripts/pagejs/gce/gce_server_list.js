@@ -34,7 +34,6 @@ $(function(){
       dataType : "json", /*这句可用可不用，没有影响*/
       contentType : "application/json; charset=utf-8",
       success : function(data) {
-      	console.log(data)
 	removeLoading();
 	error(data);
 	var array = data.data.data;
@@ -64,7 +63,7 @@ $(function(){
 	  }
 	  if(array[i].gceCluster){
 	    var td3 = $("<td class='hidden-480'>"
-	      + "<a class=\"link\" href='#'>"+array[i].gceCluster.clusterName+"</a>"
+	      + "<a class=\"link\" href=\"/detail/gce/cluster/" + array[i].gceClusterId+"\">"+array[i].gceCluster.clusterName+"</a>"
 	      + "</td>");//href=\"/detail/mcluster/" + array[i].mclusterId+"\"
 	  } else {
 	    var td3 = $("<td class='hidden-480'> -</td>");

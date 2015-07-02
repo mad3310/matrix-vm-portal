@@ -101,11 +101,11 @@ function queryByPage() {
 								+"</label>"
 							+"</td>");
 				var td2 = $("<td>"
-						+  "<a class=\"link\"  href='#' >"+array[i].containerName+"</a>"
-						+ "</td>");//+ array[i].id+"\"
+						+  "<a class=\"link\"  href=\"/detail/gce/cluster/" + array[i].id+"\">"+array[i].containerName+"</a>"
+						+ "</td>");
 				if(array[i].gcecluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/mcluster/" + array[i].gceclusterId+"\">"+array[i].gcecluster.gceclusterName+"</a>"
+							+ "<a class=\"link\"  href=\"/detail/gce/cluster/" + array[i].gceclusterId+"\">"+array[i].gcecluster.gceclusterName+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td class='hidden-480'>-</td>");
@@ -113,12 +113,9 @@ function queryByPage() {
 				if(array[i].hcluster){
 					var td4 =$("<td class='hidden-480'>"
 									+ "<a class=\"link\" href='#'>"+array[i].hcluster.hclusterNameAlias+"</a>"
-									+ "</td>");
-//					 $("<td class='hidden-480'>"
-//								+ "<a class=\"link\"  href=\"/detail/hcluster/" + array[i].gcecluster.hclusterId+"\">"+array[i].hcluster.hclusterNameAlias+"</a>"
-//								+ "</td>");
+									+ "</td>");//href=\"/detail/hcluster/" + array[i].gcecluster.hclusterId+"\"
 				} else {
-					var td4= $("<td class='hidden-480'> </td>");
+					var td4= $("<td class='hidden-480'>-</td>");
 				}
 				var td5 = $("<td>"
 						+ array[i].ipAddr

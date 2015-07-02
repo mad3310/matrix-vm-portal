@@ -64,7 +64,7 @@ $(function(){
 	  }
 	  if(array[i].slbCluster){
 	    var td3 = $("<td class='hidden-480'>"
-	      + "<a class=\"link\" href='#'>"+array[i].slbCluster.clusterName+"</a>"
+	      + "<a class=\"link\" href=\"/detail/slb/cluster/" + array[i].slbClusterId+"\">"+array[i].slbCluster.clusterName+"</a>"
 	      + "</td>");//href=\"/detail/mcluster/" + array[i].mclusterId+"\"
 	  } else {
 	    var td3 = $("<td class='hidden-480'> -</td>");
