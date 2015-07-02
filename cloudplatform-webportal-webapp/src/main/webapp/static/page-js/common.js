@@ -352,11 +352,13 @@ define(function(require,exports,module){
                 success:function(data){
                     $('body').find('.spin').remove();
                     $('body').find('.far-spin').remove();
-                    if(data.result == 0){
-                    	debugger;
-                         window.location.href="/500";
-                    }else{
-                        /*添加当handler为空时的异常处理*/
+                    if(data.result==0){
+                        var cn=new Common();
+                        cn.alertoolDanger('操作出错了！'+data.msgs);
+                        return;
+                    }
+                    /*添加当handler为空时的异常处理*/
+                    if(handler){
                         handler(data);
                     }
                 }
@@ -369,8 +371,15 @@ define(function(require,exports,module){
                 type:"get",
                 dataType:'json',
                 success:function(data){
+                    if(data.result==0){
+                        var cn=new Common();
+                        cn.alertoolDanger('操作出错了！'+data.msgs);
+                        return;
+                    }
                     /*添加当handler为空时的异常处理*/
-                    handler(data);
+                    if(handler){
+                        handler(data);
+                    }
                 }
             });
         },
@@ -382,6 +391,11 @@ define(function(require,exports,module){
                 dataType:'json',
                 data:data,
                 success:function(data){
+                    if(data.result==0){
+                        var cn=new Common();
+                        cn.alertoolDanger('操作出错了！'+data.msgs);
+                        return;
+                    }
                     /*添加当handler为空时的异常处理*/
                     if(handler){
                         handler(data);
@@ -398,6 +412,7 @@ define(function(require,exports,module){
                     if(data.result==0){
                         var cn=new Common();
                         cn.alertoolDanger('操作出错了！'+data.msgs);
+                        return;
                     }
                     /*添加当handler为空时的异常处理*/
                     if(handler){
