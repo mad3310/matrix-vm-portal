@@ -71,7 +71,7 @@ public class TaskContainerCheckStatusServiceImpl extends BaseTask4RDSServiceImpl
 		while(!tr.isSuccess()) {
 			Thread.sleep(PYTHON_INIT_CHECK_INTERVAL_TIME);
 			if(new Date().getTime()-start >PYTHON_INIT_CHECK_TIME) {
-				tr.setResult("check time over");
+				tr.setResult("check time over:" + result.getUrl());
 				break;
 			}
 			result = pythonService.checkContainerStatus(nodeIp1, username, password);

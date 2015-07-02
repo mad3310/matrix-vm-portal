@@ -58,7 +58,7 @@ public class TaskCbaseClusterCheckStatusServiceImpl extends
 		while (!tr.isSuccess()) {
 			Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
 			if (new Date().getTime() - start > PYTHON_CREATE_CHECK_TIME) {
-				tr.setResult("check time over");
+				tr.setResult("check time over:"+result.getUrl());
 				break;
 			}
 			result = cbasePythonService.checkContainerCreateStatus(

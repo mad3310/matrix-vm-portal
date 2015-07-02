@@ -55,7 +55,7 @@ public class TaskSlbChecktatusServiceImpl extends BaseTask4SlbServiceImpl implem
 		while(!tr.isSuccess()) {
 			Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
 			if(new Date().getTime()-start >PYTHON_CREATE_CHECK_TIME) {
-				tr.setResult("check time over");
+				tr.setResult("check time over:"+result.getUrl());
 				break;
 			}
 			result = slbPythonService.checkContainerCreateStatus(cluster.getClusterName(),host.getHostIp(),host.getName(),host.getPassword());
