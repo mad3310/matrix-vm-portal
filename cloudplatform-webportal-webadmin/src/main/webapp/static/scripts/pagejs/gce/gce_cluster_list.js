@@ -713,13 +713,14 @@ function addMemory(obj){
 	/*验证码DOM*/
 	var form = $("<form>"
 			 + "<div class=\"form-group\">"
+			 + "<div>2倍<input type=\"radio\" name=\"add\" value=\"2倍\" style=\"margin:-5px 25px 25px 10px ;\"/>4倍<input type=\"radio\" name=\"add\" value=\"2倍\" style=\"margin:-5px 25px 25px 10px ;\"/></div>"
 			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
 			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
              + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"
 			 + "</div>"
              + "</form>");
 	
-	confirmframe("删除container集群","删除container集群后将不能恢复!",form,deleteCmd);
+	confirmframe("扩充container集群内存","container集群内存扩充为当前的:",form,deleteCmd);
 	
 	/*刷新验证码*/
 	function refreshCode(){
