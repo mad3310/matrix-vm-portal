@@ -109,32 +109,7 @@
 												<div class="col-xs-12 col-sm-10 row">
 													<div class="bk-form-row-li">
 														<div class="bk-buttontab bk-buttontab-regioncitys">
-															<button class=" bk-button bk-button-primary bk-button-current">
-																<div>
-																	<span>北京</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary disabled hidden-xs">
-																<div>
-																	<span>成都</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary disabled hidden-xs">
-																<div>
-																	<span>青岛</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary disabled hidden-xs">
-																<div>
-																	<span>香港</span>
-																</div>
-															</button>
-															<button class="bk-button bk-button-primary disabled hidden-xs">
-																<div>
-																	<span>深圳</span>
-																</div>
-															</button>
-															<input id="regionCityName" type="hidden" value="">
+															<input type="text" class="hide" value="">															
 														</div>
 													</div>
 												</div>
@@ -157,25 +132,37 @@
 													</div>
 												</div>
 											</div>
-											<div class="bk-form-row">
-												<label class="bk-form-row-name">云主机类型：</label>
-												<div class="bk-form-row-cell">
-													<div class="bk-form-row-li clearfix">
-														<div class="pull-left">
-															<span class="sleBG"> <span class="sleHid">
-																	<div class="divselect">
-																		<span>选择主机类型</span>
-																		<ul style="display: none;">
-																		</ul>
-																		<input name="vmType" type="hidden" value="" />
-																	</div>
-															</span>
-															</span> <span class="bk-select-arrow"></span>
+											<div class="bk-form-row col-xs-12 col-sm-12">
+												<label class="bk-form-row-name">CPU：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab bk-buttontab-flavorCPUs">	
+															<input type="text" class="hide" value="">													
 														</div>
 													</div>
 												</div>
 											</div>
-											
+											<div class="bk-form-row col-xs-12 col-sm-12">
+												<label class="bk-form-row-name">内存：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab bk-buttontab-flavorRams">	
+															<input type="text" class="hide" value="">													
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="bk-form-row col-xs-12 col-sm-12">
+												<label class="bk-form-row-name">硬盘：</label>
+												<div class="col-xs-12 col-sm-10 row">
+													<div class="bk-form-row-li">
+														<div class="bk-buttontab bk-buttontab-flavorDisks">
+															<input type="text" class="hide" value="">															
+														</div>
+													</div>
+												</div>
+											</div>
+											<input id="flavorId" type="hidden" value="">
 										</div>
 									</dd>
 								</dl>
@@ -222,7 +209,7 @@
 																		<span>选择操作系统类别</span>
 																		<ul class="bk-select-options">
 																		</ul>
-																		<input name="vmImageOSName" type="hidden" value="" />
+																		<input id="vmImageOSName" name="vmImageOSName" type="hidden" />
 																	</div>
 															</span>
 															</span> <span class="bk-select-arrow"></span>
@@ -238,6 +225,7 @@
 															</span>
 															</span> <span class="bk-select-arrow"></span>
 														</div>
+														<span class="image-invalid-tip"></span>
 														<input id="vmImageId" type="hidden" value="" />
 													</div>
 												</div>
@@ -295,9 +283,9 @@
 								<div>
 									<div class="bk-items-list">
 										<ul>
-											<li><span class="bk-items-item-name">区域：</span> <span class="bk-items-item-value" id="buy-region">惠普DC</span></li>
-											<li><span class="bk-items-item-name">类型：</span> <span class="bk-items-item-value" id="buy-type">nano</span></li>
-											<li><span class="bk-items-item-name">镜像：</span> <span class="bk-items-item-value" id= "buy-image">cirros-0.3.2-x86_64 (12.6 MB)</span></li>
+											<li><span class="bk-items-item-name">区域：</span> <span class="bk-items-item-value" id="buy-region">--</span></li>
+											<li><span class="bk-items-item-name">配置：</span> <span class="bk-items-item-value" id="buy-flavor">--</span></li>
+											<li><span class="bk-items-item-name">镜像：</span> <span class="bk-items-item-value" id= "buy-image">--</span></li>
 											<!-- <li><span class="bk-items-item-name">网络：</span> <span class="bk-items-item-value">网络1</span></li> -->
 										</ul>
 									</div>
