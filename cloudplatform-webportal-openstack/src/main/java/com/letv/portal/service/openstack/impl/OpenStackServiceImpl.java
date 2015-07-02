@@ -1,17 +1,20 @@
 package com.letv.portal.service.openstack.impl;
 
 import com.letv.common.util.ConfigUtil;
+import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.internal.UserExists;
 import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.password.PasswordService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
@@ -66,6 +69,11 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private PasswordService passwordService;
 
+	@Autowired
+	private ICloudvmRegionService cloudvmRegionService;
+
+	private OpenStackServiceGroup openStackServiceGroup;
+
 	@PostConstruct
 	public void open() {
 		ConfigUtil.class.getName();
@@ -83,6 +91,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackConf
 				.setUserPrivateNetworkSubnetName(userPrivateNetworkSubnetName);
 		openStackConf.setUserPrivateRouterName(userPrivateRouterName);
+
+		openStackServiceGroup = new OpenStackServiceGroup();
+		openStackServiceGroup.setCloudvmRegionService(cloudvmRegionService);
 	}
 
 	@Override
@@ -110,7 +121,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 			if (email.endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
 			}
-			return new OpenStackSessionImpl(openStackConf, openStackUser);
+			return new OpenStackSessionImpl(openStackServiceGroup, openStackConf, openStackUser);
 		} catch (NoSuchAlgorithmException e) {
 			throw new OpenStackException("后台服务不可用", e);
 		}

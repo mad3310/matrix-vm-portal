@@ -19,6 +19,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.impl.ImageResourceImpl;
@@ -29,9 +30,9 @@ public class ImageManagerImpl extends AbstractResourceManager implements
 
 	private GlanceApi glanceApi;
 
-	public ImageManagerImpl(OpenStackConf openStackConf,
+	public ImageManagerImpl(OpenStackServiceGroup openStackServiceGroup, OpenStackConf openStackConf,
 			OpenStackUser openStackUser) {
-		super(openStackConf, openStackUser);
+		super(openStackServiceGroup, openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());

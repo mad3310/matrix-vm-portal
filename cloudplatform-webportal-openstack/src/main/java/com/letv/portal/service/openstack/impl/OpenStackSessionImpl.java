@@ -27,6 +27,8 @@ import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 public class OpenStackSessionImpl implements OpenStackSession {
 
 	@SuppressWarnings("unused")
+	private OpenStackServiceGroup openStackServiceGroup;
+	@SuppressWarnings("unused")
 	private OpenStackConf openStackConf;
 	@SuppressWarnings("unused")
 	private OpenStackUser openStackUser;
@@ -41,107 +43,127 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 	private boolean isClosed;
 
-	public OpenStackSessionImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) throws OpenStackException{
+	public OpenStackSessionImpl(OpenStackServiceGroup openStackServiceGroup,
+			OpenStackConf openStackConf, OpenStackUser openStackUser)
+			throws OpenStackException {
+		this.openStackServiceGroup = openStackServiceGroup;
 		this.openStackConf = openStackConf;
 		this.openStackUser = openStackUser;
 
 		// this.imageManagerLock = new Object();
 		// this.networkManagerLock = new Object();
 		// this.vmManagerLock = new Object();
-		
-		openStackUser.setPrivateNetworkName(openStackConf.getUserPrivateNetworkName());
 
-		imageManager = new ImageManagerImpl(openStackConf, openStackUser);
-		networkManager = new NetworkManagerImpl(openStackConf, openStackUser);
-		vmManager = new VMManagerImpl(openStackConf, openStackUser);
+		openStackUser.setPrivateNetworkName(openStackConf
+				.getUserPrivateNetworkName());
+
+		imageManager = new ImageManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
+		networkManager = new NetworkManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
+		vmManager = new VMManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
 		vmManager.setImageManager(imageManager);
 		vmManager.setNetworkManager(networkManager);
 
 		isClosed = false;
 
-//		if (openStackUser.getFirstLogin()) {
-			NeutronApi neutronApi = networkManager.getNeutronApi();
-			for (String region : neutronApi.getConfiguredRegions()) {
-				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+		// if (openStackUser.getFirstLogin()) {
+		NeutronApi neutronApi = networkManager.getNeutronApi();
+		for (String region : neutronApi.getConfiguredRegions()) {
+			NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-				Network publicNetwork = networkApi.get(openStackConf.getGlobalPublicNetworkId());
-//				for (Network network : networkApi.list().concat().toList()) {
-//					if ("__public_network".equals(network.getName())) {
-//						publicNetwork = network;
-//						break;
-//					}
-//				}
-				if (publicNetwork == null) {
-					throw new OpenStackException("can not find public network under region: "+region,"后台服务异常");
-				}
-				openStackUser.setPublicNetworkName(publicNetwork.getName());
-				
-				if(openStackUser.getInternalUser()){
-					openStackUser.setSharedNetworkName(networkApi.get(openStackConf.getGlobalSharedNetworkId()).getName());
-				}
-
-				Network privateNetwork = null;
-				for(Network network:networkApi.list().concat().toList()){
-					if(openStackConf.getUserPrivateNetworkName().equals(network.getName())){
-						privateNetwork=network;
-						break;
-					}
-				}
-				if(privateNetwork==null){
-					privateNetwork = networkApi.create(Network.CreateNetwork
-							.createBuilder("").name(openStackConf.getUserPrivateNetworkName())
-							.build());
-				}
-				
-				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-				
-				Subnet privateSubnet = null;
-				for(Subnet subnet:subnetApi.list().concat().toList()){
-					if(openStackConf.getUserPrivateNetworkSubnetName().equals(subnet.getName())){
-						privateSubnet=subnet;
-						break;
-					}
-				}
-				if(privateSubnet==null){
-					privateSubnet = subnetApi.create(Subnet.CreateSubnet
-							.createBuilder(privateNetwork.getId(), openStackConf.getUserPrivateNetworkSubnetCidr())
-							.enableDhcp(true).name(openStackConf.getUserPrivateNetworkSubnetName()).ipVersion(4).build());
-				}
-				
-				RouterApi routerApi = neutronApi.getRouterApi(region).get();
-
-				Router privateRouter =null;
-				for(Router router:routerApi.list().concat().toList()){
-					if(openStackConf.getUserPrivateRouterName().equals(router.getName())){
-						privateRouter=router;
-						break;
-					}
-				}
-				if(privateRouter==null){
-					privateRouter = routerApi.create(Router.CreateRouter
-							.createBuilder().name(openStackConf.getUserPrivateRouterName())
-							.externalGatewayInfo(
-									ExternalGatewayInfo.builder()//.enableSnat(true)
-											.networkId(publicNetwork.getId())
-											.build()).build());
-					try{
-						routerApi.addInterfaceForSubnet(privateRouter.getId(), privateSubnet.getId());
-					}catch(Exception ex){
-						routerApi.delete(privateRouter.getId());
-						throw new OpenStackException("后台服务异常",ex);
-					}
-				}
-				
-//				Router router = routerApi.create(Router.CreateRouter
-//						.createBuilder().name(openStackConf.getUserPrivateRouterName())
-//						.build());
-//				.externalGatewayInfo(
-//						ExternalGatewayInfo.builder().enableSnat(true)
-//								.networkId(publicNetwork.getId())
-//								.build())
-				
+			Network publicNetwork = networkApi.get(openStackConf
+					.getGlobalPublicNetworkId());
+			// for (Network network : networkApi.list().concat().toList()) {
+			// if ("__public_network".equals(network.getName())) {
+			// publicNetwork = network;
+			// break;
+			// }
+			// }
+			if (publicNetwork == null) {
+				throw new OpenStackException(
+						"can not find public network under region: " + region,
+						"后台服务异常");
 			}
-//		}
+			openStackUser.setPublicNetworkName(publicNetwork.getName());
+
+			if (openStackUser.getInternalUser()) {
+				openStackUser.setSharedNetworkName(networkApi.get(
+						openStackConf.getGlobalSharedNetworkId()).getName());
+			}
+
+			Network privateNetwork = null;
+			for (Network network : networkApi.list().concat().toList()) {
+				if (openStackConf.getUserPrivateNetworkName().equals(
+						network.getName())) {
+					privateNetwork = network;
+					break;
+				}
+			}
+			if (privateNetwork == null) {
+				privateNetwork = networkApi.create(Network.CreateNetwork
+						.createBuilder("")
+						.name(openStackConf.getUserPrivateNetworkName())
+						.build());
+			}
+
+			SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+
+			Subnet privateSubnet = null;
+			for (Subnet subnet : subnetApi.list().concat().toList()) {
+				if (openStackConf.getUserPrivateNetworkSubnetName().equals(
+						subnet.getName())) {
+					privateSubnet = subnet;
+					break;
+				}
+			}
+			if (privateSubnet == null) {
+				privateSubnet = subnetApi
+						.create(Subnet.CreateSubnet
+								.createBuilder(
+										privateNetwork.getId(),
+										openStackConf
+												.getUserPrivateNetworkSubnetCidr())
+								.enableDhcp(true)
+								.name(openStackConf
+										.getUserPrivateNetworkSubnetName())
+								.ipVersion(4).build());
+			}
+
+			RouterApi routerApi = neutronApi.getRouterApi(region).get();
+
+			Router privateRouter = null;
+			for (Router router : routerApi.list().concat().toList()) {
+				if (openStackConf.getUserPrivateRouterName().equals(
+						router.getName())) {
+					privateRouter = router;
+					break;
+				}
+			}
+			if (privateRouter == null) {
+				privateRouter = routerApi.create(Router.CreateRouter
+						.createBuilder()
+						.name(openStackConf.getUserPrivateRouterName())
+						.externalGatewayInfo(ExternalGatewayInfo.builder()// .enableSnat(true)
+								.networkId(publicNetwork.getId()).build())
+						.build());
+				try {
+					routerApi.addInterfaceForSubnet(privateRouter.getId(),
+							privateSubnet.getId());
+				} catch (Exception ex) {
+					routerApi.delete(privateRouter.getId());
+					throw new OpenStackException("后台服务异常", ex);
+				}
+			}
+
+			// Router router = routerApi.create(Router.CreateRouter
+			// .createBuilder().name(openStackConf.getUserPrivateRouterName())
+			// .build());
+			// .externalGatewayInfo(
+			// ExternalGatewayInfo.builder().enableSnat(true)
+			// .networkId(publicNetwork.getId())
+			// .build())
+
+		}
+		// }
 	}
 
 	@Override

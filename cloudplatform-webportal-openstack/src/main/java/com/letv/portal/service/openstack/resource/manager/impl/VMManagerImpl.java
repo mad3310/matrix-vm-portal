@@ -38,6 +38,7 @@ import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
 import com.letv.portal.service.openstack.exception.VMDeleteException;
 import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -60,9 +61,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private NetworkManager networkManager;
 
-	public VMManagerImpl(OpenStackConf openStackConf,
+	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup, OpenStackConf openStackConf,
 			OpenStackUser openStackUser) {
-		super(openStackConf, openStackUser);
+		super(openStackServiceGroup, openStackConf, openStackUser);
 
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());

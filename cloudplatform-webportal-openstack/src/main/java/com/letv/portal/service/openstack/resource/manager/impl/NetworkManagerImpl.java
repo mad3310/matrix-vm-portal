@@ -21,6 +21,7 @@ import com.google.inject.Module;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
@@ -33,8 +34,8 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
 
     private NeutronApi neutronApi;
 
-    public NetworkManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
-        super(openStackConf, openStackUser);
+    public NetworkManagerImpl(OpenStackServiceGroup openStackServiceGroup, OpenStackConf openStackConf, OpenStackUser openStackUser) {
+        super(openStackServiceGroup, openStackConf, openStackUser);
 
         Iterable<Module> modules = ImmutableSet
                 .<Module>of(new SLF4JLoggingModule());

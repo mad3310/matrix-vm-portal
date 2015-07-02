@@ -59,5 +59,7 @@
         <!-- swift -->
         <typeAlias alias="SwiftServer" type="com.letv.portal.model.swift.SwiftServer" />
         
+        <!-- OpenStack -->
+        <typeAlias alias="CloudvmRegion" type="com.letv.portal.model.cloudvm.CloudvmRegion" />
     </typeAliases>
 </configuration>
