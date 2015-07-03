@@ -16,6 +16,7 @@ define(function(require,exports,module){
     
     var DataHandler = function(){
     };
+    var regionCitynameData;
 
     module.exports = DataHandler;
 
@@ -54,7 +55,8 @@ define(function(require,exports,module){
                     }
                     tdList.push(vmStatus);
                     tdList.push("<td class='hidden-xs'>"+
-                            		"<span class='field-region'>"+array[i].region+"</span>"+
+                            		"<span>"+array[i].regionDisplayName+"</span>"+
+                            		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+
                              	"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+ array[i].image.name+"</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
@@ -63,7 +65,7 @@ define(function(require,exports,module){
                     				"<span>内网："+(array[i].ipAddresses.shared.join(', ')|| '--')+"</span>"+
 		                    	 "</td>");
                     tdList.push("<td class=\"padding-left-32\">"+
-                    			[array[i].flavor.name,array[i].flavor.ram+'M 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
+                    			[array[i].flavor.ram+'M 内存',array[i].flavor.vcpus+' 虚拟内核',array[i].flavor.disk+'G 硬盘',].join('|')+
                     			"</td>");
                     tdList.push('<td class="text-right hidden-xs">'+
 		                    		'<a href="'+baseInfoUrl+'">管理</a>|'+
@@ -87,18 +89,29 @@ define(function(require,exports,module){
            	}
 	   	},
 	   	initRegionSelectorHandler:function(data){
-   			$('#region_selector').empty();
-	   		if(data.result==1&&data.data.length){
-	   			var optionList=[];
-	   			optionList.push('<option value="All" selected="selected">全部</option>');
-	   			for(var i=0,len=data.data.length;i<len;i++){
-	   				optionList.push('<option value="'+data.data[i]+'">'+data.data[i]+'</option>');	
-	   			}
-	   			$('#region_selector').append(optionList.join(''));
+        	if(!data || !data.data) return;
+        	regionCitynameData=data;
+        	var cityObjects = Object.keys(data.data).reduce(function(x,countryId){
+        		var newCityIds=	Object.keys(data.data[countryId]);
+        		newCityIds.forEach(function(currentCityId){
+        			var currentCityObject= data.data[countryId][currentCityId];
+        			var firstRegionNum=Object.keys(currentCityObject)[0];
+        			x.push({cityId:countryId+'-'+currentCityId,cityName:currentCityObject[firstRegionNum].city});
+        		});
+        		return x;
+        	},[]);
+        	var regionCityListEl=$('.region-city-list');
+        	regionCityListEl.children('button').remove();
+	   		var optionList=[];
+	   		optionList.push('<button class="btn btn-default btn-md btn-region-display hidden-xs" value="All">全部</button>');
+	   		for(var i=0,len=cityObjects.length;i<len;i++){
+	   			optionList.push('<button class="btn btn-default btn-md btn-region-display hidden-xs" value="'+cityObjects[i].cityId+'">'+cityObjects[i].cityName+'</button>');	
 	   		}
+	   		regionCityListEl.append(optionList.join(''));
+	   		regionCityListEl.children('button').first().trigger('click');
 	   	},
 	   	getSelectedRegion:function(){
-	   		return $('select#region_selector').val();
+	   		return $('.region-city-list #city_region_selected').val();
 	   	},
 	   	operateVm:function(vmId,fieldRegion,operationType,asyncData){
 	   		var title = "确认";
@@ -112,8 +125,9 @@ define(function(require,exports,module){
             var setVmStatus=function(value){
             	getVmStatusRef().val(value);
             };
-            var doOperation=function(){
+            var doOperation=function(operateStatus){
                 cn.DialogBoxInit(title,text,function(){
+        			setVmStatus(operateStatus);
             		cn.PostData(operationUrl,{
             	        vmId: vmId
             	    },function(data){
@@ -123,51 +137,48 @@ define(function(require,exports,module){
                 });
     		};
     		if(vmStatus=='BUILD'){
-    			cn.alertoolSuccess("虚拟机正在创建中，不允许操作。");
+    			cn.alertoolWarnning("虚拟机正在创建中，不允许操作。");
     			return;
     		}
 			if(vmStatus=='REMOVEING' || vmStatus=='ACTIVEING' || vmStatus=='SHUTOFFING'){
-				cn.alertoolSuccess("虚拟机正在操作中，请稍后再试。");
+				cn.alertoolWarnning("虚拟机正在操作中，请稍后再试。");
 				return;
 			}
     		switch(operationType){
         		case 'vm-remove':
-        			setVmStatus('REMOVEING');
         			text='您确定要删除该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-delete';
         			operationCallback=function(data){
         				cn.alertoolSuccess("虚拟机删除成功。");
         				asyncData();
             		};
-            		doOperation();
+            		doOperation('REMOVEING');
             		break;
         		case 'vm-start':
         			if(vmStatus=='ACTIVE'){
         				cn.alertoolWarnning("虚拟机已经是启动状态。");
         				return;
         			}
-        			setVmStatus('ACTIVEING');
         			text='您确定要开始该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-start';
         			operationCallback=function(data){
-        				cn.alertoolWarnning("虚拟机已启动");
+        				cn.alertoolSuccess("虚拟机已启动");
         				asyncData();
             		};
-            		doOperation();
+            		doOperation('ACTIVEING');
             		break;
         		case 'vm-stop':
         			if(vmStatus=='SHUTOFF'){
-        				cn.alertoolSuccess("虚拟机已经是关闭状态。");
+        				cn.alertoolWarnning("虚拟机已经是关闭状态。");
         				return;
         			}
-        			setVmStatus('SHUTOFFING');
         			text='您确定要停止该虚拟机吗？';
         			operationUrl='/ecs/region/'+fieldRegion+'/vm-stop';
         			operationCallback=function(data){
         				cn.alertoolSuccess("虚拟机已停止");
         				asyncData();
             		};
-            		doOperation();
+            		doOperation('SHUTOFFING');
             		break;
             	default:
             		break;

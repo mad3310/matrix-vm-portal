@@ -1590,6 +1590,15 @@ textarea {
 
 /*end bootstrap-select style*/
 
+/*begin vmlist page style*/
+.region-city-list{
+	display:inline-block;
+}
+.region-city-list button{
+	margin-right:5px;
+}
+/*end vmlist page style*/
+
 /*  nodata div style*/
 #noData{
 	color:#ddd;

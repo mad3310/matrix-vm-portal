@@ -51,6 +51,11 @@ define(function(require,exports,module){
             }
             regioncitysRef.find("button").first().click();
         },
+        setBuyRegionName:function(regionName){
+        	if(!regionCitynameData || !regionCitynameData.data) return;
+        	var countryAndCityAndRegionName=regionName.split('-');
+        	$('#buy-region').html(regionCitynameData.data[countryAndCityAndRegionName[0]][countryAndCityAndRegionName[1]][countryAndCityAndRegionName[2]].name);        	
+        },
         getFlavorCPUs:function(data){
         	if(!data || !data.data) return;
         	flavorGroupData=data;

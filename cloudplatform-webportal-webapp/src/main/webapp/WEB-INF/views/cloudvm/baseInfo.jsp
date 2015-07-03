@@ -122,7 +122,7 @@
 		        	</tr> 
 		        	<tr>
 		        		<td width="50%">
-			        		<span class="text-muted pd-r8">虚拟内核:</span>
+			        		<span class="text-muted pd-r8">内核:</span>
 			        		<span id="vm_info_config_vcpu"></span>
 		        		</td>
 		        		<td width="50%">
