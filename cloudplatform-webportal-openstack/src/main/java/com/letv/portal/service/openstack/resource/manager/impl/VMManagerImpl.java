@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.CharUtils;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -28,6 +30,7 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -196,10 +199,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// test code end
 		createServerOptions.networks(networks);
 
-		if (conf.getAdminPass() == null) {
+		if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
 			conf.setAdminPass(PasswordRandom.genStr(10));
+		} else {
+			for (char ch : conf.getAdminPass().toCharArray()) {
+				if (!CharUtils.isAsciiAlphanumeric(ch)) {
+					throw new OpenStackException(
+							"User password contains illegal characters.",
+							"用户密码包含不合法的字符");
+				}
+			}
 		}
-		createServerOptions.adminPass(conf.getAdminPass());
+		// createServerOptions.adminPass(conf.getAdminPass());
+		createServerOptions.userData(MessageFormat.format(
+				"#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
+				conf.getAdminPass()).getBytes(Charsets.UTF_8));
 
 		// test code begin(ssh login)
 		{
