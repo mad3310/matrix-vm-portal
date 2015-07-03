@@ -16,18 +16,25 @@ import com.letv.portal.service.openstack.resource.VMResource;
 
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException, OpenStackException;
+			ResourceNotFoundException, APINotAvailableException,
+			OpenStackException;
+
+	List<VMResource> listAll() throws RegionNotFoundException,
+			ResourceNotFoundException, APINotAvailableException,
+			OpenStackException;
 
 	List<VMResource> listByRegionGroup(String regionGroup)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;
 
 	VMResource get(String region, String id) throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException, OpenStackException;
+			ResourceNotFoundException, APINotAvailableException,
+			OpenStackException;
 
 	VMResource create(String region, VMCreateConf conf)
 			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, PollingInterruptedException, OpenStackException;
+			APINotAvailableException, PollingInterruptedException,
+			OpenStackException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,

@@ -1,9 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -69,13 +67,8 @@ public class VMController {
 	public @ResponseBody ResultObject listAll() {
 		ResultObject result = new ResultObject();
 		try {
-			VMManager vmManager = Util.session(sessionService).getVMManager();
-			Set<String> regions = vmManager.getRegions();
-			List<VMResource> vmResources = new LinkedList<VMResource>();
-			for (String region : regions) {
-				vmResources.addAll(vmManager.list(region));
-			}
-			result.setData(vmResources);
+			result.setData(Util.session(sessionService).getVMManager()
+					.listAll());
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
