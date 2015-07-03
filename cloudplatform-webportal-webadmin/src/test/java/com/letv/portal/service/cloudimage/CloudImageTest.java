@@ -48,8 +48,8 @@ public class CloudImageTest extends AbstractTest{
     	Image image = new Image();
     	image.setDictionaryId(1l);
     	image.setPurpose("nginx");
-    	image.setUrl("10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6");
-    	image.setTag("logstash-forwarder-0.0.6");
+    	image.setUrl("1111:5000/letv/base-nginx:logstash-forwarder-0.0.6");
+    	image.setTag("1111");
     	image.setIsUsed(1);
     	image.setDescn("etst1111111");
     	
@@ -64,10 +64,10 @@ public class CloudImageTest extends AbstractTest{
       * @date 2015年7月3日 下午2:29:06
       */
     @Test
-    @Ignore
+    //@Ignore
     public void testUpdateImage() {
-    	Image image = (Image) imageController.detailById(1l).getData();
-    	image.setPurpose("hello");
+    	Image image = (Image) imageController.detailById(5l).getData();
+    	image.setIsUsed(1);
     	imageController.updateImage(image);
     }
     
@@ -79,7 +79,7 @@ public class CloudImageTest extends AbstractTest{
       * @date 2015年7月3日 下午2:28:32
       */
     @Test
-    //@Ignore
+    @Ignore
     public void testDeleteImage() {
     	imageController.deleteImageById(1l);
     }

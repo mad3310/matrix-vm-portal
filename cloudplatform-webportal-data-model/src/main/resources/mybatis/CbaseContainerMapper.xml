@@ -38,6 +38,7 @@
 
 		<association property="cbaseCluster" javaType="CbaseCluster">
 			<result column="CBASECLUSTER_NAME" property="cbaseClusterName" />
+			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 
 		<association property="hcluster" javaType="Hcluster">

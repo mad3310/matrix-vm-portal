@@ -39,6 +39,7 @@
 		
 	    <association property="slbCluster" javaType="SlbCluster">
 			<result column="CLUSTER_NAME" property="clusterName" />
+			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">

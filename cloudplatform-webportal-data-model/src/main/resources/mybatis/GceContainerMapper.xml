@@ -45,6 +45,7 @@
 		
 	    <association property="gceCluster" javaType="GceCluster">
 			<result column="GCECLUSTER_NAME" property="clusterName" />
+			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -68,16 +69,16 @@
 			<if test="containerName != null  and containerName != '' and containerName != 'null'">
 				and GCT.CONTAINER_NAME like CONCAT('%','${containerName}','%')
 			</if>
-			<if test="type != null ">
+			<if test="type != null and type != '' ">
 				and GCT.TYPE=#{type}
 			</if>
-			<if test="ipAddr != null ">
+			<if test="ipAddr != null and ipAddr != '' ">
 				and GCT.IP_ADDR=#{ipAddr}
 			</if>
-			<if test="gceClusterId != null ">
+			<if test="gceClusterId != null and gceClusterId != '' ">
 				and GCT.GCECLUSTER_ID=#{gceClusterId}
 			</if>
-			<if test="zookeeperId != null ">
+			<if test="zookeeperId != null and zookeeperId != ''">
 				and GCT.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
 			<if test="status != null and status != '' ">
@@ -213,7 +214,7 @@
 			<if test="params !=null and params.containerName != null  and params.containerName != '' and params.containerName != 'null'">
 				and GCT.CONTAINER_NAME like CONCAT('%','${params.containerName}','%')
 			</if>
-			<if test="params !=null and params.type != null ">
+			<if test="params !=null and params.type != null and params.type != ''">
 				and GCT.TYPE=#{params.type}
 			</if>
 			<if test="params !=null and params.ipAddr != null and params.ipAddr != ''">
