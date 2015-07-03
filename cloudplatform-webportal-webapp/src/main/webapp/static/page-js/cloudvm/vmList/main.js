@@ -16,6 +16,24 @@ define(function(require){
     
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
+	
+    /*按钮组件封装 --begin*/
+	$(document).on('click', '.region-city-list button' , function(e){
+		e.preventDefault();
+        if(!$(this).hasClass("btn-success")){
+            $(this).parent().find("button").removeClass("btn-success");
+            $(this).addClass("btn-success");
+            if($(this).parent().find("input:hidden").length > 0 ){
+                var val = $(this).val();
+                var hiddenInput=$(this).parent().find("input:hidden");
+                if(val!==hiddenInput.val()){
+                    hiddenInput.val(val);
+                    hiddenInput.trigger('change');
+                }	
+            }
+        }
+	});
+	/*按钮组件封装 --end*/
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');
@@ -44,6 +62,10 @@ define(function(require){
 	/*
 	 * 可封装公共方法 end
 	 */
+    $(".region-city-list input").change(function (){
+    	var flavorRam= $(this).val();
+    	asyncData();
+    });
 	
 	//加载列表数据
 	function asyncData(page) {
@@ -57,7 +79,7 @@ define(function(require){
         $('.vm-operation').each(function(index,element){
         	$(element).on('click',function(e){
         		var vmId= $(e.currentTarget.closest('tr')).find('input:checkbox[name=vm_id]').val();
-        		var fieldRegion= $(e.currentTarget.closest('tr')).find('.field-region').text();
+        		var fieldRegion= $(e.currentTarget.closest('tr')).find('.field-region').val();
         		var operationType=$(e.currentTarget).attr('class').split(' ')[1];
         		vmListHandler.operateVm(vmId,fieldRegion,operationType,asyncData);
         	});
@@ -85,7 +107,7 @@ define(function(require){
 	function asyncProgressData(){
 		$("input[name = progress_vm_id]").each(function(){
 			var vmId = $(this).val();
-			var fieldRegion=$($(this).closest('tr')).find('.field-region').text();
+			var fieldRegion=$($(this).closest('tr')).find('.field-region').val();
 			function progress_func(data){
 				vmListHandler.progress(vmId,data,asyncData);
 			}
@@ -94,15 +116,10 @@ define(function(require){
 		});
 	}
     function initComponents(){
-    	initRegionSelector().then(function(data){
-    		$('#region_selector').on('change',function(e){
-    			asyncData();
-    		});
-    		asyncData();
-    	});
+    	initRegionSelector();
     }
     function initRegionSelector(){
-    	var url = '/ecs/regions';
+    	var url='/ecs/regions/group';
 		return cn.GetData(url,vmListHandler.initRegionSelectorHandler);
     }
 

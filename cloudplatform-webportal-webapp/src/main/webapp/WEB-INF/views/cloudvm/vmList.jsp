@@ -24,9 +24,10 @@
 		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="pull-left">
 				<h5>
-				<span>云主机管理</span>&nbsp;&nbsp;				
-				<select id="region_selector" class="bootstrap-select">
-				</select>				
+				<span>云主机管理</span>		
+				<div class="region-city-list">
+					<input id="city_region_selected" type="hidden" value="" />
+				</div>			
 				</h5> 
 			</div>
 		</div>

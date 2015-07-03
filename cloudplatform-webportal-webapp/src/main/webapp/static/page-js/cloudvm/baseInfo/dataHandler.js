@@ -22,13 +22,13 @@ define(function(require,exports,module){
         			$("#"+fieldId).html(value);
                 };
                 evaluateField('vm_info_vm_id',vmInfo.id,'');
-                evaluateField('vm_info_vm_region',vmInfo.region,'');
+                evaluateField('vm_info_vm_region',vmInfo.regionDisplayName,'');
                 evaluateField('vm_info_vm_name',vmInfo && vmInfo.name  ,'');
                 evaluateField('vm_info_vm_image',vmInfo.image && vmInfo.image.name,'');
                 evaluateField('vm_info_running_state',cn.TranslateStatus(vmInfo.status),'');
                 evaluateField('vm_info_config_flavor',vmInfo.flavor && vmInfo.flavor.name,'');
                 evaluateField('vm_info_config_ram',vmInfo.flavor && vmInfo.flavor.ram,'MB');
-                evaluateField('vm_info_config_vcpu',vmInfo.flavor && vmInfo.flavor.vcpus,'虚拟内核');                
+                evaluateField('vm_info_config_vcpu',vmInfo.flavor && vmInfo.flavor.vcpus,'内核');                
                 evaluateField('vm_info_config_disk',vmInfo.flavor && vmInfo.flavor.disk,'GB');
                 evaluateField('vm_info_network_privateip',vmInfo.ipAddresses.private.join(', '),'');
                 evaluateField('vm_info_network_publicip',vmInfo.ipAddresses.public.join(', '),'');

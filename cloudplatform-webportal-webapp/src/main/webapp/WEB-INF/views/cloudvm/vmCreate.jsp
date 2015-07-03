@@ -171,8 +171,8 @@
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div>
-											<div class="bk-form-row form-group col-xs-12 col-sm-12 hidden-xs">
-												<label class="bk-form-row-name col-xs-12 col-sm-2" style="padding-left: 0px;">公网IP：</label>
+											<div class="bk-form-row col-xs-12 col-sm-12">
+												<label class="bk-form-row-name">公网IP：</label>
 												<div class="col-xs-12 col-sm-10 row">
 													<div class="bk-form-row-li">
 														<div class="bk-buttontab">
@@ -182,7 +182,7 @@
 																	<span>创建后设置</span>
 																</div>
 															</button>
-															<button class=" bk-button bk-button-primary" value="1">
+															<button class="bk-button bk-button-primary" value="1">
 																<div>
 																	<span>立即设置</span>
 																</div>
@@ -238,7 +238,7 @@
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
 										<div>
-											<div class="bk-form-row form-group col-xs-12 col-sm-12 hidden-xs">
+											<!--<div class="bk-form-row form-group col-xs-12 col-sm-12 hidden-xs">
 												<label class="bk-form-row-name col-xs-12 col-sm-2" style="padding-left: 0px;">设置密码：</label>
 												<div class="col-xs-12 col-sm-10 row">
 													<div class="bk-form-row-li">
@@ -257,7 +257,7 @@
 														</div>
 													</div>
 												</div>
-											</div>
+											</div>-->
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">管理员密码：</label>
 													<div class="col-sm-2 row">

@@ -37,7 +37,7 @@ define(function(require){
 	/*按钮组件封装 --end*/
     
     
-    $('.bk-buttontab-password').find('button').on('click',function(e){
+	/*$('.bk-buttontab-password').find('button').on('click',function(e){
     	var buttonValue = $(e.currentTarget).attr('value');
     	if(buttonValue==='1'){
     		$('#vmpw1').closest('.bk-form-row').css('display','block');
@@ -47,7 +47,7 @@ define(function(require){
     		$('#vmpw1').closest('.bk-form-row').css('display','none');
     		$('#vmpw2').closest('.bk-form-row').css('display','none');
     	}
-    });
+    });*/
 
     /*表单验证 --begin*/
     $("#monthPurchaseForm").bootstrapValidator({
@@ -124,14 +124,13 @@ define(function(require){
         }
         var regionName = $("[name = regionName]").val();
         var url = '/ecs/region/'+regionName+'/vm-create';
-        var pwd= $('input[name=isCreatePassword]')==='1'?$("#vmpw1").val():'';
+        var pwd= $("#vmpw1").val();//$('input[name=isCreatePassword]')==='1'?$("#vmpw1").val():'';
     	var data =  {
 						        name: $("#vmName").val(),
 						        imageId: $('#vmImageId').val(),
 						        flavorId: $('#flavorId').val(),
-						       // networkIds: $("#networkSelecter").val(),
 						        adminPass:pwd,
-						        publish: !!parseInt($('input[name=isCreatePublicIP]'))
+						        publish: !!parseInt($('input[name=isCreatePublicIP]').val())
 						    }
 		cn.PostData(url, data, function (data) {
                location.href = "/list/vm";
@@ -153,7 +152,7 @@ define(function(require){
     });
     $("input[name='regionName']").change(function (){
     	var regionName= $(this).val();
-    	$("#buy-region").html(regionName);
+    	dataHandler.setBuyRegionName(regionName);
     	$(".bk-buttontab-flavorCPUs input").val('');
     	initFlavorCPUs(regionName);
     	initImageOSs(regionName);
@@ -207,6 +206,7 @@ define(function(require){
     	else{
     		$('.image-version-selector').removeClass('divselect-unselected');
         	$("#buy-image").html(imageOSLastName+' ' +imageVersionName);
+        	$('.image-invalid-tip').css('display','none');
     	}
     	dataHandler.setImageId(imageOSLastName,imageVersionName);
     });
