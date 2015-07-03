@@ -135,16 +135,16 @@
 				and dictionary.DESCN=#{params.descn}
 			</if>
 			<if test="params != null and params.createTime != null  ">
-				and dictionary.CREATE_TIME=#{createTime}
+				and dictionary.CREATE_TIME=#{params.createTime}
 			</if>
 			<if test="params != null and params.createUser != null  ">
-				and dictionary.CREATE_USER=#{createUser}
+				and dictionary.CREATE_USER=#{params.createUser}
 			</if>
 			<if test="params != null and params.updateTime != null  ">
-				and dictionary.UPDATE_TIME=#{updateTime}
+				and dictionary.UPDATE_TIME=#{params.updateTime}
 			</if>
 			<if test="params != null and params.updateUser != null  ">
-				and dictionary.UPDATE_USER=#{updateUser}
+				and dictionary.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
 	</sql>

@@ -60,6 +60,7 @@
         <typeAlias alias="SwiftServer" type="com.letv.portal.model.swift.SwiftServer" />
         
         <typeAlias alias="Dictionary" type="com.letv.portal.model.dictionary.Dictionary" />
+        <typeAlias alias="Image" type="com.letv.portal.model.image.Image" />
         
     </typeAliases>
 </configuration>
