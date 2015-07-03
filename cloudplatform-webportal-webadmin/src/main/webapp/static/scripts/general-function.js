@@ -560,7 +560,7 @@ function transStateHtml(btnIcons,state){
 		del="<a class=\"red\" href=\"#\" data-click-type='delete' onfocus=\"this.blur();\"  title=\"暂时不开放\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 			+"</a>"
-	}'modify'
+	}
 	if(btnIcons.indexOf('modify')>=0){
 		modify="<a class=\"green\" href=\"#\" data-click-type='modify' onfocus=\"this.blur();\"  title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
