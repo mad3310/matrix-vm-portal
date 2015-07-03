@@ -235,7 +235,7 @@
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
 		select
-			<include refid="Base_Column_List" />,n.CLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
+			<include refid="Base_Column_List" />,n.CLUSTER_NAME GCECLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
 		from 
 			WEBPORTAL_GCECONTAINER GCT
 		left join 
