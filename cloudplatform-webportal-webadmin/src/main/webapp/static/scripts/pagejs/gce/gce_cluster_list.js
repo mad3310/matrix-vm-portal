@@ -185,8 +185,8 @@ function queryByPage() {
 							+ "</td>");
 					
 				}
-				var start='',stop='',restart='',del='',extend='';
-				var td8=$(transStateHtml(array[i].status,start,stop,restart,del,extend));	
+				var btnIcons=['start','stop','restart','extend'];
+				var td8=$(transStateHtml(btnIcons,array[i].status));	
 				if(array[i].status == 3||array[i].status == 4||array[i].status == 14){
 					var tr = $("<tr class=\"default-danger\"></tr>");
 				}else if(array[i].status == 5||array[i].status == 13){

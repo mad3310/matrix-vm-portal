@@ -557,7 +557,7 @@ function transStateHtml(btnIcons,state){
 			+"</a>"
 	}
 	if(btnIcons.indexOf('del')>=0&&state!=10){
-		del="<a class=\"red\" href=\"#\" data-click-type='delete' onfocus=\"this.blur();\"  title=\"暂时不开放\" data-toggle=\"tooltip\" data-placement=\"right\">"
+		del="<a class=\"red\" href=\"#\" data-click-type='delete' onfocus=\"this.blur();\"  title=\"删除\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 			+"</a>"
 	}

@@ -2,6 +2,58 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
   <div class="row">
+    <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+      <script>
+	$(window).load(function() {
+	var iw=document.body.clientWidth;
+	if(iw>767){//md&&lg
+	$('.queryOption').removeClass('collapsed');
+	}
+	});
+      </script>
+      <div class="widget-header hidden-md hidden-lg">
+	<h5 class="widget-title">基础镜像查询条件</h5>
+	<div class="widget-toolbar">
+	  <a href="#" data-action="collapse">
+	    <i class="ace-icon fa fa-chevron-down"></i>
+	  </a>
+	</div>
+      </div>
+      <div class="widget-body">
+	<div class="page-header">
+	  <div class="input-group pull-right">
+	    <form class="form-inline">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-2">
+		<input type="text" class="form-control" id="seImageName"
+		       placeholder="镜像名称">
+	      </div>
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-2">
+		<select class="form-control" id="seImageType">
+		<option value="">镜像类型</option>
+		</select>
+	      </div>
+              <div class="form-group  col-sm-6 col-xs-12 col-md-2">
+		<input type="text" class="form-control" id="seImageUsedTo"
+		       placeholder="镜像用途">
+	      </div>
+           <div class="form-group  col-sm-6 col-xs-12 col-md-2">
+		<select class="form-control" id="seImageStatus">
+			<option value="">使用状态</option>
+			<option value="0">默认使用</option>
+			<option value="1">默认不使用</option>
+		</select>
+	</div>
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
+		<button class="btn btn-sm btn-primary btn-search" id="imgSearch" type="button">
+		  <i class="ace-icon fa fa-search"></i>搜索
+		</button>
+		<button class="btn btn-sm" type="button" id="imgClearSearch">清空</button>
+	      </div>
+	    </form>
+	  </div>
+	</div>
+      </div>
+    </div>
     <div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
       <div class="widget-header">
 	<h5 class="widget-title">基础镜像列表</h5>
@@ -25,7 +77,7 @@
 		</th>
 		<th>镜像名称</th>
 		<th class="hidden-480">业务类型</th>
-		<th>用途</th>
+		<th>镜像用途</th>
 		<th class="hidden-480">下载地址</th>
 		<th class="hidden-480">版本</th>
 		<th>默认使用</th>
@@ -46,7 +98,6 @@
 	<li><a href="javascript:void(0);" id="prevPage">上一页</a></li>
 	<li><a href="javascript:void(0);" id="nextPage">下一页</a></li>
 	<li><a href="javascript:void(0);" id="lastPage">末页&raquo</a></li>
-	
 	<li class="hidden-480"><a>共<lable id="totalPage"></lable>页</a>
 	</li>
 	<li class="hidden-480"><a>第<lable id="currentPage"></lable>页</a>
@@ -66,7 +117,7 @@
             <h4 class="modal-title">添加镜像 </h4>
           </div>
 	  <form id="add-gce-image-form" name="add-gce-image-form" class="form-horizontal" role="form">
-	    <div class="modal-body">            				
+	    <div class="modal-body">
               <div class="form-group">
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像名称</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
@@ -81,15 +132,24 @@
 	      <div class="form-group">
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">业务类型</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control" name="type" id="type" data-placeholder="请选择类型...">
+		  <select class="form-control" name="imageType" id="imageType" data-placeholder="请选择类型...">
 		    <!-- <option value="">  </option> -->
 		    <!-- <option value="xx">消息中间件</option> -->
-		    <option value="jetty">jetty</option>
-		    <option value="nginx">nginx</option>
 		  </select>
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="所属业务类型" style="cursor:pointer; text-decoration:none;">
+		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+		  </a>
+		</label>
+	      </div>
+	      <div class="form-group">
+		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像用途</label>
+		<div class="col-sm-10 col-xs-10 col-md-6">
+		  <input class="form-control" name="purpose" id="purpose" type="text" />
+		</div>
+		<label class="control-label">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="标记镜像的用途，用于程序调用" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
@@ -98,7 +158,7 @@
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">镜像版本</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
 		  <input class="form-control" name="tag" id="tag" type="text" />
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传镜像的版本号tag" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
@@ -109,7 +169,7 @@
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">下载地址</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
 		  <input class="form-control" name="url" id="url" type="text" />
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此镜像的地址" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
@@ -117,38 +177,15 @@
 		</label>
 	      </div>
 	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">默认使用</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <input class="form-control" name="logUrl" id="logUrl" type="text" />
-		</div>								
-		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的日志地址" style="cursor:pointer; text-decoration:none;">
-		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-		  </a>
-		</label>
-	      </div>
-	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
-		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control" name="status" id="status" data-placeholder="该镜像是否可用">
-		    <option value="AVAILABLE">AVAILABLE</option>
-		    <option value="NOTAVAILABLE">NOTAVAILABLE</option>
-		  </select>
-		</div>							
-		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此功能可用暂时禁用镜像" style="cursor:pointer; text-decoration:none;">
-		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-		  </a>
-		</label>
-	      </div>
-	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
-		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control chosen-select" name="owner" id="owner" data-placeholder="请选择所属用户">
+		  <select class="form-control" name="isUsed" id="isUsed" data-placeholder="该镜像是否可用">
+		    <option value="1">默认使用</option>
+		    <option value="0">默认不使用</option>
 		  </select>
 		</div>
 		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="只有所属用户才能使用此镜像" style="cursor:pointer; text-decoration:none;">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="在创建改业务时，默认使用该镜像" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
@@ -174,7 +211,7 @@
       </div>
     </div>
     <div class="modal fade" id="modify-image-modal" tabindex="-1" aria-labelledby="myModalLabel" style="margin-top:157px">
-      <div class="modal-dialog">
+       <div class="modal-dialog">
 	<div class="modal-content">
 	  <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">
@@ -183,9 +220,9 @@
             </button>
             <h4 class="modal-title">修改镜像 </h4>
           </div>
-	  <form id="modify-gce-image-form" name="modify-gce-image-form" class="form-horizontal" role="form">
-	    <input id="modify-imageId" type="hidden" value="">
-	    <div class="modal-body">            				
+	  <form id="modify-gce-image-form" name="add-gce-image-form" class="form-horizontal" role="form">
+	   <input id="modify-imageId" type="hidden" value="">
+	    <div class="modal-body">
               <div class="form-group">
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像名称</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
@@ -200,13 +237,24 @@
 	      <div class="form-group">
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="type">业务类型</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control" name="modify-type" id="modify-type" data-placeholder="请选择类型...">
-		    <option value="jetty">jetty</option>
-		    <option value="nginx">nginx</option>
+		  <select class="form-control" name="modify-imageType" id="modify-imageType" data-placeholder="请选择类型...">
+		    <!-- <option value="">  </option> -->
+		    <!-- <option value="xx">消息中间件</option> -->
 		  </select>
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="所属业务类型" style="cursor:pointer; text-decoration:none;">
+		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
+		  </a>
+		</label>
+	      </div>
+	      <div class="form-group">
+		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="taskUnitName">镜像用途</label>
+		<div class="col-sm-10 col-xs-10 col-md-6">
+		  <input class="form-control" name="modify-purpose" id="modify-purpose" type="text" />
+		</div>
+		<label class="control-label">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="标记镜像的用途，用于程序调用" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
@@ -215,7 +263,7 @@
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">镜像版本</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
 		  <input class="form-control" name="modify-tag" id="modify-tag" type="text" />
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传镜像的版本号tag" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
@@ -226,7 +274,7 @@
 		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="url">下载地址</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
 		  <input class="form-control" name="modify-url" id="modify-url" type="text" />
-		</div>								
+		</div>
 		<label class="control-label">
 		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此镜像的地址" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
@@ -234,39 +282,15 @@
 		</label>
 	      </div>
 	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="logUrl">应用日志地址</label>
+		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">默认使用</label>
 		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <input class="form-control" name="modify-logUrl" id="modify-logUrl" type="text" />
-		</div>								
-		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="该镜像应用的日志地址" style="cursor:pointer; text-decoration:none;">
-		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-		  </a>
-		</label>
-	      </div>
-	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="beanName">可用性</label>
-		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control" name="modify-status" id="modify-status" data-placeholder="该镜像是否可用">
-		    <option value="AVAILABLE">AVAILABLE</option>
-		    <option value="NOTAVAILABLE">NOTAVAILABLE</option>
-		  </select>
-		</div>							
-		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="此功能可用暂时禁用镜像" style="cursor:pointer; text-decoration:none;">
-		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
-		  </a>
-		</label>
-	      </div>
-	      <div class="form-group">
-		<label class="col-sm-12 col-xs-12 col-md-4 control-label" for="retry">所属用户</label>
-		<div class="col-sm-10 col-xs-10 col-md-6">
-		  <select class="form-control chosen-select" name="modify-owner" id="modify-owner" data-placeholder="请选择所属用户">
-		    <option></option>
+		  <select class="form-control" name="modify-isUsed" id="modify-isUsed" data-placeholder="该镜像是否可用">
+		    <option value="1">默认使用</option>
+		    <option value="0">默认不使用</option>
 		  </select>
 		</div>
 		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="只有所属用户才能使用此镜像" style="cursor:pointer; text-decoration:none;">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="在创建改业务时，默认使用该镜像" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
