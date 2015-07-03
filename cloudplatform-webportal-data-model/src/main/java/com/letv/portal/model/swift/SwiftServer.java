@@ -6,6 +6,7 @@ import com.letv.common.model.BaseModel;
 import com.letv.portal.enumeration.OssServerVisibility;
 import com.letv.portal.model.HclusterModel;
 import com.letv.portal.model.HostModel;
+import com.letv.portal.model.UserModel;
 
 /**Program Name: SwiftServer <br>
  * Description:  swift服务<br>
@@ -28,6 +29,17 @@ public class SwiftServer extends BaseModel {
 	private HclusterModel hcluster;
 	
 	private List <HostModel> hosts;
+	
+	private UserModel user;
+
+	
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
 
 	public String getName() {
 		return name;

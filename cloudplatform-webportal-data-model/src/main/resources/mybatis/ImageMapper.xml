@@ -100,6 +100,9 @@
 			<if test="purpose != null and purpose != ''  ">
 				PURPOSE=#{purpose},
 			</if>
+			<if test="isUsed != null and isUsed != ''  ">
+				ISUSED=#{isUsed},
+			</if>
 			<if test="descn != null and descn != ''  ">
 				DESCN=#{descn},
 			</if>
@@ -117,6 +120,12 @@
 			</if>
 		</set>
 		where ID=#{id}
+	</update>
+	
+	<!-- 更新记录 -->
+	<update id="updateOthersIsUsed"  parameterType="Image">
+		update WEBPORTAL_IMAGE 
+		set ISUSED=0 where ISUSED=1 and DICTIONARY_ID=#{dictionaryId} and PURPOSE=#{purpose};
 	</update>
 
 	<!-- 物理删除 -->

@@ -35,7 +35,29 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements IImageSe
 		if(t == null) {
 			throw new ValidateException("参数不合法");
 		}
+		if(t.getIsUsed()==1) {
+			updateOthersIsUsed(t);
+		}
 		super.insert(t);
+	}
+	
+	@Override
+	public void update(Image t) {
+		if(t!=null && t.getIsUsed()==1) {
+			updateOthersIsUsed(t);
+		}
+		super.update(t);
+	}
+	
+	/**
+	  * @Title: updateOthersIsUsed
+	  * @Description: 根据dictionaryId和purpose更新现在使用中的数据为：0-未使用 
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月3日 下午6:15:11
+	  */
+	private void updateOthersIsUsed(Image image) {
+		imageDao.updateOthersIsUsed(image);
 	}
 
 }
