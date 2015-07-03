@@ -20,7 +20,7 @@
 		<result column="UPDATE_USER" property="updateUser" />
 		
 		<association property="dictionary" javaType="Dictionary">
-			<result column="DICTIONARY_NAME" property="dictionaryName" />
+			<result column="DICTIONARY_NAME" property="name" />
 		</association>
 	</resultMap>
 	

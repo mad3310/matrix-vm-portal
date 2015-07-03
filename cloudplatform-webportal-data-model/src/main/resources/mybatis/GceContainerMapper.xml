@@ -44,7 +44,7 @@
 		</association>
 		
 	    <association property="gceCluster" javaType="GceCluster">
-			<result column="GCECLUSTER_NAME" property="gceClusterName" />
+			<result column="GCECLUSTER_NAME" property="clusterName" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
