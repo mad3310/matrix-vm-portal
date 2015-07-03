@@ -65,9 +65,6 @@ public class TaskDbUserCreateServiceImpl extends BaseTask4RDSServiceImpl impleme
 	private IMonitorIndexService monitorIndexService;
 	@Autowired 
 	private IMonitorService monitorService;
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	

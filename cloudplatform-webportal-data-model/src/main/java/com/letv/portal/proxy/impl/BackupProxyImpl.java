@@ -54,8 +54,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private IDbService dbService;
 	@Autowired
 	private IPythonService pythonService;
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 
@@ -272,7 +272,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		params.put("startTime", format.format(startTime));
 		params.put("backupIp", backupIp);
 		
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统报警通知","backupFaildNotice.ftl",params);
      	defaultEmailSender.sendMessage(mailMessage);
 	}
 	

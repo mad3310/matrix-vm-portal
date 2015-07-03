@@ -38,8 +38,8 @@ import com.letv.portal.service.cbase.ICbaseContainerService;
 public class BaseTask4CbaseServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService {
 
 	private static String cbaseManagePort = "8091";
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 
@@ -86,7 +86,7 @@ public class BaseTask4CbaseServiceImpl extends BaseTaskServiceImpl implements IB
 	public void rollBack(TaskResult tr) {
 		// 发送邮件
 		this.buildResultToMgr("OCS服务创建", tr.isSuccess() ? "创建成功" : "创建失败",
-				tr.getResult(), ERROR_MAIL_ADDRESS);
+				tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
 		// 业务处理
 		this.serviceOver(tr);
 	}

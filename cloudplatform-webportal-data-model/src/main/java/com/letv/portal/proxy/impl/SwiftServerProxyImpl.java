@@ -47,9 +47,6 @@ public class SwiftServerProxyImpl extends BaseProxyImpl<SwiftServer> implements 
 	@Autowired
 	private IUserService userService;
 	
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	

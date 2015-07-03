@@ -37,8 +37,8 @@ import com.letv.portal.service.log.ILogServerService;
 @Component("baseLogTaskService")
 public class BaseTask4LogServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -86,7 +86,7 @@ public class BaseTask4LogServiceImpl extends BaseTaskServiceImpl implements IBas
 	public void rollBack(TaskResult tr) {
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		//发送邮件
-		this.buildResultToMgr("log服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("log服务创建", tr.isSuccess()?"创建成功":"创建失败", tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}

@@ -36,8 +36,8 @@ import com.letv.portal.task.log.service.impl.BaseTask4LogServiceImpl;
 @Component("baseSwiftTaskService")
 public class BaseTask4SwiftServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -76,7 +76,7 @@ public class BaseTask4SwiftServiceImpl extends BaseTaskServiceImpl implements IB
 		if(tr.getParams() !=null)
 			serverName =  (String) ((Map<String, Object>) tr.getParams()).get("serviceName");
 		//发送邮件
-		this.buildResultToMgr("Swift服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+		this.buildResultToMgr("Swift服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}

@@ -58,8 +58,7 @@ public class DbUserController {
 	@RequestMapping(method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
-		obj.setData(dbUsers);
+		obj.setData( this.dbUserService.findPagebyParams(params, page));
 		return obj;
 	}
 	

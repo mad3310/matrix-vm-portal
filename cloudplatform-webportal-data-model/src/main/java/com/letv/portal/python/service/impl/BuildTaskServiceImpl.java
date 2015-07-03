@@ -113,9 +113,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	private ITaskChainService taskChainService;
 	@Autowired 
 	private IMonitorService monitorService;
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
 	
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -164,7 +164,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			detail = e.getMessage();
 			status = DbStatus.BUILDFAIL.getValue();
 		} finally {
-			this.buildResultToMgr("DB数据库" + params.get("dbName") + "创建", resultMsg, detail, ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("DB数据库" + params.get("dbName") + "创建", resultMsg, detail, SERVICE_NOTICE_MAIL_ADDRESS);
 			DbModel dbModel = new DbModel();
 			dbModel.setId(dbId);
 			dbModel.setStatus(status);
@@ -230,7 +230,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				this.dbUserService.updateDbUser(dbUserModel);
 			}
 			DbModel db = this.dbService.selectById(errorResult.get(0).getDbId());
-			this.buildResultToMgr("DB数据库("+db.getDbName()+")用户" + errorResult.get(0).getUsername() + " "+type +"失败", "", "call python api failed", ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("DB数据库("+db.getDbName()+")用户" + errorResult.get(0).getUsername() + " "+type +"失败", "", "call python api failed", SERVICE_NOTICE_MAIL_ADDRESS);
 		} else {
 			this.sendEmail4DbUserBuild(buildResult,type);
 		}
@@ -252,7 +252,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		emailParams.put("ip",ipAndRole.toString());
 		this.email4User(emailParams,buildResult.get(0).getCreateUser(),"dbUser.ftl");
-		this.email4User(emailParams,ERROR_MAIL_ADDRESS,"dbUser4Manager.ftl");
+		this.email4User(emailParams,SERVICE_NOTICE_MAIL_ADDRESS,"dbUser4Manager.ftl");
 	}
 	private String getUserRole(Integer roleId) {
 		if(DbUserRoleStatus.MANAGER.getValue().equals(roleId))
@@ -275,7 +275,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		buildModel.setStatus(BuildStatus.SUCCESS.getValue());
 		if(!sendFlag) {
 			//if failed then send email to system Manager,and go on.
-			this.buildResultToMgr("mcluster集群", "相关系统推送异常", type + "推送异常，请运维人员重新推送！", ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("mcluster集群", "相关系统推送异常", type + "推送异常，请运维人员重新推送！", SERVICE_NOTICE_MAIL_ADDRESS);
 		}
 		this.buildService.updateByStep(buildModel);
 		BuildModel nextBuild = new BuildModel();
@@ -308,7 +308,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			buildModel.setMsg((String)meta.get("errorDetail"));
 			buildModel.setStatus(BuildStatus.FAIL.getValue());
 			flag =  false;
-			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("mcluster集群", "失败", (String)meta.get("errorDetail"), SERVICE_NOTICE_MAIL_ADDRESS);
 			MclusterModel mclusterModel = new MclusterModel();
 			mclusterModel.setId(mclusterId);
 			mclusterModel.setStatus(MclusterStatus.BUILDFAIL.getValue());
@@ -467,7 +467,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		map.put("buildType", buildType);
 		map.put("buildResult", result);
 		map.put("errorDetail", detail);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?SERVICE_NOTICE_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		try {
 			defaultEmailSender.sendMessage(mailMessage);
 		} catch (Exception e) {
