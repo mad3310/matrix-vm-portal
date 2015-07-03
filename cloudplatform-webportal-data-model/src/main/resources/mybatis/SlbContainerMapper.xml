@@ -21,7 +21,7 @@
 		<result column="HOST_ID" property="hostId" />
 		<result column="CONTAINER_UUID" property="containerUuid" />
 		<result column="HOST_IP" property="hostIp" />
-		<result column="SLBSLBCLUSTER_ID" property="slbClusterId" />
+		<result column="SLBCLUSTER_ID" property="slbClusterId" />
 		<result column="ZABBIXHOSTS" property="zabbixHosts" />
 		
 		<result column="STATUS" property="status" />
