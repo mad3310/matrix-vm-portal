@@ -540,7 +540,7 @@ function transStateHtml(btnIcons,state){
 	if(!state){
 		state=6;
 	}
-	var start=restart=stop=del=extend=modify='';
+	var start=restart=stop=del=extend=modify=isDefault='';
 	if(btnIcons.indexOf('start')>=0&&state==9){
 		start="<a class=\"green\" href=\"#\" data-click-type='start' onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 				+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
@@ -571,9 +571,14 @@ function transStateHtml(btnIcons,state){
 			+"<i class=\"ace-icon fa fa-plus bigger-120\"></i>"
 			+"</a>"
 	}
+	if(btnIcons.indexOf('default')>=0){
+		isDefault="<a class=\"blue\" href=\"#\" data-click-type='default' onfocus=\"this.blur();\"  title=\"默认使用\" data-toggle=\"tooltip\" data-placement=\"right\">"
+			+"<i class=\"ace-icon fa fa-plus bigger-120\"></i>"
+			+"</a>"
+	}
 	var td="<td>"
 			+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-			+start+stop+restart+del+modify+extend
+			+start+stop+restart+modify+del+extend+isDefault
 			+"</div>"
 			+'<div class="hidden-md hidden-lg">'
 			+'<div class="inline pos-rel">'
@@ -582,7 +587,7 @@ function transStateHtml(btnIcons,state){
 			+'</button>'
 			+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
 			+'<li>'
-			+start+stop+restart+del+modify+extend
+			+start+stop+restart+modify+del+extend+isDefault
 			+'</li></ul></div></div>'
 			+ "</td>";
 	return td;
