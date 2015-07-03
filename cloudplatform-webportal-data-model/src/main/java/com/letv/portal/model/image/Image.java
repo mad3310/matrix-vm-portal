@@ -16,6 +16,10 @@ public class Image extends BaseModel {
 	 */
 	private Dictionary dictionary;
 	/*
+	 * 名称
+	 */
+	private String name;
+	/*
 	 * 字典ID
 	 */
 	private Long dictionaryId;
@@ -41,6 +45,12 @@ public class Image extends BaseModel {
 	private String descn;
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Long getDictionaryId() {
 		return dictionaryId;
 	}

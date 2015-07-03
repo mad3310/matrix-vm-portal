@@ -80,6 +80,9 @@
 			<if test="zookeeperId != null ">
 				and GCT.ZOOKEEPER_ID=#{zookeeperId}
 			</if>
+			<if test="status != null and status != '' ">
+				and GCT.STATUS=#{status}
+			</if>
 		</trim>
 	</sql>
 	<!-- 插入记录 -->
