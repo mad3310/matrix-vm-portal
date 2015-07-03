@@ -559,6 +559,7 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.7</matrix.gce.jetty.default.image>
@@ -569,7 +570,9 @@
                 <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                
                 <webportal.errormail.to>yaokuo@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
                 <webportal.log.path>D:</webportal.log.path>
@@ -613,16 +616,20 @@
                 <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
                 <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
                 <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
+                
                  <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                  <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
                 <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.7</matrix.gce.jetty.default.image>
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                  <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
+                
                  <webportal.local.http>http://localhost:8081</webportal.local.http>
                 <webportal.admin.http>http://localhost:8080</webportal.admin.http>
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                 
                 <webportal.errormail.to>yaokuo@letv.com;liuhao1@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com;liuhao1@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                  
                 <webportal.log.path>/tmp/var/log</webportal.log.path>
@@ -680,6 +687,8 @@
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
                 <webportal.errormail.to>yaokuo@letv.com;liuhao1@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com;liuhao1@letv.com</service.notice.email.to>
+                
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -736,7 +745,8 @@
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -757,7 +767,7 @@
                 
                 <task.executor.size>150</task.executor.size>
                 
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
             </properties>
         </profile>
           <profile>
@@ -792,7 +802,8 @@
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -813,7 +824,7 @@
                 
                 <task.executor.size>150</task.executor.size>
                 
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
             </properties>
         </profile>
           <profile>
@@ -848,7 +859,8 @@
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -869,7 +881,7 @@
                 
                 <task.executor.size>150</task.executor.size>
                 
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
             </properties>
         </profile>
           <profile>
@@ -904,7 +916,8 @@
                  <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
                 <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</webportal.errormail.to>
+                <webportal.errormail.to>liuhao1@letv.com;yaokuo@letv.com;zhoubingzheng@letv.com;</webportal.errormail.to>
+                <service.notice.email.to>liuhao1@letv.com;yaokuo@letv.com;zhangzeng@letv.com;zhoubingzheng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
                 <start.timing.jobs>N</start.timing.jobs>
                 
                 <webportal.log.path>/var/log</webportal.log.path>
@@ -925,7 +938,7 @@
                 
                 <task.executor.size>150</task.executor.size>
                 
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
             </properties>
         </profile>
 
