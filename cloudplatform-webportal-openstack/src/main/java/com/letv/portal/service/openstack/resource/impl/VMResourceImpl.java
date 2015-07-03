@@ -34,12 +34,15 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	private FlavorResource flavorResource;
 	// private NetworkResource networkResource;
 	private IPAddresses ipAddresses;
+	private String regionDisplayName;
 
-	public VMResourceImpl(String region, Server server,
-			ImageResource imageResource, FlavorResource flavorResource,
-			List<FloatingIP> floatingIPs, OpenStackUser user)
-			throws RegionNotFoundException, ResourceNotFoundException {
+	public VMResourceImpl(String region, String regionDisplayName,
+			Server server, ImageResource imageResource,
+			FlavorResource flavorResource, List<FloatingIP> floatingIPs,
+			OpenStackUser user) throws RegionNotFoundException,
+			ResourceNotFoundException {
 		this.region = region;
+		this.regionDisplayName = regionDisplayName;
 		this.server = server;
 		this.flavorResource = flavorResource;
 		this.imageResource = imageResource;
@@ -82,14 +85,14 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		}
 	}
 
-	public VMResourceImpl(String region, Server server,
-			VMManagerImpl vmManager, ImageManager imageManager,
+	public VMResourceImpl(String region, String regionDisplayName,
+			Server server, VMManagerImpl vmManager, ImageManager imageManager,
 			OpenStackUser openStackUser) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException {
-		this(region, server, imageManager
-				.get(region, server.getImage().getId()), vmManager
-				.getFlavorResource(region, server.getFlavor().getId()),
-				vmManager.listFloatingIPs(region), openStackUser);
+		this(region, regionDisplayName, server, imageManager.get(region, server
+				.getImage().getId()), vmManager.getFlavorResource(region,
+				server.getFlavor().getId()), vmManager.listFloatingIPs(region),
+				openStackUser);
 	}
 
 	@Override
@@ -225,5 +228,14 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		} else {
 			return extendedStatus.get().getVmState();
 		}
+	}
+
+	public void setRegionDisplayName(String regionDisplayName) {
+		this.regionDisplayName = regionDisplayName;
+	}
+
+	@Override
+	public String getRegionDisplayName() {
+		return this.regionDisplayName;
 	}
 }

@@ -32,6 +32,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -52,7 +53,6 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
-import com.letv.portal.service.openstack.util.Util;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
@@ -93,17 +93,18 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> list(String region) throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException {
+	public List<VMResource> list(String region) throws OpenStackException {
 		checkRegion(region);
+
+		String regionDisplayName = getRegionDisplayName(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		List<Server> resources = serverApi.listInDetail().concat().toList();
 		List<VMResource> vmResources = new ArrayList<VMResource>(
 				resources.size());
 		for (Server resource : resources) {
-			vmResources.add(new VMResourceImpl(region, resource, this,
-					imageManager, openStackUser));
+			vmResources.add(new VMResourceImpl(region, regionDisplayName,
+					resource, this, imageManager, openStackUser));
 		}
 		return vmResources;
 	}
@@ -114,29 +115,30 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			APINotAvailableException, OpenStackException {
 		Set<String> groupRegions = getGroupRegions(regionGroup);
 
+		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+
 		List<VMResource> vmResources = new LinkedList<VMResource>();
 		for (String region : groupRegions) {
 			ServerApi serverApi = novaApi.getServerApi(region);
 			List<Server> resources = serverApi.listInDetail().concat().toList();
 			for (Server resource : resources) {
-				vmResources.add(new VMResourceImpl(region, resource, this,
-						imageManager, openStackUser));
+				vmResources.add(new VMResourceImpl(region,
+						transMap.get(region), resource, this, imageManager,
+						openStackUser));
 			}
 		}
 		return vmResources;
 	}
 
 	@Override
-	public VMResource get(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException {
+	public VMResource get(String region, String id) throws OpenStackException {
 		checkRegion(region);
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, server, this, imageManager,
-					openStackUser);
+			return new VMResourceImpl(region, getRegionDisplayName(region),
+					server, this, imageManager, openStackUser);
 		} else {
 			throw new ResourceNotFoundException("VM", "虚拟机", id);
 		}
@@ -177,7 +179,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		createServerOptions.networks(networks);
 
 		if (conf.getAdminPass() == null) {
-			conf.setAdminPass(Util.generateRandomPassword(10));
+			conf.setAdminPass(PasswordRandom.genStr(10));
 		}
 		createServerOptions.adminPass(conf.getAdminPass());
 
@@ -213,8 +215,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				conf.getImageResource().getId(), conf.getFlavorResource()
 						.getId(), createServerOptions);
 		Server server = serverApi.get(serverCreated.getId());
-		VMResourceImpl vmResourceImpl = new VMResourceImpl(region, server,
-				this, imageManager, openStackUser);
+		VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
+				getRegionDisplayName(region), server, this, imageManager,
+				openStackUser);
 
 		emailVmCreated(vmResourceImpl, conf);
 
@@ -236,7 +239,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 						String floatingIP = bindFloatingIP(region,
 								serverCreated.getId());
 						emailBindIP(
-								new VMResourceImpl(region, server,
+								new VMResourceImpl(region,
+										getRegionDisplayName(region), server,
 										VMManagerImpl.this, imageManager,
 										openStackUser), floatingIP);
 					} catch (Exception e) {
@@ -390,7 +394,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		String floatingIP = bindFloatingIP(region, vm.getId());
 		emailBindIP(vm, floatingIP);
-		
+
 		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
 		// networkManager;
 		// NeutronApi neutronApi = networkManagerImpl.getNeutronApi();

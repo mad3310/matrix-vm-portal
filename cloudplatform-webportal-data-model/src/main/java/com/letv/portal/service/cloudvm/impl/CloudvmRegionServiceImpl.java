@@ -70,9 +70,9 @@ public class CloudvmRegionServiceImpl extends BaseServiceImpl<CloudvmRegion>
 			throw new ValidateException("地域编码不能重复");
 		}
 		CloudvmRegion region = new CloudvmRegion(code, displayName);
-//		long userId = sessionService.getSession().getUserId();
-//		region.setCreateUser(userId);
-//		region.setUpdateUser(userId);
+		// long userId = sessionService.getSession().getUserId();
+		// region.setCreateUser(userId);
+		// region.setUpdateUser(userId);
 		insert(region);
 	}
 
@@ -95,9 +95,9 @@ public class CloudvmRegionServiceImpl extends BaseServiceImpl<CloudvmRegion>
 			region.setCode(code);
 		}
 		region.setDisplayName(displayName);
-//		long userId = sessionService.getSession().getUserId();
-//		region.setCreateUser(userId);
-//		region.setUpdateUser(userId);
+		// long userId = sessionService.getSession().getUserId();
+		// region.setCreateUser(userId);
+		// region.setUpdateUser(userId);
 		this.update(region);
 	}
 
@@ -110,4 +110,10 @@ public class CloudvmRegionServiceImpl extends BaseServiceImpl<CloudvmRegion>
 		delete(region);
 	}
 
+	@Override
+	public List<CloudvmRegion> selectAll() {
+		List<CloudvmRegion> regions = cloudvmRegionDao
+				.selectByMap(new HashMap<String, Object>());
+		return regions;
+	}
 }

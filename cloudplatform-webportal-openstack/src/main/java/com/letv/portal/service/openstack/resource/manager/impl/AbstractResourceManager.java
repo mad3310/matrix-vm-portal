@@ -134,4 +134,12 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		}
 		return region.getDisplayName();
 	}
+
+	protected Map<String, String> getRegionCodeToDisplayNameMap() {
+		Map<String, String> map = new HashMap<String, String>();
+		for (CloudvmRegion region : this.cloudvmRegionService.selectAll()) {
+			map.put(region.getCode(), region.getDisplayName());
+		}
+		return map;
+	}
 }

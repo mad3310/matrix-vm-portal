@@ -19,4 +19,5 @@ public interface VMResource extends Resource{
 	String getDiskConfig();
 	String getHostId();
 	String getKeyName();
+	String getRegionDisplayName();
 }
