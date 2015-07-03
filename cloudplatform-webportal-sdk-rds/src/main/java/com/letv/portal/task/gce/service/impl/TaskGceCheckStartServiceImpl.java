@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.TaskExecuteException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
@@ -36,15 +37,16 @@ public class TaskGceCheckStartServiceImpl extends BaseTask4GceServiceImpl implem
 		String nodeIp1 = containers.get(0).getHostIp();
 		String port = containers.get(0).getMgrBindHostPort();
 		GceCluster cluster = super.getGceCluster(params);
-		String result =  this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
-		tr = super.analyzeRestServiceResult(result);
+		ApiResultObject resultObject =  this.gcePythonService.CheckClusterStatus(nodeIp1,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		tr = super.analyzeRestServiceResult(resultObject);
+		String result = "";
 		if(tr.isSuccess()) {
 			Map<String,Object> response = (Map<String, Object>) tr.getParams();
 			result =  (String) ((Map<String,Object>)response.get("data")).get("status");
 		}
 		if(!"STARTED".equals(result)) {
 			tr.setSuccess(false);
-			tr.setResult("service start failed,the status was " + result);
+			tr.setResult("service start failed,the status was " + result +",the api url:" + resultObject.getUrl());
 		}
 		tr.setParams(params);
 		return tr;

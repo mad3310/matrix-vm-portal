@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -39,8 +40,8 @@ public class TaskGceStartLogStashForwarderServiceImpl extends BaseTask4GceServic
 		map.put("ip", (String)params.get("logIp"));
 		
 		for (GceContainer gceContainer : containers) {
-			String result = this.logPythonService.startLogStashForwarder(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
-			tr = analyzeRestServiceResult(result);
+			ApiResultObject resultObject = this.logPythonService.startLogStashForwarder(map,gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess())
 				break;
 		}

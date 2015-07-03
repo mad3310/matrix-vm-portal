@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.HostModel;
@@ -68,7 +69,7 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 		map.put("networkMode", "ip");
 		map.put("image", MATRIX_RDS_VIP_DEFAULT_IMAGE);
 		map.put("exclude_servers", excludeServers.substring(0, excludeServers.length()-1));
-		String result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

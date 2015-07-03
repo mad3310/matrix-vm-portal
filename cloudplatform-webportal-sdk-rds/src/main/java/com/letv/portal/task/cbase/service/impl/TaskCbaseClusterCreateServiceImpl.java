@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
@@ -51,7 +52,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("mountDir", mountDir);
 		map.put("memory", memory);
 
-		String result = this.cbasePythonService.createContainer(map,
+		ApiResultObject result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);
 

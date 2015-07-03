@@ -336,7 +336,7 @@
 		// $('#sidebar-task-mgr ul li:eq(2)').addClass("active");
 		$('#sidebar-common-mgr').addClass("active open hsub");
 		$('#sidebar-task-mgr').addClass("active open");
-		$('#sidebar-task-mgr ul li:eq(2)').addClass("active");
+		$('#sidebar-task-mgr ul li:eq(4)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/job/monitor").html("任务管理");
 		$('#main-content-header li:eq(1)').html("任务监控");
 	}else if(path.indexOf("/list/gce/image") >= 0){
@@ -356,6 +356,16 @@
 		$('#sidebar-common-mgr').addClass("active open hsub");
 		$('#sidebar-common-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/timingTask").html("定时任务管理");
+		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/baseImages") >= 0){
+		$('#sidebar-common-mgr').addClass("active open hsub");
+		$('#sidebar-common-mgr ul li:eq(2)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/baseImages").html("基础镜像管理");
+		$('#main-content-header li:eq(1)').remove();
+	}else if(path.indexOf("/list/dictMgr") >= 0){
+		$('#sidebar-common-mgr').addClass("active open hsub");
+		$('#sidebar-common-mgr ul li:eq(3)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/dictMgr").html("字典管理");
 		$('#main-content-header li:eq(1)').remove();
 	}else if(path.indexOf("/list/gfs/peer") >= 0){
 		$('#sidebar-gfs-mgr').addClass("active open hsub");

@@ -58,10 +58,8 @@ public class DbUserController {
 	@RequestMapping(method=RequestMethod.GET)  
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
-		if(params !=null && params.containsKey("acceptIp")) {
-			params.put("acceptIp", StringUtil.transSqlCharacter((String)params.get("acceptIp")));
-		}
-		obj.setData(this.dbUserService.selectPageByParams(page, params));
+		List<DbUserModel> dbUsers = this.dbUserService.selectGroupByName(params);
+		obj.setData(dbUsers);
 		return obj;
 	}
 	

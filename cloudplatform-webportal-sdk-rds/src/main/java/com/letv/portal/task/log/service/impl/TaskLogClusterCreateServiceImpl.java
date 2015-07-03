@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.log.LogCluster;
 import com.letv.portal.model.log.LogServer;
@@ -46,7 +47,7 @@ public class TaskLogClusterCreateServiceImpl extends BaseTask4LogServiceImpl imp
 		map.put("componentType", logServer.getType());
 		map.put("networkMode", "bridge");
 		map.put("image", MATRIX_LOGSTASH_DEFAULT_IMAGE);
-		String result = this.logPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = this.logPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

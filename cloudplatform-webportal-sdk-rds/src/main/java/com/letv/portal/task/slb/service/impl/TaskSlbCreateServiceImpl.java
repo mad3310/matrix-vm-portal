@@ -9,17 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.util.ConfigUtil;
-import com.letv.portal.constant.Constant;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbServer;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
-import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.python.service.ISlbPythonService;
-import com.letv.portal.service.IHostService;
-import com.letv.portal.service.IMclusterService;
 
 @Service("taskSlbCreateService")
 public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements IBaseTaskService{
@@ -45,7 +41,7 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		map.put("componentType", "gbalancerCluster");
 		map.put("networkMode", "ip");
 		map.put("image", MATRIX_SLB_DEFAULT_IMAGE);
-		String result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);

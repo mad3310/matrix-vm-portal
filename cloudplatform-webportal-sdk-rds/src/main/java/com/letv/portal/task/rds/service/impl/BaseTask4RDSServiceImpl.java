@@ -20,12 +20,13 @@ import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
+import com.letv.portal.model.task.service.BaseTaskServiceImpl;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
 
-@Component("baseTaskService")
-public class BaseTask4RDSServiceImpl implements IBaseTaskService{
+@Component("baseRDSTaskService")
+public class BaseTask4RDSServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
 	@Value("${error.email.to}")
 	private String ERROR_MAIL_ADDRESS;
@@ -89,114 +90,9 @@ public class BaseTask4RDSServiceImpl implements IBaseTaskService{
 
 	@Override
 	public void callBack(TaskResult tr) {
-		
-	}
-
-	/*
-	public TaskResult analyzeRestServiceResult(String result) throws Exception{
-		TaskResult tr = new TaskResult();
-		RestServiceResult rsr = getRestServiceResult(result);
-		if(rsr == null) {
-			tr.setSuccess(false);
-			tr.setResult("api connect failed");
-			return tr;
-		}
-		
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(rsr.getMeta().getCode());
-		tr.setSuccess(isSucess);
-		if(isSucess) {
-			tr.setResult(rsr.getResponse().getMessage());
-		} else {
-			tr.setResult(rsr.getResponse().getErrorDetail());
-		}
-		return tr;
-		
-	}
-	
-	public RestServiceResult getRestServiceResult(String result) throws Exception{
-		if(StringUtils.isEmpty(result))
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		RestServiceResult rsr = resultMapper.readValue(result, RestServiceResult.class);
-		return rsr;
-	}
-	*/
-	
-	@SuppressWarnings("unchecked")
-	public TaskResult analyzeRestServiceResult(String result){
-		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result);
-		if(map == null) {
-			tr.setSuccess(false);
-			tr.setResult("api connect failed");
-			return tr;
-		}
-		Map<String,Object> meta = (Map<String, Object>) map.get("meta");
-		
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(String.valueOf(meta.get("code")));
-		tr.setSuccess(isSucess);
-		if(isSucess) {
-			Map<String,Object> response = (Map<String, Object>) map.get("response");
-			tr.setResult((String) response.get("message"));
-		} else {
-			tr.setResult((String) meta.get("errorType") +":"+ (String) meta.get("errorDetail"));
-		}
-		return tr;
-		
-	}
-	
-	public void buildResultToMgr(String buildType,String result,String detail,String to){
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("buildType", buildType);
-		map.put("buildResult", result);
-		map.put("errorDetail", detail);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
-		defaultEmailSender.sendMessage(mailMessage);
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public Map<String,Object> transToMap(String params){
-		if(StringUtils.isEmpty(params))
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		Map<String,Object> jsonResult = new HashMap<String,Object>();
-		try {
-			jsonResult = resultMapper.readValue(params, Map.class);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonResult;
-	}
-	
-	public String transToString(Object params){
-		if(params == null)
-			return null;
-		ObjectMapper resultMapper = new ObjectMapper();
-		String jsonResult = "";
-		try {
-			jsonResult = resultMapper.writeValueAsString(params);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonResult;
-	}
-	
-	public Long getLongFromObject(Object o) {
-		Long value = null;
-		if(o instanceof String)
-			value = Long.parseLong((String) o);
-		if(o instanceof Integer)
-			value = Long.parseLong(((Integer)o).toString());
-		if(o instanceof Long)
-			value = (Long) o;
-		
-		return value;
 	}
 
 	@Override
 	public void beforExecute(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		
 	}
 }

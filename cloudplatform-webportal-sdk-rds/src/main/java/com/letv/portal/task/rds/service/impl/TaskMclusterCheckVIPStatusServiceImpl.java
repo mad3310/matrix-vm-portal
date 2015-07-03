@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.ContainerModel;
@@ -63,21 +64,21 @@ public class TaskMclusterCheckVIPStatusServiceImpl extends BaseTask4RDSServiceIm
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
 		String mclusterVipName = mclusterModel.getMclusterName() +  Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX;
-		String result = pythonService.checkContainerCreateStatus(mclusterVipName,host.getHostIp(),host.getName(),host.getPassword());
+		ApiResultObject result = pythonService.checkContainerCreateStatus(mclusterVipName,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		Long start = new Date().getTime();
 		while(!tr.isSuccess()) {
 			Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
 			if(new Date().getTime()-start >PYTHON_CREATE_CHECK_TIME) {
-				tr.setResult("check time over");
+				tr.setResult("check time over:"+result.getUrl());
 				break;
 			}
 			result = pythonService.checkContainerCreateStatus(mclusterVipName,host.getHostIp(),host.getName(),host.getPassword());
 			tr = analyzeRestServiceResult(result);
 		}
 		if(tr.isSuccess()) {
-			List<Map> containers = (List<Map>)((Map)transToMap(result).get("response")).get("containers");
+			List<Map> containers = (List<Map>)((Map)transToMap(result.getResult()).get("response")).get("containers");
 			for (Map map : containers) {
 				ContainerModel container = new ContainerModel();
 				BeanUtils.populate(container, map);
@@ -100,12 +101,12 @@ public class TaskMclusterCheckVIPStatusServiceImpl extends BaseTask4RDSServiceIm
 	}
 	
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result);
+		Map<String, Object> map = transToMap(result.getResult());
 		if(map == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 		Map<String,Object> meta = (Map<String, Object>) map.get("meta");
@@ -119,7 +120,7 @@ public class TaskMclusterCheckVIPStatusServiceImpl extends BaseTask4RDSServiceIm
 		if(isSucess) {
 			tr.setResult((String) response.get("message"));
 		} else {
-			tr.setResult((String) meta.get("errorType") +":"+ (String) meta.get("errorDetail"));
+			tr.setResult((String) meta.get("errorType") +",the api url:" + result.getUrl());
 		}
 		tr.setSuccess(isSucess);
 		return tr;

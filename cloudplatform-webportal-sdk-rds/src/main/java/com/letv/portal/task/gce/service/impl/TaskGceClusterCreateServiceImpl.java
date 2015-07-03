@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
@@ -63,8 +64,8 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 			}
 		}
 		
-		String result = this.gcePythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
-		tr = analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
+		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);
 		return tr;

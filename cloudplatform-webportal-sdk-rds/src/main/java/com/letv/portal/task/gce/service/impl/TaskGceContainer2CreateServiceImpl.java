@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -41,8 +42,8 @@ public class TaskGceContainer2CreateServiceImpl extends BaseTask4GceServiceImpl 
 		map.put("dataNodeIp", containers.get(1).getHostIp());
 		map.put("dataNodeExternalPort", containers.get(1).getMgrBindHostPort());
 		
-		String result = this.gcePythonService.createContainer2(map,nodeIp2,port,cluster.getAdminUser(),cluster.getAdminPassword());
-		tr = analyzeRestServiceResult(result);
+		ApiResultObject resultObject = this.gcePythonService.createContainer2(map,nodeIp2,port,cluster.getAdminUser(),cluster.getAdminPassword());
+		tr = analyzeRestServiceResult(resultObject);
 		
 		tr.setParams(params);
 		return tr;

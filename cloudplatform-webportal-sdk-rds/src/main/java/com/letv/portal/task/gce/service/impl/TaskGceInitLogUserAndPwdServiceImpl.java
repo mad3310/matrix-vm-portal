@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -33,8 +34,8 @@ public class TaskGceInitLogUserAndPwdServiceImpl extends BaseTask4GceServiceImpl
 		List<GceContainer> containers = super.getContainers(params);
 		
 		for (GceContainer gceContainer : containers) {
-			String result = this.gcePythonService.initUserAndPwd4Manager(gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
-			tr = analyzeRestServiceResult(result);
+			ApiResultObject resultObject = this.gcePythonService.initUserAndPwd4Manager(gceContainer.getHostIp(),gceContainer.getLogBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
+			tr = analyzeRestServiceResult(resultObject);
 			if(!tr.isSuccess())
 				break;
 		}

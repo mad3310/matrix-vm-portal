@@ -220,7 +220,7 @@ public class TaskEngine extends ApplicationObjectSupport implements ITaskEngine{
 				tr = baseTask.execute(params);
 				retry++;
 			}
-			if(retry >= ttd.getRetry() && !tr.isSuccess()) {
+			if(!tr.isSuccess()) {
 				baseTask.rollBack(tr);
 			}
 			if(tr.isSuccess()) {

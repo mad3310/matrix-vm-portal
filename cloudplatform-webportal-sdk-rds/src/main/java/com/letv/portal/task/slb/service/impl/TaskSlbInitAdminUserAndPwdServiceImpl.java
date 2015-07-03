@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.model.task.TaskResult;
@@ -33,7 +34,7 @@ public class TaskSlbInitAdminUserAndPwdServiceImpl extends BaseTask4SlbServiceIm
 		String nodeIp1 = containers.get(0).getIpAddr();
 		SlbCluster cluster = super.getCluster(params);
 		
-		String result = this.slbPythonService.initUserAndPwd4Manager(nodeIp1, cluster.getAdminUser(), cluster.getAdminPassword());
+		ApiResultObject result = this.slbPythonService.initUserAndPwd4Manager(nodeIp1, cluster.getAdminUser(), cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
 		
 		tr.setParams(params);
