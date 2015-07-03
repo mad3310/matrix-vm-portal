@@ -200,7 +200,7 @@
 										<div class="bk-group-control"></div>
 										<div>
 											<div class="bk-form-row">
-												<label class="bk-form-row-name">镜像名称：</label>
+												<label class="bk-form-row-name">选择镜像：</label>
 												<div class="bk-form-row-cell">
 													<div class="bk-form-row-li clearfix">
 														<div class="pull-left image-os-selector divselect-unselected">
