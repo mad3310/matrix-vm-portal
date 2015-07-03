@@ -536,36 +536,44 @@ function TranslateDbUserType(type){
         return "读写"
     }
 }
-function transStateHtml(state,start,stop,restart,del,extend){
-	if(state==9){
+function transStateHtml(btnIcons,state){
+	if(!state){
+		state=6;
+	}
+	var start=restart=stop=del=extend=modify='';
+	if(btnIcons.indexOf('start')>=0&&state==9){
 		start="<a class=\"green\" href=\"#\" data-click-type='start' onfocus=\"this.blur();\" title=\"启动\" data-toggle=\"tooltip\" data-placement=\"right\">"
 				+"<i class=\"ace-icon fa fa-play-circle-o bigger-130\"></i>"
 				+"</a>"
 	}
-	if(state==1||state==5||state==9||state==13||state==14){
+	if(btnIcons.indexOf('restart')>=0&&state==1||state==5||state==9||state==13||state==14){
 		restart="<a class=\"green\" href=\"#\" data-click-type='restart' onfocus=\"this.blur();\" title=\"重启\" data-toggle=\"tooltip\" data-placement=\"right\">"
 				+"<i class=\"ace-icon fa fa-retweet bigger-130\"></i>"
 				+"</a>"
 	}
-	if(state==1||state==5||state==13||state==14){
+	if(btnIcons.indexOf('stop')>=0&&state==1||state==5||state==13||state==14){
 		stop="<a class=\"blue\" href=\"#\" data-click-type='stop' onfocus=\"this.blur();\" title=\"停止\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-power-off bigger-120\"></i>"
 			+"</a>"
 	}
-	if(state!=10){
-		del="<a class=\"disabled\" href=\"#\" data-click-type='delete' onfocus=\"this.blur();\"  title=\"暂时不开放\" data-toggle=\"tooltip\" data-placement=\"right\">"
+	if(btnIcons.indexOf('del')>=0&&state!=10){
+		del="<a class=\"red\" href=\"#\" data-click-type='delete' onfocus=\"this.blur();\"  title=\"暂时不开放\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-trash-o bigger-120\"></i>"
 			+"</a>"
+	}'modify'
+	if(btnIcons.indexOf('modify')>=0){
+		modify="<a class=\"green\" href=\"#\" data-click-type='modify' onfocus=\"this.blur();\"  title=\"修改\" data-toggle=\"tooltip\" data-placement=\"right\">"
+			+"<i class=\"ace-icon fa fa-pencil bigger-120\"></i>"
+			+"</a>"
 	}
-	if(state==1||state==9){
+	if(btnIcons.indexOf('extend')>=0&&state==1||state==9){
 		extend="<a class=\"red\" href=\"#\" data-click-type='extend' onfocus=\"this.blur();\"  title=\"扩容\" data-toggle=\"tooltip\" data-placement=\"right\">"
 			+"<i class=\"ace-icon fa fa-plus bigger-120\"></i>"
 			+"</a>"
 	}
-	start=start?start:'';stop=stop?stop:'';restart=restart?restart:'';del=del?del:'';extend=extend?extend:'';
 	var td="<td>"
 			+"<div class=\"hidden-sm hidden-xs  action-buttons\">"
-			+start+stop+restart+del+extend
+			+start+stop+restart+del+modify+extend
 			+"</div>"
 			+'<div class="hidden-md hidden-lg">'
 			+'<div class="inline pos-rel">'
@@ -574,7 +582,7 @@ function transStateHtml(state,start,stop,restart,del,extend){
 			+'</button>'
 			+'<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">'
 			+'<li>'
-			+start+stop+restart+del+extend
+			+start+stop+restart+del+modify+extend
 			+'</li></ul></div></div>'
 			+ "</td>";
 	return td;
