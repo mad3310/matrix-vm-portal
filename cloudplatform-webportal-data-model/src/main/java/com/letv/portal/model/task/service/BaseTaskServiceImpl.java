@@ -22,8 +22,8 @@ import com.letv.portal.service.IUserService;
 @Component("baseTaskService")
 public  class BaseTaskServiceImpl implements IBaseTaskService{
 
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 
@@ -74,7 +74,7 @@ public  class BaseTaskServiceImpl implements IBaseTaskService{
 		map.put("buildType", buildType);
 		map.put("buildResult", result);
 		map.put("errorDetail", detail);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isEmpty(to)?SERVICE_NOTICE_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		defaultEmailSender.sendMessage(mailMessage);
 	}
 	

@@ -48,9 +48,8 @@ public class TaskDbCreateServiceImpl extends BaseTask4RDSServiceImpl implements 
 	
 	@Autowired 
 	private IMonitorService monitorService;
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-	
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -128,7 +127,7 @@ public class TaskDbCreateServiceImpl extends BaseTask4RDSServiceImpl implements 
 		map.put("buildType", buildType);
 		map.put("buildResult", result);
 		map.put("errorDetail", detail);
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?ERROR_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", StringUtils.isNullOrEmpty(to)?SERVICE_NOTICE_MAIL_ADDRESS:to,"乐视云平台web-portal系统通知","buildForMgr.ftl",map);
 		try {
 			defaultEmailSender.sendMessage(mailMessage);
 		} catch (Exception e) {

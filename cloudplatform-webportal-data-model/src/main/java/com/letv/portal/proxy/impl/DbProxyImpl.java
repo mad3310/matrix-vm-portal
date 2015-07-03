@@ -54,8 +54,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 	@Autowired
 	private ITaskEngine taskEngine;
 	
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
@@ -168,7 +168,7 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			emailParams.put("createUser", sessionService.getSession().getUserName());
 			emailParams.put("createTime", sdf.format(new Date()));
 			emailParams.put("dbName", dbModel.getDbName());
-			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",ERROR_MAIL_ADDRESS,"乐视云平台web-portal系统通知","auditDbNotice.ftl",emailParams);
+			MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统通知","auditDbNotice.ftl",emailParams);
 			defaultEmailSender.sendMessage(mailMessage);
 		}
 	}

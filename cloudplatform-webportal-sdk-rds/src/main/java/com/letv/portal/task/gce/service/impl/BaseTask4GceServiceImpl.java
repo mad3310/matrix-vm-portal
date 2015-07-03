@@ -42,8 +42,8 @@ import com.letv.portal.service.log.ILogContainerService;
 @Component("baseGceTaskService")
 public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBaseTaskService{
 
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -98,7 +98,7 @@ public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBas
 		if(!isContinue) {
 			//发送邮件
 			String serverName =  (String) params.get("serviceName");
-			this.buildResultToMgr("Gce服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), ERROR_MAIL_ADDRESS);
+			this.buildResultToMgr("Gce服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
 		}
 		//业务处理
 		this.serviceOver(tr);

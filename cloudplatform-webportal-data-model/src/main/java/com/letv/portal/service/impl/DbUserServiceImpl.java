@@ -38,9 +38,6 @@ public class DbUserServiceImpl extends BaseServiceImpl<DbUserModel> implements
 	@Resource
 	private IDbUserDao dbUserDao;
 	
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	

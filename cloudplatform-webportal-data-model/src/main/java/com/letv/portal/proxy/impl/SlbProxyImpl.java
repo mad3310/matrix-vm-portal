@@ -67,9 +67,6 @@ public class SlbProxyImpl extends BaseProxyImpl<SlbServer> implements
 	@Autowired
 	private ITaskEngine taskEngine;
 	
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
