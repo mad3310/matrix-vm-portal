@@ -169,7 +169,7 @@ function queryByPage() {
 					var td4 = $("<td class='hidden-480'> </td>");
 				}
 				var td5 = $("<td>"
-						+ array[i].createUser
+						+ array[i].user.userName
 						+ "</td>");
 				var td6 = $("<td class='hidden-480'>"
 						+ date('Y-m-d H:i:s',array[i].createTime)

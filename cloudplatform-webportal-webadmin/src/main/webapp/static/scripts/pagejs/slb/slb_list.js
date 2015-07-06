@@ -116,7 +116,7 @@ $(function(){
 			'hclusterName':hclusterName,
 			'userName':userName,
 			// /*'createTime':createTime,*/
-			// 'status':status
+			'status':status
 	}
     $("#tby tr").remove();
     getLoading();
