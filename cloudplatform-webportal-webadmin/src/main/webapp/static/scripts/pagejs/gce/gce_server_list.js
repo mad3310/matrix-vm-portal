@@ -134,7 +134,7 @@ var currentSelectedLineDbName = 1;
 	var tby = $("#tby");
 	var totalPages = data.data.totalPages;
 	for (var i = 0, len = array.length; i < len; i++) {
-	  var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
+	  var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].gceClusterId+"\"\> ");
 	  var td1 = $("<td class=\"center\">"
 	    +"<label class=\"position-relative\">"
 	    +"<input type=\"checkbox\" class=\"ace\"/>"
@@ -148,11 +148,11 @@ var currentSelectedLineDbName = 1;
 	      + "</td>");//href=\"/detail/db/"+array[i].id+"\"
 	  }else if(array[i].status == 0 ||array[i].status == 3){
 	    td2 = $("<td>"
-	      + "<a class=\"link\" class=\"danger\" href='#'>"+array[i].gceServerProxy.gceName+"</a>"
+	      + "<a class=\"link\" class=\"danger\" href='#'>"+array[i].gceName+"</a>"
 	      + "</td>");//href=\"/audit/db/"+array[i].id+"\"
 	  }else{
 	    td2 = $("<td>"
-	      + "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].gceServerProxy.gceName+"</a>"
+	      + "<a class=\"link\" style=\"text-decoration:none;\">"+array[i].gceName+"</a>"
 	      + "</td>");
 	  }
 	  if(array[i].gceCluster){

@@ -134,7 +134,7 @@ $(function(){
 	var tby = $("#tby");
 	var totalPages = data.data.totalPages;
 	for (var i = 0, len = array.length; i < len; i++) {
-	  var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].mclusterId+"\"\> ");
+	  var td0 = $("<input class=\"hidden\" type=\"text\" value=\""+array[i].slbClusterId+"\"\> ");
 	  var td1 = $("<td class=\"center\">"
 	    +"<label class=\"position-relative\">"
 	    +"<input type=\"checkbox\" class=\"ace\"/>"
