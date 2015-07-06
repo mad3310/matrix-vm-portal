@@ -1,20 +1,69 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
   <div class="row">
-    <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed hidden">
-      <div class="widget-header hidden-md hidden-lg">
-	<h5 class="widget-title">数据库查询条件</h5>
-	<div class="widget-toolbar">
-	  <a href="#" data-action="collapse">
-	    <i class="ace-icon fa fa-chevron-down"></i>
-	  </a>
+    <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>991){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+		$(window).resize(function(event) {
+			var iw=document.body.clientWidth;
+			if(iw>991){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
+		<div class="widget-header hidden-md hidden-lg">
+			<h5 class="widget-title">GCE查询条件</h5>
+			<div class="widget-toolbar">
+				<a href="#" data-action="collapse">
+					<i class="ace-icon fa fa-chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<div class="widget-body">
+			<div class="page-header">
+				<!-- <h3>数据库列表	</h3> -->
+			    <div class="input-group pull-right">
+					<form class="form-inline">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbName"
+								placeholder="GCE名称">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbMcluster"
+								placeholder="所属cluster">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbPhyMcluster"
+								placeholder="所属物理机集群">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="dbuser"
+								placeholder="所属用户">
+						</div>
+						<!-- <div class="form-group">
+							<input type="date" class="form-control" id="PhyMechineDate"
+								placeholder="创建时间">
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<select class="form-control" id="dbStatus">
+								<option value="">请选择状态</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2" style="padding-right:0;">
+							<button class="btn btn-sm btn-primary btn-search" type="button" id="dbSearch"><i class="ace-icon fa fa-search"></i>搜索
+							</button>
+							<button class="btn btn-sm" type="button" id="dbSearchClear">清空</button>
+						</div>
+					</form>
+				</div>	
+			</div>
+		</div>
 	</div>
-      </div>
-      <div class="widget-body">
-	<div class="page-header">
-	</div>
-      </div>
-    </div>
     <!-- /.page-header -->
 
     <div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">

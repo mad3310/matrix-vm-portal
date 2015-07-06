@@ -5,7 +5,10 @@ var queryBuildStatusrefresh;//刷新handler
 $(function(){
 	//初始化 
 	page_init();
-	
+	/*动态加载界面下拉列表值*/
+	var sltArray = [1,5,7,8,9];
+	addSltOpt(sltArray,$("#containerStatus"));
+
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -15,6 +18,51 @@ $(function(){
 		});
 	});
 	
+	$("#mclusterSearch").click(function(){
+		var iw=document.body.clientWidth;
+		if(iw>767){//md&&lg
+		}else{
+			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
+			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
+			var qryStr='';
+			var qryStr1=$('#containerName').val();var qryStr2=$('#ipAddr').val();var qryStr3;
+			if($('#containerStatus').val()){
+				qryStr3=translateStatus($('#containerStatus').val());
+			}
+			if(qryStr1){
+				qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="containerName"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr2){
+				qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="ipAddr"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr3){
+				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="containerStatus"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr){
+				$('.queryOption').find('.widget-title').html(qryStr);
+				$('.queryBadge').click(function(event) {
+					var id=$(this).attr('data-rely-id');
+					$('#'+id).val('');
+					$(this).parent().remove();
+					queryByPage();
+					if($('.queryBadge').length<=0){
+						$('.queryOption').find('.widget-title').html('Container查询条件');
+					}
+					return;
+				});
+			}else{
+				$('.queryOption').find('.widget-title').html('Container查询条件');
+			}
+
+		}
+		queryByPage();
+	});
+	$("#mclusterClearSearch").click(function(){
+		var clearList = ["containerName","ipAddr","containerStatus"];
+		clearSearch(clearList);
+	});
+	
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
 });
 
 function queryByPage() {
@@ -24,10 +72,10 @@ function queryByPage() {
 	var queryCondition = {
 		'currentPage':currentPage,
 		'recordsPerPage':recordsPerPage,
-		// 'containerName':containerName,
-		// 'ipAddr':ipAddr,
+		'containerName':containerName,
+		'ipAddr':ipAddr,
 		// /*'createTime':createTime,*/
-		// 'status':status
+		'status':status
 	}
 	$("#tby tr").remove();
 	getLoading();

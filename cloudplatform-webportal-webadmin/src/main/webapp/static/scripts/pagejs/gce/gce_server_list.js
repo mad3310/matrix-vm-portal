@@ -2,11 +2,52 @@ var currentPage = 1; //第几页
 var recordsPerPage = 15; //每页显示条数
 var currentSelectedLineDbName = 1;
 
-$(function(){
-  //初始化
-  page_init();
-  
-  $("#dbSearch").click(function(){
+ $(function(){
+	//初始化
+	page_init();
+    /*动态添加select内容*/
+	var sltArray = [0,2,3,5,6,7,8,9,10,13,14];
+	addSltOpt(sltArray,$("#dbStatus"));
+	
+	$(document).on('click', 'th input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	
+	//modal显示创建进度
+	var mclusterId;
+	/*$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+		mclusterId = $(this).closest('tr').find('input').val();
+		if($(this).html().indexOf("正常")>=0){
+			$('#buildStatusHeader').html("创建成功");
+			status = "1";
+		}else if($(this).html().indexOf("创建中")>=0){
+			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+			status = "2";
+		}else if($(this).html().indexOf("创建失败")>=0){
+			$('#buildStatusHeader').html("创建失败");
+			status = "3";
+		}
+		queryBuildStatus(mclusterId,"new");
+	});*/
+	
+	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
+		if(status == "2") {
+			queryBuildStatusrefresh = setInterval(function() {  
+				queryBuildStatus(mclusterId,"update");
+			},5000);
+		}
+	}).on('hidden.bs.modal', function (e) {
+		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
+		location.reload();
+	});
+	
+	/*查询功能*/
+	$("#dbSearch").click(function(){
 		var iw=document.body.clientWidth;
 		if(iw>767){//md&&lg
 		}else{
@@ -51,7 +92,14 @@ $(function(){
 		}
 		queryByPage();
 	});
-})
+	$("#dbSearchClear").click(function(){
+		//var clearList = ["","","","","",""]
+		var clearList = ["dbName","dbMcluster","dbPhyMcluster","dbuser","dbStatus"]
+		clearSearch(clearList);
+	});
+	
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
+});	
 
   function queryByPage() {
   	var dbName = $("#dbName").val()?$("#dbName").val():'';
@@ -62,13 +110,13 @@ $(function(){
 	var status = $("#dbStatus").val()?$("#dbStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
-			'recordsPerPage':recordsPerPage
-			//'dbName':dbName,
-			//'mclusterName':mclusterName,
-			//'hclusterName':hclusterName,
-			//'userName':userName,
-			/*'createTime':createTime,*/
-			//'status':status
+			'recordsPerPage':recordsPerPage,
+			'gceName':dbName,
+			'clusterName':mclusterName,
+			'hclusterName':hclusterName,
+			'userName':userName,
+			// // /*'createTime':createTime,*/
+			'status':status
 	}
     $("#tby tr").remove();
     getLoading();

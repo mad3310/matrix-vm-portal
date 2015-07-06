@@ -1149,3 +1149,13 @@ td,th{word-break: break-all; word-wrap:break-word;}
   .skin-custom .infobox {width: 20%;}
 }
 .queryBadge{position:absolute;top:-5px;right:-5px;color:rgba(255,255,255,.7);cursor:pointer;}
+/*数据库新建账号、编辑权限css--------------2015-07-03*/
+.se-heading{padding: 16px 0px;height: 64px;}
+.se-heading h5{display: inline-block;text-indent: 8px;border-left: 2px solid #88B7E0;margin-top: 0px;margin-bottom: 0px;margin-right: 8px;}
+.mcluster-select{border-top:0;margin-bottom:10px;}
+.inline-block{display:inline-block;}
+.select-head{border:1px solid #999;border-bottom:0;background:none repeat scroll 0% 0% #F3F3F3;color:#BBB;padding:0 5px;}
+.select-head p {margin:5px 0 5px;}
+.select {width:100%;height:140px;border:1px solid #999;background-color:#FFF;overflow-x:hidden;overflow-y:auto;}
+.m-authorize {text-align: center;height: 183px;padding-top: 60px;margin: 0 -30px;}
+.notice-block p{line-height:24px;padding-top:5px;color:#aaa;}

@@ -107,11 +107,11 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			// 'mclusterName':mclusterName,
-			// 'hclusterName':hclusterName,
-			// 'userName':userName,
+			'cbaseClusterName':mclusterName,
+			'hclusterName':hclusterName,
+			'userName':userName,
 			// /*'createTime':createTime,*/
-			// 'status':status
+			'status':status
 		}
 	
 	$("#tby tr").remove();

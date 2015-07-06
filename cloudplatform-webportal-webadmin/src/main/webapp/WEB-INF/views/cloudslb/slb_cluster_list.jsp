@@ -28,6 +28,41 @@
 		<div class="widget-body">
 		<div class="page-header col-sm-12 col-xs-12 col-md-12">
 				<!-- <h3>Container集群列表</h3> -->
+				<div class="input-group pull-right">
+					<form class="form-inline">
+						<!-- <div class="form-group">
+							<input type="text" class="form-control" id="containerType"
+								placeholder="类型">
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+							<input type="text" class="form-control" id="containerName"
+								placeholder="container集群名称">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="Physicalcluster"
+								placeholder="所属物理机集群">
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<input type="text" class="form-control" id="containeruser"
+								placeholder="所属用户">
+
+						</div>
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+							<select class="form-control" id="containerStatus">
+								<option value="">请选择状态</option>
+							</select>
+						</div>
+						<!-- <div class="form-group">
+							<input type="date" class="form-control" placeholder="yyyy-MM-dd">
+						</div> -->
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
+							<i class="ace-icon fa fa-search"></i>搜索
+						</button>
+						<button class="btn btn-sm" type="button" id="mclusterClearSearch">清空</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>

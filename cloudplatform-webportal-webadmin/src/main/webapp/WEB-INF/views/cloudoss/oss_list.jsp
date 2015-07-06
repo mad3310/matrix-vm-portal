@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
 	<div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed hidden">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
 	<script>
 		$(window).load(function() {
 			var iw=document.body.clientWidth;
@@ -46,12 +46,12 @@
 							<input type="date" class="form-control" id="PhyMechineDate"
 								placeholder="创建时间">
 						</div> -->
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
 							<select class="form-control" id="dbStatus">
 								<option value="">请选择状态</option>
 							</select>
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2" style="padding-right:0;">
+						<div class="form-group col-sm-6 col-xs-12 col-md-3" style="padding-right:0;">
 							<button class="btn btn-sm btn-primary btn-search" type="button" id="dbSearch"><i class="ace-icon fa fa-search"></i>搜索
 							</button>
 							<button class="btn btn-sm" type="button" id="dbSearchClear">清空</button>

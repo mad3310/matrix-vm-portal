@@ -107,7 +107,7 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			'mclusterName':mclusterName,
+			'clusterName':mclusterName,
 			'hclusterName':hclusterName,
 			'userName':userName,
 			/*'createTime':createTime,*/
@@ -649,15 +649,16 @@ function addMemory(obj){
 			success:function(data){
 				if(data.data == true){
 					var mclusterId =$(obj).parents("tr").find('[name="mcluster_id"]').val();
+					var mulvalue='';
+					mulvalue=$('input[type=radio]:checked').val();
 					$.ajax({
 						cache:false,
 						url:'/gce/memory',
-						type:'delete',
-						data:{id : mclusterId},
+						type:'post',
+						data:{
+							id : mclusterId,
+							multiple:mulvalue},
 						success:function(data){
-							if(typeof(data) == 'string'){
-								data = JSON.parse(data)
-							};
 							if(error(data)) return;
 							queryByPage();
 						}
@@ -681,7 +682,7 @@ function addMemory(obj){
 	/*验证码DOM*/
 	var form = $("<form>"
 			 + "<div class=\"form-group\">"
-			 + "<div>2倍<input type=\"radio\" name=\"add\" value=\"2倍\" style=\"margin:-5px 25px 25px 10px ;\"/>4倍<input type=\"radio\" name=\"add\" value=\"2倍\" style=\"margin:-5px 25px 25px 10px ;\"/></div>"
+			 + "<div>2倍<input type=\"radio\" name=\"add\" value=\"2\" style=\"margin:-5px 25px 25px 10px ;\"/>4倍<input type=\"radio\" name=\"add\" value=\"4\" style=\"margin:-5px 25px 25px 10px ;\"/></div>"
 			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
 			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
              + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"

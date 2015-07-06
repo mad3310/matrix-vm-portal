@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <div class="page-content-area">
 	<div class="row">
-	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed hidden">
+	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
 	<script>
 		$(window).load(function() {
 			var iw=document.body.clientWidth;

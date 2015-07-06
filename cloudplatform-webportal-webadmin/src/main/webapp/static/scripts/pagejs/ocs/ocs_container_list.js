@@ -73,10 +73,10 @@ function queryByPage() {
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
-			// 'containerName':containerName,
-			// 'ipAddr':ipAddr,
+			'containerName':containerName,
+			'ipAddr':ipAddr,
 			// /*'createTime':createTime,*/
-			// 'status':status
+			'status':status
 		}
 	
 	$("#tby tr").remove();

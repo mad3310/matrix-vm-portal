@@ -4,6 +4,97 @@ var queryBuildStatusrefresh;//刷新handler
 	
 $(function(){
 	page_init();
+	/*动态加载界面下拉列表值*/
+	var sltArray = [1,2,3,5,7,8,9,10,13,14];
+	addSltOpt(sltArray,$("#containerStatus"));
+	
+	$(document).on('click', 'th input:checkbox' , function(){
+		var that = this;
+		$(this).closest('table').find('tr > td:first-child input:checkbox')
+		.each(function(){
+			this.checked = that.checked;
+			$(this).closest('tr').toggleClass('selected');
+		});
+	});
+	var mclusterId;
+	var status;
+	//modal显示创建进度
+	/*$(document).on('click', "[name='buildStatusBoxLink']" , function(){
+		mclusterId = $(this).closest('tr').find('td:first input').val();
+		
+		if($(this).html().indexOf("运行中")>=0){
+			$('#buildStatusHeader').html("创建成功");
+			status = "1";
+		}else if($(this).html().indexOf("创建中")>=0){
+			$('#buildStatusHeader').html("<i class=\"ace-icon fa fa-spinner fa-spin green bigger-125\"></i>创建中...");
+			status = "2";
+		}else if($(this).html().indexOf("创建失败")>=0){
+			//$('#buildStatusHeader').html("<font color=\"red\">创建失败</font>");
+			$('#buildStatusHeader').html("创建失败");
+			status = "3";
+		}
+		queryBuildStatus(mclusterId,"new");
+	});*/
+	
+	$('#create-mcluster-status-modal').on('shown.bs.modal', function(){
+		if(status == "2") {
+			queryBuildStatusrefresh = setInterval(function() {  
+				queryBuildStatus(mclusterId,"update");
+			},5000);
+		}
+	}).on('hidden.bs.modal', function (e) {
+		queryBuildStatusrefresh = window.clearInterval(queryBuildStatusrefresh);
+		location.reload();
+	});
+	
+	$("#mclusterSearch").click(function(){
+		var iw=document.body.clientWidth;
+		if(iw>767){//md&&lg
+		}else{
+			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
+			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
+			var qryStr='';
+			var qryStr1=$('#containerName').val();var qryStr2=$('#Physicalcluster').val();var qryStr3=$('#containeruser').val();var qryStr4;
+			if($('#containerStatus').val()){
+				qryStr4=translateStatus($('#containerStatus').val());
+			}
+			if(qryStr1){
+				qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="containerName"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr2){
+				qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="Physicalcluster"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr3){
+				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="containeruser"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr4){
+				qryStr+='<span class="label label-yellow arrowed">'+qryStr4+'<span class="queryBadge" data-rely-id="containerStatus"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+			}
+			if(qryStr){
+				$('.queryOption').find('.widget-title').html(qryStr);
+				$('.queryBadge').click(function(event) {
+					var id=$(this).attr('data-rely-id');
+					$('#'+id).val('');
+					$(this).parent().remove();
+					queryByPage();
+					if($('.queryBadge').length<=0){
+						$('.queryOption').find('.widget-title').html('Container集群查询条件');
+					}
+					return;
+				});
+			}else{
+				$('.queryOption').find('.widget-title').html('Container集群查询条件');
+			}
+
+		}
+		queryByPage();
+	});
+	$("#mclusterClearSearch").click(function(){
+		var clearList = ["containerName","Physicalcluster","containeruser","containerStatus"];
+		clearSearch(clearList);
+	});
+	
+	enterKeydown($(".page-header > .input-group input"),queryByPage);
 });
 
 function queryByPage() {
@@ -15,10 +106,10 @@ function queryByPage() {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 			'clusterName':clusterName,
-			// 'hclusterName':hclusterName,
-			// 'userName':userName,
+			'hclusterName':hclusterName,
+			'userName':userName,
 			// 'createTime':createTime,
-			// 'status':status
+			'status':status
 	}
 	$("#tby tr").remove();
 	getLoading();
