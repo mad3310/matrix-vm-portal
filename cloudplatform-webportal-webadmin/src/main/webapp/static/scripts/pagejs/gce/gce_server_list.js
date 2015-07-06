@@ -144,7 +144,7 @@ var currentSelectedLineDbName = 1;
 	  var td2;
 	  if(array[i].status == 6){
 	    td2 = $("<td>"
-	      + "<a class=\"link\" href='#'>"+array[i].gceServerProxy.gceName+"</a>"
+	      + "<a class=\"link\" href='#'>"+array[i].gceName+"</a>"
 	      + "</td>");//href=\"/detail/db/"+array[i].id+"\"
 	  }else if(array[i].status == 0 ||array[i].status == 3){
 	    td2 = $("<td>"

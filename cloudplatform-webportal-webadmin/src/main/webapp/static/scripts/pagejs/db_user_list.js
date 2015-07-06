@@ -279,6 +279,7 @@ function queryByPage(){
 		            	dataType: 'json',
 		            	success:function(data){
 		            		if(error(data)){return;}
+		            		queryByPage();
 		            	}
 		            });
 		        }
@@ -444,6 +445,7 @@ function formValidate() {
     	$.post(url,postdata, function(data) {
     		if(error(data)){return;}
     		$('#reset-password-box').modal('hide');
+    		queryByPage();
     	});
     }).on('keyup', '[name="reset-password"]', function () {
         if($("[name = 'reset-password-repeat']").val() != ''){
