@@ -212,7 +212,7 @@
 	</div>
 </div>
 <!-- 点击“创建账号”后加载的div 去掉hide既可以显示此div-->
-<div id="newAccountTab" class=" " role="tablist" aria-multiselectable="true">
+<div id="newAccountTab" class="hide" role="tablist" aria-multiselectable="true">
 	<!-- heading部分 -->
 	<div class="se-heading">
 		<div class="pull-left">
