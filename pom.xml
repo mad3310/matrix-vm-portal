@@ -412,6 +412,11 @@
 				<artifactId>openstack-neutron</artifactId>
 				<version>${jclouds.version}</version>
 			</dependency>
+			<dependency>
+			    <groupId>org.apache.jclouds.api</groupId>
+			    <artifactId>openstack-cinder</artifactId>
+			    <version>${jclouds.version}</version>
+			</dependency>
 			<!-- 3rd party dependencies -->
 			<dependency>
 				<groupId>ch.qos.logback</groupId>

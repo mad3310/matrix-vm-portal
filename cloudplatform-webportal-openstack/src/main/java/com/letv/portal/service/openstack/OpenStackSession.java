@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 
 import java.io.Closeable;
 
@@ -15,6 +16,8 @@ public interface OpenStackSession extends Closeable{
     NetworkManager getNetworkManager();
     
     VMManager getVMManager();
+    
+    VolumeManager getVolumeManager();
 
     boolean isClosed();
 

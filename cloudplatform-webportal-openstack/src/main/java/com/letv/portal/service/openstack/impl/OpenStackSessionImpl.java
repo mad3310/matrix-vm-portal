@@ -17,9 +17,11 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
 /**
  * Created by zhouxianguang on 2015/6/8.
@@ -36,6 +38,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private ImageManagerImpl imageManager;
 	private NetworkManagerImpl networkManager;
 	private VMManagerImpl vmManager;
+	private VolumeManagerImpl volumeManager;
 
 	// private Object imageManagerLock;
 	// private Object networkManagerLock;
@@ -57,9 +60,14 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		openStackUser.setPrivateNetworkName(openStackConf
 				.getUserPrivateNetworkName());
 
-		imageManager = new ImageManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
-		networkManager = new NetworkManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
-		vmManager = new VMManagerImpl(openStackServiceGroup,openStackConf, openStackUser);
+		imageManager = new ImageManagerImpl(openStackServiceGroup,
+				openStackConf, openStackUser);
+		networkManager = new NetworkManagerImpl(openStackServiceGroup,
+				openStackConf, openStackUser);
+		volumeManager = new VolumeManagerImpl(openStackServiceGroup,
+				openStackConf, openStackUser);
+		vmManager = new VMManagerImpl(openStackServiceGroup, openStackConf,
+				openStackUser);
 		vmManager.setImageManager(imageManager);
 		vmManager.setNetworkManager(networkManager);
 
@@ -205,6 +213,11 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	}
 
 	@Override
+	public VolumeManager getVolumeManager() {
+		return volumeManager;
+	}
+
+	@Override
 	public boolean isClosed() {
 		return isClosed;
 	}
@@ -217,6 +230,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		}
 		if (networkManager != null) {
 			Closeables.close(networkManager, true);
+		}
+		if (volumeManager != null) {
+			Closeables.close(volumeManager, true);
 		}
 		if (vmManager != null) {
 			Closeables.close(vmManager, true);
