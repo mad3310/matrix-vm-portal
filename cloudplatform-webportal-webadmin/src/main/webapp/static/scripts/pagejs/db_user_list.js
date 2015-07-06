@@ -278,7 +278,7 @@ function queryByPage(){
 		            	type: 'delete',
 		            	dataType: 'json',
 		            	success:function(data){
-		            		if(error(data)){return;}
+		            		if(error(data)){return;}else{success('删除操作执行成功！')}
 		            		queryByPage();
 		            	}
 		            });
@@ -292,8 +292,7 @@ function queryByPage(){
 			    	url: "/dbIp/"+dbId+"/"+lineData.username,
 			    	type: 'get',
 			    	success:function(data){
-			    		console.log(error(data)+data.result)
-			    		if(error(data)){return;}
+			    		if(error(data)){warn(data.msgs);return;}
 			    		dbUserFuc.GetDbUserPrivilege(data);
 			    	}
 			    });
@@ -443,7 +442,7 @@ function formValidate() {
         }
         var url = "/dbUser/security/"+$("#reset-password-username").val();
     	$.post(url,postdata, function(data) {
-    		if(error(data)){return;}
+    		if(error(data)){warn(data.msgs);return;}else{success('密码重置成功！')}
     		$('#reset-password-box').modal('hide');
     		queryByPage();
     	});
