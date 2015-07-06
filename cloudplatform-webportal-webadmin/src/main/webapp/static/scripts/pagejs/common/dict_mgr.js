@@ -274,7 +274,7 @@ function delDict(obj){
       }
     });
   }
-  confirmframe("删除","您确定要删除该字典？","删除后可能会影响以后功能，如果不了解，请不要删除！",delCmd);
+  confirmframe("删除","您确定要删除该字典？","如果不了解，请不要删除！",delCmd);
 }
 
 function modifyDict(){
