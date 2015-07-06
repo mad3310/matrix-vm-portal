@@ -156,7 +156,11 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_SLB s
+		left join WEBPORTAL_USER u on s.CREATE_USER = u.ID
 		<include refid="Example_Where_Clause" />
+		<if test="userName != null  and userName != ''">
+				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			</if>
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -184,10 +188,10 @@
 			<if test="params != null and params.hclusterId != null  ">
 				and s.HCLUSTER_ID=#{params.hclusterId}
 			</if>
-			<if test="params != null and params.status != null  ">
+			<if test="params != null and params.status != null and params.status != '' ">
 				and s.STATUS=#{params.status}
 			</if>
-			<if test="params != null and params.descn != null  ">
+			<if test="params != null and params.descn != null and params.descn != ''  ">
 				and s.DESCN=#{params.descn}
 			</if>
 			<if test="params != null and params.ip != null  ">
@@ -222,6 +226,9 @@
 		left join WEBPORTAL_USER u on s.CREATE_USER = u.ID
 		left join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
+			<if test="params != null and params.userName != null  and params.userName != ''">
+				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

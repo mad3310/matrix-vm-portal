@@ -194,7 +194,11 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_GCE g
+		left join WEBPORTAL_USER u on g.CREATE_USER = u.ID
 		<include refid="Example_Where_Clause" /> and g.TYPE != "NGINX_PROXY"
+			<if test="userName != null  and userName != ''">
+				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			</if>
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -234,16 +238,16 @@
 			<if test="params != null and params.type != null  ">
 				and g.TYPE=#{params.type}
 			</if>
-			<if test="params != null and params.status != null  ">
+			<if test="params != null and params.status != null and params.status != ''  ">
 				and g.STATUS=#{params.status}
 			</if>
-			<if test="params != null and params.descn != null  ">
+			<if test="params != null and params.descn != null and  params.descn != '' ">
 				and g.DESCN=#{params.descn}
 			</if>
-			<if test="params != null and params.ip != null  ">
+			<if test="params != null and params.ip != null and params.ip != ''  ">
 				and g.IP=#{params.ip}
 			</if>
-			<if test="params != null and params.deleted != null  ">
+			<if test="params != null and params.deleted != null and params.deleted != '' ">
 				and g.DELETED=#{params.deleted}
 			</if>
 			<if test="params != null and params.createTime != null  ">
@@ -272,6 +276,9 @@
 		left join WEBPORTAL_USER u on g.CREATE_USER = u.ID
 		left join WEBPORTAL_HCLUSTER h on g.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" /> and g.TYPE != "NGINX_PROXY"
+			<if test="params != null and params.userName != null  and params.userName != ''">
+				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
 		ORDER BY g.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
