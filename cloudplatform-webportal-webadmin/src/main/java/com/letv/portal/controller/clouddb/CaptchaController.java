@@ -78,7 +78,12 @@ public class CaptchaController {
 		 }
 		 
 		 String captchaId = null;
-		 captchaId = CookieUtil.getCookieByName(request, Constant.KAPTCHA_COOKIE_NAME).getValue();
+		 Cookie cookieByName = CookieUtil.getCookieByName(request, Constant.KAPTCHA_COOKIE_NAME);
+		 if(cookieByName == null) {
+			 result.setData(false);
+			 return result;
+		 }
+		 captchaId = cookieByName.getValue();
 	     if (StringUtils.isEmpty(captchaId)) {
 	    	 result.setData(false);
 	    	 return result;
