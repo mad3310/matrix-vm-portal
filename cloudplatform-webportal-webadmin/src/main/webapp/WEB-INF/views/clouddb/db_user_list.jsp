@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="page-content-area">
-	<div class="row">
+	<div class="row"> <!-- row -->
 	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
 	<script>
 		$(window).load(function() {
@@ -38,7 +38,7 @@
 							<input type="text" class="form-control" id="userDb"
 								placeholder="所属数据库">
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<div class="form-group col-sm-6 col-xs-12 col-md-3">
 							<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
 							<select class="form-control" id="userAuthority">
 								<option value="">请选择用户权限</option>
@@ -47,9 +47,9 @@
 								<option value="3">读写用户</option>
 							</select>
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<!-- <div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="userIp" placeholder="ip地址">
-						</div>
+						</div> -->
 						<!-- <div class="form-group">
 							<select class="form-control" id="userLimit">
 								<option value="">频次限制</option>
@@ -63,7 +63,7 @@
 								<option value="">请选择状态</option>
 							</select>
 						</div>
-						<div class="form-group  col-sm-6 col-xs-12 col-md-2" style="padding-right:0;">
+						<div class="form-group  col-sm-6 col-xs-12 col-md-3" style="padding-right:0;">
 						<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
 							<i class="ace-icon fa fa-search"></i>搜索
 						</button>
@@ -154,7 +154,7 @@
             		</div>
             	</div>
             </div> -->
-		<div id='accountList'>
+		<div id='accountList' class=''>
 			<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 				<div class="widget-header">
 					<h5 class="widget-title">数据库用户列表</h5>
@@ -177,12 +177,12 @@
 										</label>
 									</th>
 									<th>用户名</th>
-									<!-- <th>用户权限</th>
+									<!-- <th>所属数据库</th><th>用户权限</th>
 									<th>ip地址</th> -->
-									<th class="hidden-480">最大并发量</th>
+									<th class="hidden-xs">最大并发量</th>
 									<th>当前状态</th>
-									<th>所属数据库</th>
-									<th class="hidden-480">备注</th>
+									<th class="hidden-xs">所属数据库</th>
+									<th class="hidden-xs">备注</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -211,115 +211,20 @@
 		</div>
 	</div>
 </div>
-<!-- new add by gm 2015-7-1 -->
-<div id="showDbuserIpPrivilege" class="modal fade in">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<h5 id="showDbuserIpPrivilegeTitle" class="modal-title"></h5>
-			</div>
-			<div class="modal-body">
-				<div class="table-responsive">
-					<table id="dbuser-list-ip-privilege-table" class="table table-bordered table-striped">
-						<thead>
-							<tr>
-								<th>IP
-								</td>
-								<th>权限
-								</td>
-							</tr>
-						</thead>
-						<tbody id="ip-privilege-tby">
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div id="reset-password-box" class="modal">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<h5 id="reset-password-box-title" class="modal-title"></h5>
-			</div>
-			<form id="reset-password-form" role="form" class="form-horizontal">
-				<input id="reset-password-username" class="hidden" name="usename" type="text"/>
-				<div class="modal-body">
-					<div id="reset-password-box-text">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">密码： </label>
-							<div class="col-sm-8 row">
-								<div class="col-sm-12">
-									<input name="reset-password" class="form-control input-radius-2" type="password" />
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 control-label">确认密码： </label>
-							<div class="col-sm-8 row">
-								<div class="col-sm-12">
-									<input name="reset-password-repeat" class="form-control input-radius-2" type="password" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button id="resetPasswordBoxSubmit" type="submit" class="btn btn-primary">确定</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<!--确认对话框-->
-<div id="dialog-box" class="modal">
-	<div class="modal-dialog modal-sm">
-		<div class="modal-content">
-			<div class="modal-header">
-		<!--	<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
-				</button>-->
-				<h5 id="dialog-box-title" class="modal-title"></h5>
-			</div>
-			<div class="modal-body clearfix">
-				<div class="col-xs-1 col-sm-1 col-md-1" style="font-size:20px;color:orange;padding-top:5px;">
-					<span class="glyphicon glyphicon-exclamation-sign"></span>
-				</div>
-				<div id="dialog-box-text" class="col-xs-11 col-sm-10 "></div>
-			</div>
-			<div class="modal-footer">
-				<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-				<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-			</div>
-		</div>
-	</div>
-</div>
 <!-- 点击“创建账号”后加载的div 去掉hide既可以显示此div-->
-<div id="newAccountTab" class="hide" role="tablist" aria-multiselectable="true">
+<div id="newAccountTab" class=" " role="tablist" aria-multiselectable="true">
 	<!-- heading部分 -->
 	<div class="se-heading">
 		<div class="pull-left">
 			<h5>创建新账号</h5>
-			<a class="toAccountList">返回帐号管理</a>
+			<a class="toAccountList">返回数据库用户列表</a>
 		</div>
 	</div>
 	<!-- 内容部分，由一个form承载 -->
 	<div class="">
 		<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
 			<!-- 数据库账号模块 -->
-			<div class="form-group">
+			<div class="form-group has-feedback">
 				<label class="col-xs-12 col-sm-2 control-label">
 					<span class="text-danger">*</span>
 					数据库帐号：
@@ -503,16 +408,16 @@
 		</form>
 	</div>
 </div>
-<div id="modifyAccountTab" class="hide m-pr10" role="tablist" aria-multiselectable="true">
+<div id="modifyAccountTab" class="hide" role="tablist" aria-multiselectable="true">
 	<!-- heading部分 -->
 	<div class="se-heading">
 		<div class="pull-left">
 			<h5>编辑账号</h5>
-			<a class="toAccountList">返回帐号管理</a>
+			<a class="toAccountList">返回数据库用户列表</a>
 		</div>
 	</div>
 	<!-- 内容部分，由一个form承载 -->
-	<div style="width:auto;height:auto;">
+	<div>
 		<form id="db_user_modify_form" role="form" class="form-horizontal" name="account_modify_form">
 			<input class="hidden" id="modifydbUserReadWriterRate" type="text" />
 
@@ -625,7 +530,7 @@
 					</div>
 					<!-- 密码规则提示 -->
 					<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
-						<p class="">由字母、数字、中划线或下划线组成，长度6~32位</p>
+						<p class="">由字母、数字或特殊字符如：@#$%^&*!~_- 组成，长度6~32位</p>
 					</div>
 				</div>
 			</div>
@@ -659,6 +564,102 @@
 			</div>
 			<!-- 按钮模块end -->
 		</form>
+	</div>
+</div>
+<!-- 新添创建用户，编辑权限end -->
+<!-- new add by gm 2015-7-1 -->
+<div id="showDbuserIpPrivilege" class="modal fade in">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h5 id="showDbuserIpPrivilegeTitle" class="modal-title"></h5>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table id="dbuser-list-ip-privilege-table" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>IP
+								</td>
+								<th>权限
+								</td>
+							</tr>
+						</thead>
+						<tbody id="ip-privilege-tby">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="reset-password-box" class="modal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h5 id="reset-password-box-title" class="modal-title"></h5>
+			</div>
+			<form id="reset-password-form" role="form" class="form-horizontal">
+				<input id="reset-password-username" class="hidden" name="usename" type="text"/>
+				<div class="modal-body">
+					<div id="reset-password-box-text">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">密码： </label>
+							<div class="col-sm-8 row">
+								<div class="col-sm-12">
+									<input name="reset-password" class="form-control input-radius-2" type="password" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label">确认密码： </label>
+							<div class="col-sm-8 row">
+								<div class="col-sm-12">
+									<input name="reset-password-repeat" class="form-control input-radius-2" type="password" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="resetPasswordBoxSubmit" type="submit" class="btn btn-primary">确定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!--确认对话框-->
+<div id="dialog-box" class="modal">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+		<!--	<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
+				</button>-->
+				<h5 id="dialog-box-title" class="modal-title"></h5>
+			</div>
+			<div class="modal-body clearfix">
+				<div class="col-xs-1 col-sm-1 col-md-1" style="font-size:20px;color:orange;padding-top:5px;">
+					<span class="glyphicon glyphicon-exclamation-sign"></span>
+				</div>
+				<div id="dialog-box-text" class="col-xs-11 col-sm-10 "></div>
+			</div>
+			<div class="modal-footer">
+				<button id="dialogBoxSubmit" type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+				<button id="dialogBoxCancel" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			</div>
+		</div>
 	</div>
 </div>
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />

@@ -592,11 +592,11 @@ function transStateHtml(btnIcons,state){
 			+ "</td>";
 	return td;
 }
-function DialogBoxInit(title,text,handler){
+function DialogBoxInit(title,text,handler,name,id){
     $("#dialog-box").find("#dialog-box-title").html(title);
     $("#dialog-box").find("#dialog-box-text").html("<h5 style='text-align: center; '>"+text+"</h5>");
     $("#dialogBoxSubmit").unbind("click").click(function(){
-        handler;
+        handler(name,id);
     })
     $('#dialog-box').modal({
         backdrop:false,

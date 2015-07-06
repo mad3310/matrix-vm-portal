@@ -129,7 +129,7 @@ function queryByPage(){
 	var dbName = $("#userDb").val()?$("#userDb").val():'';
 	var userName = $("#userName").val()?$("#userName").val():'';
 	var userAuthority = $("#userAuthority").val()?$("#userAuthority").val():'';
-	var acceptIp = $("#userIp").val()?$("#userIp").val():'';
+	// var acceptIp = $("#userIp").val()?$("#userIp").val():'';
 	var status = $("#dbuserStatus").val()?$("#dbuserStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
@@ -137,7 +137,7 @@ function queryByPage(){
 			'dbName':dbName,
 			'username':userName,
 			'type':userAuthority,
-			'acceptIp':acceptIp.replace(/\%/g,"%25"),
+			//'acceptIp':acceptIp.replace(/\%/g,"%25"),
 			/*'createTime':createTime,*/
 			'status':status
 		}
@@ -154,10 +154,9 @@ function queryByPage(){
 		success : function(data) {
 			removeLoading();
 			if(error(data)) return;
-			var array = data.data.data;
+			var array=data.data.data;
 			var tby = $("#tby");
 			var totalPages = data.data.totalPages;
-			
 			for (var i = 0, len = array.length; i < len; i++) {
 				if(array[i].db == undefined || array[i].db == null) continue;
 				var td1 = $("<td class=\"center\">"
@@ -169,7 +168,7 @@ function queryByPage(){
 				var td2 = $("<td>"
 						+ array[i].username
 						+ "</td>");
-				var td3 = $("<td>"
+				var td3 = $("<td class='hidden-xs'>"
 						+ "<a class=\"link\" href=\"/detail/db/" + array[i].dbId+"\">"+array[i].db.dbName+"</a>"
 						+ "</td>");
 				// if(array[i].type == 1){
@@ -188,7 +187,7 @@ function queryByPage(){
 				// var td5 = $("<td>"
 				// 		+ array[i].acceptIp
 				// 		+ "</td>");
-				var td6 = $("<td class='hidden-480'>"
+				var td6 = $("<td class='hidden-xs'>"
 						+ array[i].maxConcurrency
 						+ "</td>");
 				var td7 = $("<td><a>"
@@ -196,23 +195,23 @@ function queryByPage(){
 						+ "</a></td>");
 				var td8; 
 				if(array[i].descn){
-					td8=$("<td class='hidden-480'><span>"
+					td8=$("<td class='hidden-xs'><span>"
 						+array[i].descn
 						+"</span></td>");
-				}else{td8=$("<td class='hidden-480'><span>-"
+				}else{td8=$("<td class='hidden-xs'><span>-"
 						+"</span></td>")}
 				
-				var td9=$("<td class='hidden-480'>" 
+				var td9=$("<td class='hidden-xs'>" 
 						+ "<a class=\"dbuser-list-ip-privilege\" href='javascript:void(0)' data-db-id="+array[i].dbId+">ip访问权限</a><span class=\"text-explode\">"
 						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">重置密码</a><span class=\"text-explode\">"
-	                    + "|</span><a class=\"dbuser-list-modify-privilege disabled\" href=\"javascript:void(0);\">修改权限</a><span class=\"text-explode\">"
+	                    + "|</span><a class=\"dbuser-list-modify-privilege disabled\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">修改权限</a><span class=\"text-explode\">"
 	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">删除</a></div>"
 						+"</td>"
 						+"<td class='hidden-lg hidden-md hidden-sm'>"
-						+ "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\"><span class='text-primary'><i class='fa fa-cogs'></i></span></a><span class=\"text-explode\">"
-						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\"><i class='fa fa-key'></i></a><span class=\"text-explode\">"
-	                    + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\"><i class='fa fa-edit'></i></a><span class=\"text-explode\">"
-	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\"><i class='fa fa-trash'></i></a> </div>"
+						+ "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><span class='text-primary'><i class='fa fa-cogs'></i></span></a><span class=\"text-explode\">"
+						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-key'></i></a><span class=\"text-explode\">"
+	                    + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-edit'></i></a><span class=\"text-explode\">"
+	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-trash-o'></i></a> </div>"
 						+"</td>");	
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
 					var tr = $("<tr class=\"warning\"></tr>");
@@ -312,13 +311,15 @@ function queryByPage(){
                 $("#reset-password-username").attr('data-db-id', dbId);
             });
             /*初始化删除按钮*/
-            $(".dbuser-list-delete").unbind('click').click(function () {    
+            $(".dbuser-list-delete").unbind('click').click(function(event) {
+            	event.preventDefault();    
                 var lineData = getLineData(this);
                 var title = "确认";
                 var text = "您确定要删除("+lineData.username+")账户";
                 var name = lineData.username;
                 var dbId=$(this).attr('data-db-id');
-                DialogBoxInit(title,text,dbUserFuc.DeleteDbUser(name,dbId));
+
+                DialogBoxInit(title,text,dbUserFuc.DeleteDbUser,name,dbId);
             });
             // /*初始化修改用户权限按钮*/
             // $(".dbuser-list-modify-privilege").unbind('click').click(function(){
