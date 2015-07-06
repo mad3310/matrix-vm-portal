@@ -210,10 +210,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				}
 			}
 		}
-		// createServerOptions.adminPass(conf.getAdminPass());
-		createServerOptions.userData(MessageFormat.format(
-				"#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
-				conf.getAdminPass()).getBytes(Charsets.UTF_8));
+		createServerOptions.adminPass(conf.getAdminPass());
+		// createServerOptions.userData(MessageFormat.format(
+		// "#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
+		// conf.getAdminPass()).getBytes(Charsets.UTF_8));
 
 		// test code begin(ssh login)
 		{
