@@ -466,7 +466,12 @@ function startMcluster(obj){
 			data:{id : mclusterId},
 			success:function(data){
 				removeLoading();
-				if(error(data)) return;
+				if(error(data)){
+					warn(data.msgs);
+					return;
+				}else{
+					success('服务启动成功！')
+				}
 				queryByPage();
 			}
 		});
@@ -489,7 +494,12 @@ function restartCluster(obj){
 			data:{id : mclusterId},
 			success:function(data){
 				removeLoading();
-				if(error(data)) return;
+				if(error(data)){
+					warn(data.msgs);
+					return;
+				}else{
+					success('服务重启成功！')
+				}
 				queryByPage();
 			}
 		});
@@ -512,7 +522,12 @@ function stopMcluster(obj){
 			data:{id : mclusterId},
 			success:function(data){
 				removeLoading();
-				if(error(data)) return;
+				if(error(data)){
+					warn(data.msgs);
+					return;
+				}else{
+					success('服务停止成功！')
+				}
 				queryByPage();
 			}
 		});
@@ -659,13 +674,19 @@ function addMemory(obj){
 							id : mclusterId,
 							multiple:mulvalue},
 						success:function(data){
-							if(error(data)) return;
+							if(error(data)){
+								warn(data.msgs);
+								return;
+							}else{
+								success('扩容操作成功！')
+							}
 							queryByPage();
 						}
 					});		
 					$('#dialog-confirm').dialog("close");
 				}else if(data.data == false){
 					refreshCode();
+					warn('验证码输入错误')
 					$('.warning-info').remove();
 					$('.success-info').remove();
 					if($('.warning-info').length == 0){						
@@ -682,7 +703,7 @@ function addMemory(obj){
 	/*验证码DOM*/
 	var form = $("<form>"
 			 + "<div class=\"form-group\">"
-			 + "<div>2倍<input type=\"radio\" name=\"add\" value=\"2\" style=\"margin:-5px 25px 25px 10px ;\"/>4倍<input type=\"radio\" name=\"add\" value=\"4\" style=\"margin:-5px 25px 25px 10px ;\"/></div>"
+			 + "<div>2倍<input type=\"radio\" name=\"add\" value=\"2\" style=\"margin:-5px 25px 25px 10px ;\" checked/>4倍<input type=\"radio\" name=\"add\" value=\"4\" style=\"margin:-5px 25px 25px 10px ;\"/></div>"
 			 + "<a class=\"kaptcha\" style=\"cursor:pointer;margin-right:10px;\"><img src=\"/kaptcha\" width=\"65\" height=\"30\" id=\"kaptchaImage\" style=\"margin-bottom: 2px\"/></a>"
 			 + "<input type=\"text\" name=\"kaptcha\" style=\"width:120px;\" />"			 
              + "<p id=\"infoBlock\" style=\"width:20px;height：20px;display:inline;border:none;\"></p>"
