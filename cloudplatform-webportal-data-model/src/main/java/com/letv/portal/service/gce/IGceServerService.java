@@ -21,4 +21,6 @@ public interface IGceServerService extends IBaseService<GceServer> {
 	GceServer selectGceAndProxyById(Long id);
 
 	void saveGceExt(GceServerExt gse);
+
+	GceServer selectByClusterId(Long clusterId);
 }

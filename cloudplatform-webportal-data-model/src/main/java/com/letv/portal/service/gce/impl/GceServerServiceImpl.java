@@ -186,5 +186,10 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	public void saveGceExt(GceServerExt gse) {
 		this.gceServerExtDao.insert(gse);
 	}
+
+	@Override
+	public GceServer selectByClusterId(Long clusterId) {
+		return this.gceServerDao.selectByClusterId(clusterId);
+	}
 	
 }

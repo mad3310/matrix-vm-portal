@@ -9,4 +9,6 @@ public interface IGceServerDao extends IBaseDao<GceServer> {
 
 	List<GceServer> selectByName(String gceName);
 
+	GceServer selectByClusterId(Long clusterId);
+
 }

@@ -182,6 +182,12 @@
 			from WEBPORTAL_GCE g ,WEBPORTAL_GCECLUSTER n,WEBPORTAL_USER u,WEBPORTAL_HCLUSTER h 
 			where g.CREATE_USER=u.id and g.ID = #{id} and n.ID = g.GCECLUSTER_ID and g.HCLUSTER_ID = h.ID
 	</select>
+	<select id="selectByClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" /> 
+			
+			from WEBPORTAL_GCE g where g.GCECLUSTER_ID = #{clusterId}
+	</select>
 	
 	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select

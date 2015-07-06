@@ -62,4 +62,6 @@ public interface IGcePythonService {
 	public ApiResultObject stop(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
 	public ApiResultObject restart(Map<String, String> params, String nodeIp1,String port,String adminUser, String adminPassword);
 	public ApiResultObject checkStatus(String nodeIp1,String port,String adminUser, String adminPassword);
+	
+	public ApiResultObject capacity(Map<String,String> params,String ip,String adminUser, String adminPassword);
 }

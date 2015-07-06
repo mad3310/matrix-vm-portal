@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
+import com.letv.common.util.HttpClient;
+import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.enumeration.SlbStatus;
 import com.letv.portal.model.gce.GceCluster;
@@ -232,14 +235,24 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 
 	@Override
-	public void capacity(Long id, int multiple) {
-		GceServer gce = this.selectById(id);
+	public void capacity(Long clusterId, int multiple) {
+		GceServer gce = this.gceServerService.selectByClusterId(clusterId);
 		if(gce == null)
 			throw new ValidateException("GCE服务不存在");
 		if(multiple == 0)
 			throw new ValidateException("内存扩容倍数不能为空");
 		gce.setMemorySize(gce.getMemorySize()*multiple);
-		this.gceServerService.updateBySelective(gce);
 		
+		List<GceContainer> gcs = this.gceContainerService.selectByGceClusterId(clusterId);
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("times", String.valueOf(multiple));
+		for (GceContainer gceContainer : gcs) {
+			params.put("containerNameList", gceContainer.getContainerName());
+			ApiResultObject result = this.gcePythonService.capacity(params, gceContainer.getHostIp(),  "root","root");
+			if(StringUtils.isEmpty(result.getResult()) || !result.getResult().contains("\"code\": 200")) {
+				throw new ValidateException("扩容失败：相关api  " + result.getUrl());
+			}
+		}
+		this.gceServerService.updateBySelective(gce);
 	}
 }
