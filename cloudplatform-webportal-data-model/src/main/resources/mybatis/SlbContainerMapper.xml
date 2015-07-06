@@ -250,13 +250,13 @@
 			WEBPORTAL_SLBCLUSTER n on n.ID = SCT.SLBCLUSTER_ID 
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.slbClusterName != null  and params.slbClusterName != ''">
 				and n.CLUSTER_NAME like CONCAT('%','${params.slbClusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
-			<include refid="Example_Page_Where_Clause" />
 		ORDER BY SCT.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
@@ -273,12 +273,12 @@
 			WEBPORTAL_SLBCLUSTER n on n.ID = SCT.SLBCLUSTER_ID 
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<include refid="Example_Where_Clause" />
 			<if test="slbClusterName != null  and slbClusterName != ''">
 				and n.CLUSTER_NAME like CONCAT('%','${slbClusterName}','%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
-			<include refid="Example_Where_Clause" />
 	</select>
 </mapper>   

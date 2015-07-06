@@ -156,13 +156,13 @@
 			WEBPORTAL_USER U ON U.ID = CBASE.CREATE_USER
 		join 
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
+			<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
 				and U.USERNAME like CONCAT('%','${userName}','%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
 				and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
-			<include refid="Example_Where_Clause" />
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -175,13 +175,13 @@
 			WEBPORTAL_USER U ON U.ID = CBASE.CREATE_USER
 		join 
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
+			<include refid="List_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
 				and U.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
-			<include refid="List_Where_Clause" />
 		ORDER BY CBASE.CREATE_TIME DESC	
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}

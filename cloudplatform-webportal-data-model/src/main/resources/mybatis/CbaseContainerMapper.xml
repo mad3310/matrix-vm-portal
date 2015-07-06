@@ -262,13 +262,13 @@
 			WEBPORTAL_CBASECLUSTER_INFO n on n.ID = CCT.CBASECLUSTER_ID 
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != ''">
 				and n.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
-			<include refid="Example_Page_Where_Clause" />
 		ORDER BY CCT.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
@@ -285,13 +285,13 @@
 			WEBPORTAL_CBASECLUSTER_INFO n on n.ID = CCT.CBASECLUSTER_ID 
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
+			<include refid="Example_Where_Clause" />
 			<if test="cbaseClusterName != null  and cbaseClusterName != ''">
 				and n.CBASECLUSTER_NAME like CONCAT('%','${cbaseClusterName}','%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
-			<include refid="Example_Where_Clause" />
 	</select>
 
 </mapper>

@@ -155,13 +155,13 @@
 		select count(1) from WEBPORTAL_SWIFT s
 		join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		left join WEBPORTAL_USER user on s.CREATE_USER = user.ID
-		<if test="hclusterName != null  and hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
-		</if>
-		<if test="userName != null  and userName != ''">
-			and user.USERNAME like CONCAT('%','${userName}','%') escape '^'
-		</if>
 		<include refid="Example_Where_Clause" />
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			</if>
+			<if test="userName != null  and userName != ''">
+				and user.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			</if>
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -220,13 +220,13 @@
 		from WEBPORTAL_SWIFT s
 		join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		left join WEBPORTAL_USER user on s.CREATE_USER = user.ID
-		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-			and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
-		</if>
-		<if test="params != null and params.userName != null  and params.userName != ''">
-			and user.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
-		</if>
 		<include refid="Example_Page_Where_Clause" />
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.userName != null  and params.userName != ''">
+				and user.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}

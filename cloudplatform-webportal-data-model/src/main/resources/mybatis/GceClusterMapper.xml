@@ -150,14 +150,15 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_GCECLUSTER GCS
 		join WEBPORTAL_USER U ON U.ID = GCS.CREATE_USER
+		join WEBPORTAL_HCLUSTER h on GCS.HCLUSTER_ID = h.ID
+		<include refid="Example_Where_Clause" />
 		<if test="userName != null  and userName != ''">
 			and U.USERNAME like CONCAT('%','${userName}','%') escape '^'
 		</if>
-		join WEBPORTAL_HCLUSTER h on GCS.HCLUSTER_ID = h.ID
 		<if test="hclusterName != null  and hclusterName != ''">
 			and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 		</if>
-		<include refid="Example_Where_Clause" />
+		
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -167,14 +168,14 @@
 		<include refid="Base_Column_List" /> ,U.USERNAME,h.HCLUSTER_NAME_ALIAS
 		FROM  WEBPORTAL_GCECLUSTER GCS 
 		join WEBPORTAL_USER U ON U.ID = GCS.CREATE_USER
+		join WEBPORTAL_HCLUSTER h on GCS.HCLUSTER_ID = h.ID
+		<include refid="List_Where_Clause" />
 		<if test="params != null and params.userName != null  and params.userName != ''">
 			and U.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
 		</if>
-		join WEBPORTAL_HCLUSTER h on GCS.HCLUSTER_ID = h.ID
 		<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 			and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 		</if>
-		<include refid="List_Where_Clause" />
 		ORDER BY GCS.CREATE_TIME DESC	
 		<if test="page != null">
       		limit #{page.startRowPosition},#{page.recordsPerPage}
