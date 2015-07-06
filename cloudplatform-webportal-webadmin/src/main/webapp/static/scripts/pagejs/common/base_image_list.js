@@ -23,6 +23,7 @@ $(function(){
 		var aTarget = $(_target).parent()[0];
 		console.log($(aTarget).attr('data-click-type'));
 		if($(aTarget).attr('data-click-type') == "modify"){
+			$('#modify-image-modal').modal('show');
 			initModify(aTarget);
 		}else if($(aTarget).attr('data-click-type') == "delete"){
 			delImage(aTarget)
@@ -253,7 +254,6 @@ function updateFormValidate() {
   });
 }
 function initModify(obj){
-	$('#modify-image-modal').modal('show');
 	var tr = $(obj).closest("tr");
     var trData={
       id : tr.find("input").val(),
@@ -323,8 +323,10 @@ function updateImage(status){
 }
 function setDefault(obj){
 	initModify(obj);
+	function setDefaultFunction(){
 		updateImage('1');
-//	confirmframe("设置默认镜像","设置"+$(obj).closest("tr").find("td:eq(1)").html()+"为默认镜像，以后创建该业务会默认用该镜像","您确定要设置?",setDefaultFunction);
+	}
+	confirmframe("设置默认镜像","您正在设置（"+$(obj).closest("tr").find("td:eq(1)").html()+"）为默认镜像","您确定要执行此操作?",setDefaultFunction);
 }
 
 function delImage(obj){

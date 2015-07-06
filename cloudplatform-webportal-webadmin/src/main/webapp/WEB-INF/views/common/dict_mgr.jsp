@@ -23,19 +23,19 @@
 	<div class="page-header">
 	  <div class="input-group pull-right">
 	    <form class="form-inline">
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
 		<input type="text" class="form-control" id="seDictName"
 		       placeholder="字典名称">
 	      </div>
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
 		<input type="text" class="form-control" id="seDictType"
 		       placeholder="字典类型">
 	      </div>
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
+	    <!--   <div class="form-group  col-sm-6 col-xs-12 col-md-3">
 		<input type="text" class="form-control" id="seDictDescn"
 		       placeholder="字典描述">
-	      </div>
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
+	      </div> -->
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
 		<button class="btn btn-sm btn-primary btn-search" id="dictSearch" type="button">
 		  <i class="ace-icon fa fa-search"></i>搜索
 		</button>
@@ -109,11 +109,11 @@
 	    <div class="col-sm-10 col-xs-10 col-md-6">
 	      <input class="form-control" name="dictName" id="dictName" type="text" />
 	    </div>
-	    <label class="control-label">
+	    <!-- <label class="control-label">
 	      <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="" style="cursor:pointer; text-decoration:none;">
 		<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 	      </a>
-	    </label>
+	    </label> -->
 	  </div>
 	  <div class="form-group">
 	    <label class="col-sm-12 col-xs-12 col-md-4 control-label" for="hcluster">类型</label>
@@ -121,7 +121,7 @@
 	      <input class="form-control" name="dictType" id="dictType" type="text" />
 	    </div>
 	    <label class="control-label" for="hcluster">
-	      <a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="" style="cursor:pointer; text-decoration:none;">
+	      <a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="类型为数字（0-99）" style="cursor:pointer; text-decoration:none;">
 		<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 	      </a>
 	    </label>
@@ -131,11 +131,11 @@
 	    <div class="col-sm-10 col-xs-10 col-md-6">
 	      <textarea class="form-control" name="dictDescn" id="dictDescn" type="text" ></textarea>
 	    </div>
-	    <label class="control-label" for="hcluster">
+	    <!-- <label class="control-label" for="hcluster">
 	      <a id="hclusterHelp" name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="" style="cursor:pointer; text-decoration:none;">
 	        <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 	      </a>
-	    </label>
+	    </label> -->
 	  </div>
 	  <div class="modal-footer">
 	    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">关闭</button>

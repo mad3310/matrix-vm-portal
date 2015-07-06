@@ -39,8 +39,8 @@
            <div class="form-group  col-sm-6 col-xs-12 col-md-2">
 		<select class="form-control" id="seImageStatus">
 			<option value="">使用状态</option>
-			<option value="0">默认使用</option>
-			<option value="1">默认不使用</option>
+			<option value="1">默认使用</option>
+			<option value="0">默认不使用</option>
 		</select>
 	</div>
 	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
@@ -185,7 +185,7 @@
 		  </select>
 		</div>
 		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="在创建改业务时，默认使用该镜像" style="cursor:pointer; text-decoration:none;">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="在创建改业务时，默认使用此镜像" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
@@ -196,7 +196,7 @@
 		  <textarea id="descn" name="descn" class="form-control" rows="4"></textarea>
 		</div>
 		<label class="control-label">
-		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="本镜像的功能描述，可输入字母、数字或_,最多100字符!" style="cursor:pointer; text-decoration:none;">
+		  <a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="本镜像的功能描述，最多100字符!" style="cursor:pointer; text-decoration:none;">
 		    <i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 		  </a>
 		</label>
