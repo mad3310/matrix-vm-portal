@@ -112,7 +112,7 @@ function queryByPage() {
 			'recordsPerPage':recordsPerPage,
 			'name':dbName,
 			'hclusterName':hclusterName,
-			// 'createUser':userName,
+			'userName':userName,
 			// /*'createTime':createTime,*/
 			'status':status
 		}
