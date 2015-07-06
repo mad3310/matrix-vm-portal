@@ -202,6 +202,7 @@
 		select count(1) from WEBPORTAL_CBASE_BUCKET M
 		left join WEBPORTAL_USER u on M.CREATE_USER = u.ID
 		left join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
+		left join WEBPORTAL_CBASECLUSTER_INFO n on n.ID = M.CBASECLUSTER_ID
 		<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
 				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
