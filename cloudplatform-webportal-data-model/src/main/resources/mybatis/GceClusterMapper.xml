@@ -188,8 +188,8 @@
 			<if test="params != null and params.id !=null and params.id != '' ">
 				and GCS.ID=#{params.id}
 			</if>
-			<if test="params != null and params.gceClusterName != null  and params.gceClusterName != '' and params.gceClusterName != 'null'">
-				and GCS.MCLUSTER_NAME like CONCAT('%','${params.gceClusterName}','%') escape '^'
+			<if test="params != null and params.clusterName != null  and params.clusterName != '' and params.clusterName != 'null'">
+				and GCS.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.status != null and params.status != '' ">
 				and GCS.STATUS=#{params.status}

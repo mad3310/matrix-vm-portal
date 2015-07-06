@@ -66,7 +66,7 @@
 				and CCT.TYPE=#{type}
 			</if>
 			<if test="ipAddr != null ">
-				and CCT.IP_ADDR=#{ipAddr}
+				and CCT.IP_ADDR like CONCAT('%','${ipAddr}','%')
 			</if>
 			<if test="cbaseClusterId != null ">
 				and CCT.CBASECLUSTER_ID=#{cbaseClusterId}

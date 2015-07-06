@@ -44,7 +44,7 @@
 		</association>
 		
 	    <association property="gceCluster" javaType="GceCluster">
-			<result column="GCECLUSTER_NAME" property="clusterName" />
+			<result column="CLUSTER_NAME" property="clusterName" />
 			<result column="HCLUSTER_ID" property="hclusterId" />
 		</association>
 		
@@ -73,7 +73,7 @@
 				and GCT.TYPE=#{type}
 			</if>
 			<if test="ipAddr != null and ipAddr != '' ">
-				and GCT.IP_ADDR=#{ipAddr}
+				and GCT.IP_ADDR like CONCAT('%','${ipAddr}','%')
 			</if>
 			<if test="gceClusterId != null and gceClusterId != '' ">
 				and GCT.GCECLUSTER_ID=#{gceClusterId}
@@ -236,7 +236,7 @@
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
 		select
-			<include refid="Base_Column_List" />,n.CLUSTER_NAME GCECLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
+			<include refid="Base_Column_List" />,n.CLUSTER_NAME,h.HCLUSTER_NAME_ALIAS,n.HCLUSTER_ID
 		from 
 			WEBPORTAL_GCECONTAINER GCT
 		left join 
@@ -244,8 +244,8 @@
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 			<include refid="Example_Page_Where_Clause" />
-			<if test="params != null and params.gceClusterName != null  and params.gceClusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${params.gceClusterName}','%') escape '^'
+			<if test="params != null and params.clusterName != null  and params.clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
@@ -267,8 +267,8 @@
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 			<include refid="Example_Where_Clause" />
-			<if test="gceClusterName != null  and gceClusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${gceClusterName}','%') escape '^'
+			<if test="clusterName != null  and clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'

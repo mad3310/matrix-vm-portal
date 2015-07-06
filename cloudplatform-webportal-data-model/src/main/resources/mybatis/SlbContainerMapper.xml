@@ -69,7 +69,7 @@
 				and SCT.CONTAINER_UUID=#{containerUuid}
 			</if>
 			<if test="ipAddr != null ">
-				and SCT.IP_ADDR=#{ipAddr}
+				and SCT.IP_ADDR like CONCAT('%','${ipAddr}','%')
 			</if>
 			<if test="slbClusterId != null ">
 				and SCT.SLBCLUSTER_ID=#{slbClusterId}
@@ -251,8 +251,8 @@
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 			<include refid="Example_Page_Where_Clause" />
-			<if test="params != null and params.slbClusterName != null  and params.slbClusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${params.slbClusterName}','%') escape '^'
+			<if test="params != null and params.clusterName != null  and params.clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
 			</if>
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
@@ -274,8 +274,8 @@
 		left join 
 			WEBPORTAL_HCLUSTER h on n.HCLUSTER_ID = h.ID
 			<include refid="Example_Where_Clause" />
-			<if test="slbClusterName != null  and slbClusterName != ''">
-				and n.CLUSTER_NAME like CONCAT('%','${slbClusterName}','%') escape '^'
+			<if test="clusterName != null  and clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
 			</if>
 			<if test="hclusterName != null  and hclusterName != ''">
 				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'

@@ -156,10 +156,18 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_SLB s
+		left join WEBPORTAL_SLBCLUSTER n on n.ID = s.SLBCLUSTER_ID 
 		left join WEBPORTAL_USER u on s.CREATE_USER = u.ID
+		left join WEBPORTAL_HCLUSTER h on s.HCLUSTER_ID = h.ID
 		<include refid="Example_Where_Clause" />
-		<if test="userName != null  and userName != ''">
+			<if test="userName != null  and userName != ''">
 				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			</if>
+			<if test="clusterName != null  and clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
+			</if>
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 	</select>
 	<!-- 根据条件查询 -->
@@ -228,6 +236,12 @@
 		<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
 				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
+			<if test="params != null and params.clusterName != null  and params.clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
 		ORDER BY s.CREATE_TIME DESC
 		<if test="page != null">

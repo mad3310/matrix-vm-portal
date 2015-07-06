@@ -201,9 +201,16 @@
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_CBASE_BUCKET M
 		left join WEBPORTAL_USER u on M.CREATE_USER = u.ID
+		left join WEBPORTAL_CBASECLUSTER_INFO n on n.ID = M.CBASECLUSTER_ID
 		<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
 				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
+			</if>
+			<if test="cbaseClusterName != null  and cbaseClusterName != ''">
+				and n.CBASECLUSTER_NAME like CONCAT('%','${cbaseClusterName}','%') escape '^'
+			</if>
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 	</select>
 
@@ -292,6 +299,12 @@
 		<include refid="Example_Page_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
 				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
+			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != ''">
+				and n.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
 		ORDER BY M.CREATE_TIME DESC
 		<if test="page != null">

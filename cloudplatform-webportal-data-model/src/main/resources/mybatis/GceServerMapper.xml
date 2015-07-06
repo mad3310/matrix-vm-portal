@@ -199,6 +199,12 @@
 			<if test="userName != null  and userName != ''">
 				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
 			</if>
+			<if test="clusterName != null  and clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${clusterName}','%') escape '^'
+			</if>
+			<if test="hclusterName != null  and hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
+			</if>
 	</select>
 	<!-- 根据条件查询 -->
 	<select id="selectByMap" resultMap="BaseResultMap"
@@ -278,6 +284,12 @@
 		<include refid="Example_Page_Where_Clause" /> and g.TYPE != "NGINX_PROXY"
 			<if test="params != null and params.userName != null  and params.userName != ''">
 				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
+			</if>
+			<if test="params != null and params.clusterName != null  and params.clusterName != ''">
+				and n.CLUSTER_NAME like CONCAT('%','${params.clusterName}','%') escape '^'
+			</if>
+			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
+				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
 		ORDER BY g.CREATE_TIME DESC
 		<if test="page != null">
