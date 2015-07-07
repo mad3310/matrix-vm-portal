@@ -1,21 +1,21 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
+<script>
+	$(window).load(function() {
+		var iw=document.body.clientWidth;
+		if(iw>991){//md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}else{$('#dbPhyMcluster').removeClass('chosen-select');$('#containeruser').removeClass('chosen-select')}
+	});
+	$(window).resize(function(event) {
+		var iw=document.body.clientWidth;
+		if(iw>991){//md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}else{$('#dbPhyMcluster').removeClass('chosen-select');$('#containeruser').removeClass('chosen-select')}
+	});
+</script>
 <div class="page-content-area">
   <div class="row">
     <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
-	<script>
-		$(window).load(function() {
-			var iw=document.body.clientWidth;
-			if(iw>991){//md&&lg
-				$('.queryOption').removeClass('collapsed');
-			}
-		});
-		$(window).resize(function(event) {
-			var iw=document.body.clientWidth;
-			if(iw>991){//md&&lg
-				$('.queryOption').removeClass('collapsed');
-			}
-		});
-	</script>
 		<div class="widget-header hidden-md hidden-lg">
 			<h5 class="widget-title">GCE查询条件</h5>
 			<div class="widget-toolbar">
@@ -25,25 +25,27 @@
 			</div>
 		</div>
 		<div class="widget-body">
-			<div class="page-header">
+			<div class="page-header col-sm-12 col-xs-12 col-md-12 col-lg-12">
 				<!-- <h3>数据库列表	</h3> -->
-			    <div class="input-group pull-right">
+			    <div class="input-group pull-right col-sm-12 col-xs-12 col-md-12 col-lg-12">
 					<form class="form-inline">
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbName"
-								placeholder="GCE名称">
+							<input type="text" class="form-control" id="dbName" placeholder="GCE名称">
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbMcluster"
-								placeholder="所属cluster">
+							<input type="text" class="form-control" id="dbMcluster" placeholder="所属cluster">
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbPhyMcluster"
-								placeholder="所属物理机集群">
+							<!-- <input type="text" class="form-control" id="dbPhyMcluster" placeholder="所属物理机集群"> -->
+							<select  class="chosen-select" id="dbPhyMcluster" data-placeholder="所属物理机集群" style="width:100%">
+								<option></option>
+							</select>
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbuser"
-								placeholder="所属用户">
+							<!-- <input type="text" class="form-control" id="dbuser" placeholder="所属用户"> -->
+							<select  class="chosen-select" id="containeruser" data-placeholder="所属用户" style="width:100%">
+								<option></option>
+							</select>
 						</div>
 						<!-- <div class="form-group">
 							<input type="date" class="form-control" id="PhyMechineDate"
