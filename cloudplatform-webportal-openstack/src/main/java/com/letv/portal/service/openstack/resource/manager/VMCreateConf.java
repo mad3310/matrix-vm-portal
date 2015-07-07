@@ -17,6 +17,7 @@ public class VMCreateConf {
 	private List<NetworkResource> networkResources;
 	private String adminPass;
 	private boolean bindFloatingIP;
+	private String volumeSizesJson;
 
 	public VMCreateConf() {
 	}
@@ -79,6 +80,14 @@ public class VMCreateConf {
 
 	public void setBindFloatingIP(boolean bindFloatingIP) {
 		this.bindFloatingIP = bindFloatingIP;
+	}
+	
+	public void setVolumeSizesJson(String volumeSizesJson) {
+		this.volumeSizesJson = volumeSizesJson;
+	}
+	
+	public String getVolumeSizesJson() {
+		return volumeSizesJson;
 	}
 
 	// // 区域

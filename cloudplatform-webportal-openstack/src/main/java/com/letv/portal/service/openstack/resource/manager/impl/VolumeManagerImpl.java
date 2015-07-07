@@ -72,4 +72,6 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 	public CinderApi getCinderApi() {
 		return cinderApi;
 	}
+	
+	
 }

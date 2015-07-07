@@ -67,6 +67,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	private ImageManager imageManager;
 
 	private NetworkManager networkManager;
+	
+	private VolumeManagerImpl volumeManager;
 
 	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
