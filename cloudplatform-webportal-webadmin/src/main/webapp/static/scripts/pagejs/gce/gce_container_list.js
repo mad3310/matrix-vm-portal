@@ -105,7 +105,7 @@ function queryByPage() {
 						+ "</td>");
 				if(array[i].gceCluster){
 					var td3 = $("<td class='hidden-480'>"
-							+ "<a class=\"link\"  href=\"/detail/gce/cluster/" + array[i].gceclusterId+"\">"+array[i].gceCluster.clusterName+"</a>"
+							+ "<a class=\"link\"  href=\"/detail/gce/cluster/" + array[i].gceClusterId+"\">"+array[i].gceCluster.clusterName+"</a>"
 							+ "</td>");
 				} else {
 					var td3 = $("<td class='hidden-480'>-</td>");
