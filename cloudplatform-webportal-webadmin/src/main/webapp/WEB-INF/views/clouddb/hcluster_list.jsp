@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div class="widget-body">
-			<div class="page-headercol-sm-12 col-xs-12 col-md-12">
+			<div class="page-header col-sm-12 col-xs-12 col-md-12">
 			<!-- <h3> 物理机集群列表 </h3> -->
 			<div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 				<form class="form-inline">
