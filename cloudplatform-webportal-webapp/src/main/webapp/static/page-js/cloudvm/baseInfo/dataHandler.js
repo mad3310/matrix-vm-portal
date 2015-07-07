@@ -8,6 +8,16 @@ define(function(require,exports,module){
    
     var DataHandler = function(){
     };
+    var operatePublicIpBtnsVisible=function(bindVisible){
+        if(!bindVisible){
+        	$("#btn_publicip_bind").hide();
+        	$("#btn_publicip_unbind").show();
+        }
+        else{
+        	$("#btn_publicip_bind").show();
+        	$("#btn_publicip_unbind").hide();
+        }
+    };
 
     module.exports = DataHandler;
 
@@ -33,9 +43,9 @@ define(function(require,exports,module){
                 evaluateField('vm_info_network_privateip',vmInfo.ipAddresses.private.join(', '),'');
                 evaluateField('vm_info_network_publicip',vmInfo.ipAddresses.public.join(', '),'');
                 evaluateField('vm_info_network_sharedip',vmInfo.ipAddresses.shared.join(', '),'');
-                if(vmInfo.ipAddresses.public.length > 0){
-                	$("#getPublicIp").hide();
-                }
-        }        
+                operatePublicIpBtnsVisible(!vmInfo.ipAddresses.public.length);
+        },
+        operatePublicIpBtnsVisible:operatePublicIpBtnsVisible
+    
     }
 });

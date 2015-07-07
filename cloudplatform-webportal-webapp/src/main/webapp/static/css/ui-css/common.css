@@ -1590,14 +1590,20 @@ textarea {
 
 /*end bootstrap-select style*/
 
-/*begin vmlist page style*/
+/*begin vm-list page style*/
 .region-city-list{
 	display:inline-block;
 }
 .region-city-list button{
 	margin-right:5px;
 }
-/*end vmlist page style*/
+/*end vm-list page style*/
+
+/*begin vm-create page style*/
+.btn-publicip{
+	display: none;
+}
+/*end vm-create page style*/
 
 /*  nodata div style*/
 #noData{
