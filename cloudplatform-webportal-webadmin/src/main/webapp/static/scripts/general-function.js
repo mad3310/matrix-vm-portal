@@ -605,3 +605,25 @@ function DialogBoxInit(title,text,handler,name,id){
     $("#submitCreateUserForm").removeAttr("disabled");
     $("#submitModifyUserForm").removeAttr("disabled");
 }
+function queryUser(){
+	var options=$('#containeruser');
+	getLoading();
+	$.ajax({
+		cache:false,
+		url:'/user',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			removeLoading();
+			var array = data.data;
+			for(var i = 0, len = array.length; i < len; i++){
+				
+				var option = $("<option value=\""+array[i].id+"\">"
+								+array[i].userName
+								+"</option>");
+				options.append(option)
+			}
+			initChosen();
+		}
+	});
+}

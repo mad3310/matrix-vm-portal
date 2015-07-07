@@ -70,8 +70,22 @@ var currentSelectedLineDbName = 1;
 		clearSearch(clearList);
 	})
 	enterKeydown($(".page-header > .input-group input"),queryByPage);
+	/*页面按钮初始化 --start*/
+    $(".toCreateAccount").unbind('click').click(function () {           //切换到创建账户
+        $("#accountList").addClass("hide");
+        $("#modifyAccountTab").addClass("hide");
+        $("#newAccountTab").removeClass("hide");
+        asyncDbUserIpData();
+    })
+    $(".toAccountList").unbind('click').click(function () {             //切换到账户列表
+        $("#newAccountTab").addClass("hide");
+        $("#modifyAccountTab").addClass("hide");
+        $("#accountList").removeClass("hide");
+    })
 });	
- 
+function asyncDbUserIpData(){
+    // cn.GetData("/dbIp/"+$("#dbId").val()+"/null",dbUser.DbUserIpHandler);   //创建用户加载IP
+}
 function buildUser() {
 	var ids = $("[name='db_user_id']:checked");
 	var str="";
@@ -204,13 +218,13 @@ function queryByPage(){
 				var td9=$("<td class='hidden-xs'>" 
 						+ "<a class=\"dbuser-list-ip-privilege\" href='javascript:void(0)' data-db-id="+array[i].dbId+">ip访问权限</a><span class=\"text-explode\">"
 						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">重置密码</a><span class=\"text-explode\">"
-	                    //+ "|</span><a class=\"dbuser-list-modify-privilege disabled\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">修改权限</a><span class=\"text-explode\">"
+	                    + "|</span><a class=\"dbuser-list-modify-privilege disabled\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">修改权限</a><span class=\"text-explode\">"
 	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">删除</a></div>"
 						+"</td>"
 						+"<td class='hidden-lg hidden-md hidden-sm'>"
 						+ "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><span class='text-primary'><i class='fa fa-cogs'></i></span></a><span class=\"text-explode\">"
 						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-key'></i></a><span class=\"text-explode\">"
-	                    //+ "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-edit'></i></a><span class=\"text-explode\">"
+	                    + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-edit'></i></a><span class=\"text-explode\">"
 	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-trash-o'></i></a> </div>"
 						+"</td>");	
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){

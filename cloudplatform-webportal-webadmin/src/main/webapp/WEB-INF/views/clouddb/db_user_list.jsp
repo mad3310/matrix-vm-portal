@@ -1,168 +1,87 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script>
+	$(window).load(function() {
+		var iw=document.body.clientWidth;
+		if(iw>991){//md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+	$(window).resize(function(event) {
+		var iw=document.body.clientWidth;
+		if(iw>991){//md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+</script>
 <div class="page-content-area">
-	<div class="row"> <!-- row -->
-	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
-	<script>
-		$(window).load(function() {
-			var iw=document.body.clientWidth;
-			if(iw>991){//md&&lg
-				$('.queryOption').removeClass('collapsed');
-			}
-		});
-		$(window).resize(function(event) {
-			var iw=document.body.clientWidth;
-			if(iw>991){//md&&lg
-				$('.queryOption').removeClass('collapsed');
-			}
-		});
-	</script>
-		<div class="widget-header hidden-md hidden-lg">
-			<h5 class="widget-title">数据库用户查询条件</h5>
-			<div class="widget-toolbar">
-				<a href="#" data-action="collapse">
-					<i class="ace-icon fa fa-chevron-down"></i>
-				</a>
+	<div class="row">
+		<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+			<div class="widget-header hidden-md hidden-lg">
+				<h5 class="widget-title">数据库用户查询条件</h5>
+				<div class="widget-toolbar">
+					<a href="#" data-action="collapse">
+						<i class="ace-icon fa fa-chevron-down"></i>
+					</a>
+				</div>
 			</div>
-		</div>
-		<div class="widget-body">
-			<div class="page-header">
-				<!-- <h3>数据库用户列表</h3> -->
-			    <div class="input-group pull-right">
-					<form class="form-inline">
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="userName"
-								placeholder="用户名">
-						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="userDb"
-								placeholder="所属数据库">
-						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
-							<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
-							<select class="form-control" id="userAuthority">
-								<option value="">请选择用户权限</option>
-								<option value="1">管理员</option>
-								<option value="2">只读用户</option>
-								<option value="3">读写用户</option>
-							</select>
-						</div>
-						<!-- <div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="userIp" placeholder="ip地址">
-						</div> -->
-						<!-- <div class="form-group">
-							<select class="form-control" id="userLimit">
-								<option value="">频次限制</option>
-								<option value="">50</option>
-								<option value="">100</option>
-								<option value="">。。。</option>
-							</select>
-						</div> -->
-						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<select class="form-control" id="dbuserStatus">
-								<option value="">请选择状态</option>
-							</select>
-						</div>
-						<div class="form-group  col-sm-6 col-xs-12 col-md-3" style="padding-right:0;">
-						<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
-							<i class="ace-icon fa fa-search"></i>搜索
-						</button>
-						<button class="btn btn-sm " type="button" id="dbuseClearSearch">清空</button>
-						</div>
-					</form>
+			<div class="widget-body">
+				<div class="page-header col-sm-12 col-xs-12 col-md-12">
+					<!-- <h3>数据库用户列表</h3> -->
+				    <div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
+						<form class="form-inline">
+							<div class="form-group col-sm-6 col-xs-12 col-md-2">
+								<input type="text" class="form-control" id="userName" placeholder="用户名">
+							</div>
+							<div class="form-group col-sm-6 col-xs-12 col-md-2">
+								<input type="text" class="form-control" id="userDb" placeholder="所属数据库">
+							</div>
+							<div class="form-group col-sm-6 col-xs-12 col-md-2">
+								<!-- <input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster"> -->
+								<select class="form-control" id="userAuthority">
+									<option value="">请选择用户权限</option>
+									<option value="1">管理员</option>
+									<option value="2">只读用户</option>
+									<option value="3">读写用户</option>
+								</select>
+							</div>
+							<!-- <div class="form-group col-sm-6 col-xs-12 col-md-2">
+								<input type="text" class="form-control" id="userIp" placeholder="ip地址">
+							</div> -->
+							<!-- <div class="form-group">
+								<select class="form-control" id="userLimit">
+									<option value="">频次限制</option>
+									<option value="">50</option>
+									<option value="">100</option>
+									<option value="">。。。</option>
+								</select>
+							</div> -->
+							<div class="form-group col-sm-6 col-xs-12 col-md-2">
+								<select class="form-control" id="dbuserStatus">
+									<option value="">请选择状态</option>
+								</select>
+							</div>
+							<div class="form-group  col-sm-6 col-xs-12 col-md-3" style="padding-right:0;">
+							<button class="btn btn-sm btn-primary btn-search" id="dbuserSearch" type="button">
+								<i class="ace-icon fa fa-search"></i>搜索
+							</button>
+							<button class="btn btn-sm " type="button" id="dbuseClearSearch">清空</button>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-<!-- /.page-header -->
-            <!-- <div class="modal fade" id="dbuseradvancedSearch">
-            	<div class="modal-dialog">
-            		<div class="modal-content">
-            			<div class="modal-header">
-            				<button type="button" class="close" data-dismiss="modal">
-            					<span aria-hidden="true"><i class="ace-icon fa fa-times-circle"></i></span>
-            					<span class="sr-only">关闭</span>
-            				</button>
-            				<h4 class="modal-title">高级搜索</h4>
-            			</div>
-            			<div class="modal-body">
-            				<form class="form-horizontal" role="form">
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="userName"><b>用户名</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="userName" placeholder="用户名">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-user blue bigger-125"></i></label>
-            					</div>
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="userDb"><b>所属数据库</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="userDb" placeholder="所属数据库">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-database blue bigger-125"></i></label>
-            					</div>
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="userAuthority"><b>用户权限</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="userAuthority" placeholder="所属Mcluster">
-            							<select class="form-control" id="userAuthority">
-            								<option value="">管理员</option>
-            								<option value="">读写</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-cog blue bigger-125"></i></label>
-            					</div>
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="userIp"><b>ip地址</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="userIp" placeholder="ip地址">
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-info-circle blue bigger-125"></i></label>
-            					</div>
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="userLimit"><b>频次限制</b></lable>
-            						<div class="col-sm-7">
-            							<input type="text" class="form-control" id="dbuser" placeholder="所属用户">
-            							<select class="form-control" id="userLimit">
-            								<option value="">50</option>
-            								<option value="">100</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-cog blue bigger-125"></i></label>
-            					</div>
-            					
-            					
-            					<div class="form-group">
-            						<lable class="col-sm-4 control-label" for="PhyMechineRunState"><b>当前状态</b></lable>
-            						<div class="col-sm-7">
-            							<select class="form-control" id="PhyMechineRunState">
-            								<option value="">创建失败</option>
-            								<option value="">未审核</option>
-            								<option value="">。。。</option>
-            							</select>
-            						</div>
-            						<label class="control-label"><i class="ace-icon fa fa-cogs blue bigger-125"></i></label>
-            					</div>
-            				</form>
-            			</div>
-            			<div class="modal-footer">
-            			<button type="button" class="btn btn-sm btn-default" data-dismiss="modal">取 消 </button>
-            			<button type="button" class="btn btn-sm btn-info">搜索</button>
-            			</div>
-            		</div>
-            	</div>
-            </div> -->
 		<div id='accountList' class=''>
 			<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 				<div class="widget-header">
 					<h5 class="widget-title">数据库用户列表</h5>
 					<div class="widget-toolbar no-border">
-						<!-- <button id="create_db_user" class="btn btn-white btn-primary btn-xs" type="button" onclick="buildUser()">
+						<button id="create_db_user" class="btn btn-white btn-primary btn-xs toCreateAccount hidden-xs" type="button">  <!-- onclick="buildUser()" -->
 							<i class="ace-icont fa fa-plus"></i>
 							 创建用户
-						</button> -->
+						</button>
+						<button class="btn btn-info btn-xs toCreateAccount hidden-sm hidden-md hidden-lg"><i class="fa fa-plus-square"></i> </button>
 					</div>
 				</div>
 				<div class="widget-body">
@@ -172,8 +91,7 @@
 								<tr>
 									<th class="center">
 										<label class="position-relative">
-											<input type="checkbox" id="titleCheckbox" class="ace" />
-											<span class="lbl"></span>
+											<input type="checkbox" id="titleCheckbox" class="ace" /><span class="lbl"></span>
 										</label>
 									</th>
 									<th>用户名</th>
@@ -186,8 +104,7 @@
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody id="tby">
-							</tbody>
+							<tbody id="tby"></tbody>
 						</table>
 					</div>
 				</div>
@@ -225,10 +142,7 @@
 		<form id="db_user_create_form" role="form" class="form-horizontal" name="account_modify_form">
 			<!-- 数据库账号模块 -->
 			<div class="form-group has-feedback">
-				<label class="col-xs-12 col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					数据库帐号：
-				</label>
+				<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>数据库帐号：</label>
 				<div class="">						
 					<div class="col-xs-12 col-sm-4">							
 						<input name="username" class="form-control input-radius-2" type="text"></div>
@@ -240,33 +154,23 @@
 			<!-- 数据库账号模块end -->
 			<!-- 授权数据库模块 -->
 			<div class="form-group multi-select">
-				<label class="col-xs-12 col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					授权IP：
-				</label>
+				<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>授权IP：</label>
 				<div class="inline-block mcluster-select col-xs-10 col-sm-2">
 					<div class="select-head clearfix">
 						<p class="inline-block">未授权IP</p>
 						<p class="inline-block pull-right">
-						<a id="manager-ip-list">管理IP名单</a>
+							<a id="manager-ip-list">管理IP名单</a>
 						</p>
 					</div>
 					<div class="select">
-						<ul class="select-list select-list-left">
-						</ul>
+						<ul class="select-list select-list-left"></ul>
 						<!-- 没有数据记录时显示暂无数据 -->
-						<div class="select-msg hide">
-							<span class="text-muted">暂无数据</span>
-						</div>
+						<div class="select-msg hide"><span class="text-muted">暂无数据</span></div>
 					</div>
 				</div>
 				<div class="inline-block col-xs-2 col-sm-1 m-authorize">
-					<div style="margin-bottom:5px">
-						<a class="btn_db_add">授权&nbsp;&gt;</a>
-					</div>
-					<div>
-						<a class="btn_db_remove">&lt;&nbsp;移除</a>
-					</div>
+					<div style="margin-bottom:5px"><a class="btn_db_add">授权&nbsp;&gt;</a></div>
+					<div><a class="btn_db_remove">&lt;&nbsp;移除</a></div>
 				</div>
 				<div class="inline-block mcluster-select col-xs-12 col-sm-5 col-md-4">
 					<div class="select-head clearfix">
@@ -278,12 +182,9 @@
 					</div>
 					<div class="select">
 						<div class="select-wrap">
-							<ul class="select-list select-list-right">
-							</ul>
+							<ul class="select-list select-list-right"></ul>
 							<!--无数据时显示暂无数据 -->
-							<div class="select-msg hide">
-								<span class="text-muted">暂无数据</span>
-							</div>
+							<div class="select-msg hide"><span class="text-muted">暂无数据</span></div>
 						</div>
 					</div>
 				</div>
@@ -291,10 +192,7 @@
 			<!-- 授权数据库模块end -->
 			<!-- 密码输入模块 -->
 			<div class="hide form-group">
-				<label class="col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					读写比例：
-				</label>
+				<label class="col-sm-2 control-label"><span class="text-danger">*</span>读写比例：</label>
 				<div class="col-sm-8 row">
 					<!-- 密码输入框 -->
 					<div class="col-sm-4">
@@ -303,10 +201,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					最大并发量：
-				</label>
+				<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>最大并发量：</label>
 				<div class="">
 					<!-- 密码输入框 -->
 					<div class="col-xs-12 col-sm-4">
@@ -344,10 +239,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					密码：
-				</label>
+				<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>密码：</label>
 				<div class="">
 					<!-- 密码输入框 -->
 					<div class="col-xs-12 col-sm-4">
@@ -362,12 +254,8 @@
 			<!-- 密码输入模块end -->
 			<!-- 确认密码模块 -->
 			<div class="form-group">
-				<label class="col-xs-12 col-sm-2 control-label">
-					<span class="text-danger">*</span>
-					确认密码：
-				</label>
+				<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>确认密码：</label>
 				<div class="">
-					<!-- 确认密码输入框 -->
 					<div class="col-xs-12 col-sm-4">
 						<input name="newPwd2" class="form-control input-radius-2" type="password"/>
 					</div>
@@ -377,19 +265,16 @@
 			<!-- 备注说明模块 -->
 			<div class="form-group">
 				<label class="col-xs-12 col-sm-2 control-label">备注说明：</label>
-				<!-- 备注输入框 -->
 				<div class="">
 					<div class="col-xs-12 col-sm-4">
 						<textarea name="descn" class="form-control input-radius-2" style="width:100%;height:90px"></textarea>
 					</div>
-					<!-- 备注输入超过长度限制提示 -->
 					<div class="col-sm-8 help-info hide">
 						<small class="text-danger" >
 							<span class="glyphicon glyphicon-remove-sign"></span>
 							备注说明最多256个字符
 						</small>
 					</div>
-					<!-- 备注信息规则静态提示 -->
 					<div class="col-sm-10 col-sm-offset-2 col-xs-12 notice-block">
 						<p class="text-correct">请输入备注说明，输入长度不超过100个字符!</p>
 					</div>
