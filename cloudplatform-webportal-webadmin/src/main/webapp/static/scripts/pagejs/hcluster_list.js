@@ -24,14 +24,14 @@ $(function(){
 });
 
 function queryByPage() {
-	var hclusterName = $("#hclusterName").val()?$("#hclusterName").val():'';
-	var hclusterIndex = $("#hclusterIndex").val()?$("#hclusterIndex").val():'';
+	var hclusterName = $("#hclusterName").find('option:selected').attr('data-hclsName')?$("#hclusterName").find('option:selected').attr('data-hclsName'):'';
+	// var hclusterIndex = $("#hclusterIndex").val()?$("#hclusterIndex").val():'';
 	var status = $("#hclusterStatus").val()?$("#hclusterStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
 			'recordsPerPage':recordsPerPage,
 			'hclusterName':hclusterName,
-			'hclusterNameAlias':hclusterIndex,
+			// 'hclusterNameAlias':hclusterIndex,
 			/*'createTime':createTime,*/
 			'status':status
 		}
@@ -298,7 +298,30 @@ function clearAction(){
 		clearSearch(clearList);
 	});
 }
+function queryHcluster(){
+	var options=$('#hclusterName');
+	getLoading();
+	$.ajax({
+		cache:false,
+		url:'/hcluster',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			removeLoading();
+			var array = data.data;
+			for(var i = 0, len = array.length; i < len; i++){
+				
+				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
+								+array[i].hclusterNameAlias
+								+"</option>");
+				options.append(option);
+			}
+			initChosen();
+		}
+	});
+}
 function page_init(){
+	queryHcluster();
 	$('#nav-search').addClass("hidden");
 	queryByPage();
 	formValidate();

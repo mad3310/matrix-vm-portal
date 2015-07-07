@@ -1,16 +1,22 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- /section:settings.box -->
+<script>
+	$(window).load(function() {
+		var iw=document.body.clientWidth;
+		if(iw>767){//sm&&md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+	$(window).resize(function(event) {
+		var iw=document.body.clientWidth;
+		if(iw>767){//sm&&md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+</script>
 <div class="page-content-area">
 	<div class="row">
 	<div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
-	<script>
-		$(window).load(function() {
-			var iw=document.body.clientWidth;
-			if(iw>767){//md&&lg
-				$('.queryOption').removeClass('collapsed');
-			}
-		});
-	</script>
 		<div class="widget-header hidden-md hidden-lg">
 			<h5 class="widget-title">定时任务查询条件</h5>
 			<div class="widget-toolbar">
@@ -20,23 +26,23 @@
 			</div>
 		</div>
 		<div class="widget-body">
-			<div class="page-header">
+			<div class="page-header col-sm-12 col-xs-12 col-md-12">
 				<!-- <h3>Container集群列表</h3> -->
-				<div class="input-group pull-right">
+				<div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 					<form class="form-inline">
 						<!-- <div class="form-group">
 							<input type="text" class="form-control" id="containerType"
 								placeholder="类型">
 						</div> -->
-						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+						<div class="form-group  col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="timingTaskName"
 								placeholder="任务名称">
 						</div>
-						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+						<div class="form-group  col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="timingTaskDescn"
 								placeholder="任务描述">
 						</div>
-						<div class="form-group  col-sm-6 col-xs-12 col-md-4">
+						<div class="form-group  col-sm-6 col-xs-12 col-md-3">
 							<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
 								<i class="ace-icon fa fa-search"></i>搜索
 							</button>

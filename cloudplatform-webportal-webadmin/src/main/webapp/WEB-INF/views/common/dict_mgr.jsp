@@ -20,14 +20,14 @@
 	</div>
       </div>
       <div class="widget-body">
-	<div class="page-header">
-	  <div class="input-group pull-right">
+	<div class="page-header col-sm-12 col-xs-12 col-md-12">
+	  <div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 	    <form class="form-inline">
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-2">
 		<input type="text" class="form-control" id="seDictName"
 		       placeholder="字典名称">
 	      </div>
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-2">
 		<input type="text" class="form-control" id="seDictType"
 		       placeholder="字典类型">
 	      </div>
@@ -35,7 +35,7 @@
 		<input type="text" class="form-control" id="seDictDescn"
 		       placeholder="字典描述">
 	      </div> -->
-	      <div class="form-group  col-sm-6 col-xs-12 col-md-4">
+	      <div class="form-group  col-sm-6 col-xs-12 col-md-3">
 		<button class="btn btn-sm btn-primary btn-search" id="dictSearch" type="button">
 		  <i class="ace-icon fa fa-search"></i>搜索
 		</button>
