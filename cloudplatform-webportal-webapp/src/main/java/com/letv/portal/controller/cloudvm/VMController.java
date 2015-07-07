@@ -1,13 +1,8 @@
 package com.letv.portal.controller.cloudvm;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -102,7 +97,7 @@ public class VMController {
 			@RequestParam(required = false) String networkIds,
 			@RequestParam(required = false) String adminPass,
 			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP,
-			@RequestParam(required = false, value="volumeSizes") String volumeSizesJsonArrayString) {
+			@RequestParam(required = false, value="volumeSizes") String volumeSizesJson) {
 		ResultObject result = new ResultObject();
 		try {
 			OpenStackSession openStackSession = Util.session(sessionService);
@@ -126,13 +121,9 @@ public class VMController {
 					networkResources.add(networkManager.get(region, networkId));
 				}
 			}
-			
-			if(volumeSizesJsonArrayString!=null){
-				
-			}
 
 			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
-					flavorResource, networkResources, adminPass, bindFloatingIP);
+					flavorResource, networkResources, adminPass, bindFloatingIP, volumeSizesJson);
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);

@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.CharUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -56,6 +60,8 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
+import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
@@ -67,7 +73,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	private ImageManager imageManager;
 
 	private NetworkManager networkManager;
-	
+
 	private VolumeManagerImpl volumeManager;
 
 	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
@@ -172,6 +178,22 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws OpenStackException {
 		checkRegion(region);
 
+		List<Integer> volumeSizes = null;
+		if (conf.getVolumeSizesJson() != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				volumeSizes = objectMapper.readValue(conf.getVolumeSizesJson(),
+						new TypeReference<List<Integer>>() {
+						});
+			} catch (JsonParseException e) {
+				throw new OpenStackException("请求数据格式错误", e);
+			} catch (JsonMappingException e) {
+				throw new OpenStackException("请求数据格式错误", e);
+			} catch (IOException e) {
+				throw new OpenStackException("后台服务错误", e);
+			}
+		}
+
 		CreateServerOptions createServerOptions = new CreateServerOptions();
 
 		Set<String> networks = new HashSet<String>();
@@ -255,33 +277,17 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		emailVmCreated(vmResourceImpl, conf);
 
+		List<Runnable> afterTasks = new LinkedList<Runnable>();
 		if (conf.getBindFloatingIP()) {
-			new Thread() {
-				public void run() {
-					try {
-						Server server = serverApi.get(serverCreated.getId());
-						while (server.getAddresses()
-								.get(openStackConf.getUserPrivateNetworkName())
-								.isEmpty()) {
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e) {
-								throw new PollingInterruptedException(e);
-							}
-							server = serverApi.get(serverCreated.getId());
-						}
-						String floatingIP = bindFloatingIP(region,
-								serverCreated.getId());
-						emailBindIP(
-								new VMResourceImpl(region,
-										getRegionDisplayName(region), server,
-										VMManagerImpl.this, imageManager,
-										openStackUser), floatingIP);
-					} catch (Exception e) {
-						logger.error(e.getMessage(), e);
-					}
-				}
-			}.start();
+			afterTasks.add(new BindFloatingIP(this, imageManager, region,
+					server));
+		}
+		if (volumeSizes != null) {
+
+		}
+		if (!afterTasks.isEmpty()) {
+			new Thread(new WaitingVMCreated(this, serverApi,
+					serverCreated.getId(), afterTasks)).start();
 		}
 
 		// test code begin(ssh login)
@@ -307,7 +313,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	/**
 	 * send email to user after vm creating
 	 */
-	private void emailVmCreated(VMResource vm, VMCreateConf conf)
+	public void emailVmCreated(VMResource vm, VMCreateConf conf)
 			throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -329,7 +335,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	/**
 	 * send email to user after vm binding floating IP
 	 */
-	private void emailBindIP(VMResource vm, String floatingIP)
+	public void emailBindIP(VMResource vm, String floatingIP)
 			throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -373,7 +379,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	private String bindFloatingIP(String region, String vmId)
+	public String bindFloatingIP(String region, String vmId)
 			throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
@@ -704,6 +710,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 
 		return flavorResources;
+	}
+
+	public void setVolumeManager(VolumeManagerImpl volumeManager) {
+		this.volumeManager = volumeManager;
 	}
 
 }

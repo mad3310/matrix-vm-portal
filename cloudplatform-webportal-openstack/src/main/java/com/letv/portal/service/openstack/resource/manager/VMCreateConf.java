@@ -25,13 +25,14 @@ public class VMCreateConf {
 	public VMCreateConf(String name, ImageResource imageResource,
 			FlavorResource flavorResource,
 			List<NetworkResource> networkResources, String adminPass,
-			boolean bindFloatingIP) {
+			boolean bindFloatingIP, String volumeSizesJson) {
 		this.name = name;
 		this.imageResource = imageResource;
 		this.flavorResource = flavorResource;
 		this.networkResources = networkResources;
 		this.adminPass = adminPass;
 		this.bindFloatingIP = bindFloatingIP;
+		this.volumeSizesJson = volumeSizesJson;
 	}
 
 	public String getName() {
@@ -81,11 +82,11 @@ public class VMCreateConf {
 	public void setBindFloatingIP(boolean bindFloatingIP) {
 		this.bindFloatingIP = bindFloatingIP;
 	}
-	
+
 	public void setVolumeSizesJson(String volumeSizesJson) {
 		this.volumeSizesJson = volumeSizesJson;
 	}
-	
+
 	public String getVolumeSizesJson() {
 		return volumeSizesJson;
 	}
