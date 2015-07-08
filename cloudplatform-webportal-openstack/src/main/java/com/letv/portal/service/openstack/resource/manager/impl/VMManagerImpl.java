@@ -61,6 +61,7 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
+import com.letv.portal.service.openstack.util.Util;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
@@ -748,6 +749,33 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	public NovaApi getNovaApi() {
 		return novaApi;
+	}
+
+	@Override
+	public void batchDeleteSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			deleteSync(region, get(region, vmId));
+		}
+	}
+
+	@Override
+	public void batchStartSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			startSync(region, get(region, vmId));
+		}
+	}
+
+	@Override
+	public void batchStopSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			stopSync(region, get(region, vmId));
+		}
 	}
 
 }

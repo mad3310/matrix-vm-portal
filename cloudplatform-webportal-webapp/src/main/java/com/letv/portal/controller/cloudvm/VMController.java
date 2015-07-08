@@ -70,14 +70,14 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listAll(@RequestParam(required = false) String name,
+	public @ResponseBody ResultObject listAll(
+			@RequestParam(required = false) String name,
 			@RequestParam(required = false) Integer currentPage,
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
-					.listAll(name, currentPage,
-							recordsPerPage));
+					.listAll(name, currentPage, recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -185,6 +185,19 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/vm-batch-delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchDelete(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchDeleteSync(region, vmIds);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/region/{region}/vm-start", method = RequestMethod.POST)
 	public @ResponseBody ResultObject start(@PathVariable String region,
 			@RequestParam String vmId) {
@@ -193,6 +206,19 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/region/{region}/vm-batch-start", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStart(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchStartSync(region, vmIds);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -207,6 +233,19 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/region/{region}/vm-batch-stop", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStop(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchStopSync(region, vmIds);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
