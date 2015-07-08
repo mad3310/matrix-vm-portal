@@ -120,11 +120,6 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		return vmResources;
 	}
 
-	/**
-	 * @param currentPage
-	 *            从0开始
-	 * @throws OpenStackException 
-	 */
 	@Override
 	public List<VMResource> listAll(String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException {
@@ -145,7 +140,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	 * 
 	 * @param regions
 	 * @param name
-	 * @param currentPage 从0开始
+	 * @param currentPage
+	 *            从1开始
 	 * @param recordsPerPage
 	 * @return
 	 * @throws RegionNotFoundException
@@ -157,6 +153,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			Integer currentPage, Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException {
+		if (currentPage != null) {
+			currentPage -= 1;
+		}
+
 		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
 		List<VMResource> vmResources = new LinkedList<VMResource>();
 		int serverCount = 0;
