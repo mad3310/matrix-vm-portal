@@ -853,10 +853,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				boolean timeout = false;
 				int failCount = 0;
 				
-				DetailModel detailModel = monitor.getResponse().getNode().getLog_warning();
-				failCount = compareFailCount(failCount,detailModel);
-				timeout = isTimeout(now, detailModel);
-				detailModel = monitor.getResponse().getNode().getLog_health();
+				DetailModel detailModel = monitor.getResponse().getNode().getLog_health();
 				failCount = compareFailCount(failCount,detailModel);
 				timeout = isTimeout(now, detailModel);
 				detailModel = monitor.getResponse().getNode().getLog_error();
