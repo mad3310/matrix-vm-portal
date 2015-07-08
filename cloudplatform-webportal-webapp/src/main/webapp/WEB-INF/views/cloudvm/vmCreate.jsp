@@ -234,6 +234,33 @@
 									</dd>
 								</dl>
 								<dl class="bk-group">
+									<dt class="bk-group-title">存储</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">数据盘：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+													        <div class="bk-disk">
+													            <span class="bk-form-row-li-info bk-disk-type">
+													                <span class="bk-black">普通云盘</span>
+													            </span>
+													            <span class="bk-disk-storage bk-ml2">
+													                <input class="bk-disk-input" placeholder="5-2000">
+													                <span class="bk-disk-unit">GB</span>
+													            </span>
+													            <span class="bk-disk-delete">
+													                <i class="aliyun-icon-wrong-thin"></i>
+													            </span>
+													        </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</dd>
+								</dl>
+								<dl class="bk-group">
 									<dt class="bk-group-title">安全</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
