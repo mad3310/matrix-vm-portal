@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +33,6 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -60,6 +58,7 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
@@ -283,7 +282,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					server));
 		}
 		if (volumeSizes != null) {
-
+			afterTasks.add(new AddVolumes(this, volumeManager, region, server,
+					volumeSizes));
 		}
 		if (!afterTasks.isEmpty()) {
 			new Thread(new WaitingVMCreated(this, serverApi,
@@ -714,6 +714,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	public void setVolumeManager(VolumeManagerImpl volumeManager) {
 		this.volumeManager = volumeManager;
+	}
+
+	public NovaApi getNovaApi() {
+		return novaApi;
 	}
 
 }
