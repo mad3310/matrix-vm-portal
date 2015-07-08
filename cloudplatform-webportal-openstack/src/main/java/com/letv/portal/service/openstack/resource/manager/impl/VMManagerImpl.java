@@ -64,6 +64,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCre
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
@@ -119,40 +120,69 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		return vmResources;
 	}
 
+	/**
+	 * @param currentPage
+	 *            从0开始
+	 * @throws OpenStackException 
+	 */
 	@Override
-	public List<VMResource> listAll() throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException {
+	public List<VMResource> listAll(String name, Integer currentPage,
+			Integer recordsPerPage) throws OpenStackException {
 		Set<String> regions = getRegions();
+		return listByRegions(regions, name, currentPage, recordsPerPage);
+	}
+
+	@Override
+	public List<VMResource> listByRegionGroup(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		Set<String> groupRegions = getGroupRegions(regionGroup);
+		return listByRegions(groupRegions, name, currentPage, recordsPerPage);
+	}
+
+	/**
+	 * 
+	 * @param regions
+	 * @param name
+	 * @param currentPage 从0开始
+	 * @param recordsPerPage
+	 * @return
+	 * @throws RegionNotFoundException
+	 * @throws ResourceNotFoundException
+	 * @throws APINotAvailableException
+	 * @throws OpenStackException
+	 */
+	private List<VMResource> listByRegions(Set<String> regions, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
 		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
 		List<VMResource> vmResources = new LinkedList<VMResource>();
-		for (String region : regions) {
+		int serverCount = 0;
+		addVMResource: for (String region : regions) {
 			String regionDisplayName = transMap.get(region);
 			ServerApi serverApi = novaApi.getServerApi(region);
 			List<Server> resources = serverApi.listInDetail().concat().toList();
 			for (Server resource : resources) {
-				vmResources.add(new VMResourceImpl(region, regionDisplayName,
-						resource, this, imageManager, openStackUser));
-			}
-		}
-		return vmResources;
-	}
-
-	@Override
-	public List<VMResource> listByRegionGroup(String regionGroup)
-			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, OpenStackException {
-		Set<String> groupRegions = getGroupRegions(regionGroup);
-
-		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
-
-		List<VMResource> vmResources = new LinkedList<VMResource>();
-		for (String region : groupRegions) {
-			ServerApi serverApi = novaApi.getServerApi(region);
-			List<Server> resources = serverApi.listInDetail().concat().toList();
-			for (Server resource : resources) {
-				vmResources.add(new VMResourceImpl(region,
-						transMap.get(region), resource, this, imageManager,
-						openStackUser));
+				if (name == null
+						|| (resource.getName() != null && resource.getName()
+								.contains(name))) {
+					if (currentPage == null || recordsPerPage == null) {
+						vmResources.add(new VMResourceImpl(region,
+								regionDisplayName, resource, this,
+								imageManager, openStackUser));
+					} else {
+						if (serverCount >= (currentPage + 1) * recordsPerPage) {
+							break addVMResource;
+						} else if (serverCount >= currentPage * recordsPerPage) {
+							vmResources.add(new VMResourceImpl(region,
+									regionDisplayName, resource, this,
+									imageManager, openStackUser));
+						}
+						serverCount++;
+					}
+				}
 			}
 		}
 		return vmResources;

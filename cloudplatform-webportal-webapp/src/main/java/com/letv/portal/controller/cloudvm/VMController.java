@@ -52,11 +52,17 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region/{region}", method = RequestMethod.GET)
-	public @ResponseBody ResultObject list(@PathVariable String region) {
+	public @ResponseBody ResultObject list(@PathVariable String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVMManager()
-					.listByRegionGroup(region));
+			result.setData(Util
+					.session(sessionService)
+					.getVMManager()
+					.listByRegionGroup(region, name, currentPage,
+							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -64,11 +70,14 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listAll() {
+	public @ResponseBody ResultObject listAll(@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
-					.listAll());
+					.listAll(name, currentPage,
+							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -97,7 +106,7 @@ public class VMController {
 			@RequestParam(required = false) String networkIds,
 			@RequestParam(required = false) String adminPass,
 			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP,
-			@RequestParam(required = false, value="volumeSizes") String volumeSizesJson) {
+			@RequestParam(required = false, value = "volumeSizes") String volumeSizesJson) {
 		ResultObject result = new ResultObject();
 		try {
 			OpenStackSession openStackSession = Util.session(sessionService);
@@ -123,7 +132,8 @@ public class VMController {
 			}
 
 			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
-					flavorResource, networkResources, adminPass, bindFloatingIP, volumeSizesJson);
+					flavorResource, networkResources, adminPass,
+					bindFloatingIP, volumeSizesJson);
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
