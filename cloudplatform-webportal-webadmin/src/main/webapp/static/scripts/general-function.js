@@ -480,6 +480,15 @@ function addSltOpt(array,obj){
 function clearSearch(objArr){
 	for(var i = 0;i<objArr.length;i++){
 		$("#"+objArr[i]).val("");
+		// 针对 chosen 新添 清除
+		var _target=$("#"+objArr[i]);
+		if(_target.siblings('div').length>0){
+			if(_target.siblings('div').children('a').find('abbr').length>0){
+				_target.siblings('div').children('a').addClass('chosen-default');
+				_target.siblings('div').children('a').find('span').text(_target.attr('data-placeholder'));
+				_target.siblings('div').children('a').find('abbr').remove();
+			}
+		}
 	}
 }
 
