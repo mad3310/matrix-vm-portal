@@ -20,23 +20,23 @@
 			</div>
 		</div>
 		<div class="widget-body">
-			<div class="page-header">
+			<div class="page-header col-sm-12 col-xs-12 col-md-12">
 				<!-- <h3>Container集群列表</h3> -->
-				<div class="input-group pull-right">
+				<div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 					<form class="form-inline">
 						<!-- <div class="form-group">
 							<input type="text" class="form-control" id="containerType"
 								placeholder="类型">
 						</div> -->
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="containerName"
 								placeholder="container名称">
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<input type="text" class="form-control" id="ipAddr"
 								placeholder="IP地址">
 						</div>
-						<div class="form-group col-sm-6 col-xs-12 col-md-3">
+						<div class="form-group col-sm-6 col-xs-12 col-md-2">
 							<select class="form-control" id="containerStatus">
 								<option value="">请选择状态</option>
 							</select>

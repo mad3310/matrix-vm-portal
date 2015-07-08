@@ -1,16 +1,22 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script>
+	$(window).load(function() {
+		var iw=document.body.clientWidth;
+		if(iw>767){//sm&&md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+	$(window).resize(function(event) {
+		var iw=document.body.clientWidth;
+		if(iw>767){//sm&&md&&lg
+			$('.queryOption').removeClass('collapsed');
+		}
+	});
+</script>
 <div class="page-content-area">
   <div class="row">
     <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
-      <script>
-	$(window).load(function() {
-	var iw=document.body.clientWidth;
-	if(iw>767){//md&&lg
-	$('.queryOption').removeClass('collapsed');
-	}
-	});
-      </script>
       <div class="widget-header hidden-md hidden-lg">
 	<h5 class="widget-title">基础镜像查询条件</h5>
 	<div class="widget-toolbar">
@@ -20,8 +26,8 @@
 	</div>
       </div>
       <div class="widget-body">
-	<div class="page-header">
-	  <div class="input-group pull-right">
+	<div class="page-header col-sm-12 col-xs-12 col-md-12">
+	  <div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 	    <form class="form-inline">
 	      <div class="form-group  col-sm-6 col-xs-12 col-md-2">
 		<input type="text" class="form-control" id="seImageName"
