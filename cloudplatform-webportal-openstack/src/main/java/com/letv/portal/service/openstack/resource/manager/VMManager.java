@@ -47,7 +47,7 @@ public interface VMManager extends ResourceManager {
 			TaskNotFinishedException, VMStatusException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
-			VMDeleteException, APINotAvailableException;
+			VMDeleteException, APINotAvailableException, TaskNotFinishedException;
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
@@ -57,7 +57,7 @@ public interface VMManager extends ResourceManager {
 			throws OpenStackException;
 
 	void start(String region, VMResource vm) throws RegionNotFoundException,
-			VMStatusException;
+			VMStatusException, TaskNotFinishedException;
 
 	void startSync(String region, VMResource vm)
 			throws RegionNotFoundException, TaskNotFinishedException,

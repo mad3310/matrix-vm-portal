@@ -503,36 +503,6 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Deprecated
 	@Override
-	public void delete(String region, VMResource vm)
-			throws RegionNotFoundException, VMDeleteException,
-			APINotAvailableException {
-		checkRegion(region);
-
-		ServerApi serverApi = novaApi.getServerApi(region);
-		removeAndDeleteFloatingIPOfVM(region, vm);
-		boolean isSuccess = serverApi.delete(vm.getId());
-		if (!isSuccess) {
-			throw new VMDeleteException(vm.getId());
-		}
-	}
-
-	@Deprecated
-	@Override
-	public void start(String region, VMResource vm)
-			throws RegionNotFoundException, VMStatusException {
-		checkRegion(region);
-
-		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
-			throw new VMStatusException("The status of vm is not shut off.",
-					"虚拟机的状态不是关闭的。");
-		}
-
-		ServerApi serverApi = novaApi.getServerApi(region);
-		serverApi.start(vm.getId());
-	}
-
-	@Deprecated
-	@Override
 	public void stop(String region, VMResource vm)
 			throws RegionNotFoundException {
 		checkRegion(region);
@@ -578,11 +548,45 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		this.networkManager = networkManager;
 	}
 
+	private void waitingVM(String vmId, ServerApi serverApi,
+			ServerChecker checker) throws PollingInterruptedException {
+		try {
+			Server server = null;
+			while (true) {
+				server = serverApi.get(vmId);
+				if (checker.check(server)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		}
+	}
+
+	private void waitingVMs(List<String> vmIds, ServerApi serverApi,
+			ServerChecker checker) throws PollingInterruptedException {
+		try {
+			List<String> unFinishedVMIds = new LinkedList<String>();
+			unFinishedVMIds.addAll(vmIds);
+			while (!unFinishedVMIds.isEmpty()) {
+				for (String vmId : unFinishedVMIds.toArray(new String[0])) {
+					Server server = serverApi.get(vmId);
+					if (checker.check(server)) {
+						unFinishedVMIds.remove(vmId);
+					}
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		}
+	}
+
 	@Override
-	public void deleteSync(String region, VMResource vm)
-			throws VMDeleteException, RegionNotFoundException,
-			APINotAvailableException, TaskNotFinishedException,
-			PollingInterruptedException {
+	public void delete(String region, VMResource vm)
+			throws RegionNotFoundException, VMDeleteException,
+			APINotAvailableException, TaskNotFinishedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -595,25 +599,32 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		if (!isSuccess) {
 			throw new VMDeleteException(vm.getId());
 		}
+	}
 
-		try {
-			Server server = null;
-			while (true) {
-				server = serverApi.get(vm.getId());
-				if (server == null || server.getStatus() == Status.ERROR) {
-					break;
-				}
-				Thread.sleep(1000);
-			}
-		} catch (InterruptedException e) {
-			throw new PollingInterruptedException(e);
-		}
+	private boolean isDeleteFinished(Server server) {
+		return server == null || server.getStatus() == Status.ERROR;
 	}
 
 	@Override
-	public void startSync(String region, VMResource vm)
-			throws RegionNotFoundException, TaskNotFinishedException,
-			VMStatusException, PollingInterruptedException {
+	public void deleteSync(String region, VMResource vm)
+			throws VMDeleteException, RegionNotFoundException,
+			APINotAvailableException, TaskNotFinishedException,
+			PollingInterruptedException {
+		delete(region, vm);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		waitingVM(vm.getId(), serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isDeleteFinished(server);
+			}
+		});
+	}
+	
+	@Override
+	public void start(String region, VMResource vm)
+			throws RegionNotFoundException, VMStatusException, TaskNotFinishedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -626,21 +637,28 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
+	}
+	
+	private boolean isStartFinished(Server server) {
+		return server == null
+				|| Server.Status.ACTIVE == server.getStatus()
+				|| server.getStatus() == Status.ERROR;
+	}
 
-		try {
-			Server server = null;
-			while (true) {
-				server = serverApi.get(vm.getId());
-				if (server == null
-						|| Server.Status.ACTIVE == server.getStatus()
-						|| server.getStatus() == Status.ERROR) {
-					break;
-				}
-				Thread.sleep(1000);
+	@Override
+	public void startSync(String region, VMResource vm)
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException, PollingInterruptedException {
+		start(region, vm);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		waitingVM(vm.getId(), serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isStartFinished(server);
 			}
-		} catch (InterruptedException e) {
-			throw new PollingInterruptedException(e);
-		}
+		});
 	}
 
 	@Override
@@ -754,19 +772,39 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchDeleteSync(String region, String vmIdListJson)
 			throws OpenStackException {
+		checkRegion(region);
+		ServerApi serverApi = novaApi.getServerApi(region);
+
 		List<String> vmIdList = Util.jsonList(vmIdListJson);
 		for (String vmId : vmIdList) {
-			deleteSync(region, get(region, vmId));
+			delete(region, get(region, vmId));
 		}
+
+		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+			@Override
+			public boolean check(Server server) {
+				return isDeleteFinished(server);
+			}
+		});
 	}
 
 	@Override
 	public void batchStartSync(String region, String vmIdListJson)
 			throws OpenStackException {
+		checkRegion(region);
+		ServerApi serverApi = novaApi.getServerApi(region);
+
 		List<String> vmIdList = Util.jsonList(vmIdListJson);
 		for (String vmId : vmIdList) {
-			startSync(region, get(region, vmId));
+			start(region, get(region, vmId));
 		}
+
+		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+			@Override
+			public boolean check(Server server) {
+				return isStartFinished(server);
+			}
+		});
 	}
 
 	@Override
