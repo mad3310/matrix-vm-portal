@@ -263,6 +263,7 @@
 													<div class="col-sm-2 row">
 														<input id="vmpw1" class="form-control" name="vmpw1" type="password">
 													</div>
+													<label class="bk-form-row-name password-tip">由字母、数字组成,要求6-32位，必须要包含数字，大小写字母</label>
 											</div>																						
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">确认密码：</label>
@@ -317,7 +318,9 @@
 									</button>
 									<!-- <div class="bk-form-row-txt notice-block">您购买的云主机创建大约需要2分钟,请耐心等待...</div> -->
 								</div>
-								<div class="bk-pb4"></div>
+								<p id="submitResult"></p>
+								<div class="bk-pb4">
+								</div>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">服务专员信息</div>
