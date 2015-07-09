@@ -1603,6 +1603,100 @@ textarea {
 .btn-publicip{
 	display: none;
 }
+.bk-disk {
+box-sizing: content-box;
+padding: 5px 10px;
+background: #eee;
+width: 500px;
+height: 36px;
+float: left;
+}
+.bk-disk .bk-disk-type {
+float: left;
+display: inline;
+width: 86px;
+}
+.bk-form-row-li .bk-form-row-li-info {
+line-height: 36px;
+color: #999;
+vertical-align: top;
+}
+.bk-black {
+color: #000 !important;
+}
+.bk-disk-storage {
+position: relative;
+float: left;
+display: inline;
+width: 90px;
+}
+.bk-disk-input {
+float: left;
+display: inline;
+height: 14px;
+width: 56px;
+padding: 10px 28px 10px 4px;
+border: solid 1px #e8e8e8;
+text-align: center;
+line-height: 20px;
+color: #333;
+font-size: 14px;
+outline: none;
+}
+.bk-disk-unit {
+position: absolute;
+left: 62px;
+top: 0;
+width: 28px;
+height: 36px;
+text-align: center;
+line-height: 36px;
+color: #999;
+font-size: 12px;
+}
+.bk-disk .bk-disk-delete {
+-webkit-transition: all .3s;
+float: right;
+display: inline;
+width: 12px;
+height: 12px;
+margin-left: 10px;
+margin-top: 8px;
+font-size: 12px;
+line-height: 1;
+color: #999;
+cursor: pointer;
+padding: 2px;
+}
+.aliyun-icon-wrong-thin {
+color: #999!important;
+}
+i {
+font-style: normal;
+}
+[class^="aliyun-icon-"], [class*=" aliyun-icon-"] {
+font-family: 'aliyun-iconfont';
+speak: none;
+font-style: normal;
+font-weight: 400;
+font-variant: normal;
+text-transform: none;
+line-height: 1;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+/*end vm-create page style*/
+
+/*begin vm-create page style*/
+.password-tip{
+	font-size: 12px;
+  margin-left: 10px;
+}
+#submitResult{
+	padding: 2px 12px 0;
+  margin: 0;
+    color: #a94442;
+}
 /*end vm-create page style*/
 
 /*  nodata div style*/

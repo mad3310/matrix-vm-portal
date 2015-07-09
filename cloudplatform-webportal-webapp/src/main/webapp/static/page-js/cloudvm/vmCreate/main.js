@@ -53,9 +53,9 @@ define(function(require){
     $("#monthPurchaseForm").bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
+            valid: null,
+            invalid: null,
+            validating: null
         },
         fields: {
             vmName: {
@@ -92,8 +92,8 @@ define(function(require){
                         max: 32,
                         message: '密码长度为6-32之间!'
                     },regexp: {
-                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z_-]{6,32}$/,
-                        message: "由字母、数字、中划线或下划线组成,要求6-32位，必须要包含数字，大小写字母"
+                        regexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,32}$/,
+                        message: "由字母、数字组成,要求6-32位，必须要包含数字，大小写字母"
                     }
                 }
             },
@@ -133,7 +133,12 @@ define(function(require){
 						        publish: !!parseInt($('input[name=isCreatePublicIP]').val())
 						    }
 		cn.PostData(url, data, function (data) {
-               location.href = "/list/vm";
+			if(data.result===1){
+	               location.href = "/list/vm";	
+			}
+			else{
+				$('#submitResult').text(data.msgs[0]||'创建云主机失败！');
+			}
          });
     }).on('keyup', '[name="vmpw1"]', function () {
         if($("[name = 'vmpw2']").val() != ''){

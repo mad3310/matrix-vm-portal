@@ -234,6 +234,33 @@
 									</dd>
 								</dl>
 								<dl class="bk-group">
+									<dt class="bk-group-title">存储</dt>
+									<dd class="bk-group-detail">
+										<div class="bk-group-control"></div>
+										<div>
+											<div class="bk-form-row">
+												<label class="bk-form-row-name">数据盘：</label>
+												<div class="bk-form-row-cell">
+													<div class="bk-form-row-li">
+													        <div class="bk-disk">
+													            <span class="bk-form-row-li-info bk-disk-type">
+													                <span class="bk-black">普通云盘</span>
+													            </span>
+													            <span class="bk-disk-storage bk-ml2">
+													                <input class="bk-disk-input" placeholder="5-2000">
+													                <span class="bk-disk-unit">GB</span>
+													            </span>
+													            <span class="bk-disk-delete">
+													                <i class="aliyun-icon-wrong-thin"></i>
+													            </span>
+													        </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</dd>
+								</dl>
+								<dl class="bk-group">
 									<dt class="bk-group-title">安全</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
@@ -263,6 +290,7 @@
 													<div class="col-sm-2 row">
 														<input id="vmpw1" class="form-control" name="vmpw1" type="password">
 													</div>
+													<label class="bk-form-row-name password-tip">由字母、数字组成,要求6-32位，必须要包含数字，大小写字母</label>
 											</div>																						
 											<div class="bk-form-row form-group col-sm-12">
 													<label class="bk-form-row-name col-sm-2" style="padding-left: 0px;">确认密码：</label>
@@ -317,7 +345,9 @@
 									</button>
 									<!-- <div class="bk-form-row-txt notice-block">您购买的云主机创建大约需要2分钟,请耐心等待...</div> -->
 								</div>
-								<div class="bk-pb4"></div>
+								<p id="submitResult"></p>
+								<div class="bk-pb4">
+								</div>
 							</div>
 							<div class="bk-scope bk-items">
 								<div class="bk-items-title">服务专员信息</div>
