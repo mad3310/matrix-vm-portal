@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager;
 import java.util.List;
 import java.util.Map;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -19,12 +20,12 @@ public interface VMManager extends ResourceManager {
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	List<VMResource> listAll(String name, Integer currentPage,
+	Page listAll(String name, Integer currentPage,
 			Integer recordsPerPage) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	List<VMResource> listByRegionGroup(String regionGroup, String name,
+	Page listByRegionGroup(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;

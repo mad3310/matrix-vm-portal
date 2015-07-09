@@ -37,6 +37,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -122,14 +123,14 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> listAll(String name, Integer currentPage,
-			Integer recordsPerPage) throws OpenStackException {
+	public Page listAll(String name, Integer currentPage, Integer recordsPerPage)
+			throws OpenStackException {
 		Set<String> regions = getRegions();
 		return listByRegions(regions, name, currentPage, recordsPerPage);
 	}
 
 	@Override
-	public List<VMResource> listByRegionGroup(String regionGroup, String name,
+	public Page listByRegionGroup(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException {
@@ -150,7 +151,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	 * @throws APINotAvailableException
 	 * @throws OpenStackException
 	 */
-	private List<VMResource> listByRegions(Set<String> regions, String name,
+	private Page listByRegions(Set<String> regions, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException {
@@ -161,32 +162,55 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
 		List<VMResource> vmResources = new LinkedList<VMResource>();
 		int serverCount = 0;
-		addVMResource: for (String region : regions) {
-			String regionDisplayName = transMap.get(region);
+		boolean needCollect = true;
+		for (String region : regions) {
 			ServerApi serverApi = novaApi.getServerApi(region);
-			List<Server> resources = serverApi.listInDetail().concat().toList();
-			for (Server resource : resources) {
-				if (name == null
-						|| (resource.getName() != null && resource.getName()
-								.contains(name))) {
-					if (currentPage == null || recordsPerPage == null) {
-						vmResources.add(new VMResourceImpl(region,
-								regionDisplayName, resource, this,
-								imageManager, openStackUser));
-					} else {
-						if (serverCount >= (currentPage + 1) * recordsPerPage) {
-							break addVMResource;
-						} else if (serverCount >= currentPage * recordsPerPage) {
+			if (needCollect) {
+				String regionDisplayName = transMap.get(region);
+				List<Server> resources = serverApi.listInDetail().concat()
+						.toList();
+				for (Server resource : resources) {
+					if (name == null
+							|| (resource.getName() != null && resource
+									.getName().contains(name))) {
+						if (currentPage == null || recordsPerPage == null) {
 							vmResources.add(new VMResourceImpl(region,
 									regionDisplayName, resource, this,
 									imageManager, openStackUser));
+						} else {
+							if (needCollect) {
+								if (serverCount >= (currentPage + 1)
+										* recordsPerPage) {
+									needCollect = false;
+								} else if (serverCount >= currentPage
+										* recordsPerPage) {
+									vmResources.add(new VMResourceImpl(region,
+											regionDisplayName, resource, this,
+											imageManager, openStackUser));
+								}
+							}
 						}
+						serverCount++;
+					}
+				}
+			} else {
+				for (org.jclouds.openstack.v2_0.domain.Resource resource : serverApi
+						.list().concat().toList()) {
+					if (name == null
+							|| (resource.getName() != null && resource
+									.getName().contains(name))) {
 						serverCount++;
 					}
 				}
 			}
 		}
-		return vmResources;
+
+		Page page = new Page();
+		page.setData(vmResources);
+		page.setTotalRecords(serverCount);
+		page.setRecordsPerPage(recordsPerPage);
+		page.setCurrentPage(currentPage);
+		return page;
 	}
 
 	@Override
