@@ -1687,6 +1687,18 @@ line-height: 1;
 }
 /*end vm-create page style*/
 
+/*begin vm-create page style*/
+.password-tip{
+	font-size: 12px;
+  margin-left: 10px;
+}
+#submitResult{
+	padding: 2px 12px 0;
+  margin: 0;
+    color: #a94442;
+}
+/*end vm-create page style*/
+
 /*  nodata div style*/
 #noData{
 	color:#ddd;
