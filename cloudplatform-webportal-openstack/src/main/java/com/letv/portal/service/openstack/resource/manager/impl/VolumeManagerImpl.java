@@ -1,12 +1,15 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 
 import com.google.common.collect.ImmutableSet;
@@ -72,6 +75,19 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 	public CinderApi getCinderApi() {
 		return cinderApi;
 	}
-	
-	
+
+	public List<VolumeResource> getOfVM(String region, String vmId) {
+		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+		List<? extends Volume> volumeList = volumeApi.listInDetail().toList();
+		List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+		for (Volume volume : volumeList) {
+			for (VolumeAttachment volumeAttachment : volume.getAttachments()) {
+				if (vmId.equals(volumeAttachment.getServerId())) {
+					volumeResources.add(new VolumeResourceImpl(region, volume));
+					break;
+				}
+			}
+		}
+		return volumeResources;
+	}
 }

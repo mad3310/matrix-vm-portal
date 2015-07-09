@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource;
 
+import java.util.List;
+
 public interface VMResource extends Resource{
 	public String getName();
 	public String getAccessIPv4();
@@ -20,4 +22,5 @@ public interface VMResource extends Resource{
 	String getHostId();
 	String getKeyName();
 	String getRegionDisplayName();
+	List<VolumeResource> getVolumes();
 }

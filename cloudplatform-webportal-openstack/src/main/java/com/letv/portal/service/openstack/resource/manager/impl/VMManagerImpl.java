@@ -196,8 +196,11 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			return new VMResourceImpl(region, getRegionDisplayName(region),
-					server, this, imageManager, openStackUser);
+			VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
+					getRegionDisplayName(region), server, this, imageManager,
+					openStackUser);
+			vmResourceImpl.setVolumes(volumeManager.getOfVM(region, id));
+			return vmResourceImpl;
 		} else {
 			throw new ResourceNotFoundException("VM", "虚拟机", id);
 		}

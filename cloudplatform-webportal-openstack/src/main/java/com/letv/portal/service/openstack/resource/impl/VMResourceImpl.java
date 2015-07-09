@@ -22,6 +22,7 @@ import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.IPAddresses;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
@@ -35,6 +36,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	// private NetworkResource networkResource;
 	private IPAddresses ipAddresses;
 	private String regionDisplayName;
+	private List<VolumeResource> volumes;
 
 	public VMResourceImpl(String region, String regionDisplayName,
 			Server server, ImageResource imageResource,
@@ -237,5 +239,14 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	@Override
 	public String getRegionDisplayName() {
 		return this.regionDisplayName;
+	}
+
+	@Override
+	public List<VolumeResource> getVolumes() {
+		return volumes;
+	}
+	
+	public void setVolumes(List<VolumeResource> volumes) {
+		this.volumes = volumes;
 	}
 }
