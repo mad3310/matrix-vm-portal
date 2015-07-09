@@ -161,4 +161,35 @@ public class GcePythonServiceImpl implements IGcePythonService{
 		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
 		return new ApiResultObject(result,url.toString());
 	}
+
+	@Override
+	public ApiResultObject startGbalancer(Map<String, String> params,
+			String ip, String port, String adminUser, String adminPassword) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(":").append(port).append("/glb/start");
+		
+		String result = HttpClient.post(url.toString(), params, adminUser, adminPassword);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject configMoxi(Map<String, String> params, String ip, String port) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster/node/config");
+		
+		String result = HttpClient.post(url.toString(), params);
+		return new ApiResultObject(result,url.toString());
+	}
+
+	@Override
+	public ApiResultObject startMoxi(String ip, String port) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(":").append(port).append("/cluster/node/start");
+		
+		String result = HttpClient.post(url.toString(), null);
+		return new ApiResultObject(result,url.toString());
+	}
+
+
+
 }
