@@ -1,13 +1,8 @@
 package com.letv.portal.controller.cloudvm;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,11 +52,17 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region/{region}", method = RequestMethod.GET)
-	public @ResponseBody ResultObject list(@PathVariable String region) {
+	public @ResponseBody ResultObject list(@PathVariable String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVMManager()
-					.listByRegionGroup(region));
+			result.setData(Util
+					.session(sessionService)
+					.getVMManager()
+					.listByRegionGroup(region, name, currentPage,
+							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -69,11 +70,14 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/region", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listAll() {
+	public @ResponseBody ResultObject listAll(
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
-					.listAll());
+					.listAll(name, currentPage, recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -102,7 +106,7 @@ public class VMController {
 			@RequestParam(required = false) String networkIds,
 			@RequestParam(required = false) String adminPass,
 			@RequestParam(required = false, defaultValue = "false", value = "publish") boolean bindFloatingIP,
-			@RequestParam(required = false, value="volumeSizes") String volumeSizesJsonArrayString) {
+			@RequestParam(required = false, value = "volumeSizes") String volumeSizesJson) {
 		ResultObject result = new ResultObject();
 		try {
 			OpenStackSession openStackSession = Util.session(sessionService);
@@ -126,13 +130,10 @@ public class VMController {
 					networkResources.add(networkManager.get(region, networkId));
 				}
 			}
-			
-			if(volumeSizesJsonArrayString!=null){
-				
-			}
 
 			VMCreateConf vmCreateConf = new VMCreateConf(name, imageResource,
-					flavorResource, networkResources, adminPass, bindFloatingIP);
+					flavorResource, networkResources, adminPass,
+					bindFloatingIP, volumeSizesJson);
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
@@ -184,6 +185,19 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/vm-batch-delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchDelete(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchDeleteSync(region, vmIds);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/region/{region}/vm-start", method = RequestMethod.POST)
 	public @ResponseBody ResultObject start(@PathVariable String region,
 			@RequestParam String vmId) {
@@ -192,6 +206,19 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/region/{region}/vm-batch-start", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStart(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchStartSync(region, vmIds);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -206,6 +233,19 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/region/{region}/vm-batch-stop", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStop(@PathVariable String region,
+			@RequestParam String vmIds) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.batchStopSync(region, vmIds);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

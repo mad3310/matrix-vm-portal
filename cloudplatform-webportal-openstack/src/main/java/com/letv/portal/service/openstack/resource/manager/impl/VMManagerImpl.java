@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +12,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.CharUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
@@ -30,7 +33,6 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
 import org.slf4j.Logger;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
@@ -56,9 +58,14 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
+import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
+import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
+import com.letv.portal.service.openstack.util.Util;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
@@ -67,7 +74,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	private ImageManager imageManager;
 
 	private NetworkManager networkManager;
-	
+
 	private VolumeManagerImpl volumeManager;
 
 	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
@@ -115,39 +122,68 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public List<VMResource> listAll() throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException {
+	public List<VMResource> listAll(String name, Integer currentPage,
+			Integer recordsPerPage) throws OpenStackException {
 		Set<String> regions = getRegions();
+		return listByRegions(regions, name, currentPage, recordsPerPage);
+	}
+
+	@Override
+	public List<VMResource> listByRegionGroup(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		Set<String> groupRegions = getGroupRegions(regionGroup);
+		return listByRegions(groupRegions, name, currentPage, recordsPerPage);
+	}
+
+	/**
+	 * 
+	 * @param regions
+	 * @param name
+	 * @param currentPage
+	 *            从1开始
+	 * @param recordsPerPage
+	 * @return
+	 * @throws RegionNotFoundException
+	 * @throws ResourceNotFoundException
+	 * @throws APINotAvailableException
+	 * @throws OpenStackException
+	 */
+	private List<VMResource> listByRegions(Set<String> regions, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		if (currentPage != null) {
+			currentPage -= 1;
+		}
+
 		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
 		List<VMResource> vmResources = new LinkedList<VMResource>();
-		for (String region : regions) {
+		int serverCount = 0;
+		addVMResource: for (String region : regions) {
 			String regionDisplayName = transMap.get(region);
 			ServerApi serverApi = novaApi.getServerApi(region);
 			List<Server> resources = serverApi.listInDetail().concat().toList();
 			for (Server resource : resources) {
-				vmResources.add(new VMResourceImpl(region, regionDisplayName,
-						resource, this, imageManager, openStackUser));
-			}
-		}
-		return vmResources;
-	}
-
-	@Override
-	public List<VMResource> listByRegionGroup(String regionGroup)
-			throws RegionNotFoundException, ResourceNotFoundException,
-			APINotAvailableException, OpenStackException {
-		Set<String> groupRegions = getGroupRegions(regionGroup);
-
-		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
-
-		List<VMResource> vmResources = new LinkedList<VMResource>();
-		for (String region : groupRegions) {
-			ServerApi serverApi = novaApi.getServerApi(region);
-			List<Server> resources = serverApi.listInDetail().concat().toList();
-			for (Server resource : resources) {
-				vmResources.add(new VMResourceImpl(region,
-						transMap.get(region), resource, this, imageManager,
-						openStackUser));
+				if (name == null
+						|| (resource.getName() != null && resource.getName()
+								.contains(name))) {
+					if (currentPage == null || recordsPerPage == null) {
+						vmResources.add(new VMResourceImpl(region,
+								regionDisplayName, resource, this,
+								imageManager, openStackUser));
+					} else {
+						if (serverCount >= (currentPage + 1) * recordsPerPage) {
+							break addVMResource;
+						} else if (serverCount >= currentPage * recordsPerPage) {
+							vmResources.add(new VMResourceImpl(region,
+									regionDisplayName, resource, this,
+									imageManager, openStackUser));
+						}
+						serverCount++;
+					}
+				}
 			}
 		}
 		return vmResources;
@@ -171,6 +207,22 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	public VMResource create(final String region, VMCreateConf conf)
 			throws OpenStackException {
 		checkRegion(region);
+
+		List<Integer> volumeSizes = null;
+		if (conf.getVolumeSizesJson() != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				volumeSizes = objectMapper.readValue(conf.getVolumeSizesJson(),
+						new TypeReference<List<Integer>>() {
+						});
+			} catch (JsonParseException e) {
+				throw new OpenStackException("请求数据格式错误", e);
+			} catch (JsonMappingException e) {
+				throw new OpenStackException("请求数据格式错误", e);
+			} catch (IOException e) {
+				throw new OpenStackException("后台服务错误", e);
+			}
+		}
 
 		CreateServerOptions createServerOptions = new CreateServerOptions();
 
@@ -255,33 +307,18 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		emailVmCreated(vmResourceImpl, conf);
 
+		List<Runnable> afterTasks = new LinkedList<Runnable>();
 		if (conf.getBindFloatingIP()) {
-			new Thread() {
-				public void run() {
-					try {
-						Server server = serverApi.get(serverCreated.getId());
-						while (server.getAddresses()
-								.get(openStackConf.getUserPrivateNetworkName())
-								.isEmpty()) {
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e) {
-								throw new PollingInterruptedException(e);
-							}
-							server = serverApi.get(serverCreated.getId());
-						}
-						String floatingIP = bindFloatingIP(region,
-								serverCreated.getId());
-						emailBindIP(
-								new VMResourceImpl(region,
-										getRegionDisplayName(region), server,
-										VMManagerImpl.this, imageManager,
-										openStackUser), floatingIP);
-					} catch (Exception e) {
-						logger.error(e.getMessage(), e);
-					}
-				}
-			}.start();
+			afterTasks.add(new BindFloatingIP(this, imageManager, region,
+					server));
+		}
+		if (volumeSizes != null) {
+			afterTasks.add(new AddVolumes(this, volumeManager, region, server,
+					volumeSizes));
+		}
+		if (!afterTasks.isEmpty()) {
+			new Thread(new WaitingVMCreated(this, serverApi,
+					serverCreated.getId(), afterTasks)).start();
 		}
 
 		// test code begin(ssh login)
@@ -307,7 +344,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	/**
 	 * send email to user after vm creating
 	 */
-	private void emailVmCreated(VMResource vm, VMCreateConf conf)
+	public void emailVmCreated(VMResource vm, VMCreateConf conf)
 			throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -329,7 +366,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	/**
 	 * send email to user after vm binding floating IP
 	 */
-	private void emailBindIP(VMResource vm, String floatingIP)
+	public void emailBindIP(VMResource vm, String floatingIP)
 			throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -373,7 +410,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	private String bindFloatingIP(String region, String vmId)
+	public String bindFloatingIP(String region, String vmId)
 			throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
@@ -466,36 +503,6 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Deprecated
 	@Override
-	public void delete(String region, VMResource vm)
-			throws RegionNotFoundException, VMDeleteException,
-			APINotAvailableException {
-		checkRegion(region);
-
-		ServerApi serverApi = novaApi.getServerApi(region);
-		removeAndDeleteFloatingIPOfVM(region, vm);
-		boolean isSuccess = serverApi.delete(vm.getId());
-		if (!isSuccess) {
-			throw new VMDeleteException(vm.getId());
-		}
-	}
-
-	@Deprecated
-	@Override
-	public void start(String region, VMResource vm)
-			throws RegionNotFoundException, VMStatusException {
-		checkRegion(region);
-
-		if (((VMResourceImpl) vm).server.getStatus() != Server.Status.SHUTOFF) {
-			throw new VMStatusException("The status of vm is not shut off.",
-					"虚拟机的状态不是关闭的。");
-		}
-
-		ServerApi serverApi = novaApi.getServerApi(region);
-		serverApi.start(vm.getId());
-	}
-
-	@Deprecated
-	@Override
 	public void stop(String region, VMResource vm)
 			throws RegionNotFoundException {
 		checkRegion(region);
@@ -541,11 +548,45 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		this.networkManager = networkManager;
 	}
 
+	private void waitingVM(String vmId, ServerApi serverApi,
+			ServerChecker checker) throws PollingInterruptedException {
+		try {
+			Server server = null;
+			while (true) {
+				server = serverApi.get(vmId);
+				if (checker.check(server)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		}
+	}
+
+	private void waitingVMs(List<String> vmIds, ServerApi serverApi,
+			ServerChecker checker) throws PollingInterruptedException {
+		try {
+			List<String> unFinishedVMIds = new LinkedList<String>();
+			unFinishedVMIds.addAll(vmIds);
+			while (!unFinishedVMIds.isEmpty()) {
+				for (String vmId : unFinishedVMIds.toArray(new String[0])) {
+					Server server = serverApi.get(vmId);
+					if (checker.check(server)) {
+						unFinishedVMIds.remove(vmId);
+					}
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		}
+	}
+
 	@Override
-	public void deleteSync(String region, VMResource vm)
-			throws VMDeleteException, RegionNotFoundException,
-			APINotAvailableException, TaskNotFinishedException,
-			PollingInterruptedException {
+	public void delete(String region, VMResource vm)
+			throws RegionNotFoundException, VMDeleteException,
+			APINotAvailableException, TaskNotFinishedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -558,25 +599,32 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		if (!isSuccess) {
 			throw new VMDeleteException(vm.getId());
 		}
+	}
 
-		try {
-			Server server = null;
-			while (true) {
-				server = serverApi.get(vm.getId());
-				if (server == null || server.getStatus() == Status.ERROR) {
-					break;
-				}
-				Thread.sleep(1000);
-			}
-		} catch (InterruptedException e) {
-			throw new PollingInterruptedException(e);
-		}
+	private boolean isDeleteFinished(Server server) {
+		return server == null || server.getStatus() == Status.ERROR;
 	}
 
 	@Override
-	public void startSync(String region, VMResource vm)
-			throws RegionNotFoundException, TaskNotFinishedException,
-			VMStatusException, PollingInterruptedException {
+	public void deleteSync(String region, VMResource vm)
+			throws VMDeleteException, RegionNotFoundException,
+			APINotAvailableException, TaskNotFinishedException,
+			PollingInterruptedException {
+		delete(region, vm);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		waitingVM(vm.getId(), serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isDeleteFinished(server);
+			}
+		});
+	}
+	
+	@Override
+	public void start(String region, VMResource vm)
+			throws RegionNotFoundException, VMStatusException, TaskNotFinishedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -589,21 +637,28 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
+	}
+	
+	private boolean isStartFinished(Server server) {
+		return server == null
+				|| Server.Status.ACTIVE == server.getStatus()
+				|| server.getStatus() == Status.ERROR;
+	}
 
-		try {
-			Server server = null;
-			while (true) {
-				server = serverApi.get(vm.getId());
-				if (server == null
-						|| Server.Status.ACTIVE == server.getStatus()
-						|| server.getStatus() == Status.ERROR) {
-					break;
-				}
-				Thread.sleep(1000);
+	@Override
+	public void startSync(String region, VMResource vm)
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException, PollingInterruptedException {
+		start(region, vm);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		waitingVM(vm.getId(), serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isStartFinished(server);
 			}
-		} catch (InterruptedException e) {
-			throw new PollingInterruptedException(e);
-		}
+		});
 	}
 
 	@Override
@@ -704,6 +759,61 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 
 		return flavorResources;
+	}
+
+	public void setVolumeManager(VolumeManagerImpl volumeManager) {
+		this.volumeManager = volumeManager;
+	}
+
+	public NovaApi getNovaApi() {
+		return novaApi;
+	}
+
+	@Override
+	public void batchDeleteSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		checkRegion(region);
+		ServerApi serverApi = novaApi.getServerApi(region);
+
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			delete(region, get(region, vmId));
+		}
+
+		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+			@Override
+			public boolean check(Server server) {
+				return isDeleteFinished(server);
+			}
+		});
+	}
+
+	@Override
+	public void batchStartSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		checkRegion(region);
+		ServerApi serverApi = novaApi.getServerApi(region);
+
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			start(region, get(region, vmId));
+		}
+
+		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+			@Override
+			public boolean check(Server server) {
+				return isStartFinished(server);
+			}
+		});
+	}
+
+	@Override
+	public void batchStopSync(String region, String vmIdListJson)
+			throws OpenStackException {
+		List<String> vmIdList = Util.jsonList(vmIdListJson);
+		for (String vmId : vmIdList) {
+			stopSync(region, get(region, vmId));
+		}
 	}
 
 }

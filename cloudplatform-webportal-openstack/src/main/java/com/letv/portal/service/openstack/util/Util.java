@@ -1,6 +1,15 @@
 package com.letv.portal.service.openstack.util;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Random;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 public class Util {
 	public static String generateRandomPassword(int length) {
@@ -13,4 +22,19 @@ public class Util {
 		}
 		return stringBuilder.toString();
 	}
+
+	public static <T> List<T> jsonList(String json) throws OpenStackException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			return objectMapper.readValue(json, new TypeReference<List<T>>() {
+			});
+		} catch (JsonParseException e) {
+			throw new OpenStackException("请求数据格式错误", e);
+		} catch (JsonMappingException e) {
+			throw new OpenStackException("请求数据格式错误", e);
+		} catch (IOException e) {
+			throw new OpenStackException("后台服务错误", e);
+		}
+	}
+
 }

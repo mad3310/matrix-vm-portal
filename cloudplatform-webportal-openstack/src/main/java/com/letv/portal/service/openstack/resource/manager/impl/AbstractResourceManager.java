@@ -124,7 +124,7 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		return matchedRegions;
 	}
 
-	protected String getRegionDisplayName(String regionCode)
+	public String getRegionDisplayName(String regionCode)
 			throws OpenStackException {
 		CloudvmRegion region = this.cloudvmRegionService
 				.selectByCode(regionCode);
@@ -142,4 +142,13 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		}
 		return map;
 	}
+
+	public OpenStackConf getOpenStackConf() {
+		return openStackConf;
+	}
+
+	public OpenStackUser getOpenStackUser() {
+		return openStackUser;
+	}
+
 }

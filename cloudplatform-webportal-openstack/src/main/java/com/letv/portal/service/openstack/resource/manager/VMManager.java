@@ -19,11 +19,13 @@ public interface VMManager extends ResourceManager {
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	List<VMResource> listAll() throws RegionNotFoundException,
+	List<VMResource> listAll(String name, Integer currentPage,
+			Integer recordsPerPage) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	List<VMResource> listByRegionGroup(String regionGroup)
+	List<VMResource> listByRegionGroup(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;
 
@@ -45,24 +47,33 @@ public interface VMManager extends ResourceManager {
 			TaskNotFinishedException, VMStatusException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
-			VMDeleteException, APINotAvailableException;
+			VMDeleteException, APINotAvailableException, TaskNotFinishedException;
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
 			TaskNotFinishedException, PollingInterruptedException;
 
+	void batchDeleteSync(String region, String vmIdListJson)
+			throws OpenStackException;
+
 	void start(String region, VMResource vm) throws RegionNotFoundException,
-			VMStatusException;
+			VMStatusException, TaskNotFinishedException;
 
 	void startSync(String region, VMResource vm)
 			throws RegionNotFoundException, TaskNotFinishedException,
 			VMStatusException, PollingInterruptedException;
+	
+	void batchStartSync(String region, String vmIdListJson)
+			throws OpenStackException;
 
 	void stop(String region, VMResource vm) throws RegionNotFoundException;
 
 	void stopSync(String region, VMResource vm)
 			throws PollingInterruptedException, RegionNotFoundException,
 			TaskNotFinishedException, VMStatusException;
+	
+	void batchStopSync(String region, String vmIdListJson)
+			throws OpenStackException;
 
 	int totalNumber();
 
