@@ -66,7 +66,7 @@ public interface VMManager extends ResourceManager {
 	void batchStartSync(String region, String vmIdListJson)
 			throws OpenStackException;
 
-	void stop(String region, VMResource vm) throws RegionNotFoundException;
+	void stop(String region, VMResource vm) throws RegionNotFoundException, TaskNotFinishedException, VMStatusException;
 
 	void stopSync(String region, VMResource vm)
 			throws PollingInterruptedException, RegionNotFoundException,

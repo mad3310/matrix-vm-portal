@@ -501,16 +501,6 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	@Deprecated
-	@Override
-	public void stop(String region, VMResource vm)
-			throws RegionNotFoundException {
-		checkRegion(region);
-
-		ServerApi serverApi = novaApi.getServerApi(region);
-		serverApi.stop(vm.getId());
-	}
-
 	@Override
 	public List<FlavorResource> listFlavorResources(String region)
 			throws RegionNotFoundException {
@@ -621,10 +611,11 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 		});
 	}
-	
+
 	@Override
 	public void start(String region, VMResource vm)
-			throws RegionNotFoundException, VMStatusException, TaskNotFinishedException {
+			throws RegionNotFoundException, VMStatusException,
+			TaskNotFinishedException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -638,10 +629,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.start(vm.getId());
 	}
-	
+
 	private boolean isStartFinished(Server server) {
-		return server == null
-				|| Server.Status.ACTIVE == server.getStatus()
+		return server == null || Server.Status.ACTIVE == server.getStatus()
 				|| server.getStatus() == Status.ERROR;
 	}
 
@@ -662,9 +652,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void stopSync(String region, VMResource vm)
-			throws PollingInterruptedException, RegionNotFoundException,
-			TaskNotFinishedException, VMStatusException {
+	public void stop(String region, VMResource vm)
+			throws RegionNotFoundException, TaskNotFinishedException,
+			VMStatusException {
 		checkRegion(region);
 
 		if (vm.getTaskState() != null) {
@@ -679,21 +669,27 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		serverApi.stop(vm.getId());
+	}
 
-		try {
-			Server server = null;
-			while (true) {
-				server = serverApi.get(vm.getId());
-				if (server == null
-						|| Server.Status.SHUTOFF == server.getStatus()
-						|| server.getStatus() == Status.ERROR) {
-					break;
-				}
-				Thread.sleep(1000);
+	private boolean isStopFinished(Server server) {
+		return server == null || Server.Status.SHUTOFF == server.getStatus()
+				|| server.getStatus() == Status.ERROR;
+	}
+
+	@Override
+	public void stopSync(String region, VMResource vm)
+			throws PollingInterruptedException, RegionNotFoundException,
+			TaskNotFinishedException, VMStatusException {
+		stop(region, vm);
+
+		ServerApi serverApi = novaApi.getServerApi(region);
+		waitingVM(vm.getId(), serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isStopFinished(server);
 			}
-		} catch (InterruptedException e) {
-			throw new PollingInterruptedException(e);
-		}
+		});
 	}
 
 	@Override
@@ -810,10 +806,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchStopSync(String region, String vmIdListJson)
 			throws OpenStackException {
+		checkRegion(region);
+		ServerApi serverApi = novaApi.getServerApi(region);
+
 		List<String> vmIdList = Util.jsonList(vmIdListJson);
 		for (String vmId : vmIdList) {
-			stopSync(region, get(region, vmId));
+			stop(region, get(region, vmId));
 		}
+
+		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+
+			@Override
+			public boolean check(Server server) {
+				return isStopFinished(server);
+			}
+		});
 	}
 
 }
