@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -11,9 +12,11 @@ import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
+import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Module;
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -90,4 +93,138 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		}
 		return volumeResources;
 	}
+
+	/**
+	 * 
+	 * @param regions
+	 * @param name
+	 * @param currentPage
+	 *            从1开始
+	 * @param recordsPerPage
+	 * @return
+	 * @throws RegionNotFoundException
+	 * @throws ResourceNotFoundException
+	 * @throws APINotAvailableException
+	 * @throws OpenStackException
+	 */
+	private Page listByRegions(Set<String> regions, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		if (currentPage != null) {
+			currentPage -= 1;
+		}
+
+		// Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+		List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+		int volumeCount = 0;
+		boolean needCollect = true;
+		for (String region : regions) {
+			VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+			if (needCollect) {
+				// String regionDisplayName = transMap.get(region);
+				List<? extends Volume> volumes = volumeApi.listInDetail()
+						.toList();
+				for (Volume volume : volumes) {
+					if (name == null
+							|| (volume.getName() != null && volume.getName()
+									.contains(name))) {
+						if (currentPage == null || recordsPerPage == null) {
+							volumeResources.add(new VolumeResourceImpl(region,
+									volume));
+						} else {
+							if (needCollect) {
+								if (volumeCount >= (currentPage + 1)
+										* recordsPerPage) {
+									needCollect = false;
+								} else if (volumeCount >= currentPage
+										* recordsPerPage) {
+									volumeResources.add(new VolumeResourceImpl(
+											region, volume));
+								}
+							}
+						}
+						volumeCount++;
+					}
+				}
+			} else {
+				for (Volume volume : volumeApi.list().toList()) {
+					if (name == null
+							|| (volume.getName() != null && volume.getName()
+									.contains(name))) {
+						volumeCount++;
+					}
+				}
+			}
+		}
+
+		Page page = new Page();
+		page.setData(volumeResources);
+		page.setTotalRecords(volumeCount);
+		if (recordsPerPage != null) {
+			page.setRecordsPerPage(recordsPerPage);
+		} else {
+			page.setRecordsPerPage(10);
+		}
+		if (currentPage != null) {
+			page.setCurrentPage(currentPage);
+		} else {
+			page.setCurrentPage(1);
+		}
+		return page;
+	}
+
+	@Override
+	public Page listAll(String name, Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		return listByRegions(getRegions(), name, currentPage, recordsPerPage);
+	}
+
+	@Override
+	public Page listByRegionGroup(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException {
+		return listByRegions(getGroupRegions(regionGroup), name, currentPage,
+				recordsPerPage);
+	}
+
+	@Override
+	public VolumeResource create(String region, int sizeGB, String name,
+			String description) throws OpenStackException {
+		checkRegion(region);
+		if (sizeGB <= 0) {
+			throw new OpenStackException(
+					"The size of the cloud disk can not be less than or equal to zero.",
+					"云硬盘的大小不能小于或等于零。");
+		}
+
+		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+		CreateVolumeOptions createVolumeOptions = new CreateVolumeOptions();
+		if (name != null) {
+			createVolumeOptions.name(name);
+		}
+		if (description != null) {
+			createVolumeOptions.description(description);
+		}
+		Volume volume = volumeApi.create(sizeGB, createVolumeOptions);
+		return new VolumeResourceImpl(region, volume);
+	}
+
+	@Override
+	public void delete(String region, VolumeResource volumeResource)
+			throws OpenStackException {
+		checkRegion(region);
+
+		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+		boolean isSuccess = volumeApi.delete(volumeResource.getId());
+		if (!isSuccess) {
+			throw new OpenStackException(MessageFormat.format(
+					"Volume \"{0}\" delete failed.", volumeResource.getId()),
+					MessageFormat.format("云硬盘“{0}”删除失败。",
+							volumeResource.getId()));
+		}
+	}
+
 }

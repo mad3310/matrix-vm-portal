@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,7 @@ import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
+import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
@@ -53,6 +55,7 @@ import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
@@ -156,7 +159,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException {
 		if (currentPage != null) {
-			currentPage -= 1;
+			currentPage = currentPage - 1;
 		}
 
 		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
@@ -210,12 +213,12 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		page.setTotalRecords(serverCount);
 		if (recordsPerPage != null) {
 			page.setRecordsPerPage(recordsPerPage);
-		}else{
+		} else {
 			page.setRecordsPerPage(10);
 		}
 		if (currentPage != null) {
-			page.setCurrentPage(currentPage);
-		}else{
+			page.setCurrentPage(currentPage + 1);
+		} else {
 			page.setCurrentPage(1);
 		}
 		return page;
@@ -856,6 +859,54 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				return isStopFinished(server);
 			}
 		});
+	}
+
+	@Override
+	public void attachVolume(VMResource vmResource, VolumeResource volumeResource)
+			throws OpenStackException {
+		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
+			throw new OpenStackException(
+					"Under the different regions of the vm and volume can not add.",
+					"不同地域下的虚拟机和云硬盘不能添加");
+		}
+
+		Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
+				.getVolumeAttachmentApi(vmResource.getRegion());
+		if (!volumeAttachmentApiOptional.isPresent()) {
+			throw new APINotAvailableException(VolumeAttachmentApi.class);
+		}
+		VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
+				.get();
+
+		volumeAttachmentApi.attachVolumeToServerAsDevice(
+				volumeResource.getId(), vmResource.getId(), "/dev/vdc");
+	}
+
+	@Override
+	public void detachVolume(VMResource vmResource,
+			VolumeResource volumeResource) throws OpenStackException {
+		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
+			throw new OpenStackException(
+					"Under the different regions of the vm and volume can not remove.",
+					"不同地域下的虚拟机和云硬盘不能分离");
+		}
+
+		Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
+				.getVolumeAttachmentApi(vmResource.getRegion());
+		if (!volumeAttachmentApiOptional.isPresent()) {
+			throw new APINotAvailableException(VolumeAttachmentApi.class);
+		}
+		VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
+				.get();
+
+		boolean success = volumeAttachmentApi.detachVolumeFromServer(
+				volumeResource.getId(), vmResource.getId());
+		if (!success) {
+			throw new OpenStackException(MessageFormat.format(
+					"Volume \"{0}\" detach failed.", volumeResource.getId()),
+					MessageFormat.format("云硬盘“{0}”分离失败。",
+							volumeResource.getId()));
+		}
 	}
 
 }

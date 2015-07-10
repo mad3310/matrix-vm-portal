@@ -14,6 +14,7 @@ import com.letv.portal.service.openstack.exception.VMDeleteException;
 import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
 
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
@@ -88,4 +89,9 @@ public interface VMManager extends ResourceManager {
 	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
 			String region) throws OpenStackException;
 
+	void attachVolume(VMResource vmResource, VolumeResource volumeResource)
+			throws OpenStackException;
+
+	void detachVolume(VMResource vmResource, VolumeResource volumeResource)
+			throws OpenStackException;
 }
