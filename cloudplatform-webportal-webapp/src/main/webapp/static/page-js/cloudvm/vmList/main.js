@@ -17,6 +17,29 @@ define(function(require){
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();
 	
+    /*加载数据*/
+    var dataHandler = require('./dataHandler');
+    var vmListHandler = new dataHandler();
+    var currentPage=1;
+    var recordsPerPage=3;	
+    var vmNameOfSearch='';
+	
+    $('#search').on('click',function(e){
+    	var vmName=$('#vmName').val();
+    	vmNameOfSearch=vmName;
+    	asyncData();
+    });
+	//初始化分页组件
+	$('#paginator').bootstrapPaginator({
+		size:"small",
+    	alignment:'right',
+		bootstrapMajorVersion:3,
+		numberOfPages: 3,
+		onPageClicked: function(e,originalEvent,type,page){
+			currentPage = page;
+        	asyncData();
+        }
+	});
     /*按钮组件封装 --begin*/
 	$(document).on('click', '.region-city-list button' , function(e){
 		e.preventDefault();
@@ -35,9 +58,6 @@ define(function(require){
 	});
 	/*按钮组件封装 --end*/
 
-    /*加载数据*/
-    var dataHandler = require('./dataHandler');
-    var vmListHandler = new dataHandler();
     /*
      * 初始化数据
      */
@@ -68,11 +88,13 @@ define(function(require){
     });
 	
 	//加载列表数据
-	function asyncData(page) {
+	function asyncData() {
 		var currentRegion=vmListHandler.getSelectedRegion();
+		var vmName=$('#vmName').val();
 		var baseUrl = '/ecs/region';	
-		var url = currentRegion!='All' ? baseUrl+'/'+currentRegion:baseUrl;
-		cn.GetData(url,refreshCtl);		
+		var queryParams="?currentPage=" + currentPage +"&&recordsPerPage=" + recordsPerPage+ "&&name=" + vmName;
+		var url = currentRegion!='All' ? baseUrl+'/'+currentRegion+queryParams:baseUrl+queryParams;
+		cn.GetData(url,refreshCtl);
 	}
 	function refreshCtl(data) {
 		vmListHandler.VmListHandler(data);

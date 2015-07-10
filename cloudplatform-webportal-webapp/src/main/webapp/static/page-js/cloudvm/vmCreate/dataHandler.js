@@ -6,6 +6,11 @@ define(function(require,exports,module){
     var common = require('../../common');
     var cn = new common();
 
+    var diskOperatePanel=$('.disk-operate-panel');
+    var domElDict={
+    		diskOperatePanel:diskOperatePanel,
+    		disAddButton:diskOperatePanel.find('.bk-disk-add').parent(),
+    };
     var DataHandler = function(){
     };
     var regionCitynameData,flavorGroupData,imageGroupData;
@@ -140,6 +145,29 @@ define(function(require,exports,module){
         	if(!imageGroupData || !imageGroupData.data) return;
         	var value=(!imageOSName || !imageVersionName) ? '': imageGroupData.data[imageOSName][imageVersionName].id;
         	$('#vmImageId').val(value);
+        },
+        addDataDisk:function(){
+        	domElDict.disAddButton.before($('<div class="bk-form-row-li">'+
+													        '<div class="bk-disk">'+
+													            '<span class="bk-form-row-li-info bk-disk-type">'+
+													                '<span class="bk-black">普通云盘</span>'+
+													            '</span>'+
+													            '<span class="bk-disk-storage bk-ml2">'+
+													                '<input class="bk-disk-input" value="1">'+
+													                '<span class="bk-disk-unit">GB</span>'+
+													            '</span>'+
+													            '<span class="bk-disk-delete">'+
+													                '<i class="glyphicon glyphicon-remove"></i>'+
+													            '</span>'+
+													        '</div>'+
+												'</div>'));
+        },
+        getDataDiskInfos:function(){
+        	var diskVolumValues=[];
+        	domElDict.diskOperatePanel.find('.bk-disk-input').each(function(index,element){
+        		diskVolumValues.push($(element).val());
+        	});
+        	return diskVolumValues;
         }
     }
     

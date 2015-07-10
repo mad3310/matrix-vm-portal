@@ -25,12 +25,18 @@ define(function(require,exports,module){
         	$(".data-tr").remove();
         	
             var $tby = $('#tby');
-            var array = data.data;
+            var array = data.data.data;
             if(array.length == 0){
             	cn.emptyBlock($tby);
+            	if($("#paginatorBlock").length > 0){
+            		$("#paginatorBlock").hide();
+            	}
             }else{
             	 if($("#noData").length > 0){
             		 $("#noData").remove();
+            	 }
+            	 if($("#paginatorBlock").length > 0){
+            		 $("#paginatorBlock").show();
             	 }
                 for(var i= 0, len= array.length;i<len;i++){
                 	var tdList= [];
@@ -79,6 +85,20 @@ define(function(require,exports,module){
                     $tby.append(tdList.join(""));
                  }
             }
+            /*
+             * 设置分页数据
+             */
+            $("#totalRecords").html(data.data.totalRecords);
+            $("#recordsPerPage").html(data.data.recordsPerPage);
+            
+            if(data.data.totalPages < 1){
+        		data.data.totalPages = 1;
+        	};
+        	
+            $('#paginator').bootstrapPaginator({
+                currentPage: data.data.currentPage,
+                totalPages:data.data.totalPages
+            });
        
         },
         /*进度条进度控制*/
