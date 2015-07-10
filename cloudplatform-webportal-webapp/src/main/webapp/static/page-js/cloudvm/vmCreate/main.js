@@ -36,7 +36,21 @@ define(function(require){
 	});
 	/*按钮组件封装 --end*/
     
-    
+	$('.disk-operate-panel .bk-disk-add').on('click',function(e){
+		dataHandler.addDataDisk();
+	});
+	$(document).on('click', '.bk-disk .bk-disk-delete' , function(e){
+			e.preventDefault();
+            $(this).closest('.bk-form-row-li').remove();
+	});
+	$(document).on('blur', '.bk-disk .bk-disk-input' , function(e){
+		var inputEl=$(e.currentTarget);
+        var inputValue=inputEl.val();
+        var reg=/^[1-9]+[0-9]*/;
+        if(reg.exec(inputValue)==null){
+        	inputEl.val('1');
+        }
+	});
 	/*$('.bk-buttontab-password').find('button').on('click',function(e){
     	var buttonValue = $(e.currentTarget).attr('value');
     	if(buttonValue==='1'){
@@ -130,7 +144,8 @@ define(function(require){
 						        imageId: $('#vmImageId').val(),
 						        flavorId: $('#flavorId').val(),
 						        adminPass:pwd,
-						        publish: !!parseInt($('input[name=isCreatePublicIP]').val())
+						        publish: !!parseInt($('input[name=isCreatePublicIP]').val()),
+						        volumeSizes:dataHandler.getDataDiskInfos()
 						    }
 		cn.PostData(url, data, function (data) {
 			if(data.result===1){

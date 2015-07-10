@@ -240,20 +240,15 @@
 										<div>
 											<div class="bk-form-row">
 												<label class="bk-form-row-name">数据盘：</label>
-												<div class="bk-form-row-cell">
+												<div class="bk-form-row-cell disk-operate-panel">
 													<div class="bk-form-row-li">
-													        <div class="bk-disk">
-													            <span class="bk-form-row-li-info bk-disk-type">
-													                <span class="bk-black">普通云盘</span>
-													            </span>
-													            <span class="bk-disk-storage bk-ml2">
-													                <input class="bk-disk-input" placeholder="5-2000">
-													                <span class="bk-disk-unit">GB</span>
-													            </span>
-													            <span class="bk-disk-delete">
-													                <i class="aliyun-icon-wrong-thin"></i>
-													            </span>
-													        </div>
+														<span class="bk-disk-add" style="cursor: pointer">
+															<i class="bk-disk-add-icon">
+																<em class="bk-disk-add-icon-line"></em> 
+																<em class="bk-disk-add-icon-line-b"></em>
+															</i> 
+															<span class="bk-disk-add-txt bk-lnk">增加一块</span>
+														</span> 
 													</div>
 												</div>
 											</div>

@@ -39,6 +39,18 @@
 				</h5>
 			</div>
 		</div>
+		<div class="">
+			<div class="pull-left">
+				<form class="form-inline" role="form">
+					<div class="form-group col-xs-9 col-sm-10">
+						<input  id="vmName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
+					</div>
+					<div class="col-xs-3 col-sm-2">
+						<button id="search" type="button" class="btn btn-default"><span class='hidden-xs'>搜索</span><span class='glyphicon glyphicon-search hidden-sm hidden-md hidden-lg'></span></button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div><!-- main-content-header end-->
 
 	<div class="row"><!-- main-content-center-begin -->
@@ -59,7 +71,36 @@
 					</tr>
 				</thead>
 				<tbody id="tby">
-				</tbody>				
+				</tbody>
+				<tfoot id="paginatorBlock">
+					<!-- <tr class="tfoot" > -->
+						<td width="10">
+							<input type="checkbox">
+						</td>
+						<td colspan="9" class="row">
+							<div class="col-xs-4 col-sm-6" style="margin:2px 0;padding:0;">
+							<div class="pull-left">
+									<div pagination-info="paginationInfo">
+										<div class="pull-left">
+											<button class="btn btn-default hidden-xs" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
+											<button class="btn btn-default btn-sm hidden-sm hidden-md hidden-lg" disabled="disabled"><span class='glyphicon glyphicon-shopping-cart'></span> 续费</button>
+										</div>
+									</div>
+							</div>
+							</div>
+							<div class="col-xs-8 col-sm-6" style="margin:2px 0;padding:0;">
+							<div class="pull-right m-fltPage">
+								<div class="pagination-info hidden-xs">
+									<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
+									<span class="ng-binding">每页显示：<span id="recordsPerPage"></span>条</span>&nbsp;
+								</div>
+								<ul id='paginator'></ul>
+							</div>
+							</div>
+							<div class="clearfix"></div>
+						</td>
+					<!-- </tr> -->
+				</tfoot>				
 			</table>
 		    <!-- <div class="help-block hidden" id="noData">没有记录</div> -->
 		</div>

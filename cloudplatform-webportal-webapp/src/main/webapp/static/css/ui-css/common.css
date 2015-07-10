@@ -1609,12 +1609,12 @@ padding: 5px 10px;
 background: #eee;
 width: 500px;
 height: 36px;
-float: left;
 }
 .bk-disk .bk-disk-type {
-float: left;
 display: inline;
 width: 86px;
+float: left;
+text-align: center;
 }
 .bk-form-row-li .bk-form-row-li-info {
 line-height: 36px;
@@ -1642,6 +1642,7 @@ line-height: 20px;
 color: #333;
 font-size: 14px;
 outline: none;
+box-sizing: content-box;
 }
 .bk-disk-unit {
 position: absolute;
@@ -1668,22 +1669,57 @@ color: #999;
 cursor: pointer;
 padding: 2px;
 }
-.aliyun-icon-wrong-thin {
-color: #999!important;
+.bk-disk-delete .glyphicon-remove {
+	font-size: 16px;
+  left: -10px;
 }
 i {
 font-style: normal;
 }
-[class^="aliyun-icon-"], [class*=" aliyun-icon-"] {
-font-family: 'aliyun-iconfont';
-speak: none;
-font-style: normal;
-font-weight: 400;
-font-variant: normal;
-text-transform: none;
-line-height: 1;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
+.bk-disk-add {
+cursor: pointer;
+}
+.bk-disk-add .bk-disk-add-icon {
+position: relative;
+display: inline-block;
+width: 36px;
+height: 36px;
+background: #43bfe3;
+vertical-align: top;
+}
+.bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line, .bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line-b {
+position: absolute;
+top: 16px;
+left: 10px;
+width: 16px;
+height: 4px;
+background: #fff;
+}
+.bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line-b {
+top: 10px;
+left: 16px;
+width: 4px;
+height: 16px;
+}
+.bk-disk-add .bk-disk-add-txt {
+margin-left: 10px;
+line-height: 36px;
+font-size: 14px;
+vertical-align: top;
+}
+.bk-form-row-li .bk-lnk {
+line-height: 36px;
+white-space: nowrap;
+vertical-align: top;
+}
+.bk-lnk,.bk-lnk:link,.bk-lnk:visited {
+color: #666;
+text-decoration: none;
+cursor: pointer;
+-webkit-transition: all .3s;
+-moz-transition: all .3s;
+-ms-transition: all .3s;
+-o-transition: all .3s;
 }
 /*end vm-create page style*/
 
