@@ -10,6 +10,7 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
@@ -216,6 +217,13 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 	public void delete(String region, VolumeResource volumeResource)
 			throws OpenStackException {
 		checkRegion(region);
+
+		Status status = ((VolumeResourceImpl) volumeResource).volume
+				.getStatus();
+		if (status != Status.AVAILABLE && status != Status.ERROR) {
+			throw new OpenStackException("Volume is not removable.",
+					"云硬盘不是可删除的状态。");
+		}
 
 		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 		boolean isSuccess = volumeApi.delete(volumeResource.getId());

@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 
@@ -13,7 +14,8 @@ public class VolumeResourceImpl extends AbstractResource implements
 		VolumeResource {
 
 	private String region;
-	private Volume volume;
+	@JsonIgnore
+	public Volume volume;
 	private Set<VolumeAttachmentResource> attachments;
 
 	public VolumeResourceImpl(String region, Volume volume) {

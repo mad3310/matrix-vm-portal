@@ -19,6 +19,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
@@ -58,6 +60,7 @@ import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
@@ -862,12 +865,32 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void attachVolume(VMResource vmResource, VolumeResource volumeResource)
-			throws OpenStackException {
+	public void attachVolume(VMResource vmResource,
+			VolumeResource volumeResource) throws OpenStackException {
+		if (vmResource.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+
 		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
 			throw new OpenStackException(
-					"Under the different regions of the vm and volume can not add.",
-					"不同地域下的虚拟机和云硬盘不能添加");
+					"Under the different regions of the vm and volume can not attach.",
+					"不同地域下的虚拟机和云硬盘不能附加");
+		}
+
+		Server.Status vmStatus = ((VMResourceImpl) vmResource).server
+				.getStatus();
+		if (vmStatus != Server.Status.ACTIVE) {
+			throw new OpenStackException(
+					"The current status of the virtual machine can not attach volume.",
+					"虚拟机当前的状态不能附加云硬盘。");
+		}
+
+		Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
+				.getStatus();
+		if (volumeStatus != Volume.Status.AVAILABLE) {
+			throw new OpenStackException(
+					"The status of the volume is not available.",
+					"云硬盘的状态不是可用的。");
 		}
 
 		Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
@@ -885,10 +908,46 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void detachVolume(VMResource vmResource,
 			VolumeResource volumeResource) throws OpenStackException {
+		if (vmResource.getTaskState() != null) {
+			throw new TaskNotFinishedException();
+		}
+
 		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
 			throw new OpenStackException(
-					"Under the different regions of the vm and volume can not remove.",
+					"Under the different regions of the vm and volume can not detach.",
 					"不同地域下的虚拟机和云硬盘不能分离");
+		}
+
+		Server.Status vmStatus = ((VMResourceImpl) vmResource).server
+				.getStatus();
+		if (vmStatus != Server.Status.ACTIVE) {
+			throw new OpenStackException(
+					"The current status of the virtual machine can not attach volume.",
+					"虚拟机当前的状态不能分离云硬盘。");
+		}
+
+		Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
+				.getStatus();
+		if (volumeStatus != Volume.Status.IN_USE) {
+			throw new OpenStackException(
+					"The status of the volume is not in use.", "云硬盘没有被使用。");
+		}
+
+		boolean isAttachedToServer = false;
+		for (VolumeAttachment volumeAttachment : ((VolumeResourceImpl) volumeResource).volume
+				.getAttachments()) {
+			if (volumeAttachment.getServerId().equals(vmResource.getId())) {
+				isAttachedToServer = true;
+				if ("/".equals(volumeAttachment.getDevice())) {
+					throw new OpenStackException(
+							"Attached on the the volume can't be detached in the root directory.",
+							"挂载在根路径上的云硬盘不能被分离。");
+				}
+			}
+		}
+		if (!isAttachedToServer) {
+			throw new OpenStackException(
+					"The volume is not attached to this vm.", "云硬盘没有被这台虚拟机使用。");
 		}
 
 		Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
