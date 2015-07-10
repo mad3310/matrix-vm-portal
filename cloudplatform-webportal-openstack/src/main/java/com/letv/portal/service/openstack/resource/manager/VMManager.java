@@ -20,10 +20,9 @@ public interface VMManager extends ResourceManager {
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;
 
-	Page listAll(String name, Integer currentPage,
-			Integer recordsPerPage) throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException,
-			OpenStackException;
+	Page listAll(String name, Integer currentPage, Integer recordsPerPage)
+			throws RegionNotFoundException, ResourceNotFoundException,
+			APINotAvailableException, OpenStackException;
 
 	Page listByRegionGroup(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
@@ -48,7 +47,8 @@ public interface VMManager extends ResourceManager {
 			TaskNotFinishedException, VMStatusException, OpenStackException;
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
-			VMDeleteException, APINotAvailableException, TaskNotFinishedException;
+			VMDeleteException, APINotAvailableException,
+			TaskNotFinishedException;
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
@@ -63,16 +63,17 @@ public interface VMManager extends ResourceManager {
 	void startSync(String region, VMResource vm)
 			throws RegionNotFoundException, TaskNotFinishedException,
 			VMStatusException, PollingInterruptedException;
-	
+
 	void batchStartSync(String region, String vmIdListJson)
 			throws OpenStackException;
 
-	void stop(String region, VMResource vm) throws RegionNotFoundException, TaskNotFinishedException, VMStatusException;
+	void stop(String region, VMResource vm) throws RegionNotFoundException,
+			TaskNotFinishedException, VMStatusException;
 
 	void stopSync(String region, VMResource vm)
 			throws PollingInterruptedException, RegionNotFoundException,
 			TaskNotFinishedException, VMStatusException;
-	
+
 	void batchStopSync(String region, String vmIdListJson)
 			throws OpenStackException;
 
@@ -86,4 +87,5 @@ public interface VMManager extends ResourceManager {
 
 	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
 			String region) throws OpenStackException;
+
 }

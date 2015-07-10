@@ -208,8 +208,16 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		Page page = new Page();
 		page.setData(vmResources);
 		page.setTotalRecords(serverCount);
-		page.setRecordsPerPage(recordsPerPage);
-		page.setCurrentPage(currentPage);
+		if (recordsPerPage != null) {
+			page.setRecordsPerPage(recordsPerPage);
+		}else{
+			page.setRecordsPerPage(10);
+		}
+		if (currentPage != null) {
+			page.setCurrentPage(currentPage);
+		}else{
+			page.setCurrentPage(1);
+		}
 		return page;
 	}
 
