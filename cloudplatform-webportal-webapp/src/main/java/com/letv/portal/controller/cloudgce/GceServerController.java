@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import junit.framework.Assert;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +23,9 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.GceImageStatus;
-import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.gce.GceServer;
-import com.letv.portal.model.log.LogCluster;
-import com.letv.portal.model.log.LogServer;
-import com.letv.portal.model.slb.SlbServer;
+import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.task.service.ITaskChainIndexService;
 import com.letv.portal.model.task.service.ITaskChainService;
 import com.letv.portal.model.task.service.ITaskEngine;
@@ -113,6 +108,15 @@ public class GceServerController {
 		ResultObject obj = new ResultObject();
 		GceServer gce = this.gceServerService.selectById(id);
 		obj.setData(gce);
+		return obj;
+	}
+	
+	@RequestMapping(value="/ext/{id}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject getGceExtByGceId(@PathVariable Long id){
+		isAuthorityGce(id);
+		ResultObject obj = new ResultObject();
+		GceServerExt gceExt = this.gceServerService.selectByGceServerId(id);
+		obj.setData(gceExt);
 		return obj;
 	}
 	

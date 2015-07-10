@@ -205,7 +205,7 @@
 										</div>
 									</dd>
 								</dl>
-								<!-- <dl class="bk-group">
+								<dl class="bk-group">
 									<dt class="bk-group-title">关联服务</dt>
 									<dd class="bk-group-detail">
 										<div class="bk-group-control"></div>
@@ -248,7 +248,7 @@
 											</div>
 										</div>
 									</dd>
-								</dl> -->
+								</dl>
 								<dl class="bk-group" >
 									<dt class="bk-group-title">购买量</dt>
 									<dd class="bk-group-detail">

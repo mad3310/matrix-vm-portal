@@ -42,16 +42,16 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 		if(!tr.isSuccess())
 			return tr;
 		//页面下拉框选择，传入
-		Long cbaseClusterId = getLongFromObject(params.get("ocsId"));
-		if(cbaseClusterId == null)
-			throw new ValidateException("params's mclusterId is null");
+		Long cbaseBucketId = getLongFromObject(params.get("ocsId"));
+		if(cbaseBucketId == null)
+			throw new ValidateException("params's cbaseBucketId is null");
 		
-		CbaseBucketModel bucket = this.cbaseBucketService.selectById(cbaseClusterId);
+		CbaseBucketModel bucket = this.cbaseBucketService.selectById(cbaseBucketId);
 		if (bucket == null)
 			throw new ValidateException("参数不合法，相关数据不存在");
 		
 		List<CbaseContainerModel> cbaseContainers = this.cbaseContainerService
-				.selectByCbaseClusterId(cbaseClusterId);
+				.selectByCbaseClusterId(bucket.getCbaseClusterId());
 
 		StringBuffer cbaseHosts = new StringBuffer();
 		for (CbaseContainerModel container : cbaseContainers) {
@@ -76,7 +76,7 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 			
 			//配置moxi
 			map.clear();
-			map.put("CBASE_HOST", cbaseHosts.toString().substring(0,cbaseHosts.toString().length()-1));
+			map.put("CBASE_HOST", cbaseHosts.length()>0?cbaseHosts.substring(0,cbaseHosts.length()-1):cbaseHosts.toString());
 			map.put("CBASE_BUCKET", bucket.getBucketName());
 			map.put("CBASE_PWD", bucket.getBucketName());
 			ApiResultObject result = this.gcePythonService.configMoxi(map, gceContainer.getHostIp(),ext.get(0).getBindPort());

@@ -13,6 +13,7 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.DbModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
@@ -21,6 +22,7 @@ import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.gce.IGceContainerExtService;
 
@@ -31,6 +33,8 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 	private IGcePythonService gcePythonService;
 	@Autowired
 	private IContainerService containerService;
+	@Autowired
+	private IDbService dbService;
 	@Autowired
 	private IGceContainerExtService gceContainerExtService;
 	@Autowired
@@ -44,21 +48,23 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 		if(!tr.isSuccess())
 			return tr;
 		//页面下拉框选择，传入
-		Long mclusterId = getLongFromObject(params.get("rdsId"));
-		if(mclusterId == null)
-			throw new ValidateException("params's mclusterId is null");
+		Long dbId = getLongFromObject(params.get("rdsId"));
+		if(dbId == null)
+			throw new ValidateException("params's dbId is null");
+		
+		DbModel db = this.dbService.selectById(dbId);
 		
 		//获取GceCLuster
 		GceCluster gceCluster = super.getGceCluster(params);
 		//获取rds-CLuster
-		MclusterModel mclusterModel = this.mclusterService.selectById(mclusterId);
+		MclusterModel mclusterModel = this.mclusterService.selectById(db.getMclusterId());
 		if(mclusterModel == null)
-			throw new ValidateException("mclusterModel is null by mclusterId:" + mclusterId);
+			throw new ValidateException("mclusterModel is null by mclusterId:" + db.getMclusterId());
 		
 		//获取rds-container
-		List<ContainerModel> rdsContainers = this.containerService.selectByMclusterId(mclusterId);
+		List<ContainerModel> rdsContainers = this.containerService.selectByMclusterId(db.getMclusterId());
 		if(rdsContainers.isEmpty())
-			throw new ValidateException("containers is empty by mclusterId:" + mclusterId);
+			throw new ValidateException("containers is empty by mclusterId:" + db.getMclusterId());
 		String nodeIp1 = rdsContainers.get(0).getIpAddr();
 		String nodeIp2 = rdsContainers.get(1).getIpAddr();
 		String nodeIp3 = rdsContainers.get(2).getIpAddr();
