@@ -86,7 +86,17 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		params.put("isCreateLog", true);
 		params.put("isConfig", false);
 		
+		if(null != rdsId)
+			params.put("rdsId", rdsId);
+		if(null != ocsId)
+			params.put("ocsId", ocsId);
+		
 		if(GceType.JETTY.equals(gceServer.getType())) {
+			if(null !=rdsId ||null !=ocsId) {
+				GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
+				this.gceServerService.saveGceExt(gse);
+			}
+			
 			gceServer.setType(GceType.NGINX_PROXY);
 			gceServer.setGceName(NGINX4JETTY_CODE+"_" + gceServer.getGceName());
 			gceServer.setGceImageName("");
@@ -106,14 +116,6 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 			params.put("isContinue", false);
 		}
 		
-		if(null != rdsId)
-			params.put("rdsId", rdsId);
-		if(null != ocsId)
-			params.put("ocsId", ocsId);
-		if(null !=rdsId ||null !=ocsId) {
-			GceServerExt gse = new GceServerExt(gceServer.getId(),rdsId,ocsId);
-			this.gceServerService.saveGceExt(gse);
-		}
 		this.build(params);
 	}
 

@@ -82,23 +82,7 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				StringBuffer containerPort = new StringBuffer();
 				StringBuffer protocol = new StringBuffer();
 				
-				GceContainerExt ext = new GceContainerExt();
-				
 				for (Map portBinding : portBindings) {
-					//保存gceContainer扩展表，记录映射端口
-					if("jetty".equals(map.get("type"))) {
-						if("9888".equals(portBinding.get("containerPort"))) {//gbalance端口
-							ext.setBindPort((String)portBinding.get("hostPort"));
-							ext.setInnerPort((String)portBinding.get("containerPort"));
-							ext.setType("glb");
-							ext.setDescn("gbalancer映射内外端口");
-						} else if("7777".equals(portBinding.get("containerPort"))) {//moxi端口
-							ext.setBindPort((String)portBinding.get("hostPort"));
-							ext.setInnerPort((String)portBinding.get("containerPort"));
-							ext.setType("moxi");
-							ext.setDescn("moxi映射内外端口");
-						}
-					}
 					if("manager".equals(portBinding.get("type"))) {
 						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
 						continue;
@@ -117,8 +101,24 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				
 				this.gceContainerService.insert(container);
 				if("jetty".equals(map.get("type"))) {
+					GceContainerExt ext = new GceContainerExt();
 					ext.setContainerId(container.getId());
-					this.gceContainerExtService.insert(ext);
+					for (Map portBinding : portBindings) {
+						//保存gceContainer扩展表，记录映射端口
+						if("9888".equals(portBinding.get("containerPort"))) {//gbalance端口
+							ext.setBindPort((String)portBinding.get("hostPort"));
+							ext.setInnerPort((String)portBinding.get("containerPort"));
+							ext.setType("glb");
+							ext.setDescn("gbalancer映射内外端口");
+							this.gceContainerExtService.insert(ext);
+						} else if("7777".equals(portBinding.get("containerPort"))) {//moxi端口
+							ext.setBindPort((String)portBinding.get("hostPort"));
+							ext.setInnerPort((String)portBinding.get("containerPort"));
+							ext.setType("moxi");
+							ext.setDescn("moxi映射内外端口");
+							this.gceContainerExtService.insert(ext);
+						}
+					}
 				}
 			}
 		}
