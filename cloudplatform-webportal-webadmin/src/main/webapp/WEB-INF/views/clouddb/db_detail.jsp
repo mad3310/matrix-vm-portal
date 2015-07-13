@@ -201,7 +201,7 @@
 											<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>密码：</label>
 											<div class="">
 												<div class="col-xs-12 col-sm-4">
-													<input name="newPwd1" class="form-control input-radius-2" type="password" autocomplete="off"/>
+													<input name="newPwd1" class="form-control input-radius-2" type="text" autocomplete="off" onfocus="this.type='password'" />
 												</div>
 												<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
 													<p class="">由字母、数字或特殊字符如：@#$%^&*!~_- 组成，长度6~32位</p>
@@ -212,7 +212,7 @@
 											<label class="col-xs-12 col-sm-2 control-label"><span class="text-danger">*</span>确认密码：</label>
 											<div class="">
 												<div class="col-xs-12 col-sm-4">
-													<input name="newPwd2" class="form-control input-radius-2" type="password" autocomplete="off"/>
+													<input name="newPwd2" class="form-control input-radius-2" type="text" autocomplete="off" onfocus="this.type='password'" />
 												</div>
 											</div>
 										</div>
@@ -355,7 +355,7 @@
 											<div class="">
 												<!-- 密码输入框 -->
 												<div class="col-xs-12 col-sm-4">
-													<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="password" autocomplete="off"/>
+													<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="text" autocomplete="off" onfocus="this.type='password'" />
 												</div>
 												<!-- 密码规则提示 -->
 												<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
@@ -371,7 +371,7 @@
 											<div class="">
 												<!-- 确认密码输入框 -->
 												<div class="col-xs-12 col-sm-4">
-													<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="password" autocomplete="off"/>
+													<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="text" autocomplete="off" onfocus="this.type='password'"  />
 												</div>
 											</div>
 										</div>

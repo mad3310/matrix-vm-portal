@@ -284,7 +284,7 @@ $(function(){
 			$.post(url,createUserData, function(data) {
 				var Data=JSON.parse(data)
 				if(error(Data)){
-					$("#submitCreateUserForm").removeClass('disabled').text("提交");
+					$("#submitCreateUserForm").removeClass('disabled').removeAttr('disabled').text("提交");
 					return;
 				}else{
 					success('创建新用户执行成功！');
