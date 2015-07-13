@@ -23,6 +23,7 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 
 @Controller
 @RequestMapping("/ecs")
@@ -240,6 +241,38 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStopSync(vms);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/vm-attach-volume", method = RequestMethod.POST)
+	public @ResponseBody ResultObject attachVolume(@PathVariable String region,
+			@RequestParam String vmId, @RequestParam String volumeId) {
+		ResultObject result = new ResultObject();
+		try {
+			OpenStackSession openStackSession = Util.session(sessionService);
+			VMManager vmManager = openStackSession.getVMManager();
+			VolumeManager volumeManager = openStackSession.getVolumeManager();
+			vmManager.attachVolume(vmManager.get(region, vmId),
+					volumeManager.get(region, volumeId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/vm-detach-volume", method = RequestMethod.POST)
+	public @ResponseBody ResultObject detachVolume(@PathVariable String region,
+			@RequestParam String vmId, @RequestParam String volumeId) {
+		ResultObject result = new ResultObject();
+		try {
+			OpenStackSession openStackSession = Util.session(sessionService);
+			VMManager vmManager = openStackSession.getVMManager();
+			VolumeManager volumeManager = openStackSession.getVolumeManager();
+			vmManager.detachVolume(vmManager.get(region, vmId),
+					volumeManager.get(region, volumeId));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
