@@ -5,5 +5,5 @@ import com.letv.portal.model.gce.GceServerExt;
 
 public interface IGceServerExtDao extends IBaseDao<GceServerExt> {
 
-
+	GceServerExt selectByGceServerId(Long gceServerId);
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.gce.IGceContainerExtDao">
+
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="GceContainerExt">
+		<result column="ID" property="id" />
+		<result column="CONTAINER_ID" property="containerId" />
+		<result column="BIND_PORT" property="bindPort" />
+		<result column="INNER_PORT" property="innerPort" />
+		<result column="TYPE" property="type" />
+		<result column="DESCN" property="descn" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+		
+	    <association property="container" javaType="GceContainer">
+			<result column="HOST_IP" property="hostIp" />
+		</association>
+		
+	</resultMap>
+	
+	<!-- WEBPORTAL_GCECONTAINEREXT GC table all fields -->
+	<sql id="Base_Column_List">
+		ext.ID,ext.CONTAINER_ID,ext.BIND_PORT,ext.INNER_PORT,ext.TYPE,ext.DESCN,
+		ext.DELETED,ext.CREATE_TIME,ext.CREATE_USER,ext.UPDATE_TIME,ext.UPDATE_USER
+	</sql>
+	<!-- 查询条件 -->
+	<sql id="Common_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and ext.ID=#{id}
+			</if>
+			<if test="containerId != null  and containerId != '' and containerId != 'null'">
+				and ext.CONTAINER_ID=#{containerId}
+			</if>
+			<if test="bindPort != null and bindPort != '' ">
+				and ext.BIND_PORT=#{bindPort}
+			</if>
+			<if test="innerPort != null and innerPort != '' ">
+				and ext.INNER_PORT=#{innerPort}
+			</if>
+			<if test="type != null and type != '' ">
+				and ext.TYPE=#{type}
+			</if>
+			<if test="deleted != null and deleted != '' ">
+				and ext.DELETED=#{deleted}
+			</if>
+			<if test="descn != null and descn != '' ">
+				and ext.DESCN=#{descn}
+			</if>
+		</trim>
+	</sql>
+	
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	        select
+				<include refid="Base_Column_List" />,c.HOST_IP
+			from 
+				WEBPORTAL_GCECONTAINER_EXT ext
+			left join
+				WEBPORTAL_GCECONTAINER c on c.ID=ext.CONTAINER_ID
+				<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="GceContainerExt" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+			WEBPORTAL_GCECONTAINER_EXT(
+				CONTAINER_ID,BIND_PORT,INNER_PORT,TYPE,DESCN,
+				DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+			#{containerId},#{bindPort},#{innerPort},#{type},#{descn},
+			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
+	</insert>
+	
+	
+</mapper>   

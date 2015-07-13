@@ -8,7 +8,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.result.ApiResultObject;
@@ -17,11 +16,12 @@ import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
-import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.gce.GceContainerExt;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IHostService;
+import com.letv.portal.service.gce.IGceContainerExtService;
 import com.letv.portal.service.gce.IGceContainerService;
 
 @Service("taskGceClusterCheckStatusService")
@@ -33,6 +33,8 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 	private IHostService hostService;
 	@Autowired
 	private IGceContainerService gceContainerService;
+	@Autowired
+	private IGceContainerExtService gceContainerExtService;
 	
 	private final static long PYTHON_CREATE_CHECK_TIME = 300000;
 	private final static long PYTHON_CHECK_INTERVAL_TIME = 3000;
@@ -79,6 +81,7 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				StringBuffer hostPort = new StringBuffer();
 				StringBuffer containerPort = new StringBuffer();
 				StringBuffer protocol = new StringBuffer();
+				
 				for (Map portBinding : portBindings) {
 					if("manager".equals(portBinding.get("type"))) {
 						container.setMgrBindHostPort((String)portBinding.get("hostPort"));
@@ -97,6 +100,26 @@ public class TaskGceClusterCheckStatusServiceImpl extends BaseTask4GceServiceImp
 				container.setBingProtocol(protocol.length()>0?protocol.substring(0, protocol.length()-1):protocol.toString());
 				
 				this.gceContainerService.insert(container);
+				if("jetty".equals(map.get("type"))) {
+					GceContainerExt ext = new GceContainerExt();
+					ext.setContainerId(container.getId());
+					for (Map portBinding : portBindings) {
+						//保存gceContainer扩展表，记录映射端口
+						if("9888".equals(portBinding.get("containerPort"))) {//gbalance端口
+							ext.setBindPort((String)portBinding.get("hostPort"));
+							ext.setInnerPort((String)portBinding.get("containerPort"));
+							ext.setType("glb");
+							ext.setDescn("gbalancer映射内外端口");
+							this.gceContainerExtService.insert(ext);
+						} else if("7777".equals(portBinding.get("containerPort"))) {//moxi端口
+							ext.setBindPort((String)portBinding.get("hostPort"));
+							ext.setInnerPort((String)portBinding.get("containerPort"));
+							ext.setType("moxi");
+							ext.setDescn("moxi映射内外端口");
+							this.gceContainerExtService.insert(ext);
+						}
+					}
+				}
 			}
 		}
 		tr.setParams(params);

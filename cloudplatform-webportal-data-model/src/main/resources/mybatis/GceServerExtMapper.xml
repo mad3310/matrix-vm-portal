@@ -17,6 +17,12 @@
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
 		
+		<association property="db" javaType="Db">
+			<result column="DB_NAME" property="dbName" />
+		</association>
+		<association property="cbase" javaType="CbaseBucket">
+			<result column="BUCKET_NAME" property="bucketName" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -115,6 +121,19 @@
 			<include refid="Base_Column_List" /> 
 			from WEBPORTAL_GCE_EXT g 
 			where g.ID = #{id}
+	</select>
+	
+	<!-- 根据gceServerId查询-->
+	<select id="selectByGceServerId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+				<include refid="Base_Column_List" /> ,db.DB_NAME,cbase.BUCKET_NAME
+			from 
+				WEBPORTAL_GCE_EXT g 
+			left join
+				WEBPORTAL_DB db on g.RDS_ID=db.ID
+			left join
+				WEBPORTAL_CBASE_BUCKET cbase on g.OCS_ID=cbase.ID
+			where g.GCE_ID = #{gceServerId}
 	</select>
 	
 </mapper>   

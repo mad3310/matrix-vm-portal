@@ -84,10 +84,10 @@ define(function(require){
     function initSelect(){
     	var url="/hcluster/gce";
     	cn.GetData(url,createDbHandler.GetHclusterHandler);
-    	/*var url="/db";
+    	var url="/db";
     	cn.GetData(url,createDbHandler.getRdsHandler);
     	var url="/cbase";
-    	cn.GetData(url,createDbHandler.getOcsHandler);*/
+    	cn.GetData(url,createDbHandler.getOcsHandler);
     }
     function GetImageByType(){
     	var type = $("[name = type]").val();
