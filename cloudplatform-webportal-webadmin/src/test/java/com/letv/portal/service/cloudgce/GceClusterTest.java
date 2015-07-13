@@ -18,10 +18,11 @@ public class GceClusterTest extends AbstractTest{
     @Test
     public void testGceClusterList() {
     	MockHttpServletRequest request =  new MockHttpServletRequest();
-    	request.setAttribute("currentPage", 1);
-    	request.setAttribute("recordsPerPage", 15);
+    	request.setParameter("currentPage", "1");
+    	request.setParameter("recordsPerPage", "15");
+    	request.setParameter("status", "");
     	ResultObject ro = gceClusterController.list(new Page(), request, new ResultObject());
-    	Assert.assertEquals(72, ((Page)ro.getData()).getTotalRecords());
+    	Assert.assertEquals(92, ((Page)ro.getData()).getTotalRecords());
     }
     
 }

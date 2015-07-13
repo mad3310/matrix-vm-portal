@@ -62,5 +62,7 @@
         <typeAlias alias="Dictionary" type="com.letv.portal.model.dictionary.Dictionary" />
         <typeAlias alias="Image" type="com.letv.portal.model.image.Image" />
         
+        <typeAlias alias="GceContainerExt" type="com.letv.portal.model.gce.GceContainerExt" />
+        
     </typeAliases>
 </configuration>

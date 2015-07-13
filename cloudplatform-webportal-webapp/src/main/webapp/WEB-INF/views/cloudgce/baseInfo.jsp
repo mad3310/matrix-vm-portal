@@ -98,6 +98,33 @@ td{word-break: break-all; word-wrap:break-word;}</style>
 				  </div>
 				</div>
 			</div>
+			
+			<div class="panel panel-default panel-table">
+				<div class="panel-heading bdl-list panel-heading-mcluster" role="tab" id="headingThree">
+					<span class="panel-title">
+							关联服务
+					</span>
+					<a data-toggle="collapse" href="#collapseThree"  aria-expanded="true" aria-controls="collapseThree">
+					<span class="toggle-drop-down-icon" toggle-show="toggleShow">
+						<span class="glyphicon glyphicon-chevron-down table-viewer-dropdown "></span>
+					</span>
+					</a>
+				</div>
+				<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+				  <div class="panel-body pd0">
+					<table class="table table-bordered table-bi">
+						<tbody>
+						<tr>
+							<td width="50%"><span class="text-muted pd-r8">RDS:</span><span id="gce_rds_name"></span></td>
+							<td width="50%"><span class="text-muted" style="padding-right:8px">OCS:</span><span id="gce_ocs_name"></span></td>
+						</tr>
+						</tbody>
+					</table>
+				  </div>
+				</div>
+			</div>
+			
+			
 		</div>
 </body>
 

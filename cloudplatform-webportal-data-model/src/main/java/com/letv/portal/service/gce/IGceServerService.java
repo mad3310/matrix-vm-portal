@@ -3,7 +3,6 @@ package com.letv.portal.service.gce;
 import java.util.List;
 import java.util.Map;
 
-import com.letv.common.paging.impl.Page;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.service.IBaseService;
@@ -23,4 +22,6 @@ public interface IGceServerService extends IBaseService<GceServer> {
 	void saveGceExt(GceServerExt gse);
 
 	GceServer selectByClusterId(Long clusterId);
+	
+	GceServerExt selectByGceServerId(Long gceServerId);
 }

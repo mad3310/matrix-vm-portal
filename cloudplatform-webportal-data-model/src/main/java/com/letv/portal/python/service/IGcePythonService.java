@@ -64,4 +64,45 @@ public interface IGcePythonService {
 	public ApiResultObject checkStatus(String nodeIp1,String port,String adminUser, String adminPassword);
 	
 	public ApiResultObject capacity(Map<String,String> params,String ip,String adminUser, String adminPassword);
+	
+	/**
+	  * @Title: startGbalancer
+	  * @Description: 配置并启动container上的gbalancer
+	  * @param params 接口参数
+	  * @param ip container地址
+	  * @param adminUser 用户名
+	  * @param adminPassword 密码
+	  * @return ApiResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月7日 下午6:09:41
+	  */
+	public ApiResultObject startGbalancer(Map<String,String> params,String ip,String port, String adminUser, String adminPassword);
+	/**
+	 * @Title: configMoxi
+	 * @Description: 配置gcecontainer上的moxi
+	 * @param params 接口参数
+	 * @param ip container地址
+	 * @param adminUser 用户名
+	 * @param adminPassword 密码
+	 * @return ApiResultObject   
+	 * @throws 
+	 * @author lisuxiao
+	 * @date 2015年7月7日 下午6:09:41
+	 */
+	public ApiResultObject configMoxi(Map<String,String> params,String ip,String port);
+	
+	/**
+	 * @Title: startMoxi
+	 * @Description: 启动gcecontainer上的moxi
+	 * @param params 接口参数
+	 * @param ip container地址
+	 * @param adminUser 用户名
+	 * @param adminPassword 密码
+	 * @return ApiResultObject   
+	 * @throws 
+	 * @author lisuxiao
+	 * @date 2015年7月7日 下午6:09:41
+	 */
+	public ApiResultObject startMoxi(String ip,String port);
 }
