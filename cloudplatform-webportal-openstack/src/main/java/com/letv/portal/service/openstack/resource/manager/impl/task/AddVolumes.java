@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
@@ -51,8 +52,24 @@ public class AddVolumes implements Runnable {
 			for (Integer size : volumeSizes) {
 				Volume volume = volumeApi
 						.create(size, CreateVolumeOptions.NONE);
-				volumeAttachmentApi.attachVolumeToServerAsDevice(
-						volume.getId(), server.getId(), "/dev/vdc");
+				try {
+					while (true) {
+						volume = volumeApi.get(volume.getId());
+						if (volume.getStatus() == Volume.Status.CREATING) {
+							Thread.sleep(1000);
+						} else {
+							if (volume.getStatus() == Volume.Status.AVAILABLE) {
+								volumeAttachmentApi
+										.attachVolumeToServerAsDevice(
+												volume.getId(), server.getId(),
+												"");
+							}
+							break;
+						}
+					}
+				} catch (InterruptedException e) {
+					throw new PollingInterruptedException(e);
+				}
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
