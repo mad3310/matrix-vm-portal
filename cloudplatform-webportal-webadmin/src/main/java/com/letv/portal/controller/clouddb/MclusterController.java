@@ -50,57 +50,27 @@ public class MclusterController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(MclusterController.class);
 	
-	/**Methods Name: list <br>
-	 * Description: get mcluster list by page and params<br>
-	 * @author name: liuhao1
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/{currentPage}/{recordsPerPage}/{mclusterName}", method=RequestMethod.GET)   
-	public @ResponseBody ResultObject oldlist(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable String mclusterName,ResultObject result) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("mclusterName", StringUtil.transSqlCharacter(mclusterName));
-		result.setData(this.mclusterProxy.selectPageByParams(currentPage,recordsPerPage,map));
-		return result;
-	}	
-	
-	/**Methods Name: list <br>
-	 * Description: 查询mcluster列表<br>
-	 * @author name: yaokuo
-	 * @param dbName
-	 * @param request
-	 */
 	@RequestMapping(value="/list",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.mclusterService.selectPageByParams(page, params));
 		return obj;
 	}
-	/**Methods Name: list <br>
-	 * Description: 获取mcluster列表<br>
-	 * @author name: liuhao1
-	 * @param result
-	 * @return
-	 */
-	/*@RequestMapping(method=RequestMethod.GET)   
-	public @ResponseBody ResultObject list(ResultObject result) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("status", MclusterStatus.RUNNING.getValue());
-		result.setData(this.mclusterProxy.selectByMap(map));
-		return result;
-	}*/	
+	
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		result.setData(this.mclusterService.select4Run());
 		return result;
 	}	
+	
 	@RequestMapping(value="/valid",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject validList(ResultObject result) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		result.setData(this.mclusterService.selectValidMclusters());
 		return result;
 	}	
+	
 	@RequestMapping(value="/valid/{hclusterId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject validList(@PathVariable Long hclusterId,ResultObject result) {
 		if(hclusterId == null)

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.ContainerModel;
@@ -50,7 +51,7 @@ public class FixedPushServiceImpl implements IFixedPushService{
 	 */
 	public Boolean createMutilContainerPushFixedInfo(List<ContainerModel> containers){
 		Boolean flag = false;
-		try {					
+		try {
 			for(ContainerModel c:containers){
 				String servertag = c.getHostIp();
 				List<ContainerPush> list = new ArrayList<ContainerPush>();	
@@ -64,17 +65,17 @@ public class FixedPushServiceImpl implements IFixedPushService{
 				fixedPushModel.setIpaddress(list);
 				createContainerPushFixedInfo(fixedPushModel);
 			}
-			flag = true;
-			logger.debug("fixed success");
 		} catch (Exception e) {
-			logger.debug("fixed failure"+e.getMessage());
+			throw new TaskExecuteException("push create fixed exception" + e.getMessage());
 		}
+		flag = true;
+		
          return flag;
 	}
 	@Override
 	public Boolean deleteMutilContainerPushFixedInfo(List<ContainerModel> containers){
-		Boolean flag = false;
-		try {					
+		Boolean flag = true;
+		try {
 			for(ContainerModel c:containers){
 				String servertag = c.getHostIp();
 				List<ContainerPush> list = new ArrayList<ContainerPush>();	
@@ -88,10 +89,8 @@ public class FixedPushServiceImpl implements IFixedPushService{
 				fixedPushModel.setIpaddress(list);
 				createContainerPushFixedInfo(fixedPushModel);
 			}
-			flag = true;
-			logger.debug("fixed success");
 		} catch (Exception e) {
-			logger.debug("fixed failure"+e.getMessage());
+			throw new TaskExecuteException("push delete fixed exception" + e.getMessage());
 		}
 		return flag;
 	}

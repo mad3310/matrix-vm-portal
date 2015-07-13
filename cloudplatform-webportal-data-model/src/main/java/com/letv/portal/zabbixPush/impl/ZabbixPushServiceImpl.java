@@ -99,19 +99,15 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 	public Boolean deleteSingleContainerPushZabbixInfo(
 			ContainerModel containerModel) {
 		Boolean flag = false;
-		try {  
-			if(containerModel!=null){
-				ZabbixPushDeleteModel zabbixPushDeleteModel = new ZabbixPushDeleteModel();
-				List<String> list = new ArrayList<String>();
-				list.add(containerModel.getZabbixHosts());
-				zabbixPushDeleteModel.setParams(list);
-				flag  = pushDeleteZabbixInfo(zabbixPushDeleteModel);					
-			}		
-			} catch (Exception e) {
-				logger.debug("zabbix删除失败");
-			}
+		if(containerModel!=null){
+			ZabbixPushDeleteModel zabbixPushDeleteModel = new ZabbixPushDeleteModel();
+			List<String> list = new ArrayList<String>();
+			list.add(containerModel.getZabbixHosts());
+			zabbixPushDeleteModel.setParams(list);
+			flag  = pushDeleteZabbixInfo(zabbixPushDeleteModel);					
+		}		
 		return flag;
-			}
+	}
 	/**
 	 * Methods Name: deleteMutilContainerPushZabbixInfo <br>
 	 * Description: 删除多个zabbix信息<br>
@@ -124,18 +120,13 @@ public class ZabbixPushServiceImpl implements IZabbixPushService{
 			List<ContainerModel> list) {
 		Boolean flag = false;
 		int count =0;
-		try {  			
-			for(ContainerModel c:list){
-				flag = deleteSingleContainerPushZabbixInfo(c);	
-				if(flag)
-				count++;
-			}		
-			logger.debug("zabbix成功删除了"+count+"个container");
-			} catch (Exception e) {
-		    logger.debug("zabbix删除失败");
-			}
-		     return flag;
-			}
+		for(ContainerModel c:list){
+			flag = deleteSingleContainerPushZabbixInfo(c);	
+			if(!flag)
+				break;
+		}
+	     return flag;
+	}
 
 	/**
 	 * Methods Name: createContainerPushZabbixInfo <br>
