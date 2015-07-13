@@ -202,7 +202,7 @@
 					<div class="">
 						<!-- 密码输入框 -->
 						<div class="col-xs-12 col-sm-4">
-							<input name="newPwd1" class="form-control input-radius-2" type="password"/>
+							<input name="newPwd1" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
@@ -220,7 +220,7 @@
 					<div class="">
 						<!-- 确认密码输入框 -->
 						<div class="col-xs-12 col-sm-4">
-							<input name="newPwd2" class="form-control input-radius-2" type="password"/>
+							<input name="newPwd2" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
 						</div>
 					</div>
 				</div>
@@ -377,7 +377,7 @@
 					<div class="">
 						<!-- 密码输入框 -->
 						<div class="col-xs-12 col-sm-4">
-							<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="password" />
+							<input name="modifyFormNewPwd1" id="modifyFormNewPwd1" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
 						</div>
 						<!-- 密码规则提示 -->
 						<div class="col-xs-12 notice-block col-sm-10 col-sm-offset-2">
@@ -393,7 +393,7 @@
 					<div class="">
 						<!-- 确认密码输入框 -->
 						<div class="col-xs-12 col-sm-4">
-							<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="password" />
+							<input name="modifyFormNewPwd2" id="modifyFormNewPwd2" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off" />
 						</div>
 					</div>
 				</div>
@@ -417,7 +417,7 @@
 			</form>
 		</div>
 	</div>
-	<div id="showDbuserIpPrivilege" class="modal fade">
+	<div id="showDbuserIpPrivilege" class="modal fade" style="position:absolute;">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">

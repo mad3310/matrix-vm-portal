@@ -77,11 +77,11 @@
 				<div class="widget-header">
 					<h5 class="widget-title">数据库用户列表</h5>
 					<div class="widget-toolbar no-border">
-						<button id="create_db_user" class="btn btn-white btn-primary btn-xs toCreateAccount hidden-xs" type="button">  <!-- onclick="buildUser()" -->
+						<!-- <button id="create_db_user" class="btn btn-white btn-primary btn-xs toCreateAccount hidden-xs" type="button">  onclick="buildUser()"
 							<i class="ace-icont fa fa-plus"></i>
 							 创建用户
 						</button>
-						<button class="btn btn-info btn-xs toCreateAccount hidden-sm hidden-md hidden-lg"><i class="fa fa-plus-square"></i> </button>
+						<button class="btn btn-info btn-xs toCreateAccount hidden-sm hidden-md hidden-lg"><i class="fa fa-plus-square"></i> </button> -->
 					</div>
 				</div>
 				<div class="widget-body">
