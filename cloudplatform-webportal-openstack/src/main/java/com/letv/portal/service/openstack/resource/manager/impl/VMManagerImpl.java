@@ -811,7 +811,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public void batchDeleteSync(String vmIdListJson) throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -834,7 +834,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchStartSync(String vmIdListJson)
 			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -857,7 +857,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchStopSync(String vmIdListJson)
 			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
