@@ -218,13 +218,13 @@ function queryByPage(){
 				var td9=$("<td class='hidden-xs'>" 
 						+ "<a class=\"dbuser-list-ip-privilege\" href='javascript:void(0)' data-db-id="+array[i].dbId+">ip访问权限</a><span class=\"text-explode\">"
 						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">重置密码</a><span class=\"text-explode\">"
-	                    + "|</span><a class=\"dbuser-list-modify-privilege disabled\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">修改权限</a><span class=\"text-explode\">"
+	                    
 	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+">删除</a></div>"
 						+"</td>"
 						+"<td class='hidden-lg hidden-md hidden-sm'>"
 						+ "<a class=\"dbuser-list-ip-privilege\" href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><span class='text-primary'><i class='fa fa-cogs'></i></span></a><span class=\"text-explode\">"
 						+ "|</span><a class=\"dbuser-list-reset-password\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-key'></i></a><span class=\"text-explode\">"
-	                    + "|</span><a class=\"dbuser-list-modify-privilege\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-edit'></i></a><span class=\"text-explode\">"
+	                    
 	                    + "|</span><a class=\"dbuser-list-delete\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-trash-o'></i></a> </div>"
 						+"</td>");	
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
@@ -456,9 +456,11 @@ function formValidate() {
         }
         var url = "/dbUser/security/"+$("#reset-password-username").val();
     	$.post(url,postdata, function(data) {
-    		if(error(data)){warn(data.msgs);return;}else{success('密码重置成功！')}
-    		$('#reset-password-box').modal('hide');
-    		queryByPage();
+    		if(error(data)){warn(data.msgs);return;
+    		}else{
+    			success('密码重置成功！');$('#reset-password-form')[0].reset();$('#reset-password-box').modal('hide');
+    			queryByPage();
+    		}
     	});
     }).on('keyup', '[name="reset-password"]', function () {
         if($("[name = 'reset-password-repeat']").val() != ''){
