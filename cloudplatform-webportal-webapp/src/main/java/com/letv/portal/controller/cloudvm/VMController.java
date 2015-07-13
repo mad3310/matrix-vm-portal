@@ -185,13 +185,11 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value = "/region/{region}/vm-batch-delete", method = RequestMethod.POST)
-	public @ResponseBody ResultObject batchDelete(@PathVariable String region,
-			@RequestParam String vmIds) {
+	@RequestMapping(value = "/vm-batch-delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchDelete(@RequestParam String vms) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVMManager()
-					.batchDeleteSync(region, vmIds);
+			Util.session(sessionService).getVMManager().batchDeleteSync(vms);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -211,14 +209,12 @@ public class VMController {
 		}
 		return result;
 	}
-	
-	@RequestMapping(value = "/region/{region}/vm-batch-start", method = RequestMethod.POST)
-	public @ResponseBody ResultObject batchStart(@PathVariable String region,
-			@RequestParam String vmIds) {
+
+	@RequestMapping(value = "/vm-batch-start", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStart(@RequestParam String vms) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVMManager()
-					.batchStartSync(region, vmIds);
+			Util.session(sessionService).getVMManager().batchStartSync(vms);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -238,14 +234,12 @@ public class VMController {
 		}
 		return result;
 	}
-	
-	@RequestMapping(value = "/region/{region}/vm-batch-stop", method = RequestMethod.POST)
-	public @ResponseBody ResultObject batchStop(@PathVariable String region,
-			@RequestParam String vmIds) {
+
+	@RequestMapping(value = "/vm-batch-stop", method = RequestMethod.POST)
+	public @ResponseBody ResultObject batchStop(@RequestParam String vms) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getVMManager()
-					.batchStopSync(region, vmIds);
+			Util.session(sessionService).getVMManager().batchStopSync(vms);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

@@ -63,6 +63,7 @@ import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
+import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
@@ -595,14 +596,16 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	private void waitingVMs(List<String> vmIds, ServerApi serverApi,
-			ServerChecker checker) throws PollingInterruptedException {
+	private void waitingVMs(List<RegionAndVmId> vmIds, ServerChecker checker)
+			throws PollingInterruptedException {
 		try {
-			List<String> unFinishedVMIds = new LinkedList<String>();
+			List<RegionAndVmId> unFinishedVMIds = new LinkedList<RegionAndVmId>();
 			unFinishedVMIds.addAll(vmIds);
 			while (!unFinishedVMIds.isEmpty()) {
-				for (String vmId : unFinishedVMIds.toArray(new String[0])) {
-					Server server = serverApi.get(vmId);
+				for (RegionAndVmId vmId : unFinishedVMIds
+						.toArray(new RegionAndVmId[0])) {
+					Server server = novaApi.getServerApi(vmId.getRegion()).get(
+							vmId.getVmId());
 					if (checker.check(server)) {
 						unFinishedVMIds.remove(vmId);
 					}
@@ -807,17 +810,20 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void batchDeleteSync(String region, String vmIdListJson)
-			throws OpenStackException {
-		checkRegion(region);
-		ServerApi serverApi = novaApi.getServerApi(region);
+	public void batchDeleteSync(String vmIdListJson) throws OpenStackException {
+		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
 
-		List<String> vmIdList = Util.jsonList(vmIdListJson);
-		for (String vmId : vmIdList) {
-			delete(region, get(region, vmId));
+		Set<String> regions = getRegions();
+
+		for (RegionAndVmId regionAndVmId : regionAndVmIds) {
+			String region = regionAndVmId.getRegion();
+			if (!regions.contains(region)) {
+				throw new RegionNotFoundException(region);
+			}
+			delete(region, get(region, regionAndVmId.getVmId()));
 		}
 
-		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+		waitingVMs(regionAndVmIds, new ServerChecker() {
 			@Override
 			public boolean check(Server server) {
 				return isDeleteFinished(server);
@@ -826,17 +832,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void batchStartSync(String region, String vmIdListJson)
+	public void batchStartSync(String vmIdListJson)
 			throws OpenStackException {
-		checkRegion(region);
-		ServerApi serverApi = novaApi.getServerApi(region);
+		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
 
-		List<String> vmIdList = Util.jsonList(vmIdListJson);
-		for (String vmId : vmIdList) {
-			start(region, get(region, vmId));
+		Set<String> regions = getRegions();
+
+		for (RegionAndVmId regionAndVmId : regionAndVmIds) {
+			String region = regionAndVmId.getRegion();
+			if (!regions.contains(region)) {
+				throw new RegionNotFoundException(region);
+			}
+			start(region, get(region, regionAndVmId.getVmId()));
 		}
 
-		waitingVMs(vmIdList, serverApi, new ServerChecker() {
+		waitingVMs(regionAndVmIds, new ServerChecker() {
 			@Override
 			public boolean check(Server server) {
 				return isStartFinished(server);
@@ -845,18 +855,21 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void batchStopSync(String region, String vmIdListJson)
+	public void batchStopSync(String vmIdListJson)
 			throws OpenStackException {
-		checkRegion(region);
-		ServerApi serverApi = novaApi.getServerApi(region);
+		List<RegionAndVmId> regionAndVmIds = Util.jsonList(vmIdListJson);
 
-		List<String> vmIdList = Util.jsonList(vmIdListJson);
-		for (String vmId : vmIdList) {
-			stop(region, get(region, vmId));
+		Set<String> regions = getRegions();
+
+		for (RegionAndVmId regionAndVmId : regionAndVmIds) {
+			String region = regionAndVmId.getRegion();
+			if (!regions.contains(region)) {
+				throw new RegionNotFoundException(region);
+			}
+			stop(region, get(region, regionAndVmId.getVmId()));
 		}
 
-		waitingVMs(vmIdList, serverApi, new ServerChecker() {
-
+		waitingVMs(regionAndVmIds, new ServerChecker() {
 			@Override
 			public boolean check(Server server) {
 				return isStopFinished(server);

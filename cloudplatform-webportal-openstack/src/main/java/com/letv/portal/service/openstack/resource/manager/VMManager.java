@@ -55,7 +55,7 @@ public interface VMManager extends ResourceManager {
 			RegionNotFoundException, APINotAvailableException,
 			TaskNotFinishedException, PollingInterruptedException;
 
-	void batchDeleteSync(String region, String vmIdListJson)
+	void batchDeleteSync(String vmIdListJson)
 			throws OpenStackException;
 
 	void start(String region, VMResource vm) throws RegionNotFoundException,
@@ -65,7 +65,7 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, TaskNotFinishedException,
 			VMStatusException, PollingInterruptedException;
 
-	void batchStartSync(String region, String vmIdListJson)
+	void batchStartSync(String vmIdListJson)
 			throws OpenStackException;
 
 	void stop(String region, VMResource vm) throws RegionNotFoundException,
@@ -75,7 +75,7 @@ public interface VMManager extends ResourceManager {
 			throws PollingInterruptedException, RegionNotFoundException,
 			TaskNotFinishedException, VMStatusException;
 
-	void batchStopSync(String region, String vmIdListJson)
+	void batchStopSync(String vmIdListJson)
 			throws OpenStackException;
 
 	int totalNumber();
