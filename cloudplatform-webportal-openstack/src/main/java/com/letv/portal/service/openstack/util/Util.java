@@ -1,7 +1,6 @@
 package com.letv.portal.service.openstack.util;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 import org.codehaus.jackson.JsonParseException;
@@ -23,11 +22,12 @@ public class Util {
 		return stringBuilder.toString();
 	}
 
-	public static <T> List<T> jsonList(String json) throws OpenStackException {
+	public static <T> T fromJson(String json,
+			@SuppressWarnings("rawtypes") TypeReference typeReference)
+			throws OpenStackException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			return objectMapper.readValue(json, new TypeReference<List<T>>() {
-			});
+			return objectMapper.readValue(json, typeReference);
 		} catch (JsonParseException e) {
 			throw new OpenStackException("请求数据格式错误", e);
 		} catch (JsonMappingException e) {

@@ -75,7 +75,7 @@ public interface VMManager extends ResourceManager {
 			throws PollingInterruptedException, RegionNotFoundException,
 			TaskNotFinishedException, VMStatusException;
 
-	void batchStopSync(String vmIdListJson)
+	void batchStopSync(String regionAndVmIds)
 			throws OpenStackException;
 
 	int totalNumber();

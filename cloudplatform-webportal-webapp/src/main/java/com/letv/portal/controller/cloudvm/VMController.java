@@ -237,7 +237,7 @@ public class VMController {
 	}
 
 	@RequestMapping(value = "/vm-batch-stop", method = RequestMethod.POST)
-	public @ResponseBody ResultObject batchStop(@RequestParam String vms) {
+	public @ResponseBody ResultObject batchStop(String vms) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStopSync(vms);

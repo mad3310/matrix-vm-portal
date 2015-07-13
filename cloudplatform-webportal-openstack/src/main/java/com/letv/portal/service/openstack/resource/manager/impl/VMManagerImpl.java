@@ -69,7 +69,6 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
-import com.letv.portal.service.openstack.util.Util;
 
 public class VMManagerImpl extends AbstractResourceManager implements VMManager {
 
@@ -811,7 +810,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public void batchDeleteSync(String vmIdListJson) throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -834,7 +833,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchStartSync(String vmIdListJson)
 			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -857,7 +856,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public void batchStopSync(String vmIdListJson)
 			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = Util.<RegionAndVmId>jsonList(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
