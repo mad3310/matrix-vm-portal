@@ -82,8 +82,8 @@
 							<div class="pull-left">
 									<div pagination-info="paginationInfo">
 										<div class="pull-left">
-											<button class="btn btn-default hidden-xs" disabled="disabled" style="height:30px;font-size:12px;">批量续费</button>
-											<button class="btn btn-default btn-sm hidden-sm hidden-md hidden-lg" disabled="disabled"><span class='glyphicon glyphicon-shopping-cart'></span> 续费</button>
+											<button class="btn btn-default hidden-xs batch-operate" id="batch_start" style="height:30px;font-size:12px;">启动</button>
+											<button class="btn btn-default hidden-xs batch-operate" id="batch_stop" style="height:30px;font-size:12px;">停止</button>
 										</div>
 									</div>
 							</div>
