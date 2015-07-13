@@ -47,10 +47,19 @@ public class TaskGceContainerStartGbalancerServiceImpl extends BaseTask4GceServi
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
+		
+		if(!(Boolean) params.get("isCreateLog"))  {
+			tr.setSuccess(true);
+			tr.setResult("no need to config RDS");
+			return tr;
+		}
 		//页面下拉框选择，传入
 		Long dbId = getLongFromObject(params.get("rdsId"));
-		if(dbId == null)
-			throw new ValidateException("params's dbId is null");
+		if(dbId == null) {
+			tr.setSuccess(true);
+			tr.setResult("no config RDS, continue next step.");
+			return tr;
+		}
 		
 		DbModel db = this.dbService.selectById(dbId);
 		

@@ -562,7 +562,10 @@
                 
                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.7</matrix.gce.jetty.default.image>
+
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10_test9</matrix.gce.jetty.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V3</matrix.cbase.default.image>
+                
                 <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>

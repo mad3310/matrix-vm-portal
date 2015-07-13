@@ -65,6 +65,9 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private int DB_AUTO_BUILD_COUNT;
 	@Value("${nginx4jetty.code}")
 	private String NGINX4JETTY_CODE;
+	@Value("${gce.engine.category}")
+	private String GCE_ENGINE_CATEGORY;
+	
 	@Override
 	public void saveAndBuild(GceServer gceServer,Long rdsId,Long ocsId) {
 		if(gceServer == null)
@@ -129,7 +132,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	}
 	
 	private void build(Map<String,Object> params) {
-    	this.taskEngine.run("GCE_BUY_EXT",params);
+    	this.taskEngine.run(GCE_ENGINE_CATEGORY,params);
 	}
 	
 	@Override

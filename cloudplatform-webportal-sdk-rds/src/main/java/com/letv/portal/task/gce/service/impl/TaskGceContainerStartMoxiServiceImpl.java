@@ -41,10 +41,20 @@ public class TaskGceContainerStartMoxiServiceImpl extends BaseTask4GceServiceImp
 		TaskResult tr = super.execute(params);
 		if(!tr.isSuccess())
 			return tr;
+		
+		if(!(Boolean) params.get("isCreateLog"))  {
+			tr.setSuccess(true);
+			tr.setResult("no need to config moxi");
+			return tr;
+		}
+		
 		//页面下拉框选择，传入
 		Long cbaseBucketId = getLongFromObject(params.get("ocsId"));
-		if(cbaseBucketId == null)
-			throw new ValidateException("params's cbaseBucketId is null");
+		if(cbaseBucketId == null){
+			tr.setSuccess(true);
+			tr.setResult("no config OCS, continue next step.");
+			return tr;
+		}
 		
 		CbaseBucketModel bucket = this.cbaseBucketService.selectById(cbaseBucketId);
 		if (bucket == null)
