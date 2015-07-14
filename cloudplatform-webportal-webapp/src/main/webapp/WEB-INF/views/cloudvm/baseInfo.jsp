@@ -130,6 +130,14 @@
 			        		<span id="vm_info_config_disk"></span>
 		        		</td>
 		        	</tr> 
+		        	<tr>
+		        		<td width="50%">
+			        		<span class="text-muted pd-r8">云盘:</span>
+			        		<span id="vm_info_config_volumes"></span>
+		        		</td>
+		        		<td width="50%">
+		        		</td>
+		        	</tr> 
 		        	</tbody>
 		        </table>
 		      </div>

@@ -43,6 +43,7 @@ define(function(require,exports,module){
                 evaluateField('vm_info_network_privateip',vmInfo.ipAddresses.private.join(', '),'');
                 evaluateField('vm_info_network_publicip',vmInfo.ipAddresses.public.join(', '),'');
                 evaluateField('vm_info_network_sharedip',vmInfo.ipAddresses.shared.join(', '),'');
+                evaluateField('vm_info_config_volumes',vmInfo.volumes.map(function(element){return element.size+'GB';}).join(', '),'');
                 operatePublicIpBtnsVisible(!vmInfo.ipAddresses.public.length);
         },
         operatePublicIpBtnsVisible:operatePublicIpBtnsVisible
