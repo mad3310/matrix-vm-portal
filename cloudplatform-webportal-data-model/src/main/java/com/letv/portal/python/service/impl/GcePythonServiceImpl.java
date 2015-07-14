@@ -158,7 +158,7 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	public ApiResultObject capacity(Map<String, String> params, String ip,String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append("/server/containers/memory/add");
-		String result = HttpClient.post(url.toString(), params,adminUser,adminPassword);
+		String result = HttpClient.post(url.toString(), params,1000,10000,adminUser,adminPassword);
 		return new ApiResultObject(result,url.toString());
 	}
 
