@@ -282,8 +282,7 @@ $(function(){
             var url = "/dbUser";
             $("#submitCreateUserForm").addClass('disabled').text("提交中...");
 			$.post(url,createUserData, function(data) {
-				var Data=JSON.parse(data)
-				if(error(Data)){
+				if(error(data)){
 					$("#submitCreateUserForm").removeClass('disabled').removeAttr('disabled').text("提交");
 					return;
 				}else{
@@ -358,8 +357,7 @@ $(function(){
             var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
             $("#submitModifyUserForm").addClass("disabled").text("提交中...");
     		$.post(url,modifyUserData,function(data) {
-    			var Data=JSON.parse(data)
-    			if(error(Data)){$("#submitModifyUserForm").removeClass("disabled").text("提交");return;
+    			if(error(data)){$("#submitModifyUserForm").removeClass("disabled").text("提交");return;
     			}else{
     				success('用户权限修改成功');
     				$('#accountList').removeClass('hide');
@@ -401,7 +399,7 @@ function queryDbUser(){
 			if(error(data)) return;
 			var array = data.data;
 			var tby = $("#tby");
-			
+			$(".data-tr").remove();
 			for (var i = 0, len = array.length; i < len; i++) {
 				dbUsernames.push(array[i].username);
 				var td1 = $("<td class=\"center\">"
@@ -456,11 +454,11 @@ function queryDbUser(){
 	                    + "|</span><a class=\"dbuser-list-delete text-danger\"  href=\"javascript:void(0);\" data-db-id="+array[i].dbId+"><i class='fa fa-trash-o'></i></a> </div>"
 						+"</td>");	
 				if(array[i].status == 0 ||array[i].status == 5||array[i].status == 13){
-					var tr = $("<tr class=\"warning\"></tr>");
+					var tr = $("<tr class=\"warning data-tr\"></tr>");
 				}else if(array[i].status == 3 ||array[i].status == 4||array[i].status == 14){
-					var tr = $("<tr class=\"danger\"></tr>");
+					var tr = $("<tr class=\"danger data-tr\"></tr>");
 				}else{
-					var tr = $("<tr></tr>");
+					var tr = $("<tr class='data-tr'></tr>");
 				}
 				
 				// tr.append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7);
