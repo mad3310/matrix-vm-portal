@@ -169,11 +169,6 @@ public class SkipController {
 		return mav;
 	}
 	
-	@RequestMapping(value ="/jettyMonitor")
-	public @ResponseBody ResultObject jettyMonitor(ResultObject obj){
-		return obj;
-	}
-	
 	@RequestMapping(value ="/list/backup/{dbId}",method=RequestMethod.GET)
 	public ModelAndView toDbBackup(@PathVariable Long dbId,ModelAndView mav){
 		isAuthorityDb(dbId);

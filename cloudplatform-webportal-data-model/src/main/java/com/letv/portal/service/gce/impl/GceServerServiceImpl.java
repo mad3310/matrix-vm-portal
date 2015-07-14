@@ -191,5 +191,10 @@ public class GceServerServiceImpl extends BaseServiceImpl<GceServer> implements 
 	public GceServer selectByClusterId(Long clusterId) {
 		return this.gceServerDao.selectByClusterId(clusterId);
 	}
+
+	@Override
+	public GceServerExt selectByGceServerId(Long gceServerId) {
+		return this.gceServerExtDao.selectByGceServerId(gceServerId);
+	}
 	
 }

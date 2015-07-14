@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.PythonException;
+import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.JsonUtils;
@@ -471,7 +472,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		try {
 			defaultEmailSender.sendMessage(mailMessage);
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 	}
@@ -486,7 +486,6 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			try {
 				defaultEmailSender.sendMessage(mailMessage);
 			} catch (Exception e) {
-				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
 	}
@@ -499,12 +498,21 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		ApiResultObject result = this.pythonService.removeMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());		
 		if(analysisResult(transResult(result.getResult()))) {
 			this.pythonService.removeMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());		
-			if(this.zabbixPushService.deleteMutilContainerPushZabbixInfo(list)){
-				logger.info("invoke remove mcluster api success");
-			}
-			this.fixedPushService.deleteMutilContainerPushFixedInfo(list);
 		} else {
-			logger.info("invoke remove mcluster api error");
+			this.buildResultToMgr("mcluster 删除失败", mcluster.getMclusterName() + "：" +result.getResult(), result.getUrl(), this.SERVICE_NOTICE_MAIL_ADDRESS);
+			return;
+		}
+		StringBuffer ips = new StringBuffer();
+		for (ContainerModel containerModel : list) {
+			ips.append(containerModel.getIpAddr()).append(",");
+		}
+		if(!this.zabbixPushService.deleteMutilContainerPushZabbixInfo(list)) {
+			//send zabbix push failed to manager.
+			this.buildResultToMgr("zabbix 删除推送失败，请手动操作", result.getResult(), ips.toString(), this.SERVICE_NOTICE_MAIL_ADDRESS);
+		}
+		if(!this.fixedPushService.deleteMutilContainerPushFixedInfo(list)) {
+			//send fixed push failed to manager.
+			this.buildResultToMgr("fixed 删除推送失败，请手动操作", result.getResult(), ips.toString(), this.SERVICE_NOTICE_MAIL_ADDRESS);
 		}
 	}
 
@@ -514,11 +522,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		HostModel host = getHostByHclusterId(mcluster.getHclusterId());
 		ApiResultObject result = this.pythonService.startMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result.getResult()))) {
-			logger.info("invoke start mcluster api success");
-		} else {
-			logger.error("invoke start mcluster api error");
+			this.pythonService.startMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
+		}else {
+			throw new PythonException("集群启动失败：" + result.getUrl());
 		}
-		
 	}
 
 	@Override
@@ -528,9 +535,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		ApiResultObject result = this.pythonService.stopMcluster(mcluster.getMclusterName(),host.getHostIp(),host.getName(),host.getPassword());
 		if(analysisResult(transResult(result.getResult()))) {
 			this.pythonService.stopMcluster(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
-			logger.info("invoke stop mcluster api success");
 		} else {
-			logger.error("invoke stop mcluster api error:" + result.getUrl());
+			throw new PythonException("集群停止失败：" + result.getUrl());
 		}
 		
 	}
@@ -540,10 +546,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void startContainer(ContainerModel container) {
 		HostModel host = this.hostService.selectById(container.getHostId());
 		ApiResultObject result = this.pythonService.startContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
-		if(analysisResult(transResult(result.getResult()))) {
-			logger.info("invoke start container api success");
-		} else {
-			logger.error("invoke start container api error:"+ result.getUrl());
+		if(!analysisResult(transResult(result.getResult())))  {
+			throw new PythonException("container启动失败：" + result.getUrl());
 		}
 	}
 
@@ -552,10 +556,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public void stopContainer(ContainerModel container) {
 		HostModel host = this.hostService.selectById(container.getHostId());
 		ApiResultObject result = this.pythonService.stopContainer(container.getContainerName(),host.getHostIp(),host.getName(),host.getPassword());
-		if(analysisResult(transResult(result.getResult()))) {
-			logger.info("invoke start container api success");
-		} else {
-			logger.error("invoke start container api error:" + result.getUrl());
+		if(!analysisResult(transResult(result.getResult())))  {
+			throw new PythonException("container停止失败：" + result.getUrl());
 		}
 	}
 

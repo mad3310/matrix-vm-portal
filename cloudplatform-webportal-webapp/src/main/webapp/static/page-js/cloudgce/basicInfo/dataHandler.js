@@ -21,6 +21,17 @@ define(function(require,exports,module){
                 if(gceInfo.hcluster != undefined && gceInfo.hcluster != null) {
                     $("#gce_info_available_region").html(gceInfo.hcluster.hclusterNameAlias);
                 }
+            },
+            GceExtHandler : function(data){
+                var gceExt = data.data;
+                if(gceExt!= undefined && gceExt != null) {
+                	if(gceExt.rdsId!=null) {
+                		$("#gce_rds_name").html("<a href='#' onclick='javascript:parent.location.href=\"/detail/db/"+gceExt.rdsId+"\"'>"+gceExt.db.dbName+"</a>");
+                	}
+                	if(gceExt.ocsId!=null) {
+                		$("#gce_ocs_name").html("<a href='#' onclick='javascript:parent.location.href=\"/detail/cache/"+gceExt.ocsId+"\"'>"+gceExt.cbase.bucketName+"</a>");
+                	}
+                }
             }
     }
 	 function getAccpetAddr(data,type){

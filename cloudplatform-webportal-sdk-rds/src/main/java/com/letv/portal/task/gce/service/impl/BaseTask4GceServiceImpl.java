@@ -95,11 +95,9 @@ public class BaseTask4GceServiceImpl extends BaseTaskServiceImpl implements IBas
 	public void rollBack(TaskResult tr) {
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		boolean isContinue = (Boolean) params.get("isContinue");
-		if(!isContinue) {
-			//发送邮件
-			String serverName =  (String) params.get("serviceName");
-			this.buildResultToMgr("Gce服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
-		}
+		//发送邮件
+		String serverName =  (String) params.get("serviceName");
+		this.buildResultToMgr("Gce服务("+serverName+")创建", tr.isSuccess()?"成功":"失败", tr.getResult(), SERVICE_NOTICE_MAIL_ADDRESS);
 		//业务处理
 		this.serviceOver(tr);
 	}

@@ -1,3 +1,4 @@
+var xAxis_min,xAxis_max;
 function refreshChartForSelect(){
 	var iw=document.body.clientWidth;
 	if(iw>767){//md&&lg
@@ -151,7 +152,6 @@ function initCharts(data){
 	$('div[name="monitor-view"]').each(function(){
 		$(this).addClass("hide");
 	});
-	
 	var chart = $(div).highcharts();
 	setChartData(data.id,chart);
 	draggable(viewDemo);
@@ -160,7 +160,8 @@ function initCharts(data){
 function initChart(obj,title,ytitle,unit){
     $(obj).highcharts({
         chart: {
-            type: 'areaspline',
+            // type: 'areaspline',
+            type:'line',
             zoomType: 'x',
             spacingRight: 20
         },
@@ -195,14 +196,27 @@ function initChart(obj,title,ytitle,unit){
                 year: '%Y'
             }
         },
+        scrollbar:{
+	        enabled:true
+	    },
         plotOptions: {
         	lineWidth: 0.1,  
             fillOpacity: 0.1,
-            areaspline: {
+            // areaspline: {
+            //     marker: {
+            //         enabled: false,
+            //         symbol: 'circle',
+            //         radius: 2,
+            //         states: {
+            //             hover: {
+            //                 enabled: true
+            //             }
+            //         }
+            //     }
+            // },
+            line: {
                 marker: {
                     enabled: false,
-                    symbol: 'circle',
-                    radius: 2,
                     states: {
                         hover: {
                             enabled: true
@@ -211,7 +225,8 @@ function initChart(obj,title,ytitle,unit){
                 }
             },
             series:{
-            	lineWidth: 0.5,  
+            	// lineWidth: 0.5,
+            	lineWidth:2,  
                 fillOpacity: 0.5,
                 states:{
                     hover:{
@@ -250,7 +265,7 @@ function setChartData(indexId,chart){
 			url : "/monitor/"+mclusterId+"/"+indexId+"/"+queryTime,
 			dataType : "json", 
 			contentType : "application/json; charset=utf-8",
-			success:function(data){
+			success:function(data){	
 				chart.hideLoading();
 		 		if(error(data)) return;
 		 		var ydata = data.data;

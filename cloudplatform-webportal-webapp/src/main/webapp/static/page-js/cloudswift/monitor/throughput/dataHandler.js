@@ -42,7 +42,8 @@ define(function(require,exports,module){
     function  InitChart(obj,title,ytitle,unit){
         $(obj).highcharts({
             chart: {
-                type: 'areaspline',
+                // type: 'areaspline',
+                type:'line',
                 zoomType: 'x',
                 spacingRight: 20
             },
@@ -80,11 +81,21 @@ define(function(require,exports,module){
             plotOptions: {
             	lineWidth: 0.1,  
                 fillOpacity: 0.1,
-                areaspline: {
+                // areaspline: {
+                //     marker: {
+                //         enabled: false,
+                //         symbol: 'circle',
+                //         radius: 2,
+                //         states: {
+                //             hover: {
+                //                 enabled: true
+                //             }
+                //         }
+                //     }
+                // },
+                line: {
                     marker: {
                         enabled: false,
-                        symbol: 'circle',
-                        radius: 2,
                         states: {
                             hover: {
                                 enabled: true
@@ -93,7 +104,8 @@ define(function(require,exports,module){
                     }
                 },
                 series:{
-                	lineWidth: 0.5,  
+                	// lineWidth: 0.5,
+                    lineWidth:2,  
                     fillOpacity: 0.5,
                     states:{
                         hover:{

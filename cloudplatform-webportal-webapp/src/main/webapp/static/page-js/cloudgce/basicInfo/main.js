@@ -17,4 +17,5 @@ define(function(require){
     var gceInfoHandler = new dataHandler();
 
     cn.GetData("/gce/"+$("#gceId").val(),gceInfoHandler.GceInfoHandler);
+    cn.GetData("/gce/ext/"+$("#gceId").val(),gceInfoHandler.GceExtHandler);
 });

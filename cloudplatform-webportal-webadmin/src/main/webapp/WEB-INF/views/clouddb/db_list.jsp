@@ -19,25 +19,27 @@
 			</div>
 		</div>
 		<div class="widget-body">
-			<div class="page-header">
+			<div class="page-header col-sm-12 col-xs-12 col-md-12">
 				<!-- <h3>数据库列表	</h3> -->
-			    <div class="input-group pull-right">
+			    <div class="input-group pull-right col-sm-12 col-xs-12 col-md-12">
 					<form class="form-inline">
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbName"
-								placeholder="数据库名称">
+							<input type="text" class="form-control" id="dbName" placeholder="数据库名称">
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbMcluster"
-								placeholder="所属Mcluster">
+							<input type="text" class="form-control" id="dbMcluster" placeholder="所属Mcluster">
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbPhyMcluster"
-								placeholder="所属物理机集群">
+							<!-- <input type="text" class="form-control" id="dbPhyMcluster" placeholder="所属物理机集群"> -->
+							<select  class="chosen-select" id="dbPhyMcluster" data-placeholder="所属物理机集群" style="width:100%">
+								<option></option>
+							</select>
 						</div>
 						<div class="form-group col-sm-6 col-xs-12 col-md-2">
-							<input type="text" class="form-control" id="dbuser"
-								placeholder="所属用户">
+							<!-- <input type="text" class="form-control" id="dbuser" placeholder="所属用户"> -->
+							<select  class="chosen-select" id="containeruser" data-placeholder="所属用户" style="width:100%">
+								<option></option>
+							</select>
 						</div>
 						<!-- <div class="form-group">
 							<input type="date" class="form-control" id="PhyMechineDate"

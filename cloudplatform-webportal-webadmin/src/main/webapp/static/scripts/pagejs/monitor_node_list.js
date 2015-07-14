@@ -10,7 +10,7 @@
 			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
 			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
 			var qryStr='';
-			var qryStr1=$('#monitorContainer').val();var qryStr2=$('#VipAddress').val();var qryStr3=$('#monitorPhyM').val();
+			var qryStr1=$('#monitorContainer').val();var qryStr2=$('#VipAddress').val();var qryStr3=$("#Physicalcluster").find('option:selected').text();
 			if(qryStr1){
 				qryStr+='<span class="label label-success arrowed">'+qryStr1+'<span class="queryBadge" data-rely-id="monitorContainer"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
 			}
@@ -18,7 +18,7 @@
 				qryStr+='<span class="label label-warning arrowed">'+qryStr2+'<span class="queryBadge" data-rely-id="VipAddress"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
 			}
 			if(qryStr3){
-				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="monitorPhyM"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
+				qryStr+='<span class="label label-purple arrowed">'+qryStr3+'<span class="queryBadge" data-rely-id="Physicalcluster"><i class="ace-icon fa fa-times-circle"></i></span></span>&nbsp;'
 			}
 			if(qryStr){
 				$('.queryOption').find('.widget-title').html(qryStr);
@@ -40,7 +40,7 @@
 		queryMclusterMonitor();
 	});
 	$("#monitorNodeClear").click(function(){
-		var clearList = ["monitorContainer","monitorPhyM","VipAddress"]
+		var clearList = ["monitorContainer","Physicalcluster","VipAddress"]
 		clearSearch(clearList);
 	})
 	enterKeydown($(".page-header > .input-group input"),queryMclusterMonitor);
@@ -48,7 +48,7 @@
  
 function queryMclusterMonitor(){
 	var mclusterName = $("#monitorContainer").val()?$("#monitorContainer").val():'';
-	var hclusterName = $("#monitorPhyM").val()?$("#monitorPhyM").val():'';
+	var hclusterName = $("#Physicalcluster").find('option:selected').attr('data-hclsName')?$("#Physicalcluster").find('option:selected').attr('data-hclsName'):'';
 	var vip = $("#VipAddress").val()?$("#VipAddress").val():'';
 	var queryCondition = {
 			'mclusterName':mclusterName,
@@ -169,7 +169,30 @@ function updateMclusterStatus(){
 		}
 	});
 }
+function queryHcluster(){
+	var options=$('#Physicalcluster');
+	getLoading();
+	$.ajax({
+		cache:false,
+		url:'/hcluster',
+		type:'get',
+		dataType:'json',
+		success:function(data){
+			removeLoading();
+			var array = data.data;
+			for(var i = 0, len = array.length; i < len; i++){
+				
+				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
+								+array[i].hclusterNameAlias
+								+"</option>");
+				options.append(option)
+			}
+			initChosen();
+		}
+	});
+}
 function page_init(){
+	queryHcluster();
 	$('#nav-search').addClass("hidden");
 	queryMclusterMonitor();
 	setInterval(function() {

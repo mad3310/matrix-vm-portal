@@ -895,7 +895,7 @@ edit by jinglinlin@letv.com
 }
 
 .skin-custom .page-header {
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: auto;
     padding-bottom: 5px;
     margin-bottom: 10px;
@@ -1152,6 +1152,7 @@ td,th{word-break: break-all; word-wrap:break-word;}
 /*数据库新建账号、编辑权限css--------------2015-07-03*/
 .se-heading{padding: 16px 0px;height: 64px;}
 .se-heading h5{display: inline-block;text-indent: 8px;border-left: 2px solid #88B7E0;margin-top: 0px;margin-bottom: 0px;margin-right: 8px;}
+.se-heading a:hover{cursor:pointer;text-decoration:none}
 .mcluster-select{border-top:0;margin-bottom:10px;}
 .inline-block{display:inline-block;}
 .select-head{border:1px solid #999;border-bottom:0;background:none repeat scroll 0% 0% #F3F3F3;color:#BBB;padding:0 5px;}
@@ -1159,3 +1160,17 @@ td,th{word-break: break-all; word-wrap:break-word;}
 .select {width:100%;height:140px;border:1px solid #999;background-color:#FFF;overflow-x:hidden;overflow-y:auto;}
 .m-authorize {text-align: center;height: 183px;padding-top: 60px;margin: 0 -30px;}
 .notice-block p{line-height:24px;padding-top:5px;color:#aaa;}
+.select .select-list {list-style:none;margin:0;padding:0;}
+.select .select-list .select-item {height:32px;line-height:32px;overflow:hidden;border-bottom:1px solid #DDD;text-overflow:ellipsis;white-space:nowrap;text-indent:8px;}
+.select .select-list .select-item .pull-left,.select .select-list .select-item .pull-right {margin:0;padding:0;}
+.select .select-list .select-item .pull-right span {padding-right:10px;}
+.select .select-list .select-item .pull-right span input {vertical-align: middle;padding:0;margin:0;}
+.select .select-list .select-item .pull-right label {font-size:10px;font-weight:100;}
+.overfl{overflow:hidden;}
+#modifyAccountTab a:hover,#newAccountTab a:hover{text-decoration:none;cursor:pointer;}
+@media only screen and (max-width: 769px){
+.m-authorize {margin: 0;padding: 60px 0 0 0;}
+}
+/*下拉框 chosen select*/
+.chosen-container>.chosen-single, [class*=chosen-container]>.chosen-single{height:34px;line-height:34px;}
+.chosen-container-single{width:100% !important;}

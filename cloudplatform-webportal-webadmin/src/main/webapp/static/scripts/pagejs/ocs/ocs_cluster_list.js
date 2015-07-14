@@ -56,7 +56,7 @@ $(function(){
 			$('.queryOption').addClass('collapsed').find('.widget-body').attr('style', 'dispaly:none;');
 			$('.queryOption').find('.widget-header').find('i').attr('class', 'ace-icon fa fa-chevron-down');
 			var qryStr='';
-			var qryStr1=$('#containerName').val();var qryStr2=$('#Physicalcluster').val();var qryStr3=$('#containeruser').val();var qryStr4;
+			var qryStr1=$('#containerName').val();var qryStr2=$("#Physicalcluster").find('option:selected').text();var qryStr3=$("#containeruser").find('option:selected').text();var qryStr4;
 			if($('#containerStatus').val()){
 				qryStr4=translateStatus($('#containerStatus').val());
 			}
@@ -101,8 +101,8 @@ $(function(){
 
 function queryByPage() {
 	var mclusterName = $("#containerName").val()?$("#containerName").val():'';
-	var hclusterName = $("#Physicalcluster").val()?$("#Physicalcluster").val():'';
-	var userName = $("#containeruser").val()?$("#containeruser").val():'';
+	var hclusterName = $("#Physicalcluster").find('option:selected').attr('data-hclsName')?$("#Physicalcluster").find('option:selected').attr('data-hclsName'):'';
+	var userName = $("#containeruser").find('option:selected').text()?$("#containeruser").find('option:selected').text():'';
 	var status = $("#containerStatus").val()?$("#containerStatus").val():'';
 	var queryCondition = {
 			'currentPage':currentPage,
@@ -656,7 +656,8 @@ function deleteMcluster(obj){
 }
 
 function queryHcluster(){
-	var options = $('#hcluster_select');
+	var options1 = $('#hcluster_select');
+	var options2=$('#Physicalcluster');
 	getLoading();
 	$.ajax({
 		cache:false,
@@ -668,11 +669,13 @@ function queryHcluster(){
 			var array = data.data;
 			for(var i = 0, len = array.length; i < len; i++){
 				
-				var option = $("<option value=\""+array[i].id+"\">"
+				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
 								+array[i].hclusterNameAlias
 								+"</option>");
-				options.append(option);
+				options1.append(option);
+				options2.append(option)
 			}
+			initChosen();
 		}
 	});
 }
@@ -683,4 +686,7 @@ function page_init(){
 	formValidate();
 	pageControl();
 	$('[name = "popoverHelp"]').popover();
+	// 2015-7-7 物理机查询 select
+	queryHcluster();
+	queryUser();
 }

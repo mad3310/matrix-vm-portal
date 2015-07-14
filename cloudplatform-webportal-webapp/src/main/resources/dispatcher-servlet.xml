@@ -69,6 +69,7 @@
 	          <value>/static</value>
 	          <value>/logout</value>
 	          <value>/jettyMonitor</value>
+	          <value>/dbMonitor</value>
 	          <value>/toLogin</value>
 	          <value>/home</value>
 	        </list>
