@@ -90,11 +90,12 @@ public class VolumeController {
 	public @ResponseBody ResultObject create(@PathVariable String region,
 			@RequestParam int size,
 			@RequestParam(required = false) String name,
-			@RequestParam(required = false) String description) {
+			@RequestParam(required = false) String description,
+			@RequestParam(required = false) Integer count) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVolumeManager()
-					.create(region, size, name, description));
+			Util.session(sessionService).getVolumeManager()
+					.create(region, size, name, description, count);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
