@@ -60,11 +60,8 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		this.allowUrls = allowUrls;
 	}
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-			Object arg2) throws Exception {
+	private boolean allowUrl(HttpServletRequest request) {
 		String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");  
-		
 		//特殊url过滤
 		if(null != allowUrls && allowUrls.length>=1) {
 			for(String url : allowUrls) {  
@@ -73,12 +70,28 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 				}  
 			}
 		}
+		return false;
+	}
+	
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+			Object arg2) throws Exception {
+		
+		if(allowUrl(request))
+			return true;
+		
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
 		
 		//if url from android or ios,use token for user's isLogin.
 		String clientType = request.getHeader("clientType");
 		if(!StringUtils.isEmpty(clientType)) {
-			session  = this.validateToken(request.getHeader("authtoken"),IpUtil.getIp(request));
+			String token = request.getHeader("authtoken");
+			if(StringUtils.isEmpty(token)  || "".equals(token)) {
+				responseJson(request,response,"长时间未操作，请重新登录");
+				return false;
+			}
+			  
+			session  = this.validateToken(token,IpUtil.getIp(request));
 		}
 		
 		if(session != null ) {
@@ -121,6 +134,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");
+		
+		if(StringUtils.isEmpty(username))
+			return null;
 		
 		UserLogin userLogin = new UserLogin();
 		userLogin.setLoginName(username);
