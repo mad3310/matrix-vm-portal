@@ -34,7 +34,11 @@ public class LocalCacheServiceImpl<T> implements ICacheService <T>{
 	 * 缓存中添加数据 带过期时间
 	 */
 	public void set(String key, Object obj, Date expire) {
-		throw new RuntimeException("the method not implementation!");
+		map.put(key, obj);
+	}
+	@Override
+	public void set(String key, Object obj, long expiredMilliSeconds) {
+		map.put(key, obj);
 	}
 	/**
 	 * 缓存中取得数据

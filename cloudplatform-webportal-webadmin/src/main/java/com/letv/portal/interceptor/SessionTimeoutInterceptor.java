@@ -132,6 +132,9 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		//判断是否为移动端机器，如果是，通过token验证
 		Map<String, Object> userDetailInfo = this.oauthService.getUserdetailinfo(token);
 		
+		if(userDetailInfo == null)
+			return null;
+			
 		String username = (String) userDetailInfo.get("username");
 		String email = (String) userDetailInfo.get("email");
 		

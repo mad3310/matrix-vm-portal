@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.letv.common.exception.OauthException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpsClient;
+import com.letv.mms.cache.ICacheService;
+import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
 import com.letv.portal.service.impl.oauth.IOauthService;
@@ -37,6 +39,8 @@ public class OauthServiceImpl  implements IOauthService{
 	@Autowired
 	public SessionServiceImpl sessionService;
 	
+	private ICacheService<?> cacheService = CacheFactory.getCache();
+	
 	@Autowired
 	public ILoginProxy loginProxy;
 
@@ -44,6 +48,8 @@ public class OauthServiceImpl  implements IOauthService{
 	public String OAUTH_AUTH_HTTP;
 	@Value("${webportal.admin.http}")
 	public String WEBPORTAL_ADMIN_HTTP;
+	@Value("${oauth.token.cache.expire}")
+	public long OAUTH_TOKEN_CACHE_EXPIRE;
 	
 	public String retryOauthApi(String result,String url){
 		int i = 1;
@@ -82,6 +88,12 @@ public class OauthServiceImpl  implements IOauthService{
 	
 	@Override
 	public Map<String,Object> getUserdetailinfo(String accessToken) {
+		
+		Map<String,Object>  resultMap = (Map<String, Object>) this.cacheService.get("7b09664fbaa1fd190af7cb44a5307147", null);
+		
+		if(resultMap != null) 
+			return resultMap;
+		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/userdetailinfo?access_token=").append(accessToken);
 		logger.debug("getUserdetailinfo :" + buffer.toString());
@@ -89,7 +101,10 @@ public class OauthServiceImpl  implements IOauthService{
 		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("长时间未操作，请重新登录");
-		Map<String,Object> resultMap = this.transResult(result);
+		resultMap = this.transResult(result);
+		if(resultMap !=null)
+			this.cacheService.set(accessToken, resultMap,OAUTH_TOKEN_CACHE_EXPIRE);
+		
 		return resultMap;
 	}
 	

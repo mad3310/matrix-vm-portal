@@ -31,6 +31,7 @@ public interface ICacheService<T> {
 	 * @return
 	 */
 	public void set(String key,Object obj,Date expire);
+	public void set(String key,Object obj,long expiredMilliSeconds);
 	/**
 	 * 从缓存中取得数据
 	 * @param <T>
