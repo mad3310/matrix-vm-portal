@@ -95,4 +95,9 @@ public class SkipController {
 		return mav;
 	}	
 	
+	@RequestMapping(value ="/vnc_auto.html",method=RequestMethod.GET)
+	public ModelAndView vncAuto(ModelAndView mav){
+		mav.setViewName("/cloudvm/vnc_auto");
+		return mav;
+	}
 }
