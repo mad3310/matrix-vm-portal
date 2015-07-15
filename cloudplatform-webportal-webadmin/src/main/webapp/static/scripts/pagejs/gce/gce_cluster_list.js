@@ -762,7 +762,7 @@ function addMemory(obj){
 }
 // function of 扩容
 function queryHcluster(){
-	var options1 = $('#hcluster_select');
+//	var options1 = $('#hcluster_select');
 	var options2=$('#Physicalcluster');
 	getLoading();
 	$.ajax({
@@ -778,7 +778,7 @@ function queryHcluster(){
 				var option = $("<option value=\""+array[i].id+"\" data-hclsName='"+array[i].hclusterName+"'>"
 								+array[i].hclusterNameAlias
 								+"</option>");
-				options1.append(option);
+//				options1.append(option);
 				options2.append(option)
 			}
 			initChosen();

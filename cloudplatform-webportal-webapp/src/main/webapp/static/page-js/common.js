@@ -383,7 +383,7 @@ define(function(require,exports,module){
                 }
             });
         },
-        PostData : function (url,data,handler){ //异步提交数据,将返回数据交给handler处理
+        PostData : function (url,data,handler,obj,content){ //异步提交数据,将返回数据交给handler处理
             return $.ajax({
                 url:url,
                 cache:false,
@@ -391,6 +391,7 @@ define(function(require,exports,module){
                 dataType:'json',
                 data:data,
                 success:function(data){
+                    $(obj).removeClass('disabled').removeAttr('disabled').text(content)
                     if(data.result==0){
                         var cn=new Common();
                         cn.alertoolDanger('操作出错了！'+data.msgs);
@@ -399,7 +400,7 @@ define(function(require,exports,module){
                     /*添加当handler为空时的异常处理*/
                     if(handler){
                         handler(data);
-                    }
+                    }  
                 }
             });
         },
@@ -1035,7 +1036,7 @@ define(function(require,exports,module){
         },
         alertoolDanger:function(msg,time){
             if(time == null){
-                time=4000;
+                time=6000;
             }
             var html =$("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
@@ -1062,7 +1063,7 @@ define(function(require,exports,module){
         },
         alertoolWarnning:function(msg,time){
             if(time == null){
-                time=4000;
+                time=6000;
             }
             var html =$("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
@@ -1089,7 +1090,7 @@ define(function(require,exports,module){
         },
          alertoolSuccess:function(msg,time){
             if(time == null){
-                time=4000;
+                time=6000;
             }
             var html =$("<div class=\"alert alert-success alert-dismissible\" role=\"alert\">"
             + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>"
