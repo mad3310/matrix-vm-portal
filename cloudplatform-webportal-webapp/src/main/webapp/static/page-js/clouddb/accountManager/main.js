@@ -120,12 +120,13 @@ define(function(require){
         var createUserData = dbUser.GetCreateDbUserData();
         if(createUserData.ips != '' && createUserData.type != ''){
             var url = "/dbUser";
-            $("#submitCreateUserForm").text("提交中...");
+            var text=$("#submitCreateUserForm").text();
+            $("#submitCreateUserForm").addClass('disabled').text("提交中...");
            cn.PostData(url, createUserData, function () {
                 /*刷新本身ifame*/
                 var $iframe = $("body", parent.document).find("iframe");
                 $iframe.attr("src", $iframe.attr("src"));
-            });
+            },'#submitCreateUserForm',text);
         }else{
             var title = "警告";
             var text = "您创建的数据库账户没有添加IP名单,请添加后创建!";
@@ -192,12 +193,13 @@ define(function(require){
         var modifyUserData = dbUser.GetModifyDbUserData();
         if(modifyUserData.ips != '' && modifyUserData.type != ''){
             var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
+            var text=$("#submitModifyUserForm").text();
             $("#submitModifyUserForm").addClass("disabled").text("提交中...");
             cn.PostData(url,modifyUserData,function(){
                 /*刷新本身ifame*/
                 var $iframe = $("body",parent.document).find("iframe");
                 $iframe.attr("src",$iframe.attr("src"));
-            });
+            },'#submitModifyUserForm',text);
         }else{
             var title = "警告";
             var text = "您修改的数据库账户没有添加IP名单,请添加后修改!";
@@ -252,7 +254,7 @@ define(function(require){
             /*刷新本身ifame*/
             var $iframe = $("body",parent.document).find("iframe");
             $iframe.attr("src",$iframe.attr("src"));
-        });
+        },'#resetPasswordBoxSubmit');
     }).on('keyup', '[name="reset-password"]', function () {
         if($("[name = 'reset-password-repeat']").val() != ''){
             $('#reset-password-form').bootstrapValidator('revalidateField', 'reset-password-repeat');
