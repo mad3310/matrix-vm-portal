@@ -145,7 +145,7 @@ define(function(require){
 						        flavorId: $('#flavorId').val(),
 						        adminPass:pwd,
 						        publish: !!parseInt($('input[name=isCreatePublicIP]').val()),
-						        volumeSizes:dataHandler.getDataDiskInfos()
+						        volumeSizes: JSON.stringify(dataHandler.getDataDiskInfos())
 						    }
 		cn.PostData(url, data, function (data) {
 			if(data.result===1){
