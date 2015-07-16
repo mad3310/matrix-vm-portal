@@ -68,7 +68,9 @@ define(function(require){
         var engineType = $("[name = 'engineType']").val();
         var linkType = $("[name = 'linkType']").val();
         var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin};
+        var storageSize = $("[name = 'storageSize']").val();
+        var memorySize = $("[name = 'memorySize']").val();
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin,"storageSize":storageSize,"memorySize":memorySize};
         CreateDb(formData);
     });
     /*表单验证 --end*/

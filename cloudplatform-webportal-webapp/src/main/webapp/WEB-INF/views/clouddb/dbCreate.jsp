@@ -213,9 +213,9 @@
 													<div class="divselect">
 														<span>10G</span>
 														<ul style="display: none;">
-															<li class="bk-select-option"><a href="javascript:;" selectid="1">10G</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="10737418240">10G</a></li>
 														</ul>
-														<input type="hidden" value="" />
+														<input name="storageSize" type="hidden" value="10737418240" />
 													</div>
 												</span>
 												</span> <span class="bk-select-arrow"></span>
@@ -233,9 +233,9 @@
 													<div class="divselect">
 														<span>2G</span>
 														<ul style="display: none;">
-															<li class="bk-select-option"><a href="javascript:;" selectid="1">2G</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="2147483648">2G</a></li>
 														</ul>
-														<input type="hidden" value="" />
+														<input name="memorySize" type="hidden" value="2147483648" />
 													</div>
 											</span>
 												</span> <span class="bk-select-arrow"></span>

@@ -26,6 +26,8 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		<result column="STORAGE_SIZE" property="storageSize" />
+		<result column="MEMORY_SIZE" property="memorySize" />
 		
 		<association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
@@ -51,7 +53,7 @@
 	<!-- WEBPORTAL_DB table all fields -->
 	<sql id="Base_Column_List">
 		m.ID,m.MCLUSTER_ID,m.HCLUSTER_ID,m.DB_NAME,m.STATUS,m.BACKUP_CYCLE,m.NOTICE_TYPE,m.DESCN,m.ENGINE_TYPE,m.FROM_DB_IP,m.FROM_DB_PORT,m.FROM_DB_NAME,
-		m.LINK_TYPE,m.AUDIT_INFO,m.AUDIT_TIME,m.AUDIT_USER,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER
+		m.LINK_TYPE,m.AUDIT_INFO,m.AUDIT_TIME,m.AUDIT_USER,m.DELETED,m.CREATE_TIME,m.CREATE_USER,m.UPDATE_TIME,m.UPDATE_USER,m.STORAGE_SIZE,m.MEMORY_SIZE
 	</sql>
 	
 	<!-- 查询条件 -->
@@ -95,15 +97,16 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Db" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,HCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE)
+		WEBPORTAL_DB(DB_NAME,MCLUSTER_ID,HCLUSTER_ID,STATUS,DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER,ENGINE_TYPE,LINK_TYPE,STORAGE_SIZE,MEMORY_SIZE)
 		values(
-		#{dbName},#{mclusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType})
+		#{dbName},#{mclusterId},#{hclusterId},#{status},#{deleted},now(),#{createUser},now(),#{updateUser},#{engineType},#{linkType},#{storageSize},#{memorySize})
 	</insert>
 
 	<!-- 根据id，修改记录 -->
 	<update id="update" parameterType="Db">
 		update WEBPORTAL_DB set
-		ID=#{id},DB_NAME=#{dbName},MCLUSTER_ID=#{mclusterId},HCLUSTER_ID=#{hclusterId},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		ID=#{id},DB_NAME=#{dbName},MCLUSTER_ID=#{mclusterId},HCLUSTER_ID=#{hclusterId},STATUS=#{status},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser},
+		STORAGE_SIZE=#{storageSize},MEMORY_SIZE=#{memorySize}
 		where ID=#{id}
 	</update>
 

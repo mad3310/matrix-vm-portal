@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
-import com.letv.portal.constant.Constant;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
 import com.letv.portal.model.task.TaskResult;
@@ -19,7 +18,6 @@ import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
-import com.letv.portal.task.gce.service.impl.TaskGceClusterCreateServiceImpl;
 
 @Service("taskMclusterCreateDataService")
 public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
@@ -35,8 +33,6 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateDataServiceImpl.class);
 
-	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
-	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
@@ -57,7 +53,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
-		map.put("memory",CONTAINER_MEMORY_SIZE);
+		map.put("memory",String.valueOf(params.get("memory")));
+		map.put("dbDisk",String.valueOf(params.get("dbDisk")));
 		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
 		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);

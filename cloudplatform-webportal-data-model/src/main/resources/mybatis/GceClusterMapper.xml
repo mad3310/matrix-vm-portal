@@ -18,6 +18,7 @@
 		<result column="CREATE_USER" property="createUser" />
 		<result column="UPDATE_TIME" property="updateTime" />
 		<result column="UPDATE_USER" property="updateUser" />
+		<result column="MEMORY_SIZE" property="memorySize" />
 		<association property="createUserModel" javaType="User">
 			<result column="USERNAME" property="userName" />
 		</association>
@@ -165,10 +166,11 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap"
 		parameterType="com.letv.common.dao.QueryParam">
 		select
-		<include refid="Base_Column_List" /> ,U.USERNAME,h.HCLUSTER_NAME_ALIAS
+		<include refid="Base_Column_List" /> ,U.USERNAME,h.HCLUSTER_NAME_ALIAS,gceServer.MEMORY_SIZE
 		FROM  WEBPORTAL_GCECLUSTER GCS 
 		join WEBPORTAL_USER U ON U.ID = GCS.CREATE_USER
 		join WEBPORTAL_HCLUSTER h on GCS.HCLUSTER_ID = h.ID
+		left join WEBPORTAL_GCE gceServer on gceServer.GCECLUSTER_ID=GCS.ID
 		<include refid="List_Where_Clause" />
 		<if test="params != null and params.userName != null  and params.userName != ''">
 			and U.USERNAME like CONCAT('%','${params.userName}','%') escape '^'

@@ -83,6 +83,7 @@
 								</th>
 								<th>Container集群名称</th>
 								<th class="hidden-480">所属物理机集群</th>
+								<th class="hidden-480">内存大小</th>
 								<th class="hidden-480">类型</th>
 								<th>所属用户</th>
 								<th class="hidden-480">创建时间 </th>
