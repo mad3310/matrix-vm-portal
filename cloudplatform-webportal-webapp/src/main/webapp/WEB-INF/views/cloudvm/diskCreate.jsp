@@ -154,18 +154,12 @@
 														  	<input type="text" class="bk-number-input" value="1">
 														  	<span class="bk-number-unit">个</span> 
 														  	<span class="bk-number-control"> 
-															  	<span class="bk-number-up bk-number-disabled hide"> 
-															  		<i class="bk-number-arrow"></i>
-					                                            </span> 
 					                                            <span class="bk-number-up"> 
 					                                            	<i class="bk-number-arrow"></i>
 					                                            </span> 
 					                                            <span class="bk-number-down bk-number-disabled"> 
 					                                            	<i class="bk-number-arrow"></i>
 					                                            </span> 
-					                                            <span class="bk-number-down hide"> 
-					                                            	<i class="bk-number-arrow"></i>
-					                                            </span>
 				                                          	</span>
 				                                          </span>
 													</div>
@@ -186,8 +180,8 @@
 									<div class="bk-items-list">
 										<ul>
 											<li><span class="bk-items-item-name">区域：</span> <span class="bk-items-item-value" id="buy-region">--</span></li>
-											<li><span class="bk-items-item-name">大小：</span> <span class="bk-items-item-value" id="buy-disk-size">--</span></li>
-											<li><span class="bk-items-item-name">数量：</span> <span class="bk-items-item-value" id= "buy-disk-count">--</span></li>
+											<li><span class="bk-items-item-name">大小：</span> <span class="bk-items-item-value" id="buy-disk-size">1GB</span></li>
+											<li><span class="bk-items-item-name">数量：</span> <span class="bk-items-item-value" id= "buy-disk-count">1个</span></li>
 											<!-- <li><span class="bk-items-item-name">网络：</span> <span class="bk-items-item-value">网络1</span></li> -->
 										</ul>
 									</div>

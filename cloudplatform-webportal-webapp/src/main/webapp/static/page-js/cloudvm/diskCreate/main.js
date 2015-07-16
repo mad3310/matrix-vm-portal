@@ -27,23 +27,19 @@ define(function(require){
         return false;//阻止表单的自动提交
 	});
 	/*按钮组件封装 --end*/    
-	$('.yundisk-size-input').on('blur', function(e){
-		var inputEl=$(e.currentTarget);
-        var inputValue=inputEl.val();
-        
-        if(!cn.validateInputNum(inputValue)){
-        	inputEl.val('1');
+
+
+	var sizeInputEl=$('.yundisk-size-input');
+	var numberInputEl=$('.bk-number-input');
+	sizeInputEl.on('blur', function(e){        
+        if(!cn.validateInputNum(sizeInputEl.val())){
+        	sizeInputEl.val('1');
         }
-        $('#buy-disk-size').text(inputEl.val()+'GB');
+        $('#buy-disk-size').text(sizeInputEl.val()+'GB');
 	});
-	$('.bk-number-input').on('blur', function(e){
-		var inputEl=$(e.currentTarget);
-        var inputValue=inputEl.val();
-        
-        if(!cn.validateInputNum(inputValue)){
-        	inputEl.val('1');
-        }
-        $('#buy-disk-count').text(inputEl.val()+'个');
+	
+	cn.NumberInput(1,10,1,function(e){
+        $('#buy-disk-count').text(numberInputEl.val()+'个');
 	});
 
     /*表单验证 --begin*/
@@ -51,8 +47,8 @@ define(function(require){
         var regionName = $("[name = regionName]").val();
         var url = '/osv/region/'+regionName+'/volume-create';
     	var data =  {
-						        size: $(".yundisk-size-input").val(),
-						        count: $('.bk-number-input').val(),
+						        size: sizeInputEl.val(),
+						        count: numberInputEl.val(),
 						    };
 		cn.PostData(url, data, function (data) {
 			if(data.result===1){
