@@ -1192,6 +1192,10 @@ define(function(require,exports,module){
                 show:true,
                 backdrop:false
             })
+        },
+        validateInputNum:function(inputValue){
+            var reg=/^[1-9]+[0-9]*/;
+            return reg.exec(inputValue)==null? false:true;
         }
     }
     /*common原型属性方法end*/

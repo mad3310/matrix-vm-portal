@@ -1721,9 +1721,6 @@ cursor: pointer;
 -ms-transition: all .3s;
 -o-transition: all .3s;
 }
-/*end vm-create page style*/
-
-/*begin vm-create page style*/
 .password-tip{
 	font-size: 12px;
   margin-left: 10px;
@@ -1734,7 +1731,38 @@ cursor: pointer;
     color: #a94442;
 }
 /*end vm-create page style*/
-
+/*begin vm-disk-create page style*/
+.yundisk-size{
+	position: relative;
+  float: left;
+  display: inline;
+  width: 90px;
+}
+.yundisk-size-input {
+display: inline;
+box-sizing: content-box;
+height: 14px;
+width: 56px;
+padding: 10px 28px 10px 4px;
+border: solid 1px #e8e8e8;
+text-align: center;
+line-height: 20px;
+color: #333;
+font-size: 14px;
+outline: none;
+}
+.yundisk-size-unit {
+position: absolute;
+left: 62px;
+top: 0;
+width: 28px;
+height: 36px;
+text-align: center;
+line-height: 36px;
+color: #999;
+font-size: 12px;
+}
+/*end vm-disk-create page style*/
 /*  nodata div style*/
 #noData{
 	color:#ddd;

@@ -46,8 +46,8 @@ define(function(require){
 	$(document).on('blur', '.bk-disk .bk-disk-input' , function(e){
 		var inputEl=$(e.currentTarget);
         var inputValue=inputEl.val();
-        var reg=/^[1-9]+[0-9]*/;
-        if(reg.exec(inputValue)==null){
+        
+        if(!cn.validateInputNum(inputValue)){
         	inputEl.val('1');
         }
 	});
