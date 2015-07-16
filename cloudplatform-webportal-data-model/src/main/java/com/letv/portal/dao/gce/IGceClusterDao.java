@@ -8,6 +8,6 @@ import com.letv.portal.model.gce.GceCluster;
 
 public interface IGceClusterDao extends IBaseDao<GceCluster> {
 
-	List<MclusterModel> selectByName(String clusterName);
+	List<GceCluster> selectByName(String clusterName);
 
 }

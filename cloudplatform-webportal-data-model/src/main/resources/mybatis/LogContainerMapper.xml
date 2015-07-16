@@ -180,4 +180,10 @@
 			from WEBPORTAL_LOGCONTAINER LCT
 			where LCT.LOGCLUSTER_ID=#{logClusterId}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	        select
+			<include refid="Base_Column_List" />
+			from WEBPORTAL_LOGCONTAINER LCT
+			where LCT.CONTAINER_NAME=#{containerName}
+	</select>
 </mapper>   

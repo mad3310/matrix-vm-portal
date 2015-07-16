@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.gce.IGceContainerDao;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.impl.BaseServiceImpl;
@@ -34,6 +35,11 @@ public class GceContainerServiceImpl extends BaseServiceImpl<GceContainer> imple
 	@Override
 	public List<GceContainer> selectByGceClusterId(Long gceClusterId) {
 		return this.gceContainerDao.selectContainerByGceClusterId(gceClusterId);
+	}
+
+	@Override
+	public GceContainer selectByName(String containerName) {
+		return this.gceContainerDao.selectByName(containerName);
 	}
 
 }

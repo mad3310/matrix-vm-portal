@@ -9,4 +9,6 @@ import com.letv.portal.model.gce.GceContainer;
 public interface IGceContainerDao extends IBaseDao<GceContainer> {
 
 	public  List<GceContainer> selectContainerByGceClusterId(Long clusterId);
+
+	public GceContainer selectByName(String containerName);
 }

@@ -203,6 +203,12 @@
 			from WEBPORTAL_GCECONTAINER GCT
 			where GCT.GCECLUSTER_ID=#{gceClusterId}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	        select
+			<include refid="Base_Column_List" />
+			from WEBPORTAL_GCECONTAINER GCT
+			where GCT.CONTAINER_NAME=#{containerName}
+	</select>
 	
 	<!-- 查询条件 -->
 	<sql id="Example_Page_Where_Clause">
