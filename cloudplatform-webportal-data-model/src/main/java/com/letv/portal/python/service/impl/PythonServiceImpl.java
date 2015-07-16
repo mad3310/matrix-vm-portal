@@ -24,7 +24,7 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String URL_PORT = ":8888";	
 	private final static String OSS_URL_PORT = ":8887";	
 	private final static String GBALANCER_PORT = ":9888";	
-	private final static String URL_CHECK_PORT = ":8888";
+	private final static String URL_CHECK_PORT = ":6666";
 	
 	@Override
 	public ApiResultObject createContainer(String mclusterName,String ip,String username,String password) {
