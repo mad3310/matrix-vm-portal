@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.portal.constant.Constant;
@@ -21,6 +22,8 @@ import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IHclusterService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.cbase.ICbaseClusterService;
+import com.letv.portal.service.cbase.ICbaseContainerService;
 import com.letv.portal.service.gce.IGceClusterService;
 import com.letv.portal.service.log.ILogClusterService;
 import com.letv.portal.service.slb.ISlbClusterService;
@@ -44,6 +47,10 @@ public class CronJobsProxyImpl implements ICronJobsProxy{
 	private IMclusterService mclusterService;
 	@Autowired
 	private ILogClusterService logClusterService;
+	@Resource
+	private ICbaseClusterService cbaseClusterService;
+	@Resource
+	private ICbaseContainerService cbaseContainerService;
 	
 	@Override
 	public void checkCount() {
@@ -78,6 +85,10 @@ public class CronJobsProxyImpl implements ICronJobsProxy{
 			}
 			if("logstash".equals(type)) {
 				this.logClusterService.asyncClusterCount(mm,hcluster);
+				continue;
+			}
+			if("cbase".equals(type)) {
+				this.cbaseClusterService.asyncClusterCount(mm,hcluster);
 				continue;
 			}
 			if("mcluster".equals(type) || "gbalancer".equals(type)) {

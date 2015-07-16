@@ -145,6 +145,12 @@
 		from WEBPORTAL_CBASECLUSTER_INFO CBASE
 		where CBASE.ID=#{id}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASECLUSTER_INFO CBASE
+		where CBASE.CBASECLUSTER_NAME=#{clusterName}
+	</select>
 	
 	<!-- 列表总数  -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">

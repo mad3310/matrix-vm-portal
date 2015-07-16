@@ -38,4 +38,9 @@ public class CbaseContainerServiceImpl extends
 		return this.cbaseContainerDao
 				.selectContainerByCbaseClusterId(cbaseClusterId);
 	}
+
+	@Override
+	public CbaseContainerModel selectByName(String containerName) {
+		return this.cbaseContainerDao.selectByName(containerName);
+	}
 }
