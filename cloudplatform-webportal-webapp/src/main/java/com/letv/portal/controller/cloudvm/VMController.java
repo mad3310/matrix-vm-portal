@@ -278,4 +278,18 @@ public class VMController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/region/{region}/vm-open-console", method = RequestMethod.POST)
+	public @ResponseBody ResultObject openConsole(@PathVariable String region,
+			@RequestParam String vmId) {
+		ResultObject result = new ResultObject();
+		try {
+			OpenStackSession openStackSession = Util.session(sessionService);
+			VMManager vmManager = openStackSession.getVMManager();
+			result.setData(vmManager.openConsole(vmManager.get(region, vmId)));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

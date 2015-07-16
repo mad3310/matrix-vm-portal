@@ -192,8 +192,8 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 	}
 
 	@Override
-	public VolumeResource create(String region, int sizeGB, String name,
-			String description) throws OpenStackException {
+	public void create(String region, int sizeGB, String name,
+			String description, Integer count) throws OpenStackException {
 		checkRegion(region);
 		if (sizeGB <= 0) {
 			throw new OpenStackException(
@@ -209,8 +209,16 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		if (description != null) {
 			createVolumeOptions.description(description);
 		}
-		Volume volume = volumeApi.create(sizeGB, createVolumeOptions);
-		return new VolumeResourceImpl(region, volume);
+		if (count == null) {
+			volumeApi.create(sizeGB, createVolumeOptions);
+		} else {
+			if (count <= 0) {
+				throw new OpenStackException("The count of volume is less than or equal to zero.", "云硬盘的数量不能小于或等于0");
+			}
+			for (int i = 0; i < count; i++) {
+				volumeApi.create(sizeGB, createVolumeOptions);
+			}
+		}
 	}
 
 	@Override

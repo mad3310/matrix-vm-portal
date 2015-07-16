@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
+import org.jclouds.openstack.nova.v2_0.extensions.ConsolesApi;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
@@ -810,7 +813,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	@Override
 	public void batchDeleteSync(String vmIdListJson) throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId
+				.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -831,9 +835,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void batchStartSync(String vmIdListJson)
-			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
+	public void batchStartSync(String vmIdListJson) throws OpenStackException {
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId
+				.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -854,9 +858,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	@Override
-	public void batchStopSync(String vmIdListJson)
-			throws OpenStackException {
-		List<RegionAndVmId> regionAndVmIds = RegionAndVmId.listFromJson(vmIdListJson);
+	public void batchStopSync(String vmIdListJson) throws OpenStackException {
+		List<RegionAndVmId> regionAndVmIds = RegionAndVmId
+				.listFromJson(vmIdListJson);
 
 		Set<String> regions = getRegions();
 
@@ -978,6 +982,20 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					MessageFormat.format("云硬盘“{0}”分离失败。",
 							volumeResource.getId()));
 		}
+	}
+
+	@Override
+	public String openConsole(VMResource vmResource)
+			throws APINotAvailableException {
+		Optional<ConsolesApi> consoleApiOptional = novaApi
+				.getConsolesApi(vmResource.getRegion());
+		if (!consoleApiOptional.isPresent()) {
+			throw new APINotAvailableException(ConsolesApi.class);
+		}
+		URI uri = consoleApiOptional.get()
+				.getConsole(vmResource.getId(), Console.Type.NOVNC).getUrl();
+		return uri.getScheme() + "://" + "localhost:8081" + uri.getPath() + "?"
+				+ uri.getQuery();// TODO change localhost:8081
 	}
 
 }
