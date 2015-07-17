@@ -133,20 +133,6 @@ public class CronJobsController {
 		this.cronJobsProxy.checkCount();
 		return obj;
 	}
-	
-	/**Methods Name: checkGceClusterCount <br>
-	 * Description: 检查服务集群一致性<br>
-	 * @author name: howie
-	 * @param request
-	 * @param obj
-	 * @return
-	 */
-	@RequestMapping(value="/cluster/count/check",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject checkGceClusterCount(HttpServletRequest request,ResultObject obj) {
-		logger.info("check gceCluster Count");
-		this.cronJobsProxy.checkCount();
-		return obj;
-	}
 	/**Methods Name: deleteMonitorMonthAgo <br>
 	 * Description: 删除一个月之前监控数据<br>
 	 * @author name: liuhao1
