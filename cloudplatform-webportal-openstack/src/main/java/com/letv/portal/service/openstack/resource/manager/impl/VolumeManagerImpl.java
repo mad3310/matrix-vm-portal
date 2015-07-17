@@ -11,6 +11,7 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
@@ -214,16 +215,36 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			createVolumeOptions.description(description);
 		}
 		if (count == null) {
+			count = 1;
+		}
+		if (count <= 0) {
+			throw new OpenStackException(
+					"The count of volume is less than or equal to zero.",
+					"云硬盘的数量不能小于或等于0");
+		}
+
+		{
+			List<? extends Volume> volumes = volumeApi.list().toList();
+			int volumeCount = count;
+			int volumeTotalSize = count * sizeGB;
+			for (Volume volume : volumes) {
+				volumeCount++;
+				volumeTotalSize += volume.getSize();
+			}
+
+			VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
+					.getByTenant(openStackUser.getUserId());
+			if (volumeTotalSize > volumeQuota.getGigabytes()) {
+				throw new OpenStackException("Disk size exceeding the quota.", "磁盘大小超过配额。");
+			}
+
+			if (volumeCount > volumeQuota.getVolumes()) {
+				throw new OpenStackException("Disk count exceeding the quota.", "磁盘数量超过配额。");
+			}
+		}
+
+		for (int i = 0; i < count; i++) {
 			volumeApi.create(sizeGB, createVolumeOptions);
-		} else {
-			if (count <= 0) {
-				throw new OpenStackException(
-						"The count of volume is less than or equal to zero.",
-						"云硬盘的数量不能小于或等于0");
-			}
-			for (int i = 0; i < count; i++) {
-				volumeApi.create(sizeGB, createVolumeOptions);
-			}
 		}
 	}
 
