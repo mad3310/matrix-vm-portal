@@ -18,9 +18,7 @@
 		    <list> 
 			    <value>classpath*:jdbc.properties</value>
 			    <value>classpath*:config.properties</value> 
-			    <!-- 重新加载本地文件，可以在web配置文件中，覆盖jar中的配置文件 -->
-			    <value>classpath:jdbc.properties</value>
-			    <value>classpath:config.properties</value> 
+			   
 		    </list> 
 	    </property>
     </bean>
