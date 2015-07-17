@@ -63,7 +63,7 @@ public class VolumeController {
 			result.setData(Util
 					.session(sessionService)
 					.getVolumeManager()
-					.listByRegionGroup(region, name, currentPage,
+					.listByRegionGroup(region, Util.optPara(name), currentPage,
 							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
@@ -79,7 +79,7 @@ public class VolumeController {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVolumeManager()
-					.listAll(name, currentPage, recordsPerPage));
+					.listAll(Util.optPara(name), currentPage, recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

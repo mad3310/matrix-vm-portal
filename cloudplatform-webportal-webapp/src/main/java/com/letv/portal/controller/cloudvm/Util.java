@@ -11,4 +11,11 @@ public class Util {
 		return (OpenStackSession) sessionService.getSession()
 				.getOpenStackSession();
 	}
+
+	public static String optPara(String para) {
+		if (para != null && para.isEmpty()) {
+			return null;
+		}
+		return para;
+	}
 }

@@ -62,7 +62,7 @@ public class VMController {
 			result.setData(Util
 					.session(sessionService)
 					.getVMManager()
-					.listByRegionGroup(region, name, currentPage,
+					.listByRegionGroup(region, Util.optPara(name), currentPage,
 							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
@@ -78,7 +78,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
-					.listAll(name, currentPage, recordsPerPage));
+					.listAll(Util.optPara(name), currentPage, recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
