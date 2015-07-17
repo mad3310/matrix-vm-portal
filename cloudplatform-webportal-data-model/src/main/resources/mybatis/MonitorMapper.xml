@@ -99,5 +99,16 @@
 		where ip=#{ipAddr} order by monitor_date desc limit 0,4
 	</select>
 
-
+	<!-- 增加分区 -->
+	<update id="addMonitorPartition" parameterType="java.util.Map">
+		ALTER TABLE ${dbName} ADD PARTITION
+		(
+		 PARTITION ${partitionName1} VALUES less than (UNIX_TIMESTAMP(#{partitionTime1})),  
+		 PARTITION ${partitionName2} VALUES less than (UNIX_TIMESTAMP(#{partitionTime2}))
+		)
+	</update>
+	<!-- 删除分区 -->
+	<update id="deleteMonitorPartitionThirtyDaysAgo" parameterType="java.util.Map">
+		ALTER TABLE ${dbName} DROP PARTITION ${partitionName1},${partitionName2}
+	</update>
 </mapper>   

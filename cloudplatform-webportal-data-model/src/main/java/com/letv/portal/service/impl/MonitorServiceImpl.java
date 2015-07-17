@@ -243,4 +243,16 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.selectExtremeIdByMonitorDate(map);
 	}
 
+
+	@Override
+	public void addMonitorPartition(Map<String, Object> map) {
+		this.monitorDao.addMonitorPartition(map);
+	}
+
+
+	@Override
+	public void deleteMonitorPartitionThirtyDaysAgo(Map<String, Object> map) {
+		this.monitorDao.deleteMonitorPartitionThirtyDaysAgo(map);
+	}
+
 }

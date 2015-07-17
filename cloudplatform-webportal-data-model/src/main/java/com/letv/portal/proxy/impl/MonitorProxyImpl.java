@@ -1,6 +1,7 @@
 package com.letv.portal.proxy.impl;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -251,5 +252,52 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		List<MonitorViewYModel> data = this.monitorService.getMonitorData(containers.get(0).getContainerName(), chartId, strategy,isTimeAveraging,format);
 		return data;
 	}
-
+	@Override
+	public void addMonitorPartition() {
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("status", 3);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		//分区名称
+		String partitionName1 = "pa"+formatter.format(c.getTime());
+		String partitionName2 = "pb"+formatter.format(c.getTime());
+		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 12, 0, 0);
+		//分区时间
+		long partitionTime1 = c.getTimeInMillis();
+		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 24, 0, 0);
+		long partitionTime2 = c.getTimeInMillis();
+		
+		for (MonitorIndexModel monitorIndexModel : indexs) {
+			params.clear();
+			params.put("dbName", monitorIndexModel.getDetailTable());
+			params.put("partitionName1", partitionName1);
+			params.put("partitionTime1", new Date(partitionTime1));
+			params.put("partitionName2", partitionName2);
+			params.put("partitionTime2", new Date(partitionTime2));
+			this.monitorService.addMonitorPartition(params);
+		}
+	}
+	
+	@Override
+	public void deleteMonitorPartitionThirtyDaysAgo() {
+		Map<String,Object> params = new  HashMap<String,Object>();
+		params.put("status", 3);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -30);    //得到30天以前
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		String partitionName1 = "pa"+formatter.format(cal.getTime());
+		String partitionName2 = "pb"+formatter.format(cal.getTime());
+		for (MonitorIndexModel monitorIndexModel : indexs) {
+			params.clear();
+			params.put("dbName", monitorIndexModel.getDetailTable());
+			params.put("partitionName1", partitionName1);
+			params.put("partitionName2", partitionName2);
+			this.monitorService.deleteMonitorPartitionThirtyDaysAgo(params);
+		}
+	}
+	
 }

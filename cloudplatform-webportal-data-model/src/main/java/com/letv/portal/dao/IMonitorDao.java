@@ -22,4 +22,6 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public List<Map<String,Object>> selectDbConnect(String ipAddr);
 	public void deleteOutDataByIndex(Map<String,Object> map);
 	public List<Map<String,Object>> selectExtremeIdByMonitorDate(Map<String, Object> map);
+	public void addMonitorPartition(Map<String,Object> map);
+	public void deleteMonitorPartitionThirtyDaysAgo(Map<String,Object> map);
 }
