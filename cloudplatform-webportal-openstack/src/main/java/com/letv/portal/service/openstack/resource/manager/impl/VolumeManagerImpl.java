@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.ContextBuilder;
@@ -70,7 +71,8 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 		Volume volume = volumeApi.get(id);
 		if (volume != null) {
-			return new VolumeResourceImpl(region, volume);
+			return new VolumeResourceImpl(region,
+					this.getRegionDisplayName(region), volume);
 		} else {
 			throw new ResourceNotFoundException("Volume", "卷", id);
 		}
@@ -80,14 +82,16 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		return cinderApi;
 	}
 
-	public List<VolumeResource> getOfVM(String region, String vmId) {
+	public List<VolumeResource> getOfVM(String region,
+			String regionDisplayName, String vmId) {
 		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 		List<? extends Volume> volumeList = volumeApi.listInDetail().toList();
 		List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
 		for (Volume volume : volumeList) {
 			for (VolumeAttachment volumeAttachment : volume.getAttachments()) {
 				if (vmId.equals(volumeAttachment.getServerId())) {
-					volumeResources.add(new VolumeResourceImpl(region, volume));
+					volumeResources.add(new VolumeResourceImpl(region,
+							regionDisplayName, volume));
 					break;
 				}
 			}
@@ -116,14 +120,14 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			currentPage -= 1;
 		}
 
-		// Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+		Map<String, String> transMap = getRegionCodeToDisplayNameMap();
 		List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
 		int volumeCount = 0;
 		boolean needCollect = true;
 		for (String region : regions) {
 			VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 			if (needCollect) {
-				// String regionDisplayName = transMap.get(region);
+				String regionDisplayName = transMap.get(region);
 				List<? extends Volume> volumes = volumeApi.listInDetail()
 						.toList();
 				for (Volume volume : volumes) {
@@ -132,7 +136,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 									.contains(name))) {
 						if (currentPage == null || recordsPerPage == null) {
 							volumeResources.add(new VolumeResourceImpl(region,
-									volume));
+									regionDisplayName, volume));
 						} else {
 							if (needCollect) {
 								if (volumeCount >= (currentPage + 1)
@@ -141,7 +145,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 								} else if (volumeCount >= currentPage
 										* recordsPerPage) {
 									volumeResources.add(new VolumeResourceImpl(
-											region, volume));
+											region, regionDisplayName, volume));
 								}
 							}
 						}
@@ -213,7 +217,9 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			volumeApi.create(sizeGB, createVolumeOptions);
 		} else {
 			if (count <= 0) {
-				throw new OpenStackException("The count of volume is less than or equal to zero.", "云硬盘的数量不能小于或等于0");
+				throw new OpenStackException(
+						"The count of volume is less than or equal to zero.",
+						"云硬盘的数量不能小于或等于0");
 			}
 			for (int i = 0; i < count; i++) {
 				volumeApi.create(sizeGB, createVolumeOptions);

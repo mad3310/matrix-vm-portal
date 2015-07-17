@@ -14,12 +14,15 @@ public class VolumeResourceImpl extends AbstractResource implements
 		VolumeResource {
 
 	private String region;
+	private String regionDisplayName;
 	@JsonIgnore
 	public Volume volume;
 	private Set<VolumeAttachmentResource> attachments;
 
-	public VolumeResourceImpl(String region, Volume volume) {
+	public VolumeResourceImpl(String region, String regionDisplayName,
+			Volume volume) {
 		this.region = region;
+		this.regionDisplayName = regionDisplayName;
 		this.volume = volume;
 		this.attachments = new HashSet<VolumeAttachmentResource>();
 		for (VolumeAttachment volumeAttachment : volume.getAttachments()) {
@@ -86,6 +89,11 @@ public class VolumeResourceImpl extends AbstractResource implements
 	@Override
 	public Set<VolumeAttachmentResource> getAttachments() {
 		return attachments;
+	}
+
+	@Override
+	public String getRegionDisplayName() {
+		return regionDisplayName;
 	}
 
 }
