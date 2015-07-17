@@ -234,12 +234,17 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
 					.getByTenant(openStackUser.getUserId());
-			if (volumeTotalSize > volumeQuota.getGigabytes()) {
-				throw new OpenStackException("Disk size exceeding the quota.", "磁盘大小超过配额。");
+			if (volumeQuota == null) {
+				throw new OpenStackException("Volume quota is not available.",
+						"云硬盘配额不可用。");
 			}
-
+			if (volumeTotalSize > volumeQuota.getGigabytes()) {
+				throw new OpenStackException(
+						"Volume size exceeding the quota.", "云硬盘大小超过配额。");
+			}
 			if (volumeCount > volumeQuota.getVolumes()) {
-				throw new OpenStackException("Disk count exceeding the quota.", "磁盘数量超过配额。");
+				throw new OpenStackException(
+						"Volume count exceeding the quota.", "云硬盘数量超过配额。");
 			}
 		}
 

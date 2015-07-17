@@ -29,11 +29,13 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.Quota;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.extensions.ConsolesApi;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
+import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
@@ -237,11 +239,12 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		ServerApi serverApi = novaApi.getServerApi(region);
 		Server server = serverApi.get(id);
 		if (server != null) {
-			String regionDisplayName=getRegionDisplayName(region);
+			String regionDisplayName = getRegionDisplayName(region);
 			VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
 					regionDisplayName, server, this, imageManager,
 					openStackUser);
-			vmResourceImpl.setVolumes(volumeManager.getOfVM(region,regionDisplayName, id));
+			vmResourceImpl.setVolumes(volumeManager.getOfVM(region,
+					regionDisplayName, id));
 			return vmResourceImpl;
 		} else {
 			throw new ResourceNotFoundException("VM", "虚拟机", id);
@@ -342,6 +345,55 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// test code end
 
 		final ServerApi serverApi = novaApi.getServerApi(region);
+
+		{
+			FlavorApi flavorApi = novaApi.getFlavorApi(region);
+			FlavorResource flavorResource = conf.getFlavorResource();
+			int serverCount = 1, serverTotalVcpus = flavorResource.getVcpus(), serverTotalRam = flavorResource
+					.getRam();
+			List<Server> servers = serverApi.listInDetail().concat().toList();
+			Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
+			for (Server server : servers) {
+				serverCount++;
+				String flavorId = server.getFlavor().getId();
+				Flavor flavor = idToFlavor.get(flavorId);
+				if (flavor == null) {
+					flavor = flavorApi.get(flavorId);
+					if (flavor == null) {
+
+					}
+					idToFlavor.put(flavorId, flavor);
+				}
+				serverTotalVcpus += flavor.getVcpus();
+				serverTotalRam += flavor.getRam();
+			}
+
+			Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(region);
+			if (!quotaApiOptional.isPresent()) {
+				throw new APINotAvailableException(QuotaApi.class);
+			}
+
+			Quota quota = quotaApiOptional.get().getByTenant(
+					openStackUser.getUserId());
+			if (quota == null) {
+				throw new OpenStackException("VM quota is not available.",
+						"虚拟机配额不可用。");
+			}
+
+			if (serverCount > quota.getInstances()) {
+				throw new OpenStackException("VM count exceeding the quota.",
+						"虚拟机数量超过配额。");
+			}
+			if (serverTotalVcpus > quota.getCores()) {
+				throw new OpenStackException("Vcpu count exceeding the quota.",
+						"虚拟CPU数量超过配额。");
+			}
+			if (serverTotalRam > quota.getRam()) {
+				throw new OpenStackException(
+						"Ram amounts exceeding the quota.", "内存总量超过配额。");
+			}
+		}
+
 		final ServerCreated serverCreated = serverApi.create(conf.getName(),
 				conf.getImageResource().getId(), conf.getFlavorResource()
 						.getId(), createServerOptions);
