@@ -1192,6 +1192,54 @@ define(function(require,exports,module){
                 show:true,
                 backdrop:false
             })
+        },
+        validateInputNum:function(inputValue){
+            var reg=/^[1-9]+[0-9]*/;
+            return reg.exec(inputValue)==null? false:true;
+        },
+        NumberInput:function(minNum,maxNum,increment,onChange){
+        	var that=this;
+        	var numberUpEl=$('.bk-number-up');
+        	var numberDownEl=$('.bk-number-down');
+        	var numberInputEl=$('.bk-number-input');
+        	
+        	numberInputEl.on('change',function(e){
+        		onChange(e);
+        	});
+        	numberInputEl.on('blur', function(e){       
+                if(!that.validateInputNum(numberInputEl.val())){
+                	numberInputEl.val(minNum.toString());
+                	numberInputEl.trigger('change');
+                }
+        	});
+        	numberDownEl.on('click',function(e){
+        		var currentNum=parseFloat(numberInputEl.val());
+        		if(currentNum==minNum){
+        			return;
+        		}
+        		if((currentNum-increment)==minNum){
+        			numberDownEl.addClass('bk-number-disabled');
+        		}
+        		if(currentNum==maxNum){
+        			numberUpEl.removeClass('bk-number-disabled');
+        		}
+        		numberInputEl.val((currentNum-increment).toString());
+        		numberInputEl.trigger('change');
+        	});
+        	numberUpEl.on('click',function(e){
+        		var currentNum=parseFloat(numberInputEl.val());
+        		if(currentNum==maxNum){
+        			return;
+        		}
+        		if((currentNum+increment)==maxNum){
+        			numberUpEl.addClass('bk-number-disabled');
+        		}
+        		if(currentNum==minNum){
+        			numberDownEl.removeClass('bk-number-disabled');
+        		}
+        		numberInputEl.val((currentNum+increment).toString());
+        		numberInputEl.trigger('change');
+        	});
         }
     }
     /*common原型属性方法end*/

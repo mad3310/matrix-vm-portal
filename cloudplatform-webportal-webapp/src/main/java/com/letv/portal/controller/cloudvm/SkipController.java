@@ -95,6 +95,20 @@ public class SkipController {
 		return mav;
 	}	
 	
+	/**
+	 * Methods Name: vmCreate<br>
+	 * Description: 跳转数据库创建页面
+	 * @author name: yaokuo
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value ="/vm/diskCreate",method=RequestMethod.GET)
+	public ModelAndView toDiskCreate(ModelAndView mav){
+		mav.setViewName("/cloudvm/diskCreate");
+		return mav;
+	}	
+	
 	@RequestMapping(value ="/vnc_auto.html",method=RequestMethod.GET)
 	public ModelAndView vncAuto(ModelAndView mav){
 		mav.setViewName("/cloudvm/vnc_auto");
