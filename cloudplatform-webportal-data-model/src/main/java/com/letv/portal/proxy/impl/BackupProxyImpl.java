@@ -1,7 +1,6 @@
 package com.letv.portal.proxy.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,11 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.SchedulingTaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.BackupStatus;
 import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
@@ -58,6 +59,9 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Autowired
+	private SchedulingTaskExecutor threadPoolTaskExecutor;
 
 	@Override
 	public IBaseService<BackupResultModel> getService() {
@@ -69,71 +73,151 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		this.backupTask(0); //all
 	}
 	@Override
-	public void backupTask(int count) {
+	public void backupTask(final int count) {
 		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
-		if(count == 0)
-			count = 5;
-		
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("type", "rds");
-		
 		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
-		params.clear();
 		
-		List<MclusterModel> mclusters = new ArrayList<MclusterModel>();
-		for (HclusterModel hcluster : hclusters) {
+		for (final HclusterModel hcluster : hclusters) {
+			this.threadPoolTaskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					backupByHcluster(count,hcluster);
+				}
+			});
+		}
+	}
+	
+	private void backupByHcluster(int count,HclusterModel hcluster) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("hclusterId", hcluster.getId());
+		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count,params);
+		Set<Long> set = new HashSet<Long>();
+		
+		while(mclusters != null && !mclusters.isEmpty()) {
+			for (MclusterModel mclusterModel : mclusters) {
+				//进行备份。
+				this.wholeBackup4Db(mclusterModel);
+			}
+			
+			int buildingCount = count;
+			
+			while(buildingCount >=count) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+				}
+				buildingCount = this.checkBackupStatus(mclusters);
+			}
+			
+			int addNewCount = count - buildingCount;
+			
+			params.clear();
 			params.put("hclusterId", hcluster.getId());
-			mclusters.addAll(this.mclusterService.selectValidMclusters(count,params));
+			BackupResultModel recentBackup = this.selectRecentBackup(params);
+			if(recentBackup == null || count<=0)
+				continue;
+			mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),addNewCount);
 		}
+		
+	}
+
+	private int checkBackupStatus(List<MclusterModel> mclusters) {
+		int buildingCount = mclusters.size();
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.put("hclusterId", mclusters.get(0).getHclusterId());
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar curDate = Calendar.getInstance();
+		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
+		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		
+		int totalCount = 0;
 		for (MclusterModel mclusterModel : mclusters) {
-			//进行备份。
-			this.wholeBackup4Db(mclusterModel);
+			totalCount++;
+			params.put("mclusterId", mclusterModel.getId());
+			params.put("status", BackupStatus.BUILDING);
+			List<BackupResultModel> results = this.backupService.selectByStatusAndDateOrderByMclusterId(params);
+			
+			BackupResultModel backup = null;
+			String result = "";
+			BackupStatus status = null;
+			String resultDetail = "";
+			for (int i = 0; i < results.size(); i++) {
+				backup = results.get(i);
+				if(i ==0) {
+					if(!BackupStatus.BUILDING.equals(backup.getStatus())) {
+						totalCount--;
+						break;
+					}
+					result = this.pythonService.checkBackup4Db(backup.getBackupIp());
+					backup = this.analysisBackupResult(backup, result);
+					status = backup.getStatus();
+					resultDetail = backup.getResultDetail();
+					if(status != BackupStatus.BUILDING)
+						buildingCount--;
+				}
+				backup.setStatus(status);
+				backup.setResultDetail(resultDetail);
+				
+				Date date = new Date();
+				backup.setEndTime(date);
+				this.backupService.updateBySelective(backup);
+				
+				if(BackupStatus.FAILD.equals(backup.getStatus())) {
+					//send failed email notice
+					sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
+				}
+			}
 		}
+		if(totalCount == 0)
+			buildingCount = 0;
+		return buildingCount;
 	}
 
 	@Override
-	@Async
 	public void wholeBackup4Db(MclusterModel mcluster) {
 		Date date = new Date();
 		if(mcluster == null)
 			return;
-		//选择集群的第二个节点ip (ps:mcluster manager 要求打到第二个节点)。
 		ContainerModel container = this.selectValidVipContianer(mcluster.getId(), "mclustervip");
-		//选择该集群下的所有db库（不止一个）
 		List<DbModel> dbModels = this.dbService.selectDbByMclusterId(mcluster.getId());
-		
-		if(container == null || dbModels.isEmpty()) return;
-		
-		BackupStatus status = BackupStatus.BUILDING;
-		String resultDetail = "";
-		//调用备份接口
-		String result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
-		if(StringUtils.isNullOrEmpty(result)) {
-			status = BackupStatus.FAILD;
-			resultDetail = "Connection refused";
-		} else {
-			if(result.contains("\"code\": 200")) {
-				status = BackupStatus.BUILDING;
-			} else {
-				status = BackupStatus.FAILD;
-				resultDetail = "api not found";
-			}
+		if(container == null || dbModels.isEmpty())  {
+			//发送告知邮件，数据有问题。
+			return;
 		}
+		
+		BackupResultModel backup = this.wholeBackup4Db(mcluster,container);
+		
 		for (DbModel dbModel : dbModels) {
 			//将备份记录写入数据库。
-			BackupResultModel backup = new BackupResultModel();
 			backup.setMclusterId(mcluster.getId());
 			backup.setHclusterId(mcluster.getHclusterId());
 			backup.setDbId(dbModel.getId());
 			backup.setBackupIp(container.getIpAddr());
 			backup.setStartTime(date);
-			backup.setStatus(status);
-			backup.setResultDetail(resultDetail);
 			super.insert(backup);
 			//发送邮件通知
-			if(status == BackupStatus.FAILD)
-				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(), resultDetail,date,container.getIpAddr());
+			if(backup.getStatus().equals(BackupStatus.FAILD))
+				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(), backup.getResultDetail(),date,container.getIpAddr());
 		}
+	}
+	
+	private BackupResultModel wholeBackup4Db(MclusterModel mcluster,ContainerModel container){
+		BackupResultModel backupResult = new BackupResultModel();
+		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
+		String resultMessage = result.getResult();
+		if(StringUtils.isNullOrEmpty(resultMessage)) {
+			backupResult.setStatus(BackupStatus.FAILD);
+			backupResult.setResultDetail("backup api result is null:" + result.getUrl());
+		} else if(resultMessage.contains("\"code\": 200")) {
+			backupResult.setStatus(BackupStatus.BUILDING);
+		} else {
+			backupResult.setStatus(BackupStatus.FAILD);
+			backupResult.setResultDetail(resultMessage + ":" + result.getUrl());
+		}
+		return backupResult;
 	}
 	
 	private ContainerModel selectValidVipContianer(Long mclusterId,String type){
@@ -148,6 +232,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
+	@Deprecated
 	public void checkBackupStatusTask(int count) {
 		if(count == 0)
 			count = 5;
@@ -164,6 +249,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 
 	@Override
     @Async
+    @Deprecated
 	public void checkBackupStatus(BackupResultModel backup) {
 		String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
 		backup = analysisBackupResult(backup, result);
@@ -218,6 +304,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		return backup;
 	}
 	
+	@Deprecated
 	private void backupTask4addNew(int count) {
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("type","rds");
@@ -251,6 +338,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			
 		}
 	}
+	@Deprecated
 	private BackupResultModel selectRecentBackup(Map<String,Object> params) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar curDate = Calendar.getInstance();

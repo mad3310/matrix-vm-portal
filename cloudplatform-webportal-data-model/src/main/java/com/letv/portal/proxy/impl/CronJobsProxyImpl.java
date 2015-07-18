@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.portal.constant.Constant;
@@ -72,7 +73,9 @@ public class CronJobsProxyImpl implements ICronJobsProxy{
 		}
 	}
 	
-	private void asyncClusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
+	@Override
+	@Async
+	public void asyncClusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
 		for (Map<String,Object> mm : data) {
 			String type = (String) mm.get("type");
 			if("jetty".equals(type) || "nginx".equals(type)) {

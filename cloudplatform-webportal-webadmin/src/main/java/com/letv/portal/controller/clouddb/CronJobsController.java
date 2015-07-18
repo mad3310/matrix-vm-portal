@@ -160,17 +160,16 @@ public class CronJobsController {
 	/**Methods Name: dbBackup <br>
 	 * Description: db数据库备份<br>
 	 * @author name: liuhao1
-	 * @param stage  1:0点备份  2:2点备份 3:4点备份 4:6点备份
+	 * @param count  
 	 * @param request
 	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
+	@RequestMapping(value="/db/backup",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
-		if(count ==0 || count<0) {
+		if(count ==0 || count<0)
 			count = 5;
-		}
 		this.backupProxy.backupTask(count);
 		return obj;
 	}
