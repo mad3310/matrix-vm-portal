@@ -176,7 +176,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			page.setRecordsPerPage(10);
 		}
 		if (currentPage != null) {
-			page.setCurrentPage(currentPage);
+			page.setCurrentPage(currentPage + 1);
 		} else {
 			page.setCurrentPage(1);
 		}
@@ -331,7 +331,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 							volumeResource.getId()));
 		}
 	}
-	
+
 	public void waitingVolume(String volumeId, VolumeApi volumeApi,
 			VolumeChecker checker) throws PollingInterruptedException {
 		try {
