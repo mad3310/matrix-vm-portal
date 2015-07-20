@@ -1208,6 +1208,22 @@ define(function(require,exports,module){
                 show:true,
                 backdrop:false
             })
+        },
+        TransUnit:function(num){
+        	var temp=Math.abs(num);
+        	if(temp<1024){//B
+        		temp=temp+'B';
+        	}else if(temp<1024*1024){//KB
+        		temp= Math.round(temp/1024*Math.pow(10, 2))/Math.pow(10, 2)+'KB'
+        	}else if(temp<1024*1024*1024){//MB
+        		temp=Math.round(temp/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'MB'
+        	}else{//GB
+        		temp=Math.round(temp/1024/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'GB';
+        	}
+        	if(num<0){
+        		temp='-'+temp
+        	}
+        	return temp;
         }
     }
     /*common原型属性方法end*/

@@ -203,4 +203,32 @@ public class CronJobsController {
     	this.backupProxy.deleteOutData();
     	return obj;
 	}
+	
+	/**Methods Name: deleteMonitorPartitionMonthAgo <br>
+	 * Description: 删除30天之前分区<br>
+	 * @author name: 
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/monitor/deletePartition",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject deleteMonitorPartitionThirtyDaysAgo(HttpServletRequest request,ResultObject obj) {
+		logger.info("deleteMonitorPartitionThirtyDaysAgo");
+		this.monitorProxy.deleteMonitorPartitionThirtyDaysAgo();
+    	return obj;
+	}
+	
+	/**Methods Name: addMonitorPartition <br>
+	 * Description: 添加监控表分区<br>
+	 * @author name:
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/monitor/addPartition",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject addMonitorPartition(HttpServletRequest request,ResultObject obj) {
+		logger.info("addMonitorPartition");
+		this.monitorProxy.addMonitorPartition();
+		return obj;
+	}
 }

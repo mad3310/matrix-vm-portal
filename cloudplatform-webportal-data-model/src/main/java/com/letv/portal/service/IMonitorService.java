@@ -24,4 +24,23 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	public List<Map<String, Object>> selectExtremeIdByMonitorDate(
 			Map<String, Object> map);
 	
+	/**
+	  * @Title: addMonitorPartition
+	  * @Description: 添加分区
+	  * @param map void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月17日 上午9:29:14
+	  */
+	public void addMonitorPartition(Map<String, Object> map);
+	/**
+	  * @Title: deleteMonitorPartitionThirtyDaysAgo
+	  * @Description: 删除30天以前的分区
+	  * @param map void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月17日 上午10:42:28
+	  */
+	public void deleteMonitorPartitionThirtyDaysAgo(Map<String, Object> map);
+	
 }
