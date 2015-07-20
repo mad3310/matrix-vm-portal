@@ -195,15 +195,15 @@ $(function(){
         });
     });
     $(".toAccountList").unbind('click').click(function () {             //切换到账户列表
-        // $("#newAccountTab").addClass("hide");
-        // $("#modifyAccountTab").addClass("hide");
-        // $("#accountList").removeClass("hide");
-        var hash='';
-        if(!location.hash){
-            hash=location.href+"#db-detail-user-mgr";
-        }
-        location.href=hash;
-        window.location.reload();
+        $("#newAccountTab").addClass("hide");
+        $("#modifyAccountTab").addClass("hide");
+        $("#accountList").removeClass("hide");
+        // var hash='';
+        // if(!location.hash){
+        //     hash=location.href+"#db-detail-user-mgr";
+        // }
+        // location.href=hash;
+        // window.location.reload();
     });
     // 新用户创建及验证
     $('#db_user_create_form').bootstrapValidator({
