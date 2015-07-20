@@ -9,7 +9,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -39,8 +38,6 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 	private ISlbContainerService slbContainerService;
 	@Resource
 	private IHostService hostService;
-	@Value("${async.cluster.createuser}")
-	private long ASYNC_CLUSTER_CREATEUSER ;
 	
 	public SlbClusterServiceImpl() {
 		super(SlbCluster.class);
@@ -98,7 +95,6 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 		cluster.setAdminPassword((String) mm.get("clusterName"));
 		cluster.setType(MclusterType.HAND.getValue());
 		cluster.setHclusterId(hclusterId);
-		cluster.setCreateUser(ASYNC_CLUSTER_CREATEUSER);
 		cluster.setDeleted(true);
 		this.insert(cluster);
 		List<Map<String,Object>> cms = (List<Map<String,Object>>) mm.get("nodeInfo");

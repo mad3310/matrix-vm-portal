@@ -490,7 +490,7 @@
 								<label class="col-sm-4 control-label">密码： </label>
 								<div class="col-sm-8 row">
 									<div class="col-sm-12">
-										<input name="reset-password" class="form-control input-radius-2" type="password" />
+										<input name="reset-password" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
 									</div>
 								</div>
 							</div>
@@ -498,7 +498,7 @@
 								<label class="col-sm-4 control-label">确认密码： </label>
 								<div class="col-sm-8 row">
 									<div class="col-sm-12">
-										<input name="reset-password-repeat" class="form-control input-radius-2" type="password" />
+										<input name="reset-password-repeat" class="form-control input-radius-2" type="text" onfocus="this.type='password'" autocomplete="off"/>
 									</div>
 								</div>
 							</div>
