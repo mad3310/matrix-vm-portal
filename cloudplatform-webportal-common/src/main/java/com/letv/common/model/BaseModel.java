@@ -18,7 +18,7 @@ public class BaseModel implements IEntity,ISoftDelete{
 	private boolean deleted;
 	
 	private Timestamp createTime;
-	private Long createUser = 2L; //默认为系统管理员
+	private Long createUser;
 	private Timestamp updateTime;
 	private Long updateUser;
 

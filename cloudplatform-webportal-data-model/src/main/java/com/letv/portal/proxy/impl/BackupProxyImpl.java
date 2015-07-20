@@ -105,7 +105,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			
 			while(buildingCount >=count) {
 				try {
-					Thread.sleep(10000);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 				}
 				buildingCount = this.checkBackupStatus(mclusters);
@@ -113,14 +113,19 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			
 			int addNewCount = count - buildingCount;
 			
-			params.clear();
-			params.put("hclusterId", hcluster.getId());
-			BackupResultModel recentBackup = this.selectRecentBackup(params);
-			if(recentBackup == null || count<=0)
-				continue;
-			mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),addNewCount);
+			mclusters = this.addBackupMcluster(null,hcluster.getId(), addNewCount);
 		}
 		
+	}
+	
+	private List<MclusterModel> addBackupMcluster(Long mclusterId,Long hclusterId,int addNewCount) {
+		Map<String, Object> params = new HashMap<String,Object>();
+		params.clear();
+		params.put("hclusterId", hclusterId);
+		BackupResultModel recentBackup = this.selectRecentBackup(params);
+		if(recentBackup == null)
+			return null;
+		return  this.mclusterService.selectNextValidMclusterById(null == mclusterId?recentBackup.getMclusterId():mclusterId, hclusterId,addNewCount);
 	}
 
 	private int checkBackupStatus(List<MclusterModel> mclusters) {
@@ -139,7 +144,10 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			params.put("mclusterId", mclusterModel.getId());
 			params.put("status", BackupStatus.BUILDING);
 			List<BackupResultModel> results = this.backupService.selectByStatusAndDateOrderByMclusterId(params);
-			
+			if(null == results || results.isEmpty()) {
+				totalCount--;
+				continue;
+			}
 			BackupResultModel backup = null;
 			String result = "";
 			BackupStatus status = null;
@@ -147,16 +155,10 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			for (int i = 0; i < results.size(); i++) {
 				backup = results.get(i);
 				if(i ==0) {
-					if(!BackupStatus.BUILDING.equals(backup.getStatus())) {
-						totalCount--;
-						break;
-					}
 					result = this.pythonService.checkBackup4Db(backup.getBackupIp());
 					backup = this.analysisBackupResult(backup, result);
 					status = backup.getStatus();
 					resultDetail = backup.getResultDetail();
-					if(status != BackupStatus.BUILDING)
-						buildingCount--;
 				}
 				backup.setStatus(status);
 				backup.setResultDetail(resultDetail);
@@ -169,6 +171,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 					//send failed email notice
 					sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
 				}
+				if(!BackupStatus.BUILDING.equals(results.get(0).getStatus())) 
+					buildingCount--;
 			}
 		}
 		if(totalCount == 0)
