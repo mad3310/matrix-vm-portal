@@ -1064,7 +1064,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				.get();
 
 		volumeAttachmentApi.attachVolumeToServerAsDevice(
-				volumeResource.getId(), vmResource.getId(), "/dev/vdc");
+				volumeResource.getId(), vmResource.getId(), "");
 
 		volumeManager.waitingVolume(volumeResource.getId(), volumeManager
 				.getCinderApi().getVolumeApi(volumeResource.getRegion()),
