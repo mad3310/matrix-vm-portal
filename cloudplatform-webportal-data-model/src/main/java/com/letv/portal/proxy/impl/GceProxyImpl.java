@@ -1,11 +1,14 @@
 package com.letv.portal.proxy.impl;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +17,23 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.exception.MatrixException;
+import com.letv.common.exception.PythonException;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
-import com.letv.common.util.HttpClient;
-import com.letv.common.util.StringUtil;
+import com.letv.portal.constant.Constant;
+import com.letv.portal.enumeration.GceStatus;
 import com.letv.portal.enumeration.GceType;
+import com.letv.portal.enumeration.MclusterStatus;
+import com.letv.portal.enumeration.MclusterType;
 import com.letv.portal.enumeration.SlbStatus;
+import com.letv.portal.model.ContainerModel;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
+import com.letv.portal.model.gce.GceContainerExt;
 import com.letv.portal.model.gce.GceServer;
 import com.letv.portal.model.gce.GceServerExt;
 import com.letv.portal.model.log.LogServer;
@@ -32,7 +43,10 @@ import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.python.service.IGcePythonService;
 import com.letv.portal.service.IBaseService;
+import com.letv.portal.service.IHclusterService;
+import com.letv.portal.service.IHostService;
 import com.letv.portal.service.gce.IGceClusterService;
+import com.letv.portal.service.gce.IGceContainerExtService;
 import com.letv.portal.service.gce.IGceContainerService;
 import com.letv.portal.service.gce.IGceServerService;
 import com.letv.portal.service.log.ILogServerService;
@@ -57,9 +71,16 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 	private IBaseTaskService baseGceTaskService;
 	@Autowired
 	private ITaskEngine taskEngine;
+	@Autowired
+	private IHclusterService hclusterService;
+	@Autowired
+	private IHostService hostService;
 	
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
+	
+	@Autowired
+	private IGceContainerExtService gceContainerExtService;
 	
 	@Value("${db.auto.build.count}")
 	private int DB_AUTO_BUILD_COUNT;
@@ -187,6 +208,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		return tr.isSuccess();
 	}
+	
 	private boolean stop(GceServer slb,GceCluster cluster,List<GceContainer> containers) {
 		ApiResultObject resultObject = this.gcePythonService.stop(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(),cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
@@ -197,6 +219,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		return tr.isSuccess();
 	}
+	
 	private boolean start(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
 		ApiResultObject resultObject = this.gcePythonService.start(null,containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
 		TaskResult tr = this.baseGceTaskService.analyzeRestServiceResult(resultObject);
@@ -207,6 +230,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		return tr.isSuccess();
 	}
+	
 	private String checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers) {
 		 TaskResult tr = new TaskResult();
 		 ApiResultObject resultObject =  this.gcePythonService.checkStatus(containers.get(0).getHostIp(),containers.get(0).getMgrBindHostPort(), cluster.getAdminUser(), cluster.getAdminPassword());
@@ -219,6 +243,7 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		Map<String,Object> params = (Map<String, Object>) tr.getParams();
 		return (String) ((Map<String,Object>)params.get("data")).get("status");
 	}
+	
 	private void checkStatus(GceServer gce,GceCluster cluster,List<GceContainer> containers,String expectStatus,String exception) {
 		String status = "";
 		for (int i = 0; i < 3; i++) {
@@ -260,4 +285,5 @@ public class GceProxyImpl extends BaseProxyImpl<GceServer> implements
 		}
 		this.gceServerService.updateBySelective(gce);
 	}
+
 }

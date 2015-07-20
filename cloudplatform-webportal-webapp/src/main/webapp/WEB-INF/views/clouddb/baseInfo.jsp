@@ -137,10 +137,10 @@
 		        	<tbody>
 		        	<tr>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库内存:</span><span>2048M</span>
+			        		<span class="text-muted pd-r8">数据库内存:</span><span id="db_info_memory_size"></span>
 			        	</td>
 			        	<td width="50%">
-			        		<span class="text-muted pd-r8">数据库空间:</span><span>10G</span>
+			        		<span class="text-muted pd-r8">数据库空间:</span><span id="db_info_storage_size"></span>
 			        	</td>
 		        	</tr>
 		        	<tr>

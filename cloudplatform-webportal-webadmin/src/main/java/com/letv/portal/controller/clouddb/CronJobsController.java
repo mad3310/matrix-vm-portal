@@ -20,6 +20,8 @@ import com.letv.common.result.ResultObject;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
+import com.letv.portal.proxy.ICronJobsProxy;
+import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IMonitorIndexService;
@@ -41,6 +43,11 @@ public class CronJobsController {
 	private IMonitorService monitorService;
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
+	@Autowired
+	private IGceProxy gceProxy;
+	
+	@Autowired
+	private ICronJobsProxy cronJobsProxy;
 	
 	private final static Logger logger = LoggerFactory.getLogger(CronJobsController.class);
 		
@@ -100,7 +107,7 @@ public class CronJobsController {
     	return obj;
 	}
 	/**Methods Name: checkMclusterCount <br>
-	 * Description: 检查集群数量一致性<br>
+	 * Description: 检查RDS集群数量一致性<br>
 	 * @author name: liuhao1
 	 * @param request
 	 * @param obj
@@ -111,6 +118,20 @@ public class CronJobsController {
 		logger.info("check Mcluster Count");
     	this.mclusterProxy.checkCount();
     	return obj;
+	}
+	
+	/**Methods Name: checkGceClusterCount <br>
+	 * Description: 检查服务集群一致性<br>
+	 * @author name: howie
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/cluster/count/check",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject checkGceClusterCount(HttpServletRequest request,ResultObject obj) {
+		logger.info("check gceCluster Count");
+		this.cronJobsProxy.checkCount();
+		return obj;
 	}
 	/**Methods Name: deleteMonitorMonthAgo <br>
 	 * Description: 删除一个月之前监控数据<br>
@@ -139,7 +160,7 @@ public class CronJobsController {
 	/**Methods Name: dbBackup <br>
 	 * Description: db数据库备份<br>
 	 * @author name: liuhao1
-	 * @param stage  1:0点备份  2:2点备份 3:4点备份 4:6点备份
+	 * @param count  
 	 * @param request
 	 * @param obj
 	 * @return
@@ -147,10 +168,23 @@ public class CronJobsController {
 	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
-		if(count ==0 || count<0) {
+		if(count ==0 || count<0)
 			count = 5;
-		}
 		this.backupProxy.backupTask(count);
+		return obj;
+	}
+
+	/**Methods Name: dbBackup <br>
+	 * Description: db数据库备份报告<br>
+	 * @author name: liuhao1
+	 * @param count  
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/db/backup/report",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject dbBackupReport(HttpServletRequest request,ResultObject obj) {
+		this.backupProxy.backupTaskReport();
 		return obj;
 	}
 	/**Methods Name: dbBackupCheck <br>
@@ -161,6 +195,7 @@ public class CronJobsController {
 	 * @return
 	 */
 	@RequestMapping(value="/db/backup/check",method=RequestMethod.GET)   
+	@Deprecated
 	public @ResponseBody ResultObject dbBackupCheck(int count,HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup check");
 		if(count ==0 || count<0) {
@@ -182,5 +217,33 @@ public class CronJobsController {
 		logger.info("deleteBackupHalfMonthAgo");
     	this.backupProxy.deleteOutData();
     	return obj;
+	}
+	
+	/**Methods Name: deleteMonitorPartitionMonthAgo <br>
+	 * Description: 删除30天之前分区<br>
+	 * @author name: 
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/monitor/deletePartition",method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject deleteMonitorPartitionThirtyDaysAgo(HttpServletRequest request,ResultObject obj) {
+		logger.info("deleteMonitorPartitionThirtyDaysAgo");
+		this.monitorProxy.deleteMonitorPartitionThirtyDaysAgo();
+    	return obj;
+	}
+	
+	/**Methods Name: addMonitorPartition <br>
+	 * Description: 添加监控表分区<br>
+	 * @author name:
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/monitor/addPartition",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject addMonitorPartition(HttpServletRequest request,ResultObject obj) {
+		logger.info("addMonitorPartition");
+		this.monitorProxy.addMonitorPartition();
+		return obj;
 	}
 }

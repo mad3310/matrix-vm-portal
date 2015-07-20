@@ -73,23 +73,24 @@ define(function(require){
     cn.Sidebar(index);//index为菜单中的排序(1-12)
  
    $("#modifyCommit").click(function(){
+   		var text=$(this).text();
+   		$(this).addClass('disabled').text('配置中...')
    		var data={
    			id:$(swiftId).val(),
    			visibilityLevel:$("[name = visibilityLevel]").parent().parent().find(":checked").val(),
    			storeSize:$(".memSize").val()
    		}
    		cn.PostData("/oss/config",data,function(data){
+   			$("#myModal").modal('hide');
    			if(data.result == 1){
-	   			$("#myModal").modal('hide');
 				cn.alertoolSuccess("配置已生效.");
 	   			getSwiftConfig();
 	   			cn.RefreshIfame();
    			}else{
-   				$("#myModal").modal('hide');
 				cn.alertoolWarnning(data.msgs);
 	   			getSwiftConfig();
    			}
-   		});
+   		},'#modifyCommit',text);
    })
 /*获取swift当前配置信息*/
 	var dataHandler = require('./dataHandler');

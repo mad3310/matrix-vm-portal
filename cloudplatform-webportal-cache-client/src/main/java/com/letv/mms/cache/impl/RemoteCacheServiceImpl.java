@@ -80,6 +80,11 @@ public class RemoteCacheServiceImpl <T> implements ICacheService <T>{
 	public void set(String key, Object obj,Date expire) {
 		Retry.retry(new SetOper(key,obj,expire), retryHandler, key);
 	}
+	@Override
+	public void set(String key, Object obj,long expiredMilliSeconds) {
+		Date expire = new Date(new Date().getTime()+expiredMilliSeconds);
+		Retry.retry(new SetOper(key,obj,expire), retryHandler, key);
+	}
 	
 	private class SetOper implements Callable<T>
 	{

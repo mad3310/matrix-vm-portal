@@ -284,7 +284,7 @@ public interface IPythonService {
 	 * @param name
 	 * @param password
 	 */
-	public String wholeBackup4Db(String ipAddr,String name, String password);
+	public ApiResultObject wholeBackup4Db(String ipAddr,String name, String password);
 
 	/**Methods Name: checkBackup4Db <br>
 	 * Description: 检查db备份结果<br>
@@ -293,7 +293,7 @@ public interface IPythonService {
 	 * @param name
 	 * @param password
 	 */
-	public String checkBackup4Db(String ipAddr);
+	public ApiResultObject checkBackup4Db(String ipAddr);
 	public String getOSSData(String ip, String index);
 	
 	

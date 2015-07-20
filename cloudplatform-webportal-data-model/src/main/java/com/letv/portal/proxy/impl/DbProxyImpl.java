@@ -113,6 +113,8 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 				map.put("mclusterId", mcluster.getId());
 				map.put("serviceName", db.getDbName());
 				map.put("clusterName", mcluster.getMclusterName());
+				map.put("memory", db.getMemorySize());
+				map.put("dbDisk", db.getStorageSize());
 				this.taskEngine.run("RDS_BUY", map);
 			} else {
 				dbModel.setMclusterId(mclusterId);

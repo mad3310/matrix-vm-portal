@@ -192,6 +192,11 @@
 		<include refid="Base_Column_List" />
 		from WEBPORTAL_SLBCONTAINER SCT where SCT.ID = #{id}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_SLBCONTAINER SCT where SCT.CONTAINER_NAME = #{containerName}
+	</select>
 	<select id="selectBySlbClusterId" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />

@@ -18,6 +18,7 @@ public class GcePythonServiceImpl implements IGcePythonService{
 	
 	private final static String URL_HEAD = "http://";
 	private final static String URL_PORT = ":8888";	
+	private final static String URL_CHECK_PORT = ":6666";
 	
 	@Override
 	public ApiResultObject createContainer(Map<String,String> params,String ip,String username,String password) {
@@ -190,6 +191,12 @@ public class GcePythonServiceImpl implements IGcePythonService{
 		return new ApiResultObject(result,url.toString());
 	}
 
-
+	@Override
+	public String checkClusterCount(String hostIp, String name, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(hostIp).append(URL_CHECK_PORT).append("/containerCluster/sync");
+		String result = HttpClient.get(url.toString(),name,password);
+		return result;
+	}
 
 }

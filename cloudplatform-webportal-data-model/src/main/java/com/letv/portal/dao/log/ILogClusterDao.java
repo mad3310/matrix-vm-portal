@@ -8,6 +8,6 @@ import com.letv.portal.model.log.LogCluster;
 
 public interface ILogClusterDao extends IBaseDao<LogCluster> {
 
-	List<MclusterModel> selectByName(String clusterName);
+	List<LogCluster> selectByName(String clusterName);
 
 }

@@ -27,7 +27,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ApiNotFoundException;
 import com.letv.common.exception.MatrixException;
-import com.letv.common.exception.ValidateException;
+import com.letv.common.exception.OauthException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
@@ -62,7 +62,9 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
     		e = ((MatrixException) e).getE();
     	}
 		e = transE(e);
-		if(Boolean.valueOf(ERROR_MAIL_ENABLED) ) {
+		if(e instanceof OauthException) {
+			//do not send email.
+		} else if(Boolean.valueOf(ERROR_MAIL_ENABLED) ) {
 			String stackTraceStr = com.letv.common.util.ExceptionUtils.getRootCauseStackTrace(e);
 			String exceptionMessage = e.getMessage();
 			sendErrorMail(req,error +":" +exceptionMessage,stackTraceStr);
@@ -72,7 +74,10 @@ public class DefaultMappingExceptionResolver extends SimpleMappingExceptionResol
 		if (viewName == null) 
 			return null;
 		boolean isAjaxRequest = (req.getHeader("x-requested-with") != null)? true:false;
-		if (isAjaxRequest) {
+		
+		String clientType = req.getHeader("clientType");
+		
+		if (isAjaxRequest || !StringUtils.isEmpty(clientType)) {
 			responseJson(req,res,error);
 			return null;
 		} else {

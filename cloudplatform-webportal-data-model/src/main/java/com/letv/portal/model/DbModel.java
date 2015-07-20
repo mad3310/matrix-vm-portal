@@ -34,6 +34,9 @@ public class DbModel extends BaseModel {
 	private String fromDbPort;   //原数据库port
 	private String fromDbName;   //原数据库name
 	
+	private Long storageSize;//存储大小
+	private Long memorySize;//内存大小
+	
 	private String auditUser;   //审核人
 	private String auditInfo;
 	private UserModel user;
@@ -43,6 +46,18 @@ public class DbModel extends BaseModel {
 	
 	private List<ContainerModel> containers;
 	
+	public Long getStorageSize() {
+		return storageSize;
+	}
+	public void setStorageSize(Long storageSize) {
+		this.storageSize = storageSize;
+	}
+	public Long getMemorySize() {
+		return memorySize;
+	}
+	public void setMemorySize(Long memorySize) {
+		this.memorySize = memorySize;
+	}
 	public Long getHclusterId() {
 		return hclusterId;
 	}

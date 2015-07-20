@@ -1716,9 +1716,59 @@ textarea {
 .tip-btngroup{margin-top: 10px;width:100%;padding:0 10px;}
 .shade{background:rgba(0,0,0,.4);position:absolute;top:0;left:0;width:100%;height:100%;overflow: hidden}
 
+@-webkit-keyframes scales{
+	0%{-webkit-transform-origin:right;-webkit-transform: scale(0.6);}
+	30%{-webkit-transform-origin:right;-webkit-transform: scale(1.3);}
+	0%{-webkit-transform-origin:right;-webkit-transform: scale(0.8);}
+	100%{-webkit-transform-origin:right;-webkit-transform:scale(1);}
+}
+@-moz-keyframes scales{
+	0%{-moz-transform-origin:right;-moz-transform: scale(0.6);}
+	30%{-moz-transform-origin:right;-moz-transform: scale(1.3);}
+	0%{-moz-transform-origin:right;-moz-transform: scale(0.8);}
+	100%{-moz-transform-origin:right;-moz-transform:scale(1);}
+}
+@-o-keyframes scales{
+	0%{-o-transform-origin:right;-o-transform: scale(0.6);}
+	30%{-o-transform-origin:right;-o-transform: scale(1.3);}
+	60%{-o-transform-origin:right;-o-transform: scale(0.8);}
+	100%{-o-transform-origin:right;-o-transform:scale(1);}
+}
+@keyframes scales{
+	0%{transform-origin:right;transform: scale(0.6);}
+	30%{transform-origin:right;transform: scale(1.3);}
+	60%{transform-origin:right;transform: scale(0.8);}
+	100%{transform-origin:right;transform:scale(1);}
+}
+@-webkit-keyframes moves{
+	0%{-webkit-transform:translate(-300%,500%);}
+	20%{-webkit-transform:translate(0,30%);}
+	100%{-webkit-transform:translate(0,0);}
+}
+@-moz-keyframes moves{
+	0%{-moz-transform:translate(-300%,500%);}
+	20%{-moz-transform:translate(0,30%);}
+	100%{-moz-transform:translate(0,0);}
+}
+@-o-keyframes moves{
+	0%{-o-transform:translate(-300%,500%);}
+	20%{-o-transform:translate(0,30%);}
+	100%{-o-transform:translate(0,0);}
+}
+@keyframes moves{
+	0%{transform:translate(-300%,500%);}
+	20%{transform:translate(0,30%);}
+	100%{transform:translate(0,0);}
+}
 .alertool{position: fixed;z-index: 9;top:45px;}
 .alertool div{margin-bottom: 5px;padding: 2px 25px 2px 15px;}
-
+.alertool .alert{
+-webkit-animation:moves 2s;
+-moz-animation:moves 2s;
+-o-animation:moves 2s;
+-ms-animation:moves 2s;
+animation:moves 2s;
+}
 /*2015-6-12 gm file upload*/
 .btn-file{position:relative;cursor:pointer;}
 .btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}

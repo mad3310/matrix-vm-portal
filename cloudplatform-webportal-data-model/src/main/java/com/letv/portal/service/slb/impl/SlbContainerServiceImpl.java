@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.slb.ISlbContainerDao;
+import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.slb.SlbContainer;
 import com.letv.portal.service.impl.BaseServiceImpl;
@@ -35,6 +36,11 @@ public class SlbContainerServiceImpl extends BaseServiceImpl<SlbContainer> imple
 	@Override
 	public List<SlbContainer> selectBySlbClusterId(Long slbClusterId) {
 		return this.slbContainerDao.selectBySlbClusterId(slbClusterId);
+	}
+
+	@Override
+	public SlbContainer selectByName(String containerName) {
+		return this.slbContainerDao.selectByName(containerName);
 	}
 
 }

@@ -344,19 +344,19 @@ public class PythonServiceImpl implements IPythonService{
 	}
 
 	@Override
-	public String wholeBackup4Db(String ipAddr,String name, String password) {
+	public ApiResultObject wholeBackup4Db(String ipAddr,String name, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup");
 		String result = HttpClient.get(url.toString(),1000,5000,name,password);
-		return result;
+		return new ApiResultObject(result, url.toString());
 	}
 
 	@Override
-	public String checkBackup4Db(String ipAddr) {
+	public ApiResultObject checkBackup4Db(String ipAddr) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup/check");
 		String result = HttpClient.get(url.toString(),1000,10000);
-		return result;
+		return new ApiResultObject(result, url.toString());
 	}    
 	
 }

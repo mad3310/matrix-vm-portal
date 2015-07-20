@@ -213,6 +213,11 @@
 		ZABBIXHOSTS
 		from WEBPORTAL_CBASE_CONTAINER where ID = #{id}
 	</select>
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CBASE_CONTAINER CCT where CCT.CONTAINER_NAME = #{containerName}
+	</select>
 
 	<select id="selectContainerByCbaseClusterId" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">

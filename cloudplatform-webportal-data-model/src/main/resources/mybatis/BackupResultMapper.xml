@@ -175,11 +175,21 @@
 		<include refid="Example_Where_Clause" />
 		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID
 	</select>
+	<select id="selectByMapGroupByMcluster" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" /> ,m.MCLUSTER_NAME,d.DB_NAME 
+		from WEBPORTAL_BACKUP_RESULT r,WEBPORTAL_MCLUSTER_INFO m,WEBPORTAL_DB d
+		<include refid="Example_Where_Clause" />
+		and r.MCLUSTER_ID = m.ID and r.DB_ID = d.ID group by MCLUSTER_ID
+	</select>
 	<select id="selectByStatusAndDateOrderByMclusterId" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_BACKUP_RESULT r where 1=1
+		<include refid="Base_Column_List" />,d.DB_NAME
+		from WEBPORTAL_BACKUP_RESULT r 
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
+		where 1=1
 		<trim suffixOverrides=",">
 			<if test="startTime != null and startTime != '' ">
 				and r.START_TIME&gt;=#{startTime}

@@ -45,6 +45,8 @@ public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 	public void checkBackupStatus(BackupResultModel result);
 	
 	public void deleteOutData();
+
+	public void backupTaskReport();
 	
 	
 }

@@ -118,7 +118,8 @@ function queryMclusterMonitor() {
 			var tr3 = $("<tr class=\"default-danger seriousTag\"></tr>");
 			var tr4 = $("<tr class=\"default-danger disableClusterTag\"></tr>");
 			var tr5 = $("<tr class=\"default-danger timeoutClusterTag\"></tr>");
-			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5);
+			var tr6 = $("<tr class=\"default-danger exceptionClusterTag\"></tr>");
+			tby.prepend(tr1).prepend(tr2).prepend(tr3).prepend(tr4).prepend(tr5).prepend(tr6);
 			updateMclusterStatus();//查询集群状态
 			
 		}
@@ -183,7 +184,7 @@ function getMclusterStatus(ip,obj) {
 				$(obj).removeClass();
 				$(obj).find('[name="mclusterStatus"]').html("<a>解析出错，请联系管理员</a>");
 				$(obj).addClass("default-danger timeoutCluster");
-				$(obj).parent().find(".timeoutClusterTag").after($(obj));
+				$(obj).parent().find(".exceptionClusterTag").after($(obj));
 				addControlButton();
 			}
 			$('[data-toggle = "tooltip"]').tooltip();

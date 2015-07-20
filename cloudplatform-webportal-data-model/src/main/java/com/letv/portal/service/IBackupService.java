@@ -23,4 +23,6 @@ public interface IBackupService extends IBaseService<BackupResultModel> {
 	List<BackupResultModel> selectByStatusAndDateOrderByMclusterId(
 			Map<String, Object> params);
 
+	List<BackupResultModel> selectByMapGroupByMcluster(Map<String, Object> params);
+
 }

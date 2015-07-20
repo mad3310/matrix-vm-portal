@@ -8,6 +8,6 @@ import com.letv.portal.model.slb.SlbCluster;
 
 public interface ISlbClusterDao extends IBaseDao<SlbCluster> {
 
-	List<MclusterModel> selectByName(String clusterName);
+	List<SlbCluster> selectByName(String clusterName);
 
 }

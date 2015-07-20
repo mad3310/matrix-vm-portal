@@ -105,4 +105,6 @@ public interface IGcePythonService {
 	 * @date 2015年7月7日 下午6:09:41
 	 */
 	public ApiResultObject startMoxi(String ip,String port);
+
+	public String checkClusterCount(String hostIp, String name, String password);
 }
