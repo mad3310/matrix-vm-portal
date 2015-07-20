@@ -39,8 +39,8 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 	private ICbaseContainerService cbaseContainerService;
 	@Resource
 	private IHostService hostService;
-	@Value("${async.cluster.createUser }")
-	private Long ASYNC_CLUSTER_CREATEUSER ;
+	@Value("${async.cluster.createuser}")
+	private long ASYNC_CLUSTER_CREATEUSER ;
 
 	public CbaseClusterServiceImpl() {
 		super(CbaseClusterModel.class);

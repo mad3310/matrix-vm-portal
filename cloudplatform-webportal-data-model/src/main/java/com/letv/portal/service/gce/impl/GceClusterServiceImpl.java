@@ -41,8 +41,8 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 	private IHostService hostService;
 	@Resource
 	private IGceContainerExtService gceContainerExtService;
-	@Value("${async.cluster.createUser }")
-	private Long ASYNC_CLUSTER_CREATEUSER ;
+	@Value("${async.cluster.createuser}")
+	private long ASYNC_CLUSTER_CREATEUSER ;
 
 	public GceClusterServiceImpl() {
 		super(GceCluster.class);

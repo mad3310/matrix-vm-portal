@@ -38,8 +38,8 @@ public class LogClusterServiceImpl extends BaseServiceImpl<LogCluster> implement
 	private ILogContainerService logContainerService;
 	@Resource
 	private IHostService hostService;
-	@Value("${async.cluster.createUser }")
-	private Long ASYNC_CLUSTER_CREATEUSER ;
+	@Value("${async.cluster.createuser}")
+	private long ASYNC_CLUSTER_CREATEUSER ;
 	
 	public LogClusterServiceImpl() {
 		super(LogCluster.class);

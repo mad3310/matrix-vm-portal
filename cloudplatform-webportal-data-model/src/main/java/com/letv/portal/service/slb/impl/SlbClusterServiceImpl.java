@@ -39,8 +39,8 @@ public class SlbClusterServiceImpl extends BaseServiceImpl<SlbCluster> implement
 	private ISlbContainerService slbContainerService;
 	@Resource
 	private IHostService hostService;
-	@Value("${async.cluster.createUser }")
-	private Long ASYNC_CLUSTER_CREATEUSER ;
+	@Value("${async.cluster.createuser}")
+	private long ASYNC_CLUSTER_CREATEUSER ;
 	
 	public SlbClusterServiceImpl() {
 		super(SlbCluster.class);
