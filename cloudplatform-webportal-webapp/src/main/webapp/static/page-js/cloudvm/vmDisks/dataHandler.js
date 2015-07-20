@@ -52,6 +52,9 @@ define(function(require,exports,module){
                             		"<span>"+array[i].regionDisplayName+"</span>"+
                             		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+
                              	"</td>");
+                    tdList.push('<td class="text-right hidden-xs">'+
+                    		'<a class="disk-operation disk-detach" href="javascript:void(0);">解挂</a>'+
+                    	'</td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
                     
@@ -63,6 +66,47 @@ define(function(require,exports,module){
 	   	resetSelectAllCheckbox:function(){
 			$('th input:checkbox').prop('checked', false);
 			//$('tfoot input:checkbox').prop('checked', false);
+	   	},
+	   	operateDisk:function(diskId,vmId,fieldRegion,operationType,asyncData){
+	   		var title = "确认",
+	   			text = '',
+	   			operationUrl='',
+	   			operatingTip='',
+	   			operationCallback=null,
+	   			diskStatusEl=$($('input:checkbox[value='+diskId+']').closest('tr')).find('input:hidden[name=disk_status]'),
+	   			diskStatus=diskStatusEl.val();
+	   		var doOperation=function(operateStatus){
+	                cn.DialogBoxInit(title,text,function(){
+        				cn.alertoolSuccess(operatingTip);
+	            		cn.PostData(operationUrl,{
+	            			volumeId: diskId,
+	            			vmId:vmId
+	            	    },function(data){
+	            	    	operationCallback(data);
+	            		});
+                    	
+	                });
+    		};
+    		
+			if(diskStatus !='in-use'){
+				cn.alertoolWarnning("云盘当前的状态不可解绑。");
+				return;
+			}
+    		switch(operationType){
+        		case 'disk-detach':
+        			text='您确定要解挂该云盘吗？';
+        			operatingTip="云盘解挂执行中...";
+        			operationUrl='/ecs/region/'+fieldRegion+'/vm-detach-volume';
+        			operationCallback=function(data){
+        				asyncData();
+            		};
+            		doOperation('detaching');
+            		break;
+            	default:
+            		break;
+    		}
+
+    		
 	   	}
     }
 });

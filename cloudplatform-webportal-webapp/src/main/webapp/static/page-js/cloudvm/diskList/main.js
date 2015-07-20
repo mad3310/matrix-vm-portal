@@ -59,7 +59,8 @@ define(function(require){
 			return result;
 		},
 		setDiskStatus=function(diskId,displayStatus){
-			$('input:checkbox[value='+diskId+']').closest('tr').find('。disk-display-status').text(displayStatus);
+			var rowEl=$('input:checkbox[value='+diskId+']').closest('tr');
+			rowEl.find('.disk-display-status').text(displayStatus);
 		};
 		for(var i=0,leng=data.data.data.length;i<leng;i++){
 			var disk=data.data.data[i];
@@ -81,6 +82,7 @@ define(function(require){
 								clearInterval(currentDisk.intervalObject);
 								if(isAllIntervalStoped()){
 									setListAutoFresh();
+									asyncData();
 								}
 							}
 						});

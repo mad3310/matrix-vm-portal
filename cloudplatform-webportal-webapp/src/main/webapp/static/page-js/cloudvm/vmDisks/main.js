@@ -23,7 +23,14 @@ define(function(require){
     },
     refreshCtl=function(data) {
 		diskListHandler.DiskListHandler(data);
-
+        $('.disk-operation').each(function(index,element){
+        	$(element).on('click',function(e){
+        		var diskId= $(e.currentTarget.closest('tr')).find('input:checkbox[name=disk_id]').val();
+        		var fieldRegion= $(e.currentTarget.closest('tr')).find('.field-region').val();
+        		var operationType=$(e.currentTarget).attr('class').split(' ')[1];
+        		diskListHandler.operateDisk(diskId,vmId,fieldRegion,operationType,asyncData);
+        	});
+        });
         diskListHandler.resetSelectAllCheckbox();
 	},
 	initAttachDiskSelector=function(){
@@ -32,7 +39,9 @@ define(function(require){
 			if(data.result==0 || data.data.data.length<=0) return;
 			var optionHtmls=[];
 			for(var i=0,leng=data.data.data.length;i<leng;i++){
-				optionHtmls.push('<option value="'+data.data.data[i].id+'">'+data.data.data[i].id+'</option>');
+				if(data.data.data[i].status=='available'){
+					optionHtmls.push('<option value="'+data.data.data[i].id+'">'+data.data.data[i].id+'</option>');
+				}
 			}
 			diskNameSelectorEl.append(optionHtmls.join(''));
 		});
@@ -70,6 +79,7 @@ define(function(require){
 	    	if(data.result==1){
 	    		modalAttachDiskEl.modal('hide');
 	    		cn.alertoolSuccess('挂载成功。');
+	    		asyncData();
 	    	}
 	    	else{
 	    		cn.alertoolDanger(data.msgs[0]||'挂载失败失败！');

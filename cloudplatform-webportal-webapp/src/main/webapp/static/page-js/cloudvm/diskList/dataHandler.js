@@ -47,7 +47,7 @@ define(function(require,exports,module){
                     var diskStatus = '';                
                     var diskStatus = 	"<td>"+
                     						"<input type=\"hidden\" name=\"disk_status\" value= \""+ array[i].status + "\" />"+
-		                                	"<span class\"disk-display-status\">"+cn.TranslateStatus(array[i].status)+"</span>"+
+		                                	"<span class=\"disk-display-status\">"+cn.TranslateStatus(array[i].status)+"</span>"+
 		                               "</td>";
                     tdList.push(diskStatus);
                     tdList.push("<td class=\"padding-left-32\">"+

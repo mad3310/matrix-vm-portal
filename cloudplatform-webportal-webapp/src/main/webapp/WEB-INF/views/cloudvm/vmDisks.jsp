@@ -52,6 +52,7 @@
 						<th class="hidden-xs">状态</th>
 						<th class="hidden-xs">大小</th>
 						<th class="hidden-xs">区域</th>
+						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
