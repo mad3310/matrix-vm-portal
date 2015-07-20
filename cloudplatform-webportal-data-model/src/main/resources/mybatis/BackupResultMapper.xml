@@ -178,8 +178,10 @@
 	<select id="selectByStatusAndDateOrderByMclusterId" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />
-		from WEBPORTAL_BACKUP_RESULT r where 1=1
+		<include refid="Base_Column_List" />,d.DB_NAME
+		from WEBPORTAL_BACKUP_RESULT r 
+		join WEBPORTAL_DB d on r.DB_ID = d.ID
+		where 1=1
 		<trim suffixOverrides=",">
 			<if test="startTime != null and startTime != '' ">
 				and r.START_TIME&gt;=#{startTime}
