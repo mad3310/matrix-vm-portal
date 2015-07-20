@@ -195,9 +195,15 @@ $(function(){
         });
     });
     $(".toAccountList").unbind('click').click(function () {             //切换到账户列表
-        $("#newAccountTab").addClass("hide");
-        $("#modifyAccountTab").addClass("hide");
-        $("#accountList").removeClass("hide");
+        // $("#newAccountTab").addClass("hide");
+        // $("#modifyAccountTab").addClass("hide");
+        // $("#accountList").removeClass("hide");
+        var hash='';
+        if(!location.hash){
+            hash=location.href+"#db-detail-user-mgr";
+        }
+        location.href=hash;
+        window.location.reload();
     });
     // 新用户创建及验证
     $('#db_user_create_form').bootstrapValidator({
@@ -286,10 +292,12 @@ $(function(){
 					$("#submitCreateUserForm").removeClass('disabled').removeAttr('disabled').text("提交");
 					return;
 				}else{
-					success('创建新用户执行成功！');
-					$('#accountList').removeClass('hide');
-					$('#newAccountTab').addClass('hide');
-					queryDbUser();
+					var hash='';
+                    if(!location.hash){
+                        hash=location.href+"#db-detail-user-mgr";
+                    }
+                    location.href=hash;
+                    window.location.reload();
 				}
 			});
         }else{
@@ -357,12 +365,15 @@ $(function(){
             var url = "/dbUser/authority/"+$("#modifyFormDbUsername").html();
             $("#submitModifyUserForm").addClass("disabled").text("提交中...");
     		$.post(url,modifyUserData,function(data) {
-    			if(error(data)){$("#submitModifyUserForm").removeClass("disabled").text("提交");return;
+                $("#submitModifyUserForm").removeClass("disabled").text("提交");
+    			if(error(data)){return;
     			}else{
-    				success('用户权限修改成功');
-    				$('#accountList').removeClass('hide');
-					$('#modifyAccountTab').addClass('hide');
-    				queryDbUser();
+                    var hash='';
+                    if(!location.hash){
+                        hash=location.href+"#db-detail-user-mgr";
+                    }
+                    location.href=hash;
+                    window.location.reload();
     			}
     		});
         }else{
@@ -627,7 +638,11 @@ function pageinit(){
 	checkboxControl();
 	queryDbUser();
 	queryDbInfo();
-	formValidate()
+	formValidate();
+    var hash=window.location.hash;
+    if(hash){
+        $('#db-detail-tabs a[href="'+hash+'"]').tab('show')
+    }
 }
 /*双选框初始化 --begin*/
 function InitDoubleFrame(id,data){
