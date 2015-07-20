@@ -196,6 +196,60 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 				recordsPerPage);
 	}
 
+	public List<Volume> create(String region, List<Integer> sizes)
+			throws OpenStackException {
+		checkRegion(region);
+
+		if (sizes.isEmpty()) {
+			throw new OpenStackException(
+					"The count of volume is less than or equal to zero.",
+					"云硬盘的数量等于0");
+		}
+		int volumeCount = 0;
+		int volumeTotalSize = 0;
+		for (Integer size : sizes) {
+			if (size <= 0) {
+				throw new OpenStackException(
+						"The size of the cloud disk can not be less than or equal to zero.",
+						"云硬盘的大小不能小于或等于零。");
+			}
+			volumeCount++;
+			volumeTotalSize += size;
+		}
+
+		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+
+		{
+			List<? extends Volume> volumes = volumeApi.list().toList();
+			for (Volume volume : volumes) {
+				volumeCount++;
+				volumeTotalSize += volume.getSize();
+			}
+
+			VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
+					.getByTenant(openStackUser.getUserId());
+			if (volumeQuota == null) {
+				throw new OpenStackException("Volume quota is not available.",
+						"云硬盘配额不可用。");
+			}
+			if (volumeTotalSize > volumeQuota.getGigabytes()) {
+				throw new OpenStackException(
+						"Volume size exceeding the quota.", "云硬盘大小超过配额。");
+			}
+			if (volumeCount > volumeQuota.getVolumes()) {
+				throw new OpenStackException(
+						"Volume count exceeding the quota.", "云硬盘数量超过配额。");
+			}
+		}
+
+		CreateVolumeOptions createVolumeOptions = new CreateVolumeOptions();
+		List<Volume> volumeList = new LinkedList<Volume>();
+		for (Integer size : sizes) {
+			volumeList.add(volumeApi.create(size, createVolumeOptions));
+		}
+		return volumeList;
+	}
+
 	@Override
 	public void create(String region, int sizeGB, String name,
 			String description, Integer count) throws OpenStackException {

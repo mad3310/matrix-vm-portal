@@ -16,6 +16,7 @@ import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
+@Deprecated
 public class AddVolumes implements Runnable {
 
 	private static final Logger logger = LoggerFactory

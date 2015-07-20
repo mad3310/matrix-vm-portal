@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.resource.manager.impl.task;
 
+import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,25 +19,26 @@ public class BindFloatingIP implements Runnable {
 	private ImageManager imageManager;
 	private String region;
 	private Server server;
+	private FloatingIP floatingIP;
 
 	public BindFloatingIP(VMManagerImpl vmManager, ImageManager imageManager,
-			String region, Server server) {
+			String region, Server server, FloatingIP floatingIP) {
 		this.vmManager = vmManager;
 		this.imageManager = imageManager;
 		this.region = region;
 		this.server = server;
+		this.floatingIP = floatingIP;
 	}
 
 	@Override
 	public void run() {
 		try {
-			String floatingIP = vmManager
-					.bindFloatingIP(region, server.getId());
+			vmManager.bindFloatingIP(region, floatingIP, server.getId());
 			vmManager.emailBindIP(
 					new VMResourceImpl(region, vmManager
 							.getRegionDisplayName(region), server, vmManager,
 							this.imageManager, vmManager.getOpenStackUser()),
-					floatingIP);
+					floatingIP.getIp());
 		} catch (OpenStackException e) {
 			logger.error(e.getMessage(), e);
 		}

@@ -26,6 +26,7 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.BlockDeviceMapping;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
@@ -71,7 +72,6 @@ import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
-import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
@@ -394,6 +394,29 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 		}
 
+		FloatingIP floatingIP = null;
+		if (conf.getBindFloatingIP()) {
+			floatingIP = allocFloatingIP(region);
+		}
+
+		List<Volume> volumes = null;
+		try {
+			if (volumeSizes != null && !volumeSizes.isEmpty()) {
+				volumes = volumeManager.create(region, volumeSizes);
+				Set<BlockDeviceMapping> blockDeviceMappings = new HashSet<BlockDeviceMapping>();
+				for (Volume volume : volumes) {
+					blockDeviceMappings.add(BlockDeviceMapping.builder()
+							.uuid(volume.getId()).build());
+				}
+				createServerOptions.blockDeviceMappings(blockDeviceMappings);
+			}
+		} catch (OpenStackException ex) {
+			if (floatingIP != null) {
+				deleteFloatingIP(region, floatingIP);
+			}
+			throw ex;
+		}
+
 		final ServerCreated serverCreated = serverApi.create(conf.getName(),
 				conf.getImageResource().getId(), conf.getFlavorResource()
 						.getId(), createServerOptions);
@@ -405,13 +428,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		emailVmCreated(vmResourceImpl, conf);
 
 		List<Runnable> afterTasks = new LinkedList<Runnable>();
-		if (conf.getBindFloatingIP()) {
+		if (floatingIP != null) {
 			afterTasks.add(new BindFloatingIP(this, imageManager, region,
-					server));
-		}
-		if (volumeSizes != null) {
-			afterTasks.add(new AddVolumes(this, volumeManager, region, server,
-					volumeSizes));
+					server, floatingIP));
 		}
 		if (!afterTasks.isEmpty()) {
 			new Thread(new WaitingVMCreated(this, serverApi,
@@ -507,8 +526,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 	}
 
-	public String bindFloatingIP(String region, String vmId)
-			throws OpenStackException {
+	public FloatingIP allocFloatingIP(String region) throws OpenStackException {
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
@@ -533,6 +551,41 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
 		}
 
+		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
+				.getGlobalPublicNetworkId());
+		return floatingIP;
+	}
+
+	private void deleteFloatingIP(String region, FloatingIP floatingIP)
+			throws APINotAvailableException {
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+		floatingIPApi.delete(floatingIP.getId());
+	}
+
+	public void bindFloatingIP(String region, FloatingIP ip, String vmId)
+			throws OpenStackException {
+		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+		ip = floatingIPApi.get(ip.getId());
+		if (ip.getInstanceId() != null) {
+			throw new OpenStackException(
+					"Public IP has been binding, cannot be bound to the virtual machine.",
+					"公网IP已经被绑定，不能绑定到多台虚拟机。");
+		}
+
+		List<FloatingIP> floatingIps = floatingIPApi.list().toList();
+
 		for (FloatingIP floatingIP : floatingIps) {
 			if (vmId.equals(floatingIP.getInstanceId())) {
 				throw new OpenStackException(
@@ -541,10 +594,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 		}
 
-		FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
-				.getGlobalPublicNetworkId());
-		floatingIPApi.addToServer(floatingIP.getIp(), vmId);
-		return floatingIP.getIp();
+		floatingIPApi.addToServer(ip.getIp(), vmId);
 	}
 
 	@Override
@@ -577,8 +627,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		// Address address = addresses.iterator().next();
 		// String ip = address.getAddr();
 
-		String floatingIP = bindFloatingIP(region, vm.getId());
-		emailBindIP(vm, floatingIP);
+		FloatingIP floatingIP = allocFloatingIP(region);
+		bindFloatingIP(region, floatingIP, vm.getId());
+		emailBindIP(vm, floatingIP.getIp());
 
 		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
 		// networkManager;
