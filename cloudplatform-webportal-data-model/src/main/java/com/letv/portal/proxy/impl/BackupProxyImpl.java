@@ -169,7 +169,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				
 				if(BackupStatus.FAILD.equals(backup.getStatus())) {
 					//send failed email notice
-					sendBackupFaildNotice(backup.getDb().getDbName(),backup.getMcluster().getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
+					sendBackupFaildNotice(backup.getDb().getDbName(),mclusterModel.getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
 				}
 				if(!BackupStatus.BUILDING.equals(results.get(0).getStatus())) 
 					buildingCount--;
@@ -212,7 +212,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		BackupResultModel backupResult = new BackupResultModel();
 		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
 		String resultMessage = result.getResult();
-		if(StringUtils.isNullOrEmpty(resultMessage)) {
+		/*if(StringUtils.isNullOrEmpty(resultMessage)) {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail("backup api result is null:" + result.getUrl());
 		} else if(resultMessage.contains("\"code\": 200")) {
@@ -220,7 +220,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		} else {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail(resultMessage + ":" + result.getUrl());
-		}
+		}*/
+		backupResult.setStatus(BackupStatus.BUILDING);
 		return backupResult;
 	}
 	
