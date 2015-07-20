@@ -83,6 +83,7 @@
             <div class="sidebar sidebar-line sidebar-selector">
                 <ul class="nav nav-sidebar li-underline">
                     <li class="active"><a class="text-sm" src="${ctx}/detail/vmBaseInfo/${vmId}?region=${region}" href="javascript:void(0)">基本信息</a></li>
+                    <li><a class="text-sm" src="${ctx}/detail/vmDisks/${vmId}?region=${region}" href="javascript:void(0)">磁盘</a></li>
                 </ul>
             </div>
         </nav>

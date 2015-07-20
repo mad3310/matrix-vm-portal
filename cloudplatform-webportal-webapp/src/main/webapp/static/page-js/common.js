@@ -160,6 +160,25 @@ define(function(require,exports,module){
             else if(status == 'SHUTOFF'){
                 return '已停止'
             }
+            //disk status
+            else if(status == 'creating'){
+                return '创建中'
+            }
+            else if(status == 'available'){
+                return '可用的';
+            }
+            else if(status == 'attaching'){
+                return '挂载中'
+            }
+            else if(status == 'in-use'){
+                return '使用中'
+            }
+            else if(status == 'deleting'){
+                return '删除中'
+            }
+            else if(status == 'error'){
+                return '异常'
+            }
             else{
                 return status;
             }   
@@ -1101,7 +1120,7 @@ define(function(require,exports,module){
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
-        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand"+(data[i].isActive? " active":"")+"\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
         },
         uploadfile:function(target){
