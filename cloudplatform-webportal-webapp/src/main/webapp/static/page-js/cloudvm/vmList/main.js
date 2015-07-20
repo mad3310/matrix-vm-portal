@@ -9,10 +9,8 @@ define(function(require){
     
     cn.Tooltip();
      /* 初始化navbar-header-menu */
-	cn.initNavbarMenu([{
-				name : "云主机",
-				herf : "/list/vm"
-			}]);
+	cn.initNavbarMenu([{name : "云主机",herf : "/list/vm",isActive:true},
+	                   {name : "磁盘",herf : "/list/vm/disk"}]);
     
 	/*禁用退格键退回网页*/
 	window.onload=cn.DisableBackspaceEnter();

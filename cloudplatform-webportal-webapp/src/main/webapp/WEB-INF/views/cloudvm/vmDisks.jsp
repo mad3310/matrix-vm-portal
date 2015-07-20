@@ -15,7 +15,8 @@
 	<title>云主机管理控制台</title>
 </head>
 <body>
-<%@ include file="../../layouts/header.jsp"%>
+<input class="hidden" value="${vmId}" name="vmId" id="vmId" type="text" />
+<input class="hidden" value="${region}" name="region_id" id="region_id" type="text" />
 <!-- main-content begin-->
 <div class="container-fluid">
 				<div class="col-md-offset-4 col-md-4 alertool" id="alertool">
@@ -25,9 +26,6 @@
 			<div class="pull-left">
 				<h5>
 				<span>磁盘管理</span>		
-				<div class="region-city-list">
-					<input id="city_region_selected" type="hidden" value="" />
-				</div>			
 				</h5> 
 			</div>
 		</div>
@@ -35,6 +33,7 @@
 			<div class="pull-right">
 				<h5 class="bdl-0">
 				<button class="btn-default btn btn-md" id="refresh"><span class="glyphicon glyphicon-refresh"></span>刷新</button>
+				<button class="btn-primary btn btn-md btn-attach-disk">挂载云盘</button>
 				<button class="btn-primary btn btn-md" onclick="window.open('${ctx}/detail/diskCreate')">购买云盘</button>
 				</h5>
 			</div>
@@ -53,30 +52,11 @@
 						<th class="hidden-xs">状态</th>
 						<th class="hidden-xs">大小</th>
 						<th class="hidden-xs">区域</th>
-						<th class="text-right">操作</th>
 					</tr>
 				</thead>
 				<tbody id="tby">
 				</tbody>
-				<tfoot id="paginatorBlock">
-					<!-- <tr class="tfoot" > -->
-						<td width="10">
-						</td>
-						<td colspan="9" class="row">
-							<div class="col-xs-4 col-sm-6" style="margin:2px 0;padding:0;">
-							</div>
-							<div class="col-xs-8 col-sm-6" style="margin:2px 0;padding:0;">
-							<div class="pull-right m-fltPage">
-								<div class="pagination-info hidden-xs">
-									<span class="ng-binding">共有<span id="totalRecords"></span>条</span>， 
-									<span class="ng-binding">每页显示：<span id="recordsPerPage"></span>条</span>&nbsp;
-								</div>
-								<ul id='paginator'></ul>
-							</div>
-							</div>
-						</td>
-					<!-- </tr> -->
-				</tfoot>				
+						
 			</table>
 		    <!-- <div class="help-block hidden" id="noData">没有记录</div> -->
 		</div>
@@ -106,6 +86,28 @@
 		</div>
 	</div>
 <!-- js -->
+<div class="modal fade" id="modal_attach_disk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">挂载云盘</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="disk_name" class="control-label">选择云盘:</label>
+            <select id="disk_name_selector" class="bootstrap-select"></select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-exec-attach">执行挂载</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript" src="${ctx}/static/modules/seajs/2.3.0/sea.js"></script>
 <script type="text/javascript">
 
@@ -119,7 +121,7 @@ seajs.config({
 	}
 });
 
-seajs.use("${ctx}/static/page-js/cloudvm/diskList/main");
+seajs.use("${ctx}/static/page-js/cloudvm/vmDisks/main");
 
 </script>
 </body>

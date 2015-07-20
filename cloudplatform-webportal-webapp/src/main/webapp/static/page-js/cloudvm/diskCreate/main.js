@@ -52,7 +52,7 @@ define(function(require){
 						    };
 		cn.PostData(url, data, function (data) {
 			if(data.result===1){
-	               //location.href = "/list/vm";	
+	               location.href = "/list/vm/disk";	
 			}
 			else{
 				$('#submitResult').text(data.msgs[0]||'创建云主机失败！');

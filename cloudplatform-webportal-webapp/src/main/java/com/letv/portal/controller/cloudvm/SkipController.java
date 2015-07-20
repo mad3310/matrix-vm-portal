@@ -103,11 +103,25 @@ public class SkipController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value ="/vm/diskCreate",method=RequestMethod.GET)
+	@RequestMapping(value ="/detail/diskCreate",method=RequestMethod.GET)
 	public ModelAndView toDiskCreate(ModelAndView mav){
 		mav.setViewName("/cloudvm/diskCreate");
 		return mav;
 	}	
+	
+	@RequestMapping(value ="/list/vm/disk",method=RequestMethod.GET)
+	public ModelAndView toVmDiskList(ModelAndView mav){
+		mav.setViewName("/cloudvm/diskList");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/detail/vmDisks/{vmId}",method=RequestMethod.GET)
+	public ModelAndView toVmDisks(@PathVariable String vmId,String region,ModelAndView mav){
+		mav.addObject("vmId",vmId);
+		mav.addObject("region",region);
+		mav.setViewName("/cloudvm/vmDisks");
+		return mav;
+	}
 	
 	@RequestMapping(value ="/vnc_auto.html",method=RequestMethod.GET)
 	public ModelAndView vncAuto(ModelAndView mav){

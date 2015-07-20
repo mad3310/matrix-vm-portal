@@ -1590,6 +1590,17 @@ textarea {
 
 /*end bootstrap-select style*/
 
+/*begin vm-global style*/
+.navbar-header .navbar-brand.m-brand{
+	margin-left:0;
+	margin-right:15px
+}
+.navbar-header .navbar-brand.m-brand.active{
+	background-color: #ddd;
+}
+/*end vm-global style*/
+
+
 /*begin vm-list page style*/
 .region-city-list{
 	display:inline-block;
