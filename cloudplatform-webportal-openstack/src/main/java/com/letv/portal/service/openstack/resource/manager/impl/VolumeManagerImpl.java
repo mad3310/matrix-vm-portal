@@ -11,9 +11,9 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
-import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
+import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
@@ -329,6 +329,22 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 					"Volume \"{0}\" delete failed.", volumeResource.getId()),
 					MessageFormat.format("云硬盘“{0}”删除失败。",
 							volumeResource.getId()));
+		}
+	}
+	
+	public void waitingVolume(String volumeId, VolumeApi volumeApi,
+			VolumeChecker checker) throws PollingInterruptedException {
+		try {
+			Volume volume = null;
+			while (true) {
+				volume = volumeApi.get(volumeId);
+				if (checker.check(volume)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
 		}
 	}
 

@@ -415,10 +415,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				char deviceNameSuffix = 'e';
 				for (Volume volume : volumes) {
 					blockDeviceMappings.add(BlockDeviceMapping.builder()
-							.uuid(volume.getId())
-//							.deviceName("/dev/sdb1")
-							.deviceName("/dev/vd" + deviceNameSuffix)
-							.sourceType("image").build());
+							.uuid(volume.getId()).deviceName("/dev/vdc")
+							// .deviceName("/dev/vd" + deviceNameSuffix)
+							.sourceType("blank").build());
 					deviceNameSuffix++;
 				}
 				createServerOptions.blockDeviceMappings(blockDeviceMappings);
@@ -1066,6 +1065,19 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 		volumeAttachmentApi.attachVolumeToServerAsDevice(
 				volumeResource.getId(), vmResource.getId(), "/dev/vdc");
+
+		volumeManager.waitingVolume(volumeResource.getId(), volumeManager
+				.getCinderApi().getVolumeApi(volumeResource.getRegion()),
+				new VolumeChecker() {
+
+					@Override
+					public boolean check(Volume volume) {
+						return volume == null
+								|| volume.getStatus() == Volume.Status.IN_USE
+								|| volume.getStatus() == Volume.Status.ERROR
+								|| volume.getStatus() == Volume.Status.ERROR_DELETING;
+					}
+				});
 	}
 
 	@Override
@@ -1129,6 +1141,19 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					MessageFormat.format("云硬盘“{0}”分离失败。",
 							volumeResource.getId()));
 		}
+
+		volumeManager.waitingVolume(volumeResource.getId(), volumeManager
+				.getCinderApi().getVolumeApi(volumeResource.getRegion()),
+				new VolumeChecker() {
+
+					@Override
+					public boolean check(Volume volume) {
+						return volume == null
+								|| volume.getStatus() == Volume.Status.AVAILABLE
+								|| volume.getStatus() == Volume.Status.ERROR
+								|| volume.getStatus() == Volume.Status.ERROR_DELETING;
+					}
+				});
 	}
 
 	@Override
