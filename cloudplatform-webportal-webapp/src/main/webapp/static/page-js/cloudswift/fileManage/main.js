@@ -10,7 +10,7 @@ define(function(require){
     require("bootstrapValidator")($);
     cn.Tooltip();
     
-	/*½ûÓÃÍË¸ñ¼üÍË»ØÍøÒ³*/
+	/*ç¦ç”¨é€€æ ¼é”®é€€å›ç½‘é¡µ*/
 	window.onload=cn.DisableBackspaceEnter();
 
 	/* $('#form-upload').submit(function(){  
@@ -30,15 +30,15 @@ define(function(require){
         });
     })();
 	
-    /*¼ÓÔØÊı¾İ*/
+    /*åŠ è½½æ•°æ®*/
     var dataHandler = require('./dataHandler');
     var fileListHandler = new dataHandler();
     /*
-     * ³õÊ¼»¯Êı¾İ
+     * åˆå§‹åŒ–æ•°æ®
      */
 	asyncData();
 	/*
-	 * ²Ù×÷°´Å¥³õÊ¼»¯
+	 * æ“ä½œæŒ‰é’®åˆå§‹åŒ–
 	 */
 	$("#tby").click(function(e){
 		e = e? e:window.event;
@@ -58,13 +58,13 @@ define(function(require){
 			cn.PostData(url,data,asyncData);
 		}
 	})
-	//ÎÄ¼şÉÏ´«
+	//æ–‡ä»¶ä¸Šä¼ 
 	$('#upload').change(function(event) {
-		if(cn.uploadfile(this)){//ÎÄ¼şÒªÇóºó×ººÍ´óĞ¡¾ù·ûºÏ
+		if(cn.uploadfile(this)){//æ–‡ä»¶è¦æ±‚åç¼€å’Œå¤§å°å‡ç¬¦åˆ
 			var file=cn.getFile(this);
 			var pathvalue=$('.dirPath:visible').text();var path='root';
 			if(pathvalue){
-				if(pathvalue!='µ±Ç°Î»ÖÃ£º¸ùÄ¿Â¼ /'){
+				if(pathvalue!='å½“å‰ä½ç½®ï¼šæ ¹ç›®å½• /'){
 					path=$('#dirName').val();
 				}
 			}
@@ -77,7 +77,7 @@ define(function(require){
 		}
 	});
 	
-	//ĞÂ½¨ÎÄ¼ş¼ĞÑéÖ¤£¬Ìá½»
+	//æ–°å»ºæ–‡ä»¶å¤¹éªŒè¯ï¼Œæäº¤
 	$('#createDirform').bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -88,25 +88,25 @@ define(function(require){
         	folderName:{
         		validators: {
                     notEmpty: {
-                        message: 'ÎÄ¼ş¼ĞÃû²»ÄÜÎª¿Õ!'
+                        message: 'æ–‡ä»¶å¤¹åä¸èƒ½ä¸ºç©º!'
                     },
                     stringLength: {
                         max: 254,
-                        message: 'ÎÄ¼ş¼ĞÃû¹ı³¤!'
+                        message: 'æ–‡ä»¶å¤¹åè¿‡é•¿!'
                     },regexp: {
                         regexp: /^[a-zA-Z0-9\u4e00-\u9fa5_.-]*$/,
-                        message: " Ö»ÄÜ°üº¬×ÖÄ¸£¬Êı×Ö£¬ÖĞÎÄ£¬ÏÂ»®Ïß£¨_£©ºÍ¶ÌºáÏß£¨-£©,Ğ¡Êıµã£¨.£©"
-                    }//ÖØÃûÔò¸²¸Ç ĞÂ½¨ºÍ¸üĞÂ
+                        message: " åªèƒ½åŒ…å«å­—æ¯ï¼Œæ•°å­—ï¼Œä¸­æ–‡ï¼Œä¸‹åˆ’çº¿ï¼ˆ_ï¼‰å’ŒçŸ­æ¨ªçº¿ï¼ˆ-ï¼‰,å°æ•°ç‚¹ï¼ˆ.ï¼‰"
+                    }//é‡ååˆ™è¦†ç›– æ–°å»ºå’Œæ›´æ–°
                 }
         	}
         }
     }).on('success.form.bv', function(e) {
     	e.preventDefault();
-    	$("#add-dir").html("´´½¨ÖĞ...");
+    	$("#add-dir").html("åˆ›å»ºä¸­...");
     	var folderName=$('#floderName').val();
     	var pathvalue=$('.dirPath:visible').text();var path='root';
 		if(pathvalue){
-			if(pathvalue!='µ±Ç°Î»ÖÃ£º¸ùÄ¿Â¼ /'){
+			if(pathvalue!='å½“å‰ä½ç½®ï¼šæ ¹ç›®å½• /'){
 				path=$('#dirName').val();
 			}
 		}
@@ -120,7 +120,7 @@ define(function(require){
 			$("#addDirModal").modal("hide");
 			$("#createDirform").data("bootstrapValidator").resetForm();
 			$("#createDirform")[0].reset();
-			$("#add-dir").html("´´½¨");
+			$("#add-dir").html("åˆ›å»º");
 		});
     });
 
@@ -147,7 +147,7 @@ define(function(require){
 	// 	}
 	// });
 	
-	/*³õÊ¼»¯°´Å¥*/
+	/*åˆå§‹åŒ–æŒ‰é’®*/
 	// $(".btn-region-display").click(function(){
 	// 	$(".btn-region-display").removeClass("btn-success").addClass("btn-default");
 	// 	$(this).removeClass("btn-default").addClass("btn-success");
@@ -156,9 +156,9 @@ define(function(require){
 	// })
 	
 	/*
-	 * ¿É·â×°¹«¹²·½·¨ begin
+	 * å¯å°è£…å…¬å…±æ–¹æ³• begin
 	 */
-	//³õÊ¼»¯·ÖÒ³×é¼ş
+	//åˆå§‹åŒ–åˆ†é¡µç»„ä»¶
 	// $('#paginator').bootstrapPaginator({
 	// 	size:"small",
  //    	alignment:'right',
@@ -169,7 +169,7 @@ define(function(require){
  //        	asyncData(page);
  //        }
 	// });
-	//³õÊ¼»¯checkbox
+	//åˆå§‹åŒ–checkbox
 	$(document).on('click', 'th input:checkbox' , function(){
 		var that = this;
 		$(this).closest('table').find('tr > td:first-child input:checkbox')
@@ -187,10 +187,10 @@ define(function(require){
 		});
 	});
 	/*
-	 * ¿É·â×°¹«¹²·½·¨ end
+	 * å¯å°è£…å…¬å…±æ–¹æ³• end
 	 */
 	
-	//¼ÓÔØÁĞ±íÊı¾İ
+	//åŠ è½½åˆ—è¡¨æ•°æ®
 	function asyncData() {
 		var directory = $('#dirName').val();
 		if(!directory){
@@ -217,7 +217,7 @@ define(function(require){
 	    	if(dirname){
 	    		dirarry=dirname.split('/');
 	    	}
-	    	var location='<span class="dirPath" name="root">µ±Ç°Î»ÖÃ£º¸ùÄ¿Â¼ /</span> ';
+	    	var location='<span class="dirPath" name="root">å½“å‰ä½ç½®ï¼šæ ¹ç›®å½• /</span> ';
 	    	for(i in dirarry){
 	    		location=location+'<span class="dirPath" name="'+dirarry[i]+'">'+dirarry[i]+' /</span> '
 	    	}
