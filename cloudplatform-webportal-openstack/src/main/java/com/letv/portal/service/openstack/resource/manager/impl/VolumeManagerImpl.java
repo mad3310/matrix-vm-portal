@@ -22,6 +22,7 @@ import com.google.inject.Module;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -35,7 +36,8 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		VolumeManager {
 
 	private CinderApi cinderApi;
-//	private IdentityManagerImpl identityManager;
+
+	// private IdentityManagerImpl identityManager;
 
 	public VolumeManagerImpl(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
@@ -330,8 +332,25 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		}
 	}
 
-//	public void setIdentityManager(IdentityManagerImpl identityManager) {
-//		this.identityManager = identityManager;
-//	}
+	public void waitingVolumeCreated(String region, String volumeId)
+			throws PollingInterruptedException {
+		VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+		try {
+			while (true) {
+				Volume volume = volumeApi.get(volumeId);
+				if (volume.getStatus() == Volume.Status.CREATING) {
+					Thread.sleep(1000);
+				} else {
+					break;
+				}
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		}
+	}
+
+	// public void setIdentityManager(IdentityManagerImpl identityManager) {
+	// this.identityManager = identityManager;
+	// }
 
 }

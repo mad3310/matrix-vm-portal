@@ -22,6 +22,7 @@ import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
+import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
@@ -89,7 +90,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private VolumeManagerImpl volumeManager;
 
-//	private IdentityManagerImpl identityManager;
+	// private IdentityManagerImpl identityManager;
 
 	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
@@ -257,206 +258,229 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	public VMResource create(final String region, VMCreateConf conf)
 			throws OpenStackException {
 		checkRegion(region);
-
-		List<Integer> volumeSizes = null;
-		if (conf.getVolumeSizesJson() != null) {
-			ObjectMapper objectMapper = new ObjectMapper();
-			try {
-				volumeSizes = objectMapper.readValue(conf.getVolumeSizesJson(),
-						new TypeReference<List<Integer>>() {
-						});
-			} catch (JsonParseException e) {
-				throw new OpenStackException("请求数据格式错误", e);
-			} catch (JsonMappingException e) {
-				throw new OpenStackException("请求数据格式错误", e);
-			} catch (IOException e) {
-				throw new OpenStackException("后台服务错误", e);
-			}
-		}
-
-		CreateServerOptions createServerOptions = new CreateServerOptions();
-
-		Set<String> networks = new HashSet<String>();
-		List<NetworkResource> networkResources = conf.getNetworkResources();
-		if (networkResources != null) {
-			for (int i = 0; i < networkResources.size(); i++) {
-				networks.add(networkResources.get(i).getId());
-			}
-		}
-		// test code begin(ssh login)
-		{
-			NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
-			NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
-			NetworkApi networkApi = neutronApi.getNetworkApi(region);
-			for (Network network : networkApi.list().concat().toList()) {
-				if (openStackConf.getUserPrivateNetworkName().equals(
-						network.getName())) {
-					networks.add(network.getId());
-					break;
-				}
-			}
-
-			if (openStackUser.getInternalUser()) {
-				networks.add(openStackConf.getGlobalSharedNetworkId());
-			}
-		}
-		// test code end
-		createServerOptions.networks(networks);
-
-		if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
-			conf.setAdminPass(PasswordRandom.genStr(10));
-		} else {
-			for (char ch : conf.getAdminPass().toCharArray()) {
-				if (!CharUtils.isAsciiAlphanumeric(ch)) {
-					throw new OpenStackException(
-							"User password contains illegal characters.",
-							"用户密码包含不合法的字符");
-				}
-			}
-		}
-		createServerOptions.adminPass(conf.getAdminPass());
-		// createServerOptions.userData(MessageFormat.format(
-		// "#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
-		// conf.getAdminPass()).getBytes(Charsets.UTF_8));
-
-		// test code begin(ssh login)
-		{
-			// Optional<SecurityGroupApi> securityGroupApi = novaApi
-			// .getSecurityGroupApi(region);
-			// if (securityGroupApi.isPresent()) {
-			// SecurityGroup defaultSecurityGroup = null;
-			// List<SecurityGroup> securityGroups = securityGroupApi.get()
-			// .list().toList();
-			// for (SecurityGroup securityGroup : securityGroups) {
-			// if ("default".equals(securityGroup.getName())) {
-			// defaultSecurityGroup = securityGroup;
-			// break;
-			// }
-			// }
-			// if (defaultSecurityGroup != null) {
-			// } else {
-			// throw new
-			// OpenStackException("Default security group is not found.");
-			// }
-			// } else {
-			// throw new APINotAvailableException(SecurityGroupApi.class);
-			// }
-
-			createServerOptions.securityGroupNames("default");
-		}
-		// test code end
-
-		final ServerApi serverApi = novaApi.getServerApi(region);
-
-		{
-			FlavorApi flavorApi = novaApi.getFlavorApi(region);
-			FlavorResource flavorResource = conf.getFlavorResource();
-			int serverCount = 1, serverTotalVcpus = flavorResource.getVcpus(), serverTotalRam = flavorResource
-					.getRam();
-			List<Server> servers = serverApi.listInDetail().concat().toList();
-			Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
-			for (Server server : servers) {
-				serverCount++;
-				String flavorId = server.getFlavor().getId();
-				Flavor flavor = idToFlavor.get(flavorId);
-				if (flavor == null) {
-					flavor = flavorApi.get(flavorId);
-					if (flavor == null) {
-
-					}
-					idToFlavor.put(flavorId, flavor);
-				}
-				serverTotalVcpus += flavor.getVcpus();
-				serverTotalRam += flavor.getRam();
-			}
-
-			Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(region);
-			if (!quotaApiOptional.isPresent()) {
-				throw new APINotAvailableException(QuotaApi.class);
-			}
-
-			Quota quota = quotaApiOptional.get().getByTenant(
-					openStackUser.getTenantId());
-			if (quota == null) {
-				throw new OpenStackException("VM quota is not available.",
-						"虚拟机配额不可用。");
-			}
-
-			if (serverCount > quota.getInstances()) {
-				throw new OpenStackException("VM count exceeding the quota.",
-						"虚拟机数量超过配额。");
-			}
-			if (serverTotalVcpus > quota.getCores()) {
-				throw new OpenStackException("Vcpu count exceeding the quota.",
-						"虚拟CPU数量超过配额。");
-			}
-			if (serverTotalRam > quota.getRam()) {
-				throw new OpenStackException(
-						"Ram amounts exceeding the quota.", "内存总量超过配额。");
-			}
-		}
+		final String regionDisplayName = getRegionDisplayName(region);
 
 		FloatingIP floatingIP = null;
-		if (conf.getBindFloatingIP()) {
-			floatingIP = allocFloatingIP(region);
-		}
-
 		List<Volume> volumes = null;
+
 		try {
+			List<Integer> volumeSizes = null;
+			if (conf.getVolumeSizesJson() != null) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				try {
+					volumeSizes = objectMapper.readValue(
+							conf.getVolumeSizesJson(),
+							new TypeReference<List<Integer>>() {
+							});
+				} catch (JsonParseException e) {
+					throw new OpenStackException("请求数据格式错误", e);
+				} catch (JsonMappingException e) {
+					throw new OpenStackException("请求数据格式错误", e);
+				} catch (IOException e) {
+					throw new OpenStackException("后台服务错误", e);
+				}
+			}
+
+			CreateServerOptions createServerOptions = new CreateServerOptions();
+
+			Set<String> networks = new HashSet<String>();
+			List<NetworkResource> networkResources = conf.getNetworkResources();
+			if (networkResources != null) {
+				for (int i = 0; i < networkResources.size(); i++) {
+					networks.add(networkResources.get(i).getId());
+				}
+			}
+			// test code begin(ssh login)
+			{
+				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
+				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				for (Network network : networkApi.list().concat().toList()) {
+					if (openStackConf.getUserPrivateNetworkName().equals(
+							network.getName())) {
+						networks.add(network.getId());
+						break;
+					}
+				}
+
+				if (openStackUser.getInternalUser()) {
+					networks.add(openStackConf.getGlobalSharedNetworkId());
+				}
+			}
+			// test code end
+			createServerOptions.networks(networks);
+
+			if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
+				conf.setAdminPass(PasswordRandom.genStr(10));
+			} else {
+				for (char ch : conf.getAdminPass().toCharArray()) {
+					if (!CharUtils.isAsciiAlphanumeric(ch)) {
+						throw new OpenStackException(
+								"User password contains illegal characters.",
+								"用户密码包含不合法的字符");
+					}
+				}
+			}
+			createServerOptions.adminPass(conf.getAdminPass());
+			// createServerOptions.userData(MessageFormat.format(
+			// "#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
+			// conf.getAdminPass()).getBytes(Charsets.UTF_8));
+
+			// test code begin(ssh login)
+			{
+				// Optional<SecurityGroupApi> securityGroupApi = novaApi
+				// .getSecurityGroupApi(region);
+				// if (securityGroupApi.isPresent()) {
+				// SecurityGroup defaultSecurityGroup = null;
+				// List<SecurityGroup> securityGroups = securityGroupApi.get()
+				// .list().toList();
+				// for (SecurityGroup securityGroup : securityGroups) {
+				// if ("default".equals(securityGroup.getName())) {
+				// defaultSecurityGroup = securityGroup;
+				// break;
+				// }
+				// }
+				// if (defaultSecurityGroup != null) {
+				// } else {
+				// throw new
+				// OpenStackException("Default security group is not found.");
+				// }
+				// } else {
+				// throw new APINotAvailableException(SecurityGroupApi.class);
+				// }
+
+				createServerOptions.securityGroupNames("default");
+			}
+			// test code end
+
+			final ServerApi serverApi = novaApi.getServerApi(region);
+
+			{
+				FlavorApi flavorApi = novaApi.getFlavorApi(region);
+				FlavorResource flavorResource = conf.getFlavorResource();
+				int serverCount = 1, serverTotalVcpus = flavorResource
+						.getVcpus(), serverTotalRam = flavorResource.getRam();
+				List<Server> servers = serverApi.listInDetail().concat()
+						.toList();
+				Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
+				for (Server server : servers) {
+					serverCount++;
+					String flavorId = server.getFlavor().getId();
+					Flavor flavor = idToFlavor.get(flavorId);
+					if (flavor == null) {
+						flavor = flavorApi.get(flavorId);
+						if (flavor == null) {
+
+						}
+						idToFlavor.put(flavorId, flavor);
+					}
+					serverTotalVcpus += flavor.getVcpus();
+					serverTotalRam += flavor.getRam();
+				}
+
+				Optional<QuotaApi> quotaApiOptional = novaApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+
+				Quota quota = quotaApiOptional.get().getByTenant(
+						openStackUser.getTenantId());
+				if (quota == null) {
+					throw new OpenStackException("VM quota is not available.",
+							"虚拟机配额不可用。");
+				}
+
+				if (serverCount > quota.getInstances()) {
+					throw new OpenStackException(
+							"VM count exceeding the quota.", "虚拟机数量超过配额。");
+				}
+				if (serverTotalVcpus > quota.getCores()) {
+					throw new OpenStackException(
+							"Vcpu count exceeding the quota.", "虚拟CPU数量超过配额。");
+				}
+				if (serverTotalRam > quota.getRam()) {
+					throw new OpenStackException(
+							"Ram amounts exceeding the quota.", "内存总量超过配额。");
+				}
+			}
+
+			if (conf.getBindFloatingIP()) {
+				floatingIP = allocFloatingIP(region);
+			}
+
 			if (volumeSizes != null && !volumeSizes.isEmpty()) {
 				volumes = volumeManager.create(region, volumeSizes);
 				Set<BlockDeviceMapping> blockDeviceMappings = new HashSet<BlockDeviceMapping>();
+				char deviceNameSuffix = 'e';
 				for (Volume volume : volumes) {
 					blockDeviceMappings.add(BlockDeviceMapping.builder()
-							.uuid(volume.getId()).build());
+							.uuid(volume.getId())
+//							.deviceName("/dev/sdb1")
+							.deviceName("/dev/vd" + deviceNameSuffix)
+							.sourceType("image").build());
+					deviceNameSuffix++;
 				}
 				createServerOptions.blockDeviceMappings(blockDeviceMappings);
 			}
-		} catch (OpenStackException ex) {
+
+			final ServerCreated serverCreated = serverApi.create(
+					conf.getName(), conf.getImageResource().getId(), conf
+							.getFlavorResource().getId(), createServerOptions);
+			Server server = serverApi.get(serverCreated.getId());
+			VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
+					regionDisplayName, server, this, imageManager,
+					openStackUser);
+
+			emailVmCreated(vmResourceImpl, conf);
+
+			List<Runnable> afterTasks = new LinkedList<Runnable>();
+			if (floatingIP != null) {
+				afterTasks.add(new BindFloatingIP(this, imageManager, region,
+						server, floatingIP));
+			}
+			if (!afterTasks.isEmpty()) {
+				new Thread(new WaitingVMCreated(this, serverApi,
+						serverCreated.getId(), afterTasks)).start();
+			}
+
+			// test code begin(ssh login)
+			// {
+			// Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+			// .getFloatingIPApi(region);
+			// if (!floatingIPApiOptional.isPresent()) {
+			// throw new APINotAvailableException(FloatingIPApi.class);
+			// }
+			// FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+			// // FloatingIP floatingIP = floatingIPApi.create();
+			// for(Entry<String,Address> entry:server.getAddresses().entries()){
+			// logger.info(MessageFormat.format("server address: {0} => {1}",
+			// entry.getKey(),entry.getValue().getAddr()));
+			// }
+			// // floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
+			// }
+			// test code end
+
+			return vmResourceImpl;
+		} catch (Exception ex) {
 			if (floatingIP != null) {
 				deleteFloatingIP(region, floatingIP);
 			}
-			throw ex;
+			if (volumes != null) {
+				VolumeApi volumeApi = volumeManager.getCinderApi()
+						.getVolumeApi(region);
+				for (Volume volume : volumes) {
+					// volumeManager.waitingVolumeCreated(region,
+					// volume.getId());
+					volumeApi.delete(volume.getId());
+				}
+			}
+			if (ex instanceof OpenStackException) {
+				throw (OpenStackException) ex;
+			} else {
+				throw new OpenStackException("后台服务错误", ex);
+			}
 		}
-
-		final ServerCreated serverCreated = serverApi.create(conf.getName(),
-				conf.getImageResource().getId(), conf.getFlavorResource()
-						.getId(), createServerOptions);
-		Server server = serverApi.get(serverCreated.getId());
-		VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
-				getRegionDisplayName(region), server, this, imageManager,
-				openStackUser);
-
-		emailVmCreated(vmResourceImpl, conf);
-
-		List<Runnable> afterTasks = new LinkedList<Runnable>();
-		if (floatingIP != null) {
-			afterTasks.add(new BindFloatingIP(this, imageManager, region,
-					server, floatingIP));
-		}
-		if (!afterTasks.isEmpty()) {
-			new Thread(new WaitingVMCreated(this, serverApi,
-					serverCreated.getId(), afterTasks)).start();
-		}
-
-		// test code begin(ssh login)
-		// {
-		// Optional<FloatingIPApi> floatingIPApiOptional = novaApi
-		// .getFloatingIPApi(region);
-		// if (!floatingIPApiOptional.isPresent()) {
-		// throw new APINotAvailableException(FloatingIPApi.class);
-		// }
-		// FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-		// // FloatingIP floatingIP = floatingIPApi.create();
-		// for(Entry<String,Address> entry:server.getAddresses().entries()){
-		// logger.info(MessageFormat.format("server address: {0} => {1}",
-		// entry.getKey(),entry.getValue().getAddr()));
-		// }
-		// // floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
-		// }
-		// test code end
-
-		return vmResourceImpl;
 	}
 
 	/**
@@ -1121,8 +1145,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 				+ uri.getQuery();// TODO change localhost:8081
 	}
 
-//	public void setIdentityManager(IdentityManagerImpl identityManager) {
-//		this.identityManager = identityManager;
-//	}
+	// public void setIdentityManager(IdentityManagerImpl identityManager) {
+	// this.identityManager = identityManager;
+	// }
 
 }
