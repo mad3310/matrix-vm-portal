@@ -35,7 +35,7 @@ public interface IMonitorProxy {
 	
 	/**
 	  * @Title: addMonitorPartition
-	  * @Description: 添加分区（每天24点之前执行一次，添加第二天2个分区0:00-12:00,12:00-24:00）   
+	  * @Description: 添加分区（每天24点之前执行一次，添加第8天2个分区0:00-12:00,12:00-24:00）   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年7月16日 下午6:51:42

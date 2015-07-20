@@ -255,10 +255,9 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Override
 	public void addMonitorPartition() {
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("status", 3);
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DATE, 1);
+		c.add(Calendar.DATE, 8);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		//分区名称
 		String partitionName1 = "pa"+formatter.format(c.getTime());
@@ -283,7 +282,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Override
 	public void deleteMonitorPartitionThirtyDaysAgo() {
 		Map<String,Object> params = new  HashMap<String,Object>();
-		params.put("status", 3);
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
 		
 		Calendar cal = Calendar.getInstance();
