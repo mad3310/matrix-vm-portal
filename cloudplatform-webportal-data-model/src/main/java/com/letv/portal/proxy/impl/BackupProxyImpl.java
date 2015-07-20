@@ -22,6 +22,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.BackupStatus;
+import com.letv.portal.enumeration.DbStatus;
 import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
@@ -149,7 +150,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 				continue;
 			}
 			BackupResultModel backup = null;
-			String result = "";
+			ApiResultObject result = null;
 			BackupStatus status = null;
 			String resultDetail = "";
 			for (int i = 0; i < results.size(); i++) {
@@ -212,7 +213,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		BackupResultModel backupResult = new BackupResultModel();
 		ApiResultObject result = this.pythonService.wholeBackup4Db(container.getIpAddr(),mcluster.getAdminUser(),mcluster.getAdminPassword());
 		String resultMessage = result.getResult();
-		/*if(StringUtils.isNullOrEmpty(resultMessage)) {
+		if(StringUtils.isNullOrEmpty(resultMessage)) {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail("backup api result is null:" + result.getUrl());
 		} else if(resultMessage.contains("\"code\": 200")) {
@@ -220,8 +221,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		} else {
 			backupResult.setStatus(BackupStatus.FAILD);
 			backupResult.setResultDetail(resultMessage + ":" + result.getUrl());
-		}*/
-		backupResult.setStatus(BackupStatus.BUILDING);
+		}
 		return backupResult;
 	}
 	
@@ -256,7 +256,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
     @Async
     @Deprecated
 	public void checkBackupStatus(BackupResultModel backup) {
-		String result = this.pythonService.checkBackup4Db(backup.getBackupIp());
+		ApiResultObject result = this.pythonService.checkBackup4Db(backup.getBackupIp());
 		backup = analysisBackupResult(backup, result);
 		
 		Date date = new Date();
@@ -270,10 +270,11 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 	}
 	
-	private BackupResultModel analysisBackupResult(BackupResultModel backup,String result) {
+	private BackupResultModel analysisBackupResult(BackupResultModel backup,ApiResultObject resultObject) {
+		String result = resultObject.getResult();
 		if(StringUtils.isNullOrEmpty(result)) {
 			backup.setStatus( BackupStatus.FAILD);
-			backup.setResultDetail("Connection refused");
+			backup.setResultDetail("Connection refused:" + resultObject.getUrl());
 			return backup;
 		}
 		if(result.contains("\"code\": 200") && result.contains("backup success")) {
@@ -295,16 +296,16 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		}
 		if(result.contains("\"code\": 200") && result.contains("expired")) {
 			backup.setStatus( BackupStatus.FAILD);
-			backup.setResultDetail("backup expired");
+			backup.setResultDetail("backup expired:" + resultObject.getUrl());
 			return backup;
 		}
 		if(result.contains("\"code\": 411")) {
 			backup.setStatus( BackupStatus.FAILD);
-			backup.setResultDetail(result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},")));
+			backup.setResultDetail(result.substring(result.indexOf("\"errorDetail\": \"")+1, result.lastIndexOf("\"},")) + resultObject.getUrl());
 			return backup;
 		} 
 		backup.setStatus( BackupStatus.FAILD);
-		backup.setResultDetail("api not found");
+		backup.setResultDetail("api not found:" + resultObject.getUrl());
 
 		return backup;
 	}
@@ -399,4 +400,85 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		map.put("max", max);
 		this.backupService.deleteOutDataByIndex(map);
 	}
+
+	@Override
+	public void backupTaskReport() {
+		Map<String, Object> params = new HashMap<String,Object>();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar curDate = Calendar.getInstance();
+		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
+		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		List<BackupResultModel> backupResults = this.selectByMap(params);
+		int mclusters = this.mclusterService.selectValidMclusterCount();
+		int dbs = this.dbService.selectCountByStatus(DbStatus.NORMAL.getValue());
+		int totalDb = backupResults.size();
+		int successDb = 0;
+		int failedDb = 0;
+		int buildingDb = 0;
+		int abNormalDb = 0;
+		for (BackupResultModel backupResultModel : backupResults) {
+			if(BackupStatus.SUCCESS.equals(backupResultModel.getStatus())) {
+				successDb++;
+				continue;
+			}
+			if(BackupStatus.FAILD.equals(backupResultModel.getStatus())) {
+				failedDb++;
+				continue;
+			}
+			if(BackupStatus.BUILDING.equals(backupResultModel.getStatus())) {
+				buildingDb++;
+				continue;
+			}
+			if(BackupStatus.ABNORMAL.equals(backupResultModel.getStatus())) {
+				abNormalDb++;
+				continue;
+			}
+		}
+		
+		backupResults = this.backupService.selectByMapGroupByMcluster(params);
+		int totalCluster = backupResults.size();
+		int successCluster = 0;
+		int failedCluster = 0;
+		int buildingCluster = 0;
+		int abNormalCluster = 0;
+		for (BackupResultModel backupResultModel : backupResults) {
+			if(BackupStatus.SUCCESS.equals(backupResultModel.getStatus())) {
+				successCluster++;
+				continue;
+			}
+			if(BackupStatus.FAILD.equals(backupResultModel.getStatus())) {
+				failedCluster++;
+				continue;
+			}
+			if(BackupStatus.BUILDING.equals(backupResultModel.getStatus())) {
+				buildingCluster++;
+				continue;
+			}
+			if(BackupStatus.ABNORMAL.equals(backupResultModel.getStatus())) {
+				abNormalCluster++;
+				continue;
+			}
+		}
+		
+		params.clear();
+		params.put("dbCount", dbs);
+		params.put("dbBackupCount", totalDb);
+		params.put("successDb", successDb);
+		params.put("failedDb", failedDb);
+		params.put("buildingDb", buildingDb);
+		params.put("abNormalDb", abNormalDb);
+		
+		params.put("clusterCount", mclusters);
+		params.put("clusterBackupCount", totalCluster);
+		params.put("successCluster", successCluster);
+		params.put("failedCluster", failedCluster);
+		params.put("buildingCluster", buildingCluster);
+		params.put("abNormalCluster", abNormalCluster);
+		
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统备份结果通知","dbBackupReport.ftl",params);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+	}
+	
 }

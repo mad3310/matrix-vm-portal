@@ -293,7 +293,7 @@ public interface IPythonService {
 	 * @param name
 	 * @param password
 	 */
-	public String checkBackup4Db(String ipAddr);
+	public ApiResultObject checkBackup4Db(String ipAddr);
 	public String getOSSData(String ip, String index);
 	
 	

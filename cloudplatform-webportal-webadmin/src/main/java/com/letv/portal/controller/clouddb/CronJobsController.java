@@ -165,12 +165,26 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
-	@RequestMapping(value="/db/backup",method=RequestMethod.GET)   
+	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
 		if(count ==0 || count<0)
 			count = 5;
 		this.backupProxy.backupTask(count);
+		return obj;
+	}
+
+	/**Methods Name: dbBackup <br>
+	 * Description: db数据库备份报告<br>
+	 * @author name: liuhao1
+	 * @param count  
+	 * @param request
+	 * @param obj
+	 * @return
+	 */
+	@RequestMapping(value="/db/backup/report",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject dbBackupReport(HttpServletRequest request,ResultObject obj) {
+		this.backupProxy.backupTaskReport();
 		return obj;
 	}
 	/**Methods Name: dbBackupCheck <br>
@@ -181,6 +195,7 @@ public class CronJobsController {
 	 * @return
 	 */
 	@RequestMapping(value="/db/backup/check",method=RequestMethod.GET)   
+	@Deprecated
 	public @ResponseBody ResultObject dbBackupCheck(int count,HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup check");
 		if(count ==0 || count<0) {
