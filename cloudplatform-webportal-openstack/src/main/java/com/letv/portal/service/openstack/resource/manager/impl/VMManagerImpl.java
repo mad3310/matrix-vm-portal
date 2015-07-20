@@ -515,8 +515,25 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			throw new APINotAvailableException(FloatingIPApi.class);
 		}
 		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+		List<FloatingIP> floatingIps = floatingIPApi.list().toList();
 
-		for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
+		Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(region);
+		if (!quotaApiOptional.isPresent()) {
+			throw new APINotAvailableException(QuotaApi.class);
+		}
+
+		Quota quota = quotaApiOptional.get().getByTenant(
+				openStackUser.getUserId());
+		if (quota == null) {
+			throw new OpenStackException("VM quota is not available.",
+					"虚拟机配额不可用。");
+		}
+		if (floatingIps.size() + 1 > quota.getFloatingIps()) {
+			throw new OpenStackException(
+					"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
+		}
+
+		for (FloatingIP floatingIP : floatingIps) {
 			if (vmId.equals(floatingIP.getInstanceId())) {
 				throw new OpenStackException(
 						"Virtual machine has been binding public IP, cannot repeat binding.",
