@@ -8,7 +8,8 @@ public class OpenStackUser {
 	private String userName;
 	private boolean firstLogin;
 	private boolean internalUser;
-	
+	private String tenantId;
+
 	private String publicNetworkName;
 	private String privateNetworkName;
 	private String sharedNetworkName;
@@ -83,6 +84,14 @@ public class OpenStackUser {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }

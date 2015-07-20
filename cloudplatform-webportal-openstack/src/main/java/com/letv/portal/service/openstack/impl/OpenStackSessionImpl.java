@@ -18,6 +18,7 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import com.letv.portal.service.openstack.resource.manager.impl.IdentityManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
@@ -39,6 +40,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private NetworkManagerImpl networkManager;
 	private VMManagerImpl vmManager;
 	private VolumeManagerImpl volumeManager;
+//	private IdentityManagerImpl identityManager;
 
 	// private Object imageManagerLock;
 	// private Object networkManagerLock;
@@ -60,6 +62,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		openStackUser.setPrivateNetworkName(openStackConf
 				.getUserPrivateNetworkName());
 
+//		identityManager = new IdentityManagerImpl(openStackServiceGroup,
+//				openStackConf, openStackUser);
 		imageManager = new ImageManagerImpl(openStackServiceGroup,
 				openStackConf, openStackUser);
 		networkManager = new NetworkManagerImpl(openStackServiceGroup,
@@ -68,9 +72,13 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				openStackConf, openStackUser);
 		vmManager = new VMManagerImpl(openStackServiceGroup, openStackConf,
 				openStackUser);
+		
 		vmManager.setImageManager(imageManager);
 		vmManager.setNetworkManager(networkManager);
 		vmManager.setVolumeManager(volumeManager);
+//		vmManager.setIdentityManager(identityManager);
+		
+//		volumeManager.setIdentityManager(identityManager);
 
 		isClosed = false;
 
@@ -226,6 +234,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	@Override
 	public void close() throws IOException {
 		isClosed = true;
+//		if (identityManager != null) {
+//			Closeables.close(identityManager, true);
+//		}
 		if (imageManager != null) {
 			Closeables.close(imageManager, true);
 		}

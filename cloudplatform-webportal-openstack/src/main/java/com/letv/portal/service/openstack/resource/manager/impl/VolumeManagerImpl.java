@@ -35,6 +35,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 		VolumeManager {
 
 	private CinderApi cinderApi;
+//	private IdentityManagerImpl identityManager;
 
 	public VolumeManagerImpl(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
@@ -227,7 +228,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			}
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
-					.getByTenant(openStackUser.getUserId());
+					.getByTenant(openStackUser.getTenantId());
 			if (volumeQuota == null) {
 				throw new OpenStackException("Volume quota is not available.",
 						"云硬盘配额不可用。");
@@ -287,7 +288,7 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 			}
 
 			VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
-					.getByTenant(openStackUser.getUserId());
+					.getByTenant(openStackUser.getTenantId());
 			if (volumeQuota == null) {
 				throw new OpenStackException("Volume quota is not available.",
 						"云硬盘配额不可用。");
@@ -328,5 +329,9 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 							volumeResource.getId()));
 		}
 	}
+
+//	public void setIdentityManager(IdentityManagerImpl identityManager) {
+//		this.identityManager = identityManager;
+//	}
 
 }

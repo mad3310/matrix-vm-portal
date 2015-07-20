@@ -89,6 +89,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private VolumeManagerImpl volumeManager;
 
+//	private IdentityManagerImpl identityManager;
+
 	public VMManagerImpl(OpenStackServiceGroup openStackServiceGroup,
 			OpenStackConf openStackConf, OpenStackUser openStackUser) {
 		super(openStackServiceGroup, openStackConf, openStackUser);
@@ -374,7 +376,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 
 			Quota quota = quotaApiOptional.get().getByTenant(
-					openStackUser.getUserId());
+					openStackUser.getTenantId());
 			if (quota == null) {
 				throw new OpenStackException("VM quota is not available.",
 						"虚拟机配额不可用。");
@@ -541,7 +543,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		}
 
 		Quota quota = quotaApiOptional.get().getByTenant(
-				openStackUser.getUserId());
+				openStackUser.getTenantId());
 		if (quota == null) {
 			throw new OpenStackException("VM quota is not available.",
 					"虚拟机配额不可用。");
@@ -1118,5 +1120,9 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		return uri.getScheme() + "://" + "localhost:8081" + uri.getPath() + "?"
 				+ uri.getQuery();// TODO change localhost:8081
 	}
+
+//	public void setIdentityManager(IdentityManagerImpl identityManager) {
+//		this.identityManager = identityManager;
+//	}
 
 }

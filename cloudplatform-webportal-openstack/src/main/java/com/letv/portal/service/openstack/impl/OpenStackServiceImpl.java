@@ -72,7 +72,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private ICloudvmRegionService cloudvmRegionService;
-	
+
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 
@@ -102,8 +102,8 @@ public class OpenStackServiceImpl implements OpenStackService {
 	}
 
 	@Override
-	public OpenStackSession createSession(String userId, String email, String userName)
-			throws OpenStackException {
+	public OpenStackSession createSession(String userId, String email,
+			String userName) throws OpenStackException {
 		try {
 			OpenStackUser openStackUser = new OpenStackUser();
 			openStackUser.setUserId(userId);
@@ -115,20 +115,25 @@ public class OpenStackServiceImpl implements OpenStackService {
 			final String password = passwordService.userIdToPassword(userId);
 			openStackUser.setPassword(password);
 
-			if (!new UserExists(publicEndpoint, userId, password).run()) {
+			UserExists userExists = new UserExists(publicEndpoint, userId,
+					password);
+			if (!userExists.run()) {
 				openStackUser.setFirstLogin(true);
 				new UserRegister(adminEndpoint, userId, password, email,
 						userRegisterToken).run();
-				if (!new UserExists(publicEndpoint, userId, password).run()) {
+				userExists = new UserExists(publicEndpoint, userId, password);
+				if (!userExists.run()) {
 					throw new OpenStackException(
 							"can not create openstack user:" + userId,
 							"不能创建用户：" + email);
 				}
 			}
+			openStackUser.setTenantId(userExists.getTenantId());
 			if (email.endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
 			}
-			return new OpenStackSessionImpl(openStackServiceGroup, openStackConf, openStackUser);
+			return new OpenStackSessionImpl(openStackServiceGroup,
+					openStackConf, openStackUser);
 		} catch (NoSuchAlgorithmException e) {
 			throw new OpenStackException("后台服务不可用", e);
 		}
