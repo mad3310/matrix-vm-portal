@@ -9,6 +9,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -40,6 +41,8 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 	private IHostService hostService;
 	@Resource
 	private IGceContainerExtService gceContainerExtService;
+	@Value("${async.cluster.createUser }")
+	private Long ASYNC_CLUSTER_CREATEUSER ;
 
 	public GceClusterServiceImpl() {
 		super(GceCluster.class);
@@ -96,6 +99,7 @@ public class GceClusterServiceImpl extends BaseServiceImpl<GceCluster> implement
 		cluster.setType(MclusterType.HAND.getValue());
 		cluster.setHclusterId(hclusterId);
 		cluster.setDeleted(true);
+		cluster.setCreateUser(ASYNC_CLUSTER_CREATEUSER);
 		this.insert(cluster);
 		List<Map<String,Object>> cms = (List<Map<String,Object>>) mm.get("nodeInfo");
 		for (Map<String,Object> cm : cms) {
