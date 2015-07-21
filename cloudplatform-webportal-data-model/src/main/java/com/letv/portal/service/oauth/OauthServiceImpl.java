@@ -65,7 +65,7 @@ public class OauthServiceImpl  implements IOauthService{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/authorize?client_id=").append(clientId).append("&response_type=code&redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
 		logger.debug("getAuthorize :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,2000);
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("长时间未操作，请重新登录");
@@ -78,7 +78,7 @@ public class OauthServiceImpl  implements IOauthService{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/accesstoken?grant_type=authorization_code&code=").append(code).append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret).append("&redirect_uri=").append(WEBPORTAL_ADMIN_HTTP).append("/oauth/callback");
 		logger.debug("getAccessToken :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,2000);
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("长时间未操作，请重新登录");
@@ -97,7 +97,7 @@ public class OauthServiceImpl  implements IOauthService{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(OAUTH_AUTH_HTTP).append("/userdetailinfo?access_token=").append(accessToken);
 		logger.debug("getUserdetailinfo :" + buffer.toString());
-		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,2000);
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
 		retryOauthApi(result,buffer.toString());
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("长时间未操作，请重新登录");
