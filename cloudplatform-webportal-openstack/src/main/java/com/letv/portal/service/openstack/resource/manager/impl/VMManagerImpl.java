@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,6 @@ import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -86,7 +86,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private ImageManager imageManager;
 
-	private NetworkManager networkManager;
+	private NetworkManagerImpl networkManager;
 
 	private VolumeManagerImpl volumeManager;
 
@@ -283,14 +283,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 			CreateServerOptions createServerOptions = new CreateServerOptions();
 
-			Set<String> networks = new HashSet<String>();
-			List<NetworkResource> networkResources = conf.getNetworkResources();
-			if (networkResources != null) {
-				for (int i = 0; i < networkResources.size(); i++) {
-					networks.add(networkResources.get(i).getId());
-				}
-			}
-			// test code begin(ssh login)
+			Set<String> networks = new LinkedHashSet<String>();
 			{
 				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
 				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
@@ -303,11 +296,17 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					}
 				}
 
+				List<NetworkResource> networkResources = conf.getNetworkResources();
+				if (networkResources != null) {
+					for (int i = 0; i < networkResources.size(); i++) {
+						networks.add(networkResources.get(i).getId());
+					}
+				}
+				
 				if (openStackUser.getInternalUser()) {
 					networks.add(openStackConf.getGlobalSharedNetworkId());
 				}
 			}
-			// test code end
 			createServerOptions.networks(networks);
 
 			if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
@@ -624,6 +623,11 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 		}
 
+		org.jclouds.openstack.neutron.v2.features.PortApi neutronFloatingIPApiOptional = networkManager
+				.getNeutronApi().getPortApi(region);
+		
+
+		
 		floatingIPApi.addToServer(ip.getIp(), vmId);
 	}
 
@@ -729,7 +733,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		this.imageManager = imageManager;
 	}
 
-	public void setNetworkManager(NetworkManager networkManager) {
+	public void setNetworkManager(NetworkManagerImpl networkManager) {
 		this.networkManager = networkManager;
 	}
 
