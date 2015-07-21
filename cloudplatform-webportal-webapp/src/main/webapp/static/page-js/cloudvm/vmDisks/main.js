@@ -19,7 +19,6 @@ define(function(require){
 	},
     initComponents=function (){
 		asyncData();
-		initAttachDiskSelector();
     },
     refreshCtl=function(data) {
 		diskListHandler.DiskListHandler(data);
@@ -34,13 +33,14 @@ define(function(require){
         diskListHandler.resetSelectAllCheckbox();
 	},
 	initAttachDiskSelector=function(){
+		diskNameSelectorEl.empty();
 		var url='/osv/region/'+region;
 		cn.GetLocalData(url,function(data){
 			if(data.result==0 || data.data.data.length<=0) return;
 			var optionHtmls=[];
 			for(var i=0,leng=data.data.data.length;i<leng;i++){
 				if(data.data.data[i].status=='available'){
-					optionHtmls.push('<option value="'+data.data.data[i].id+'">'+data.data.data[i].id+'</option>');
+					optionHtmls.push(['<option value="',data.data.data[i].id,'">',data.data.data[i].id.split('-')[0],'  / ',data.data.data[i].size,'GB','</option>'].join(''));
 				}
 			}
 			diskNameSelectorEl.append(optionHtmls.join(''));
@@ -92,6 +92,9 @@ define(function(require){
     modalAttachDiskEl.modal({
   	  backdrop:false,
   	  show:false
+    });
+    modalAttachDiskEl.on('show.bs.modal', function (event) {
+		initAttachDiskSelector();
     });
     
     initComponents();
