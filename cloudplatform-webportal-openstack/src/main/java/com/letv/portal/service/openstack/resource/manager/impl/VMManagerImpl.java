@@ -27,7 +27,6 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.BlockDeviceMapping;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
@@ -73,6 +72,7 @@ import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
@@ -411,16 +411,17 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 			if (volumeSizes != null && !volumeSizes.isEmpty()) {
 				volumes = volumeManager.create(region, volumeSizes);
-				Set<BlockDeviceMapping> blockDeviceMappings = new HashSet<BlockDeviceMapping>();
-				char deviceNameSuffix = 'e';
-				for (Volume volume : volumes) {
-					blockDeviceMappings.add(BlockDeviceMapping.builder()
-							.uuid(volume.getId()).deviceName("/dev/vdc")
-							// .deviceName("/dev/vd" + deviceNameSuffix)
-							.sourceType("blank").build());
-					deviceNameSuffix++;
-				}
-				createServerOptions.blockDeviceMappings(blockDeviceMappings);
+				// Set<BlockDeviceMapping> blockDeviceMappings = new
+				// HashSet<BlockDeviceMapping>();
+				// char deviceNameSuffix = 'e';
+				// for (Volume volume : volumes) {
+				// blockDeviceMappings.add(BlockDeviceMapping.builder()
+				// .uuid(volume.getId()).deviceName("/dev/vdc")
+				// // .deviceName("/dev/vd" + deviceNameSuffix)
+				// .sourceType("blank").build());
+				// deviceNameSuffix++;
+				// }
+				// createServerOptions.blockDeviceMappings(blockDeviceMappings);
 			}
 
 			final ServerCreated serverCreated = serverApi.create(
@@ -437,6 +438,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			if (floatingIP != null) {
 				afterTasks.add(new BindFloatingIP(this, imageManager, region,
 						server, floatingIP));
+			}
+			if (volumes != null) {
+				afterTasks.add(new AddVolumes(this, volumeManager, region,
+						server, volumes));
 			}
 			if (!afterTasks.isEmpty()) {
 				new Thread(new WaitingVMCreated(this, serverApi,
