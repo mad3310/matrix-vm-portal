@@ -1609,6 +1609,13 @@ textarea {
 .region-city-list button{
 	margin-right:5px;
 }
+.vmlist-item-more{
+	
+}
+.vmlist-item-more .dropdown-menu{
+	right:0;
+	left: auto;
+}
 /*end vm-list page style*/
 
 /*begin vm-create page style*/
