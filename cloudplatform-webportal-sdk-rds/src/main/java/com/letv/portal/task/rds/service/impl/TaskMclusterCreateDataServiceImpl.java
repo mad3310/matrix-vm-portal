@@ -3,6 +3,7 @@ package com.letv.portal.task.rds.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 	
 	private final static Logger logger = LoggerFactory.getLogger(TaskMclusterCreateDataServiceImpl.class);
 
+	private final static String  CONTAINER_MEMORY_SIZE = "2147483648";
+	private final static String  CONTAINER_DBDISK_SIZE = "10737418240";
+	
 	@Override
 	public TaskResult execute(Map<String, Object> params) throws Exception{
 		TaskResult tr = super.execute(params);
@@ -53,8 +57,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
-		map.put("memory",String.valueOf(params.get("memory")));
-		map.put("dbDisk",String.valueOf(params.get("dbDisk")));
+		map.put("memory", params.get("memory")==null || params.get("memory")=="" ? CONTAINER_MEMORY_SIZE : String.valueOf(params.get("memory")));
+		map.put("dbDisk", params.get("dbDisk")==null || params.get("dbDisk")=="" ? CONTAINER_DBDISK_SIZE : String.valueOf(params.get("dbDisk")));
 		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
 		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
