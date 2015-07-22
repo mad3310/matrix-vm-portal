@@ -663,6 +663,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	private void asyncMclusterCount(List<Map<String,Object>> data,HclusterModel hcluster) {
 		for (Map<String,Object> mm : data) {
+			String type = (String) mm.get("type");
+			if(!"mcluster".equals(type) && !"gbalancer".equals(type)) {
+				continue;
+			}
 			String mclusterName = (String) mm.get("clusterName");
 			if(StringUtils.isNullOrEmpty(mclusterName))
 				continue;

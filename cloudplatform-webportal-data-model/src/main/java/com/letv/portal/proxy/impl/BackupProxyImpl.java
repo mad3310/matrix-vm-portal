@@ -58,6 +58,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private IPythonService pythonService;
 	@Value("${service.notice.email.to}")
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
+	@Value("${python.db.backup.check.interval.time}")
+	private long DB_BACKUP_CHECK_INTERVAL_TIME;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -106,7 +108,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			
 			while(buildingCount >=count) {
 				try {
-					Thread.sleep(10);
+					Thread.sleep(DB_BACKUP_CHECK_INTERVAL_TIME);
 				} catch (InterruptedException e) {
 				}
 				buildingCount = this.checkBackupStatus(mclusters);

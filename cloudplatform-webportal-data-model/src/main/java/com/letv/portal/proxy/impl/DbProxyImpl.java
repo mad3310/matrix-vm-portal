@@ -133,6 +133,14 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 		dbModel.setCreateUser(userId);
 		dbModel.setStatus(DbStatus.DEFAULT.getValue());
 		dbModel.setDeleted(true);
+		//页面值传入为空或不合法，改为默认值2G
+		if(dbModel.getMemorySize()==null || dbModel.getMemorySize()<=0) {
+			dbModel.setMemorySize(2147483648l);
+		}
+		//页面值传入为空或不合法，改为默认值10G
+		if(dbModel.getStorageSize()==null || dbModel.getStorageSize()<=0) {
+			dbModel.setStorageSize(10737418240l);
+		}
 		this.dbService.insert(dbModel);
 		
 		if(isCreateAdmin)
