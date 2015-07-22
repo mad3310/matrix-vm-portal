@@ -5,7 +5,7 @@
     </client>
     <socketpool name="pool" failover="true" initConn="5" minConn="5" maxConn="250" maintSleep="0"
         nagle="false" socketTO="3000" aliveCheck="true">
-        <servers>10.154.28.163:11212</servers>
+        <servers>10.154.28.163:11211</servers>
     </socketpool> 
     <cluster name="cluster1">
         <memCachedClients>mclient</memCachedClients>
