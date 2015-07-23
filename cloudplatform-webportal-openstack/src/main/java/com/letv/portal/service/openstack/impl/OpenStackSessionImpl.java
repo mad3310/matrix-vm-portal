@@ -237,7 +237,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 								defaultSecurityGroup.getId())
 						.ethertype(RuleEthertype.IPV4)
 						.protocol(RuleProtocol.ICMP)
-						.remoteIpPrefix("0.0.0.0/0").build());
+						.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
 			}
 			if (sshRule == null) {
 				sshRule = securityGroupApi.create(Rule.CreateRule
