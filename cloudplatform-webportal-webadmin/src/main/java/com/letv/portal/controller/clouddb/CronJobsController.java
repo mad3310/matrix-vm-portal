@@ -187,23 +187,6 @@ public class CronJobsController {
 		this.backupProxy.backupTaskReport();
 		return obj;
 	}
-	/**Methods Name: dbBackupCheck <br>
-	 * Description: db数据库备份检查<br>
-	 * @author name: liuhao1
-	 * @param request
-	 * @param obj
-	 * @return
-	 */
-	@RequestMapping(value="/db/backup/check",method=RequestMethod.GET)   
-	@Deprecated
-	public @ResponseBody ResultObject dbBackupCheck(int count,HttpServletRequest request,ResultObject obj) {
-		logger.info("db backup check");
-		if(count ==0 || count<0) {
-			count = 5;
-		}
-		this.backupProxy.checkBackupStatusTask(count);
-		return obj;
-	}
 	
 	/**Methods Name: deleteBackupHalfMonthAgo <br>
 	 * Description: <br>

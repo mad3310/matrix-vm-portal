@@ -13,12 +13,6 @@ import com.letv.portal.model.MclusterModel;
 public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 
 	/**Methods Name: backupTask <br>
-	 * Description: 备份任务<br>
-	 * @author name: liuhao1
-	 */
-	public void backupTask();
-	
-	/**Methods Name: backupTask <br>
 	 * Description: 备份任务：0:all  1:0点备份 2:2点备份 3:4点备份 4:6点备份<br>
 	 * @author name: liuhao1
 	 * @param stage
@@ -31,11 +25,6 @@ public interface IBackupProxy extends IBaseProxy<BackupResultModel> {
 	 */
 	public void wholeBackup4Db(MclusterModel mcluster);
 
-	/**Methods Name: checkBackupStatus <br>
-	 * Description: 定期检查备份结果 任务<br>
-	 * @author name: liuhao1
-	 */
-	public void checkBackupStatusTask(int count);
 	
 	/**Methods Name: checkBackupStatus <br>
 	 * Description: 检查某备份结果<br>

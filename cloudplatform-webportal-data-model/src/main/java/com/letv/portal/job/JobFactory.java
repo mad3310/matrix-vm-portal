@@ -85,11 +85,6 @@ public class JobFactory implements Job {
         	this.backupProxy.backupTask(4);
         }
         
-        //定时任务备份
-        if("checkBackupStatus".equals(method)) {
-        	logger.info("checkBackupStatus");
-        	this.backupProxy.checkBackupStatusTask(5);
-        }
         if("deleteBackupHalfMonthAgo".equals(method)) {
         	logger.info("deleteBackupHalfMonthAgo");
         	this.backupProxy.deleteOutData();

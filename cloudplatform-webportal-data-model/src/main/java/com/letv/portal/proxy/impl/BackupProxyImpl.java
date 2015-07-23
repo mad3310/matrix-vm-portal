@@ -58,8 +58,8 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	private IPythonService pythonService;
 	@Value("${service.notice.email.to}")
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
-	@Value("${python.db.backup.check.interval.time}")
-	private long DB_BACKUP_CHECK_INTERVAL_TIME;
+	@Value("${python.db.backup.interval.time}")
+	private long DB_BACKUP_INTERVAL_TIME;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -72,12 +72,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 	
 	@Override
-	public void backupTask() {
-		this.backupTask(0); //all
-	}
-	@Override
 	public void backupTask(final int count) {
-		//选择有意义的mcluster集群。  RUNNING(1),STARTING(7),STOPPING(8),STOPED(9),DANGER(13),CRISIS(14).
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("type", "rds");
 		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
@@ -96,29 +91,18 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		Map<String, Object> params = new HashMap<String,Object>();
 		params.put("hclusterId", hcluster.getId());
 		List<MclusterModel> mclusters = this.mclusterService.selectValidMclusters(count,params);
-		Set<Long> set = new HashSet<Long>();
 		
 		while(mclusters != null && !mclusters.isEmpty()) {
 			for (MclusterModel mclusterModel : mclusters) {
 				//进行备份。
 				this.wholeBackup4Db(mclusterModel);
 			}
-			
-			int buildingCount = count;
-			
-			while(buildingCount >=count) {
-				try {
-					Thread.sleep(DB_BACKUP_CHECK_INTERVAL_TIME);
-				} catch (InterruptedException e) {
-				}
-				buildingCount = this.checkBackupStatus(mclusters);
+			try {
+				Thread.sleep(DB_BACKUP_INTERVAL_TIME);
+			} catch (InterruptedException e) {
 			}
-			
-			int addNewCount = count - buildingCount;
-			
-			mclusters = this.addBackupMcluster(null,hcluster.getId(), addNewCount);
+			mclusters = this.addBackupMcluster(null,hcluster.getId(), count);
 		}
-		
 	}
 	
 	private List<MclusterModel> addBackupMcluster(Long mclusterId,Long hclusterId,int addNewCount) {
@@ -129,58 +113,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		if(recentBackup == null)
 			return null;
 		return  this.mclusterService.selectNextValidMclusterById(null == mclusterId?recentBackup.getMclusterId():mclusterId, hclusterId,addNewCount);
-	}
-
-	private int checkBackupStatus(List<MclusterModel> mclusters) {
-		int buildingCount = mclusters.size();
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("hclusterId", mclusters.get(0).getHclusterId());
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Calendar curDate = Calendar.getInstance();
-		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
-		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
-		
-		int totalCount = 0;
-		for (MclusterModel mclusterModel : mclusters) {
-			totalCount++;
-			params.put("mclusterId", mclusterModel.getId());
-			params.put("status", BackupStatus.BUILDING);
-			List<BackupResultModel> results = this.backupService.selectByStatusAndDateOrderByMclusterId(params);
-			if(null == results || results.isEmpty()) {
-				totalCount--;
-				continue;
-			}
-			BackupResultModel backup = null;
-			ApiResultObject result = null;
-			BackupStatus status = null;
-			String resultDetail = "";
-			for (int i = 0; i < results.size(); i++) {
-				backup = results.get(i);
-				if(i ==0) {
-					result = this.pythonService.checkBackup4Db(backup.getBackupIp());
-					backup = this.analysisBackupResult(backup, result);
-					status = backup.getStatus();
-					resultDetail = backup.getResultDetail();
-				}
-				backup.setStatus(status);
-				backup.setResultDetail(resultDetail);
-				
-				Date date = new Date();
-				backup.setEndTime(date);
-				this.backupService.updateBySelective(backup);
-				
-				if(BackupStatus.FAILD.equals(backup.getStatus())) {
-					//send failed email notice
-					sendBackupFaildNotice(backup.getDb().getDbName(),mclusterModel.getMclusterName(),backup.getResultDetail(),backup.getStartTime(),backup.getBackupIp());
-				}
-				if(!BackupStatus.BUILDING.equals(results.get(0).getStatus())) 
-					buildingCount--;
-			}
-		}
-		if(totalCount == 0)
-			buildingCount = 0;
-		return buildingCount;
 	}
 
 	@Override
@@ -239,24 +171,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	}
 
 	@Override
-	@Deprecated
-	public void checkBackupStatusTask(int count) {
-		if(count == 0)
-			count = 5;
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("status", BackupStatus.BUILDING);
-		List<BackupResultModel> results = this.selectByMap(params);
-		
-		for (BackupResultModel backup : results) {
-			this.checkBackupStatus(backup);
-		}
-		this.backupTask4addNew(count);
-		
-	}
-
-	@Override
-    @Async
-    @Deprecated
 	public void checkBackupStatus(BackupResultModel backup) {
 		ApiResultObject result = this.pythonService.checkBackup4Db(backup.getBackupIp());
 		backup = analysisBackupResult(backup, result);
@@ -312,41 +226,7 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		return backup;
 	}
 	
-	@Deprecated
-	private void backupTask4addNew(int count) {
-		Map<String, Object> params = new HashMap<String,Object>();
-		params.put("type","rds");
-		List<HclusterModel> hclusters = this.hclusterService.selectByMap(params);
-		params.clear();
-		for (HclusterModel hcluster : hclusters) {
-			params.clear();
-			params.put("status", BackupStatus.BUILDING);
-			params.put("hclusterId", hcluster.getId());
-			List<BackupResultModel> results = this.selectByMap(params);
-			/*if(!results.isEmpty())
-				count -= results.size();*/
-			//以集群名为单位，计算当前building个数。
-			Set<Long> set = new HashSet<Long>();
-			for (BackupResultModel result : results) {
-				set.add(result.getMclusterId());
-			}
-			if(!results.isEmpty())
-				count -= set.size();
-			set = null;
-			
-			params.clear();
-			params.put("hclusterId", hcluster.getId());
-			BackupResultModel recentBackup = this.selectRecentBackup(params);
-			if(recentBackup == null || count<=0)
-				continue;
-			List<MclusterModel> mclusters = this.mclusterService.selectNextValidMclusterById(recentBackup.getMclusterId(), hcluster.getId(),count);
-			for (MclusterModel mclusterModel : mclusters) {
-				this.wholeBackup4Db(mclusterModel);
-			}
-			
-		}
-	}
-	@Deprecated
+	
 	private BackupResultModel selectRecentBackup(Map<String,Object> params) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar curDate = Calendar.getInstance();
@@ -406,12 +286,17 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 	@Override
 	public void backupTaskReport() {
 		Map<String, Object> params = new HashMap<String,Object>();
-		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar curDate = Calendar.getInstance();
 		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
 		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
 		List<BackupResultModel> backupResults = this.selectByMap(params);
+		
+		for (BackupResultModel backupResultModel : backupResults) {
+			this.checkBackupStatus(backupResultModel);
+		}
+		backupResults = this.selectByMap(params);
+		
 		int mclusters = this.mclusterService.selectValidMclusterCount();
 		int dbs = this.dbService.selectCountByStatus(DbStatus.NORMAL.getValue());
 		int totalDb = backupResults.size();
@@ -482,5 +367,5 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 		mailMessage.setHtml(true);
 		defaultEmailSender.sendMessage(mailMessage);
 	}
-	
+
 }
