@@ -137,9 +137,6 @@ public class BackupProxyImpl extends BaseProxyImpl<BackupResultModel> implements
 			backup.setBackupIp(container.getIpAddr());
 			backup.setStartTime(date);
 			super.insert(backup);
-			//发送邮件通知
-			if(backup.getStatus().equals(BackupStatus.FAILD))
-				sendBackupFaildNotice(dbModel.getDbName(),mcluster.getMclusterName(), backup.getResultDetail(),date,container.getIpAddr());
 		}
 	}
 	
