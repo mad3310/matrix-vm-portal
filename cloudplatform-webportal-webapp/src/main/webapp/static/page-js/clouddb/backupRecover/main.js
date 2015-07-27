@@ -9,12 +9,12 @@ define(function(require){
 	/*初始化时间输入框*/
 	 require.async(['moment', 'jquery','datetimepicker'], function() {  
 		 $("#startTime").datetimepicker({
-				viewMode: 'months',
+				viewMode: 'days',
 				format:'L',
 				locale: 'zh-cn'
 			});
 			$("#endTime").datetimepicker({
-				viewMode: 'months',
+				viewMode: 'days',
 				format: 'L',
 				locale: 'zh-cn'
 			});
