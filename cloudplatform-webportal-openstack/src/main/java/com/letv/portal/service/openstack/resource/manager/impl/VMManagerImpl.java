@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,6 @@ import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.BlockDeviceMapping;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
@@ -69,10 +69,10 @@ import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
@@ -86,7 +86,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 	private ImageManager imageManager;
 
-	private NetworkManager networkManager;
+	private NetworkManagerImpl networkManager;
 
 	private VolumeManagerImpl volumeManager;
 
@@ -283,14 +283,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 			CreateServerOptions createServerOptions = new CreateServerOptions();
 
-			Set<String> networks = new HashSet<String>();
-			List<NetworkResource> networkResources = conf.getNetworkResources();
-			if (networkResources != null) {
-				for (int i = 0; i < networkResources.size(); i++) {
-					networks.add(networkResources.get(i).getId());
-				}
-			}
-			// test code begin(ssh login)
+			Set<String> networks = new LinkedHashSet<String>();
 			{
 				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
 				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
@@ -303,11 +296,17 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					}
 				}
 
+				List<NetworkResource> networkResources = conf.getNetworkResources();
+				if (networkResources != null) {
+					for (int i = 0; i < networkResources.size(); i++) {
+						networks.add(networkResources.get(i).getId());
+					}
+				}
+				
 				if (openStackUser.getInternalUser()) {
 					networks.add(openStackConf.getGlobalSharedNetworkId());
 				}
 			}
-			// test code end
 			createServerOptions.networks(networks);
 
 			if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
@@ -411,16 +410,17 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 			if (volumeSizes != null && !volumeSizes.isEmpty()) {
 				volumes = volumeManager.create(region, volumeSizes);
-				Set<BlockDeviceMapping> blockDeviceMappings = new HashSet<BlockDeviceMapping>();
-				char deviceNameSuffix = 'e';
-				for (Volume volume : volumes) {
-					blockDeviceMappings.add(BlockDeviceMapping.builder()
-							.uuid(volume.getId()).deviceName("/dev/vdc")
-							// .deviceName("/dev/vd" + deviceNameSuffix)
-							.sourceType("blank").build());
-					deviceNameSuffix++;
-				}
-				createServerOptions.blockDeviceMappings(blockDeviceMappings);
+				// Set<BlockDeviceMapping> blockDeviceMappings = new
+				// HashSet<BlockDeviceMapping>();
+				// char deviceNameSuffix = 'e';
+				// for (Volume volume : volumes) {
+				// blockDeviceMappings.add(BlockDeviceMapping.builder()
+				// .uuid(volume.getId()).deviceName("/dev/vdc")
+				// // .deviceName("/dev/vd" + deviceNameSuffix)
+				// .sourceType("blank").build());
+				// deviceNameSuffix++;
+				// }
+				// createServerOptions.blockDeviceMappings(blockDeviceMappings);
 			}
 
 			final ServerCreated serverCreated = serverApi.create(
@@ -437,6 +437,10 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			if (floatingIP != null) {
 				afterTasks.add(new BindFloatingIP(this, imageManager, region,
 						server, floatingIP));
+			}
+			if (volumes != null) {
+				afterTasks.add(new AddVolumes(this, volumeManager, region,
+						server, volumes));
 			}
 			if (!afterTasks.isEmpty()) {
 				new Thread(new WaitingVMCreated(this, serverApi,
@@ -619,6 +623,11 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			}
 		}
 
+		org.jclouds.openstack.neutron.v2.features.PortApi neutronFloatingIPApiOptional = networkManager
+				.getNeutronApi().getPortApi(region);
+		
+
+		
 		floatingIPApi.addToServer(ip.getIp(), vmId);
 	}
 
@@ -724,7 +733,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 		this.imageManager = imageManager;
 	}
 
-	public void setNetworkManager(NetworkManager networkManager) {
+	public void setNetworkManager(NetworkManagerImpl networkManager) {
 		this.networkManager = networkManager;
 	}
 

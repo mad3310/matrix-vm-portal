@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
-import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
-@Deprecated
 public class AddVolumes implements Runnable {
 
 	private static final Logger logger = LoggerFactory
@@ -26,16 +24,16 @@ public class AddVolumes implements Runnable {
 	private VolumeManagerImpl volumeManagerImpl;
 	private String region;
 	private Server server;
-	private List<Integer> volumeSizes;
+	private List<Volume> volumes;
 
 	public AddVolumes(VMManagerImpl vmManager,
 			VolumeManagerImpl volumeManagerImpl, String region, Server server,
-			List<Integer> volumeSizes) {
+			List<Volume> volumes) {
 		this.vmManager = vmManager;
 		this.volumeManagerImpl = volumeManagerImpl;
 		this.region = region;
 		this.server = server;
-		this.volumeSizes = volumeSizes;
+		this.volumes = volumes;
 	}
 
 	@Override
@@ -50,9 +48,7 @@ public class AddVolumes implements Runnable {
 			}
 			VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
 					.get();
-			for (Integer size : volumeSizes) {
-				Volume volume = volumeApi
-						.create(size, CreateVolumeOptions.NONE);
+			for (Volume volume : volumes) {
 				try {
 					while (true) {
 						volume = volumeApi.get(volume.getId());
