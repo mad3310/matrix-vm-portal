@@ -41,12 +41,12 @@
 				<script type="text/javascript">
 					$(function () {
 		                $('#startTime').datetimepicker({
-		            		viewMode: 'months',
+		            		viewMode: 'days',
 		            		format: 'L',
 		            		locale: 'zh-cn'
 		            	});
 		                $('#endTime').datetimepicker({
-		            		viewMode: 'months',
+		            		viewMode: 'days',
 		            		format: 'L',
 		            		locale: 'zh-cn'
 		            	});
