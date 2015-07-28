@@ -7,8 +7,6 @@ define(function(require){
 			name : "云引擎GCE",
 			herf : "/list/gce"
 		}]);
-	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
 	/*加载数据*/

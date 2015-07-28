@@ -20,8 +20,8 @@ define(function(require) {
 	cn.barClickDrag(options);
 	cn.barDrag(options);
 	$('.self-dragBar').closest('.bk-form-row-li').next().text('最小值为'+options.min+options.unit+'；步长为'+options.stepSize+options.unit);
-	/* 禁用退格键退回网页 */
-	window.onload = cn.DisableBackspaceEnter();
+	/* 防止误操作退出创建页面 */
+	cn.AddBeforeunloadListener();
 	if (document.getElementById("monthPurchaseBotton").form == null) { // 兼容IE
 																		// form提交
 		$("#monthPurchaseBotton").click(function() {
@@ -210,6 +210,7 @@ define(function(require) {
 	}
 	/* 创建cache */
 	function CreateCache(data) {
+		cn.RemoveBeforeunloadListener();
 		console.log(data)
 		var url = "/cache";
 		cn.PostData(url, data, function() {

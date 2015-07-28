@@ -7,8 +7,8 @@ define(function(require){
     var $ = require("jquery");
     require("bootstrapValidator")($);
 
-    /*禁用退格键退回网页*/
-    window.onload=cn.DisableBackspaceEnter();
+	/* 防止误操作退出创建页面 */
+	cn.AddBeforeunloadListener();
 
     if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
         $("#monthPurchaseBotton").click(function(){
@@ -59,6 +59,7 @@ define(function(require){
 			slbName : $("[name = slbName]").val(),
 			hclusterId : $("[name = 'hclusterId']").val()
 		}
+		cn.RemoveBeforeunloadListener();
 		var url = "/slb";
 		cn.PostData(url, createConfigData, function () {
 			location.href = "/list/slb";

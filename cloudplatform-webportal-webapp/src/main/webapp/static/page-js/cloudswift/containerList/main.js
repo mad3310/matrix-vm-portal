@@ -12,8 +12,6 @@ define(function(require){
 			name : "开放存储服务 OSS",
 			herf : "/list/oss"
 		}]);
-	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

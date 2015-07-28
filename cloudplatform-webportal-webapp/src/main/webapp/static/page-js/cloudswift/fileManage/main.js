@@ -10,8 +10,6 @@ define(function(require){
     require("bootstrapValidator")($);
     cn.Tooltip();
     
-	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
 
 	/* $('#form-upload').submit(function(){  
          $(this).ajaxSubmit(); 

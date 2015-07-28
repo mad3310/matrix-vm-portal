@@ -17,8 +17,6 @@ define(function(require){
     cn.center();
 
    
-    /*禁用退格键退回网页*/
-    window.onload=cn.DisableBackspaceEnter();
 
     /*页面按钮初始化 --start*/
     $(".toCreateAccount").click(function () {           //切换到创建账户

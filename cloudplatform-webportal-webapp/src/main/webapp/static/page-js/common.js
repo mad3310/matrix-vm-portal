@@ -1224,6 +1224,14 @@ define(function(require,exports,module){
         		temp='-'+temp
         	}
         	return temp;
+        },
+        AddBeforeunloadListener:function(text){
+        	$(window).on('beforeunload', function(){
+        	      return text || '表单还没有提交。';
+        	});
+        },
+        RemoveBeforeunloadListener:function(text){
+        	$(window).off('beforeunload');
         }
     }
     /*common原型属性方法end*/

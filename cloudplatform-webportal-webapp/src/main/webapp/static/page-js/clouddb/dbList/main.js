@@ -14,8 +14,6 @@ define(function(require){
 				herf : "/list/db"
 			}]);
     
-	/*禁用退格键退回网页*/
-	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

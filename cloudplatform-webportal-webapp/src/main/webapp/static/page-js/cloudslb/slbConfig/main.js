@@ -7,8 +7,6 @@ define(function(require){
     var common = require('../../common');
     var cn = new common();
 
-    /*禁用退格键*/
-    window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

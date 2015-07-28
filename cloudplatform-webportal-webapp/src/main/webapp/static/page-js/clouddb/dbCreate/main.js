@@ -10,8 +10,8 @@ define(function(require){
                 name : "Le云控制台",
                 herf : "/dashboard"
             }]);
-    /*禁用退格键退回网页*/
-    window.onload=cn.DisableBackspaceEnter();
+	/* 防止误操作退出创建页面 */
+	cn.AddBeforeunloadListener();
 
     if(document.getElementById("monthPurchaseBotton").form == null){    //兼容IE form提交
         $("#monthPurchaseBotton").click(function(){
@@ -85,6 +85,7 @@ define(function(require){
     }
     /*创建数据库*/
     function CreateDb(data){
+    	cn.RemoveBeforeunloadListener();
         var url="/db";
         cn.PostData(url,data, function () {
             location.href = "/list/db";
