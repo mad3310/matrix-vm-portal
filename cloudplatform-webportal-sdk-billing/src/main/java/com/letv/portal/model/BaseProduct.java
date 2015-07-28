@@ -9,7 +9,7 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
-public class BaseProduction extends BaseModel{
+public class BaseProduct extends BaseModel{
 
 	private static final long serialVersionUID = 7865544036106203329L;
 	
