@@ -30,7 +30,7 @@
 					<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 						<img class="nav-user-photo"
 					 		src="${ctx}/static/ace/avatars/user.jpg" alt="Jason's Photo" />
-						<span class="user-info"> <small>欢迎会员,</small>${sessionScope.userSession.userName}</span>
+						<span class="user-info">${sessionScope.userSession.userName}</span>
 						<i class="ace-icon fa fa-caret-down"></i>
 					</a>
 					<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-blue dropdown-caret dropdown-close">
