@@ -213,4 +213,41 @@ public class SkipController {
 		mav.setViewName("/clouddb/backup_recover");
 		return mav;
 	}
+	
+	@RequestMapping(value ="/list/rds/node/health",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeHealthList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_health");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/list/rds/node/resource",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeResourceList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_resource");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/list/rds/node/keyBuffer",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeKeyBufferList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_key_buffer");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/list/rds/node/innodb",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeInnodbList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_innodb");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/list/rds/node/tableSpace/{dbSpaceId}",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeTableSpaceList(@PathVariable int dbSpaceId,ModelAndView mav,HttpServletRequest request){
+		mav.addObject("dbSpaceId",dbSpaceId);
+		mav.setViewName("/clouddb/rds_monitor_node_table_space");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/list/rds/node/dbSpace",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeDbSpaceList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_db_space");
+		return mav;
+	}
 }

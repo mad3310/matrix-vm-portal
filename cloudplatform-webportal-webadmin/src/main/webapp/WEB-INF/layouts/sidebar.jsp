@@ -63,6 +63,11 @@
 	  <b class="arrow"></b>
 	  <ul class="submenu">
 	    <li><a href="${ctx}/view/mcluster/monitor"><i class="menu-icon fa fa-caret-right"></i>container集群监控图</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/health"><i class="menu-icon fa fa-caret-right"></i>rds健康监控</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/resource"><i class="menu-icon fa fa-caret-right"></i>rds资源监控</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/keyBuffer"><i class="menu-icon fa fa-caret-right"></i>rds键缓存监控</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/innodb"><i class="menu-icon fa fa-caret-right"></i>rds InnoDB监控</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/dbSpace"><i class="menu-icon fa fa-caret-right"></i>rds表空间分析</a><b class="arrow"></b></li>
 	  </ul>
 	</li>
 	<li id="sidebar-forewarning-monitor-mgr">
