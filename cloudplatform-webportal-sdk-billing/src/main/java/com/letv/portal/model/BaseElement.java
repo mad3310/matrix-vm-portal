@@ -14,6 +14,15 @@ public class BaseElement extends BaseModel{
 	private static final long serialVersionUID = 4187977926839991202L;
 	
 	private String name;
+	private String descn;
+
+	public String getDescn() {
+		return descn;
+	}
+
+	public void setDescn(String descn) {
+		this.descn = descn;
+	}
 
 	public String getName() {
 		return name;

@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import java.sql.Date;
+
 import com.letv.common.model.BaseModel;
 
 /**Program Name: SubscriptionDetail <br>
@@ -13,4 +15,47 @@ public class SubscriptionDetail extends BaseModel{
 
 	private static final long serialVersionUID = 727699783805627057L;
 
+	private Long subscriptionId;
+	private Long productPriceId;
+	private Date startTime;
+	private Date endTime;
+	private long indate;
+	private boolean valid;
+	public Long getSubscriptionId() {
+		return subscriptionId;
+	}
+	public void setSubscriptionId(Long subscriptionId) {
+		this.subscriptionId = subscriptionId;
+	}
+	public Long getProductPriceId() {
+		return productPriceId;
+	}
+	public void setProductPriceId(Long productPriceId) {
+		this.productPriceId = productPriceId;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	public long getIndate() {
+		return indate;
+	}
+	public void setIndate(long indate) {
+		this.indate = indate;
+	}
+	public boolean isValid() {
+		return valid;
+	}
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+	
 }
