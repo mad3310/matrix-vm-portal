@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.BaseElement;
+import com.letv.portal.service.IBaseElementService;
 
 /**Program Name: BaseElementController <br>
  * Description:  基础元素<br>
@@ -28,6 +31,9 @@ public class BaseElementController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseElementController.class);
 
+	@Autowired
+	private IBaseElementService baseElementService;
+	
 	/**Methods Name: pageList <br>
 	 * Description: 基础元素分页列表<br>
 	 * @author name: liuhao1
@@ -38,7 +44,7 @@ public class BaseElementController {
 	@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject pageList(@ModelAttribute Page page,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
-		obj.setData(page);
+		obj.setData(this.baseElementService.selectPageByParams(page, HttpUtil.requestParam2Map(request)));
 		return obj;
 	}
 	
@@ -51,6 +57,7 @@ public class BaseElementController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(@ModelAttribute BaseElement element) {
 		ResultObject obj = new ResultObject();
+		this.save(element);
 		return obj;
 	}
 	
@@ -64,6 +71,7 @@ public class BaseElementController {
 	@RequestMapping(value="/{id}", method=RequestMethod.POST)   
 	public @ResponseBody ResultObject update(@PathVariable Long id,@ModelAttribute BaseElement element) {
 		ResultObject obj = new ResultObject();
+		this.save(element);
 		return obj;
 	}
 	
