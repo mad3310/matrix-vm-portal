@@ -45,6 +45,7 @@ public class BaseElementController {
 	public @ResponseBody ResultObject pageList(@ModelAttribute Page page,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.baseElementService.selectPageByParams(page, HttpUtil.requestParam2Map(request)));
+		logger.info("pageList for Element begin---");
 		return obj;
 	}
 	

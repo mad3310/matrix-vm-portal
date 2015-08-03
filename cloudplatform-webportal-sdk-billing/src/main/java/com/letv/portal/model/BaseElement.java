@@ -1,5 +1,7 @@
 package com.letv.portal.model;
 
+import org.apache.ibatis.type.Alias;
+
 import com.letv.common.model.BaseModel;
    
 /**Program Name: BaseElementModel <br>
@@ -9,6 +11,7 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@Alias("BaseElement")
 public class BaseElement extends BaseModel{
 
 	private static final long serialVersionUID = 4187977926839991202L;
