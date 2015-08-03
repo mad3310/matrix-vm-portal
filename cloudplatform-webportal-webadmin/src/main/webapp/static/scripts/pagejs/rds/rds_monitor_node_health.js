@@ -53,7 +53,7 @@ function queryHealthData(){
 	clearSortBy();
 	updateHealthData();
 }
-function updateHealthData(order,orderArg) {
+function updateHealthData() {
 	var hostIp=$('#hostIp').val();
 	var hostTag=$('#hostTag').val();
 	var connectCount=$('#connectCount').val();
@@ -66,6 +66,16 @@ function updateHealthData(order,orderArg) {
 			'hostTag':hostTag?hostTag:'',
 			'connectCount':connectCount?connectCount:'',
 			'activityCount':activityCount?activityCount:''
+		}
+		/*判断当前是否有排序要求，如果有加入排序参数 --start--*/
+		var order = $('.sort-by').closest('th').attr('target-data'),orderArg;
+		var $sb = $('.sort-by');
+		if($sb){
+			if($sb.hasClass('fa-sort-down')){
+				orderArg='DESC';
+			}else if ($sb.hasClass('fa-sort-up')){
+				orderArg='ASC';
+			}
 		}
 		if(order){
 			queryCondition.order=order;
@@ -129,7 +139,7 @@ function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
 		currentPage = 1;
-		queryHealthData();
+		updateHealthData();
 	});
 
 	// 上一页
@@ -147,7 +157,7 @@ function pageControl() {
 			
 		} else {
 			currentPage--;
-			queryHealthData();
+			updateHealthData();
 		}
 	});
 
@@ -166,14 +176,14 @@ function pageControl() {
 			
 		} else {
 			currentPage++;
-			queryHealthData();
+			updateHealthData();
 		}
 	});
 
 	// 末页
 	$("#lastPage").bind("click", function() {
 		currentPage = $("#totalPage_input").val();
-		queryHealthData();
+		updateHealthData();
 	});
 }
 
@@ -189,26 +199,18 @@ function tableSortInit(){	//在鼠标放到head上时，显示排序箭头，离
 		var _target = e.target || e.srcElement;
 		var targetClassList = _target.classList;
 		var $target = $(_target);
-		if(targetClassList.contains("fa-sort-down")){
+		if(targetClassList.contains("fa-sort-down") ||targetClassList.contains("fa-sort-up")){
 				setSortBy($target);
-				updateBySort($target,'DESC');
-			}else if(targetClassList.contains("fa-sort-up")){
-				setSortBy($target);
-				updateBySort($target,'ASC');
 		}
 	  })
 }
 function setSortBy($target){ //target 为<i class='fa fa-sort-down'></i>或<i class='fa fa-sort-up'></i>
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
 	$target.addClass("sort-by");
+	updateHealthData();
 }
 function clearSortBy(){
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
-}
-function updateBySort(target,orderArg){
-	currentPage = 1;//重新排序，当前页重置为第一页。 
-	var order = target.closest('th').attr('target-data');
-	updateHealthData(order,orderArg);
 }
 function page_init(){
 	$('#nav-search').addClass("hidden");

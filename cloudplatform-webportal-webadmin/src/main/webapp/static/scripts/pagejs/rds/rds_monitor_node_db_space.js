@@ -47,7 +47,7 @@ function queryResourceData(){
 	clearSortBy();
 	updateResourceData();
 }
-function updateResourceData(order,orderArg) {
+function updateResourceData() {
 	var hostIp=$('#hostIp').val();
 	var hostTag=$('#hostTag').val();
 	var queryCondition = {
@@ -57,12 +57,23 @@ function updateResourceData(order,orderArg) {
 			'hostIp':hostIp?hostIp:'',
 			'hostTag':hostTag?hostTag:''
 		}
+		/*判断当前是否有排序要求，如果有加入排序参数 --start--*/
+		var order = $('.sort-by').closest('th').attr('target-data'),orderArg;
+		var $sb = $('.sort-by');
+		if($sb){
+			if($sb.hasClass('fa-sort-down')){
+				orderArg='DESC';
+			}else if ($sb.hasClass('fa-sort-up')){
+				orderArg='ASC';
+			}
+		}
 		if(order){
 			queryCondition.order=order;
 		}
 		if(orderArg){
 			queryCondition.orderArg=orderArg;
 		}
+		/*--end--*/
 	$("#tby tr").remove();
 	getLoading();
 	$.ajax({ 
@@ -107,7 +118,7 @@ function pageControl() {
 	// 首页
 	$("#firstPage").bind("click", function() {
 		currentPage = 1;
-		queryResourceData();
+		updateResourceData();
 	});
 
 	// 上一页
@@ -125,7 +136,7 @@ function pageControl() {
 			
 		} else {
 			currentPage--;
-			queryResourceData();
+			updateResourceData();
 		}
 	});
 
@@ -144,14 +155,14 @@ function pageControl() {
 			
 		} else {
 			currentPage++;
-			queryResourceData();
+			updateResourceData();
 		}
 	});
 
 	// 末页
 	$("#lastPage").bind("click", function() {
 		currentPage = $("#totalPage_input").val();
-		queryResourceData();
+		updateResourceData();
 	});
 }
 
@@ -167,26 +178,18 @@ function tableSortInit(){	//在鼠标放到head上时，显示排序箭头，离
 		var _target = e.target || e.srcElement;
 		var targetClassList = _target.classList;
 		var $target = $(_target);
-		if(targetClassList.contains("fa-sort-down")){
+		if(targetClassList.contains("fa-sort-down") ||targetClassList.contains("fa-sort-up")){
 				setSortBy($target);
-				updateBySort($target,'DESC');
-			}else if(targetClassList.contains("fa-sort-up")){
-				setSortBy($target);
-				updateBySort($target,'ASC');
 		}
 	  })
 }
 function setSortBy($target){ //target 为<i class='fa fa-sort-down'></i>或<i class='fa fa-sort-up'></i>
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
 	$target.addClass("sort-by");
+	queryResourceData();
 }
 function clearSortBy(){
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
-}
-function updateBySort(target,orderArg){
-	currentPage = 1;//重新排序，当前页重置为第一页。 
-	var order = target.closest('th').attr('target-data');
-	updateResourceData(order,orderArg);
 }
 function page_init(){
 	$('#nav-search').addClass("hidden");
