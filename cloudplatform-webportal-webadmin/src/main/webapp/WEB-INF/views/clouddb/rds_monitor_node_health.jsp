@@ -82,7 +82,7 @@
 					<thead class="monitor-table-headr-group">
 						<tr class="header-one"> 
 							<th colspan=2 >服务器</th>
-							<th colspan=4>基本信息</th>
+							<th colspan=3>基本信息</th>
 							<th colspan=3>线程数</th>
 							<th colspan=2>网络</th>
 							<th colspan=3>查询</th>
@@ -91,7 +91,6 @@
 						<tr class="header-two">
 							<th  class="table-head-sort" target-data="HOST_IP">主机</th>
 							<th>标签</th>
-							<th>连接</th>
 							<th>角色</th>
 							<th class="table-head-sort" target-data="RUN_TIME">运行时间</th>
 							<th>版本</th>
