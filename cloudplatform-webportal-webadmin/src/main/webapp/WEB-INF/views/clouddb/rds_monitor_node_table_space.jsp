@@ -63,7 +63,7 @@
 						<tr class="header-two">
 							<th class="table-head-sort" target-data="NAME">表名称</th>
 							<th class="table-head-sort" target-data="SIZE">表大小</th>
-							<th class="table-head-sort">表注释</th>
+							<th>表注释</th>
 						</tr>
 					</thead>
 						<tbody id="tby">

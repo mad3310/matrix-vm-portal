@@ -105,7 +105,6 @@ function updateHealthData() {
 				var td=[];
 				td.push("<td>"+array[i].hostIp+"</td>");
 				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+"<a class='green'>正常</a>"+"</td>");
 				td.push("<td>"+array[i].role+"</td>");
 				td.push("<td>"+TransTimeUnit(array[i].runTime)+"</td>");
 				td.push("<td>"+array[i].version+"</td>");
