@@ -1049,7 +1049,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
-	//@Async
+	@Async
 	public void getMysqlMonitorServiceData(ContainerModel container,
 			MonitorIndexModel index, Date date) {
 		Map<String, String> params = new HashMap<String, String>();
@@ -1065,7 +1065,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 	
 	@Override
-	//@Async
+	@Async
 	public void collectMysqlMonitorBaseData(ContainerModel container, MonitorIndexModel index,Date date) {
 		Map<String, String> params = new HashMap<String, String>();
 		String[] str = index.getMonitorPoint().split(",");
@@ -1090,7 +1090,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	}
 
 	@Override
-	//@Async
+	@Async
 	public void collectMysqlMonitorBaseSpaceData(String dbName,
 			ContainerModel container, List<MonitorIndexModel> indexs, Date date) {
 		Map<String, String> params = new HashMap<String, String>();

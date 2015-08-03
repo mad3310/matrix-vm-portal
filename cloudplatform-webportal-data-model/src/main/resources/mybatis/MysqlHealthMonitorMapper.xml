@@ -58,37 +58,37 @@
 		    <if test="role!= null and role != '' ">
 		        ROLE=#{role},
 		    </if>
-		    <if test="runTime!= null and runTime != '' ">
+		    <if test="runTime!= null ">
 		        RUN_TIME=#{runTime},
 		    </if>
 		    <if test="version!= null and version != '' ">
 		        VERSION=#{version},
 		    </if>
-		    <if test="connectCount!= null and connectCount != '' ">
+		    <if test="connectCount!= null ">
 		        CONNECT_COUNT=#{connectCount},
 		    </if>
-		    <if test="activityCount!= null and activityCount != '' ">
+		    <if test="activityCount!= null ">
 		        ACTIVITY_COUNT=#{activityCount},
 		    </if>
-		    <if test="waitCount!= null and waitCount != '' ">
+		    <if test="waitCount!= null ">
 		        WAIT_COUNT=#{waitCount},
 		    </if>
-		    <if test="send!= null and send != '' ">
+		    <if test="send!= null ">
 		        SEND=#{send},
 		    </if>
-		    <if test="recv!= null and recv != '' ">
+		    <if test="recv!= null">
 		        RECV=#{recv},
 		    </if>
-		    <if test="queryPs!= null and queryPs != '' ">
+		    <if test="queryPs!= null ">
 		        QUERY_PS=#{queryPs},
 		    </if>
-		    <if test="transactionPs!= null and transactionPs != '' ">
+		    <if test="transactionPs!= null ">
 		        TRANSACTION_PS=#{transactionPs},
 		    </if>
-		    <if test="cpu!= null and cpu != '' ">
+		    <if test="cpu!= null ">
 		        CPU=#{cpu},
 		    </if>
-		    <if test="memory!= null and memory != '' ">
+		    <if test="memory!= null ">
 		        MEMORY=#{memory},
 		    </if>
 		    <if test="descn!= null and descn != '' ">
@@ -100,7 +100,7 @@
 		    <if test="updateTime!= null and updateTime != '' ">
 		        UPDATE_TIME=#{updateTime},
 		    </if>
-		    <if test="slowQueryCount!= null and slowQueryCount != '' ">
+		    <if test="slowQueryCount!= null ">
 		        SLOW_QUERY_COUNT=#{slowQueryCount},
 		    </if>
 		</set>

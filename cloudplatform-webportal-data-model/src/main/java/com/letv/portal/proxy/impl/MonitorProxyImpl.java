@@ -301,7 +301,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		//map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_qq0729");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -319,7 +319,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		//map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_qq0729");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 4);
@@ -337,7 +337,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseSpaceData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		// 测试专用，需要删除
-		//map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_qq0729");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();

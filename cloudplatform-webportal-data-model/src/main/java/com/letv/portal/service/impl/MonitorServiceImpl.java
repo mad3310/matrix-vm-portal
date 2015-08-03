@@ -324,8 +324,8 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
-		cal.add(Calendar.HOUR, -1);
-		//cal.add(Calendar.DATE, -1);
+		//cal.add(Calendar.HOUR, -1);
+		cal.add(Calendar.DATE, -1);
 		Date start = new Date(cal.getTimeInMillis());
 		params.put("dbName", tableName);
 		params.put("ip", containerIp);

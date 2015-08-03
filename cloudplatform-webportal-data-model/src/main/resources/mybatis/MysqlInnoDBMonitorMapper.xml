@@ -46,19 +46,19 @@
 		    <if test="hostTag != null and hostTag != '' ">
 		        HOST_TAG=#{hostTag},
 		    </if>
-		    <if test="innodbBufferPoolSize != null and innodbBufferPoolSize != '' ">
+		    <if test="innodbBufferPoolSize != null ">
 		        INNODB_BUFFER_POOL_SIZE=#{innodbBufferPoolSize},
 		    </if>
-		    <if test="innodbRowsRead != null and innodbRowsRead != '' ">
+		    <if test="innodbRowsRead != null ">
 		        INNODB_ROWS_READ=#{innodbRowsRead},
 		    </if>
-		    <if test="innodbRowsInsert != null and innodbRowsInsert != '' ">
+		    <if test="innodbRowsInsert != null ">
 		        INNODB_ROWS_INSERT=#{innodbRowsInsert},
 		    </if>
-		    <if test="innodbRowsUpdate != null and innodbRowsUpdate != '' ">
+		    <if test="innodbRowsUpdate != null ">
 		        INNODB_ROWS_UPDATE=#{innodbRowsUpdate},
 		    </if>
-		    <if test="innodbRowsDelete != null and innodbRowsDelete != '' ">
+		    <if test="innodbRowsDelete != null ">
 		        INNODB_ROWS_DELETE=#{innodbRowsDelete},
 		    </if>
 		    <if test="descn != null and descn != '' ">
@@ -70,7 +70,7 @@
 		    <if test="updateTime != null and updateTime != '' ">
 		        UPDATE_TIME=#{updateTime},
 		    </if>
-		    <if test="innodbBufferReadHits != null and innodbBufferReadHits != '' ">
+		    <if test="innodbBufferReadHits != null ">
 		        INNODB_BUFFER_READ_HITS=#{innodbBufferReadHits},
 		    </if>
 		</set>

@@ -52,31 +52,31 @@
 		    <if test="hostTag != null and hostTag != '' ">
 		        HOST_TAG=#{hostTag},
 		    </if>
-		    <if test="keyBufferSize != null and keyBufferSize != '' ">
+		    <if test="keyBufferSize != null ">
 		        KEY_BUFFER_SIZE=#{keyBufferSize},
 		    </if>
-		    <if test="sortBufferSize != null and sortBufferSize != '' ">
+		    <if test="sortBufferSize != null ">
 		        SORT_BUFFER_SIZE=#{sortBufferSize},
 		    </if>
-		    <if test="joinBufferSize != null and joinBufferSize != '' ">
+		    <if test="joinBufferSize != null ">
 		        JOIN_BUFFER_SIZE=#{joinBufferSize},
 		    </if>
-		    <if test="keyBlocksUnused != null and keyBlocksUnused != '' ">
+		    <if test="keyBlocksUnused != null ">
 		        KEY_BLOCKS_UNUSED=#{keyBlocksUnused},
 		    </if>
-		    <if test="keyBlocksUsed != null and keyBlocksUsed != '' ">
+		    <if test="keyBlocksUsed != null ">
 		        KEY_BLOCKS_USED=#{keyBlocksUsed},
 		    </if>
-		    <if test="keyBlocksNotFlushed != null and keyBlocksNotFlushed != '' ">
+		    <if test="keyBlocksNotFlushed != null ">
 		        KEY_BLOCKS_NOT_FLUSHED=#{keyBlocksNotFlushed},
 		    </if>
-		    <if test="keyBlocksUsedRate != null and keyBlocksUsedRate != '' ">
+		    <if test="keyBlocksUsedRate != null ">
 		        KEY_BLOCKS_USED_RATE=#{keyBlocksUsedRate},
 		    </if>
-		    <if test="keyBufferReadRate != null and keyBufferReadRate != '' ">
+		    <if test="keyBufferReadRate != null ">
 		        KEY_BUFFER_READ_RATE=#{keyBufferReadRate},
 		    </if>
-		    <if test="keyBufferWriteRate != null and keyBufferWriteRate != '' ">
+		    <if test="keyBufferWriteRate != null ">
 		        KEY_BUFFER_WRITE_RATE=#{keyBufferWriteRate},
 		    </if>
 		    <if test="descn != null and descn != '' ">

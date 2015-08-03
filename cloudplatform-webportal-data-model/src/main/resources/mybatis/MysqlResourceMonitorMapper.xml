@@ -49,22 +49,22 @@
 		    <if test="hostTag != null and hostTag != '' ">
 		        HOST_TAG=#{hostTag},
 		    </if>
-		    <if test="maxConnect != null and maxConnect != '' ">
+		    <if test="maxConnect != null ">
 		        MAX_CONNECT=#{maxConnect},
 		    </if>
-		    <if test="maxConnectError != null and maxConnectError != '' ">
+		    <if test="maxConnectError != null ">
 		        MAX_CONNECT_ERROR=#{maxConnectError},
 		    </if>
-		    <if test="maxOpenFile != null and maxOpenFile != '' ">
+		    <if test="maxOpenFile != null ">
 		        MAX_OPEN_FILE=#{maxOpenFile},
 		    </if>
-		    <if test="hadOpenFile != null and hadOpenFile != '' ">
+		    <if test="hadOpenFile != null ">
 		        HAD_OPEN_FILE=#{hadOpenFile},
 		    </if>
-		    <if test="cacheTableCount != null and cacheTableCount != '' ">
+		    <if test="cacheTableCount != null ">
 		        CACHE_TABLE_COUNT=#{cacheTableCount},
 		    </if>
-		    <if test="hadOpenTable != null and hadOpenTable != '' ">
+		    <if test="hadOpenTable != null ">
 		        HAD_OPEN_TABLE=#{hadOpenTable},
 		    </if>
 		    <if test="descn != null and descn != '' ">
@@ -76,7 +76,7 @@
 		    <if test="updateTime != null and updateTime != '' ">
 		        UPDATE_TIME=#{updateTime},
 		    </if>
-		    <if test="cacheTableNohitCount != null and cacheTableNohitCount != '' ">
+		    <if test="cacheTableNohitCount != null ">
 		        CACHE_TABLE_NOHIT_COUNT=#{cacheTableNohitCount},
 		    </if>
 		</set>

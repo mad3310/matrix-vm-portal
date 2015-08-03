@@ -49,8 +49,12 @@ public class MysqlInnoDBMonitorServiceImpl extends BaseServiceImpl<MysqlInnoDBMo
 		innodb.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
 		innodb.setInnodbBufferPoolSize(Float.parseFloat((String)map.get("stat_innodb_bufferpool_size_command")));
 		if(dbResult.get("stat_innodb_bufferpool_reads_command")!=null && dbResult.get("stat_innodb_bufferpool_read_request_command")!=null) {
-			float readHits = (Float)dbResult.get("stat_innodb_bufferpool_reads_command")/(Float)dbResult.get("stat_innodb_bufferpool_read_request_command");
-			innodb.setInnodbBufferReadHits(1-readHits);
+			if((Float)dbResult.get("stat_innodb_bufferpool_read_request_command")!=0f) {
+				float readHits = (Float)dbResult.get("stat_innodb_bufferpool_reads_command")/(Float)dbResult.get("stat_innodb_bufferpool_read_request_command");
+				innodb.setInnodbBufferReadHits(1-readHits);
+			} else {
+				innodb.setInnodbBufferReadHits(0f);
+			}
 		}
 		innodb.setInnodbRowsRead((Float)dbResult.get("num_reads_sec"));
 		innodb.setInnodbRowsInsert((Float)dbResult.get("num_inserts_sec"));

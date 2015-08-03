@@ -45,7 +45,7 @@
 		    <if test="name != null and name != '' ">
 		        NAME=#{name},
 		    </if>
-		    <if test="size != null and size != '' ">
+		    <if test="size != null ">
 		        SIZE=#{size},
 		    </if>
 		    <if test="descn != null and descn != '' ">

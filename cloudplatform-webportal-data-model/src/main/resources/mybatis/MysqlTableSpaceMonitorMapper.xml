@@ -35,7 +35,7 @@
 		    <if test="name != null and name != '' ">
 		        and tablespace.NAME=#{name}
 		    </if>
-		    <if test="size != null and size != '' ">
+		    <if test="size != null ">
 		        and tablespace.SIZE=#{size}
 		    </if>
 		    <if test="descn != null and descn != '' ">
@@ -71,16 +71,16 @@
 		    <if test="name != null and name != '' ">
 		        NAME=#{name},
 		    </if>
-		    <if test="size != null and size != '' ">
+		    <if test="size != null ">
 		        SIZE=#{size},
 		    </if>
-		    <if test="descn != null and descn != '' ">
+		    <if test="descn != null ">
 		        DESCN=#{descn},
 		    </if>
-		    <if test="createTime != null and createTime != '' ">
+		    <if test="createTime != null ">
 		        CREATE_TIME=#{createTime},
 		    </if>
-		    <if test="updateTime != null and updateTime != '' ">
+		    <if test="updateTime != null ">
 		        UPDATE_TIME=#{updateTime},
 		    </if>
 		</set>
