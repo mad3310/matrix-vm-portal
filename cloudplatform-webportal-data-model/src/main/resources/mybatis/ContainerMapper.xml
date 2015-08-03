@@ -39,6 +39,8 @@
 	    <association property="mcluster" javaType="Mcluster">
 			<result column="MCLUSTER_NAME" property="mclusterName" />
 	    	<result column="HCLUSTER_ID" property="hclusterId" />
+	    	<result column="ADMIN_USER" property="adminUser" />
+	    	<result column="ADMIN_PASSWORD" property="adminPassword" />
 		</association>
 		
 	    <association property="hcluster" javaType="Hcluster">
@@ -268,7 +270,7 @@
 	<!-- 根据条件查询 -->
 	<select id="selectAllByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,H.HOST_NAME,H.HOST_NAME_ALIAS,U.HCLUSTER_NAME_ALIAS,H.HCLUSTER_ID
+		<include refid="Base_Column_List" />,M.MCLUSTER_NAME,M.ADMIN_USER,M.ADMIN_PASSWORD,H.HOST_NAME,H.HOST_NAME_ALIAS,U.HCLUSTER_NAME_ALIAS,H.HCLUSTER_ID
 		from WEBPORTAL_CONTAINER C,WEBPORTAL_MCLUSTER_INFO M,WEBPORTAL_HOST H,WEBPORTAL_HCLUSTER U
 		where 1=1
 		<if test="containerName != null  and containerName != '' and containerName != 'null'">

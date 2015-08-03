@@ -297,5 +297,65 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			this.monitorService.deleteMonitorPartitionThirtyDaysAgo(params);
 		}
 	}
+	@Override
+	public void collectMysqlMonitorData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		//测试专用，需要删除
+		//map.put("mclusterName", "35_qq0729");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 0);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (ContainerModel container : contianers) {
+				this.buildTaskService.getMysqlMonitorServiceData(container, index, date);
+			}
+		}
+	}
+	@Override
+	public void collectMysqlMonitorBaseData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		//测试专用，需要删除
+		//map.put("mclusterName", "35_qq0729");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 4);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorBaseData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (ContainerModel container : contianers) {
+				this.buildTaskService.collectMysqlMonitorBaseData(container, index, date);
+			}
+		}
+		logger.info("collectMysqlMonitorBaseData end");
+	}
+	@Override
+	public void collectMysqlMonitorBaseSpaceData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		// 测试专用，需要删除
+		//map.put("mclusterName", "35_qq0729");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 5);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorBaseSpaceData start" + date);
+		for (ContainerModel container : contianers) {
+			map.clear();
+			map.put("mclusterId", container.getMclusterId());
+			List<DbModel> dbs = this.dbService.selectByMap(map);
+			for (DbModel dbModel : dbs) {
+				this.buildTaskService.collectMysqlMonitorBaseSpaceData(dbModel.getDbName(),container, indexs, date);
+			}
+		}
+		logger.info("collectMysqlMonitorBaseSpaceData end");
+	}
+	
+	
 	
 }

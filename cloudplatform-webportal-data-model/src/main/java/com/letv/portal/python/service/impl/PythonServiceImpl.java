@@ -303,7 +303,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
-		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());	
+		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());
 		return new ApiResultObject(result,url.toString());
 	}
 
@@ -357,6 +357,13 @@ public class PythonServiceImpl implements IPythonService{
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup/check");
 		String result = HttpClient.get(url.toString(),1000,10000);
 		return new ApiResultObject(result, url.toString());
+	}
+	@Override
+	public String getMysqlMonitorData(String ip, String index, Map<String, String> params, String userName, String password) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		String result = HttpClient.post(url.toString(), params, userName, password);
+		return result;
 	}    
 	
 }

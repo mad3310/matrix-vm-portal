@@ -94,4 +94,16 @@ public interface IBaseService<T> {
 	<K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc);
 	<K, V> Page selectPageByParams(Page page, Map<K,V> params);
 	
+	/**
+	  * @Title: queryByPagination
+	  * @Description: 根据参数查询数据（带分页）
+	  * @param page
+	  * @param params
+	  * @return Page   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月27日 上午11:38:37
+	  */
+	<K, V> Page queryByPagination(Page page, Map<K,V> params);
+	
 }

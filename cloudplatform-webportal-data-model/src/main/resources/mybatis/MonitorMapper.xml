@@ -111,4 +111,13 @@
 	<update id="deleteMonitorPartitionThirtyDaysAgo" parameterType="java.util.Map">
 		ALTER TABLE ${dbName} DROP PARTITION ${partitionName1},${partitionName2}
 	</update>
+	<!-- 查询最新记录 -->
+	<select id="selectLastestData" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+	       <include refid="Base_Column_List" /> 
+	   	from ${dbName} m
+	       <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
+	       order by m.MONITOR_DATE
+	       limit 0,#{count}
+	</select>
 </mapper>   
