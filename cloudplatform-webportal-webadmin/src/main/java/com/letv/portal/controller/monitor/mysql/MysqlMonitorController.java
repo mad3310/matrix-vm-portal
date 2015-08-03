@@ -59,7 +59,7 @@ public class MysqlMonitorController {
 		return obj; 
 	} 
 	
-	@RequestMapping(value="/keybuffer/list",method=RequestMethod.GET)
+	@RequestMapping(value="/key/buffer/list",method=RequestMethod.GET)
 	public @ResponseBody ResultObject keyBufferList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.mysqlKeyBufferMonitorService.queryByPagination(page, params));
