@@ -119,6 +119,9 @@
 			<if test="params != null and params.id != null  ">
 				and tablespace.ID=#{params.id}
 			</if>
+			<if test="params != null and params.dbSpaceId != null and params.dbSpaceId != '' ">
+		        and tablespace.DB_SPACE_ID=#{params.dbSpaceId}
+		    </if>
 			
 			<if test="params != null and params.descn != null and params.descn != ''  ">
 				and tablespace.DESCN=#{params.descn}

@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -72,16 +73,17 @@ public class MysqlMonitorController {
 		return obj; 
 	} 
 	
-	@RequestMapping(value="/dbspace/list",method=RequestMethod.GET)
+	@RequestMapping(value="/db/space/list",method=RequestMethod.GET)
 	public @ResponseBody ResultObject dbSpaceList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.mysqlDbSpaceMonitorService.queryByPagination(page, params));
 		return obj; 
 	} 
 	
-	@RequestMapping(value="/tablespace/list",method=RequestMethod.GET)
-	public @ResponseBody ResultObject tableSpaceList(Page page,HttpServletRequest request,ResultObject obj) {
+	@RequestMapping(value="/table/space/list/{dbSpaceId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject tableSpaceList(@PathVariable Long dbSpaceId,Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("dbSpaceId", dbSpaceId);
 		obj.setData(this.mysqlTableSpaceMonitorService.queryByPagination(page, params));
 		return obj; 
 	} 
