@@ -1047,4 +1047,97 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			}
 		}
 	}
+
+	@Override
+	//@Async
+	public void getMysqlMonitorServiceData(ContainerModel container,
+			MonitorIndexModel index, Date date) {
+		Map<String, String> params = new HashMap<String, String>();
+		String[] str = index.getMonitorPoint().split(",");
+		for (String string : str) {
+			params.put(string, "''");
+		}
+		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+		if(analysisResult(result)) {
+			Map<String,Object>  data = (Map<String, Object>) result.get("response");
+			this.monitorService.insertMysqlMonitorData(container, data, date);
+		}
+	}
+	
+	@Override
+	//@Async
+	public void collectMysqlMonitorBaseData(ContainerModel container, MonitorIndexModel index,Date date) {
+		Map<String, String> params = new HashMap<String, String>();
+		String[] str = index.getMonitorPoint().split(",");
+		for (String string : str) {
+			params.put(string, "''");
+		}
+		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+		if(analysisResult(result)) {
+			Map<String,Object>  data= (Map<String, Object>) result.get("response");
+			for(Iterator it =  data.keySet().iterator();it.hasNext();){
+				 String key = (String) it.next();
+				 MonitorDetailModel monitorDetail = new MonitorDetailModel();
+				 monitorDetail.setDbName(index.getDetailTable());
+				 monitorDetail.setDetailName(key);
+				 monitorDetail.setMonitorDate(date);
+				 monitorDetail.setDetailValue(Float.parseFloat(data.get(key).toString()));  
+				 monitorDetail.setIp(container.getIpAddr());
+				 this.monitorService.insert(monitorDetail);
+			}
+		}
+		logger.info("collectMysqlMonitorBaseData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+	}
+
+	@Override
+	//@Async
+	public void collectMysqlMonitorBaseSpaceData(String dbName,
+			ContainerModel container, List<MonitorIndexModel> indexs, Date date) {
+		Map<String, String> params = new HashMap<String, String>();
+		Map<String,Object>  dataAll = new HashMap<String, Object>();
+		for (MonitorIndexModel index : indexs) {
+			String[] str = index.getMonitorPoint().split(",");
+			params.clear();
+			for (String string : str) {
+				params.put(string, dbName);
+			}
+			Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+			if(analysisResult(result)) {
+				Map<String,Object> response = (Map<String, Object>) result.get("response");
+				if(response.get(index.getMonitorPoint())!=null && response.get(index.getMonitorPoint()) instanceof Map) {
+					Map<String,Object> data = (Map<String, Object>)response.get(index.getMonitorPoint());
+					dataAll.putAll(data);
+					for(Iterator it =  data.keySet().iterator();it.hasNext();){
+						String key = (String) it.next();
+						MonitorDetailModel monitorDetail = new MonitorDetailModel();
+						monitorDetail.setDbName(index.getDetailTable());
+						monitorDetail.setIp(container.getIpAddr());
+						monitorDetail.setMonitorDate(date);
+						Map<String,Object>  sizeAndComment = (Map<String, Object>) data.get(key);
+						monitorDetail.setDetailName(dbName+"."+key);
+						monitorDetail.setDetailValue(Float.parseFloat(sizeAndComment.get("total_kb").toString()));  
+						this.monitorService.insert(monitorDetail);
+					}
+				} else {
+					dataAll.putAll(response);
+					MonitorDetailModel monitorDetail = new MonitorDetailModel();
+					monitorDetail.setDbName(index.getDetailTable());
+					monitorDetail.setIp(container.getIpAddr());
+					monitorDetail.setMonitorDate(date);
+					monitorDetail.setDetailName(dbName);
+					monitorDetail.setDetailValue(Float.parseFloat(response.get(index.getMonitorPoint()).toString()));  
+					this.monitorService.insert(monitorDetail);
+				}
+				
+			}
+			logger.info("collectMysqlMonitorBaseSpaceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		}
+		
+		//保存数据到页面展示表
+		this.monitorService.insertMysqlMonitorSpaceData(dbName, container, dataAll, date);
+		
+		
+	}
+	
+	
 }

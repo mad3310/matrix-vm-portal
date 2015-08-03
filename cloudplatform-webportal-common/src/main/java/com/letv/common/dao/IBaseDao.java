@@ -36,4 +36,15 @@ public interface IBaseDao<T> {
 	 */
 	public List<T> selectPageByMap(QueryParam params);
 	
+	/**
+	  * @Title: selectByMapCount
+	  * @Description: 列表查询时，根据条件查询所有记录数（定义此方法是为了和selectPageByMap使用相同的参数）
+	  * @param params
+	  * @return Integer   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月27日 上午11:41:04
+	  */
+	public <K,V> Integer selectByMapCount(QueryParam params);
+	
 }

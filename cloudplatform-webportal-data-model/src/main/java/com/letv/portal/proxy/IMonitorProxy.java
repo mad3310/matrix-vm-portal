@@ -50,4 +50,29 @@ public interface IMonitorProxy {
 	  * @date 2015年7月17日 上午10:26:53
 	  */
 	void deleteMonitorPartitionThirtyDaysAgo();
+	/**
+	  * @Title: collectMysqlMonitorData
+	  * @Description: 根据监控表基础数据和调用Python接口查询不经常变化数据组合到mysql监控相关表   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月28日 上午11:25:06
+	  */
+	void collectMysqlMonitorData();
+	
+	/**
+	  * @Title: collectMysqlMonitorBaseData
+	  * @Description: 获取mysql监控基础数据   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月28日 下午5:36:33
+	  */
+	void collectMysqlMonitorBaseData();
+	/**
+	  * @Title: collectMysqlMonitorBaseSpaceData
+	  * @Description: 获取mysql数据库和表大小  
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月30日 下午5:01:58
+	  */
+	void collectMysqlMonitorBaseSpaceData();
 }

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.monitor.mysql.IMysqlResourceMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="mysqlResourceMonitor">
+		<result column="ID" property="id" />
+		<result column="HOST_IP" property="hostIp" />
+		<result column="HOST_TAG" property="hostTag" />
+		<result column="MAX_CONNECT" property="maxConnect" />
+		<result column="MAX_CONNECT_ERROR" property="maxConnectError" />
+		<result column="MAX_OPEN_FILE" property="maxOpenFile" />
+		<result column="HAD_OPEN_FILE" property="hadOpenFile" />
+		<result column="CACHE_TABLE_COUNT" property="cacheTableCount" />
+		<result column="CACHE_TABLE_NOHIT_COUNT" property="cacheTableNohitCount" />
+		<result column="HAD_OPEN_TABLE" property="hadOpenTable" />
+		<result column="DESCN" property="descn" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="UPDATE_TIME" property="updateTime" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		resource.ID,
+		resource.HOST_IP,resource.HOST_TAG,resource.MAX_CONNECT,resource.MAX_CONNECT_ERROR,
+		resource.MAX_OPEN_FILE,resource.HAD_OPEN_FILE,
+		resource.CACHE_TABLE_COUNT,resource.HAD_OPEN_TABLE,
+		resource.DESCN,resource.CREATE_TIME,resource.UPDATE_TIME
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MysqlResourceMonitor" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTAL_MONITOR_MYSQL_RESOURCE 
+			(HOST_IP,HOST_TAG,MAX_CONNECT,MAX_CONNECT_ERROR,MAX_OPEN_FILE,HAD_OPEN_FILE,CACHE_TABLE_COUNT,HAD_OPEN_TABLE,DESCN,CREATE_TIME,UPDATE_TIME,CACHE_TABLE_NOHIT_COUNT) 
+		values 
+			(#{hostIp},#{hostTag},#{maxConnect},#{maxConnectError},#{maxOpenFile},#{hadOpenFile},#{cacheTableCount},#{hadOpenTable},#{descn},#{createTime},#{updateTime},#{cacheTableNohitCount});
+	</insert>
+
+	<!-- 更新记录 -->
+	<update id="update" parameterType="MysqlResourceMonitor">
+		update WEBPORTAL_MONITOR_MYSQL_RESOURCE 
+		<set>
+		    <if test="id != null and id != '' ">
+		        ID=#{id},
+		    </if>
+		    <if test="hostIp != null and hostIp != '' ">
+		        HOST_IP=#{hostIp},
+		    </if>
+		    <if test="hostTag != null and hostTag != '' ">
+		        HOST_TAG=#{hostTag},
+		    </if>
+		    <if test="maxConnect != null and maxConnect != '' ">
+		        MAX_CONNECT=#{maxConnect},
+		    </if>
+		    <if test="maxConnectError != null and maxConnectError != '' ">
+		        MAX_CONNECT_ERROR=#{maxConnectError},
+		    </if>
+		    <if test="maxOpenFile != null and maxOpenFile != '' ">
+		        MAX_OPEN_FILE=#{maxOpenFile},
+		    </if>
+		    <if test="hadOpenFile != null and hadOpenFile != '' ">
+		        HAD_OPEN_FILE=#{hadOpenFile},
+		    </if>
+		    <if test="cacheTableCount != null and cacheTableCount != '' ">
+		        CACHE_TABLE_COUNT=#{cacheTableCount},
+		    </if>
+		    <if test="hadOpenTable != null and hadOpenTable != '' ">
+		        HAD_OPEN_TABLE=#{hadOpenTable},
+		    </if>
+		    <if test="descn != null and descn != '' ">
+		        DESCN=#{descn},
+		    </if>
+		    <if test="createTime != null and createTime != '' ">
+		        CREATE_TIME=#{createTime},
+		    </if>
+		    <if test="updateTime != null and updateTime != '' ">
+		        UPDATE_TIME=#{updateTime},
+		    </if>
+		    <if test="cacheTableNohitCount != null and cacheTableNohitCount != '' ">
+		        CACHE_TABLE_NOHIT_COUNT=#{cacheTableNohitCount},
+		    </if>
+		</set>
+		where HOST_IP=#{hostIp};
+	</update>
+	
+	<select id="selectByHostIp" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_RESOURCE resource
+		where
+			resource.HOST_IP = #{hostIp}
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_RESOURCE resource
+			<include refid="List_Page_Where_Clause" />
+	</select>
+	
+	
+	<sql id="List_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and resource.ID=#{params.id}
+			</if>
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and resource.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and resource.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+			
+			<if test="params != null and params.descn != null and params.descn != ''  ">
+				and resource.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and resource.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and resource.UPDATE_TIME=#{params.updateTime}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_RESOURCE resource
+			<include refid="List_Page_Where_Clause" />
+		ORDER BY 
+			<if test="params != null and params.order != null and params.order != '' ">
+				resource.${params.order} 
+			</if>
+			<if test="params == null or params.order == null or params.order == '' ">
+				resource.CREATE_TIME
+			</if>
+			<if test="params != null and params.orderArg != null and params.orderArg != '' ">
+				${params.orderArg}
+			</if>
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+</mapper>   

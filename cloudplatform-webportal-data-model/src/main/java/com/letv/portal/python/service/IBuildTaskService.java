@@ -152,4 +152,39 @@ public interface IBuildTaskService {
 	public void getOSSServiceData(String hostIp, String string,
 			MonitorIndexModel index, Date date);
 	
+	/**
+	  * @Title: getMysqlMonitorServiceData
+	  * @Description: 获取数据及查询已有监控输入，入库
+	  * @param container
+	  * @param index
+	  * @param date void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月28日 下午1:36:43
+	  */
+	public void getMysqlMonitorServiceData(ContainerModel container, MonitorIndexModel index,Date date);
+	/**
+	  * @Title: collectMysqlMonitorBaseData
+	  * @Description: 获取mysql监控基础表数据
+	  * @param container
+	  * @param index
+	  * @param date void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月28日 下午6:04:32
+	  */
+	public void collectMysqlMonitorBaseData(ContainerModel container, MonitorIndexModel index,Date date);
+	/**
+	  * @Title: collectMysqlMonitorBaseSpaceData
+	  * @Description: 获取数据库和表大小
+	  * @param dbName
+	  * @param container
+	  * @param index
+	  * @param date void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年7月30日 下午5:11:18
+	  */
+	public void collectMysqlMonitorBaseSpaceData(String dbName, ContainerModel container, List<MonitorIndexModel> indexs,Date date);
+	
 }
