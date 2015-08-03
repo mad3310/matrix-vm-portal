@@ -24,7 +24,7 @@
 		resource.ID,
 		resource.HOST_IP,resource.HOST_TAG,resource.MAX_CONNECT,resource.MAX_CONNECT_ERROR,
 		resource.MAX_OPEN_FILE,resource.HAD_OPEN_FILE,
-		resource.CACHE_TABLE_COUNT,resource.HAD_OPEN_TABLE,
+		resource.CACHE_TABLE_COUNT,resource.HAD_OPEN_TABLE,resource.CACHE_TABLE_NOHIT_COUNT,
 		resource.DESCN,resource.CREATE_TIME,resource.UPDATE_TIME
 	</sql>
 	
