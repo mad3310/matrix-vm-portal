@@ -48,8 +48,8 @@ public class BaseHclusterExtController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="/price/config", method=RequestMethod.POST)
-	public @ResponseBody ResultObject configPrice(@RequestParam(value="priceIds[]") int[] priceIds,@RequestParam Long id) {
+	@RequestMapping(value="/price", method=RequestMethod.POST)
+	public @ResponseBody ResultObject configPrice(@RequestParam(value="priceIds[]") Long[] priceIds,@RequestParam Long id) {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
@@ -61,8 +61,8 @@ public class BaseHclusterExtController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="/product/config", method=RequestMethod.POST)
-	public @ResponseBody ResultObject configProduct(@RequestParam(value="productIds[]") int[] productIds,@RequestParam Long id) {
+	@RequestMapping(value="/product", method=RequestMethod.POST)
+	public @ResponseBody ResultObject configProduct(@RequestParam(value="productIds[]") Long[] productIds,@RequestParam Long id) {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

@@ -3,6 +3,7 @@ package com.letv.portal.model;
 import java.sql.Date;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.enumeration.PriceType;
 
 /**Program Name: BaseProductPrice <br>
  * Description:  基础产品定价<br>
@@ -23,6 +24,7 @@ public class BaseProductPrice extends BaseModel{
 	private Date endTime;
 	private boolean valid;
 	private float price;
+	private PriceType priceType;
 	
 	public Long getProductId() {
 		return productId;
@@ -71,6 +73,12 @@ public class BaseProductPrice extends BaseModel{
 	}
 	public void setPrice(float price) {
 		this.price = price;
+	}
+	public PriceType getPriceType() {
+		return priceType;
+	}
+	public void setPriceType(PriceType priceType) {
+		this.priceType = priceType;
 	}
 	
 }

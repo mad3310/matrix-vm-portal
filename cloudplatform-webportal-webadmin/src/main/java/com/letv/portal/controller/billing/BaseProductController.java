@@ -1,7 +1,5 @@
 package com.letv.portal.controller.billing;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -14,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.common.dao.QueryParam;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.BasePrice;
 import com.letv.portal.model.BaseProduct;
 
 /**Program Name: BaseProductController <br>
@@ -71,6 +69,18 @@ public class BaseProductController {
 		return obj;
 	}
 	
+	/**Methods Name: delete <br>
+	 * Description: 删除产品信息<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delete(@PathVariable Long id) {
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	
 	/**Methods Name: configElement <br>
 	 * Description: 配置产品元素<br>
 	 * @author name: liuhao1
@@ -78,8 +88,22 @@ public class BaseProductController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="/config", method=RequestMethod.POST)
+	@RequestMapping(value="/element", method=RequestMethod.POST)
 	public @ResponseBody ResultObject configElement(@RequestParam(value="elementIds[]") int[] elementIds,@RequestParam Long id) {
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	
+	/**Methods Name: configPrice <br>
+	 * Description: 配置产品基础价格<br>
+	 * @author name: liuhao1
+	 * @param prices
+	 * @param hclusterId
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/price", method=RequestMethod.POST)
+	public @ResponseBody ResultObject configPrice(@RequestParam(value="elementIds[]") BasePrice[] prices,@RequestParam Long hclusterId,@RequestParam Long id) {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

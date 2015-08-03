@@ -16,6 +16,7 @@ public class BaseProduct extends BaseModel{
 	private String name;
 	private String type;
 	private String version;
+	private float basePrice;
 	
 	public String getName() {
 		return name;
@@ -35,6 +36,11 @@ public class BaseProduct extends BaseModel{
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
+	public float getBasePrice() {
+		return basePrice;
+	}
+	public void setBasePrice(float basePrice) {
+		this.basePrice = basePrice;
+	}
 	
 }

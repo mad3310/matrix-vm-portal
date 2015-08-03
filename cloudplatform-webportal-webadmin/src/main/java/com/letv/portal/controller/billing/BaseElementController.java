@@ -58,7 +58,7 @@ public class BaseElementController {
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(@ModelAttribute BaseElement element) {
 		ResultObject obj = new ResultObject();
-		this.save(element);
+		this.baseElementService.insert(element);
 		return obj;
 	}
 	
@@ -72,7 +72,20 @@ public class BaseElementController {
 	@RequestMapping(value="/{id}", method=RequestMethod.POST)   
 	public @ResponseBody ResultObject update(@PathVariable Long id,@ModelAttribute BaseElement element) {
 		ResultObject obj = new ResultObject();
-		this.save(element);
+		this.baseElementService.updateBySelective(element);
+		return obj;
+	}
+	
+	/**Methods Name: delete <br>
+	 * Description: 删除基础元素<br>
+	 * @author name: liuhao1
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)   
+	public @ResponseBody ResultObject delete(@PathVariable Long id) {
+		ResultObject obj = new ResultObject();
+//		this.baseElementService.delete();
 		return obj;
 	}
 	

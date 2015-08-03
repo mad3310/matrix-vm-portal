@@ -68,4 +68,10 @@ public class BasePriceController {
 		return obj;
 	}
 	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public @ResponseBody ResultObject delete(@PathVariable Long id) {
+		ResultObject obj = new ResultObject();
+		return obj;
+	}
+	
 }
