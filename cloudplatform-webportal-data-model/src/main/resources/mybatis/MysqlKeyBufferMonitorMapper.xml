@@ -15,8 +15,8 @@
 		<result column="KEY_BLOCKS_USED" property="keyBlocksUsed" />
 		<result column="KEY_BLOCKS_NOT_FLUSHED" property="keyBlocksNotFlushed" />
 		<result column="KEY_BLOCKS_USED_RATE" property="keyBlocksUsedRate" />
-		<result column="KEY_BUFFER_READ_RATE" property="keyBlocksReadRate" />
-		<result column="KEY_BUFFER_WRITE_RATE" property="keyBlocksWriteRate" />
+		<result column="KEY_BUFFER_READ_RATE" property="keyBufferReadRate" />
+		<result column="KEY_BUFFER_WRITE_RATE" property="keyBufferWriteRate" />
 		<result column="DESCN" property="descn" />
 		<result column="CREATE_TIME" property="createTime" />
 		<result column="UPDATE_TIME" property="updateTime" />

@@ -22,7 +22,7 @@
 	<sql id="Base_Column_List">
 		innodb.ID,innodb.HOST_IP,innodb.HOST_TAG,
 		innodb.INNODB_BUFFER_POOL_SIZE,innodb.INNODB_ROWS_READ,innodb.INNODB_ROWS_INSERT,innodb.INNODB_ROWS_UPDATE,innodb.INNODB_ROWS_DELETE,
-		innodb.DESCN,innodb.CREATE_TIME,innodb.UPDATE_TIME
+		innodb.DESCN,innodb.CREATE_TIME,innodb.UPDATE_TIME,innodb.INNODB_BUFFER_READ_HITS
 	</sql>
 	
 	<!-- 插入记录 -->

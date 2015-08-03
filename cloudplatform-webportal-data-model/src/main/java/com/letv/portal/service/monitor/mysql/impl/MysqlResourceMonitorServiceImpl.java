@@ -50,7 +50,7 @@ public class MysqlResourceMonitorServiceImpl extends BaseServiceImpl<MysqlResour
 		resource.setMaxConnect(Integer.parseInt((String)map.get("stat_max_conn_command")));
 		resource.setMaxConnectError(Integer.parseInt((String)map.get("stat_max_err_conn_command")));
 		resource.setMaxOpenFile(Integer.parseInt((String)map.get("stat_max_open_file_command")));
-		resource.setHadOpenFile(dbResult.get("stat_slow_query_command")==null?null:((Float)dbResult.get("stat_opened_file_command")).intValue());
+		resource.setHadOpenFile(dbResult.get("stat_opened_file_command")==null?null:((Float)dbResult.get("stat_opened_file_command")).intValue());
 		resource.setCacheTableCount(Integer.parseInt((String)map.get("stat_table_cach_command")));
 		resource.setCacheTableNohitCount(dbResult.get("stat_table_cach_noha_command")==null?null:((Float)dbResult.get("stat_table_cach_noha_command")).intValue());
 		resource.setHadOpenTable(dbResult.get("stat_opened_table_cach_command")==null?null:((Float)dbResult.get("stat_opened_table_cach_command")).intValue());
