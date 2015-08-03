@@ -60,7 +60,7 @@
 							<th colspan=2 >服务器</th>
 							<th colspan=2>连接池资源</th>
 							<th colspan=2>文件资源</th>
-							<th colspan=2>表资源</th>
+							<th colspan=3>表资源</th>
 						</tr>
 						<tr class="header-two">
 							<th  class="table-head-sort" target-data="HOST_IP">主机</th>
@@ -71,6 +71,7 @@
 							<th class="table-head-sort" target-data="HAD_OPEN_FILE">已打开文件数</th>
 							<th>表缓存数</th>
 							<th class="table-head-sort" target-data="HAD_OPEN_TABLE">已打开表</th>
+							<th class="table-head-sort" target-data="CACHE_TABLE_NOHIT_COUNT">表缓存未命中数</th>
 						</tr>
 					</thead>
 						<tbody id="tby">

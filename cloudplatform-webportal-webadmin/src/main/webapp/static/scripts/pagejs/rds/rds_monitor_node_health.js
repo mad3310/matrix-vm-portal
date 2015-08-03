@@ -107,13 +107,13 @@ function updateHealthData() {
 				td.push("<td>"+array[i].hostTag+"</td>");
 				td.push("<td>"+"<a class='green'>正常</a>"+"</td>");
 				td.push("<td>"+array[i].role+"</td>");
-				td.push("<td>"+array[i].runTime+"天</td>");
+				td.push("<td>"+TransTimeUnit(array[i].runTime)+"</td>");
 				td.push("<td>"+array[i].version+"</td>");
 				td.push("<td>"+array[i].connectCount+"</td>");
 				td.push("<td>"+array[i].activityCount+"</td>");
 				td.push("<td>"+array[i].waitCount+"</td>");
-				td.push("<td>"+array[i].send+"</td>");
-				td.push("<td>"+array[i].recv+"</td>");
+				td.push("<td>"+TransUnit(array[i].send)+"</td>");
+				td.push("<td>"+TransUnit(array[i].recv)+"</td>");
 				td.push("<td>"+array[i].queryPs+"</td>");
 				td.push("<td>"+array[i].transactionPs+"</td>");
 				td.push("<td>"+array[i].slowQueryCount+"</td>");

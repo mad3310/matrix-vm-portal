@@ -48,7 +48,7 @@
 
 <!-- ace settings handler -->
 <script src="${ctx}/static/ace/js/jquery.min.js"></script>
-<script src="http://10.154.28.164:17070/rap.plugin.js?projectId=1&disableLog=true"></script>
+<script src="http://10.154.28.164:17070/rap.plugin.js?projectId=1&disableLog=true&mode=0"></script>
 <script src="${ctx}/static/ace/js/ace-extra.min.js"></script>
 <script src="${ctx}/static/ace/js/bootstrap.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery-ui.min.js"></script>

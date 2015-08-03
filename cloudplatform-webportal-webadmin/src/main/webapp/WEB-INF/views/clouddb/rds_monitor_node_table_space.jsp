@@ -58,11 +58,12 @@
 					<table id="mcluster_list" class="table table-striped table-bordered table-hover">
 					<thead class="monitor-table-headr-group">
 						<tr class="header-one"> 
-							<th colspan=2>表信息</th>
+							<th colspan=3>表信息</th>
 						</tr>
 						<tr class="header-two">
 							<th class="table-head-sort" target-data="NAME">表名称</th>
 							<th class="table-head-sort" target-data="SIZE">表大小</th>
+							<th class="table-head-sort">表注释</th>
 						</tr>
 					</thead>
 						<tbody id="tby">

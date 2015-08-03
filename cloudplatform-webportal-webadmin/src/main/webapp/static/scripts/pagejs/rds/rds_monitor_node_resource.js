@@ -101,6 +101,7 @@ function updateResourceData() {
 				td.push("<td>"+array[i].hadOpenFile+"</td>");
 				td.push("<td>"+array[i].cacheTableCount+"</td>");
 				td.push("<td>"+array[i].hadOpenTable+"</td>");
+				td.push("<td>"+array[i].cacheTableNohitCount+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

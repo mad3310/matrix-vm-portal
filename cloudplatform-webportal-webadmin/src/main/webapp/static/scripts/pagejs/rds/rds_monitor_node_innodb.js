@@ -95,7 +95,7 @@ function updateResourceData() {
 				var td=[];
 				td.push("<td>"+array[i].hostIp+"</td>");
 				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+array[i].innodbBufferPoolSize+"</td>");
+				td.push("<td>"+TransUnit(array[i].innodbBufferPoolSize)+"</td>");
 				td.push("<td>"+array[i].innodbBufferReadHits+"</td>");
 				td.push("<td>"+array[i].innodbRowsRead+"</td>");
 				td.push("<td>"+array[i].innodbRowsInsert+"</td>");

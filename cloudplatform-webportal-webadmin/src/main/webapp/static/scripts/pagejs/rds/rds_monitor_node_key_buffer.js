@@ -95,15 +95,15 @@ function updateResourceData() {
 				var td=[];
 				td.push("<td>"+array[i].hostIp+"</td>");
 				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+array[i].keyBufferSize+"</td>");
-				td.push("<td>"+array[i].sortBufferSize+"</td>");
-				td.push("<td>"+array[i].joinBufferSize+"</td>");
+				td.push("<td>"+TransUnit(array[i].keyBufferSize)+"</td>");
+				td.push("<td>"+TransUnit(array[i].sortBufferSize)+"</td>");
+				td.push("<td>"+TransUnit(array[i].joinBufferSize)+"</td>");
 				td.push("<td>"+array[i].keyBlocksUnused+"</td>");
 				td.push("<td>"+array[i].keyBlocksUsed+"</td>");
 				td.push("<td>"+array[i].keyBlocksNotFlushed+"</td>");
-				td.push("<td>"+array[i].keyBlocksUsed+"</td>");
-				td.push("<td>"+array[i].keyBufferReadRate+"</td>");
-				td.push("<td>"+array[i].keyBufferWriteRate+"</td>");
+				td.push("<td>"+array[i].keyBlocksUsed*100+"%</td>");
+				td.push("<td>"+array[i].keyBufferReadRate*100+"%</td>");
+				td.push("<td>"+array[i].keyBufferWriteRate*100+"%</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 
