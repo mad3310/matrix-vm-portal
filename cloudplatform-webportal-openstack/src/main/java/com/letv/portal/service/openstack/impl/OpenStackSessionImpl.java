@@ -94,8 +94,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		for (String region : neutronApi.getConfiguredRegions()) {
 			NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-			Network publicNetwork = networkApi.get(openStackConf
-					.getGlobalPublicNetworkId());
+			Network publicNetwork = networkManager.getPublicNetwork(region);
 			// for (Network network : networkApi.list().concat().toList()) {
 			// if ("__public_network".equals(network.getName())) {
 			// publicNetwork = network;
@@ -113,78 +112,6 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				openStackUser.setSharedNetworkName(networkApi.get(
 						openStackConf.getGlobalSharedNetworkId()).getName());
 			}
-
-			Network privateNetwork = null;
-			for (Network network : networkApi.list().concat().toList()) {
-				if (openStackConf.getUserPrivateNetworkName().equals(
-						network.getName())) {
-					privateNetwork = network;
-					break;
-				}
-			}
-			if (privateNetwork == null) {
-				privateNetwork = networkApi.create(Network.CreateNetwork
-						.createBuilder("")
-						.name(openStackConf.getUserPrivateNetworkName())
-						.build());
-			}
-
-			SubnetApi subnetApi = neutronApi.getSubnetApi(region);
-
-			Subnet privateSubnet = null;
-			for (Subnet subnet : subnetApi.list().concat().toList()) {
-				if (openStackConf.getUserPrivateNetworkSubnetName().equals(
-						subnet.getName())) {
-					privateSubnet = subnet;
-					break;
-				}
-			}
-			if (privateSubnet == null) {
-				privateSubnet = subnetApi
-						.create(Subnet.CreateSubnet
-								.createBuilder(
-										privateNetwork.getId(),
-										openStackConf
-												.getUserPrivateNetworkSubnetCidr())
-								.enableDhcp(true)
-								.name(openStackConf
-										.getUserPrivateNetworkSubnetName())
-								.ipVersion(4).build());
-			}
-
-			RouterApi routerApi = neutronApi.getRouterApi(region).get();
-
-			Router privateRouter = null;
-			for (Router router : routerApi.list().concat().toList()) {
-				if (openStackConf.getUserPrivateRouterName().equals(
-						router.getName())) {
-					privateRouter = router;
-					break;
-				}
-			}
-			if (privateRouter == null) {
-				privateRouter = routerApi.create(Router.CreateRouter
-						.createBuilder()
-						.name(openStackConf.getUserPrivateRouterName())
-						.externalGatewayInfo(ExternalGatewayInfo.builder()// .enableSnat(true)
-								.networkId(publicNetwork.getId()).build())
-						.build());
-				try {
-					routerApi.addInterfaceForSubnet(privateRouter.getId(),
-							privateSubnet.getId());
-				} catch (Exception ex) {
-					routerApi.delete(privateRouter.getId());
-					throw new OpenStackException("后台服务异常", ex);
-				}
-			}
-
-			// Router router = routerApi.create(Router.CreateRouter
-			// .createBuilder().name(openStackConf.getUserPrivateRouterName())
-			// .build());
-			// .externalGatewayInfo(
-			// ExternalGatewayInfo.builder().enableSnat(true)
-			// .networkId(publicNetwork.getId())
-			// .build())
 
 			Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
 					.getSecurityGroupApi(region);

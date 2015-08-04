@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,9 +23,7 @@ import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
-import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Console;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
@@ -285,15 +282,19 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 
 			Set<String> networks = new LinkedHashSet<String>();
 			{
-				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
-				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
-				NetworkApi networkApi = neutronApi.getNetworkApi(region);
-				for (Network network : networkApi.list().concat().toList()) {
-					if (openStackConf.getUserPrivateNetworkName().equals(
-							network.getName())) {
-						networks.add(network.getId());
-						break;
-					}
+//				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
+//				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
+//				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+//				for (Network network : networkApi.list().concat().toList()) {
+//					if (openStackConf.getUserPrivateNetworkName().equals(
+//							network.getName())) {
+//						networks.add(network.getId());
+//						break;
+//					}
+//				}
+				Network userPrivateNetwork=networkManager.getOrCreateUserPrivateNetwork(region);
+				if(userPrivateNetwork!=null) {
+					networks.add(userPrivateNetwork.getId());
 				}
 
 				List<NetworkResource> networkResources = conf.getNetworkResources();
@@ -556,6 +557,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	}
 
 	public FloatingIP allocFloatingIP(String region) throws OpenStackException {
+		networkManager.getOrCreateUserPrivateRouter(region);
+
 		Optional<FloatingIPApi> floatingIPApiOptional = novaApi
 				.getFloatingIPApi(region);
 		if (!floatingIPApiOptional.isPresent()) {
