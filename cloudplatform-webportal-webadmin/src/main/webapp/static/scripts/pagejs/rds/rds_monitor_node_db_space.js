@@ -167,7 +167,7 @@ function pageControl() {
 }
 
 function tableSortInit(){	//在鼠标放到head上时，显示排序箭头，离开时隐藏，点击箭头，按箭头命令排序。
-	var icon = "<a class='sort-down'><i class='fa fa-sort-down'></i></a><a class='sort-up'><i class='fa fa-sort-up'></i></a>";
+	var icon = "<a class='sort'><i class='fa fa-sort-down'></i><i class='fa fa-sort-up'></i></a>";
 	$(".table-head-sort").append(icon);
 	$(".monitor-table-headr-group .header-two").mouseover(function(){
 	    $(".table-head-sort a").css('visibility', 'visible');
@@ -186,7 +186,7 @@ function tableSortInit(){	//在鼠标放到head上时，显示排序箭头，离
 function setSortBy($target){ //target 为<i class='fa fa-sort-down'></i>或<i class='fa fa-sort-up'></i>
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
 	$target.addClass("sort-by");
-	queryResourceData();
+	updateResourceData();
 }
 function clearSortBy(){
 	$(".table-head-sort").find(".sort-by").removeClass("sort-by");
