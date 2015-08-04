@@ -303,7 +303,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 					}
 				}
 				
-				if (openStackUser.getInternalUser()) {
+				if (openStackUser.getInternalUser()&&!openStackConf.getGlobalSharedNetworkId().isEmpty()) {
 					networks.add(openStackConf.getGlobalSharedNetworkId());
 				}
 			}

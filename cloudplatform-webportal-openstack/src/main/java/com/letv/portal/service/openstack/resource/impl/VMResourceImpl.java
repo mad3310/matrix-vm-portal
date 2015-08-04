@@ -78,7 +78,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 					ipAddresses.getPrivateIP().add(ip);
 				}
 			} else {
-				if (user.getInternalUser()) {
+				if (user.getSharedNetworkName()!=null) {
 					if (user.getSharedNetworkName().equals(networkName)) {
 						ipAddresses.getSharedIP().add(ip);
 					}

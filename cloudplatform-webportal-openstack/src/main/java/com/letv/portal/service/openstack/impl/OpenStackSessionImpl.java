@@ -109,7 +109,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 			}
 			openStackUser.setPublicNetworkName(publicNetwork.getName());
 
-			if (openStackUser.getInternalUser()) {
+			if (openStackUser.getInternalUser()&&!openStackConf.getGlobalSharedNetworkId().isEmpty()) {
 				openStackUser.setSharedNetworkName(networkApi.get(
 						openStackConf.getGlobalSharedNetworkId()).getName());
 			}
