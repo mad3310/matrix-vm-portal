@@ -77,7 +77,13 @@ define(function(require,exports,module){
 		                    		'<a href="'+baseInfoUrl+'">管理</a>|'+
 		                    		'<a class="vm-operation vm-start" href="javascript:void(0);">启动</a>|'+
 		                    		'<a class="vm-operation vm-stop" href="javascript:void(0);">停止</a>|'+
-		                    		'<a class="vm-operation vm-remove" href="javascript:void(0);">删除</a>'+
+		                    		'<div class="dropdown vmlist-item-more">'+
+								      '<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">更多<span class="caret"></span></a>'+
+								      '<ul class="dropdown-menu">'+
+								        '<li><a class="vm-operation vm-remove" href="javascript:void(0);"><span>删除</span></a></li>'+
+								        '<li class="disabled"><a href="javascript:void(0);"><span>连接管理终端</span></a></li>'+
+								      '</ul>'+
+								    '</div>'+
 		                    	'</td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
