@@ -254,6 +254,8 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 	@Override
 	public VMResource create(final String region, VMCreateConf conf)
 			throws OpenStackException {
+		checkUserEmail();
+
 		checkRegion(region);
 		final String regionDisplayName = getRegionDisplayName(region);
 

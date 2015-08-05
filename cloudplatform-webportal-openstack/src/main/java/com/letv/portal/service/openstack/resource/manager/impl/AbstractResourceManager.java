@@ -1,10 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.Closeable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
@@ -151,4 +148,17 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		return openStackUser;
 	}
 
+	private static final Set<String> limitedUserEmails=new HashSet<String>();
+	static{
+		limitedUserEmails.add("zhangwenming@letv.com");
+		limitedUserEmails.add("zhoubingzheng@letv.com");
+		limitedUserEmails.add("yuelongguang@letv.com");
+		limitedUserEmails.add("jiangfei@letv.com");
+		limitedUserEmails.add("zhouxianguang@letv.com");
+	}
+	protected void checkUserEmail() throws OpenStackException {
+		if(!limitedUserEmails.contains(openStackUser.getEmail())){
+			throw new OpenStackException("The user is not in limited users", "对不起，您没有权限。");
+		}
+	}
 }

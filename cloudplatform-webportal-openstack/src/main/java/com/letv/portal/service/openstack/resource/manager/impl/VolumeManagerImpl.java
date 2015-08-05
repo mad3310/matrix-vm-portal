@@ -201,6 +201,8 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 
 	public List<Volume> create(String region, List<Integer> sizes)
 			throws OpenStackException {
+		checkUserEmail();
+
 		checkRegion(region);
 
 		if (sizes.isEmpty()) {
@@ -256,6 +258,8 @@ public class VolumeManagerImpl extends AbstractResourceManager implements
 	@Override
 	public void create(String region, int sizeGB, String name,
 			String description, Integer count) throws OpenStackException {
+		checkUserEmail();
+
 		checkRegion(region);
 		if (sizeGB <= 0) {
 			throw new OpenStackException(
