@@ -1,4 +1,4 @@
-package com.letv.portal.annotation;
+package com.letv.portal.annotation.aspect;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

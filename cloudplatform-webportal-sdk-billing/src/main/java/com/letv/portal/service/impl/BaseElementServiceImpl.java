@@ -1,5 +1,7 @@
 package com.letv.portal.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,12 @@ public class BaseElementServiceImpl extends BaseServiceImpl<BaseElement> impleme
 	@Override
 	public IBaseDao<BaseElement> getDao() {
 		return this.baseElementDao;
+	}
+
+	@Override
+	public boolean isUnique(String name) {
+		List<BaseElement> elements = this.baseElementDao.selectByName(name);
+		return elements == null || elements.isEmpty();
 	}
 
 }

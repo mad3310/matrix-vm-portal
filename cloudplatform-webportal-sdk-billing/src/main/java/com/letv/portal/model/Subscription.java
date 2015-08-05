@@ -18,11 +18,15 @@ public class Subscription extends BaseModel{
 	private static final long serialVersionUID = 6612436637375760981L;
 
 	private Long productId;
+	private Long hclusterId;
 	private ChargeType chargeType;
 	private Date startTime;
 	private Date endTime;
 	private long indate;
 	private boolean valid;
+	
+	private long buyNumber;
+	private long buyTime;
 	
 	public Long getProductId() {
 		return productId;
@@ -60,6 +64,23 @@ public class Subscription extends BaseModel{
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
-	
+	public long getBuyNumber() {
+		return buyNumber;
+	}
+	public void setBuyNumber(long buyNumber) {
+		this.buyNumber = buyNumber;
+	}
+	public Long getHclusterId() {
+		return hclusterId;
+	}
+	public void setHclusterId(Long hclusterId) {
+		this.hclusterId = hclusterId;
+	}
+	public long getBuyTime() {
+		return buyTime;
+	}
+	public void setBuyTime(long buyTime) {
+		this.buyTime = buyTime;
+	}
 	
 }

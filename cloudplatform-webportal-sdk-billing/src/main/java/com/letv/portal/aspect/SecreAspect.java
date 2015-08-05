@@ -12,7 +12,7 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.model.BaseModel;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.annotation.SecreValid;
+import com.letv.portal.annotation.aspect.SecreValid;
 
 @Aspect
 @Component

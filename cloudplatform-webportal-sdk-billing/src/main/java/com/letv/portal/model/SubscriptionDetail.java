@@ -21,6 +21,10 @@ public class SubscriptionDetail extends BaseModel{
 	private Date endTime;
 	private long indate;
 	private boolean valid;
+	
+	private long buySize; //购买大小
+	private long buyTime;
+	
 	public Long getSubscriptionId() {
 		return subscriptionId;
 	}
@@ -56,6 +60,18 @@ public class SubscriptionDetail extends BaseModel{
 	}
 	public void setValid(boolean valid) {
 		this.valid = valid;
+	}
+	public long getBuySize() {
+		return buySize;
+	}
+	public void setBuySize(long buySize) {
+		this.buySize = buySize;
+	}
+	public long getBuyTime() {
+		return buyTime;
+	}
+	public void setBuyTime(long buyTime) {
+		this.buyTime = buyTime;
 	}
 	
 }

@@ -1,8 +1,11 @@
 package com.letv.portal.model;
 
 import org.apache.ibatis.type.Alias;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.anotation.validator.Unique;
    
 /**Program Name: BaseElementModel <br>
  * Description:  基础资源元素<br>
@@ -27,6 +30,9 @@ public class BaseElement extends BaseModel{
 		this.descn = descn;
 	}
 
+	@NotEmpty(message="{billing.element.name.notEmpty.message}")
+	@Length(min=6,max=20,message="{billing.element.name.length.message}")
+	@Unique(message="{billing.element.name.unique.message}")
 	public String getName() {
 		return name;
 	}

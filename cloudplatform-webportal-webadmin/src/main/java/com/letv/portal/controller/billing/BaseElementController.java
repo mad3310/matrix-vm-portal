@@ -1,20 +1,19 @@
 package com.letv.portal.controller.billing;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.BaseElement;
 import com.letv.portal.service.IBaseElementService;
 
@@ -41,13 +40,13 @@ public class BaseElementController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.GET)   
+	/*@RequestMapping(method=RequestMethod.GET)   
 	public @ResponseBody ResultObject pageList(@ModelAttribute Page page,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		obj.setData(this.baseElementService.selectPageByParams(page, HttpUtil.requestParam2Map(request)));
 		logger.info("pageList for Element begin---");
 		return obj;
-	}
+	}*/
 	
 	/**Methods Name: save <br>
 	 * Description: 保存基础元素<br>
@@ -55,8 +54,11 @@ public class BaseElementController {
 	 * @param element
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(@ModelAttribute BaseElement element) {
+	@RequestMapping(method=RequestMethod.GET)   
+	public @ResponseBody ResultObject save(@Valid @ModelAttribute BaseElement element,BindingResult result) {
+		if(result.hasErrors())
+			return new ResultObject(result.getAllErrors());
+		
 		ResultObject obj = new ResultObject();
 		this.baseElementService.insert(element);
 		return obj;
@@ -86,6 +88,13 @@ public class BaseElementController {
 	public @ResponseBody ResultObject delete(@PathVariable Long id) {
 		ResultObject obj = new ResultObject();
 //		this.baseElementService.delete();
+		return obj;
+	}
+	
+	@RequestMapping(value="/all",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject all() {
+		ResultObject obj = new ResultObject();
+		obj.setData(this.baseElementService.selectByMap(null));
 		return obj;
 	}
 	

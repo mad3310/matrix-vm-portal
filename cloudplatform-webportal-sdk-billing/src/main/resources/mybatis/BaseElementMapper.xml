@@ -109,6 +109,13 @@
 			where e.ID = #{id}
 	</select>
 	
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	        select
+			<include refid="Base_Column_List" /> 
+			from MATRIX_BILLING_BASE_ELEMENT e
+			where e.NAME = #{name}
+	</select>
+	
 	
 	<!-- 列表总数 -->
 	<select id="selectByMapCount" resultType="java.lang.Integer"

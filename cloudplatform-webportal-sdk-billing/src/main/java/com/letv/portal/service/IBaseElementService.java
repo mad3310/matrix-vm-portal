@@ -11,4 +11,11 @@ import com.letv.portal.model.BaseElement;
  */
 public interface IBaseElementService extends IBaseService<BaseElement> {
 
+	/**Methods Name: isUnique <br>
+	 * Description: 根据名称验证唯一性<br>
+	 * @author name: liuhao1
+	 * @param name
+	 * @return
+	 */
+	public boolean isUnique(String name);
 }
