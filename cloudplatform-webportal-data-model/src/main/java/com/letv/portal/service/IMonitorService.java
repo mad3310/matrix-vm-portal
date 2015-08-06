@@ -34,7 +34,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	  * @author lisuxiao
 	  * @date 2015年7月17日 上午9:29:14
 	  */
-	public void addMonitorPartition(Map<String, Object> map);
+	public void addMonitorPartition(Map<String, Object> map, Date d);
 	/**
 	  * @Title: deleteMonitorPartitionThirtyDaysAgo
 	  * @Description: 删除30天以前的分区
@@ -47,7 +47,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	/**
 	  * @Title: insertMysqlMonitorData
-	  * @Description: 保存数据到mysql监控表
+	  * @Description: 保存数据到mysql监控表(当该次收集数据为空时，把相应字段置为-1，表示数据错误)
 	  * @param map void   
 	  * @throws 
 	  * @author lisuxiao

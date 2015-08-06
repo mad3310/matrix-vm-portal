@@ -44,25 +44,29 @@ public class MysqlHealthMonitorServiceImpl extends BaseServiceImpl<MysqlHealthMo
 	@Override
 	public void collectMysqlHealthMonitorData(ContainerModel container,
 			Map<String, Object> map, Date d) {
+		//从数据库历史表中获取最新数据
 		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
 		MysqlHealthMonitor health = new MysqlHealthMonitor();
 		health.setHostIp(container.getIpAddr());
 		health.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		health.setRole((String) map.get("stat_wsrep_status_command"));
-		health.setRunTime(Float.parseFloat((String) map.get("stat_running_day_command")));
-		health.setVersion((String) map.get("stat_version_command"));
-		health.setConnectCount(dbResult.get("stat_connection_count_command")==null?null:((Float)dbResult.get("stat_connection_count_command")).intValue());
-		health.setActivityCount(dbResult.get("stat_active_count_command")==null?null:((Float)dbResult.get("stat_active_count_command")).intValue());
-		health.setWaitCount(dbResult.get("stat_wating_count_command")==null?null:((Float)dbResult.get("stat_wating_count_command")).intValue());
-		health.setSend((Float) dbResult.get("stat_net_send_command"));
-		health.setRecv((Float) dbResult.get("stat_net_rev_command"));
-		health.setQueryPs((Float) dbResult.get("stat_QPS_command"));
+		//当数据为空时，赋值-1，表示该数据异常
+		health.setRole(map.get("stat_wsrep_status_command")==null?"-1":(String) map.get("stat_wsrep_status_command"));
+		health.setRunTime(map.get("stat_running_day_command")==null?-1f:Float.parseFloat((String) map.get("stat_running_day_command")));
+		health.setVersion(map.get("stat_version_command")==null?"-1":(String) map.get("stat_version_command"));
+		health.setConnectCount(dbResult.get("stat_connection_count_command")==null?-1:((Float)dbResult.get("stat_connection_count_command")).intValue());
+		health.setActivityCount(dbResult.get("stat_active_count_command")==null?-1:((Float)dbResult.get("stat_active_count_command")).intValue());
+		health.setWaitCount(dbResult.get("stat_wating_count_command")==null?-1:((Float)dbResult.get("stat_wating_count_command")).intValue());
+		health.setSend(dbResult.get("stat_net_send_command")==null?-1f:(Float) dbResult.get("stat_net_send_command"));
+		health.setRecv(dbResult.get("stat_net_rev_command")==null?-1f:(Float) dbResult.get("stat_net_rev_command"));
+		health.setQueryPs(dbResult.get("stat_QPS_command")==null?-1f:(Float) dbResult.get("stat_QPS_command"));
 		if(dbResult.get("stat_Com_rollback")!=null && dbResult.get("stat_Com_commit_command")!=null) {
 			health.setTransactionPs((Float) dbResult.get("stat_Com_rollback")+(Float)dbResult.get("stat_Com_commit_command"));
+		} else {
+			health.setTransactionPs(-1f);
 		}
-		health.setSlowQueryCount(dbResult.get("stat_slow_query_command")==null?null:((Float)dbResult.get("stat_slow_query_command")).intValue());
-		health.setCpu((Float)dbResult.get("mysql_cpu_partion"));
-		health.setMemory((Float) dbResult.get("mysql_mem_partion"));
+		health.setSlowQueryCount(dbResult.get("stat_slow_query_command")==null?-1:((Float)dbResult.get("stat_slow_query_command")).intValue());
+		health.setCpu(dbResult.get("mysql_cpu_partion")==null?-1f:(Float)dbResult.get("mysql_cpu_partion"));
+		health.setMemory(dbResult.get("mysql_mem_partion")==null?-1f:(Float) dbResult.get("mysql_mem_partion"));
 		int i = this.mysqlHealthMonitorDao.selectByHostIp(container.getIpAddr());
 		if(i==1) {
 			health.setUpdateTime(new Timestamp(d.getTime()));

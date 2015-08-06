@@ -47,13 +47,13 @@ public class MysqlResourceMonitorServiceImpl extends BaseServiceImpl<MysqlResour
 		MysqlResourceMonitor resource = new MysqlResourceMonitor();
 		resource.setHostIp(container.getIpAddr());
 		resource.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		resource.setMaxConnect(Integer.parseInt((String)map.get("stat_max_conn_command")));
-		resource.setMaxConnectError(Integer.parseInt((String)map.get("stat_max_err_conn_command")));
-		resource.setMaxOpenFile(Integer.parseInt((String)map.get("stat_max_open_file_command")));
-		resource.setHadOpenFile(dbResult.get("stat_opened_file_command")==null?null:((Float)dbResult.get("stat_opened_file_command")).intValue());
-		resource.setCacheTableCount(Integer.parseInt((String)map.get("stat_table_cach_command")));
-		resource.setCacheTableNohitCount(dbResult.get("stat_table_cach_noha_command")==null?null:((Float)dbResult.get("stat_table_cach_noha_command")).intValue());
-		resource.setHadOpenTable(dbResult.get("stat_opened_table_cach_command")==null?null:((Float)dbResult.get("stat_opened_table_cach_command")).intValue());
+		resource.setMaxConnect(map.get("stat_max_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_conn_command")));
+		resource.setMaxConnectError(map.get("stat_max_err_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_err_conn_command")));
+		resource.setMaxOpenFile(map.get("stat_max_open_file_command")==null?-1:Integer.parseInt((String)map.get("stat_max_open_file_command")));
+		resource.setHadOpenFile(dbResult.get("stat_opened_file_command")==null?-1:((Float)dbResult.get("stat_opened_file_command")).intValue());
+		resource.setCacheTableCount(map.get("stat_table_cach_command")==null?-1:Integer.parseInt((String)map.get("stat_table_cach_command")));
+		resource.setCacheTableNohitCount(dbResult.get("stat_table_cach_noha_command")==null?-1:((Float)dbResult.get("stat_table_cach_noha_command")).intValue());
+		resource.setHadOpenTable(dbResult.get("stat_opened_table_cach_command")==null?-1:((Float)dbResult.get("stat_opened_table_cach_command")).intValue());
 		
 		int i = this.mysqlResourceMonitorDao.selectByHostIp(container.getIpAddr());
 		if(i==1) {

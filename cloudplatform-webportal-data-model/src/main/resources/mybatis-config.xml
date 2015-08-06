@@ -70,6 +70,7 @@
         <typeAlias alias="MysqlInnoDBMonitor" type="com.letv.portal.model.monitor.mysql.MysqlInnoDBMonitor" />
         <typeAlias alias="MysqlDbSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlDbSpaceMonitor" />
         <typeAlias alias="MysqlTableSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlTableSpaceMonitor" />
+        <typeAlias alias="MysqlGaleraMonitor" type="com.letv.portal.model.monitor.mysql.MysqlGaleraMonitor" />
         
     </typeAliases>
 </configuration>

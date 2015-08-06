@@ -41,7 +41,7 @@ public class MysqlTableSpaceMonitorServiceImpl extends BaseServiceImpl<MysqlTabl
 			ContainerModel container, Map<String, Object> sizeAndComment, Date d) {
 		MysqlTableSpaceMonitor tableSpace = new MysqlTableSpaceMonitor();
 		tableSpace.setName(tableName);
-		tableSpace.setSize(Float.parseFloat((String)sizeAndComment.get("total_kb")));
+		tableSpace.setSize(sizeAndComment.get("total_kb")==null?-1f:Float.parseFloat((String)sizeAndComment.get("total_kb")));
 		tableSpace.setDescn((String)sizeAndComment.get("table_comment"));
 		tableSpace.setDbSpaceId(dbSpaceId);
 		

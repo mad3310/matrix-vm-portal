@@ -47,14 +47,16 @@ public class MysqlKeyBufferMonitorServiceImpl extends BaseServiceImpl<MysqlKeyBu
 		MysqlKeyBufferMonitor keyBuffer = new MysqlKeyBufferMonitor();
 		keyBuffer.setHostIp(container.getIpAddr());
 		keyBuffer.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		keyBuffer.setKeyBufferSize(Float.parseFloat((String)map.get("stat_key_buffer_size_command")));
-		keyBuffer.setSortBufferSize(Float.parseFloat((String)map.get("stat_sort_buffer_size_command")));
-		keyBuffer.setJoinBufferSize(Float.parseFloat((String)map.get("stat_join_buffer_size_command")));
-		keyBuffer.setKeyBlocksUnused(dbResult.get("stat_key_blocks_unused_command")==null?null:((Float)dbResult.get("stat_key_blocks_unused_command")).intValue());
-		keyBuffer.setKeyBlocksUsed(dbResult.get("stat_key_blocks_used_command")==null?null:((Float)dbResult.get("stat_key_blocks_used_command")).intValue());
-		keyBuffer.setKeyBlocksNotFlushed(dbResult.get("stat_key_blocks_not_flushed_command")==null?null:((Float)dbResult.get("stat_key_blocks_not_flushed_command")).intValue());
+		keyBuffer.setKeyBufferSize(map.get("stat_key_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_key_buffer_size_command")));
+		keyBuffer.setSortBufferSize(map.get("stat_sort_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_sort_buffer_size_command")));
+		keyBuffer.setJoinBufferSize(map.get("stat_join_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_join_buffer_size_command")));
+		keyBuffer.setKeyBlocksUnused(dbResult.get("stat_key_blocks_unused_command")==null?-1:((Float)dbResult.get("stat_key_blocks_unused_command")).intValue());
+		keyBuffer.setKeyBlocksUsed(dbResult.get("stat_key_blocks_used_command")==null?-1:((Float)dbResult.get("stat_key_blocks_used_command")).intValue());
+		keyBuffer.setKeyBlocksNotFlushed(dbResult.get("stat_key_blocks_not_flushed_command")==null?-1:((Float)dbResult.get("stat_key_blocks_not_flushed_command")).intValue());
 		if(dbResult.get("stat_key_blocks_used_command")!=null && dbResult.get("stat_key_blocks_used_command")!=null) {
 			keyBuffer.setKeyBlocksUsedRate((Float)dbResult.get("stat_key_blocks_used_command")/((Float)dbResult.get("stat_key_blocks_used_command")+(Float)dbResult.get("stat_key_blocks_unused_command")));
+		} else {
+			keyBuffer.setKeyBlocksUsedRate(-1f);
 		}
 		if(dbResult.get("stat_key_buffer_reads_command")!=null && dbResult.get("stat_key_buffer_reads_request_command")!=null) {
 			if((Float)dbResult.get("stat_key_buffer_reads_request_command")!=0f) {
@@ -63,15 +65,18 @@ public class MysqlKeyBufferMonitorServiceImpl extends BaseServiceImpl<MysqlKeyBu
 			} else {
 				keyBuffer.setKeyBufferReadRate(0f);
 			}
-			
+		} else {
+			keyBuffer.setKeyBufferReadRate(-1f);
 		}
 		if(dbResult.get("stat_key_buffer_writes_command")!=null && dbResult.get("stat_key_buffer_writes_request_command")!=null) {
 			if((Float)dbResult.get("stat_key_buffer_writes_request_command")!=0f) {
 				float f = (Float)dbResult.get("stat_key_buffer_writes_command")/(Float)dbResult.get("stat_key_buffer_writes_request_command");
 				keyBuffer.setKeyBufferWriteRate(1-f);
 			} else {
-				keyBuffer.setKeyBufferWriteRate(0f);
+				keyBuffer.setKeyBufferWriteRate(0f);//除数为0时，设置值为0
 			}
+		} else {
+			keyBuffer.setKeyBufferWriteRate(-1f);//-1定义为数据异常
 		}
 		
 		 

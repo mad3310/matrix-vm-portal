@@ -15,6 +15,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.service.monitor.mysql.IMysqlDbSpaceMonitorService;
+import com.letv.portal.service.monitor.mysql.IMysqlGaleraMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlHealthMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlInnoDBMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlKeyBufferMonitorService;
@@ -40,6 +41,8 @@ public class MysqlMonitorController {
 	private IMysqlKeyBufferMonitorService mysqlKeyBufferMonitorService;
 	@Resource
 	private IMysqlInnoDBMonitorService mysqlInnoDBMonitorService;
+	@Resource
+	private IMysqlGaleraMonitorService mysqlGaleraMonitorService;
 	@Resource
 	private IMysqlDbSpaceMonitorService mysqlDbSpaceMonitorService;
 	@Resource
@@ -70,6 +73,13 @@ public class MysqlMonitorController {
 	public @ResponseBody ResultObject innodbList(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		obj.setData(this.mysqlInnoDBMonitorService.queryByPagination(page, params));
+		return obj; 
+	} 
+	
+	@RequestMapping(value="/galera/list",method=RequestMethod.GET)
+	public @ResponseBody ResultObject galeraList(Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		obj.setData(this.mysqlGaleraMonitorService.queryByPagination(page, params));
 		return obj; 
 	} 
 	

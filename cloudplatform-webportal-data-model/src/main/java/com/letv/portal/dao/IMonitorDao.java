@@ -25,4 +25,7 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public void addMonitorPartition(Map<String,Object> map);
 	public void deleteMonitorPartitionThirtyDaysAgo(Map<String,Object> map);
 	public List<MonitorDetailModel> selectLastestData(Map<String,Object> map);
+	
+	public List<String> getPartitionInfo(Map<String,Object> map);
+	public String getPartitionOrder(Map<String,Object> map);
 }

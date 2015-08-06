@@ -302,14 +302,12 @@ public interface IPythonService {
 	  * @param ip
 	  * @param index
 	  * @param params
-	  * @param userName
-	  * @param password
 	  * @return String   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年7月28日 下午6:54:54
 	  */
-	public String getMysqlMonitorData(String ip,String index, Map<String, String> params,  String userName, String password);
+	public String getMysqlMonitorData(String ip,String index, Map<String, String> params);
 	
 	
 	

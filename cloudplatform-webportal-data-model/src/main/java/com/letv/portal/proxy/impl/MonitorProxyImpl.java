@@ -256,26 +256,10 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void addMonitorPartition() {
 		Map<String,Object> params = new HashMap<String,Object>();
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DATE, 8);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		//分区名称
-		String partitionName1 = "pa"+formatter.format(c.getTime());
-		String partitionName2 = "pb"+formatter.format(c.getTime());
-		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 12, 0, 0);
-		//分区时间
-		long partitionTime1 = c.getTimeInMillis();
-		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 24, 0, 0);
-		long partitionTime2 = c.getTimeInMillis();
-		
 		for (MonitorIndexModel monitorIndexModel : indexs) {
 			params.clear();
 			params.put("dbName", monitorIndexModel.getDetailTable());
-			params.put("partitionName1", partitionName1);
-			params.put("partitionTime1", new Date(partitionTime1));
-			params.put("partitionName2", partitionName2);
-			params.put("partitionTime2", new Date(partitionTime2));
-			this.monitorService.addMonitorPartition(params);
+			this.monitorService.addMonitorPartition(params, new Date());
 		}
 	}
 	
@@ -301,7 +285,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -319,7 +303,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 4);
@@ -337,7 +321,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseSpaceData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		// 测试专用，需要删除
-		map.put("mclusterName", "35_qq0729");
+		map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();

@@ -109,8 +109,37 @@
 	</update>
 	<!-- 删除分区 -->
 	<update id="deleteMonitorPartitionThirtyDaysAgo" parameterType="java.util.Map">
-		ALTER TABLE ${dbName} DROP PARTITION ${partitionName1},${partitionName2}
+		ALTER TABLE ${dbName} DROP PARTITION  
+		<foreach collection="names" index="index" item="partitionNames" open="" separator="," close="">  
+        	${partitionNames}  
+    	</foreach>  
 	</update>
+	<!-- 获取表分区排序 -->
+	<select id="getPartitionOrder" resultType="String" parameterType="java.util.Map">
+		select 
+	       p.PARTITION_ORDINAL_POSITION partitionOrdinalPosition
+	   	from 
+	   		INFORMATION_SCHEMA.PARTITIONS p  
+	    where 
+	    	p.TABLE_SCHEMA = #{tableSchema} and
+	    	p.TABLE_NAME = #{dbName} and
+	    	p.PARTITION_NAME = #{partitionName2}
+	</select>
+	<!-- 获取表分区信息 -->
+	<select id="getPartitionInfo" resultType="String" parameterType="java.util.Map">
+		select 
+	       p.PARTITION_NAME partitionName
+	   	from 
+	   		INFORMATION_SCHEMA.PARTITIONS p  
+	    where 
+	    	p.TABLE_SCHEMA = #{tableSchema} and
+	    	p.TABLE_NAME = #{dbName} and
+	    	p.PARTITION_NAME is not null and
+	    	p.PARTITION_ORDINAL_POSITION &lt;= ${order}
+	    order by 
+	    	p.PARTITION_ORDINAL_POSITION desc
+	</select>
+	
 	<!-- 查询最新记录 -->
 	<select id="selectLastestData" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select 

@@ -1057,7 +1057,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String string : str) {
 			params.put(string, "''");
 		}
-		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
 		if(analysisResult(result)) {
 			Map<String,Object>  data = (Map<String, Object>) result.get("response");
 			this.monitorService.insertMysqlMonitorData(container, data, date);
@@ -1072,7 +1072,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String string : str) {
 			params.put(string, "''");
 		}
-		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String, Object>) result.get("response");
 			for(Iterator it =  data.keySet().iterator();it.hasNext();){
@@ -1085,8 +1085,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 monitorDetail.setIp(container.getIpAddr());
 				 this.monitorService.insert(monitorDetail);
 			}
+			logger.info("collectMysqlMonitorBaseData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		} else {
+			//入库
+			logger.info("collectMysqlMonitorBaseData verify failure, response is :" + result.toString());
 		}
-		logger.info("collectMysqlMonitorBaseData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 	}
 
 	@Override
@@ -1101,7 +1104,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			for (String string : str) {
 				params.put(string, dbName);
 			}
-			Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params, container.getMcluster().getAdminUser(), container.getMcluster().getAdminPassword()));
+			Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
 			if(analysisResult(result)) {
 				Map<String,Object> response = (Map<String, Object>) result.get("response");
 				if(response.get(index.getMonitorPoint())!=null && response.get(index.getMonitorPoint()) instanceof Map) {
@@ -1128,16 +1131,15 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					monitorDetail.setDetailValue(Float.parseFloat(response.get(index.getMonitorPoint()).toString()));  
 					this.monitorService.insert(monitorDetail);
 				}
-				
+				logger.info("collectMysqlMonitorBaseSpaceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+			} else {
+				logger.info("collectMysqlMonitorBaseSpaceData verify failure, response is :" + result.toString());
 			}
-			logger.info("collectMysqlMonitorBaseSpaceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 		}
-		
-		//保存数据到页面展示表
-		this.monitorService.insertMysqlMonitorSpaceData(dbName, container, dataAll, date);
-		
-		
+		if(dataAll.size()!=0) {
+			//保存数据到页面展示表
+			this.monitorService.insertMysqlMonitorSpaceData(dbName, container, dataAll, date);
+		}
 	}
-	
 	
 }

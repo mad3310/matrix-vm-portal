@@ -359,10 +359,10 @@ public class PythonServiceImpl implements IPythonService{
 		return new ApiResultObject(result, url.toString());
 	}
 	@Override
-	public String getMysqlMonitorData(String ip, String index, Map<String, String> params, String userName, String password) {
+	public String getMysqlMonitorData(String ip, String index, Map<String, String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
-		String result = HttpClient.post(url.toString(), params, userName, password);
+		String result = HttpClient.post(url.toString(), params);
 		return result;
 	}    
 	

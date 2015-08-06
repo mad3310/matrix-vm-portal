@@ -2,6 +2,7 @@ package com.letv.portal.service.impl;
 
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
@@ -26,6 +28,7 @@ import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlDbSpaceMonitorService;
+import com.letv.portal.service.monitor.mysql.IMysqlGaleraMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlHealthMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlInnoDBMonitorService;
 import com.letv.portal.service.monitor.mysql.IMysqlKeyBufferMonitorService;
@@ -58,6 +61,12 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	private IMysqlDbSpaceMonitorService mysqlDbSpaceMonitorService;
 	@Autowired
 	private IMysqlTableSpaceMonitorService mysqlTableSpaceMonitorService;
+	@Autowired
+	private IMysqlGaleraMonitorService mysqlGaleraMonitorService;
+	@Value("${jdbc.url}")
+	private String jdbcUrl;
+	@Value("${monitor.statistics.cycle}")
+	private int cycleTime;
 	
 	public MonitorServiceImpl() {
 		super(MonitorDetailModel.class);
@@ -266,14 +275,78 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 
 	@Override
-	public void addMonitorPartition(Map<String, Object> map) {
-		this.monitorDao.addMonitorPartition(map);
+	public void addMonitorPartition(Map<String, Object> map, Date d) {
+		String tableSchema = jdbcUrl.substring(jdbcUrl.lastIndexOf("/")+1, jdbcUrl.indexOf("?"));
+		map.put("tableSchema", tableSchema);
+		int i = 0;
+		//从往前第八天开始查询是否存在分区，不存在，查询第七天...；存在后，跳出循环；当分区超过38个后，跳出循环；
+		while(true) {
+			getPartitionInfos(map, d, 8-i);
+			//根据分区名称获取分区排序号
+			String order = this.monitorDao.getPartitionOrder(map);
+			if(order==null) {
+				i++;
+				if(i==38) {
+					break;
+				}
+			} else {
+				i--;
+				break;
+			}
+		}
+		//从i最大的分区开始创建，一直到往前的第八天
+		for(int j=i; j>=0; j--) {
+			getPartitionInfos(map, d, 8-j);
+			this.monitorDao.addMonitorPartition(map);
+		}
+	}
+	
+	/**
+	  * @Title: getPartitionInfos
+	  * @Description: 计算分区名称和分区时间（一天2个分区，名称以pa+yyyyMMdd、pb+yyyyMMdd分开，时间以每天12点、24点分开）
+	  * @param map 往map中放值
+	  * @param d 计算起始时间
+	  * @param day 几天后时间   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月6日 上午10:04:46
+	  */
+	private void getPartitionInfos(Map<String, Object> map, Date d, int day) {
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(d.getTime());
+		c.add(Calendar.DATE, day);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		//分区名称
+		String partitionName1 = "pa"+formatter.format(c.getTime());
+		String partitionName2 = "pb"+formatter.format(c.getTime());
+		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 12, 0, 0);
+		//分区时间
+		long partitionTime1 = c.getTimeInMillis();
+		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 24, 0, 0);
+		long partitionTime2 = c.getTimeInMillis();
+		map.put("partitionName1", partitionName1);
+		map.put("partitionTime1", new Date(partitionTime1));
+		map.put("partitionName2", partitionName2);
+		map.put("partitionTime2", new Date(partitionTime2));
 	}
 
 
 	@Override
 	public void deleteMonitorPartitionThirtyDaysAgo(Map<String, Object> map) {
-		this.monitorDao.deleteMonitorPartitionThirtyDaysAgo(map);
+		String tableSchema = jdbcUrl.substring(jdbcUrl.lastIndexOf("/")+1, jdbcUrl.indexOf("?"));
+		map.put("tableSchema", tableSchema);
+		//根据分区名称获取分区排序号
+		String order = this.monitorDao.getPartitionOrder(map);
+		if(order!=null) {
+			map.put("order", order);
+			//获取小于等于排序号的分区信息
+			List<String> names = this.monitorDao.getPartitionInfo(map);
+			map.put("names", names);
+			this.monitorDao.deleteMonitorPartitionThirtyDaysAgo(map);
+		} else {
+			logger.info("delete partition is not exist. partition name is "
+					+ "("+(String)map.get("partitionName1")+","+(String)map.get("partitionName2")+")");
+		}
 	}
 	
 	
@@ -283,6 +356,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		this.mysqlResourceMonitorService.collectMysqlResourceMonitorData(container, map, d);
 		this.mysqlKeyBufferMonitorService.collectMysqlKeyBufferMonitorData(container, map, d);
 		this.mysqlInnoDBMonitorService.collectMysqlInnoDBMonitorData(container, map, d);
+		this.mysqlGaleraMonitorService.collectMysqlGaleraMonitorData(container, map, d);
 	}
 
 
@@ -324,8 +398,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		Map<String, Object> params = new HashMap<String, Object>();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
-		//cal.add(Calendar.HOUR, -1);
-		cal.add(Calendar.DATE, -1);
+		cal.add(Calendar.MINUTE, -cycleTime);
 		Date start = new Date(cal.getTimeInMillis());
 		params.put("dbName", tableName);
 		params.put("ip", containerIp);
@@ -378,7 +451,9 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			if(map.get(key)!=null && map.get(key) instanceof Map) {
 				continue;
 			} else {
-				dbSpace = this.mysqlDbSpaceMonitorService.collectMysqlDbSpaceMonitorData(dbName, container, (String)map.get(key), d);
+				//当值不存在时，表明本次调用数据有误，定义返回-1，用于提示数据有误
+				String size = map.get(key)==null?"-1":(String)map.get(key);
+				dbSpace = this.mysqlDbSpaceMonitorService.collectMysqlDbSpaceMonitorData(dbName, container, size, d);
 				count++;
 				break;
 			}

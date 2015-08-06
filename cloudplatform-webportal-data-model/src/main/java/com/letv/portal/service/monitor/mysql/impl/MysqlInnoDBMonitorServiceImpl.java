@@ -47,7 +47,7 @@ public class MysqlInnoDBMonitorServiceImpl extends BaseServiceImpl<MysqlInnoDBMo
 		MysqlInnoDBMonitor innodb = new MysqlInnoDBMonitor();
 		innodb.setHostIp(container.getIpAddr());
 		innodb.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		innodb.setInnodbBufferPoolSize(Float.parseFloat((String)map.get("stat_innodb_bufferpool_size_command")));
+		innodb.setInnodbBufferPoolSize(map.get("stat_innodb_bufferpool_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_innodb_bufferpool_size_command")));
 		if(dbResult.get("stat_innodb_bufferpool_reads_command")!=null && dbResult.get("stat_innodb_bufferpool_read_request_command")!=null) {
 			if((Float)dbResult.get("stat_innodb_bufferpool_read_request_command")!=0f) {
 				float readHits = (Float)dbResult.get("stat_innodb_bufferpool_reads_command")/(Float)dbResult.get("stat_innodb_bufferpool_read_request_command");
@@ -55,11 +55,13 @@ public class MysqlInnoDBMonitorServiceImpl extends BaseServiceImpl<MysqlInnoDBMo
 			} else {
 				innodb.setInnodbBufferReadHits(0f);
 			}
+		} else {
+			innodb.setInnodbBufferReadHits(-1f);
 		}
-		innodb.setInnodbRowsRead((Float)dbResult.get("num_reads_sec"));
-		innodb.setInnodbRowsInsert((Float)dbResult.get("num_inserts_sec"));
-		innodb.setInnodbRowsUpdate((Float)dbResult.get("num_updates_sec"));
-		innodb.setInnodbRowsDelete((Float)dbResult.get("num_deletes_sec"));
+		innodb.setInnodbRowsRead(dbResult.get("num_reads_sec")==null?-1f:(Float)dbResult.get("num_reads_sec"));
+		innodb.setInnodbRowsInsert(dbResult.get("num_inserts_sec")==null?-1f:(Float)dbResult.get("num_inserts_sec"));
+		innodb.setInnodbRowsUpdate(dbResult.get("num_updates_sec")==null?-1f:(Float)dbResult.get("num_updates_sec"));
+		innodb.setInnodbRowsDelete(dbResult.get("num_deletes_sec")==null?-1f:(Float)dbResult.get("num_deletes_sec"));
 		
 		int i = this.mysqlInnoDBMonitorDao.selectByHostIp(container.getIpAddr());
 		if(i==1) {
