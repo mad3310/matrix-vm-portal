@@ -93,17 +93,17 @@ function updateResourceData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td>"+array[i].hostIp+"</td>");
-				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+TransUnit(array[i].keyBufferSize)+"</td>");
-				td.push("<td>"+TransUnit(array[i].sortBufferSize)+"</td>");
-				td.push("<td>"+TransUnit(array[i].joinBufferSize)+"</td>");
-				td.push("<td>"+array[i].keyBlocksUnused+"</td>");
-				td.push("<td>"+array[i].keyBlocksUsed+"</td>");
-				td.push("<td>"+array[i].keyBlocksNotFlushed+"</td>");
-				td.push("<td>"+array[i].keyBlocksUsed*100+"%</td>");
-				td.push("<td>"+array[i].keyBufferReadRate*100+"%</td>");
-				td.push("<td>"+array[i].keyBufferWriteRate*100+"%</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostIp)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].keyBufferSize))+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].sortBufferSize))+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].joinBufferSize))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUnused)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUsed)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBlocksNotFlushed)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUsed*100)+"%</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBufferReadRate*100)+"%</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBufferWriteRate*100)+"%</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

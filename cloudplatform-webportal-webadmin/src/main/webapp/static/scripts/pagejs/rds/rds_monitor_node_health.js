@@ -103,21 +103,21 @@ function updateHealthData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td>"+array[i].hostIp+"</td>");
-				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+array[i].role+"</td>");
-				td.push("<td>"+TransTimeUnit(array[i].runTime)+"</td>");
-				td.push("<td>"+array[i].version+"</td>");
-				td.push("<td>"+array[i].connectCount+"</td>");
-				td.push("<td>"+array[i].activityCount+"</td>");
-				td.push("<td>"+array[i].waitCount+"</td>");
-				td.push("<td>"+TransUnit(array[i].send)+"</td>");
-				td.push("<td>"+TransUnit(array[i].recv)+"</td>");
-				td.push("<td>"+array[i].queryPs+"</td>");
-				td.push("<td>"+array[i].transactionPs+"</td>");
-				td.push("<td>"+array[i].slowQueryCount+"</td>");
-				td.push("<td>"+array[i].cpu+"</td>");
-				td.push("<td>"+array[i].memory+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostIp)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].role)+"</td>");
+				td.push("<td>"+dataErrorFilter(TransTimeUnit(array[i].runTime))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].version)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].activityCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].waitCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].send))+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].recv))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].queryPs)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].transactionPs)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].slowQueryCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].cpu)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].memory)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

@@ -91,9 +91,9 @@ function updateResourceData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td>"+array[i].name+"</td>");
-				td.push("<td>"+TransUnit(array[i].size*1024)+"</td>");
-				td.push("<td>"+array[i].descn+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].name)+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].size*1024))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].descn)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

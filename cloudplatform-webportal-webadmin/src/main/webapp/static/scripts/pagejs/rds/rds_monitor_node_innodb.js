@@ -93,14 +93,14 @@ function updateResourceData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td>"+array[i].hostIp+"</td>");
-				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+TransUnit(array[i].innodbBufferPoolSize)+"</td>");
-				td.push("<td>"+array[i].innodbBufferReadHits+"</td>");
-				td.push("<td>"+array[i].innodbRowsRead+"</td>");
-				td.push("<td>"+array[i].innodbRowsInsert+"</td>");
-				td.push("<td>"+array[i].innodbRowsUpdate+"</td>");
-				td.push("<td>"+array[i].innodbRowsDelete+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostIp)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
+				td.push("<td>"+dataErrorFilter(TransUnit(array[i].innodbBufferPoolSize))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].innodbBufferReadHits)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].innodbRowsRead)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].innodbRowsInsert)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].innodbRowsUpdate)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].innodbRowsDelete)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

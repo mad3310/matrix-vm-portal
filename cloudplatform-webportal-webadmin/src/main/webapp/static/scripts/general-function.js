@@ -759,3 +759,10 @@ function TransTimeUnit(num) {
 	}
 	return temp;
 }
+function dataErrorFilter(data){
+	if(data != '-1' && data != null){
+		return data;
+	}else{
+		return '数据有误'
+	}
+}

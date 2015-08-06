@@ -93,15 +93,15 @@ function updateResourceData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td>"+array[i].hostIp+"</td>");
-				td.push("<td>"+array[i].hostTag+"</td>");
-				td.push("<td>"+array[i].maxConnect+"</td>");
-				td.push("<td>"+array[i].maxConnectError+"</td>");
-				td.push("<td>"+array[i].maxOpenFile+"</td>");
-				td.push("<td>"+array[i].hadOpenFile+"</td>");
-				td.push("<td>"+array[i].cacheTableCount+"</td>");
-				td.push("<td>"+array[i].hadOpenTable+"</td>");
-				td.push("<td>"+array[i].cacheTableNohitCount+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostIp)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].maxConnect)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].maxConnectError)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].maxOpenFile)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hadOpenFile)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].cacheTableCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].hadOpenTable)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].cacheTableNohitCount)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

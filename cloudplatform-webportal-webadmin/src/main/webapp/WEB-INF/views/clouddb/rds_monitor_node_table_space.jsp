@@ -14,6 +14,11 @@
 	});
 </script>
 <div class="page-content-area">
+	<div id="page-header-id" class="page-header">
+		<h1>
+			<a href="${ctx}/list/rds/node/dbSpace">返回db空间分析<i class="ace-icon fa fa-reply icon-only"></i></a>	
+		</h1>
+	</div>
 	<div class="row">
 	<input type="hidden" id="dbSpaceId" value="${dbSpaceId}"/>
 	<!-- <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
