@@ -97,7 +97,7 @@ function updateResourceData() {
 				td.push("<td>"+array[i].hostIp+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
 				td.push("<td><a class='link'  href='/list/rds/node/tableSpace/"+array[i].id+"'>"+dataErrorFilter(array[i].name)+"</td>");
-				td.push("<td>"+dataErrorFilter(TransUnit(array[i].size*1024))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].size ==-1 ? -1:TransUnit(array[i].size*1024))+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 

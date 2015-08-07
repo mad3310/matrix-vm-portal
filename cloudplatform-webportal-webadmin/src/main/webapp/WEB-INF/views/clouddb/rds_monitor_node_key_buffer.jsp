@@ -71,9 +71,9 @@
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_UNUSED">_unused</th>
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED">_used</th>
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_NOT_FLUSHED">_not_flushed</th>
-							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED_RATE">key_blocks_used</th>
-							<th  class="table-head-sort" target-data="KEY_BUFFER_READ_RATE">key_buffer_read</th>
-							<th  class="table-head-sort" target-data="KEY_BUFFER_WRITE_RATE">key_buffer_write</th>
+							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED_RATE">key_blocks_used(%)</th>
+							<th  class="table-head-sort" target-data="KEY_BUFFER_READ_RATE">key_buffer_read(%)</th>
+							<th  class="table-head-sort" target-data="KEY_BUFFER_WRITE_RATE">key_buffer_write(%)</th>
 						</tr>
 					</thead>
 						<tbody id="tby">

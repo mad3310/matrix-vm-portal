@@ -107,13 +107,13 @@ function updateHealthData() {
 				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
 				//td.push("<td>"+dataErrorFilter(array[i].role)+"</td>");
 				td.push("<td style='text-align:center;'><i class='fa fa-medium'></li></td>");
-				td.push("<td>"+dataErrorFilter(TransTimeUnit(array[i].runTime))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].runTime ==-1 ? -1:TransTimeUnit(array[i].runTime))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].version)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].activityCount)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].waitCount)+"</td>");
-				td.push("<td>"+dataErrorFilter(TransUnit(array[i].send))+"</td>");
-				td.push("<td>"+dataErrorFilter(TransUnit(array[i].recv))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].send ==-1 ? -1:TransUnit(array[i].send))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].recv ==-1 ? -1:TransUnit(array[i].recv))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].queryPs)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].transactionPs)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].slowQueryCount)+"</td>");

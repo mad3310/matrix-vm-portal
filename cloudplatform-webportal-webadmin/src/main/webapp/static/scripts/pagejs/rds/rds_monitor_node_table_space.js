@@ -92,7 +92,7 @@ function updateResourceData() {
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
 				td.push("<td>"+dataErrorFilter(array[i].name)+"</td>");
-				td.push("<td>"+dataErrorFilter(TransUnit(array[i].size*1024))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].size ==-1 ? -1:TransUnit(array[i].size*1024))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].descn)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
