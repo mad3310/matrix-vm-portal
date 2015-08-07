@@ -297,7 +297,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		map.put("mclusterName", "35_hello44");
+		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -315,7 +315,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		//测试专用，需要删除
-		map.put("mclusterName", "35_hello44");
+		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 4);
@@ -333,7 +333,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void collectMysqlMonitorBaseSpaceData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
 		// 测试专用，需要删除
-		map.put("mclusterName", "35_hello44");
+		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -359,9 +359,9 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar curDate = Calendar.getInstance();
 		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
-		params.put("endTime", format.format(new Date(curDate.getTimeInMillis())));
+		params.put("end", format.format(new Date(curDate.getTimeInMillis())));
 		curDate.add(Calendar.DATE, -1);
-		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		params.put("start", format.format(new Date(curDate.getTimeInMillis())));
 		List<Map<String,Object>> errors = this.monitorService.getMonitorErrorModelsByMap(params);
 		
 		StringBuffer buffer = new StringBuffer();
@@ -378,7 +378,7 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		params.clear();
 		params.put("tableInfo", buffer.toString());
 		
-		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统备份结果通知","monitorErrorReport.ftl",params);
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台监控错误结果通知","monitorErrorReport.ftl",params);
 		mailMessage.setHtml(true);
 		defaultEmailSender.sendMessage(mailMessage);
 	
