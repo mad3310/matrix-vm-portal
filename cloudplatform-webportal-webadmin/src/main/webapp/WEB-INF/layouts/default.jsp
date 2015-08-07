@@ -275,43 +275,39 @@
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("container集群监控图");
 	}else if(path.indexOf("/list/rds/node/health") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr ul li:eq(1)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("rds健康监控");
 	}else if(path.indexOf("/list/rds/node/resource") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr ul li:eq(2)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("rds资源监控");
 	}else if(path.indexOf("/list/rds/node/keyBuffer") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr ul li:eq(3)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("rds键缓存监控");
 	}else if(path.indexOf("/list/rds/node/innodb") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr ul li:eq(4)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("rds InnoDB监控");
-	}else if(path.indexOf("/list/rds/node/dbSpace") >= 0||path.indexOf("/list/rds/node/tableSpace") >= 0){
-		// $('#sidebar-monitor-mgr').addClass("active open hsub");
-		// $('#sidebar-monitor-mgr ul li:eq(0)').addClass("active");
+	}else if(path.indexOf("/list/rds/node/galera") >= 0){
 		$('#sidebar-rds-mgr').addClass("active open hsub");
 		$('#sidebar-monitor-mgr').addClass("active open hsub");
-		$('#sidebar-monitor-mgr ul li:eq(5)').addClass("active");
+		$('#sidebar-monitor-mgr ul li:eq(4)').addClass("active");
+		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
+		$('#main-content-header li:eq(1)').html("rds galera监控");
+	}else if(path.indexOf("/list/rds/node/dbSpace") >= 0||path.indexOf("/list/rds/node/tableSpace") >= 0){
+		$('#sidebar-rds-mgr').addClass("active open hsub");
+		$('#sidebar-monitor-mgr').addClass("active open hsub");
+		$('#sidebar-monitor-mgr ul li:eq(6)').addClass("active");
 		$('#main-content-header li:first a').attr("href", "${ctx}/list/mcluster/monitor").html("监控管理");
 		$('#main-content-header li:eq(1)').html("rds表空间分析");
 	}else if(path.indexOf("/list/mcluster") >= 0||path.indexOf("/detail/mcluster") >= 0){

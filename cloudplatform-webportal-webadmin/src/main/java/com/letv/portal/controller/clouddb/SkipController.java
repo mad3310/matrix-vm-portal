@@ -250,4 +250,9 @@ public class SkipController {
 		mav.setViewName("/clouddb/rds_monitor_node_db_space");
 		return mav;
 	}
+	@RequestMapping(value ="/list/rds/node/galera",method=RequestMethod.GET)
+	public ModelAndView toRdsNodeGaleraList(ModelAndView mav,HttpServletRequest request){
+		mav.setViewName("/clouddb/rds_monitor_node_galera");
+		return mav;
+	}
 }

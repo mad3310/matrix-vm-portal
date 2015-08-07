@@ -67,6 +67,7 @@
 	    <li><a href="${ctx}/list/rds/node/resource"><i class="menu-icon fa fa-caret-right"></i>rds资源监控</a><b class="arrow"></b></li>
 	    <li><a href="${ctx}/list/rds/node/keyBuffer"><i class="menu-icon fa fa-caret-right"></i>rds键缓存监控</a><b class="arrow"></b></li>
 	    <li><a href="${ctx}/list/rds/node/innodb"><i class="menu-icon fa fa-caret-right"></i>rds InnoDB监控</a><b class="arrow"></b></li>
+	    <li><a href="${ctx}/list/rds/node/galera"><i class="menu-icon fa fa-caret-right"></i>rds galera监控</a><b class="arrow"></b></li>
 	    <li><a href="${ctx}/list/rds/node/dbSpace"><i class="menu-icon fa fa-caret-right"></i>rds表空间分析</a><b class="arrow"></b></li>
 	  </ul>
 	</li>
