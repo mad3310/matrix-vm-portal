@@ -1084,7 +1084,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
 		Map result = transResult(apiResult.getResult());
-		Map<String,Object>  data = null;
+		Map<String,Object>  data = new HashMap<String, Object>();
 		if(analysisResult(result)) {
 			data = (Map<String, Object>) result.get("response");
 		} else {
