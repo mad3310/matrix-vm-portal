@@ -12,6 +12,13 @@
         <result column="IP" property="ip" />
         <result column="DB_NAME" property="dbName" /> 
 	</resultMap>
+	<resultMap id="MonitorErrorResultMap" type="MonitorErrorModel">
+		<result column="ID" property="id" />
+		<result column="TABLE_NAME" property="tableName" />
+		<result column="URL" property="url" />
+        <result column="RESULT" property="result" />
+        <result column="CREATE_TIME" property="createTime" /> 
+	</resultMap>
 	<resultMap id="dataMap" type="java.util.Map">
         <result column="MONITOR_DATE" property="monitorDate" />
 		<result column="DETAIL_VALUE" property="detailValue" />
@@ -58,7 +65,23 @@
 		values(
 		#{detailName},#{detailValue},#{monitorDate},#{ip})
 	</insert>
+
+	<!-- 插入记录 -->
+	<insert id="saveMonitorErrorInfo" parameterType="MonitorErrorModel" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_MONITOR_ERROR
+			(TABLE_NAME,URL,RESULT,CREATE_TIME)
+		values
+			(#{tableName},#{url},#{result},now())
+	</insert>
 	
+
+	<select id="getMonitorErrorModelsByMap" resultMap="MonitorErrorResultMap" parameterType="java.util.Map">
+		select
+			error.ID,error.TABLE_NAME,error.URL,error.RESULT
+		from 
+			WEBPORTAL_MONITOR_ERROR error
+	</select>
 
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">

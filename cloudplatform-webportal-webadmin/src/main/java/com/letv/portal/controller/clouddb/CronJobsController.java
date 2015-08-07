@@ -296,4 +296,10 @@ public class CronJobsController {
 		return obj;
 	}
 	
+	@RequestMapping(value="/monitor/error/report",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject monitorErrorReport(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.monitorErrorReport();
+		return obj;
+	}
+	
 }

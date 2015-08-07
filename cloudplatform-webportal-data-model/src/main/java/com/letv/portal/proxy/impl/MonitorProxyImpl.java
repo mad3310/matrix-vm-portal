@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,16 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.BackupStatus;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HostModel;
@@ -23,6 +30,7 @@ import com.letv.portal.model.UserModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
@@ -76,6 +84,10 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private IUserService userService;
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
 	public void collectMclusterServiceData() {
@@ -338,6 +350,32 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			}
 		}
 		logger.info("collectMysqlMonitorBaseSpaceData end");
+	}
+	@Override
+	public void monitorErrorReport() {
+
+		Map<String, Object> params = new HashMap<String,Object>();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar curDate = Calendar.getInstance();
+		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
+		params.put("endTime", format.format(new Date(curDate.getTimeInMillis())));
+		curDate.add(Calendar.DATE, -1);
+		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		List<MonitorErrorModel> errors = this.monitorService.getMonitorErrorModelsByMap(params);
+		
+		int failedCount = 0;
+		for (MonitorErrorModel monitorErrorModel : errors) {
+			
+		}
+		params.clear();
+		//params.put("tableName", dbs);
+		//params.put("failedCount", failedDb);
+		
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统备份结果通知","monitorErrorReport.ftl",params);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+	
 	}
 	
 	

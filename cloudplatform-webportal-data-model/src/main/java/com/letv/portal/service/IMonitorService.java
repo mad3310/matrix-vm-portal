@@ -7,6 +7,7 @@ import java.util.Map;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 import com.letv.portal.model.monitor.MonitorViewYModel;
 
 public interface IMonitorService extends IBaseService<MonitorDetailModel>{
@@ -78,5 +79,9 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	  * @date 2015年7月30日 下午2:04:21
 	  */
 	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d);
+	
+	public void saveMonitorErrorInfo(MonitorErrorModel error);
+	
+	public List<MonitorErrorModel> getMonitorErrorModelsByMap(Map<String, Object> map);
 	
 }

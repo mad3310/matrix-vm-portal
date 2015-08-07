@@ -51,6 +51,7 @@ import com.letv.portal.model.monitor.ClusterModel;
 import com.letv.portal.model.monitor.ClusterMonitorModel;
 import com.letv.portal.model.monitor.ContainerMonitorModel;
 import com.letv.portal.model.monitor.DbMonitorModel;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 import com.letv.portal.model.monitor.NodeModel;
 import com.letv.portal.model.monitor.NodeModel.DetailModel;
 import com.letv.portal.model.monitor.NodeMonitorModel;
@@ -963,8 +964,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void getContainerServiceData(ContainerModel container, MonitorIndexModel index,Date date) {
-		
-		Map result = transResult(this.pythonService.getMonitorData(container.getIpAddr(), index.getDataFromApi()));
+		ApiResultObject apiResult = this.pythonService.getMonitorData(container.getIpAddr(), index.getDataFromApi());
+		Map result = transResult(apiResult.getResult());
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String, Object>) result.get("response");
 			for(Iterator it =  data.keySet().iterator();it.hasNext();){
@@ -977,15 +978,23 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				 monitorDetail.setIp(container.getIpAddr());
 				 this.monitorService.insert(monitorDetail);
 			}
+			logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		} else {
+			MonitorErrorModel error = new MonitorErrorModel();
+			error.setTableName(index.getDetailTable());
+			error.setUrl(apiResult.getUrl());
+			error.setResult(result.toString());
+			this.monitorService.saveMonitorErrorInfo(error);
 		}
-		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		
 	}
 
 	@Override
 	@Async
 	public void getClusterServiceData(String clusterName, Long hclusterId,MonitorIndexModel index,Date date) {
 		String ip = this.getHclusterMainIp(hclusterId);
-		Map result = transResult(this.pythonService.getMonitorData(ip, index.getDataFromApi().replace("{0}", clusterName)));
+		ApiResultObject apiResult = this.pythonService.getMonitorData(ip, index.getDataFromApi().replace("{0}", clusterName));
+		Map result = transResult(apiResult.getResult());
 		if(analysisResult(result)) {
 			List<Map<String,Object>>  data= (List<Map<String,Object>>) ((Map<String,Object>)result.get("response")).get("data");
 			for (Map<String, Object> containerData : data) {
@@ -1002,7 +1011,13 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 					this.monitorService.insert(monitorDetail);
 				}
 			}
-		logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+			logger.info("getContainerServiceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
+		} else {
+			MonitorErrorModel error = new MonitorErrorModel();
+			error.setTableName(index.getDetailTable());
+			error.setUrl(apiResult.getUrl());
+			error.setResult(result.toString());
+			this.monitorService.saveMonitorErrorInfo(error);
 		}
 	}
 	
@@ -1025,7 +1040,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 
 	@Override
 	public void getOSSServiceData(String url,String ip, MonitorIndexModel index, Date date) {
-		Map result = transResult(this.pythonService.getOSSData(url, index.getDataFromApi().replace("{0}", ip)));
+		ApiResultObject apiResult = this.pythonService.getOSSData(url, index.getDataFromApi().replace("{0}", ip));
+		Map result = transResult(apiResult.getResult());
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String,Object>) ((Map<String,Object>)result.get("response")).get("data");
 			 String time = (String) ((Map<String,Object>)result.get("response")).get("time");
@@ -1045,6 +1061,12 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				monitorDetail.setIp(ip);
 				this.monitorService.insert(monitorDetail);
 			}
+		} else {
+			MonitorErrorModel error = new MonitorErrorModel();
+			error.setTableName(index.getDetailTable());
+			error.setUrl(apiResult.getUrl());
+			error.setResult(result.toString());
+			this.monitorService.saveMonitorErrorInfo(error);
 		}
 	}
 
@@ -1057,10 +1079,17 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String string : str) {
 			params.put(string, "''");
 		}
-		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
+		ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
+		Map result = transResult(apiResult.getResult());
 		if(analysisResult(result)) {
 			Map<String,Object>  data = (Map<String, Object>) result.get("response");
 			this.monitorService.insertMysqlMonitorData(container, data, date);
+		} else {
+			MonitorErrorModel error = new MonitorErrorModel();
+			error.setTableName(index.getDetailTable());
+			error.setUrl(apiResult.getUrl());
+			error.setResult(result.toString());
+			this.monitorService.saveMonitorErrorInfo(error);
 		}
 	}
 	
@@ -1072,7 +1101,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		for (String string : str) {
 			params.put(string, "''");
 		}
-		Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
+		ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
+		Map result = transResult(apiResult.getResult());
 		if(analysisResult(result)) {
 			Map<String,Object>  data= (Map<String, Object>) result.get("response");
 			for(Iterator it =  data.keySet().iterator();it.hasNext();){
@@ -1088,6 +1118,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			logger.info("collectMysqlMonitorBaseData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 		} else {
 			//入库
+			MonitorErrorModel error = new MonitorErrorModel();
+			error.setTableName(index.getDetailTable());
+			error.setUrl(apiResult.getUrl());
+			error.setResult(result.toString());
+			this.monitorService.saveMonitorErrorInfo(error);
 			logger.info("collectMysqlMonitorBaseData verify failure, response is :" + result.toString());
 		}
 	}
@@ -1104,7 +1139,8 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			for (String string : str) {
 				params.put(string, dbName);
 			}
-			Map result = transResult(this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params));
+			ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
+			Map result = transResult(apiResult.getResult());
 			if(analysisResult(result)) {
 				Map<String,Object> response = (Map<String, Object>) result.get("response");
 				if(response.get(index.getMonitorPoint())!=null && response.get(index.getMonitorPoint()) instanceof Map) {
@@ -1133,6 +1169,11 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 				}
 				logger.info("collectMysqlMonitorBaseSpaceData" + date + "-----------------" + new Date() + "--------" + index.getDetailTable());
 			} else {
+				MonitorErrorModel error = new MonitorErrorModel();
+				error.setTableName(index.getDetailTable());
+				error.setUrl(apiResult.getUrl());
+				error.setResult(result.toString());
+				this.monitorService.saveMonitorErrorInfo(error);
 				logger.info("collectMysqlMonitorBaseSpaceData verify failure, response is :" + result.toString());
 			}
 		}

@@ -22,6 +22,7 @@ import com.letv.portal.dao.IMonitorDao;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.MonitorDetailModel;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.model.monitor.mysql.MysqlDbSpaceMonitor;
 import com.letv.portal.service.IContainerService;
@@ -294,7 +295,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 				break;
 			}
 		}
-		//从i最大的分区开始创建，一直到往前的第八天
+		//从时间最小的分区开始创建，一直到往前的第八天
 		for(int j=i; j>=0; j--) {
 			getPartitionInfos(map, d, 8-j);
 			this.monitorDao.addMonitorPartition(map);
@@ -469,6 +470,19 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			}
 		}
 		
+	}
+
+
+	@Override
+	public void saveMonitorErrorInfo(MonitorErrorModel error) {
+		this.monitorDao.saveMonitorErrorInfo(error);
+	}
+
+
+	@Override
+	public List<MonitorErrorModel> getMonitorErrorModelsByMap(
+			Map<String, Object> map) {
+		return this.monitorDao.getMonitorErrorModelsByMap(map);
 	}
 	
 	

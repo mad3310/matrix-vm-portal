@@ -71,6 +71,7 @@
         <typeAlias alias="MysqlDbSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlDbSpaceMonitor" />
         <typeAlias alias="MysqlTableSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlTableSpaceMonitor" />
         <typeAlias alias="MysqlGaleraMonitor" type="com.letv.portal.model.monitor.mysql.MysqlGaleraMonitor" />
+        <typeAlias alias="MonitorErrorModel" type="com.letv.portal.model.monitor.MonitorErrorModel" />
         
     </typeAliases>
 </configuration>

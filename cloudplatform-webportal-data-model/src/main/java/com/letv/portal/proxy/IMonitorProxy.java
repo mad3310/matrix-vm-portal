@@ -75,4 +75,13 @@ public interface IMonitorProxy {
 	  * @date 2015年7月30日 下午5:01:58
 	  */
 	void collectMysqlMonitorBaseSpaceData();
+	
+	/**
+	  * @Title: monitorErrorReport
+	  * @Description: 监控错误信息发送报告   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月6日 下午6:24:51
+	  */
+	public void monitorErrorReport();
 }

@@ -275,7 +275,7 @@ public interface IPythonService {
 	 * @param index
 	 * @return
 	 */
-	public String getMonitorData(String ip,String index);
+	public ApiResultObject getMonitorData(String ip,String index);
 
 	/**Methods Name: wholeBackup4Db <br>
 	 * Description: db数据库备份<br>
@@ -294,7 +294,7 @@ public interface IPythonService {
 	 * @param password
 	 */
 	public ApiResultObject checkBackup4Db(String ipAddr);
-	public String getOSSData(String ip, String index);
+	public ApiResultObject getOSSData(String ip, String index);
 	
 	/**
 	  * @Title: getMysqlMonitorData
@@ -307,7 +307,7 @@ public interface IPythonService {
 	  * @author lisuxiao
 	  * @date 2015年7月28日 下午6:54:54
 	  */
-	public String getMysqlMonitorData(String ip,String index, Map<String, String> params);
+	public ApiResultObject getMysqlMonitorData(String ip,String index, Map<String, String> params);
 	
 	
 	
