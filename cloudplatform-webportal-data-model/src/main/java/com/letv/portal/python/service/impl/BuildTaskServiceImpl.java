@@ -575,8 +575,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			if(status == MclusterStatus.NOTEXIT.getValue() || status == MclusterStatus.DESTROYED.getValue()) {
 				this.mclusterService.delete(mcluster);
 			}
-			this.pythonService.checkMclusterStatus(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
+		} else if(null !=result && result.contains("not existed")){
+			this.mclusterService.delete(mcluster);
 		}
+		this.pythonService.checkMclusterStatus(mcluster.getMclusterName()+Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX,host.getHostIp(),host.getName(),host.getPassword());
 	}
 
 	@Override
@@ -677,6 +679,10 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			MclusterModel mcluster = list.get(0);
 			if(MclusterStatus.BUILDDING.getValue() == mcluster.getStatus() || MclusterStatus.BUILDFAIL.getValue() == mcluster.getStatus() || MclusterStatus.DEFAULT.getValue() == mcluster.getStatus()|| MclusterStatus.AUDITFAIL.getValue() == mcluster.getStatus())
 				continue;
+			if(transStatus((String) mm.get("status")) == MclusterStatus.NOTEXIT.getValue() || transStatus((String) mm.get("status")) == MclusterStatus.DESTROYED.getValue()) {
+				this.mclusterService.delete(list.get(0));
+				continue;
+			}
 			addOrUpdateContainer(mm,mcluster);
 		}
 	}
