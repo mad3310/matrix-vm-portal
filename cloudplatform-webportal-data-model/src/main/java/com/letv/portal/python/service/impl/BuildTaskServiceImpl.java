@@ -1084,9 +1084,9 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 		}
 		ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
 		Map result = transResult(apiResult.getResult());
+		Map<String,Object>  data = null;
 		if(analysisResult(result)) {
-			Map<String,Object>  data = (Map<String, Object>) result.get("response");
-			this.monitorService.insertMysqlMonitorData(container, data, date);
+			data = (Map<String, Object>) result.get("response");
 		} else {
 			MonitorErrorModel error = new MonitorErrorModel();
 			error.setTableName(index.getDetailTable());
@@ -1094,6 +1094,7 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 			error.setResult(result.toString());
 			this.monitorService.saveMonitorErrorInfo(error);
 		}
+		this.monitorService.insertMysqlMonitorData(container, data, date);
 	}
 	
 	@Override
