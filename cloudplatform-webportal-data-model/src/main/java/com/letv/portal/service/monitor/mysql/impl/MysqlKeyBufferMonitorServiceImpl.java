@@ -53,7 +53,7 @@ public class MysqlKeyBufferMonitorServiceImpl extends BaseServiceImpl<MysqlKeyBu
 		keyBuffer.setKeyBlocksUnused(dbResult.get("stat_key_blocks_unused_command")==null?-1:((Float)dbResult.get("stat_key_blocks_unused_command")).intValue());
 		keyBuffer.setKeyBlocksUsed(dbResult.get("stat_key_blocks_used_command")==null?-1:((Float)dbResult.get("stat_key_blocks_used_command")).intValue());
 		keyBuffer.setKeyBlocksNotFlushed(dbResult.get("stat_key_blocks_not_flushed_command")==null?-1:((Float)dbResult.get("stat_key_blocks_not_flushed_command")).intValue());
-		if(dbResult.get("stat_key_blocks_used_command")!=null && dbResult.get("stat_key_blocks_used_command")!=null) {
+		if(dbResult.get("stat_key_blocks_used_command")!=null || dbResult.get("stat_key_blocks_unused_command")!=null) {
 			keyBuffer.setKeyBlocksUsedRate((Float)dbResult.get("stat_key_blocks_used_command")/((Float)dbResult.get("stat_key_blocks_used_command")+(Float)dbResult.get("stat_key_blocks_unused_command")));
 		} else {
 			keyBuffer.setKeyBlocksUsedRate(-1f);
@@ -79,7 +79,6 @@ public class MysqlKeyBufferMonitorServiceImpl extends BaseServiceImpl<MysqlKeyBu
 			keyBuffer.setKeyBufferWriteRate(-1f);//-1定义为数据异常
 		}
 		
-		 
 		int i = this.mysqlKeyBufferMonitorDao.selectByHostIp(container.getIpAddr());
 		if(i==1) {
 			keyBuffer.setUpdateTime(new Timestamp(d.getTime()));
