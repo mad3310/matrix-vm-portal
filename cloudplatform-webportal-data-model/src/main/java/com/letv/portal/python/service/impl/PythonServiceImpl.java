@@ -303,7 +303,7 @@ public class PythonServiceImpl implements IPythonService{
 		map.put("clusterName", hostModel.getHcluster().getHclusterName());
 		map.put("dataNodeIp", hostModel.getHostIp());
 		map.put("dataNodeName", hostModel.getHostName());
-		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());	
+		String result = HttpClient.post(url.toString(), map,hostModel.getName(),hostModel.getPassword());
 		return new ApiResultObject(result,url.toString());
 	}
 
@@ -329,18 +329,18 @@ public class PythonServiceImpl implements IPythonService{
 	}
 	
 	@Override
-	public String getMonitorData(String ip, String index) {
+	public ApiResultObject getMonitorData(String ip, String index) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
 		String result = HttpClient.get(url.toString(),1000,1000);
-		return result;
+		return new ApiResultObject(result, url.toString());
 	}
 	@Override
-	public String getOSSData(String ip, String index) {
+	public ApiResultObject getOSSData(String ip, String index) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(OSS_URL_PORT).append(index);
 		String result = HttpClient.get(url.toString(),1000,1000);
-		return result;
+		return new ApiResultObject(result, url.toString());
 	}
 
 	@Override
@@ -356,6 +356,13 @@ public class PythonServiceImpl implements IPythonService{
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ipAddr).append(URL_PORT).append("/backup/check");
 		String result = HttpClient.get(url.toString(),1000,10000);
+		return new ApiResultObject(result, url.toString());
+	}
+	@Override
+	public ApiResultObject getMysqlMonitorData(String ip, String index, Map<String, String> params) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		String result = HttpClient.post(url.toString(), params);
 		return new ApiResultObject(result, url.toString());
 	}    
 	

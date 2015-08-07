@@ -64,5 +64,14 @@
         
         <typeAlias alias="GceContainerExt" type="com.letv.portal.model.gce.GceContainerExt" />
         
+        <typeAlias alias="MysqlHealthMonitor" type="com.letv.portal.model.monitor.mysql.MysqlHealthMonitor" />
+        <typeAlias alias="MysqlResourceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlResourceMonitor" />
+        <typeAlias alias="MysqlKeyBufferMonitor" type="com.letv.portal.model.monitor.mysql.MysqlKeyBufferMonitor" />
+        <typeAlias alias="MysqlInnoDBMonitor" type="com.letv.portal.model.monitor.mysql.MysqlInnoDBMonitor" />
+        <typeAlias alias="MysqlDbSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlDbSpaceMonitor" />
+        <typeAlias alias="MysqlTableSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlTableSpaceMonitor" />
+        <typeAlias alias="MysqlGaleraMonitor" type="com.letv.portal.model.monitor.mysql.MysqlGaleraMonitor" />
+        <typeAlias alias="MonitorErrorModel" type="com.letv.portal.model.monitor.MonitorErrorModel" />
+        
     </typeAliases>
 </configuration>

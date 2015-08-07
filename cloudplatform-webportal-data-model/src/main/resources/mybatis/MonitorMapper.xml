@@ -12,6 +12,13 @@
         <result column="IP" property="ip" />
         <result column="DB_NAME" property="dbName" /> 
 	</resultMap>
+	<resultMap id="MonitorErrorResultMap" type="MonitorErrorModel">
+		<result column="ID" property="id" />
+		<result column="TABLE_NAME" property="tableName" />
+		<result column="URL" property="url" />
+        <result column="RESULT" property="result" />
+        <result column="CREATE_TIME" property="createTime" /> 
+	</resultMap>
 	<resultMap id="dataMap" type="java.util.Map">
         <result column="MONITOR_DATE" property="monitorDate" />
 		<result column="DETAIL_VALUE" property="detailValue" />
@@ -58,7 +65,23 @@
 		values(
 		#{detailName},#{detailValue},#{monitorDate},#{ip})
 	</insert>
+
+	<!-- 插入记录 -->
+	<insert id="saveMonitorErrorInfo" parameterType="MonitorErrorModel" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_MONITOR_ERROR
+			(TABLE_NAME,URL,RESULT,CREATE_TIME)
+		values
+			(#{tableName},#{url},#{result},now())
+	</insert>
 	
+
+	<select id="getMonitorErrorModelsByMap" resultMap="MonitorErrorResultMap" parameterType="java.util.Map">
+		select
+			error.ID,error.TABLE_NAME,error.URL,error.RESULT
+		from 
+			WEBPORTAL_MONITOR_ERROR error
+	</select>
 
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
@@ -109,6 +132,44 @@
 	</update>
 	<!-- 删除分区 -->
 	<update id="deleteMonitorPartitionThirtyDaysAgo" parameterType="java.util.Map">
-		ALTER TABLE ${dbName} DROP PARTITION ${partitionName1},${partitionName2}
+		ALTER TABLE ${dbName} DROP PARTITION  
+		<foreach collection="names" index="index" item="partitionNames" open="" separator="," close="">  
+        	${partitionNames}  
+    	</foreach>  
 	</update>
+	<!-- 获取表分区排序 -->
+	<select id="getPartitionOrder" resultType="String" parameterType="java.util.Map">
+		select 
+	       p.PARTITION_ORDINAL_POSITION partitionOrdinalPosition
+	   	from 
+	   		INFORMATION_SCHEMA.PARTITIONS p  
+	    where 
+	    	p.TABLE_SCHEMA = #{tableSchema} and
+	    	p.TABLE_NAME = #{dbName} and
+	    	p.PARTITION_NAME = #{partitionName2}
+	</select>
+	<!-- 获取表分区信息 -->
+	<select id="getPartitionInfo" resultType="String" parameterType="java.util.Map">
+		select 
+	       p.PARTITION_NAME partitionName
+	   	from 
+	   		INFORMATION_SCHEMA.PARTITIONS p  
+	    where 
+	    	p.TABLE_SCHEMA = #{tableSchema} and
+	    	p.TABLE_NAME = #{dbName} and
+	    	p.PARTITION_NAME is not null and
+	    	p.PARTITION_ORDINAL_POSITION &lt;= ${order}
+	    order by 
+	    	p.PARTITION_ORDINAL_POSITION desc
+	</select>
+	
+	<!-- 查询最新记录 -->
+	<select id="selectLastestData" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select 
+	       <include refid="Base_Column_List" /> 
+	   	from ${dbName} m
+	       <include refid="Example_Where_Clause" />  and m.MONITOR_DATE between #{start} and #{end} 
+	       order by m.MONITOR_DATE
+	       limit 0,#{count}
+	</select>
 </mapper>   

@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,16 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.email.bean.MailMessage;
 import com.letv.common.exception.ValidateException;
+import com.letv.portal.enumeration.BackupStatus;
+import com.letv.portal.enumeration.DbStatus;
+import com.letv.portal.model.BackupResultModel;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HostModel;
@@ -23,6 +30,7 @@ import com.letv.portal.model.UserModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceContainer;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 import com.letv.portal.model.monitor.MonitorViewYModel;
 import com.letv.portal.model.slb.SlbCluster;
 import com.letv.portal.model.slb.SlbContainer;
@@ -76,6 +84,10 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private IUserService userService;
 	@Autowired
 	private IMonitorIndexService monitorIndexService;
+	@Value("${service.notice.email.to}")
+	private String SERVICE_NOTICE_MAIL_ADDRESS;
+	@Autowired
+	private ITemplateMessageSender defaultEmailSender;
 	
 	@Override
 	public void collectMclusterServiceData() {
@@ -256,26 +268,10 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	public void addMonitorPartition() {
 		Map<String,Object> params = new HashMap<String,Object>();
 		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(params);
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DATE, 8);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-		//分区名称
-		String partitionName1 = "pa"+formatter.format(c.getTime());
-		String partitionName2 = "pb"+formatter.format(c.getTime());
-		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 12, 0, 0);
-		//分区时间
-		long partitionTime1 = c.getTimeInMillis();
-		c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), 24, 0, 0);
-		long partitionTime2 = c.getTimeInMillis();
-		
 		for (MonitorIndexModel monitorIndexModel : indexs) {
 			params.clear();
 			params.put("dbName", monitorIndexModel.getDetailTable());
-			params.put("partitionName1", partitionName1);
-			params.put("partitionTime1", new Date(partitionTime1));
-			params.put("partitionName2", partitionName2);
-			params.put("partitionTime2", new Date(partitionTime2));
-			this.monitorService.addMonitorPartition(params);
+			this.monitorService.addMonitorPartition(params, new Date());
 		}
 	}
 	
@@ -297,5 +293,91 @@ public class MonitorProxyImpl implements IMonitorProxy{
 			this.monitorService.deleteMonitorPartitionThirtyDaysAgo(params);
 		}
 	}
+	@Override
+	public void collectMysqlMonitorData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		//测试专用，需要删除
+		map.put("mclusterName", "35_hello44");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 0);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (ContainerModel container : contianers) {
+				this.buildTaskService.getMysqlMonitorServiceData(container, index, date);
+			}
+		}
+	}
+	@Override
+	public void collectMysqlMonitorBaseData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		//测试专用，需要删除
+		map.put("mclusterName", "35_hello44");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 4);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorBaseData start" + date);
+		for (MonitorIndexModel index : indexs) {
+			for (ContainerModel container : contianers) {
+				this.buildTaskService.collectMysqlMonitorBaseData(container, index, date);
+			}
+		}
+		logger.info("collectMysqlMonitorBaseData end");
+	}
+	@Override
+	public void collectMysqlMonitorBaseSpaceData() {
+		Map<String,Object> map = new  HashMap<String,Object>();
+		// 测试专用，需要删除
+		map.put("mclusterName", "35_hello44");
+		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
+		
+		Map<String,Object> indexParams = new  HashMap<String,Object>();
+		indexParams.put("status", 5);
+		List<MonitorIndexModel> indexs = this.monitorIndexService.selectByMap(indexParams);
+		Date date = new Date();
+		logger.info("collectMysqlMonitorBaseSpaceData start" + date);
+		for (ContainerModel container : contianers) {
+			map.clear();
+			map.put("mclusterId", container.getMclusterId());
+			List<DbModel> dbs = this.dbService.selectByMap(map);
+			for (DbModel dbModel : dbs) {
+				this.buildTaskService.collectMysqlMonitorBaseSpaceData(dbModel.getDbName(),container, indexs, date);
+			}
+		}
+		logger.info("collectMysqlMonitorBaseSpaceData end");
+	}
+	@Override
+	public void monitorErrorReport() {
+
+		Map<String, Object> params = new HashMap<String,Object>();
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar curDate = Calendar.getInstance();
+		curDate = new GregorianCalendar(curDate.get(Calendar.YEAR), curDate.get(Calendar.MONTH),curDate.get(Calendar.DATE), 0, 0, 0);
+		params.put("endTime", format.format(new Date(curDate.getTimeInMillis())));
+		curDate.add(Calendar.DATE, -1);
+		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
+		List<MonitorErrorModel> errors = this.monitorService.getMonitorErrorModelsByMap(params);
+		
+		int failedCount = 0;
+		for (MonitorErrorModel monitorErrorModel : errors) {
+			
+		}
+		params.clear();
+		//params.put("tableName", dbs);
+		//params.put("failedCount", failedDb);
+		
+		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统备份结果通知","monitorErrorReport.ftl",params);
+		mailMessage.setHtml(true);
+		defaultEmailSender.sendMessage(mailMessage);
+	
+	}
+	
+	
 	
 }

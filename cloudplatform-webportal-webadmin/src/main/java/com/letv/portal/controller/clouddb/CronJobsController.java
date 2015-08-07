@@ -229,4 +229,60 @@ public class CronJobsController {
 		this.monitorProxy.addMonitorPartition();
 		return obj;
 	}
+	
+	
+	/**
+	  * @Title: collectMysqlMonitorData
+	  * @Description: 收集mysql监控数据保存到mysql页面展示表（监控监控、资源监控、键缓存监控、InnoDB监控）
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月3日 上午9:46:51
+	  */
+	@RequestMapping(value="/monitor/collectMysqlMonitorData",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject collectMysqlMonitorData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.collectMysqlMonitorData();
+		return obj;
+	}
+	
+	/**
+	  * @Title: collectMysqlMonitorBaseData
+	  * @Description: 调用Python接口维护mysql监控历史数据
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月3日 上午9:47:57
+	  */
+	@RequestMapping(value="/monitor/collectMysqlMonitorBaseData",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject collectMysqlMonitorBaseData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.collectMysqlMonitorBaseData();
+		return obj;
+	}
+	
+	/**
+	  * @Title: collectMysqlMonitorBaseSpaceData
+	  * @Description: 保存数据库大小和表大小历史及维护页面展示表（表空间监控）
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月3日 上午9:49:46
+	  */
+	@RequestMapping(value="/monitor/collectMysqlMonitorBaseSpaceData",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject collectMysqlMonitorBaseSpaceData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.collectMysqlMonitorBaseSpaceData();
+		return obj;
+	}
+	
+	@RequestMapping(value="/monitor/error/report",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject monitorErrorReport(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.monitorErrorReport();
+		return obj;
+	}
+	
 }

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.monitor.mysql.IMysqlGaleraMonitorDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="mysqlGaleraMonitor">
+		<result column="ID" property="id"/>
+	    <result column="HOST_IP" property="hostIp"/>
+	    <result column="HOST_TAG" property="hostTag"/>
+	    <result column="WSREP_LOCAL_FAIL" property="wsrepLocalFail"/>
+	    <result column="WSREP_LOCAL_ABORT" property="wsrepLocalAbort"/>
+	    <result column="WSREP_LOCAL_REPLAYS" property="wsrepLocalReplays"/>
+	    <result column="WSREP_REPLICATED" property="wsrepReplicated"/>
+	    <result column="WSREP_REP_BYTES" property="wsrepRepBytes"/>
+	    <result column="WSREP_RECEIVED" property="wsrepReceived"/>
+	    <result column="WSREP_REC_BYTES" property="wsrepRecBytes"/>
+	    <result column="WSREP_FLOW_CONTROL_PAUSED" property="wsrepFlowControlPaused"/>
+	    <result column="WSREP_FLOW_CONTROL_SENT" property="wsrepFlowControlSent"/>
+	    <result column="WSREP_FLOW_CONTROL_RECV" property="wsrepFlowControlRecv"/>
+	    <result column="DESCN" property="descn"/>
+	    <result column="CREATE_TIME" property="createTime"/>
+	    <result column="UPDATE_TIME" property="updateTime"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		galera.ID,galera.HOST_IP,galera.HOST_TAG,
+		galera.WSREP_LOCAL_FAIL,galera.WSREP_LOCAL_ABORT,galera.WSREP_LOCAL_REPLAYS,
+		galera.WSREP_REPLICATED,galera.WSREP_REP_BYTES,
+		galera.WSREP_RECEIVED,galera.WSREP_REC_BYTES,
+		galera.WSREP_FLOW_CONTROL_PAUSED,galera.WSREP_FLOW_CONTROL_SENT,galera.WSREP_FLOW_CONTROL_RECV,
+		galera.DESCN,galera.CREATE_TIME,galera.UPDATE_TIME
+	</sql>
+	
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="MysqlGaleraMonitor" useGeneratedKeys="true" keyProperty="id">
+		insert into WEBPORTAL_MONITOR_MYSQL_GALERA 
+			(HOST_IP,HOST_TAG,WSREP_LOCAL_FAIL,WSREP_LOCAL_ABORT,WSREP_LOCAL_REPLAYS,WSREP_REPLICATED,WSREP_REP_BYTES,WSREP_RECEIVED,WSREP_REC_BYTES,WSREP_FLOW_CONTROL_PAUSED,WSREP_FLOW_CONTROL_SENT,WSREP_FLOW_CONTROL_RECV,DESCN,CREATE_TIME,UPDATE_TIME) 
+		values 
+			(#{hostIp},#{hostTag},#{wsrepLocalFail},#{wsrepLocalAbort},#{wsrepLocalReplays},#{wsrepReplicated},#{wsrepRepBytes},#{wsrepReceived},#{wsrepRecBytes},#{wsrepFlowControlPaused},#{wsrepFlowControlSent},#{wsrepFlowControlRecv},#{descn},#{createTime},#{updateTime});
+	</insert>
+
+	<!-- 更新记录 -->
+	<update id="update" parameterType="MysqlGaleraMonitor">
+		update WEBPORTAL_MONITOR_MYSQL_GALERA 
+		<set>
+		    <if test="id != null and id != '' ">
+		        ID=#{id},
+		    </if>
+		    <if test="hostIp != null and hostIp != '' ">
+		        HOST_IP=#{hostIp},
+		    </if>
+		    <if test="hostTag != null and hostTag != '' ">
+		        HOST_TAG=#{hostTag},
+		    </if>
+		    <if test="wsrepLocalFail != null ">
+		        WSREP_LOCAL_FAIL=#{wsrepLocalFail},
+		    </if>
+		    <if test="wsrepLocalAbort != null ">
+		        WSREP_LOCAL_ABORT=#{wsrepLocalAbort},
+		    </if>
+		    <if test="wsrepLocalReplays != null ">
+		        WSREP_LOCAL_REPLAYS=#{wsrepLocalReplays},
+		    </if>
+		    <if test="wsrepReplicated != null ">
+		        WSREP_REPLICATED=#{wsrepReplicated},
+		    </if>
+		    <if test="wsrepRepBytes != null ">
+		        WSREP_REP_BYTES=#{wsrepRepBytes},
+		    </if>
+		    <if test="wsrepReceived != null ">
+		        WSREP_RECEIVED=#{wsrepReceived},
+		    </if>
+		    <if test="wsrepRecBytes != null ">
+		        WSREP_REC_BYTES=#{wsrepRecBytes},
+		    </if>
+		    <if test="wsrepFlowControlPaused != null ">
+		        WSREP_FLOW_CONTROL_PAUSED=#{wsrepFlowControlPaused},
+		    </if>
+		    <if test="wsrepFlowControlSent != null ">
+		        WSREP_FLOW_CONTROL_SENT=#{wsrepFlowControlSent},
+		    </if>
+		    <if test="wsrepFlowControlRecv != null ">
+		        WSREP_FLOW_CONTROL_RECV=#{wsrepFlowControlRecv},
+		    </if>
+		    <if test="descn != null and descn != '' ">
+		        DESCN=#{descn},
+		    </if>
+		    <if test="createTime != null and createTime != '' ">
+		        CREATE_TIME=#{createTime},
+		    </if>
+		    <if test="updateTime != null and updateTime != '' ">
+		        UPDATE_TIME=#{updateTime},
+		    </if>
+		</set>
+		where HOST_IP=#{hostIp};
+	</update>
+	
+	<select id="selectByHostIp" resultType="java.lang.Integer" parameterType="java.lang.String">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_GALERA galera
+		where
+			galera.HOST_IP = #{hostIp}
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="com.letv.common.dao.QueryParam">
+		select 
+			count(1) 
+		from 
+			WEBPORTAL_MONITOR_MYSQL_GALERA galera
+			<include refid="List_Page_Where_Clause" />
+	</select>
+	
+	
+	<sql id="List_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and galera.ID=#{params.id}
+			</if>
+			<if test="params != null and params.hostIp != null and params.hostIp != '' ">
+				and galera.HOST_IP like CONCAT('%','${params.hostIp}','%') escape '^'
+			</if>
+			<if test="params != null and params.hostTag != null and params.hostTag != ''  ">
+				and galera.HOST_TAG like CONCAT('%','${params.hostTag}','%') escape '^'
+			</if>
+			
+			<if test="params != null and params.descn != null and params.descn != ''  ">
+				and galera.DESCN=#{params.descn}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and galera.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and galera.UPDATE_TIME=#{params.updateTime}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_MONITOR_MYSQL_GALERA galera
+			<include refid="List_Page_Where_Clause" />
+		ORDER BY 
+			<if test="params != null and params.order != null and params.order != '' ">
+				galera.${params.order} 
+			</if>
+			<if test="params == null or params.order == null or params.order == '' ">
+				galera.CREATE_TIME
+			</if>
+			<if test="params != null and params.orderArg != null and params.orderArg != '' ">
+				${params.orderArg}
+			</if>
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
+</mapper>   

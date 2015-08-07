@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.model.MonitorDetailModel;
+import com.letv.portal.model.monitor.MonitorErrorModel;
 
 /**
  * Program Name: IMonitorDao <br>
@@ -24,4 +25,10 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public List<Map<String,Object>> selectExtremeIdByMonitorDate(Map<String, Object> map);
 	public void addMonitorPartition(Map<String,Object> map);
 	public void deleteMonitorPartitionThirtyDaysAgo(Map<String,Object> map);
+	public List<MonitorDetailModel> selectLastestData(Map<String,Object> map);
+	
+	public List<String> getPartitionInfo(Map<String,Object> map);
+	public String getPartitionOrder(Map<String,Object> map);
+	public void saveMonitorErrorInfo(MonitorErrorModel error);
+	public List<MonitorErrorModel> getMonitorErrorModelsByMap(Map<String, Object> map);
 }

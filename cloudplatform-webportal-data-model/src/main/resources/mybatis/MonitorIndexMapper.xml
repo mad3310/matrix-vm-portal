@@ -56,7 +56,10 @@
 			</if>	
 			<if test="status != null  ">
 				and m.STATUS=#{status}
-			</if>					
+			</if>	
+			<if test="status == null  ">
+				and m.STATUS != 0
+			</if>
 		</trim>
 	</sql>
 
