@@ -76,11 +76,15 @@
 	</insert>
 	
 
-	<select id="getMonitorErrorModelsByMap" resultMap="MonitorErrorResultMap" parameterType="java.util.Map">
+	<select id="getMonitorErrorModelsByMap" resultType="java.util.Map" parameterType="java.util.Map">
 		select
-			error.ID,error.TABLE_NAME,error.URL,error.RESULT
+			error.TABLE_NAME tableName,count(error.TABLE_NAME) count
 		from 
 			WEBPORTAL_MONITOR_ERROR error
+		where 
+			error.CREATE_TIME between #{start} and #{end}
+		group by 
+			error.TABLE_NAME
 	</select>
 
 	<select id="selectByMap" resultMap="BaseResultMap"

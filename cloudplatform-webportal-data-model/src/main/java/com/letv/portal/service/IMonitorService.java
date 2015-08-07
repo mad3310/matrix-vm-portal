@@ -82,6 +82,6 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	public void saveMonitorErrorInfo(MonitorErrorModel error);
 	
-	public List<MonitorErrorModel> getMonitorErrorModelsByMap(Map<String, Object> map);
+	public List<Map<String, Object>> getMonitorErrorModelsByMap(Map<String, Object> map);
 	
 }

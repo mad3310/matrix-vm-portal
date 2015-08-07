@@ -362,15 +362,21 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		params.put("endTime", format.format(new Date(curDate.getTimeInMillis())));
 		curDate.add(Calendar.DATE, -1);
 		params.put("startTime", format.format(new Date(curDate.getTimeInMillis())));
-		List<MonitorErrorModel> errors = this.monitorService.getMonitorErrorModelsByMap(params);
+		List<Map<String,Object>> errors = this.monitorService.getMonitorErrorModelsByMap(params);
 		
-		int failedCount = 0;
-		for (MonitorErrorModel monitorErrorModel : errors) {
-			
+		StringBuffer buffer = new StringBuffer();
+		for (Map<String, Object> map : errors) {
+			buffer.append("<tr>");
+			buffer.append("<th width=\"100px\">");
+			buffer.append(map.get("tableName"));
+			buffer.append("</th>");
+			buffer.append("<th width=\"100px\">");
+			buffer.append(map.get("count"));
+			buffer.append("</th>");
+			buffer.append("</tr>");
 		}
 		params.clear();
-		//params.put("tableName", dbs);
-		//params.put("failedCount", failedDb);
+		params.put("tableInfo", buffer.toString());
 		
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统",SERVICE_NOTICE_MAIL_ADDRESS,"乐视云平台web-portal系统备份结果通知","monitorErrorReport.ftl",params);
 		mailMessage.setHtml(true);

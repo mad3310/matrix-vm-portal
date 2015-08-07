@@ -428,6 +428,19 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					break;
 				}
 			}
+		} else if("WEBPORTAL_MONITOR_MYSQL_BASE_NET".equals(tableName)) {
+			Map<String, Object> computer = new HashMap<String, Object>();
+			for (MonitorDetailModel monitorDetailModel : models) {
+				if(computer.get(monitorDetailModel.getDetailName()+"_value")==null) {
+					computer.put(monitorDetailModel.getDetailName()+"_value", monitorDetailModel.getDetailValue());
+				} else {
+					float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue());
+					result.put(monitorDetailModel.getDetailName(), Math.abs(ret));
+				}
+				if(result.size()==cols.length) {//采用最新2次数据，满足采集条数后，退出
+					break;
+				}
+			}
 		} else {
 			for (MonitorDetailModel monitorDetailModel : models) {
 				result.put(monitorDetailModel.getDetailName(),monitorDetailModel.getDetailValue());
@@ -480,7 +493,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 
 
 	@Override
-	public List<MonitorErrorModel> getMonitorErrorModelsByMap(
+	public List<Map<String, Object>> getMonitorErrorModelsByMap(
 			Map<String, Object> map) {
 		return this.monitorDao.getMonitorErrorModelsByMap(map);
 	}

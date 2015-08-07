@@ -41,10 +41,7 @@ p {
 		<th width="100px">表名</th>
 		<th width="100px">失败次数</th>
 	</tr>
-	<tr>
-		<th width="100px">${tableName}</th>
-		<th width="100px">${failedCount}</th>
-	</tr>
+	${tableInfo}
 </table>
 <br/>
 
