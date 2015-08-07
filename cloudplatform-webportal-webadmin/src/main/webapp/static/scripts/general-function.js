@@ -763,6 +763,6 @@ function dataErrorFilter(data){
 	if(data != '-1' && data != null){
 		return data;
 	}else{
-		return '数据有误'
+		return '<i class="fa fa-times"></i>'
 	}
 }

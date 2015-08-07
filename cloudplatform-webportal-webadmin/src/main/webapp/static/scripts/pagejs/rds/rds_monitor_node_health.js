@@ -105,7 +105,8 @@ function updateHealthData() {
 				var td=[];
 				td.push("<td>"+dataErrorFilter(array[i].hostIp)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].role)+"</td>");
+				//td.push("<td>"+dataErrorFilter(array[i].role)+"</td>");
+				td.push("<td style='text-align:center;'><i class='fa fa-medium'></li></td>");
 				td.push("<td>"+dataErrorFilter(TransTimeUnit(array[i].runTime))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].version)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");

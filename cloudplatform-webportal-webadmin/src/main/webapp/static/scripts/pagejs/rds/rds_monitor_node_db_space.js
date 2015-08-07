@@ -94,9 +94,9 @@ function updateResourceData() {
 			var trs = [];
 			for (var i = 0, len = array.length; i < len; i++) {
 				var td=[];
-				td.push("<td><a class=\"link\"  href=\"/list/rds/node/tableSpace/"+array[i].id+"\">"+array[i].hostIp+"</td>");
+				td.push("<td>"+array[i].hostIp+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].hostTag)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].name)+"</td>");
+				td.push("<td><a class='link'  href='/list/rds/node/tableSpace/"+array[i].id+"'>"+dataErrorFilter(array[i].name)+"</td>");
 				td.push("<td>"+dataErrorFilter(TransUnit(array[i].size*1024))+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
