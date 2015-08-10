@@ -115,8 +115,8 @@ function updateHealthData() {
 				td.push("<td>"+dataErrorFilter(array[i].send ==-1 ? -1:TransUnit(array[i].send))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].recv ==-1 ? -1:TransUnit(array[i].recv))+"</td>");
 				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].queryPs))+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].transactionPs)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].slowQueryCount)+"</td>");
+				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].transactionPs))+"</td>");
+				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].slowQueryCount))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].cpu)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].memory)+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
