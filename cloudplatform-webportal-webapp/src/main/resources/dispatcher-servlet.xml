@@ -95,6 +95,11 @@
 					 <value>/osv</value>
 				 </list>
 			 </property>
+			 <property name="allowUrls">
+				 <list>
+					 <value>/ecs/is-authority</value>
+				 </list>
+			 </property>
 		 </bean>
 	 </mvc:interceptor>
 	</mvc:interceptors>
