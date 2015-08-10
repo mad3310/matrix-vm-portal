@@ -28,16 +28,29 @@ public class CloudvmInterceptor implements HandlerInterceptor {
     @Autowired
     private SessionServiceImpl sessionService;
 
-    public String[] checkUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
+    public String[] checkUrls;
+    private String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
 
     public void setCheckUrls(String[] checkUrls) {
         this.checkUrls = checkUrls;
+    }
+
+    public void setAllowUrls(String[] allowUrls) {
+        this.allowUrls = allowUrls;
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object arg2) throws Exception {
         String requestUrl = request.getRequestURI().replace(request.getContextPath(), "");
+
+        if(null!=allowUrls&&allowUrls.length>=1){
+            for(String url:allowUrls){
+                if(requestUrl.contains(url)){
+                    return true;
+                }
+            }
+        }
 
         //特殊url过滤
         if (null != checkUrls && checkUrls.length >= 1) {
