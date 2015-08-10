@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.result.ApiResultObject;
 import com.letv.common.util.HttpClient;
 import com.letv.portal.python.service.ICbasePythonService;
 
@@ -21,28 +20,28 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 	private final static String URL_PORT = ":8888";
 
 	@Override
-	public ApiResultObject createContainer(Map<String, String> params, String ip,
+	public String createContainer(Map<String, String> params, String ip,
 			String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT)
 				.append("/containerCluster");
 		String result = HttpClient.post(url.toString(), params, username,
 				password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject checkContainerCreateStatus(String cbaseClusterName,
+	public String checkContainerCreateStatus(String cbaseClusterName,
 			String ip, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT)
-				.append("/containerCluster/createResult/").append(cbaseClusterName);
+				.append("/containerCluster/status/").append(cbaseClusterName);
 		String result = HttpClient.get(url.toString(), username, password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject initUserAndPwd4Manager(String nodeIp, String port,
+	public String initUserAndPwd4Manager(String nodeIp, String port,
 			String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
@@ -54,11 +53,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 		map.put("port", port);
 
 		String result = HttpClient.postCbaseManager(url.toString(), map);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject configClusterMemQuota(String nodeIp1, String port,
+	public String configClusterMemQuota(String nodeIp1, String port,
 			String memoryQuota, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
@@ -69,11 +68,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.postCbaseManager(url.toString(), nodeIp1,
 				port, map, adminUser, adminPassword);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject addNodeToCluster(String srcNodeIp, String addNodeIp,
+	public String addNodeToCluster(String srcNodeIp, String addNodeIp,
 			String port, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(srcNodeIp).append(":").append(port)
@@ -86,11 +85,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.postCbaseManager(url.toString(), srcNodeIp,
 				port, map, username, password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject rebalanceCluster(String nodeIp, String port,
+	public String rebalanceCluster(String nodeIp, String port,
 			String knownNodes, String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
@@ -102,11 +101,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
 				port, map, username, password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject checkClusterRebalanceStatus(String nodeIp, String port,
+	public String checkClusterRebalanceStatus(String nodeIp, String port,
 			String username, String password) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp).append(":").append(port)
@@ -114,11 +113,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.getCbaseManager(url.toString(), username,
 				password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject createPersistentBucket(String nodeIp, String port,
+	public String createPersistentBucket(String nodeIp, String port,
 			String bucketName, String ramQuotaMB, String authType,
 			String saslPassword, String username, String password) {
 		StringBuffer url = new StringBuffer();
@@ -134,11 +133,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
 				port, map, username, password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject createUnPersistentBucket(String nodeIp, String port,
+	public String createUnPersistentBucket(String nodeIp, String port,
 			String bucketName, String ramQuotaMB, String authType,
 			String saslPassword, String username, String password) {
 		StringBuffer url = new StringBuffer();
@@ -154,11 +153,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.postCbaseManager(url.toString(), nodeIp,
 				port, map, username, password);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject CheckClusterStatus(String nodeIp1, String port,
+	public String CheckClusterStatus(String nodeIp1, String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
@@ -166,11 +165,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient
 				.get(url.toString(), adminUser, adminPassword);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject stop(Map<String, String> params, String nodeIp1, String port,
+	public String stop(Map<String, String> params, String nodeIp1, String port,
 			String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
@@ -178,11 +177,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.post(url.toString(), params, adminUser,
 				adminPassword);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject start(Map<String, String> params, String nodeIp1,
+	public String start(Map<String, String> params, String nodeIp1,
 			String port, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
@@ -190,11 +189,11 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.post(url.toString(), params, adminUser,
 				adminPassword);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 	@Override
-	public ApiResultObject restart(Map<String, String> params, String nodeIp1,
+	public String restart(Map<String, String> params, String nodeIp1,
 			String port, String adminUser, String adminPassword) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(nodeIp1).append(":").append(port)
@@ -202,7 +201,7 @@ public class CbasePythonServiceImpl implements ICbasePythonService {
 
 		String result = HttpClient.post(url.toString(), params, adminUser,
 				adminPassword);
-		return new ApiResultObject(result,url.toString());
+		return result;
 	}
 
 }

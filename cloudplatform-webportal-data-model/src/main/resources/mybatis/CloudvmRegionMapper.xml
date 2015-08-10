@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmRegionDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmRegion">
+		<result column="ID" property="id" />
+
+		<result column="CODE" property="code" />
+		<result column="DISPLAY_NAME" property="displayName" />
+		
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	
+	</resultMap>
+	
+	<!-- WEBPORTAL_CLOUDVM_REGION table all fields -->
+	<sql id="Base_Column_List">
+		R.ID,R.CODE,R.DISPLAY_NAME,
+		R.DELETED,R.CREATE_TIME,R.CREATE_USER,R.UPDATE_TIME,R.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and R.ID=#{id}
+			</if>
+			<if test="code != null  and code != ''  and code != 'null'">
+				and R.CODE like CONCAT('%','${code}','%') escape '^'
+			</if>
+			<if test="displayName != null  and displayName != ''  and displayName != 'null'">
+				and R.DISPLAY_NAME like CONCAT('%','${displayName}','%') escape '^'
+			</if>
+			<if test="deleted != null  ">
+				and R.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and R.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and R.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and R.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and R.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmRegion" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_REGION(CODE,DISPLAY_NAME,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{code},#{displayName},#{deleted},now(),#{createUser},now(),#{updateUser})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="CloudvmRegion">
+		update WEBPORTAL_CLOUDVM_REGION set
+		ID=#{id},CODE=#{code},DISPLAY_NAME=#{displayName},DELETED=#{deleted},CREATE_TIME=#{createTime},CREATE_USER=#{createUser},UPDATE_TIME=now(),UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<update id="updateBySelective" parameterType="CloudvmRegion">
+		update WEBPORTAL_CLOUDVM_REGION
+		<set>
+			<if test="code != null  and code != '' ">
+				CODE=#{code},
+			</if>
+			<if test="displayName != null  and displayName != '' ">
+				DISPLAY_NAME=#{displayName},
+			</if>
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+				UPDATE_TIME=now(),
+			<if test="updateUser != null  ">
+				UPDATE_USER=#{updateUser}
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+	
+	
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmRegion">
+		delete from WEBPORTAL_CLOUDVM_REGION where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" /> 
+			from WEBPORTAL_CLOUDVM_REGION R
+			where  R.ID = #{id};
+	</select>
+	
+	<select id="selectByCode" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_REGION R WHERE R.CODE = #{code}
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByModelCount" resultType="java.lang.Integer"
+		parameterType="CloudvmRegion">
+		select count(1) from WEBPORTAL_CLOUDVM_REGION R
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from WEBPORTAL_CLOUDVM_REGION R
+		<include refid="Example_Where_Clause" />
+	</select>
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_REGION R
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id !=null  ">
+				and R.ID=#{params.id}
+			</if>
+			<if test="params != null and params.code != null  and params.code != ''  and params.code != 'null'">
+				and R.CODE like CONCAT('%','${params.code}','%') escape '^'
+			</if>
+			<if test="params != null and params.displayName != null  and params.displayName != ''  and params.displayName != 'null'">
+				and R.DISPLAY_NAME like CONCAT('%','${params.displayName}','%') escape '^'
+			</if>
+			<if test="params != null and params.deleted != null  ">
+				and R.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and R.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and R.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and R.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and R.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_REGION R
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY R.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+	</select>
+	
+</mapper>   

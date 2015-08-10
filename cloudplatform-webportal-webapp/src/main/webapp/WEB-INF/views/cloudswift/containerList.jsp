@@ -8,7 +8,6 @@
 </style>
 <body>
 <%@ include file="../../layouts/header.jsp"%>
-<input class="hidden" value="" id="waitTime" type="text" />
 <!-- navbar end -->
 <!-- main-content begin-->
 <div class="container-fluid">

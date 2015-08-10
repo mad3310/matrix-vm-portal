@@ -32,8 +32,6 @@ public class Constant {
 	public static Integer IPRESOURCE_STATUS_USERD = 1;
 
 	public static String PYTHON_API_RESPONSE_SUCCESS = "200";
-	//根据业务判断是否异常
-	public static String PYTHON_API_RESPONSE_JUDGE  = "417";
 
 	public static String CREATE_BUCKET_API_RESPONSE_SUCCESS = "202";
 

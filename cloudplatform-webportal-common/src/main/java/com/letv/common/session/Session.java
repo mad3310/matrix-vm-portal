@@ -24,6 +24,8 @@ public class Session implements Serializable{
 	
 	private boolean isAdmin;
 	
+	private Object openStackSession;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -87,4 +89,11 @@ public class Session implements Serializable{
 		this.isAdmin = isAdmin;
 	}
 
+	public void setOpenStackSession(Object openStackSession) {
+		this.openStackSession = openStackSession;
+	}
+	
+	public Object getOpenStackSession() {
+		return openStackSession;
+	}
 }

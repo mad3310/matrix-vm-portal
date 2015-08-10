@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -37,7 +36,7 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 		String nodeIp1 = containers.get(0).getIpAddr();
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		ApiResultObject result = this.cbasePythonService.initUserAndPwd4Manager(nodeIp1,
+		String result = this.cbasePythonService.initUserAndPwd4Manager(nodeIp1,
 				super.getCbaseManagePort(), cluster.getAdminUser(),
 				cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
@@ -47,19 +46,19 @@ public class TaskCbaseInitAdminUserAndPwdServiceImpl extends
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
+	public TaskResult analyzeRestServiceResult(String result) {
 		TaskResult tr = new TaskResult();
 		if (result == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed:" + result.getUrl());
+			tr.setResult("api connect failed");
 			return tr;
 		}
 
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result.getResult());
+		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
 		if (isSucess) {
 			tr.setResult("InitAdminUserAndPwd SUCCESS");
 		} else {
-			tr.setResult("InitAdminUserAndPwd FAILURE:" + result.getUrl());
+			tr.setResult("InitAdminUserAndPwd FAILURE");
 		}
 		tr.setSuccess(isSucess);
 		return tr;

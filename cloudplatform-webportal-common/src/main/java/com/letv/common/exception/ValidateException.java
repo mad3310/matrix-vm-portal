@@ -5,6 +5,8 @@ package com.letv.common.exception;
  * @author yangjz
  */
 public class ValidateException extends RuntimeException {
+	
+	private String userMessage;
 
 	public ValidateException() {
 	}
@@ -19,5 +21,9 @@ public class ValidateException extends RuntimeException {
 
 	public ValidateException(Throwable cause) {
 		super(cause);
+	}
+	
+	public String getUserMessage() {
+		return userMessage;
 	}
 }

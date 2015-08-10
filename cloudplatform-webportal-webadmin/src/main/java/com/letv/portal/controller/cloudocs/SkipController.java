@@ -22,7 +22,7 @@ import com.letv.common.result.ResultObject;
 public class SkipController {
 	
 	@RequestMapping(value ="/list/ocs/cluster",method=RequestMethod.GET)
-	public ModelAndView toOcsclusterList(ModelAndView mav,HttpServletRequest request){
+	public ModelAndView toMclusterList(ModelAndView mav,HttpServletRequest request){
 		mav.setViewName("/cloudocs/ocs_cluster_list");
 		return mav;
 	}
@@ -31,27 +31,5 @@ public class SkipController {
 		mav.setViewName("/cloudocs/ocs_container_list");
 		return mav;
 	}
-	@RequestMapping(value="/detail/ocs/cluster/{clusterId}", method=RequestMethod.GET)   
-	public ModelAndView toOcsclusterDetail(@PathVariable Long clusterId,ModelAndView mav) {
-		mav.addObject("clusterId",clusterId);
-		mav.setViewName("/cloudocs/ocs_cluster_detail");
-		return mav;
-	}
-	@RequestMapping(value="/list/bucket",method=RequestMethod.GET)
-	public ModelAndView toOcsList(ModelAndView mav){
-		mav.setViewName("/cloudocs/ocs_bucket_list");
-		return mav;
-	}
-	@RequestMapping(value="/detail/bucket/{bucketId}",method=RequestMethod.GET)
-	public ModelAndView toOcsDetail(@PathVariable Long bucketId,ModelAndView mav){
-		mav.addObject("bucketId",bucketId);
-		mav.setViewName("/cloudocs/ocs_bucket_detail");
-		return mav;
-	}
-	@RequestMapping(value="/audit/bucket/{bucketId}",method=RequestMethod.GET)
-	public ModelAndView toOcsAudit(@PathVariable Long bucketId, ModelAndView mav){
-		mav.addObject("bucketId",bucketId);
-		mav.setViewName("/cloudocs/ocs_bucket_audit");
-		return mav;
-	}
+	
 }

@@ -1,22 +1,22 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!-- /section:settings.box -->
-<script>
-	$(window).load(function() {
-		var iw=document.body.clientWidth;
-		if(iw>767){//sm&&md&&lg
-			$('.queryOption').removeClass('collapsed');
-		}else{$('#Physicalcluster').removeClass('chosen-select');$('#containeruser').removeClass('chosen-select')}
-	});
-	$(window).resize(function(event) {
-		var iw=document.body.clientWidth;
-		if(iw>767){//sm&&md&&lg
-			$('.queryOption').removeClass('collapsed');
-		}else{$('#Physicalcluster').removeClass('chosen-select');$('#containeruser').removeClass('chosen-select')}
-	});
-</script>
 <div class="page-content-area">
 <div class="row">
 <div class="widget-box widget-color-blue ui-sortable-handle queryOption collapsed">
+	<script>
+		$(window).load(function() {
+			var iw=document.body.clientWidth;
+			if(iw>991){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+		$(window).resize(function(event) {
+			var iw=document.body.clientWidth;
+			if(iw>991){//md&&lg
+				$('.queryOption').removeClass('collapsed');
+			}
+		});
+	</script>
 	<div class="widget-header hidden-md hidden-lg">
 		<h5 class="widget-title">Container集群查询条件</h5>
 		<div class="widget-toolbar">
@@ -26,32 +26,28 @@
 		</div>
 	</div>
 	<div class="widget-body">
-		<div class="page-header col-sm-12 col-xs-12 col-md-12 col-lg-12">
-			<div class="input-group pull-right col-sm-12 col-xs-12 col-md-12 col-lg-12">
+		<div class="page-header col-sm-12 col-xs-12 col-md-12">
+			<div class="input-group pull-right">
 				<form class="form-inline">
-					<div class="form-group col-sm-6 col-xs-12 col-md-2 col-lg-2">
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
 						<input type="text" class="form-control" id="containerName"
 							placeholder="container集群名称">
 					</div>
-					<div class="form-group col-sm-6 col-xs-12 col-md-2 col-lg-2">
-						<!-- <input type="text" class="form-control" id="Physicalcluster" placeholder="所属物理机集群"> -->
-						<select  class="chosen-select" id="Physicalcluster" data-placeholder="所属物理机集群" style="width:100%">
-							<option></option>
-						</select>
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<input type="text" class="form-control" id="Physicalcluster"
+							placeholder="所属物理机集群">
 					</div>
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
+						<input type="text" class="form-control" id="containeruser"
+							placeholder="所属用户">
 
-					<div class="form-group col-sm-6 col-xs-12 col-md-2 col-lg-2">
-						<!-- <input type="text" class="form-control" id="containeruser" placeholder="所属用户"> -->
-						<select  class="chosen-select" id="containeruser" data-placeholder="所属用户" style="width:100%">
-							<option></option>
-						</select>
 					</div>
-					<div class="form-group col-sm-6 col-xs-12 col-md-2 col-lg-2">
+					<div class="form-group col-sm-6 col-xs-12 col-md-2">
 						<select class="form-control" id="containerStatus">
 							<option value="">请选择状态</option>
 						</select>
 					</div>
-					<div class="form-group col-sm-6 col-xs-12 col-md-2 col-lg-2">
+					<div class="form-group col-sm-6 col-xs-12 col-md-3">
 						<button class="btn btn-sm btn-primary btn-search" id="mclusterSearch" type="button">
 							<i class="ace-icon fa fa-search"></i>搜索
 						</button>
@@ -66,7 +62,7 @@
 		<div class="widget-box widget-color-blue ui-sortable-handle col-xs-12">
 			<div class="widget-header">
 				<h5 class="widget-title">Container集群列表</h5>
-				<div class="widget-toolbar no-border hidden">
+				<div class="widget-toolbar no-border">
 					<button class="btn btn-white btn-primary btn-xs" data-toggle="modal" onclick="queryHcluster()" data-target="#create-mcluster-modal"><i class="ace-icont fa fa-plus"></i>创建Container集群</button>
 				</div>
 			</div>
@@ -83,7 +79,6 @@
 								</th>
 								<th>Container集群名称</th>
 								<th class="hidden-480">所属物理机集群</th>
-								<th class="hidden-480">内存大小</th>
 								<th class="hidden-480">类型</th>
 								<th>所属用户</th>
 								<th class="hidden-480">创建时间 </th>
@@ -192,9 +187,11 @@
 	</div>
 </div>
 <!-- /.page-content-area -->
+
 <link rel="stylesheet" href="${ctx}/static/styles/bootstrap/bootstrapValidator.min.css" />
 <script src="${ctx}/static/scripts/bootstrap/bootstrapValidator.min.js"></script>
 
 <script src="${ctx}/static/ace/js/jquery.dataTables.min.js"></script>
 <script src="${ctx}/static/ace/js/jquery.dataTables.bootstrap.js"></script>
+
 <script src="${ctx}/static/scripts/pagejs/gce/gce_cluster_list.js"></script>

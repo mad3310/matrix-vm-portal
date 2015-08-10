@@ -19,8 +19,8 @@ define(function(require) {
 	cn.dragBarInite(options);
 	cn.barClickDrag(options);
 	cn.barDrag(options);
-	/* 防止误操作退出创建页面 */
-	cn.AddBeforeunloadListener();
+	/* 禁用退格键退回网页 */
+	window.onload = cn.DisableBackspaceEnter();
 	if (document.getElementById("monthPurchaseBotton").form == null) { // 兼容IE
 																		// form提交
 		$("#monthPurchaseBotton").click(function() {
@@ -206,7 +206,6 @@ define(function(require) {
 	}
 	/* 创建cache */
 	function createOSS(data) {
-		cn.RemoveBeforeunloadListener();
 		location.href = "/list/oss";
 		 var url = "/oss";
 		 cn.PostData(url, data, function() {

@@ -19,6 +19,8 @@ define(function(require) {
 	cn.dragBarInite(options);
 	cn.barClickDrag(options);
 	cn.barDrag(options);
+	/* 禁用退格键退回网页 */
+	window.onload = cn.DisableBackspaceEnter();
 	
 	var _up = $('.mem-num-up');
 	var _down = $('.mem-num-down');

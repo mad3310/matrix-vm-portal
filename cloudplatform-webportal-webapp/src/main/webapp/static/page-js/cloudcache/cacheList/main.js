@@ -8,6 +8,8 @@ define(function(require){
 		name : "开放缓存服务 OCS",
 		herf : "/list/cache"
 	}]);
+	/*禁用退格键退回网页*/
+	window.onload=cn.DisableBackspaceEnter();
 
     /*加载数据*/
     var dataHandler = require('./dataHandler');

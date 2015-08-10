@@ -9,6 +9,4 @@ public interface ICbaseContainerService extends
 		IBaseService<CbaseContainerModel> {
 
 	public List<CbaseContainerModel> selectByCbaseClusterId(Long cbaseClusterId);
-
-	public CbaseContainerModel selectByName(String string);
 }

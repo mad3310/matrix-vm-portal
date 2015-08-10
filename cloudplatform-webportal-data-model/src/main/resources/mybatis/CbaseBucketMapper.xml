@@ -45,7 +45,7 @@
 	<sql id="Example_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
-			<if test="id != null and id != ''  ">
+			<if test="id != null  ">
 				and M.ID=#{id}
 			</if>
 
@@ -54,10 +54,10 @@
 				escape '^'
 			</if>
 
-			<if test="cbaseClusterId != null and cbaseClusterId != '' ">
+			<if test="cbaseClusterId != null  ">
 				and M.CBASECLUSTER_ID=#{cbaseClusterId}
 			</if>
-			<if test="hclusterId != null and hclusterId != '' ">
+			<if test="hclusterId != null  ">
 				and M.HCLUSTER_ID=#{hclusterId}
 			</if>
 			<if test="status != null and status != ''  ">
@@ -76,19 +76,19 @@
 				'^'
 			</if>
 
-			<if test="deleted != null and deleted != '' ">
+			<if test="deleted != null  ">
 				and M.DELETED=#{deleted}
 			</if>
-			<if test="createTime != null and createTime != '' ">
+			<if test="createTime != null  ">
 				and M.CREATE_TIME=#{createTime}
 			</if>
-			<if test="createUser != null and createUser != '' ">
+			<if test="createUser != null  ">
 				and M.CREATE_USER=#{createUser}
 			</if>
-			<if test="updateTime != null and updateTime != '' ">
+			<if test="updateTime != null  ">
 				and M.UPDATE_TIME=#{updateTime}
 			</if>
-			<if test="updateUser != null and updateUser != ''  ">
+			<if test="updateUser != null  ">
 				and M.UPDATE_USER=#{updateUser}
 			</if>
 		</trim>
@@ -200,19 +200,7 @@
 	<select id="selectByMapCount" resultType="java.lang.Integer"
 		parameterType="java.util.Map">
 		select count(1) from WEBPORTAL_CBASE_BUCKET M
-		left join WEBPORTAL_USER u on M.CREATE_USER = u.ID
-		left join WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
-		left join WEBPORTAL_CBASECLUSTER_INFO n on n.ID = M.CBASECLUSTER_ID
 		<include refid="Example_Where_Clause" />
-			<if test="userName != null  and userName != ''">
-				and u.USERNAME like CONCAT('%','${userName}','%') escape '^'
-			</if>
-			<if test="cbaseClusterName != null  and cbaseClusterName != ''">
-				and n.CBASECLUSTER_NAME like CONCAT('%','${cbaseClusterName}','%') escape '^'
-			</if>
-			<if test="hclusterName != null  and hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
-			</if>
 	</select>
 
 	<!-- 根据条件查询 -->
@@ -227,7 +215,7 @@
 	<sql id="Example_Page_Where_Clause">
 		where 1=1
 		<trim suffixOverrides=",">
-			<if test="params != null and params.id !=null and params.id !='' ">
+			<if test="params != null and params.id !=null  ">
 				and M.ID=#{params.id}
 			</if>
 			<if
@@ -237,19 +225,19 @@
 				'^'
 			</if>
 
-			<if test="params != null and params.cbaseClusterId != null and params.cbaseClusterId != ''  ">
+			<if test="params != null and params.cbaseClusterId != null  ">
 				and M.CBASECLUSTER_ID=#{params.cbaseClusterId}
 			</if>
-			<if test="params != null and params.hclusterId != null and params.hclusterId != '' ">
+			<if test="params != null and params.hclusterId != null  ">
 				and M.HCLUSTER_ID=#{params.hclusterId}
 			</if>
-			<if test="params != null and params.bucketType != null and params.bucketType != ''  ">
+			<if test="params != null and params.bucketType != null  ">
 				and M.BUCKET_TYPE=#{params.bucketType}
 			</if>
-			<if test="params != null and params.status != null and params.status != ''  ">
+			<if test="params != null and params.status != null  ">
 				and M.STATUS=#{params.status}
 			</if>
-			<if test="params != null and params.descn != null and params.descn != '' ">
+			<if test="params != null and params.descn != null  ">
 				and M.DESCN=#{params.descn}
 			</if>
 
@@ -265,19 +253,19 @@
 				'^'
 			</if>
 
-			<if test="params != null and params.deleted != null and params.deleted != ''  ">
+			<if test="params != null and params.deleted != null  ">
 				and M.DELETED=#{params.deleted}
 			</if>
-			<if test="params != null and params.createTime != null and params.createTime != '' ">
+			<if test="params != null and params.createTime != null  ">
 				and M.CREATE_TIME=#{params.createTime}
 			</if>
-			<if test="params != null and params.createUser != null  and params.createUser != '' ">
+			<if test="params != null and params.createUser != null  ">
 				and M.CREATE_USER=#{params.createUser}
 			</if>
-			<if test="params != null and params.updateTime != null and params.updateTime != '' ">
+			<if test="params != null and params.updateTime != null  ">
 				and M.UPDATE_TIME=#{params.updateTime}
 			</if>
-			<if test="params != null and params.updateUser != null and params.updateUser != '' ">
+			<if test="params != null and params.updateUser != null  ">
 				and M.UPDATE_USER=#{params.updateUser}
 			</if>
 		</trim>
@@ -298,15 +286,6 @@
 		left join
 		WEBPORTAL_HCLUSTER h on M.HCLUSTER_ID = h.ID
 		<include refid="Example_Page_Where_Clause" />
-			<if test="params != null and params.userName != null  and params.userName != ''">
-				and u.USERNAME like CONCAT('%','${params.userName}','%') escape '^'
-			</if>
-			<if test="params != null and params.cbaseClusterName != null  and params.cbaseClusterName != ''">
-				and n.CBASECLUSTER_NAME like CONCAT('%','${params.cbaseClusterName}','%') escape '^'
-			</if>
-			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
-				and h.HCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
-			</if>
 		ORDER BY M.CREATE_TIME DESC
 		<if test="page != null">
 			limit #{page.startRowPosition},#{page.recordsPerPage}

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -48,7 +47,7 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		ApiResultObject result = this.cbasePythonService.checkClusterRebalanceStatus(
+		String result = this.cbasePythonService.checkClusterRebalanceStatus(
 				nodeIp1, super.getCbaseManagePort(), cluster.getAdminUser(),
 				cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
@@ -57,7 +56,7 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 		while (!tr.isSuccess()) {
 			Thread.sleep(PYTHON_CHECK_INTERVAL_TIME);
 			if (new Date().getTime() - start > PYTHON_CREATE_CHECK_TIME) {
-				tr.setResult("check time over:"+result.getUrl());
+				tr.setResult("check time over");
 				break;
 			}
 			result = cbasePythonService.checkClusterRebalanceStatus(nodeIp1,
@@ -71,12 +70,12 @@ public class TaskCbaseRebalanceCheckStatusServiceImpl extends
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
+	public TaskResult analyzeRestServiceResult(String result) {
 		TaskResult tr = new TaskResult();
-		Map<String, Object> map = transToMap(result.getResult());
+		Map<String, Object> map = transToMap(result);
 		if (map == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed:" + result.getUrl());
+			tr.setResult("api connect failed");
 			return tr;
 		}
 

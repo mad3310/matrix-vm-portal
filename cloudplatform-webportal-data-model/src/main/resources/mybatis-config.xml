@@ -58,12 +58,12 @@
         
         <!-- swift -->
         <typeAlias alias="SwiftServer" type="com.letv.portal.model.swift.SwiftServer" />
-        
+
         <typeAlias alias="Dictionary" type="com.letv.portal.model.dictionary.Dictionary" />
         <typeAlias alias="Image" type="com.letv.portal.model.image.Image" />
-        
+
         <typeAlias alias="GceContainerExt" type="com.letv.portal.model.gce.GceContainerExt" />
-        
+
         <typeAlias alias="MysqlHealthMonitor" type="com.letv.portal.model.monitor.mysql.MysqlHealthMonitor" />
         <typeAlias alias="MysqlResourceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlResourceMonitor" />
         <typeAlias alias="MysqlKeyBufferMonitor" type="com.letv.portal.model.monitor.mysql.MysqlKeyBufferMonitor" />
@@ -72,6 +72,8 @@
         <typeAlias alias="MysqlTableSpaceMonitor" type="com.letv.portal.model.monitor.mysql.MysqlTableSpaceMonitor" />
         <typeAlias alias="MysqlGaleraMonitor" type="com.letv.portal.model.monitor.mysql.MysqlGaleraMonitor" />
         <typeAlias alias="MonitorErrorModel" type="com.letv.portal.model.monitor.MonitorErrorModel" />
-        
+
+        <!-- OpenStack -->
+        <typeAlias alias="CloudvmRegion" type="com.letv.portal.model.cloudvm.CloudvmRegion" />
     </typeAliases>
 </configuration>
