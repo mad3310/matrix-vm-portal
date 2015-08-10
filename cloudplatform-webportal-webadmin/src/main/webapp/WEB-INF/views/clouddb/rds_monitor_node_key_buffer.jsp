@@ -60,7 +60,7 @@
 							<th colspan=2 >服务器</th>
 							<th colspan=3>_buffer_size</th>
 							<th colspan=3>key_blocks_</th>
-							<th colspan=3>rate</th>
+							<th colspan=3>_rate</th>
 						</tr>
 						<tr class="header-two">
 							<th  class="table-head-sort" target-data="HOST_IP">主机</th>
@@ -71,9 +71,9 @@
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_UNUSED">_unused</th>
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED">_used</th>
 							<th  class="table-head-sort" target-data="KEY_BLOCKS_NOT_FLUSHED">_not_flushed</th>
-							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED_RATE">key_blocks_used(%)</th>
-							<th  class="table-head-sort" target-data="KEY_BUFFER_READ_RATE">key_buffer_read(%)</th>
-							<th  class="table-head-sort" target-data="KEY_BUFFER_WRITE_RATE">key_buffer_write(%)</th>
+							<th  class="table-head-sort" target-data="KEY_BLOCKS_USED_RATE">key_blocks_used_</th>
+							<th  class="table-head-sort" target-data="KEY_BUFFER_READ_RATE">key_buffer_read_</th>
+							<th  class="table-head-sort" target-data="KEY_BUFFER_WRITE_RATE">key_buffer_write_</th>
 						</tr>
 					</thead>
 						<tbody id="tby">

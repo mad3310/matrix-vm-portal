@@ -101,9 +101,9 @@ function updateResourceData() {
 				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUnused)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUsed)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].keyBlocksNotFlushed)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].joinBufferSize ==-1 ? -1:array[i].keyBlocksUsed*100)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].keyBufferReadRate ==-1 ? -1:array[i].keyBufferReadRate*100)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].keyBufferWriteRate ==-1 ? -1:array[i].keyBufferWriteRate*100)+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBlocksUsedRate ==-1 ? -1:(array[i].keyBlocksUsedRate*100+'%'))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBufferReadRate ==-1 ? -1:(array[i].keyBufferReadRate*100+'%'))+"</td>");
+				td.push("<td>"+dataErrorFilter(array[i].keyBufferWriteRate ==-1 ? -1:(array[i].keyBufferWriteRate*100+'%'))+"</td>");
 				var tr ="<tr>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 
