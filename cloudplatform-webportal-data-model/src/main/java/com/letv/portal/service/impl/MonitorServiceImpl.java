@@ -497,6 +497,12 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			Map<String, Object> map) {
 		return this.monitorDao.getMonitorErrorModelsByMap(map);
 	}
+
+
+	@Override
+	public void deleteMonitorErrorDataByMap(Map<String, Object> map) {
+		this.monitorDao.deleteMonitorErrorDataByMap(map);
+	}
 	
 	
 

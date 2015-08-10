@@ -86,6 +86,12 @@
 		group by 
 			error.TABLE_NAME
 	</select>
+	<delete id="deleteMonitorErrorDataByMap" parameterType="java.util.Map">
+		delete from 
+			WEBPORTAL_MONITOR_ERROR 
+		where 
+			CREATE_TIME &lt;= #{date} 
+	</delete>
 
 	<select id="selectByMap" resultMap="BaseResultMap"
 		parameterType="java.util.Map">

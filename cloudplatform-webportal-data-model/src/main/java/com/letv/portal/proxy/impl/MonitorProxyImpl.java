@@ -86,6 +86,8 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	private IMonitorIndexService monitorIndexService;
 	@Value("${service.notice.email.to}")
 	private String SERVICE_NOTICE_MAIL_ADDRESS;
+	@Value("${delete.monitor.error.days.ago}")
+	private int DELETE_MONITOR_ERROR_DAYS_AGO;
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 	
@@ -296,8 +298,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Override
 	public void collectMysqlMonitorData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
-		//测试专用，需要删除
-		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -314,8 +314,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Override
 	public void collectMysqlMonitorBaseData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
-		//测试专用，需要删除
-		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
 		indexParams.put("status", 4);
@@ -332,8 +330,6 @@ public class MonitorProxyImpl implements IMonitorProxy{
 	@Override
 	public void collectMysqlMonitorBaseSpaceData() {
 		Map<String,Object> map = new  HashMap<String,Object>();
-		// 测试专用，需要删除
-		//map.put("mclusterName", "35_hello44");
 		List<ContainerModel> contianers = this.containerService.selectVaildNormalContainers(map);
 		
 		Map<String,Object> indexParams = new  HashMap<String,Object>();
@@ -382,6 +378,14 @@ public class MonitorProxyImpl implements IMonitorProxy{
 		mailMessage.setHtml(true);
 		defaultEmailSender.sendMessage(mailMessage);
 	
+	}
+	@Override
+	public void deleteMonitorErrorData() {
+		Map<String, Object> params = new HashMap<String,Object>();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -DELETE_MONITOR_ERROR_DAYS_AGO);
+		params.put("date", new Date(cal.getTimeInMillis()));
+		this.monitorService.deleteMonitorErrorDataByMap(params);
 	}
 	
 	
