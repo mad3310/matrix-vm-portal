@@ -93,4 +93,6 @@ public interface VMManager extends ResourceManager {
 			throws OpenStackException;
 
 	String openConsole(VMResource vmResource) throws APINotAvailableException;
+
+	boolean isAuthority();
 }

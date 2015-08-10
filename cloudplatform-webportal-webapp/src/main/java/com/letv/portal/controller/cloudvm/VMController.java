@@ -292,4 +292,13 @@ public class VMController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value="/is-authority", method=RequestMethod.GET)
+	public @ResponseBody ResultObject isAuthority(){
+		ResultObject result=new ResultObject();
+		OpenStackSession openStackSession = Util.session(sessionService);
+		VMManager vmManager = openStackSession.getVMManager();
+		result.setData(vmManager.isAuthority());
+		return result;
+	}
 }

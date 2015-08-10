@@ -157,8 +157,12 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		limitedUserEmails.add("zhouxianguang@letv.com");
 	}
 	protected void checkUserEmail() throws OpenStackException {
-		if(!limitedUserEmails.contains(openStackUser.getEmail())){
+		if(!isAuthority()){
 			throw new OpenStackException("The user is not in limited users", "对不起，您没有权限。");
 		}
+	}
+
+	public boolean isAuthority(){
+		return limitedUserEmails.contains(openStackUser.getEmail());
 	}
 }
