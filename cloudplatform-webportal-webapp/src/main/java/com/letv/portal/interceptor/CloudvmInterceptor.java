@@ -48,8 +48,7 @@ public class CloudvmInterceptor implements HandlerInterceptor {
                         if (isAjaxRequest) {
                             responseJson(request, response, "对不起，您没有权限。");
                         } else {
-                            RequestDispatcher rd = request.getRequestDispatcher("/");
-                            rd.forward(request, response);
+                            response.sendRedirect(request.getContextPath()+"/dashboard");
                         }
                         return false;
                     }
