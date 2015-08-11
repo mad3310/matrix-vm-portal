@@ -315,7 +315,7 @@
 											<span>ECS</span>
 											<span class="beta-font">Beta</span>
 										</div>
-										<div class="pull-right clearfix">
+										<div class="product-opts pull-right clearfix">
 											<div class="pull-left product-opt-wrap">
 												<a href="/detail/vmCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
 													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
@@ -329,7 +329,7 @@
 										</div>
 									</li>
 									<li  id="slb-not-opened">
-										<div class="pull-left hide clearfix">
+										<div class="pull-left clearfix">
 											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
