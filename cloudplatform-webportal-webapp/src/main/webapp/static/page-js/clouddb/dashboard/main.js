@@ -21,7 +21,9 @@ define(function(require){
      * 加载资源数量：rds数
      */
     
-    cn.GetData("/dashboard/statistics",basicInfoHandler.resCountHandler);
+    cn.GetData("/dashboard/statistics",basicInfoHandler.resCountHandler).then(function(data){
+        cn.GetData("/ecs/is-authority",basicInfoHandler.InitVmModule);
+    });
     //查询缓存是否显示
     if(cn.getCookie('tiptool')){//已读过tip
     }else{

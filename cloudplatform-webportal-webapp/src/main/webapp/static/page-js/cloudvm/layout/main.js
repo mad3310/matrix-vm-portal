@@ -9,10 +9,8 @@ define(function(require){
 	var operState = 'free';
 	var vmStatus = '';
      /* 初始化navbar-header-menu */
-	cn.initNavbarMenu([{
-				name : "云主机",
-				herf : "/list/vm"
-			}]);
+	cn.initNavbarMenu([{name : "云主机",herf : "/list/vm",isActive:true},
+	                   {name : "磁盘",herf : "/list/vm/disk"}]);
 			
 	$("#right-head").click(function(e){
 		e = e ? e : window.event;

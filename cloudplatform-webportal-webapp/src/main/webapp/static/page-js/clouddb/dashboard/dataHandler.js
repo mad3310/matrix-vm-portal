@@ -63,6 +63,13 @@ define(function(require,exports,module){
                 $("#vm-opened").addClass("hide");
                 $("#vm-not-opened").removeClass("hide");
             }
+        },
+        InitVmModule:function(data){
+        	if(!data || !data.data){
+        		$("#vm-opened").addClass("hide");
+        		$("#vm-not-opened").removeClass("hide");
+        		$("#vm-not-opened .product-opts").html('<span class="home-orange">敬请期待...</span>');
+        	}
         }
     }
 });
