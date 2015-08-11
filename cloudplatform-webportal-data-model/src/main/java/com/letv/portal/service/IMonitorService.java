@@ -80,8 +80,25 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	  */
 	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d);
 	
+	/**
+	  * @Title: saveMonitorErrorInfo
+	  * @Description: 保存监控错误数据
+	  * @param error void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月10日 下午3:49:01
+	  */
 	public void saveMonitorErrorInfo(MonitorErrorModel error);
 	
 	public List<Map<String, Object>> getMonitorErrorModelsByMap(Map<String, Object> map);
+	/**
+	  * @Title: deleteMonitorErrorDataByMap
+	  * @Description: 删除几天前监控错误数据
+	  * @param map void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月10日 下午3:48:33
+	  */
+	public void deleteMonitorErrorDataByMap(Map<String, Object> map);
 	
 }
