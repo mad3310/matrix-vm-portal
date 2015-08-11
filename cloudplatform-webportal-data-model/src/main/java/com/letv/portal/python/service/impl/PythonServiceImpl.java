@@ -25,6 +25,7 @@ public class PythonServiceImpl implements IPythonService{
 	private final static String OSS_URL_PORT = ":8887";	
 	private final static String GBALANCER_PORT = ":9888";	
 	private final static String URL_CHECK_PORT = ":6666";
+	private final static String BEEHIVE_PORT = ":6666";
 	
 	@Override
 	public ApiResultObject createContainer(String mclusterName,String ip,String username,String password) {
@@ -332,6 +333,13 @@ public class PythonServiceImpl implements IPythonService{
 	public ApiResultObject getMonitorData(String ip, String index) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
+		String result = HttpClient.get(url.toString(),1000,1000);
+		return new ApiResultObject(result, url.toString());
+	}
+	@Override
+	public ApiResultObject getClusterMonitorData(String ip, String index) {
+		StringBuffer url = new StringBuffer();
+		url.append(URL_HEAD).append(ip).append(BEEHIVE_PORT).append(index);
 		String result = HttpClient.get(url.toString(),1000,1000);
 		return new ApiResultObject(result, url.toString());
 	}
