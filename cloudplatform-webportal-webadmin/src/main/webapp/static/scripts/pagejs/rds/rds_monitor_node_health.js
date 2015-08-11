@@ -109,14 +109,26 @@ function updateHealthData() {
 				td.push("<td style='text-align:center;'><i class='fa fa-medium'></li></td>");
 				td.push("<td>"+dataErrorFilter(array[i].runTime ==-1 ? -1:TransTimeUnit(array[i].runTime))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].version)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");
+				if(array[i].connectCount >=200){
+					td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");
+				}else{
+					td.push("<td>"+dataErrorFilter(array[i].connectCount)+"</td>");
+				}
 				td.push("<td>"+dataErrorFilter(array[i].activityCount)+"</td>");
-				td.push("<td>"+dataErrorFilter(array[i].waitCount)+"</td>");
+				if(array[i].waitCount>=100){
+					td.push("<td class='text-danger'>"+dataErrorFilter(array[i].waitCount)+"</td>");
+				}else{
+					td.push("<td>"+dataErrorFilter(array[i].waitCount)+"</td>");
+				}
 				td.push("<td>"+dataErrorFilter(array[i].send ==-1 ? -1:TransUnit(array[i].send))+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].recv ==-1 ? -1:TransUnit(array[i].recv))+"</td>");
 				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].queryPs))+"</td>");
 				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].transactionPs))+"</td>");
-				td.push("<td>"+dataErrorFilter(Math.ceil(array[i].slowQueryCount))+"</td>");
+				if(array[i].slowQueryCount>=3000){
+					td.push("<td class='text-danger'>"+dataErrorFilter(Math.ceil(array[i].slowQueryCount))+"</td>");
+				}else{
+					td.push("<td>"+dataErrorFilter(Math.ceil(array[i].slowQueryCount))+"</td>");
+				}
 				td.push("<td>"+dataErrorFilter(array[i].cpu)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].memory)+"</td>");
 				var tr ="<tr data-toggle='tooltip' data-placement='top' title='最新监控时间:"+date('Y-m-d H:i:s',array[i].updateTime)+"'>"+td.join('')+"</tr>";

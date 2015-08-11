@@ -1196,3 +1196,4 @@ td,th{word-break: break-all; word-wrap:break-word;}
 .monitor-table-headr-group .header-two .table-head-sort a{visibility: hidden;color: #c8c8c8;cursor:default; }
 .monitor-table-headr-group .header-two .table-head-sort a .fa{height:4px;cursor:pointer;}
 .monitor-table-headr-group .header-two .table-head-sort a .sort-by{visibility: visible; color: #428bca;}
+td .text-danger{color: #d95c5c;}
