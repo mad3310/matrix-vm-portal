@@ -428,6 +428,22 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					break;
 				}
 			}
+		} else if("WEBPORTAL_MONITOR_MYSQL_BASE_WSREP_REP_REC".equals(tableName)) {
+			Map<String, Object> computer = new HashMap<String, Object>();
+			for (MonitorDetailModel monitorDetailModel : models) {
+				//拿到2次值和对应时间，相减后除以时间
+				if(computer.get(monitorDetailModel.getDetailName()+"_value")==null) {
+					computer.put(monitorDetailModel.getDetailName()+"_value", monitorDetailModel.getDetailValue());
+					computer.put(monitorDetailModel.getDetailName()+"_time", monitorDetailModel.getMonitorDate());
+				} else {
+					long time = (((Date)computer.get(monitorDetailModel.getDetailName()+"_time")).getTime()-monitorDetailModel.getMonitorDate().getTime())/1000;
+					float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue())/time;
+					result.put(monitorDetailModel.getDetailName(), ret);
+				}
+				if(result.size()==cols.length) {//采用最新2次数据，满足采集条数后，退出
+					break;
+				}
+			}
 		} else if("WEBPORTAL_MONITOR_MYSQL_BASE_NET".equals(tableName)) {
 			Map<String, Object> computer = new HashMap<String, Object>();
 			for (MonitorDetailModel monitorDetailModel : models) {
