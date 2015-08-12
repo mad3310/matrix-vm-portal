@@ -84,4 +84,13 @@ public interface IMonitorProxy {
 	  * @date 2015年8月6日 下午6:24:51
 	  */
 	public void monitorErrorReport();
+	
+	/**
+	  * @Title: deleteMonitorErrorData
+	  * @Description: 删除监控错误表历史数据   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月10日 下午3:57:59
+	  */
+	public void deleteMonitorErrorData();
 }
