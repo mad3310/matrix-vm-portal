@@ -33,7 +33,7 @@ public class SkipController {
 		mav.setViewName("/cloudocs/ocs_container_list");
 		return mav;
 	}
-	@RequestMapping(value="/detail/ocs/cluster/{clusterId}", method=RequestMethod.GET)   
+	@RequestMapping(value="/detail/ocs/cluster/{clusterId}", method=RequestMethod.GET)
 	public ModelAndView toOcsclusterDetail(@PathVariable Long clusterId,ModelAndView mav) {
 		mav.addObject("clusterId",clusterId);
 		mav.setViewName("/cloudocs/ocs_cluster_detail");

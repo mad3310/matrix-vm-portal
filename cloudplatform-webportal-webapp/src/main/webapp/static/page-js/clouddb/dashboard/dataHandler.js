@@ -55,6 +55,21 @@ define(function(require,exports,module){
                 $("#oss-opened").addClass("hide");
                 $("#oss-not-opened").removeClass("hide");
             }
+            if(data.data.vm > 0){
+                $("#vm-opened").removeClass("hide");
+                $("#vm-not-opened").addClass("hide");
+                $("#vmCount").html(data.data.vm);
+            }else{
+                $("#vm-opened").addClass("hide");
+                $("#vm-not-opened").removeClass("hide");
+            }
+        },
+        InitVmModule:function(data){
+        	if(!data || !data.data){
+        		$("#vm-opened").addClass("hide");
+        		$("#vm-not-opened").removeClass("hide");
+        		$("#vm-not-opened .product-opts").html('<span class="home-orange">敬请期待...</span>');
+        	}
         }
     }
 });

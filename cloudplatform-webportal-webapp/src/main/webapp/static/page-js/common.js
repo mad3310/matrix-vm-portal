@@ -160,6 +160,25 @@ define(function(require,exports,module){
             else if(status == 'SHUTOFF'){
                 return '已停止'
             }
+            //disk status
+            else if(status == 'creating'){
+                return '创建中'
+            }
+            else if(status == 'available'){
+                return '可用的';
+            }
+            else if(status == 'attaching'){
+                return '挂载中'
+            }
+            else if(status == 'in-use'){
+                return '使用中'
+            }
+            else if(status == 'deleting'){
+                return '删除中'
+            }
+            else if(status == 'error'){
+                return '异常'
+            }
             else{
                 return status;
             }   
@@ -1117,7 +1136,7 @@ define(function(require,exports,module){
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
-        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand"+(data[i].isActive? " active":"")+"\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
         },
         uploadfile:function(target){
@@ -1210,28 +1229,76 @@ define(function(require,exports,module){
             })
         },
         TransUnit:function(num){
-        	var temp=Math.abs(num);
-        	if(temp<1024){//B
-        		temp=temp+'B';
-        	}else if(temp<1024*1024){//KB
-        		temp= Math.round(temp/1024*Math.pow(10, 2))/Math.pow(10, 2)+'KB'
-        	}else if(temp<1024*1024*1024){//MB
-        		temp=Math.round(temp/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'MB'
-        	}else{//GB
-        		temp=Math.round(temp/1024/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'GB';
-        	}
-        	if(num<0){
-        		temp='-'+temp
-        	}
-        	return temp;
+            var temp=Math.abs(num);
+            if(temp<1024){//B
+                temp=temp+'B';
+            }else if(temp<1024*1024){//KB
+                temp= Math.round(temp/1024*Math.pow(10, 2))/Math.pow(10, 2)+'KB'
+            }else if(temp<1024*1024*1024){//MB
+                temp=Math.round(temp/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'MB'
+            }else{//GB
+                temp=Math.round(temp/1024/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'GB';
+            }
+            if(num<0){
+                temp='-'+temp
+            }
+            return temp;
         },
         AddBeforeunloadListener:function(text){
-        	$(window).on('beforeunload', function(){
-        	      return text || '表单还没有提交。';
-        	});
+            $(window).on('beforeunload', function(){
+                return text || '表单还没有提交。';
+            });
         },
         RemoveBeforeunloadListener:function(text){
-        	$(window).off('beforeunload');
+            $(window).off('beforeunload');
+        },
+        validateInputNum:function(inputValue){
+            var reg=/^[1-9]+[0-9]*/;
+            return reg.exec(inputValue)==null? false:true;
+        },
+        NumberInput:function(minNum,maxNum,increment,onChange){
+            var that=this;
+            var numberUpEl=$('.bk-number-up');
+            var numberDownEl=$('.bk-number-down');
+            var numberInputEl=$('.bk-number-input');
+
+            numberInputEl.on('change',function(e){
+                onChange(e);
+            });
+            numberInputEl.on('blur', function(e){
+                if(!that.validateInputNum(numberInputEl.val())){
+                    numberInputEl.val(minNum.toString());
+                    numberInputEl.trigger('change');
+                }
+            });
+            numberDownEl.on('click',function(e){
+                var currentNum=parseFloat(numberInputEl.val());
+                if(currentNum==minNum){
+                    return;
+                }
+                if((currentNum-increment)==minNum){
+                    numberDownEl.addClass('bk-number-disabled');
+                }
+                if(currentNum==maxNum){
+                    numberUpEl.removeClass('bk-number-disabled');
+                }
+                numberInputEl.val((currentNum-increment).toString());
+                numberInputEl.trigger('change');
+            });
+            numberUpEl.on('click',function(e){
+                var currentNum=parseFloat(numberInputEl.val());
+                if(currentNum==maxNum){
+                    return;
+                }
+                if((currentNum+increment)==maxNum){
+                    numberUpEl.addClass('bk-number-disabled');
+                }
+                if(currentNum==minNum){
+                    numberDownEl.removeClass('bk-number-disabled');
+                }
+                numberInputEl.val((currentNum+increment).toString());
+                numberInputEl.trigger('change');
+            });
         }
     }
     /*common原型属性方法end*/

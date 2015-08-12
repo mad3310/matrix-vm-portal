@@ -151,16 +151,16 @@
 		from WEBPORTAL_CBASECLUSTER_INFO CBASE
 		where CBASE.CBASECLUSTER_NAME=#{clusterName}
 	</select>
-	
+
 	<!-- 列表总数  -->
 	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
-		select 
-			count(1) 
-		from 
+		select
+			count(1)
+		from
 			WEBPORTAL_CBASECLUSTER_INFO CBASE
-		join 
+		join
 			WEBPORTAL_USER U ON U.ID = CBASE.CREATE_USER
-		join 
+		join
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
 			<include refid="Example_Where_Clause" />
 			<if test="userName != null  and userName != ''">
@@ -170,16 +170,16 @@
 				and h.hCLUSTER_NAME like CONCAT('%','${hclusterName}','%') escape '^'
 			</if>
 	</select>
-	
+
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="com.letv.common.dao.QueryParam">
 		select
 			<include refid="Base_Column_List" /> ,U.USERNAME,h.HCLUSTER_NAME_ALIAS
-		FROM  
-			WEBPORTAL_CBASECLUSTER_INFO CBASE 
-		join 
+		FROM
+			WEBPORTAL_CBASECLUSTER_INFO CBASE
+		join
 			WEBPORTAL_USER U ON U.ID = CBASE.CREATE_USER
-		join 
+		join
 			WEBPORTAL_HCLUSTER h on CBASE.HCLUSTER_ID = h.ID
 			<include refid="List_Where_Clause" />
 			<if test="params != null and params.userName != null  and params.userName != ''">
@@ -188,7 +188,7 @@
 			<if test="params != null and params.hclusterName != null  and params.hclusterName != ''">
 				and h.hCLUSTER_NAME like CONCAT('%','${params.hclusterName}','%') escape '^'
 			</if>
-		ORDER BY CBASE.CREATE_TIME DESC	
+		ORDER BY CBASE.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>

@@ -73,6 +73,33 @@
 	      </property>
 	    </bean>
 	  </mvc:interceptor>
+	 <mvc:interceptor>
+		 <mvc:mapping path="/**"/>
+		 <bean class="com.letv.portal.interceptor.CloudvmInterceptor">
+			 <property name="checkUrls">
+				 <list>
+					 <value>/detail/vmBaseInfo</value>
+					 <value>/detail/vm</value>
+					 <value>/list/vm</value>
+					 <value>/detail/vmCreate</value>
+					 <value>/detail/diskCreate</value>
+					 <value>/list/vm/disk</value>
+					 <value>/detail/vmDisks</value>
+					 <value>/vnc_auto.html</value>
+					 <value>/ecs</value>
+					 <value>/osf</value>
+					 <value>/osi</value>
+					 <value>/osn</value>
+					 <value>/osv</value>
+				 </list>
+			 </property>
+			 <property name="allowUrls">
+				 <list>
+					 <value>/ecs/is-authority</value>
+				 </list>
+			 </property>
+		 </bean>
+	 </mvc:interceptor>
 	</mvc:interceptors>
 
 </beans>

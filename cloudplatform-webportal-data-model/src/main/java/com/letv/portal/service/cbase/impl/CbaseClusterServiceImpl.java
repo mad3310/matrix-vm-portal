@@ -52,7 +52,7 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 	public List<CbaseClusterModel> selectByName(String clusterName) {
 		return this.cbaseClusterDao.selectByName(clusterName);
 	}
-	
+
 	@Override
 	public void asyncClusterCount(Map<String,Object> mm,HclusterModel hcluster) {
 		String clusterName = (String) mm.get("clusterName");
@@ -76,14 +76,14 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 			if(null == container) {
 				this.addHandContainer(cm, cluster.getId());
 				continue;
-			} 
+			}
 		}
 	}
-	
+
 	private void addHandMcluster(Map mm,Long hclusterId) {
 		CbaseClusterModel cluster = new CbaseClusterModel();
 		cluster.setCbaseClusterName((String) mm.get("clusterName"));
-		cluster.setStatus(MclusterStatus.RUNNING.getValue());	
+		cluster.setStatus(MclusterStatus.RUNNING.getValue());
 		cluster.setAdminUser("root");
 		cluster.setAdminPassword((String) mm.get("clusterName"));
 		cluster.setType(MclusterType.HAND.getValue());
@@ -95,7 +95,7 @@ public class CbaseClusterServiceImpl extends BaseServiceImpl<CbaseClusterModel>
 			this.addHandContainer(cm,cluster.getId());
 		}
 	}
-	
+
 	private void addHandContainer(Map cm,Long mclusterId) {
 			CbaseContainerModel container = new CbaseContainerModel();
 			try {

@@ -23,7 +23,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 
 	@Value("${matrix.cbase.default.image}")
 	private String MATRIX_CBASE_DEFAULT_IMAGE;
-	
+
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 	private final static Logger logger = LoggerFactory
@@ -55,7 +55,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("nodeCount", String.valueOf(hostSize));
 		map.put("mountDir", mountDir);
 		map.put("memory", memory);
-		
+
 		map.put("image", MATRIX_CBASE_DEFAULT_IMAGE);
 
 		ApiResultObject result = this.cbasePythonService.createContainer(map,

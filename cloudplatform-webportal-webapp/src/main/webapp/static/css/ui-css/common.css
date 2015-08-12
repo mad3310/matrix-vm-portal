@@ -1492,6 +1492,34 @@ textarea {
 }
 
 /*select style*/
+.image-version-selector{
+	margin-left:5px !important;
+}
+.image-invalid-tip{
+	display: inline;
+  	line-height: 36px;
+  	margin-left: 10px;
+	color: #a94442;
+}
+.divselect-unselected .sleBG{
+	background-color: rgb(232, 232, 232) !important;
+	color:black !important;
+}
+.divselect-unselected .divselect span{
+	color: #666 !important;
+}
+.divselect-disabled .sleBG{
+	background-color: rgb(232, 232, 232) !important;
+}
+.divselect-disabled .divselect span{
+	color: #666 !important;
+}
+.divselect-disabled .bk-select-arrow{
+	display:none !important;
+}
+.divselect-disabled .bk-select-options{
+	display:none !important;
+}
 .divselect{
 	cursor: pointer;
 	width:226px;
@@ -1511,6 +1539,19 @@ textarea {
 	border:1px solid #eeeeee;
 	/*修改下拉框适配位置显示*/
 	position:absolute;
+}
+.divselect .bk-select-options {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 36px;
+	overflow: auto;
+	max-height: 200px;
+	background: #fff;
+	width: 100%;
+	-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+	box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+	z-index: 1000;
 }
 .bk-select-option{
 	cursor: pointer;
@@ -1545,10 +1586,202 @@ textarea {
   -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  min-width:200px;
 }
 
 /*end bootstrap-select style*/
 
+/*begin vm-global style*/
+.navbar-header .navbar-brand.m-brand{
+	margin-left:0;
+	margin-right:15px
+}
+.navbar-header .navbar-brand.m-brand.active{
+	background-color: #ddd;
+}
+/*end vm-global style*/
+
+
+/*begin vm-list page style*/
+.region-city-list{
+	display:inline-block;
+}
+.region-city-list button{
+	margin-right:5px;
+}
+.vmlist-item-more{
+
+}
+.vmlist-item-more .dropdown-menu{
+	right:0;
+	left: auto;
+}
+/*end vm-list page style*/
+
+/*begin vm-create page style*/
+.btn-publicip{
+	display: none;
+}
+.bk-disk {
+box-sizing: content-box;
+padding: 5px 10px;
+background: #eee;
+width: 500px;
+height: 36px;
+}
+.bk-disk .bk-disk-type {
+display: inline;
+width: 86px;
+float: left;
+text-align: center;
+}
+.bk-form-row-li .bk-form-row-li-info {
+line-height: 36px;
+color: #999;
+vertical-align: top;
+}
+.bk-black {
+color: #000 !important;
+}
+.bk-disk-storage {
+position: relative;
+float: left;
+display: inline;
+width: 90px;
+}
+.bk-disk-input {
+float: left;
+display: inline;
+height: 14px;
+width: 56px;
+padding: 10px 28px 10px 4px;
+border: solid 1px #e8e8e8;
+text-align: center;
+line-height: 20px;
+color: #333;
+font-size: 14px;
+outline: none;
+box-sizing: content-box;
+}
+.bk-disk-unit {
+position: absolute;
+left: 62px;
+top: 0;
+width: 28px;
+height: 36px;
+text-align: center;
+line-height: 36px;
+color: #999;
+font-size: 12px;
+}
+.bk-disk .bk-disk-delete {
+-webkit-transition: all .3s;
+float: right;
+display: inline;
+width: 12px;
+height: 12px;
+margin-left: 10px;
+margin-top: 8px;
+font-size: 12px;
+line-height: 1;
+color: #999;
+cursor: pointer;
+padding: 2px;
+}
+.bk-disk-delete .glyphicon-remove {
+	font-size: 16px;
+  left: -10px;
+}
+i {
+font-style: normal;
+}
+.bk-disk-add {
+cursor: pointer;
+}
+.bk-disk-add .bk-disk-add-icon {
+position: relative;
+display: inline-block;
+width: 36px;
+height: 36px;
+background: #43bfe3;
+vertical-align: top;
+}
+.bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line, .bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line-b {
+position: absolute;
+top: 16px;
+left: 10px;
+width: 16px;
+height: 4px;
+background: #fff;
+}
+.bk-disk-add .bk-disk-add-icon .bk-disk-add-icon-line-b {
+top: 10px;
+left: 16px;
+width: 4px;
+height: 16px;
+}
+.bk-disk-add .bk-disk-add-txt {
+margin-left: 10px;
+line-height: 36px;
+font-size: 14px;
+vertical-align: top;
+}
+.bk-form-row-li .bk-lnk {
+line-height: 36px;
+white-space: nowrap;
+vertical-align: top;
+}
+.bk-lnk,.bk-lnk:link,.bk-lnk:visited {
+color: #666;
+text-decoration: none;
+cursor: pointer;
+-webkit-transition: all .3s;
+-moz-transition: all .3s;
+-ms-transition: all .3s;
+-o-transition: all .3s;
+}
+.password-tip{
+	font-size: 12px;
+  margin-left: 10px;
+}
+#submitResult{
+	padding: 2px 12px 0;
+  margin: 0;
+    color: #a94442;
+}
+/*end vm-create page style*/
+/*begin vm-disk-create page style*/
+.yundisk-size{
+	position: relative;
+  float: left;
+  display: inline;
+  width: 90px;
+}
+.yundisk-size-input {
+display: inline;
+box-sizing: content-box;
+height: 14px;
+width: 56px;
+padding: 10px 28px 10px 4px;
+border: solid 1px #e8e8e8;
+text-align: center;
+line-height: 20px;
+color: #333;
+font-size: 14px;
+outline: none;
+}
+.yundisk-size-unit {
+position: absolute;
+left: 62px;
+top: 0;
+width: 28px;
+height: 36px;
+text-align: center;
+line-height: 36px;
+color: #999;
+font-size: 12px;
+}
+/*end vm-disk-create page style*/
 /*  nodata div style*/
 #noData{
 	color:#ddd;
@@ -1774,7 +2007,7 @@ animation:moves 2s;
 .btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}
 .help-tip{padding-top:7px;}
 /**
- * layouts menu css 
+ * layouts menu css
  * Version 1.0
  * author yaokuo 2015-05-26
  **/
