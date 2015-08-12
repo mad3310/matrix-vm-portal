@@ -288,9 +288,34 @@ public class CronJobsController {
 		return obj;
 	}
 	
+	/**
+	  * @Title: monitorErrorReport
+	  * @Description: 发送监控错误报告
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月10日 下午2:13:52
+	  */
 	@RequestMapping(value="/monitor/error/report",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject monitorErrorReport(HttpServletRequest request,ResultObject obj) {
 		this.monitorProxy.monitorErrorReport();
+		return obj;
+	}
+	/**
+	  * @Title: deleteMonitorErrorData
+	  * @Description: 删除监控错误历史数据
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月10日 下午3:57:28
+	  */
+	@RequestMapping(value="/monitor/error/clear",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject deleteMonitorErrorData(HttpServletRequest request,ResultObject obj) {
+		this.monitorProxy.deleteMonitorErrorData();
 		return obj;
 	}
 	

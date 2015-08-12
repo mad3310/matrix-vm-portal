@@ -54,11 +54,28 @@ public class CronJobsControllerTest extends AbstractTest{
     	this.cron.addMonitorPartition(request, new ResultObject());
     }
     @Test
-    //@Ignore
+    @Ignore
     public void testDeleteMonitorPartition() {
     	MockHttpServletRequest request =  new MockHttpServletRequest();
     	this.cron.deleteMonitorPartitionThirtyDaysAgo(request, new ResultObject());
     }
-    
+    @Test
+    @Ignore
+    public void testMonitorErrorReport() {
+    	MockHttpServletRequest request =  new MockHttpServletRequest();
+    	this.cron.monitorErrorReport(request, new ResultObject());
+    }
+    @Test
+    @Ignore
+    public void testCollectMclusterMonitorData() {
+    	MockHttpServletRequest request =  new MockHttpServletRequest();
+    	this.cron.collectMclusterMonitorData(request, new ResultObject());
+    }
+    @Test
+    //@Ignore
+    public void testDeleteMonitorErrorData() {
+    	MockHttpServletRequest request =  new MockHttpServletRequest();
+    	this.cron.deleteMonitorErrorData(request, new ResultObject());
+    }
     
 }

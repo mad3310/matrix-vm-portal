@@ -102,10 +102,16 @@ function updateResourceData() {
 				td.push("<td>"+dataErrorFilter(array[i].cacheTableCount)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].hadOpenTable)+"</td>");
 				td.push("<td>"+dataErrorFilter(array[i].cacheTableNohitCount)+"</td>");
-				var tr ="<tr>"+td.join('')+"</tr>";
+				var tr ="<tr  data-toggle='tooltip' data-placement='top' title='最新监控时间:"+date('Y-m-d H:i:s',array[i].updateTime)+"'>"+td.join('')+"</tr>";
 				trs.push(tr);
 			}//循环json中的数据 
 			tby.html(trs);
+			var tooltip = $('[data-toggle = "tooltip"]').tooltip({
+				position: { my: "right top+40%", at: "right" }
+			});
+			var tooltip = $('[data-toggle = "tooltip"]').tooltip({
+				position: { my: "right top+40%", at: "right" }
+			});
 			if (totalPages <= 1) {
 				$("#pageControlBar").hide();
 			} else {
