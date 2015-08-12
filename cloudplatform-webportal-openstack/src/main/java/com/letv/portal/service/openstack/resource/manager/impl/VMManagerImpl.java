@@ -484,7 +484,7 @@ public class VMManagerImpl extends AbstractResourceManager implements VMManager 
 			if (ex instanceof OpenStackException) {
 				throw (OpenStackException) ex;
 			} else {
-				if(ex.getMessage().contains("Flavor's disk is too small for requested image.")){
+				if(ex.getMessage()!=null && ex.getMessage().contains("Flavor's disk is too small for requested image.")){
 					throw new OpenStackException(ex.getMessage(),"硬件配置过低，不满足镜像的要求。");
 				}
 				throw new OpenStackException("后台服务错误", ex);
