@@ -40,13 +40,12 @@ public class DashBoardController {
 		return result;
 	}
 
-	@RequestMapping(value = "/monitor/db/storage", method = RequestMethod.GET)
+	@RequestMapping(value="/monitor/db/storage",method=RequestMethod.GET)
 	public @ResponseBody ResultObject dbStorage(ResultObject result) {
 		result.setData(this.dashBoardProxy.selectDbStorage());
 		return result;
 	}
-
-	@RequestMapping(value = "/monitor/db/connect", method = RequestMethod.GET)
+	@RequestMapping(value="/monitor/db/connect",method=RequestMethod.GET)
 	public @ResponseBody ResultObject dbConnect(ResultObject result) {
 		result.setData(this.dashBoardProxy.selectDbConnect());
 		return result;

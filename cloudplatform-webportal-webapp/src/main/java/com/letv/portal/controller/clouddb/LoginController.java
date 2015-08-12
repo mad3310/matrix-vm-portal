@@ -40,6 +40,7 @@ public class LoginController{
 	private ILoginService loginManager;
 	@Autowired
 	private SessionServiceImpl sessionService;
+
 	@Autowired
 	private OpenStackService openStackService;
 	

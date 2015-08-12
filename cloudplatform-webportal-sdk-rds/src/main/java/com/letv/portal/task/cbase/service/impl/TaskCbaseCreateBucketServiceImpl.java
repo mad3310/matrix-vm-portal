@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
@@ -50,7 +51,7 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 		int perBucketNodeMemQuotaMB = (int) tmpPerBucketNodeMemQuotaMB + 100;
 
 		if (bucket.getBucketType() == 0) {
-			String result = this.cbasePythonService.createPersistentBucket(
+			ApiResultObject result = this.cbasePythonService.createPersistentBucket(
 					nodeIp1, super.getCbaseManagePort(),
 					bucket.getBucketName(),
 					String.valueOf(perBucketNodeMemQuotaMB),
@@ -74,7 +75,7 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 				tr = analyzeRestServiceResult(result);
 			}
 		} else if (bucket.getBucketType() == 1) {
-			String result = this.cbasePythonService.createUnPersistentBucket(
+			ApiResultObject result = this.cbasePythonService.createUnPersistentBucket(
 					nodeIp1, super.getCbaseManagePort(),
 					bucket.getBucketName(),
 					String.valueOf(perBucketNodeMemQuotaMB),
@@ -109,20 +110,20 @@ public class TaskCbaseCreateBucketServiceImpl extends BaseTask4CbaseServiceImpl
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
 		if (result == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 
 		boolean isSucess = Constant.CREATE_BUCKET_API_RESPONSE_SUCCESS
-				.equals(result);
+				.equals(result.getResult());
 		if (isSucess) {
 			tr.setResult("Create Bucket SUCCESS");
 		} else {
-			tr.setResult("Create Bucket FAILURE");
+			tr.setResult("Create Bucket FAILURE:" +result.getUrl());
 		}
 		tr.setSuccess(isSucess);
 		return tr;

@@ -9,4 +9,6 @@ public interface ICbaseContainerDao extends IBaseDao<CbaseContainerModel> {
 
 	public List<CbaseContainerModel> selectContainerByCbaseClusterId(
 			Long clusterId);
+
+	public CbaseContainerModel selectByName(String containerName);
 }

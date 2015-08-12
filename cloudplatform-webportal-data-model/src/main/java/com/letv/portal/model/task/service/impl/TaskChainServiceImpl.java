@@ -173,6 +173,8 @@ public class TaskChainServiceImpl extends BaseServiceImpl<TaskChain> implements
 		if (db == null)
 			throw new ValidateException("参数不合法");
 		MclusterModel mcluster = this.mclusterService.selectById(db.getMclusterId());
+		if (mcluster == null)
+			throw new ValidateException("参数不合法");
 		String serviceName = db.getDbName();
 		String clusterName = mcluster.getMclusterName();
 		TaskChainIndex taskChainIndex = this.taskChainIndexService

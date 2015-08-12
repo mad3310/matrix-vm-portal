@@ -1610,7 +1610,7 @@ textarea {
 	margin-right:5px;
 }
 .vmlist-item-more{
-	
+
 }
 .vmlist-item-more .dropdown-menu{
 	right:0;
@@ -2007,7 +2007,7 @@ animation:moves 2s;
 .btn-file input[type=file] {position:absolute;top:0;left:0;width:100px;height:34px;overflow:hidden;text-align: right;filter: alpha(opacity=0);opacity:0;background: none repeat scroll 0 0 transparent;cursor:pointer;display: block;}
 .help-tip{padding-top:7px;}
 /**
- * layouts menu css 
+ * layouts menu css
  * Version 1.0
  * author yaokuo 2015-05-26
  **/

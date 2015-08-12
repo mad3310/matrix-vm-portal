@@ -39,9 +39,6 @@ public class CbaseProxyImpl extends BaseProxyImpl<CbaseBucketModel> implements
 	@Autowired
 	private ITaskEngine taskEngine;
 
-	@Value("${error.email.to}")
-	private String ERROR_MAIL_ADDRESS;
-
 	@Autowired
 	private ITemplateMessageSender defaultEmailSender;
 

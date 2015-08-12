@@ -6,8 +6,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
@@ -18,6 +20,9 @@ import com.letv.portal.python.service.ICbasePythonService;
 @Service("taskCbaseClusterCreateService")
 public class TaskCbaseClusterCreateServiceImpl extends
 		BaseTask4CbaseServiceImpl implements IBaseTaskService {
+
+	@Value("${matrix.cbase.default.image}")
+	private String MATRIX_CBASE_DEFAULT_IMAGE;
 
 	@Autowired
 	private ICbasePythonService cbasePythonService;
@@ -51,7 +56,9 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("mountDir", mountDir);
 		map.put("memory", memory);
 
-		String result = this.cbasePythonService.createContainer(map,
+		map.put("image", MATRIX_CBASE_DEFAULT_IMAGE);
+
+		ApiResultObject result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());
 		tr = analyzeRestServiceResult(result);
 

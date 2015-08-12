@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.TaskExecuteException;
+import com.letv.common.result.ApiResultObject;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.cbase.CbaseClusterModel;
 import com.letv.portal.model.cbase.CbaseContainerModel;
@@ -46,7 +47,7 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 		}
 		CbaseClusterModel cluster = super.getCbaseCluster(params);
 
-		String result = this.cbasePythonService.addNodeToCluster(nodeIp1,
+		ApiResultObject result = this.cbasePythonService.addNodeToCluster(nodeIp1,
 				nodeIp2, super.getCbaseManagePort(), cluster.getAdminUser(),
 				cluster.getAdminPassword());
 		tr = analyzeRestServiceResult(result);
@@ -56,19 +57,19 @@ public class TaskCbaseAddNodeServiceImpl extends BaseTask4CbaseServiceImpl
 	}
 
 	@Override
-	public TaskResult analyzeRestServiceResult(String result) {
+	public TaskResult analyzeRestServiceResult(ApiResultObject result) {
 		TaskResult tr = new TaskResult();
-		if (result == null) {
+		if (result.getResult() == null) {
 			tr.setSuccess(false);
-			tr.setResult("api connect failed");
+			tr.setResult("api connect failed:" + result.getUrl());
 			return tr;
 		}
 
-		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result);
+		boolean isSucess = Constant.PYTHON_API_RESPONSE_SUCCESS.equals(result.getResult());
 		if (isSucess) {
 			tr.setResult("AddNode SUCCESS");
 		} else {
-			tr.setResult("AddNode FAILURE");
+			tr.setResult("AddNode FAILURE:" + result.getUrl());
 		}
 		tr.setSuccess(isSucess);
 		return tr;
