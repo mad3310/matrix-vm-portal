@@ -16,7 +16,9 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="用户管理")
 @Controller
 @RequestMapping("/user")
 public class UserController {

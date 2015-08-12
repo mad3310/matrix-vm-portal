@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(ignore=true)
 @Controller
 public class BaseController {
 	@RequestMapping(value="/403",method=RequestMethod.GET)   

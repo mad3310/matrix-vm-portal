@@ -18,10 +18,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IGfsProxy;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.gce.IGceImageService;
 import com.mysql.jdbc.StringUtils;
+
+@ClassAoLog(module="GFS管理")
 @Controller
 @RequestMapping("/gfs")
 public class GfsController {
@@ -80,7 +85,8 @@ public class GfsController {
 		obj.setData(data);
 		return obj;
 	}
-	
+
+	@AoLog(desc="启动volume",type=AoLogType.START)
 	@RequestMapping(value="/volume/start",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject volStart(String name,ResultObject obj) {
 		Map<String,Object> data =  transResult(gfsProxy.volStartByName(IP, name));
@@ -88,6 +94,7 @@ public class GfsController {
 		return obj;
 	}
 	
+	@AoLog(desc="停止volume",type=AoLogType.STOP)
 	@RequestMapping(value="/volume/stop",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject volStop(String name,ResultObject obj) {
 		Map<String,Object> data =  transResult(gfsProxy.volStopByName(IP, name));

@@ -17,8 +17,13 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.common.ZookeeperInfo;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.common.IZookeeperInfoService;
+
+@ClassAoLog(module="GCE管理/zookeeper管理")
 @Controller
 @RequestMapping("/zk")
 public class ZookeeperInfoController {
@@ -41,12 +46,15 @@ public class ZookeeperInfoController {
 		return obj;
 	}
 	
+	@AoLog(desc="创建zookeeper信息",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject insert(ZookeeperInfo zk,ResultObject obj) {
 		zk.setUsed(0);
 		this.zookeeperInfoService.insert(zk);
 		return obj;
 	}
+	
+	@AoLog(desc="修改zookeeper信息",type=AoLogType.UPDATE)
 	@RequestMapping(value="/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject update(@PathVariable Long id,ZookeeperInfo zk,ResultObject obj) {
 		if(id == null)
@@ -57,6 +65,8 @@ public class ZookeeperInfoController {
 		this.zookeeperInfoService.updateBySelective(zk);
 		return obj;
 	}
+	
+	@AoLog(desc="删除zookeeper信息",type=AoLogType.DELETE)
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE) 
 	public @ResponseBody ResultObject delete(@PathVariable Long id,ResultObject obj) {
 		if(id == null)

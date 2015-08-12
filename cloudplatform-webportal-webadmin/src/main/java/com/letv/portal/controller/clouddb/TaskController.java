@@ -23,6 +23,7 @@ import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.task.TaskChain;
 import com.letv.portal.model.task.TemplateTask;
 import com.letv.portal.model.task.TemplateTaskChain;
@@ -33,6 +34,8 @@ import com.letv.portal.model.task.service.ITaskEngine;
 import com.letv.portal.model.task.service.ITemplateTaskChainService;
 import com.letv.portal.model.task.service.ITemplateTaskDetailService;
 import com.letv.portal.model.task.service.ITemplateTaskService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
 /**Program Name: JobController <br>
  * Description:  任务的相关操作<br>
@@ -41,6 +44,7 @@ import com.letv.portal.model.task.service.ITemplateTaskService;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module="通用管理/任务管理")
 @Controller
 @RequestMapping("/task")
 public class TaskController {
@@ -107,6 +111,7 @@ public class TaskController {
 		obj.setData(this.taskChainService.selectAllChainByIndexId(chainIndexId));
 		return obj;
 	}
+	@AoLog(desc="重启任务",type=AoLogType.RESTART)
 	@RequestMapping(value ="/restart",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject restartTask(Long taskChainId,ResultObject obj) {
 		if(null == taskChainId)
@@ -151,6 +156,7 @@ public class TaskController {
      * @param request
      * @return
      */
+	@AoLog(desc="创建templateTask信息",type=AoLogType.INSERT)
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveTask(TemplateTask templateTaskModal, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -165,6 +171,7 @@ public class TaskController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="创建templateTaskUnit信息",type=AoLogType.INSERT)
 	@RequestMapping(value="/unit",method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveTaskUnit(TemplateTaskDetail templateTaskDetailModal, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -179,6 +186,7 @@ public class TaskController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="创建taskUnit信息",type=AoLogType.INSERT)
 	@RequestMapping(value="/stream",method = RequestMethod.POST)
 	public @ResponseBody ResultObject addTaskUnit(TemplateTaskChain templateTaskChain, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -193,6 +201,7 @@ public class TaskController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="删除taskUnit信息",type=AoLogType.DELETE)
 	@RequestMapping(value="/stream/{id}",method = RequestMethod.DELETE)
 	public @ResponseBody ResultObject delTaskUnit(@PathVariable Long id, HttpServletRequest request) {
 		TemplateTaskChain templateTaskChain = new TemplateTaskChain();
@@ -209,6 +218,7 @@ public class TaskController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="验证任务流是否存在",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String name,HttpServletRequest request) {
 		if(StringUtils.isEmpty(name))

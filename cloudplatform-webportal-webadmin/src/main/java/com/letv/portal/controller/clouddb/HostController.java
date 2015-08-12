@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,9 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.HostModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IHostProxy;
 import com.letv.portal.service.IHostService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="通用管理")
 @Controller
 @RequestMapping("/host")
 public class HostController {
@@ -64,6 +69,7 @@ public class HostController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="校验hostName是否存在",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/hostName/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validateName(String hostName,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -81,6 +87,7 @@ public class HostController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="校验hostIp是否存在",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/hostIp/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validateIp(String hostIp,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -97,6 +104,7 @@ public class HostController {
 	 * @param dav
 	 * @param request   descn
 	 */
+	@AoLog(desc="创建host信息",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject saveHost(HostModel hostModel,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -123,6 +131,7 @@ public class HostController {
     * @param hv
     * @param request
     */
+   @AoLog(desc="删除host信息通过hostID",type=AoLogType.DELETE)
    @RequestMapping(value="/{hostId}",method=RequestMethod.DELETE)   
    public @ResponseBody ResultObject delteHostByID(@PathVariable Long hostId,HttpServletRequest request) {
 	ResultObject obj = new ResultObject();
@@ -139,6 +148,7 @@ public class HostController {
    * @param hv
    * @param request
    */
+  @AoLog(desc="修改host的相关信息",type=AoLogType.UPDATE)
   @RequestMapping(value="/{hostId}",method=RequestMethod.POST)   
   public @ResponseBody ResultObject updateHost(HostModel hostModel) {
 	ResultObject obj = new ResultObject();
@@ -153,6 +163,7 @@ public class HostController {
    * @param request
    * @return
    */
+    @AoLog(desc="判断host上是否container存在",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/isExistContainerOnHost/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validateExistContainer(Long id,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();

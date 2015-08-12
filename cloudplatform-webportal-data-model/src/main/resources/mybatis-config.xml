@@ -73,5 +73,6 @@
         <typeAlias alias="MysqlGaleraMonitor" type="com.letv.portal.model.monitor.mysql.MysqlGaleraMonitor" />
         <typeAlias alias="MonitorErrorModel" type="com.letv.portal.model.monitor.MonitorErrorModel" />
         
+        <typeAlias alias="AdminOpLog" type="com.letv.portal.model.adminoplog.AdminOpLog" />
     </typeAliases>
 </configuration>

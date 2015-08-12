@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.functors.TruePredicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.view.DbAuditView;
 import com.mysql.jdbc.StringUtils;
 
@@ -33,6 +37,7 @@ import com.mysql.jdbc.StringUtils;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module="RDS管理/数据库管理")
 @Controller
 @RequestMapping("/db")
 public class DbController {
@@ -98,6 +103,7 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="审批db",type=AoLogType.UPDATE)
 	@RequestMapping(value="/audit",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(DbAuditView dbAuditView) {
 		if(!StringUtils.isNullOrEmpty(dbAuditView.getMclusterName())) {
@@ -119,7 +125,7 @@ public class DbController {
 		
 	}
 	
-	
+	@AoLog(ignore=true)
 	@RequestMapping(value="/xx",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject testXx() {
 		ResultObject obj = new ResultObject();

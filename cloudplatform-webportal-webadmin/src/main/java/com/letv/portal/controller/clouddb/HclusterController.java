@@ -21,8 +21,12 @@ import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.HclusterStatus;
 import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.service.IHclusterService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="通用管理/物理机集群列表")
 @Controller
 @RequestMapping("/hcluster")
 public class HclusterController {
@@ -115,6 +119,7 @@ public class HclusterController {
      * @param request
      * @return
      */
+	@AoLog(desc="创建hcluster信息",type=AoLogType.INSERT)
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveHcluster(HclusterModel hclusterModel,
 			HttpServletRequest request) {
@@ -125,14 +130,15 @@ public class HclusterController {
 	}
 
 	/**
-	 * Methods Name: delteHostByID <br>
+	 * Methods Name: deleteHostByID <br>
 	 * Description: 删除hcluster信息通过hclusterId
 	 * @author name: wujun
 	 * @param hclusterId
 	 * @param request
 	 */
+	@AoLog(desc="删除hcluster信息通过hclusterId",type=AoLogType.DELETE)
 	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.DELETE)
-	public @ResponseBody ResultObject delteHclusterByID(
+	public @ResponseBody ResultObject deleteHclusterByID(
 			@PathVariable Long hclusterId, HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
 		HclusterModel hclusterModel = new HclusterModel();
@@ -148,6 +154,7 @@ public class HclusterController {
 	 * @param hclusterId
 	 * @param request
 	 */
+	@AoLog(desc="修改hcluster的相关信息",type=AoLogType.UPDATE)
 	@RequestMapping(value = "/{hclusterId}", method = RequestMethod.POST)
 	public void updateHclusterId(HclusterModel hclusterModel) {
 
@@ -161,6 +168,7 @@ public class HclusterController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="校验hcluster是否存在通过名字(模糊查询)",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> validateIp(String hclusterName,
 			HttpServletRequest request) {
@@ -178,6 +186,7 @@ public class HclusterController {
      * @param request
      * @return
      */
+	@AoLog(desc="删除hcluster之前校验是否存在host",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value = "/isExistHostOnHcluster/validate", method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> isExistHostOnHcluster(
 			String hclusterId, HttpServletRequest request) {
@@ -206,6 +215,7 @@ public class HclusterController {
 	 * Description: 禁用hcluster集群<br>
 	 * @author name: wujun
 	 */
+	@AoLog(desc="禁用hcluster集群",type=AoLogType.UPDATE)
 	@RequestMapping(value = "/forbid", method = RequestMethod.POST)
 	public @ResponseBody ResultObject  forbidHcluster(HclusterModel hclusterModel){
 		ResultObject obj = new ResultObject();

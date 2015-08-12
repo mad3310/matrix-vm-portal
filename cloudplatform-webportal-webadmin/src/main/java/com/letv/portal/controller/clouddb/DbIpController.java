@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.service.IDbUserService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.mysql.jdbc.StringUtils;
 
+@ClassAoLog(module="RDS管理/数据库管理/数据库IP")
 @Controller
 @RequestMapping("/dbIp")
 public class DbIpController {
@@ -35,6 +39,8 @@ public class DbIpController {
 		obj.setData(this.dbUserService.selectIpsFromUser(dbId));
 		return obj;
 	}
+	
+	@AoLog(desc="修改db的IP",type=AoLogType.UPDATE)
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(Long dbId,String ips,ResultObject obj) {
 		if(null == dbId || StringUtils.isNullOrEmpty(ips)) {

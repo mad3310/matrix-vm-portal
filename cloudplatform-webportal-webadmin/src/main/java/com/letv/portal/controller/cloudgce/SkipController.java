@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.letv.portal.service.adminoplog.ClassAoLog;
+
 /**Program Name: SkipController <br>
  * Description:  用于页面跳转       list、detail、form、……<br>
  * @author name: liuhao1 <br>
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module="GCE管理")
 @Controller("gceSkip")
 public class SkipController {
 	

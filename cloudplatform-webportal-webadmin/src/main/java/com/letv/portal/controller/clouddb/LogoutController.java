@@ -13,7 +13,9 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpsClient;
 import com.letv.portal.service.ILoginService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(ignore=true)
 @Controller
 @RequestMapping(value="/account")
 public class LogoutController{

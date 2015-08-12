@@ -24,7 +24,9 @@ import com.letv.common.util.CookieUtil;
 import com.letv.mms.cache.ICacheService;
 import com.letv.mms.cache.factory.CacheFactory;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(ignore=true)
 @Controller
 @RequestMapping("/kaptcha")
 public class CaptchaController {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
 /**Program Name: SkipController <br>
  * Description:  用于页面跳转       list、detail、form、……<br>

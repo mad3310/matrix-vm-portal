@@ -19,11 +19,16 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.proxy.IGceProxy;
 import com.letv.portal.service.IUserService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.gce.IGceImageService;
 import com.letv.portal.service.gce.IGceServerService;
+
+@ClassAoLog(module="GCE管理")
 @Controller
 @RequestMapping("/gce")
 public class GceController {
@@ -45,7 +50,8 @@ public class GceController {
 		obj.setData(this.gceImageService.selectPageByParams(page, params));
 		return obj;
 	}
-	
+
+	@AoLog(desc="创建GCE镜像",type=AoLogType.INSERT)
 	@RequestMapping(value="/image",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addImage(GceImage gceImage,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -53,6 +59,7 @@ public class GceController {
 		return obj;
 	}
 	
+	@AoLog(desc="删除GCE镜像",type=AoLogType.DELETE)
 	@RequestMapping(value="/image/{id}",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject delImage(@PathVariable Long id,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -64,7 +71,8 @@ public class GceController {
 		this.gceImageService.delete(gceImage);
 		return obj;
 	}
-	
+
+	@AoLog(desc="修改GCE镜像",type=AoLogType.UPDATE)
 	@RequestMapping(value="/image/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject updateImage(@PathVariable Long id,GceImage gceImage,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();
@@ -103,22 +111,26 @@ public class GceController {
 		obj.setData(this.gceServerService.selectPageByParams(page, params));
 		return obj;
 	}
-	
+
+	@AoLog(desc="重启GCE服务",type=AoLogType.RESTART)
 	@RequestMapping(value="/restart",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject restart(Long id,ResultObject obj) {
 		this.gceProxy.restart(id);
 		return obj;
 	}
+	@AoLog(desc="启动GCE服务",type=AoLogType.START)
 	@RequestMapping(value="/start",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject start(Long id,ResultObject obj) {
 		this.gceProxy.start(id);
 		return obj;
 	}
+	@AoLog(desc="停止GCE服务",type=AoLogType.STOP)
 	@RequestMapping(value="/stop",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject stop(Long id,ResultObject obj) {
 		this.gceProxy.stop(id);
 		return obj;
 	}
+	@AoLog(desc="扩容GCE服务",type=AoLogType.UPDATE)
 	@RequestMapping(value="/memory",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject capacity(@RequestParam Long id,@RequestParam int multiple,ResultObject obj) {
 		this.gceProxy.capacity(id,multiple);

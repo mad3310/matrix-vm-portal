@@ -2,6 +2,7 @@ package com.letv.portal.controller.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.letv.common.result.ResultObject;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module = "通用管理")
 @Controller("commonSkip")
 public class SkipController {
 	

@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="RDS管理/集群管理")
 @Controller
 @RequestMapping("/container")
 public class ContainerController {
@@ -63,6 +67,7 @@ public class ContainerController {
 	 * @param result
 	 * @return
 	 */
+	@AoLog(desc="启动单个容器",type=AoLogType.START)
 	@RequestMapping(value = "/start", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject start(Long containerId,ResultObject result) {
 		this.containerProxy.start(containerId);
@@ -76,6 +81,7 @@ public class ContainerController {
 	 * @param result
 	 * @return
 	 */
+	@AoLog(desc="停止单个容器",type=AoLogType.STOP)
 	@RequestMapping(value = "/stop", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject stop(Long containerId,ResultObject result) {
 		this.containerProxy.stop(containerId);

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="监控器")
 @Controller("warningController")
 public class warningController {
 	

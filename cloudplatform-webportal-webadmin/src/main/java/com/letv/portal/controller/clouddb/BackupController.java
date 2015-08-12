@@ -17,6 +17,9 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.service.IBackupService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
+
+@ClassAoLog(module="RDS管理/备份与恢复")
 @Controller
 @RequestMapping("/backup")
 public class BackupController {

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.cbase.ICbaseClusterService;
 
+@ClassAoLog(module="OCS管理/集群管理")
 @Controller
 @RequestMapping("/ocs/cluster")
 public class OcsClusterController {

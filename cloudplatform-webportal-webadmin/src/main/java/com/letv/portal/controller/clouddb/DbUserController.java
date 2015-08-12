@@ -22,9 +22,12 @@ import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.model.DbModel;
 import com.letv.portal.model.DbUserModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IDbUserProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IDbUserService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.mysql.jdbc.StringUtils;
 
 /**Program Name: DbUserController <br>
@@ -34,6 +37,7 @@ import com.mysql.jdbc.StringUtils;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module="RDS管理/数据库管理/数据库用户列表")
 @Controller
 @RequestMapping("/dbUser")
 public class DbUserController {
@@ -85,6 +89,7 @@ public class DbUserController {
 	 * @param dbUserModel
 	 * @return
 	 */
+	@AoLog(desc="创建db用户",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)
 	public @ResponseBody ResultObject save(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
 		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips)|| types.contains("undefined") || ips.contains("undefined")) {
@@ -101,6 +106,7 @@ public class DbUserController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="校验db用户是否存在",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(DbUserModel dbUserModel,HttpServletRequest request) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -116,12 +122,14 @@ public class DbUserController {
 	 * @param dbUserModel
 	 * @return
 	 */
+	@AoLog(desc="删除db用户",type=AoLogType.DELETE)
 	@RequestMapping(value="/{dbUserId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable String dbUserId,DbUserModel dbUserModel) {
 		ResultObject obj = new ResultObject();
 		this.dbUserProxy.deleteDbUser(dbUserId);
 		return obj;
 	}
+	@AoLog(desc="删除db用户",type=AoLogType.DELETE)
 	@RequestMapping(value="/{dbId}/{username}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDbUserById(@PathVariable Long dbId,@PathVariable String username,ResultObject obj) {
 		if(null == dbId || StringUtils.isNullOrEmpty(username)) {
@@ -133,6 +141,7 @@ public class DbUserController {
 		this.dbUserProxy.deleteAndBuild(dbId,username);
 		return obj;
 	}
+	@AoLog(desc="删除db用户",type=AoLogType.DELETE)
 	@RequestMapping(value="/security/{username}",method=RequestMethod.POST)
 	public  @ResponseBody ResultObject deleteDbUserById(Long dbId,String username,String password,ResultObject obj) {
 		if(dbId == null || StringUtils.isNullOrEmpty(username) || StringUtils.isNullOrEmpty(password)) {
@@ -152,6 +161,7 @@ public class DbUserController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
 	@RequestMapping(value="/authority/{username}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateUserAuthority(DbUserModel dbUserModel,String types,String ips,ResultObject obj) {
 		if(StringUtils.isNullOrEmpty(types) || StringUtils.isNullOrEmpty(ips) || types.contains("undefined") || ips.contains("undefined")) {
@@ -169,6 +179,7 @@ public class DbUserController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="修改db用户",type=AoLogType.UPDATE)
 	@RequestMapping(value="/descn/{username}",method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateUserDescn(DbUserModel dbUserModel,ResultObject obj) {
 		if(StringUtils.isNullOrEmpty(dbUserModel.getUsername()) || dbUserModel.getDbId() == null || StringUtils.isNullOrEmpty(dbUserModel.getDescn())) {

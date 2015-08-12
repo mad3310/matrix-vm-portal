@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.service.IBuildService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="RDS管理/集群创建过程")
 @Controller
 @RequestMapping("/build")
 public class BuildController {

@@ -111,6 +111,8 @@
 	<!-- 配置特殊日志级别 -->
 		<logger name="java.sql.Connection"> <level value="DEBUG" /> </logger> 
 		<logger name="java.sql.Statement"> <level value="DEBUG" /> </logger> 
+		<logger name="org.apache.ibatis"><level value="DEBUG" /></logger>
+		<logger name="org.mybatis"><level value="DEBUG" /></logger>
 		<logger name="com.ibatis"> <level value="DEBUG" /> </logger>
 		 <logger name="com.ibatis.common.jdbc.SimpleDataSource"> <level value="DEBUG" /> </logger> 
 		<logger name="com.ibatis.common.jdbc.ScriptRunner"> <level value="DEBUG" /> </logger> 

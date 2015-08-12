@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.slb.ISlbServerService;
 
-
+@ClassAoLog(module="SLB管理")
 @Controller
 @RequestMapping("/slb")
 public class SlbController {

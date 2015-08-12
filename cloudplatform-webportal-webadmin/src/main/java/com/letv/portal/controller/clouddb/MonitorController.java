@@ -25,6 +25,7 @@ import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
 import com.letv.portal.service.IMonitorIndexService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 /**
  * Program Name: MonitorController <br>
  * Description:  监控<br>
@@ -33,6 +34,7 @@ import com.letv.portal.service.IMonitorIndexService;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@ClassAoLog(module="RDS管理/监控")
 @Controller
 @RequestMapping("/monitor")
 public class MonitorController {

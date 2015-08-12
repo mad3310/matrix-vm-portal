@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.dictionary.Dictionary;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.dictionary.IDictionaryService;
 
-
+@ClassAoLog(module="通用管理/字典管理")
 @Controller
 @RequestMapping("/dictionary")
 public class DictionaryController {
@@ -57,6 +60,7 @@ public class DictionaryController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:48:00
 	  */
+	@AoLog(desc="创建字典信息",type=AoLogType.INSERT)
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveDictionary(Dictionary dictionary) {
 		ResultObject obj = new ResultObject();
@@ -73,6 +77,7 @@ public class DictionaryController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:55:50
 	  */
+	@AoLog(desc="根据主键id删除字典信息",type=AoLogType.DELETE)
 	@RequestMapping(value="/{dictionaryId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteDictionaryById(@PathVariable Long dictionaryId) {
 		Dictionary dictionary = new Dictionary();
@@ -91,6 +96,7 @@ public class DictionaryController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:58:17
 	  */
+	@AoLog(desc="修改字典信息",type=AoLogType.UPDATE)
 	@RequestMapping(value="/{dictionaryId}", method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateDictionary(Dictionary dictionary) {
 		this.dictionaryService.update(dictionary);		

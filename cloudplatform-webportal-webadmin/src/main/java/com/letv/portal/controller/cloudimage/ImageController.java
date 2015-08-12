@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.image.Image;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.image.IImageService;
 
-
+@ClassAoLog(module="通用管理/基础镜像管理")
 @Controller
 @RequestMapping("/image")
 public class ImageController {
@@ -57,6 +60,7 @@ public class ImageController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:48:00
 	  */
+	@AoLog(desc="创建镜像信息",type=AoLogType.INSERT)
 	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody ResultObject saveImage(Image image) {
 		ResultObject obj = new ResultObject();
@@ -73,6 +77,7 @@ public class ImageController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:55:50
 	  */
+	@AoLog(desc="根据主键id删除镜像信息",type=AoLogType.DELETE)
 	@RequestMapping(value="/{imageId}",method=RequestMethod.DELETE)
 	public  @ResponseBody ResultObject deleteImageById(@PathVariable Long imageId) {
 		Image image = new Image();
@@ -91,6 +96,7 @@ public class ImageController {
 	  * @author lisuxiao
 	  * @date 2015年6月30日 下午5:58:17
 	  */
+	@AoLog(desc="修改镜像信息",type=AoLogType.UPDATE)
 	@RequestMapping(value="/{imageId}", method=RequestMethod.POST)
 	public @ResponseBody ResultObject updateImage(Image image) {
 		this.imageService.update(image);		

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.MonitorIndexModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IBackupProxy;
 import com.letv.portal.proxy.IContainerProxy;
 import com.letv.portal.proxy.ICronJobsProxy;
@@ -26,7 +27,10 @@ import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.proxy.IMonitorProxy;
 import com.letv.portal.service.IMonitorIndexService;
 import com.letv.portal.service.IMonitorService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 
+@ClassAoLog(module="通用管理")
 @Controller
 @RequestMapping("/cronJobs")
 public class CronJobsController {
@@ -140,6 +144,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="删除一个月之前监控数据",type=AoLogType.DELETE)
 	@RequestMapping(value="/mcluster/monitor",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject deleteMonitorMonthAgo(HttpServletRequest request,ResultObject obj) {
 		logger.info("deleteMonitorMonthAgo");
@@ -165,6 +170,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="db数据库备份",type=AoLogType.INSERT)
 	@RequestMapping(value="/db/backup",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject dbBackup(int count, HttpServletRequest request,ResultObject obj) {
 		logger.info("db backup");
@@ -195,6 +201,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="删除半个月以前的备份",type=AoLogType.DELETE)
 	@RequestMapping(value="/db/backup",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject deleteBackupHalfMonthAgo(HttpServletRequest request,ResultObject obj) {
 		logger.info("deleteBackupHalfMonthAgo");
@@ -209,6 +216,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="删除30天之前分区",type=AoLogType.DELETE)
 	@RequestMapping(value="/monitor/deletePartition",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject deleteMonitorPartitionThirtyDaysAgo(HttpServletRequest request,ResultObject obj) {
 		logger.info("deleteMonitorPartitionThirtyDaysAgo");
@@ -223,6 +231,7 @@ public class CronJobsController {
 	 * @param obj
 	 * @return
 	 */
+	@AoLog(desc="添加监控表分区",type=AoLogType.INSERT)
 	@RequestMapping(value="/monitor/addPartition",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject addMonitorPartition(HttpServletRequest request,ResultObject obj) {
 		logger.info("addMonitorPartition");

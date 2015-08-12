@@ -22,9 +22,11 @@ import com.letv.common.util.IpUtil;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.ILoginService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.impl.oauth.IOauthService;
 import com.mysql.jdbc.StringUtils;
 
+@ClassAoLog(ignore=true)
 @Controller
 public class LoginController{
 	

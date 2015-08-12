@@ -17,8 +17,10 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.proxy.IGceProxy;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.gce.IGceClusterService;
 
+@ClassAoLog(module="GCE管理/集群管理")
 @Controller
 @RequestMapping("/gce/cluster")
 public class GceClusterController {

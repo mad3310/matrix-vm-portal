@@ -23,12 +23,16 @@ import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.MclusterStatus;
 import com.letv.portal.fixedPush.IFixedPushService;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IMclusterProxy;
 import com.letv.portal.python.service.IBuildTaskService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
+@ClassAoLog(module="RDS管理/集群管理")
 @Controller
 @RequestMapping("/mcluster")
 public class MclusterController {
@@ -87,6 +91,7 @@ public class MclusterController {
 	 * @param mclusterModel
 	 * @param request
 	 */
+	@AoLog(desc="保存并创建mcluster",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject save(MclusterModel mclusterModel,ResultObject result) {
 		this.mclusterProxy.insertAndBuild(mclusterModel);
@@ -100,6 +105,7 @@ public class MclusterController {
 	 * @param request
 	 * @return
 	 */
+	@AoLog(desc="根据mclusterName验证重复性",type=AoLogType.VALIDATE,ignore = true)
 	@RequestMapping(value="/validate",method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> validate(String mclusterName) {
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -115,6 +121,7 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
+	@AoLog(desc="contianer集群删除",type=AoLogType.DELETE)
 	@RequestMapping(value = "/{mclusterId}", method=RequestMethod.DELETE) 
 	public @ResponseBody ResultObject delete(@PathVariable Long mclusterId,ResultObject result) {
 		if(mclusterId == null)
@@ -132,6 +139,7 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
+	@AoLog(desc="启动container集群",type=AoLogType.START)
 	@RequestMapping(value = "/start", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject start(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.start(mclusterId);
@@ -144,6 +152,7 @@ public class MclusterController {
 	 * @param result
 	 * @return
 	 */
+	@AoLog(desc="停止container集群",type=AoLogType.STOP)
 	@RequestMapping(value = "/stop", method=RequestMethod.POST) 
 	public @ResponseBody ResultObject stop(Long mclusterId,ResultObject result) {
 		this.mclusterProxy.stop(mclusterId);
@@ -156,6 +165,7 @@ public class MclusterController {
 	 * @param dbId
 	 * @return
 	 */
+	@AoLog(desc="重启container集群",type=AoLogType.RESTART)
 	@RequestMapping(value="/restart",method=RequestMethod.POST)
 	public @ResponseBody ResultObject restartDb(Long mclusterId,ResultObject obj){
 		if(mclusterId == null) 

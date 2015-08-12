@@ -20,11 +20,16 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.common.util.StringUtil;
 import com.letv.portal.enumeration.TimingTaskExecType;
+import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.model.common.ZookeeperInfo;
 import com.letv.portal.model.gce.GceImage;
 import com.letv.portal.model.timing.task.BaseTimingTask;
+import com.letv.portal.service.adminoplog.AoLog;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.common.IZookeeperInfoService;
 import com.letv.portal.timing.task.IBaseTimingTaskService;
+
+@ClassAoLog(module="通用管理/定时任务管理")
 @Controller
 @RequestMapping("/timingTask")
 public class TimingTaskController {
@@ -42,6 +47,8 @@ public class TimingTaskController {
 		obj.setData(this.baseTimingTaskService.selectPageByParams(page, params));
 		return obj;
 	}
+	
+	@AoLog(desc="创建定时任务",type=AoLogType.INSERT)
 	@RequestMapping(method=RequestMethod.POST)   
 	public @ResponseBody ResultObject addTimingTask(BaseTimingTask baseTimingTask,HttpServletRequest request) {
 		
@@ -51,6 +58,8 @@ public class TimingTaskController {
 		this.pythonTimingTaskService.insert(baseTimingTask);
 		return obj;
 	}
+	
+	@AoLog(desc="删除定时任务",type=AoLogType.DELETE)
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)   
 	public @ResponseBody ResultObject delTimingTask(@PathVariable Long id,HttpServletRequest request) {
 		ResultObject obj = new ResultObject();

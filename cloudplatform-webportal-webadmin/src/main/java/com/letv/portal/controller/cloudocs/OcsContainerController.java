@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.service.cbase.ICbaseContainerService;
 
+@ClassAoLog(module="OCS管理/容器管理")
 @Controller
 @RequestMapping("/ocs/container")
 public class OcsContainerController {

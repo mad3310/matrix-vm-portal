@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.service.IContainerService;
+import com.letv.portal.service.adminoplog.ClassAoLog;
 import com.letv.portal.zabbixPush.IZabbixPushService;
 
+@ClassAoLog(module="Dashboard")
 @Controller
 @RequestMapping("/dashboard")
 public class DashBoardController {
