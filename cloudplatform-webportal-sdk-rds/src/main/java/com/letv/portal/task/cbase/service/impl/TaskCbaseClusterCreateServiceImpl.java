@@ -56,7 +56,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 
 		//从数据库获取image
 		Map<String,String> map = new HashMap<String,String>();
-		map.put("dictionaryName", "CBASE");
+		map.put("dictionaryName", "OCS");
 		map.put("purpose", "default");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
