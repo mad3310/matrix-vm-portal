@@ -1,6 +1,7 @@
 package com.letv.portal.task.gce.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,20 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
 import com.letv.portal.enumeration.GceType;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.gce.GceCluster;
 import com.letv.portal.model.gce.GceServer;
+import com.letv.portal.model.image.Image;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IGcePythonService;
+import com.letv.portal.service.image.IImageService;
 
 @Service("taskGceClusterCreateService")
 public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl implements IBaseTaskService{
 	
 	@Autowired
 	private IGcePythonService gcePythonService;
+	@Autowired
+	private IImageService imageService;
 	@Value("${matrix.gce.jetty.default.image}")
 	private String MATRIX_GCE_JETTY_DEFAULT_IMAGE;
 	@Value("${matrix.gce.nginx.default.image}")
@@ -46,7 +52,24 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		GceType gceType = gceServer.getType();
 		boolean isNginx = gceType.equals(GceType.NGINX) || gceType.equals(GceType.NGINX_PROXY);
 		
+		//从数据库获取image
 		Map<String,String> map = new HashMap<String,String>();
+		map.put("dictionaryName", "GCE");
+		map.put("isUsed", "1");
+		List<Image> images = this.imageService.selectByMap(map);
+		if(images == null || images.size()!=2)
+			throw new ValidateException("get Image had error, params :" + map.toString());
+		String nginxImage = null;
+		String jettyImage = null;
+		for (Image image : images) {
+			if("nginx".equals(image.getPurpose())) {
+				nginxImage = image.getUrl();
+			} else if("jetty".equals(image.getPurpose())) {
+				jettyImage = image.getUrl();
+			}
+		}
+		
+		map.clear();
 		map.put("containerClusterName", gceCluster.getClusterName());
 		map.put("componentType", gceType.toString().toLowerCase());
 		map.put("image", gceServer.getGceImageName());
@@ -58,9 +81,9 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		
 		if(StringUtils.isEmpty(gceServer.getGceImageName())) {
 			if(isNginx) {
-				map.put("image", MATRIX_GCE_NGINX_DEFAULT_IMAGE);
+				map.put("image", nginxImage==null ? MATRIX_GCE_NGINX_DEFAULT_IMAGE : nginxImage);
 			}else {
-				map.put("image", MATRIX_GCE_JETTY_DEFAULT_IMAGE);
+				map.put("image", jettyImage==null ? MATRIX_GCE_JETTY_DEFAULT_IMAGE : jettyImage);
 			}
 		}
 		

@@ -52,7 +52,7 @@
 			<if test="tag != null and tag != ''  ">
 				and image.TAG=#{tag}
 			</if>
-			<if test="isUsed != null and isUsed != ''  ">
+			<if test="isUsed != null  ">
 				and image.ISUSED=#{isUsed}
 			</if>
 			<if test="descn != null and descn != ''  ">
@@ -74,6 +74,25 @@
 		</trim>
 	</sql>
 
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			WEBPORTAL_IMAGE image
+		left join 
+			WEBPORTAL_DICTIONARY dictionary on image.DICTIONARY_ID=dictionary.ID
+		where 1=1 
+			<if test="purpose != null ">
+				and image.PURPOSE=#{purpose}
+			</if>
+			<if test="isUsed != null  ">
+				and image.ISUSED=#{isUsed}
+			</if>
+			<if test="dictionaryName != null  and dictionaryName != ''">
+				and dictionary.NAME = #{dictionaryName}
+			</if>
+	</select>
 
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="Image" useGeneratedKeys="true" keyProperty="id" >
@@ -86,39 +105,16 @@
 
 	<!-- 更新记录 -->
 	<update id="update" parameterType="Image">
-		update WEBPORTAL_IMAGE
-		<set>
-			<if test="id != null  ">
-				ID=#{id},
-			</if>
-			<if test="name != null and name != '' ">
-				NAME=#{name},
-			</if>
-			<if test="dictionaryId != null and dictionaryId != '' ">
-				DICTIONARY_ID=#{dictionaryId},
-			</if>
-			<if test="purpose != null and purpose != ''  ">
-				PURPOSE=#{purpose},
-			</if>
-			<if test="isUsed != null and isUsed != ''  ">
-				ISUSED=#{isUsed},
-			</if>
-			<if test="descn != null and descn != ''  ">
-				DESCN=#{descn},
-			</if>
-			<if test="createTime != null  ">
-				CREATE_TIME=#{createTime},
-			</if>
-			<if test="createUser != null  ">
-				CREATE_USER=#{createUser},
-			</if>
-			<if test="updateTime != null  ">
-				UPDATE_TIME=#{updateTime},
-			</if>
-			<if test="updateUser != null  ">
-				UPDATE_USER=#{updateUser},
-			</if>
-		</set>
+		update WEBPORTAL_IMAGE set
+			NAME=#{name},
+			DICTIONARY_ID=#{dictionaryId},
+			PURPOSE=#{purpose},
+			URL=#{url},
+			TAG=#{tag},
+			ISUSED=#{isUsed},
+			DESCN=#{descn},
+			UPDATE_USER=#{updateUser},
+			UPDATE_TIME=now()
 		where ID=#{id}
 	</update>
 	

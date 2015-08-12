@@ -1,9 +1,9 @@
 package com.letv.portal.task.rds.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,13 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.image.Image;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.image.IImageService;
 
 @Service("taskMclusterCreateDataService")
 public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
@@ -29,6 +31,8 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 	private IHostService hostService;
 	@Autowired
 	private IMclusterService mclusterService;
+	@Autowired
+	private IImageService imageService;
 	@Value("${matrix.rds.data.default.image}")
 	private String MATRIX_RDS_DATA_DEFAULT_IMAGE;
 	
@@ -53,13 +57,23 @@ public class TaskMclusterCreateDataServiceImpl extends BaseTask4RDSServiceImpl i
 		HostModel host = this.hostService.getHostByHclusterId(mclusterModel.getHclusterId());
 		if(host == null || mclusterModel.getHclusterId() == null)
 			throw new ValidateException("host is null by hclusterIdId:" + mclusterModel.getHclusterId());
+		
+		//从数据库获取image
 		Map<String,String> map = new HashMap<String,String>();
+		map.put("dictionaryName", "RDS");
+		map.put("purpose", "data");
+		map.put("isUsed", "1");
+		List<Image> images = this.imageService.selectByMap(map);
+		if(images == null || images.size()!=1)
+			throw new ValidateException("get Image had error, params :" + map.toString());
+		
+		map.clear();
 		map.put("containerClusterName", mclusterModel.getMclusterName());
 		map.put("componentType", "mcluster");
 		map.put("networkMode", "ip");
 		map.put("memory", params.get("memory")==null || params.get("memory")=="" ? CONTAINER_MEMORY_SIZE : String.valueOf(params.get("memory")));
 		map.put("dbDisk", params.get("dbDisk")==null || params.get("dbDisk")=="" ? CONTAINER_DBDISK_SIZE : String.valueOf(params.get("dbDisk")));
-		map.put("image", MATRIX_RDS_DATA_DEFAULT_IMAGE);
+		map.put("image", images.get(0).getUrl()==null ? MATRIX_RDS_DATA_DEFAULT_IMAGE : images.get(0).getUrl());
 		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		

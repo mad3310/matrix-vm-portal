@@ -1,6 +1,7 @@
 package com.letv.portal.task.cbase.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ApiResultObject;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.cbase.CbaseBucketModel;
 import com.letv.portal.model.cbase.CbaseClusterModel;
+import com.letv.portal.model.image.Image;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.ICbasePythonService;
+import com.letv.portal.service.image.IImageService;
 
 @Service("taskCbaseClusterCreateService")
 public class TaskCbaseClusterCreateServiceImpl extends
@@ -23,7 +27,9 @@ public class TaskCbaseClusterCreateServiceImpl extends
 
 	@Value("${matrix.cbase.default.image}")
 	private String MATRIX_CBASE_DEFAULT_IMAGE;
-
+	@Autowired
+	private IImageService imageService;
+	
 	@Autowired
 	private ICbasePythonService cbasePythonService;
 	private final static Logger logger = LoggerFactory
@@ -48,15 +54,23 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		long perClusterNodeMemQuotaMB = (long) tmpPerClusterNodeMemQuotaMB + 100;
 		String memory = String.valueOf(perClusterNodeMemQuotaMB * 1024 * 1024);
 
-		Map<String, String> map = new HashMap<String, String>();
+		//从数据库获取image
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("dictionaryName", "CBASE");
+		map.put("purpose", "default");
+		map.put("isUsed", "1");
+		List<Image> images = this.imageService.selectByMap(map);
+		if(images == null || images.size()!=1)
+			throw new ValidateException("get Image had error, params :" + map.toString());
+		
+		map.clear();
 		map.put("containerClusterName", cbaseCluster.getCbaseClusterName());
 		map.put("componentType", "cbase");
 		map.put("networkMode", "ip");
 		map.put("nodeCount", String.valueOf(hostSize));
 		map.put("mountDir", mountDir);
 		map.put("memory", memory);
-
-		map.put("image", MATRIX_CBASE_DEFAULT_IMAGE);
+		map.put("image", images.get(0).getUrl()==null ? MATRIX_CBASE_DEFAULT_IMAGE : images.get(0).getUrl());
 
 		ApiResultObject result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());

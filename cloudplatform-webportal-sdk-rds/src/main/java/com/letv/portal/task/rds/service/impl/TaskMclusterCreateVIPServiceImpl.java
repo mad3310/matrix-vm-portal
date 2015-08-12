@@ -16,12 +16,14 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.model.ContainerModel;
 import com.letv.portal.model.HostModel;
 import com.letv.portal.model.MclusterModel;
+import com.letv.portal.model.image.Image;
 import com.letv.portal.model.task.TaskResult;
 import com.letv.portal.model.task.service.IBaseTaskService;
 import com.letv.portal.python.service.IPythonService;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IHostService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.image.IImageService;
 
 @Service("taskMclusterCreateVIPService")
 public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl implements IBaseTaskService{
@@ -34,6 +36,8 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 	private IContainerService containerService;
 	@Autowired
 	private IMclusterService mclusterService;
+	@Autowired
+	private IImageService imageService;
 	@Value("${matrix.rds.vip.default.image}")
 	private String MATRIX_RDS_VIP_DEFAULT_IMAGE;
 	
@@ -63,11 +67,21 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 		for (ContainerModel containerModel : containers) {
 			excludeServers.append(containerModel.getHostIp()).append(",");
 		}
+
+		//从数据库获取image
 		Map<String,String> map = new HashMap<String,String>();
+		map.put("dictionaryName", "RDS");
+		map.put("purpose", "vip");
+		map.put("isUsed", "1");
+		List<Image> images = this.imageService.selectByMap(map);
+		if(images == null || images.size()!=1)
+			throw new ValidateException("get Image had error, params :" + map.toString());
+		
+		map.clear();
 		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX);
 		map.put("componentType", "gbalancer");
 		map.put("networkMode", "ip");
-		map.put("image", MATRIX_RDS_VIP_DEFAULT_IMAGE);
+		map.put("image", images.get(0).getUrl()==null ? MATRIX_RDS_VIP_DEFAULT_IMAGE : images.get(0).getUrl());
 		map.put("exclude_servers", excludeServers.substring(0, excludeServers.length()-1));
 		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
