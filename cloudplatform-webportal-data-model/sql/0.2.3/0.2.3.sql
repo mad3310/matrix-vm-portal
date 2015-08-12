@@ -283,3 +283,31 @@ values
 ('mysql.wsrep.local',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'WEBPORTAL_MONITOR_MYSQL_BASE_WSREP_LOCAL',4,'/node/stat/info','stat_wsrep_local_fail_command,stat_wsrep_local_bf_aborts_command,stat_wsrep_local_replays_command'),
 ('mysql.wsrep.rep_rec',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'WEBPORTAL_MONITOR_MYSQL_BASE_WSREP_REP_REC',4,'/node/stat/info','stat_wsrep_replicated_command,stat_wsrep_replicated_bytes_command,stat_wsrep_received_command,stat_wsrep_received_bytes_command'),
 ('mysql.wsrep_flow_control',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'WEBPORTAL_MONITOR_MYSQL_BASE_WSREP_FLOW_CONTROL',4,'/node/stat/info','stat_wsrep_flow_control_paused_command,stat_wsrep_flow_control_sent_command,stat_wsrep_flow_control_recv_command');
+
+-- OpenStack region Chinese translation
+CREATE TABLE `WEBPORTAL_CLOUDVM_REGION` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `CODE` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL UNIQUE,
+  `DISPLAY_NAME` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `DELETED` tinyint(4) DEFAULT NULL,
+  `CREATE_TIME` datetime DEFAULT NULL,
+  `UPDATE_TIME` datetime DEFAULT NULL,
+  `CREATE_USER` bigint(20) unsigned DEFAULT NULL,
+  `UPDATE_USER` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
+
+-- admin operation log
+CREATE TABLE `WEBPORTAL_ADMIN_OP_LOG` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `EVENT` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `LOG_TYPE` tinyint DEFAULT NULL,
+  `MODULE` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `DESCRIPTION` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `DELETED` tinyint(4) DEFAULT NULL,
+  `CREATE_TIME` datetime DEFAULT NULL,
+  `UPDATE_TIME` datetime DEFAULT NULL,
+  `CREATE_USER` bigint(20) unsigned DEFAULT NULL,
+  `UPDATE_USER` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;

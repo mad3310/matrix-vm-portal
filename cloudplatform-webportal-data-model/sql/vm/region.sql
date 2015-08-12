@@ -1,3 +1,4 @@
+-- OpenStack region Chinese translation
 CREATE TABLE `WEBPORTAL_CLOUDVM_REGION` (
   `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `CODE` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL UNIQUE,
