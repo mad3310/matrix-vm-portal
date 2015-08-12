@@ -74,14 +74,14 @@ public class TaskMclusterCreateVIPServiceImpl extends BaseTask4RDSServiceImpl im
 		map.put("purpose", "vip");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
-		if(images == null || images.size()!=1)
-			throw new ValidateException("get Image had error, params :" + map.toString());
+		if(images!=null && images.size()>1)
+			throw new ValidateException("get one Image had many result, params :" + map.toString());
 		
 		map.clear();
 		map.put("containerClusterName", mclusterModel.getMclusterName() + Constant.MCLUSTER_NODE_TYPE_VIP_SUFFIX);
 		map.put("componentType", "gbalancer");
 		map.put("networkMode", "ip");
-		map.put("image", images.get(0).getUrl()==null ? MATRIX_RDS_VIP_DEFAULT_IMAGE : images.get(0).getUrl());
+		map.put("image", images==null||images.size()==0||images.get(0).getUrl()==null ? MATRIX_RDS_VIP_DEFAULT_IMAGE : images.get(0).getUrl());
 		map.put("exclude_servers", excludeServers.substring(0, excludeServers.length()-1));
 		ApiResultObject result = this.pythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);

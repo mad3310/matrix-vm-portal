@@ -57,8 +57,8 @@ public class TaskGceClusterCreateServiceImpl extends BaseTask4GceServiceImpl imp
 		map.put("dictionaryName", "GCE");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
-		if(images == null || images.size()!=2)
-			throw new ValidateException("get Image had error, params :" + map.toString());
+		if(images != null && images.size()>2)
+			throw new ValidateException("get two Image had many result, params :" + map.toString());
 		String nginxImage = null;
 		String jettyImage = null;
 		for (Image image : images) {

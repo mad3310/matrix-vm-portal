@@ -48,14 +48,14 @@ public class TaskSlbCreateServiceImpl extends BaseTask4SlbServiceImpl implements
 		map.put("purpose", "default");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
-		if(images == null || images.size()!=1)
-			throw new ValidateException("get Image had error, params :" + map.toString());
+		if(images!=null && images.size()>1)
+			throw new ValidateException("get one Image had many result, params :" + map.toString());
 		
 		map.clear();
 		map.put("containerClusterName",cluster.getClusterName());
 		map.put("componentType", "gbalancerCluster");
 		map.put("networkMode", "ip");
-		map.put("image", images.get(0).getUrl()==null ? MATRIX_SLB_DEFAULT_IMAGE : images.get(0).getUrl());
+		map.put("image", images==null||images.size()==0||images.get(0).getUrl()==null ? MATRIX_SLB_DEFAULT_IMAGE : images.get(0).getUrl());
 		ApiResultObject result = this.slbPythonService.createContainer(map,host.getHostIp(),host.getName(),host.getPassword());
 		tr = analyzeRestServiceResult(result);
 		

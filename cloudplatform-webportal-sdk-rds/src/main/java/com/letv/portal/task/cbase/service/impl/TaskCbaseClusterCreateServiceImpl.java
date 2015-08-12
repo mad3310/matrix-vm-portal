@@ -60,8 +60,8 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("purpose", "default");
 		map.put("isUsed", "1");
 		List<Image> images = this.imageService.selectByMap(map);
-		if(images == null || images.size()!=1)
-			throw new ValidateException("get Image had error, params :" + map.toString());
+		if(images!=null && images.size()>1)
+			throw new ValidateException("get one Image had many result, params :" + map.toString());
 		
 		map.clear();
 		map.put("containerClusterName", cbaseCluster.getCbaseClusterName());
@@ -70,7 +70,7 @@ public class TaskCbaseClusterCreateServiceImpl extends
 		map.put("nodeCount", String.valueOf(hostSize));
 		map.put("mountDir", mountDir);
 		map.put("memory", memory);
-		map.put("image", images.get(0).getUrl()==null ? MATRIX_CBASE_DEFAULT_IMAGE : images.get(0).getUrl());
+		map.put("image", images==null||images.size()==0||images.get(0).getUrl()==null ? MATRIX_CBASE_DEFAULT_IMAGE : images.get(0).getUrl());
 
 		ApiResultObject result = this.cbasePythonService.createContainer(map,
 				host.getHostIp(), host.getName(), host.getPassword());
