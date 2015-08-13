@@ -418,8 +418,10 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 						computer.put(monitorDetailModel.getDetailName()+"_time", monitorDetailModel.getMonitorDate());
 					} else {
 						long time = (((Date)computer.get(monitorDetailModel.getDetailName()+"_time")).getTime()-monitorDetailModel.getMonitorDate().getTime())/1000;
-						float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue())/time;
-						result.put(monitorDetailModel.getDetailName(), ret);
+						if(time!=0) {
+							float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue())/time;
+							result.put(monitorDetailModel.getDetailName(), ret);
+						}
 					}
 				} else {
 					result.put(monitorDetailModel.getDetailName(),monitorDetailModel.getDetailValue());
@@ -437,8 +439,10 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 					computer.put(monitorDetailModel.getDetailName()+"_time", monitorDetailModel.getMonitorDate());
 				} else {
 					long time = (((Date)computer.get(monitorDetailModel.getDetailName()+"_time")).getTime()-monitorDetailModel.getMonitorDate().getTime())/1000;
-					float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue())/time;
-					result.put(monitorDetailModel.getDetailName(), ret);
+					if(time!=0) {
+						float ret = ((Float)computer.get(monitorDetailModel.getDetailName()+"_value")-monitorDetailModel.getDetailValue())/time;
+						result.put(monitorDetailModel.getDetailName(), ret);
+					}
 				}
 				if(result.size()==cols.length) {//采用最新2次数据，满足采集条数后，退出
 					break;

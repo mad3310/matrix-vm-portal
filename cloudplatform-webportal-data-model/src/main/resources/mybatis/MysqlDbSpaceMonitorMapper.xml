@@ -58,16 +58,17 @@
 		        UPDATE_TIME=#{updateTime},
 		    </if>
 		</set>
-		where HOST_TAG=#{hostTag};
+		where HOST_TAG=#{hostTag} and NAME = #{name};
 	</update>
 	
-	<select id="selectByHostTag" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select 
 			<include refid="Base_Column_List" />
 		from 
 			WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace
 		where
-			dbspace.HOST_TAG = #{hostTag}
+			dbspace.HOST_TAG = #{hostTag} and
+			dbspace.NAME = #{name}
 	</select>
 	
 	<!-- 列表总数 -->

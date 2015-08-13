@@ -370,7 +370,7 @@ public class PythonServiceImpl implements IPythonService{
 	public ApiResultObject getMysqlMonitorData(String ip, String index, Map<String, String> params) {
 		StringBuffer url = new StringBuffer();
 		url.append(URL_HEAD).append(ip).append(URL_PORT).append(index);
-		String result = HttpClient.post(url.toString(), params);
+		String result = HttpClient.post(url.toString(), params, 1000, 1000, null, null);
 		return new ApiResultObject(result, url.toString());
 	}    
 	
