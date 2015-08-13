@@ -33,6 +33,11 @@ public class DashBoardController {
 	public @ResponseBody ResultObject list(ResultObject result) {
 		Map<String, Integer> appResource = this.dashBoardProxy
 				.selectAppResource();
+		logger.info("sessionService: " + sessionService);
+		logger.info("(OpenStackSession) sessionService.getSession(): " + (OpenStackSession) sessionService.getSession());
+		logger.info("(OpenStackSession) sessionService.getSession().getOpenStackSession(): " + (OpenStackSession) sessionService.getSession().getOpenStackSession());
+		logger.info("((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager(): " + ((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager());
+		logger.info("((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber(): " + ((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber());
 		int totalVMNumber = ((OpenStackSession) sessionService.getSession()
 				.getOpenStackSession()).getVMManager().totalNumber();
 		appResource.put("vm", totalVMNumber);
