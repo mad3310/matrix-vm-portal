@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.adminoplog.IAdminOpLogDao;
 import com.letv.portal.model.adminoplog.AdminOpLog;
@@ -52,7 +53,11 @@ public class AdminOpLogServiceImpl extends BaseServiceImpl<AdminOpLog>
 	public void add(String event, AoLogType logType, String module,
 			String description) {
 		if (event == null) {
-			throw new ValidateException("参数不合法");
+//			throw new ValidateException("参数不合法");
+			event = "";
+		}
+		if(logType==null){
+			logType=AoLogType.NULL;
 		}
 		if (module == null) {
 			throw new ValidateException("参数不合法");
@@ -60,8 +65,9 @@ public class AdminOpLogServiceImpl extends BaseServiceImpl<AdminOpLog>
 		if (description == null) {
 			throw new ValidateException("参数不合法");
 		}
-		AdminOpLog log = new AdminOpLog(event, sessionService.getSession()
-				.getUserId(), logType, module, description);
+		Session session=sessionService.getSession();
+		Long userId=session.getUserId();
+		AdminOpLog log = new AdminOpLog(event, userId, logType, module, description);
 		insert(log);
 	}
 

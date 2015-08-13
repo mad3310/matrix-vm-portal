@@ -96,7 +96,7 @@ public class AdminOpLogAspect {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			logService.add(e.getMessage(), null, "", e.getLocalizedMessage());
+			logService.add(e.getMessage()!=null?e.getMessage():"", AoLogType.NULL, "", e.getLocalizedMessage()!=null?e.getLocalizedMessage():"");
 			throw new MatrixException("后台错误", e);
 		}
 	}
