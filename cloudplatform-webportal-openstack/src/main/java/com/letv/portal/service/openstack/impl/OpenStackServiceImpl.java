@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.util.ConfigUtil;
+import com.letv.common.util.SpringContextUtil;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
@@ -77,7 +78,13 @@ public class OpenStackServiceImpl implements OpenStackService {
 	private ITemplateMessageSender defaultEmailSender;
 
 	private OpenStackServiceGroup openStackServiceGroup;
+	
+	private static OpenStackServiceImpl INSTANCE;
 
+	public OpenStackServiceImpl() {
+		INSTANCE=this;
+	}
+	
 	@PostConstruct
 	public void open() {
 		ConfigUtil.class.getName();
@@ -132,11 +139,14 @@ public class OpenStackServiceImpl implements OpenStackService {
 			if (email.endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
 			}
-			return new OpenStackSessionImpl(openStackServiceGroup,
+			return new OpenStackSessionImpl(
 					openStackConf, openStackUser);
 		} catch (NoSuchAlgorithmException e) {
 			throw new OpenStackException("后台服务不可用", e);
 		}
 	}
 
+	public static OpenStackServiceGroup getOpenStackServiceGroup() {
+		return INSTANCE.openStackServiceGroup;
+	}
 }

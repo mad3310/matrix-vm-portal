@@ -1,39 +1,89 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.Closeable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import com.letv.common.email.ITemplateMessageSender;
+import org.jclouds.ContextBuilder;
+import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.inject.Module;
 import com.letv.portal.model.cloudvm.CloudvmRegion;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
-import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.Region;
 import com.letv.portal.service.openstack.resource.manager.ResourceManager;
 
-public abstract class AbstractResourceManager implements ResourceManager,
-		Closeable {
-	protected OpenStackServiceGroup openStackServiceGroup;
+public abstract class AbstractResourceManager<ApiType extends Closeable>
+		implements ResourceManager, Closeable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1539965976463585808L;
+	// protected OpenStackServiceGroup openStackServiceGroup;
 	protected OpenStackConf openStackConf;
 	protected OpenStackUser openStackUser;
 
-	protected ICloudvmRegionService cloudvmRegionService;
-	protected ITemplateMessageSender defaultEmailSender;
+	// protected ICloudvmRegionService cloudvmRegionService;
+	// protected ITemplateMessageSender defaultEmailSender;
 
-	public AbstractResourceManager(OpenStackServiceGroup openStackServiceGroup,
-			OpenStackConf openStackConf, OpenStackUser openStackUser) {
-		this.openStackServiceGroup = openStackServiceGroup;
-		this.openStackConf = openStackConf;
-		this.openStackUser = openStackUser;
-		this.cloudvmRegionService = openStackServiceGroup
-				.getCloudvmRegionService();
-		this.defaultEmailSender = openStackServiceGroup.getDefaultEmailSender();
+	public AbstractResourceManager() {
 	}
 
-	public void checkRegion(String region) throws RegionNotFoundException {
+	public AbstractResourceManager(OpenStackConf openStackConf,
+			OpenStackUser openStackUser) {
+		// this.openStackServiceGroup = openStackServiceGroup;
+		this.openStackConf = openStackConf;
+		this.openStackUser = openStackUser;
+		// this.cloudvmRegionService = openStackServiceGroup
+		// .getCloudvmRegionService();
+		// this.defaultEmailSender =
+		// openStackServiceGroup.getDefaultEmailSender();
+	}
+
+	protected abstract String getProviderOrApi();
+
+	protected abstract Class<ApiType> getApiClass();
+
+	public ApiType openApi() {
+		Iterable<Module> modules = ImmutableSet
+				.<Module> of(new SLF4JLoggingModule());
+
+		ApiType api = ContextBuilder
+				.newBuilder(getProviderOrApi())
+				.endpoint(openStackConf.getPublicEndpoint())
+				.credentials(
+						openStackUser.getUserId() + ":"
+								+ openStackUser.getUserId(),
+						openStackUser.getPassword()).modules(modules)
+				.buildApi(getApiClass());
+		return api;
+	}
+
+	public <ReturnType> ReturnType runWithApi(ApiRunnable<ApiType,ReturnType> task) throws OpenStackException {
+		try {
+			ReturnType returnObj;
+			ApiType api = openApi();
+			try {
+				returnObj = task.run(api);
+			} finally {
+				api.close();
+			}
+			return returnObj;
+		} catch (OpenStackException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new OpenStackException("后台错误", ex);
+		}
+	}
+
+	public void checkRegion(String region) throws OpenStackException,RegionNotFoundException {
 		if (!getRegions().contains(region)) {
 			throw new RegionNotFoundException(region);
 		}
@@ -54,7 +104,8 @@ public abstract class AbstractResourceManager implements ResourceManager,
 			final String cityId = regionCodeFragments[1];
 			final int number = Integer.parseInt(regionCodeFragments[2]);
 
-			CloudvmRegion cloudvmRegion = cloudvmRegionService
+			CloudvmRegion cloudvmRegion = OpenStackServiceImpl
+					.getOpenStackServiceGroup().getCloudvmRegionService()
 					.selectByCode(regionCode);
 			if (cloudvmRegion == null) {
 				throw new OpenStackException("Lack of region Chinese name",
@@ -123,8 +174,8 @@ public abstract class AbstractResourceManager implements ResourceManager,
 
 	public String getRegionDisplayName(String regionCode)
 			throws OpenStackException {
-		CloudvmRegion region = this.cloudvmRegionService
-				.selectByCode(regionCode);
+		CloudvmRegion region = OpenStackServiceImpl.getOpenStackServiceGroup()
+				.getCloudvmRegionService().selectByCode(regionCode);
 		if (region == null) {
 			throw new OpenStackException("Lack of region Chinese name",
 					"缺少地域的中文名");
@@ -134,7 +185,9 @@ public abstract class AbstractResourceManager implements ResourceManager,
 
 	protected Map<String, String> getRegionCodeToDisplayNameMap() {
 		Map<String, String> map = new HashMap<String, String>();
-		for (CloudvmRegion region : this.cloudvmRegionService.selectAll()) {
+		for (CloudvmRegion region : OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmRegionService()
+				.selectAll()) {
 			map.put(region.getCode(), region.getDisplayName());
 		}
 		return map;
@@ -148,21 +201,23 @@ public abstract class AbstractResourceManager implements ResourceManager,
 		return openStackUser;
 	}
 
-	private static final Set<String> limitedUserEmails=new HashSet<String>();
-	static{
+	private static final Set<String> limitedUserEmails = new HashSet<String>();
+	static {
 		limitedUserEmails.add("zhangwenming@letv.com");
 		limitedUserEmails.add("zhoubingzheng@letv.com");
 		limitedUserEmails.add("yuelongguang@letv.com");
 		limitedUserEmails.add("jiangfei@letv.com");
 		limitedUserEmails.add("zhouxianguang@letv.com");
 	}
+
 	protected void checkUserEmail() throws OpenStackException {
-		if(!isAuthority()){
-			throw new OpenStackException("The user is not in limited users", "对不起，您没有权限。");
+		if (!isAuthority()) {
+			throw new OpenStackException("The user is not in limited users",
+					"对不起，您没有权限。");
 		}
 	}
 
-	public boolean isAuthority(){
+	public boolean isAuthority() {
 		return limitedUserEmails.contains(openStackUser.getEmail());
 	}
 }

@@ -2,14 +2,17 @@ package com.letv.portal.service.openstack.resource.manager.impl.task;
 
 import java.util.List;
 
+import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
+import com.google.common.io.Closeables;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
@@ -39,34 +42,44 @@ public class AddVolumes implements Runnable {
 	@Override
 	public void run() {
 		try {
-			VolumeApi volumeApi = volumeManagerImpl.getCinderApi()
-					.getVolumeApi(region);
-			Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = vmManager
-					.getNovaApi().getVolumeAttachmentApi(region);
-			if (!volumeAttachmentApiOptional.isPresent()) {
-				throw new APINotAvailableException(VolumeAttachmentApi.class);
-			}
-			VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
-					.get();
-			for (Volume volume : volumes) {
+			CinderApi cinderApi = volumeManagerImpl.openApi();
+			try {
+				NovaApi novaApi = vmManager.openApi();
 				try {
-					while (true) {
-						volume = volumeApi.get(volume.getId());
-						if (volume.getStatus() == Volume.Status.CREATING) {
-							Thread.sleep(1000);
-						} else {
-							if (volume.getStatus() == Volume.Status.AVAILABLE) {
-								volumeAttachmentApi
-										.attachVolumeToServerAsDevice(
-												volume.getId(), server.getId(),
-												"");
+					VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+					Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
+							.getVolumeAttachmentApi(region);
+					if (!volumeAttachmentApiOptional.isPresent()) {
+						throw new APINotAvailableException(
+								VolumeAttachmentApi.class);
+					}
+					VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
+							.get();
+					for (Volume volume : volumes) {
+						try {
+							while (true) {
+								volume = volumeApi.get(volume.getId());
+								if (volume.getStatus() == Volume.Status.CREATING) {
+									Thread.sleep(1000);
+								} else {
+									if (volume.getStatus() == Volume.Status.AVAILABLE) {
+										volumeAttachmentApi
+												.attachVolumeToServerAsDevice(
+														volume.getId(),
+														server.getId(), "");
+									}
+									break;
+								}
 							}
-							break;
+						} catch (InterruptedException e) {
+							throw new PollingInterruptedException(e);
 						}
 					}
-				} catch (InterruptedException e) {
-					throw new PollingInterruptedException(e);
+				} finally {
+					Closeables.close(novaApi, false);
 				}
+			} finally {
+				Closeables.close(cinderApi, false);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

@@ -15,6 +15,7 @@ import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.proxy.IDashBoardProxy;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 @Controller
 @RequestMapping("/dashboard")
@@ -31,10 +32,11 @@ public class DashBoardController {
 
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
 	public @ResponseBody ResultObject list(ResultObject result) {
+		try{
 		Map<String, Integer> appResource = this.dashBoardProxy
 				.selectAppResource();
 		logger.info("sessionService: " + sessionService);
-		logger.info("(OpenStackSession) sessionService.getSession(): " + (OpenStackSession) sessionService.getSession());
+		logger.info("sessionService.getSession(): " + sessionService.getSession());
 		logger.info("(OpenStackSession) sessionService.getSession().getOpenStackSession(): " + (OpenStackSession) sessionService.getSession().getOpenStackSession());
 		logger.info("((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager(): " + ((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager());
 		logger.info("((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber(): " + ((OpenStackSession) sessionService.getSession().getOpenStackSession()).getVMManager().totalNumber());
@@ -43,6 +45,9 @@ public class DashBoardController {
 		appResource.put("vm", totalVMNumber);
 		result.setData(appResource);
 		return result;
+		}catch(OpenStackException ex){
+			throw ex.matrixException();
+		}
 	}
 
 	@RequestMapping(value="/monitor/db/storage",method=RequestMethod.GET)

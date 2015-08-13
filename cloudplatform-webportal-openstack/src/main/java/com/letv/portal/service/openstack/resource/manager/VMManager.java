@@ -49,39 +49,39 @@ public interface VMManager extends ResourceManager {
 
 	void delete(String region, VMResource vm) throws RegionNotFoundException,
 			VMDeleteException, APINotAvailableException,
-			TaskNotFinishedException;
+			TaskNotFinishedException, OpenStackException;
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
-			TaskNotFinishedException, PollingInterruptedException;
+			TaskNotFinishedException, PollingInterruptedException, OpenStackException;
 
 	void batchDeleteSync(String vmIdListJson) throws OpenStackException;
 
 	void start(String region, VMResource vm) throws RegionNotFoundException,
-			VMStatusException, TaskNotFinishedException;
+			VMStatusException, TaskNotFinishedException, OpenStackException;
 
 	void startSync(String region, VMResource vm)
 			throws RegionNotFoundException, TaskNotFinishedException,
-			VMStatusException, PollingInterruptedException;
+			VMStatusException, PollingInterruptedException, OpenStackException;
 
 	void batchStartSync(String vmIdListJson) throws OpenStackException;
 
 	void stop(String region, VMResource vm) throws RegionNotFoundException,
-			TaskNotFinishedException, VMStatusException;
+			TaskNotFinishedException, VMStatusException, OpenStackException;
 
 	void stopSync(String region, VMResource vm)
 			throws PollingInterruptedException, RegionNotFoundException,
-			TaskNotFinishedException, VMStatusException;
+			TaskNotFinishedException, VMStatusException, OpenStackException;
 
 	void batchStopSync(String regionAndVmIds) throws OpenStackException;
 
-	int totalNumber();
+	int totalNumber() throws OpenStackException;
 
 	List<FlavorResource> listFlavorResources(String region)
-			throws RegionNotFoundException;
+			throws RegionNotFoundException, OpenStackException;
 
 	FlavorResource getFlavorResource(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException;
+			throws RegionNotFoundException, ResourceNotFoundException, OpenStackException;
 
 	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
 			String region) throws OpenStackException;
@@ -92,7 +92,7 @@ public interface VMManager extends ResourceManager {
 	void detachVolume(VMResource vmResource, VolumeResource volumeResource)
 			throws OpenStackException;
 
-	String openConsole(VMResource vmResource) throws APINotAvailableException;
+	String openConsole(VMResource vmResource) throws APINotAvailableException, OpenStackException;
 
 	boolean isAuthority();
 }

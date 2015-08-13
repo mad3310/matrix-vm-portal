@@ -3,19 +3,14 @@ package com.letv.portal.service.openstack.impl;
 import java.io.IOException;
 
 import org.jclouds.openstack.neutron.v2.NeutronApi;
-import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
-import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
 import org.jclouds.openstack.neutron.v2.domain.RuleDirection;
 import org.jclouds.openstack.neutron.v2.domain.RuleEthertype;
 import org.jclouds.openstack.neutron.v2.domain.RuleProtocol;
 import org.jclouds.openstack.neutron.v2.domain.SecurityGroup;
-import org.jclouds.openstack.neutron.v2.domain.Subnet;
-import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.extensions.SecurityGroupApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
-import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.base.Optional;
 import com.google.common.io.Closeables;
@@ -37,8 +32,8 @@ import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl
 public class OpenStackSessionImpl implements OpenStackSession {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
-	private OpenStackServiceGroup openStackServiceGroup;
+//	@SuppressWarnings("unused")
+//	private OpenStackServiceGroup openStackServiceGroup;
 	@SuppressWarnings("unused")
 	private OpenStackConf openStackConf;
 	@SuppressWarnings("unused")
@@ -55,11 +50,14 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	// private Object vmManagerLock;
 
 	private boolean isClosed;
+	
+	public OpenStackSessionImpl(){
+	}
 
-	public OpenStackSessionImpl(OpenStackServiceGroup openStackServiceGroup,
+	public OpenStackSessionImpl(
 			OpenStackConf openStackConf, OpenStackUser openStackUser)
 			throws OpenStackException {
-		this.openStackServiceGroup = openStackServiceGroup;
+//		this.openStackServiceGroup = openStackServiceGroup;
 		this.openStackConf = openStackConf;
 		this.openStackUser = openStackUser;
 
@@ -72,13 +70,13 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 		// identityManager = new IdentityManagerImpl(openStackServiceGroup,
 		// openStackConf, openStackUser);
-		imageManager = new ImageManagerImpl(openStackServiceGroup,
+		imageManager = new ImageManagerImpl(
 				openStackConf, openStackUser);
-		networkManager = new NetworkManagerImpl(openStackServiceGroup,
+		networkManager = new NetworkManagerImpl(
 				openStackConf, openStackUser);
-		volumeManager = new VolumeManagerImpl(openStackServiceGroup,
+		volumeManager = new VolumeManagerImpl(
 				openStackConf, openStackUser);
-		vmManager = new VMManagerImpl(openStackServiceGroup, openStackConf,
+		vmManager = new VMManagerImpl(openStackConf,
 				openStackUser);
 
 		vmManager.setImageManager(imageManager);
@@ -91,7 +89,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		isClosed = false;
 
 		// if (openStackUser.getFirstLogin()) {
-		NeutronApi neutronApi = networkManager.getNeutronApi();
+		NeutronApi neutronApi = networkManager.openApi();
+		try{
 		for (String region : neutronApi.getConfiguredRegions()) {
 			NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
@@ -174,6 +173,13 @@ public class OpenStackSessionImpl implements OpenStackSession {
 						.ethertype(RuleEthertype.IPV4)
 						.protocol(RuleProtocol.TCP).portRangeMin(22)
 						.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
+			}
+		}
+		}finally{
+			try {
+				neutronApi.close();
+			} catch (IOException e) {
+				throw new OpenStackException("后台错误", e);
 			}
 		}
 		// }

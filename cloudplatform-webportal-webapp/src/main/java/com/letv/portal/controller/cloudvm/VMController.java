@@ -35,8 +35,12 @@ public class VMController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
+		try{
 		result.setData(Util.session(sessionService).getVMManager().getRegions()
 				.toArray(new String[0]));
+		}catch(OpenStackException e){
+			throw e.matrixException();
+		}
 		return result;
 	}
 

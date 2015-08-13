@@ -1,6 +1,13 @@
 package com.letv.portal.service.openstack.impl;
 
-public class OpenStackConf {
+import java.io.Serializable;
+
+public class OpenStackConf implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3301523223935880732L;
+
 	private String publicEndpoint;
 
 	private String globalPublicNetworkId;
@@ -14,6 +21,9 @@ public class OpenStackConf {
 	private String userPrivateNetworkSubnetCidr;
 
 	private String userPrivateRouterName;
+	
+	public OpenStackConf() {
+	}
 	
 	public String getUserPrivateRouterName() {
 		return userPrivateRouterName;

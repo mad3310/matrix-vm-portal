@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
@@ -21,11 +18,9 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Module;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
-import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
@@ -33,122 +28,171 @@ import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 
-public class NetworkManagerImpl extends AbstractResourceManager implements
+public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi> implements
         NetworkManager {
 
-    private NeutronApi neutronApi;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -705565951531564369L;
+//	private NeutronApi neutronApi;
 
-    public NetworkManagerImpl(OpenStackServiceGroup openStackServiceGroup, OpenStackConf openStackConf, OpenStackUser openStackUser) {
-        super(openStackServiceGroup, openStackConf, openStackUser);
+	public NetworkManagerImpl() {
+	}
+	
+    public NetworkManagerImpl(OpenStackConf openStackConf, OpenStackUser openStackUser) {
+        super( openStackConf, openStackUser);
 
-        Iterable<Module> modules = ImmutableSet
-                .<Module>of(new SLF4JLoggingModule());
-
-        neutronApi = ContextBuilder.newBuilder("openstack-neutron")
-                .endpoint(openStackConf.getPublicEndpoint())
-                .credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword())
-                .modules(modules).buildApi(NeutronApi.class);
+//        Iterable<Module> modules = ImmutableSet
+//                .<Module>of(new SLF4JLoggingModule());
+//
+//        neutronApi = ContextBuilder.newBuilder("openstack-neutron")
+//                .endpoint(openStackConf.getPublicEndpoint())
+//                .credentials(openStackUser.getUserId() + ":" + openStackUser.getUserId(), openStackUser.getPassword())
+//                .modules(modules).buildApi(NeutronApi.class);
     }
 
     @Override
     public void close() throws IOException {
-        neutronApi.close();
+//        neutronApi.close();
     }
 
     @Override
-    public Set<String> getRegions() {
-        return neutronApi.getConfiguredRegions();
+    public Set<String> getRegions() throws OpenStackException {
+    	return runWithApi(new ApiRunnable<NeutronApi,Set<String>>() {
+			
+			@Override
+			public Set<String> run(NeutronApi neutronApi) throws Exception {
+				return neutronApi.getConfiguredRegions();
+			}
+		});
     }
 
     @Override
-    public List<NetworkResource> list(String region)
-            throws RegionNotFoundException {
-        checkRegion(region);
+    public List<NetworkResource> list(final String region)
+            throws OpenStackException {
+    	return runWithApi(new ApiRunnable<NeutronApi, List<NetworkResource>>() {
 
-        NetworkApi networkApi = neutronApi.getNetworkApi(region);
-        SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+			@Override
+			public List<NetworkResource> run(NeutronApi neutronApi) throws Exception {
+				 checkRegion(region);
 
-        List<Network> networks = networkApi.list().concat().toList();
-        List<Subnet> subnets = subnetApi.list().concat().toList();
+			        NetworkApi networkApi = neutronApi.getNetworkApi(region);
+			        SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 
-        Map<String, NetworkResourceImpl> idToNetwork = new HashMap<String, NetworkResourceImpl>();
-        for (Network network : networks) {
-            idToNetwork.put(network.getId(), new NetworkResourceImpl(region, network, new LinkedList<SubnetResource>()));
-        }
+			        List<Network> networks = networkApi.list().concat().toList();
+			        List<Subnet> subnets = subnetApi.list().concat().toList();
 
-        for (Subnet subnet : subnets) {
-            idToNetwork.get(subnet.getNetworkId()).getSubnets().add(new SubnetResourceImpl(region, subnet));
-        }
+			        Map<String, NetworkResourceImpl> idToNetwork = new HashMap<String, NetworkResourceImpl>();
+			        for (Network network : networks) {
+			            idToNetwork.put(network.getId(), new NetworkResourceImpl(region, network, new LinkedList<SubnetResource>()));
+			        }
 
-        List<NetworkResource> networkResources = new ArrayList<NetworkResource>(
-                idToNetwork.size());
-        for (NetworkResourceImpl networkResourceImpl : idToNetwork.values()) {
-            networkResources.add(networkResourceImpl);
-        }
+			        for (Subnet subnet : subnets) {
+			            idToNetwork.get(subnet.getNetworkId()).getSubnets().add(new SubnetResourceImpl(region, subnet));
+			        }
 
-        return networkResources;
+			        List<NetworkResource> networkResources = new ArrayList<NetworkResource>(
+			                idToNetwork.size());
+			        for (NetworkResourceImpl networkResourceImpl : idToNetwork.values()) {
+			            networkResources.add(networkResourceImpl);
+			        }
+
+			        return networkResources;
+			}
+		});
     }
 
     @Override
-    public NetworkResource get(String region, String id)
-            throws RegionNotFoundException, ResourceNotFoundException {
-        checkRegion(region);
+    public NetworkResource get(final String region,final String id)
+            throws OpenStackException {
+    	return runWithApi(new ApiRunnable<NeutronApi, NetworkResource>() {
 
-        NetworkApi networkApi = neutronApi.getNetworkApi(region);
-        Network network = networkApi.get(id);
+			@Override
+			public NetworkResource run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
 
-        if (network != null) {
-            NetworkResourceImpl networkResourceImpl = new NetworkResourceImpl(region, network, new LinkedList<SubnetResource>());
+		        NetworkApi networkApi = neutronApi.getNetworkApi(region);
+		        Network network = networkApi.get(id);
 
-            ImmutableSet<String> subnetIds = network.getSubnets();
-            List<Subnet> allSubnets = neutronApi.getSubnetApi(region).list().concat().toList();
+		        if (network != null) {
+		            NetworkResourceImpl networkResourceImpl = new NetworkResourceImpl(region, network, new LinkedList<SubnetResource>());
 
-            for (Subnet subnet : allSubnets) {
-                if (subnetIds.contains(subnet.getId())) {
-                    networkResourceImpl.getSubnets().add(new SubnetResourceImpl(region, subnet));
-                }
-            }
-            return networkResourceImpl;
-        } else {
-            throw new ResourceNotFoundException("Network","网络",id);
-        }
+		            ImmutableSet<String> subnetIds = network.getSubnets();
+		            List<Subnet> allSubnets = neutronApi.getSubnetApi(region).list().concat().toList();
+
+		            for (Subnet subnet : allSubnets) {
+		                if (subnetIds.contains(subnet.getId())) {
+		                    networkResourceImpl.getSubnets().add(new SubnetResourceImpl(region, subnet));
+		                }
+		            }
+		            return networkResourceImpl;
+		        } else {
+		            throw new ResourceNotFoundException("Network","网络",id);
+		        }
+			}
+    		
+		});
     }
 
-    public NeutronApi getNeutronApi() {
-		return neutronApi;
-	}
+//    public NeutronApi getNeutronApi() {
+//		return neutronApi;
+//	}
 
-    public Network getPublicNetwork(String region){
-        return neutronApi.getNetworkApi(region).get(openStackConf.getGlobalPublicNetworkId());
+    public Network getPublicNetwork(final String region) throws OpenStackException{
+    	return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+
+			@Override
+			public Network run(NeutronApi neutronApi) throws Exception {
+				return neutronApi.getNetworkApi(region).get(openStackConf.getGlobalPublicNetworkId());
+			}
+    	});
     }
 
-    public Subnet getUserPrivateSubnet(String region){
-        SubnetApi subnetApi=neutronApi.getSubnetApi(region);
-        Subnet privateSubnet = null;
-        for (Subnet subnet : subnetApi.list().concat().toList()) {
-            if (openStackConf.getUserPrivateNetworkSubnetName().equals(
-                    subnet.getName())) {
-                privateSubnet = subnet;
-                break;
-            }
-        }
-        return privateSubnet;
+    public Subnet getUserPrivateSubnet(final String region) throws OpenStackException{
+    	return runWithApi(new ApiRunnable<NeutronApi, Subnet>() {
+
+			@Override
+			public Subnet run(NeutronApi neutronApi) throws Exception {
+				SubnetApi subnetApi=neutronApi.getSubnetApi(region);
+		        Subnet privateSubnet = null;
+		        for (Subnet subnet : subnetApi.list().concat().toList()) {
+		            if (openStackConf.getUserPrivateNetworkSubnetName().equals(
+		                    subnet.getName())) {
+		                privateSubnet = subnet;
+		                break;
+		            }
+		        }
+		        return privateSubnet;
+			}
+		});
     }
 
-    public Network getUserPrivateNetwork(String region){
-        NetworkApi networkApi=neutronApi.getNetworkApi(region);
-        Network privateNetwork = null;
-        for (Network network : networkApi.list().concat().toList()) {
-            if (openStackConf.getUserPrivateNetworkName().equals(
-                    network.getName())) {
-                privateNetwork = network;
-                break;
-            }
-        }
-        return privateNetwork;
+    public Network getUserPrivateNetwork(final String region) throws OpenStackException{
+		return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+
+			@Override
+			public Network run(NeutronApi neutronApi) throws Exception {
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				Network privateNetwork = null;
+				for (Network network : networkApi.list().concat().toList()) {
+					if (openStackConf.getUserPrivateNetworkName().equals(
+							network.getName())) {
+						privateNetwork = network;
+						break;
+					}
+				}
+				return privateNetwork;
+			}
+		});
     }
 
-    public Network getOrCreateUserPrivateNetwork(String region){
+    public Network getOrCreateUserPrivateNetwork(final String region) throws OpenStackException{
+    	return runWithApi(new ApiRunnable<NeutronApi, Network>() {
+
+			@Override
+			public Network run(NeutronApi neutronApi) throws Exception {
+    	
         NetworkApi networkApi=neutronApi.getNetworkApi(region);
 
         Network privateNetwork = getUserPrivateNetwork(region);
@@ -176,9 +220,16 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         }
 
         return privateNetwork;
+        
+			}
+		});
     }
 
-    public Router getOrCreateUserPrivateRouter(String region) throws OpenStackException {
+    public Router getOrCreateUserPrivateRouter(final String region) throws OpenStackException {
+    	return runWithApi(new ApiRunnable<NeutronApi, Router>() {
+
+			@Override
+			public Router run(NeutronApi neutronApi) throws Exception {
         RouterApi routerApi = neutronApi.getRouterApi(region).get();
 
         Router privateRouter = null;
@@ -214,5 +265,17 @@ public class NetworkManagerImpl extends AbstractResourceManager implements
         // .build())
 
         return privateRouter;
+			}
+		});
     }
+
+	@Override
+	protected String getProviderOrApi() {
+		return "openstack-neutron";
+	}
+
+	@Override
+	protected Class<NeutronApi> getApiClass() {
+		return NeutronApi.class;
+	}
 }

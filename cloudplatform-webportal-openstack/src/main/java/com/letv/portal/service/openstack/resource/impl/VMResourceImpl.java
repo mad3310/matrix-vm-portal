@@ -14,7 +14,7 @@ import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -89,8 +89,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 
 	public VMResourceImpl(String region, String regionDisplayName,
 			Server server, VMManagerImpl vmManager, ImageManager imageManager,
-			OpenStackUser openStackUser) throws RegionNotFoundException,
-			ResourceNotFoundException, APINotAvailableException {
+			OpenStackUser openStackUser) throws OpenStackException {
 		this(region, regionDisplayName, server, imageManager.get(region, server
 				.getImage().getId()), vmManager.getFlavorResource(region,
 				server.getFlavor().getId()), vmManager.listFloatingIPs(region),
@@ -249,4 +248,5 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	public void setVolumes(List<VolumeResource> volumes) {
 		this.volumes = volumes;
 	}
+
 }

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("/osf")
@@ -23,8 +21,12 @@ public class FlavorController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
+		try {
 		result.setData(Util.session(sessionService).getVMManager().getRegions()
 				.toArray(new String[0]));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 
@@ -34,7 +36,7 @@ public class FlavorController {
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
 					.listFlavorResources(region));
-		} catch (RegionNotFoundException e) {
+		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
 		return result;
@@ -47,9 +49,7 @@ public class FlavorController {
 		try {
 			result.setData(Util.session(sessionService).getVMManager()
 					.getFlavorResource(region, flavorId));
-		} catch (RegionNotFoundException e) {
-			throw e.matrixException();
-		} catch (ResourceNotFoundException e) {
+		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
 		return result;

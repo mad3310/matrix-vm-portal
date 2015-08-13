@@ -1,7 +1,11 @@
 package com.letv.portal.service.openstack.exception;
 
-@SuppressWarnings("serial")
 public class VMStatusException extends OpenStackException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6445293197818536717L;
 
 	public VMStatusException(String msg, String userMessage) {
 		super(msg, userMessage);

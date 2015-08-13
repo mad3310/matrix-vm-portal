@@ -1,10 +1,15 @@
 package com.letv.portal.service.openstack.exception;
 
+import java.io.Serializable;
+
 import com.letv.common.exception.MatrixException;
 
-@SuppressWarnings("serial")
-public class OpenStackException extends Exception {
+public class OpenStackException extends Exception implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1248947391308476404L;
 	private String userMessage;
 
 	public OpenStackException(String msg, String userMessage) {

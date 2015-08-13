@@ -9,10 +9,10 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.ImageResource;
 
 public interface ImageManager extends ResourceManager {
-	List<ImageResource> list(String region) throws RegionNotFoundException;
+	List<ImageResource> list(String region) throws RegionNotFoundException, OpenStackException;
 
 	ImageResource get(String region, String id) throws RegionNotFoundException,
-			ResourceNotFoundException;
+			ResourceNotFoundException, OpenStackException;
 
 	Map<String, Map<String, ImageResource>> group(String region)
 			throws RegionNotFoundException, OpenStackException;

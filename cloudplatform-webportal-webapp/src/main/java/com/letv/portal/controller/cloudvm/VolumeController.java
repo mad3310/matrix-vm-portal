@@ -23,8 +23,12 @@ public class VolumeController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
+		try{
 		result.setData(Util.session(sessionService).getVolumeManager()
 				.getRegions().toArray(new String[0]));
+		}catch(OpenStackException e){
+			e.matrixException();
+		}
 		return result;
 	}
 
