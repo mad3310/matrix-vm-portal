@@ -47,7 +47,7 @@ public class MysqlDbSpaceMonitorServiceImpl extends BaseServiceImpl<MysqlDbSpace
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("hostTag", dbSpace.getHostTag());
-		params.put("dbName", dbName);
+		params.put("name", dbName);
 		List<MysqlDbSpaceMonitor> dbSpaces = this.mysqlDbSpaceMonitorDao.selectByMap(params);
 		if(dbSpaces!=null && dbSpaces.size()==1) {
 			dbSpace.setId(dbSpaces.get(0).getId());
