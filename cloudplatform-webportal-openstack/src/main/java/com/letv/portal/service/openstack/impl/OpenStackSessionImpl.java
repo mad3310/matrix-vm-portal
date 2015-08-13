@@ -35,6 +35,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl
  * Created by zhouxianguang on 2015/6/8.
  */
 public class OpenStackSessionImpl implements OpenStackSession {
+	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unused")
 	private OpenStackServiceGroup openStackServiceGroup;
