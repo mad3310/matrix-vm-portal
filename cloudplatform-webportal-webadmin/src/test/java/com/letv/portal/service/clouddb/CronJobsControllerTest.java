@@ -1,5 +1,8 @@
 package com.letv.portal.service.clouddb;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -77,5 +80,11 @@ public class CronJobsControllerTest extends AbstractTest{
     	MockHttpServletRequest request =  new MockHttpServletRequest();
     	this.cron.deleteMonitorErrorData(request, new ResultObject());
     }
+    public static void main(String[] args) {
+		Date d = new Date();
+		d.setTime(1439400301000l);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HHmmss");
+		System.out.println(sdf.format(d));
+	}
     
 }

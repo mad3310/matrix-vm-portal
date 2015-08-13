@@ -2,7 +2,9 @@ package com.letv.portal.service.monitor.mysql.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -43,7 +45,10 @@ public class MysqlDbSpaceMonitorServiceImpl extends BaseServiceImpl<MysqlDbSpace
 		dbSpace.setName(dbName);
 		dbSpace.setSize(Float.parseFloat(size));
 		
-		List<MysqlDbSpaceMonitor> dbSpaces = this.mysqlDbSpaceMonitorDao.selectByHostTag(dbSpace.getHostTag());
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("hostTag", dbSpace.getHostTag());
+		params.put("dbName", dbName);
+		List<MysqlDbSpaceMonitor> dbSpaces = this.mysqlDbSpaceMonitorDao.selectByMap(params);
 		if(dbSpaces!=null && dbSpaces.size()==1) {
 			dbSpace.setId(dbSpaces.get(0).getId());
 			dbSpace.setUpdateTime(new Timestamp(d.getTime()));

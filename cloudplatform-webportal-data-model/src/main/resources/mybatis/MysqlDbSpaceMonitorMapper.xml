@@ -61,13 +61,14 @@
 		where HOST_TAG=#{hostTag};
 	</update>
 	
-	<select id="selectByHostTag" resultMap="BaseResultMap" parameterType="java.lang.String">
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select 
 			<include refid="Base_Column_List" />
 		from 
 			WEBPORTAL_MONITOR_MYSQL_DB_SPACE dbspace
 		where
-			dbspace.HOST_TAG = #{hostTag}
+			dbspace.HOST_TAG = #{hostTag} and
+			dbspace.NAME = #{dbName}
 	</select>
 	
 	<!-- 列表总数 -->
