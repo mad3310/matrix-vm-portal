@@ -6,11 +6,12 @@ import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 
 import java.io.Closeable;
+import java.io.Serializable;
 
 /**
  * Created by zhouxianguang on 2015/6/8.
  */
-public interface OpenStackSession extends Closeable{
+public interface OpenStackSession extends Closeable, Serializable {
     ImageManager getImageManager();
     
     NetworkManager getNetworkManager();
