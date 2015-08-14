@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.exception.*;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
@@ -16,11 +17,6 @@ import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.PollingInterruptedException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.VolumeResource;
@@ -90,7 +86,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 					return new VolumeResourceImpl(region,
 							VolumeManagerImpl.this.getRegionDisplayName(region), volume);
 				} else {
-					throw new ResourceNotFoundException("Volume", "卷", id);
+					throw new VolumeNotFoundException(id);
 				}
 			}
 		});
