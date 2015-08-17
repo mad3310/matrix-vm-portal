@@ -1,6 +1,6 @@
 package com.letv.portal.service.openstack.exception;
 
-public class VMStatusException extends OpenStackException {
+public class VMStatusException extends UserOperationException {
 
 	/**
 	 * 

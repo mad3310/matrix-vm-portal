@@ -123,7 +123,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 	 * 
 	 * @param regions
 	 * @param name
-	 * @param currentPage
+	 * @param currentPagePara
 	 *            从1开始
 	 * @param recordsPerPage
 	 * @return
@@ -233,7 +233,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 				checkRegion(region);
 
 				if (sizes.isEmpty()) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"The count of volume is less than or equal to zero.",
 							"云硬盘的数量等于0");
 				}
@@ -241,7 +241,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 				int volumeTotalSize = 0;
 				for (Integer size : sizes) {
 					if (size <= 0) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"The size of the cloud disk can not be less than or equal to zero.",
 								"云硬盘的大小不能小于或等于零。");
 					}
@@ -265,11 +265,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 								"云硬盘配额不可用。");
 					}
 					if (volumeTotalSize > volumeQuota.getGigabytes()) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"Volume size exceeding the quota.", "云硬盘大小超过配额。");
 					}
 					if (volumeCount > volumeQuota.getVolumes()) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"Volume count exceeding the quota.", "云硬盘数量超过配额。");
 					}
 				}
@@ -297,7 +297,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 
 				checkRegion(region);
 				if (sizeGB <= 0) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"The size of the cloud disk can not be less than or equal to zero.",
 							"云硬盘的大小不能小于或等于零。");
 				}
@@ -315,7 +315,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 					count = 1;
 				}
 				if (count <= 0) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"The count of volume is less than or equal to zero.",
 							"云硬盘的数量不能小于或等于0");
 				}
@@ -336,11 +336,11 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 								"云硬盘配额不可用。");
 					}
 					if (volumeTotalSize > volumeQuota.getGigabytes()) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"Volume size exceeding the quota.", "云硬盘大小超过配额。");
 					}
 					if (volumeCount > volumeQuota.getVolumes()) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"Volume count exceeding the quota.", "云硬盘数量超过配额。");
 					}
 				}
@@ -367,7 +367,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi> implem
 				Status status = ((VolumeResourceImpl) volumeResource).volume
 						.getStatus();
 				if (status != Status.AVAILABLE && status != Status.ERROR) {
-					throw new OpenStackException("Volume is not removable.",
+					throw new UserOperationException("Volume is not removable.",
 							"云硬盘不是可删除的状态。");
 				}
 

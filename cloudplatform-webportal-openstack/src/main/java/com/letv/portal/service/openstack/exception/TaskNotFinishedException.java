@@ -1,6 +1,6 @@
 package com.letv.portal.service.openstack.exception;
 
-public class TaskNotFinishedException extends OpenStackException {
+public class TaskNotFinishedException extends UserOperationException {
 
 	/**
 	 * 

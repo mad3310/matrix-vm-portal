@@ -3,6 +3,7 @@ package com.letv.portal.controller.cloudvm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -142,6 +143,9 @@ public class VMController {
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -156,6 +160,9 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.publish(region, vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -170,6 +177,9 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.unpublish(region, vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -184,6 +194,9 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.deleteSync(region, vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -195,6 +208,9 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchDeleteSync(vms);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -209,6 +225,9 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -220,6 +239,9 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStartSync(vms);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -234,6 +256,9 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -245,6 +270,9 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStopSync(vms);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -261,6 +289,9 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			vmManager.attachVolume(vmManager.get(region, vmId),
 					volumeManager.get(region, volumeId));
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -277,6 +308,9 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			vmManager.detachVolume(vmManager.get(region, vmId),
 					volumeManager.get(region, volumeId));
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -291,6 +325,9 @@ public class VMController {
 			OpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			result.setData(vmManager.openConsole(vmManager.get(region, vmId)));
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

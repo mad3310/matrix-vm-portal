@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.exception.*;
 import org.apache.commons.lang3.CharUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -42,14 +43,6 @@ import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.PollingInterruptedException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
-import com.letv.portal.service.openstack.exception.VMDeleteException;
-import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -169,7 +162,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	 * 
 	 * @param regions
 	 * @param name
-	 * @param currentPage
+	 * @param currentPagePara
 	 *            从1开始
 	 * @param recordsPerPage
 	 * @return
@@ -355,7 +348,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 			} else {
 				for (char ch : conf.getAdminPass().toCharArray()) {
 					if (!CharUtils.isAsciiAlphanumeric(ch)) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"User password contains illegal characters.",
 								"用户密码包含不合法的字符");
 					}
@@ -432,15 +425,15 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				}
 
 				if (serverCount > quota.getInstances()) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"VM count exceeding the quota.", "虚拟机数量超过配额。");
 				}
 				if (serverTotalVcpus > quota.getCores()) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Vcpu count exceeding the quota.", "虚拟CPU数量超过配额。");
 				}
 				if (serverTotalRam > quota.getRam()) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Ram amounts exceeding the quota.", "内存总量超过配额。");
 				}
 			}
@@ -517,7 +510,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				throw (OpenStackException) ex;
 			} else {
 				if(ex.getMessage()!=null && ex.getMessage().contains("Flavor's disk is too small for requested image.")){
-					throw new OpenStackException("硬件配置过低，不满足镜像的要求。",ex);
+					throw new UserOperationException("硬件配置过低，不满足镜像的要求。",ex);
 				}
 				throw new OpenStackException("后台服务错误", ex);
 			}
@@ -634,7 +627,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 							"虚拟机配额不可用。");
 				}
 				if (floatingIps.size() + 1 > quota.getFloatingIps()) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
 				}
 
@@ -679,7 +672,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 				FloatingIP ip = floatingIPApi.get(ipPara.getId());
 				if (ip.getInstanceId() != null) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Public IP has been binding, cannot be bound to the virtual machine.",
 							"公网IP已经被绑定，不能绑定到多台虚拟机。");
 				}
@@ -688,7 +681,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 				for (FloatingIP floatingIP : floatingIps) {
 					if (vmId.equals(floatingIP.getInstanceId())) {
-						throw new OpenStackException(
+						throw new UserOperationException(
 								"Virtual machine has been binding public IP, cannot repeat binding.",
 								"虚拟机已经绑定公网IP，不能重复绑定。");
 					}
@@ -752,7 +745,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	 * call before deleting vm
 	 * 
 	 * @param region
-	 * @param vmId
+	 * @param vm
 	 * @throws OpenStackException 
 	 */
 	private void removeAndDeleteFloatingIPOfVM(final String region,final VMResource vm)
@@ -1215,7 +1208,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				}
 
 				if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Under the different regions of the vm and volume can not attach.",
 							"不同地域下的虚拟机和云硬盘不能附加");
 				}
@@ -1223,7 +1216,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				Server.Status vmStatus = ((VMResourceImpl) vmResource).server
 						.getStatus();
 				if (vmStatus != Server.Status.ACTIVE) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"The current status of the virtual machine can not attach volume.",
 							"虚拟机当前的状态不能附加云硬盘。");
 				}
@@ -1231,7 +1224,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
 						.getStatus();
 				if (volumeStatus != Volume.Status.AVAILABLE) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"The status of the volume is not available.",
 							"云硬盘的状态不是可用的。");
 				}
@@ -1278,7 +1271,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		}
 
 		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
-			throw new OpenStackException(
+			throw new UserOperationException(
 					"Under the different regions of the vm and volume can not detach.",
 					"不同地域下的虚拟机和云硬盘不能分离");
 		}
@@ -1286,7 +1279,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		Server.Status vmStatus = ((VMResourceImpl) vmResource).server
 				.getStatus();
 		if (vmStatus != Server.Status.ACTIVE) {
-			throw new OpenStackException(
+			throw new UserOperationException(
 					"The current status of the virtual machine can not attach volume.",
 					"虚拟机当前的状态不能分离云硬盘。");
 		}
@@ -1294,7 +1287,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
 				.getStatus();
 		if (volumeStatus != Volume.Status.IN_USE) {
-			throw new OpenStackException(
+			throw new UserOperationException(
 					"The status of the volume is not in use.", "云硬盘没有被使用。");
 		}
 
@@ -1304,14 +1297,14 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 			if (volumeAttachment.getServerId().equals(vmResource.getId())) {
 				isAttachedToServer = true;
 				if ("/".equals(volumeAttachment.getDevice())) {
-					throw new OpenStackException(
+					throw new UserOperationException(
 							"Attached on the the volume can't be detached in the root directory.",
 							"挂载在根路径上的云硬盘不能被分离。");
 				}
 			}
 		}
 		if (!isAttachedToServer) {
-			throw new OpenStackException(
+			throw new UserOperationException(
 					"The volume is not attached to this vm.", "云硬盘没有被这台虚拟机使用。");
 		}
 

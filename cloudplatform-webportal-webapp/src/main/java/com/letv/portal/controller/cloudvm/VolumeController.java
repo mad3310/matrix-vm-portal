@@ -1,6 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,9 @@ public class VolumeController {
 		try {
 			Util.session(sessionService).getVolumeManager()
 					.create(region, size, name, description, count);
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -118,6 +122,9 @@ public class VolumeController {
 			VolumeManager volumeManager = Util.session(sessionService)
 					.getVolumeManager();
 			volumeManager.delete(region, volumeManager.get(region, volumeId));
+		} catch (UserOperationException e){
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
