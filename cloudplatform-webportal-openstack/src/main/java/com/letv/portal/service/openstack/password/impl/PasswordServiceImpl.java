@@ -29,9 +29,9 @@ public class PasswordServiceImpl implements PasswordService {
 
 	public static void main(String[] args) throws NoSuchAlgorithmException {
 		PasswordServiceImpl i = new PasswordServiceImpl();
-		i.userPasswordSalt = "abcdefg12345";
 		Scanner scanner = new Scanner(System.in);
 		try {
+			i.userPasswordSalt = scanner.nextLine();
 			String line = scanner.nextLine();
 			String pw = i.userIdToPassword(line);
 			System.out.println(pw);

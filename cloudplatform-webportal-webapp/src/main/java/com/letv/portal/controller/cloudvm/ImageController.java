@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("/osi")
@@ -25,7 +23,11 @@ public class ImageController {
     @ResponseBody
     ResultObject regions() {
         ResultObject result = new ResultObject();
+        try {
         result.setData(Util.session(sessionService).getImageManager().getRegions().toArray(new String[0]));
+        } catch (OpenStackException e) {
+			throw e.matrixException();
+		}
         return result;
     }
 
@@ -36,7 +38,7 @@ public class ImageController {
         ResultObject result = new ResultObject();
         try {
             result.setData(Util.session(sessionService).getImageManager().list(region));
-        } catch (RegionNotFoundException e) {
+        } catch (OpenStackException e) {
         	throw e.matrixException();
         }
         return result;
@@ -62,9 +64,7 @@ public class ImageController {
         ResultObject result = new ResultObject();
         try {
             result.setData(Util.session(sessionService).getImageManager().get(region, imageId));
-        } catch (RegionNotFoundException e) {
-        	throw e.matrixException();
-        } catch (ResourceNotFoundException e) {
+        } catch (OpenStackException e) {
         	throw e.matrixException();
         }
         return result;

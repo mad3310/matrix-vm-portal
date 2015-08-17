@@ -1,5 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,12 @@ public class VolumeController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
+		try{
 		result.setData(Util.session(sessionService).getVolumeManager()
 				.getRegions().toArray(new String[0]));
+		}catch(OpenStackException e){
+			e.matrixException();
+		}
 		return result;
 	}
 
@@ -47,6 +53,8 @@ public class VolumeController {
 		try {
 			result.setData(Util.session(sessionService).getVolumeManager()
 					.get(region, volumeId));
+		} catch (VolumeNotFoundException e) {
+			result.addMsg("没有此云硬盘");
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

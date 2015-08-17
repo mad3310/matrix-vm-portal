@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 
 @Controller
 @RequestMapping("/osn")
@@ -22,8 +21,12 @@ public class NetworkController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
+		try{
 		result.setData(Util.session(sessionService).getNetworkManager()
 				.getRegions().toArray(new String[0]));
+		}catch(OpenStackException e){
+			throw e.matrixException();
+		}
 		return result;
 	}
 
@@ -33,7 +36,7 @@ public class NetworkController {
 		try {
 			result.setData(Util.session(sessionService).getNetworkManager()
 					.list(region));
-		} catch (RegionNotFoundException e) {
+		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
 		return result;
@@ -46,11 +49,9 @@ public class NetworkController {
 		try {
 			result.setData(Util.session(sessionService).getNetworkManager()
 					.get(region, networkId));
-		} catch (RegionNotFoundException e) {
+		} catch (OpenStackException e) {
 			throw e.matrixException();
-		} catch (ResourceNotFoundException e) {
-			throw e.matrixException();
-		}
+		} 
 		return result;
 	}
 }

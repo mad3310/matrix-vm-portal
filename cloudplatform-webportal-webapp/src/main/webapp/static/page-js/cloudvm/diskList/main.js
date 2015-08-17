@@ -70,9 +70,9 @@ define(function(require){
 				disk.intervalObject=setInterval((function(currentDisk){
 					return function(){
 						var url = '/osv/region/'+currentDisk.region+'/volume/' + currentDisk.id;
-						cn.GetLocalData(url,function(data){
-							if(data.result==0 || diskListHandler.goingStatusList.indexOf(data.data.status)==-1){
-								if(data.result==0){//表示已删除
+						cn.GetData(url,function(data){
+							if((data.result==1 && data.data===null) || diskListHandler.goingStatusList.indexOf(data.data.status)==-1){
+								if(data.result==1 && data.data===null){//表示已删除
 									setDiskStatus(currentDisk.id,'已删除');
 								}
 								else{
