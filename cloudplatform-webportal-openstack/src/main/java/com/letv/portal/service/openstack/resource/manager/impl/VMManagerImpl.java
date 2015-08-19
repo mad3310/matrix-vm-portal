@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.model.cloudvm.CloudvmVmCount;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.exception.*;
+
 import org.apache.commons.lang3.CharUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -61,7 +64,8 @@ import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 
-public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements VMManager {
+public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
+		VMManager {
 
 	/**
 	 * 
@@ -72,7 +76,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	private static final Logger logger = org.slf4j.LoggerFactory
 			.getLogger(VMManager.class);
 
-//	private NovaApi novaApi;
+	// private NovaApi novaApi;
 
 	private ImageManager imageManager;
 
@@ -81,36 +85,36 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	private VolumeManagerImpl volumeManager;
 
 	// private IdentityManagerImpl identityManager;
-	
+
 	public VMManagerImpl() {
 	}
 
-	public VMManagerImpl(
-			OpenStackConf openStackConf, OpenStackUser openStackUser) {
+	public VMManagerImpl(OpenStackConf openStackConf,
+			OpenStackUser openStackUser) {
 		super(openStackConf, openStackUser);
 
-//		Iterable<Module> modules = ImmutableSet
-//				.<Module> of(new SLF4JLoggingModule());
-//
-//		novaApi = ContextBuilder
-//				.newBuilder("openstack-nova")
-//				.endpoint(openStackConf.getPublicEndpoint())
-//				.credentials(
-//						openStackUser.getUserId() + ":"
-//								+ openStackUser.getUserId(),
-//						openStackUser.getPassword()).modules(modules)
-//				.buildApi(NovaApi.class);
+		// Iterable<Module> modules = ImmutableSet
+		// .<Module> of(new SLF4JLoggingModule());
+		//
+		// novaApi = ContextBuilder
+		// .newBuilder("openstack-nova")
+		// .endpoint(openStackConf.getPublicEndpoint())
+		// .credentials(
+		// openStackUser.getUserId() + ":"
+		// + openStackUser.getUserId(),
+		// openStackUser.getPassword()).modules(modules)
+		// .buildApi(NovaApi.class);
 	}
 
 	@Override
 	public void close() throws IOException {
-//		novaApi.close();
+		// novaApi.close();
 	}
 
 	@Override
 	public Set<String> getRegions() throws OpenStackException {
-		return runWithApi(new ApiRunnable<NovaApi,Set<String>>() {
-			
+		return runWithApi(new ApiRunnable<NovaApi, Set<String>>() {
+
 			@Override
 			public Set<String> run(NovaApi api) throws Exception {
 				return api.getConfiguredRegions();
@@ -120,8 +124,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 	@Override
 	public List<VMResource> list(final String region) throws OpenStackException {
-		return runWithApi(new ApiRunnable<NovaApi,List<VMResource>>() {
-			
+		return runWithApi(new ApiRunnable<NovaApi, List<VMResource>>() {
+
 			@Override
 			public List<VMResource> run(NovaApi novaApi) throws Exception {
 				checkRegion(region);
@@ -129,14 +133,16 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				String regionDisplayName = getRegionDisplayName(region);
 
 				ServerApi serverApi = novaApi.getServerApi(region);
-				List<Server> resources = serverApi.listInDetail().concat().toList();
+				List<Server> resources = serverApi.listInDetail().concat()
+						.toList();
 				List<VMResource> vmResources = new ArrayList<VMResource>(
 						resources.size());
 				for (Server resource : resources) {
-					vmResources.add(new VMResourceImpl(region, regionDisplayName,
-							resource, VMManagerImpl.this, imageManager, openStackUser));
+					vmResources.add(new VMResourceImpl(region,
+							regionDisplayName, resource, VMManagerImpl.this,
+							imageManager, openStackUser));
 				}
-				
+
 				return vmResources;
 			}
 		});
@@ -171,18 +177,18 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	 * @throws APINotAvailableException
 	 * @throws OpenStackException
 	 */
-	private Page listByRegions(final Set<String> regions,final String name,
+	private Page listByRegions(final Set<String> regions, final String name,
 			final Integer currentPagePara, final Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException {
-		return runWithApi(new ApiRunnable<NovaApi,Page>() {
-			
+		return runWithApi(new ApiRunnable<NovaApi, Page>() {
+
 			@Override
 			public Page run(NovaApi novaApi) throws Exception {
 				Integer currentPage;
 				if (currentPagePara != null) {
 					currentPage = currentPagePara - 1;
-				}else{
+				} else {
 					currentPage = null;
 				}
 
@@ -194,16 +200,18 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					ServerApi serverApi = novaApi.getServerApi(region);
 					if (needCollect) {
 						String regionDisplayName = transMap.get(region);
-						List<Server> resources = serverApi.listInDetail().concat()
-								.toList();
+						List<Server> resources = serverApi.listInDetail()
+								.concat().toList();
 						for (Server resource : resources) {
 							if (name == null
 									|| (resource.getName() != null && resource
 											.getName().contains(name))) {
-								if (currentPage == null || recordsPerPage == null) {
+								if (currentPage == null
+										|| recordsPerPage == null) {
 									vmResources.add(new VMResourceImpl(region,
-											regionDisplayName, resource, VMManagerImpl.this,
-											imageManager, openStackUser));
+											regionDisplayName, resource,
+											VMManagerImpl.this, imageManager,
+											openStackUser));
 								} else {
 									if (needCollect) {
 										if (serverCount >= (currentPage + 1)
@@ -211,9 +219,14 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 											needCollect = false;
 										} else if (serverCount >= currentPage
 												* recordsPerPage) {
-											vmResources.add(new VMResourceImpl(region,
-													regionDisplayName, resource, VMManagerImpl.this,
-													imageManager, openStackUser));
+											vmResources
+													.add(new VMResourceImpl(
+															region,
+															regionDisplayName,
+															resource,
+															VMManagerImpl.this,
+															imageManager,
+															openStackUser));
 										}
 									}
 								}
@@ -252,7 +265,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	@Override
-	public VMResource get(final String region, final String id) throws OpenStackException {
+	public VMResource get(final String region, final String id)
+			throws OpenStackException {
 		return runWithApi(new ApiRunnable<NovaApi, VMResource>() {
 
 			@Override
@@ -264,8 +278,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				if (server != null) {
 					String regionDisplayName = getRegionDisplayName(region);
 					VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
-							regionDisplayName, server, VMManagerImpl.this, imageManager,
-							openStackUser);
+							regionDisplayName, server, VMManagerImpl.this,
+							imageManager, openStackUser);
 					vmResourceImpl.setVolumes(volumeManager.getOfVM(region,
 							regionDisplayName, id));
 					return vmResourceImpl;
@@ -273,7 +287,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					throw new ResourceNotFoundException("VM", "虚拟机", id);
 				}
 			}
-			
+
 		});
 	}
 
@@ -284,239 +298,266 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 			@Override
 			public VMResource run(NovaApi novaApi) throws Exception {
-		
-		checkUserEmail();
 
-		checkRegion(region);
-		final String regionDisplayName = getRegionDisplayName(region);
+				checkUserEmail();
 
-		FloatingIP floatingIP = null;
-		List<Volume> volumes = null;
+				checkRegion(region);
+				final String regionDisplayName = getRegionDisplayName(region);
 
-		try {
-			List<Integer> volumeSizes = null;
-			if (conf.getVolumeSizesJson() != null) {
-				ObjectMapper objectMapper = new ObjectMapper();
+				FloatingIP floatingIP = null;
+				List<Volume> volumes = null;
+
 				try {
-					volumeSizes = objectMapper.readValue(
-							conf.getVolumeSizesJson(),
-							new TypeReference<List<Integer>>() {
-							});
-				} catch (JsonParseException e) {
-					throw new OpenStackException("请求数据格式错误", e);
-				} catch (JsonMappingException e) {
-					throw new OpenStackException("请求数据格式错误", e);
-				} catch (IOException e) {
-					throw new OpenStackException("后台服务错误", e);
-				}
-			}
-
-			CreateServerOptions createServerOptions = new CreateServerOptions();
-
-			Set<String> networks = new LinkedHashSet<String>();
-			{
-//				NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl) networkManager;
-//				NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
-//				NetworkApi networkApi = neutronApi.getNetworkApi(region);
-//				for (Network network : networkApi.list().concat().toList()) {
-//					if (openStackConf.getUserPrivateNetworkName().equals(
-//							network.getName())) {
-//						networks.add(network.getId());
-//						break;
-//					}
-//				}
-				Network userPrivateNetwork=networkManager.getOrCreateUserPrivateNetwork(region);
-				if(userPrivateNetwork!=null) {
-					networks.add(userPrivateNetwork.getId());
-				}
-
-				List<NetworkResource> networkResources = conf.getNetworkResources();
-				if (networkResources != null) {
-					for (int i = 0; i < networkResources.size(); i++) {
-						networks.add(networkResources.get(i).getId());
-					}
-				}
-				
-				if (openStackUser.getInternalUser()&&!openStackConf.getGlobalSharedNetworkId().isEmpty()) {
-					networks.add(openStackConf.getGlobalSharedNetworkId());
-				}
-			}
-			createServerOptions.networks(networks);
-
-			if (conf.getAdminPass() == null || conf.getAdminPass().isEmpty()) {
-				conf.setAdminPass(PasswordRandom.genStr(10));
-			} else {
-				for (char ch : conf.getAdminPass().toCharArray()) {
-					if (!CharUtils.isAsciiAlphanumeric(ch)) {
-						throw new UserOperationException(
-								"User password contains illegal characters.",
-								"用户密码包含不合法的字符");
-					}
-				}
-			}
-			createServerOptions.adminPass(conf.getAdminPass());
-			// createServerOptions.userData(MessageFormat.format(
-			// "#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
-			// conf.getAdminPass()).getBytes(Charsets.UTF_8));
-
-			// test code begin(ssh login)
-			{
-				// Optional<SecurityGroupApi> securityGroupApi = novaApi
-				// .getSecurityGroupApi(region);
-				// if (securityGroupApi.isPresent()) {
-				// SecurityGroup defaultSecurityGroup = null;
-				// List<SecurityGroup> securityGroups = securityGroupApi.get()
-				// .list().toList();
-				// for (SecurityGroup securityGroup : securityGroups) {
-				// if ("default".equals(securityGroup.getName())) {
-				// defaultSecurityGroup = securityGroup;
-				// break;
-				// }
-				// }
-				// if (defaultSecurityGroup != null) {
-				// } else {
-				// throw new
-				// OpenStackException("Default security group is not found.");
-				// }
-				// } else {
-				// throw new APINotAvailableException(SecurityGroupApi.class);
-				// }
-
-				createServerOptions.securityGroupNames("default");
-			}
-			// test code end
-
-			final ServerApi serverApi = novaApi.getServerApi(region);
-
-			{
-				FlavorApi flavorApi = novaApi.getFlavorApi(region);
-				FlavorResource flavorResource = conf.getFlavorResource();
-				int serverCount = 1, serverTotalVcpus = flavorResource
-						.getVcpus(), serverTotalRam = flavorResource.getRam();
-				List<Server> servers = serverApi.listInDetail().concat()
-						.toList();
-				Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
-				for (Server server : servers) {
-					serverCount++;
-					String flavorId = server.getFlavor().getId();
-					Flavor flavor = idToFlavor.get(flavorId);
-					if (flavor == null) {
-						flavor = flavorApi.get(flavorId);
-						if (flavor == null) {
-
+					List<Integer> volumeSizes = null;
+					if (conf.getVolumeSizesJson() != null) {
+						ObjectMapper objectMapper = new ObjectMapper();
+						try {
+							volumeSizes = objectMapper.readValue(
+									conf.getVolumeSizesJson(),
+									new TypeReference<List<Integer>>() {
+									});
+						} catch (JsonParseException e) {
+							throw new OpenStackException("请求数据格式错误", e);
+						} catch (JsonMappingException e) {
+							throw new OpenStackException("请求数据格式错误", e);
+						} catch (IOException e) {
+							throw new OpenStackException("后台服务错误", e);
 						}
-						idToFlavor.put(flavorId, flavor);
 					}
-					serverTotalVcpus += flavor.getVcpus();
-					serverTotalRam += flavor.getRam();
+
+					CreateServerOptions createServerOptions = new CreateServerOptions();
+
+					Set<String> networks = new LinkedHashSet<String>();
+					{
+						// NetworkManagerImpl networkManagerImpl =
+						// (NetworkManagerImpl) networkManager;
+						// NeutronApi neutronApi =
+						// networkManagerImpl.getNeutronApi();
+						// NetworkApi networkApi =
+						// neutronApi.getNetworkApi(region);
+						// for (Network network :
+						// networkApi.list().concat().toList()) {
+						// if (openStackConf.getUserPrivateNetworkName().equals(
+						// network.getName())) {
+						// networks.add(network.getId());
+						// break;
+						// }
+						// }
+						Network userPrivateNetwork = networkManager
+								.getOrCreateUserPrivateNetwork(region);
+						if (userPrivateNetwork != null) {
+							networks.add(userPrivateNetwork.getId());
+						}
+
+						List<NetworkResource> networkResources = conf
+								.getNetworkResources();
+						if (networkResources != null) {
+							for (int i = 0; i < networkResources.size(); i++) {
+								networks.add(networkResources.get(i).getId());
+							}
+						}
+
+						if (openStackUser.getInternalUser()
+								&& !openStackConf.getGlobalSharedNetworkId()
+										.isEmpty()) {
+							networks.add(openStackConf
+									.getGlobalSharedNetworkId());
+						}
+					}
+					createServerOptions.networks(networks);
+
+					if (conf.getAdminPass() == null
+							|| conf.getAdminPass().isEmpty()) {
+						conf.setAdminPass(PasswordRandom.genStr(10));
+					} else {
+						for (char ch : conf.getAdminPass().toCharArray()) {
+							if (!CharUtils.isAsciiAlphanumeric(ch)) {
+								throw new UserOperationException(
+										"User password contains illegal characters.",
+										"用户密码包含不合法的字符");
+							}
+						}
+					}
+					createServerOptions.adminPass(conf.getAdminPass());
+					// createServerOptions.userData(MessageFormat.format(
+					// "#!/bin/sh\npasswd root<<EOF\n{0}\n{0}\nEOF\n",
+					// conf.getAdminPass()).getBytes(Charsets.UTF_8));
+
+					// test code begin(ssh login)
+					{
+						// Optional<SecurityGroupApi> securityGroupApi = novaApi
+						// .getSecurityGroupApi(region);
+						// if (securityGroupApi.isPresent()) {
+						// SecurityGroup defaultSecurityGroup = null;
+						// List<SecurityGroup> securityGroups =
+						// securityGroupApi.get()
+						// .list().toList();
+						// for (SecurityGroup securityGroup : securityGroups) {
+						// if ("default".equals(securityGroup.getName())) {
+						// defaultSecurityGroup = securityGroup;
+						// break;
+						// }
+						// }
+						// if (defaultSecurityGroup != null) {
+						// } else {
+						// throw new
+						// OpenStackException("Default security group is not found.");
+						// }
+						// } else {
+						// throw new
+						// APINotAvailableException(SecurityGroupApi.class);
+						// }
+
+						createServerOptions.securityGroupNames("default");
+					}
+					// test code end
+
+					final ServerApi serverApi = novaApi.getServerApi(region);
+
+					{
+						FlavorApi flavorApi = novaApi.getFlavorApi(region);
+						FlavorResource flavorResource = conf
+								.getFlavorResource();
+						int serverCount = 1, serverTotalVcpus = flavorResource
+								.getVcpus(), serverTotalRam = flavorResource
+								.getRam();
+						List<Server> servers = serverApi.listInDetail()
+								.concat().toList();
+						Map<String, Flavor> idToFlavor = new HashMap<String, Flavor>();
+						for (Server server : servers) {
+							serverCount++;
+							String flavorId = server.getFlavor().getId();
+							Flavor flavor = idToFlavor.get(flavorId);
+							if (flavor == null) {
+								flavor = flavorApi.get(flavorId);
+								if (flavor == null) {
+
+								}
+								idToFlavor.put(flavorId, flavor);
+							}
+							serverTotalVcpus += flavor.getVcpus();
+							serverTotalRam += flavor.getRam();
+						}
+
+						Optional<QuotaApi> quotaApiOptional = novaApi
+								.getQuotaApi(region);
+						if (!quotaApiOptional.isPresent()) {
+							throw new APINotAvailableException(QuotaApi.class);
+						}
+
+						Quota quota = quotaApiOptional.get().getByTenant(
+								openStackUser.getTenantId());
+						if (quota == null) {
+							throw new OpenStackException(
+									"VM quota is not available.", "虚拟机配额不可用。");
+						}
+
+						if (serverCount > quota.getInstances()) {
+							throw new UserOperationException(
+									"VM count exceeding the quota.",
+									"虚拟机数量超过配额。");
+						}
+						if (serverTotalVcpus > quota.getCores()) {
+							throw new UserOperationException(
+									"Vcpu count exceeding the quota.",
+									"虚拟CPU数量超过配额。");
+						}
+						if (serverTotalRam > quota.getRam()) {
+							throw new UserOperationException(
+									"Ram amounts exceeding the quota.",
+									"内存总量超过配额。");
+						}
+					}
+
+					if (conf.getBindFloatingIP()) {
+						floatingIP = allocFloatingIP(region);
+					}
+
+					if (volumeSizes != null && !volumeSizes.isEmpty()) {
+						volumes = volumeManager.create(region, volumeSizes);
+						// Set<BlockDeviceMapping> blockDeviceMappings = new
+						// HashSet<BlockDeviceMapping>();
+						// char deviceNameSuffix = 'e';
+						// for (Volume volume : volumes) {
+						// blockDeviceMappings.add(BlockDeviceMapping.builder()
+						// .uuid(volume.getId()).deviceName("/dev/vdc")
+						// // .deviceName("/dev/vd" + deviceNameSuffix)
+						// .sourceType("blank").build());
+						// deviceNameSuffix++;
+						// }
+						// createServerOptions.blockDeviceMappings(blockDeviceMappings);
+					}
+
+					final ServerCreated serverCreated = serverApi.create(
+							conf.getName(), conf.getImageResource().getId(),
+							conf.getFlavorResource().getId(),
+							createServerOptions);
+					incVmCount();
+					Server server = serverApi.get(serverCreated.getId());
+					VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
+							regionDisplayName, server, VMManagerImpl.this,
+							imageManager, openStackUser);
+
+					emailVmCreated(vmResourceImpl, conf);
+
+					List<Runnable> afterTasks = new LinkedList<Runnable>();
+					if (floatingIP != null) {
+						afterTasks.add(new BindFloatingIP(VMManagerImpl.this,
+								imageManager, region, server, floatingIP));
+					}
+					if (volumes != null) {
+						afterTasks.add(new AddVolumes(VMManagerImpl.this,
+								volumeManager, region, server, volumes));
+					}
+					if (!afterTasks.isEmpty()) {
+						new Thread(new WaitingVMCreated(VMManagerImpl.this,
+								region, serverCreated.getId(), afterTasks))
+								.start();
+					}
+
+					// test code begin(ssh login)
+					// {
+					// Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+					// .getFloatingIPApi(region);
+					// if (!floatingIPApiOptional.isPresent()) {
+					// throw new APINotAvailableException(FloatingIPApi.class);
+					// }
+					// FloatingIPApi floatingIPApi =
+					// floatingIPApiOptional.get();
+					// // FloatingIP floatingIP = floatingIPApi.create();
+					// for(Entry<String,Address>
+					// entry:server.getAddresses().entries()){
+					// logger.info(MessageFormat.format("server address: {0} => {1}",
+					// entry.getKey(),entry.getValue().getAddr()));
+					// }
+					// // floatingIPApi.addToServer(floatingIP.getIp(),
+					// server.getId());
+					// }
+					// test code end
+
+					return vmResourceImpl;
+				} catch (Exception ex) {
+					if (floatingIP != null) {
+						deleteFloatingIP(region, floatingIP);
+					}
+					if (volumes != null) {
+						volumeManager.delete(region, volumes);
+					}
+					if (ex instanceof OpenStackException) {
+						throw (OpenStackException) ex;
+					} else {
+						if (ex.getMessage() != null
+								&& ex.getMessage()
+										.contains(
+												"Flavor's disk is too small for requested image.")) {
+							throw new UserOperationException(
+									"硬件配置过低，不满足镜像的要求。", ex);
+						}
+						throw new OpenStackException("后台服务错误", ex);
+					}
 				}
-
-				Optional<QuotaApi> quotaApiOptional = novaApi
-						.getQuotaApi(region);
-				if (!quotaApiOptional.isPresent()) {
-					throw new APINotAvailableException(QuotaApi.class);
-				}
-
-				Quota quota = quotaApiOptional.get().getByTenant(
-						openStackUser.getTenantId());
-				if (quota == null) {
-					throw new OpenStackException("VM quota is not available.",
-							"虚拟机配额不可用。");
-				}
-
-				if (serverCount > quota.getInstances()) {
-					throw new UserOperationException(
-							"VM count exceeding the quota.", "虚拟机数量超过配额。");
-				}
-				if (serverTotalVcpus > quota.getCores()) {
-					throw new UserOperationException(
-							"Vcpu count exceeding the quota.", "虚拟CPU数量超过配额。");
-				}
-				if (serverTotalRam > quota.getRam()) {
-					throw new UserOperationException(
-							"Ram amounts exceeding the quota.", "内存总量超过配额。");
-				}
 			}
 
-			if (conf.getBindFloatingIP()) {
-				floatingIP = allocFloatingIP(region);
-			}
-
-			if (volumeSizes != null && !volumeSizes.isEmpty()) {
-				volumes = volumeManager.create(region, volumeSizes);
-				// Set<BlockDeviceMapping> blockDeviceMappings = new
-				// HashSet<BlockDeviceMapping>();
-				// char deviceNameSuffix = 'e';
-				// for (Volume volume : volumes) {
-				// blockDeviceMappings.add(BlockDeviceMapping.builder()
-				// .uuid(volume.getId()).deviceName("/dev/vdc")
-				// // .deviceName("/dev/vd" + deviceNameSuffix)
-				// .sourceType("blank").build());
-				// deviceNameSuffix++;
-				// }
-				// createServerOptions.blockDeviceMappings(blockDeviceMappings);
-			}
-
-			final ServerCreated serverCreated = serverApi.create(
-					conf.getName(), conf.getImageResource().getId(), conf
-							.getFlavorResource().getId(), createServerOptions);
-			Server server = serverApi.get(serverCreated.getId());
-			VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
-					regionDisplayName, server, VMManagerImpl.this, imageManager,
-					openStackUser);
-
-			emailVmCreated(vmResourceImpl, conf);
-
-			List<Runnable> afterTasks = new LinkedList<Runnable>();
-			if (floatingIP != null) {
-				afterTasks.add(new BindFloatingIP(VMManagerImpl.this, imageManager, region,
-						server, floatingIP));
-			}
-			if (volumes != null) {
-				afterTasks.add(new AddVolumes(VMManagerImpl.this, volumeManager, region,
-						server, volumes));
-			}
-			if (!afterTasks.isEmpty()) {
-				new Thread(new WaitingVMCreated(VMManagerImpl.this, region,
-						serverCreated.getId(), afterTasks)).start();
-			}
-
-			// test code begin(ssh login)
-			// {
-			// Optional<FloatingIPApi> floatingIPApiOptional = novaApi
-			// .getFloatingIPApi(region);
-			// if (!floatingIPApiOptional.isPresent()) {
-			// throw new APINotAvailableException(FloatingIPApi.class);
-			// }
-			// FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-			// // FloatingIP floatingIP = floatingIPApi.create();
-			// for(Entry<String,Address> entry:server.getAddresses().entries()){
-			// logger.info(MessageFormat.format("server address: {0} => {1}",
-			// entry.getKey(),entry.getValue().getAddr()));
-			// }
-			// // floatingIPApi.addToServer(floatingIP.getIp(), server.getId());
-			// }
-			// test code end
-
-			return vmResourceImpl;
-		} catch (Exception ex) {
-			if (floatingIP != null) {
-				deleteFloatingIP(region, floatingIP);
-			}
-			if (volumes != null) {
-				volumeManager.delete(region, volumes);
-			}
-			if (ex instanceof OpenStackException) {
-				throw (OpenStackException) ex;
-			} else {
-				if(ex.getMessage()!=null && ex.getMessage().contains("Flavor's disk is too small for requested image.")){
-					throw new UserOperationException("硬件配置过低，不满足镜像的要求。",ex);
-				}
-				throw new OpenStackException("后台服务错误", ex);
-			}
-		}
-}
-			
 		});
 	}
 
@@ -539,7 +580,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				openStackUser.getEmail(), "乐视云平台web-portal系统通知",
 				"cloudvm/createVm.ftl", params);
 		mailMessage.setHtml(true);
-		OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender().sendMessage(mailMessage);
+		OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender()
+				.sendMessage(mailMessage);
 	}
 
 	/**
@@ -561,7 +603,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				openStackUser.getEmail(), "乐视云平台web-portal系统通知",
 				"cloudvm/bindFloatingIp.ftl", params);
 		mailMessage.setHtml(true);
-		OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender().sendMessage(mailMessage);
+		OpenStackServiceImpl.getOpenStackServiceGroup().getDefaultEmailSender()
+				.sendMessage(mailMessage);
 	}
 
 	@Override
@@ -587,20 +630,21 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 				for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
 					if (vm.getId().equals(floatingIP.getInstanceId())) {
-						floatingIPApi.removeFromServer(floatingIP.getIp(), vm.getId());
+						floatingIPApi.removeFromServer(floatingIP.getIp(),
+								vm.getId());
 						floatingIPApi.delete(floatingIP.getId());
 					}
 				}
-				
-				
+
 				return null;
 			}
-		
+
 		});
-		
+
 	}
 
-	public FloatingIP allocFloatingIP(final String region) throws OpenStackException {
+	public FloatingIP allocFloatingIP(final String region)
+			throws OpenStackException {
 		return runWithApi(new ApiRunnable<NovaApi, FloatingIP>() {
 
 			@Override
@@ -615,7 +659,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 				List<FloatingIP> floatingIps = floatingIPApi.list().toList();
 
-				Optional<QuotaApi> quotaApiOptional = novaApi.getQuotaApi(region);
+				Optional<QuotaApi> quotaApiOptional = novaApi
+						.getQuotaApi(region);
 				if (!quotaApiOptional.isPresent()) {
 					throw new APINotAvailableException(QuotaApi.class);
 				}
@@ -628,18 +673,21 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				}
 				if (floatingIps.size() + 1 > quota.getFloatingIps()) {
 					throw new UserOperationException(
-							"Floating IP count exceeding the quota.", "公网IP数量超过配额。");
+							"Floating IP count exceeding the quota.",
+							"公网IP数量超过配额。");
 				}
 
-				FloatingIP floatingIP = floatingIPApi.allocateFromPool(openStackConf
-						.getGlobalPublicNetworkId());
+				FloatingIP floatingIP = floatingIPApi
+						.allocateFromPool(openStackConf
+								.getGlobalPublicNetworkId());
 				return floatingIP;
 			}
 		});
 	}
 
-	private void deleteFloatingIP(final String region, final FloatingIP floatingIP)
-			throws APINotAvailableException,OpenStackException {
+	private void deleteFloatingIP(final String region,
+			final FloatingIP floatingIP) throws APINotAvailableException,
+			OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
@@ -657,8 +705,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		});
 	}
 
-	public void bindFloatingIP(final String region,final FloatingIP ipPara,final String vmId)
-			throws OpenStackException {
+	public void bindFloatingIP(final String region, final FloatingIP ipPara,
+			final String vmId) throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
@@ -687,9 +735,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					}
 				}
 
-//				org.jclouds.openstack.neutron.v2.features.PortApi neutronFloatingIPApiOptional = networkManager
-//						.getNeutronApi().getPortApi(region);
-				
+				// org.jclouds.openstack.neutron.v2.features.PortApi
+				// neutronFloatingIPApiOptional = networkManager
+				// .getNeutronApi().getPortApi(region);
+
 				floatingIPApi.addToServer(ip.getIp(), vmId);
 				return null;
 			}
@@ -727,9 +776,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 		// String ip = address.getAddr();
 
 		FloatingIP floatingIP = allocFloatingIP(region);
-		bindFloatingIP(region, floatingIP, vm.getId());
+		try {
+			bindFloatingIP(region, floatingIP, vm.getId());
+		} catch (OpenStackException e) {
+			deleteFloatingIP(region, floatingIP);
+			throw e;
+		}
 		emailBindIP(vm, floatingIP.getIp());
-
 		// NetworkManagerImpl networkManagerImpl = (NetworkManagerImpl)
 		// networkManager;
 		// NeutronApi neutronApi = networkManagerImpl.getNeutronApi();
@@ -746,10 +799,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	 * 
 	 * @param region
 	 * @param vm
-	 * @throws OpenStackException 
+	 * @throws OpenStackException
 	 */
-	private void removeAndDeleteFloatingIPOfVM(final String region,final VMResource vm)
-			throws OpenStackException {
+	private void removeAndDeleteFloatingIPOfVM(final String region,
+			final VMResource vm) throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
@@ -763,14 +816,15 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 				for (FloatingIP floatingIP : floatingIPApi.list().toList()) {
 					if (vmId.equals(floatingIP.getInstanceId())) {
-						floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
+						floatingIPApi
+								.removeFromServer(floatingIP.getIp(), vmId);
 						floatingIPApi.delete(floatingIP.getId());
 					}
 				}
-				
+
 				return null;
 			}
-			
+
 		});
 	}
 
@@ -784,15 +838,17 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				checkRegion(region);
 
 				FlavorApi flavorApi = novaApi.getFlavorApi(region);
-				List<Flavor> resources = flavorApi.listInDetail().concat().toList();
+				List<Flavor> resources = flavorApi.listInDetail().concat()
+						.toList();
 				List<FlavorResource> flavorResources = new ArrayList<FlavorResource>(
 						resources.size());
 				for (Flavor resource : resources) {
-					flavorResources.add(new FlavorResourceImpl(region, resource));
+					flavorResources
+							.add(new FlavorResourceImpl(region, resource));
 				}
 				return flavorResources;
 			}
-			
+
 		});
 	}
 
@@ -813,7 +869,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					throw new ResourceNotFoundException("Flavor", "规格", id);
 				}
 			}
-			
+
 		});
 	}
 
@@ -826,7 +882,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	private void waitingVM(String vmId, ServerApi serverApi,
-			ServerChecker checker) throws PollingInterruptedException {
+			ServerChecker checker) throws OpenStackException {
 		try {
 			Server server = null;
 			while (true) {
@@ -836,13 +892,17 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				}
 				Thread.sleep(1000);
 			}
+		} catch (OpenStackException e){
+			throw e;
 		} catch (InterruptedException e) {
 			throw new PollingInterruptedException(e);
+		} catch (Exception e){
+			throw new OpenStackException("后台错误", e);
 		}
 	}
 
-	private void waitingVMs(final List<RegionAndVmId> vmIds,final ServerChecker checker)
-			throws OpenStackException {
+	private void waitingVMs(final List<RegionAndVmId> vmIds,
+			final ServerChecker checker) throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
@@ -853,8 +913,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					while (!unFinishedVMIds.isEmpty()) {
 						for (RegionAndVmId vmId : unFinishedVMIds
 								.toArray(new RegionAndVmId[0])) {
-							Server server = novaApi.getServerApi(vmId.getRegion()).get(
-									vmId.getVmId());
+							Server server = novaApi.getServerApi(
+									vmId.getRegion()).get(vmId.getVmId());
 							if (checker.check(server)) {
 								unFinishedVMIds.remove(vmId);
 							}
@@ -889,19 +949,23 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				if (!isSuccess) {
 					throw new VMDeleteException(vm.getId());
 				}
-				
+
 				return null;
 			}
 		});
-		
+
 	}
 
-	private boolean isDeleteFinished(Server server) {
-		return server == null || server.getStatus() == Status.ERROR;
+	private boolean isDeleteFinished(Server server) throws OpenStackException {
+		if (server == null) {
+			decVmCount();
+			return true;
+		}
+		return server.getStatus() == Status.ERROR;
 	}
 
 	@Override
-	public void deleteSync(final String region,final  VMResource vm)
+	public void deleteSync(final String region, final VMResource vm)
 			throws OpenStackException {
 		delete(region, vm);
 
@@ -914,7 +978,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				waitingVM(vm.getId(), serverApi, new ServerChecker() {
 
 					@Override
-					public boolean check(Server server) {
+					public boolean check(Server server) throws Exception {
 						return isDeleteFinished(server);
 					}
 				});
@@ -924,7 +988,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	@Override
-	public void start(final String region,final VMResource vm)
+	public void start(final String region, final VMResource vm)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
@@ -955,7 +1019,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	@Override
-	public void startSync(final String region,final VMResource vm)
+	public void startSync(final String region, final VMResource vm)
 			throws OpenStackException {
 		start(region, vm);
 
@@ -978,7 +1042,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	@Override
-	public void stop(final String region,final VMResource vm)
+	public void stop(final String region, final VMResource vm)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
@@ -1013,10 +1077,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	}
 
 	@Override
-	public void stopSync(final String region,final VMResource vm)
+	public void stopSync(final String region, final VMResource vm)
 			throws OpenStackException {
 		stop(region, vm);
-		
+
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
@@ -1029,7 +1093,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 						return isStopFinished(server);
 					}
 				});
-				
+
 				return null;
 			}
 		});
@@ -1142,7 +1206,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 		waitingVMs(regionAndVmIds, new ServerChecker() {
 			@Override
-			public boolean check(Server server) {
+			public boolean check(Server server) throws Exception {
 				return isDeleteFinished(server);
 			}
 		});
@@ -1196,12 +1260,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 	@Override
 	public void attachVolume(final VMResource vmResource,
-		 final	VolumeResource volumeResource) throws OpenStackException {
+			final VolumeResource volumeResource) throws OpenStackException {
 		runWithApi(new ApiRunnable<NovaApi, Void>() {
 
 			@Override
 			public Void run(NovaApi novaApi) throws Exception {
-
 
 				if (vmResource.getTaskState() != null) {
 					throw new TaskNotFinishedException();
@@ -1232,7 +1295,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
 						.getVolumeAttachmentApi(vmResource.getRegion());
 				if (!volumeAttachmentApiOptional.isPresent()) {
-					throw new APINotAvailableException(VolumeAttachmentApi.class);
+					throw new APINotAvailableException(
+							VolumeAttachmentApi.class);
 				}
 				VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
 						.get();
@@ -1240,8 +1304,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 				volumeAttachmentApi.attachVolumeToServerAsDevice(
 						volumeResource.getId(), vmResource.getId(), "");
 
-				volumeManager.waitingVolume(volumeResource.getRegion(),  volumeResource.getId(),
-						new VolumeChecker() {
+				volumeManager.waitingVolume(volumeResource.getRegion(),
+						volumeResource.getId(), new VolumeChecker() {
 
 							@Override
 							public boolean check(Volume volume) {
@@ -1251,11 +1315,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 										|| volume.getStatus() == Volume.Status.ERROR_DELETING;
 							}
 						});
-				
+
 				return null;
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -1265,78 +1329,82 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 
 			@Override
 			public Void run(NovaApi novaApi) throws Exception {
-		
-		if (vmResource.getTaskState() != null) {
-			throw new TaskNotFinishedException();
-		}
 
-		if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
-			throw new UserOperationException(
-					"Under the different regions of the vm and volume can not detach.",
-					"不同地域下的虚拟机和云硬盘不能分离");
-		}
-
-		Server.Status vmStatus = ((VMResourceImpl) vmResource).server
-				.getStatus();
-		if (vmStatus != Server.Status.ACTIVE) {
-			throw new UserOperationException(
-					"The current status of the virtual machine can not attach volume.",
-					"虚拟机当前的状态不能分离云硬盘。");
-		}
-
-		Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
-				.getStatus();
-		if (volumeStatus != Volume.Status.IN_USE) {
-			throw new UserOperationException(
-					"The status of the volume is not in use.", "云硬盘没有被使用。");
-		}
-
-		boolean isAttachedToServer = false;
-		for (VolumeAttachment volumeAttachment : ((VolumeResourceImpl) volumeResource).volume
-				.getAttachments()) {
-			if (volumeAttachment.getServerId().equals(vmResource.getId())) {
-				isAttachedToServer = true;
-				if ("/".equals(volumeAttachment.getDevice())) {
-					throw new UserOperationException(
-							"Attached on the the volume can't be detached in the root directory.",
-							"挂载在根路径上的云硬盘不能被分离。");
+				if (vmResource.getTaskState() != null) {
+					throw new TaskNotFinishedException();
 				}
-			}
-		}
-		if (!isAttachedToServer) {
-			throw new UserOperationException(
-					"The volume is not attached to this vm.", "云硬盘没有被这台虚拟机使用。");
-		}
 
-		Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
-				.getVolumeAttachmentApi(vmResource.getRegion());
-		if (!volumeAttachmentApiOptional.isPresent()) {
-			throw new APINotAvailableException(VolumeAttachmentApi.class);
-		}
-		VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
-				.get();
+				if (!vmResource.getRegion().equals(volumeResource.getRegion())) {
+					throw new UserOperationException(
+							"Under the different regions of the vm and volume can not detach.",
+							"不同地域下的虚拟机和云硬盘不能分离");
+				}
 
-		boolean success = volumeAttachmentApi.detachVolumeFromServer(
-				volumeResource.getId(), vmResource.getId());
-		if (!success) {
-			throw new OpenStackException(MessageFormat.format(
-					"Volume \"{0}\" detach failed.", volumeResource.getId()),
-					MessageFormat.format("云硬盘“{0}”分离失败。",
-							volumeResource.getId()));
-		}
+				Server.Status vmStatus = ((VMResourceImpl) vmResource).server
+						.getStatus();
+				if (vmStatus != Server.Status.ACTIVE) {
+					throw new UserOperationException(
+							"The current status of the virtual machine can not attach volume.",
+							"虚拟机当前的状态不能分离云硬盘。");
+				}
 
-		volumeManager.waitingVolume(volumeResource.getRegion(),volumeResource.getId(), 
-				new VolumeChecker() {
+				Volume.Status volumeStatus = ((VolumeResourceImpl) volumeResource).volume
+						.getStatus();
+				if (volumeStatus != Volume.Status.IN_USE) {
+					throw new UserOperationException(
+							"The status of the volume is not in use.",
+							"云硬盘没有被使用。");
+				}
 
-					@Override
-					public boolean check(Volume volume) {
-						return volume == null
-								|| volume.getStatus() == Volume.Status.AVAILABLE
-								|| volume.getStatus() == Volume.Status.ERROR
-								|| volume.getStatus() == Volume.Status.ERROR_DELETING;
+				boolean isAttachedToServer = false;
+				for (VolumeAttachment volumeAttachment : ((VolumeResourceImpl) volumeResource).volume
+						.getAttachments()) {
+					if (volumeAttachment.getServerId().equals(
+							vmResource.getId())) {
+						isAttachedToServer = true;
+						if ("/".equals(volumeAttachment.getDevice())) {
+							throw new UserOperationException(
+									"Attached on the the volume can't be detached in the root directory.",
+									"挂载在根路径上的云硬盘不能被分离。");
+						}
 					}
-				});
-		return null;
+				}
+				if (!isAttachedToServer) {
+					throw new UserOperationException(
+							"The volume is not attached to this vm.",
+							"云硬盘没有被这台虚拟机使用。");
+				}
+
+				Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = novaApi
+						.getVolumeAttachmentApi(vmResource.getRegion());
+				if (!volumeAttachmentApiOptional.isPresent()) {
+					throw new APINotAvailableException(
+							VolumeAttachmentApi.class);
+				}
+				VolumeAttachmentApi volumeAttachmentApi = volumeAttachmentApiOptional
+						.get();
+
+				boolean success = volumeAttachmentApi.detachVolumeFromServer(
+						volumeResource.getId(), vmResource.getId());
+				if (!success) {
+					throw new OpenStackException(MessageFormat.format(
+							"Volume \"{0}\" detach failed.",
+							volumeResource.getId()), MessageFormat.format(
+							"云硬盘“{0}”分离失败。", volumeResource.getId()));
+				}
+
+				volumeManager.waitingVolume(volumeResource.getRegion(),
+						volumeResource.getId(), new VolumeChecker() {
+
+							@Override
+							public boolean check(Volume volume) {
+								return volume == null
+										|| volume.getStatus() == Volume.Status.AVAILABLE
+										|| volume.getStatus() == Volume.Status.ERROR
+										|| volume.getStatus() == Volume.Status.ERROR_DELETING;
+							}
+						});
+				return null;
 			}
 		});
 	}
@@ -1354,11 +1422,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 					throw new APINotAvailableException(ConsolesApi.class);
 				}
 				URI uri = consoleApiOptional.get()
-						.getConsole(vmResource.getId(), Console.Type.NOVNC).getUrl();
-				return uri.getScheme() + "://" + "localhost:8081" + uri.getPath() + "?"
-						+ uri.getQuery();// TODO change localhost:8081
+						.getConsole(vmResource.getId(), Console.Type.NOVNC)
+						.getUrl();
+				return uri.getScheme() + "://" + "localhost:8081"
+						+ uri.getPath() + "?" + uri.getQuery();// TODO change
+																// localhost:8081
 			}
-			
+
 		});
 	}
 
@@ -1375,5 +1445,31 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements V
 	// public void setIdentityManager(IdentityManagerImpl identityManager) {
 	// this.identityManager = identityManager;
 	// }
+
+	private void incVmCount() throws OpenStackException {
+		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmVmCountService();
+		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+				.getVmCountOfCurrentUser();
+		if (cloudvmVmCount == null) {
+			cloudvmVmCountService.createVmCountOfCurrentUser(1);
+		} else {
+			cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+					.getVmCount() + 1);
+		}
+	}
+
+	private void decVmCount() throws OpenStackException {
+		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmVmCountService();
+		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
+				.getVmCountOfCurrentUser();
+		if (cloudvmVmCount == null) {
+			throw new OpenStackException("Vm count of user is not synchronized.", "用户数据错误");
+		} else {
+			cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
+					.getVmCount() - 1);
+		}
+	}
 
 }

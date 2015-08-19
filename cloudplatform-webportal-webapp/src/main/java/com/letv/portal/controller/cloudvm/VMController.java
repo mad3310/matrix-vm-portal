@@ -338,8 +338,7 @@ public class VMController {
 	public @ResponseBody ResultObject isAuthority(){
 		ResultObject result=new ResultObject();
 		OpenStackSession openStackSession = Util.session(sessionService);
-		VMManager vmManager = openStackSession.getVMManager();
-		result.setData(vmManager.isAuthority());
+		result.setData(openStackSession.isAuthority());
 		return result;
 	}
 }

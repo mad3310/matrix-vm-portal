@@ -2,12 +2,15 @@ package com.letv.portal.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Executable;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.controller.cloudvm.Util;
 import com.letv.portal.proxy.ILoginProxy;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +59,8 @@ public class CloudvmInterceptor implements HandlerInterceptor {
         if (null != checkUrls && checkUrls.length >= 1) {
             for (String url : checkUrls) {
                 if (requestUrl.contains(url)) {
-                    if (!Util.session(sessionService).getVMManager().isAuthority()) {
+                    OpenStackSession openStackSession = Util.session(sessionService);
+                    if (!openStackSession.isAuthority()) {
                         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null) ? true : false;
                         if (isAjaxRequest) {
                             responseJson(request, response, "对不起，您没有权限。");
@@ -64,6 +68,13 @@ public class CloudvmInterceptor implements HandlerInterceptor {
                             response.sendRedirect(request.getContextPath()+"/dashboard");
                         }
                         return false;
+                    }else{
+                        try {
+                            openStackSession.init();
+                        }catch(OpenStackException e){
+                            throw e.matrixException();
+                        }
+                        return true;
                     }
                 }
             }
