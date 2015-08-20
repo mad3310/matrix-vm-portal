@@ -56,6 +56,10 @@
 		
 		<pattern>/dashboard/*</pattern>
 		<pattern>/403</pattern>
+		
+		<pattern>/user</pattern>
+		<pattern>/user*</pattern>
+		<pattern>/user/*</pattern>
 	</excludes>
 	
 	<decorator name="default" page="default.jsp">
