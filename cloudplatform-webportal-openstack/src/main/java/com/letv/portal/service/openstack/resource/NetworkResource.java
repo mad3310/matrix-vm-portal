@@ -20,4 +20,5 @@ public interface NetworkResource extends Resource{
 	String getStatus();
 	List<NetworkSegmentResource> getNetworkSegments();
 	List<SubnetResource> getSubnets();
+	String getRegionDisplayName();
 }

@@ -17,4 +17,6 @@ public interface SubnetResource extends Resource {
 	Integer getIpVersion();
 
 	List<String> getDnsNameservers();
+	
+	String getRegionDisplayName();
 }

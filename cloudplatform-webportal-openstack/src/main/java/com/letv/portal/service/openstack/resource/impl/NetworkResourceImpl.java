@@ -1,12 +1,16 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.NetworkSegment;
 import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
 import org.jclouds.openstack.neutron.v2.domain.NetworkType;
+import org.jclouds.openstack.neutron.v2.domain.Subnet;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -18,19 +22,39 @@ public class NetworkResourceImpl extends AbstractResource implements
 		NetworkResource {
 
 	private String region;
-	private Network network;
+	@JsonIgnore
+	public Network network;
+	private String regionDisplayName;
 	private List<SubnetResource> subnetResources;
 	private List<NetworkSegmentResource> networkSegmentResources;
 
-	public NetworkResourceImpl(String region, Network network,
-			List<SubnetResource> subnetResources) {
+	public NetworkResourceImpl(String region, String regionDisplayName,
+			Network network, List<SubnetResource> subnetResources) {
 		this.region = region;
+		this.regionDisplayName = regionDisplayName;
 		this.network = network;
 		this.subnetResources = subnetResources;
+		initNetworkSegmentResources();
+	}
 
+	public NetworkResourceImpl(String region, String regionDisplayName,
+			Network network, Map<String, Subnet> idToSubnet) {
+		this.region = region;
+		this.regionDisplayName = regionDisplayName;
+		this.network = network;
+		this.subnetResources = new LinkedList<SubnetResource>();
+		for (String subnetId : network.getSubnets()) {
+			subnetResources.add(new SubnetResourceImpl(region,
+					regionDisplayName, idToSubnet.get(subnetId)));
+		}
+		initNetworkSegmentResources();
+	}
+
+	private void initNetworkSegmentResources() {
 		ImmutableSet<NetworkSegment> networkSegmentsSet = network.getSegments();
 		if (networkSegmentsSet != null) {
-			ImmutableList<NetworkSegment> networkSegments = networkSegmentsSet.asList();
+			ImmutableList<NetworkSegment> networkSegments = networkSegmentsSet
+					.asList();
 			this.networkSegmentResources = new ArrayList<NetworkSegmentResource>(
 					networkSegments.size());
 			for (NetworkSegment networkSegment : networkSegments) {
@@ -41,6 +65,11 @@ public class NetworkResourceImpl extends AbstractResource implements
 		} else {
 			this.networkSegmentResources = new ArrayList<NetworkSegmentResource>();
 		}
+	}
+
+	@Override
+	public String getRegionDisplayName() {
+		return regionDisplayName;
 	}
 
 	@Override

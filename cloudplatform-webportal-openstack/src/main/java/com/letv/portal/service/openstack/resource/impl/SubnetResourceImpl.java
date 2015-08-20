@@ -13,13 +13,15 @@ import org.jclouds.openstack.neutron.v2.domain.Subnet;
  */
 public class SubnetResourceImpl extends AbstractResource implements
 		SubnetResource {
-
+	
+	private String regionDisplayName;
 	private String region;
 	private Subnet subnet;
 	private List<String> dnsNameservers;
 
-	public SubnetResourceImpl(String region, Subnet subnet) {
+	public SubnetResourceImpl(String region,String regionDisplayName, Subnet subnet) {
 		this.region = region;
+		this.regionDisplayName = regionDisplayName;
 		this.subnet = subnet;
 		ImmutableSet<String> dnsNameservers = subnet.getDnsNameservers();
 		if (dnsNameservers != null) {
@@ -67,5 +69,10 @@ public class SubnetResourceImpl extends AbstractResource implements
 	@Override
 	public List<String> getDnsNameservers() {
 		return dnsNameservers;
+	}
+	
+	@Override
+	public String getRegionDisplayName() {
+		return regionDisplayName;
 	}
 }
