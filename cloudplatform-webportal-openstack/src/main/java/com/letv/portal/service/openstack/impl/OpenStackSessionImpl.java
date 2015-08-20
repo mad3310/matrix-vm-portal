@@ -2,14 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.letv.common.session.Executable;
-import com.letv.common.session.Session;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.service.openstack.internal.UserExists;
-import com.letv.portal.service.openstack.internal.UserRegister;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
@@ -22,9 +15,13 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 
 import com.google.common.base.Optional;
 import com.google.common.io.Closeables;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.internal.UserExists;
+import com.letv.portal.service.openstack.internal.UserRegister;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
@@ -42,9 +39,9 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 //	@SuppressWarnings("unused")
 //	private OpenStackServiceGroup openStackServiceGroup;
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private OpenStackConf openStackConf;
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	private OpenStackUser openStackUser;
 
 	private ImageManagerImpl imageManager;

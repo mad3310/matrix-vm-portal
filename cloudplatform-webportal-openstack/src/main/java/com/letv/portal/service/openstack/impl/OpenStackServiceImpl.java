@@ -1,26 +1,21 @@
 package com.letv.portal.service.openstack.impl;
 
-import com.letv.common.email.ITemplateMessageSender;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.ConfigUtil;
-import com.letv.common.util.SpringContextUtil;
-import com.letv.portal.service.cloudvm.ICloudvmRegionService;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
-import com.letv.portal.service.openstack.OpenStackService;
-import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.internal.UserExists;
-import com.letv.portal.service.openstack.internal.UserRegister;
-import com.letv.portal.service.openstack.password.PasswordService;
+import java.text.MessageFormat;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
-import java.security.NoSuchAlgorithmException;
-import java.text.MessageFormat;
+import com.letv.common.email.ITemplateMessageSender;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.cloudvm.ICloudvmRegionService;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
+import com.letv.portal.service.openstack.OpenStackService;
+import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.password.PasswordService;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

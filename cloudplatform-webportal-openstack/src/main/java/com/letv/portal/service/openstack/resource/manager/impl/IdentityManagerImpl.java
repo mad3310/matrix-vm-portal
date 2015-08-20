@@ -1,23 +1,23 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import java.io.IOException;
-import java.util.Set;
-
-import org.jclouds.ContextBuilder;
-import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
-import org.jclouds.openstack.keystone.v2_0.KeystoneApi;
-import org.jclouds.openstack.keystone.v2_0.domain.User;
-import org.jclouds.openstack.keystone.v2_0.features.UserApi;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
-import com.google.inject.Module;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.impl.OpenStackConf;
-import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
-import com.letv.portal.service.openstack.impl.OpenStackUser;
-import com.letv.portal.service.openstack.resource.manager.IdentityManager;
-
+//import java.io.IOException;
+//import java.util.Set;
+//
+//import org.jclouds.ContextBuilder;
+//import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
+//import org.jclouds.openstack.keystone.v2_0.KeystoneApi;
+//import org.jclouds.openstack.keystone.v2_0.domain.User;
+//import org.jclouds.openstack.keystone.v2_0.features.UserApi;
+//
+//import com.google.common.base.Optional;
+//import com.google.common.collect.ImmutableSet;
+//import com.google.inject.Module;
+//import com.letv.portal.service.openstack.exception.APINotAvailableException;
+//import com.letv.portal.service.openstack.impl.OpenStackConf;
+//import com.letv.portal.service.openstack.impl.OpenStackServiceGroup;
+//import com.letv.portal.service.openstack.impl.OpenStackUser;
+//import com.letv.portal.service.openstack.resource.manager.IdentityManager;
+//
 //public class IdentityManagerImpl extends AbstractResourceManager implements
 //		IdentityManager {
 //

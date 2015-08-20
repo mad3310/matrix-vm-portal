@@ -1424,9 +1424,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 				URI uri = consoleApiOptional.get()
 						.getConsole(vmResource.getId(), Console.Type.NOVNC)
 						.getUrl();
-				return uri.getScheme() + "://" + "localhost:8081"
-						+ uri.getPath() + "?" + uri.getQuery();// TODO change
-																// localhost:8081
+				return uri.toString();
 			}
 
 		});

@@ -1,8 +1,5 @@
 package com.letv.portal.controller.cloudvm;
 
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.exception.VolumeNotFoundException;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 
 @Controller
