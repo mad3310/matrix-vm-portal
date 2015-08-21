@@ -56,9 +56,24 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/network/private/{networkId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getPrivate(@PathVariable String region,
+			@PathVariable String networkId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getPrivate(region, networkId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/network/private/list", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listPrivate(@RequestParam(required = false) String region,
-			@RequestParam(required = false) String name, @RequestParam(required = false) Integer currentPage,
+	public @ResponseBody ResultObject listPrivate(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {

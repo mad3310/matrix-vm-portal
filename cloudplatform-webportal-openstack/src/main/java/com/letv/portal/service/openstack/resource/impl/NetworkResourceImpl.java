@@ -50,10 +50,11 @@ public class NetworkResourceImpl extends AbstractResource implements
 			if (subnet != null) {
 				subnetResources.add(new SubnetResourceImpl(region,
 						regionDisplayName, subnet));
-			} else {
-				throw new OpenStackException("Subnet is not found,id:"
-						+ subnetId, "后台错误");
 			}
+//			else {
+//				throw new OpenStackException("Subnet is not found,id:"
+//						+ subnetId, "后台错误");
+//			}
 		}
 		initNetworkSegmentResources();
 	}

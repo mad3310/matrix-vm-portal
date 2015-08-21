@@ -155,6 +155,45 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	@Override
+	public NetworkResource getPrivate(final String region, final String id)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, NetworkResource>() {
+
+			@Override
+			public NetworkResource run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				Network network = networkApi.get(id);
+
+				if (network != null && !network.getShared()
+						&& !network.getExternal()) {
+					final String regionDisplayName = getRegionDisplayName(region);
+					NetworkResourceImpl networkResourceImpl = new NetworkResourceImpl(
+							region, regionDisplayName, network,
+							new LinkedList<SubnetResource>());
+
+					ImmutableSet<String> subnetIds = network.getSubnets();
+					List<Subnet> allSubnets = neutronApi.getSubnetApi(region)
+							.list().concat().toList();
+
+					for (Subnet subnet : allSubnets) {
+						if (subnetIds.contains(subnet.getId())) {
+							networkResourceImpl.getSubnets().add(
+									new SubnetResourceImpl(region,
+											regionDisplayName, subnet));
+						}
+					}
+					return networkResourceImpl;
+				} else {
+					throw new ResourceNotFoundException("Private Network", "私有网络", id);
+				}
+			}
+
+		});
+	}
+
 	// public NeutronApi getNeutronApi() {
 	// return neutronApi;
 	// }
@@ -406,19 +445,19 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	public Page listPrivate(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws OpenStackException {
-		NetworkFilter filter=new NetworkFilter() {
-			
+		NetworkFilter filter = new NetworkFilter() {
+
 			@Override
 			public boolean filter(Network network) {
-				return !network.getShared()&& !network.getExternal();
+				return !network.getShared() && !network.getExternal();
 			}
 		};
 		if (StringUtils.isEmpty(regionGroup)) {
 			return listByRegions(getRegions(), name, currentPage,
-					recordsPerPage,filter);
+					recordsPerPage, filter);
 		} else {
 			return listByRegions(getGroupRegions(regionGroup), name,
-					currentPage, recordsPerPage,filter);
+					currentPage, recordsPerPage, filter);
 		}
 	}
 

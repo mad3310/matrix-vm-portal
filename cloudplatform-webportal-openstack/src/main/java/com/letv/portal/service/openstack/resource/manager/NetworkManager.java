@@ -16,6 +16,9 @@ public interface NetworkManager extends ResourceManager {
 			throws RegionNotFoundException, ResourceNotFoundException,
 			OpenStackException;
 
+	NetworkResource getPrivate(String region, String id)
+			throws OpenStackException;
+
 	Page listPrivate(String regionGroup, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
 }
