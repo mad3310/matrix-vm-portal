@@ -8,5 +8,5 @@ import com.letv.portal.model.monitor.mysql.MysqlInnoDBMonitor;
 import com.letv.portal.service.IBaseService;
 
 public interface IMysqlInnoDBMonitorService extends IBaseService<MysqlInnoDBMonitor> {
-	void collectMysqlInnoDBMonitorData(ContainerModel container, Map<String, Object> map, Date d);
+	void collectMysqlInnoDBMonitorData(ContainerModel container, Map<String, Object> map, Date d, Date start, boolean query);
 }

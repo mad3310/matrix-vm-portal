@@ -31,5 +31,4 @@ public interface IMonitorDao extends IBaseDao<MonitorDetailModel>{
 	public String getPartitionOrder(Map<String,Object> map);
 	public void saveMonitorErrorInfo(MonitorErrorModel error);
 	public List<Map<String,Object>> getMonitorErrorModelsByMap(Map<String, Object> map);
-	public void deleteMonitorErrorDataByMap(Map<String, Object> map);
 }

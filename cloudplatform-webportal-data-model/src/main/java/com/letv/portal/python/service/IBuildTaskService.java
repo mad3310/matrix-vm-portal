@@ -157,12 +157,13 @@ public interface IBuildTaskService {
 	  * @Description: 获取数据及查询已有监控输入，入库
 	  * @param container
 	  * @param index
-	  * @param date void   
+	  * @param date    
+	  * @param query true查询mysql不变数据，false不查询mysql不变数据   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年7月28日 下午1:36:43
 	  */
-	public void getMysqlMonitorServiceData(ContainerModel container, MonitorIndexModel index,Date date);
+	public void getMysqlMonitorServiceData(ContainerModel container, MonitorIndexModel index,Date date, boolean query);
 	/**
 	  * @Title: collectMysqlMonitorBaseData
 	  * @Description: 获取mysql监控基础表数据

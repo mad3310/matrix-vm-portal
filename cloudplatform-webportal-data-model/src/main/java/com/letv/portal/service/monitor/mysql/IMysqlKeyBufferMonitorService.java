@@ -8,5 +8,5 @@ import com.letv.portal.model.monitor.mysql.MysqlKeyBufferMonitor;
 import com.letv.portal.service.IBaseService;
 
 public interface IMysqlKeyBufferMonitorService extends IBaseService<MysqlKeyBufferMonitor> {
-	void collectMysqlKeyBufferMonitorData(ContainerModel container, Map<String, Object> map, Date d);
+	void collectMysqlKeyBufferMonitorData(ContainerModel container, Map<String, Object> map, Date d, Date start, boolean query);
 }

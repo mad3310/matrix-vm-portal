@@ -1076,25 +1076,27 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	@Override
 	@Async
 	public void getMysqlMonitorServiceData(ContainerModel container,
-			MonitorIndexModel index, Date date) {
+			MonitorIndexModel index, Date date, boolean query) {
 		Map<String, String> params = new HashMap<String, String>();
 		String[] str = index.getMonitorPoint().split(",");
 		for (String string : str) {
 			params.put(string, "''");
 		}
-		ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
-		Map result = transResult(apiResult.getResult());
 		Map<String,Object>  data = new HashMap<String, Object>();
-		if(analysisResult(result)) {
-			data = (Map<String, Object>) result.get("response");
-		} else {
-			MonitorErrorModel error = new MonitorErrorModel();
-			error.setTableName(index.getDetailTable());
-			error.setUrl(apiResult.getUrl());
-			error.setResult(result.toString());
-			this.monitorService.saveMonitorErrorInfo(error);
+		if(query==true) {
+			ApiResultObject apiResult = this.pythonService.getMysqlMonitorData(container.getIpAddr(), index.getDataFromApi(), params);
+			Map result = transResult(apiResult.getResult());
+			if(analysisResult(result)) {
+				data = (Map<String, Object>) result.get("response");
+			} else {
+				MonitorErrorModel error = new MonitorErrorModel();
+				error.setTableName(index.getDetailTable());
+				error.setUrl(apiResult.getUrl());
+				error.setResult(result.toString());
+				this.monitorService.saveMonitorErrorInfo(error);
+			}
 		}
-		this.monitorService.insertMysqlMonitorData(container, data, date);
+		this.monitorService.insertMysqlMonitorData(container, data, date, query);
 	}
 	
 	@Override

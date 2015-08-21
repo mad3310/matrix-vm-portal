@@ -8,5 +8,5 @@ import com.letv.portal.model.monitor.mysql.MysqlResourceMonitor;
 import com.letv.portal.service.IBaseService;
 
 public interface IMysqlResourceMonitorService extends IBaseService<MysqlResourceMonitor> {
-	void collectMysqlResourceMonitorData(ContainerModel container, Map<String, Object> map, Date d);
+	void collectMysqlResourceMonitorData(ContainerModel container, Map<String, Object> map, Date d, Date start, boolean query);
 }

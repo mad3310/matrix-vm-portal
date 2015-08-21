@@ -42,14 +42,16 @@ public class MysqlKeyBufferMonitorServiceImpl extends BaseServiceImpl<MysqlKeyBu
 
 	@Override
 	public void collectMysqlKeyBufferMonitorData(ContainerModel container,
-			Map<String, Object> map, Date d) {
-		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
+			Map<String, Object> map, Date d, Date start, boolean query) {
+		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d, start);
 		MysqlKeyBufferMonitor keyBuffer = new MysqlKeyBufferMonitor();
 		keyBuffer.setHostIp(container.getIpAddr());
 		keyBuffer.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		keyBuffer.setKeyBufferSize(map.get("stat_key_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_key_buffer_size_command")));
-		keyBuffer.setSortBufferSize(map.get("stat_sort_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_sort_buffer_size_command")));
-		keyBuffer.setJoinBufferSize(map.get("stat_join_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_join_buffer_size_command")));
+		if(query == true) {
+			keyBuffer.setKeyBufferSize(map.get("stat_key_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_key_buffer_size_command")));
+			keyBuffer.setSortBufferSize(map.get("stat_sort_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_sort_buffer_size_command")));
+			keyBuffer.setJoinBufferSize(map.get("stat_join_buffer_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_join_buffer_size_command")));
+		}
 		keyBuffer.setKeyBlocksUnused(dbResult.get("stat_key_blocks_unused_command")==null?-1:((Float)dbResult.get("stat_key_blocks_unused_command")).intValue());
 		keyBuffer.setKeyBlocksUsed(dbResult.get("stat_key_blocks_used_command")==null?-1:((Float)dbResult.get("stat_key_blocks_used_command")).intValue());
 		keyBuffer.setKeyBlocksNotFlushed(dbResult.get("stat_key_blocks_not_flushed_command")==null?-1:((Float)dbResult.get("stat_key_blocks_not_flushed_command")).intValue());

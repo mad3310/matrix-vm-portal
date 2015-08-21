@@ -352,17 +352,21 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	
 	
 	@Override
-	public void insertMysqlMonitorData(ContainerModel container, Map<String, Object> map, Date d) {
-		this.mysqlHealthMonitorService.collectMysqlHealthMonitorData(container, map, d);
-		this.mysqlResourceMonitorService.collectMysqlResourceMonitorData(container, map, d);
-		this.mysqlKeyBufferMonitorService.collectMysqlKeyBufferMonitorData(container, map, d);
-		this.mysqlInnoDBMonitorService.collectMysqlInnoDBMonitorData(container, map, d);
-		this.mysqlGaleraMonitorService.collectMysqlGaleraMonitorData(container, map, d);
+	public void insertMysqlMonitorData(ContainerModel container, Map<String, Object> map, Date d, boolean query) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.MINUTE, -cycleTime);
+		Date start = new Date(cal.getTimeInMillis());
+		this.mysqlHealthMonitorService.collectMysqlHealthMonitorData(container, map, d, start, query);
+		this.mysqlResourceMonitorService.collectMysqlResourceMonitorData(container, map, d, start, query);
+		this.mysqlKeyBufferMonitorService.collectMysqlKeyBufferMonitorData(container, map, d, start, query);
+		this.mysqlInnoDBMonitorService.collectMysqlInnoDBMonitorData(container, map, d, start, query);
+		this.mysqlGaleraMonitorService.collectMysqlGaleraMonitorData(container, map, d, start, query);
 	}
 
 
 	@Override
-	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d) {
+	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d, Date start) {
 		Map<String, String> param = new HashMap<String, String>();
 		List<MonitorIndexModel> indexs = null;
 		Map<String, Object> results = new HashMap<String, Object>();
@@ -370,7 +374,7 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 			param.put("titleText", title);
 			indexs = this.monitorIndexService.selectByMap(param);
 			if(indexs!=null && indexs.size()==1) {
-				Map<String, Object> result = getLatestDataFromMonitorTable(containerIp, indexs.get(0).getDetailTable(), indexs.get(0).getMonitorPoint(), d);
+				Map<String, Object> result = getLatestDataFromMonitorTable(containerIp, indexs.get(0).getDetailTable(), indexs.get(0).getMonitorPoint(), d, start);
 				results.putAll(result);
 			} else if(indexs.size()>1){
 				logger.info("have many MonitorIndexModels with titleText is : "+title);
@@ -393,14 +397,10 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 	  * @author lisuxiao
 	  * @date 2015年7月30日 下午2:07:27
 	  */
-	private Map<String, Object> getLatestDataFromMonitorTable(String containerIp, String tableName, String colNames, Date d) {
+	private Map<String, Object> getLatestDataFromMonitorTable(String containerIp, String tableName, String colNames, Date d, Date start) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		String[] cols = colNames.split(",");
 		Map<String, Object> params = new HashMap<String, Object>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(d);
-		cal.add(Calendar.MINUTE, -cycleTime);
-		Date start = new Date(cal.getTimeInMillis());
 		params.put("dbName", tableName);
 		params.put("ip", containerIp);
 		params.put("start", start);
@@ -518,11 +518,6 @@ public class MonitorServiceImpl extends BaseServiceImpl<MonitorDetailModel> impl
 		return this.monitorDao.getMonitorErrorModelsByMap(map);
 	}
 
-
-	@Override
-	public void deleteMonitorErrorDataByMap(Map<String, Object> map) {
-		this.monitorDao.deleteMonitorErrorDataByMap(map);
-	}
 	
 	
 
