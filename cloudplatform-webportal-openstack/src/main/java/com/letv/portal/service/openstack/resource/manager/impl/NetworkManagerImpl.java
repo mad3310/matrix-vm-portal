@@ -410,7 +410,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			
 			@Override
 			public boolean filter(Network network) {
-				return !network.getShared();
+				return !network.getShared()&& !network.getExternal();
 			}
 		};
 		if (StringUtils.isEmpty(regionGroup)) {

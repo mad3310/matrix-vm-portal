@@ -57,9 +57,9 @@ public class NetworkController {
 	}
 
 	@RequestMapping(value = "/network/private/list", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listPrivate(@RequestParam String region,
-			@RequestParam String name, @RequestParam Integer currentPage,
-			@RequestParam Integer recordsPerPage) {
+	public @ResponseBody ResultObject listPrivate(@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name, @RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getNetworkManager()

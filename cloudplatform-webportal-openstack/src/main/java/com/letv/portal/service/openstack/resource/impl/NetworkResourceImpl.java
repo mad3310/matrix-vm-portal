@@ -14,6 +14,7 @@ import org.jclouds.openstack.neutron.v2.domain.Subnet;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.NetworkSegmentResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
@@ -38,14 +39,21 @@ public class NetworkResourceImpl extends AbstractResource implements
 	}
 
 	public NetworkResourceImpl(String region, String regionDisplayName,
-			Network network, Map<String, Subnet> idToSubnet) {
+			Network network, Map<String, Subnet> idToSubnet)
+			throws OpenStackException {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.network = network;
 		this.subnetResources = new LinkedList<SubnetResource>();
 		for (String subnetId : network.getSubnets()) {
-			subnetResources.add(new SubnetResourceImpl(region,
-					regionDisplayName, idToSubnet.get(subnetId)));
+			Subnet subnet = idToSubnet.get(subnetId);
+			if (subnet != null) {
+				subnetResources.add(new SubnetResourceImpl(region,
+						regionDisplayName, subnet));
+			} else {
+				throw new OpenStackException("Subnet is not found,id:"
+						+ subnetId, "后台错误");
+			}
 		}
 		initNetworkSegmentResources();
 	}
