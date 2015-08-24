@@ -97,4 +97,17 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/network/private/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editPrivate(@RequestParam String region,
+			@RequestParam String networkId, @RequestParam String name) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.editPrivate(region, networkId, name);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

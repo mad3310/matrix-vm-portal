@@ -23,4 +23,7 @@ public interface NetworkManager extends ResourceManager {
 			Integer recordsPerPage) throws OpenStackException;
 
 	void createPrivate(String region, String name) throws OpenStackException;
+
+	void editPrivate(String region, String networkId, String name)
+			throws OpenStackException;
 }

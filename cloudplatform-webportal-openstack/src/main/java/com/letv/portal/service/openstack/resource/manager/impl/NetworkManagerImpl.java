@@ -471,6 +471,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
+	@Override
 	public void createPrivate(final String region, final String name)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
@@ -505,6 +506,32 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				networkApi.create(Network.createBuilder(name).build());
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void editPrivate(final String region, final String networkId,
+			final String name) throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				Network network = networkApi.get(networkId);
+
+				if (network == null || !isPrivateNetwork(network)) {
+					throw new ResourceNotFoundException("Private Network", "私有网络",
+							networkId);
+				}
+
+				networkApi.update(networkId, Network.updateBuilder().name(name)
+						.build());
 
 				return null;
 			}
