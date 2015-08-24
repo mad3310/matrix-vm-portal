@@ -21,4 +21,6 @@ public interface NetworkManager extends ResourceManager {
 
 	Page listPrivate(String regionGroup, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
+
+	void createPrivate(String region, String name) throws OpenStackException;
 }

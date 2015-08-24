@@ -12,16 +12,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
+import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
@@ -187,7 +192,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 					return networkResourceImpl;
 				} else {
-					throw new ResourceNotFoundException("Private Network", "私有网络", id);
+					throw new ResourceNotFoundException("Private Network",
+							"私有网络", id);
 				}
 			}
 
@@ -441,24 +447,68 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	private boolean isPrivateNetwork(Network network) {
+		return !network.getShared() && !network.getExternal();
+	}
+
 	@Override
 	public Page listPrivate(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws OpenStackException {
-		NetworkFilter filter = new NetworkFilter() {
+		NetworkFilter privateNetworkFilter = new NetworkFilter() {
 
 			@Override
 			public boolean filter(Network network) {
-				return !network.getShared() && !network.getExternal();
+				return isPrivateNetwork(network);
 			}
 		};
 		if (StringUtils.isEmpty(regionGroup)) {
 			return listByRegions(getRegions(), name, currentPage,
-					recordsPerPage, filter);
+					recordsPerPage, privateNetworkFilter);
 		} else {
 			return listByRegions(getGroupRegions(regionGroup), name,
-					currentPage, recordsPerPage, filter);
+					currentPage, recordsPerPage, privateNetworkFilter);
 		}
+	}
+
+	public void createPrivate(final String region, final String name)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				int privateNetworkCount = 0;
+				List<Network> networkList = networkApi.list().concat().toList();
+				for (Network network : networkList) {
+					if (isPrivateNetwork(network)) {
+						privateNetworkCount++;
+					}
+				}
+
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+
+				if (quota.getNetwork() <= privateNetworkCount) {
+					throw new UserOperationException(
+							"Private network count exceeding the quota.",
+							"私有网络数量超过配额。");
+				}
+
+				networkApi.create(Network.createBuilder(name).build());
+
+				return null;
+			}
+		});
 	}
 
 	@Override

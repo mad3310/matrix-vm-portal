@@ -84,4 +84,17 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/network/private/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createPrivate(
+			@RequestParam String region, @RequestParam String name) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.createPrivate(region, name);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
