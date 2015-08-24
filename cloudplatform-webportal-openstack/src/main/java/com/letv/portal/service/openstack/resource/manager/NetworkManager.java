@@ -26,4 +26,7 @@ public interface NetworkManager extends ResourceManager {
 
 	void editPrivate(String region, String networkId, String name)
 			throws OpenStackException;
+
+	void deletePrivate(String region, String networkId)
+			throws OpenStackException;
 }

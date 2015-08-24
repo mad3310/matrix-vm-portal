@@ -110,4 +110,18 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/network/private/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deletePrivate(
+			@RequestParam String region, @RequestParam String networkId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deletePrivate(region, networkId);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }

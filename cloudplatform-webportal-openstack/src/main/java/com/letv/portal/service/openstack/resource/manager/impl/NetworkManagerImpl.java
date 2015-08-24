@@ -12,13 +12,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
 import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
+import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
+import org.springframework.aop.ThrowsAdvice;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
@@ -526,12 +529,45 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				Network network = networkApi.get(networkId);
 
 				if (network == null || !isPrivateNetwork(network)) {
-					throw new ResourceNotFoundException("Private Network", "私有网络",
-							networkId);
+					throw new ResourceNotFoundException("Private Network",
+							"私有网络", networkId);
 				}
 
 				networkApi.update(networkId, Network.updateBuilder().name(name)
 						.build());
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void deletePrivate(final String region, final String networkId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				Network network = networkApi.get(networkId);
+
+				if (network == null || !isPrivateNetwork(network)) {
+					throw new ResourceNotFoundException("Private Network",
+							"私有网络", networkId);
+				}
+
+				PortApi portApi = neutronApi.getPortApi(region);
+
+				for (Port port : portApi.list().concat().toList()) {
+					if (networkId.equals(port.getNetworkId())) {
+						throw new UserOperationException("There are router interface connected to the network.", "有路由的接口连接着这个网络");
+					}
+				}
+
+				networkApi.delete(networkId);
 
 				return null;
 			}
