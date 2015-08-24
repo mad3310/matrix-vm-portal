@@ -93,5 +93,5 @@ public interface IBaseService<T> {
 	 */
 	<K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc);
 	<K, V> Page selectPageByParams(Page page, Map<K,V> params);
-	
+	boolean isUnique(String name);
 }

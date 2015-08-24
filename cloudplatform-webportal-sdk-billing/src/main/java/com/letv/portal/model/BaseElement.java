@@ -21,6 +21,10 @@ public class BaseElement extends BaseModel{
 	
 	private String name;
 	private String descn;
+	
+	public BaseElement(Long id) {
+		super.setId(id);
+	}
 
 	public String getDescn() {
 		return descn;
@@ -32,7 +36,7 @@ public class BaseElement extends BaseModel{
 
 	@NotEmpty(message="{billing.element.name.notEmpty.message}")
 	@Length(min=6,max=20,message="{billing.element.name.length.message}")
-	@Unique(message="{billing.element.name.unique.message}")
+	@Unique(message="{billing.element.name.unique.message}",service="baseElementService")
 	public String getName() {
 		return name;
 	}

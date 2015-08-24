@@ -236,6 +236,10 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 		page.setTotalRecords(getDao().selectByMapCount(params));
 		return page;
 	}
+	@Override
+	public boolean isUnique(String name) {
+		return false;
+	}
 	
 	public abstract IBaseDao<T> getDao();
 }

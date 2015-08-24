@@ -22,7 +22,9 @@ import javax.validation.Payload;
 public @interface Unique {
 	
 	String message() default "{org.hibernate.validator.constraints.Length.message}";
-
+	
+	String service() default "baseService";
+	
 	Class<?>[] groups() default { };
 
 	Class<? extends Payload>[] payload() default { };
