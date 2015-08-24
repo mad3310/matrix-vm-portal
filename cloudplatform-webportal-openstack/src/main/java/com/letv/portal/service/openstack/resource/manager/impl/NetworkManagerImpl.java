@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
 import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
@@ -21,13 +23,13 @@ import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
-import org.springframework.aop.ThrowsAdvice;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
@@ -358,7 +360,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	 */
 	private Page listByRegions(final Set<String> regions, final String name,
 			final Integer currentPagePara, final Integer recordsPerPage,
-			final NetworkFilter networkFilter) throws OpenStackException {
+			final NetworkChecker networkFilter) throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, Page>() {
 
 			@Override
@@ -386,7 +388,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							idToSubnet.put(subnet.getId(), subnet);
 						}
 						for (Network resource : resources) {
-							if (networkFilter.filter(resource)) {
+							if (networkFilter.check(resource)) {
 								if (name == null
 										|| (resource.getName() != null && resource
 												.getName().contains(name))) {
@@ -420,7 +422,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					} else {
 						for (Network resource : networkApi.list().concat()
 								.toList()) {
-							if (networkFilter.filter(resource)) {
+							if (networkFilter.check(resource)) {
 								if (name == null
 										|| (resource.getName() != null && resource
 												.getName().contains(name))) {
@@ -458,10 +460,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	public Page listPrivate(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws OpenStackException {
-		NetworkFilter privateNetworkFilter = new NetworkFilter() {
+		NetworkChecker privateNetworkFilter = new NetworkChecker() {
 
 			@Override
-			public boolean filter(Network network) {
+			public boolean check(Network network) {
 				return isPrivateNetwork(network);
 			}
 		};
@@ -563,15 +565,59 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				for (Port port : portApi.list().concat().toList()) {
 					if (networkId.equals(port.getNetworkId())) {
-						throw new UserOperationException("There are router interface connected to the network.", "有路由的接口连接着这个网络");
+						throw new UserOperationException(
+								"There are router interface connected to the network.",
+								"有路由的接口连接着这个网络");
 					}
 				}
 
-				networkApi.delete(networkId);
+				boolean isSuccess = networkApi.delete(networkId);
+				if (!isSuccess) {
+					throw new OpenStackException(
+							MessageFormat.format(
+									"Private network \"{0}\" delete failed.",
+									networkId), MessageFormat.format(
+									"私有网络“{0}”删除失败。", networkId));
+				}
+
+				waitingNetwork(networkId, networkApi, new NetworkChecker() {
+
+					@Override
+					public boolean check(Network network) throws Exception {
+						return isDeleteFinished(network);
+					}
+				});
 
 				return null;
 			}
 		});
+	}
+
+	private boolean isDeleteFinished(Network network) throws OpenStackException {
+		if (network == null) {
+			return true;
+		}
+		return network.getStatus() == NetworkStatus.ERROR;
+	}
+
+	private void waitingNetwork(String networkId, NetworkApi networkApi,
+			NetworkChecker checker) throws OpenStackException {
+		try {
+			Network network = null;
+			while (true) {
+				network = networkApi.get(networkId);
+				if (checker.check(network)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
 	}
 
 	@Override
