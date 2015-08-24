@@ -42,16 +42,18 @@ public class MysqlResourceMonitorServiceImpl extends BaseServiceImpl<MysqlResour
 
 	@Override
 	public void collectMysqlResourceMonitorData(ContainerModel container,
-			Map<String, Object> map, Date d) {
-		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
+			Map<String, Object> map, Date d, Date start, boolean query) {
+		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d, start);
 		MysqlResourceMonitor resource = new MysqlResourceMonitor();
 		resource.setHostIp(container.getIpAddr());
 		resource.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		resource.setMaxConnect(map.get("stat_max_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_conn_command")));
-		resource.setMaxConnectError(map.get("stat_max_err_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_err_conn_command")));
-		resource.setMaxOpenFile(map.get("stat_max_open_file_command")==null?-1:Integer.parseInt((String)map.get("stat_max_open_file_command")));
+		if(query == true) {
+			resource.setMaxConnect(map.get("stat_max_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_conn_command")));
+			resource.setMaxConnectError(map.get("stat_max_err_conn_command")==null?-1:Integer.parseInt((String)map.get("stat_max_err_conn_command")));
+			resource.setMaxOpenFile(map.get("stat_max_open_file_command")==null?-1:Integer.parseInt((String)map.get("stat_max_open_file_command")));
+			resource.setCacheTableCount(map.get("stat_table_cach_command")==null?-1:Integer.parseInt((String)map.get("stat_table_cach_command")));
+		}
 		resource.setHadOpenFile(dbResult.get("stat_opened_file_command")==null?-1:((Float)dbResult.get("stat_opened_file_command")).intValue());
-		resource.setCacheTableCount(map.get("stat_table_cach_command")==null?-1:Integer.parseInt((String)map.get("stat_table_cach_command")));
 		resource.setCacheTableNohitCount(dbResult.get("stat_table_cach_noha_command")==null?-1:((Float)dbResult.get("stat_table_cach_noha_command")).intValue());
 		resource.setHadOpenTable(dbResult.get("stat_opened_table_cach_command")==null?-1:((Float)dbResult.get("stat_opened_table_cach_command")).intValue());
 		

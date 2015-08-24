@@ -42,8 +42,8 @@ public class MysqlGaleraMonitorServiceImpl extends BaseServiceImpl<MysqlGaleraMo
 
 	@Override
 	public void collectMysqlGaleraMonitorData(ContainerModel container,
-			Map<String, Object> map, Date d) {
-		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
+			Map<String, Object> map, Date d, Date start, boolean query) {
+		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d, start);
 		MysqlGaleraMonitor galera = new MysqlGaleraMonitor();
 		galera.setHostIp(container.getIpAddr());
 		galera.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());

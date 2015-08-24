@@ -46,5 +46,6 @@ public class Constant {
 	public static String DB_USER_TYPE_MANAGER = "manager";
 
 	public static String MCLUSTER_INIT_STATUS_RUNNING = "running";
-
+	//是否查询mysql不变数据的开关
+	public static boolean QUERY_MYSQL_CONSTANT_DATA = false;
 }

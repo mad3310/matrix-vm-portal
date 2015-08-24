@@ -54,7 +54,7 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	  * @author lisuxiao
 	  * @date 2015年7月28日 下午2:04:23
 	  */
-	public void insertMysqlMonitorData(ContainerModel container, Map<String, Object> map, Date d);
+	public void insertMysqlMonitorData(ContainerModel container, Map<String, Object> map, Date d, boolean query);
 	/**
 	  * @Title: insertMysqlMonitorSpaceData
 	  * @Description: 保存数据到mysql 表空间监控表
@@ -69,16 +69,17 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	
 	/**
 	  * @Title: getLatestDataFromMonitorTable
-	  * @Description: 获取监控表数据库中最新记录值
+	  * @Description: 获取监控表数据库中最新时间段内记录值
 	  * @param containerIp container的ip
 	  * @param titles WEBPORTAL_INDEX_MONITOR表的title值
-	  * @param d
+	  * @param d 结束时间
+	  * @param start起始时间
 	  * @return Map<String,Object>   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年7月30日 下午2:04:21
 	  */
-	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d);
+	public Map<String, Object> getLatestDataFromMonitorTables(String containerIp, String[] titles, Date d, Date start);
 	
 	/**
 	  * @Title: saveMonitorErrorInfo
@@ -91,14 +92,6 @@ public interface IMonitorService extends IBaseService<MonitorDetailModel>{
 	public void saveMonitorErrorInfo(MonitorErrorModel error);
 	
 	public List<Map<String, Object>> getMonitorErrorModelsByMap(Map<String, Object> map);
-	/**
-	  * @Title: deleteMonitorErrorDataByMap
-	  * @Description: 删除几天前监控错误数据
-	  * @param map void   
-	  * @throws 
-	  * @author lisuxiao
-	  * @date 2015年8月10日 下午3:48:33
-	  */
-	public void deleteMonitorErrorDataByMap(Map<String, Object> map);
+
 	
 }

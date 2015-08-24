@@ -43,16 +43,18 @@ public class MysqlHealthMonitorServiceImpl extends BaseServiceImpl<MysqlHealthMo
 
 	@Override
 	public void collectMysqlHealthMonitorData(ContainerModel container,
-			Map<String, Object> map, Date d) {
+			Map<String, Object> map, Date d, Date start, boolean query) {
 		//从数据库历史表中获取最新数据
-		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
+		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d, start);
 		MysqlHealthMonitor health = new MysqlHealthMonitor();
 		health.setHostIp(container.getIpAddr());
 		health.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		//当数据为空时，赋值-1，表示该数据异常
-		health.setRole(map.get("stat_wsrep_status_command")==null?"-1":(String) map.get("stat_wsrep_status_command"));
-		health.setRunTime(map.get("stat_running_day_command")==null?-1f:Float.parseFloat((String) map.get("stat_running_day_command")));
-		health.setVersion(map.get("stat_version_command")==null?"-1":(String) map.get("stat_version_command"));
+		if(query == true) {
+			//当数据为空时，赋值-1，表示该数据异常
+			health.setRole(map.get("stat_wsrep_status_command")==null?"-1":(String) map.get("stat_wsrep_status_command"));
+			health.setRunTime(map.get("stat_running_day_command")==null?-1f:Float.parseFloat((String) map.get("stat_running_day_command")));
+			health.setVersion(map.get("stat_version_command")==null?"-1":(String) map.get("stat_version_command"));
+		}
 		health.setConnectCount(dbResult.get("stat_connection_count_command")==null?-1:((Float)dbResult.get("stat_connection_count_command")).intValue());
 		health.setActivityCount(dbResult.get("stat_active_count_command")==null?-1:((Float)dbResult.get("stat_active_count_command")).intValue());
 		health.setWaitCount(dbResult.get("stat_wating_count_command")==null?-1:((Float)dbResult.get("stat_wating_count_command")).intValue());

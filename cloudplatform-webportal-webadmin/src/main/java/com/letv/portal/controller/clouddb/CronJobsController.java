@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.portal.constant.Constant;
 import com.letv.portal.model.MonitorIndexModel;
 import com.letv.portal.model.adminoplog.AoLogType;
 import com.letv.portal.proxy.IBackupProxy;
@@ -157,7 +158,7 @@ public class CronJobsController {
 		long date = cal.getTimeInMillis();
 		Date monthAgo = new Date(date);
 		for (MonitorIndexModel monitorIndexModel : indexs) {
-			this.monitorProxy.deleteOutData(monitorIndexModel,monthAgo);
+			this.monitorProxy.deleteOutData(monitorIndexModel.getDetailTable(), "MONITOR_DATE", monthAgo);
 		}
     	return obj;
 	}
@@ -253,6 +254,22 @@ public class CronJobsController {
 	@RequestMapping(value="/monitor/collectMysqlMonitorData",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject collectMysqlMonitorData(HttpServletRequest request,ResultObject obj) {
 		this.monitorProxy.collectMysqlMonitorData();
+		return obj;
+	}
+	
+	/**
+	  * @Title: modifyMysqlMonitorConstantStatus
+	  * @Description: 修改mysql监控不变数据为true
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年8月21日 下午4:11:13
+	  */
+	@RequestMapping(value="/monitor/modifyMysqlMonitorConstantStatus",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject modifyMysqlMonitorConstantStatus(HttpServletRequest request,ResultObject obj) {
+		Constant.QUERY_MYSQL_CONSTANT_DATA = true;
 		return obj;
 	}
 	

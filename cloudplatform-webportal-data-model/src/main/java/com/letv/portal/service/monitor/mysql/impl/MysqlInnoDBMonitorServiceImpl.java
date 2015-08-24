@@ -42,12 +42,14 @@ public class MysqlInnoDBMonitorServiceImpl extends BaseServiceImpl<MysqlInnoDBMo
 
 	@Override
 	public void collectMysqlInnoDBMonitorData(ContainerModel container,
-			Map<String, Object> map, Date d) {
-		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d);
+			Map<String, Object> map, Date d, Date start, boolean query) {
+		Map<String, Object> dbResult = this.monitorService.getLatestDataFromMonitorTables(container.getIpAddr(), titles, d, start);
 		MysqlInnoDBMonitor innodb = new MysqlInnoDBMonitor();
 		innodb.setHostIp(container.getIpAddr());
 		innodb.setHostTag(container.getHcluster().getHclusterNameAlias()+"-"+container.getHostIp()+"-"+container.getContainerName());
-		innodb.setInnodbBufferPoolSize(map.get("stat_innodb_bufferpool_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_innodb_bufferpool_size_command")));
+		if(query == true) {
+			innodb.setInnodbBufferPoolSize(map.get("stat_innodb_bufferpool_size_command")==null?-1f:Float.parseFloat((String)map.get("stat_innodb_bufferpool_size_command")));
+		}
 		if(dbResult.get("stat_innodb_bufferpool_reads_command")!=null && dbResult.get("stat_innodb_bufferpool_read_request_command")!=null) {
 			if((Float)dbResult.get("stat_innodb_bufferpool_read_request_command")!=0f) {
 				float readHits = (Float)dbResult.get("stat_innodb_bufferpool_reads_command")/(Float)dbResult.get("stat_innodb_bufferpool_read_request_command");
