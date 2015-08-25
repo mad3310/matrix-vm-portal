@@ -1113,16 +1113,16 @@
     </profiles>
   
    <repositories>
+   		<repository>
+      		<id>matrix.releases</id>
+      		<name>Matrix Releases Repository</name>
+      		<url>http://10.200.91.144:28081/nexus/content/repositories/releases/</url>
+    	</repository>
         <repository>
             <id>letv.public</id>
             <name>Letv.com Repository</name>
             <url>http://maven.letv.cn/nexus/content/groups/public/</url>
         </repository>
-        <repository>
-      		<id>matrix.releases</id>
-      		<name>Matrix Releases Repository</name>
-      		<url>http://10.200.91.144:28081/nexus/content/repositories/releases/</url>
-    	</repository>
     </repositories>
 	<!-- <repositories> <repository> <snapshots> <enabled>false</enabled> </snapshots> 
 		<id>central</id> <name>Maven Repository Switchboard</name> <url>http://repo1.maven.org/maven2</url> 
