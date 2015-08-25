@@ -42,6 +42,18 @@ public class NetworkController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/regions/group", method = RequestMethod.GET)
+	public @ResponseBody ResultObject groupRegions() {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getGroupRegions());
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 
 	@RequestMapping(value = "/region/{region}/network/{networkId}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject get(@PathVariable String region,
