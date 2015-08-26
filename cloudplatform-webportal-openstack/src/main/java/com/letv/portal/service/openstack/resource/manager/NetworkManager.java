@@ -29,4 +29,8 @@ public interface NetworkManager extends ResourceManager {
 
 	void deletePrivate(String region, String networkId)
 			throws OpenStackException;
+
+	void createPrivateSubnet(String region, String networkId, String name,
+			String cidr, boolean enableGateway, String gatewayIp,
+			boolean enableDhcp) throws OpenStackException;
 }

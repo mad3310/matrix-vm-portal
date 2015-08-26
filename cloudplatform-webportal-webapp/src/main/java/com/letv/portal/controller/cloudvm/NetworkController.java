@@ -42,7 +42,7 @@ public class NetworkController {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/regions/group", method = RequestMethod.GET)
 	public @ResponseBody ResultObject groupRegions() {
 		ResultObject result = new ResultObject();
@@ -136,4 +136,21 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/subnet/private/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createPrivateSubnet(
+			@RequestParam String region, @RequestParam String networkId,
+			@RequestParam String name, @RequestParam String cidr,
+			@RequestParam boolean enableGateway,
+			@RequestParam String gatewayIp, @RequestParam boolean enableDhcp) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.createPrivateSubnet(region, networkId, name, cidr,
+							enableGateway, gatewayIp, enableDhcp);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
