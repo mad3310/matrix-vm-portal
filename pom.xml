@@ -400,6 +400,12 @@
 				<groupId>org.apache.jclouds.driver</groupId>
 				<artifactId>jclouds-sshj</artifactId>
 				<version>${jclouds.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>net.schmizz</groupId>
+						<artifactId>sshj</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<!-- jclouds OpenStack dependencies -->
 			<dependency>
