@@ -44,7 +44,7 @@
     <joda-time.version>1.6.2</joda-time.version>
     <httpclient.version>4.3.3</httpclient.version>
     <aspectj.version>1.6.8</aspectj.version>
-    <jclouds.version>1.9.0</jclouds.version>
+    <jclouds.version>1.9.0-matrix.1</jclouds.version>
   </properties>
 
   <dependencyManagement>
