@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 
 @Controller
 @RequestMapping("/osn")
@@ -104,6 +105,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.createPrivate(region, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -117,6 +121,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.editPrivate(region, networkId, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -130,6 +137,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.deletePrivate(region, networkId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -148,6 +158,58 @@ public class NetworkController {
 					.getNetworkManager()
 					.createPrivateSubnet(region, networkId, name, cidr,
 							enableGateway, gatewayIp, enableDhcp);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/subnet/{subnetId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getPrivateSubnet(
+			@PathVariable String region, @PathVariable String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getPrivateSubnet(region, subnetId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/subnet/private/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editPrivateSubnet(
+			@RequestParam String region, @RequestParam String subnetId,
+			@RequestParam String name, @RequestParam boolean enableGateway,
+			@RequestParam String gatewayIp, @RequestParam boolean enableDhcp) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.editPrivateSubnet(region, subnetId, name, enableGateway,
+							gatewayIp, enableDhcp);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/subnet/private/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deletePrivateSubnet(
+			@RequestParam String region, @RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deletePrivateSubnet(region, subnetId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

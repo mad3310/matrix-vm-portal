@@ -5,6 +5,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.SubnetResource;
 
 import java.util.List;
 
@@ -33,4 +34,14 @@ public interface NetworkManager extends ResourceManager {
 	void createPrivateSubnet(String region, String networkId, String name,
 			String cidr, boolean enableGateway, String gatewayIp,
 			boolean enableDhcp) throws OpenStackException;
+
+	SubnetResource getPrivateSubnet(String region, String subnetId)
+			throws OpenStackException;
+
+	void editPrivateSubnet(String region, String subnetId, String name,
+			boolean enableGateway, String gatewayIp, boolean enableDhcp)
+			throws OpenStackException;
+
+	void deletePrivateSubnet(String region, String subnetId)
+			throws OpenStackException;
 }

@@ -1,6 +1,8 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.util.SubnetUtils;
+import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Network;
@@ -25,8 +29,11 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
+import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -636,16 +643,19 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				Network parentNetwork = networkApi.get(networkId);
 				if (parentNetwork == null) {
-					throw new UserOperationException("Network is not found.",
-							"网络不存在");
+					throw new ResourceNotFoundException("Network", "网络",
+							networkId);
 				}
 				if (!isPrivateNetwork(parentNetwork)) {
 					throw new UserOperationException(
 							"Unable to create under the private network subnet.",
 							"不能在非私有网络下创建子网");
 				}
-				
-				// TODO 判断 cidr,gatewayIp是否有效
+
+				if (!isSubnetCidrValid(cidr)) {
+					throw new UserOperationException(
+							"The subnet segment is not correct.", "子网的网段不正确");
+				}
 
 				Set<String> privateNetworkIds = new HashSet<String>();
 				for (Network network : networkApi.list().concat().toList()) {
@@ -656,12 +666,42 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 
+				SubnetInfo subnetInfo = new SubnetUtils(cidr).getInfo();
+				long subnetLowAddress = ByteBuffer.wrap(
+						InetAddress.getByName(subnetInfo.getLowAddress())
+								.getAddress()).getLong();
+				long subnetHighAddress = ByteBuffer.wrap(
+						InetAddress.getByName(subnetInfo.getHighAddress())
+								.getAddress()).getLong();
+
 				int privateSubnetCount = 0;
-				List<Subnet> subnetList = subnetApi.list().concat().toList();
-				for (Subnet subnet : subnetList) {
-					if (privateNetworkIds.contains(subnet.getNetworkId())) {
+				List<Subnet> existsSubnetList = subnetApi.list().concat()
+						.toList();
+				for (Subnet existsSubnet : existsSubnetList) {
+					if (privateNetworkIds.contains(existsSubnet.getNetworkId())) {
 						privateSubnetCount++;
 					}
+					if (networkId.equals(existsSubnet.getNetworkId())) {
+						SubnetInfo existsSubnetInfo = new SubnetUtils(
+								existsSubnet.getCidr()).getInfo();
+						long existsSubnetLowAddress = ByteBuffer.wrap(
+								InetAddress.getByName(
+										existsSubnetInfo.getLowAddress())
+										.getAddress()).getLong();
+						long existsSubnetHighAddress = ByteBuffer.wrap(
+								InetAddress.getByName(
+										existsSubnetInfo.getHighAddress())
+										.getAddress()).getLong();
+						if (!(subnetLowAddress > existsSubnetHighAddress || subnetHighAddress < existsSubnetLowAddress)) {
+							throw new UserOperationException(
+									"Subnet segment and the scope of other subnet segment overlap.",
+									"子网的网段和其他子网的网段的范围有重叠");
+						}
+					}
+				}
+
+				if (enableGateway && !subnetInfo.isInRange(gatewayIp)) {
+					throw new UserOperationException("", "网关IP不在子网的网段内");
 				}
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
@@ -680,13 +720,115 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				Subnet.CreateBuilder createBuilder = Subnet
-						.createBuilder(networkId, cidr).ipVersion(4).name(name).cidr(cidr)
-						.enableDhcp(enableDhcp);
+						.createBuilder(networkId, cidr).ipVersion(4).name(name)
+						.cidr(cidr).enableDhcp(enableDhcp);
 				if (enableGateway) {
 					createBuilder.gatewayIp(gatewayIp);
 				}
 				subnetApi.create(createBuilder.build());
 
+				return null;
+			}
+
+		});
+	}
+
+	private boolean isSubnetCidrValid(String cidr) {
+		try {
+			String[] ipAndNum = cidr.split("/");
+			if (ipAndNum.length != 2) {
+				return false;
+			}
+			String[] ipFragmentStrs = ipAndNum[0].split("\\.");
+			if (ipFragmentStrs.length != 4) {
+				return false;
+			}
+			int[] ipFragments = new int[ipFragmentStrs.length];
+			for (int i = 0; i < ipFragmentStrs.length; i++) {
+				ipFragments[i] = Integer.parseInt(ipFragmentStrs[i]);
+			}
+			String numStr = ipAndNum[1];
+			int num = Integer.parseInt(numStr);
+			return isSubnetCidrValid1(ipFragments, num)
+					|| isSubnetCidrValid2(ipFragments, num)
+					|| isSubnetCidrValid3(ipFragments, num);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	private boolean isSubnetCidrValid1(int[] ipFragments, int num) {
+		if (ipFragments[0] != 192) {
+			return false;
+		}
+		if (ipFragments[1] != 168) {
+			return false;
+		}
+		if (ipFragments[2] < 0 || ipFragments[2] > 255) {
+			return false;
+		}
+		if (ipFragments[3] != 0) {
+			return false;
+		}
+		if (num != 24) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isSubnetCidrValid2(int[] ipFragments, int num) {
+		if (ipFragments[0] != 10) {
+			return false;
+		}
+		if (ipFragments[1] < 0 || ipFragments[1] > 255) {
+			return false;
+		}
+		if (ipFragments[2] < 0 || ipFragments[2] > 255) {
+			return false;
+		}
+		if (ipFragments[3] < 0 || ipFragments[3] > 255) {
+			return false;
+		}
+		if (num < 8 || num > 30) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isSubnetCidrValid3(int[] ipFragments, int num) {
+		if (ipFragments[0] != 172) {
+			return false;
+		}
+		if (ipFragments[1] < 16 || ipFragments[1] > 31) {
+			return false;
+		}
+		if (ipFragments[2] < 0 || ipFragments[2] > 255) {
+			return false;
+		}
+		if (ipFragments[3] < 0 || ipFragments[3] > 255) {
+			return false;
+		}
+		if (num < 12 || num > 30) {
+			return false;
+		}
+		return true;
+	}
+
+	public SubnetResource getPrivateSubnet(final String region,
+			final String subnetId) throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, SubnetResource>() {
+
+			@Override
+			public SubnetResource run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Subnet subnet = neutronApi.getSubnetApi(region).get(subnetId);
+				if (subnet == null) {
+					// throw new ResourceNotFoundException("","");
+				}
+
+				// return new SubnetResourceImpl(region,
+				// getRegionDisplayName(region), );
 				return null;
 			}
 		});
@@ -700,6 +842,21 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	@Override
 	protected Class<NeutronApi> getApiClass() {
 		return NeutronApi.class;
+	}
+
+	@Override
+	public void editPrivateSubnet(String region, String subnetId, String name,
+			boolean enableGateway, String gatewayIp, boolean enableDhcp)
+			throws OpenStackException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deletePrivateSubnet(String region, String subnetId)
+			throws OpenStackException {
+		// TODO Auto-generated method stub
+
 	}
 
 }
