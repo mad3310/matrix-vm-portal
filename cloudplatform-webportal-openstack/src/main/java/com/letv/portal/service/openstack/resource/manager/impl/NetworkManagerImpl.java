@@ -18,6 +18,7 @@ import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
+import org.jclouds.openstack.neutron.v2.domain.IP;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
 import org.jclouds.openstack.neutron.v2.domain.Port;
@@ -572,8 +573,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				for (Port port : portApi.list().concat().toList()) {
 					if (networkId.equals(port.getNetworkId())) {
 						throw new UserOperationException(
-								"There are router interface connected to the network.",
-								"有路由的接口连接着这个网络");
+								"There are router interface or vm connected to the network.",
+								"有路由的接口或虚拟机连接着这个网络");
 					}
 				}
 
@@ -900,14 +901,68 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			public Void run(NeutronApi neutronApi) throws Exception {
 				checkRegion(region);
 
-				getPrivateSubnet(neutronApi, region, subnetId);
+				Subnet subnet = getPrivateSubnet(neutronApi, region, subnetId);
 
-				neutronApi.getSubnetApi(region).delete(subnetId);
+				for (Port port : neutronApi.getPortApi(region).list().concat()
+						.toList()) {
+					if (subnet.getNetworkId().equals(port.getNetworkId())) {
+						if (port.getFixedIps() != null) {
+							for (IP ip : port.getFixedIps()) {
+								if (subnet.getId().equals(ip.getSubnetId())) {
+									throw new UserOperationException(
+											"There are router interface or vm connected to the subnet.",
+											"有路由的接口或虚拟机连接着这个子网");
+								}
+							}
+						}
+					}
+				}
+
+				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+
+				boolean isSuccess = subnetApi.delete(subnetId);
+				if (!isSuccess) {
+					throw new OpenStackException(MessageFormat.format(
+							"Private subnet \"{0}\" delete failed.", subnetId),
+							MessageFormat.format("私有子网“{0}”删除失败。", subnetId));
+				}
+
+				waitingSubnet(subnetId, subnetApi, new Checker<Subnet>() {
+
+					@Override
+					public boolean check(Subnet subnet) throws Exception {
+						return isSubnetDeleteFinished(subnet);
+					}
+				});
 
 				return null;
 			}
 
 		});
+	}
+
+	private boolean isSubnetDeleteFinished(Subnet subnet) {
+		return subnet == null;
+	}
+
+	private void waitingSubnet(String subnetId, SubnetApi subnetApi,
+			Checker<Subnet> checker) throws OpenStackException {
+		try {
+			Subnet subnet = null;
+			while (true) {
+				subnet = subnetApi.get(subnetId);
+				if (checker.check(subnet)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
 	}
 
 	@Override
