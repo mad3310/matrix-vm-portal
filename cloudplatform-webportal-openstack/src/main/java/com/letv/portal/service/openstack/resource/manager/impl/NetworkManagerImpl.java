@@ -2,7 +2,6 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
@@ -31,11 +30,8 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
-import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Longs;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -702,7 +698,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				if (enableGateway && !subnetInfo.isInRange(gatewayIp)) {
-					throw new UserOperationException("", "网关IP不在子网的网段内");
+					throw new UserOperationException("The gateway IP network segment is not in the subnet.", "网关IP不在子网的网段内");
 				}
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
@@ -815,6 +811,29 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		return true;
 	}
 
+	private Subnet getPrivateSubnet(NeutronApi neutronApi, String region,
+			String subnetId) throws OpenStackException {
+		Subnet subnet = neutronApi.getSubnetApi(region).get(subnetId);
+		if (subnet == null) {
+			throw new ResourceNotFoundException("Subnet", "子网", subnetId);
+		}
+
+		Network network = neutronApi.getNetworkApi(region).get(
+				subnet.getNetworkId());
+		if (network == null) {
+			throw new ResourceNotFoundException("Network", "网络",
+					subnet.getNetworkId());
+		}
+
+		if (!isPrivateNetwork(network)) {
+			throw new ResourceNotFoundException("Private Subnet", "私有子网",
+					subnetId);
+		}
+
+		return subnet;
+	}
+
+	@Override
 	public SubnetResource getPrivateSubnet(final String region,
 			final String subnetId) throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, SubnetResource>() {
@@ -823,27 +842,64 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			public SubnetResource run(NeutronApi neutronApi) throws Exception {
 				checkRegion(region);
 
-				Subnet subnet = neutronApi.getSubnetApi(region).get(subnetId);
-				if (subnet == null) {
-					throw new ResourceNotFoundException("Subnet", "子网",
-							subnetId);
-				}
-
-				Network network = neutronApi.getNetworkApi(region).get(
-						subnet.getNetworkId());
-				if (network == null) {
-					throw new ResourceNotFoundException("Network", "网络",
-							subnet.getNetworkId());
-				}
-
-				if (!isPrivateNetwork(network)) {
-					throw new ResourceNotFoundException("Private Subnet",
-							"私有子网", subnetId);
-				}
-
 				return new SubnetResourceImpl(region,
-						getRegionDisplayName(region), subnet);
+						getRegionDisplayName(region), getPrivateSubnet(
+								neutronApi, region, subnetId));
 			}
+		});
+	}
+
+	@Override
+	public void editPrivateSubnet(final String region, final String subnetId,
+			final String name, final boolean enableGateway,
+			final String gatewayIp, final boolean enableDhcp)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Subnet subnet = getPrivateSubnet(neutronApi, region, subnetId);
+
+				if (enableGateway) {
+					SubnetInfo subnetInfo = new SubnetUtils(subnet.getCidr())
+							.getInfo();
+					if (!subnetInfo.isInRange(gatewayIp)) {
+						throw new UserOperationException("The gateway IP network segment is not in the subnet.", "网关IP不在子网的网段内");
+					}
+				}
+
+				Subnet.UpdateBuilder updateBuilder = Subnet.updateBuilder()
+						.name(name).enableDhcp(enableDhcp);
+				if (enableGateway) {
+					updateBuilder.gatewayIp(gatewayIp);
+				}
+				neutronApi.getSubnetApi(region).update(subnetId,
+						updateBuilder.build());
+
+				return null;
+			}
+
+		});
+	}
+
+	@Override
+	public void deletePrivateSubnet(final String region, final String subnetId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+				
+				getPrivateSubnet(neutronApi, region, subnetId);
+				
+				neutronApi.getSubnetApi(region).delete(subnetId);
+
+				return null;
+			}
+
 		});
 	}
 
@@ -855,21 +911,6 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	@Override
 	protected Class<NeutronApi> getApiClass() {
 		return NeutronApi.class;
-	}
-
-	@Override
-	public void editPrivateSubnet(String region, String subnetId, String name,
-			boolean enableGateway, String gatewayIp, boolean enableDhcp)
-			throws OpenStackException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deletePrivateSubnet(String region, String subnetId)
-			throws OpenStackException {
-		// TODO Auto-generated method stub
-
 	}
 
 }
