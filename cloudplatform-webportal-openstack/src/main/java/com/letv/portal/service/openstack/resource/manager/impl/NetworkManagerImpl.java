@@ -689,8 +689,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					if (networkId.equals(existsSubnet.getNetworkId())) {
 						SubnetInfo existsSubnetInfo = new SubnetUtils(
 								existsSubnet.getCidr()).getInfo();
-						long existsSubnetLowAddress = ipStrToNum(existsSubnetInfo.getLowAddress());
-						long existsSubnetHighAddress = ipStrToNum(existsSubnetInfo.getHighAddress());
+						long existsSubnetLowAddress = ipStrToNum(existsSubnetInfo
+								.getLowAddress());
+						long existsSubnetHighAddress = ipStrToNum(existsSubnetInfo
+								.getHighAddress());
 						if (!(subnetLowAddress > existsSubnetHighAddress || subnetHighAddress < existsSubnetLowAddress)) {
 							throw new UserOperationException(
 									"Subnet segment and the scope of other subnet segment overlap.",
@@ -823,12 +825,24 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				Subnet subnet = neutronApi.getSubnetApi(region).get(subnetId);
 				if (subnet == null) {
-					// throw new ResourceNotFoundException("","");
+					throw new ResourceNotFoundException("Subnet", "子网",
+							subnetId);
 				}
 
-				// return new SubnetResourceImpl(region,
-				// getRegionDisplayName(region), );
-				return null;
+				Network network = neutronApi.getNetworkApi(region).get(
+						subnet.getNetworkId());
+				if (network == null) {
+					throw new ResourceNotFoundException("Network", "网络",
+							subnet.getNetworkId());
+				}
+
+				if (!isPrivateNetwork(network)) {
+					throw new ResourceNotFoundException("Private Subnet",
+							"私有子网", subnetId);
+				}
+
+				return new SubnetResourceImpl(region,
+						getRegionDisplayName(region), subnet);
 			}
 		});
 	}
