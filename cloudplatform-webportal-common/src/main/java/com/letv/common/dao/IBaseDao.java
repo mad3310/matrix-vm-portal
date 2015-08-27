@@ -35,5 +35,6 @@ public interface IBaseDao<T> {
 	 * @return
 	 */
 	public List<T> selectPageByMap(QueryParam params);
+	public <K,V> Integer selectByMapCount(QueryParam params);
 	
 }
