@@ -167,7 +167,7 @@ public class NetworkController {
 		return result;
 	}
 
-	@RequestMapping(value = "/region/{region}/subnet/{subnetId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/region/{region}/subnet/private/{subnetId}", method = RequestMethod.GET)
 	public @ResponseBody ResultObject getPrivateSubnet(
 			@PathVariable String region, @PathVariable String subnetId) {
 		ResultObject result = new ResultObject();
