@@ -9,9 +9,9 @@ define(function(require) {
 		'lev2' : 309,// 拖动条第二块长度==css width
 		'lev3' : 412,// 拖动条第三块长度==css width
 		'min':1,
-		'grade1' : 15,// 三段设置
-		'grade2' : 20,
-		'grade3' : 30,
+		'grade1' : 5,// 三段设置
+		'grade2' : 8,
+		'grade3' : 10,
 		'unit' : 'GB'
 	};
 	cn.divselect();
