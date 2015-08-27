@@ -32,15 +32,14 @@ public interface NetworkManager extends ResourceManager {
 			throws OpenStackException;
 
 	void createPrivateSubnet(String region, String networkId, String name,
-			String cidr, boolean enableGateway, String gatewayIp,
+			String cidr, boolean autoGatewayIp, String gatewayIp,
 			boolean enableDhcp) throws OpenStackException;
 
 	SubnetResource getPrivateSubnet(String region, String subnetId)
 			throws OpenStackException;
 
 	void editPrivateSubnet(String region, String subnetId, String name,
-			boolean enableGateway, String gatewayIp, boolean enableDhcp)
-			throws OpenStackException;
+			String gatewayIp, boolean enableDhcp) throws OpenStackException;
 
 	void deletePrivateSubnet(String region, String subnetId)
 			throws OpenStackException;

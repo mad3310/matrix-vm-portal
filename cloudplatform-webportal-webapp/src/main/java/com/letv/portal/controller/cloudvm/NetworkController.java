@@ -150,14 +150,14 @@ public class NetworkController {
 	public @ResponseBody ResultObject createPrivateSubnet(
 			@RequestParam String region, @RequestParam String networkId,
 			@RequestParam String name, @RequestParam String cidr,
-			@RequestParam boolean enableGateway,
+			@RequestParam boolean autoGatewayIp,
 			@RequestParam String gatewayIp, @RequestParam boolean enableDhcp) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.createPrivateSubnet(region, networkId, name, cidr,
-							enableGateway, gatewayIp, enableDhcp);
+							autoGatewayIp, gatewayIp, enableDhcp);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -183,14 +183,14 @@ public class NetworkController {
 	@RequestMapping(value = "/subnet/private/edit", method = RequestMethod.POST)
 	public @ResponseBody ResultObject editPrivateSubnet(
 			@RequestParam String region, @RequestParam String subnetId,
-			@RequestParam String name, @RequestParam boolean enableGateway,
-			@RequestParam String gatewayIp, @RequestParam boolean enableDhcp) {
+			@RequestParam String name, @RequestParam String gatewayIp,
+			@RequestParam boolean enableDhcp) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.editPrivateSubnet(region, subnetId, name, enableGateway,
-							gatewayIp, enableDhcp);
+					.editPrivateSubnet(region, subnetId, name, gatewayIp,
+							enableDhcp);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
