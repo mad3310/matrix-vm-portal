@@ -4,15 +4,15 @@ public enum BillingType{
 	BYTIME(0,"按时间"),
 	BYUSEDLADDER(1,"按用量阶梯");
 	
-	private final Integer value;
-	private final String  descn;
+	private int value;
+	private String  descn;
 	
-	private BillingType(Integer value,String descn) {
+	private BillingType(int value,String descn) {
 		this.value = value;
 		this.descn = descn;
 	}
 
-	public Integer getValue() {
+	public int getValue() {
 		return value;
 	}
 

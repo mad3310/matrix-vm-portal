@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.IBasePriceDao">
+
+	<resultMap id="BaseResultMap" type="BasePrice">
+		<result column="ID" property="id" />
+	
+		<result column="ELEMENT_ID" property="elementId" />
+		<result column="ELEMENT_STANDARD" property="elementStandard" />
+		<result column="ELEMENT_QUALITY" property="elementQuality" />
+		<result column="BILLING_TYPE" property="billingType" typeHandler="com.letv.portal.enumeration.BillingTypeTypeHandle"/>
+		<result column="BY_TIME" property="byTime" />
+		<result column="BY_USEDLADDER" property="byUsedLadder" />
+		<result column="BASE_PRICE" property="basePrice" />
+			
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		p.ID,
+		p.ELEMENT_ID,p.ELEMENT_STANDARD,p.ELEMENT_QUALITY,p.BILLING_TYPE,p.BY_TIME,p.BY_USEDLADDER,p.BASE_PRICE,
+		p.DELETED,p.CREATE_TIME,p.CREATE_USER,p.UPDATE_TIME,p.UPDATE_USER
+	</sql>
+	
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and p.ID=#{id}
+			</if>
+			
+			<if test="elementId != null  ">
+				and p.ELEMENT_ID=#{elementId}
+			</if>
+			<if test="elementStandard != null  ">
+				and p.ELEMENT_STANDARD=#{elementStandard}
+			</if>
+			<if test="elementQuality != null  ">
+				and p.ELEMENT_QUALITY=#{elementQuality}
+			</if>
+			<if test="billingType != null  ">
+				and p.BILLING_TYPE=#{billingType,typeHandler=com.letv.portal.enumeration.BillingTypeTypeHandle}
+			</if>
+			<if test="byTime != null  ">
+				and p.BY_TIME=#{byTime}
+			</if>
+			<if test="byUsedLadder != null  ">
+				and p.BY_USEDLADDER=#{byUsedLadder}
+			</if>
+			<if test="basePrice != null  ">
+				and p.BASE_PRICE=#{basePrice}
+			</if>
+
+			<if test="deleted != null  ">
+				and p.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and p.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and p.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and p.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and p.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="BasePrice" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		MATRIX_BILLING_BASE_PRICE(
+			ELEMENT_ID,ELEMENT_STANDARD,ELEMENT_QUALITY,BILLING_TYPE,BY_TIME,BY_USEDLADDER,BASE_PRICE,
+			DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+			#{elementId},#{elementStandard},#{elementQuality},
+			#{billingType,typeHandler=com.letv.portal.enumeration.BillingTypeTypeHandle},
+			#{byTime},#{byUsedLadder},#{basePrice},
+			#{deleted},now(),#{createUser},#{updateTime},#{updateUser})
+	</insert>
+
+	<!-- -->
+	<update id="updateBySelective" parameterType="BasePrice">
+		update MATRIX_BILLING_BASE_PRICE
+		<set>
+			<if test="id != null  ">
+				ID=#{id},
+			</if>
+			
+			<if test="elementId != null  ">
+				ELEMENT_ID=#{elementId},
+			</if>
+			<if test="elementStandard != null  ">
+				ELEMENT_STANDARD=#{elementStandard},
+			</if>
+			<if test="elementQuality != null  ">
+				ELEMENT_QUALITY=#{elementQuality},
+			</if>
+			<if test="billingType != null  ">
+				BILLING_TYPE=#{billingType,typeHandler=com.letv.portal.enumeration.BillingTypeTypeHandle},
+			</if>
+			<if test="byTime != null  ">
+				BY_TIME=#{byTime},
+			</if>
+			<if test="byUsedLadder != null  ">
+				BY_USEDLADDER=#{byUsedLadder},
+			</if>
+			<if test="basePrice != null  ">
+				BASE_PRICE=#{basePrice},
+			</if>
+			
+			<if test="deleted != null  ">
+				DELETED=#{deleted},
+			</if>
+			<if test="createTime != null  ">
+				CREATE_TIME=#{createTime},
+			</if>
+			<if test="createUser != null  ">
+				CREATE_USER=#{createUser},
+			</if>
+			<if test="updateTime != null  ">
+			    UPDATE_TIME=#{updateTime},
+			</if>
+			<if test="updateUser != null  ">
+			    UPDATE_USER=#{updateUser},
+			</if>
+		</set>
+		where ID=#{id}
+	</update>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="BasePrice">
+		delete from MATRIX_BILLING_BASE_PRICE where ID = #{id}
+	</update>
+	
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	        select
+			<include refid="Base_Column_List" /> 
+			from MATRIX_BILLING_BASE_PRICE p
+			where p.ID = #{id}
+	</select>
+	
+	<select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+	        select
+			<include refid="Base_Column_List" /> 
+			from MATRIX_BILLING_BASE_PRICE p
+			where p.NAME = #{name}
+	</select>
+	
+	
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+		parameterType="java.util.Map">
+		select count(1) from MATRIX_BILLING_BASE_PRICE p
+		<include refid="Example_Where_Clause" />
+	</select>
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from MATRIX_BILLING_BASE_PRICE p
+		<include refid="Example_Where_Clause" />
+	</select>
+	
+	
+	<sql id="Example_Page_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="params != null and params.id != null  ">
+				and p.ID=#{params.id}
+			</if>
+			
+			<if test="params != null and params.elementId != null  ">
+				and p.ELEMENT_ID=#{params.elementId}
+			</if>
+			<if test="params != null and params.elementStandard != null  ">
+				and p.ELEMENT_STANDARD=#{params.elementStandard}
+			</if>
+			<if test="params != null and params.elementQuality != null  ">
+				and p.ELEMENT_QUALITY=#{params.elementQuality}
+			</if>
+			<if test="params != null and params.billingType != null  ">
+				and p.BILLING_TYPE=#{params.billingType,typeHandler=com.letv.portal.enumeration.BillingTypeTypeHandle}
+			</if>
+			<if test="params != null and params.byTime != null  ">
+				and p.BY_TIME=#{params.byTime}
+			</if>
+			<if test="params != null and params.byUsedLadder != null  ">
+				and p.BY_USEDLADDER=#{params.byUsedLadder}
+			</if>
+			<if test="params != null and params.basePrice != null  ">
+				and p.BASE_PRICE=#{params.basePrice}
+			</if>
+			
+			<if test="params != null and params.deleted != null  ">
+				and p.DELETED=#{params.deleted}
+			</if>
+			<if test="params != null and params.createTime != null  ">
+				and p.CREATE_TIME=#{params.createTime}
+			</if>
+			<if test="params != null and params.createUser != null  ">
+				and p.CREATE_USER=#{params.createUser}
+			</if>
+			<if test="params != null and params.updateTime != null  ">
+				and p.UPDATE_TIME=#{params.updateTime}
+			</if>
+			<if test="params != null and params.updateUser != null  ">
+				and p.UPDATE_USER=#{params.updateUser}
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap"
+		parameterType="com.letv.common.dao.QueryParam">
+		select
+		<include refid="Base_Column_List" />
+		from MATRIX_BILLING_BASE_PRICE p
+		<include refid="Example_Page_Where_Clause" />
+		ORDER BY p.CREATE_TIME DESC
+		<if test="page != null">
+      		limit #{page.startRowPosition},#{page.recordsPerPage}
+    	</if>
+	</select>
+</mapper>   

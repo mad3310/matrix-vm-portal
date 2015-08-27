@@ -20,7 +20,10 @@ public class BaseElement extends BaseModel{
 	private static final long serialVersionUID = 4187977926839991202L;
 	
 	private String name;
+	
 	private String descn;
+	
+	public BaseElement() {}
 	
 	public BaseElement(Long id) {
 		super.setId(id);
@@ -33,7 +36,7 @@ public class BaseElement extends BaseModel{
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
-
+	
 	@NotEmpty(message="{billing.element.name.notEmpty.message}")
 	@Length(min=6,max=20,message="{billing.element.name.length.message}")
 	@Unique(message="{billing.element.name.unique.message}",service="baseElementService")

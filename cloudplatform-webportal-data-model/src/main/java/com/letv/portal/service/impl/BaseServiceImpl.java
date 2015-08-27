@@ -13,6 +13,7 @@
  */
 package com.letv.portal.service.impl;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -32,6 +33,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.BeanUtil;
+import com.letv.portal.enumeration.ByteEnum;
 import com.letv.portal.service.IBaseService;
 
 /**
@@ -209,6 +211,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 
 	@Override
 	public <K,V> List<T> selectByMap(Map<K,V> map) {
+		map = transEnum(map);
 		List<T> lists = getDao().selectByMap(map);
 		return lists;
 	}
@@ -220,6 +223,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	
 	@Override
 	public <K, V> Page selectPageByParams(Page page, Map<K,V> params,String orderBy,Boolean isAsc) {
+		params = transEnum(params);
 		QueryParam param = new QueryParam();
 		param.setPage(page);
 		param.setParams(params);
@@ -229,6 +233,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	}
 	@Override
 	public <K, V> Page selectPageByParams(Page page, Map<K,V> params) {
+		params = transEnum(params);
 		QueryParam param = new QueryParam();
 		param.setPage(page);
 		param.setParams(params);
@@ -239,6 +244,19 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 	@Override
 	public boolean isUnique(String name) {
 		return false;
+	}
+	private <K, V> Map<K,V> transEnum(Map<K,V> map) {
+		Field[] declaredFields = entityClass.getDeclaredFields();
+		for(Field field:declaredFields){
+			
+			if(field.getType().isEnum() && !field.getType().isAssignableFrom(ByteEnum.class)){
+				Object value=map.get(field.getName());
+				if(value instanceof String){
+					map.put((K)field.getName(), (V)Enum.valueOf((Class<? extends Enum>)field.getType(), (String)value));
+				}
+			}
+		}
+		return map;
 	}
 	
 	public abstract IBaseDao<T> getDao();

@@ -29,7 +29,7 @@ import com.letv.portal.service.IBaseElementService;
  * Modified Date: <br>
  */
 @Controller
-@RequestMapping("/baseElement")
+@RequestMapping("/billing/element")
 public class BaseElementController {
 	
 	private final static Logger logger = LoggerFactory.getLogger(BaseElementController.class);
@@ -57,7 +57,7 @@ public class BaseElementController {
 	 * @param element
 	 * @return
 	 */
-	@RequestMapping(method=RequestMethod.POST)   
+	@RequestMapping(value="/1/1",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject save(@Valid @ModelAttribute BaseElement element,BindingResult result) {
 		if(result.hasErrors())
 			return new ResultObject(result.getAllErrors());
