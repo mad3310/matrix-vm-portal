@@ -259,5 +259,15 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 		return map;
 	}
 	
+	@Override
+    public <K, V> Page queryByPagination(Page page , Map<K, V> params ) {
+       QueryParam param = new QueryParam();
+       params = transEnum(params);
+       param .setPage(page );
+       param .setParams( params);
+       page .setData(getDao().selectPageByMap(param));
+       page .setTotalRecords(getDao().selectByMapCount(param));
+       return page ;
+   }
 	public abstract IBaseDao<T> getDao();
 }
