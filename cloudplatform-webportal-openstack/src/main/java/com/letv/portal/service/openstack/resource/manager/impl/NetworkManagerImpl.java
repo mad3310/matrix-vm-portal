@@ -1,7 +1,9 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -628,6 +630,13 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		}
 	}
 
+	private long ipStrToNum(String ip) throws UnknownHostException {
+		byte[] bytes = Inet4Address.getByName(ip).getAddress();
+		byte[] newBytes = new byte[8];
+		System.arraycopy(bytes, 0, newBytes, 4, 4);
+		return ByteBuffer.wrap(newBytes).getLong();
+	}
+
 	@Override
 	public void createPrivateSubnet(final String region,
 			final String networkId, final String name, final String cidr,
@@ -667,12 +676,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
 
 				SubnetInfo subnetInfo = new SubnetUtils(cidr).getInfo();
-				long subnetLowAddress = ByteBuffer.wrap(
-						InetAddress.getByName(subnetInfo.getLowAddress())
-								.getAddress()).getLong();
-				long subnetHighAddress = ByteBuffer.wrap(
-						InetAddress.getByName(subnetInfo.getHighAddress())
-								.getAddress()).getLong();
+				long subnetLowAddress = ipStrToNum(subnetInfo.getLowAddress());
+				long subnetHighAddress = ipStrToNum(subnetInfo.getHighAddress());
 
 				int privateSubnetCount = 0;
 				List<Subnet> existsSubnetList = subnetApi.list().concat()
@@ -684,14 +689,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					if (networkId.equals(existsSubnet.getNetworkId())) {
 						SubnetInfo existsSubnetInfo = new SubnetUtils(
 								existsSubnet.getCidr()).getInfo();
-						long existsSubnetLowAddress = ByteBuffer.wrap(
-								InetAddress.getByName(
-										existsSubnetInfo.getLowAddress())
-										.getAddress()).getLong();
-						long existsSubnetHighAddress = ByteBuffer.wrap(
-								InetAddress.getByName(
-										existsSubnetInfo.getHighAddress())
-										.getAddress()).getLong();
+						long existsSubnetLowAddress = ipStrToNum(existsSubnetInfo.getLowAddress());
+						long existsSubnetHighAddress = ipStrToNum(existsSubnetInfo.getHighAddress());
 						if (!(subnetLowAddress > existsSubnetHighAddress || subnetHighAddress < existsSubnetLowAddress)) {
 							throw new UserOperationException(
 									"Subnet segment and the scope of other subnet segment overlap.",
