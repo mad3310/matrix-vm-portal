@@ -697,8 +697,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 				}
 
-				if (enableGateway && !subnetInfo.isInRange(gatewayIp)) {
-					throw new UserOperationException("The gateway IP network segment is not in the subnet.", "网关IP不在子网的网段内");
+				if (enableGateway && !gatewayIp.isEmpty()
+						&& !subnetInfo.isInRange(gatewayIp)) {
+					throw new UserOperationException(
+							"The gateway IP network segment is not in the subnet.",
+							"网关IP不在子网的网段内");
 				}
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
@@ -862,11 +865,13 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				Subnet subnet = getPrivateSubnet(neutronApi, region, subnetId);
 
-				if (enableGateway) {
+				if (enableGateway && !gatewayIp.isEmpty()) {
 					SubnetInfo subnetInfo = new SubnetUtils(subnet.getCidr())
 							.getInfo();
 					if (!subnetInfo.isInRange(gatewayIp)) {
-						throw new UserOperationException("The gateway IP network segment is not in the subnet.", "网关IP不在子网的网段内");
+						throw new UserOperationException(
+								"The gateway IP network segment is not in the subnet.",
+								"网关IP不在子网的网段内");
 					}
 				}
 
@@ -874,6 +879,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						.name(name).enableDhcp(enableDhcp);
 				if (enableGateway) {
 					updateBuilder.gatewayIp(gatewayIp);
+				} else {
+					updateBuilder.gatewayIp(null);
 				}
 				neutronApi.getSubnetApi(region).update(subnetId,
 						updateBuilder.build());
@@ -892,9 +899,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			@Override
 			public Void run(NeutronApi neutronApi) throws Exception {
 				checkRegion(region);
-				
+
 				getPrivateSubnet(neutronApi, region, subnetId);
-				
+
 				neutronApi.getSubnetApi(region).delete(subnetId);
 
 				return null;
