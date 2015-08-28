@@ -1,11 +1,14 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableSet;
+import com.letv.portal.service.openstack.resource.IpAllocationPool;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 
+import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
 
 /**
@@ -13,21 +16,34 @@ import org.jclouds.openstack.neutron.v2.domain.Subnet;
  */
 public class SubnetResourceImpl extends AbstractResource implements
 		SubnetResource {
-	
+
 	private String regionDisplayName;
 	private String region;
 	private Subnet subnet;
 	private List<String> dnsNameservers;
+	private List<IpAllocationPool> ipAllocationPools;
 
-	public SubnetResourceImpl(String region,String regionDisplayName, Subnet subnet) {
+	public SubnetResourceImpl(String region, String regionDisplayName,
+			Subnet subnet) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.subnet = subnet;
+		
 		ImmutableSet<String> dnsNameservers = subnet.getDnsNameservers();
 		if (dnsNameservers != null) {
 			this.dnsNameservers = dnsNameservers.asList();
 		} else {
 			this.dnsNameservers = new ArrayList<String>();
+		}
+
+		this.ipAllocationPools = new LinkedList<IpAllocationPool>();
+		ImmutableSet<AllocationPool> allocationPools = subnet
+				.getAllocationPools();
+		if (allocationPools != null) {
+			for (AllocationPool allocationPool : allocationPools) {
+				this.ipAllocationPools.add(new IpAllocationPool(allocationPool
+						.getStart(), allocationPool.getEnd()));
+			}
 		}
 	}
 
@@ -70,9 +86,19 @@ public class SubnetResourceImpl extends AbstractResource implements
 	public List<String> getDnsNameservers() {
 		return dnsNameservers;
 	}
-	
+
 	@Override
 	public String getRegionDisplayName() {
 		return regionDisplayName;
+	}
+
+	@Override
+	public String getNetworkId() {
+		return subnet.getNetworkId();
+	}
+
+	@Override
+	public List<IpAllocationPool> getIpAllocationPools() {
+		return ipAllocationPools;
 	}
 }

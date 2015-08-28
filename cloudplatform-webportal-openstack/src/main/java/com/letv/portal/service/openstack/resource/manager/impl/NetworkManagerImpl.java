@@ -881,7 +881,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					if (gatewayIpNum >= startIpNum && gatewayIpNum <= endIpNum) {
 						throw new UserOperationException(
 								"Gateway ip conflicts with allocation pool.",
-								"网关IP不能在子网的IP池内");
+								"网关IP不能在子网的IP分配池内");
 					}
 				}
 
