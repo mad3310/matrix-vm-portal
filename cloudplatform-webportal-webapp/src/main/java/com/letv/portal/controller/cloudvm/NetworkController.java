@@ -2,6 +2,7 @@ package com.letv.portal.controller.cloudvm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -210,6 +211,35 @@ public class NetworkController {
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/router/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listRouter(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listRouter(region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/router/{routerId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getRouter(@PathVariable String region,
+			@PathVariable String routerId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getRouter(region, routerId));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

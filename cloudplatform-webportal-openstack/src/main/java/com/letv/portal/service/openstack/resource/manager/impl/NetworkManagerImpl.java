@@ -32,19 +32,23 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
+import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 
@@ -970,6 +974,144 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		} catch (Exception e) {
 			throw new OpenStackException("后台错误", e);
 		}
+	}
+
+	/**
+	 * 
+	 * @param regions
+	 * @param name
+	 * @param currentPagePara
+	 *            从1开始
+	 * @param recordsPerPage
+	 * @return
+	 * @throws RegionNotFoundException
+	 * @throws ResourceNotFoundException
+	 * @throws APINotAvailableException
+	 * @throws OpenStackException
+	 */
+	private Page listRouterByRegions(final Set<String> regions,
+			final String name, final Integer currentPagePara,
+			final Integer recordsPerPage) throws RegionNotFoundException,
+			ResourceNotFoundException, APINotAvailableException,
+			OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, Page>() {
+
+			@Override
+			public Page run(NeutronApi neutronApi) throws Exception {
+				Integer currentPage;
+				if (currentPagePara != null) {
+					currentPage = currentPagePara - 1;
+				} else {
+					currentPage = null;
+				}
+
+				Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+				List<RouterResource> routerResources = new LinkedList<RouterResource>();
+				int routerCount = 0;
+				boolean needCollect = true;
+				for (String region : regions) {
+					Optional<RouterApi> routerApiOptional = neutronApi
+							.getRouterApi(region);
+					if (!routerApiOptional.isPresent()) {
+						throw new APINotAvailableException(RouterApi.class);
+					}
+					RouterApi routerApi = routerApiOptional.get();
+					if (needCollect) {
+						String regionDisplayName = transMap.get(region);
+						List<Router> resources = routerApi.list().concat()
+								.toList();
+						for (Router resource : resources) {
+							if (name == null
+									|| (resource.getName() != null && resource
+											.getName().contains(name))) {
+								if (currentPage == null
+										|| recordsPerPage == null) {
+									routerResources
+											.add(new RouterResourceImpl(region,
+													regionDisplayName, resource));
+								} else {
+									if (needCollect) {
+										if (routerCount >= (currentPage + 1)
+												* recordsPerPage) {
+											needCollect = false;
+										} else if (routerCount >= currentPage
+												* recordsPerPage) {
+											routerResources
+													.add(new RouterResourceImpl(
+															region,
+															regionDisplayName,
+															resource));
+										}
+									}
+								}
+								routerCount++;
+							}
+						}
+					} else {
+						for (Router resource : routerApi.list().concat()
+								.toList()) {
+							if (name == null
+									|| (resource.getName() != null && resource
+											.getName().contains(name))) {
+								routerCount++;
+							}
+						}
+					}
+				}
+
+				Page page = new Page();
+				page.setData(routerResources);
+				page.setTotalRecords(routerCount);
+				if (recordsPerPage != null) {
+					page.setRecordsPerPage(recordsPerPage);
+				} else {
+					page.setRecordsPerPage(10);
+				}
+				if (currentPage != null) {
+					page.setCurrentPage(currentPage + 1);
+				} else {
+					page.setCurrentPage(1);
+				}
+
+				return page;
+			}
+		});
+	}
+
+	@Override
+	public Page listRouter(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws OpenStackException {
+		return listRouterByRegions(getGroupRegions(regionGroup), name,
+				currentPage, recordsPerPage);
+	}
+
+	@Override
+	public RouterResource getRouter(final String region, final String routerId)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, RouterResource>() {
+
+			@Override
+			public RouterResource run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<RouterApi> routerApiOptional = neutronApi
+						.getRouterApi(region);
+				if (!routerApiOptional.isPresent()) {
+					throw new APINotAvailableException(RouterApi.class);
+				}
+				RouterApi routerApi = routerApiOptional.get();
+
+				Router router = routerApi.get(routerId);
+				if (router == null) {
+					throw new ResourceNotFoundException("Router", "路由",
+							routerId);
+				}
+
+				return new RouterResourceImpl(region,
+						getRegionDisplayName(region), router);
+			}
+		});
 	}
 
 	@Override
