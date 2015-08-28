@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.BasePrice;
-import com.letv.portal.model.BaseProduct;
+import com.letv.portal.model.base.BasePrice;
+import com.letv.portal.model.product.Product;
 
 /**Program Name: BaseProductController <br>
  * Description:  基础产品<br>
@@ -51,7 +51,7 @@ public class BaseProductController {
 	 * @return
 	 */
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(@ModelAttribute BaseProduct product) {
+	public @ResponseBody ResultObject save(@ModelAttribute Product product) {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}
@@ -64,7 +64,7 @@ public class BaseProductController {
 	 * @return
 	 */
 	@RequestMapping(value="/{id}", method=RequestMethod.POST)
-	public @ResponseBody ResultObject update(@PathVariable Long id,@ModelAttribute BaseProduct product) {
+	public @ResponseBody ResultObject update(@PathVariable Long id,@ModelAttribute Product product) {
 		ResultObject obj = new ResultObject();
 		return obj;
 	}

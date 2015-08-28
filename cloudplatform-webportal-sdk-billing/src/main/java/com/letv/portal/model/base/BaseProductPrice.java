@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.portal.model.base;
 
 import java.sql.Date;
 

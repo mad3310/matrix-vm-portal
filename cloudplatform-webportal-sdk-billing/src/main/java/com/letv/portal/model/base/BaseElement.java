@@ -1,4 +1,4 @@
-package com.letv.portal.model;
+package com.letv.portal.model.base;
 
 import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.Length;

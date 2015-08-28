@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.BaseElement;
-import com.letv.portal.service.IBaseElementService;
+import com.letv.portal.model.base.BaseElement;
+import com.letv.portal.service.base.IBaseElementService;
 
 /**Program Name: BaseElementController <br>
  * Description:  基础元素<br>

@@ -1,6 +1,7 @@
-package com.letv.portal.service;
+package com.letv.portal.service.base;
 
-import com.letv.portal.model.BasePrice;
+import com.letv.portal.model.base.BasePrice;
+import com.letv.portal.service.IBaseService;
 
 /**Program Name: IBasePriceService <br>
  * Description:  基本价格<br>

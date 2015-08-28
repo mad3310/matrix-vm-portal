@@ -18,8 +18,8 @@ import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.enumeration.BillingType;
-import com.letv.portal.model.BasePrice;
-import com.letv.portal.service.IBasePriceService;
+import com.letv.portal.model.base.BasePrice;
+import com.letv.portal.service.base.IBasePriceService;
 
 
 /**Program Name: BasePriceController <br>
