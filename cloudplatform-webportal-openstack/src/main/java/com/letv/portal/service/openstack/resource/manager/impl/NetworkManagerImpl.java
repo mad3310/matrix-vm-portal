@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.IP;
 import org.jclouds.openstack.neutron.v2.domain.Network;
@@ -870,6 +871,18 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					throw new UserOperationException(
 							"The gateway IP network segment is not in the subnet.",
 							"网关IP不在子网的网段内");
+				}
+
+				long gatewayIpNum = ipStrToNum(gatewayIp);
+				for (AllocationPool allocationPool : subnet
+						.getAllocationPools()) {
+					long startIpNum = ipStrToNum(allocationPool.getStart());
+					long endIpNum = ipStrToNum(allocationPool.getEnd());
+					if (gatewayIpNum >= startIpNum && gatewayIpNum <= endIpNum) {
+						throw new UserOperationException(
+								"Gateway ip conflicts with allocation pool.",
+								"网关IP不能在子网的IP池内");
+					}
 				}
 
 				Subnet.UpdateBuilder updateBuilder = Subnet.updateBuilder()
