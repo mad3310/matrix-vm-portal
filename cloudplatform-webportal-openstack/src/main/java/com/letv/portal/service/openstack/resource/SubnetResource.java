@@ -19,4 +19,9 @@ public interface SubnetResource extends Resource {
 	List<String> getDnsNameservers();
 	
 	String getRegionDisplayName();
+	
+	String getNetworkId();
+	
+	List<IpAllocationPool> getIpAllocationPools();
+	
 }

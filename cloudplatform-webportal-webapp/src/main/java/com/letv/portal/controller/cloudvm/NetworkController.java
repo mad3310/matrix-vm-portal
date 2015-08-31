@@ -2,6 +2,7 @@ package com.letv.portal.controller.cloudvm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 
 @Controller
 @RequestMapping("/osn")
@@ -42,7 +44,7 @@ public class NetworkController {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/regions/group", method = RequestMethod.GET)
 	public @ResponseBody ResultObject groupRegions() {
 		ResultObject result = new ResultObject();
@@ -104,6 +106,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.createPrivate(region, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -117,6 +122,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.editPrivate(region, networkId, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -130,10 +138,111 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.deletePrivate(region, networkId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
 		return result;
 	}
 
+	@RequestMapping(value = "/subnet/private/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createPrivateSubnet(
+			@RequestParam String region, @RequestParam String networkId,
+			@RequestParam String name, @RequestParam String cidr,
+			@RequestParam boolean autoGatewayIp,
+			@RequestParam String gatewayIp, @RequestParam boolean enableDhcp) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.createPrivateSubnet(region, networkId, name, cidr,
+							autoGatewayIp, gatewayIp, enableDhcp);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/subnet/private/{subnetId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getPrivateSubnet(
+			@PathVariable String region, @PathVariable String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getPrivateSubnet(region, subnetId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/subnet/private/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editPrivateSubnet(
+			@RequestParam String region, @RequestParam String subnetId,
+			@RequestParam String name, @RequestParam String gatewayIp,
+			@RequestParam boolean enableDhcp) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.editPrivateSubnet(region, subnetId, name, gatewayIp,
+							enableDhcp);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/subnet/private/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deletePrivateSubnet(
+			@RequestParam String region, @RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deletePrivateSubnet(region, subnetId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/router/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listRouter(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listRouter(region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/router/{routerId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getRouter(@PathVariable String region,
+			@PathVariable String routerId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getRouter(region, routerId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
