@@ -120,4 +120,10 @@ public class SkipController {
 		mav.setViewName("/cloudvm/vnc_auto");
 		return mav;
 	}
+	
+	@RequestMapping(value ="/list/vm/network",method=RequestMethod.GET)
+	public ModelAndView toVmNetworkList(ModelAndView mav){
+		mav.setViewName("/cloudvm/networkList");
+		return mav;
+	}
 }
