@@ -50,7 +50,13 @@ public interface NetworkManager extends ResourceManager {
 
 	RouterResource getRouter(String region, String id)
 			throws OpenStackException;
-	
+
 	void createRouter(String region, String name,
 			boolean enablePublicNetworkGateway) throws OpenStackException;
+
+	void editRouter(String region, String routerId, String name,
+			boolean enablePublicNetworkGateway) throws OpenStackException;
+
+	Page listPrivateSubnet(String region, String name, Integer currentPage,
+			Integer recordsPerPage) throws OpenStackException;
 }

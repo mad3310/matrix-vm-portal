@@ -147,6 +147,25 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/subnet/private/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listPrivateSubnet(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util
+					.session(sessionService)
+					.getNetworkManager()
+					.listPrivateSubnet(region, name, currentPage,
+							recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/subnet/private/create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject createPrivateSubnet(
 			@RequestParam String region, @RequestParam String networkId,
@@ -259,4 +278,5 @@ public class NetworkController {
 		}
 		return result;
 	}
+
 }

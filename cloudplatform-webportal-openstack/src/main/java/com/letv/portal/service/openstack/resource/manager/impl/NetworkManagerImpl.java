@@ -1164,6 +1164,133 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	/**
+	 * 
+	 * @param regions
+	 * @param name
+	 * @param currentPagePara
+	 *            从1开始
+	 * @param recordsPerPage
+	 * @return
+	 * @throws OpenStackException
+	 */
+	private Page listPrivateSubnetByRegions(final Set<String> regions,
+			final String name, final Integer currentPagePara,
+			final Integer recordsPerPage) throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, Page>() {
+
+			@Override
+			public Page run(NeutronApi neutronApi) throws Exception {
+				Integer currentPage;
+				if (currentPagePara != null) {
+					currentPage = currentPagePara - 1;
+				} else {
+					currentPage = null;
+				}
+
+				Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+				List<SubnetResource> subnetResources = new LinkedList<SubnetResource>();
+				int subnetCount = 0;
+				boolean needCollect = true;
+				for (String region : regions) {
+					SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+					Set<String> privateNetworkIds = new HashSet<String>();
+					for (Network network : neutronApi.getNetworkApi(region)
+							.list().concat().toList()) {
+						if(isPrivateNetwork(network)){
+							privateNetworkIds.add(network.getId());
+						}
+					}
+					if (needCollect) {
+						String regionDisplayName = transMap.get(region);
+						List<Subnet> resources = subnetApi.list().concat()
+								.toList();
+						for (Subnet resource : resources) {
+							if (privateNetworkIds.contains(resource
+									.getNetworkId())) {
+								if (name == null
+										|| (resource.getName() != null && resource
+												.getName().contains(name))) {
+									if (currentPage == null
+											|| recordsPerPage == null) {
+										subnetResources
+												.add(new SubnetResourceImpl(
+														region,
+														regionDisplayName,
+														resource));
+									} else {
+										if (needCollect) {
+											if (subnetCount >= (currentPage + 1)
+													* recordsPerPage) {
+												needCollect = false;
+											} else if (subnetCount >= currentPage
+													* recordsPerPage) {
+												subnetResources
+														.add(new SubnetResourceImpl(
+																region,
+																regionDisplayName,
+																resource));
+											}
+										}
+									}
+									subnetCount++;
+								}
+							}
+						}
+					} else {
+						for (Subnet resource : subnetApi.list().concat()
+								.toList()) {
+							if (privateNetworkIds.contains(resource
+									.getNetworkId())) {
+								if (name == null
+										|| (resource.getName() != null && resource
+												.getName().contains(name))) {
+									subnetCount++;
+								}
+							}
+						}
+					}
+				}
+
+				Page page = new Page();
+				page.setData(subnetResources);
+				page.setTotalRecords(subnetCount);
+				if (recordsPerPage != null) {
+					page.setRecordsPerPage(recordsPerPage);
+				} else {
+					page.setRecordsPerPage(10);
+				}
+				if (currentPage != null) {
+					page.setCurrentPage(currentPage + 1);
+				} else {
+					page.setCurrentPage(1);
+				}
+
+				return page;
+			}
+		});
+	}
+
+	@Override
+	public Page listPrivateSubnet(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws OpenStackException {
+		if (StringUtils.isEmpty(regionGroup)) {
+			return listPrivateSubnetByRegions(getRegions(), name, currentPage,
+					recordsPerPage);
+		} else {
+			return listPrivateSubnetByRegions(getGroupRegions(regionGroup),
+					name, currentPage, recordsPerPage);
+		}
+	}
+
+	@Override
+	public void editRouter(String region, String routerId, String name,
+			boolean enablePublicNetworkGateway) throws OpenStackException {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	protected String getProviderOrApi() {
 		return "openstack-neutron";
