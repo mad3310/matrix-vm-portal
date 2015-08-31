@@ -1,8 +1,15 @@
 package com.letv.portal.service.openstack.util;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -37,4 +44,50 @@ public class Util {
 		}
 	}
 
+	public static void throwExceptionOfResponse(HttpResponse resp)
+			throws OpenStackException {
+		StringBuilder exceptionMessageBuilder = new StringBuilder();
+		exceptionMessageBuilder.append("Error OpenStack http response<br>");
+
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+
+			Map<String, Object> responseMap = new HashMap<String, Object>();
+
+			StatusLine statusLine = resp.getStatusLine();
+			if (statusLine != null) {
+				Map<String, Object> responseStatusLineMap = new HashMap<String, Object>();
+				responseStatusLineMap.put("protocol_version", statusLine
+						.getProtocolVersion().toString());
+				responseStatusLineMap.put("reason_phrase",
+						statusLine.getReasonPhrase());
+				responseStatusLineMap.put("status_code",
+						statusLine.getStatusCode());
+				responseMap.put("status_line", responseStatusLineMap);
+			}
+
+			Map<String, Object> responseHeaderMap = new HashMap<String, Object>();
+			for (Header header : resp.getAllHeaders()) {
+				responseHeaderMap.put(header.getName(), header.getValue());
+			}
+			responseMap.put("header", responseHeaderMap);
+
+			if (resp.getEntity() != null) {
+				responseMap.put("entity",
+						EntityUtils.toString(resp.getEntity(), "UTF-8"));
+			}
+
+			String responseMapJson = objectMapper
+					.writeValueAsString(responseMap);
+			exceptionMessageBuilder.append(responseMapJson);
+		} catch (Exception ex) {
+			exceptionMessageBuilder.append(ex.getMessage());
+			exceptionMessageBuilder.append("<br>");
+			exceptionMessageBuilder.append(ExceptionUtils.getStackTrace(ex)
+					.replaceAll("\\\n", "<br>"));
+		}
+
+		throw new OpenStackException(exceptionMessageBuilder.toString(),
+				"后台服务异常");
+	}
 }

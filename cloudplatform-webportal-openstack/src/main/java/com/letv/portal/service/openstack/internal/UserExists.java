@@ -1,8 +1,7 @@
 package com.letv.portal.service.openstack.internal;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.util.Contants;
-import com.letv.portal.service.openstack.util.Params;
+import java.io.InputStream;
+import java.io.StringWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -16,12 +15,11 @@ import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.text.MessageFormat;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.util.Contants;
+import com.letv.portal.service.openstack.util.Params;
+import com.letv.portal.service.openstack.util.Util;
 
 /**
  * Created by zhouxianguang on 2015/6/11.
@@ -29,8 +27,8 @@ import java.text.MessageFormat;
 @SuppressWarnings("deprecation")
 public class UserExists {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(UserExists.class);
+//	private static final Logger logger = LoggerFactory
+//			.getLogger(UserExists.class);
 
 	private final String endpoint;
 	private final String userName;
@@ -110,34 +108,7 @@ public class UserExists {
 			} else if (statusCode == 401) {
 				status = false;
 			} else {
-				try {
-					HttpEntity httpEntity = resp.getEntity();
-					if (httpEntity != null) {
-						String contentEncoding = "UTF-8";
-						Header contentEncodingHeader = httpEntity
-								.getContentEncoding();
-						if (contentEncodingHeader != null) {
-							String contentEncodingHeaderValue = contentEncodingHeader
-									.getValue();
-							if (contentEncodingHeaderValue != null) {
-								contentEncoding = contentEncodingHeaderValue;
-							}
-						}
-
-						InputStream rcis = httpEntity.getContent();
-						try {
-							logger.error(IOUtils
-									.toString(rcis, contentEncoding));
-						} finally {
-							rcis.close();
-						}
-					}
-				} catch (Exception ex) {
-					logger.error(ex.getMessage(), ex);
-				}
-
-				throw new OpenStackException("OpenStack response status code:"
-						+ Integer.toString(statusCode), "后台服务异常");
+				Util.throwExceptionOfResponse(resp);
 			}
 		} catch (OpenStackException ose) {
 			throw ose;
