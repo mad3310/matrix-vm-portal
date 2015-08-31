@@ -1,12 +1,15 @@
 package com.letv.portal.service.openstack.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.util.EntityUtils;
@@ -73,8 +76,7 @@ public class Util {
 			responseMap.put("header", responseHeaderMap);
 
 			if (resp.getEntity() != null) {
-				responseMap.put("entity",
-						EntityUtils.toString(resp.getEntity(), "UTF-8"));
+				responseMap.put("entity", httpEntityToString(resp.getEntity()));
 			}
 
 			String responseMapJson = objectMapper
@@ -89,5 +91,29 @@ public class Util {
 
 		throw new OpenStackException(exceptionMessageBuilder.toString(),
 				"后台服务异常");
+	}
+
+	private static String httpEntityToString(HttpEntity httpEntity)
+			throws IllegalStateException, IOException {
+		String contentEncoding = "UTF-8";
+		Header contentEncodingHeader = httpEntity.getContentEncoding();
+
+		if (contentEncodingHeader != null) {
+			String contentEncodingHeaderValue = contentEncodingHeader
+					.getValue();
+			if (contentEncodingHeaderValue != null) {
+				contentEncoding = contentEncodingHeaderValue;
+			}
+		}
+
+		InputStream rcis = httpEntity.getContent();
+		String str = "";
+		try {
+			str = IOUtils.toString(rcis, contentEncoding);
+		} finally {
+			rcis.close();
+		}
+
+		return str;
 	}
 }
