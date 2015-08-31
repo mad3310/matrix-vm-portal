@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 
 /**
  * Created by zhouxianguang on 2015/6/11.
@@ -46,6 +47,14 @@ public class UserExists {
 	@SuppressWarnings("resource")
 	public boolean run() throws OpenStackException {
 		boolean status = false;
+
+		if (userName == null) {
+			throw new OpenStackException("OpenStack user name is null.", "后台错误");
+		} else if (userName.isEmpty()) {
+			throw new OpenStackException(
+					"OpenStack user name is an empty string.", "后台错误");
+		}
+
 		HttpClient client = new DefaultHttpClient();
 		try {
 			HttpPost req = new HttpPost(this.endpoint + "tokens");
