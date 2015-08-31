@@ -245,4 +245,18 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/router/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createRouter(@RequestParam String region,
+			@RequestParam String name,
+			@RequestParam boolean enablePublicNetworkGateway) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.createRouter(region, name, enablePublicNetworkGateway);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

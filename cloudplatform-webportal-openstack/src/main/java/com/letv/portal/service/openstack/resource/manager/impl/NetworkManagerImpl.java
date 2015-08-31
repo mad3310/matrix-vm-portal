@@ -32,7 +32,6 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
-import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.paging.impl.Page;
@@ -1110,6 +1109,57 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				return new RouterResourceImpl(region,
 						getRegionDisplayName(region), router);
+			}
+		});
+	}
+
+	@Override
+	public void createRouter(final String region, final String name,
+			final boolean enablePublicNetworkGateway) throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<RouterApi> routerApiOptional = neutronApi
+						.getRouterApi(region);
+				if (!routerApiOptional.isPresent()) {
+					throw new APINotAvailableException(RouterApi.class);
+				}
+				RouterApi routerApi = routerApiOptional.get();
+
+				int existsRouterCount = routerApi.list().concat().toList()
+						.size();
+
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+
+				if (quota.getRouter() <= existsRouterCount) {
+					throw new UserOperationException(
+							"Router count exceeding the quota.", "路由数量超过配额");
+				}
+
+				Router.CreateBuilder createBuilder = Router.createBuilder()
+						.name(name);
+				if (enablePublicNetworkGateway) {
+					createBuilder
+							.externalGatewayInfo(ExternalGatewayInfo
+									.builder()
+									.networkId(
+											openStackConf
+													.getGlobalPublicNetworkId())
+									.build());
+				}
+				routerApi.create(createBuilder.build());
+
+				return null;
 			}
 		});
 	}
