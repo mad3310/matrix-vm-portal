@@ -292,4 +292,20 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/router/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editRouter(@RequestParam String region,
+			@RequestParam String routerId, @RequestParam String name,
+			@RequestParam boolean enablePublicNetworkGateway) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService)
+					.getNetworkManager()
+					.editRouter(region, routerId, name,
+							enablePublicNetworkGateway);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }

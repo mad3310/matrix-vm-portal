@@ -28,6 +28,7 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
+import org.jclouds.openstack.neutron.v2.domain.Router.UpdateRouter;
 import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
@@ -1306,10 +1307,63 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	}
 
 	@Override
-	public void editRouter(String region, String routerId, String name,
-			boolean enablePublicNetworkGateway) throws OpenStackException {
-		// TODO Auto-generated method stub
+	public void editRouter(final String region, final String routerId,
+			final String name, final boolean enablePublicNetworkGateway)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<RouterApi> routerApiOptional = neutronApi
+						.getRouterApi(region);
+				if (!routerApiOptional.isPresent()) {
+					throw new APINotAvailableException(RouterApi.class);
+				}
+				RouterApi routerApi = routerApiOptional.get();
+
+				Router router = routerApi.get(routerId);
+				if (router == null) {
+					throw new ResourceNotFoundException("Router", "路由",
+							routerId);
+				}
+
+				Router.UpdateBuilder updateBuilder = Router.updateBuilder()
+						.name(name);
+				boolean needSetGatewayQos = false;
+				if (enablePublicNetworkGateway
+						&& (router.getExternalGatewayInfo() == null || router
+								.getExternalGatewayInfo().getNetworkId() == null)) {
+					updateBuilder
+							.externalGatewayInfo(ExternalGatewayInfo
+									.builder()
+									.networkId(
+											openStackConf
+													.getGlobalPublicNetworkId())
+									.build());
+					needSetGatewayQos = true;
+				} else if (!enablePublicNetworkGateway
+						&& (router.getExternalGatewayInfo() != null && router
+								.getExternalGatewayInfo().getNetworkId() != null)) {
+					updateBuilder.externalGatewayInfo(ExternalGatewayInfo
+							.builder().build());
+				}
+				routerApi.update(routerId, updateBuilder.build());
+				if (needSetGatewayQos) {
+					Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+							.getFloatingIPApi(region);
+					if (!floatingIPApiOptional.isPresent()) {
+						throw new APINotAvailableException(FloatingIPApi.class);
+					}
+					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+					floatingIPApi.update(router.getId(), FloatingIP
+							.updateBuilder().fipQos(createFipQos(250)).build());
+				}
+
+				return null;
+			}
+		});
 	}
 
 	@Override
