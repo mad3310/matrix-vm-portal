@@ -279,4 +279,17 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/router/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deleteRouter(@RequestParam String region,
+			@RequestParam String routerId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deleteRouter(region, routerId);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }
