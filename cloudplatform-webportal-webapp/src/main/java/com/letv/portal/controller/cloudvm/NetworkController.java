@@ -2,7 +2,6 @@ package com.letv.portal.controller.cloudvm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -273,6 +272,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.createRouter(region, name, enablePublicNetworkGateway);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -286,6 +288,9 @@ public class NetworkController {
 		try {
 			Util.session(sessionService).getNetworkManager()
 					.deleteRouter(region, routerId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -302,6 +307,9 @@ public class NetworkController {
 					.getNetworkManager()
 					.editRouter(region, routerId, name,
 							enablePublicNetworkGateway);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
