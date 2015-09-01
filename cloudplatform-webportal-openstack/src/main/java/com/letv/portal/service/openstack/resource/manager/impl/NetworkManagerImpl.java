@@ -19,6 +19,8 @@ import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
+import org.jclouds.openstack.neutron.v2.domain.FipQos;
+import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.IP;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.NetworkStatus;
@@ -26,6 +28,7 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
+import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
@@ -1157,11 +1160,28 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 													.getGlobalPublicNetworkId())
 									.build());
 				}
-				routerApi.create(createBuilder.build());
+				Router router = routerApi.create(createBuilder.build());
+				if (enablePublicNetworkGateway) {
+					Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+							.getFloatingIPApi(region);
+					if (!floatingIPApiOptional.isPresent()) {
+						throw new APINotAvailableException(FloatingIPApi.class);
+					}
+					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+					floatingIPApi.update(router.getId(), FloatingIP
+							.updateBuilder().fipQos(createFipQos(250)).build());
+				}
 
 				return null;
 			}
 		});
+	}
+
+	private static FipQos createFipQos(int bandWidth) {
+		return FipQos.createBuilder().ingressBurstRate(bandWidth + "Mb")
+				.egressBurstRate(bandWidth + "Mb")
+				.ingressMaxRate(bandWidth + "Mbit")
+				.egressMaxRate(bandWidth + "Mbit").build();
 	}
 
 	/**
@@ -1197,7 +1217,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					Set<String> privateNetworkIds = new HashSet<String>();
 					for (Network network : neutronApi.getNetworkApi(region)
 							.list().concat().toList()) {
-						if(isPrivateNetwork(network)){
+						if (isPrivateNetwork(network)) {
 							privateNetworkIds.add(network.getId());
 						}
 					}
