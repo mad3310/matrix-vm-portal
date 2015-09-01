@@ -59,4 +59,6 @@ public interface NetworkManager extends ResourceManager {
 
 	Page listPrivateSubnet(String region, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
+
+	void deleteRouter(String region, String routerId) throws OpenStackException;
 }

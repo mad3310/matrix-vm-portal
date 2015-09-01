@@ -35,6 +35,7 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
+import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
 import com.letv.common.paging.impl.Page;
@@ -1309,6 +1310,85 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			boolean enablePublicNetworkGateway) throws OpenStackException {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void deleteRouter(final String region, final String routerId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<RouterApi> routerApiOptional = neutronApi
+						.getRouterApi(region);
+				if (!routerApiOptional.isPresent()) {
+					throw new APINotAvailableException(RouterApi.class);
+				}
+				RouterApi routerApi = routerApiOptional.get();
+
+				Router router = routerApi.get(routerId);
+				if (router == null) {
+					throw new ResourceNotFoundException("Router", "路由",
+							routerId);
+				}
+
+				PortApi portApi = neutronApi.getPortApi(region);
+				for (Port port : portApi.list().concat().toList()) {
+					if ("network:router_interface"
+							.equals(port.getDeviceOwner())) {
+						if (StringUtils.equals(routerId, port.getDeviceId())) {
+							throw new UserOperationException(
+									"This router can not be deleted,because this router has at least one interface.",
+									"路由有接口，不能删除 。");
+						}
+					}
+				}
+
+				boolean isSuccess = routerApi.delete(routerId);
+				if (!isSuccess) {
+					throw new OpenStackException(MessageFormat.format(
+							"Router \"{0}\" delete failed.", routerId),
+							MessageFormat.format("路由“{0}”删除失败。", routerId));
+				}
+
+				waitingRouter(routerId, routerApi, new Checker<Router>() {
+
+					@Override
+					public boolean check(Router router) throws Exception {
+						return isDeleteFinished(router);
+					}
+				});
+
+				return null;
+			}
+
+		});
+	}
+
+	private void waitingRouter(String routerId, RouterApi routerApi,
+			Checker<Router> checker) throws OpenStackException {
+		try {
+			Router router = null;
+			while (true) {
+				router = routerApi.get(routerId);
+				if (checker.check(router)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
+	private boolean isDeleteFinished(Router router) {
+		return router == null;
 	}
 
 	@Override
