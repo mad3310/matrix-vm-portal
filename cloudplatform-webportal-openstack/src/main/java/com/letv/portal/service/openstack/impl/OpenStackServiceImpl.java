@@ -58,6 +58,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Value("${openstack.neutron.router.user.private.name}")
 	private String userPrivateRouterName;
+	
+	@Value("${openstack.neutron.router.gateway.bandWidth}")
+	private String routerGatewayBandWidth;
 
 	private String publicEndpoint;
 
@@ -107,6 +110,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackConf.setUserPrivateRouterName(userPrivateRouterName);
 		openStackConf.setAdminEndpoint(adminEndpoint);
 		openStackConf.setUserRegisterToken(userRegisterToken);
+		openStackConf.setRouterGatewayBandWidth(Integer.parseInt(routerGatewayBandWidth));
 
 		openStackServiceGroup = new OpenStackServiceGroup();
 		openStackServiceGroup.setCloudvmRegionService(cloudvmRegionService);

@@ -26,6 +26,8 @@ public class OpenStackConf implements Serializable{
 
 	private String userRegisterToken;
 	
+	private int routerGatewayBandWidth;
+	
 	public OpenStackConf() {
 	}
 	
@@ -100,4 +102,13 @@ public class OpenStackConf implements Serializable{
 	public void setUserRegisterToken(String userRegisterToken) {
 		this.userRegisterToken = userRegisterToken;
 	}
+
+	public int getRouterGatewayBandWidth() {
+		return routerGatewayBandWidth;
+	}
+
+	public void setRouterGatewayBandWidth(int routerGatewayBandWidth) {
+		this.routerGatewayBandWidth = routerGatewayBandWidth;
+	}
+
 }

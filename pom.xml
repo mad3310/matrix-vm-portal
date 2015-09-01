@@ -695,6 +695,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
 
@@ -768,6 +769,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
         
@@ -843,6 +845,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
 
@@ -974,6 +977,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
           <profile>
@@ -1046,6 +1050,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
           <profile>
@@ -1118,6 +1123,7 @@
                 <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
                 <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
                 <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
             </properties>
         </profile>
 

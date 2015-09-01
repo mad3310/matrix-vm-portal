@@ -1171,7 +1171,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 					floatingIPApi.update(router.getId(), FloatingIP
-							.updateBuilder().fipQos(createFipQos(250)).build());
+							.updateBuilder().fipQos(createFipQos(openStackConf.getRouterGatewayBandWidth())).build());
 				}
 
 				return null;
@@ -1358,7 +1358,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 					floatingIPApi.update(router.getId(), FloatingIP
-							.updateBuilder().fipQos(createFipQos(250)).build());
+							.updateBuilder().fipQos(createFipQos(openStackConf.getRouterGatewayBandWidth())).build());
 				}
 
 				return null;
