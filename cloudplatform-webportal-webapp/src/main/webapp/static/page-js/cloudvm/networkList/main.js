@@ -5,6 +5,7 @@
 define(function(require){
     var common = require('../../common');
     var dataHandler = require('./dataHandler');
+    require("bootstrapValidator")($);
     
     
     var cn = new common(),
@@ -180,14 +181,21 @@ define(function(require){
 		subnetModalEl.modal('toggle');
 	});	
 	
-	$("#vpc_create_button").click(function() {		
+	/*$("#vpc_create_button").click(function() {		
 		cn.PostData('/osn/network/private/create',{
 	        region:vpcRegionSelector.val(),
 	        name:newVpcNameEl.val()
 	    },function(data){
-	    	return data;
+    		vpcModalEl.modal('toggle');
+	    	if(data.result===1){
+	    		cn.alertoolSuccess('私有网络创建成功');
+	    		asyncData();
+	    	}
+	    	else{
+	    		cn.alertoolDanger(data.msgs[0] || '私有网络创建失败');
+	    	}
 	    });
-	});	
+	});	*/
 	
 	$("#subnet_create_button").click(function() {		
 		cn.PostData('/osn/subnet/private/create',{
@@ -199,7 +207,14 @@ define(function(require){
 	        gatewayIp:$('#subnet_gateway_ip').val(),
 	        enableDhcp:$('#subnet_enable_dhcp').val()
 	    },function(data){
-	    	return data;
+    		subnetModalEl.modal('toggle');
+	    	if(data.result===1){
+	    		cn.alertoolSuccess('子网创建成功');
+	    		asyncData();
+	    	}
+	    	else{
+	    		cn.alertoolDanger(data.msgs[0] || '子网创建失败');
+	    	}
 	    });
 	});	
 	
@@ -243,6 +258,59 @@ define(function(require){
 		  element.tab('show');
 		  asyncData();
 	});
+	
+    if(document.getElementById("vpc_create_button").form == null){    //兼容IE form提交
+        $("#vpc_create_button").click(function(){
+            $("#vpc_form").submit();
+        })
+    }
+    
+    $("#vpc_form").bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: null,
+            invalid: null,
+            validating: null
+        },
+        fields: {
+        	vpc_name: {
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '私有网络名称不能为空!'
+                    },
+                    stringLength: {
+                        max: 16,
+                        message: '私有网络名过长!'
+                    }, regexp: {
+                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
+                        message: "请输入字母数字或'_',私有网络名不能以数字开头."
+                    }
+                }
+            },
+            vpc_region_selector: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择地域!'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+		cn.PostData('/osn/network/private/create',{
+	        region:vpcRegionSelector.val(),
+	        name:newVpcNameEl.val()
+	    },function(data){
+    		vpcModalEl.modal('toggle');
+	    	if(data.result===1){
+	    		cn.alertoolSuccess('私有网络创建成功');
+	    		asyncData();
+	    	}
+	    	else{
+	    		cn.alertoolDanger(data.msgs[0] || '私有网络创建失败');
+	    	}
+	    });
+    });
     
     
     cn.Tooltip();

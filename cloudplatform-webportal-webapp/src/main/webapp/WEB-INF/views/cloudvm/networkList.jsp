@@ -18,8 +18,8 @@
 <%@ include file="../../layouts/header.jsp"%>
 <!-- main-content begin-->
 <div class="container-fluid vm-network">
-				<div class="col-md-offset-4 col-md-4 alertool" id="alertool">
-      		</div>
+	<div class="col-md-offset-4 col-md-4 alertool" id="alertool">
+    </div>
 	<div class="row main-header"> <!-- main-content-header begin -->
 		<div class="col-xs-12 col-sm-12 col-md-12">
 			<div class="pull-left">
@@ -170,25 +170,25 @@
         <h4 class="modal-title" id="myModalLabel">创建私有网络</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="vpc_form">
           <div class="form-group">
 		    <label for="vpc_region" class="col-sm-3 control-label">区域</label>
 		    <div class="col-sm-9">
-		      <select class="form-control" id="vpc_region_selector">
+		      <select class="form-control" id="vpc_region_selector" name="vpc_region_selector">
 		      	<option value="">请选择地域</option>
 		      </select>
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label for="vpc_name" class="	col-sm-3 control-label">私有网络名称</label>
+		    <label for="vpc_name" class="col-sm-3 control-label">私有网络名称</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="vpc_name" placeholder="私有网络名称">
+		      <input type="text" class="form-control" id="vpc_name" name="vpc_name" placeholder="私有网络名称">
 		    </div>
 		  </div>
 		</form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="vpc_create_button" class="btn btn-primary">创建</button>
+        <button form="monthPurchaseForm" type="submit" id="vpc_create_button" class="btn btn-primary">创建</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
       </div>
     </div>
@@ -268,7 +268,8 @@ seajs.config({
 	alias: {
 		"jquery": "jquery/2.0.3/jquery.min.js",
 		"bootstrap": "bootstrap/bootstrap/3.3.0/bootstrap.js",
-		"paginator": "bootstrap/paginator/bootstrap-paginator.js"
+		"paginator": "bootstrap/paginator/bootstrap-paginator.js",
+		"bootstrapValidator": "bootstrap/bootstrapValidator/0.5.3/bootstrapValidator.js"
 	}
 });
 
