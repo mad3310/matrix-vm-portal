@@ -1,5 +1,7 @@
 package com.letv.portal.model.product;
 
+import org.apache.ibatis.type.Alias;
+
 import com.letv.common.model.BaseModel;
 
 /**Program Name: BaseProduction <br>
@@ -9,11 +11,12 @@ import com.letv.common.model.BaseModel;
  * Modified By: <br>
  * Modified Date: <br>
  */
+@Alias("Product")
 public class Product extends BaseModel{
 
 	private static final long serialVersionUID = 7865544036106203329L;
-	//产品名称
-	private String name;
+	
+	private String name;//产品名称
 	private String descn;
 	
 	public String getName() {

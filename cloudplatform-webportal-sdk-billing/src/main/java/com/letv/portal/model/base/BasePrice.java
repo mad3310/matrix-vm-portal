@@ -2,10 +2,8 @@ package com.letv.portal.model.base;
 
 
 import org.apache.ibatis.type.Alias;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.BillingType;
 
 /**Program Name: BasePrice <br>
  * Description:  基础资源定价<br>
@@ -19,66 +17,47 @@ public class BasePrice extends BaseModel{
 
 	private static final long serialVersionUID = 2938602851391168471L;
 	
-	private long elementId;
-	private String elementStandard; //计费单元  1G，1M等
-	private String elementQuality;	//元素质量类型，各元素不同，由页面决定
-	private BillingType billingType;
-	private String byTime;
-	private String byUsedLadder;
-	private float basePrice;
+	private Long baseStandardId;//基础规格ID
+	private String type;//计费类型：0-基础价格，1-阶梯，2-线性
+	private String amount;//使用量
+	private String unit;//单位
+	private Double price;//单位价格
+	private String descn;//描述
 	
-	public BasePrice(){}
-	
-	public BasePrice(Long id) {
-		super.setId(id);
+	public String getType() {
+		return type;
 	}
-	
-	public long getElementId() {
-		return elementId;
+	public String getUnit() {
+		return unit;
 	}
-	@NotEmpty
-	public String getElementStandard() {
-		return elementStandard;
+	public Double getPrice() {
+		return price;
 	}
-	@NotEmpty
-	public String getElementQuality() {
-		return elementQuality;
+	public String getDescn() {
+		return descn;
 	}
-	@NotEmpty
-	public BillingType getBillingType() {
-		return billingType;
+	public Long getBaseStandardId() {
+		return baseStandardId;
 	}
-	public String getByTime() {
-		return byTime;
+	public void setBaseStandardId(Long baseStandardId) {
+		this.baseStandardId = baseStandardId;
 	}
-	public String getByUsedLadder() {
-		return byUsedLadder;
+	public void setType(String type) {
+		this.type = type;
 	}
-	@NotEmpty
-	public float getBasePrice() {
-		return basePrice;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
-	
-	public void setElementId(long elementId) {
-		this.elementId = elementId;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
-	public void setElementStandard(String elementStandard) {
-		this.elementStandard = elementStandard;
+	public void setDescn(String descn) {
+		this.descn = descn;
 	}
-	public void setElementQuality(String elementQuality) {
-		this.elementQuality = elementQuality;
+	public String getAmount() {
+		return amount;
 	}
-	public void setBillingType(BillingType billingType) {
-		this.billingType = billingType;
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
-	public void setByTime(String byTime) {
-		this.byTime = byTime;
-	}
-	public void setByUsedLadder(String byUsedLadder) {
-		this.byUsedLadder = byUsedLadder;
-	}
-	public void setBasePrice(float basePrice) {
-		this.basePrice = basePrice;
-	}
-	
 }

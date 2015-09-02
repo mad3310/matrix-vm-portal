@@ -62,9 +62,9 @@ public class BasePriceController {
 	public @ResponseBody ResultObject save(@ModelAttribute BasePrice price,BindingResult result) {
 		if(result.hasErrors())
 			return new ResultObject(result.getAllErrors());
-		price.setBasePrice(1.243F);
-		price.setBillingType(BillingType.BYTIME);
-		price.setByTime("1h");
+		//price.setBasePrice(1.243F);
+		//price.setBillingType(BillingType.BYTIME);
+		//price.setByTime("1h");
 		this.basePriceService.insert(price);
 		ResultObject obj = new ResultObject();
 		return obj;
@@ -95,7 +95,7 @@ public class BasePriceController {
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public @ResponseBody ResultObject delete(@PathVariable Long id) {
 		ResultObject obj = new ResultObject();
-		this.basePriceService.delete(new BasePrice(id));
+		//this.basePriceService.delete(new BasePrice(id));
 		return obj;
 	}
 	

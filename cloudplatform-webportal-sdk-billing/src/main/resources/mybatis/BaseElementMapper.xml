@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
-<mapper namespace="com.letv.portal.dao.IBaseElementDao">
+<mapper namespace="com.letv.portal.dao.base.IBaseElementDao">
 
 	<resultMap id="BaseResultMap" type="BaseElement">
 		<result column="ID" property="id" />

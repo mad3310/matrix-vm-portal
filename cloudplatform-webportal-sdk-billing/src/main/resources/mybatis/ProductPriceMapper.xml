@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.product.IProductPriceDao">
+
+	<resultMap id="BaseResultMap" type="ProductPrice">
+	    <result column="ID" property="id" />
+	    <result column="PRODUCT_ID" property="productId" />
+	    <result column="BASE_REGION_ID" property="baseRegionId" />
+	    <result column="BASE_PRICE_ID" property="basePriceId" />
+	    <result column="PRICE" property="price" />
+	    <result column="VERSION" property="version" />
+	    <result column="USED" property="used" />
+	    <result column="START_TIME" property="startTime" />
+	    <result column="END_TIME" property="endTime" />
+	    <result column="DESCN" property="descn" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    productPrice.ID,productPrice.PRODUCT_ID,productPrice.BASE_REGION_ID,productPrice.BASE_PRICE_ID,
+	    productPrice.PRICE,productPrice.VERSION,productPrice.USED,productPrice.START_TIME,productPrice.END_TIME,
+	    productPrice.DESCN,productPrice.DELETED,productPrice.CREATE_TIME,productPrice.UPDATE_TIME,
+	    productPrice.CREATE_USER,productPrice.UPDATE_USER
+	</sql>
+	
+	<insert id="insert" parameterType="ProductPrice" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_PRODUCT_PRICE 
+	        (PRODUCT_ID,BASE_REGION_ID,BASE_PRICE_ID,PRICE,VERSION,USED,START_TIME,END_TIME,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	    values
+	        (#{productId},#{baseRegionId},#{basePriceId},#{price},#{version},#{used},#{startTime},#{endTime},#{descn},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and productPrice.ID=#{id}
+	        </if>
+	        <if test="productId != null ">
+	            and productPrice.PRODUCT_ID=#{productId}
+	        </if>
+	        <if test="baseRegionId != null ">
+	            and productPrice.BASE_REGION_ID=#{baseRegionId}
+	        </if>
+	        <if test="basePriceId != null ">
+	            and productPrice.BASE_PRICE_ID=#{basePriceId}
+	        </if>
+	        <if test="price != null ">
+	            and productPrice.PRICE=#{price}
+	        </if>
+	        <if test="version != null ">
+	            and productPrice.VERSION=#{version}
+	        </if>
+	        <if test="used != null ">
+	            and productPrice.USED=#{used}
+	        </if>
+	        <if test="startTime != null ">
+	            and productPrice.START_TIME=#{startTime}
+	        </if>
+	        <if test="endTime != null ">
+	            and productPrice.END_TIME=#{endTime}
+	        </if>
+	        <if test="descn != null ">
+	            and productPrice.DESCN=#{descn}
+	        </if>
+	        <if test="deleted != null ">
+	            and productPrice.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and productPrice.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and productPrice.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and productPrice.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and productPrice.UPDATE_USER=#{updateUser}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_PRODUCT_PRICE productPrice
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<select id="selectProductPriceByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_PRODUCT_PRICE productPrice
+	        <include refid="Common_Where_Clause" />
+	        and #{date} between productPrice.START_TIME and productPrice.END_TIME
+	</select>
+
+</mapper>   

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.product.IProductRegionDao">
+
+	<resultMap id="BaseResultMap" type="ProductRegion">
+	    <result column="ID" property="id" />
+	    <result column="PRODUCT_ID" property="productId" />
+	    <result column="BASE_REGION_ID" property="baseRegionId" />
+	    <result column="HCLUSTER_ID" property="hclusterId" />
+	    <result column="DESCN" property="descn" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    
+	    <association property="baseRegion" javaType="BaseRegion">
+			<result column="NAME" property="name" />
+		</association>
+		<association property="hcluster" javaType="Hcluster">
+			<result column="HCLUSTER_NAME_ALIAS" property="hclusterNameAlias" />
+		</association>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    productRegion.ID,productRegion.PRODUCT_ID,productRegion.BASE_REGION_ID,productRegion.HCLUSTER_ID,
+	    productRegion.DESCN,productRegion.DELETED,productRegion.CREATE_TIME,productRegion.UPDATE_TIME,
+	    productRegion.CREATE_USER,productRegion.UPDATE_USER
+	</sql>
+	
+	<insert id="insert" parameterType="ProductRegion" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_PRODUCT_REGION 
+	        (PRODUCT_ID,BASE_REGION_ID,HCLUSTER_ID,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	    values
+	        (#{productId},#{baseRegionId},#{hclusterId},#{descn},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and productRegion.ID=#{id}
+	        </if>
+	        <if test="productId != null ">
+	            and productRegion.PRODUCT_ID=#{productId}
+	        </if>
+	        <if test="baseRegionId != null ">
+	            and productRegion.BASE_REGION_ID=#{baseRegionId}
+	        </if>
+	        <if test="hclusterId != null ">
+	            and productRegion.HCLUSTER_ID=#{hclusterId}
+	        </if>
+	        <if test="descn != null ">
+	            and productRegion.DESCN=#{descn}
+	        </if>
+	        <if test="deleted != null ">
+	            and productRegion.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and productRegion.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and productRegion.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and productRegion.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and productRegion.UPDATE_USER=#{updateUser}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />,region.NAME,hcluster.HCLUSTER_NAME_ALIAS
+	    from
+	        MATRIX_BILLING_PRODUCT_REGION productRegion
+	    left join 
+	    	MATRIX_BILLING_BASE_REGION region on productRegion.BASE_REGION_ID=region.ID
+	    left join
+	    	WEBPORTAL_HCLUSTER hcluster on productRegion.HCLUSTER_ID=hcluster.ID
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+</mapper>   
