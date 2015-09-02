@@ -71,7 +71,7 @@ public interface NetworkManager extends ResourceManager {
 //	
 //	void addRouterInterfaceForSubnet(String region, String routerId,
 //			String subnetId) throws OpenStackException;
-//
+
 //	void removeRouterInterfaceForSubnet(String region, String routerId,
 //			String subnetId) throws OpenStackException;
 

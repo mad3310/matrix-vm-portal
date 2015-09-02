@@ -1128,7 +1128,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				return new RouterResourceImpl(region,
-						getRegionDisplayName(region), router, portResources);
+						getRegionDisplayName(region), router, new LinkedList<SubnetResource>());
 			}
 		});
 	}
