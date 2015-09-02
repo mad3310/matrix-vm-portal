@@ -1,8 +1,12 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 
+import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 
 public class RouterResourceImpl extends AbstractResource implements
@@ -11,12 +15,19 @@ public class RouterResourceImpl extends AbstractResource implements
 	private String region;
 	private String regionDisplayName;
 	private Router router;
+	private List<PortResource> ports;
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
+		this(region, regionDisplayName, router, new ArrayList<PortResource>());
+	}
+
+	public RouterResourceImpl(String region, String regionDisplayName,
+			Router router, List<PortResource> ports) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.router = router;
+		this.ports = ports;
 	}
 
 	@Override
@@ -52,6 +63,11 @@ public class RouterResourceImpl extends AbstractResource implements
 					&& !info.getNetworkId().isEmpty();
 		}
 		return false;
+	}
+
+	@Override
+	public List<PortResource> getPorts() {
+		return ports;
 	}
 
 }

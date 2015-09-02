@@ -49,9 +49,11 @@ import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.PortResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
@@ -1112,8 +1114,21 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							routerId);
 				}
 
+				List<PortResource> portResources = new LinkedList<PortResource>();
+				String regionDisplayName = getRegionDisplayName(region);
+				PortApi portApi = neutronApi.getPortApi(region);
+				for (Port port : portApi.list().concat().toList()) {
+					if ("network:router_interface"
+							.equals(port.getDeviceOwner())) {
+						if (StringUtils.equals(routerId, port.getDeviceId())) {
+							portResources.add(new PortResourceImpl(region,
+									regionDisplayName, port));
+						}
+					}
+				}
+
 				return new RouterResourceImpl(region,
-						getRegionDisplayName(region), router);
+						getRegionDisplayName(region), router, portResources);
 			}
 		});
 	}
@@ -1170,8 +1185,13 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						throw new APINotAvailableException(FloatingIPApi.class);
 					}
 					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-					floatingIPApi.update(router.getId(), FloatingIP
-							.updateBuilder().fipQos(createFipQos(openStackConf.getRouterGatewayBandWidth())).build());
+					floatingIPApi.update(
+							router.getId(),
+							FloatingIP
+									.updateBuilder()
+									.fipQos(createFipQos(openStackConf
+											.getRouterGatewayBandWidth()))
+									.build());
 				}
 
 				return null;
@@ -1357,8 +1377,13 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						throw new APINotAvailableException(FloatingIPApi.class);
 					}
 					FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
-					floatingIPApi.update(router.getId(), FloatingIP
-							.updateBuilder().fipQos(createFipQos(openStackConf.getRouterGatewayBandWidth())).build());
+					floatingIPApi.update(
+							router.getId(),
+							FloatingIP
+									.updateBuilder()
+									.fipQos(createFipQos(openStackConf
+											.getRouterGatewayBandWidth()))
+									.build());
 				}
 
 				return null;
