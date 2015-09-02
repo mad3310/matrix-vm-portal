@@ -1782,6 +1782,36 @@ color: #999;
 font-size: 12px;
 }
 /*end vm-disk-create page style*/
+/*begin vm-network page style*/
+.vm-network{
+	
+}
+
+.vm-network .main-header{
+	padding-bottom: 0;
+}
+
+.vm-network .main-header h5{
+	margin-top: 0;
+    margin-bottom: 0;
+	
+}
+.vm-network .main-header h5 .region-city-list{
+	display: inline-block;
+    height: 42px;
+    line-height: 42px;
+    vertical-align: middle;	
+}
+.vm-network .main-header h5 .nav-tabs{
+	display: inline-block;
+    vertical-align: middle;	
+    border-bottom: 0px solid #ddd;
+}
+.vm-network .main-header .search-box{
+	line-height: 42px;	
+	margin-top: -4px;
+}
+/*end vm-network page style*/
 /*  nodata div style*/
 #noData{
 	color:#ddd;

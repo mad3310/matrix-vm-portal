@@ -20,22 +20,29 @@ define(function(require,exports,module){
     module.exports = DataHandler;
 
     DataHandler.prototype = {
-    	NetworkListHandler : function(data){
-        	$(".data-tr").remove();
+    		vpcListHandler : function(data){
         	
-            var $tby = $('#tby');
-            var array = data.data.data;
+            var tbodyEl = $('.table-vpc #tby'),
+            	paginatorBlockEl=$(".table-vpc #paginatorBlock"),
+            	noDataEl=$(".table-vpc #noData"),
+            	totalRecordsEl=$(".table-vpc #totalRecords"),
+            	recordsPerPageEl=$(".table-vpc #recordsPerPage"),
+            	paginatorEl=$('.table-vpc #paginator'),
+            	datatrEl=$(".table-vpc .data-tr"),
+            	array = data.data.data;
+            
+            datatrEl.remove();
             if(array.length == 0){
-            	cn.emptyBlock($tby);
-            	if($("#paginatorBlock").length > 0){
-            		$("#paginatorBlock").hide();
+            	cn.emptyBlock(tbodyEl);
+            	if(paginatorBlockEl.length > 0){
+            		paginatorBlockEl.hide();
             	}
             }else{
-            	 if($("#noData").length > 0){
-            		 $("#noData").remove();
+            	 if(noDataEl.length > 0){
+            		 noDataEl.remove();
             	 }
-            	 if($("#paginatorBlock").length > 0){
-            		 $("#paginatorBlock").show();
+            	 if(paginatorBlockEl.length > 0){
+            		 paginatorBlockEl.show();
             	 }
                 for(var i= 0, len= array.length;i<len;i++){
                 	var tdList= [];
@@ -63,23 +70,82 @@ define(function(require,exports,module){
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
                     
-                    $tby.append(tdList.join(""));
+                    tbodyEl.append(tdList.join(""));
                  }
             }
             /*
              * 设置分页数据
              */
-            $("#totalRecords").html(data.data.totalRecords);
-            $("#recordsPerPage").html(data.data.recordsPerPage);
+            totalRecordsEl.html(data.data.totalRecords);
+            recordsPerPageEl.html(data.data.recordsPerPage);
             
             if(data.data.totalPages < 1){
         		data.data.totalPages = 1;
         	};
         	
-            $('#paginator').bootstrapPaginator({
+        	paginatorEl.bootstrapPaginator({
                 currentPage: data.data.currentPage,
                 totalPages:data.data.totalPages
             });
+       
+        },
+        subnetListHandler : function(data){
+        	var tbodyEl = $('.table-subnet #tby'),
+        	paginatorBlockEl=$(".table-subnet #paginatorBlock"),
+        	noDataEl=$(".table-subnet #noData"),
+        	totalRecordsEl=$(".table-subnet #totalRecords"),
+        	recordsPerPageEl=$(".table-subnet #recordsPerPage"),
+        	paginatorEl=$('.table-subnet #paginator'),
+        	datatrEl=$(".table-subnet .data-tr"),
+        	array = data.data.data;
+        
+        datatrEl.remove();
+        if(array.length == 0){
+        	cn.emptyBlock(tbodyEl);
+        	if(paginatorBlockEl.length > 0){
+        		paginatorBlockEl.hide();
+        	}
+        }else{
+        	 if(noDataEl.length > 0){
+        		 noDataEl.remove();
+        	 }
+        	 if(paginatorBlockEl.length > 0){
+        		 paginatorBlockEl.show();
+        	 }
+            for(var i= 0, len= array.length;i<len;i++){
+            	var tdList= [];
+            	tdList.push("<td width=\"10\">"+ 
+                        		"<input type=\"checkbox\" name=\"subnet_id\" value= \""+array[i].id+"\">"+
+                        	"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+ (array[i].name||'--')+"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+ array[i].networkId+"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAllocationPools[0].start+'~'+array[i].ipAllocationPools[0].end+"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+ array[i].regionDisplayName+
+                		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+		
+                "</td>");
+                tdList.push('<td class="text-right hidden-xs">'+
+	                    		'<a class="subnet-operation subnet-remove" href="javascript:void(0);">删除</a>'+
+	                    	'</td>');
+                tdList.unshift("<tr class='data-tr'>");
+                tdList.push("</tr>");
+                
+                tbodyEl.append(tdList.join(""));
+             }
+        }
+        /*
+         * 设置分页数据
+         */
+        totalRecordsEl.html(data.data.totalRecords);
+        recordsPerPageEl.html(data.data.recordsPerPage);
+        
+        if(data.data.totalPages < 1){
+    		data.data.totalPages = 1;
+    	};
+    	
+    	paginatorEl.bootstrapPaginator({
+            currentPage: data.data.currentPage,
+            totalPages:data.data.totalPages
+        });
        
         },
         /*进度条进度控制*/
@@ -94,21 +160,23 @@ define(function(require,exports,module){
         	if(!data || !data.data) return;
         	
         	var vpcRegionSelectorEl=$('#vpc_region_selector');
-	   		var vpcRegionSelectorOptions=[];
+        	var subnetRegionSelectorEl=$('#subnet_region_selector');
+	   		var regionSelectorOptions=[];
 			for(var country in data.data){
 				if(data.data.hasOwnProperty(country)){
 					for(var city in data.data[country]){
 						if(data.data[country].hasOwnProperty(city)){
 							for(var region in data.data[country][city]){
 								if(data.data[country][city].hasOwnProperty(region)){
-									vpcRegionSelectorOptions.push('<option value="'+data.data[country][city][region].id+'">'+data.data[country][city][region].name+'</option>');	
+									regionSelectorOptions.push('<option value="'+data.data[country][city][region].id+'">'+data.data[country][city][region].name+'</option>');	
 								}
 							}
 						}
 					}
 				}
 			}
-	   		vpcRegionSelectorEl.html(vpcRegionSelectorOptions.join(''));
+	   		vpcRegionSelectorEl.append(regionSelectorOptions.join(''));
+	   		subnetRegionSelectorEl.append(regionSelectorOptions.join(''));
         	
         	var cityObjects = Object.keys(data.data).reduce(function(x,countryId){
         		var newCityIds=	Object.keys(data.data[countryId]);
@@ -122,7 +190,7 @@ define(function(require,exports,module){
         	var regionCityListEl=$('.region-city-list');
         	regionCityListEl.children('button').remove();
 	   		var optionList=[];
-	   		optionList.push('<button class="btn btn-default btn-md btn-region-display hidden-xs" value="All">全部</button>');
+	   		optionList.push('<button class="btn btn-default btn-md btn-region-display hidden-xs" value="">全部</button>');
 	   		for(var i=0,len=cityObjects.length;i<len;i++){
 	   			optionList.push('<button class="btn btn-default btn-md btn-region-display hidden-xs" value="'+cityObjects[i].cityId+'">'+cityObjects[i].cityName+'</button>');	
 	   		}
@@ -136,21 +204,19 @@ define(function(require,exports,module){
 			$('th input:checkbox').prop('checked', false);
 			//$('tfoot input:checkbox').prop('checked', false);
 	   	},
-	   	operateDisk:function(vpcId,fieldRegion,operationType,asyncData){
+	   	operateHandler:function(id,fieldRegion,operationType,asyncData){
 	   		var title = "确认",
 	   			text = '',
 	   			operationUrl='',
 	   			operatingTip='',
 	   			operationCallback=null,
-	   			vpcStatusEl=$($('input:checkbox[value='+vpcId+']').closest('tr')).find('input:hidden[name=vpc_status]'),
-	   			vpcStatus=vpcStatusEl.val();
+	   			operationData=null;
+	   			//vpcStatusEl=$($('input:checkbox[value='+vpcId+']').closest('tr')).find('input:hidden[name=vpc_status]'),
+	   			//vpcStatus=vpcStatusEl.val();
 	   		var doOperation=function(operateStatus){
 	                cn.DialogBoxInit(title,text,function(){
         				cn.alertoolSuccess(operatingTip);
-	            		cn.PostData(operationUrl,{
-	            	        region:fieldRegion,
-	            	        networkId:vpcId
-	            	    },function(data){
+	            		cn.PostData(operationUrl,operationData,function(data){
 	            	    	operationCallback(data);
 	            		});
                     	
@@ -165,6 +231,23 @@ define(function(require,exports,module){
         			operationCallback=function(data){
         				asyncData();
             		};
+            		operationData={
+	            	        region:fieldRegion,
+	            	        networkId:id
+	            	};
+            		doOperation('REMOVEING');
+            		break;
+        		case 'subnet-remove':
+        			text='您确定要删除该子网吗？';
+        			operatingTip="子网删除执行中...";
+        			operationUrl='/osn/subnet/private/delete';
+        			operationCallback=function(data){
+        				asyncData();
+            		};
+            		operationData={
+	            	        region:fieldRegion,
+	            	        subnetId:id
+	            	};
             		doOperation('REMOVEING');
             		break;
             	default:
