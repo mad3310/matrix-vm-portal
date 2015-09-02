@@ -169,8 +169,7 @@ public class NetworkController {
 	public @ResponseBody ResultObject createPrivateSubnet(
 			@RequestParam String region, @RequestParam String networkId,
 			@RequestParam String name, @RequestParam String cidr,
-			@RequestParam boolean autoGatewayIp,
-			@RequestParam String gatewayIp) {
+			@RequestParam boolean autoGatewayIp, @RequestParam String gatewayIp) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
@@ -207,8 +206,7 @@ public class NetworkController {
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
-					.editPrivateSubnet(region, subnetId, name, gatewayIp,
-							false);
+					.editPrivateSubnet(region, subnetId, name, gatewayIp, false);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -315,4 +313,16 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/port/{portId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getPort(@PathVariable String region,
+			@PathVariable String portId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getPort(region, portId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

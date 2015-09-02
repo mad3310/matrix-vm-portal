@@ -5,6 +5,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 
@@ -61,4 +62,7 @@ public interface NetworkManager extends ResourceManager {
 			Integer recordsPerPage) throws OpenStackException;
 
 	void deleteRouter(String region, String routerId) throws OpenStackException;
+
+	PortResource getPort(String region, String portId)
+			throws OpenStackException;
 }

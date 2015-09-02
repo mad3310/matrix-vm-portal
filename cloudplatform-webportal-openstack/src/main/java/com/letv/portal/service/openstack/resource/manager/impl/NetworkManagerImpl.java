@@ -1471,6 +1471,27 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	}
 
 	@Override
+	public PortResource getPort(final String region, final String portId)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, PortResource>() {
+
+			@Override
+			public PortResource run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				PortApi portApi = neutronApi.getPortApi(region);
+				Port port = portApi.get(portId);
+				if (port == null) {
+					throw new ResourceNotFoundException("Port", "端口", portId);
+				}
+
+				return new PortResourceImpl(region,
+						getRegionDisplayName(region), port);
+			}
+		});
+	}
+
+	@Override
 	protected String getProviderOrApi() {
 		return "openstack-neutron";
 	}
