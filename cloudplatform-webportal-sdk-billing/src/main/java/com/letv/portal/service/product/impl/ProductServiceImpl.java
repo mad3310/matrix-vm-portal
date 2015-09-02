@@ -235,6 +235,14 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				Double.parseDouble((String)map.get("order_time"))!=24 && Double.parseDouble((String)map.get("order_time"))!=36)) {
 			logger.info("validateData, map order_time standard is :"+map.get("order_time")+", standard not within range");
 			return false;
+		} else {
+			if(Double.parseDouble((String)map.get("order_time"))==12) {
+				map.put("order_time", "10");
+			} else if(Double.parseDouble((String)map.get("order_time"))==24) {
+				map.put("order_time", "20");
+			} else if(Double.parseDouble((String)map.get("order_time"))==36) {
+				map.put("order_time", "30");
+			}
 		}
 		return true;
 	}

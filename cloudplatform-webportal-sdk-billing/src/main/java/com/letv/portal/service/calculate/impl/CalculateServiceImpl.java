@@ -95,6 +95,12 @@ public class CalculateServiceImpl implements ICalculateService {
 			}
 			
 		}
+		//购买时间
+		Double ret = Arithmetic4Double.multi(price, Double.parseDouble((String)map.get("order_time")));
+		price = Arithmetic4Double.add(price, ret);
+		//购买台数
+		ret = Arithmetic4Double.multi(price, Double.parseDouble((String)map.get("order_num")));
+		price = Arithmetic4Double.add(price, ret);
 		return price;
 	}
 
