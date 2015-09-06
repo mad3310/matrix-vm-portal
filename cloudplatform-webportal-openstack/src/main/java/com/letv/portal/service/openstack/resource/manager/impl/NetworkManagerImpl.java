@@ -1182,7 +1182,13 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	public Page listRouter(String regionGroup, String name,
 			Integer currentPage, Integer recordsPerPage)
 			throws OpenStackException {
-		return listRouterByRegions(getGroupRegions(regionGroup), name,
+		Set<String> regions = null;
+		if (StringUtils.isEmpty(regionGroup)) {
+			regions = getRegions();
+		} else {
+			regions = getGroupRegions(regionGroup);
+		}
+		return listRouterByRegions(regions, name,
 				currentPage, recordsPerPage);
 	}
 
