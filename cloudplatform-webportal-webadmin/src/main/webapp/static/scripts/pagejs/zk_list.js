@@ -171,8 +171,33 @@ function formValidate() {
              invalid: 'glyphicon glyphicon-remove',
              validating: 'glyphicon glyphicon-refresh'
          },
-         fields: {
-         }
+	         fields: {
+	        	 ip: {
+	                 validMessage: '请按提示输入',
+	                 validators: {
+	                     notEmpty: {
+	                         message: 'ip不能为空'
+	                     },
+	                     regexp:{
+	                    	 regexp:/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/ ,
+	                         message: "请按IP格式(xx.xx.xx.xx)输入."
+	                     }
+		             }
+	         	},
+	        	 port: {
+	                 validMessage: '请按提示输入',
+	                 validators: {
+	                     notEmpty: {
+	                         message: '端口号不能为空'
+	                     },
+	                     between:{
+	                         min:0,
+	                         max:65535,
+	                         message:'端口号为0-65535之间'
+	                     }
+		             }
+	         	}	
+	         }
      }).on('success.form.bv', function(e) {
     	 e.preventDefault();
     	$.ajax({
@@ -182,7 +207,6 @@ function formValidate() {
     		data: {
     			name:$('#name').val(),
     			descn:$('#descn').val(),
-    			url:$('#url').val(),
     			status:$('#status').val(),
     			ip:$('#ip').val(),
     			port:$('#port').val()
