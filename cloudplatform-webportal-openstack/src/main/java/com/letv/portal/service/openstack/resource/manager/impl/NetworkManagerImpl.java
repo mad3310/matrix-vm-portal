@@ -1114,21 +1114,34 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							routerId);
 				}
 
-				List<PortResource> portResources = new LinkedList<PortResource>();
 				String regionDisplayName = getRegionDisplayName(region);
+
+				List<SubnetResource> subnetResources=new LinkedList<SubnetResource>();
 				PortApi portApi = neutronApi.getPortApi(region);
+				SubnetApi subnetApi=neutronApi.getSubnetApi(region);
 				for (Port port : portApi.list().concat().toList()) {
 					if ("network:router_interface"
 							.equals(port.getDeviceOwner())) {
 						if (StringUtils.equals(routerId, port.getDeviceId())) {
-							portResources.add(new PortResourceImpl(region,
-									regionDisplayName, port));
+							ImmutableSet<IP> fixedIps=port.getFixedIps();
+							if(fixedIps!=null){
+								for(IP ip:fixedIps){
+									String subnetId=ip.getSubnetId();
+									if(subnetId!=null){
+										Subnet subnet=subnetApi.get(subnetId);
+										if(subnet!=null){
+											SubnetResource subnetResource = new SubnetResourceImpl(region,regionDisplayName,subnet);
+											subnetResources.add(subnetResource);
+										}
+									}
+								}
+							}
 						}
 					}
 				}
 
 				return new RouterResourceImpl(region,
-						getRegionDisplayName(region), router, new LinkedList<SubnetResource>());
+						getRegionDisplayName(region), router, subnetResources);
 			}
 		});
 	}
