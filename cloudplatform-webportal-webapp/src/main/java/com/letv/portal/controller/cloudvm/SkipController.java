@@ -126,4 +126,9 @@ public class SkipController {
 		mav.setViewName("/cloudvm/networkList");
 		return mav;
 	}
+	@RequestMapping(value ="/list/vm/router",method=RequestMethod.GET)
+	public ModelAndView toVmRouterList(ModelAndView mav){
+		mav.setViewName("/cloudvm/routerList");
+		return mav;
+	}
 }
