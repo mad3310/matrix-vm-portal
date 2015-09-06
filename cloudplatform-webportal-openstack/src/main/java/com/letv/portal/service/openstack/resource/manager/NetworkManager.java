@@ -68,6 +68,10 @@ public interface NetworkManager extends ResourceManager {
 
 	List<NetworkResource> listAvailableSubnetsForRouterInterface(String region) throws OpenStackException;
 
+	void associateSubnetWithRouter(String region, String routerId, String subnetId) throws OpenStackException;
+
+//	void separateSubnetFromRouter();
+
 //	void editPort(String region, String portId, String name)
 //			throws OpenStackException;
 //	

@@ -337,4 +337,21 @@ public class NetworkController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/router/subnet/associate", method = RequestMethod.POST)
+	public @ResponseBody ResultObject associateSubnetWithRouter(
+			@RequestParam String region, @RequestParam String routerId,
+			@RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.associateSubnetWithRouter(region, routerId, subnetId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
