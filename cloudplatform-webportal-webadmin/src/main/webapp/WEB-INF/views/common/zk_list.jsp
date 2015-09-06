@@ -72,7 +72,7 @@
 									<input class="form-control" name="name" id="name" type="text" />
 								</div>
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper名称应与下载zookeeper名相同" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper名称，便于分类" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -83,7 +83,7 @@
 									<input class="form-control" name="ip" id="ip" type="text" />
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="上传zookeeper的版本号tag" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper的IP地址" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
@@ -94,7 +94,7 @@
 									<input class="form-control" name="port" id="port" type="text" />
 								</div>								
 								<label class="control-label">
-									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="下载此zookeeper的地址" style="cursor:pointer; text-decoration:none;">
+									<a name="popoverHelp" rel="popover" data-container="body" data-toggle="popover" data-placement="right" data-trigger='hover' data-content="zookeeper的端口号" style="cursor:pointer; text-decoration:none;">
 										<i class="ace-icon fa fa-question-circle blue bigger-125"></i>
 									</a>
 								</label>
