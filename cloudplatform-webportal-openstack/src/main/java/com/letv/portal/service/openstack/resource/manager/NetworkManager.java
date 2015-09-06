@@ -66,6 +66,8 @@ public interface NetworkManager extends ResourceManager {
 	PortResource getPort(String region, String portId)
 			throws OpenStackException;
 
+	List<NetworkResource> listAvailableSubnetsForRouterInterface(String region) throws OpenStackException;
+
 //	void editPort(String region, String portId, String name)
 //			throws OpenStackException;
 //	

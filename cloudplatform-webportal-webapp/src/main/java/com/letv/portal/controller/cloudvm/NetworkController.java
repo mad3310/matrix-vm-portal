@@ -325,4 +325,16 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value="/network/private/available_for_router_interface/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listAvailableSubnetsForRouterInterface(@RequestParam String region){
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listAvailableSubnetsForRouterInterface(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
