@@ -18,6 +18,8 @@ define(function(require){
     	activeTabName='vpc',
     	vpcModalEl=$('#vpc_modal'),
     	subnetModalEl=$('#subnet_modal'),
+        vpcFormEl=$("#vpc_form"),
+        subnetFormEl=$("#subnet_form"),
     	newVpcNameEl=$('#vpc_name'),
     	vpcRegionSelector=$('#vpc_region_selector');
     
@@ -181,43 +183,6 @@ define(function(require){
 		subnetModalEl.modal('toggle');
 	});	
 	
-	/*$("#vpc_create_button").click(function() {		
-		cn.PostData('/osn/network/private/create',{
-	        region:vpcRegionSelector.val(),
-	        name:newVpcNameEl.val()
-	    },function(data){
-    		vpcModalEl.modal('toggle');
-	    	if(data.result===1){
-	    		cn.alertoolSuccess('私有网络创建成功');
-	    		asyncData();
-	    	}
-	    	else{
-	    		cn.alertoolDanger(data.msgs[0] || '私有网络创建失败');
-	    	}
-	    });
-	});	*/
-	
-	$("#subnet_create_button").click(function() {		
-		cn.PostData('/osn/subnet/private/create',{
-	        region:$('#subnet_region_selector').val(),
-	        networkId:$('#subnet_vpc_selector').val(),
-	        name:$('#subnet_name').val(),
-	        cidr:$('#subnet_cidr').val(),
-	        autoGatewayIp:false,
-	        gatewayIp:$('#subnet_gateway_ip').val(),
-	        enableDhcp:$('#subnet_enable_dhcp').val()
-	    },function(data){
-    		subnetModalEl.modal('toggle');
-	    	if(data.result===1){
-	    		cn.alertoolSuccess('子网创建成功');
-	    		asyncData();
-	    	}
-	    	else{
-	    		cn.alertoolDanger(data.msgs[0] || '子网创建失败');
-	    	}
-	    });
-	});	
-	
     $(".region-city-list input").change(function (){
     	var flavorRam= $(this).val();
     	asyncData();
@@ -264,8 +229,13 @@ define(function(require){
             $("#vpc_form").submit();
         })
     }
+    if(document.getElementById("subnet_create_button").form == null){    //兼容IE form提交
+        $("#subnet_create_button").click(function(){
+            $("#subnet_form").submit();
+        })
+    }
     
-    $("#vpc_form").bootstrapValidator({
+    vpcFormEl.bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
             valid: null,
@@ -278,13 +248,6 @@ define(function(require){
                 validators: {
                     notEmpty: {
                         message: '私有网络名称不能为空!'
-                    },
-                    stringLength: {
-                        max: 16,
-                        message: '私有网络名过长!'
-                    }, regexp: {
-                        regexp: /^([a-zA-Z_]+[a-zA-Z_0-9]*)$/,
-                        message: "请输入字母数字或'_',私有网络名不能以数字开头."
                     }
                 }
             },
@@ -297,12 +260,13 @@ define(function(require){
             }
         }
     }).on('success.form.bv', function(e) {
-		cn.PostData('/osn/network/private/create',{
+		cn.doPost('/osn/network/private/create',{
 	        region:vpcRegionSelector.val(),
 	        name:newVpcNameEl.val()
-	    },function(data){
+	    }).then(function(data){
     		vpcModalEl.modal('toggle');
 	    	if(data.result===1){
+	    		vpcFormEl.data('bootstrapValidator').resetForm(true);
 	    		cn.alertoolSuccess('私有网络创建成功');
 	    		asyncData();
 	    	}
@@ -312,6 +276,72 @@ define(function(require){
 	    });
     });
     
+    subnetFormEl.bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: null,
+            invalid: null,
+            validating: null
+        },
+        fields: {
+        	subnet_name: {
+                validMessage: '请按提示输入',
+                validators: {
+                    notEmpty: {
+                        message: '子网名称不能为空!'
+                    }
+                }
+            },
+            subnet_region_selector: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择地域!'
+                    }
+                }
+            },
+            subnet_vpc_selector: {
+                validators: {
+                    notEmpty: {
+                        message: '请选择私有网络!'
+                    }
+                }
+            },
+            subnet_cidr: {
+                validators: {
+                    notEmpty: {
+                        message: '请输入网段!'
+                    }
+                }
+            },
+            subnet_gateway_ip: {
+                validators: {
+                    notEmpty: {
+                        message: '请输入网关!'
+                    }
+                }
+            }
+        }
+    }).on('success.form.bv', function(e) {
+		cn.doPost('/osn/subnet/private/create',{
+	        region:$('#subnet_region_selector').val(),
+	        networkId:$('#subnet_vpc_selector').val(),
+	        name:$('#subnet_name').val(),
+	        cidr:$('#subnet_cidr').val(),
+	        autoGatewayIp:false,
+	        gatewayIp:$('#subnet_gateway_ip').val(),
+	        enableDhcp:$('#subnet_enable_dhcp').val()
+	    }).then(function(data){
+    		subnetModalEl.modal('toggle');
+	    	if(data.result===1){
+	    		subnetFormEl.data('bootstrapValidator').resetForm(true);
+	    		cn.alertoolSuccess('子网创建成功');
+	    		asyncData();
+	    	}
+	    	else{
+	    		cn.alertoolDanger(data.msgs[0] || '子网创建失败');
+	    	}
+	    });
+    });
     
     cn.Tooltip();
     /* 初始化navbar-header-menu */

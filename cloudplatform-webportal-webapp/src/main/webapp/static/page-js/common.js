@@ -423,6 +423,23 @@ define(function(require,exports,module){
                 }
             });
         },
+        doGet : function (url,data){
+            return $.ajax({
+                url:url,
+                cache:false,
+                type:"get",
+                dataType:'json'
+            });
+       },
+        doPost : function (url,data){
+            return $.ajax({
+                url:url,
+                cache:false,
+                type:"post",
+                dataType:'json',
+                data:data
+            });
+        },
         DeleteData : function (url,handler){ //异步提交数据,将返回数据交给handler处理
             $.ajax({
                 url:url,

@@ -188,7 +188,7 @@
 		</form>
       </div>
       <div class="modal-footer">
-        <button form="monthPurchaseForm" type="submit" id="vpc_create_button" class="btn btn-primary">创建</button>
+        <button form="vpc_form" type="submit" id="vpc_create_button" class="btn btn-primary">创建</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
       </div>
     </div>
@@ -204,11 +204,11 @@
         <h4 class="modal-title" id="myModalLabel">创建子网</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="subnet_form">
           <div class="form-group">
 		    <label for="subnet_region" class="col-sm-3 control-label">区域</label>
 		    <div class="col-sm-9">
-		      <select class="form-control" id="subnet_region_selector">
+		      <select class="form-control" id="subnet_region_selector" name="subnet_region_selector">
 		      	 <option value="">请选择地域</option>
 		      </select>
 		    </div>
@@ -216,7 +216,7 @@
 		  <div class="form-group">
 		    <label for="subnet_region" class="col-sm-3 control-label">私有网络</label>
 		    <div class="col-sm-9">
-		      <select class="form-control" id="subnet_vpc_selector">
+		      <select class="form-control" id="subnet_vpc_selector" name="subnet_vpc_selector">
 		      	<option value="">请选择私有网络</option>
 		      </select>
 		    </div>
@@ -224,19 +224,19 @@
 		  <div class="form-group">
 		    <label for="subnet_name" class="col-sm-3 control-label">子网名称</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="subnet_name" placeholder="子网名称">
+		      <input type="text" class="form-control" id="subnet_name" name="subnet_name" placeholder="子网名称">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="subnet_cidr" class="col-sm-3 control-label">网段</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="subnet_cidr" placeholder="网段">
+		      <input type="text" class="form-control" id="subnet_cidr" name="subnet_cidr" placeholder="网段">
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="subnet_gateway_ip" class="col-sm-3 control-label">网关</label>
 		    <div class="col-sm-9">
-		      <input type="text" class="form-control" id="subnet_gateway_ip" placeholder="网关">
+		      <input type="text" class="form-control" id="subnet_gateway_ip" name="subnet_gateway_ip" placeholder="网关">
 		    </div>
 		  </div>
 		  <div class="form-group">
@@ -252,7 +252,7 @@
 		</form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="subnet_create_button" class="btn btn-primary">创建</button>
+        <button form="subnet_form" type="submit" id="subnet_create_button" class="btn btn-primary">创建</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
       </div>
     </div>
