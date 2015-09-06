@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager;
 
+import java.util.List;
+
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
@@ -8,8 +10,6 @@ import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
-
-import java.util.List;
 
 public interface NetworkManager extends ResourceManager {
 	List<NetworkResource> list(String region) throws RegionNotFoundException,
@@ -65,4 +65,14 @@ public interface NetworkManager extends ResourceManager {
 
 	PortResource getPort(String region, String portId)
 			throws OpenStackException;
+
+//	void editPort(String region, String portId, String name)
+//			throws OpenStackException;
+//	
+//	void addRouterInterfaceForSubnet(String region, String routerId,
+//			String subnetId) throws OpenStackException;
+
+//	void removeRouterInterfaceForSubnet(String region, String routerId,
+//			String subnetId) throws OpenStackException;
+
 }

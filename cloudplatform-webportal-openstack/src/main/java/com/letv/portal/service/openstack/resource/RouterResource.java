@@ -7,5 +7,6 @@ public interface RouterResource extends Resource{
 	String getStatus();
 	String getRegionDisplayName();
 	boolean getPublicNetworkGatewayEnable();
-	List<PortResource> getPorts();
+//	List<PortResource> getPorts();
+	List<SubnetResource> getSubnets();
 }

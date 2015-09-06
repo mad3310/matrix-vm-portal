@@ -6,8 +6,8 @@ import java.util.List;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 
-import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
+import com.letv.portal.service.openstack.resource.SubnetResource;
 
 public class RouterResourceImpl extends AbstractResource implements
 		RouterResource {
@@ -15,19 +15,20 @@ public class RouterResourceImpl extends AbstractResource implements
 	private String region;
 	private String regionDisplayName;
 	private Router router;
-	private List<PortResource> ports;
+//	private List<PortResource> ports;
+	private List<SubnetResource> subnets;
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
-		this(region, regionDisplayName, router, new ArrayList<PortResource>());
+		this(region, regionDisplayName, router, new ArrayList<SubnetResource>());
 	}
 
 	public RouterResourceImpl(String region, String regionDisplayName,
-			Router router, List<PortResource> ports) {
+			Router router, List<SubnetResource> subnets) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.router = router;
-		this.ports = ports;
+		this.subnets = subnets;
 	}
 
 	@Override
@@ -66,8 +67,8 @@ public class RouterResourceImpl extends AbstractResource implements
 	}
 
 	@Override
-	public List<PortResource> getPorts() {
-		return ports;
+	public List<SubnetResource> getSubnets() {
+		return subnets;
 	}
 
 }
