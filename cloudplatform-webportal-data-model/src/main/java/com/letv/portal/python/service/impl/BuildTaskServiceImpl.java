@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.email.bean.MailMessage;
+import com.letv.common.exception.CommonException;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.PythonException;
 import com.letv.common.exception.TaskExecuteException;
 import com.letv.common.exception.ValidateException;
@@ -881,14 +883,16 @@ public class BuildTaskServiceImpl implements IBuildTaskService{
 	public boolean isTimeout(Date now,DetailModel detailModel) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		long diff = 0;
+		String ctime = detailModel.getCtime();
+		if(org.apache.commons.lang.StringUtils.isEmpty(ctime))
+			return true;
 		try {
 			diff = (now.getTime() - simpleDateFormat.parse(detailModel.getCtime()).getTime())/1000;
 		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		if(diff > 60) {
 			return true;
 		}
+		if(diff > 60)
+			return true;
 		return false;
 	}
 	public int compareFailCount(int failCount,DetailModel detailModel) {
