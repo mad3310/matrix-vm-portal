@@ -23,5 +23,8 @@ public interface SubnetResource extends Resource {
 	String getNetworkId();
 	
 	List<IpAllocationPool> getIpAllocationPools();
-	
+
+	RouterResource getRouter();
+
+	NetworkResource getNetwork();
 }

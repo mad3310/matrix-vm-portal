@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.resource.IpAllocationPool;
+import com.letv.portal.service.openstack.resource.NetworkResource;
+import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
 
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
@@ -22,13 +24,28 @@ public class SubnetResourceImpl extends AbstractResource implements
 	private Subnet subnet;
 	private List<String> dnsNameservers;
 	private List<IpAllocationPool> ipAllocationPools;
+	private RouterResource router;
+	private NetworkResource network;
 
-	public SubnetResourceImpl(String region, String regionDisplayName,
-			Subnet subnet) {
+	public SubnetResourceImpl(String region,String regionDisplayName,Subnet subnet){
+		this(region,regionDisplayName,subnet,null,null);
+	}
+
+	public SubnetResourceImpl(String region,String regionDisplayName,Subnet subnet,NetworkResource network){
+		this(region,regionDisplayName,subnet,network,null);
+	}
+
+	public SubnetResourceImpl(String region,String regionDisplayName,Subnet subnet,RouterResource router){
+		this(region,regionDisplayName,subnet,null,router);
+	}
+
+	public SubnetResourceImpl(String region,String regionDisplayName,Subnet subnet,NetworkResource network, RouterResource router){
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.subnet = subnet;
-		
+		this.network = network;
+		this.router = router;
+
 		ImmutableSet<String> dnsNameservers = subnet.getDnsNameservers();
 		if (dnsNameservers != null) {
 			this.dnsNameservers = dnsNameservers.asList();
@@ -100,5 +117,15 @@ public class SubnetResourceImpl extends AbstractResource implements
 	@Override
 	public List<IpAllocationPool> getIpAllocationPools() {
 		return ipAllocationPools;
+	}
+
+	@Override
+	public RouterResource getRouter(){
+		return router;
+	}
+
+	@Override
+	public NetworkResource getNetwork() {
+		return network;
 	}
 }
