@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -856,9 +857,71 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			public SubnetResource run(NeutronApi neutronApi) throws Exception {
 				checkRegion(region);
 
-				return new SubnetResourceImpl(region,
-						getRegionDisplayName(region), getPrivateSubnet(
-								neutronApi, region, subnetId));
+				SubnetApi subnetApi=neutronApi.getSubnetApi(region);
+				Subnet subnet = subnetApi.get(subnetId);
+				if (subnet == null) {
+					throw new ResourceNotFoundException("Subnet", "子网", subnetId);
+				}
+
+				NetworkApi networkApi=neutronApi.getNetworkApi(region);
+				Network network = networkApi.get(
+						subnet.getNetworkId());
+				if (network == null) {
+					throw new ResourceNotFoundException("Network", "网络",
+							subnet.getNetworkId());
+				}
+
+				if (!isPrivateNetwork(network)) {
+					throw new ResourceNotFoundException("Private Subnet", "私有子网",
+							subnetId);
+				}
+
+				PortApi portApi=neutronApi.getPortApi(region);
+				String routerId=null;
+				findRouterId:
+				for(Port port:portApi.list().concat().toList()){
+					if ("network:router_interface"
+							.equals(port.getDeviceOwner())) {
+						if(subnet.getNetworkId().equals(port.getNetworkId())){
+							ImmutableSet<IP> fixedIps=port.getFixedIps();
+							if(fixedIps!=null){
+								for(IP ip:fixedIps) {
+									if(subnetId.equals(ip.getSubnetId())){
+										routerId=port.getDeviceId();
+										break findRouterId;
+									}
+								}
+							}
+						}
+					}
+				}
+				Router router = null;
+				if(routerId != null){
+					Optional<RouterApi> routerApiOptional = neutronApi.getRouterApi(region);
+					if(!routerApiOptional.isPresent()){
+						throw new APINotAvailableException(RouterApi.class);
+					}
+					RouterApi routerApi=routerApiOptional.get();
+					router=routerApi.get(routerId);
+				}
+
+				String regionDisplayName=getRegionDisplayName(region);
+
+				NetworkResource networkResource=new NetworkResourceImpl(region,regionDisplayName,network,new ArrayList<SubnetResource>());
+
+				RouterResource routerResource=null;
+				if(router!=null){
+					routerResource=new RouterResourceImpl(region,regionDisplayName,router);
+				}
+
+				SubnetResource subnetResource=null;
+				if(routerResource!=null){
+					subnetResource=new SubnetResourceImpl(region,regionDisplayName,subnet,networkResource,routerResource);
+				}else{
+					subnetResource=new SubnetResourceImpl(region,regionDisplayName,subnet,networkResource);
+				}
+
+				return subnetResource;
 			}
 		});
 	}
@@ -1022,19 +1085,31 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						throw new APINotAvailableException(RouterApi.class);
 					}
 					RouterApi routerApi = routerApiOptional.get();
+					PortApi portApi = neutronApi.getPortApi(region);
 					if (needCollect) {
 						String regionDisplayName = transMap.get(region);
 						List<Router> resources = routerApi.list().concat()
 								.toList();
+						Map<String, Subnet> idToSubnet = new HashMap<String, Subnet>();
+						for (Subnet subnet : neutronApi.getSubnetApi(region)
+								.list().concat().toList()) {
+							idToSubnet.put(subnet.getId(), subnet);
+						}
+						List<Port> portList = new LinkedList<Port>();
+						for(Port port:portApi.list().concat().toList()){
+							if ("network:router_interface"
+									.equals(port.getDeviceOwner())) {
+								portList.add(port);
+							}
+						}
 						for (Router resource : resources) {
 							if (name == null
 									|| (resource.getName() != null && resource
 											.getName().contains(name))) {
+								boolean needAdd=false;
 								if (currentPage == null
 										|| recordsPerPage == null) {
-									routerResources
-											.add(new RouterResourceImpl(region,
-													regionDisplayName, resource));
+									needAdd=true;
 								} else {
 									if (needCollect) {
 										if (routerCount >= (currentPage + 1)
@@ -1042,13 +1117,32 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 											needCollect = false;
 										} else if (routerCount >= currentPage
 												* recordsPerPage) {
-											routerResources
-													.add(new RouterResourceImpl(
-															region,
-															regionDisplayName,
-															resource));
+											needAdd=true;
 										}
 									}
+								}
+								if(needAdd){
+									List<SubnetResource> subnetResources = new LinkedList<SubnetResource>();
+									for(Port port:portList){
+										if(StringUtils.equals(resource.getId(),port.getDeviceId())){
+											ImmutableSet<IP> fixedIps=port.getFixedIps();
+											if(fixedIps!=null){
+												for(IP ip:fixedIps){
+													String subnetId=ip.getSubnetId();
+													if(subnetId!=null){
+														Subnet subnet=idToSubnet.get(subnetId);
+														if(subnet!=null){
+															SubnetResource subnetResource = new SubnetResourceImpl(region,regionDisplayName,subnet);
+															subnetResources.add(subnetResource);
+														}
+													}
+												}
+											}
+										}
+									}
+									routerResources
+											.add(new RouterResourceImpl(region,
+													regionDisplayName, resource, subnetResources));
 								}
 								routerCount++;
 							}
