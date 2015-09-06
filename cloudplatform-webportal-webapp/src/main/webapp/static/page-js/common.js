@@ -160,6 +160,25 @@ define(function(require,exports,module){
             else if(status == 'SHUTOFF'){
                 return '已停止'
             }
+            //disk status
+            else if(status == 'creating'){
+                return '创建中'
+            }
+            else if(status == 'available'){
+                return '可用的';
+            }
+            else if(status == 'attaching'){
+                return '挂载中'
+            }
+            else if(status == 'in-use'){
+                return '使用中'
+            }
+            else if(status == 'deleting'){
+                return '删除中'
+            }
+            else if(status == 'error'){
+                return '异常'
+            }
             else{
                 return status;
             }   
@@ -565,18 +584,27 @@ define(function(require,exports,module){
                 }else{
                     ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
                 }
-            })
-            $(document).click(function () {
-                $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+            });
+            $(document).unbind('click').click(function (event) {
+                $('.divselect:visible').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
             })
 
-            $('.divselect').find("ul li").unbind("click").click(function(){
-                var txt = $(this).find('a').text();
-                $(this).closest('.divselect').find('span').html(txt);
-                var value = $(this).find('a').attr("selectid");
-                $(this).closest('.divselect').find('input').val(value).change();
+            $('.divselect').find('ul').unbind("click").click(function(event){
+                // event.stopPropagation();
+                var _src=event.srcElement || event.target;
+                var _this=$(_src).closest('li');
+                var txt = _this.find('a').text();
+                var _span=$(this).closest('.divselect').children('span');
+                _span.html(txt);
+                //赋值隐藏input&trigger change 计费
+                var availableId=_span.attr('self-tag');
+                var value =_this.find('a').attr("selectid");
+                $('#'+availableId).val(value);
+                $('#'+availableId).unbind('trigger').trigger('change');
+                //end 赋值隐藏input&trigger change 计费
+                
             });
-            $(".divselect").each(function () {
+            $(".divselect:visible").each(function () {
                 if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
                     $(this).find('ul li').first().click();
                 }
@@ -1117,7 +1145,7 @@ define(function(require,exports,module){
         },
         initNavbarMenu:function(data){
         	for(var i=0,len=data.length;i<len;i++){
-        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
+        		$("#navbar-menu").find(".navbar-header").append("<a class=\"navbar-brand m-brand"+(data[i].isActive? " active":"")+"\" href=\""+data[i].herf+"\">"+data[i].name+"</a>");
         	}
         },
         uploadfile:function(target){
@@ -1210,20 +1238,76 @@ define(function(require,exports,module){
             })
         },
         TransUnit:function(num){
-        	var temp=Math.abs(num);
-        	if(temp<1024){//B
-        		temp=temp+'B';
-        	}else if(temp<1024*1024){//KB
-        		temp= Math.round(temp/1024*Math.pow(10, 2))/Math.pow(10, 2)+'KB'
-        	}else if(temp<1024*1024*1024){//MB
-        		temp=Math.round(temp/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'MB'
-        	}else{//GB
-        		temp=Math.round(temp/1024/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'GB';
-        	}
-        	if(num<0){
-        		temp='-'+temp
-        	}
-        	return temp;
+            var temp=Math.abs(num);
+            if(temp<1024){//B
+                temp=temp+'B';
+            }else if(temp<1024*1024){//KB
+                temp= Math.round(temp/1024*Math.pow(10, 2))/Math.pow(10, 2)+'KB'
+            }else if(temp<1024*1024*1024){//MB
+                temp=Math.round(temp/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'MB'
+            }else{//GB
+                temp=Math.round(temp/1024/1024/1024*Math.pow(10, 2))/Math.pow(10, 2)+'GB';
+            }
+            if(num<0){
+                temp='-'+temp
+            }
+            return temp;
+        },
+        AddBeforeunloadListener:function(text){
+            $(window).on('beforeunload', function(){
+                return text || '表单还没有提交。';
+            });
+        },
+        RemoveBeforeunloadListener:function(text){
+            $(window).off('beforeunload');
+        },
+        validateInputNum:function(inputValue){
+            var reg=/^[1-9]+[0-9]*/;
+            return reg.exec(inputValue)==null? false:true;
+        },
+        NumberInput:function(minNum,maxNum,increment,onChange){
+            var that=this;
+            var numberUpEl=$('.bk-number-up');
+            var numberDownEl=$('.bk-number-down');
+            var numberInputEl=$('.bk-number-input');
+
+            numberInputEl.on('change',function(e){
+                onChange(e);
+            });
+            numberInputEl.on('blur', function(e){
+                if(!that.validateInputNum(numberInputEl.val())){
+                    numberInputEl.val(minNum.toString());
+                    numberInputEl.trigger('change');
+                }
+            });
+            numberDownEl.on('click',function(e){
+                var currentNum=parseFloat(numberInputEl.val());
+                if(currentNum==minNum){
+                    return;
+                }
+                if((currentNum-increment)==minNum){
+                    numberDownEl.addClass('bk-number-disabled');
+                }
+                if(currentNum==maxNum){
+                    numberUpEl.removeClass('bk-number-disabled');
+                }
+                numberInputEl.val((currentNum-increment).toString());
+                numberInputEl.trigger('change');
+            });
+            numberUpEl.on('click',function(e){
+                var currentNum=parseFloat(numberInputEl.val());
+                if(currentNum==maxNum){
+                    return;
+                }
+                if((currentNum+increment)==maxNum){
+                    numberUpEl.addClass('bk-number-disabled');
+                }
+                if(currentNum==minNum){
+                    numberDownEl.removeClass('bk-number-disabled');
+                }
+                numberInputEl.val((currentNum+increment).toString());
+                numberInputEl.trigger('change');
+            });
         }
     }
     /*common原型属性方法end*/
