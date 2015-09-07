@@ -15,8 +15,6 @@ import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import com.google.common.base.Optional;
 import com.google.common.collect.Multimap;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.IPAddresses;
@@ -38,11 +36,16 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	private String regionDisplayName;
 	private List<VolumeResource> volumes;
 
+	public VMResourceImpl(String region, String regionDisplayName, Server server) {
+		this.region = region;
+		this.regionDisplayName = regionDisplayName;
+		this.server = server;
+	}
+
 	public VMResourceImpl(String region, String regionDisplayName,
 			Server server, ImageResource imageResource,
 			FlavorResource flavorResource, List<FloatingIP> floatingIPs,
-			OpenStackUser user) throws RegionNotFoundException,
-			ResourceNotFoundException {
+			OpenStackUser user) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.server = server;
@@ -78,7 +81,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 					ipAddresses.getPrivateIP().add(ip);
 				}
 			} else {
-				if (user.getSharedNetworkName()!=null) {
+				if (user.getSharedNetworkName() != null) {
 					if (user.getSharedNetworkName().equals(networkName)) {
 						ipAddresses.getSharedIP().add(ip);
 					}
@@ -244,7 +247,7 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	public List<VolumeResource> getVolumes() {
 		return volumes;
 	}
-	
+
 	public void setVolumes(List<VolumeResource> volumes) {
 		this.volumes = volumes;
 	}

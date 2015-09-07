@@ -373,4 +373,33 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/{region}/floatingip/{floatingIpId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getFloatingIp(
+			@PathVariable String region, @PathVariable String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getFloatingIp(region, floatingIpId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/floatingip/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deleteFloatingIp(
+			@RequestParam String region, @RequestParam String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deleteFloaingIp(region, floatingIpId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }

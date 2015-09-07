@@ -6,6 +6,7 @@ import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.RegionNotFoundException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
@@ -66,20 +67,28 @@ public interface NetworkManager extends ResourceManager {
 	PortResource getPort(String region, String portId)
 			throws OpenStackException;
 
-	List<NetworkResource> listAvailableSubnetsForRouterInterface(String region) throws OpenStackException;
+	List<NetworkResource> listAvailableSubnetsForRouterInterface(String region)
+			throws OpenStackException;
 
-	void associateSubnetWithRouter(String region, String routerId, String subnetId) throws OpenStackException;
+	void associateSubnetWithRouter(String region, String routerId,
+			String subnetId) throws OpenStackException;
 
 	void separateSubnetFromRouter(String region, String routerId,
 			String subnetId) throws OpenStackException;
 
-//	void editPort(String region, String portId, String name)
-//			throws OpenStackException;
-//	
-//	void addRouterInterfaceForSubnet(String region, String routerId,
-//			String subnetId) throws OpenStackException;
+	FloatingIpResource getFloatingIp(String region, String floatingIpId)
+			throws OpenStackException;
 
-//	void removeRouterInterfaceForSubnet(String region, String routerId,
-//			String subnetId) throws OpenStackException;
+	void deleteFloaingIp(String region, String floatingIpId)
+			throws OpenStackException;
+
+	// void editPort(String region, String portId, String name)
+	// throws OpenStackException;
+	//
+	// void addRouterInterfaceForSubnet(String region, String routerId,
+	// String subnetId) throws OpenStackException;
+
+	// void removeRouterInterfaceForSubnet(String region, String routerId,
+	// String subnetId) throws OpenStackException;
 
 }

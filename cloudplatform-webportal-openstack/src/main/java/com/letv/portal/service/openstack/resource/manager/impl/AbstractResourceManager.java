@@ -50,7 +50,7 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 	protected abstract String getProviderOrApi();
 
 	protected abstract Class<ApiType> getApiClass();
-
+	
 	public ApiType openApi() {
 		Iterable<Module> modules = ImmutableSet
 				.<Module> of(new SLF4JLoggingModule());

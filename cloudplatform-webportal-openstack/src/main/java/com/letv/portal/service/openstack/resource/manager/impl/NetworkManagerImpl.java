@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -30,7 +28,6 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
-import org.jclouds.openstack.neutron.v2.domain.Router.UpdateRouter;
 import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
@@ -38,9 +35,10 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
-import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.common.exception.ApiNotFoundException;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -50,14 +48,18 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.impl.FloatingIpResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.PortResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 
 public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
@@ -69,6 +71,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	private static final long serialVersionUID = -705565951531564369L;
 
 	// private NeutronApi neutronApi;
+
+	private VMManagerImpl vmManager;
 
 	public NetworkManagerImpl() {
 	}
@@ -1336,6 +1340,22 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				.egressMaxRate(bandWidth + "Mbit").build();
 	}
 
+	public static Integer getBandWidth(FipQos fipQos) {
+		try {
+			if (fipQos != null) {
+				String egressMaxRate = fipQos.getEgressMaxRate();
+				if (egressMaxRate != null) {
+					String bandWidthStr = egressMaxRate.substring(0,
+							egressMaxRate.length() - "Mbit".length());
+					return Integer.parseInt(bandWidthStr);
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			throw new MatrixException("后台错误", e);
+		}
+	}
+
 	/**
 	 *
 	 * @param regions
@@ -1930,6 +1950,135 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	private boolean isDeleteFinished(Port port) {
 		return port == null;
+	}
+
+	@Override
+	public FloatingIpResource getFloatingIp(final String region,
+			final String floaingIpId) throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, FloatingIpResource>() {
+
+			@Override
+			public FloatingIpResource run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floaingIpId);
+				if (floatingIP == null) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floaingIpId);
+				}
+
+				if (StringUtils.equals(floatingIP.getFixedIpAddress(),
+						floatingIP.getFloatingIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floaingIpId);
+				}
+
+				String regionDisplayName = getRegionDisplayName(region);
+
+				String portId = floatingIP.getPortId();
+				VMResource vmResource = null;
+				if (portId != null) {
+					PortApi portApi = neutronApi.getPortApi(region);
+					Port port = portApi.get(portId);
+					if (port == null) {
+						throw new ResourceNotFoundException("Port", "公网端口",
+								portId);
+					}
+					String vmId = port.getDeviceId();
+					vmResource = vmManager.get(region, vmId);
+				}
+
+				FloatingIpResource floatingIpResource = null;
+				if (vmResource != null) {
+					floatingIpResource = new FloatingIpResourceImpl(region,
+							regionDisplayName, floatingIP, vmResource);
+				} else {
+					floatingIpResource = new FloatingIpResourceImpl(region,
+							regionDisplayName, floatingIP);
+				}
+				return floatingIpResource;
+			}
+		});
+	}
+
+	@Override
+	public void deleteFloaingIp(final String region, final String floatingIpId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				boolean isSuccess = floatingIPApi.delete(floatingIpId);
+				if (!isSuccess) {
+					throw new OpenStackException("Floating IP delete failed.",
+							"公网IP删除失败");
+				}
+
+				waitingFloatingIP(floatingIpId, floatingIPApi,
+						new Checker<FloatingIP>() {
+
+							@Override
+							public boolean check(FloatingIP floatingIP)
+									throws Exception {
+								return isDeleteFinished(floatingIP);
+							}
+						});
+
+				return null;
+			}
+		});
+	}
+
+	private void waitingFloatingIP(String floatingIpId,
+			FloatingIPApi floatingIPApi, Checker<FloatingIP> checker)
+			throws OpenStackException {
+		try {
+			FloatingIP floatingIP = null;
+			while (true) {
+				floatingIP = floatingIPApi.get(floatingIpId);
+				if (checker.check(floatingIP)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
+	private boolean isDeleteFinished(FloatingIP floatingIP) {
+		return floatingIP == null;
+	}
+
+	public void setVmManager(VMManagerImpl vmManager) {
+		this.vmManager = vmManager;
 	}
 
 	@Override
