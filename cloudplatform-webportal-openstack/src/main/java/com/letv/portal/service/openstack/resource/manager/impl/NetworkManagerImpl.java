@@ -1954,7 +1954,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public FloatingIpResource getFloatingIp(final String region,
-			final String floaingIpId) throws OpenStackException {
+			final String floatingIpId) throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, FloatingIpResource>() {
 
 			@Override
@@ -1969,16 +1969,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 
-				FloatingIP floatingIP = floatingIPApi.get(floaingIpId);
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
 				if (floatingIP == null) {
 					throw new ResourceNotFoundException("FloatingIP", "公网IP",
-							floaingIpId);
+							floatingIpId);
 				}
 
 				if (StringUtils.equals(floatingIP.getFixedIpAddress(),
 						floatingIP.getFloatingIpAddress())) {
 					throw new ResourceNotFoundException("FloatingIP", "公网IP",
-							floaingIpId);
+							floatingIpId);
 				}
 
 				String regionDisplayName = getRegionDisplayName(region);
@@ -1993,6 +1993,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 								portId);
 					}
 					String vmId = port.getDeviceId();
+					if (vmId == null) {
+						throw new ResourceNotFoundException(
+								"vm binded by floating IP", "公网绑定的虚拟机", portId);
+					}
 					vmResource = vmManager.get(region, vmId);
 				}
 
@@ -2029,6 +2033,29 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				if (floatingIP == null) {
 					throw new ResourceNotFoundException("FloatingIP", "公网IP",
 							floatingIpId);
+				}
+
+				if (StringUtils.equals(floatingIP.getFixedIpAddress(),
+						floatingIP.getFloatingIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				String portId = floatingIP.getPortId();
+				if (portId != null) {
+					PortApi portApi = neutronApi.getPortApi(region);
+					Port port = portApi.get(portId);
+					if (port == null) {
+						throw new ResourceNotFoundException("Port", "公网端口",
+								portId);
+					}
+					String vmId = port.getDeviceId();
+					if (vmId == null) {
+						throw new UserOperationException(MessageFormat.format(
+								"Floating IP is binded to VM \"{0}\".", vmId),
+								MessageFormat.format("公网IP已经绑定到虚拟机“{0}”，请先解绑。",
+										vmId));
+					}
 				}
 
 				boolean isSuccess = floatingIPApi.delete(floatingIpId);
