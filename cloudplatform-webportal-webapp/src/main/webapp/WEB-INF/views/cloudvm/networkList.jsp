@@ -36,7 +36,7 @@
 			<div class="pull-right search-box">
 				<form class="form-inline" role="form">
 					<div class="form-group col-xs-9 col-sm-10">
-						<input  id="networkName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
+						<input  id="searchName" type="text" class="form-control" size="48" placeholder="请输入实例名称进行搜索">
 					</div>
 					<div class="col-xs-3 col-sm-2">
 						<button id="search" type="button" class="btn btn-default"><span class='hidden-xs'>搜索</span><span class='glyphicon glyphicon-search hidden-sm hidden-md hidden-lg'></span></button>
@@ -61,7 +61,7 @@
 							<th width="10">
 								<input type="checkbox">
 							</th>
-							<th class="padding-left-32">网络ID</th>
+							<th class="padding-left-32">名称</th>
 							<th class="hidden-xs">子网</th>
 							<th class="hidden-xs">状态</th>
 							<th class="hidden-xs">区域</th>
@@ -104,10 +104,11 @@
 							<th width="10">
 								<input type="checkbox">
 							</th>
-							<th class="padding-left-32">网络ID</th>
-							<th class="hidden-xs">子网</th>
-							<th class="hidden-xs">状态</th>
-							<th class="hidden-xs">区域</th>
+							<th class="padding-left-32">名称</th>
+							<th class="hidden-xs">私有网络</th>
+							<th class="hidden-xs">网段</th>
+							<th class="hidden-xs">绑定路由</th>
+							<th class="hidden-xs">地域</th>
 							<th class="text-right">操作</th>
 						</tr>
 					</thead>
@@ -237,16 +238,6 @@
 		    <label for="subnet_gateway_ip" class="col-sm-3 control-label">网关</label>
 		    <div class="col-sm-9">
 		      <input type="text" class="form-control" id="subnet_gateway_ip" name="subnet_gateway_ip" placeholder="网关">
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label for="subnet_enable_dhcp" class="col-sm-3 control-label">启动DHCP</label>
-		    <div class="col-sm-9">
-		      <div class="checkbox">
-			        <label>
-			          <input type="checkbox" id="subnet_enable_dhcp"> 是否启动DHCP
-			        </label>
-			  </div>
 		    </div>
 		  </div>
 		</form>

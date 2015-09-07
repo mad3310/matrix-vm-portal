@@ -118,8 +118,9 @@ define(function(require,exports,module){
                         		"<input type=\"checkbox\" name=\"subnet_id\" value= \""+array[i].id+"\">"+
                         	"</td>");
                 tdList.push("<td class=\"padding-left-32\">"+ (array[i].name||'--')+"</td>");
-                tdList.push("<td class=\"padding-left-32\">"+ array[i].networkId+"</td>");
-                tdList.push("<td class=\"padding-left-32\">"+ array[i].ipAllocationPools[0].start+'~'+array[i].ipAllocationPools[0].end+"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+(array[i].network.name||'--') +"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+(array[i].cidr||'--')+"</td>");
+                tdList.push("<td class=\"padding-left-32\">"+((array[i].router && array[i].router.name) ||'--')+"</td>");
                 tdList.push("<td class=\"padding-left-32\">"+ array[i].regionDisplayName+
                 		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+		
                 "</td>");
@@ -216,8 +217,9 @@ define(function(require,exports,module){
 	   		var doOperation=function(operateStatus){
 	                cn.DialogBoxInit(title,text,function(){
         				cn.alertoolSuccess(operatingTip);
-	            		cn.PostData(operationUrl,operationData,function(data){
+	            		cn.doPost(operationUrl,operationData).then(function(data){
 	            	    	operationCallback(data);
+	        		    	return data;
 	            		});
                     	
 	                });
@@ -229,7 +231,13 @@ define(function(require,exports,module){
         			operatingTip="私有网络删除执行中...";
         			operationUrl='/osn/network/private/delete';
         			operationCallback=function(data){
-        				asyncData();
+        		    	if(data.result===1){
+        		    		cn.alertoolSuccess('私有网络删除成功');
+        		    		asyncData();
+        		    	}
+        		    	else{
+        		    		cn.alertoolDanger(data.msgs[0] || '私有网络创建失败');
+        		    	}
             		};
             		operationData={
 	            	        region:fieldRegion,
@@ -242,7 +250,13 @@ define(function(require,exports,module){
         			operatingTip="子网删除执行中...";
         			operationUrl='/osn/subnet/private/delete';
         			operationCallback=function(data){
-        				asyncData();
+        		    	if(data.result===1){
+        		    		cn.alertoolSuccess('子网删除成功');
+        		    		asyncData();
+        		    	}
+        		    	else{
+        		    		cn.alertoolDanger(data.msgs[0] || '子网创建失败');
+        		    	}
             		};
             		operationData={
 	            	        region:fieldRegion,
@@ -255,9 +269,6 @@ define(function(require,exports,module){
     		}
 
     		
-	   	},
-	   	createVPC:function(){
-	   		
 	   	}
     }
 });
