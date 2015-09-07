@@ -326,8 +326,9 @@ public class NetworkController {
 		return result;
 	}
 
-	@RequestMapping(value="/network/private/available_for_router_interface/list", method = RequestMethod.GET)
-	public @ResponseBody ResultObject listAvailableSubnetsForRouterInterface(@RequestParam String region){
+	@RequestMapping(value = "/network/private/available_for_router_interface/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listAvailableSubnetsForRouterInterface(
+			@RequestParam String region) {
 		ResultObject result = new ResultObject();
 		try {
 			result.setData(Util.session(sessionService).getNetworkManager()
@@ -337,7 +338,7 @@ public class NetworkController {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/router/subnet/associate", method = RequestMethod.POST)
 	public @ResponseBody ResultObject associateSubnetWithRouter(
 			@RequestParam String region, @RequestParam String routerId,
@@ -354,4 +355,22 @@ public class NetworkController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/router/subnet/separate", method = RequestMethod.POST)
+	public @ResponseBody ResultObject separateSubnetFromRouter(
+			@RequestParam String region, @RequestParam String routerId,
+			@RequestParam String subnetId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.separateSubnetFromRouter(region, routerId, subnetId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }

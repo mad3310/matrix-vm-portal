@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -1815,6 +1816,83 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				routerApi.addInterfaceForSubnet(routerId, subnetId);
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void separateSubnetFromRouter(final String region,
+			final String routerId, final String subnetId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<RouterApi> routerApiOptional = neutronApi
+						.getRouterApi(region);
+				if (!routerApiOptional.isPresent()) {
+					throw new APINotAvailableException(RouterApi.class);
+				}
+				RouterApi routerApi = routerApiOptional.get();
+				PortApi portApi = neutronApi.getPortApi(region);
+				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				Router router = routerApi.get(routerId);
+				if (router == null) {
+					throw new ResourceNotFoundException("Router", "路由",
+							routerId);
+				}
+
+				Subnet subnet = subnetApi.get(subnetId);
+				if (subnet == null) {
+					throw new ResourceNotFoundException("Subnet", "子网",
+							subnetId);
+				}
+				Network network = networkApi.get(subnet.getNetworkId());
+				if (network == null) {
+					throw new ResourceNotFoundException("Network", "网络",
+							subnet.getNetworkId());
+				}
+				if (!isPrivateNetwork(network)) {
+					throw new ResourceNotFoundException("Private Subnet",
+							"私有子网", subnetId);
+				}
+
+				boolean portExist = false;
+				checkPortExist: for (Port port : portApi.list().concat()
+						.toList()) {
+					if ("network:router_interface"
+							.equals(port.getDeviceOwner())
+							&& routerId.equals(port.getDeviceId())) {
+						ImmutableSet<IP> fixedIps = port.getFixedIps();
+						if (fixedIps != null) {
+							for (IP ip : fixedIps) {
+								if (subnetId.equals(ip.getSubnetId())) {
+									portExist = true;
+									break checkPortExist;
+								}
+							}
+						}
+					}
+				}
+				if (!portExist) {
+					throw new UserOperationException(
+							"Subnet is not associated with router.",
+							"子网和路由之间不存在关联");
+				}
+
+				boolean isSuccess = routerApi.removeInterfaceForSubnet(
+						routerId, subnetId);
+				if (!isSuccess) {
+					throw new OpenStackException(
+							"Separate subnets and routing failure.",
+							"子网和路由解除关联失败");
+				}
 
 				return null;
 			}
