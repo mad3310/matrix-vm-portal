@@ -2050,7 +2050,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 								portId);
 					}
 					String vmId = port.getDeviceId();
-					if (vmId == null) {
+					if (vmId != null) {
 						throw new UserOperationException(MessageFormat.format(
 								"Floating IP is binded to VM \"{0}\".", vmId),
 								MessageFormat.format("公网IP已经绑定到虚拟机“{0}”，请先解绑。",
