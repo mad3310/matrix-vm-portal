@@ -50,15 +50,16 @@ public class CalculateServiceImpl implements ICalculateService {
 		}
 		//记录计算过的standard
 		Set<String> set = new HashSet<String>();
+		params.put("baseRegionId", map.get("region"));
+		params.put("used", 1);
+		params.put("deleted", 0);
+		params.put("date", new Date());
 		for (BaseStandard baseStandard : baseStandards) {
 			if(set.contains(baseStandard.getStandard())) {
 				continue;
 			}
-			params.put("baseRegionId", map.get("region"));
 			params.put("basePriceId", baseStandard.getBasePrice().getId());
-			params.put("used", 1);
-			params.put("deleted", 0);
-			params.put("date", new Date());
+			
 			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
 			if("0".equals(baseStandard.getBasePrice().getType())) {
 				if(baseStandard.getValue().equals(map.get(baseStandard.getStandard()))) {

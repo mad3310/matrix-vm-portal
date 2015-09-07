@@ -15,4 +15,15 @@ import com.letv.portal.service.IBaseService;
 public interface IProductService extends IBaseService<Product> {
 	Map<String, Object> queryProductDetailById(Long id);
 	Double queryProductPrice(Long id, Map<String,Object> map);
+	/**
+	  * @Title: validateData
+	  * @Description: 验证产品信息是否合法
+	  * @param id
+	  * @param map
+	  * @return boolean   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月6日 下午5:00:37
+	  */
+	boolean validateData(Long id, Map<String,Object> map);
 }

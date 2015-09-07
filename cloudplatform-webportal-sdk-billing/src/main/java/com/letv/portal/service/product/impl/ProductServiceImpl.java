@@ -176,7 +176,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	  * @author lisuxiao
 	  * @date 2015年9月1日 下午4:23:04
 	  */
-	private boolean validateData(Long id, Map<String, Object> map) {
+	@Override
+	public boolean validateData(Long id, Map<String, Object> map) {
 		//**********验证产品在该地域是否存在start******************
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", id);
@@ -224,6 +225,8 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				}
 			}
 		}
+		
+		//**********验证购买产品数量和时长是否在规定范围内start******************
 		Iterator<String> it = standards.get("order_num").iterator();
 		if(map.get("order_num")==null || Double.parseDouble((String)map.get("order_num"))<0 
 				|| Double.parseDouble((String)map.get("order_num"))>Double.parseDouble(it.next())) {
@@ -236,14 +239,15 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 			logger.info("validateData, map order_time standard is :"+map.get("order_time")+", standard not within range");
 			return false;
 		} else {
-			if(Double.parseDouble((String)map.get("order_time"))==12) {
+			if(Double.parseDouble((String)map.get("order_time"))==12) {//一年按10个月
 				map.put("order_time", "10");
-			} else if(Double.parseDouble((String)map.get("order_time"))==24) {
+			} else if(Double.parseDouble((String)map.get("order_time"))==24) {//2年按20个月
 				map.put("order_time", "20");
-			} else if(Double.parseDouble((String)map.get("order_time"))==36) {
+			} else if(Double.parseDouble((String)map.get("order_time"))==36) {//3年按30个月
 				map.put("order_time", "30");
 			}
 		}
+		//**********验证购买产品数量和时长是否在规定范围内end******************
 		return true;
 	}
 

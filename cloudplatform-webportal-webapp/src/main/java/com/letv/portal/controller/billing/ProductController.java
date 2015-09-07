@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.service.product.IProductService;
+import com.letv.portal.service.subscription.ISubscriptionService;
 
 /**Program Name: BaseProductController <br>
  * Description:  基础产品<br>
@@ -33,6 +34,8 @@ public class ProductController {
 	
 	@Autowired
 	IProductService productService;
+	@Autowired
+	ISubscriptionService subscriptionService;
 	
 	@RequestMapping(value="/product/{id}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject queryProductDetail(@PathVariable Long id, ResultObject obj) {
@@ -50,6 +53,18 @@ public class ProductController {
 			obj.addMsg("输入参数不合法");
 		} else {
 			obj.setData(ret);
+		}
+		return obj;
+	}
+	
+	@RequestMapping(value="/subscription/{id}",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject createSubscription( @PathVariable Long id, HttpServletRequest request, ResultObject obj) {
+		Map<String,Object> map = HttpUtil.requestParam2Map(request);
+		if(this.productService.validateData(id, map)) {
+			obj.setData(this.subscriptionService.createSubscription(id, map));
+		} else {
+			obj.setResult(0);
+			obj.addMsg("输入参数不合法");
 		}
 		return obj;
 	}
