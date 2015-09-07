@@ -21,7 +21,8 @@ define(function(require){
         vpcFormEl=$("#vpc_form"),
         subnetFormEl=$("#subnet_form"),
     	newVpcNameEl=$('#vpc_name'),
-    	vpcRegionSelector=$('#vpc_region_selector');
+    	vpcRegionSelector=$('#vpc_region_selector'),
+    	searchNameEl=$('#searchName');
     
     var asyncData=function () {
 		var currentRegion= networkListHandler.getSelectedRegion();
@@ -65,7 +66,6 @@ define(function(require){
         	});
         });
 
-        pollingStatusChange(data);
         networkListHandler.resetSelectAllCheckbox();
 	},
     refreshSubnetCtl=function(data) {
@@ -79,61 +79,10 @@ define(function(require){
         	});
         });
 
-        pollingStatusChange(data);
         networkListHandler.resetSelectAllCheckbox();
 	},
-    setListAutoFresh=function(){
-		iFresh = setInterval(asyncData,cn.dbListRefreshTime);
-	},
-	pollingStatusChange=function(data){
-		if(data.result!==1 || data.data.data.length<=0) return;
-		var intervalRefList={};
-		var isAllIntervalStoped=function(){
-			var result=true;
-			for(var p in intervalRefList){
-				if(intervalRefList[p].intervalStoped==false){
-					result=false;
-					break;
-				}
-			}
-			return result;
-		},
-		setDiskStatus=function(diskId,displayStatus){
-			var rowEl=$('input:checkbox[value='+diskId+']').closest('tr');
-			rowEl.find('.disk-display-status').text(displayStatus);
-		};
-		for(var i=0,leng=data.data.data.length;i<leng;i++){
-			var disk=data.data.data[i];
-			if(networkListHandler.goingStatusList.indexOf(disk.status)>-1){
-				clearInterval(iFresh);
-				disk.intervalStoped=false;
-				disk.intervalObject=setInterval((function(currentDisk){
-					return function(){
-						var url = '/osv/region/'+currentDisk.region+'/volume/' + currentDisk.id;
-						cn.GetData(url,function(data){
-							if((data.result==1 && data.data===null) || networkListHandler.goingStatusList.indexOf(data.data.status)==-1){
-								if(data.result==1 && data.data===null){//表示已删除
-									setDiskStatus(currentDisk.id,'已删除');
-								}
-								else{
-									setDiskStatus(data.data.id,cn.TranslateStatus(data.data.status));
-								}
-								currentDisk.intervalStoped=true;
-								clearInterval(currentDisk.intervalObject);
-								if(isAllIntervalStoped()){
-									setListAutoFresh();
-									asyncData();
-								}
-							}
-						});
-					};
-				})(disk),10000);
-				intervalRefList[disk.id]=disk;
-			}
-		}
-	},
 	setSearchName=function(){
-    	searchName=$('#networkName').val();;
+    	searchName=searchNameEl.val();;
 	};
 	
 	/*禁用退格键退回网页*/
@@ -208,7 +157,7 @@ define(function(require){
     	setSearchName();
     	asyncData();
     });
-	$("#networkName").keydown(function(e){
+    searchNameEl.keydown(function(e){
 		if(e.keyCode==13){
 			currentPage = 1;
 			setSearchName();
@@ -221,6 +170,9 @@ define(function(require){
 		  var element=$(this);
 		  activeTabName=element.attr('aria-controls');
 		  element.tab('show');
+		  currentPage=1;
+		  searchName='';
+		  searchNameEl.val('');
 		  asyncData();
 	});
 	
@@ -328,8 +280,7 @@ define(function(require){
 	        name:$('#subnet_name').val(),
 	        cidr:$('#subnet_cidr').val(),
 	        autoGatewayIp:false,
-	        gatewayIp:$('#subnet_gateway_ip').val(),
-	        enableDhcp:$('#subnet_enable_dhcp').val()
+	        gatewayIp:$('#subnet_gateway_ip').val()
 	    }).then(function(data){
     		subnetModalEl.modal('toggle');
 	    	if(data.result===1){
@@ -350,8 +301,6 @@ define(function(require){
 	                   {name : "网络",herf : "/list/vm/network",isActive:true}
 	                   ]);	
     
-    initComponents();
-	
-    setListAutoFresh();
+    initComponents();	
 
 });

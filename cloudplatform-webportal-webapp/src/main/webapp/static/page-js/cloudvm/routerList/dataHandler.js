@@ -52,9 +52,6 @@ define(function(require,exports,module){
 		                               "</td>";
                     tdList.push(routerStatus);
                     tdList.push("<td class=\"padding-left-32\">"+
-	                    			'192.168.1.1'+
-	                			"</td>");
-                    tdList.push("<td class=\"padding-left-32\">"+
                     		array[i].subnets.map(function(subnet){
                     			return "<span>"+subnet.name+"</span>";
                     		}).join('<br>')

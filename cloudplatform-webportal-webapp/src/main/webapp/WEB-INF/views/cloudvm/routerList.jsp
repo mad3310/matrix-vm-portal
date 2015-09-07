@@ -64,7 +64,6 @@
 						<th class="padding-left-32">路由ID</th>
 						<th class="hidden-xs">名称</th>
 						<th class="hidden-xs">状态</th>
-						<th class="hidden-xs">IP地址</th>
 						<th class="hidden-xs">关联子网</th>
 						<th class="hidden-xs">区域</th>
 						<th class="text-right">操作</th>
