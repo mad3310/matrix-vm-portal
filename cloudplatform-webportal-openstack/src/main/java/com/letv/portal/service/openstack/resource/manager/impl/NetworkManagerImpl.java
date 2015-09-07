@@ -1863,7 +1863,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"私有子网", subnetId);
 				}
 
-				boolean portExist = false;
+				Port associatedPort = null;
 				checkPortExist: for (Port port : portApi.list().concat()
 						.toList()) {
 					if ("network:router_interface"
@@ -1873,14 +1873,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 						if (fixedIps != null) {
 							for (IP ip : fixedIps) {
 								if (subnetId.equals(ip.getSubnetId())) {
-									portExist = true;
+									associatedPort = port;
 									break checkPortExist;
 								}
 							}
 						}
 					}
 				}
-				if (!portExist) {
+				if (associatedPort == null) {
 					throw new UserOperationException(
 							"Subnet is not associated with router.",
 							"子网和路由之间不存在关联");
@@ -1894,9 +1894,42 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 							"子网和路由解除关联失败");
 				}
 
+				waitingPort(associatedPort.getId(), portApi,
+						new Checker<Port>() {
+
+							@Override
+							public boolean check(Port port) throws Exception {
+								return isDeleteFinished(port);
+							}
+						});
+
 				return null;
 			}
 		});
+	}
+
+	private void waitingPort(String portId, PortApi portApi,
+			Checker<Port> checker) throws OpenStackException {
+		try {
+			Port port = null;
+			while (true) {
+				port = portApi.get(portId);
+				if (checker.check(port)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
+	private boolean isDeleteFinished(Port port) {
+		return port == null;
 	}
 
 	@Override
