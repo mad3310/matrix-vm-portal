@@ -1985,6 +1985,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				String regionDisplayName = getRegionDisplayName(region);
 
+				NetworkResource networkResource = new NetworkResourceImpl(
+						neutronApi.getNetworkApi(region).get(
+								floatingIP.getFloatingNetworkId()));
+
 				String portId = floatingIP.getPortId();
 				VMResource vmResource = null;
 				if (portId != null) {
@@ -2005,10 +2009,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				FloatingIpResource floatingIpResource = null;
 				if (vmResource != null) {
 					floatingIpResource = new FloatingIpResourceImpl(region,
-							regionDisplayName, floatingIP, vmResource);
+							regionDisplayName, floatingIP, networkResource,
+							vmResource);
 				} else {
 					floatingIpResource = new FloatingIpResourceImpl(region,
-							regionDisplayName, floatingIP);
+							regionDisplayName, floatingIP, networkResource);
 				}
 				return floatingIpResource;
 			}
@@ -2133,11 +2138,162 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	private static String getNameOfFloatingIp(FloatingIP floatingIP) {
+		// TODO get name of floating ip
+		return floatingIP.getFloatingIpAddress();
+	}
+
+	private Page listFloatingIpByRegions(final Set<String> regions,
+			final String name, final Integer currentPagePara,
+			final Integer recordsPerPage,
+			final Checker<FloatingIP> floatingIpFilter)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, Page>() {
+
+			@Override
+			public Page run(NeutronApi neutronApi) throws Exception {
+				Integer currentPage;
+				if (currentPagePara != null) {
+					currentPage = currentPagePara - 1;
+				} else {
+					currentPage = null;
+				}
+
+				Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+				List<FloatingIpResource> floatingIpResources = new LinkedList<FloatingIpResource>();
+				int floatingIpCount = 0;
+				boolean needCollect = true;
+				for (String region : regions) {
+					Optional<FloatingIPApi> floatingIpApiOptional = neutronApi
+							.getFloatingIPApi(region);
+					if (!floatingIpApiOptional.isPresent()) {
+						throw new APINotAvailableException(FloatingIPApi.class);
+					}
+					FloatingIPApi floatingIPApi = floatingIpApiOptional.get();
+					if (needCollect) {
+						String regionDisplayName = transMap.get(region);
+						List<FloatingIP> resources = floatingIPApi.list()
+								.concat().toList();
+						for (FloatingIP resource : resources) {
+							if (floatingIpFilter.check(resource)) {
+								if (name == null
+										|| (getNameOfFloatingIp(resource) != null && getNameOfFloatingIp(
+												resource).contains(name))) {
+									boolean needAdd = false;
+									if (currentPage == null
+											|| recordsPerPage == null) {
+										needAdd = true;
+									} else {
+										if (needCollect) {
+											if (floatingIpCount >= (currentPage + 1)
+													* recordsPerPage) {
+												needCollect = false;
+											} else if (floatingIpCount >= currentPage
+													* recordsPerPage) {
+												needAdd = true;
+											}
+										}
+									}
+									if (needAdd) {
+										NetworkResource networkResource = new NetworkResourceImpl(
+												neutronApi
+														.getNetworkApi(region)
+														.get(resource
+																.getFloatingNetworkId()));
+
+										String portId = resource.getPortId();
+										VMResource vmResource = null;
+										if (portId != null) {
+											PortApi portApi = neutronApi
+													.getPortApi(region);
+											Port port = portApi.get(portId);
+											if (port == null) {
+												throw new ResourceNotFoundException(
+														"Port", "公网端口", portId);
+											}
+											String vmId = port.getDeviceId();
+											if (vmId == null) {
+												throw new ResourceNotFoundException(
+														"vm binded by floating IP",
+														"公网绑定的虚拟机", portId);
+											}
+											vmResource = vmManager.get(region,
+													vmId);
+										}
+
+										FloatingIpResource floatingIpResource = null;
+										if (vmResource != null) {
+											floatingIpResource = new FloatingIpResourceImpl(
+													region, regionDisplayName,
+													resource, networkResource,
+													vmResource);
+										} else {
+											floatingIpResource = new FloatingIpResourceImpl(
+													region, regionDisplayName,
+													resource, networkResource);
+										}
+
+										floatingIpResources
+												.add(floatingIpResource);
+									}
+									floatingIpCount++;
+								}
+							}
+						}
+					} else {
+						for (FloatingIP resource : floatingIPApi.list()
+								.concat().toList()) {
+							if (floatingIpFilter.check(resource)) {
+								if (name == null
+										|| (getNameOfFloatingIp(resource) != null && getNameOfFloatingIp(
+												resource).contains(name))) {
+									floatingIpCount++;
+								}
+							}
+						}
+					}
+				}
+
+				Page page = new Page();
+				page.setData(floatingIpResources);
+				page.setTotalRecords(floatingIpCount);
+				if (recordsPerPage != null) {
+					page.setRecordsPerPage(recordsPerPage);
+				} else {
+					page.setRecordsPerPage(10);
+				}
+				if (currentPage != null) {
+					page.setCurrentPage(currentPage + 1);
+				} else {
+					page.setCurrentPage(1);
+				}
+
+				return page;
+			}
+		});
+	}
+
 	@Override
-	public Page listFloatingIp(String region, String name, Integer currentPage,
-			Integer recordsPerPage) throws OpenStackException {
-		// TODO Auto-generated method stub
-		return null;
+	public Page listFloatingIp(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws OpenStackException {
+		Set<String> regions = null;
+		if (StringUtils.isEmpty(regionGroup)) {
+			regions = getRegions();
+		} else {
+			regions = getGroupRegions(regionGroup);
+		}
+		return listFloatingIpByRegions(regions, name, currentPage,
+				recordsPerPage, new Checker<FloatingIP>() {
+
+					@Override
+					public boolean check(FloatingIP floatingIP)
+							throws Exception {
+						return !StringUtils.equals(
+								floatingIP.getFloatingIpAddress(),
+								floatingIP.getFixedIpAddress());
+					}
+				});
 	}
 
 	@Override
@@ -2190,20 +2346,25 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
 				if (quota == null) {
-					throw new OpenStackException("User quota is not available.", "用户配额不可用");
+					throw new OpenStackException(
+							"User quota is not available.", "用户配额不可用");
 				}
 
 				final int floatingIpCountQuota = quota.getFloatingIp()
 						- quota.getRouter();
 				if (floatingIpCount >= floatingIpCountQuota) {
-					throw new UserOperationException("Floating IP count exceeding the quota.", "公网IP数量超过配额");
+					throw new UserOperationException(
+							"Floating IP count exceeding the quota.",
+							"公网IP数量超过配额");
 				}
 
 				final int floatingIpBandWidthQuota = quota.getBandWidth()
 						- quota.getRouter()
 						* openStackConf.getRouterGatewayBandWidth();
 				if (totalBandWidth + bandWidth > floatingIpBandWidthQuota) {
-					throw new UserOperationException("Floating IP band width exceeding the quota.", "公网IP带宽超过配额");
+					throw new UserOperationException(
+							"Floating IP band width exceeding the quota.",
+							"公网IP带宽超过配额");
 				}
 
 				floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)

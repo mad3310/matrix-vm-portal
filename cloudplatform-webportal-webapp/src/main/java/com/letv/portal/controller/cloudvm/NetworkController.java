@@ -436,4 +436,19 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/floatingip/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listFloatingIp(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listFloatingIp(region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
