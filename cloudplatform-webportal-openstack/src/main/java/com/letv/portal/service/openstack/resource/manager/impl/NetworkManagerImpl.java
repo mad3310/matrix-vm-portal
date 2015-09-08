@@ -2397,7 +2397,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
 
 				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
-				if (floatingIP == null||StringUtils.equals(floatingIP.getFloatingIpAddress(), floatingIP.getFixedIpAddress())) {
+				if (floatingIP == null
+						|| StringUtils.equals(
+								floatingIP.getFloatingIpAddress(),
+								floatingIP.getFixedIpAddress())) {
 					throw new ResourceNotFoundException("FloatingIP", "公网IP",
 							floatingIpId);
 				}
@@ -2406,7 +2409,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				for (FloatingIP fip : floatingIPApi.list().concat().toList()) {
 					if (!StringUtils.equals(fip.getFixedIpAddress(),
 							fip.getFloatingIpAddress())) {
-						if(!fip.getId().equals(floatingIP)){
+						if (!StringUtils.equals(fip.getId(), floatingIpId)) {
 							othersBandWidth += getBandWidth(fip.getFipQos());
 						}
 					}
