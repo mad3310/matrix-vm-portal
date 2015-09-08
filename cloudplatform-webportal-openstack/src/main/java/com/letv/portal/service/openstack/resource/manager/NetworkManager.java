@@ -54,10 +54,10 @@ public interface NetworkManager extends ResourceManager {
 			throws OpenStackException;
 
 	void createRouter(String region, String name,
-			boolean enablePublicNetworkGateway) throws OpenStackException;
+			boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
 
 	void editRouter(String region, String routerId, String name,
-			boolean enablePublicNetworkGateway) throws OpenStackException;
+			boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
 
 	Page listPrivateSubnet(String region, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;

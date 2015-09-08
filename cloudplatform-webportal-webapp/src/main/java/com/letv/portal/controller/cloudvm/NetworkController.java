@@ -264,11 +264,14 @@ public class NetworkController {
 	@RequestMapping(value = "/router/create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject createRouter(@RequestParam String region,
 			@RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway) {
+			@RequestParam boolean enablePublicNetworkGateway,
+			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.createRouter(region, name, enablePublicNetworkGateway);
+			Util.session(sessionService)
+					.getNetworkManager()
+					.createRouter(region, name, enablePublicNetworkGateway,
+							publicNetworkId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -297,13 +300,14 @@ public class NetworkController {
 	@RequestMapping(value = "/router/edit", method = RequestMethod.POST)
 	public @ResponseBody ResultObject editRouter(@RequestParam String region,
 			@RequestParam String routerId, @RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway) {
+			@RequestParam boolean enablePublicNetworkGateway,
+			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.editRouter(region, routerId, name,
-							enablePublicNetworkGateway);
+							enablePublicNetworkGateway, publicNetworkId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

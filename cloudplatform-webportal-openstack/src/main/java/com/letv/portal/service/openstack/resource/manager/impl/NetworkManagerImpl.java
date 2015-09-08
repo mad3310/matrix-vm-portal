@@ -1267,7 +1267,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void createRouter(final String region, final String name,
-			final boolean enablePublicNetworkGateway) throws OpenStackException {
+			final boolean enablePublicNetworkGateway,
+			final String publicNetworkId) throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
 			@Override
@@ -1301,13 +1302,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				Router.CreateBuilder createBuilder = Router.createBuilder()
 						.name(name);
 				if (enablePublicNetworkGateway) {
-					createBuilder
-							.externalGatewayInfo(ExternalGatewayInfo
-									.builder()
-									.networkId(
-											openStackConf
-													.getGlobalPublicNetworkId())
-									.build());
+					NetworkApi networkApi = neutronApi.getNetworkApi(region);
+					Network publicNetwork = networkApi.get(publicNetworkId);
+					if (publicNetwork == null || !publicNetwork.getExternal()) {
+						throw new ResourceNotFoundException("Public Network",
+								"线路", publicNetworkId);
+					}
+					createBuilder.externalGatewayInfo(ExternalGatewayInfo
+							.builder().networkId(publicNetworkId).build());
 				}
 				Router router = routerApi.create(createBuilder.build());
 				if (enablePublicNetworkGateway) {
@@ -1529,8 +1531,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void editRouter(final String region, final String routerId,
-			final String name, final boolean enablePublicNetworkGateway)
-			throws OpenStackException {
+			final String name, final boolean enablePublicNetworkGateway,
+			final String publicNetworkId) throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
 			@Override
@@ -1556,13 +1558,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				if (enablePublicNetworkGateway
 						&& (router.getExternalGatewayInfo() == null || router
 								.getExternalGatewayInfo().getNetworkId() == null)) {
-					updateBuilder
-							.externalGatewayInfo(ExternalGatewayInfo
-									.builder()
-									.networkId(
-											openStackConf
-													.getGlobalPublicNetworkId())
-									.build());
+					NetworkApi networkApi = neutronApi.getNetworkApi(region);
+					Network publicNetwork = networkApi.get(publicNetworkId);
+					if (publicNetwork == null || !publicNetwork.getExternal()) {
+						throw new ResourceNotFoundException("Public Network",
+								"线路", publicNetworkId);
+					}
+					updateBuilder.externalGatewayInfo(ExternalGatewayInfo
+							.builder().networkId(publicNetworkId).build());
 					needSetGatewayQos = true;
 				} else if (!enablePublicNetworkGateway
 						&& (router.getExternalGatewayInfo() != null && router
