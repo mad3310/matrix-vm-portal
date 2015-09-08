@@ -418,4 +418,22 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/floatingip/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createFloatingIp(
+			@RequestParam String region, @RequestParam String name,
+			@RequestParam String publicNetworkId,
+			@RequestParam Integer bandWidth) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.createFloatingIp(region, name, publicNetworkId, bandWidth);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }

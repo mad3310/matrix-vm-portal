@@ -54,10 +54,12 @@ public interface NetworkManager extends ResourceManager {
 			throws OpenStackException;
 
 	void createRouter(String region, String name,
-			boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
+			boolean enablePublicNetworkGateway, String publicNetworkId)
+			throws OpenStackException;
 
 	void editRouter(String region, String routerId, String name,
-			boolean enablePublicNetworkGateway, String publicNetworkId) throws OpenStackException;
+			boolean enablePublicNetworkGateway, String publicNetworkId)
+			throws OpenStackException;
 
 	Page listPrivateSubnet(String region, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
@@ -83,6 +85,12 @@ public interface NetworkManager extends ResourceManager {
 			throws OpenStackException;
 
 	List<NetworkResource> listPublic(String region) throws OpenStackException;
+
+	Page listFloatingIp(String region, String name, Integer currentPage,
+			Integer recordsPerPage) throws OpenStackException;
+	
+	void createFloatingIp(String region, String name, String publicNetwrokId,
+			int bandWidth) throws OpenStackException;
 
 	// void editPort(String region, String portId, String name)
 	// throws OpenStackException;
