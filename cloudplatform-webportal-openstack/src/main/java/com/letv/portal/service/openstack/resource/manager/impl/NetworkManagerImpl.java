@@ -2376,6 +2376,73 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	}
 
 	@Override
+	public void editFloatingIp(final String region, final String floatingIpId,
+			final String name, final int bandWidth) throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				if (bandWidth <= 0) {
+					throw new UserOperationException("bandWidth <= 0",
+							"带宽必须大于0");
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null||StringUtils.equals(floatingIP.getFloatingIpAddress(), floatingIP.getFixedIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				int othersBandWidth = 0;
+				for (FloatingIP fip : floatingIPApi.list().concat().toList()) {
+					if (!StringUtils.equals(fip.getFixedIpAddress(),
+							fip.getFloatingIpAddress())) {
+						if(!fip.getId().equals(floatingIP)){
+							othersBandWidth += getBandWidth(fip.getFipQos());
+						}
+					}
+				}
+
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				if (quota == null) {
+					throw new OpenStackException(
+							"User quota is not available.", "用户配额不可用");
+				}
+
+				final int floatingIpBandWidthQuota = quota.getBandWidth()
+						- quota.getRouter()
+						* openStackConf.getRouterGatewayBandWidth();
+				if (othersBandWidth + bandWidth > floatingIpBandWidthQuota) {
+					throw new UserOperationException(
+							"Floating IP band width exceeding the quota.",
+							"公网IP带宽超过配额");
+				}
+
+				floatingIPApi.update(floatingIpId, (FloatingIP.updateBuilder()
+						.fipQos(createFipQos(bandWidth)).build()));
+
+				return null;
+			}
+		});
+	}
+
+	@Override
 	protected String getProviderOrApi() {
 		return "openstack-neutron";
 	}

@@ -88,8 +88,11 @@ public interface NetworkManager extends ResourceManager {
 
 	Page listFloatingIp(String region, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
-	
+
 	void createFloatingIp(String region, String name, String publicNetwrokId,
+			int bandWidth) throws OpenStackException;
+
+	void editFloatingIp(String region, String floatingIpId, String name,
 			int bandWidth) throws OpenStackException;
 
 	// void editPort(String region, String portId, String name)

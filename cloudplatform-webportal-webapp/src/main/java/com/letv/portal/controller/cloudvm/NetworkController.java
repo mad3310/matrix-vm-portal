@@ -451,4 +451,22 @@ public class NetworkController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/floatingip/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editFloatingIp(
+			@RequestParam String region, @RequestParam String floatingIpId,
+			@RequestParam String name,
+			@RequestParam Integer bandWidth) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.editFloatingIp(region, floatingIpId, name, bandWidth);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
