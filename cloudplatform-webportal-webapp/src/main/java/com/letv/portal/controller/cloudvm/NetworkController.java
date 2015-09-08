@@ -264,11 +264,14 @@ public class NetworkController {
 	@RequestMapping(value = "/router/create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject createRouter(@RequestParam String region,
 			@RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway) {
+			@RequestParam boolean enablePublicNetworkGateway,
+			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
-			Util.session(sessionService).getNetworkManager()
-					.createRouter(region, name, enablePublicNetworkGateway);
+			Util.session(sessionService)
+					.getNetworkManager()
+					.createRouter(region, name, enablePublicNetworkGateway,
+							publicNetworkId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -297,13 +300,14 @@ public class NetworkController {
 	@RequestMapping(value = "/router/edit", method = RequestMethod.POST)
 	public @ResponseBody ResultObject editRouter(@RequestParam String region,
 			@RequestParam String routerId, @RequestParam String name,
-			@RequestParam boolean enablePublicNetworkGateway) {
+			@RequestParam boolean enablePublicNetworkGateway,
+			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService)
 					.getNetworkManager()
 					.editRouter(region, routerId, name,
-							enablePublicNetworkGateway);
+							enablePublicNetworkGateway, publicNetworkId);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -367,6 +371,47 @@ public class NetworkController {
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/region/{region}/floatingip/{floatingIpId}", method = RequestMethod.GET)
+	public @ResponseBody ResultObject getFloatingIp(
+			@PathVariable String region, @PathVariable String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.getFloatingIp(region, floatingIpId));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/floatingip/delete", method = RequestMethod.POST)
+	public @ResponseBody ResultObject deleteFloatingIp(
+			@RequestParam String region, @RequestParam String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.deleteFloaingIp(region, floatingIpId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/network/public/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listPublic(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listPublic(region));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

@@ -892,11 +892,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 				}
 				Thread.sleep(1000);
 			}
-		} catch (OpenStackException e){
+		} catch (OpenStackException e) {
 			throw e;
 		} catch (InterruptedException e) {
 			throw new PollingInterruptedException(e);
-		} catch (Exception e){
+		} catch (Exception e) {
 			throw new OpenStackException("后台错误", e);
 		}
 	}
@@ -1463,7 +1463,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
 				.getVmCountOfCurrentUser();
 		if (cloudvmVmCount == null) {
-			throw new OpenStackException("Vm count of user is not synchronized.", "用户数据错误");
+			throw new OpenStackException(
+					"Vm count of user is not synchronized.", "用户数据错误");
 		} else {
 			cloudvmVmCountService.updateVmCountOfCurrentUser(cloudvmVmCount
 					.getVmCount() - 1);

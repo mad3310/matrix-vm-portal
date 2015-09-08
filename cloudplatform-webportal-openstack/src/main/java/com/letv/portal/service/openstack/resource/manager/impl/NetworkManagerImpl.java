@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
@@ -30,7 +28,6 @@ import org.jclouds.openstack.neutron.v2.domain.Port;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
-import org.jclouds.openstack.neutron.v2.domain.Router.UpdateRouter;
 import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.extensions.QuotaApi;
 import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
@@ -38,9 +35,9 @@ import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
-import com.google.common.base.FinalizablePhantomReference;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -50,10 +47,13 @@ import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.resource.FloatingIpResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.PortResource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.impl.FloatingIpResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.PortResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
@@ -69,6 +69,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	private static final long serialVersionUID = -705565951531564369L;
 
 	// private NeutronApi neutronApi;
+
+	private VMManagerImpl vmManager;
 
 	public NetworkManagerImpl() {
 	}
@@ -1265,7 +1267,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void createRouter(final String region, final String name,
-			final boolean enablePublicNetworkGateway) throws OpenStackException {
+			final boolean enablePublicNetworkGateway,
+			final String publicNetworkId) throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
 			@Override
@@ -1299,13 +1302,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				Router.CreateBuilder createBuilder = Router.createBuilder()
 						.name(name);
 				if (enablePublicNetworkGateway) {
-					createBuilder
-							.externalGatewayInfo(ExternalGatewayInfo
-									.builder()
-									.networkId(
-											openStackConf
-													.getGlobalPublicNetworkId())
-									.build());
+					NetworkApi networkApi = neutronApi.getNetworkApi(region);
+					Network publicNetwork = networkApi.get(publicNetworkId);
+					if (publicNetwork == null || !publicNetwork.getExternal()) {
+						throw new ResourceNotFoundException("Public Network",
+								"线路", publicNetworkId);
+					}
+					createBuilder.externalGatewayInfo(ExternalGatewayInfo
+							.builder().networkId(publicNetworkId).build());
 				}
 				Router router = routerApi.create(createBuilder.build());
 				if (enablePublicNetworkGateway) {
@@ -1334,6 +1338,22 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				.egressBurstRate(bandWidth + "Mb")
 				.ingressMaxRate(bandWidth + "Mbit")
 				.egressMaxRate(bandWidth + "Mbit").build();
+	}
+
+	public static Integer getBandWidth(FipQos fipQos) {
+		try {
+			if (fipQos != null) {
+				String egressMaxRate = fipQos.getEgressMaxRate();
+				if (egressMaxRate != null) {
+					String bandWidthStr = egressMaxRate.substring(0,
+							egressMaxRate.length() - "Mbit".length());
+					return Integer.parseInt(bandWidthStr);
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			throw new MatrixException("后台错误", e);
+		}
 	}
 
 	/**
@@ -1511,8 +1531,8 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void editRouter(final String region, final String routerId,
-			final String name, final boolean enablePublicNetworkGateway)
-			throws OpenStackException {
+			final String name, final boolean enablePublicNetworkGateway,
+			final String publicNetworkId) throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
 			@Override
@@ -1538,13 +1558,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				if (enablePublicNetworkGateway
 						&& (router.getExternalGatewayInfo() == null || router
 								.getExternalGatewayInfo().getNetworkId() == null)) {
-					updateBuilder
-							.externalGatewayInfo(ExternalGatewayInfo
-									.builder()
-									.networkId(
-											openStackConf
-													.getGlobalPublicNetworkId())
-									.build());
+					NetworkApi networkApi = neutronApi.getNetworkApi(region);
+					Network publicNetwork = networkApi.get(publicNetworkId);
+					if (publicNetwork == null || !publicNetwork.getExternal()) {
+						throw new ResourceNotFoundException("Public Network",
+								"线路", publicNetworkId);
+					}
+					updateBuilder.externalGatewayInfo(ExternalGatewayInfo
+							.builder().networkId(publicNetworkId).build());
 					needSetGatewayQos = true;
 				} else if (!enablePublicNetworkGateway
 						&& (router.getExternalGatewayInfo() != null && router
@@ -1930,6 +1951,185 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	private boolean isDeleteFinished(Port port) {
 		return port == null;
+	}
+
+	@Override
+	public FloatingIpResource getFloatingIp(final String region,
+			final String floatingIpId) throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, FloatingIpResource>() {
+
+			@Override
+			public FloatingIpResource run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (StringUtils.equals(floatingIP.getFixedIpAddress(),
+						floatingIP.getFloatingIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				String regionDisplayName = getRegionDisplayName(region);
+
+				String portId = floatingIP.getPortId();
+				VMResource vmResource = null;
+				if (portId != null) {
+					PortApi portApi = neutronApi.getPortApi(region);
+					Port port = portApi.get(portId);
+					if (port == null) {
+						throw new ResourceNotFoundException("Port", "公网端口",
+								portId);
+					}
+					String vmId = port.getDeviceId();
+					if (vmId == null) {
+						throw new ResourceNotFoundException(
+								"vm binded by floating IP", "公网绑定的虚拟机", portId);
+					}
+					vmResource = vmManager.get(region, vmId);
+				}
+
+				FloatingIpResource floatingIpResource = null;
+				if (vmResource != null) {
+					floatingIpResource = new FloatingIpResourceImpl(region,
+							regionDisplayName, floatingIP, vmResource);
+				} else {
+					floatingIpResource = new FloatingIpResourceImpl(region,
+							regionDisplayName, floatingIP);
+				}
+				return floatingIpResource;
+			}
+		});
+	}
+
+	@Override
+	public void deleteFloaingIp(final String region, final String floatingIpId)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (StringUtils.equals(floatingIP.getFixedIpAddress(),
+						floatingIP.getFloatingIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				String portId = floatingIP.getPortId();
+				if (portId != null) {
+					PortApi portApi = neutronApi.getPortApi(region);
+					Port port = portApi.get(portId);
+					if (port == null) {
+						throw new ResourceNotFoundException("Port", "公网端口",
+								portId);
+					}
+					String vmId = port.getDeviceId();
+					if (vmId != null) {
+						throw new UserOperationException(MessageFormat.format(
+								"Floating IP is binded to VM \"{0}\".", vmId),
+								MessageFormat.format("公网IP已经绑定到虚拟机“{0}”，请先解绑。",
+										vmId));
+					}
+				}
+
+				boolean isSuccess = floatingIPApi.delete(floatingIpId);
+				if (!isSuccess) {
+					throw new OpenStackException("Floating IP delete failed.",
+							"公网IP删除失败");
+				}
+
+				waitingFloatingIP(floatingIpId, floatingIPApi,
+						new Checker<FloatingIP>() {
+
+							@Override
+							public boolean check(FloatingIP floatingIP)
+									throws Exception {
+								return isDeleteFinished(floatingIP);
+							}
+						});
+
+				return null;
+			}
+		});
+	}
+
+	private void waitingFloatingIP(String floatingIpId,
+			FloatingIPApi floatingIPApi, Checker<FloatingIP> checker)
+			throws OpenStackException {
+		try {
+			FloatingIP floatingIP = null;
+			while (true) {
+				floatingIP = floatingIPApi.get(floatingIpId);
+				if (checker.check(floatingIP)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
+	private boolean isDeleteFinished(FloatingIP floatingIP) {
+		return floatingIP == null;
+	}
+
+	public void setVmManager(VMManagerImpl vmManager) {
+		this.vmManager = vmManager;
+	}
+
+	@Override
+	public List<NetworkResource> listPublic(final String region)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, List<NetworkResource>>() {
+
+			@Override
+			public List<NetworkResource> run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
+				for (Network network : networkApi.list().concat().toList()) {
+					if (network.getExternal()) {
+						networkResources.add(new NetworkResourceImpl(network));
+					}
+				}
+				return networkResources;
+			}
+		});
 	}
 
 	@Override

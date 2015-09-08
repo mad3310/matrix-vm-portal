@@ -28,6 +28,10 @@ public class NetworkResourceImpl extends AbstractResource implements
 	private String regionDisplayName;
 	private List<SubnetResource> subnetResources;
 	private List<NetworkSegmentResource> networkSegmentResources;
+	
+	public NetworkResourceImpl(Network network){
+		this.network = network;
+	}
 
 	public NetworkResourceImpl(String region, String regionDisplayName,
 			Network network, List<SubnetResource> subnetResources) {
