@@ -37,7 +37,6 @@ import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.letv.common.exception.ApiNotFoundException;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
@@ -59,7 +58,6 @@ import com.letv.portal.service.openstack.resource.impl.NetworkResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.PortResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.RouterResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.SubnetResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 
 public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
@@ -2106,6 +2104,29 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	public void setVmManager(VMManagerImpl vmManager) {
 		this.vmManager = vmManager;
+	}
+
+	@Override
+	public List<NetworkResource> listPublic(final String region)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, List<NetworkResource>>() {
+
+			@Override
+			public List<NetworkResource> run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
+				for (Network network : networkApi.list().concat().toList()) {
+					if (network.getExternal()) {
+						networkResources.add(new NetworkResourceImpl(network));
+					}
+				}
+				return networkResources;
+			}
+		});
 	}
 
 	@Override

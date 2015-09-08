@@ -82,6 +82,8 @@ public interface NetworkManager extends ResourceManager {
 	void deleteFloaingIp(String region, String floatingIpId)
 			throws OpenStackException;
 
+	List<NetworkResource> listPublic(String region) throws OpenStackException;
+
 	// void editPort(String region, String portId, String name)
 	// throws OpenStackException;
 	//

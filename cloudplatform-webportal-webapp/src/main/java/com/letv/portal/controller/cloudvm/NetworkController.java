@@ -402,4 +402,16 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/network/public/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listPublic(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listPublic(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }
