@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.order.IOrderDao">
+
+	<resultMap id="BaseResultMap" type="Order">
+	    <result column="ID" property="id" />
+	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
+	    <result column="START_TIME" property="startTime" />
+	    <result column="END_TIME" property="endTime" />
+	    <result column="PRICE" property="price" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    order.ID,order.SUBSCRIPTION_ID,order.START_TIME,order.END_TIME,order.PRICE,
+	    order.DELETED,order.CREATE_TIME,order.UPDATE_TIME,order.CREATE_USER,order.UPDATE_USER,order.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_ORDER 
+	        (SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{subscriptionId},#{startTime},#{endTime},#{price},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and order.ID=#{id}
+	        </if>
+	        <if test="subscriptionId != null ">
+	            and order.SUBSCRIPTION_ID=#{subscriptionId}
+	        </if>
+	        <if test="startTime != null ">
+	            and order.START_TIME=#{startTime}
+	        </if>
+	        <if test="endTime != null ">
+	            and order.END_TIME=#{endTime}
+	        </if>
+	        <if test="price != null ">
+	            and order.PRICE=#{price}
+	        </if>
+	        <if test="deleted != null ">
+	            and order.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and order.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and order.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and order.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and order.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and order.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_ORDER order
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+
+
+</mapper>   

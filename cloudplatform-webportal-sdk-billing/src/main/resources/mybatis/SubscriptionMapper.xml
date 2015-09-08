@@ -104,6 +104,14 @@
 	        <include refid="Common_Where_Clause" />
 	</select>
 
-
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+			<include refid="Base_Column_List" /> 
+		from 
+			MATRIX_BILLING_SUBSCRIPTION subscription
+		where 
+			subscription.ID = #{subscriptionId}
+	</select>
 
 </mapper>   

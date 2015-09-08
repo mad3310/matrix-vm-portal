@@ -103,6 +103,72 @@ public class CalculateServiceImpl implements ICalculateService {
 		return price;
 	}
 
+	@Override
+	public Double calculateStandardPrice(Long productId, Long baseRegionId,
+			String standardName, String standardValue, Integer orderNum,
+			Integer orderTime) {
+		Double price = 0d;
+		
+		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByStandard(standardName);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("productId", productId);
+		//记录计算过的standard
+		Set<String> set = new HashSet<String>();
+		params.put("baseRegionId", baseRegionId);
+		params.put("used", 1);
+		params.put("deleted", 0);
+		params.put("date", new Date());
+		for (BaseStandard baseStandard : baseStandards) {
+			if(set.contains(baseStandard.getStandard())) {
+				break;
+			}
+			params.put("basePriceId", baseStandard.getBasePrice().getId());
+			
+			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
+			if("0".equals(baseStandard.getBasePrice().getType())) {
+				if(baseStandard.getValue().equals(standardValue)) {
+					set.add(baseStandard.getStandard());
+					if(productPrice!=null && productPrice.getPrice()!=null) {
+						price = Arithmetic4Double.add(price, productPrice.getPrice());
+					} else {
+						price = Arithmetic4Double.add(price, baseStandard.getBasePrice().getPrice());
+					}
+				}
+			} else if("1".equals(baseStandard.getBasePrice().getType())) {
+				String[] str = baseStandard.getBasePrice().getAmount().split("-");
+				if(Double.parseDouble(str[0])<=Double.parseDouble(standardValue) && Double.parseDouble(str[1])>=Double.parseDouble(standardValue)) {
+					set.add(baseStandard.getStandard());
+					if(productPrice!=null && productPrice.getPrice()!=null) {
+						Double ret = Arithmetic4Double.multi(productPrice.getPrice(), Double.parseDouble(standardValue)/1024/1024/1024);
+						price = Arithmetic4Double.add(price, ret);
+					} else {
+						Double ret = Arithmetic4Double.multi(baseStandard.getBasePrice().getPrice(), Double.parseDouble(standardValue)/1024/1024/1024);
+						price = Arithmetic4Double.add(price, ret);
+					}
+					
+				}
+			} else if("2".equals(baseStandard.getBasePrice().getType())) {
+				set.add(baseStandard.getStandard());
+				if(productPrice!=null && productPrice.getPrice()!=null) {
+					Double ret = Arithmetic4Double.multi(productPrice.getPrice(), Double.parseDouble(standardValue)/1024/1024/1024);
+					price = Arithmetic4Double.add(price, ret);
+				} else {
+					Double ret = Arithmetic4Double.multi(baseStandard.getBasePrice().getPrice(), Double.parseDouble(standardValue)/1024/1024/1024);
+					price = Arithmetic4Double.add(price, ret);
+				}
+				
+			}
+			
+		}
+		
+		//购买时间
+		price = Arithmetic4Double.multi(price, orderTime);
+		//购买台数
+		price = Arithmetic4Double.multi(price, orderNum);
+		return price;
+	}
+
 
 
 }

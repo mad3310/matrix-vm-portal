@@ -94,6 +94,16 @@
 	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
 	        <include refid="Common_Where_Clause" />
 	</select>
+	
+	<select id="selectByMapAndTime" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+	        <include refid="Common_Where_Clause" />
+	        and #{date} between subDetail.START_TIME and subDetail.END_TIME
+	</select>
+	
 		
 
 </mapper>   

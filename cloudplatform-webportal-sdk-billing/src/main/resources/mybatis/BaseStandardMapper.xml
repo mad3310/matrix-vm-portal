@@ -114,6 +114,17 @@
 	    where
 	    	standard.BASE_ELEMENT_ID=#{baseElementId}
 	</select>
+	
+	<select id="selectBaseStandardWithPriceByStandard" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	    select
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE
+	    from
+	        MATRIX_BILLING_BASE_STANDARD standard
+	    join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
+	    where
+	    	standard.STANDARD=#{standard}
+	</select>
 
 
 </mapper>   

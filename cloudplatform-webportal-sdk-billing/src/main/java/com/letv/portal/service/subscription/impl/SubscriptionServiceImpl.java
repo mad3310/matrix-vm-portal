@@ -16,6 +16,7 @@ import com.letv.portal.dao.subscription.ISubscriptionDetailDao;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.service.impl.BaseServiceImpl;
+import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 
@@ -37,6 +38,8 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	private ISubscriptionDetailDao subscriptionDetailDao;
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private IOrderService orderService;
 
 	@Override
 	public IBaseDao<Subscription> getDao() {
@@ -51,7 +54,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			sub.setProductId(id);
 			sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
 			sub.setHclusterId(Long.parseLong((String)map.get("area")));
-			sub.setChargeType(map.get("chargeType")==null?null:Integer.parseInt((String)map.get("chargeType")));
+			sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
 			sub.setOrderNum(Integer.parseInt((String)map.get("order_num")));
 			Integer t = Integer.parseInt((String)map.get("order_time"));
 			sub.setOrderTime(t);
@@ -84,6 +87,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 				detail.setValid(true);
 				this.subscriptionDetailDao.insert(detail);
 			}
+			this.orderService.createOrder(sub.getId());
 		}
 		
 		return true;

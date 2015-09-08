@@ -14,6 +14,7 @@
 	    <result column="USED" property="used" />
 	    <result column="START_TIME" property="startTime" />
 	    <result column="END_TIME" property="endTime" />
+	    <result column="PRIORITY" property="priority" />
 	    <result column="DESCN" property="descn" />
 	    <result column="DELETED" property="deleted" />
 	    <result column="CREATE_TIME" property="createTime" />
@@ -25,15 +26,15 @@
 	<sql id="Base_Column_List">
 	    productPrice.ID,productPrice.PRODUCT_ID,productPrice.BASE_REGION_ID,productPrice.BASE_PRICE_ID,
 	    productPrice.PRICE,productPrice.VERSION,productPrice.USED,productPrice.START_TIME,productPrice.END_TIME,
-	    productPrice.DESCN,productPrice.DELETED,productPrice.CREATE_TIME,productPrice.UPDATE_TIME,
+	    productPrice.DESCN,productPrice.DELETED,productPrice.CREATE_TIME,productPrice.UPDATE_TIME,productPrice.PRIORITY,
 	    productPrice.CREATE_USER,productPrice.UPDATE_USER
 	</sql>
 	
 	<insert id="insert" parameterType="ProductPrice" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_PRODUCT_PRICE 
-	        (PRODUCT_ID,BASE_REGION_ID,BASE_PRICE_ID,PRICE,VERSION,USED,START_TIME,END_TIME,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	        (PRODUCT_ID,BASE_REGION_ID,BASE_PRICE_ID,PRICE,VERSION,USED,START_TIME,END_TIME,PRIORITY,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
 	    values
-	        (#{productId},#{baseRegionId},#{basePriceId},#{price},#{version},#{used},#{startTime},#{endTime},#{descn},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser})
+	        (#{productId},#{baseRegionId},#{basePriceId},#{price},#{version},#{used},#{startTime},#{endTime},#{priority},#{descn},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -65,6 +66,9 @@
 	        </if>
 	        <if test="endTime != null ">
 	            and productPrice.END_TIME=#{endTime}
+	        </if>
+	        <if test="priority != null ">
+	            and productPrice.PRIORITY=#{priority}
 	        </if>
 	        <if test="descn != null ">
 	            and productPrice.DESCN=#{descn}
@@ -102,6 +106,9 @@
 	        MATRIX_BILLING_PRODUCT_PRICE productPrice
 	        <include refid="Common_Where_Clause" />
 	        and #{date} between productPrice.START_TIME and productPrice.END_TIME
+	    order by 
+	    	productPrice.PRIORITY desc
+	    limit 1
 	</select>
 
 </mapper>   

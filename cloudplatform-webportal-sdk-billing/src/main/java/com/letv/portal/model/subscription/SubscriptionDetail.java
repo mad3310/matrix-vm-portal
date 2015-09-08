@@ -27,7 +27,15 @@ public class SubscriptionDetail extends BaseModel{
 	private Date endTime;//结束时间
 	private boolean valid;//是否有效：false-无效，true-有效
 	private String descn;//描述
+	private Double price;//价格-用于记录各规格价格
 	
+	
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
 	public String getDescn() {
 		return descn;
 	}

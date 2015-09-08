@@ -25,8 +25,15 @@ public class ProductPrice extends BaseModel{
 	private Boolean used;
 	private Timestamp startTime;
 	private Timestamp endTime;
+	private Integer priority;//优先级
 	private String descn;
 	
+	public Integer getPriority() {
+		return priority;
+	}
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
 	public Long getBaseRegionId() {
 		return baseRegionId;
 	}
