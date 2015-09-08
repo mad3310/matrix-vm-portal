@@ -61,7 +61,14 @@ define(function(require,exports,module){
                     		'<input type="hidden" class="field-region" value="'+array[i].region+'" />'+
                      	"</td>");
                     tdList.push('<td class="text-right hidden-xs">'+
-		                    		'<a class="router-operation router-remove" href="javascript:void(0);">删除</a>'+
+                    				'<a class="router-operation router-edit" href="javascript:void(0);">编辑</a>|'+
+		                    		'<a class="router-operation router-remove" href="javascript:void(0);">删除</a>|'+
+		                    		'<div class="dropdown routerlist-item-more">'+
+								      '<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">更多<span class="caret"></span></a>'+
+								      '<ul class="dropdown-menu">'+
+								        '<li><a class="router-operation router-associate-subnet" href="javascript:void(0);"><span>关联子网</span></a></li>'+
+								      '</ul>'+
+								    '</div>'+
 		                    	'</td>');
                     tdList.unshift("<tr class='data-tr'>");
                     tdList.push("</tr>");
