@@ -1,0 +1,27 @@
+<div class="side-menu-view" ng-controller="SideMenuController">
+    <ul class="side-menu">
+        <li class="menu-item" ng-class="{active:isActive(r.url),open:r.isOpen}" ng-repeat="r in routes">
+            <a href="{{r | sideMenuUrlFilter}}" ng-click="openSubMenu(r.url)">
+                <i class="{{r.icon}}"></i>
+                <span>{{r.title}}</span>
+                <span class="arrow" ng-if="r.subRoutes != null"></span>
+            </a>
+            <ul class="submenu" ng-if="r.subRoutes != null">
+                <li class="submenu-item" ng-class="{active: isActive(sr.url),open:sr.isOpen}" ng-repeat="sr in r.subRoutes">
+                    <a href="{{sr | sideMenuUrlFilter}}" ng-click="openSubSubMenu(sr.url,r)">
+                        <i class="fa fa-circle"></i>
+                        <span>{{sr.title}}</span>
+                        <span class="arrow" ng-if="sr.subSubRoutes != null"></span>
+                    </a>
+                    <ul class="sub-submenu"  ng-if="sr.subSubRoutes != null">
+                        <li class="sub-submenu-item" ng-class="{active: isActive(ssr.url)}" ng-repeat="ssr in sr.subSubRoutes">
+                            <a href="{{ssr | sideMenuUrlFilter}}">
+                                <span>{{ssr.title}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

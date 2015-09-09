@@ -1,0 +1,108 @@
+/*begin global style*/
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-color: #364150;
+}
+
+/*end global style*/
+
+/*begin col style*/
+.le-col-1, .le-col-2, .le-col-3, .le-col-4, .le-col-5, .le-col-6, .le-col-7, .le-col-8, .le-col-9, .le-col-10, .le-col-11, .le-col-12 {
+    float: left;
+    padding: 0 12px;
+}
+
+.le-col-12 {
+    width: 100%;
+}
+
+.le-col-11 {
+    width: 91.66666667%;
+}
+
+.le-col-10 {
+    width: 83.33333333%;
+}
+
+.le-col-9 {
+    width: 75%;
+}
+
+.le-col-8 {
+    width: 66.66666667%;
+}
+
+.le-col-7 {
+    width: 58.33333333%;
+}
+
+.le-col-6 {
+    width: 50%;
+}
+
+.le-col-5 {
+    width: 41.66666667%;
+}
+
+.le-col-4 {
+    width: 33.33333333%;
+}
+
+.le-col-3 {
+    width: 25%;
+}
+
+.le-col-2 {
+    width: 16.66666667%;
+}
+
+.le-col-1 {
+    width: 8.33333333%;
+}
+
+/*end col style*/
+
+/*begin clearfix style*/
+.le-clearfix:before,
+.le-clearfix:after,
+.le-row:before,
+.le-row:after{
+    content: " ";
+    display: table;
+}
+
+.le-clearfix:after,
+.le-row:after{
+    clear: both;
+}
+/*end clearfix style*/
+
+/*begin le-row style*/
+.le-row {
+    padding: 10px 0;
+}
+
+/*end le-row style*/
+
+/*begin le-form-control style*/
+.le-form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+/*end le-form-control style*/

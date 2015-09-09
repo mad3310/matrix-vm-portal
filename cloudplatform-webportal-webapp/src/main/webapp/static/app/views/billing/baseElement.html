@@ -1,0 +1,41 @@
+<div ng-controller="VmListController">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 pull-left">
+                <button class="btn btn-primary" ng-click="openModalBox()">打开modal框</button>
+            </div>
+            <div class="col-md-2 pull-right">
+                <button class="btn btn-primary" ng-click="getVmList()">获取列表</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>cpu</th>
+                        <th>内存</th>
+                        <th>硬盘</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="vm in vmList">
+                        <td>{{vm.name}}</td>
+                        <td>{{vm.description}}</td>
+                        <td>{{vm.cpu}}核</td>
+                        <td>{{vm.ram}}GB</td>
+                        <td>{{vm.disk}}GB</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <le-modal option="leModalOption">
+            <p>le-modal test {{p1Name}}</p>
+            <p>le-modal test {{p2Name}}</p>
+        </le-modal>
+    </div>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}"></toaster-container>
+</div>
