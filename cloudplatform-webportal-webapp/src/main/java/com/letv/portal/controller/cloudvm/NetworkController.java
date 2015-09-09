@@ -469,4 +469,16 @@ public class NetworkController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/network/shared/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listShared(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listShared(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

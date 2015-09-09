@@ -2446,6 +2446,31 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	}
 
 	@Override
+	public List<NetworkResource> listShared(final String region)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, List<NetworkResource>>() {
+
+			@Override
+			public List<NetworkResource> run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
+				for (Network network : networkApi.list().concat().toList()) {
+					if (network.getShared()
+							&& !StringUtils.equals(network.getId(),
+									openStackConf.getGlobalSharedNetworkId())) {
+						networkResources.add(new NetworkResourceImpl(network));
+					}
+				}
+				return networkResources;
+			}
+		});
+	}
+
+	@Override
 	protected String getProviderOrApi() {
 		return "openstack-neutron";
 	}
