@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -127,5 +128,14 @@ public class SubnetResourceImpl extends AbstractResource implements
 	@Override
 	public NetworkResource getNetwork() {
 		return network;
+	}
+	
+	@Override
+	public Long getCreated() {
+		Date date = subnet.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
 	}
 }

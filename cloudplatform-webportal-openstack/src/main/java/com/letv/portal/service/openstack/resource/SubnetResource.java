@@ -27,4 +27,6 @@ public interface SubnetResource extends Resource {
 	RouterResource getRouter();
 
 	NetworkResource getNetwork();
+	
+	Long getCreated();
 }

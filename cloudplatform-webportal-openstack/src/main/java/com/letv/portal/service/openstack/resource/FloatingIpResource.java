@@ -9,4 +9,5 @@ public interface FloatingIpResource extends Resource{
 	String getStatus();
 	NetworkResource getCarrier();
 	String getName();
+	Long getCreated();
 }

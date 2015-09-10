@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import java.util.Date;
+
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 
 import com.letv.portal.service.openstack.resource.FloatingIpResource;
@@ -95,4 +97,12 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 		return floatingIp.getName();
 	}
 
+	@Override
+	public Long getCreated() {
+		Date date = floatingIp.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
 }

@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -72,4 +73,12 @@ public class RouterResourceImpl extends AbstractResource implements
 		return subnets;
 	}
 
+	@Override
+	public Long getCreated() {
+		Date date = router.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
 }
