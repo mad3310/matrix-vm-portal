@@ -105,5 +105,7 @@ public interface IBaseService<T> {
 	  * @date 2015年7月27日 上午11:38:37
 	  */
 	<K, V> Page queryByPagination(Page page, Map<K,V> params);
-	
+
+	boolean isUnique(String name);
+
 }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.base.IBaseRegionDao">
+
+	<resultMap id="BaseResultMap" type="BaseRegion">
+	    <result column="ID" property="id" />
+	    <result column="NAME" property="name" />
+	    <result column="DESCN" property="descn" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    region.ID,region.NAME,region.DESCN,region.DELETED,region.CREATE_TIME,
+	    region.UPDATE_TIME,region.CREATE_USER,region.UPDATE_USER
+	</sql>
+	
+	<insert id="insert" parameterType="BaseRegion" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_BASE_REGION 
+	        (NAME,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	    values
+	        (#{name},#{descn},#{deleted},now(),#{updateTime},#{createUser},#{updateUser})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and region.ID=#{id}
+	        </if>
+	        <if test="name != null ">
+	            and region.NAME=#{name}
+	        </if>
+	        <if test="descn != null ">
+	            and region.DESCN=#{descn}
+	        </if>
+	        <if test="deleted != null ">
+	            and region.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and region.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and region.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and region.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and region.UPDATE_USER=#{updateUser}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_BASE_REGION region
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+</mapper>   

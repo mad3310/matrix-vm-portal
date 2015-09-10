@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+
 /**
  * 用于封装api调用的返回结果
  * 
@@ -45,6 +48,12 @@ public class ResultObject implements Serializable {
 	}
 	public ResultObject(int result) {
 		this.result = result;
+	}
+	public ResultObject(List<ObjectError> errors) {
+		for (ObjectError error : errors) {
+			this.msgs.add(error.getDefaultMessage());
+		}
+		this.result = 0;
 	}
 
 	public int getResult() {

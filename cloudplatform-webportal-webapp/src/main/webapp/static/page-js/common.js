@@ -601,18 +601,27 @@ define(function(require,exports,module){
                 }else{
                     ul.hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
                 }
-            })
-            $(document).click(function () {
-                $('.divselect').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
+            });
+            $(document).unbind('click').click(function (event) {
+                $('.divselect:visible').find('ul').hide().closest('.pull-left').find('.bk-select-arrow').attr("style","-webkit-transform:rotate(0deg);-moz-transform:rotate(0deg);-o-transform:rotate(0deg);-ms-transform: rotate(0deg);");
             })
 
-            $('.divselect').find("ul li").unbind("click").click(function(){
-                var txt = $(this).find('a').text();
-                $(this).closest('.divselect').find('span').html(txt);
-                var value = $(this).find('a').attr("selectid");
-                $(this).closest('.divselect').find('input').val(value).change();
+            $('.divselect').find('ul').unbind("click").click(function(event){
+                // event.stopPropagation();
+                var _src=event.srcElement || event.target;
+                var _this=$(_src).closest('li');
+                var txt = _this.find('a').text();
+                var _span=$(this).closest('.divselect').children('span');
+                _span.html(txt);
+                //赋值隐藏input&trigger change 计费
+                var availableId=_span.attr('self-tag');
+                var value =_this.find('a').attr("selectid");
+                $('#'+availableId).val(value);
+                $('#'+availableId).unbind('trigger').trigger('change');
+                //end 赋值隐藏input&trigger change 计费
+                
             });
-            $(".divselect").each(function () {
+            $(".divselect:visible").each(function () {
                 if($(this).find('span').html() == ''&&$(this).find('li').length > 0){
                     $(this).find('ul li').first().click();
                 }

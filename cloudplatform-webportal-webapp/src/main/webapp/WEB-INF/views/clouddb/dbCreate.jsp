@@ -55,8 +55,8 @@
 									<label class="bk-form-row-name col-xs-12 col-sm-2">地域：</label>
 									<div class="col-xs-12 col-sm-10 row">
 										<div class="bk-form-row-li">
-											<div class="bk-buttontab">
-												<button class=" bk-button bk-button-primary bk-button-current">
+											<div class="bk-buttontab" self-tag="region">
+												<!-- <button class=" bk-button bk-button-primary bk-button-current">
 													<div>
 														<span>北京</span>
 													</div>
@@ -80,8 +80,9 @@
 													<div>
 														<span>深圳</span>
 													</div>
-												</button>
+												</button> -->
 											</div>
+											<input class="hidden" type="text" id="region" value="">
 											<span class="bk-lnk hidden-xs" style="cursor: text;">暂时只有北京可用,其他地域陆续开通</span>
 										</div>
 										<div class="bk-form-row-txt hidden-xs">不同地域之间的产品内网不互通；订购后不支持更换地域，请谨慎选择</div>
@@ -90,18 +91,19 @@
 								<div class="bk-form-row col-xs-12 col-sm-12">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">可用区：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li clearfix">
+										<div class="bk-form-row-li clearfix" self-tag="available">
 											<div class="pull-left">
 												<span class="sleBG"> <span class="sleHid">
-														<div class="divselect">
+														<!-- <div class="divselect">
 															<span></span>
 															<ul>
 															</ul>
 															<input name="hclusterId" type="hidden" value="" />
-														</div>
+														</div> -->
 												</span>
 												</span> <span class="bk-select-arrow"></span>
 											</div>
+											<input class="hidden" id="available" type="text">
 										</div>
 									</div>
 								</div>
@@ -109,7 +111,7 @@
 									<label class="bk-form-row-name col-xs-12 col-sm-2">数据库类型：</label>
 									<div class="col-xs-12 col-sm-10 row">
 										<div class="bk-form-row-li clearfix">
-											<div class="pull-left">
+											<!-- <div class="pull-left">
 												<span class="sleBG"> <span class="sleHid">
 														<div class="divselect">
 															<span>MYSQL</span>
@@ -120,15 +122,23 @@
 														</div>
 												</span>
 												</span> <span class="bk-select-arrow"></span>
-											</div>
+											</div> -->
+											<div class="bk-buttontab" self-tag="dbConfig"></div>
+											<input class="hidden" id="dbConfig" type="text">
 										</div>
 									</div>
 								</div>
+
 								<div class="bk-form-row col-xs-12 col-sm-12 hidden-xs">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">版本：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li">
-											<div class="bk-buttontab">
+										<div class="bk-form-row-li" self-tag="dbVersion">
+											<div class="pull-left">
+												<span class="sleBG"> <span class="sleHid">
+												</span>
+												</span> <span class="bk-select-arrow"></span>
+											</div>
+											<!-- <div class="bk-buttontab">
 												<button class="bk-button bk-button-primary bk-button-current">
 													<div><span>5.5</span></div>
 												</button>
@@ -136,31 +146,34 @@
 													<div><span>5.6</span></div>
 												</button>
 
-											</div>
-											<span class="bk-lnk" style="cursor: text;">暂时只提供5.5版本</span>
+											</div> -->
+											<!-- <span class="bk-lnk" style="cursor: text;">暂时只提供5.5版本</span> -->
 										</div>
+
+										<input class="hidden" id="dbVersion" type="text">
 									</div>
 								</div>
 								<div class="bk-form-row col-xs-12 col-sm-12">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">存储引擎：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li">
-											<div class="bk-buttontab">
+										<div class="bk-form-row-li" self-tag="dbEngine">
+											<!-- <div class="bk-buttontab">
 												<input name="engineType" type="text" class="hide" value="0">
 												<button class=" bk-button bk-button-primary bk-button-current" value="0">
 													<div>
 														<span>InnDB</span>
 													</div>
 												</button>
-											</div>
+											</div> -->
 										</div>
+										<input class="hidden" type="text" id="dbEngine">
 									</div>
 								</div>
 								<div class="bk-form-row col-xs-12 col-sm-12 hidden-xs">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">链接类型：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li">
-											<div class="bk-buttontab">
+										<div class="bk-form-row-li" self-tag="dbLinkType">
+											<!-- <div class="bk-buttontab">
 												<input name="linkType" type="text" class="hide" value="0">
 												<button class=" bk-button bk-button-primary bk-button-current" value="0">
 													<div>
@@ -172,15 +185,16 @@
 														<span>短链接</span>
 													</div>
 												</button>
-											</div>
+											</div> -->
 										</div>
+										<input class="hidden" type="text" id="dbLinkType">
 									</div>
 								</div>
 								<div class="bk-form-row col-xs-12 col-sm-12 hidden-xs">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">默认管理账户：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li">
-											<div class="bk-buttontab">
+										<div class="bk-form-row-li" self-tag="dbAccount">
+											<!-- <div class="bk-buttontab">
 												<input name="isCreateAdmin" type="text" class="hide" value="0">
 												<button class=" bk-button bk-button-primary " value="1">
 													<div>
@@ -192,10 +206,12 @@
 														<span>不创建</span>
 													</div>
 												</button>
-											</div>
+											</div> -->
 										</div>
+										<input class="hidden" type="text" id="dbAccount">
 									</div>
 								</div>
+
 							</div>
 						</dd>
 					</dl>
@@ -207,40 +223,42 @@
 								<div class="bk-form-row col-xs-12 col-sm-12">
 									<label class="bk-form-row-name  col-xs-12 col-sm-2">存储空间：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li clearfix">
+										<div class="bk-form-row-li clearfix" self-tag="dbStorage">
 											<div class="pull-left" style="height: 36px;">
 												<span class="sleBG"> <span class="sleHid">
-													<div class="divselect">
+													<!-- <div class="divselect">
 														<span>10G</span>
 														<ul style="display: none;">
 															<li class="bk-select-option"><a href="javascript:;" selectid="10737418240">10G</a></li>
 														</ul>
 														<input name="storageSize" type="hidden" value="10737418240" />
-													</div>
+													</div> -->
 												</span>
 												</span> <span class="bk-select-arrow"></span>
 											</div>
 										</div>
+										<input class="hidden" type="text" id="dbStorage">
 										<div class="bk-form-row-txt notice-block">存储空间暂时不限制</div>
 									</div>
 								</div>
 								<div class="bk-form-row col-xs-12 col-sm-12">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">内存：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li clearfix">
+										<div class="bk-form-row-li clearfix" self-tag="dbRam">
 											<div class="pull-left" style="height: 36px;">
 												<span class="sleBG"> <span class="sleHid">
-													<div class="divselect">
+													<!-- <div class="divselect">
 														<span>2G</span>
 														<ul style="display: none;">
 															<li class="bk-select-option"><a href="javascript:;" selectid="2147483648">2G</a></li>
 														</ul>
 														<input name="memorySize" type="hidden" value="2147483648" />
-													</div>
+													</div> -->
 											</span>
 												</span> <span class="bk-select-arrow"></span>
 											</div>
 										</div>
+										<input type="text" class="hidden" id="dbRam">
 										<div class="bk-form-row-txt">最大连接数:60 IOPS:150</div>
 									</div>
 								</div>
@@ -255,22 +273,33 @@
 								<div class="bk-form-row col-xs-12 col-sm-12">
 									<label class="bk-form-row-name col-xs-12 col-sm-2">购买时长：</label>
 									<div class="col-xs-12 col-sm-10 row">
-										<div class="bk-form-row-li clearfix">
+										<div class="bk-form-row-li clearfix" self-tag='dbTime'>
 											<div class="pull-left" style="height: 36px;">
 												<span class="sleBG">
 												<span class="sleHid">
 													<div class="divselect">
-														<span>一年</span>
-														<ul style="display: none;">
-															<li class="bk-select-option"><a href="javascript:;" selectid="1">一年</a></li>
+														<span self-tag='dbTime'></span>
+														<ul style="display:none;">
+															<li class="bk-select-option"><a href="javascript:;" selectid="1">一个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="2">二个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="3">三个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="4">四个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="5">五个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="6">六个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="7">七个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="8">八个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="9">九个月</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="12">一年</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="24">二年</a></li>
+															<li class="bk-select-option"><a href="javascript:;" selectid="36">三年</a></li>
 														</ul>
-														<input type="hidden" value="" />
 													</div>
 												</span>
 												</span>
 												<span class="bk-select-arrow"></span>
 											</div>
 										</div>
+										<input type="text" class="hidden" id="dbTime" />
 										<div class="bk-form-row-txt">此功能暂时不开放</div>
 									</div>
 								</div>
@@ -279,7 +308,7 @@
 								<label class="bk-form-row-name">数量：</label>
 								<div class="bk-form-row-cell">
 									<div class="bk-form-row-li">
-										<span class="bk-number"> <input type="text" class="bk-number-input" value="3"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
+										<span class="bk-number"> <input type="text" class="bk-number-input tai-num" value="1" id="dbNum"> <span class="bk-number-unit">台</span> <span class="bk-number-control"> <span class="bk-number-up bk-number-disabled hide"> <i class="bk-number-arrow"></i>
 											</span> <span class="bk-number-up"> <i class="bk-number-arrow"></i>
 											</span> <span class="bk-number-down bk-number-disabled"> <i class="bk-number-arrow"></i>
 											</span> <span class="bk-number-down hide"> <i class="bk-number-arrow"></i>
@@ -315,7 +344,7 @@
 							<div class="bk-items-price-title bk-pale">配置费用：</div>
 							<div class="bk-items-price-settle">
 								<div>
-									<span class="bk-cny">¥</span> <span class="bk-items-price-money">0.00</span> <span class="bk-items-price-unit"></span>
+									<span class="bk-cny">¥</span> <span class="bk-items-price-money" id="configMoney">0.00</span> <span class="bk-items-price-unit"></span>
 								</div>
 							</div>
 						</div>
@@ -434,4 +463,5 @@ new scale('btn0', 'bar0','layer0','value0',stepLen0);
 new scale('btn1', 'bar1','layer1','value1',stepLen1);
 new scale('btn2', 'bar2','layer2','value2',stepLen2);
 </script>
+
 </html>

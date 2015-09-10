@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.base.IBasePriceDao">
+
+	<resultMap id="BaseResultMap" type="BasePrice">
+	    <result column="ID" property="id" />
+	    <result column="BASE_STANDARD_ID" property="baseStandardId" />
+	    <result column="TYPE" property="type" />
+	    <result column="AMOUNT" property="amount" />
+	    <result column="UNIT" property="unit" />
+	    <result column="PRICE" property="price" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    price.ID,price.BASE_STANDARD_ID,price.TYPE,price.AMOUNT,price.UNIT,price.PRICE,price.DELETED,price.CREATE_TIME,
+	    price.UPDATE_TIME,price.CREATE_USER,price.UPDATE_USER,price.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="BasePrice" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_BASE_PRICE 
+	        (BASE_STANDARD_ID,TYPE,AMOUNT,UNIT,PRICE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{baseStandardId},#{type},#{amount},#{unit},#{price},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and price.ID=#{id}
+	        </if>
+	        <if test="baseStandardId != null ">
+	            and price.BASE_STANDARD_ID=#{baseStandardId}
+	        </if>
+	        <if test="type != null ">
+	            and price.TYPE=#{type}
+	        </if>
+	        <if test="amount != null ">
+	            and price.AMOUNT=#{amount}
+	        </if>
+	        <if test="unit != null ">
+	            and price.UNIT=#{unit}
+	        </if>
+	        <if test="price != null ">
+	            and price.PRICE=#{price}
+	        </if>
+	        <if test="deleted != null ">
+	            and price.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and price.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and price.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and price.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and price.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and price.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_BASE_PRICE price
+	        <include refid="Common_Where_Clause" />
+	</select>
+	<select id="selectChargeTypeByStandard" resultType="java.lang.Integer" parameterType="java.lang.String">
+	    select
+	        price.TYPE
+	    from
+	        MATRIX_BILLING_BASE_PRICE price
+	    left join 
+	    	MATRIX_BILLING_BASE_STANDARD standard on price.BASE_STANDARD_ID=standard.ID
+	    where 
+	    	standard.STANDARD=#{standard}
+	</select>
+
+</mapper>   

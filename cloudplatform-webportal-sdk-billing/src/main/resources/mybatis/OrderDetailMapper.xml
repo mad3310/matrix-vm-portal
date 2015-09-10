@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.order.IOrderDetailDao">
+	
+	<resultMap id="BaseResultMap" type="OrderDetail">
+	    <result column="ID" property="id" />
+	    <result column="ORDER_ID" property="orderId" />
+	    <result column="SUBSCRIPTION_DETAIL_ID" property="subscriptionDetailId" />
+	    <result column="START_TIME" property="startTime" />
+	    <result column="END_TIME" property="endTime" />
+	    <result column="AMOUNT" property="amount" />
+	    <result column="PRICE" property="price" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    orderDetail.ID,orderDetail.ORDER_ID,orderDetail.SUBSCRIPTION_DETAIL_ID,
+	    orderDetail.START_TIME,orderDetail.END_TIME,orderDetail.AMOUNT,orderDetail.PRICE,orderDetail.DELETED,
+	    orderDetail.CREATE_TIME,orderDetail.UPDATE_TIME,orderDetail.CREATE_USER,orderDetail.UPDATE_USER,orderDetail.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="OrderDetail" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_ORDER_DETAIL 
+	        (ORDER_ID,SUBSCRIPTION_DETAIL_ID,START_TIME,END_TIME,AMOUNT,PRICE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{orderId},#{subscriptionDetailId},#{startTime},#{endTime},#{amount},#{price},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and orderDetail.ID=#{id}
+	        </if>
+	        <if test="orderId != null ">
+	            and orderDetail.ORDER_ID=#{orderId}
+	        </if>
+	        <if test="subscriptionDetailId != null ">
+	            and orderDetail.SUBSCRIPTION_DETAIL_ID=#{subscriptionDetailId}
+	        </if>
+	        <if test="startTime != null ">
+	            and orderDetail.START_TIME=#{startTime}
+	        </if>
+	        <if test="endTime != null ">
+	            and orderDetail.END_TIME=#{endTime}
+	        </if>
+	        <if test="amount != null ">
+	            and orderDetail.AMOUNT=#{amount}
+	        </if>
+	        <if test="price != null ">
+	            and orderDetail.PRICE=#{price}
+	        </if>
+	        <if test="deleted != null ">
+	            and orderDetail.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and orderDetail.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and orderDetail.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and orderDetail.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and orderDetail.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and orderDetail.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_ORDER_DETAIL orderDetail
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+	
+
+</mapper>   

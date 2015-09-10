@@ -120,7 +120,7 @@
 										<a href="javascript:void(0)">云盾</a>
 										<div class="yundun-title-tips">
 											<span class="glyphicon glyphicon-info-sign text-warning"></span>
-											<span class="text-danger">您尚未购买云主机或负载均衡,在您购买后会自动开启云盾服务</span>
+											<span class="text-danger">您尚未购买云服务器或负载均衡,在您购买后会自动开启云盾服务</span>
 										</div>
 									</div>
 									<div>
@@ -249,26 +249,6 @@
 								</a>
 							</div>
 						</li>
-						<li id="vm-opened" class="hide product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
-							<div class="item-profile clearfix">
-								<a href="${ctx}/list/vm" class="pull-left">
-									<span class="item-icon product-icons-48 product-icons-yunzhuji"></span>
-								</a>
-								<p class="item-title">
-									<a href="${ctx}/list/vm">云主机&nbsp;<span class="item-title-short">ECS</span>
-									</a>
-								</p>
-							</div>
-							<div class="item-record">
-								<span class="item-record-num">
-									<a class="item-record-num-count" href="${ctx}/list/vm"><span id="vmCount">0</span></a>
-								</span>
-								<span class="item-record-unit">个</span>
-								<a data-toggle="tooltip" data-placement="top" title="云主机数">
-									<span class="glyphicon glyphicon-question-sign text-muted" ></span>
-								</a><!-- 已开通产品 begin -->
-							</div>
-						</li>
 						<li class="product-item col-xs-12 col-sm-12 col-md-3 col-lg-3">
 							<div class="item-profile clearfix">
 								<a href="javascript:void(0)" class="pull-left">
@@ -308,28 +288,18 @@
 							<div class="product-category">
 								<p class="category-title ng-binding">弹性计算</p>
 								<ul>
-									<li id="vm-not-opened">
-										<div class="pull-left clearfix">
+									<li class="clearfix">
+										<div class="pull-left">
 											<span class="glyphicon glyphicon-th-list text-muted"></span> 
-											<span>云主机</span>
+											<span>云服务器</span>
 											<span>ECS</span>
-											<span class="beta-font">Beta</span>
 										</div>
-										<div class="product-opts pull-right clearfix">
-											<div class="pull-left product-opt-wrap">
-												<a href="/detail/vmCreate" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="立即购买">
-													<span id="rds-purchase" class="glyphicon glyphicon-shopping-cart product-opt-icon"></span>
-												</a>
-											</div>
-											<div class="pull-left product-opt-wrap">
-												<a href="/helpCenter/helpCenter.jsp" target="_blank" class="product-opt" data-toggle="tooltip" data-placement="top" title="产品详情">
-													<span id="rds-purchase" class="glyphicon glyphicon-question-sign product-opt-icon"></span>
-												</a>
-											</div>
+										<div class="pull-right clearfix">
+											<span class="home-orange">敬请期待...</span>
 										</div>
 									</li>
 									<li  id="slb-not-opened">
-										<div class="pull-left clearfix">
+										<div class="pull-left" class="hide clearfix">
 											<span class="glyphicon glyphicon-tasks text-muted"></span>
 											<span>负载均衡</span>
 											<span>SLB</span>
