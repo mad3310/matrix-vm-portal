@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.model.subscription.Subscription;
 
 
 /**
@@ -22,7 +23,21 @@ public class Order extends BaseModel{
 	private Date endTime;//结束时间
 	private String descn;//描述
 	private Double price;//价格
+	private Integer status;//订单状态：0-未付款，1-失效，2-已付款
+	private Subscription subscription;//订阅实体
 	
+	public Subscription getSubscription() {
+		return subscription;
+	}
+	public void setSubscription(Subscription subscription) {
+		this.subscription = subscription;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 	public Double getPrice() {
 		return price;
 	}

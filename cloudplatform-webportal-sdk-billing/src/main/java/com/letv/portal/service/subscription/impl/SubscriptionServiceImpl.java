@@ -48,7 +48,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 
 
 	@Override
-	public Boolean createSubscription(Long id, Map<String, Object> map) {
+	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId) {
 		if(this.productService.validateData(id, map)) {
 			Subscription sub = new Subscription();
 			sub.setProductId(id);
@@ -56,6 +56,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			sub.setHclusterId(Long.parseLong((String)map.get("area")));
 			sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
 			sub.setOrderNum(Integer.parseInt((String)map.get("order_num")));
+			sub.setProductInfoRecordId(productInfoRecordId);
 			Integer t = Integer.parseInt((String)map.get("order_time"));
 			sub.setOrderTime(t);
 			Date d = new Date();
@@ -87,10 +88,10 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 				detail.setValid(true);
 				this.subscriptionDetailDao.insert(detail);
 			}
-			this.orderService.createOrder(sub.getId());
+			return sub;
 		}
 		
-		return true;
+		return null;
 	}
 
 

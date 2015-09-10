@@ -34,8 +34,6 @@ public class ProductController {
 	
 	@Autowired
 	IProductService productService;
-	@Autowired
-	ISubscriptionService subscriptionService;
 	
 	@RequestMapping(value="/product/{id}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject queryProductDetail(@PathVariable Long id, ResultObject obj) {
@@ -44,80 +42,7 @@ public class ProductController {
 	}
 	
 	
-	@RequestMapping(value="/price/{id}",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject queryProductPrice( @PathVariable Long id, HttpServletRequest request, ResultObject obj) {
-		Map<String,Object> map = HttpUtil.requestParam2Map(request);
-		Double ret = this.productService.queryProductPrice(id, map);
-		if(ret==null) {
-			obj.setResult(0);
-			obj.addMsg("输入参数不合法");
-		} else {
-			obj.setData(ret);
-		}
-		return obj;
-	}
-	
-	@RequestMapping(value="/subscription/{id}",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject createSubscription( @PathVariable Long id, HttpServletRequest request, ResultObject obj) {
-		Map<String,Object> map = HttpUtil.requestParam2Map(request);
-		if(this.productService.validateData(id, map)) {
-			obj.setData(this.subscriptionService.createSubscription(id, map));
-		} else {
-			obj.setResult(0);
-			obj.addMsg("输入参数不合法");
-		}
-		return obj;
-	}
 	
 	
-	
-	/**Methods Name: listHcluster <br>
-	 * Description: 获取产品hcluster列表<br>
-	 * @author name: liuhao1
-	 * @return
-	 */
-	@RequestMapping(value="/hcluster",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject listHcluster() {
-		ResultObject obj = new ResultObject();
-		return obj;
-	}
-	
-	/**Methods Name: listProduct <br>
-	 * Description: 根据某地域及产品名称获取product列表<br>
-	 * @author name: liuhao1
-	 * @param hclusterId
-	 * @param name
-	 * @return
-	 */
-	@RequestMapping(value="/product",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject listProduct(@RequestParam Long hclusterId,@RequestParam String name) {
-		ResultObject obj = new ResultObject();
-		return obj;
-	}
-	
-	/**Methods Name: listElement <br>
-	 * Description: 产品基础元素<br>
-	 * @author name: liuhao1
-	 * @param productId
-	 * @return
-	 */
-	@RequestMapping(value="/element",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject listElement(@RequestParam Long productId) {
-		ResultObject obj = new ResultObject();
-		return obj;
-	}
-	
-	
-	/**Methods Name: listPrice <br>
-	 * Description: 根据地域获取资源内容及基础价格列表<br>
-	 * @author name: liuhao1
-	 * @param hclusterId
-	 * @return
-	 */
-	@RequestMapping(value="/price",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject listPrice(@RequestParam Long hclusterId) {
-		ResultObject obj = new ResultObject();
-		return obj;
-	}
 	
 }

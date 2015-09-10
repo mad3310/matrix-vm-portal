@@ -31,8 +31,15 @@ public class Subscription extends BaseModel{
 	private Date endTime;//结束时间
 	private boolean valid;//是否有效：false-无效，true-有效
 	private String descn;//描述
+	private Long productInfoRecordId;//产品信息记录ID
 	
 	
+	public Long getProductInfoRecordId() {
+		return productInfoRecordId;
+	}
+	public void setProductInfoRecordId(Long productInfoRecordId) {
+		this.productInfoRecordId = productInfoRecordId;
+	}
 	public Long getUserId() {
 		return userId;
 	}

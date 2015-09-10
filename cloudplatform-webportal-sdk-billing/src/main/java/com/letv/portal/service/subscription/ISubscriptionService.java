@@ -16,10 +16,11 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @Description: 生产订阅 
 	  * @param id
 	  * @param map
-	  * @return Boolean   
+	  * @param productInfoRecordId 具体购买产品信息记录ID，用户支付完成后创建服务
+	  * @return Subscription 返回订阅   
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年9月6日 下午3:58:11
 	  */
-	Boolean createSubscription(Long id, Map<String, Object> map);
+	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId);
 }

@@ -17,17 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.model.DbModel;
+import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.IContainerService;
 import com.letv.portal.service.IDbService;
 import com.letv.portal.service.IDbUserService;
 import com.letv.portal.service.IMclusterService;
+import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.product.IProductService;
+import com.letv.portal.service.subscription.ISubscriptionService;
 
 /**Program Name: DbController <br>
  * Description:  db数据库的相关操作<br>
@@ -48,6 +53,12 @@ public class DbController {
 	private IMclusterService mclusterService;
 	@Resource
 	private IDbUserService dbUserService;
+	@Autowired
+	IProductService productService;
+	@Autowired
+	ISubscriptionService subscriptionService;
+	@Autowired
+	IOrderService orderService;
 	
 	@Autowired
 	private IDbProxy dbProxy;
@@ -95,10 +106,20 @@ public class DbController {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject save(DbModel dbModel,boolean isCreateAdmin) {
-		this.dbProxy.saveAndBuild(dbModel,isCreateAdmin);
+	public @ResponseBody ResultObject save(DbModel dbModel,boolean isCreateAdmin,String calculateData) {
+		Map<String, Object> billingPrams = JSONObject.parseObject(calculateData, Map.class);
+		//保存db基本信息
+		Long rdsId = this.dbProxy.save(dbModel,isCreateAdmin);
 		ResultObject obj = new ResultObject();
+		//生产订阅
+		Subscription sub = this.subscriptionService.createSubscription(1l, billingPrams, rdsId);
+		//生产订单
+		if(sub.getChargeType()==0) {//包年包月
+			Long orderId = this.orderService.createOrder(sub.getId());
+			obj.setData(orderId);
+		}
 		return obj;
 	}
 	@RequestMapping(value="/1/1/1/1",method=RequestMethod.POST)   

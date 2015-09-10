@@ -182,5 +182,55 @@ public class DbProxyImpl extends BaseProxyImpl<DbModel> implements
 			defaultEmailSender.sendMessage(mailMessage);
 		}
 	}
+	@Override
+	public Long save(DbModel dbModel,boolean isCreateAdmin) {
+		Long userId = sessionService.getSession().getUserId();
+		dbModel.setCreateUser(userId);
+		dbModel.setStatus(DbStatus.DEFAULT.getValue());
+		dbModel.setDeleted(true);
+		//页面值传入为空或不合法，改为默认值2G
+		if(dbModel.getMemorySize()==null || dbModel.getMemorySize()<=0) {
+			dbModel.setMemorySize(2147483648l);
+		}
+		//页面值传入为空或不合法，改为默认值10G
+		if(dbModel.getStorageSize()==null || dbModel.getStorageSize()<=0) {
+			dbModel.setStorageSize(10737418240l);
+		}
+		this.dbService.insert(dbModel);
+		
+		if(isCreateAdmin)
+			this.dbUserService.createDefalutAdmin(dbModel.getId());
+		return dbModel.getId();
+	}
+	
+	@Override
+	public void build(Long dbId) {
+		Long userId = sessionService.getSession().getUserId();
+		DbModel dbModel = this.dbService.selectById(dbId);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("createUser", userId);
+		
+		//创建mcluster集群
+		Map<String,Object> params = new HashMap<String,Object>();
+		
+		params.put("dbId", dbModel.getId());
+		StringBuffer mclusterName = new StringBuffer();
+		mclusterName.append(userId).append("_").append(dbModel.getDbName());
+		Boolean isExist= this.mclusterService.isExistByName(mclusterName.toString());
+		int i = 0;
+		while(!isExist) {
+			isExist= this.mclusterService.isExistByName(mclusterName.toString() + i);
+			i++;
+		}
+		if(i>0)
+			mclusterName.append(i);
+		params.put("mclusterName", mclusterName.toString());
+		params.put("status", DbStatus.BUILDDING.getValue());
+		params.put("hclusterId", dbModel.getHclusterId());
+		
+		this.auditAndBuild(params);
+		
+	}
 	
 }
