@@ -13,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.letv.portal.model.cloudvm.CloudvmVmCount;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
-import com.letv.portal.service.openstack.exception.*;
-
 import org.apache.commons.lang3.CharUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -46,6 +43,17 @@ import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
+import com.letv.portal.model.cloudvm.CloudvmVmCount;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
@@ -1471,4 +1479,100 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 		}
 	}
 
+	@Override
+	public void bindFloatingIp(final String region, final String vmId,
+			final String floatingIpId) throws OpenStackException {
+		runWithApi(new ApiRunnable<NovaApi, Void>() {
+
+			@Override
+			public Void run(NovaApi novaApi) throws Exception {
+				checkRegion(region);
+
+				ServerApi serverApi = novaApi.getServerApi(region);
+				Server server = serverApi.get(vmId);
+				if (server == null) {
+					throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null || !isPublicIp(floatingIP)) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (floatingIP.getInstanceId() != null) {
+					throw new UserOperationException(MessageFormat.format(
+							"Floating IP is binded to the VM '{0}'.",
+							floatingIP.getInstanceId()), MessageFormat.format(
+							"公网IP已绑定到虚拟机“{0}”，请先解绑。",
+							floatingIP.getInstanceId()));
+				}
+
+				for (FloatingIP fip : floatingIPApi.list().toList()) {
+					if (vmId.equals(fip.getInstanceId())) {
+						throw new UserOperationException(MessageFormat.format(
+								"VM is binded to the Floating IP '{0}'.",
+								fip.getId()), MessageFormat.format(
+								"虚拟机已绑定公网IP“{0}”，请先解绑。", fip.getId()));
+					}
+				}
+
+				floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+
+				emailBindIP(get(region, vmId), floatingIP.getIp());
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void unbindFloatingIp(final String region, final String vmId,
+			final String floatingIpId) throws OpenStackException {
+		runWithApi(new ApiRunnable<NovaApi, Void>() {
+
+			@Override
+			public Void run(NovaApi novaApi) throws Exception {
+				checkRegion(region);
+
+				ServerApi serverApi = novaApi.getServerApi(region);
+				Server server = serverApi.get(vmId);
+				if (server == null) {
+					throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null || !isPublicIp(floatingIP)) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (!vmId.equals(floatingIP.getInstanceId())) {
+					throw new UserOperationException("VM is not binded to Floating IP.", "虚拟机和公网IP未绑定");
+				}
+
+				floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
+
+				return null;
+			}
+		});
+	}
+
+	private static boolean isPublicIp(FloatingIP floatingIP) {
+		return !StringUtils.equals(floatingIP.getFixedIp(), floatingIP.getIp());
+	}
 }

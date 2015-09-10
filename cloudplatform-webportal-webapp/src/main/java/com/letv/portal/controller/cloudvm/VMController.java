@@ -36,10 +36,10 @@ public class VMController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
-		try{
-		result.setData(Util.session(sessionService).getVMManager().getRegions()
-				.toArray(new String[0]));
-		}catch(OpenStackException e){
+		try {
+			result.setData(Util.session(sessionService).getVMManager()
+					.getRegions().toArray(new String[0]));
+		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
 		return result;
@@ -143,7 +143,7 @@ public class VMController {
 			VMResource vmResource = vmManager.create(region, vmCreateConf);
 
 			result.setData(vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -160,7 +160,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.publish(region, vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -177,7 +177,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.unpublish(region, vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -194,7 +194,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.deleteSync(region, vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -208,7 +208,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchDeleteSync(vms);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -225,7 +225,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -239,7 +239,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStartSync(vms);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -256,7 +256,7 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -270,7 +270,7 @@ public class VMController {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVMManager().batchStopSync(vms);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -289,7 +289,7 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			vmManager.attachVolume(vmManager.get(region, vmId),
 					volumeManager.get(region, volumeId));
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -308,7 +308,7 @@ public class VMController {
 			VolumeManager volumeManager = openStackSession.getVolumeManager();
 			vmManager.detachVolume(vmManager.get(region, vmId),
 					volumeManager.get(region, volumeId));
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -325,7 +325,7 @@ public class VMController {
 			OpenStackSession openStackSession = Util.session(sessionService);
 			VMManager vmManager = openStackSession.getVMManager();
 			result.setData(vmManager.openConsole(vmManager.get(region, vmId)));
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -334,11 +334,45 @@ public class VMController {
 		return result;
 	}
 
-	@RequestMapping(value="/is-authority", method=RequestMethod.GET)
-	public @ResponseBody ResultObject isAuthority(){
-		ResultObject result=new ResultObject();
+	@RequestMapping(value = "/is-authority", method = RequestMethod.GET)
+	public @ResponseBody ResultObject isAuthority() {
+		ResultObject result = new ResultObject();
 		OpenStackSession openStackSession = Util.session(sessionService);
 		result.setData(openStackSession.isAuthority());
+		return result;
+	}
+
+	@RequestMapping(value = "/vm/floatingip/bind", method = RequestMethod.POST)
+	public @ResponseBody ResultObject bindFloatingIp(
+			@RequestParam String region, @RequestParam String vmId,
+			@RequestParam String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.bindFloatingIp(region, vmId, floatingIpId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/vm/floatingip/unbind", method = RequestMethod.POST)
+	public @ResponseBody ResultObject unbindFloatingIp(
+			@RequestParam String region, @RequestParam String vmId,
+			@RequestParam String floatingIpId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.unbindFloatingIp(region, vmId, floatingIpId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 }

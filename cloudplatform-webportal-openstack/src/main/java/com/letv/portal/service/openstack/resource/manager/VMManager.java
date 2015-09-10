@@ -53,7 +53,8 @@ public interface VMManager extends ResourceManager {
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
-			TaskNotFinishedException, PollingInterruptedException, OpenStackException;
+			TaskNotFinishedException, PollingInterruptedException,
+			OpenStackException;
 
 	void batchDeleteSync(String vmIdListJson) throws OpenStackException;
 
@@ -81,7 +82,8 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, OpenStackException;
 
 	FlavorResource getFlavorResource(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException, OpenStackException;
+			throws RegionNotFoundException, ResourceNotFoundException,
+			OpenStackException;
 
 	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
 			String region) throws OpenStackException;
@@ -92,5 +94,12 @@ public interface VMManager extends ResourceManager {
 	void detachVolume(VMResource vmResource, VolumeResource volumeResource)
 			throws OpenStackException;
 
-	String openConsole(VMResource vmResource) throws APINotAvailableException, OpenStackException;
+	String openConsole(VMResource vmResource) throws APINotAvailableException,
+			OpenStackException;
+
+	void bindFloatingIp(String region, String vmId, String floatingIpId)
+			throws OpenStackException;
+	
+	void unbindFloatingIp(String region, String vmId, String floatingIpId)
+			throws OpenStackException;
 }
