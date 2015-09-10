@@ -1,5 +1,19 @@
 .main-body{width:100%;min-width:1024px;max-width:1920px;}
 .active{color:#088ac2}
+/* font-face */
+@font-face {font-family: 'iconfont';
+    src: url('iconfonts/iconfont.eot'); /* IE9*/
+    src: url('iconfonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfonts/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);overflow:hidden;}
 .body-top .top-nav{position:relative;z-index:200;line-height:45px;}
@@ -40,15 +54,19 @@
 .recommend-product .product-more{margin:5px 0 0 0;font-size:1.2rem;color:#088ac2;letter-spacing:.15rem;text-align:left}
 .recommend-product .product-try{width:180px;height:35px;margin-top:25px;margin-bottom: 10px;border:1px solid #088ac2;border-radius:2px;font-size:1.2rem;color:#088ac2;letter-spacing:.15rem;text-align:center;line-height:35px;overflow: hidden;}
 .product-try span{font-size:1.4rem;color:#ff3c37}
-.product-use,.product-price{-ms-transition:0.5s;-webkit-transition:0.5s;transition:0.5s;}
+.product-use,.product-price{width:182px;height:37px;margin-left: -1px;margin-top: -1px;;-ms-transition:0.5s;-webkit-transition:0.5s;transition:0.5s;}
 .product-use{background-color: #088AC2;color:#f5f9fb;}
 
 /* by yk start
  *产品推荐交互效果
  * */
 .recommend-product > div{color: white;-ms-transition:0.1s;-webkit-transition:0.1s;transition:0.1s;}
-.recommend-product > div:hover{/* box-shadow: 0px 0px 5px gray; */ -ms-transform: scale(1.05,1.05);-webkit-transform: scale(1.05,1.05);transform: scale(1.05,1.05);}
-.product-try:hover .product-price{margin-top:-37px;}
+.product-iconfont{left: 50%;margin-left: -50px;width:100px;height: 100px;border-radius:40%;border: 1px solid #088AC2;position: relative;z-index: 999;}	
+.product-iconfont> .iconfont{color:#088AC2; font-size: 80px;position: absolute;left: 50%;top:5px;margin-left: -40px;z-index: 9999;}
+.recommend-product > div:hover{/* box-shadow: 0px 0px 5px gray; */ -ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1);}
+.recommend-product > div:hover .product-price{margin-top:-38px;}
+.recommend-product > div:hover .product-iconfont{background-color: #088AC2; }
+.recommend-product > div:hover .product-iconfont> .iconfont{color:#FFFFFF;}
 /* by yk end */
 
 /*customer*/
@@ -92,6 +110,7 @@
 .footer-right .right-desc{padding:15px 0 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* 返回顶部 */
 #toTop{position:fixed;right:30px;bottom:40px;cursor:pointer;display:none;}
+#toTop:hover{-ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1);}
 @media(min-width:1024px){
 	.main-body{padding-left:10%;padding-right:10%;}
 }
