@@ -10,4 +10,5 @@ public interface RouterResource extends Resource{
 //	List<PortResource> getPorts();
 	List<SubnetResource> getSubnets();
 	Long getCreated();
+	NetworkResource getCarrier();
 }

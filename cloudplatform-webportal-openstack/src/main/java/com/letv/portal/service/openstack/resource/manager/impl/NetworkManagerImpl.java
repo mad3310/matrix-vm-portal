@@ -1159,9 +1159,25 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 											}
 										}
 									}
-									routerResources.add(new RouterResourceImpl(
-											region, regionDisplayName,
-											resource, subnetResources));
+									NetworkResource networkResource = null;
+									if (resource.getExternalGatewayInfo() != null
+											&& resource.getExternalGatewayInfo().getNetworkId() != null) {
+										networkResource = new NetworkResourceImpl(neutronApi
+												.getNetworkApi(region).get(
+														resource.getExternalGatewayInfo()
+																.getNetworkId()));
+									}
+									RouterResource routerResource;
+									if (networkResource != null) {
+										routerResource = new RouterResourceImpl(region,
+												regionDisplayName, resource,
+												networkResource, subnetResources);
+									} else {
+										routerResource = new RouterResourceImpl(
+												region, regionDisplayName,
+												resource, subnetResources);
+									}
+									routerResources.add(routerResource);
 								}
 								routerCount++;
 							}
@@ -1234,6 +1250,15 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				String regionDisplayName = getRegionDisplayName(region);
 
+				NetworkResource networkResource = null;
+				if (router.getExternalGatewayInfo() != null
+						&& router.getExternalGatewayInfo().getNetworkId() != null) {
+					networkResource = new NetworkResourceImpl(neutronApi
+							.getNetworkApi(region).get(
+									router.getExternalGatewayInfo()
+											.getNetworkId()));
+				}
+
 				List<SubnetResource> subnetResources = new LinkedList<SubnetResource>();
 				PortApi portApi = neutronApi.getPortApi(region);
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
@@ -1260,8 +1285,17 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 				}
 
-				return new RouterResourceImpl(region,
-						getRegionDisplayName(region), router, subnetResources);
+				RouterResource routerResource;
+				if (networkResource != null) {
+					routerResource = new RouterResourceImpl(region,
+							getRegionDisplayName(region), router,
+							networkResource, subnetResources);
+				} else {
+					routerResource = new RouterResourceImpl(region,
+							getRegionDisplayName(region), router,
+							subnetResources);
+				}
+				return routerResource;
 			}
 		});
 	}
