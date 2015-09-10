@@ -65,15 +65,53 @@ define(function(require){
         }
     }).on('success.form.bv', function(e) {
         e.preventDefault();
+        
+      //生产订单计算价格参数
+        var _region=$('#region').val();
+        var _area=$('#available').val();
+        var _rds_ram=$('#dbRam').val();
+        var _order_time=$('#dbTime').val();
+        var _rds_db=$('#dbConfig').val();
+        var _db_version=$('#dbVersion').val();
+        var _db_account=$('#dbAccount').val();
+        var _db_engine=$('#dbEngine').val();
+        var _db_linkType=$('#dbLinkType').val();
+        var _order_num=$('#dbNum').val();
+        var _rds_storage=$('#dbStorage').val();
+        var calculateData={
+            "region":_region,
+            "area":_area,
+            "rds_ram":_rds_ram,
+            "order_time":_order_time,
+            "rds_db":_rds_db,
+            "db_version":_db_version,
+            "db_account":_db_account,
+            "db_engine":_db_engine,
+            "db_linkType":_db_linkType,
+            "order_num":_order_num,
+            "rds_storage":_rds_storage
+        }
+        
         var dbName = $("[name = 'dbName']").val();
-        var hclusterId = $("[name = 'hclusterId']").val();
-        var engineType = $("[name = 'engineType']").val();
-        var linkType = $("[name = 'linkType']").val();
-        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
-        var storageSize = $("[name = 'storageSize']").val();
-        var memorySize = $("[name = 'memorySize']").val();
-        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin,"storageSize":storageSize,"memorySize":memorySize};
-        CreateDb(formData);
+        var hclusterId = _area;
+        var engineType = _db_engine;
+        var linkType = _db_linkType;
+        var isCreateAdmin = _db_account;
+        var storageSize = _rds_storage;
+        var memorySize = _rds_ram;
+        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin,"storageSize":storageSize,"memorySize":memorySize,"calculateData":JSON.stringify(calculateData)};
+        
+        buy(formData);
+        
+//        var dbName = $("[name = 'dbName']").val();
+//        var hclusterId = $("[name = 'hclusterId']").val();
+//        var engineType = $("[name = 'engineType']").val();
+//        var linkType = $("[name = 'linkType']").val();
+//        var isCreateAdmin = $("[name = 'isCreateAdmin']").val();
+//        var storageSize = $("[name = 'storageSize']").val();
+//        var memorySize = $("[name = 'memorySize']").val();
+//        var formData = {"dbName":dbName,"linkType":linkType,"engineType":engineType,"hclusterId":hclusterId,"isCreateAdmin":isCreateAdmin,"storageSize":storageSize,"memorySize":memorySize};
+//        CreateDb(formData);
     });
     /*表单验证 --end*/
 
@@ -93,7 +131,15 @@ define(function(require){
             location.href = "/list/db";
         });
     }
-
+    
+    /*购买*/
+    function buy(formData) {
+    	cn.RemoveBeforeunloadListener();
+    	cn.PostData("/db", formData, function (data) {
+            location.href = "/order/"+data.data;
+        });
+    }
+    
     // 手机端 购买页面 适配
     $('.step-next').unbind('click').click(function(event) {
         $(this).parent().addClass('hide').next().removeClass('config-buy');
@@ -419,7 +465,7 @@ define(function(require){
         console.log(postData)
         var _configMoney=$('#configMoney')
         $.ajax({
-            url: '/billing/price/1',
+            url: '/billing/calculate/price/1',
             type: 'post',
             data:postData,
             success:function(data){
