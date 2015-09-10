@@ -90,4 +90,9 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 		return networkResource;
 	}
 
+	@Override
+	public String getName() {
+		return floatingIp.getName();
+	}
+
 }

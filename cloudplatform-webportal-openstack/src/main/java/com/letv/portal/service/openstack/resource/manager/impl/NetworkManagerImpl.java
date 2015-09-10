@@ -2139,8 +2139,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	}
 
 	private static String getNameOfFloatingIp(FloatingIP floatingIP) {
-		// TODO get name of floating ip
-		return floatingIP.getFloatingIpAddress();
+		return floatingIP.getName();
 	}
 
 	private Page listFloatingIpByRegions(final Set<String> regions,
@@ -2368,7 +2367,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
-						.fipQos(createFipQos(bandWidth)).build());
+						.name(name).fipQos(createFipQos(bandWidth)).build());
 
 				return null;
 			}
@@ -2438,7 +2437,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				}
 
 				floatingIPApi.update(floatingIpId, (FloatingIP.updateBuilder()
-						.fipQos(createFipQos(bandWidth)).build()));
+						.name(name).fipQos(createFipQos(bandWidth)).build()));
 
 				return null;
 			}
