@@ -1344,10 +1344,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	public static Integer getBandWidth(FipQos fipQos) {
 		try {
 			if (fipQos != null) {
-				String egressMaxRate = fipQos.getEgressMaxRate();
-				if (egressMaxRate != null) {
-					String bandWidthStr = egressMaxRate.substring(0,
-							egressMaxRate.length() - "Mbit".length());
+				String egressBurstRate = fipQos.getEgressBurstRate();
+				if (egressBurstRate != null) {
+					String bandWidthStr = egressBurstRate.substring(0,
+							egressBurstRate.length() - "Mb".length());
 					return Integer.parseInt(bandWidthStr);
 				}
 			}
