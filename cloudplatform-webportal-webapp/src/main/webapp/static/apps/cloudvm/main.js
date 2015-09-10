@@ -1,20 +1,18 @@
 require.config({
   paths: {
     //vendor
-    'jquery': '/javascripts/jquery-1.11.3',
-    'bootstrap': '/javascripts/bootstrap',
-    'common': '/javascripts/common',
-    'angular': '/javascripts/angular',
-    'angular-animate': '/javascripts/angular-animate',
-    'angular-route': '/javascripts/angular-route',
-    'ui-select': '/javascripts/select',
-    'ui-bootstrap': '/javascripts/ui-bootstrap-tpls-0.13.3',
-    'ng-toaster': '/javascripts/toaster',
-    'ng-rap': '/javascripts/ng-rap',
+    'jquery': '/static/javascripts/jquery-1.11.3',
+    'bootstrap': '/static/javascripts/bootstrap',
+    'common': '/static/javascripts/common',
+    'angular': '/static/javascripts/angular',
+    'angular-animate': '/static/javascripts/angular-animate',
+    'angular-route': '/static/javascripts/angular-route',
+    'ui-select': '/static/javascripts/select',
+    'ui-bootstrap': '/static/javascripts/ui-bootstrap-tpls-0.13.3',
+    'ng-toaster': '/static/javascripts/toaster',
     //js文件
-    'app': '/app/app',
-    'app.router': '/app/app.route',
-    'app.mock': '/app/app.mock'
+    'app': '/static/apps/cloudvm/app',
+    'app.router': '/static/apps/cloudvm/app.route'
   },
   shim: {
     'angular': {
@@ -39,11 +37,7 @@ require.config({
     'ng-toaster': {
       deps: ['angular','angular-animate'],
       exports: 'ng-toaster'
-    },
-    'ng-rap': {
-      deps: ['angular'],
-      exports: 'ng-rap'
-    },
+    }, 
     'bootstrap': {
       deps: ['jquery'],
       exports: 'bootstrap'
@@ -55,7 +49,7 @@ require.config({
   }
 });
 
-require(['jquery', 'angular','common', 'bootstrap', 'app', 'app.router', 'app.mock'],//to enable ngrap,add 'app.mock' to require dependency
+require(['jquery', 'angular','common', 'bootstrap', 'app', 'app.router'],
   function (jquery, angular) {
     angular.bootstrap(document, ['myApp']);
   }

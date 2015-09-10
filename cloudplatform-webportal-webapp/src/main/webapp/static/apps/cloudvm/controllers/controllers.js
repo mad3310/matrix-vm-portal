@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/7/21.
  */
-define(['controllers/app.controller','controllers/rds/cluster-manage/ContainerCluster'],function (controllerModule) {
+define(['controllers/app.controller','controllers/VirtualMachine'],function (controllerModule) {
 
   controllerModule.controller('SideMenuController', ['$scope', '$location', 'routes',
     function ($scope, $location, routes) {
@@ -17,21 +17,10 @@ define(['controllers/app.controller','controllers/rds/cluster-manage/ContainerCl
               value.isOpen=false;
             }
           });
-        },
-        openSubSubMenu = function (url,parentRoute) {
-          angular.forEach(parentRoute.subRoutes, function (value, key){
-            if(url==value.url){
-              value.isOpen=true;
-            }
-            else{
-              value.isOpen=false;
-            }
-          });
         };
       $scope.routes = routes;
       $scope.isActive = isActive;
       $scope.openSubMenu = openSubMenu;
-      $scope.openSubSubMenu = openSubSubMenu;
     }]);
 
   controllerModule.controller('VmListController', ['$scope', '$http','toaster',

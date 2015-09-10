@@ -4,12 +4,9 @@
 define(['services/app.service'],function (serviceModule) {
   serviceModule.factory('Config', [function () {
     var config = {};
-    config.url = {
-      mcluster_list: '/mcluster/list',
-      user_list: '/user',
-      hcluster_list: '/hcluster',
-      mcluster_start: '/mcluster/start',
-      mcluster_stop: '/mcluster/stop',
+    config.urls = {
+      vm_regions: '/ecs/regions/',
+      vm_list: '/ecs/region',
     };
     config.mclusterStatuses = [
       {"text": "请选择状态", "value": ""},

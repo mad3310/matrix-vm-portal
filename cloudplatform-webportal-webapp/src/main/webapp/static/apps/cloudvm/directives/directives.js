@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/7/22.
  */
-define(['/app/directives/app.directive.js'],function (directiveModule) {
+define(['directives/app.directive'],function (directiveModule) {
 
     directiveModule.directive('leModal', function () {
         return {

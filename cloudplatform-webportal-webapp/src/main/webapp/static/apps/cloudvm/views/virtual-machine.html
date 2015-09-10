@@ -1,0 +1,57 @@
+<div class="container-cluster-view" ng-controller="VirtualMachineCrtl">
+    <div class="le-row operate-panel">
+        <div class="le-col-2">
+            <ui-select ng-model="selectedRegion.selected" theme="bootstrap">
+                <ui-select-match placeholder="">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="region in regionList">
+                    <div>{{region}}</div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="le-col-2 pull-right">
+            <input type="text" class="le-form-control" style="display: inline-block;width: 60%" ng-model="searchVmName" />
+            <button class="btn btn-default" ng-click="doSearch()">搜索</button>
+        </div>
+    </div>
+    <div class="le-row grid">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>云主机名称</th>
+                <th>状态</th>
+                <th>区域</th>
+                <th>镜像名称</th>
+                <th>网络</th>
+                <th>配置</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tby">
+            <tr ng-repeat="vm in vmList">
+                <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
+                <td>
+                    {{vm.vmState}}
+                </td>
+                <td>{{vm.regionDisplayName}}</td>
+                <td>{{vm.image.name}}</td>
+                <td>{{vm.ipAddresses.private[0]}}</td>
+                <td>{{vm.flavor.name}}</td>
+                <td>
+                    <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
+                        <i class="fa fa-play-circle-o"></i>
+                    </a>
+                    <a href="javascript:void(0);" title="停止" ng-click="stopMcluster(vm)">
+                        <i class="fa fa-power-off"></i>
+                    </a>
+                    <a href="javascript:void(0);" title="删除" ng-if="mc.status===3" ng-click="deleteMcluster(vm)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize" total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
+        </pagination>
+    </div>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}"></toaster-container>
+</div>

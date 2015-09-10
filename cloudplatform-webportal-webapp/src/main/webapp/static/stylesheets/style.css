@@ -211,27 +211,6 @@
     font-size: 12px;
     margin-right: 5px;
 }
-
-.side-menu-view .side-menu .menu-item .submenu .submenu-item .sub-submenu {
-    display: none;
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
-
-.side-menu-view .side-menu .menu-item .submenu .submenu-item.open .sub-submenu {
-    display: block;
-}
-
-.side-menu-view .side-menu .menu-item .submenu .submenu-item .sub-submenu .sub-submenu-item > a {
-    display: block;
-    margin-left: 50px;
-    padding: 4px 10px 4px 10px;
-}
-
-.side-menu-view .side-menu .menu-item .submenu .submenu-item .sub-submenu .sub-submenu-item.active > a {
-    background: #578ebe;
-}
-
 /*end side-menu-view style*/
 
 /*end container-cluster-view style*/

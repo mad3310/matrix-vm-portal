@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/7/21.
  */
-define(['angular', 'angular-animate', 'angular-route', 'ui-select', 'ui-bootstrap', 'ng-toaster','ng-rap', 'controllers/controllers', 'services/services', 'directives/directives', 'filters/filters'], function (angular) {
+define(['angular', 'angular-animate', 'angular-route', 'ui-select', 'ui-bootstrap', 'ng-toaster', 'controllers/controllers', 'services/services', 'directives/directives', 'filters/filters'], function (angular) {
   var app = angular.module('myApp', [
     //angular
     'ngAnimate',
@@ -9,7 +9,6 @@ define(['angular', 'angular-animate', 'angular-route', 'ui-select', 'ui-bootstra
     'ui.select',
     'ui.bootstrap',
     'toaster',
-    'ngRap',
     //app
     'app.controller',
     'app.service',
@@ -25,15 +24,6 @@ define(['angular', 'angular-animate', 'angular-route', 'ui-select', 'ui-bootstra
           routes[i].isOpen = true;
           route = routes[i];
           break;
-        }
-      }
-      if (route) {
-        var subRoutes = route.subRoutes;
-        for (var i = 0, leng = subRoutes.length; i < leng; i++) {
-          if ($location.path().indexOf(subRoutes[i].url) > -1) {
-            subRoutes[i].isOpen = true;
-            break;
-          }
         }
       }
     });

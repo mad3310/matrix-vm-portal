@@ -12,12 +12,12 @@
         <body>
             <%@ include file="../../includes/header.jsp"%>
             <div class="main">
-                <div ng-include="'/app/partials/sidemenu.html'" class="side-bar"></div>
+                <div ng-include="'/static/apps/cloudvm/partials/sidemenu.html'" class="side-bar"></div>
                 <div class="content-wrapper">
                     <div ng-view="ng-view" class="content"></div>
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <script type="text/javascript" src="/static/javascripts/require.js" data-main="/static/app/main.js"></script>
+            <script type="text/javascript" src="/static/javascripts/require.js" data-main="/static/apps/cloudvm/main.js"></script>
         </body>
     </html>

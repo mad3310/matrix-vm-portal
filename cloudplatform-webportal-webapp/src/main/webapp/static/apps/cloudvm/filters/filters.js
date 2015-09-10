@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/8/18.
  */
-define(['filters/app.filter'],function (filterModule) {
+define(['filters/app.filter'], function (filterModule) {
 
   filterModule.filter('propsFilter', function () {
     return function (items, props) {
@@ -61,6 +61,21 @@ define(['filters/app.filter'],function (filterModule) {
   }]);
 
   filterModule.filter('sideMenuUrlFilter', [function () {
+    /*return function (route, parentRoute) {
+      var out = '';
+      if (parentRoute != null) {//subroute
+        out = ['/', parentRoute.url, '/#/', route.url].join('');
+      }
+      else {
+        if (route.abstract) {
+          out = 'javascript:void(0);';
+        }
+        else {
+          out = '/' + route.url;
+        }
+      }
+      return out || '未知';
+    }*/
     return function (route) {
       var out = '';
       if (route.abstract) {
