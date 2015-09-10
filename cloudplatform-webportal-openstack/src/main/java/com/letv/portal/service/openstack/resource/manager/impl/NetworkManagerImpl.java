@@ -1161,17 +1161,22 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 									}
 									NetworkResource networkResource = null;
 									if (resource.getExternalGatewayInfo() != null
-											&& resource.getExternalGatewayInfo().getNetworkId() != null) {
-										networkResource = new NetworkResourceImpl(neutronApi
-												.getNetworkApi(region).get(
-														resource.getExternalGatewayInfo()
+											&& resource
+													.getExternalGatewayInfo()
+													.getNetworkId() != null) {
+										networkResource = new NetworkResourceImpl(
+												neutronApi
+														.getNetworkApi(region)
+														.get(resource
+																.getExternalGatewayInfo()
 																.getNetworkId()));
 									}
 									RouterResource routerResource;
 									if (networkResource != null) {
-										routerResource = new RouterResourceImpl(region,
-												regionDisplayName, resource,
-												networkResource, subnetResources);
+										routerResource = new RouterResourceImpl(
+												region, regionDisplayName,
+												resource, networkResource,
+												subnetResources);
 									} else {
 										routerResource = new RouterResourceImpl(
 												region, regionDisplayName,
@@ -1607,6 +1612,25 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 								.getExternalGatewayInfo().getNetworkId() != null)) {
 					updateBuilder.externalGatewayInfo(ExternalGatewayInfo
 							.builder().build());
+				} else if (enablePublicNetworkGateway
+						&& (router.getExternalGatewayInfo() != null && router
+								.getExternalGatewayInfo().getNetworkId() != null)
+						&& !router.getExternalGatewayInfo().getNetworkId()
+								.equals(publicNetworkId)) {
+					routerApi.update(
+							routerId,
+							Router.updateBuilder()
+									.externalGatewayInfo(
+											ExternalGatewayInfo.builder()
+													.build()).build());
+					routerApi.update(
+							routerId,
+							Router.updateBuilder()
+									.externalGatewayInfo(
+											ExternalGatewayInfo.builder()
+													.networkId(publicNetworkId)
+													.build()).build());
+					needSetGatewayQos = true;
 				}
 				routerApi.update(routerId, updateBuilder.build());
 				if (needSetGatewayQos) {
