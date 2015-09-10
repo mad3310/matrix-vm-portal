@@ -105,4 +105,13 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 		}
 		return null;
 	}
+
+	@Override
+	public Long getUpdated() {
+		Date date = floatingIp.getUpdated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
 }
