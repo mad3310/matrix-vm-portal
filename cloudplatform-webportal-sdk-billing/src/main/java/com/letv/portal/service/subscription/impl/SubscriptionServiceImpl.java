@@ -19,6 +19,7 @@ import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
+import com.letv.portal.util.SerialNumberUtil;
 
 @Service("subscriptionService")
 public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> implements ISubscriptionService {
@@ -51,6 +52,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 	public Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId) {
 		if(this.productService.validateData(id, map)) {
 			Subscription sub = new Subscription();
+			sub.setSubscriptionNumber(SerialNumberUtil.getNumber(1));
 			sub.setProductId(id);
 			sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
 			sub.setHclusterId(Long.parseLong((String)map.get("area")));
