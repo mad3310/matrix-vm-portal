@@ -1,6 +1,20 @@
 .main-body{width:100%;min-width:1024px;max-width:1920px;}
 a:hover{cursor:pointer;}
 .active{color:#088ac2}
+/* font-face */
+@font-face {font-family: 'iconfont';
+    src: url('iconfonts/iconfont.eot'); /* IE9*/
+    src: url('iconfonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('iconfonts/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('iconfonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('iconfonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;}
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);overflow:hidden;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
@@ -47,7 +61,7 @@ a:hover{cursor:pointer;}
 .recommend-product .product-title{margin:20px 0 0 0;font-size:1.4rem;color:#333;letter-spacing:.15rem;text-align:left}
 .recommend-product .product-desc{margin:10px 0 0 0;font-size:1.2rem;color:#888;letter-spacing:.15rem;text-align:left}
 .recommend-product .product-more{margin:5px 0 0 0;font-size:1.2rem;color:#088ac2;letter-spacing:.15rem;text-align:left}
-.recommend-product .product-try{width:180px;height:35px;margin-top:25px;border:1px solid #088ac2;border-radius:2px;font-size:1.2rem;color:#088ac2;letter-spacing:.15rem;text-align:center;line-height:35px;}
+.recommend-product .product-try{width:180px;height:35px;margin-top:25px;margin-bottom: 10px;border:1px solid #088ac2;border-radius:2px;font-size:1.2rem;color:#088ac2;letter-spacing:.15rem;text-align:center;line-height:35px;overflow: hidden;}
 .product-try span{font-size:1.4rem;color:#ff3c37}
 .product-use,.product-price{width:182px;height:37px;margin-left: -1px;margin-top: -1px;;-ms-transition:0.5s;-webkit-transition:0.5s;transition:0.5s;}
 .product-use{background-color: #088AC2;color:#f5f9fb;}
@@ -64,7 +78,7 @@ a:hover{cursor:pointer;}
 .recommend-product > div:hover .product-iconfont> .iconfont{color:#FFFFFF;}
 
 /* by yk start
- *产品推荐交互效果
+ *客户案例交互效果
  * */
 .main-customer .customer-logos> div{position:relative; }
 .customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #CCCCCC;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;z-index: 9999;}
