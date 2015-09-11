@@ -70,6 +70,8 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
@@ -1606,5 +1608,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
 	private static boolean isPublicIp(FloatingIP floatingIP) {
 		return !StringUtils.equals(floatingIP.getFixedIp(), floatingIP.getIp());
+	}
+
+	@Override
+	public void create2(VMCreateConf2 conf) throws OpenStackException {
+		checkUserEmail();
+		new VMCreate(conf, this).run();
 	}
 }

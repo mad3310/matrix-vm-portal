@@ -15,6 +15,7 @@ import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
@@ -38,6 +39,8 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, PollingInterruptedException,
 			OpenStackException;
+
+	void create2(VMCreateConf2 conf2) throws OpenStackException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,
@@ -99,7 +102,8 @@ public interface VMManager extends ResourceManager {
 
 	void bindFloatingIp(String region, String vmId, String floatingIpId)
 			throws OpenStackException;
-	
+
 	void unbindFloatingIp(String region, String vmId, String floatingIpId)
 			throws OpenStackException;
+
 }
