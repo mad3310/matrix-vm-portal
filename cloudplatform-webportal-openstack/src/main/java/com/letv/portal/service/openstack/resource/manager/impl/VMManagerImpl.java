@@ -354,49 +354,46 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 						// }
 						// }
 
-						// Network userPrivateNetwork = networkManager
-						// .getOrCreateUserPrivateNetwork(region);
-						// if (userPrivateNetwork != null) {
-						// networks.add(userPrivateNetwork.getId());
+						Network userPrivateNetwork = networkManager
+								.getOrCreateUserPrivateNetwork(region);
+						if (userPrivateNetwork != null) {
+							networks.add(userPrivateNetwork.getId());
+						}
+
+						// if (networkResources == null
+						// || networkResources.isEmpty()) {
+						// throw new UserOperationException(
+						// "You must select a network to create virtual machine.",
+						// "创建虚拟机必须选择一个网络");
+						// }
+						// if (networkResources.size() > 1) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can't select more than one network.",
+						// "创建虚拟机不能选择多个网络");
 						// }
 
-						List<NetworkResource> networkResources = conf
-								.getNetworkResources();
-						if (networkResources == null
-								|| networkResources.isEmpty()) {
-							throw new UserOperationException(
-									"You must select a network to create virtual machine.",
-									"创建虚拟机必须选择一个网络");
-						}
-						if (networkResources.size() > 1) {
-							throw new UserOperationException(
-									"Create a virtual machine can't select more than one network.",
-									"创建虚拟机不能选择多个网络");
-						}
-
-						// if (networkResources != null) {
-						Boolean isSelectSharedNetwork = null;
-						for (int i = 0; i < networkResources.size(); i++) {
-							NetworkResourceImpl networkResource = (NetworkResourceImpl) networkResources
-									.get(i);
-							if (networkResource.getExternal()) {
-								throw new UserOperationException(
-										"Create a virtual machine can not choose the public network.",
-										"创建虚拟机不能选择公有网络");
-							}
-							if (isSelectSharedNetwork == null) {
-								isSelectSharedNetwork = networkResource
-										.getShared();
-							} else {
-								if (!isSelectSharedNetwork
-										.equals(networkResource.getShared())) {
-									throw new UserOperationException(
-											"Create a virtual machine can not add the shared network and private network at the same time.",
-											"创建虚拟机不能同时加入基础网络和私有网络");
-								}
-							}
-							networks.add(networkResource.getId());
-						}
+						// Boolean isSelectSharedNetwork = null;
+						// for (int i = 0; i < networkResources.size(); i++) {
+						// NetworkResourceImpl networkResource =
+						// (NetworkResourceImpl) networkResources
+						// .get(i);
+						// if (networkResource.getExternal()) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can not choose the public network.",
+						// "创建虚拟机不能选择公有网络");
+						// }
+						// if (isSelectSharedNetwork == null) {
+						// isSelectSharedNetwork = networkResource
+						// .getShared();
+						// } else {
+						// if (!isSelectSharedNetwork
+						// .equals(networkResource.getShared())) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can not add the shared network and private network at the same time.",
+						// "创建虚拟机不能同时加入基础网络和私有网络");
+						// }
+						// }
+						// networks.add(networkResource.getId());
 						// }
 
 						if (openStackUser.getInternalUser()
