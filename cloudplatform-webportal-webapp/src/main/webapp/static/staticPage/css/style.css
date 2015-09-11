@@ -4,7 +4,8 @@ a:hover{cursor:pointer;}
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);overflow:hidden;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
-.top-nav .nav-item a{font-size:1.8rem;color:#fff;}
+.top-nav .nav-item{font-size:1.8rem;color:#fff;}
+.top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
 .nav-item .item-arrow{position:relative;}
 .item-arrow img{position:absolute;top:0px;left:-776px;}
