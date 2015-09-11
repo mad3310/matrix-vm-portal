@@ -72,15 +72,26 @@
  *产品推荐交互效果
  * */
 .main-customer .customer-logos> div{position:relative; }
-.customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;z-index: 9999;}
-.customer-logos .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;margin-left: -3px;margin-top: 2px;z-index: 9999;}
+.customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #CCCCCC;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;z-index: 9999;}
+.customer-logos .tip-point >i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #CCCCCC;margin-left: -3px;margin-top: 2px;z-index: 9999;}
+.customer-logos>div:hover  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;z-index: 9999;}
+.customer-logos>div:hover .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;}
 .customer-logos .tip-triangle{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-left: 20px;;margin-top: -56px;z-index: 99;}
+.customer-logos .tip-triangle-start{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-left: 20px;;margin-top: -56px;z-index: 99;}
+.customer-logos .tip-triangle-middle{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-left: -37px;;margin-top: -56px;z-index: 99;}
+.customer-logos .tip-triangle-end{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-left: -60px;;margin-top: -56px;z-index: 99;}
 .customer-logos .tip-triangle>i{position:absolute;top:0; left:0;width:100%; height:100%;}
-.customer-logos .tip-triangle .triangle-1{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-30deg);-ms-transform: rotate(-30deg);transform: rotate(-30deg);}
- .customer-logos .tip-triangle .triangle-2{background-color : #F7F7F7;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-60deg);-ms-transform: rotate(-60deg);transform: rotate(-60deg);}
- .customer-logos .tip-triangle .triangle-3{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:60% 50%;-ms-transform-origin:60% 50%;transform-origin:60% 50%;-webkit-transform: rotate(110deg);-ms-transform: rotate(110deg);transform: rotate(110deg);}
- .customer-logos .tip-triangle .triangle-4{background-color : #F7F7F7;border-top: 1px solid #CCCCCC;-webkit-transform-origin:45% 50%;-ms-transform-origin:45% 50%;transform-origin:45% 50%;-webkit-transform: rotate(70deg);-ms-transform: rotate(70deg);transform: rotate(70deg);}
-/*customer*/
+.customer-logos .while-line{position: absolute;height: 1px;background: #FFFFFF;}
+.customer-logos .tip-triangle-start .triangle-1{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-30deg);-ms-transform: rotate(-30deg);transform: rotate(-30deg);}
+ .customer-logos .tip-triangle-start .triangle-2{background-color : #F7F7F7;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-60deg);-ms-transform: rotate(-60deg);transform: rotate(-60deg);}
+ .customer-logos .tip-triangle-middle .triangle-1{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:60% 50%;-ms-transform-origin:60% 50%;transform-origin:60% 50%;-webkit-transform: rotate(110deg);-ms-transform: rotate(110deg);transform: rotate(110deg);}
+ .customer-logos .tip-triangle-middle .triangle-2{background-color : #F7F7F7;border-top: 1px solid #CCCCCC;-webkit-transform-origin:45% 50%;-ms-transform-origin:45% 50%;transform-origin:45% 50%;-webkit-transform: rotate(70deg);-ms-transform: rotate(70deg);transform: rotate(70deg);}
+ .customer-logos .tip-triangle-end .triangle-1{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:100% 100%;-webkit-transform: rotate(-30deg);-ms-transform: rotate(-30deg);transform: rotate(30deg);}
+.customer-logos .tip-triangle-end .triangle-2{background-color : #F7F7F7;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:100% 100%;-webkit-transform: rotate(-60deg);-ms-transform: rotate(-60deg);transform: rotate(60deg);}
+ .customer-logos .tip-triangle{visibility: hidden;} 
+.customer-logos> div:hover  .tip-triangle{visibility:visible; }
+
+ /*customer*/
 .main-customer{height:550px;padding-top:60px;padding-bottom:85px;margin:0 auto;text-align:center;background:#f7f7f7;}
 .main-customer .customer-tab{width:660px;height:40px;margin:45px auto;border-left:1px solid #ccc;border-right:1px solid #ccc;border-radius:5px;font-size:1.6rem;line-height:38px;overflow:hidden;}
 .customer-tab .tab-item{border:1px solid #ccc;border-left:none;}
