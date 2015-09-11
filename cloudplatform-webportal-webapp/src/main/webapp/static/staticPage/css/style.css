@@ -60,26 +60,37 @@
 /* by yk start
  *产品推荐交互效果
  * */
-.recommend-product > div{color: white;-ms-transition:0.1s;-webkit-transition:0.1s;transition:0.1s;}
+.recommend-product > div{color: white;-ms-transition:0.3s;-webkit-transition:0.3s;transition:0.3s;}
 .product-iconfont{left: 50%;margin-left: -50px;width:100px;height: 100px;border-radius:40%;border: 1px solid #088AC2;position: relative;z-index: 999;}	
 .product-iconfont> .iconfont{color:#088AC2; font-size: 80px;position: absolute;left: 50%;top:5px;margin-left: -40px;z-index: 9999;}
-.recommend-product > div:hover{/* box-shadow: 0px 0px 5px gray; */ -ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1);}
+.recommend-product > div:hover{/* box-shadow: 0px 0px 5px gray; */ /* -ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1); */}
 .recommend-product > div:hover .product-price{margin-top:-38px;}
 .recommend-product > div:hover .product-iconfont{background-color: #088AC2; }
 .recommend-product > div:hover .product-iconfont> .iconfont{color:#FFFFFF;}
-/* by yk end */
 
+/* by yk start
+ *产品推荐交互效果
+ * */
+.main-customer .customer-logos> div{position:relative; }
+.customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;z-index: 9999;}
+.customer-logos .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;margin-left: -3px;margin-top: 2px;z-index: 9999;}
+.customer-logos .tip-triangle{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-left: 20px;;margin-top: -56px;z-index: 99;}
+.customer-logos .tip-triangle>i{position:absolute;top:0; left:0;width:100%; height:100%;}
+.customer-logos .tip-triangle .triangle-1{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-30deg);-ms-transform: rotate(-30deg);transform: rotate(-30deg);}
+ .customer-logos .tip-triangle .triangle-2{background-color : #F7F7F7;border: 1px solid #CCCCCC;-webkit-transform-origin:0 100%;-ms-transform-origin:0 100%;transform-origin:0 100%;-webkit-transform: rotate(-60deg);-ms-transform: rotate(-60deg);transform: rotate(-60deg);}
+ .customer-logos .tip-triangle .triangle-3{background-color : #FFFFFF;border: 1px solid #CCCCCC;-webkit-transform-origin:60% 50%;-ms-transform-origin:60% 50%;transform-origin:60% 50%;-webkit-transform: rotate(110deg);-ms-transform: rotate(110deg);transform: rotate(110deg);}
+ .customer-logos .tip-triangle .triangle-4{background-color : #F7F7F7;border-top: 1px solid #CCCCCC;-webkit-transform-origin:45% 50%;-ms-transform-origin:45% 50%;transform-origin:45% 50%;-webkit-transform: rotate(70deg);-ms-transform: rotate(70deg);transform: rotate(70deg);}
 /*customer*/
 .main-customer{height:550px;padding-top:60px;padding-bottom:85px;margin:0 auto;text-align:center;background:#f7f7f7;}
 .main-customer .customer-tab{width:660px;height:40px;margin:45px auto;border-left:1px solid #ccc;border-right:1px solid #ccc;border-radius:5px;font-size:1.6rem;line-height:38px;overflow:hidden;}
 .customer-tab .tab-item{border:1px solid #ccc;border-left:none;}
 .tab-item.tab-item-last{border-right:0;}
 .tab-item.active{color:#fff;background:#088ac2;border-color:#088ac2;}
-.main-customer .customer-hoverTip{height:110px;margin-bottom:15px;font-size:1.4rem;text-align:left;color:#333;position:relative;}
-.hoverTip{border:1px solid #ccc;border-radius:3px;padding:24px;}
+.main-customer .customer-hoverTip{height:110px;margin-bottom:15px;font-size:1.4rem;text-align:left;color:#333;}
+.hoverTip{border:1px solid #ccc;border-radius:3px;padding:24px;background: #ffffff;z-index: 999;}
 .hoverTip-desc{margin:15px 0 0 0;font-size:1.2rem;color:#888;} 
-.hoverTip-arrow{display:block;width:0;height:0;font-size:0;line-height:0;position:absolute;bottom:0px;left:40px;border-bottom:0;border-top:10px solid #ccc;border-left:10px solid #f7f7f7;border-right:10px solid #f7f7f7;}
-.arrow-top{display:block;width:0;height:0;font-size:0;line-height:0;position:absolute;bottom:5px;left:-6px;border-bottom:0;border-top:6px solid #f7f7f7;border-right:6px solid #ccc;border-left:6px solid #ccc;}
+/* .hoverTip-arrow{display:block;width:0;height:0;font-size:0;line-height:0;position:absolute;bottom:0px;left:40px;border-bottom:0;border-top:10px solid #ccc;border-left:10px solid #f7f7f7;border-right:10px solid #f7f7f7;}
+.arrow-top{display:block;width:0;height:0;font-size:0;line-height:0;position:absolute;bottom:5px;left:-6px;border-bottom:0;border-top:6px solid #f7f7f7;border-right:6px solid #ccc;border-left:6px solid #ccc;} */
 .main-customer .customer-axisX{height:1px;border-top:1px solid #ccc;margin:15px auto 15px;text-align:center;}
 .main-customer .customer-logos{height:60px;line-height:60px;}
 /*partners*/
