@@ -22,4 +22,25 @@ public interface IDbProxy extends IBaseProxy<DbModel> {
 	 * @param isCreateAdmin 是否默认创建管理员用户
 	 */
 	public void saveAndBuild(DbModel dbModel,boolean isCreateAdmin);
+	/**
+	  * @Title: save
+	  * @Description: 只保存db信息,不进行服务创建
+	  * @param dbModel
+	  * @param isCreateAdmin
+	  * @return Long   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月10日 上午10:13:36
+	  */
+	public Long save(DbModel dbModel,boolean isCreateAdmin);
+	/**
+	  * @Title: build
+	  * @Description: 创建服务
+	  * @param dbId
+	  * @return Long   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月10日 下午12:00:16
+	  */
+	public void build(Long dbId);
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.subscription.ISubscriptionDetailDao">
+	
+	<resultMap id="BaseResultMap" type="SubscriptionDetail">
+	    <result column="ID" property="id" />
+	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
+	    <result column="STANDARD_NAME" property="standardName" />
+	    <result column="STANDARD_VALUE" property="standardValue" />
+	    <result column="ORDER_TIME" property="orderTime" />
+	    <result column="VALID" property="valid" />
+	    <result column="START_TIME" property="startTime" />
+	    <result column="END_TIME" property="endTime" />
+	    <result column="USER_ID" property="userId" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    subDetail.ID,subDetail.SUBSCRIPTION_ID,subDetail.STANDARD_NAME,subDetail.STANDARD_VALUE,
+	    subDetail.ORDER_TIME,subDetail.VALID,subDetail.START_TIME,subDetail.END_TIME,subDetail.USER_ID,
+	    subDetail.DELETED,subDetail.CREATE_TIME,subDetail.UPDATE_TIME,subDetail.CREATE_USER,subDetail.UPDATE_USER,
+	    subDetail.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="SubscriptionDetail" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_SUBSCRIPTION_DETAIL 
+	        (SUBSCRIPTION_ID,STANDARD_NAME,STANDARD_VALUE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{subscriptionId},#{standardName},#{standardValue},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and subDetail.ID=#{id}
+	        </if>
+	        <if test="subscriptionId != null ">
+	            and subDetail.SUBSCRIPTION_ID=#{subscriptionId}
+	        </if>
+	        <if test="standardName != null ">
+	            and subDetail.STANDARD_NAME=#{standardName}
+	        </if>
+	        <if test="standardValue != null ">
+	            and subDetail.STANDARD_VALUE=#{standardValue}
+	        </if>
+	        <if test="orderTime != null ">
+	            and subDetail.ORDER_TIME=#{orderTime}
+	        </if>
+	        <if test="valid != null ">
+	            and subDetail.VALID=#{valid}
+	        </if>
+	        <if test="startTime != null ">
+	            and subDetail.START_TIME=#{startTime}
+	        </if>
+	        <if test="endTime != null ">
+	            and subDetail.END_TIME=#{endTime}
+	        </if>
+	        <if test="userId != null ">
+	            and subDetail.USER_ID=#{userId}
+	        </if>
+	        <if test="deleted != null ">
+	            and subDetail.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and subDetail.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and subDetail.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and subDetail.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and subDetail.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and subDetail.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+	        <include refid="Common_Where_Clause" />
+	</select>
+	
+	<select id="selectByMapAndTime" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+	        <include refid="Common_Where_Clause" />
+	        and #{date} between subDetail.START_TIME and subDetail.END_TIME
+	</select>
+	
+		
+
+</mapper>   

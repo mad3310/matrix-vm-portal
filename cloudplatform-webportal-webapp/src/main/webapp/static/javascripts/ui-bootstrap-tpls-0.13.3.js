@@ -2873,7 +2873,7 @@ angular.module('ui.bootstrap.modal', [])
                 deferred: modalResultDeferred,
                 renderDeferred: modalRenderDeferred,
                 content: tplAndVars[0],
-                animation: modalOptions.animation,
+                  animation: modalOptions.animation,
                 backdrop: modalOptions.backdrop,
                 keyboard: modalOptions.keyboard,
                 backdropClass: modalOptions.backdropClass,
