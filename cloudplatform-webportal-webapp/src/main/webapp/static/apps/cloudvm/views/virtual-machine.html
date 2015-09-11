@@ -1,4 +1,4 @@
-<div class="container-cluster-view" ng-controller="VirtualMachineCrtl">
+<div class="virtual-machine-view" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-2">
             <ui-select ng-model="selectedRegion.selected" theme="bootstrap">
@@ -8,8 +8,12 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <div class="le-col-2">
+            <button class="btn btn-default" ng-click="openVmCreateModal()">创建云主机</button>
+        </div>
         <div class="le-col-2 pull-right">
-            <input type="text" class="le-form-control" style="display: inline-block;width: 60%" ng-model="searchVmName" />
+            <input type="text" class="le-form-control" style="display: inline-block;width: 60%"
+                   ng-model="searchVmName"/>
             <button class="btn btn-default" ng-click="doSearch()">搜索</button>
         </div>
     </div>
@@ -50,8 +54,90 @@
             </tr>
             </tbody>
         </table>
-        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize" total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
+        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                    total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                    last-text="&raquo;">
         </pagination>
     </div>
-    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}"></toaster-container>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
+    </toaster-container>
+    <script type="text/ng-template" id="VmCreateModalTpl">
+        <div class="modal-header vm-create-modal-header">
+            <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">创建云主机</h3>
+        </div>
+        <div class="modal-body vm-create-modal-body">
+            <tabset>        
+                <tab active=tabsActive[1]>            
+                    <tab-heading>镜像选择</tab-heading>
+                    <div class="tab-content">
+                        <div class="le-row">
+                            <div class="le-col-3"><span>主机名称：</span></div>
+                            <div class="le-col-9"><input type="text" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" /></div>
+                        </div>
+                        <div class="le-row">
+                            <div class="le-col-3"><span>系统镜像：</span></div>
+                            <div class="le-col-9">
+                                    <ul class="list-inline vm-image-selector">
+                                        <li ng-repeat="vmImage in vmImageList" ng-class="{'selected':isSelectedVmImage(vmImage)}" ng-click="selectVmImage(vmImage)">
+                                            <a href="javascript:void(0);">{{vmImage.name}}</a>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <div class="le-row">
+                            <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="tabsActive[1]=false;tabsActive[2]=true;">下一步</button></div>
+                        </div>
+                    </div>
+                </tab>
+                <tab active=tabsActive[2]>            
+                    <tab-heading>配置选择</tab-heading>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>CPU：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-cpu-selector">
+                                <li ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                    <a href="javascript:void(0);">{{vmCpu}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>内存：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-ram-selector">
+                                <li ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                    <a href="javascript:void(0);">{{vmRam}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>数据盘：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-disk-selector">
+                                <li ng-repeat="vmDisk in vmDiskList" ng-class="{'selected':isSelectedVmDisk(vmDisk)}" ng-click="selectVmDisk(vmDisk)">
+                                    <a href="javascript:void(0);">{{vmDisk}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-2 pull-left"><button class="btn btn-default pull-left" ng-click="tabsActive[2]=false;tabsActive[1]=true;">上一步</button></div>
+                        <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="tabsActive[2]=false;tabsActive[3]=true;">下一步</button></div>
+                    </div>       
+                </tab> 
+                <tab active=tabsActive[3]>            
+                    <tab-heading>网络设置</tab-heading>
+                    <button class="btn btn-default" ng-click="tabsActive[3]=false;tabsActive[2]=true;">上一步</button>
+                    3 content
+                    <button class="btn btn-default" ng-click="tabsActive[3]=false;tabsActive[4]=true;">下一步</button>        
+                </tab>
+                <tab active=tabsActive[4]>            
+                    <tab-heading>主机设置</tab-heading>
+                    4 content        
+                </tab>      
+            </tabset>
+        </div>
+    </script>
 </div>

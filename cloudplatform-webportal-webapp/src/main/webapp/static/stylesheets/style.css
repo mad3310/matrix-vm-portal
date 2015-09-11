@@ -1,13 +1,15 @@
 /*begin override bootstrap style*/
-.btn{
+.btn {
     border-radius: 0;
 }
+
 /*begin override bootstrap style*/
 
 /*begin override toaster style*/
-.toast-bottom-right{
+.toast-bottom-right {
     bottom: 30px;
 }
+
 /*begin override toaster style*/
 
 /*begin header style*/
@@ -16,7 +18,7 @@
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 9999;
+    z-index: 1000;
     background-color: #333333;
 }
 
@@ -64,16 +66,18 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    z-index: 9999;
+    z-index: 1000;
     color: white;
     background-color: #333333;
 }
-.footer .copyright{
+
+.footer .copyright {
     line-height: 30px;
     margin-left: 10px;
     font-size: 12px;
     font-weight: bold;
 }
+
 /*end footer style*/
 
 /*begin main style*/
@@ -211,10 +215,36 @@
     font-size: 12px;
     margin-right: 5px;
 }
+
 /*end side-menu-view style*/
 
 /*end container-cluster-view style*/
-.container-cluster-view .grid .table{
+.virtual-machine-view .grid .table {
     margin-bottom: 0;
 }
+
+.vm-create-modal-body .vm-image-selector {
+    width: 200px;
+    padding: 10px;
+}
+
+.vm-create-modal-body .vm-image-selector li a,
+.vm-create-modal-body .vm-cpu-selector li a,
+.vm-create-modal-body .vm-ram-selector li a,
+.vm-create-modal-body .vm-disk-selector li a{
+    display: block;
+    padding: 2px 4px;
+    border: 1px solid #ccc;
+    margin: 2px;
+    text-decoration: none;
+}
+
+.vm-create-modal-body .vm-image-selector li.selected a,
+.vm-create-modal-body .vm-cpu-selector li.selected a,
+.vm-create-modal-body .vm-ram-selector li.selected a,
+.vm-create-modal-body .vm-disk-selector li.selected a{
+    background-color: #286090;
+    color: white;
+}
+
 /*begin container-cluster-view style*/

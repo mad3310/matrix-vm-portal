@@ -6,7 +6,9 @@ define(['services/app.service'],function (serviceModule) {
     var config = {};
     config.urls = {
       vm_regions: '/ecs/regions/',
-      vm_list: '/ecs/region',
+      vm_list: '/ecs/region/{region}',
+      image_list: '/osi/region/{region}',
+      flavor_group_data: '/osf/region/{region}/group',
     };
     config.mclusterStatuses = [
       {"text": "请选择状态", "value": ""},
