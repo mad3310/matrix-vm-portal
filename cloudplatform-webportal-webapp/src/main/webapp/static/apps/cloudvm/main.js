@@ -10,6 +10,7 @@ require.config({
     'ui-select': '/static/javascripts/select',
     'ui-bootstrap': '/static/javascripts/ui-bootstrap-tpls-0.13.3',
     'ng-toaster': '/static/javascripts/toaster',
+    'ng-rzslider': '/static/javascripts/rzslider',
     //js文件
     'app': '/static/apps/cloudvm/app',
     'app.router': '/static/apps/cloudvm/app.route'
@@ -35,9 +36,13 @@ require.config({
       exports: 'ui-bootstrap'
     },
     'ng-toaster': {
-      deps: ['angular','angular-animate'],
+      deps: ['angular', 'angular-animate'],
       exports: 'ng-toaster'
-    }, 
+    },
+    'ng-rzslider': {
+      deps: ['angular'],
+      exports: 'ng-rzslider'
+    },
     'bootstrap': {
       deps: ['jquery'],
       exports: 'bootstrap'
@@ -49,7 +54,7 @@ require.config({
   }
 });
 
-require(['jquery', 'angular','common', 'bootstrap', 'app', 'app.router'],
+require(['jquery', 'angular', 'common', 'bootstrap', 'app', 'app.router'],
   function (jquery, angular) {
     angular.bootstrap(document, ['myApp']);
   }
