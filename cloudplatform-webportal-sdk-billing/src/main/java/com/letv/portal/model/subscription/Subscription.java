@@ -33,7 +33,7 @@ public class Subscription extends BaseModel{
 	private Integer orderTime;//购买时长
 	private Date startTime;//开始时间
 	private Date endTime;//结束时间
-	private boolean valid;//是否有效：false-无效，true-有效
+	private Integer valid;//是否有效：0-无效，1-有效
 	private String descn;//描述
 	private Long productInfoRecordId;//产品信息记录ID
 	
@@ -132,10 +132,10 @@ public class Subscription extends BaseModel{
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-	public boolean isValid() {
+	public Integer getValid() {
 		return valid;
 	}
-	public void setValid(boolean valid) {
+	public void setValid(Integer valid) {
 		this.valid = valid;
 	}
 	public String getDescn() {
