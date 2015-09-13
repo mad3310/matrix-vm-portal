@@ -145,7 +145,7 @@ a:hover{cursor:pointer;}
 .footer-right .right-logo{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-desc{padding:15px 0 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* 返回顶部 */
-#toTop{position:fixed;right:30px;bottom:40px;cursor:pointer;display:none;}
+#toTop{position:fixed;z-index:200;right:30px;bottom:40px;cursor:pointer;display:none;}
 #toTop:hover{-ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1);}
 /*product-top*/
 .body-top .top-product-desc{padding:180px 0 0 0;font-size:2.2rem;color:#f5c131;text-align:center;letter-spacing:.1rem;line-height:3rem;}
