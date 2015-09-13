@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class BaseController {
 	
-	@Value("${oauth.auth.http}")
-	private String OAUTH_AUTH_HTTP;
+	@Value("${uc.auth.http}")
+	private String UC_AUTH_HTTP;
 	@Value("${webportal.local.http}")
 	private String WEBPORTAL_LOCAL_HTTP;
 	
@@ -39,8 +39,7 @@ public class BaseController {
 	@RequestMapping(value ="/toLogin")
 	public ModelAndView toLogin(@RequestParam String back,ModelAndView mav){
 		StringBuffer buffer = new StringBuffer();
-//		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
-		buffer.append("http://uc.letvcloud.com").append("/login.do?backUrl=").append("http://matrix.letvcloud.com:8081/").append(back);
+		buffer.append(UC_AUTH_HTTP).append("/login.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append("/").append(back);
 		mav.addObject("loginURI", buffer.toString());
 		mav.setViewName("/toLogin");
 		return mav;

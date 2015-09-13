@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -49,11 +50,16 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	@Autowired
 	private OpenStackService openStackService;
 	
-	public String[] allowUrls;//还没发现可以直接配置不拦截的资源，所以在代码里面来排除
+	@Value("${uc.auth.http}")
+	private String UC_AUTH_HTTP;
+	
+	public String[] allowUrls;
 	
 	public void setAllowUrls(String[] allowUrls) {
 		this.allowUrls = allowUrls;
 	}
+	
+	private final static String UC_COOKIE_KEY = "lecloud_uc_jsessionid";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -62,7 +68,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			return true;
 		
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-		Cookie ucCookie = CookieUtil.getCookieByName(request, "lecloud_uc_jsessionid");
+		Cookie ucCookie = CookieUtil.getCookieByName(request, UC_COOKIE_KEY);
 		
 		if(session == null && ucCookie !=null) {
 			session = getUserdetailinfo(ucCookie.getValue(),request);
@@ -164,7 +170,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 	
 	private Map<String,Object> getUserdetailinfo(String ucCookieId) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("http://uc.letvcloud.com/user/userInfo.do?sessionId=").append(ucCookieId);
+		buffer.append(UC_AUTH_HTTP).append("/user/userInfo.do?sessionId=").append(ucCookieId);
 		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,2000);
 		if(StringUtils.isNullOrEmpty(result))
 			throw new OauthException("getUserdetailinfo connection timeout");

@@ -23,12 +23,6 @@ public class SkipController {
 	@Autowired(required=false)
 	private SessionServiceImpl sessionService;
 	
-	@Value("${oauth.auth.http}")
-	private String OAUTH_AUTH_HTTP;
-	@Value("${webportal.local.http}")
-	private String WEBPORTAL_LOCAL_HTTP;
-	
-	
 	/**
 	 * Methods Name: dbInfo<br>
 	 * Description: 跳转基本信息页面

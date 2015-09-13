@@ -84,12 +84,6 @@ public class CbaseController {
 	private final static Logger logger = LoggerFactory
 			.getLogger(CbaseController.class);
 
-	//
-	// @Value("${oauth.auth.http}")
-	// private String OAUTH_AUTH_HTTP;
-	// @Value("${webportal.local.http}")
-	// private String WEBPORTAL_LOCAL_HTTP;
-
 	@RequestMapping(value = "/cbase", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);

@@ -21,8 +21,8 @@ public class LogoutController{
 
 	public static final String DASHBORAD_ADDRESS = "/dashboard";
 	
-	@Value("${oauth.auth.http}")
-	private String OAUTH_AUTH_HTTP;
+	@Value("${uc.auth.http}")
+	private String UC_AUTH_HTTP;
 	@Value("${webportal.local.http}")
 	private String WEBPORTAL_LOCAL_HTTP;
 	
@@ -46,7 +46,7 @@ public class LogoutController{
 		request.getSession().invalidate();
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("http://uc.letvcloud.com/logout.do?backUrl=http://matrix.letvcloud.com:8081/dashboard");
+		buffer.append(UC_AUTH_HTTP).append("/logout.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append("/dashboard");
 		response.sendRedirect(buffer.toString());
    }
 }
