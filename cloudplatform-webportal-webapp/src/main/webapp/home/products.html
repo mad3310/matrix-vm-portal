@@ -71,16 +71,7 @@
 		</div>
 	</div>
 </div>
-<div class="main-body top-product-tab tab-fixed hide">
-	<div class="clearfix">
-		<div class="col-md-offset-2 col-md-8">
-			<div class="col-md-3 tab-item active-item"><a href="#anchor-andvantage">产品优势</a></div>
-			<div class="col-md-3 tab-item"><a href="#anchor-func">核心功能</a></div>
-			<div class="col-md-3 tab-item"><a href="#anchor-price">产品价格</a></div>
-			<div class="col-md-3 tab-item"><a href="#anchor-help">帮助手册</a></div>
-		</div>
-	</div>
-</div>
+<div class="main-body top-product-tab tab-fixed hide clearfix"></div>
 <div class="main-body nav-uls hide"></div> <!-- 遮罩 -->
 <div id="anchor-advantage">  <!-- 优势 -->
 	<div class="main-body"> <!-- 优势--> 
@@ -146,6 +137,9 @@
 		<div class="product-func-title">核心功能</div>
 		<div class="product-func-item clearfix">
 			<div class="col-md-2">
+				<div class="item-bg-white">
+					<div></div>
+				</div>
 				<div class="item-square bg-blue">
 					<img src="/static/staticPage/img/products/pro-fun1.png">
 				</div>
@@ -161,6 +155,9 @@
 				<dd>快速搭建私有网络（VPC），提供完全的网络隔离，确保安全，提供包括：VPC、路由、公网IP功能，云硬盘提供高速、持久化的存储服</dd>
 			</dl>
 			<div class="col-md-2">
+			<div class="item-bg-white">
+					<div></div>
+				</div>
 				<div class="item-square item-square-right bg-blueGreen pull-right">
 					<img src="/static/staticPage/img/products/pro-fun2.png">
 				</div>
@@ -374,4 +371,5 @@
 <script>
 topNavHover();//导航滑过效果
 scrollNav();//滚动事件	
+tabClick();// tab 切换
 </script>

@@ -150,7 +150,7 @@ a:hover{cursor:pointer;}
 .top-product-tab .tab-item.active-item{color:#fff;background:#088ac2}
 .top-product-tab .tab-item.active-item a{color:#fff;}
 .top-product-tab .tab-item a{color:#333;}
-.tab-fixed{position:fixed;top:20px;margin:0;background-color:rgba(0,0,0,.4);}
+.tab-fixed{position:fixed;z-index:200;top:0;margin:0;background-color:rgba(0,0,0,.4);}
 /*product advantage*/
 .body-product-advantage{height:140px;padding:60px 0 45px 0;font-size:2.4rem;text-align:left;}
 .product-advantage-items dl{margin:20px 0 20px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -163,9 +163,11 @@ a:hover{cursor:pointer;}
 .body-product-func{height:770px;padding:60px 0 0 0;font-size:1.2rem;text-align:left;}
 .body-product-func .product-func-title{margin-bottom:45px;font-size:2.4rem;color:#333;}
 .body-product-func .product-func-item{height:200px;margin-bottom:10px;background:#f7f7f7;overflow:hidden;}
-.product-func-item .item-square{width:200px;height:200px;border-radius:100px 0 100px 100px;text-align:center;color:#fff;}
+.product-func-item .item-square{width:200px;height:200px;position:relative;z-index:2;border-radius:100px 0 100px 100px;text-align:center;color:#fff;}
 .item-square.item-square-right{border-radius:0 100px 100px 100px}
 .item-square img{margin-top:55px;}
+.product-func-item .item-bg-white{position:relative;z-index:1;}
+.item-bg-white>div{position:absolute;background:#fff;width:100px;height:200px;}
 .product-func-item dl{margin-top:0;padding:60px 0;}
 .product-func-item dl dt{margin-bottom:25px;padding:0;font-size:1.8rem;color:#333}
 .product-func-item dl dd{margin:0;padding:0;color:#888;line-height:1.6rem;}
