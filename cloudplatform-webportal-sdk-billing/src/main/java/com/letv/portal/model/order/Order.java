@@ -24,9 +24,16 @@ public class Order extends BaseModel{
 	private Date endTime;//结束时间
 	private String descn;//描述
 	private Double price;//价格
+	private Double discountPrice;//折扣价
 	private Integer status;//订单状态：0-未付款，1-失效，2-已付款
 	private Subscription subscription;//订阅实体
 	
+	public Double getDiscountPrice() {
+		return discountPrice;
+	}
+	public void setDiscountPrice(Double discountPrice) {
+		this.discountPrice = discountPrice;
+	}
 	public String getOrderNumber() {
 		return orderNumber;
 	}
