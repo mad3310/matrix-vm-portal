@@ -82,7 +82,7 @@
 	        <if test="endTime != null ">
 	            and subscription.END_TIME=#{endTime}
 	        </if>
-	        <if test="userId != null ">
+	        <if test="userId != null and userId != '' ">
 	            and subscription.USER_ID=#{userId}
 	        </if>
 	        <if test="deleted != null ">
@@ -94,10 +94,10 @@
 	        <if test="updateTime != null ">
 	            and subscription.UPDATE_TIME=#{updateTime}
 	        </if>
-	        <if test="createUser != null ">
+	        <if test="createUser != null and createUser != '' ">
 	            and subscription.CREATE_USER=#{createUser}
 	        </if>
-	        <if test="updateUser != null ">
+	        <if test="updateUser != null and updateUser != '' ">
 	            and subscription.UPDATE_USER=#{updateUser}
 	        </if>
 	        <if test="descn != null ">
@@ -134,6 +134,12 @@
 		from 
 			MATRIX_BILLING_SUBSCRIPTION subscription
 			<include refid="Common_Where_Clause" />
+			<if test="productName != null and productName != '' ">
+	            and product.NAME=#{productName}
+	        </if>
+	        <if test="baseRegionName != null and baseRegionName != '' ">
+	            and region.NAME=#{baseRegionName}
+	        </if>
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -150,6 +156,12 @@
 		left join
 	    	WEBPORTAL_USER user on subscription.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
+			<if test="productName != null and productName != '' ">
+	            and product.NAME=#{productName}
+	        </if>
+	        <if test="baseRegionName != null and baseRegionName != '' ">
+	            and region.NAME=#{baseRegionName}
+	        </if>
 		ORDER BY subscription.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}

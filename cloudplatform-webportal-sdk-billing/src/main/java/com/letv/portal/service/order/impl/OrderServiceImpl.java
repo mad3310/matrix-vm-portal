@@ -122,4 +122,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderSe
 	}
 
 
+
+	@Override
+	public void modifyPriceById(Map<String, Object> params) {
+		params.put("updateUser", sessionService.getSession().getUserId());
+		this.orderDao.modifyPriceById(params);
+	}
+
+
 }

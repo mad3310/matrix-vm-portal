@@ -1,5 +1,7 @@
 package com.letv.portal.service.order;
 
+import java.util.Map;
+
 import com.letv.portal.model.order.Order;
 import com.letv.portal.service.IBaseService;
 
@@ -21,4 +23,14 @@ public interface IOrderService extends IBaseService<Order> {
 	Long createOrder(Long subscriptionId);
 	Order selectOrderById(Long orderId);
 	void updateOrderStatus(Long orderId);
+	
+	/**
+	  * @Title: modifyPriceById
+	  * @Description: 修改订单价格
+	  * @param params void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月13日 上午11:44:44
+	  */
+	void modifyPriceById(Map<String, Object> params);
 }

@@ -6,55 +6,36 @@ define(['app'],function (app) {
 
   var routeConfigurator = function ($routeProvider, routes) {
       var setRoute = function (routeConfig) {
-        if (!routeConfig.abstract) {
           $routeProvider.when(routeConfig.url, routeConfig.config);
-        }
       };
       angular.forEach(routes, function (value, key) {
         setRoute(value);
-        if (value.subRoutes) {
-          angular.forEach(value.subRoutes, function (value, key) {
-            setRoute(value);
-          });
-        }
       });
-      $routeProvider.otherwise({redirectTo: '/profile'});
+      $routeProvider.otherwise({redirectTo: '/vm'});
     },
     getRoutes = function () {
       return [
-        {//begin Dashboard routes
-          url: '/profile',
-          title: '概览',
-          isSpaUrl:true,
-          icon: 'fa fa-tachometer',
+        {
+          url: '/vm',
+          title: '云主机',
           config: {
-            template: 'Dashboard'
+            templateUrl: '/static/apps/cloudvm/views/virtual-machine.html'
           }
-        },//end Dashboard routes
-        {//begin rds routes
-          url: '/cloudvm',
-          title: '计算与网络',
-          icon: 'fa fa-desktop',
-          abstract: true,
-          subRoutes: [
-            {
-              url: '/cloudvm/vm',
-              title: '主机',
-              isSpaUrl:true,
-              config: {
-                templateUrl: 'static/apps/cloudvm/views/virtual-machine.html'
-              }
-            }, {
-              url: '/cloudvm/disk',
-              title: '云硬盘',
-              isSpaUrl:true,
-              config: {
-                template: '云硬盘<a href="/cvm#/cloudvm/vm">url</a>'
-              }
-            }
-          ]
-        }
-      ];
+        },
+        {
+          url: '/image',
+          title: '镜像',
+          config: {
+            template: '镜像'
+          }
+        },
+        {
+          url: '/disk',
+          title: '云硬盘',
+          config: {
+            template: '云硬盘'
+          }
+        }];
     };
 
   app.constant('routes', getRoutes());
