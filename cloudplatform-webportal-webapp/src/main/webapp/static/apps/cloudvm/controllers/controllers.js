@@ -3,26 +3,6 @@
  */
 define(['controllers/app.controller','controllers/VirtualMachine'],function (controllerModule) {
 
-  controllerModule.controller('SideMenuController', ['$scope', '$location', 'routes',
-    function ($scope, $location, routes) {
-      var isActive = function (url) {
-          return $location.path().indexOf(url) > -1;
-        },
-        openSubMenu = function (url) {
-          angular.forEach(routes, function (value, key){
-            if(url==value.url){
-              value.isOpen=true;
-            }
-            else{
-              value.isOpen=false;
-            }
-          });
-        };
-      $scope.routes = routes;
-      $scope.isActive = isActive;
-      $scope.openSubMenu = openSubMenu;
-    }]);
-
   controllerModule.controller('VmListController', ['$scope', '$http','toaster',
     function ($scope, $http,toaster) {
       $scope.p1Name = 'p1';
