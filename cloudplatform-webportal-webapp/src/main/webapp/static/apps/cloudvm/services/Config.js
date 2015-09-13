@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/8/19.
  */
-define(['services/app.service'],function (serviceModule) {
+define(['services/app.service'], function (serviceModule) {
   serviceModule.factory('Config', [function () {
     var config = {};
     config.urls = {
@@ -9,6 +9,7 @@ define(['services/app.service'],function (serviceModule) {
       vm_list: '/ecs/region/{region}',
       image_list: '/osi/region/{region}',
       flavor_group_data: '/osf/region/{region}/group',
+      vm_create: '/ecs/region/{region}/vm-create'
     };
     config.mclusterStatuses = [
       {"text": "请选择状态", "value": ""},

@@ -269,6 +269,15 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
        page .setTotalRecords(getDao().selectByMapCount(param));
        return page ;
    }
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <K, V> Page queryPaginationByMap(Page page, Map<K, V> params) {
+		params.put((K)"page", (V)page);
+		page.setData(getDao().selectPageByMap(params));
+		page.setTotalRecords(getDao().selectByMapCount(params));
+		return page;
+	}
 
 	public abstract IBaseDao<T> getDao();
 }

@@ -1,5 +1,6 @@
 (function init(){
 	toTop();
+	customerToolInit();
 })()
 function toTop() {
 	var scrollEle = clientEle = document.documentElement, toTopBtn = document.getElementById("toTop"), compatMode = document.compatMode, isChrome = window.navigator.userAgent.indexOf("Chrome") === -1 ? false : true;
@@ -162,4 +163,18 @@ function tabClick(){
 			}, 500)
 		}
 	});
+}
+function customerToolInit() {
+	(function tooltip(){
+		$(".customer-logos div").click(function() {
+			$(".customer-logos div").removeClass('logo-focus');
+			$(this).addClass("logo-focus");
+		});
+	})();
+	(function tabinit(){
+		$(".customer-tab div").click(function() {
+			$(".customer-tab div").removeClass('active');
+			$(this).addClass("active");
+		});
+	})();
 }

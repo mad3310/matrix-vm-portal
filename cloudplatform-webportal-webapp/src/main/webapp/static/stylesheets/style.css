@@ -231,7 +231,10 @@
 .vm-create-modal-body .vm-image-selector li a,
 .vm-create-modal-body .vm-cpu-selector li a,
 .vm-create-modal-body .vm-ram-selector li a,
-.vm-create-modal-body .vm-disk-selector li a{
+.vm-create-modal-body .vm-disk-selector li a,
+.vm-create-modal-body .vm-network-type-selector li a,
+.vm-create-modal-body .vm-network-public_ip_model-selector li a,
+.vm-create-modal-body .vm-security-type-selector li a{
     display: block;
     padding: 2px 4px;
     border: 1px solid #ccc;
@@ -242,7 +245,10 @@
 .vm-create-modal-body .vm-image-selector li.selected a,
 .vm-create-modal-body .vm-cpu-selector li.selected a,
 .vm-create-modal-body .vm-ram-selector li.selected a,
-.vm-create-modal-body .vm-disk-selector li.selected a{
+.vm-create-modal-body .vm-disk-selector li.selected a,
+.vm-create-modal-body .vm-network-type-selector li.selected a,
+.vm-create-modal-body .vm-network-public_ip_model-selector li.selected a,
+.vm-create-modal-body .vm-security-type-selector li.selected a{
     background-color: #286090;
     color: white;
 }

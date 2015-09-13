@@ -5,7 +5,10 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
-import com.letv.portal.enumeration.ChargeType;
+import com.letv.portal.model.HclusterModel;
+import com.letv.portal.model.UserModel;
+import com.letv.portal.model.base.BaseRegion;
+import com.letv.portal.model.product.Product;
 
 
 /**Program Name: Subscription <br>
@@ -20,6 +23,7 @@ public class Subscription extends BaseModel{
 
 	private static final long serialVersionUID = 6612436637375760981L;
 
+	private String subscriptionNumber;//订阅编码
 	private Long productId;//产品表主键
 	private Long baseRegionId;//地域表主键
 	private Long hclusterId;//机房机群主键
@@ -33,7 +37,41 @@ public class Subscription extends BaseModel{
 	private String descn;//描述
 	private Long productInfoRecordId;//产品信息记录ID
 	
+	private String productName;//产品名称
+	private String baseRegionName;//地域名称
+	private String hclusterName;//机房名称
+	private String userName;//用户名称
 	
+	public String getSubscriptionNumber() {
+		return subscriptionNumber;
+	}
+	public void setSubscriptionNumber(String subscriptionNumber) {
+		this.subscriptionNumber = subscriptionNumber;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public String getBaseRegionName() {
+		return baseRegionName;
+	}
+	public void setBaseRegionName(String baseRegionName) {
+		this.baseRegionName = baseRegionName;
+	}
+	public String getHclusterName() {
+		return hclusterName;
+	}
+	public void setHclusterName(String hclusterName) {
+		this.hclusterName = hclusterName;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public Long getProductInfoRecordId() {
 		return productInfoRecordId;
 	}
