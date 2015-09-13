@@ -13,7 +13,7 @@
         <body>
             <%@ include file="../../includes/header.jsp"%>
             <div class="main">
-                <div ng-include="'/static/apps/cloudvm/partials/sidemenu.html'" class="side-bar"></div>
+                <%@ include file="../../includes/sidebar.jsp"%>
                 <div class="content-wrapper">
                     <div ng-view="ng-view" class="content"></div>
                 </div>

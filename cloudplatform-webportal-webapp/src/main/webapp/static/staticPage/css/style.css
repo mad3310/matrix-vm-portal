@@ -81,10 +81,9 @@ a:hover{cursor:pointer;}
  *客户案例交互效果
  * */
 .main-customer .customer-logos> div{position:relative; }
+.customer-logos >div:not(.logo-focus) img{opacity: 0.3;filter: alpha(opacity=30);-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);filter:grayscale(100%);filter: gray;}
 .customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #CCCCCC;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
 .customer-logos .tip-point >i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #CCCCCC;margin-left: -3px;margin-top: 2px;}
-.customer-logos>div:hover  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
-.customer-logos>div:hover .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;}
 .customer-logos .tip-triangle{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-top: -56px;}
 .customer-logos .tip-triangle-start{margin-left: 20px;}
 .customer-logos .tip-triangle-middle{margin-left: -37px;}
@@ -102,8 +101,12 @@ a:hover{cursor:pointer;}
 .customer-logos .line-start{width:21px;margin-left: 31px;}
 .customer-logos .line-middle{width:14px;margin-left: -8px;}
 .customer-logos .line-end{width:21px;margin-left: -42px;}
- .customer-logos span{visibility: hidden;} 
-.customer-logos > div:hover span{visibility:visible; }
+ .customer-logos .tip-triangle,.customer-logos .white-line{visibility: hidden;} 
+ .customer-logos .logo-focus{}
+.customer-logos .logo-focus .tip-triangle,.customer-logos .logo-focus .white-line{visibility:visible; }
+.customer-logos .logo-focus  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
+.customer-logos .logo-focus .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;}
+
  /*customer*/
 .main-customer{height:550px;padding-top:60px;padding-bottom:85px;margin:0 auto;text-align:center;background:#f7f7f7;}
 .main-customer .customer-tab{width:660px;height:40px;margin:45px auto;border-left:1px solid #ccc;border-right:1px solid #ccc;border-radius:5px;font-size:1.6rem;line-height:38px;overflow:hidden;}
@@ -142,7 +145,7 @@ a:hover{cursor:pointer;}
 .footer-right .right-logo{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-desc{padding:15px 0 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* 返回顶部 */
-#toTop{position:fixed;right:30px;bottom:40px;cursor:pointer;display:none;}
+#toTop{position:fixed;z-index:200;right:30px;bottom:40px;cursor:pointer;display:none;}
 #toTop:hover{-ms-transform: scale(1.1,1.1);-webkit-transform: scale(1.1,1.1);transform: scale(1.1,1.1);}
 /*product-top*/
 .body-top .top-product-desc{padding:180px 0 0 0;font-size:2.2rem;color:#f5c131;text-align:center;letter-spacing:.1rem;line-height:3rem;}
@@ -153,7 +156,7 @@ a:hover{cursor:pointer;}
 .top-product-tab .tab-item.active-item{color:#fff;background:#088ac2}
 .top-product-tab .tab-item.active-item a{color:#fff;}
 .top-product-tab .tab-item a{color:#333;}
-.tab-fixed{position:fixed;top:20px;margin:0;background-color:rgba(0,0,0,.4);}
+.tab-fixed{position:fixed;z-index:200;top:0;margin:0;background-color:rgba(0,0,0,.4);}
 /*product advantage*/
 .body-product-advantage{height:140px;padding:60px 0 45px 0;font-size:2.4rem;text-align:left;}
 .product-advantage-items dl{margin:20px 0 20px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -166,9 +169,11 @@ a:hover{cursor:pointer;}
 .body-product-func{height:770px;padding:60px 0 0 0;font-size:1.2rem;text-align:left;}
 .body-product-func .product-func-title{margin-bottom:45px;font-size:2.4rem;color:#333;}
 .body-product-func .product-func-item{height:200px;margin-bottom:10px;background:#f7f7f7;overflow:hidden;}
-.product-func-item .item-square{width:200px;height:200px;border-radius:100px 0 100px 100px;text-align:center;color:#fff;}
+.product-func-item .item-square{width:200px;height:200px;position:relative;z-index:2;border-radius:100px 0 100px 100px;text-align:center;color:#fff;}
 .item-square.item-square-right{border-radius:0 100px 100px 100px}
 .item-square img{margin-top:55px;}
+.product-func-item .item-bg-white{position:relative;z-index:1;}
+.item-bg-white>div{position:absolute;background:#fff;width:100px;height:200px;}
 .product-func-item dl{margin-top:0;padding:60px 0;}
 .product-func-item dl dt{margin-bottom:25px;padding:0;font-size:1.8rem;color:#333}
 .product-func-item dl dd{margin:0;padding:0;color:#888;line-height:1.6rem;}
