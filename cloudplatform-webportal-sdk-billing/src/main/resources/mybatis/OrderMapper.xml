@@ -11,6 +11,7 @@
 	    <result column="START_TIME" property="startTime" />
 	    <result column="END_TIME" property="endTime" />
 	    <result column="PRICE" property="price" />
+	    <result column="DISCOUNT_PRICE" property="discountPrice" />
 	    <result column="STATUS" property="status" />
 	    <result column="DELETED" property="deleted" />
 	    <result column="CREATE_TIME" property="createTime" />
@@ -36,7 +37,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.STATUS,od.ORDER_NUMBER,
+	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.DISCOUNT_PRICE,od.STATUS,od.ORDER_NUMBER,
 	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN
 	</sql>
 	
@@ -90,6 +91,20 @@
 		</set>
 		where ID=#{id}
 	</update>
+	<!--根据id，修改折扣价 -->
+	<update id="modifyPriceById" parameterType="java.util.Map">
+		update MATRIX_BILLING_ORDER
+		<set>
+	        <if test="discountPrice != null ">
+	            DISCOUNT_PRICE=#{discountPrice},
+	        </if>
+	        UPDATE_TIME=now(),
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser}
+	        </if>
+		</set>
+		where ID=#{orderId}
+	</update>
 	
 	<sql id="Common_Where_Clause">
 	    where 1=1
@@ -111,6 +126,9 @@
 	        </if>
 	        <if test="price != null ">
 	            and od.PRICE=#{price}
+	        </if>
+	        <if test="discountPrice != null ">
+	            and od.DISCOUNT_PRICE=#{discountPrice}
 	        </if>
 	        <if test="status != null ">
 	            and od.STATUS=#{status}
