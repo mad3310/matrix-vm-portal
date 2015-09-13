@@ -35,16 +35,17 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 		String userNamePassport = userLogin.getLoginName();
 		String loginIp = userLogin.getLoginIp();
 		String email = userLogin.getEmail();
+		Long ucId = userLogin.getUcId();
 		
-		if(userNamePassport == null || "".equals(userNamePassport))
-			throw new ValidateException("userNamePassort should be not null");
-			
-		UserModel user = userService.getUserByNameAndEmail(userNamePassport,email);
+		UserModel user = userService.getUserByNameAndEmailOrUcId(userNamePassport,email,ucId);
 		if(null == user) {
-			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp,email);
+			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp,email,ucId);
 		} else {
+			user.setUserName(userNamePassport);
+			user.setEmail(email);
 			userService.updateUserLoginInfo(user, loginIp);
 		}
+		
 		final Session session = this.createUserSession(user);
 		
 		logger.debug("logined successfully");
@@ -58,6 +59,7 @@ public class LoginProxyImpl extends BaseProxyImpl<UserLogin> implements ILoginPr
 		session.setUserName(user.getUserName());
 		session.setEmail(user.getEmail());
 		session.setAdmin(user.isAdmin());
+		session.setUcId(user.getUcId());
 		return session;
 	}
 

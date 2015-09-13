@@ -36,40 +36,6 @@ public class LoginServiceImpl extends BaseServiceImpl<UserLogin> implements ILog
 		super(UserLogin.class);
 	}
 
-	@Override
-	public Session saveOrUpdateUserAndLogin(UserLogin userLogin) {
-		Assert.notNull(userLogin);
-		
-		String userNamePassport = userLogin.getLoginName();
-		String loginIp = userLogin.getLoginIp();
-		String email = userLogin.getEmail();
-		
-		if(userNamePassport == null || "".equals(userNamePassport))
-			throw new ValidateException("userNamePassort should be not null");
-			
-		UserModel user = userService.getUserByNameAndEmail(userNamePassport,email);
-		if(null == user)
-			user = userService.saveUserObjectWithSpecialName(userNamePassport,loginIp,email);
-		
-		if(null == user)
-			throw new ValidateException("用户不存在！");
-		
-		userService.updateUserLoginInfo(user, loginIp);
-		
-		final Session session = this.createUserSession(user);
-		
-		logger.debug("logined successfully");
-		return session;
-	}
-	
-	private Session createUserSession(UserModel user)
-	{
-		Session session = new Session();
-		session.setUserInfoId(user.getId());
-		session.setUserName(user.getUserName());
-		
-		return session;
-	}
 	
 	@Override
 	public void logout() {
@@ -83,10 +49,6 @@ public class LoginServiceImpl extends BaseServiceImpl<UserLogin> implements ILog
          });
 
 		logger.debug("logouted successfully");
-	}
-
-	@Override
-	public void checkingUserStatus(String userName) {
 	}
 
 	@Override

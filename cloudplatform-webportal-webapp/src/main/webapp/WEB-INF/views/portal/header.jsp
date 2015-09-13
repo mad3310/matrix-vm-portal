@@ -20,8 +20,11 @@
     </ul>
     <ul class="ul_horizon pull-right" style="margin-top:30px;font-size:14px;">
       <li><a class="index_a" href="" ><i class="fa fa-home"></i> 首页</a></li>
-      <li><a  class="index_a" href='<%=ConfigUtil.getString("oauth.auth.http") + "/index?redirect_uri=" + ConfigUtil.getString("webportal.local.http") +"/oauth/callback"  %>' ><i class="fa fa-key"></i> 登录</a></li>
+      <%-- <li><a  class="index_a" href='<%=ConfigUtil.getString("oauth.auth.http") + "/index?redirect_uri=" + ConfigUtil.getString("webportal.local.http") +"/oauth/callback"  %>' ><i class="fa fa-key"></i> 登录</a></li>
       <li><a class="reg_a" href='<%=ConfigUtil.getString("oauth.auth.http") + "/reg.jsp?redirect_uri=" + ConfigUtil.getString("webportal.local.http") +"/oauth/callback"  %>'><i class="fa fa-tag"></i> 注册</a></li>
+      <li><a class="index_a" href="${ctx}/helpCenter/helpCenter.jsp" ><i class="fa fa-magic"></i> 帮助中心</a></li> --%>
+      <li><a  class="index_a" href='http://uc.letvcloud.com/login.do?backUrl=http://matrix.letvcloud.com:8081/dashboard' ><i class="fa fa-key"></i> 登录</a></li>
+      <li><a class="reg_a" href=''><i class="fa fa-tag"></i> 注册</a></li>
       <li><a class="index_a" href="${ctx}/helpCenter/helpCenter.jsp" ><i class="fa fa-magic"></i> 帮助中心</a></li>
     </ul>
     

@@ -22,7 +22,6 @@ import com.letv.portal.service.IUserService;
 @Service("userService")
 public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUserService{
 	
-	private static String SUFFIX_EMAIL = "@letv.com";
 	@Autowired
 	private IUserDao userDao;
 	
@@ -30,25 +29,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		super(UserModel.class);
 	}
 
-	public void validationForSaving(UserModel checkingUser) {
-		String userName = checkingUser.getUserName();
-		boolean exist = existUserByUserName(userName);
-		if(exist)
-			throw new ValidateException("用户已存在！");
-	}
-	
-	@Override
 	public void saveUserObject(UserModel user) {
-		this.createUserObject(user);
-		try {
-			super.insert(user);
-		} catch (Exception e) {
-			throw new CommonException("保存用户时出现异常",e);
-		}
-	}
-	
-	private void createUserObject(UserModel user)
-	{		
 		Date date = new Date();
 		user.setRegisterDate(date);
 		user.setLastLoginTime(date);
@@ -61,18 +42,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		user.setCreateTime(timestamp);
 		user.setUpdateUser(Long.valueOf(0L));
 		user.setUpdateTime(timestamp);
+		super.insert(user);
 	}
 	
-	public void updateUserStauts(Long userid,UserStatus status) {
-		try {
-			UserModel user=this.getUserById(userid);			
-			user.setStatus(status);
-			super.update(user);
-		} catch (Exception e) {
-			throw new CommonException("更改user状态时出现异常！",e);
-		}
-	}
-	
+	@Override
 	public UserModel getUserById(Long userid)
 	{
 		UserModel user = super.selectById(userid);
@@ -81,40 +54,17 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		return user;
 	}
 	
-	public UserModel getUserByName(String userName){
-		userName=StringUtils.lowerCase(userName);
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userName",userName);
-		List<UserModel> users = selectByMap(map);
-		
-		if(null == users || users.isEmpty())
-			return null;
-		
-		return users.get(0);
-	}
-	
 	@Override
-	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email) {
+	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email,Long ucId) {
 		UserModel user = new UserModel();
 		user.setUserName(userName);
 		user.setCurrentLoginIp(loginIp);
 		user.setEmail(email);
+		user.setUcId(ucId);
 		saveUserObject(user);
 		return user;
 	}
 	
-	public boolean existUserByUserName(String userName)
-	{
-		userName=StringUtils.lowerCase(userName);
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userName", userName);
-		int userNameCount = selectByMapCount(map);
-		if (userNameCount > 0){
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void updateUserLoginInfo(UserModel user,String currentLoginIp) {
 		if(null == user)
@@ -135,15 +85,24 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	}
 
 	@Override
-	public UserModel getUserByNameAndEmail(String userNamePassport, String email) {
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userName",userNamePassport);
-		map.put("email",email);
+	public UserModel getUserByNameAndEmailOrUcId(String userNamePassport, String email,Long ucId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(null!= ucId){
+			map.put("ucId",ucId);
+		} else {
+			map.put("userName",userNamePassport);
+			map.put("email",email);
+		}
 		List<UserModel> users = selectByMap(map);
 		if(null == users || users.isEmpty())
 			return null;
 		
 		return users.get(0);
+	}
+
+	@Override
+	public UserModel getUserByUcId(Long ucId) {
+		return this.userDao.getUserByUcId(ucId);
 	}
   
 }

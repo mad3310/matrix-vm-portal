@@ -21,6 +21,7 @@ public class Session implements Serializable{
 	private String clientId;
 	private String clientSecret;
 	private String email;
+	private Long ucId;
 	
 	private boolean isAdmin;
 	
@@ -96,4 +97,14 @@ public class Session implements Serializable{
 	public Object getOpenStackSession() {
 		return openStackSession;
 	}
+
+	public Long getUcId() {
+		return ucId;
+	}
+
+	public void setUcId(Long ucId) {
+		this.ucId = ucId;
+	}
+	
+	
 }

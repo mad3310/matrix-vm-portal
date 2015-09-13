@@ -43,20 +43,10 @@ public class LogoutController{
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
 		loginService.logout();
-		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-		if(session != null) {
-			String clientId = session.getClientId();
-			String clientSecret = session.getClientSecret();
-			
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(OAUTH_AUTH_HTTP).append("/logout?client_id=").append(clientId).append("&client_secret=").append(clientSecret);
-			
-			request.getSession().invalidate();
-			sessionService.setSession(null,"logout");
-			HttpsClient.sendXMLDataByGet(buffer.toString(),1000,1000);
-		}
+		request.getSession().invalidate();
+		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(OAUTH_AUTH_HTTP).append("/index?redirect_uri=").append(WEBPORTAL_LOCAL_HTTP).append("/oauth/callback");
+		buffer.append("http://uc.letvcloud.com/logout.do?backUrl=http://matrix.letvcloud.com:8081/dashboard");
 		response.sendRedirect(buffer.toString());
    }
 }
