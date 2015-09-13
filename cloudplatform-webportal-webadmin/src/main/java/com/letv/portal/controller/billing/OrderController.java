@@ -35,6 +35,17 @@ public class OrderController {
 	@Autowired
 	IOrderDetailService orderDetailService;
 	
+	/**
+	  * @Title: list
+	  * @Description: 订单列表
+	  * @param page
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月13日 下午2:06:56
+	  */
 	@RequestMapping(value="/list",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject list(Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
@@ -42,11 +53,43 @@ public class OrderController {
 		return obj;
 	}
 	
+	/**
+	  * @Title: detailById
+	  * @Description: 根据订单id，获取订单明细
+	  * @param id
+	  * @param page
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月13日 下午2:06:31
+	  */
 	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)   
 	public @ResponseBody ResultObject detailById(@PathVariable Long id, Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("orderId", id);
 		obj.setData(this.orderDetailService.queryPaginationByMap(page, params));
+		return obj;
+	}
+	
+	/**
+	  * @Title: modifyPriceById
+	  * @Description: 修改订单价格（折扣价）
+	  * @param id
+	  * @param page
+	  * @param request
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月13日 下午2:05:58
+	  */
+	@RequestMapping(value="/modify/price/{id}", method=RequestMethod.POST)   
+	public @ResponseBody ResultObject modifyPriceById(@PathVariable Long id, Page page,HttpServletRequest request,ResultObject obj) {
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		params.put("orderId", id);
+		this.orderService.modifyPriceById(params);
 		return obj;
 	}
 	
