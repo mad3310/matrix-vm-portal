@@ -6,6 +6,7 @@
             <link rel="stylesheet" href="/static/stylesheets/font-awesome.css">
             <link rel="stylesheet" href="/static/stylesheets/select.css">
             <link rel="stylesheet" href="/static/stylesheets/toaster.css">
+            <link rel="stylesheet" href="/static/stylesheets/rzslider.css">
             <link rel="stylesheet" href="/static/stylesheets/common.css">
             <link rel="stylesheet" href="/static/stylesheets/style.css">
         </head>

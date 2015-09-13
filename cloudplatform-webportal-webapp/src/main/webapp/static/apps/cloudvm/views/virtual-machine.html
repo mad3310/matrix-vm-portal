@@ -1,4 +1,4 @@
-<div class="container-cluster-view" ng-controller="VirtualMachineCrtl">
+<div class="virtual-machine-view" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-2">
             <ui-select ng-model="selectedRegion.selected" theme="bootstrap">
@@ -8,8 +8,12 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <div class="le-col-2">
+            <button class="btn btn-default" ng-click="openVmCreateModal()">创建云主机</button>
+        </div>
         <div class="le-col-2 pull-right">
-            <input type="text" class="le-form-control" style="display: inline-block;width: 60%" ng-model="searchVmName" />
+            <input type="text" class="le-form-control" style="display: inline-block;width: 60%"
+                   ng-model="searchVmName"/>
             <button class="btn btn-default" ng-click="doSearch()">搜索</button>
         </div>
     </div>
@@ -50,8 +54,197 @@
             </tr>
             </tbody>
         </table>
-        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize" total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
+        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                    total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                    last-text="&raquo;">
         </pagination>
     </div>
-    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}"></toaster-container>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
+    </toaster-container>
+    <script type="text/ng-template" id="VmCreateModalTpl">
+        <div class="modal-header vm-create-modal-header">
+            <button type="button" class="close" ng-click="closeModal()"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">创建云主机</h3>
+        </div>
+        <div class="modal-body vm-create-modal-body">
+            <tabset>        
+                <tab active=tabsActive[1]>            
+                    <tab-heading>镜像选择</tab-heading>
+                    <div class="tab-content">
+                        <div class="le-row">
+                            <div class="le-col-3"><span>主机名称：</span></div>
+                            <div class="le-col-9"><input type="text" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" /></div>
+                        </div>
+                        <div class="le-row">
+                            <div class="le-col-3"><span>系统镜像：</span></div>
+                            <div class="le-col-9">
+                                    <ul class="list-inline vm-image-selector">
+                                        <li ng-repeat="vmImage in vmImageList" ng-class="{'selected':isSelectedVmImage(vmImage)}" ng-click="selectVmImage(vmImage)">
+                                            <a href="javascript:void(0);">{{vmImage.name}}</a>
+                                        </li>
+                                    </ul>
+                            </div>
+                        </div>
+                        <div class="le-row">
+                            <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="tabsActive[1]=false;tabsActive[2]=true;">下一步</button></div>
+                        </div>
+                    </div>
+                </tab>
+                <tab active=tabsActive[2]>            
+                    <tab-heading>配置选择</tab-heading>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>CPU：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-cpu-selector">
+                                <li ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                    <a href="javascript:void(0);">{{vmCpu}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>内存：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-ram-selector">
+                                <li ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                    <a href="javascript:void(0);">{{vmRam}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>数据盘：</span></div>
+                        <div class="le-col-9">
+                            <rzslider
+                                    rz-slider-floor="1"
+                                    rz-slider-ceil="500"
+                                    rz-slider-step="10"
+                                    rz-slider-precision="1"
+                                    rz-slider-model="dataDiskVolume">
+                            </rzslider>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>系统盘：</span></div>
+                        <div class="le-col-9">
+                            <span>默认为40G</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-2 pull-left"><button class="btn btn-default pull-left" ng-click="tabsActive[2]=false;tabsActive[1]=true;">上一步</button></div>
+                        <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="tabsActive[2]=false;tabsActive[3]=true;">下一步</button></div>
+                    </div>       
+                </tab> 
+                <tab active=tabsActive[3]>            
+                    <tab-heading>网络设置</tab-heading>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>类型：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-network-type-selector">
+                                <li ng-class="{'selected':vmNetworkType=='primary'}">
+                                    <a href="javascript:void(0);" ng-click="vmNetworkType='primary'">基础网络</a>
+                                </li>
+                                <li ng-class="{'selected':vmNetworkType=='private'}">
+                                    <a href="javascript:void(0);" ng-click="vmNetworkType='private'">私有网络</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row" ng-if="vmNetworkType=='primary'">
+                        <div class="le-col-3"><span>网络：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-network-public_ip_model-selector">
+                                <li ng-class="{'selected':vmNetworkPublicIpModel=='now'}">
+                                    <a href="javascript:void(0);" ng-click="vmNetworkPublicIpModel='now'">绑定公网IP</a>
+                                </li>
+                                <li ng-class="{'selected':vmNetworkPublicIpModel=='later'}">
+                                    <a href="javascript:void(0);" ng-click="vmNetworkPublicIpModel='later'">稍后设置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row" ng-if="vmNetworkType=='primary'">
+                        <div class="le-col-3"><span>带宽：</span></div>
+                        <div class="le-col-9">
+                            <rzslider
+                                    rz-slider-floor="1"
+                                    rz-slider-ceil="4096"
+                                    rz-slider-step="10"
+                                    rz-slider-precision="1"
+                                    rz-slider-model="networkBandWidth">
+                            </rzslider>
+                        </div>
+                    </div>
+                    <div class="le-row" ng-if="vmNetworkType=='private'">
+                        <div class="le-col-3"><span>子网：</span></div>
+                        <div class="le-col-9">
+                            <select ng-model="vmNetworkSubnet" class="le-form-control">
+                                <option value="subnet1">子网1</option>
+                                <option value="subnet2">子网2</option>
+                                <option value="subnet3">子网3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-2 pull-left"><button class="btn btn-default pull-left" ng-click="tabsActive[3]=false;tabsActive[2]=true;">上一步</button></div>
+                        <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="tabsActive[3]=false;tabsActive[4]=true;">下一步</button></div>
+                    </div>       
+                </tab>
+                <tab active=tabsActive[4]>            
+                    <tab-heading>主机设置</tab-heading>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>登陆方式：</span></div>
+                        <div class="le-col-9">
+                            <ul class="list-inline vm-security-type-selector">
+                                <li ng-class="{'selected':vmSecurityType=='key'}">
+                                    <a href="javascript:void(0);" ng-click="vmSecurityType='key'">密钥</a>
+                                </li>
+                                <li ng-class="{'selected':vmSecurityType=='password'}">
+                                    <a href="javascript:void(0);" ng-click="vmSecurityType='password'">密码</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>账户：</span></div>
+                        <div class="le-col-9">
+                            <input type="text" class="le-form-control" ng-disabled="true" value="root" />
+                        </div>
+                    </div> 
+                    <div class="le-row" ng-if="vmSecurityType=='key'">
+                        <div class="le-col-3"><span>密钥：</span></div>
+                        <div class="le-col-9">
+                            <select ng-model="vmSecurityKey" class="le-form-control">
+                                <option value="key1">密钥1</option>
+                                <option value="key2">密钥2</option>
+                                <option value="key3">密钥3</option>
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="le-row" ng-if="vmSecurityType=='password'">
+                        <div class="le-col-3"><span>密码：</span></div>
+                        <div class="le-col-9">
+                            <input type="text" class="le-form-control" ng-model="vmSecurityPassword" />
+                        </div>
+                    </div> 
+                    <div class="le-row" ng-if="vmSecurityType=='password'">
+                        <div class="le-col-3"><span>确认密码：</span></div>
+                        <div class="le-col-9">
+                            <input type="text" class="le-form-control" ng-model="vmSecurityPasswordConfirm" />
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3"><span>数量：</span></div>
+                        <div class="le-col-9">
+                            <input type="text" class="le-form-control" ng-model="vmCount" />
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-2 pull-left"><button class="btn btn-default pull-left" ng-click="tabsActive[4]=false;tabsActive[3]=true;">上一步</button></div>
+                        <div class="le-col-2 pull-right"><button class="btn btn-default pull-right" ng-click="createVm()">创建</button></div>
+                    </div> 
+                </tab>      
+            </tabset>
+        </div>
+    </script>
 </div>

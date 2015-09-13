@@ -1,12 +1,15 @@
 /**
  * Created by jiangfei on 2015/8/19.
  */
-define(['services/app.service'],function (serviceModule) {
+define(['services/app.service'], function (serviceModule) {
   serviceModule.factory('Config', [function () {
     var config = {};
     config.urls = {
       vm_regions: '/ecs/regions/',
-      vm_list: '/ecs/region',
+      vm_list: '/ecs/region/{region}',
+      image_list: '/osi/region/{region}',
+      flavor_group_data: '/osf/region/{region}/group',
+      vm_create: '/ecs/region/{region}/vm-create'
     };
     config.mclusterStatuses = [
       {"text": "请选择状态", "value": ""},
