@@ -81,10 +81,9 @@ a:hover{cursor:pointer;}
  *客户案例交互效果
  * */
 .main-customer .customer-logos> div{position:relative; }
+.customer-logos >div:not(.logo-focus) img{opacity: 0.3;filter: alpha(opacity=30);-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);filter:grayscale(100%);filter: gray;}
 .customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #CCCCCC;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
 .customer-logos .tip-point >i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #CCCCCC;margin-left: -3px;margin-top: 2px;}
-.customer-logos>div:hover  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
-.customer-logos>div:hover .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;}
 .customer-logos .tip-triangle{position: absolute;width: 50px;height:20px;border-top:1px solid #CCCCCC;overflow: hidden;background: #F7F7F7;left:50%;margin-top: -56px;}
 .customer-logos .tip-triangle-start{margin-left: 20px;}
 .customer-logos .tip-triangle-middle{margin-left: -37px;}
@@ -102,8 +101,12 @@ a:hover{cursor:pointer;}
 .customer-logos .line-start{width:21px;margin-left: 31px;}
 .customer-logos .line-middle{width:14px;margin-left: -8px;}
 .customer-logos .line-end{width:21px;margin-left: -42px;}
- .customer-logos span{visibility: hidden;} 
-.customer-logos > div:hover span{visibility:visible; }
+ .customer-logos .tip-triangle,.customer-logos .white-line{visibility: hidden;} 
+ .customer-logos .logo-focus{}
+.customer-logos .logo-focus .tip-triangle,.customer-logos .logo-focus .white-line{visibility:visible; }
+.customer-logos .logo-focus  .tip-point{width: 12px;height:12px;border: 1px solid #088AC2;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;}
+.customer-logos .logo-focus .tip-point>i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #088AC2;}
+
  /*customer*/
 .main-customer{height:550px;padding-top:60px;padding-bottom:85px;margin:0 auto;text-align:center;background:#f7f7f7;}
 .main-customer .customer-tab{width:660px;height:40px;margin:45px auto;border-left:1px solid #ccc;border-right:1px solid #ccc;border-radius:5px;font-size:1.6rem;line-height:38px;overflow:hidden;}
