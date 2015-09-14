@@ -208,6 +208,11 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 		limitedUserEmails.add("yuelongguang@letv.com");
 		limitedUserEmails.add("jiangfei@letv.com");
 		limitedUserEmails.add("zhouxianguang@letv.com");
+		limitedUserEmails.add("jiangfei5945@hotmail.com");
+		limitedUserEmails.add("gaomin@letv.com");
+		limitedUserEmails.add("yaokuo@letv.com");
+		limitedUserEmails.add("lisuxiao@letv.com");
+		limitedUserEmails.add("liuhao1@letv.com");
 	}
 
 	protected void checkUserEmail() throws OpenStackException {
