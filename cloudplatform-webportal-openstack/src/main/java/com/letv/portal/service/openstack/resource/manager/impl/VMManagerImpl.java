@@ -1485,7 +1485,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	// this.identityManager = identityManager;
 	// }
 
-	private void incVmCount() throws OpenStackException {
+	public void incVmCount() throws OpenStackException {
 		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 				.getOpenStackServiceGroup().getCloudvmVmCountService();
 		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService

@@ -116,7 +116,7 @@ public class VMController {
 			@RequestParam String keyPairName, @RequestParam String adminPass,
 			@RequestParam int count) {
 		ResultObject result = new ResultObject();
-//		try {
+		try {
 			VMCreateConf2 conf = new VMCreateConf2();
 			conf.setRegion(region);
 			conf.setName(name);
@@ -132,13 +132,13 @@ public class VMController {
 			conf.setKeyPairName(keyPairName);
 			conf.setAdminPass(adminPass);
 			conf.setCount(count);
-//			Util.session(sessionService).getVMManager().create2(conf);
-//		} catch (UserOperationException e) {
-//			result.addMsg(e.getUserMessage());
-//			result.setResult(0);
-//		} catch (OpenStackException e) {
-//			throw e.matrixException();
-//		}
+			Util.session(sessionService).getVMManager().create2(conf);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 

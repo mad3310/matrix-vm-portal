@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
+import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
+import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 
 import com.google.common.base.Optional;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
@@ -24,7 +27,7 @@ public class ApiCache {
 		this.region = region;
 		this.cache = new HashMap<Class<?>, Object>();
 	}
-	
+
 	public ApiSession getApiSession() {
 		return apiSession;
 	}
@@ -65,6 +68,18 @@ public class ApiCache {
 		return imageApi;
 	}
 
+	public org.jclouds.openstack.nova.v2_0.features.ImageApi getNovaImageApi() {
+		org.jclouds.openstack.nova.v2_0.features.ImageApi imageApi = (org.jclouds.openstack.nova.v2_0.features.ImageApi) this.cache
+				.get(org.jclouds.openstack.nova.v2_0.features.ImageApi.class);
+		if (imageApi == null) {
+			imageApi = apiSession.getNovaApi().getImageApi(region);
+			this.cache.put(
+					org.jclouds.openstack.nova.v2_0.features.ImageApi.class,
+					imageApi);
+		}
+		return imageApi;
+	}
+
 	public VolumeTypeApi getVolumeTypeApi() {
 		VolumeTypeApi volumeTypeApi = (VolumeTypeApi) this.cache
 				.get(VolumeTypeApi.class);
@@ -73,6 +88,15 @@ public class ApiCache {
 			this.cache.put(VolumeTypeApi.class, volumeTypeApi);
 		}
 		return volumeTypeApi;
+	}
+
+	public ServerApi getServerApi() {
+		ServerApi serverApi = (ServerApi) this.cache.get(ServerApi.class);
+		if (serverApi == null) {
+			serverApi = apiSession.getNovaApi().getServerApi(region);
+			this.cache.put(ServerApi.class, serverApi);
+		}
+		return serverApi;
 	}
 
 	public KeyPairApi getKeyPairApi() throws APINotAvailableException {
@@ -88,4 +112,66 @@ public class ApiCache {
 		}
 		return keyPairApi;
 	}
+
+	public QuotaApi getNovaQuotaApi() throws APINotAvailableException {
+		QuotaApi quotaApi = (QuotaApi) this.cache.get(QuotaApi.class);
+		if (quotaApi == null) {
+			Optional<QuotaApi> quotaApiOptional = apiSession.getNovaApi()
+					.getQuotaApi(region);
+			if (!quotaApiOptional.isPresent()) {
+				throw new APINotAvailableException(QuotaApi.class);
+			}
+			quotaApi = quotaApiOptional.get();
+			this.cache.put(QuotaApi.class, quotaApi);
+		}
+		return quotaApi;
+	}
+
+	public org.jclouds.openstack.neutron.v2.extensions.QuotaApi getNeutronQuotaApi()
+			throws APINotAvailableException {
+		org.jclouds.openstack.neutron.v2.extensions.QuotaApi quotaApi = (org.jclouds.openstack.neutron.v2.extensions.QuotaApi) this.cache
+				.get(org.jclouds.openstack.neutron.v2.extensions.QuotaApi.class);
+		if (quotaApi == null) {
+			Optional<org.jclouds.openstack.neutron.v2.extensions.QuotaApi> quotaApiOptional = apiSession
+					.getNeutronApi().getQuotaApi(region);
+			if (!quotaApiOptional.isPresent()) {
+				throw new APINotAvailableException(
+						org.jclouds.openstack.neutron.v2.extensions.QuotaApi.class);
+			}
+			quotaApi = quotaApiOptional.get();
+			this.cache.put(
+					org.jclouds.openstack.neutron.v2.extensions.QuotaApi.class,
+					quotaApi);
+		}
+		return quotaApi;
+	}
+
+	public org.jclouds.openstack.cinder.v1.features.QuotaApi getCinderQuotaApi() {
+		org.jclouds.openstack.cinder.v1.features.QuotaApi quotaApi = (org.jclouds.openstack.cinder.v1.features.QuotaApi) this.cache
+				.get(org.jclouds.openstack.cinder.v1.features.QuotaApi.class);
+		if (quotaApi == null) {
+			quotaApi = apiSession.getCinderApi().getQuotaApi(region);
+			this.cache.put(
+					org.jclouds.openstack.cinder.v1.features.QuotaApi.class,
+					quotaApi);
+		}
+		return quotaApi;
+	}
+
+	public FloatingIPApi getNeutronFloatingIpApi()
+			throws APINotAvailableException {
+		FloatingIPApi floatingIPApi = (FloatingIPApi) this.cache
+				.get(FloatingIPApi.class);
+		if (floatingIPApi == null) {
+			Optional<FloatingIPApi> floatingIPApiOptional = apiSession
+					.getNeutronApi().getFloatingIPApi(region);
+			if (!floatingIPApiOptional.isPresent()) {
+				throw new APINotAvailableException(FloatingIPApi.class);
+			}
+			floatingIPApi = floatingIPApiOptional.get();
+			this.cache.put(FloatingIPApi.class, FloatingIPApi.class);
+		}
+		return floatingIPApi;
+	}
+
 }

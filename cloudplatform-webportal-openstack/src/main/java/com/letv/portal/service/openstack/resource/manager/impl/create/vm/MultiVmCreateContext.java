@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import java.util.List;
+
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
@@ -7,10 +9,15 @@ import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class MultiVmCreateContext {
 
+//	private OpenStackConf openStackConf;
+//	private OpenStackUser openStackUser;
+	
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
 
@@ -25,6 +32,32 @@ public class MultiVmCreateContext {
 	private Image snapshot;
 	private VolumeType volumeType;
 	private KeyPair keyPair;
+	
+	private List<VmCreateContext> vmCreateContexts;
+	
+//	public void setOpenStackConf(OpenStackConf openStackConf) {
+//		this.openStackConf = openStackConf;
+//	}
+//	
+//	public OpenStackConf getOpenStackConf() {
+//		return openStackConf;
+//	}
+//	
+//	public void setOpenStackUser(OpenStackUser openStackUser) {
+//		this.openStackUser = openStackUser;
+//	}
+//	
+//	public OpenStackUser getOpenStackUser() {
+//		return openStackUser;
+//	}
+	
+	public void setVmCreateContexts(List<VmCreateContext> vmCreateContexts) {
+		this.vmCreateContexts = vmCreateContexts;
+	}
+	
+	public List<VmCreateContext> getVmCreateContexts() {
+		return vmCreateContexts;
+	}
 
 	public void setPrivateNetwork(Network privateNetwork) {
 		this.privateNetwork = privateNetwork;
