@@ -66,6 +66,11 @@ body {
     background-color: #088ac2;
 }
 
+.header a:link, .header a:visited, .header a:hover, .header a:active {
+    text-decoration: none;
+    color: white;
+}
+
 .header .header-brand {
     display: block;
     height: 70px;
@@ -74,35 +79,28 @@ body {
     padding: 15px 0 10px 20px;
 }
 
-.header a:link, .header a:visited, .header a:hover, .header a:active {
-    text-decoration: none;
-    color: white;
-}
-
 .header .header-brand .brand-logo {
 
 }
 
-.header .header-brand span {
-    font-size: 24px;
-    line-height: 50px;
+.header .header-help,.header .header-account{
+    height: 70px;
 }
 
-.header .header-brand span small {
-    margin-left: 5px;
+.header .header-help{
+    margin-right: 30px;
+}
+
+.header .header-account{
+    margin-right: 20px;
+}
+.header .header-help .help-icon,.header .header-account .account-icon{
+    line-height: 70px;
+}
+.header .header-help span,.header .header-account span{
+    line-height: 70px;
     font-size: 14px;
 }
-
-.header .account {
-    display: inline;
-    line-height: 50px;
-    margin-right: 10px;
-}
-
-.header .account .dropdown-menu a {
-    color: black;
-}
-
 /*end header style*/
 
 /*begin footer style*/
