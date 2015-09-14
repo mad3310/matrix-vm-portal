@@ -108,8 +108,17 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedVmCpu = null;
     $scope.vmRamList = [];
     $scope.selectedVmRam = null;
-    $scope.vmDiskList = [];
-    $scope.selectedVmDisk = null;
+    $scope.dataDiskVolume = 10;
+    $scope.vmNetworkType = 'primary';
+    $scope.vmNetworkPublicIpModel = 'now';
+    $scope.networkBandWidth = 2;
+    $scope.vmNetworkSubnet = 'subnet1';
+    $scope.vmSecurityType = 'key';
+    $scope.vmSecurityKey = 'key1';
+    $scope.vmSecurityPassword = '';
+    $scope.vmSecurityPasswordConfirm = '';
+    $scope.vmCount = '';
+
 
     $scope.selectVmImage = function (vmImage) {
       $scope.selectedVmImage = vmImage;
@@ -129,17 +138,22 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmRam = function (vmRam) {
       return $scope.selectedVmRam === vmRam;
     };
-    $scope.selectVmDisk = function (vmDisk) {
-      $scope.selectedVmDisk = vmDisk;
-    };
-    $scope.isSelectedVmDisk = function (vmDisk) {
-      return $scope.selectedVmDisk === vmDisk;
-    };
-    $scope.ok = function () {
+    $scope.createVm = function () {
+      var data = {
+        name: $scope.vmName,
+        imageId: $scope.selectedVmImage.id,
+        flavorId: selectedVmFlavor.id,
+        networkIds: null,
+        adminPass: $scope.vmSecurityPassword,
+        publish: $scope.vmNetworkPublicIpModel === 'now',
+        volumeSizes: [$scope.dataDiskVolume]
+      };
+      HttpService.doPost(Config.urls.vm_create.replace('{region}', region), data).success(function (data, status, headers, config) {
+        return data;
+      });
       $modalInstance.close($scope.selected.item);
     };
-
-    $scope.cancel = function () {
+    $scope.closeModal = function () {
       $modalInstance.dismiss('cancel');
     };
     $scope.$watch('selectedVmCpu', function (value) {
@@ -149,11 +163,12 @@ define(['controllers/app.controller'], function (controllerModule) {
     });
     $scope.$watch('selectedVmRam', function (value) {
       if (value != null) {
-        initVmDiskSelector();
+        setSelectedVmFlavor();
       }
     });
 
-    var flavorGroupData = null;
+    var flavorGroupData = null,
+      selectedVmFlavor = null;
     var initComponents = function () {
         initVmImageSelector();
         initVmCpuSelector();
@@ -180,12 +195,11 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         $scope.selectedVmRam = $scope.vmRamList[0];
       },
-      initVmDiskSelector = function () {
-        $scope.vmDiskList.splice(0, $scope.vmDiskList.length);
-        for (var disk in flavorGroupData[$scope.selectedVmCpu][$scope.selectedVmRam]) {
-          $scope.vmDiskList.push(disk);
+      setSelectedVmFlavor = function () {
+        for (var disk in flavorGroupData[$scope.selectedVmCpu][$scope.selectedVmRam]) {//跟运维规定系统盘都为40G，cpu,ram可唯一确定flavor,默认选择第一个硬盘，
+          selectedVmFlavor = flavorGroupData[$scope.selectedVmCpu][$scope.selectedVmRam][disk];
+          break;
         }
-        $scope.selectedVmDisk = $scope.vmDiskList[0];
       };
     ;
     initComponents();
