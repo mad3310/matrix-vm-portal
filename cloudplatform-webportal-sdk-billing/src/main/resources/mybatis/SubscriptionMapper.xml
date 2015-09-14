@@ -53,7 +53,7 @@
 	            and subscription.ID=#{id}
 	        </if>
 	        <if test="subscriptionNumber != null ">
-	            and subscription.SUBSCRIPTION_NUMBER=#{subscriptionNumber}
+	            and subscription.SUBSCRIPTION_NUMBER like CONCAT('%','${subscriptionNumber}','%') escape '^'
 	        </if>
 	        <if test="productId != null ">
 	            and subscription.PRODUCT_ID=#{productId}
