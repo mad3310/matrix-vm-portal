@@ -1,12 +1,62 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import org.jclouds.openstack.cinder.v1.domain.VolumeType;
+import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Subnet;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
+import org.jclouds.openstack.nova.v2_0.domain.Image;
+import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
+
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class MultiVmCreateContext {
-	private String regionDisplayName;
 
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
+
+	private ApiCache apiCache;
+
+	private String regionDisplayName;
+	private Flavor flavor;
+	private Image image;
+	private Network privateNetwork;
+	private Subnet privateSubnet;
+	private Network sharedNetwork;
+	private Image snapshot;
+	private VolumeType volumeType;
+	private KeyPair keyPair;
+
+	public void setPrivateNetwork(Network privateNetwork) {
+		this.privateNetwork = privateNetwork;
+	}
+
+	public Network getPrivateNetwork() {
+		return privateNetwork;
+	}
+
+	public void setPrivateSubnet(Subnet privateSubnet) {
+		this.privateSubnet = privateSubnet;
+	}
+
+	public Subnet getPrivateSubnet() {
+		return privateSubnet;
+	}
+
+	public void setSharedNetwork(Network sharedNetwork) {
+		this.sharedNetwork = sharedNetwork;
+	}
+
+	public Network getSharedNetwork() {
+		return sharedNetwork;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public Image getImage() {
+		return image;
+	}
 
 	public String getRegionDisplayName() {
 		return regionDisplayName;
@@ -32,4 +82,43 @@ public class MultiVmCreateContext {
 		this.vmManager = vmManager;
 	}
 
+	public void setFlavor(Flavor flavor) {
+		this.flavor = flavor;
+	}
+
+	public Flavor getFlavor() {
+		return flavor;
+	}
+
+	public void setSnapshot(Image snapshot) {
+		this.snapshot = snapshot;
+	}
+
+	public Image getSnapshot() {
+		return snapshot;
+	}
+
+	public void setVolumeType(VolumeType volumeType) {
+		this.volumeType = volumeType;
+	}
+
+	public VolumeType getVolumeType() {
+		return volumeType;
+	}
+
+	public void setKeyPair(KeyPair keyPair) {
+		this.keyPair = keyPair;
+	}
+
+	public KeyPair getKeyPair() {
+		return keyPair;
+	}
+
+	public void setApiCache(ApiCache apiCache) {
+		this.apiCache = apiCache;
+	}
+	
+	public ApiCache getApiCache() {
+		return apiCache;
+	}
 }

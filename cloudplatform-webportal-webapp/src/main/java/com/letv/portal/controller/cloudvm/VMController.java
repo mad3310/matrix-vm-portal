@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.letv.portal.service.openstack.exception.UserOperationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,6 +101,20 @@ public class VMController {
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
+		return result;
+	}
+
+	@RequestMapping(value = "/vm/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject create(@RequestParam String region,
+			@RequestParam String name, @RequestParam String flavorId,
+			@RequestParam String imageId, @RequestParam String snapshotId,
+			@RequestParam int volumeSize, @RequestParam String volumeTypeId,
+			@RequestParam String privateSubnetId,
+			@RequestParam String sharedNetworkId,
+			@RequestParam boolean bindFloatingIP, @RequestParam int bandWidth,
+			@RequestParam String keyPairName, @RequestParam String adminPass,
+			@RequestParam int count) {
+		ResultObject result = new ResultObject();
 		return result;
 	}
 

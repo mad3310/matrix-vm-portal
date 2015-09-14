@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 
@@ -20,6 +21,7 @@ public class ApiSession implements Closeable {
 	private NovaApi novaApi;
 	private NeutronApi neutronApi;
 	private CinderApi cinderApi;
+	private GlanceApi glanceApi;
 
 	public ApiSession(OpenStackConf openStackConf, OpenStackUser openStackUser) {
 		Iterable<Module> modules = ImmutableSet
@@ -30,6 +32,8 @@ public class ApiSession implements Closeable {
 				"openstack-neutron", NeutronApi.class);
 		this.cinderApi = openApi(openStackConf, openStackUser, modules,
 				"openstack-cinder", CinderApi.class);
+		this.glanceApi = openApi(openStackConf, openStackUser, modules,
+				"openstack-glance", GlanceApi.class);
 	}
 
 	private <ApiType extends Closeable> ApiType openApi(
@@ -58,12 +62,17 @@ public class ApiSession implements Closeable {
 	public CinderApi getCinderApi() {
 		return cinderApi;
 	}
+	
+	public GlanceApi getGlanceApi() {
+		return glanceApi;
+	}
 
 	public void close() {
 		try {
 			Closeables.close(novaApi, true);
 			Closeables.close(neutronApi, true);
 			Closeables.close(cinderApi, true);
+			Closeables.close(glanceApi, true);
 		} catch (IOException e) {
 			throw new MatrixException("后台错误", e);
 		}

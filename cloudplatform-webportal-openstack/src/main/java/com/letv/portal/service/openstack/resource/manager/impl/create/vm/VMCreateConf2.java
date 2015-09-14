@@ -10,8 +10,8 @@ public class VMCreateConf2 {
 	private String imageId;
 	private String snapshotId;
 
-	private String volumeSize;
-	private String volumeType;
+	private int volumeSize;
+	private String volumeTypeId;
 
 	private String privateSubnetId;
 	private String sharedNetworkId;
@@ -67,23 +67,23 @@ public class VMCreateConf2 {
 		this.flavorId = flavorId;
 	}
 
-	public String getVolumeSize() {
+	public int getVolumeSize() {
 		return volumeSize;
 	}
 
-	public void setVolumeSize(String volumeSize) {
+	public void setVolumeSize(int volumeSize) {
 		this.volumeSize = volumeSize;
 	}
 
-	public String getVolumeType() {
-		return volumeType;
+	public String getVolumeTypeId() {
+		return volumeTypeId;
 	}
 
-	public void setVolumeType(String volumeType) {
-		this.volumeType = volumeType;
+	public void setVolumeTypeId(String volumeTypeId) {
+		this.volumeTypeId = volumeTypeId;
 	}
 
-	public boolean isBindFloatingIP() {
+	public boolean getBindFloatingIP() {
 		return bindFloatingIP;
 	}
 
