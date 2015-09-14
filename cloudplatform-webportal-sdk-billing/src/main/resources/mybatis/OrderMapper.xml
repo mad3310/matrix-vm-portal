@@ -113,7 +113,7 @@
 	            and od.ID=#{id}
 	        </if>
 	        <if test="orderNumber != null ">
-	            and od.ORDER_NUMBER=#{orderNumber}
+	            and od.ORDER_NUMBER like CONCAT('%','${orderNumber}','%') escape '^' 
 	        </if>
 	        <if test="subscriptionId != null ">
 	            and od.SUBSCRIPTION_ID=#{subscriptionId}
@@ -174,7 +174,18 @@
 			count(1) 
 		from 
 			MATRIX_BILLING_ORDER od
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+		left join
+	    	WEBPORTAL_USER user on sub.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
+			<if test="userName != null and userName != '' ">
+	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
+	        </if>
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -194,6 +205,9 @@
 		left join
 	    	WEBPORTAL_USER user on sub.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
+			<if test="userName != null and userName != '' ">
+	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
+	        </if>
 		ORDER BY od.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}

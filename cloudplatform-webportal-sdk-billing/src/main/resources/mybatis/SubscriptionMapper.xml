@@ -146,6 +146,9 @@
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
 	        </if>
+	        <if test="userName != null and userName != '' ">
+	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
+	        </if>
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
@@ -167,6 +170,9 @@
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
+	        </if>
+	        <if test="userName != null and userName != '' ">
+	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
 	        </if>
 		ORDER BY subscription.CREATE_TIME DESC
 			<if test="page != null">
