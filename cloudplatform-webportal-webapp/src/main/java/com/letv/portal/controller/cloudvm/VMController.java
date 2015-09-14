@@ -111,7 +111,7 @@ public class VMController {
 			@RequestParam int volumeSize, @RequestParam String volumeTypeId,
 			@RequestParam String privateSubnetId,
 			@RequestParam String sharedNetworkId,
-			@RequestParam boolean bindFloatingIP, @RequestParam int bandWidth,
+			@RequestParam boolean bindFloatingIp, @RequestParam int bandWidth,
 			@RequestParam String keyPairName, @RequestParam String adminPass,
 			@RequestParam int count) {
 		ResultObject result = new ResultObject();
