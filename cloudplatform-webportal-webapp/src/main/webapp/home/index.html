@@ -14,66 +14,111 @@
 <div class="main-body body-top"><!-- header&banner -->
 	<div class="top-nav clearfix"> 
 		<div class="col-md-2">
-			<img src="/static/staticPage/img/white-logo.png">
+			<a><img src="/static/staticPage/img/white-logo.png"></a>
 		</div>
 		<div class="col-md-offset-1 col-md-6 nav-items">
-			<div class="col-md-2 nav-item"><span>首页</span></div>
-			<div class="col-md-2 nav-item">产品</div>
-			<div class="col-md-2 nav-item">控制台</div>
-			<div class="col-md-2 nav-item">帮助中心</div>
-			<div class="col-md-2 nav-item">关于我们</div>
+			<div class="col-md-2 nav-item"><a><span>首页</span></a></div>
+			<div class="col-md-2 nav-item item-product">
+				<a href="products.html"><span>产品</span></a>
+				<div class="item-arrow hide">
+					<img src="/static/staticPage/img/top-arrow.png">
+				</div>
+				<div class="item-uls hide">
+					<div class="uls-items clearfix">
+						<div class="col-md-offset-3 col-md-2">
+							<div class="items-type"><a>弹性计算</a></div>
+							<ul>
+								<li><a>云服务器ECS</a></li>
+								<li><a>弹性伸缩服务ESS</a></li>
+								<li><a>负载均衡SLB</a></li>
+							</ul>
+						</div>
+						<div class="col-md-2">
+							<div class="items-type"><a>存储与CDN</a></div>
+							<ul>
+								<li><a>开放存储服务OSS</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 nav-item"><a><span>控制台</span></a></div>
+			<div class="col-md-2 nav-item"><a><span>帮助中心</span></a></div>
+			<div class="col-md-2 nav-item"><a><span>关于我们</span></a></div>
 			<div class="clearfix"></div>
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-3">
 			<div class="nav-more pull-right">
-				<div class="col-md-6 more-login">登录</div>
-				<div class="col-md-6 more-reg">注册</div>
+				<div class="col-md-6 more-login"><a><span>登录</span></a></div>
+				<div class="col-md-6 more-reg"><a><span>注册</span></a></div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
-	<div class="top-carousel"> <!-- lunbo banner -->
-		<div class="carousel-content clearfix">
-			<div class="col-md-5">
-				<div class="content-title"><span>云主机</span>免费试用啦！</div>
-				<div class="content-desc">参与即送500G   BOS存储空间</div>
-				<div class="content-tryNow">立即试用</div>
+	<div class="carousels">
+		<div class="top-carousel" self-carousel-id="0"> <!-- lunbo banner -->
+			<div class="carousel-content clearfix">
+				<div class="col-md-5 fadeIn">
+					<div class="content-title"><span>云主机</span>免费试用啦！</div>
+					<div class="content-desc">参与即送500G   BOS存储空间</div>
+					<div class="content-tryNow"><a><span>立即试用</span></a></div>
+				</div>
+				<div class="col-md-7 slideR">
+					<img src="/static/staticPage/img/banner-img.png">
+				</div>
 			</div>
-			<div class="col-md-7">
-				<img src="/static/staticPage/img/banner-img.png">
+			<!-- <div class="carousel-control">
+				<img src="/static/staticPage/img/line-short.png">
+				<img src="/static/staticPage/img/line-long.png">
+				<img src="/static/staticPage/img/line-short.png">
+				<img src="/static/staticPage/img/line-short.png">
+			</div> -->
+		</div>
+		<div class="top-carousel hide" self-carousel-id="1"> <!-- lunbo banner -->
+			<div class="carousel-content clearfix">
+				<div class="col-md-5">
+					<div class="content-title"><span>RDS</span>免费试用啦！</div>
+					<div class="content-desc">参与即送500G   BOS存储空间</div>
+					<div class="content-tryNow"><a><span>立即试用</span></a></div>
+				</div>
+				<div class="col-md-7">
+					<img src="/static/staticPage/img/advantage-safety.png">
+				</div>
 			</div>
 		</div>
-		<div class="carousel-control">
-			<img src="/static/staticPage/img/line-short.png">
-			<img src="/static/staticPage/img/line-long.png">
-			<img src="/static/staticPage/img/line-short.png">
-			<img src="/static/staticPage/img/line-short.png">
+		<div class="top-carousel hide" self-carousel-id="2"> <!-- lunbo banner -->
+			<div class="carousel-content clearfix">
+				<div class="col-md-5">
+					<div class="content-title"><span>SLB</span>免费试用啦！</div>
+					<div class="content-desc">参与即送500G   BOS存储空间</div>
+					<div class="content-tryNow"><a><span>立即试用</span></a></div>
+				</div>
+				<div class="col-md-7">
+					<img src="/static/staticPage/img/advantage-safety.png">
+				</div>
+			</div>
+		</div>
+		<div class="top-carousel hide" self-carousel-id="3"> <!-- lunbo banner -->
+			<div class="carousel-content clearfix">
+				<div class="col-md-5">
+					<div class="content-title"><span>RDS</span>免费试用啦！</div>
+					<div class="content-desc">参与即送500G   BOS存储空间</div>
+					<div class="content-tryNow"><a><span>立即试用</span></a></div>
+				</div>
+				<div class="col-md-7">
+					<img src="/static/staticPage/img/banner-img.png">
+				</div>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="main-body nav-uls">
-	<div class="uls-items clearfix">
-		<div class="uls-arrow">
-			<div class="arrow-up">
-				<div class="up-hollow"></div>
-			</div>
-		</div>
-		<div class="col-md-offset-3 col-md-2">
-			<div class="items-type">弹性计算</div>
-			<ul>
-				<li>云服务器ECS</li>
-				<li>弹性伸缩服务ESS</li>
-				<li>负载均衡SLB</li>
-			</ul>
-		</div>
-		<div class="col-md-2">
-			<div class="items-type">存储与CDN</div>
-			<ul>
-				<li>开放存储服务OSS</li>
-			</ul>
-		</div>
+	<div class="carousel-control">
+		<img self-carousel-id="0" src="/static/staticPage/img/line-long.png">
+		<img self-carousel-id="1" class="control-short" src="/static/staticPage/img/line-long.png">
+		<img self-carousel-id="2" class="control-short" src="/static/staticPage/img/line-long.png">
+		<img self-carousel-id="3" class="control-short" src="/static/staticPage/img/line-long.png">
 	</div>
 </div>
+<div class="main-body nav-uls hide"></div> <!-- 遮罩 -->
 <div class="main-body"> <!-- 优势 & 推荐 -->
 	<div class="body-advantage clearfix"> <!-- 优势 -->
 		<div class="col-md-4 bg-blue">
@@ -204,7 +249,7 @@
 					<img src="/static/staticPage/img/JD.png">
 				</div>
 			</div>
-			<div class="hoverTip-arrow"><span class="arrow-top"></span></div>
+			<!-- <div class="hoverTip-arrow"><span class="arrow-top"></span></div> -->
 		</div>
 	</div>
 	<div class="clearfix"></div>
@@ -213,12 +258,44 @@
 		<div class="col-md-2"></div>
 	</div>
 	<div class="customer-logos clearfix">
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/JD.png"></div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png"></div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png"></div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/zhejiangTV.png"></div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png"></div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png"></div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/JD.png">
+			<!-- 小圆点 -->
+			<span class="tip-point"><i></i></span>
+			<!-- 画三角形 -->
+			<span class="tip-triangle tip-triangle-start"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-start"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-middle"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-middle"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/zhejiangTV.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-middle"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-middle"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-end"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-end"></span>
+		</div>
 	</div>
 </div>
 <div class="main-body"> <!-- 合作伙伴 -->
@@ -372,5 +449,10 @@
 	<img src="/static/staticPage/img/top.png" id="toTop"/>
 </div>
 </body>
+<script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script src="/static/staticPage/js/home.js" type="text/javascript" charset="utf-8"></script>
 </html>
+<script>
+topNavHover();//导航滑过效果
+carousels();//轮播
+</script>

@@ -96,7 +96,7 @@ public interface IBaseService<T> {
 	
 	/**
 	  * @Title: queryByPagination
-	  * @Description: 根据参数查询数据（带分页）
+	  * @Description: 根据QueryParam参数查询数据（带分页）
 	  * @param page
 	  * @param params
 	  * @return Page   
@@ -105,6 +105,17 @@ public interface IBaseService<T> {
 	  * @date 2015年7月27日 上午11:38:37
 	  */
 	<K, V> Page queryByPagination(Page page, Map<K,V> params);
+	/**
+	  * @Title: queryPaginationByMap
+	  * @Description: 使用map参数查询分页数据
+	  * @param page
+	  * @param params
+	  * @return Page   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月11日 上午11:43:11
+	  */
+	<K, V> Page queryPaginationByMap(Page page, Map<K,V> params);
 
 	boolean isUnique(String name);
 

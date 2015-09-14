@@ -23,6 +23,8 @@ public interface IBaseDao<T> {
 	
 	public <K,V> Integer selectByMapCount(Map<K,V>  map);
 	
+	public <K,V> List<T> selectPageByMap(Map<K,V>  map);
+	
 	public List<T> selectByModel(T t);
 	
 	public <K,V> List<T> selectByMap(Map<K,V>  map);

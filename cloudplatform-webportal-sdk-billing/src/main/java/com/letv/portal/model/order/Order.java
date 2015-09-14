@@ -18,6 +18,7 @@ public class Order extends BaseModel{
 
 	private static final long serialVersionUID = 6612436637375760981L;
 
+	private String orderNumber;//订单编码
 	private Long subscriptionId;//订阅主表主键
 	private Date startTime;//开始时间
 	private Date endTime;//结束时间
@@ -26,6 +27,12 @@ public class Order extends BaseModel{
 	private Integer status;//订单状态：0-未付款，1-失效，2-已付款
 	private Subscription subscription;//订阅实体
 	
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
 	public Subscription getSubscription() {
 		return subscription;
 	}

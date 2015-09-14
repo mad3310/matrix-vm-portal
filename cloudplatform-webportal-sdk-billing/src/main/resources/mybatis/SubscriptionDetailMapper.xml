@@ -104,6 +104,26 @@
 	        and #{date} between subDetail.START_TIME and subDetail.END_TIME
 	</select>
 	
-		
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+			<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail
+			<include refid="Common_Where_Clause" />
+		ORDER BY subDetail.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>	
 
 </mapper>   

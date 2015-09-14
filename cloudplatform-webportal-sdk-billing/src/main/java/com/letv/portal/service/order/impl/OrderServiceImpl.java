@@ -25,6 +25,7 @@ import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.product.IProductService;
+import com.letv.portal.util.SerialNumberUtil;
 
 @Service("orderService")
 public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderService {
@@ -63,6 +64,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderSe
 		Subscription sub = this.subscriptionDao.selectById(subscriptionId);
 		if(sub.getChargeType()==0) {
 			Order order = new Order();
+			order.setOrderNumber(SerialNumberUtil.getNumber(2));
 			order.setSubscriptionId(subscriptionId);
 			order.setStartTime(sub.getStartTime());
 			order.setEndTime(sub.getEndTime());

@@ -6,6 +6,7 @@
 
 	<resultMap id="BaseResultMap" type="Order">
 	    <result column="ID" property="id" />
+	    <result column="ORDER_NUMBER" property="orderNumber" />
 	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
 	    <result column="START_TIME" property="startTime" />
 	    <result column="END_TIME" property="endTime" />
@@ -27,25 +28,32 @@
 		    <result column="ORDER_TIME" property="orderTime" />
 		    <result column="VALID" property="valid" />
 		    <result column="PRODUCT_INFO_RECORD_ID" property="productInfoRecordId" />
+		    <result column="PRODUCT_NAME" property="productName" />
+		    <result column="BASE_REGION_NAME" property="baseRegionName" />
+		    <result column="HCLUSTER_NAME" property="hclusterName" />
+		    <result column="USER_NAME" property="userName" />
 		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.STATUS,
+	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.STATUS,od.ORDER_NUMBER,
 	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN
 	</sql>
 	
 	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_ORDER 
-	        (SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	        (ORDER_NUMBER,SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
 	    values
-	        (#{subscriptionId},#{startTime},#{endTime},#{price},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	        (#{orderNumber},#{subscriptionId},#{startTime},#{endTime},#{price},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
 	</insert>
 	
 	<!--根据id，有选择的修改记录 -->
 	<update id="updateBySelective" parameterType="Order">
 		update MATRIX_BILLING_ORDER
 		<set>
+			<if test="orderNumber != null ">
+	            ORDER_NUMBER=#{orderNumber},
+	        </if>
 			<if test="subscriptionId != null ">
 	            SUBSCRIPTION_ID=#{subscriptionId},
 	        </if>
@@ -88,6 +96,9 @@
 	    <trim suffixOverrides=",">
 	        <if test="id != null ">
 	            and od.ID=#{id}
+	        </if>
+	        <if test="orderNumber != null ">
+	            and od.ORDER_NUMBER=#{orderNumber}
 	        </if>
 	        <if test="subscriptionId != null ">
 	            and od.SUBSCRIPTION_ID=#{subscriptionId}
@@ -139,6 +150,36 @@
 			</if>
 	</select>
 
-
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+		select 
+			count(1) 
+		from 
+			MATRIX_BILLING_ORDER od
+			<include refid="Common_Where_Clause" />
+	</select>
+	
+	<!-- 分页：根据条件查询 -->
+	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.HCLUSTER_ID,
+	        sub.CHARGE_TYPE,sub.ORDER_NUM,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,
+	        product.NAME PRODUCT_NAME,region.NAME BASE_REGION_NAME,user.USERNAME USER_NAME
+		from 
+			MATRIX_BILLING_ORDER od
+		left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+		left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
+		left join
+	    	WEBPORTAL_USER user on sub.USER_ID=user.ID
+			<include refid="Common_Where_Clause" />
+		ORDER BY od.CREATE_TIME DESC
+			<if test="page != null">
+	      		limit #{page.startRowPosition},#{page.recordsPerPage}
+	    	</if>
+	</select>
 
 </mapper>   
