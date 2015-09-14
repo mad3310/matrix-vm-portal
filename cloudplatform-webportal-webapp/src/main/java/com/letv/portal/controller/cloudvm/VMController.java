@@ -26,6 +26,7 @@ import com.letv.portal.service.openstack.resource.manager.NetworkManager;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 
 @Controller
 @RequestMapping("/ecs")
@@ -115,6 +116,29 @@ public class VMController {
 			@RequestParam String keyPairName, @RequestParam String adminPass,
 			@RequestParam int count) {
 		ResultObject result = new ResultObject();
+//		try {
+			VMCreateConf2 conf = new VMCreateConf2();
+			conf.setRegion(region);
+			conf.setName(name);
+			conf.setFlavorId(flavorId);
+			conf.setImageId(imageId);
+			conf.setSnapshotId(snapshotId);
+			conf.setVolumeSize(volumeSize);
+			conf.setVolumeTypeId(volumeTypeId);
+			conf.setPrivateSubnetId(privateSubnetId);
+			conf.setSharedNetworkId(sharedNetworkId);
+			conf.setBindFloatingIp(bindFloatingIp);
+			conf.setBandWidth(bandWidth);
+			conf.setKeyPairName(keyPairName);
+			conf.setAdminPass(adminPass);
+			conf.setCount(count);
+//			Util.session(sessionService).getVMManager().create2(conf);
+//		} catch (UserOperationException e) {
+//			result.addMsg(e.getUserMessage());
+//			result.setResult(0);
+//		} catch (OpenStackException e) {
+//			throw e.matrixException();
+//		}
 		return result;
 	}
 

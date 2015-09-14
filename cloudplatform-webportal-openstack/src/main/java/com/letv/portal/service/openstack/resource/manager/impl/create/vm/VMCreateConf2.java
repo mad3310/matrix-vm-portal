@@ -16,7 +16,7 @@ public class VMCreateConf2 {
 	private String privateSubnetId;
 	private String sharedNetworkId;
 	
-	private boolean bindFloatingIP;
+	private boolean bindFloatingIp;
 	private int bandWidth;
 
 	private String keyPairName;
@@ -83,12 +83,12 @@ public class VMCreateConf2 {
 		this.volumeTypeId = volumeTypeId;
 	}
 
-	public boolean getBindFloatingIP() {
-		return bindFloatingIP;
+	public boolean getBindFloatingIp() {
+		return bindFloatingIp;
 	}
-
-	public void setBindFloatingIP(boolean bindFloatingIP) {
-		this.bindFloatingIP = bindFloatingIP;
+	
+	public void setBindFloatingIp(boolean bindFloatingIp) {
+		this.bindFloatingIp = bindFloatingIp;
 	}
 
 	public int getBandWidth() {

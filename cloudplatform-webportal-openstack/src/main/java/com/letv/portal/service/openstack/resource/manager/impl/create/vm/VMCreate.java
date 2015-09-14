@@ -70,7 +70,7 @@ public class VMCreate {
 		multiVmCreateContext.setApiCache(apiCache);
 	}
 
-	private ApiCache checkVmCreateConf(MultiVmCreateContext multiVmCreateContext,ApiSession apiSession)
+	private void checkVmCreateConf(MultiVmCreateContext multiVmCreateContext,ApiSession apiSession)
 			throws OpenStackException {
 		if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
 			Subnet privateSubnet = multiVmCreateContext.getApiCache().getSubnetApi().get(vmCreateConf
@@ -135,7 +135,7 @@ public class VMCreate {
 			multiVmCreateContext.setVolumeType(volumeType);
 		}
 
-		if (vmCreateConf.getBindFloatingIP()) {
+		if (vmCreateConf.getBindFloatingIp()) {
 			if (vmCreateConf.getBandWidth() <= 0) {
 				throw new UserOperationException(
 						"The bandwidth must be greater than zero.", "带宽必须大于0");
