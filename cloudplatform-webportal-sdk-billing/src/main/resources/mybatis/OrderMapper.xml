@@ -20,7 +20,7 @@
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
 	    
-	    <association property="subscription" javaType="SubScription">
+	    <association property="subscription" javaType="Subscription">
 			<result column="PRODUCT_ID" property="productId" />
 		    <result column="BASE_REGION_ID" property="baseRegionId" />
 		    <result column="HCLUSTER_ID" property="hclusterId" />

@@ -18,6 +18,11 @@
 	    <result column="CREATE_USER" property="createUser" />
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
+	    
+	    <association property="subscriptionDetail" javaType="SubscriptionDetail">
+			<result column="STANDARD_NAME" property="standardName" />
+	    	<result column="STANDARD_VALUE" property="standardValue" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -98,9 +103,11 @@
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-			<include refid="Base_Column_List" />
+			<include refid="Base_Column_List" />,subDetail.STANDARD_NAME,subDetail.STANDARD_VALUE
 		from 
 			MATRIX_BILLING_ORDER_DETAIL orderDetail
+		left join
+			MATRIX_BILLING_SUBSCRIPTION_DETAIL subDetail on orderDetail.SUBSCRIPTION_DETAIL_ID=subDetail.ID 
 			<include refid="Common_Where_Clause" />
 		ORDER BY orderDetail.CREATE_TIME DESC
 			<if test="page != null">

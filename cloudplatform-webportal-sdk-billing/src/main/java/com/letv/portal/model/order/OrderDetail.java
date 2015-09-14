@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.model.subscription.SubscriptionDetail;
 
 /**
  * 订单详情
@@ -24,6 +25,14 @@ public class OrderDetail extends BaseModel{
 	private Date endTime;//结束时间
 	private String descn;//描述
 	
+	private SubscriptionDetail subscriptionDetail;//订单详情
+	
+	public SubscriptionDetail getSubscriptionDetail() {
+		return subscriptionDetail;
+	}
+	public void setSubscriptionDetail(SubscriptionDetail subscriptionDetail) {
+		this.subscriptionDetail = subscriptionDetail;
+	}
 	public Long getSubscriptionDetailId() {
 		return subscriptionDetailId;
 	}
