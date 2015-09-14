@@ -1,3 +1,44 @@
+
+/*begin custom iconfont style*/
+@font-face {font-family: "iconfont";
+    src: url('../fonts/iconfont.eot'); /* IE9*/
+    src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.icon-proback:before { content: "\e614"; }
+.icon-loadblance:before { content: "\e613"; }
+.icon-gce:before { content: "\e610"; }
+.icon-yunzhuji:before { content: "\e60c"; }
+.icon-game:before { content: "\e603"; }
+.icon-movie:before { content: "\e604"; }
+.icon-shopping:before { content: "\e607"; }
+.icon-xinfeng:before { content: "\e609"; }
+.icon-weixin:before { content: "\e608"; }
+.icon-music:before { content: "\e605"; }
+.icon-icon:before { content: "\e600"; }
+.icon-rds:before { content: "\e60f"; }
+.icon-snapshoticon:before { content: "\e61e"; }
+.icon-shearicon:before { content: "\e61d"; }
+.icon-neticon:before { content: "\e61b"; }
+.icon-routeicon:before { content: "\e61c"; }
+.icon-cloudstorageicon:before { content: "\e619"; }
+.icon-ipicon:before { content: "\e61a"; }
+.icon-blockicon:before { content: "\e618"; }
+.icon-camera:before { content: "\e601"; }
+.icon-rds1:before { content: "\e617"; }
+/*end custom iconfont style*/
+
 /*begin override bootstrap style*/
 .btn {
     border-radius:2px;
@@ -14,7 +55,7 @@
 
 /*begin header style*/
 body {
-    background-color: #364150;
+    background-color: #ebebeb;
 }
 .header {
     height: 70px;
@@ -25,6 +66,11 @@ body {
     background-color: #088ac2;
 }
 
+.header a:link, .header a:visited, .header a:hover, .header a:active {
+    text-decoration: none;
+    color: white;
+}
+
 .header .header-brand {
     display: block;
     height: 70px;
@@ -33,35 +79,28 @@ body {
     padding: 15px 0 10px 20px;
 }
 
-.header a:link, .header a:visited, .header a:hover, .header a:active {
-    text-decoration: none;
-    color: white;
-}
-
 .header .header-brand .brand-logo {
 
 }
 
-.header .header-brand span {
-    font-size: 24px;
-    line-height: 50px;
+.header .header-help,.header .header-account{
+    height: 70px;
 }
 
-.header .header-brand span small {
-    margin-left: 5px;
+.header .header-help{
+    margin-right: 30px;
+}
+
+.header .header-account{
+    margin-right: 20px;
+}
+.header .header-help .help-icon,.header .header-account .account-icon{
+    line-height: 70px;
+}
+.header .header-help span,.header .header-account span{
+    line-height: 70px;
     font-size: 14px;
 }
-
-.header .account {
-    display: inline;
-    line-height: 50px;
-    margin-right: 10px;
-}
-
-.header .account .dropdown-menu a {
-    color: black;
-}
-
 /*end header style*/
 
 /*begin footer style*/
@@ -86,20 +125,19 @@ body {
 
 /*begin main style*/
 .main {
-    margin-top: 50px;
+    margin-top: 70px;
 }
 
 .main .side-bar {
     position: fixed;
     left: 0;
-    top: 50px;
+    top: 70px;
     float: left;
     margin-right: -100%;
     margin-top: 10px;
     width: 230px;
     height: auto;
     max-height: none;
-    background-color: #364150;
 }
 
 .main .content-wrapper {
@@ -121,28 +159,43 @@ body {
     list-style: none;
 }
 
-.side-menu .menu-item {
-    display: block;
-}
-
-.side-menu .menu-item a {
+.side-menu a {
     color: #b4bcc8;
     text-decoration: none;
 }
 
-.side-menu .menu-item a:hover {
-    background-color: #2C3542;
+.side-menu .menu-item {
+    display: block;
 }
 
 .side-menu .menu-item > a {
     display: block;
-    padding: 10px 15px;
-    border-top: 1px solid #3d4957;
+    padding: 15px 15px 15px 70px;
+    color: #58717c;
+}
+
+.side-menu .menu-item > a:hover {
+    background-color: #2C3542;
+    color: white;
 }
 
 .side-menu .menu-item.active > a {
-    background: #1caf9a;
-    color: white;
+    background: white;
+    color: #088ac2;
+    margin-left: 20px;
+    padding: 15px 15px 15px 46px;
+    border-left: 4px solid #088ac2;
+}
+
+.side-menu .menu-item > a > i {
+    margin-right: 10px;
+    font-size: 30px;
+    line-height: 20px;
+    vertical-align: middle;
+}
+
+.side-menu .menu-item > a > span {
+    vertical-align: middle;
 }
 
 .side-menu .menu-item .submenu {
@@ -154,11 +207,6 @@ body {
 
 .side-menu .menu-item.open .submenu {
     display: block;
-}
-
-.side-menu .menu-item > a > i {
-    margin-right: 4px;
-    font-size: 20px;
 }
 
 .side-menu .menu-item > a > .arrow:before {
@@ -219,6 +267,7 @@ body {
     font-size: 12px;
     margin-right: 5px;
 }
+
 
 /*end side-menu style*/
 

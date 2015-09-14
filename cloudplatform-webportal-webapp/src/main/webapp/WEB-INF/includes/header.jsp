@@ -1,8 +1,14 @@
+    <%@ page language="java" pageEncoding="UTF-8"%>
     <div class="header">
-        <a href="/" class="header-brand">
+        <a href="/" class="header-brand pull-left">
             <img src="/static/images/brand-logo.png" class="brand-logo" />
         </a>
-        <div class="dropdown pull-right account">
-            <a href="https://login.lecloud.com/index?redirect_uri=http://localhost:3000/oauth/callback;">登录</a>
-        </div>
+        <a href="/" class="header-account pull-right">
+            <img src="/static/images/nav-account.png" class="account-icon" />
+            <span>jiangfei5945@hotmail.com</span>
+        </a>
+        <a href="/" class="header-help pull-right">
+            <img src="/static/images/nav-help.png" class="help-icon" />
+            <span>帮助中心</span>
+        </a>
     </div>

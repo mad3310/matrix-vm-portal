@@ -8,11 +8,11 @@ define(['jquery'],function($){
 
   /*配置页面的左侧菜单*/
   var sideMenuData = [
-      {url: '/profile', title: '概览', icon: 'fa fa-tachometer'},
-      {url: '/cvm/#/vm', title: '云主机', icon: 'fa fa-tachometer'},
-      {url: '/cvm/#/image', title: '镜像', icon: 'fa fa-tachometer'},
-      {url: '/cvm/#/disk', title: '云硬盘', icon: 'fa fa-tachometer'},
-      {url: '/rds', title: '关系型数据库', icon: 'fa fa-tachometer'}
+      {url: '/profile', title: '概览', icon: 'iconfont icon-blockicon'},
+      {url: '/cvm/#/vm', title: '云主机', icon: 'iconfont icon-yunzhuji'},
+      {url: '/cvm/#/image', title: '镜像', icon:  'iconfont icon-shearicon'},
+      {url: '/cvm/#/disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
+      {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds'}
     ],
     sideMenuItemEl = null,
     sideMenuItemEls = [],

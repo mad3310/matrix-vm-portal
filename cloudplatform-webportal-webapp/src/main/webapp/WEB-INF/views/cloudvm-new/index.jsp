@@ -9,6 +9,7 @@
             <link rel="stylesheet" href="/static/stylesheets/rzslider.css">
             <link rel="stylesheet" href="/static/stylesheets/common.css">
             <link rel="stylesheet" href="/static/stylesheets/style.css">
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         </head>
         <body>
             <%@ include file="../../includes/header.jsp"%>
