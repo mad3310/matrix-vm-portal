@@ -133,12 +133,18 @@
 			count(1) 
 		from 
 			MATRIX_BILLING_SUBSCRIPTION subscription
+		left join
+	    	MATRIX_BILLING_PRODUCT product on subscription.PRODUCT_ID=product.ID
+		left join
+	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
+		left join
+	    	WEBPORTAL_USER user on subscription.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
 			<if test="productName != null and productName != '' ">
-	            and product.NAME=#{productName}
+	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
-	            and region.NAME=#{baseRegionName}
+	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
 	        </if>
 	</select>
 	
@@ -157,10 +163,10 @@
 	    	WEBPORTAL_USER user on subscription.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
 			<if test="productName != null and productName != '' ">
-	            and product.NAME=#{productName}
+	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
-	            and region.NAME=#{baseRegionName}
+	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
 	        </if>
 		ORDER BY subscription.CREATE_TIME DESC
 			<if test="page != null">

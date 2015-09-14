@@ -3,7 +3,7 @@
  */
 define(['jquery'],function($){
   /*设置页面的最低高度*/
-  var viewHeight = $(window).height() - 50 - 30;
+  var viewHeight = $(window).height() - 70;
   $('.content').css('min-height', viewHeight);
 
   /*配置页面的左侧菜单*/

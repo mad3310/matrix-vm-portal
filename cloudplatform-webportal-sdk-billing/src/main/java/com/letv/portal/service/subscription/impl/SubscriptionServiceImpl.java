@@ -67,7 +67,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			cal.setTimeInMillis(d.getTime());
 			cal.add(Calendar.MONTH, t);
 			sub.setEndTime(cal.getTime());
-			sub.setValid(true);
+			sub.setValid(1);
 			sub.setUserId(sessionService.getSession().getUserId());
 			sub.setCreateUser(sessionService.getSession().getUserId());
 			sub.setDeleted(false);
