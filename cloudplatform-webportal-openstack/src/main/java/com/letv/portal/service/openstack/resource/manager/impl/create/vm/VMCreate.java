@@ -5,16 +5,19 @@ import java.util.List;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class VMCreate {
 
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
+	private NetworkManagerImpl networkManager;
 
-	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager) {
+	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,NetworkManagerImpl networkManager) {
 		this.vmCreateConf = vmCreateConf;
 		this.vmManager = vmManager;
+		this.networkManager = networkManager;
 	}
 
 	public void run() throws OpenStackException {
@@ -23,6 +26,7 @@ public class VMCreate {
 				MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
 				multiVmCreateContext.setVmCreateConf(vmCreateConf);
 				multiVmCreateContext.setVmManager(vmManager);
+				multiVmCreateContext.setNetworkManager(networkManager);
 
 				ApiSession apiSession = new ApiSession(
 						vmManager.getOpenStackConf(),

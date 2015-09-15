@@ -9,6 +9,8 @@ import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
+import ch.qos.logback.core.Context;
+
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
@@ -16,9 +18,10 @@ import com.letv.portal.service.openstack.exception.UserOperationException;
 public class CheckVmCreateConfTask implements VmsCreateSubTask {
 
 	@Override
-	public void run(MultiVmCreateContext multiVmCreateContext) throws OpenStackException {
+	public void run(MultiVmCreateContext multiVmCreateContext)
+			throws OpenStackException {
 		VMCreateConf2 vmCreateConf = multiVmCreateContext.getVmCreateConf();
-		
+
 		if (StringUtils.isNotEmpty(vmCreateConf.getPrivateSubnetId())) {
 			Subnet privateSubnet = multiVmCreateContext.getApiCache()
 					.getSubnetApi().get(vmCreateConf.getPrivateSubnetId());
@@ -90,6 +93,18 @@ public class CheckVmCreateConfTask implements VmsCreateSubTask {
 				throw new UserOperationException(
 						"The bandwidth must be greater than zero.", "带宽必须大于0");
 			}
+			if (StringUtils.isEmpty(vmCreateConf.getFloatingNetworkId())) {
+				vmCreateConf.setFloatingNetworkId(multiVmCreateContext
+						.getVmManager().getOpenStackConf()
+						.getGlobalPublicNetworkId());
+			}
+			Network floatingNetwork = multiVmCreateContext.getApiCache()
+					.getNetworkApi().get(vmCreateConf.getFloatingNetworkId());
+			if (floatingNetwork == null || !floatingNetwork.getExternal()) {
+				throw new ResourceNotFoundException("Floating Network", "公网",
+						vmCreateConf.getFloatingNetworkId());
+			}
+			multiVmCreateContext.setFloatingNetwork(floatingNetwork);
 		}
 
 		if (StringUtils.isNotEmpty(vmCreateConf.getKeyPairName())) {

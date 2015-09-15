@@ -1373,7 +1373,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
-	private static FipQos createFipQos(int bandWidth) {
+	public static FipQos createFipQos(int bandWidth) {
 		return FipQos.createBuilder().ingressBurstRate(bandWidth + "Mb")
 				.egressBurstRate(bandWidth + "Mb")
 				.ingressMaxRate(bandWidth + "Mbit")

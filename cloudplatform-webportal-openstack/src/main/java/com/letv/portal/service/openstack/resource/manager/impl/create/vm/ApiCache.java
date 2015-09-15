@@ -169,7 +169,26 @@ public class ApiCache {
 				throw new APINotAvailableException(FloatingIPApi.class);
 			}
 			floatingIPApi = floatingIPApiOptional.get();
-			this.cache.put(FloatingIPApi.class, FloatingIPApi.class);
+			this.cache.put(FloatingIPApi.class, floatingIPApi);
+		}
+		return floatingIPApi;
+	}
+
+	public org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi getNovaFloatingIPApi()
+			throws APINotAvailableException {
+		org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi floatingIPApi = (org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi) this.cache
+				.get(org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi.class);
+		if (floatingIPApi == null) {
+			Optional<org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi> floatingIPApiOptional = apiSession
+					.getNovaApi().getFloatingIPApi(region);
+			if (!floatingIPApiOptional.isPresent()) {
+				throw new APINotAvailableException(
+						org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi.class);
+			}
+			floatingIPApi = floatingIPApiOptional.get();
+			this.cache
+					.put(org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi.class,
+							floatingIPApi);
 		}
 		return floatingIPApi;
 	}

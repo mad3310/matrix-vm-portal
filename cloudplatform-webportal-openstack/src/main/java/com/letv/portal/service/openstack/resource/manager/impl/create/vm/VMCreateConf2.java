@@ -18,6 +18,7 @@ public class VMCreateConf2 {
 	
 	private boolean bindFloatingIp;
 	private int bandWidth;
+	private String floatingNetworkId;
 
 	private String keyPairName;
 	private String adminPass;
@@ -137,6 +138,14 @@ public class VMCreateConf2 {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+
+	public String getFloatingNetworkId() {
+		return floatingNetworkId;
+	}
+
+	public void setFloatingNetworkId(String floatingNetworkId) {
+		this.floatingNetworkId = floatingNetworkId;
 	}
 
 }

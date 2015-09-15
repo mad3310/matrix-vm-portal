@@ -9,8 +9,7 @@ import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
-import com.letv.portal.service.openstack.impl.OpenStackConf;
-import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 
 public class MultiVmCreateContext {
@@ -20,6 +19,7 @@ public class MultiVmCreateContext {
 	
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
+	private NetworkManagerImpl networkManager;
 
 	private ApiCache apiCache;
 
@@ -32,6 +32,7 @@ public class MultiVmCreateContext {
 	private Image snapshot;
 	private VolumeType volumeType;
 	private KeyPair keyPair;
+	private Network floatingNetwork;
 	
 	private List<VmCreateContext> vmCreateContexts;
 	
@@ -51,10 +52,26 @@ public class MultiVmCreateContext {
 //		return openStackUser;
 //	}
 	
+	public void setFloatingNetwork(Network floatingNetwork) {
+		this.floatingNetwork = floatingNetwork;
+	}
+	
+	public Network getFloatingNetwork() {
+		return floatingNetwork;
+	}
+	
 	public void setVmCreateContexts(List<VmCreateContext> vmCreateContexts) {
 		this.vmCreateContexts = vmCreateContexts;
 	}
 	
+	public NetworkManagerImpl getNetworkManager() {
+		return networkManager;
+	}
+
+	public void setNetworkManager(NetworkManagerImpl networkManager) {
+		this.networkManager = networkManager;
+	}
+
 	public List<VmCreateContext> getVmCreateContexts() {
 		return vmCreateContexts;
 	}

@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,12 @@ public class CheckNovaQuotaTask implements VmsCreateSubTask {
 			throw new UserOperationException(
 					"Ram amounts exceeding the quota.", "内存总量超过配额。");
 		}
+
+		List<VmCreateContext> vmCreateContexts = new LinkedList<VmCreateContext>();
+		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
+			vmCreateContexts.add(new VmCreateContext());
+		}
+		context.setVmCreateContexts(vmCreateContexts);
 	}
 
 	@Override
