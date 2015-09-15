@@ -55,12 +55,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	}
 	
 	@Override
-	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email,Long ucId) {
+	public UserModel saveUserObjectWithSpecialName(String userName,String loginIp,String email) {
 		UserModel user = new UserModel();
 		user.setUserName(userName);
 		user.setCurrentLoginIp(loginIp);
 		user.setEmail(email);
-		user.setUcId(ucId);
 		saveUserObject(user);
 		return user;
 	}
@@ -85,14 +84,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	}
 
 	@Override
-	public UserModel getUserByNameAndEmailOrUcId(String userNamePassport, String email,Long ucId) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		if(null!= ucId){
-			map.put("ucId",ucId);
-		} else {
-			map.put("userName",userNamePassport);
-			map.put("email",email);
-		}
+	public UserModel getUserByNameAndEmail(String userNamePassport, String email) {
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("userName",userNamePassport);
+		map.put("email",email);
 		List<UserModel> users = selectByMap(map);
 		if(null == users || users.isEmpty())
 			return null;
@@ -100,9 +95,4 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		return users.get(0);
 	}
 
-	@Override
-	public UserModel getUserByUcId(Long ucId) {
-		return this.userDao.getUserByUcId(ucId);
-	}
-  
 }

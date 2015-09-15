@@ -39,7 +39,7 @@ public class BaseController {
 	@RequestMapping(value ="/toLogin")
 	public ModelAndView toLogin(@RequestParam String back,ModelAndView mav){
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(UC_AUTH_HTTP).append("/login.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append("/").append(back);
+		buffer.append(UC_AUTH_HTTP).append("/login.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append(back);
 		mav.addObject("loginURI", buffer.toString());
 		mav.setViewName("/toLogin");
 		return mav;

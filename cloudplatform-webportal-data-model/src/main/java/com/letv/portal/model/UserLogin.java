@@ -10,8 +10,6 @@ public class UserLogin {
 	
 	private String email;
 	
-	private Long ucId;
-	
 	public UserLogin(){}
 	
 	public String getLoginName() {
@@ -48,12 +46,4 @@ public class UserLogin {
 		this.email = email;
 	}
 
-	public Long getUcId() {
-		return ucId;
-	}
-
-	public void setUcId(Long ucId) {
-		this.ucId = ucId;
-	}
-	
 }
