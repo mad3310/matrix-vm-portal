@@ -9,9 +9,9 @@
             </ui-select>
         </div>
         <div class="le-col-3">
-            <button class="btn btn-default btn-le-blue" ng-click="openVmCreateModal()"><span>创建云主机</span></button>
-            <button class="btn btn-default btn-le-blueGreen" ng-click="restartVm()"><span>启动</span></button>
-            <button class="btn btn-default btn-le-green" ng-click="openVmCreateModal()"><span>重启</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmCreateModal('md')"><span>创建云主机</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="restartVm('400')"><span>启动</span></button>
+            <button class="btn btn-le-green" ng-click="openVmCreateModal()"><span>重启</span></button>
         </div>
         <div class="le-col-1">
                 <div dropdown on-toggle="toggled(open)" class="more-operation-dropdown">
@@ -274,20 +274,21 @@
     </script>
 
     <script type="text/ng-template" id="ConfirmModalTpl">
-            <div class="le-confim">
-                <div class="modal-header letv-modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">启动提示</h4>
+            <div class="le-confirm">
+                <div class="le-row confirm-header">
+                    <span class="confirm-title">{{title}}</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
                 </div>
-                <div class="modal-body">
-                    <p><span class="fa fa-exclamation-circle"></span>{{confirmMessage}}</p>
+                <div class="le-row confirm-content">
+                    <i class="iconfont icon-icon1"></i>
+                    <span class="confirm-message">{{confirmMessage}}</span>
                 </div>
-
-                <div class="button yn-button">
-                    <button type="button" class="btn btn-primary  btn-yes ">确认</button>
-                    <button type="button" class="btn btn-warning btn-no ">取消</button>
+                <div class="le-row confirm-operation">
+                    <button class="btn btn-le-blue" ng-click="ok()">确定</button>
+                    <button class="btn btn-le-yellow" ng-click="cancel()">取消</button>
                 </div>
-                <div class="clearfix"></div>
-            </div><!-- /.modal-content -->
+            </div>
     </script>
 </div>

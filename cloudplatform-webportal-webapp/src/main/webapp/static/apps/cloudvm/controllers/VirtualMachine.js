@@ -30,6 +30,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           resolve: {
             message:function(){
               return  '确定要启动云主机test吗？';
+            },
+            title:function(){
+              return  '启动云主机';
             }
           }
         });
@@ -226,7 +229,17 @@ define(['controllers/app.controller'], function (controllerModule) {
     initComponents();
   });
 
-  controllerModule.controller('ConfirmModalCtrl', function ( $scope, $modalInstance, message) {
+  controllerModule.controller('ConfirmModalCtrl', function ( $scope, $modalInstance, message,title) {
     $scope.confirmMessage=message;
+    $scope.title=title;
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.ok = function () {
+      $modalInstance.close(true);
+    };
+    $scope.cancel = function () {
+      $modalInstance.dismiss('cancel');
+    };
   });
 });

@@ -197,12 +197,59 @@ body {
 /*end le-dropdown style*/
 
 /*begin le-confim style*/
-.le-confim .modal-body,.yn-button{text-align: center}
-.le-confim .modal-body{margin-top:20px;}
-.le-confim .yn-button{margin-bottom: 30px;}
-.le-confim .fa-exclamation-circle{color: red;padding-right: 10px}
-.le-confim .btn-yes,.btn-no{padding: 3px 18px 3px 18px;border-radius: 2px;}
-.le-confim .btn-yes{margin-right: 10px}
-.le-confim .btn-no{margin-left: 10px}
-.le-confim .modal-content{border-radius: 2px}
+.le-confirm{
+    width: 398px;
+    height: 238px;
+}
+.le-confirm .confirm-header{
+    height: 50px;
+    padding: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    color: #088ac2;
+    border-bottom: 1px solid #088ac2;
+    text-align: center;
+}
+.le-confirm .confirm-header .confirm-title,.le-confirm .confirm-header .close{
+    line-height: 50px;
+    vertical-align: middle;
+}
+.le-confirm .confirm-header .confirm-title{
+    font-size: 16px;
+}
+.le-confirm .confirm-header .close > i{
+    font-size: 30px;
+    transform:rotate(45deg);
+    display: block;
+    color: #088ac2;
+    font-weight: 100;
+    opacity: 1;
+}
+.le-confirm .confirm-content{
+    width: 100%;
+    height: 100px;
+    padding: 0;
+    text-align: center;
+}
+.le-confirm .confirm-content .confirm-message{
+    line-height: 100px;
+}
+
+.le-confirm .confirm-content i{
+    font-size: 35px;
+    line-height: 100px;
+    vertical-align: middle;
+    color: red;
+}
+
+.le-confirm .confirm-operation{
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    text-align: center;
+}
+
+.le-confirm .confirm-operation .btn-le-blue{
+    margin-right: 30px;
+}
 /*end le-confim style*/
