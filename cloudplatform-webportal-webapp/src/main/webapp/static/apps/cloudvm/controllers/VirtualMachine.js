@@ -22,6 +22,24 @@ define(['controllers/app.controller'], function (controllerModule) {
         refreshVmList();
       };
 
+      $scope.restartVm=function(size){
+        var modalInstance = $modal.open({
+          templateUrl: 'ConfirmModalTpl',
+          controller: 'ConfirmModalCtrl',
+          size: size,
+          resolve: {
+            message:function(){
+              return  '确定要启动云主机test吗？';
+            }
+          }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+        }, function () {
+        });
+      };
+
       $scope.startMcluster = function (mcluster) {
         HttpService.doPost(Config.url.mcluster_start, {mclusterId: mcluster.id}).success(function (data, status, headers, config) {
           if (data.result == 1) {
@@ -45,6 +63,9 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.deleteMcluster = function (mcluster) {
         return mcluster;
+      };
+      $scope.checkVm = function (vm) {
+        vm.checked = vm.checked === true ? false : true;
       };
 
       $scope.items = ['item1', 'item2', 'item3'];
@@ -203,5 +224,9 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
     ;
     initComponents();
+  });
+
+  controllerModule.controller('ConfirmModalCtrl', function ( $scope, $modalInstance, message) {
+    $scope.confirmMessage=message;
   });
 });

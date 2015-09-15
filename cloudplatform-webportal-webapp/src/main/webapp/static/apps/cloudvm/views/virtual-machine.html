@@ -8,38 +8,63 @@
                 </ui-select-choices>
             </ui-select>
         </div>
-        <div class="le-col-2">
-            <button class="btn btn-default" ng-click="openVmCreateModal()">创建云主机</button>
+        <div class="le-col-3">
+            <button class="btn btn-default btn-le-blue" ng-click="openVmCreateModal()"><span>创建云主机</span></button>
+            <button class="btn btn-default btn-le-blueGreen" ng-click="restartVm()"><span>启动</span></button>
+            <button class="btn btn-default btn-le-green" ng-click="openVmCreateModal()"><span>重启</span></button>
+        </div>
+        <div class="le-col-1">
+                <div dropdown on-toggle="toggled(open)" class="more-operation-dropdown">
+                      <a href class="btn btn-default btn-le-yellow" dropdown-toggle>
+                          更多操作
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                          <li ng-repeat="choice in [1,2]">
+                              <a href>{{choice}}</a>
+                          </li>
+                      </ul>
+                </div>
         </div>
         <div class="le-col-2 pull-right">
-            <input type="text" class="le-form-control" style="display: inline-block;width: 60%"
-                   ng-model="searchVmName"/>
-            <button class="btn btn-default" ng-click="doSearch()">搜索</button>
+            <div class="le-search-box">
+                <input type="text" ng-model="searchVmName" ng-change="doSearch()"/>
+                <span class="search-icon"></span>
+            </div>
         </div>
     </div>
-    <div class="le-row grid">
-        <table class="table table-bordered table-hover">
+    <div class="le-row vm-list">
+        <table class="table table-hover">
             <thead>
             <tr>
-                <th>云主机名称</th>
-                <th>状态</th>
-                <th>区域</th>
-                <th>镜像名称</th>
-                <th>网络</th>
-                <th>配置</th>
-                <th>操作</th>
+                <th>
+                    <div class="letv-checkbox">
+                        <span class="fa fa-check"></span>
+                    </div>
+                </th>
+                <th><span>云主机名称</span></th>
+                <th><span>状态</span></th>
+                <th><span>区域</span></th>
+                <th><span>镜像名称</span></th>
+                <th><span>网络</span></th>
+                <th><span>配置</span></th>
+                <th><span>操作</span></th>
             </tr>
             </thead>
             <tbody id="tby">
             <tr ng-repeat="vm in vmList">
+                <td>
+                    <div class="letv-checkbox" ng-class="{active:vm.checked}" ng-click="checkVm(vm)">
+                        <span class="fa fa-check"></span>
+                    </div>
+                </td>
                 <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
                 <td>
-                    {{vm.vmState}}
+                    <span>{{vm.vmState}}</span>
                 </td>
-                <td>{{vm.regionDisplayName}}</td>
-                <td>{{vm.image.name}}</td>
-                <td>{{vm.ipAddresses.private[0]}}</td>
-                <td>{{vm.flavor.name}}</td>
+                <td><span>{{vm.regionDisplayName}}</span></td>
+                <td><span>{{vm.image.name}}</span></td>
+                <td><span>{{vm.ipAddresses.private[0]}}</span></td>
+                <td><span>{{vm.flavor.name}}</span></td>
                 <td>
                     <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
                         <i class="fa fa-play-circle-o"></i>
@@ -246,5 +271,23 @@
                 </tab>      
             </tabset>
         </div>
+    </script>
+
+    <script type="text/ng-template" id="ConfirmModalTpl">
+            <div class="le-confim">
+                <div class="modal-header letv-modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">启动提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p><span class="fa fa-exclamation-circle"></span>{{confirmMessage}}</p>
+                </div>
+
+                <div class="button yn-button">
+                    <button type="button" class="btn btn-primary  btn-yes ">确认</button>
+                    <button type="button" class="btn btn-warning btn-no ">取消</button>
+                </div>
+                <div class="clearfix"></div>
+            </div><!-- /.modal-content -->
     </script>
 </div>
