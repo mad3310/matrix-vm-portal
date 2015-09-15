@@ -124,7 +124,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService, $scope, $modalInstance, items, region) {
 
-    $scope.tabsActive = {1: true, 2: false, 3: false, 4: false};
+    $scope.activeFlow = 1;
     $scope.vmName = '';
     $scope.vmImageList = [];
     $scope.selectedVmImage = null;
