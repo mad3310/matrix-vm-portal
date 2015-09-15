@@ -1,6 +1,11 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
+import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
+
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
 
 public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 
@@ -9,8 +14,48 @@ public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 		if (context.getVmCreateConf().getVolumeSize() == 0) {
 			return;
 		}
-		
-		
+
+		int totalVolumeCount = 0, totalVolumeSize = 0;
+		for (Volume volume : context.getApiCache().getVolumeApi().list()
+				.toList()) {
+			totalVolumeCount++;
+			totalVolumeSize += volume.getSize();
+		}
+
+		VolumeQuota quota = context
+				.getApiCache()
+				.getCinderQuotaApi()
+				.getByTenant(
+						context.getVmManager().getOpenStackUser().getTenantId());
+		if (quota == null) {
+			throw new OpenStackException("Cinder quota is not available.",
+					"云硬盘的配额不可用。");
+		}
+		if (totalVolumeCount + context.getVmCreateConf().getCount() > quota
+				.getVolumes()) {
+			throw new UserOperationException(
+					"Volume count exceeding the quota.", "云硬盘数量超过配额。");
+		}
+		if (totalVolumeSize + context.getVmCreateConf().getCount()
+				* context.getVmCreateConf().getVolumeSize() > quota
+					.getGigabytes()) {
+			throw new UserOperationException(
+					"Volumes size exceeding the quota.", "云硬盘总大小超过配额。");
+		}
+
+		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
+			context.getVmCreateContexts()
+					.get(i)
+					.setVolume(
+							context.getApiCache()
+									.getVolumeApi()
+									.create(context.getVmCreateConf()
+											.getVolumeSize(),
+											new CreateVolumeOptions()
+													.volumeType(context
+															.getVolumeType()
+															.getId())));
+		}
 	}
 
 	@Override
@@ -19,8 +64,13 @@ public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 		if (context.getVmCreateConf().getVolumeSize() == 0) {
 			return;
 		}
-		
-		
+
+		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
+			Volume volume = context.getVmCreateContexts().get(i).getVolume();
+			if (volume.getStatus() != Volume.Status.IN_USE) {
+				context.getApiCache().getVolumeApi().delete(volume.getId());
+			}
+		}
 	}
 
 }

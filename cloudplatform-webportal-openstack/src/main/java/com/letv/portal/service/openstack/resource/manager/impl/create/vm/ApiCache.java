@@ -3,10 +3,14 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
+import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
+import org.jclouds.openstack.neutron.v2.extensions.RouterApi;
 import org.jclouds.openstack.neutron.v2.features.NetworkApi;
+import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
@@ -193,4 +197,35 @@ public class ApiCache {
 		return floatingIPApi;
 	}
 
+	public VolumeApi getVolumeApi() {
+		VolumeApi volumeApi = (VolumeApi) this.cache.get(VolumeApi.class);
+		if (volumeApi == null) {
+			volumeApi = apiSession.getCinderApi().getVolumeApi(region);
+			this.cache.put(VolumeApi.class, volumeApi);
+		}
+		return volumeApi;
+	}
+
+	public PortApi getPortApi() {
+		PortApi portApi = (PortApi) this.cache.get(PortApi.class);
+		if (portApi == null) {
+			portApi = apiSession.getNeutronApi().getPortApi(region);
+			this.cache.put(PortApi.class, portApi);
+		}
+		return portApi;
+	}
+
+	public RouterApi getRouterApi() throws APINotAvailableException {
+		RouterApi routerApi = (RouterApi) this.cache.get(RouterApi.class);
+		if (routerApi == null) {
+			Optional<RouterApi> routerApiOptional = apiSession.getNeutronApi()
+					.getRouterApi(region);
+			if (!routerApiOptional.isPresent()) {
+				throw new APINotAvailableException(RouterApi.class);
+			}
+			routerApi = routerApiOptional.get();
+			this.cache.put(Router.class, routerApi);
+		}
+		return routerApi;
+	}
 }

@@ -1,16 +1,20 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import java.text.MessageFormat;
+
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
+import org.jclouds.openstack.neutron.v2.domain.IP;
 import org.jclouds.openstack.neutron.v2.domain.Network;
+import org.jclouds.openstack.neutron.v2.domain.Port;
+import org.jclouds.openstack.neutron.v2.domain.Router;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Image;
 import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
-import ch.qos.logback.core.Context;
-
+import com.google.common.collect.ImmutableSet;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
@@ -93,6 +97,7 @@ public class CheckVmCreateConfTask implements VmsCreateSubTask {
 				throw new UserOperationException(
 						"The bandwidth must be greater than zero.", "带宽必须大于0");
 			}
+
 			if (StringUtils.isEmpty(vmCreateConf.getFloatingNetworkId())) {
 				vmCreateConf.setFloatingNetworkId(multiVmCreateContext
 						.getVmManager().getOpenStackConf()
@@ -105,6 +110,57 @@ public class CheckVmCreateConfTask implements VmsCreateSubTask {
 						vmCreateConf.getFloatingNetworkId());
 			}
 			multiVmCreateContext.setFloatingNetwork(floatingNetwork);
+
+			if (multiVmCreateContext.getPrivateSubnet() != null) {
+				String routerId = null;
+				findRouterId: for (Port port : multiVmCreateContext
+						.getApiCache().getPortApi().list().concat().toList()) {
+					if ("network:router_interface"
+							.equals(port.getDeviceOwner())) {
+						if (multiVmCreateContext.getPrivateSubnet()
+								.getNetworkId().equals(port.getNetworkId())) {
+							ImmutableSet<IP> fixedIps = port.getFixedIps();
+							if (fixedIps != null) {
+								for (IP ip : fixedIps) {
+									if (multiVmCreateContext.getPrivateSubnet()
+											.getId().equals(ip.getSubnetId())) {
+										routerId = port.getDeviceId();
+										break findRouterId;
+									}
+								}
+							}
+						}
+					}
+				}
+				if (routerId == null) {
+					throw new UserOperationException(
+							"Private subnet is not associate with router.",
+							"私有子网未关联路由");
+				}
+				Router router = multiVmCreateContext.getApiCache()
+						.getRouterApi().get(routerId);
+				if (router == null) {
+					throw new ResourceNotFoundException("Router", "路由",
+							routerId);
+				}
+				if (router.getExternalGatewayInfo() == null
+						|| StringUtils.isEmpty(router.getExternalGatewayInfo()
+								.getNetworkId())) {
+					throw new UserOperationException(MessageFormat.format(
+							"Router \"{0}\" is not enable gateway.", routerId),
+							MessageFormat.format("私有子网关联的路由“{0}”未设置网关",
+									routerId));
+				}
+				if (!StringUtils.equals(router.getExternalGatewayInfo()
+						.getNetworkId(), multiVmCreateContext
+						.getFloatingNetwork().getId())) {
+					throw new UserOperationException(
+							MessageFormat.format(
+									"The carrier of Router \"{0}\" is not the carrier of Floating IP.",
+									routerId), MessageFormat.format(
+									"路由“{0}”的线路和公网IP的线路不是同一个线路", routerId));
+				}
+			}
 		}
 
 		if (StringUtils.isNotEmpty(vmCreateConf.getKeyPairName())) {

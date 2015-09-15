@@ -38,6 +38,7 @@ public class VMCreate {
 					tasks.add(new CheckNovaQuotaTask());
 					tasks.add(new CheckFloatingIpQuotaTask());
 					tasks.add(new CheckVolumeQuotaTask());
+					tasks.add(new CreateSubnetPortsTask());
 					tasks.add(new CreateVmsTask());
 					tasks.add(new EmailVmsCreatedTask());
 					tasks.add(new AddVmsCreateListenerTask());

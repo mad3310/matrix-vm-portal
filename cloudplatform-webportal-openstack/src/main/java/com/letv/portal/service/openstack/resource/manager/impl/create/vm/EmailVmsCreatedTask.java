@@ -6,15 +6,14 @@ public class EmailVmsCreatedTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
-		// TODO Auto-generated method stub
-
+		for (VmCreateContext vmContext : context.getVmCreateContexts()) {
+			
+		}
 	}
 
 	@Override
 	public void rollback(MultiVmCreateContext context)
 			throws OpenStackException {
-		// TODO Auto-generated method stub
-
 	}
 
 }
