@@ -90,6 +90,12 @@ public class SkipController {
 		mav.setViewName("/dashBoard");
 		return mav;
 	}
+//	dashboard-new controller
+	@RequestMapping(value ="/profile",method=RequestMethod.GET)
+	public ModelAndView toProfile(ModelAndView mav){
+		mav.setViewName("/profile");
+		return mav;
+	}
 	/**
 	 * Methods Name: accountManager<br>
 	 * Description: 跳转用户管理

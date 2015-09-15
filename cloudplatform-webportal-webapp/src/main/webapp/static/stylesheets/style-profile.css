@@ -1,0 +1,55 @@
+.text-gray{color:#888}
+.no-paddingR{padding-right:0;}
+.no-paddingL{padding-left:0;}
+.main-body{min-width:1360px;width:100%;min-width:1360px;}
+/*account*/
+.body-account{height:200px;padding-top:45px;border:1px solid #ededed;font-size:12px;color:#333;}
+.body-account ul{margin:10px 0 0 0;}
+.body-account ul li{margin-right:10px;list-style:none;color:#088ac2;display:inline;}
+.body-account li i{font-size:24px;}
+.body-account .message{margin:10px 0 0 0;}
+.body-account .message .message-num{padding:0 10px 0 0;font-size:18px;color:#088ac2;}
+.body-account .remain{font-size:20px;color:#ff3c37;}
+/*operation*/
+.body-operation{font-size:12px;color:#333;}
+.body-operation .operation-title{}
+.operation-title .operation-column{height:17px;border:3px solid #088ac2;border-top:0;border-bottom:0;border-radius:2px;}
+.operation-title .title{padding-left:20px;font-size:14px;}
+.operation-title .more{color:#888;float:right;}
+.body-operation .operation-items{margin:10px 0 0 0;}
+.body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border:1px solid #ededed;border-bottom:0;}
+.body-operation .operation-items li.last{border-bottom:1px solid #ededed;}
+.operation-items .items-desc{margin-top:5px;}
+/*.buyed*/
+.body-buyed{height:385px;margin-top:30px;}
+.body-buyed .buyed-products{margin-top:15px;}
+.buyed-products .product{width:40%;height:175px;padding:25px 0 15px 0;text-align:center;color:#fff;background:#088ac2;float:left}
+.product .iconfont{font-size:55px;display:block;}
+.product .product-title{margin-top:5px;font-size:16px;}
+.product .product-num{margin-top:10px;font-size:14px;}
+.buyed-products .productDesc{width:60%;height:175px;padding:30px 15px 0 25px;border:1px solid #ededed;border-left:0;border-right:0;font-size:12px;float:left;color:#888;}
+.buyed-products .productDesc.last{border-right:1px solid #ededed;}
+.productDesc .productDesc-consume{margin:10px 0 15px 0;font-size:18px;color:#ff3c37;}
+.product.harddisk{background:#08aec2;}
+/*source quota*/
+.body-quota{margin-top:30px;font-size:12px;color:#333;}
+.body-quota .quota-items{margin-top:15px;}
+.quota-items .quota-item{height:62px;margin-bottom:10px;border:1px solid #ededed;border-left:3px solid #dbdbdb;overflow:hidden;}
+.quota-items .quota-item.last{margin-bottom:0;}
+.quota-item .item-source{width:74.5%;height:60px;padding:10px 10px 5px 10px;display:inline-block;}
+.item-source span{letter-spacing:2px;}
+.item-source .source-precent{margin-top:5px;height:6px;}
+.source-precent .active{height:6px;background:#088ac2;float:left}
+.source-precent .unactive{height:6px;background:#dbdbdb;float:left}
+.quota-item .item-quota{width:60px;width:16.5%;min-width:60px;height:62px;margin-top:-1px;padding:15px 10px;color:#fff;background:#08aec2;display:inline-block;float:right;}
+.item-quota .quota-line{margin:0 auto;border-top:1px solid #fff;transform:rotate(-45deg);-ms-transform:rotate(-45deg);-moz-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-o-transform:rotate(-45deg);}
+/*recommend*/
+.body-recommend{margin-top:30px;}
+.body-recommend .recommend-items{margin-top:15px;font-size:14px;color:#333;}
+.recommend-items .recommend-item{border:1px solid #ededed;border-right:0;}
+.recommend-items .recommend-item.last{border-right:1px solid #ededed;}
+.recommend-item .iconfont{padding:0 10px;font-size:60px;color:#088ac2;}
+.recommend-item .item-title{padding-top:30px;}
+.recommend-item .item-desc{padding-top:10px;font-size:12px;color:#888;}
+.recommend-item .item-detail{padding-top:10px;font-size:12px;}
+.recommend-item .item-buttons{margin:25px 0;}
