@@ -507,8 +507,8 @@ body {
 .letv-nav-tab>li{margin-right:10px;}
 .letv-nav-tab>li>a{padding:6px 24px;border-radius:2px;font-size:12px;background:#e6e6e6;color:#333;}
 .letv-nav-tab>li>a:hover{cursor:pointer;color:#333;background:#e6e6e6}
-.letv-nav-tab>li>a.activea{border-radius:2px;background:#088ac2;color:#fff;}
-.letv-nav-tab>li>a.activea:hover{cursor:pointer;color:#fff;background:#088ac2}
+.letv-nav-tab>li.active>a{border-radius:2px;background:#088ac2;color:#fff;}
+.letv-nav-tab>li.active>a,.letv-nav-tab>li.active>a:hover,.letv-nav-tab>li.active>a:focus{cursor:pointer;color:#fff;background:#088ac2}
 .letv-tab-content{border:1px solid #d2d2d2;border-top:0;padding:15px 0 10px 0;}
 /*radio-self*/
 .radio-content{line-height:14px;}
