@@ -2,12 +2,17 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
-public class EmailVmsCreatedTask implements VmsCreateSubTask {
+public class BindFloatingIpTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
-		for (VmCreateContext vmContext : context.getVmCreateContexts()) {
-			
+		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
+			context.getApiCache()
+					.getNovaFloatingIPApi()
+					.addToServer(
+							vmCreateContext.getFloatingIp()
+									.getFloatingIpAddress(),
+							vmCreateContext.getServerCreated().getId());
 		}
 		// TODO send email
 	}

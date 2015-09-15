@@ -53,21 +53,19 @@ public class CheckFloatingIpQuotaTask implements VmsCreateSubTask {
 					"公网IP带宽超过配额。");
 		}
 
-		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			context.getVmCreateContexts()
-					.get(i)
-					.setFloatingIp(
-							context.getApiCache()
-									.getNeutronFloatingIpApi()
-									.create(CreateFloatingIP
-											.createBuilder(
-													context.getFloatingNetwork()
-															.getId())
-											.fipQos(NetworkManagerImpl
-													.createFipQos(context
-															.getVmCreateConf()
-															.getBandWidth()))
-											.build()));
+		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
+			vmCreateContext
+					.setFloatingIp(context
+							.getApiCache()
+							.getNeutronFloatingIpApi()
+							.create(CreateFloatingIP
+									.createBuilder(
+											context.getFloatingNetwork()
+													.getId())
+									.fipQos(NetworkManagerImpl
+											.createFipQos(context
+													.getVmCreateConf()
+													.getBandWidth())).build()));
 		}
 	}
 
@@ -79,12 +77,9 @@ public class CheckFloatingIpQuotaTask implements VmsCreateSubTask {
 		}
 
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			FloatingIP floatingIP = vmCreateContext.getFloatingIp();
-			if (StringUtils.isEmpty(context.getApiCache()
-					.getNovaFloatingIPApi().get(floatingIP.getId())
-					.getInstanceId())) {
+			if (vmCreateContext.getServerCreated() == null) {
 				context.getApiCache().getNeutronFloatingIpApi()
-						.delete(floatingIP.getId());
+						.delete(vmCreateContext.getFloatingIp().getId());
 			}
 		}
 	}

@@ -43,18 +43,13 @@ public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 					"Volumes size exceeding the quota.", "云硬盘总大小超过配额。");
 		}
 
-		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			context.getVmCreateContexts()
-					.get(i)
-					.setVolume(
-							context.getApiCache()
-									.getVolumeApi()
-									.create(context.getVmCreateConf()
-											.getVolumeSize(),
-											new CreateVolumeOptions()
-													.volumeType(context
-															.getVolumeType()
-															.getId())));
+		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
+			vmCreateContext.setVolume(context
+					.getApiCache()
+					.getVolumeApi()
+					.create(context.getVmCreateConf().getVolumeSize(),
+							new CreateVolumeOptions().volumeType(context
+									.getVolumeType().getId())));
 		}
 	}
 
@@ -65,10 +60,10 @@ public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 			return;
 		}
 
-		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			Volume volume = context.getVmCreateContexts().get(i).getVolume();
-			if (volume.getStatus() != Volume.Status.IN_USE) {
-				context.getApiCache().getVolumeApi().delete(volume.getId());
+		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
+			if (vmCreateContext.getServerCreated() == null) {
+				context.getApiCache().getVolumeApi()
+						.delete(vmCreateContext.getVolume().getId());
 			}
 		}
 	}

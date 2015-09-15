@@ -14,8 +14,8 @@ public class CreateSubnetPortsTask implements VmsCreateSubTask {
 			return;
 		}
 
-		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			createOnePort(context, context.getVmCreateContexts().get(i));
+		for (VmCreateContext vmCreateContext:context.getVmCreateContexts()) {
+			createOnePort(context, vmCreateContext);
 		}
 	}
 
@@ -43,9 +43,7 @@ public class CreateSubnetPortsTask implements VmsCreateSubTask {
 			return;
 		}
 
-		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			VmCreateContext vmCreateContext = context.getVmCreateContexts()
-					.get(i);
+		for (VmCreateContext vmCreateContext:context.getVmCreateContexts()) {
 			if (vmCreateContext.getServerCreated() == null) {
 				context.getApiCache().getPortApi()
 						.delete(vmCreateContext.getSubnetPort().getId());

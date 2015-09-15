@@ -14,7 +14,8 @@ public class VMCreate {
 	private VMManagerImpl vmManager;
 	private NetworkManagerImpl networkManager;
 
-	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,NetworkManagerImpl networkManager) {
+	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
+			NetworkManagerImpl networkManager) {
 		this.vmCreateConf = vmCreateConf;
 		this.vmManager = vmManager;
 		this.networkManager = networkManager;
@@ -40,26 +41,24 @@ public class VMCreate {
 					tasks.add(new CheckVolumeQuotaTask());
 					tasks.add(new CreateSubnetPortsTask());
 					tasks.add(new CreateVmsTask());
-					tasks.add(new EmailVmsCreatedTask());
 					tasks.add(new AddVmsCreateListenerTask());
+					tasks.add(new EmailVmsCreatedTask());
 
-					int taskIndex = 0;
-					try {
-						for (; taskIndex < tasks.size(); taskIndex++) {
-							tasks.get(taskIndex).run(multiVmCreateContext);
-						}
-					} catch (Exception ex) {
-						for (; taskIndex >= 0; taskIndex--) {
-							tasks.get(taskIndex).rollback(multiVmCreateContext);
-						}
-						throw ex;
-					}
+					VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
+							tasks, multiVmCreateContext);
+					executor.run();
 				} finally {
 					apiSession.close();
 				}
 			} catch (OpenStackException ex) {
 				throw ex;
 			} catch (Exception ex) {
+				if (ex.getMessage() != null
+						&& ex.getMessage()
+								.contains(
+										"Flavor's disk is too small for requested image.")) {
+					throw new UserOperationException("硬件配置过低，不满足镜像的要求。", ex);
+				}
 				throw new OpenStackException("后台错误", ex);
 			}
 		} else {

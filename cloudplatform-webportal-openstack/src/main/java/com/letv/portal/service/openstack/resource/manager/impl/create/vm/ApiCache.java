@@ -14,6 +14,7 @@ import org.jclouds.openstack.neutron.v2.features.PortApi;
 import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 import org.jclouds.openstack.nova.v2_0.extensions.KeyPairApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
+import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 
@@ -227,5 +228,21 @@ public class ApiCache {
 			this.cache.put(Router.class, routerApi);
 		}
 		return routerApi;
+	}
+
+	public VolumeAttachmentApi getVolumeAttachmentApi()
+			throws APINotAvailableException {
+		VolumeAttachmentApi volumeAttachmentApi = (VolumeAttachmentApi) this.cache
+				.get(VolumeAttachmentApi.class);
+		if (volumeAttachmentApi == null) {
+			Optional<VolumeAttachmentApi> volumeAttachmentApiOptional = apiSession
+					.getNovaApi().getVolumeAttachmentApi(region);
+			if (!volumeAttachmentApiOptional.isPresent()) {
+				throw new APINotAvailableException(VolumeAttachmentApi.class);
+			}
+			volumeAttachmentApi = volumeAttachmentApiOptional.get();
+			this.cache.put(VolumeAttachmentApi.class, volumeAttachmentApi);
+		}
+		return volumeAttachmentApi;
 	}
 }
