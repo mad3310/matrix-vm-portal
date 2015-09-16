@@ -15,6 +15,7 @@ import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.password.PasswordService;
 
@@ -86,6 +87,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	
 	@Autowired
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
+	
+	@Autowired
+	private ErrorEmailService errorEmailService;
 
 	private OpenStackServiceGroup openStackServiceGroup;
 	
@@ -123,6 +127,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setSessionService(sessionService);
 		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
 		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);
+		openStackServiceGroup.setErrorEmailService(errorEmailService);
 	}
 
 	@Override

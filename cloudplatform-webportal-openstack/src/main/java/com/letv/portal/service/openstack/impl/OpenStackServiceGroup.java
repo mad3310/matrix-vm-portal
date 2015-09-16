@@ -6,6 +6,7 @@ import com.letv.common.email.ITemplateMessageSender;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
+import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.password.PasswordService;
 
 public class OpenStackServiceGroup {
@@ -15,6 +16,7 @@ public class OpenStackServiceGroup {
 	private SessionServiceImpl sessionService;
 	private ICloudvmVmCountService cloudvmVmCountService;
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
+	private ErrorEmailService errorEmailService;
 
 	public ICloudvmRegionService getCloudvmRegionService() {
 		return cloudvmRegionService;
@@ -65,5 +67,13 @@ public class OpenStackServiceGroup {
 
 	public SchedulingTaskExecutor getThreadPoolTaskExecutor() {
 		return threadPoolTaskExecutor;
+	}
+
+	public void setErrorEmailService(ErrorEmailService errorEmailService) {
+		this.errorEmailService = errorEmailService;
+	}
+	
+	public ErrorEmailService getErrorEmailService() {
+		return errorEmailService;
 	}
 }

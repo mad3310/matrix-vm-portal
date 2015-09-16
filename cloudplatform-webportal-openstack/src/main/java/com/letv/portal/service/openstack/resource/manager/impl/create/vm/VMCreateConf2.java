@@ -148,4 +148,17 @@ public class VMCreateConf2 {
 		this.floatingNetworkId = floatingNetworkId;
 	}
 
+	@Override
+	public String toString() {
+		return "VMCreateConf2 [region=" + region + ", name=" + name
+				+ ", flavorId=" + flavorId + ", imageId=" + imageId
+				+ ", snapshotId=" + snapshotId + ", volumeSize=" + volumeSize
+				+ ", volumeTypeId=" + volumeTypeId + ", privateSubnetId="
+				+ privateSubnetId + ", sharedNetworkId=" + sharedNetworkId
+				+ ", bindFloatingIp=" + bindFloatingIp + ", bandWidth="
+				+ bandWidth + ", floatingNetworkId=" + floatingNetworkId
+				+ ", keyPairName=" + keyPairName + ", adminPass=" + adminPass
+				+ ", count=" + count + "]";
+	}
+
 }
