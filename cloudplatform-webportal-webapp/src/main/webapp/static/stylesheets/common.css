@@ -239,7 +239,7 @@ body {
     font-size: 35px;
     line-height: 100px;
     vertical-align: middle;
-    color: red;
+    color: #ff3c37;
 }
 
 .le-confirm .confirm-operation{
@@ -253,3 +253,10 @@ body {
     margin-right: 30px;
 }
 /*end le-confim style*/
+
+/*end le-input-validation style*/
+input.ng-invalid.ng-touched {
+    border: 1px solid #ff3c37;
+}
+.le-input-validation{font-size: 12px;color: #ff3c37;line-height: 20px;}
+/*end le-input-validation style*/
