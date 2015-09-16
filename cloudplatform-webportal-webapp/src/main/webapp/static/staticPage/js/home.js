@@ -137,7 +137,7 @@ function scrollNav(){
         }
 	});
 }
-//ropducts:tab-click
+//products:tab-click
 function tabClick(){
 	$('.top-product-tab').unbind('click').click(function(event) {
 		event.preventDefault();
@@ -161,6 +161,25 @@ function tabClick(){
 			$('body').animate({
 				scrollTop:720
 			}, 500)
+		}
+	});
+}
+//home&product logged
+function iflogged(){
+	var _target=$('.nav-more');
+	$.ajax({
+		url:'/user',
+		type:'get',
+		cache:false,
+		success:function(data){
+			if(data.result==0){//未登录
+				_target.removeClass('hide');
+				$('.logged').addClass('hide');
+			}else{
+				var name=data.data.username;
+				_target.addClass('hide');
+				$('.logged').removeClass('hide').find('.logged-name').text(name);
+			}
 		}
 	});
 }

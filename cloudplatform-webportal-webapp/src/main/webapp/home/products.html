@@ -48,10 +48,15 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="col-md-3">
-			<div class="nav-more pull-right">
+			<div class="nav-more pull-right hide">
 				<div class="col-md-6 more-login"><a><span>登录</span></a></div>
 				<div class="col-md-6 more-reg"><a><span>注册</span></a></div>
 				<div class="clearfix"></div>
+			</div>
+			<div class="logged pull-right hide">
+				<span class="iconfont icon-my"></span>
+				<a href="#"><span class="logged-name"></span></a>
+				<a href="/account/logout"><span>退出</span></a>
 			</div>
 		</div>
 	</div>
@@ -375,4 +380,5 @@
 topNavHover();//导航滑过效果
 scrollNav();//滚动事件	
 tabClick();// tab 切换
+iflogged();//判断是否登录
 </script>

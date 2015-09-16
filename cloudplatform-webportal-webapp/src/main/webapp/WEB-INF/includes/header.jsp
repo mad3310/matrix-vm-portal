@@ -1,6 +1,6 @@
     <%@ page language="java" pageEncoding="UTF-8"%>
     <div class="header">
-        <a href="/" class="header-brand pull-left">
+        <a href="/home/index.html" class="header-brand pull-left">
             <img src="/static/images/brand-logo.png" class="brand-logo" />
         </a>
         <a href="/" class="header-account pull-right">

@@ -42,17 +42,23 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2 nav-item"><a><span>控制台</span></a></div>
+			<div class="col-md-2 nav-item"><a href="http://matrix.letvcloud.com:8081/profile"><span>控制台</span></a></div>
 			<div class="col-md-2 nav-item"><a><span>帮助中心</span></a></div>
 			<div class="col-md-2 nav-item"><a><span>关于我们</span></a></div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="col-md-3">
-			<div class="nav-more pull-right">
-				<div class="col-md-6 more-login"><a><span>登录</span></a></div>
+			<div class="nav-more pull-right hide">
+				<div class="col-md-6 more-login"><a href="http://uc.letvcloud.com/login.do?backUrl=http://matrix.letvcloud.com:8081/profile"><span>登录</span></a></div>
 				<div class="col-md-6 more-reg"><a><span>注册</span></a></div>
 				<div class="clearfix"></div>
 			</div>
+			<div class="logged pull-right hide">
+				<span class="iconfont icon-my"></span>
+				<a href="#"><span class="logged-name"></span></a>
+				<a href="/account/logout"><span>退出</span></a>
+			</div>
+			<div class="clearfix"></div>
 		</div>
 	</div>
 	<div class="carousels">
@@ -457,8 +463,10 @@
 </body>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script src="/static/staticPage/js/home.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/staticPage/js/common.js" charset="utf-8"></script>
 </html>
 <script>
 topNavHover();//导航滑过效果
 carousels();//轮播
+iflogged();//判断是否登录
 </script>
