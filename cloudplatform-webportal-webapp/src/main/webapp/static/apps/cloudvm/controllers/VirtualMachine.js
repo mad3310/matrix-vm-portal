@@ -132,7 +132,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedVmCpu = null;
     $scope.vmRamList = [];
     $scope.selectedVmRam = null;
-    $scope.dataDiskVolume = 10;
+    $scope.dataDiskVolume = 50;
     $scope.vmNetworkType = 'primary';
     $scope.vmNetworkPublicIpModel = 'now';
     $scope.networkBandWidth = 2;
@@ -142,7 +142,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityPassword = '';
     $scope.vmSecurityPasswordConfirm = '';
     $scope.vmCount = '';
-
 
     $scope.selectVmImage = function (vmImage) {
       $scope.selectedVmImage = vmImage;
