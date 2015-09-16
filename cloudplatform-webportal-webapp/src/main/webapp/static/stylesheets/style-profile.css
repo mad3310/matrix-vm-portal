@@ -1,7 +1,7 @@
 .text-gray{color:#888}
 .no-paddingR{padding-right:0;}
 .no-paddingL{padding-left:0;}
-.main-body{min-width:1360px;width:100%;min-width:1360px;}
+.main-body{width:1079px;width:100%;min-width:1079px;}
 /*account*/
 .body-account{height:200px;padding-top:45px;border:1px solid #ededed;font-size:12px;color:#333;}
 .body-account ul{margin:10px 0 0 0;}
@@ -35,13 +35,14 @@
 .buyed-products .productDesc{width:60%;height:175px;padding:30px 15px 0 25px;border:1px solid #ededed;border-left:0;border-right:0;font-size:12px;float:left;color:#888;}
 .buyed-products .productDesc.last{border-right:1px solid #ededed;}
 .productDesc .productDesc-consume{margin:10px 0 15px 0;font-size:18px;color:#ff3c37;}
+.productDesc-consume .icon-moneyicon{font-size:25px;}
 .product.harddisk{background:#08aec2;}
 /*source quota*/
 .body-quota{margin-top:30px;font-size:12px;color:#333;}
 .body-quota .quota-items{margin-top:15px;}
 .quota-items .quota-item{height:62px;margin-bottom:10px;border:1px solid #ededed;border-left:3px solid #dbdbdb;overflow:hidden;}
 .quota-items .quota-item.last{margin-bottom:0;}
-.quota-item .item-source{width:74.5%;height:60px;padding:10px 10px 5px 10px;display:inline-block;}
+.quota-item .item-source{width:60%;height:60px;padding:10px 10px 5px 10px;display:inline-block;}
 .item-source span{letter-spacing:2px;}
 .item-source .source-precent{margin-top:5px;height:6px;}
 .source-precent .active{height:6px;background:#088ac2;float:left}

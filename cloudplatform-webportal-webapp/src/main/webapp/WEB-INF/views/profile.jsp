@@ -16,7 +16,7 @@
 </head>
 <style>
 .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}
-.main .content-wrapper{width:1630px;width:100%;min-width:1630px;}
+.main .content-wrapper{width:1349px;width:100%;min-width:1349px;}
 </style>
 <body>
 	<%@ include file="../includes/header.jsp"%>
