@@ -65,11 +65,13 @@
 	          <value>/oauth/callback</value>
 	          <value>/static</value>
 	          <value>/logout</value>
-	          <value>/jettyMonitor</value>
-	          <value>/dbMonitor</value>
 	          <value>/toLogin</value>
 	          <value>/home</value>
 	          <value>/user</value>
+	          
+	          <!-- 监控api -->
+	          <value>/jettyMonitor</value>
+	          <value>/dbMonitor</value>
 	        </list>
 	      </property>
 	    </bean>
