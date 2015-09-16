@@ -29,6 +29,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CookieUtil;
 import com.letv.common.util.HttpsClient;
 import com.letv.common.util.IpUtil;
+import com.letv.portal.controller.user.UserVo;
 import com.letv.portal.model.UserLogin;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.openstack.OpenStackService;
@@ -119,11 +120,14 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		String username = (String) userdetailinfo.get("contacts");
 		String email = (String) userdetailinfo.get("email");
 		String mobile = (String) userdetailinfo.get("mobile");
+		Integer mobileStatus = (Integer) userdetailinfo.get("mobileStatus");
 		
 		Session session = new Session(userId);
 		session.setUserName(username);
 		session.setEmail(email);
 		session.setMobile(mobile);
+		
+		session.setUserVo(new UserVo(userId,username,email,mobile,mobileStatus));
 		
 		session.setOpenStackSession(openStackService.createSession(email,email,username));
 		return session;

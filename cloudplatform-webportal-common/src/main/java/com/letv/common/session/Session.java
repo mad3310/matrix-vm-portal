@@ -41,6 +41,8 @@ public class Session implements Serializable{
 	
 	private String mobile;
 	
+	private Object userVo;
+	
 	public Session(){}
 	
 	public Session(Long userId) {
@@ -117,6 +119,14 @@ public class Session implements Serializable{
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+
+	public Object getUserVo() {
+		return userVo;
+	}
+
+	public void setUserVo(Object userVo) {
+		this.userVo = userVo;
 	}
 	
 }
