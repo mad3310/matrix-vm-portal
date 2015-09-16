@@ -1,13 +1,12 @@
-<link rel="stylesheet" type="text/css" href="./static/stylesheets/style-profile.css">
-<div class="main-body">
+<div class="main-body" ng-controller="DashboardCtrl">
 	<div class="col-md-7">
 		<div class="body-account clearfix">
-			<div class="row">
+			<div class="clearfix">
 				<div class="col-md-2 text-center">
 					<img src="../static/images/dashboard/account.png">
 				</div>
 				<div class="col-md-5">
-					<div>早上好：<span class="text-blue">letvcloud&nbsp;</span>先生/女士</div>
+					<div>早上好：<span class="text-blue">{{username}}&nbsp;</span>先生/女士</div>
 					<ul>
 						<li><i class="icon iconfont">&#xe600;</i></li>
 						<li><i class="icon iconfont">&#xe609;</i></li>
@@ -26,7 +25,7 @@
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="clearfix">
 				<div class="col-md-offset-2 col-md-5">
 					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥10.245</span></div>
 					<div><span class="text-gray">预估：</span>&nbsp;&nbsp;¥10.245&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
@@ -58,7 +57,7 @@
 						<div class="productDesc">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
-								<span></span> <!-- 钱袋图标 -->
+								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
 								<span>¥10.245</span>
 							</div>
 							<div class="row">
@@ -71,17 +70,17 @@
 					<div class="col-md-6 no-paddingL">
 						<div class="product harddisk">
 							<span class="iconfont icon-cloudstorageicon"></span>
-							<div class="product-title">云主机</div>
-							<div class="product-num">2个</div>
+							<div class="product-title">运硬盘</div>
+							<div class="product-num">0个</div>
 						</div>
 						<div class="productDesc last">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
-								<span></span> <!-- 钱袋图标 -->
-								<span>¥10.245</span>
+								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
+								<span>¥0</span>
 							</div>
 							<div class="row">
-								<span class="col-md-6">运行2个</span>
+								<span class="col-md-6">运行0个</span>
 								<span class="col-md-6">停0个</span>
 							</div>
 							<div class="clearfix"></div>
@@ -92,16 +91,16 @@
 						<div class="product harddisk">
 							<span class="iconfont icon-rds"></span>
 							<div class="product-title">数据库</div>
-							<div class="product-num">2个</div>
+							<div class="product-num">0个</div>
 						</div>
 						<div class="productDesc">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
-								<span></span> <!-- 钱袋图标 -->
-								<span>¥10.245</span>
+								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
+								<span>¥0</span>
 							</div>
 							<div class="row">
-								<span class="col-md-6">运行2个</span>
+								<span class="col-md-6">运行0个</span>
 								<span class="col-md-6">停0个</span>
 							</div>
 						</div>
@@ -111,16 +110,16 @@
 						<div class="product">
 							<span class="iconfont icon-gce"></span>
 							<div class="product-title">云引擎</div>
-							<div class="product-num">2个</div>
+							<div class="product-num">0个</div>
 						</div>
 						<div class="productDesc last">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
-								<span></span> <!-- 钱袋图标 -->
-								<span>¥10.245</span>
+								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
+								<span>¥0</span>
 							</div>
 							<div class="row">
-								<span class="col-md-6">运行2个</span>
+								<span class="col-md-6">运行0个</span>
 								<span class="col-md-6">停0个</span>
 							</div>
 							<div class="clearfix"></div>
@@ -131,229 +130,232 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-5">
-		<div class="body-operation">
-			<div class="operation-title">
-				<span class="operation-column"></span>
-				<span class="title">最近操作</span>
-				<span class="more">更多</span>
-				<div class="clearfix"></div>
-			</div>
-			<ul class="operation-items">
-				<li>
-					<div>创建云主机实例</div>
-					<div class="items-desc">
-						<span>Welsdfell_jksdfj_001</span>
-						<span class="pull-right">15:36</span>
-						<div class="clearfix"></div>
-					</div>
-				</li>
-				<li>
-					<div>创建云主机实例</div>
-					<div class="items-desc">
-						<span>Welsdfell_jksdfj_001</span>
-						<span class="pull-right">15:36</span>
-						<div class="clearfix"></div>
-					</div>
-				</li>
-				<li class="last">
-					<div>创建云主机实例</div>
-					<div class="items-desc">
-						<span>Welsdfell_jksdfj_001</span>
-						<span class="pull-right">15:36</span>
-						<div class="clearfix"></div>
-					</div>
-				</li>
-			</ul>
-		</div>
-		<div class="body-quota">
+	<le-expander layout="{{expander.layout}}">
+		<div class="col-md-5 le-expander">
 			<div class="body-operation">
 				<div class="operation-title">
 					<span class="operation-column"></span>
-					<span class="title">资源配额</span>
-					<span class="more">更多</span>
+					<span class="title">最近操作</span>
+					<span class="more" ng-click='expanderToggle()'>更多</span>
+					<div class="clearfix"></div>
+				</div>
+				<ul class="operation-items">
+					<li>
+						<div>创建云主机实例</div>
+						<div class="items-desc">
+							<span>Welsdfell_jksdfj_001</span>
+							<span class="pull-right">15:36</span>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+					<li>
+						<div>创建云主机实例</div>
+						<div class="items-desc">
+							<span>Welsdfell_jksdfj_001</span>
+							<span class="pull-right">15:36</span>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+					<li class="last">
+						<div>创建云主机实例</div>
+						<div class="items-desc">
+							<span>Welsdfell_jksdfj_001</span>
+							<span class="pull-right">15:36</span>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="body-quota">
+				<div class="body-operation">
+					<div class="operation-title">
+						<span class="operation-column"></span>
+						<span class="title">资源配额</span>
+						<span class="more">更多</span>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="quota-items">
+					<div class="col-md-6 no-paddingR no-paddingL">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 no-paddingR">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-6 no-paddingR no-paddingL">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 no-paddingR">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-6 no-paddingR no-paddingL">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 no-paddingR">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-6 no-paddingR no-paddingL">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 no-paddingR">
+						<div class="quota-item">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-md-6 no-paddingR no-paddingL">
+						<div class="quota-item last">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 no-paddingR">
+						<div class="quota-item last">
+							<div class="item-source">
+								<div>云主机<span>（个）</span></div>
+								<div class="source-precent">
+									<div class="active" style="width:30%"></div>
+									<div class="unactive" style="width:70%"></div>
+									<div class="clearfix"></div>
+								</div>
+							</div>
+							<div class="item-quota">
+								<div class="text-left">4</div>
+								<div class="quota-line"></div>
+								<div class="text-right">10</div>
+							</div>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<div class="quota-items">
-				<div class="col-md-6 no-paddingR no-paddingL">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 no-paddingR">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-6 no-paddingR no-paddingL">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 no-paddingR">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-6 no-paddingR no-paddingL">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 no-paddingR">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-6 no-paddingR no-paddingL">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 no-paddingR">
-					<div class="quota-item">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-				<div class="col-md-6 no-paddingR no-paddingL">
-					<div class="quota-item last">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6 no-paddingR">
-					<div class="quota-item last">
-						<div class="item-source">
-							<div>云主机<span>（个）</span></div>
-							<div class="source-precent">
-								<div class="active" style="width:30%"></div>
-								<div class="unactive" style="width:70%"></div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="item-quota">
-							<div class="text-left">4</div>
-							<div class="quota-line"></div>
-							<div class="text-right">10</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
 		</div>
-	</div>
+	</le-expander>
+
 	<div class="clearfix"></div>
 	<div class="body-recommend col-md-12">
 		<div class="body-operation">
