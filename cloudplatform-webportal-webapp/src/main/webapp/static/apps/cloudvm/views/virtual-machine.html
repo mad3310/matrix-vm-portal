@@ -92,6 +92,7 @@
                 <h3 class="modal-title">创建云主机</h3>
             </div>
             <div class="modal-body vm-create-modal-body">
+                <form novalidate class="vm-create-form" name="vm_create_form">
                 <div class="col-sm-8 body-left">
                     <div class="left-flow clearfix">
                         <div class="flow-desc pull-left">
@@ -125,12 +126,12 @@
                     <div id="left-flowone" ng-class="{hide:activeFlow!=1}">
                         <div class="left-inputs">
                             <div class="inputs-item clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">主机名称：</span></div>
-                                <div class="col-sm-9"><input type="text" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称"></div>
+                                <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
+                                <div class="col-sm-10"><input type="text" class="le-form-control" ng-model="vmName" ng-maxlength="20" placeholder="请输入云主机名称" required></div>
                             </div>
                             <div class="inputs-item clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">镜像：</span></div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-2"><span class="letv-control-label">镜像：</span></div>
+                                <div class="col-sm-10">
                                     <ul class="nav nav-tabs letv-nav-tab" role="tablist">
                                         <li role="presentation" class="active">
                                             <a href="#system" data-toggle="tab" aria-controls="system" class="activea" aria-expanded="true">系统镜像</a>
@@ -141,26 +142,12 @@
                                     </ul>
                                     <div class="tab-content letv-tab-content">
                                         <div role="tabpanel" class="tab-pane active" id="system">
-                                            <div class="system-content clearfix">
-                                                <div class="col-sm-6">
+                                            <ul class="system-content clearfix">
+                                                <li ng-repeat="vmImage in vmImageList" ng-click="selectVmImage(vmImage)">
                                                     <i class="iconfont icon-checkblockicon"></i>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <i class="iconfont icon-checkblockicon"></i>
-                                                    <span class="letv-radio-content">CentOs 6.4 32bit</span>
-                                                </div>
-                                            </div>
-                                            <div class="system-content clearfix">
-                                                <div class="col-sm-6">
-                                                    <i class="iconfont icon-checkblockicon"></i>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <i class="iconfont icon-checkblockicon"></i>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                            </div>
+                                                    <span title="{{vmImage.name}}">{{vmImage.name}}</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div role="tabpanel" class="tab-pane" id="hostSnap">
                                         </div>
@@ -170,87 +157,137 @@
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-right" ng-click="activeFlow=2"><span>下一步</span></div>
+                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=2;"><span>下一步</span></div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                     </div>
                     <div id="left-flowtwo" ng-class="{hide:activeFlow!=2}">
                         <div class="left-inputs">
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">CPU：</span></div>
+                                <div class="col-sm-10">
+                                    <div class="letv-mutiCheck" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                        <span>{{vmCpu}}核</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">内存：</span></div>
+                                <div class="col-sm-10">
+                                    <div class="letv-mutiCheck" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                        <span>{{vmRam}}MB</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">数据盘：</span></div>
+                                <div class="col-sm-10">
+                                    <div class="letv-mutiCheck">
+                                        <span>性能型</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                    <div class="letv-mutiCheck">
+                                        <span>容量型</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="inputs-item row clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">CPU：</span></div>
-                                <div class="col-sm-9">
-                                    <div class="row">
-                                        <div class="col-sm-2">
-                                            <div class="letv-mutiCheck">
-                                                <span>1核</span>
-                                                <div class="letv-checkbox checkbox-round active">
-                                                    <span class="fa fa-check"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inputs-item clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">内存：</span></div>
-                                <div class="col-sm-9">
-                                    <ul class="nav nav-tabs letv-nav-tab" role="tablist">
-                                        <li role="presentation" class="active">
-                                            <a href="#system" data-toggle="tab" aria-controls="system" class="activea">系统镜像</a>
-                                        </li>
-                                        <li role="presentation">
-                                            <a href="#hostSnap" data-toggle="tab" aria-controls="hostSnap">主机快照</a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content letv-tab-content">
-                                        <div role="tabpanel" class="tab-pane active" id="system">
-                                            <div class="system-content clearfix">
-                                                <div class="col-sm-6">
-                                                    <div class="letv-radio-parent">
-                                                        <div class="parent-child"><div class="child-dot"></div></div>
-                                                    </div>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="letv-radio-parent unactive">
-                                                        <div class="parent-child"><div class="child-dot unactive"></div></div>
-                                                    </div>
-                                                    <span class="letv-radio-content">CentOs 6.4 32bit</span>
-                                                </div>
-                                            </div>
-                                            <div class="system-content clearfix">
-                                                <div class="col-sm-6">
-                                                    <div class="letv-radio-parent unactive">
-                                                        <div class="parent-child"><div class="child-dot unactive"></div></div>
-                                                    </div>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="letv-radio-parent unactive">
-                                                        <div class="parent-child"><div class="child-dot unactive"></div></div>
-                                                    </div>
-                                                    <span>CentOs 6.4 32bit</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div role="tabpanel" class="tab-pane" id="hostSnap">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inputs-item clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">数据盘：</span></div>
-                                <div class="col-sm-9"><input type="text" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称"></div>
-                            </div>
-                            <div class="inputs-item clearfix">
-                                <div class="col-sm-3"><span class="letv-control-label">系统盘：</span></div>
-                                <div class="col-sm-9"><span>默认系统盘 Linux(20G)、 Windows(40G)</span></div>
+                                <div class="col-sm-2"><span class="letv-control-label">系统盘：</span></div>
+                                <div class="col-sm-10"><span class="letv-control-label">默认系统盘 Linux(20G)、 Windows(40G)</span></div>
                             </div>
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-right" ng-click="activeFlow=3"><span>下一步</span></div>
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=1"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3"><span>下一步</span></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div id="left-flowthree" ng-class="{hide:activeFlow!=3}">
+                        <div class="left-inputs">
+                            <div class="inputs-item nomargin row clearfix network-type">
+                                <div class="col-sm-2"><span class="letv-control-label">类型：</span></div>
+                                <div class="col-sm-10 row flowthree-type">
+                                    <div class="col-sm-4">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">基础网络</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">私有网络</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">网络：</span></div>
+                                <div class="col-sm-10">
+                                    <div class="letv-mutiCheck flowthree" ng-click="vmNetworkPublicIpModel='now'">
+                                        <span>绑定公网IP</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                    <div class="letv-mutiCheck flowthree" ng-click="vmNetworkPublicIpModel='later'">
+                                        <span>稍后设置</span>
+                                        <i class="iconfont icon-roundcheckfill"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="left-button">
+                            <div class="col-sm-12">
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=4"><span>下一步</span></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div id="left-flowfour" ng-class="{hide:activeFlow!=4}">
+                        <div class="left-inputs">
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">登录方式：</span></div>
+                                <div class="col-sm-10 row flowthree-type">
+                                    <div class="col-sm-4">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">密钥</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">密码</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">用户名：</span></div>
+                                <div class="col-sm-10"><input type="text" class="le-form-control" ng-model="vmName"/></div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">密码：</span></div>
+                                <div class="col-sm-10">
+                                    <input type="password" name='password' class="le-form-control" ng-model="vmSecurityPassword" ng-model-options="{ updateOn: 'blur' }" required />
+                                    <span ng-show="vm_create_form.password.$error.required">密码不能为空</span>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>
+                                <div class="col-sm-10">
+                                    <input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />
+                                    <span ng-show="vm_create_form.confirm_password.$error.required">确认密码不能为空</span>
+                                    <span ng-show="vm_create_form.confirm_password.$error.passwordVerify">密码不相等</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="left-button">
+                            <div class="col-sm-12">
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=3"><span>上一步</span></div>
+                                <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -270,10 +307,12 @@
                         </ul>
                     </div>
                     <div class="right-bottom">
-                        合计：<span>60</span>元/小时
+                        <span>合计：<span class="price">60</span>元/小时</span>
+                        <button class="btn btn-le-red btn-submit-order" ng-click="createVm()"><span>提交订单</span></button>
                     </div>
                 </div>
                 <div class="clearfix"></div>
+                </form>
             </div>
     </script>
 

@@ -6,6 +6,7 @@
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
 	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/static/stylesheets/font-awesome.css">
     <link rel="stylesheet" href="/static/stylesheets/common.css">
