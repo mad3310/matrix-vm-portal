@@ -21,7 +21,8 @@ public class MultiVmCreateContext {
 	private VMManagerImpl vmManager;
 	private NetworkManagerImpl networkManager;
 
-	private ApiCache apiCache;
+//	private ApiSession apiSession;
+	private ThreadLocal<ApiCache> apiCacheThreadLocal;
 
 	private String regionDisplayName;
 	private Flavor flavor;
@@ -50,6 +51,14 @@ public class MultiVmCreateContext {
 //	
 //	public OpenStackUser getOpenStackUser() {
 //		return openStackUser;
+//	}
+	
+//	public void setApiSession(ApiSession apiSession) {
+//		this.apiSession = apiSession;
+//	}
+//	
+//	public ApiSession getApiSession() {
+//		return apiSession;
 //	}
 	
 	public void setFloatingNetwork(Network floatingNetwork) {
@@ -165,10 +174,10 @@ public class MultiVmCreateContext {
 	}
 
 	public void setApiCache(ApiCache apiCache) {
-		this.apiCache = apiCache;
+		this.apiCacheThreadLocal.set(apiCache);
 	}
 	
 	public ApiCache getApiCache() {
-		return apiCache;
+		return apiCacheThreadLocal.get();
 	}
 }

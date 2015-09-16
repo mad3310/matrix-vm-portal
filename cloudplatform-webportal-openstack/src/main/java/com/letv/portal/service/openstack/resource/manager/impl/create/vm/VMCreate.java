@@ -29,27 +29,19 @@ public class VMCreate {
 				multiVmCreateContext.setVmManager(vmManager);
 				multiVmCreateContext.setNetworkManager(networkManager);
 
-				ApiSession apiSession = new ApiSession(
-						vmManager.getOpenStackConf(),
-						vmManager.getOpenStackUser());
-				try {
-					List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
-					tasks.add(new CreateApiCacheTask(apiSession));
-					tasks.add(new CheckVmCreateConfTask());
-					tasks.add(new CheckNovaQuotaTask());
-					tasks.add(new CheckFloatingIpQuotaTask());
-					tasks.add(new CheckVolumeQuotaTask());
-					tasks.add(new CreateSubnetPortsTask());
-					tasks.add(new CreateVmsTask());
-					tasks.add(new AddVmsCreateListenerTask());
-					tasks.add(new EmailVmsCreatedTask());
+				List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
+				tasks.add(new CheckVmCreateConfTask());
+				tasks.add(new CheckNovaQuotaTask());
+				tasks.add(new CheckFloatingIpQuotaTask());
+				tasks.add(new CheckVolumeQuotaTask());
+				tasks.add(new CreateSubnetPortsTask());
+				tasks.add(new CreateVmsTask());
+				tasks.add(new AddVmsCreateListenerTask());
+				tasks.add(new EmailVmsCreatedTask());
 
-					VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
-							tasks, multiVmCreateContext);
-					executor.run();
-				} finally {
-					apiSession.close();
-				}
+				VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
+						tasks, multiVmCreateContext);
+				executor.run();
 			} catch (OpenStackException ex) {
 				throw ex;
 			} catch (Exception ex) {
