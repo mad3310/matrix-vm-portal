@@ -60,8 +60,6 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		this.allowUrls = allowUrls;
 	}
 	
-	private final static String UC_COOKIE_KEY = "lecloud_uc_jsessionid";
-
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
 			Object arg2) throws Exception {
@@ -69,7 +67,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 			return true;
 		
 		Session session = (Session) request.getSession().getAttribute(Session.USER_SESSION_REQUEST_ATTRIBUTE);
-		Cookie ucCookie = CookieUtil.getCookieByName(request, UC_COOKIE_KEY);
+		Cookie ucCookie = CookieUtil.getCookieByName(request, Session.UC_COOKIE_KEY);
 		
 		if(session == null && ucCookie !=null) {
 			session = getUserdetailinfo(ucCookie.getValue(),request);

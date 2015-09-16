@@ -7,6 +7,7 @@ public class Session implements Serializable{
 	private static final long serialVersionUID = -8540774365214309089L;
 	
 	public static final String USER_SESSION_REQUEST_ATTRIBUTE = "userSession";
+	public static final String UC_COOKIE_KEY = "lecloud_uc_jsessionid";
 	
 	/**
 	 * from http://uc.letvcloud.com/user/userInfo.do?sessionId=7aa301f4-669f-497b-b760-1a012a61d78e
