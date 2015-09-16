@@ -3,29 +3,27 @@
  */
 define(['directives/app.directive'],function (directiveModule) {
 
-    directiveModule.directive('leModal', function () {
+    directiveModule.directive('leExpander', function () {
         return {
             restrict: 'AE',
-            scope: {
-                option: '=option'
-            },
             transclude: true,
-            link: function (scope, element, attrs) {
-                var modalEl = element.children().first();
-                modalEl.modal({
-                    show: false,
-                    backdrop: false
-                });
-                scope.$watch('option.isShow', function (newValue, oldValue) {
-                    if (newValue) {
-                        modalEl.modal('show');
-                    }
-                    else {
-                        modalEl.modal('hide');
-                    }
-                });
+            replace:true,
+            scope: {
+            	layout:'@'
             },
-            templateUrl: '/app/directives/le-modal/template.html'
+            template :'<div ng-transclude></div>',
+            link: function (scope, element, attrs) {
+            	scope.$watch('layout',function(){
+            		var item = element.find(".operation-items");
+            		if(scope.layout == 'top-expander'){
+            			item.addClass("operation-expander");
+            			item.height(item.height()+415);
+            		}else if(scope.layout == 'top-shrink'){
+            			item.removeClass("operation-expander");
+            			item.height(item.height()-415);
+            		}
+            	});
+            }
         };
     });
 

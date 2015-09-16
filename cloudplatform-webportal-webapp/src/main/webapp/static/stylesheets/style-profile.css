@@ -20,6 +20,11 @@
 .body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border:1px solid #ededed;border-bottom:0;}
 .body-operation .operation-items li.last{border-bottom:1px solid #ededed;}
 .operation-items .items-desc{margin-top:5px;}
+
+/* 最近操作交互样式 by yk*/
+.le-expander{overflow: hidden;height:614px;}
+.le-expander .operation-expander{overflow:auto; }
+
 /*.buyed*/
 .body-buyed{height:385px;margin-top:30px;}
 .body-buyed .buyed-products{margin-top:15px;}
