@@ -29,13 +29,13 @@ public class UserAccountController {
 	@Autowired
 	private BillUserAmountService billUserAmountService;
 	
-	@RequestMapping(method=RequestMethod.GET)   
+	@RequestMapping(value="/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
 		BillUserAmount userAmount = this.billUserAmountService.getUserAmount(userId);
 		obj.setData(userAmount);
 		return obj;
 	}
-	@RequestMapping(method=RequestMethod.POST)   
+	@RequestMapping(value="/post/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject create(@PathVariable Long userId, ResultObject obj) {
 		this.billUserAmountService.createUserAmount(userId);
 		return obj;

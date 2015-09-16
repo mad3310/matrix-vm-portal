@@ -1,4 +1,4 @@
-package com.letv.portal.controller.clouddb;
+package com.letv.portal.controller.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import com.letv.portal.service.ILoginService;
 @RequestMapping(value="/account")
 public class LogoutController{
 
-	public static final String DASHBORAD_ADDRESS = "/dashboard";
+	public static final String DASHBORAD_ADDRESS = "/profile";
 	
 	@Value("${uc.auth.http}")
 	private String UC_AUTH_HTTP;
@@ -46,7 +46,7 @@ public class LogoutController{
 		request.getSession().invalidate();
 		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(UC_AUTH_HTTP).append("/logout.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append("/dashboard");
+		buffer.append(UC_AUTH_HTTP).append("/logout.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append(DASHBORAD_ADDRESS);
 		response.sendRedirect(buffer.toString());
    }
 }

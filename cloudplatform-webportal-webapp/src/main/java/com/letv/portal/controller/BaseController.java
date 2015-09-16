@@ -1,4 +1,4 @@
-package com.letv.portal.controller.clouddb;
+package com.letv.portal.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +31,9 @@ public class BaseController {
 	public String browserErrorException(HttpServletRequest request,HttpServletResponse response) {
 		return "/error/browserError";
 	}
-	@RequestMapping(value="/home",method=RequestMethod.GET)   
+	@RequestMapping(value="/index",method=RequestMethod.GET)   
 	public String home(HttpServletRequest request,HttpServletResponse response) {
-		return "/portal/home";
+		return "/index";
 	}
 	
 	@RequestMapping(value ="/toLogin")
@@ -42,6 +42,11 @@ public class BaseController {
 		buffer.append(UC_AUTH_HTTP).append("/login.do?backUrl=").append(WEBPORTAL_LOCAL_HTTP).append(back);
 		mav.addObject("loginURI", buffer.toString());
 		mav.setViewName("/toLogin");
+		return mav;
+	}
+	@RequestMapping(value ="/profile",method=RequestMethod.GET)
+	public ModelAndView toProfile(ModelAndView mav){
+		mav.setViewName("/profile");
 		return mav;
 	}
 }

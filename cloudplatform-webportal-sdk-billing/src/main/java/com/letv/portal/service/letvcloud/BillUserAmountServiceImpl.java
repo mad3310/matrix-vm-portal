@@ -36,7 +36,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 
     @Override
     public void createUserAmount(Long userId) throws CommonException {
-        long ret = billUserAmountMapper.insertUserAmountDefault(userId);
+        long ret = Long.valueOf(billUserAmountMapper.insertUserAmountDefault(userId));
         if (ret < 1) {
             throw new CommonException("创建用户余额失败");
         }
