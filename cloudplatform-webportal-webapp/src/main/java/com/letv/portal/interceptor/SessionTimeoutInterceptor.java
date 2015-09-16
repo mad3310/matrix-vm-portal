@@ -114,18 +114,17 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		Map<String, Object> userdetailinfo = this.getUserdetailinfo(ucCookieId);
 		if(null == userdetailinfo || userdetailinfo.isEmpty()||null == userdetailinfo.get("id"))
 			return null;
-		UserLogin userLogin = new UserLogin();
 		
+		Long userId = Long.valueOf((Integer) userdetailinfo.get("id"));
 		String username = (String) userdetailinfo.get("contacts");
 		String email = (String) userdetailinfo.get("email");
-		Long ucId = Long.valueOf((Integer) userdetailinfo.get("id"));
+		String mobile = (String) userdetailinfo.get("mobile");
 		
-		userLogin.setLoginName(username);
-		userLogin.setEmail(email);
-		userLogin.setUcId(ucId);
+		Session session = new Session(userId);
+		session.setUserName(username);
+		session.setEmail(email);
+		session.setMobile(mobile);
 		
-		userLogin.setLoginIp(IpUtil.getIp(request));
-		Session session = this.loginProxy.saveOrUpdateUserAndLogin(userLogin);
 		session.setOpenStackSession(openStackService.createSession(email,email,username));
 		return session;
 	}

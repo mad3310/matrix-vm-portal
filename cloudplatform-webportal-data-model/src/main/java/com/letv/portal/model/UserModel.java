@@ -28,8 +28,6 @@ public class UserModel extends BaseModel{
 	
 	private Date registerDate;
 	
-	private Long ucId;
-	
 	private String password;
 	private String salt;
 	private Integer type;
@@ -150,14 +148,6 @@ public class UserModel extends BaseModel{
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
-	}
-
-	public Long getUcId() {
-		return ucId;
-	}
-
-	public void setUcId(Long ucId) {
-		this.ucId = ucId;
 	}
 
 }
