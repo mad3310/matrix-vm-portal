@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letv.portal.dao.letvcloud.BillUserInvoiceMapper">
+    <insert id="insertUserInvoice">
+        insert into bill_user_invoice(
+          billingId,
+          orderId,
+          email,
+          contacts,
+          billingMonth,
+          billingMoney,
+          state,
+          billingContents
+        )
+        values(
+          #{billingId},
+          #{orderId},
+          #{email},
+          #{contacts},
+          #{billingMonth},
+          #{billingMoney},
+          #{state},
+          #{billingContents}
+        )
+    </insert>
+
+</mapper>

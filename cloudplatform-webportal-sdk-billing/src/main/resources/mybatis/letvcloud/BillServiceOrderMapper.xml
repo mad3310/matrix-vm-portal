@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.letv.portal.dao.letvcloud.BillServiceOrderMapper">
+    <insert id="insert" parameterType="com.letv.portal.model.letvcloud.BillServiceOrder">
+      <selectKey resultType="java.lang.Long" keyProperty="orderId">
+          SELECT @@IDENTITY AS "orderId"
+      </selectKey>
+        insert into bill_service_order(
+        serviceCode,
+        userId,
+        discount,
+        lossValue,
+        p2pValue,
+        createdTime,
+        lastUpdateTime
+        )values(
+        #{serviceCode},
+        #{userId},
+        #{discount},
+        #{lossValue},
+        #{p2pValue},
+        NOW(),
+        NOW()
+        )
+    </insert>
+    <update id="update" parameterType="com.letv.portal.model.letvcloud.BillServiceOrder">
+      update bill_service_order
+      <set>
+          <if test="state != null">state=#{state},</if>
+          lastUpdateTime=NOW()
+      </set>
+      where userId= #{userId} and serviceCode=#{serviceCode}
+    </update>
+    <select id="getOrderId" parameterType="com.letv.portal.letvcloud.bill.vo.FeatherCondition" resultType="java.lang.Long">
+        SELECT orderId from bill_service_order where userId = #{userId} and serviceCode =  #{serviceCode}
+    </select>
+    <select id="getServiceOrder" parameterType="com.letv.portal.model.letvcloud.BillServiceOrder" resultType="com.letv.portal.model.letvcloud.BillServiceOrder">
+        select orderId,serviceCode,userId,state, discount,lossValue,
+        p2pValue,createdTime,lastUpdateTime from
+        bill_service_order where userId = #{userId} and serviceCode = #{serviceCode}
+    </select>
+    <select id="getUserByServiceCode" resultType="java.lang.Long">
+        select userId from bill_service_order where serviceCode=#{serviceCode}
+    </select>
+    <select id="isOrderExist" resultType ="java.lang.Long">
+        select 1 from bill_service_order where userId= #{userId} and
+        serviceCode = #{serviceCode} limit 1
+    </select>
+    <select id="getState" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select orderId,state,testStartTime,testEndTime,orderStage,lossValue,discount from bill_service_order where
+        userId = #{userId} and serviceCode= #{serviceCode}
+    </select>
+    <select id="getUserService" resultType="java.lang.String">
+        select serviceCode from bill_service_order where userId = #{userId}
+    </select>
+</mapper>
