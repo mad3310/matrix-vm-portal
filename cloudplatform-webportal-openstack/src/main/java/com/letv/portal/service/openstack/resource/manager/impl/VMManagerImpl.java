@@ -13,11 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.letv.portal.model.cloudvm.CloudvmVmCount;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
-import com.letv.portal.service.openstack.exception.*;
-
 import org.apache.commons.lang3.CharUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -46,11 +43,21 @@ import com.google.common.base.Optional;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.util.PasswordRandom;
+import com.letv.portal.model.cloudvm.CloudvmVmCount;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
+import com.letv.portal.service.openstack.exception.APINotAvailableException;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.exception.PollingInterruptedException;
+import com.letv.portal.service.openstack.exception.RegionNotFoundException;
+import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
+import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
+import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.exception.VMDeleteException;
+import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
 import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
@@ -60,6 +67,8 @@ import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
 import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
@@ -343,19 +352,48 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 						// break;
 						// }
 						// }
+
 						Network userPrivateNetwork = networkManager
 								.getOrCreateUserPrivateNetwork(region);
 						if (userPrivateNetwork != null) {
 							networks.add(userPrivateNetwork.getId());
 						}
 
-						List<NetworkResource> networkResources = conf
-								.getNetworkResources();
-						if (networkResources != null) {
-							for (int i = 0; i < networkResources.size(); i++) {
-								networks.add(networkResources.get(i).getId());
-							}
-						}
+						// if (networkResources == null
+						// || networkResources.isEmpty()) {
+						// throw new UserOperationException(
+						// "You must select a network to create virtual machine.",
+						// "创建虚拟机必须选择一个网络");
+						// }
+						// if (networkResources.size() > 1) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can't select more than one network.",
+						// "创建虚拟机不能选择多个网络");
+						// }
+
+						// Boolean isSelectSharedNetwork = null;
+						// for (int i = 0; i < networkResources.size(); i++) {
+						// NetworkResourceImpl networkResource =
+						// (NetworkResourceImpl) networkResources
+						// .get(i);
+						// if (networkResource.getExternal()) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can not choose the public network.",
+						// "创建虚拟机不能选择公有网络");
+						// }
+						// if (isSelectSharedNetwork == null) {
+						// isSelectSharedNetwork = networkResource
+						// .getShared();
+						// } else {
+						// if (!isSelectSharedNetwork
+						// .equals(networkResource.getShared())) {
+						// throw new UserOperationException(
+						// "Create a virtual machine can not add the shared network and private network at the same time.",
+						// "创建虚拟机不能同时加入基础网络和私有网络");
+						// }
+						// }
+						// networks.add(networkResource.getId());
+						// }
 
 						if (openStackUser.getInternalUser()
 								&& !openStackConf.getGlobalSharedNetworkId()
@@ -1444,7 +1482,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	// this.identityManager = identityManager;
 	// }
 
-	private void incVmCount() throws OpenStackException {
+	public void incVmCount() throws OpenStackException {
 		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 				.getOpenStackServiceGroup().getCloudvmVmCountService();
 		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
@@ -1471,4 +1509,107 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 		}
 	}
 
+	@Override
+	public void bindFloatingIp(final String region, final String vmId,
+			final String floatingIpId) throws OpenStackException {
+		runWithApi(new ApiRunnable<NovaApi, Void>() {
+
+			@Override
+			public Void run(NovaApi novaApi) throws Exception {
+				checkRegion(region);
+
+				ServerApi serverApi = novaApi.getServerApi(region);
+				Server server = serverApi.get(vmId);
+				if (server == null) {
+					throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null || !isPublicIp(floatingIP)) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (floatingIP.getInstanceId() != null) {
+					throw new UserOperationException(MessageFormat.format(
+							"Floating IP is binded to the VM '{0}'.",
+							floatingIP.getInstanceId()), MessageFormat.format(
+							"公网IP已绑定到虚拟机“{0}”，请先解绑。",
+							floatingIP.getInstanceId()));
+				}
+
+				for (FloatingIP fip : floatingIPApi.list().toList()) {
+					if (vmId.equals(fip.getInstanceId())) {
+						throw new UserOperationException(MessageFormat.format(
+								"VM is binded to the Floating IP '{0}'.",
+								fip.getId()), MessageFormat.format(
+								"虚拟机已绑定公网IP“{0}”，请先解绑。", fip.getId()));
+					}
+				}
+
+				floatingIPApi.addToServer(floatingIP.getIp(), vmId);
+
+				emailBindIP(get(region, vmId), floatingIP.getIp());
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void unbindFloatingIp(final String region, final String vmId,
+			final String floatingIpId) throws OpenStackException {
+		runWithApi(new ApiRunnable<NovaApi, Void>() {
+
+			@Override
+			public Void run(NovaApi novaApi) throws Exception {
+				checkRegion(region);
+
+				ServerApi serverApi = novaApi.getServerApi(region);
+				Server server = serverApi.get(vmId);
+				if (server == null) {
+					throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = novaApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null || !isPublicIp(floatingIP)) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				if (!vmId.equals(floatingIP.getInstanceId())) {
+					throw new UserOperationException(
+							"VM is not binded to Floating IP.", "虚拟机和公网IP未绑定");
+				}
+
+				floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
+
+				return null;
+			}
+		});
+	}
+
+	private static boolean isPublicIp(FloatingIP floatingIP) {
+		return !StringUtils.equals(floatingIP.getFixedIp(), floatingIP.getIp());
+	}
+
+	@Override
+	public void create2(VMCreateConf2 conf) throws OpenStackException {
+		checkUserEmail();
+		new VMCreate(conf, this, this.networkManager).run();
+	}
 }

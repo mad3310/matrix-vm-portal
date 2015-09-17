@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -16,19 +17,33 @@ public class RouterResourceImpl extends AbstractResource implements
 	private String region;
 	private String regionDisplayName;
 	private Router router;
-//	private List<PortResource> ports;
+	// private List<PortResource> ports;
 	private List<SubnetResource> subnets;
+	private NetworkResource networkResource;
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
-		this(region, regionDisplayName, router, new ArrayList<SubnetResource>());
+		this(region, regionDisplayName, router, null, null);
+	}
+
+	public RouterResourceImpl(String region, String regionDisplayName,
+			Router router, NetworkResource networkResource) {
+		this(region, regionDisplayName, router, networkResource,
+				new ArrayList<SubnetResource>());
 	}
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router, List<SubnetResource> subnets) {
+		this(region, regionDisplayName, router, null, subnets);
+	}
+
+	public RouterResourceImpl(String region, String regionDisplayName,
+			Router router, NetworkResource networkResource,
+			List<SubnetResource> subnets) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.router = router;
+		this.networkResource = networkResource;
 		this.subnets = subnets;
 	}
 
@@ -72,4 +87,17 @@ public class RouterResourceImpl extends AbstractResource implements
 		return subnets;
 	}
 
+	@Override
+	public Long getCreated() {
+		Date date = router.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
+
+	@Override
+	public NetworkResource getCarrier() {
+		return networkResource;
+	}
 }

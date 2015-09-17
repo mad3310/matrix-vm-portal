@@ -1,8 +1,11 @@
 package com.letv.portal.service.openstack.resource.impl;
 
+import java.util.Date;
+
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 
 import com.letv.portal.service.openstack.resource.FloatingIpResource;
+import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.Resource;
 import com.letv.portal.service.openstack.resource.RouterResource;
 import com.letv.portal.service.openstack.resource.VMResource;
@@ -15,18 +18,21 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 	private String regionDisplayName;
 	private FloatingIP floatingIp;
 	private Resource bindResource;
+	private NetworkResource networkResource;
 
 	public FloatingIpResourceImpl(String region, String regionDisplayName,
-			FloatingIP floatingIp) {
-		this(region, regionDisplayName, floatingIp, null);
+			FloatingIP floatingIp, NetworkResource networkResource) {
+		this(region, regionDisplayName, floatingIp, networkResource, null);
 	}
 
 	public FloatingIpResourceImpl(String region, String regionDisplayName,
-			FloatingIP floatingIp, Resource bindResource) {
+			FloatingIP floatingIp, NetworkResource networkResource,
+			Resource bindResource) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.floatingIp = floatingIp;
 		this.bindResource = bindResource;
+		this.networkResource = networkResource;
 	}
 
 	@Override
@@ -81,4 +87,31 @@ public class FloatingIpResourceImpl extends AbstractResource implements
 		}
 	}
 
+	@Override
+	public NetworkResource getCarrier() {
+		return networkResource;
+	}
+
+	@Override
+	public String getName() {
+		return floatingIp.getName();
+	}
+
+	@Override
+	public Long getCreated() {
+		Date date = floatingIp.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
+
+	@Override
+	public Long getUpdated() {
+		Date date = floatingIp.getUpdated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
+	}
 }
