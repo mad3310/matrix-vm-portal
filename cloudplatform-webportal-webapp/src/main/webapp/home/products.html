@@ -11,14 +11,14 @@
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 </head>
 <body>
-<div class="main-body body-top"><!-- header&banner -->
+<div class="main-body body-top product-top"><!-- header&banner -->
 	<div class="top-nav clearfix"> 
 		<div class="col-md-2">
 			<a><img src="/static/staticPage/img/white-logo.png"></a>
 		</div>
 		<div class="col-md-offset-1 col-md-6 nav-items">
-			<div class="col-md-2 nav-item"><a href="index.html"><span>首页</span></a></div>
-			<div class="col-md-2 nav-item item-product">
+			<div class="nav-item"><a href="index.html"><span>首页</span></a></div>
+			<div class="nav-item item-product">
 				<a><span class="active">产品</span></a>
 				<div class="item-arrow hide">
 					<img src="/static/staticPage/img/top-arrow.png">
@@ -42,9 +42,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2 nav-item"><a><span>控制台</span></a></div>
-			<div class="col-md-2 nav-item"><a><span>帮助中心</span></a></div>
-			<div class="col-md-2 nav-item"><a><span>关于我们</span></a></div>
+			<div class="nav-item"><a  href="http://matrix.letvcloud.com:8081/profile"><span>控制台</span></a></div>
+			<div class="nav-item"><a><span>帮助中心</span></a></div>
+			<div class="nav-item"><a><span>关于我们</span></a></div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="col-md-3">
@@ -58,12 +58,13 @@
 				<a href="http://uc.letvcloud.com/userView/ucOverview.do"><span class="logged-name"></span></a>
 				<a href="/account/logout"><span>退出</span></a>
 			</div>
-			<div class="clearfix"></div>
 		</div>
 	</div>
 	<div class="top-product-desc clearfix">
-		<div class="col-md-offset-2 col-md-8">
-			<span>LCE提供基础资源可弹性伸缩的计算服务，资源的获取以及管理方式都优于传统物理服务器。用户可以根据业务的需求，随时获取和释放大规模云主机，使IT基础设施的使用及运维变得更简单、更高效，既帮助用户快速构建安全、可靠地应用环境，又能让用户将精力专注于核心业务。</span>
+		<div class="col-md-offset-1 col-md-10">
+			<span>LCE提供基础资源可弹性伸缩的计算服务，资源的获取以及管理方式都优于传统物理服务器。用户可以</span><br>
+			<span>根据业务的需求，随时获取和释放大规模云主机，使IT基础设施的使用及运维变得更简单、更高效，</span><br>
+			<span>既帮助用户快速构建安全、可靠地应用环境，又能让用户将精力专注于核心业务。</span>
 			<div class="product-desc-btn">立即订购</div>
 		</div>
 	</div>
@@ -89,7 +90,7 @@
 		<div class="col-md-6 advantage-item-left bg-pinkWhite">
 			<div class="col-md-offset-6 col-md-6">
 				<dl class="clearfix">
-					<dd  class="col-md-4"><img src="/static/staticPage/img/products/pro-item1.png"></dd>
+					<dd  class="col-md-4"><img class="advantage-img" src="/static/staticPage/img/products/pro-item1.png"></dd>
 					<dd  class="col-md-8">
 						<div class="product-title">快速部署</div>
 						<div class="product-desc">秒级创建，按需快速获取基础资源，支持批量创建；无需考虑硬件选型、采购、部署、维护、扩容等复杂度，有效缩短业务建设周期，提升工作
@@ -101,7 +102,7 @@
 		<div class="col-md-6 advantage-item-right">
 			<div class="col-md-offset-1 col-md-6">
 				<dl class="clearfix">
-					<dd  class="col-md-4"><img src="/static/staticPage/img/products/pro-item2.png"></dd>
+					<dd  class="col-md-4"><img class="advantage-img" src="/static/staticPage/img/products/pro-item2.png"></dd>
 					<dd  class="col-md-8">
 						<div class="product-title">稳定可靠</div>
 						<div class="product-desc">灵活的跨物理服务器安全迁移，高性能分布式存储系统保证数据可靠性，实现云主机业务高可用，可用性：99.9%。
@@ -115,7 +116,7 @@
 		<div class="col-md-6 advantage-item-left">
 			<div class="col-md-offset-6 col-md-6">
 				<dl class="clearfix">
-					<dd  class="col-md-4"><img src="/static/staticPage/img/products/pro-item3.png"></dd>
+					<dd  class="col-md-4"><img class="advantage-img" src="/static/staticPage/img/products/pro-item3.png"></dd>
 					<dd  class="col-md-8">
 						<div class="product-title">备份恢复</div>
 						<div class="product-desc">支持灵活的云主机快照创建，用户可以根据需求基于快照创建镜像或者对云主机进行状态回滚。
@@ -127,7 +128,7 @@
 		<div class="col-md-6 advantage-item-right bg-pinkWhite">
 			<div class="col-md-offset-1 col-md-6">
 				<dl class="clearfix">
-					<dd  class="col-md-4"><img src="/static/staticPage/img/products/pro-item3.png"></dd>
+					<dd  class="col-md-4"><img class="advantage-img" src="/static/staticPage/img/products/pro-item3.png"></dd>
 					<dd  class="col-md-8">
 						<div class="product-title">镜像无依赖</div>
 						<div class="product-desc">提供多种主流常用系统镜像版本，用户可根据业务需求进行灵活选择，同时支持自定义上传镜像，其使用方式与系统镜像完全一致，简化系统部.9%。
@@ -151,14 +152,14 @@
 				</div>
 			</div>
 			<dl class="col-md-9">
-				<dt>云硬盘</dt>
-				<dd>云硬盘提供高速、持久化的存储服务，采用分布式架构，支持多硬盘并行读写，即使服务器故障也能保障数据的可靠性、可用性和安全性。快速搭建私有网络（VPC），提供完全的网络隔离，确保安全，提供包括：VPC、路由、公网IP功能</dd>
+				<dt>存储</dt>
+				<dd>LCE提供了灵活、经济且易于使用的数据存储选项，这些存储选项既可以单独使用、也可以组合使用，以满足不同应用场景的需求。</dd>
 			</dl>
 		</div>
 		<div class="product-func-item clearfix">
-			<dl class="col-md-offset-1 col-md-9">
+			<dl class="col-md-offset-1 col-md-9" style="padding-left:0;">
 				<dt>网络</dt>
-				<dd>快速搭建私有网络（VPC），提供完全的网络隔离，确保安全，提供包括：VPC、路由、公网IP功能，云硬盘提供高速、持久化的存储服</dd>
+				<dd>乐视云计算提供了两种组网方式：基础网络、私有网络（VPC）。前者是一个由乐视云系统维护的全局网络，后者是用户根据业务需要自行组建的网络。</dd>
 			</dl>
 			<div class="col-md-2">
 				<div class="item-bg-white pull-right">
@@ -175,14 +176,31 @@
 				<div class="item-bg-white">
 					<div></div>
 				</div>
-				<div class="item-square bg-brightGreen">
-					<img src="/static/staticPage/img/products/pro-fun3.png">
+				<div class="item-square icon bg-brightGreen">
+					<!-- <img src="/static/staticPage/img/products/pro-fun3.png"> -->
+					<span class="iconfont icon-shearicon"></span>
 				</div>
 			</div>
 			<dl class="col-md-9">
-				<dt>其它</dt>
-				<dd>云硬盘提供高速、持久化的存储服务，采用分布式架构，支持多硬盘并行读写，即使服务器故障也能保障数据的可靠性、可用性和安全性。快速</dd>
+				<dt>镜像</dt>
+				<dd>镜像分为两种：一种是乐视提供的“系统镜像”，为Linux操作系统。另一种是“自定义镜像”，由用户提供上传至乐视云计算平台，若要采用自定义镜像创建LCE实例，需预先与乐视服务人员联系上传相关事宜。系统镜像全局可见可用，自定义镜像只有用户本人可见可用。</dd>
 			</dl>
+		</div>
+		<div class="product-func-item clearfix">
+			<dl class="col-md-offset-1 col-md-9" style="padding-left:0;">
+				<dt>快照</dt>
+				<dd>提供在线数据备份与恢复，当设备发生应用故障或者文件损坏时，，用户可以随时按快照点进行快速的数据恢复，从而实现包括增量备份等各种形式的备份服务。</dd>
+			</dl>
+			<div class="col-md-2">
+				<div class="item-bg-white pull-right">
+					<div style="left:-100px;"></div>
+				</div>
+				<div class="item-square icon item-square-right bg-yellow pull-right">
+					<!-- <img src="/static/staticPage/img/products/pro-fun2.png"> -->
+					<span class="iconfont icon-snapshoticon"></span>
+				</div>
+				<div class="clearfix"></div>
+			</div>
 		</div>
 	</div>
 </div>

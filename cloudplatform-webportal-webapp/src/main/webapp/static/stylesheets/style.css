@@ -288,8 +288,11 @@ body {
 }
 
 .side-menu .menu-item > a:hover {
-    background-color: #2C3542;
-    color: white;
+    background:#E0DEDE;
+    color: #088ac2;
+    margin-left: 20px;
+    padding: 15px 15px 15px 46px;
+    border-left: 4px solid #088ac2;
 }
 
 .side-menu .menu-item.active > a {
@@ -511,8 +514,8 @@ body {
 .inputs-item>.col-sm-10{padding-left:0;}
 .inputs-item input{width: 70%;}
 .system-content{padding:5px 0 5px 0;font-size:12px;margin-bottom: 0;}
-.system-content .iconfont{color: #088ac2;}
-.system-content li{padding:2px 5px;width: 50%;float: left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.system-content li{padding:2px 5px;width: 50%;float: left;}
+.system-content .letv-radioCheck{width: 100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .body-right{height:375px;background:#f5f5f5;font-size:12px;color:#333;}
 .body-right .right-top{margin-top:15px;border-bottom:1px solid #d2d2d2;font-size:14px;}
 .right-top ul{margin:30px 0 0 25px;padding:0;}
@@ -526,7 +529,7 @@ body {
 .flowthree-type{padding:7px 0;}
 .flowthree-type i{color: #088ac2;}
 /*input-self*/
-.letv-control-label{line-height:34px;}
+.letv-control-label{line-height:34px;font-size: 12px}
 /*tab-self*/
 .letv-nav-tab>li{margin-right:10px;}
 .letv-nav-tab>li>a{padding:6px 24px;border-radius:2px;font-size:12px;background:#e6e6e6;color:#333;}
@@ -535,7 +538,7 @@ body {
 .letv-nav-tab>li.active>a,.letv-nav-tab>li.active>a:hover,.letv-nav-tab>li.active>a:focus{cursor:pointer;color:#fff;background:#088ac2}
 .letv-tab-content{border:1px solid #d2d2d2;border-top:0;padding:10px 0 10px 0;}
 /*radio-self*/
-.letv-radio-content{line-height:14px;}
+.letv-radio-content{line-height:14px;font-size: 12px;}
 .letv-radio-parent{width:14px;height:14px;border:1px solid #088ac2;border-radius:14px;background:#fff;text-align:left;display:inline-block;}
 .letv-radio-parent.unactive{border:1px solid #c8c8c8;}
 .letv-radio-parent .parent-child{margin:3.5px;}
@@ -551,4 +554,8 @@ body {
 .letv-mutiCheck.selected{border-color:#088ac2; }
 .letv-mutiCheck.selected i{color: #088ac2;}
 .letv-mutiCheck.flowthree{width:90px;}
+
+.letv-radioCheck{width: 80px;height: 22px;line-height: 20px;padding: 0;margin: 0;}
+.letv-radioCheck i.iconfont{color: #dbdbdb; }
+.letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
 /*end container-cluster-view style*/

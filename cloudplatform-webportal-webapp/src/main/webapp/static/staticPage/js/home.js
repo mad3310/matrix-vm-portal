@@ -48,14 +48,16 @@ function toTop() {
 }; 
 // common:top-nav-hover
 function topNavHover(){
+	var _navUl=$('.nav-uls');var time='';
 	$('.item-product').unbind('hover').hover(function(){ //top-nav 滑过效果
-		var _navUl=$('.nav-uls');
-		_navUl.slideDown('fast', function() {
-			$('.item-product').children('div').removeClass('hide');
-		});
+		time=setTimeout(function(){
+			_navUl.slideDown('400', function() {
+				$('.item-product').children('div').removeClass('hide');
+			});
+		},200);
 	},function(){
+		clearTimeout(time);
 		$('.item-product').children('div').addClass('hide');
-		var _navUl=$('.nav-uls');
 		_navUl.hide();
 	});
 }
@@ -131,6 +133,11 @@ function scrollNav(){
         	}
         	_target.removeClass('hide');
         }else{
+        	var _tabClone='';
+			if(_target.children().length>0){
+				_tabClone=_target.children().clone();
+				$('.tab-layout').html(_tabClone);
+			}
         	$('.tab-layout').removeClass('hide');
         	_target.addClass('hide');
         	_target.children().remove();

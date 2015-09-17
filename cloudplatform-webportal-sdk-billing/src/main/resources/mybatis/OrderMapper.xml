@@ -19,6 +19,7 @@
 	    <result column="CREATE_USER" property="createUser" />
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
+	    <result column="PAY_NUMBER" property="payNumber" />
 	    
 	    <association property="subscription" javaType="Subscription">
 			<result column="PRODUCT_ID" property="productId" />
@@ -38,7 +39,7 @@
 	
 	<sql id="Base_Column_List">
 	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.DISCOUNT_PRICE,od.STATUS,od.ORDER_NUMBER,
-	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN
+	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN,od.PAY_NUMBER
 	</sql>
 	
 	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
@@ -86,7 +87,10 @@
 	            UPDATE_USER=#{updateUser},
 	        </if>
 	        <if test="descn != null ">
-	            DESCN=#{descn}
+	            DESCN=#{descn},
+	        </if>
+	        <if test="payNumber != null ">
+	            PAY_NUMBER=#{payNumber}
 	        </if>
 		</set>
 		where ID=#{id}
@@ -157,11 +161,13 @@
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
 	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.HCLUSTER_ID,
-	        sub.CHARGE_TYPE,sub.ORDER_NUM,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID
+	        sub.CHARGE_TYPE,sub.ORDER_NUM,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME
 	    from
 	        MATRIX_BILLING_ORDER od
 	    left join
 	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+	    left join
+	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
 	        <include refid="Common_Where_Clause" />
 	        <if test="userId != null  and userId != ''">
 				and sub.USER_ID = #{userId}
