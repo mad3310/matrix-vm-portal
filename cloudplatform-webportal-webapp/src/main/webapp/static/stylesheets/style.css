@@ -288,8 +288,11 @@ body {
 }
 
 .side-menu .menu-item > a:hover {
-    background-color: #2C3542;
-    color: white;
+    background:#E0DEDE;
+    color: #088ac2;
+    margin-left: 20px;
+    padding: 15px 15px 15px 46px;
+    border-left: 4px solid #088ac2;
 }
 
 .side-menu .menu-item.active > a {
