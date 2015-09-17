@@ -1812,6 +1812,13 @@ font-size: 12px;
 	margin-top: -4px;
 }
 /*end vm-network page style*/
+
+/*begin vm-routerlist page style*/
+.routerlist-item-more .dropdown-menu{
+	right:0;
+	left: auto;
+}
+/*end vm-routerlist page style*/
 /*  nodata div style*/
 #noData{
 	color:#ddd;

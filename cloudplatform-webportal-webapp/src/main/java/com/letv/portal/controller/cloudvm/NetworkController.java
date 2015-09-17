@@ -418,4 +418,67 @@ public class NetworkController {
 		return result;
 	}
 
+	@RequestMapping(value = "/floatingip/create", method = RequestMethod.POST)
+	public @ResponseBody ResultObject createFloatingIp(
+			@RequestParam String region, @RequestParam String name,
+			@RequestParam String publicNetworkId,
+			@RequestParam Integer bandWidth) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.createFloatingIp(region, name, publicNetworkId, bandWidth);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/floatingip/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listFloatingIp(
+			@RequestParam(required = false) String region,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) Integer currentPage,
+			@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listFloatingIp(region, name, currentPage, recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/floatingip/edit", method = RequestMethod.POST)
+	public @ResponseBody ResultObject editFloatingIp(
+			@RequestParam String region, @RequestParam String floatingIpId,
+			@RequestParam String name,
+			@RequestParam Integer bandWidth) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getNetworkManager()
+					.editFloatingIp(region, floatingIpId, name, bandWidth);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/network/shared/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listShared(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getNetworkManager()
+					.listShared(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

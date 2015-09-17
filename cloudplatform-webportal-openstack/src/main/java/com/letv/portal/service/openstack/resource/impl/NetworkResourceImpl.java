@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.resource.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.NetworkSegmentResource;
 import com.letv.portal.service.openstack.resource.SubnetResource;
+import com.sun.jna.platform.win32.OaIdl.DATE;
 
 public class NetworkResourceImpl extends AbstractResource implements
 		NetworkResource {
@@ -28,8 +30,8 @@ public class NetworkResourceImpl extends AbstractResource implements
 	private String regionDisplayName;
 	private List<SubnetResource> subnetResources;
 	private List<NetworkSegmentResource> networkSegmentResources;
-	
-	public NetworkResourceImpl(Network network){
+
+	public NetworkResourceImpl(Network network) {
 		this.network = network;
 	}
 
@@ -55,10 +57,10 @@ public class NetworkResourceImpl extends AbstractResource implements
 				subnetResources.add(new SubnetResourceImpl(region,
 						regionDisplayName, subnet));
 			}
-//			else {
-//				throw new OpenStackException("Subnet is not found,id:"
-//						+ subnetId, "后台错误");
-//			}
+			// else {
+			// throw new OpenStackException("Subnet is not found,id:"
+			// + subnetId, "后台错误");
+			// }
 		}
 		initNetworkSegmentResources();
 	}
@@ -188,5 +190,14 @@ public class NetworkResourceImpl extends AbstractResource implements
 	@Override
 	public List<NetworkSegmentResource> getNetworkSegments() {
 		return networkSegmentResources;
+	}
+
+	@Override
+	public Long getCreated() {
+		Date date = network.getCreated();
+		if (date != null) {
+			return date.getTime();
+		}
+		return null;
 	}
 }

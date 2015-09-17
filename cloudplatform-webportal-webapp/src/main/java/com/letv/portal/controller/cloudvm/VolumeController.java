@@ -25,10 +25,10 @@ public class VolumeController {
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
 		ResultObject result = new ResultObject();
-		try{
-		result.setData(Util.session(sessionService).getVolumeManager()
-				.getRegions().toArray(new String[0]));
-		}catch(OpenStackException e){
+		try {
+			result.setData(Util.session(sessionService).getVolumeManager()
+					.getRegions().toArray(new String[0]));
+		} catch (OpenStackException e) {
 			e.matrixException();
 		}
 		return result;
@@ -104,7 +104,7 @@ public class VolumeController {
 		try {
 			Util.session(sessionService).getVolumeManager()
 					.create(region, size, name, description, count);
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -121,7 +121,7 @@ public class VolumeController {
 			VolumeManager volumeManager = Util.session(sessionService)
 					.getVolumeManager();
 			volumeManager.delete(region, volumeManager.get(region, volumeId));
-		} catch (UserOperationException e){
+		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
 		} catch (OpenStackException e) {
@@ -130,4 +130,15 @@ public class VolumeController {
 		return result;
 	}
 
+	@RequestMapping(value = "/volume/type/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listVolumeType(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getVolumeManager()
+					.listVolumeType(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

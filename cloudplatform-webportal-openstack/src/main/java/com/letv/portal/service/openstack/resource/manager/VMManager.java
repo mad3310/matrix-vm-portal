@@ -15,6 +15,7 @@ import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 
 public interface VMManager extends ResourceManager {
 	List<VMResource> list(String region) throws RegionNotFoundException,
@@ -39,6 +40,8 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, PollingInterruptedException,
 			OpenStackException;
 
+	void create2(VMCreateConf2 conf2) throws OpenStackException;
+
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,
 			VMStatusException, OpenStackException;
@@ -53,7 +56,8 @@ public interface VMManager extends ResourceManager {
 
 	void deleteSync(String region, VMResource vm) throws VMDeleteException,
 			RegionNotFoundException, APINotAvailableException,
-			TaskNotFinishedException, PollingInterruptedException, OpenStackException;
+			TaskNotFinishedException, PollingInterruptedException,
+			OpenStackException;
 
 	void batchDeleteSync(String vmIdListJson) throws OpenStackException;
 
@@ -81,7 +85,8 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, OpenStackException;
 
 	FlavorResource getFlavorResource(String region, String id)
-			throws RegionNotFoundException, ResourceNotFoundException, OpenStackException;
+			throws RegionNotFoundException, ResourceNotFoundException,
+			OpenStackException;
 
 	Map<Integer, Map<Integer, Map<Integer, FlavorResource>>> groupFlavorResources(
 			String region) throws OpenStackException;
@@ -92,5 +97,13 @@ public interface VMManager extends ResourceManager {
 	void detachVolume(VMResource vmResource, VolumeResource volumeResource)
 			throws OpenStackException;
 
-	String openConsole(VMResource vmResource) throws APINotAvailableException, OpenStackException;
+	String openConsole(VMResource vmResource) throws APINotAvailableException,
+			OpenStackException;
+
+	void bindFloatingIp(String region, String vmId, String floatingIpId)
+			throws OpenStackException;
+
+	void unbindFloatingIp(String region, String vmId, String floatingIpId)
+			throws OpenStackException;
+
 }
