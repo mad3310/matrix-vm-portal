@@ -22,7 +22,7 @@ public class MultiVmCreateContext {
 	private NetworkManagerImpl networkManager;
 
 //	private ApiSession apiSession;
-	private ThreadLocal<ApiCache> apiCacheThreadLocal;
+	private ThreadLocal<ApiCache> apiCacheThreadLocal=new ThreadLocal<ApiCache>();
 
 	private String regionDisplayName;
 	private Flavor flavor;
