@@ -4,12 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Quota;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP.CreateFloatingIP;
+import org.jclouds.openstack.neutron.v2.extensions.FloatingIPApi;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 
-public class CheckFloatingIpQuotaTask implements VmsCreateSubTask {
+public class CreateFloatingIpTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
@@ -77,9 +78,12 @@ public class CheckFloatingIpQuotaTask implements VmsCreateSubTask {
 		}
 
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			if (vmCreateContext.getServerCreated() == null) {
-				context.getApiCache().getNeutronFloatingIpApi()
-						.delete(vmCreateContext.getFloatingIp().getId());
+			if (vmCreateContext.getServerCreated() == null
+					&& vmCreateContext.getFloatingIp() != null) {
+				ApiCache apiCache = context.getApiCache();
+				FloatingIPApi floatingIPApi = apiCache
+						.getNeutronFloatingIpApi();
+				floatingIPApi.delete(vmCreateContext.getFloatingIp().getId());
 			}
 		}
 	}

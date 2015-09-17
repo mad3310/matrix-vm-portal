@@ -32,8 +32,8 @@ public class VMCreate {
 				List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
 				tasks.add(new CheckVmCreateConfTask());
 				tasks.add(new CheckNovaQuotaTask());
-				tasks.add(new CheckFloatingIpQuotaTask());
-				tasks.add(new CheckVolumeQuotaTask());
+				tasks.add(new CreateFloatingIpTask());
+				tasks.add(new CreateVolumeTask());
 				tasks.add(new CreateSubnetPortsTask());
 				tasks.add(new CreateVmsTask());
 				tasks.add(new AddVmsCreateListenerTask());

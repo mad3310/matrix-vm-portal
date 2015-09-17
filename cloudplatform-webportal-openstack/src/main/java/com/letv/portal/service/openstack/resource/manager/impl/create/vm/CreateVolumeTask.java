@@ -7,7 +7,7 @@ import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 
-public class CheckVolumeQuotaTask implements VmsCreateSubTask {
+public class CreateVolumeTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
@@ -61,7 +61,8 @@ public class CheckVolumeQuotaTask implements VmsCreateSubTask {
 		}
 
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			if (vmCreateContext.getServerCreated() == null) {
+			if (vmCreateContext.getServerCreated() == null
+					&& vmCreateContext.getVolume() != null) {
 				context.getApiCache().getVolumeApi()
 						.delete(vmCreateContext.getVolume().getId());
 			}
