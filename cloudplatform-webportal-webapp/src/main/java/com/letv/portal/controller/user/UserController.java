@@ -101,21 +101,7 @@ public class UserController {
 			obj.setResult(0);
 			return obj;
 		}
-		obj.setData(unReadMessage);
-		return obj;
-	}
-	@RequestMapping(value="/order/{userId}",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject order(@PathVariable Long userId,ResultObject obj) throws Exception{
-		if(null ==userId) {
-			obj.setResult(0);
-			return obj;
-		}
-		Map<String, Object> userdetailinfo = this.getUserByUserId(userId);
-		if(userdetailinfo == null || userdetailinfo.isEmpty()) {
-			obj.setResult(0);
-			return obj;
-		}
-		obj.setData(userdetailinfo);
+		obj.setData(unReadMessage.get("totalCount"));
 		return obj;
 	}
 	
