@@ -183,6 +183,7 @@ a:hover{cursor:pointer;}
 .footer ul li{list-style:none;margin-bottom:15px;}
 .footer .footer-linkTitle{font-size:1.4rem;}
 .footer .footer-right{border-left:1px solid #9aa9af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.footer-right .right-logo img{width:50px;width:100%;min-width:50px;}
 .footer-right .right-logo,.right-logo div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-desc{padding:15px 0 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .right-desc div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
