@@ -183,7 +183,7 @@ function iflogged(){
 				_target.removeClass('hide');
 				$('.logged').addClass('hide');
 			}else{
-				var name=data.data.username;
+				var name=data.data.contacts;
 				_target.addClass('hide');
 				$('.logged').removeClass('hide').find('.logged-name').text(name);
 			}
