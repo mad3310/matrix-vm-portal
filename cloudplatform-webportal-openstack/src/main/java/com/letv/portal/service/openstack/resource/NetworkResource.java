@@ -21,4 +21,5 @@ public interface NetworkResource extends Resource{
 	List<NetworkSegmentResource> getNetworkSegments();
 	List<SubnetResource> getSubnets();
 	String getRegionDisplayName();
+	Long getCreated();
 }

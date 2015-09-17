@@ -9,4 +9,6 @@ public interface RouterResource extends Resource{
 	boolean getPublicNetworkGatewayEnable();
 //	List<PortResource> getPorts();
 	List<SubnetResource> getSubnets();
+	Long getCreated();
+	NetworkResource getCarrier();
 }

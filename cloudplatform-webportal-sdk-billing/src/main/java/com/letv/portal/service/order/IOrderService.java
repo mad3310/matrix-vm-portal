@@ -22,6 +22,16 @@ public interface IOrderService extends IBaseService<Order> {
 	 */
 	Long createOrder(Long subscriptionId);
 	Order selectOrderById(Long orderId);
+	/**
+	  * @Title: selectOrderByOrderNumber
+	  * @Description: 根据orderNumber查询订单
+	  * @param orderNumber
+	  * @return Order   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月17日 下午4:44:38
+	  */
+	Order selectOrderByOrderNumber(String orderNumber);
 	void updateOrderStatus(Long orderId);
 	
 	/**

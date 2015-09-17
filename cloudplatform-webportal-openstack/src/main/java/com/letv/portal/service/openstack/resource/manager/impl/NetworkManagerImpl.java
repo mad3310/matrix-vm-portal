@@ -37,6 +37,7 @@ import org.jclouds.openstack.neutron.v2.features.SubnetApi;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
+import com.letv.common.exception.ApiNotFoundException;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
@@ -1158,9 +1159,30 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 											}
 										}
 									}
-									routerResources.add(new RouterResourceImpl(
-											region, regionDisplayName,
-											resource, subnetResources));
+									NetworkResource networkResource = null;
+									if (resource.getExternalGatewayInfo() != null
+											&& resource
+													.getExternalGatewayInfo()
+													.getNetworkId() != null) {
+										networkResource = new NetworkResourceImpl(
+												neutronApi
+														.getNetworkApi(region)
+														.get(resource
+																.getExternalGatewayInfo()
+																.getNetworkId()));
+									}
+									RouterResource routerResource;
+									if (networkResource != null) {
+										routerResource = new RouterResourceImpl(
+												region, regionDisplayName,
+												resource, networkResource,
+												subnetResources);
+									} else {
+										routerResource = new RouterResourceImpl(
+												region, regionDisplayName,
+												resource, subnetResources);
+									}
+									routerResources.add(routerResource);
 								}
 								routerCount++;
 							}
@@ -1233,6 +1255,15 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				String regionDisplayName = getRegionDisplayName(region);
 
+				NetworkResource networkResource = null;
+				if (router.getExternalGatewayInfo() != null
+						&& router.getExternalGatewayInfo().getNetworkId() != null) {
+					networkResource = new NetworkResourceImpl(neutronApi
+							.getNetworkApi(region).get(
+									router.getExternalGatewayInfo()
+											.getNetworkId()));
+				}
+
 				List<SubnetResource> subnetResources = new LinkedList<SubnetResource>();
 				PortApi portApi = neutronApi.getPortApi(region);
 				SubnetApi subnetApi = neutronApi.getSubnetApi(region);
@@ -1259,8 +1290,17 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					}
 				}
 
-				return new RouterResourceImpl(region,
-						getRegionDisplayName(region), router, subnetResources);
+				RouterResource routerResource;
+				if (networkResource != null) {
+					routerResource = new RouterResourceImpl(region,
+							getRegionDisplayName(region), router,
+							networkResource, subnetResources);
+				} else {
+					routerResource = new RouterResourceImpl(region,
+							getRegionDisplayName(region), router,
+							subnetResources);
+				}
+				return routerResource;
 			}
 		});
 	}
@@ -1333,7 +1373,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
-	private static FipQos createFipQos(int bandWidth) {
+	public static FipQos createFipQos(int bandWidth) {
 		return FipQos.createBuilder().ingressBurstRate(bandWidth + "Mb")
 				.egressBurstRate(bandWidth + "Mb")
 				.ingressMaxRate(bandWidth + "Mbit")
@@ -1343,10 +1383,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 	public static Integer getBandWidth(FipQos fipQos) {
 		try {
 			if (fipQos != null) {
-				String egressMaxRate = fipQos.getEgressMaxRate();
-				if (egressMaxRate != null) {
-					String bandWidthStr = egressMaxRate.substring(0,
-							egressMaxRate.length() - "Mbit".length());
+				String egressBurstRate = fipQos.getEgressBurstRate();
+				if (egressBurstRate != null) {
+					String bandWidthStr = egressBurstRate.substring(0,
+							egressBurstRate.length() - "Mb".length());
 					return Integer.parseInt(bandWidthStr);
 				}
 			}
@@ -1572,6 +1612,25 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 								.getExternalGatewayInfo().getNetworkId() != null)) {
 					updateBuilder.externalGatewayInfo(ExternalGatewayInfo
 							.builder().build());
+				} else if (enablePublicNetworkGateway
+						&& (router.getExternalGatewayInfo() != null && router
+								.getExternalGatewayInfo().getNetworkId() != null)
+						&& !router.getExternalGatewayInfo().getNetworkId()
+								.equals(publicNetworkId)) {
+					routerApi.update(
+							routerId,
+							Router.updateBuilder()
+									.externalGatewayInfo(
+											ExternalGatewayInfo.builder()
+													.build()).build());
+					routerApi.update(
+							routerId,
+							Router.updateBuilder()
+									.externalGatewayInfo(
+											ExternalGatewayInfo.builder()
+													.networkId(publicNetworkId)
+													.build()).build());
+					needSetGatewayQos = true;
 				}
 				routerApi.update(routerId, updateBuilder.build());
 				if (needSetGatewayQos) {
@@ -1984,6 +2043,10 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				String regionDisplayName = getRegionDisplayName(region);
 
+				NetworkResource networkResource = new NetworkResourceImpl(
+						neutronApi.getNetworkApi(region).get(
+								floatingIP.getFloatingNetworkId()));
+
 				String portId = floatingIP.getPortId();
 				VMResource vmResource = null;
 				if (portId != null) {
@@ -2004,10 +2067,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				FloatingIpResource floatingIpResource = null;
 				if (vmResource != null) {
 					floatingIpResource = new FloatingIpResourceImpl(region,
-							regionDisplayName, floatingIP, vmResource);
+							regionDisplayName, floatingIP, networkResource,
+							vmResource);
 				} else {
 					floatingIpResource = new FloatingIpResourceImpl(region,
-							regionDisplayName, floatingIP);
+							regionDisplayName, floatingIP, networkResource);
 				}
 				return floatingIpResource;
 			}
@@ -2124,6 +2188,337 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
 				for (Network network : networkApi.list().concat().toList()) {
 					if (network.getExternal()) {
+						networkResources.add(new NetworkResourceImpl(network));
+					}
+				}
+				return networkResources;
+			}
+		});
+	}
+
+	private static String getNameOfFloatingIp(FloatingIP floatingIP) {
+		return floatingIP.getName();
+	}
+
+	private Page listFloatingIpByRegions(final Set<String> regions,
+			final String name, final Integer currentPagePara,
+			final Integer recordsPerPage,
+			final Checker<FloatingIP> floatingIpFilter)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, Page>() {
+
+			@Override
+			public Page run(NeutronApi neutronApi) throws Exception {
+				Integer currentPage;
+				if (currentPagePara != null) {
+					currentPage = currentPagePara - 1;
+				} else {
+					currentPage = null;
+				}
+
+				Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+				List<FloatingIpResource> floatingIpResources = new LinkedList<FloatingIpResource>();
+				int floatingIpCount = 0;
+				boolean needCollect = true;
+				for (String region : regions) {
+					Optional<FloatingIPApi> floatingIpApiOptional = neutronApi
+							.getFloatingIPApi(region);
+					if (!floatingIpApiOptional.isPresent()) {
+						throw new APINotAvailableException(FloatingIPApi.class);
+					}
+					FloatingIPApi floatingIPApi = floatingIpApiOptional.get();
+					if (needCollect) {
+						String regionDisplayName = transMap.get(region);
+						List<FloatingIP> resources = floatingIPApi.list()
+								.concat().toList();
+						for (FloatingIP resource : resources) {
+							if (floatingIpFilter.check(resource)) {
+								if (name == null
+										|| (getNameOfFloatingIp(resource) != null && getNameOfFloatingIp(
+												resource).contains(name))) {
+									boolean needAdd = false;
+									if (currentPage == null
+											|| recordsPerPage == null) {
+										needAdd = true;
+									} else {
+										if (needCollect) {
+											if (floatingIpCount >= (currentPage + 1)
+													* recordsPerPage) {
+												needCollect = false;
+											} else if (floatingIpCount >= currentPage
+													* recordsPerPage) {
+												needAdd = true;
+											}
+										}
+									}
+									if (needAdd) {
+										NetworkResource networkResource = new NetworkResourceImpl(
+												neutronApi
+														.getNetworkApi(region)
+														.get(resource
+																.getFloatingNetworkId()));
+
+										String portId = resource.getPortId();
+										VMResource vmResource = null;
+										if (portId != null) {
+											PortApi portApi = neutronApi
+													.getPortApi(region);
+											Port port = portApi.get(portId);
+											if (port == null) {
+												throw new ResourceNotFoundException(
+														"Port", "公网端口", portId);
+											}
+											String vmId = port.getDeviceId();
+											if (vmId == null) {
+												throw new ResourceNotFoundException(
+														"vm binded by floating IP",
+														"公网绑定的虚拟机", portId);
+											}
+											vmResource = vmManager.get(region,
+													vmId);
+										}
+
+										FloatingIpResource floatingIpResource = null;
+										if (vmResource != null) {
+											floatingIpResource = new FloatingIpResourceImpl(
+													region, regionDisplayName,
+													resource, networkResource,
+													vmResource);
+										} else {
+											floatingIpResource = new FloatingIpResourceImpl(
+													region, regionDisplayName,
+													resource, networkResource);
+										}
+
+										floatingIpResources
+												.add(floatingIpResource);
+									}
+									floatingIpCount++;
+								}
+							}
+						}
+					} else {
+						for (FloatingIP resource : floatingIPApi.list()
+								.concat().toList()) {
+							if (floatingIpFilter.check(resource)) {
+								if (name == null
+										|| (getNameOfFloatingIp(resource) != null && getNameOfFloatingIp(
+												resource).contains(name))) {
+									floatingIpCount++;
+								}
+							}
+						}
+					}
+				}
+
+				Page page = new Page();
+				page.setData(floatingIpResources);
+				page.setTotalRecords(floatingIpCount);
+				if (recordsPerPage != null) {
+					page.setRecordsPerPage(recordsPerPage);
+				} else {
+					page.setRecordsPerPage(10);
+				}
+				if (currentPage != null) {
+					page.setCurrentPage(currentPage + 1);
+				} else {
+					page.setCurrentPage(1);
+				}
+
+				return page;
+			}
+		});
+	}
+
+	@Override
+	public Page listFloatingIp(String regionGroup, String name,
+			Integer currentPage, Integer recordsPerPage)
+			throws OpenStackException {
+		Set<String> regions = null;
+		if (StringUtils.isEmpty(regionGroup)) {
+			regions = getRegions();
+		} else {
+			regions = getGroupRegions(regionGroup);
+		}
+		return listFloatingIpByRegions(regions, name, currentPage,
+				recordsPerPage, new Checker<FloatingIP>() {
+
+					@Override
+					public boolean check(FloatingIP floatingIP)
+							throws Exception {
+						return !StringUtils.equals(
+								floatingIP.getFloatingIpAddress(),
+								floatingIP.getFixedIpAddress());
+					}
+				});
+	}
+
+	@Override
+	public void createFloatingIp(final String region, final String name,
+			final String publicNetworkId, final int bandWidth)
+			throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				Network publicNetwork = networkApi.get(publicNetworkId);
+				if (publicNetwork == null || !publicNetwork.getExternal()) {
+					throw new ResourceNotFoundException("Public Network", "线路",
+							publicNetworkId);
+				}
+
+				if (bandWidth <= 0) {
+					throw new UserOperationException("bandWidth <= 0",
+							"带宽必须大于0");
+				}
+
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				int totalBandWidth = 0;
+				int floatingIpCount = 0;
+				for (FloatingIP floatingIP : floatingIPApi.list().concat()
+						.toList()) {
+					if (!StringUtils.equals(floatingIP.getFixedIpAddress(),
+							floatingIP.getFloatingIpAddress())) {
+						floatingIpCount++;
+						totalBandWidth += getBandWidth(floatingIP.getFipQos());
+					}
+				}
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				if (quota == null) {
+					throw new OpenStackException(
+							"User quota is not available.", "用户配额不可用");
+				}
+
+				final int floatingIpCountQuota = quota.getFloatingIp()
+						- quota.getRouter();
+				if (floatingIpCount >= floatingIpCountQuota) {
+					throw new UserOperationException(
+							"Floating IP count exceeding the quota.",
+							"公网IP数量超过配额");
+				}
+
+				final int floatingIpBandWidthQuota = quota.getBandWidth()
+						- quota.getRouter()
+						* openStackConf.getRouterGatewayBandWidth();
+				if (totalBandWidth + bandWidth > floatingIpBandWidthQuota) {
+					throw new UserOperationException(
+							"Floating IP band width exceeding the quota.",
+							"公网IP带宽超过配额");
+				}
+
+				floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
+						.name(name).fipQos(createFipQos(bandWidth)).build());
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void editFloatingIp(final String region, final String floatingIpId,
+			final String name, final int bandWidth) throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkRegion(region);
+
+				if (bandWidth <= 0) {
+					throw new UserOperationException("bandWidth <= 0",
+							"带宽必须大于0");
+				}
+
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+						.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				FloatingIP floatingIP = floatingIPApi.get(floatingIpId);
+				if (floatingIP == null
+						|| StringUtils.equals(
+								floatingIP.getFloatingIpAddress(),
+								floatingIP.getFixedIpAddress())) {
+					throw new ResourceNotFoundException("FloatingIP", "公网IP",
+							floatingIpId);
+				}
+
+				int othersBandWidth = 0;
+				for (FloatingIP fip : floatingIPApi.list().concat().toList()) {
+					if (!StringUtils.equals(fip.getFixedIpAddress(),
+							fip.getFloatingIpAddress())) {
+						if (!StringUtils.equals(fip.getId(), floatingIpId)) {
+							othersBandWidth += getBandWidth(fip.getFipQos());
+						}
+					}
+				}
+
+				Optional<QuotaApi> quotaApiOptional = neutronApi
+						.getQuotaApi(region);
+				if (!quotaApiOptional.isPresent()) {
+					throw new APINotAvailableException(QuotaApi.class);
+				}
+				QuotaApi quotaApi = quotaApiOptional.get();
+
+				Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+				if (quota == null) {
+					throw new OpenStackException(
+							"User quota is not available.", "用户配额不可用");
+				}
+
+				final int floatingIpBandWidthQuota = quota.getBandWidth()
+						- quota.getRouter()
+						* openStackConf.getRouterGatewayBandWidth();
+				if (othersBandWidth + bandWidth > floatingIpBandWidthQuota) {
+					throw new UserOperationException(
+							"Floating IP band width exceeding the quota.",
+							"公网IP带宽超过配额");
+				}
+
+				floatingIPApi.update(floatingIpId, (FloatingIP.updateBuilder()
+						.name(name).fipQos(createFipQos(bandWidth)).build()));
+
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public List<NetworkResource> listShared(final String region)
+			throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, List<NetworkResource>>() {
+
+			@Override
+			public List<NetworkResource> run(NeutronApi neutronApi)
+					throws Exception {
+				checkRegion(region);
+
+				NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+				List<NetworkResource> networkResources = new LinkedList<NetworkResource>();
+				for (Network network : networkApi.list().concat().toList()) {
+					if (network.getShared()
+							&& !StringUtils.equals(network.getId(),
+									openStackConf.getGlobalSharedNetworkId())) {
 						networkResources.add(new NetworkResourceImpl(network));
 					}
 				}

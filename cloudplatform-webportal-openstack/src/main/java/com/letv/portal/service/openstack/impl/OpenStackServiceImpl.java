@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.SchedulingTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -14,6 +15,7 @@ import com.letv.portal.service.cloudvm.ICloudvmRegionService;
 import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.password.PasswordService;
 
@@ -82,6 +84,12 @@ public class OpenStackServiceImpl implements OpenStackService {
 	
 	@Autowired
 	private ICloudvmVmCountService cloudvmVmCountService;
+	
+	@Autowired
+	private SchedulingTaskExecutor threadPoolTaskExecutor;
+	
+	@Autowired
+	private ErrorEmailService errorEmailService;
 
 	private OpenStackServiceGroup openStackServiceGroup;
 	
@@ -118,6 +126,8 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setPasswordService(passwordService);
 		openStackServiceGroup.setSessionService(sessionService);
 		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
+		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);
+		openStackServiceGroup.setErrorEmailService(errorEmailService);
 	}
 
 	@Override
