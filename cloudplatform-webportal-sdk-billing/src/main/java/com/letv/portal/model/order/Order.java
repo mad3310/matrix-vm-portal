@@ -27,7 +27,15 @@ public class Order extends BaseModel{
 	private Double discountPrice;//折扣价
 	private Integer status;//订单状态：0-未付款，1-失效，2-已付款
 	private Subscription subscription;//订阅实体
+	private String payNumber;//支付订单号
 	
+	
+	public String getPayNumber() {
+		return payNumber;
+	}
+	public void setPayNumber(String payNumber) {
+		this.payNumber = payNumber;
+	}
 	public Double getDiscountPrice() {
 		return discountPrice;
 	}

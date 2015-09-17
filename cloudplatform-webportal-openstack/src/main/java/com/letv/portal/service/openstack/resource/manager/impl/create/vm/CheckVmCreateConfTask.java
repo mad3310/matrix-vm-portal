@@ -51,6 +51,7 @@ public class CheckVmCreateConfTask implements VmsCreateSubTask {
 				throw new ResourceNotFoundException("Shared Network", "共享网络",
 						vmCreateConf.getSharedNetworkId());
 			}
+			multiVmCreateContext.setSharedNetwork(sharedNetwork);
 		}
 
 		Flavor flavor = multiVmCreateContext.getApiCache().getFlavorApi()

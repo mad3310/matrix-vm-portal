@@ -181,7 +181,7 @@
                                 <div class="col-sm-2"><span class="letv-control-label">内存：</span></div>
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
-                                        <span>{{vmRam}}MB</span>
+                                        <span>{{vmRam/1024}}G</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
                                 </div>
@@ -189,12 +189,8 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">数据盘：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck">
-                                        <span>性能型</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
-                                    </div>
-                                    <div class="letv-mutiCheck selected">
-                                        <span>容量型</span>
+                                    <div class="letv-mutiCheck" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
+                                        <span>{{vmDiskType.name}}</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
                                 </div>

@@ -13,6 +13,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedVmCpu = null;
     $scope.vmRamList = [];
     $scope.selectedVmRam = null;
+    $scope.vmDiskTypeList = [];
+    $scope.selectedVmDiskType = null;
     $scope.dataDiskVolume = 50;
     $scope.vmNetworkType = 'primary';
     $scope.vmNetworkPublicIpModel = 'now';
@@ -42,17 +44,30 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmRam = function (vmRam) {
       return $scope.selectedVmRam === vmRam;
     };
+    $scope.selectVmDiskType = function (vmDiskType) {
+      $scope.selectedVmDiskType = vmDiskType;
+    };
+    $scope.isSelectedVmDiskType = function (vmDiskType) {
+      return $scope.selectedVmDiskType === vmDiskType;
+    };
     $scope.createVm = function () {
       var data = {
+        region:region,
         name: $scope.vmName,
         imageId: $scope.selectedVmImage.id,
         flavorId: selectedVmFlavor.id,
-        //networkIds: null,
+        volumeTypeId:$scope.selectedVmDiskType.id,
+        volumeSize: $scope.dataDiskVolume,
         adminPass: $scope.vmSecurityPassword,
-        publish: $scope.vmNetworkPublicIpModel === 'now',
-        volumeSizes: JSON.stringify([$scope.dataDiskVolume])
+        bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
+        sharedNetworkId:selectedVmSharedNetwork.id,
+        bandWidth:1,
+        keyPairName:'',
+        count:1,
+        privateSubnetId:'',
+        snapshotId:'',
       };
-      HttpService.doPost(Config.urls.vm_create.replace('{region}', region), data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.vm_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           WidgetService.notifySuccess('创建云主机成功');
@@ -77,10 +92,13 @@ define(['controllers/app.controller'], function (controllerModule) {
     });
 
     var flavorGroupData = null,
-      selectedVmFlavor = null;
+      selectedVmFlavor = null,
+      selectedVmSharedNetwork=null;
     var initComponents = function () {
         initVmImageSelector();
         initVmCpuSelector();
+        initVmDiskTypeSelector();
+        setSelectedVmSharedNetworkId();
       },
       initVmImageSelector = function () {
         HttpService.doGet(Config.urls.image_list.replace('{region}', region)).success(function (data, status, headers, config) {
@@ -109,6 +127,17 @@ define(['controllers/app.controller'], function (controllerModule) {
           selectedVmFlavor = flavorGroupData[$scope.selectedVmCpu][$scope.selectedVmRam][disk];
           break;
         }
+      },
+      initVmDiskTypeSelector = function () {
+        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
+            $scope.vmDiskTypeList=data.data;
+          $scope.selectedVmDiskType = $scope.vmDiskTypeList[0];
+        });
+      },
+      setSelectedVmSharedNetworkId = function () {
+        HttpService.doGet(Config.urls.vm_network_shared_list,{region:region}).success(function (data, status, headers, config) {
+          selectedVmSharedNetwork=data.data[0];
+        });
       };
     ;
     initComponents();
