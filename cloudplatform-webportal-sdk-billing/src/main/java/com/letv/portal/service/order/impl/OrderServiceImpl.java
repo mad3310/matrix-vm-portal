@@ -108,7 +108,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderSe
 		params.put("id", orderId);
 		params.put("userId", sessionService.getSession().getUserId());
 		List<Order> rets = this.orderDao.selectByMap(params);
-		return rets==null?null:rets.get(0);
+		return rets!=null && rets.size()!=0 ? rets.get(0) : null;
 	}
 
 
@@ -127,6 +127,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order> implements IOrderSe
 	public void modifyPriceById(Map<String, Object> params) {
 		params.put("updateUser", sessionService.getSession().getUserId());
 		this.orderDao.modifyPriceById(params);
+	}
+
+
+
+	@Override
+	public Order selectOrderByOrderNumber(String orderNumber) {
+		Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("orderNumber", orderNumber);
+	    List<Order> rets = this.orderDao.selectByMap(params);
+	    return rets!=null && rets.size()!=0 ? rets.get(0) : null;
 	}
 
 
