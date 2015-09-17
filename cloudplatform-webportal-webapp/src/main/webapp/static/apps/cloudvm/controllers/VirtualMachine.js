@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope', '$modal', 'Config', 'HttpService',
-    function ($scope, $modal, Config, HttpService) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope', '$modal', 'Config', 'HttpService','toaster',
+    function ($scope, $modal, Config, HttpService,toaster) {
       $scope.searchVmName = '';
 
       $scope.regionList = [];
@@ -22,7 +22,15 @@ define(['controllers/app.controller'], function (controllerModule) {
         refreshVmList();
       };
 
-      $scope.restartVm=function(size){
+      $scope.startVm=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          toaster.pop('warning', null, '请选中一个云主机', 2000, 'trustedHtml');
+          return;
+        }
+        var data={
+          vmId: checkedVms[0].id
+        };
         var modalInstance = $modal.open({
           templateUrl: 'ConfirmModalTpl',
           controller: 'ConfirmModalCtrl',
@@ -37,36 +45,60 @@ define(['controllers/app.controller'], function (controllerModule) {
           }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          HttpService.doPost(Config.urls.vm_start.replace('{region}', region), data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              $modalInstance.close(data);
+              toaster.pop('success', null, '创建云主机成功', 2000, 'trustedHtml');
+            }
+            else{
+              toaster.pop('error', null, data.msgs[0]||'创建云主机失败', 2000, 'trustedHtml');
+            }
+          });
         }, function () {
         });
       };
 
-      $scope.startMcluster = function (mcluster) {
-        HttpService.doPost(Config.url.mcluster_start, {mclusterId: mcluster.id}).success(function (data, status, headers, config) {
-          if (data.result == 1) {
-            toaster.pop('success', null, '启动d成功', 2000, 'trustedHtml');
-          }
-          else {
-            toaster.pop('error', null, '启动失败', 2000, 'trustedHtml');
+      $scope.deleteVm=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          toaster.pop('warning', null, '请选中一个云主机', 2000, 'trustedHtml');
+          return;
+        }
+        var data={
+          vmId: checkedVms[0].id
+        };
+        var modalInstance = $modal.open({
+          templateUrl: 'ConfirmModalTpl',
+          controller: 'ConfirmModalCtrl',
+          size: size,
+          resolve: {
+            message:function(){
+              return  '确定要删除云主机test吗？';
+            },
+            title:function(){
+              return  '删除云主机';
+            }
           }
         });
-      };
-      $scope.stopMcluster = function (mcluster) {
-        HttpService.doPost(Config.url.mcluster_stop, {mclusterId: mcluster.id}).success(function (data, status, headers, config) {
-          if (data.result == 1) {
-            toaster.pop('success', null, '停止成功', 2000, 'trustedHtml');
-          }
-          else {
-            toaster.pop('error', null, '停止失败', 2000, 'trustedHtml');
-          }
+
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          HttpService.doPost(Config.urls.vm_delete.replace('{region}', checkedVms[0].region), data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              modalInstance.close(data);
+              toaster.pop('success', null, '删除云主机成功', 2000, 'trustedHtml');
+              refreshVmList();
+            }
+            else{
+              toaster.pop('error', null, data.msgs[0]||'删除云主机失败', 2000, 'trustedHtml');
+            }
+          });
+        }, function () {
         });
       };
 
-      $scope.deleteMcluster = function (mcluster) {
-        return mcluster;
-      };
       $scope.checkVm = function (vm) {
         vm.checked = vm.checked === true ? false : true;
       };
@@ -88,8 +120,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           }
         });
 
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshVmList();
+          }
         }, function () {
         });
       };
@@ -115,6 +149,11 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.selectedRegion.selected = $scope.regionList[0];
             refreshVmList();
           });
+        },
+        getCheckedVm=function(){
+          return $scope.vmList.filter(function(item){
+            return item.checked===true;
+          });
         };
 
       initPageComponents();
@@ -122,7 +161,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService, $scope, $modalInstance, items, region) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,toaster, $scope, $modalInstance, items, region) {
 
     $scope.activeFlow = 1;
     $scope.vmName = '';
@@ -166,15 +205,20 @@ define(['controllers/app.controller'], function (controllerModule) {
         name: $scope.vmName,
         imageId: $scope.selectedVmImage.id,
         flavorId: selectedVmFlavor.id,
-        networkIds: null,
+        //networkIds: null,
         adminPass: $scope.vmSecurityPassword,
         publish: $scope.vmNetworkPublicIpModel === 'now',
-        volumeSizes: [$scope.dataDiskVolume]
+        volumeSizes: JSON.stringify([$scope.dataDiskVolume])
       };
       HttpService.doPost(Config.urls.vm_create.replace('{region}', region), data).success(function (data, status, headers, config) {
-        return data;
+        if(data.result===1){
+          $modalInstance.close(data);
+          toaster.pop('success', null, '创建云主机成功', 2000, 'trustedHtml');
+        }
+        else{
+          toaster.pop('error', null, data.msgs[0]||'创建云主机失败', 2000, 'trustedHtml');
+        }
       });
-      $modalInstance.close($scope.selected.item);
     };
     $scope.closeModal = function () {
       $modalInstance.dismiss('cancel');

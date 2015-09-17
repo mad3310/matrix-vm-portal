@@ -10,8 +10,8 @@
         </div>
         <div class="le-col-3">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
-            <button class="btn btn-le-blueGreen" ng-click="restartVm('400')"><span>启动</span></button>
-            <button class="btn btn-le-green" ng-click="openVmCreateModal()"><span>重启</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="startVm('400')"><span>启动</span></button>
+            <button class="btn btn-le-green" ng-click="openVmCreateModal('720')"><span>重启</span></button>
         </div>
         <div class="le-col-1">
                 <div dropdown on-toggle="toggled(open)" class="more-operation-dropdown">
@@ -19,9 +19,8 @@
                           更多操作
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                          <li ng-repeat="choice in [1,2]">
-                              <a href>{{choice}}</a>
-                          </li>
+                          <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
+                          <li><a href="javascript:void(0);">绑定云硬盘</a></li>
                       </ul>
                 </div>
         </div>
@@ -146,9 +145,11 @@
                                     <div class="tab-content letv-tab-content">
                                         <div role="tabpanel" class="tab-pane active" id="system">
                                             <ul class="system-content clearfix">
-                                                <li ng-repeat="vmImage in vmImageList" ng-click="selectVmImage(vmImage)">
-                                                    <i class="iconfont icon-checkblockicon"></i>
-                                                    <span title="{{vmImage.name}}">{{vmImage.name}}</span>
+                                                <li ng-repeat="vmImage in vmImageList">
+                                                    <div class="letv-radioCheck" ng-class="{'selected':isSelectedVmImage(vmImage)}" ng-click="selectVmImage(vmImage)">
+                                                        <i class="iconfont icon-checkblockicon"></i>
+                                                        <span class="letv-radio-content" title="{{vmImage.name}}">{{vmImage.name}}</span>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -192,7 +193,7 @@
                                         <span>性能型</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
-                                    <div class="letv-mutiCheck">
+                                    <div class="letv-mutiCheck selected">
                                         <span>容量型</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -226,12 +227,16 @@
                                 <div class="col-sm-2"><span class="letv-control-label">类型：</span></div>
                                 <div class="col-sm-10 row flowthree-type">
                                     <div class="col-sm-4">
-                                        <i class="iconfont icon-checkblockicon"></i>
-                                        <span class="letv-radio-content">基础网络</span>
+                                        <div class="letv-radioCheck selected">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content">基础网络</span>
+                                        </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <i class="iconfont icon-checkblockicon"></i>
-                                        <span class="letv-radio-content">私有网络</span>
+                                        <div class="letv-radioCheck">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content">私有网络</span>
+                                        </div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
@@ -239,11 +244,11 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">网络：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck flowthree" ng-click="vmNetworkPublicIpModel='now'">
+                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
                                         <span>绑定公网IP</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
-                                    <div class="letv-mutiCheck flowthree" ng-click="vmNetworkPublicIpModel='later'">
+                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
                                         <span>稍后设置</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -265,19 +270,23 @@
                                 <div class="col-sm-2"><span class="letv-control-label">登录方式：</span></div>
                                 <div class="col-sm-10 row flowthree-type">
                                     <div class="col-sm-4">
-                                        <i class="iconfont icon-checkblockicon"></i>
-                                        <span class="letv-radio-content">密钥</span>
+                                        <div class="letv-radioCheck">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content">密钥</span>
+                                        </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <i class="iconfont icon-checkblockicon"></i>
-                                        <span class="letv-radio-content">密码</span>
+                                        <div class="letv-radioCheck selected">
+                                            <i class="iconfont icon-checkblockicon"></i>
+                                            <span class="letv-radio-content">密码</span>
+                                        </div>
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">用户名：</span></div>
-                                <div class="col-sm-10"><input type="text" class="le-form-control" ng-model="vmName"/></div>
+                                <div class="col-sm-10"><input type="text" class="le-form-control" ng-disabled="true" value="root" /></div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">密码：</span></div>

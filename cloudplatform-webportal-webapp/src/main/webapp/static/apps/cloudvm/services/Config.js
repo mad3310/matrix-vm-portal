@@ -9,7 +9,10 @@ define(['services/app.service'], function (serviceModule) {
       vm_list: '/ecs/region/{region}',
       image_list: '/osi/region/{region}',
       flavor_group_data: '/osf/region/{region}/group',
-      vm_create: '/ecs/region/{region}/vm-create'
+      vm_create: '/ecs/region/{region}/vm-create',
+      vm_start: '/ecs/region/{region}/vm-start',
+      vm_stop: '/ecs/region/{region}/vm-stop',
+      vm_delete: '/ecs/region/{region}/vm-delete'
     };
     config.mclusterStatuses = [
       {"text": "请选择状态", "value": ""},
