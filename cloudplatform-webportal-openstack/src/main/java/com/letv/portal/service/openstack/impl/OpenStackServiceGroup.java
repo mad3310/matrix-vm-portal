@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.impl;
 
+import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
+import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -17,6 +19,8 @@ public class OpenStackServiceGroup {
 	private ICloudvmVmCountService cloudvmVmCountService;
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
 	private ErrorEmailService errorEmailService;
+	private ICloudvmFlavorService cloudvmFlavorService;
+	private ICloudvmServerService cloudvmServerService;
 
 	public ICloudvmRegionService getCloudvmRegionService() {
 		return cloudvmRegionService;
@@ -75,5 +79,21 @@ public class OpenStackServiceGroup {
 	
 	public ErrorEmailService getErrorEmailService() {
 		return errorEmailService;
+	}
+
+	public ICloudvmFlavorService getCloudvmFlavorService() {
+		return cloudvmFlavorService;
+	}
+
+	public void setCloudvmFlavorService(ICloudvmFlavorService cloudvmFlavorService) {
+		this.cloudvmFlavorService = cloudvmFlavorService;
+	}
+
+	public ICloudvmServerService getCloudvmServerService() {
+		return cloudvmServerService;
+	}
+
+	public void setCloudvmServerService(ICloudvmServerService cloudvmServerService) {
+		this.cloudvmServerService = cloudvmServerService;
 	}
 }

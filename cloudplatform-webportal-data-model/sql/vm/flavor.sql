@@ -1,5 +1,6 @@
 CREATE TABLE `WEBPORTAL_CLOUDVM_FLAVOR` (
 	`ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+	`REGION` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`FLAVOR_ID` char(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 	`VCPUS` tinyint unsigned NOT NULL,
 	`RAM` mediumint unsigned NOT NULL,

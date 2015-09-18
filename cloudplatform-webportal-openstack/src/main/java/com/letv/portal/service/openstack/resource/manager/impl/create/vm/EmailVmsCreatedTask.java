@@ -35,8 +35,7 @@ public class EmailVmsCreatedTask implements VmsCreateSubTask {
 				vmModel.put("password", context.getVmCreateConf()
 						.getAdminPass());
 			}
-			vmModel.put("createTime", format.format((context.getApiCache()
-					.getServerApi().get(vmContext.getServerCreated().getId())
+			vmModel.put("createTime", format.format((vmContext.getServer()
 					.getCreated())));
 			vmModelList.add(vmModel);
 		}

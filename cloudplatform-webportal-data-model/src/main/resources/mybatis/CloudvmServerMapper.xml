@@ -6,6 +6,7 @@
 	<!-- Result Map -->
 	<resultMap id="BaseResultMap" type="CloudvmServer">
 		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
 		<result column="SERVER_ID" property="serverId"/>
 		<result column="FLAVOR_ID" property="flavorId" />
 		<result column="DELETED" property="deleted" />
@@ -17,7 +18,7 @@
 
 	<!-- WEBPORTAL_ADMIN_OP_LOG table all fields -->
 	<sql id="Base_Column_List">
-		s.ID,s.SERVER_ID,s.FLAVOR_ID,
+		s.ID,s.REGION,s.SERVER_ID,s.FLAVOR_ID,
 		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
 	</sql>
 
@@ -27,6 +28,9 @@
 		<trim suffixOverrides=",">
 			<if test="id != null  ">
 				and s.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and s.REGION=#{region}
 			</if>
 			<if test="serverId != null ">
 				and s.SERVER_ID=#{serverId}
@@ -55,10 +59,10 @@
 	<!-- 插入记录 -->
 	<insert id="insert" parameterType="CloudvmServer" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_CLOUDVM_SERVER(SERVER_ID,FLAVOR_ID,
+		WEBPORTAL_CLOUDVM_SERVER(REGION,SERVER_ID,FLAVOR_ID,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{serverId},#{flavorId},#{deleted},null,#{createUser},null,null)
+		#{region},#{serverId},#{flavorId},#{deleted},now(),#{createUser},null,null)
 	</insert>
 
 	<!-- 更新 -->
@@ -66,13 +70,14 @@
 		update WEBPORTAL_CLOUDVM_SERVER
 		set
 		ID=#{id},
+		REGION=#{region},
 		SERVER_ID=#{serverId},
 		FLAVOR_ID=#{flavorId},
 		DELETED=#{deleted},
-		CREATE_TIME=null,
+		CREATE_TIME=#{createTime},
 		CREATE_USER=#{createUser},
-		UPDATE_TIME=null,
-		UPDATE_USER=null
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
 		where ID=#{id}
 	</update>
 

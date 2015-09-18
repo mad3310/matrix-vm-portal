@@ -9,14 +9,16 @@ public class CloudvmServer extends BaseModel {
 
 	private static final long serialVersionUID = 441262241566576508L;
 
+	private String region;
 	private String serverId;
 	private String flavorId;
 
 	public CloudvmServer() {
 	}
 
-	public CloudvmServer(String serverId, String flavorId) {
+	public CloudvmServer(String region, String serverId, String flavorId) {
 		this();
+		this.region = region;
 		this.serverId = serverId;
 		this.flavorId = flavorId;
 	}
@@ -37,4 +39,11 @@ public class CloudvmServer extends BaseModel {
 		this.flavorId = flavorId;
 	}
 
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
 }

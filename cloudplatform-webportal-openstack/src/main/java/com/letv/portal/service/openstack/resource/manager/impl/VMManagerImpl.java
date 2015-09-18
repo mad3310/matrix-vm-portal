@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.model.cloudvm.CloudvmFlavor;
+import com.letv.portal.model.cloudvm.CloudvmServer;
+import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
+import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -77,7 +81,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 		VMManager {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -1012274540203347510L;
 
@@ -174,7 +178,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @param regions
 	 * @param name
 	 * @param currentPagePara
@@ -230,12 +234,12 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 												* recordsPerPage) {
 											vmResources
 													.add(new VMResourceImpl(
-															region,
-															regionDisplayName,
-															resource,
-															VMManagerImpl.this,
-															imageManager,
-															openStackUser));
+                                                            region,
+                                                            regionDisplayName,
+                                                            resource,
+                                                            VMManagerImpl.this,
+                                                            imageManager,
+                                                            openStackUser));
 										}
 									}
 								}
@@ -530,8 +534,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 							conf.getName(), conf.getImageResource().getId(),
 							conf.getFlavorResource().getId(),
 							createServerOptions);
-					incVmCount();
 					Server server = serverApi.get(serverCreated.getId());
+                    recordVmCreated(region,server);
 					VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
 							regionDisplayName, server, VMManagerImpl.this,
 							imageManager, openStackUser);
@@ -587,7 +591,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 						if (ex.getMessage() != null
 								&& ex.getMessage()
 										.contains(
-												"Flavor's disk is too small for requested image.")) {
+                                                "Flavor's disk is too small for requested image.")) {
 							throw new UserOperationException(
 									"硬件配置过低，不满足镜像的要求。", ex);
 						}
@@ -717,7 +721,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
 				FloatingIP floatingIP = floatingIPApi
 						.allocateFromPool(openStackConf
-								.getGlobalPublicNetworkId());
+                                .getGlobalPublicNetworkId());
 				return floatingIP;
 			}
 		});
@@ -834,7 +838,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
 	/**
 	 * call before deleting vm
-	 * 
+	 *
 	 * @param region
 	 * @param vm
 	 * @throws OpenStackException
@@ -996,7 +1000,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
 	private boolean isDeleteFinished(Server server) throws OpenStackException {
 		if (server == null) {
-			decVmCount();
+			recordVmDeleted();
 			return true;
 		}
 		return server.getStatus() == Status.ERROR;
@@ -1023,6 +1027,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 				return null;
 			}
 		});
+
+        recordVmDeleted(region,vm.getId());
 	}
 
 	@Override
@@ -1482,7 +1488,30 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	// this.identityManager = identityManager;
 	// }
 
-	public void incVmCount() throws OpenStackException {
+	public void recordVmCreated(String region, Server server) throws OpenStackException {
+        ICloudvmFlavorService cloudvmFlavorService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmFlavorService();
+        if (cloudvmFlavorService.selectByFlavorId(region, server.getFlavor().getId()) == null) {
+            FlavorResource flavorResource = getFlavorResource(region, server.getFlavor().getId());
+            CloudvmFlavor cloudvmFlavor = new CloudvmFlavor();
+            cloudvmFlavor.setRegion(flavorResource.getRegion());
+            cloudvmFlavor.setFlavorId(flavorResource.getId());
+            cloudvmFlavor.setVcpus(flavorResource.getVcpus());
+            cloudvmFlavor.setRam(flavorResource.getRam());
+            cloudvmFlavor.setDisk(flavorResource.getDisk());
+            cloudvmFlavorService.insert(cloudvmFlavor);
+        }
+
+        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
+        CloudvmServer cloudvmServer = new CloudvmServer();
+        cloudvmServer.setRegion(region);
+        cloudvmServer.setServerId(server.getId());
+        cloudvmServer.setFlavorId(server.getFlavor().getId());
+        cloudvmServerService.insert(cloudvmServer);
+
+        incVmCount();
+    }
+
+	private void incVmCount() throws OpenStackException{
 		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 				.getOpenStackServiceGroup().getCloudvmVmCountService();
 		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService
@@ -1495,7 +1524,15 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 		}
 	}
 
-	private void decVmCount() throws OpenStackException {
+	private void recordVmDeleted(String region,String vmId) throws OpenStackException {
+        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
+        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
+        cloudvmServerService.delete(cloudvmServer);
+
+        decVmCount();
+    }
+
+	private void decVmCount() throws OpenStackException{
 		ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
 				.getOpenStackServiceGroup().getCloudvmVmCountService();
 		CloudvmVmCount cloudvmVmCount = cloudvmVmCountService

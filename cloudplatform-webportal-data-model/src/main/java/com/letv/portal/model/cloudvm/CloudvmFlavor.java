@@ -7,54 +7,63 @@ import com.letv.common.model.BaseModel;
  */
 public class CloudvmFlavor extends BaseModel {
 
-	private static final long serialVersionUID = -2079817238965628633L;
+    private static final long serialVersionUID = -2079817238965628633L;
 
-	private String flavorId;
-	private int vcpus;
-	private int ram;
-	private int disk;
+    private String region;
+    private String flavorId;
+    private int vcpus;
+    private int ram;
+    private int disk;
 
-	public CloudvmFlavor() {
-	}
-	
-	public CloudvmFlavor(String flavorId, int vcpus, int ram, int disk) {
-		this();
-		this.flavorId = flavorId;
-		this.vcpus = vcpus;
-		this.ram = ram;
-		this.disk = disk;
-	}
+    public CloudvmFlavor() {
+    }
 
-	public String getFlavorId() {
-		return flavorId;
-	}
+    public CloudvmFlavor(String region, String flavorId, int vcpus, int ram, int disk) {
+        this();
+        this.region = region;
+        this.flavorId = flavorId;
+        this.vcpus = vcpus;
+        this.ram = ram;
+        this.disk = disk;
+    }
 
-	public void setFlavorId(String flavorId) {
-		this.flavorId = flavorId;
-	}
+    public String getFlavorId() {
+        return flavorId;
+    }
 
-	public int getVcpus() {
-		return vcpus;
-	}
+    public void setFlavorId(String flavorId) {
+        this.flavorId = flavorId;
+    }
 
-	public void setVcpus(int vcpus) {
-		this.vcpus = vcpus;
-	}
+    public int getVcpus() {
+        return vcpus;
+    }
 
-	public int getRam() {
-		return ram;
-	}
+    public void setVcpus(int vcpus) {
+        this.vcpus = vcpus;
+    }
 
-	public void setRam(int ram) {
-		this.ram = ram;
-	}
+    public int getRam() {
+        return ram;
+    }
 
-	public int getDisk() {
-		return disk;
-	}
+    public void setRam(int ram) {
+        this.ram = ram;
+    }
 
-	public void setDisk(int disk) {
-		this.disk = disk;
-	}
+    public int getDisk() {
+        return disk;
+    }
 
+    public void setDisk(int disk) {
+        this.disk = disk;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getRegion() {
+        return region;
+    }
 }
