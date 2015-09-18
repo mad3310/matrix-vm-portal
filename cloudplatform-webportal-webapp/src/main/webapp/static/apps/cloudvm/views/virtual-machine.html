@@ -1,79 +1,80 @@
 <div class="virtual-machine-view" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
-        <div class="le-col-3">
+        <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
             <button class="btn btn-le-blueGreen" ng-click="startVm('400')"><span>启动</span></button>
             <button class="btn btn-le-green" ng-click="openVmCreateModal('720')"><span>重启</span></button>
+            <div dropdown class="more-operation-dropdown">
+                <a href class="btn btn-le-yellow" dropdown-toggle>
+                    更多操作
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
+                    <li><a href="javascript:void(0);">绑定云硬盘</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="le-col-1">
-                <div dropdown class="more-operation-dropdown">
-                      <a href class="btn btn-default btn-le-yellow" dropdown-toggle>
-                          更多操作
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                          <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
-                          <li><a href="javascript:void(0);">绑定云硬盘</a></li>
-                      </ul>
-                </div>
-        </div>
-        <div class="le-col-2 pull-right">
-            <div class="le-search-box">
+        <div class="le-col-6">
+            <div class="le-search-box pull-right">
                 <input type="text" ng-model="searchVmName" ng-change="doSearch()"/>
                 <span class="search-icon"></span>
             </div>
         </div>
     </div>
     <div class="le-row vm-list">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>
-                    <div class="letv-checkbox">
-                        <span class="fa fa-check"></span>
-                    </div>
-                </th>
-                <th><span>云主机名称</span></th>
-                <th><span>状态</span></th>
-                <th><span>区域</span></th>
-                <th><span>镜像名称</span></th>
-                <th><span>网络</span></th>
-                <th><span>配置</span></th>
-                <th><span>操作</span></th>
-            </tr>
-            </thead>
-            <tbody id="tby">
-            <tr ng-repeat="vm in vmList">
-                <td>
-                    <div class="letv-checkbox" ng-class="{active:vm.checked}" ng-click="checkVm(vm)">
-                        <span class="fa fa-check"></span>
-                    </div>
-                </td>
-                <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
-                <td>
-                    <span>{{vm.vmState}}</span>
-                </td>
-                <td><span>{{vm.regionDisplayName}}</span></td>
-                <td><span>{{vm.image.name}}</span></td>
-                <td><span>{{vm.ipAddresses.private[0]}}</span></td>
-                <td><span>{{vm.flavor.name}}</span></td>
-                <td>
-                    <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
-                        <i class="fa fa-play-circle-o"></i>
-                    </a>
-                    <a href="javascript:void(0);" title="停止" ng-click="stopMcluster(vm)">
-                        <i class="fa fa-power-off"></i>
-                    </a>
-                    <a href="javascript:void(0);" title="删除" ng-if="mc.status===3" ng-click="deleteMcluster(vm)">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
-                    total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
-                    last-text="&raquo;">
-        </pagination>
+        <div class="le-col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                        <div class="letv-checkbox">
+                            <span class="fa fa-check"></span>
+                        </div>
+                    </th>
+                    <th><span>云主机名称</span></th>
+                    <th><span>状态</span></th>
+                    <th><span>区域</span></th>
+                    <th><span>镜像名称</span></th>
+                    <th><span>网络</span></th>
+                    <th><span>配置</span></th>
+                    <th><span>操作</span></th>
+                </tr>
+                </thead>
+                <tbody id="tby">
+                <tr ng-repeat="vm in vmList">
+                    <td>
+                        <div class="letv-checkbox" ng-class="{active:vm.checked}" ng-click="checkVm(vm)">
+                            <span class="fa fa-check"></span>
+                        </div>
+                    </td>
+                    <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
+                    <td>
+                        <span>{{vm.vmState}}</span>
+                    </td>
+                    <td><span>{{vm.regionDisplayName}}</span></td>
+                    <td><span>{{vm.image.name}}</span></td>
+                    <td><span>{{vm.ipAddresses.private[0]}}</span></td>
+                    <td><span>{{vm.flavor.name}}</span></td>
+                    <td>
+                        <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
+                            <i class="fa fa-play-circle-o"></i>
+                        </a>
+                        <a href="javascript:void(0);" title="停止" ng-click="stopMcluster(vm)">
+                            <i class="fa fa-power-off"></i>
+                        </a>
+                        <a href="javascript:void(0);" title="删除" ng-if="mc.status===3" ng-click="deleteMcluster(vm)">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                        total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                        last-text="&raquo;">
+            </pagination>
+        </div>
+
     </div>
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
     </toaster-container>

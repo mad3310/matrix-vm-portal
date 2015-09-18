@@ -510,16 +510,34 @@ body {
     color: #ff3c37;
 }
 
+.virtual-machine-view .operate-panel > .le-btn-group > .btn{
+    margin-right: 10px;
+}
+
+
 .virtual-machine-view .operate-panel .more-operation-dropdown{
     width: 100px;
     height: 30px;
+    display: inline-block;
     line-height: 30px;
-    vertical-align: middle;
+    margin-left: 20px;
 }
 
 .virtual-machine-view .operate-panel .more-operation-dropdown .dropdown-menu{
     min-width: auto;
     width: 100%;
+    background-color: #f5f5f5;
+    margin:0;
+    padding: 0 0 5px;
+}
+.virtual-machine-view .operate-panel .more-operation-dropdown .dropdown-menu >li >a{
+    padding: 2px 0;
+    text-align: center;
+}
+.virtual-machine-view .operate-panel .more-operation-dropdown .dropdown-menu >li >a:hover{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
 }
 .vm-create-form  rzslider{width: 70%;}
 .vm-create-form .disk-volume,.vm-create-form .disk-volume-unit{display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 3px;}
