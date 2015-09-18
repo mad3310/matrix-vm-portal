@@ -10,7 +10,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.currentPage = 1;
       $scope.totalItems = 0;
-      $scope.pageSize = 15;
+      $scope.pageSize = 3;
       $scope.onPageChange = function () {
         refreshVmList();
       };
@@ -83,6 +83,26 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+
+      $scope.isAllVmChecked=function(){
+        var unCheckedVms=$scope.vmList.filter(function(vm){
+          return vm.checked===false || vm.checked===undefined;
+        });
+        return unCheckedVms.length==0;
+      };
+      $scope.checkAllVm=function(){
+        if($scope.isAllVmChecked()){
+          $scope.vmList.forEach(function(vm){
+            vm.checked=false;
+          });
+        }
+        else{
+          $scope.vmList.forEach(function(vm){
+            vm.checked=true;
+          });
+        }
+
+      };
       $scope.checkVm = function (vm) {
         vm.checked = vm.checked === true ? false : true;
       };
@@ -118,10 +138,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               currentPage: $scope.currentPage,
               recordsPerPage: $scope.pageSize
             };
-          HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {
-            currentPage: 1,
-            recordsPerPage: 3
-          }).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
           });

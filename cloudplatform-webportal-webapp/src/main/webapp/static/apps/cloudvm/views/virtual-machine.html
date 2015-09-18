@@ -27,45 +27,35 @@
                 <thead>
                 <tr>
                     <th>
-                        <div class="letv-checkbox">
-                            <span class="fa fa-check"></span>
-                        </div>
+                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllVmChecked()}" ng-click="checkAllVm()"></span>
                     </th>
-                    <th><span>云主机名称</span></th>
+                    <th><span>名称</span></th>
+                    <th><span>内网IP</span></th>
+                    <th><span>公网IP</span></th>
                     <th><span>状态</span></th>
-                    <th><span>区域</span></th>
-                    <th><span>镜像名称</span></th>
-                    <th><span>网络</span></th>
+                    <th><span>镜像</span></th>
                     <th><span>配置</span></th>
-                    <th><span>操作</span></th>
+                    <th><span>监控</span></th>
+                    <th><span>创建时间</span></th>
+                    <th><span>VNC登录</span></th>
                 </tr>
                 </thead>
                 <tbody id="tby">
                 <tr ng-repeat="vm in vmList">
                     <td>
-                        <div class="letv-checkbox" ng-class="{active:vm.checked}" ng-click="checkVm(vm)">
-                            <span class="fa fa-check"></span>
-                        </div>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
                     </td>
-                    <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
+                    <td><span>{{vm.name}}</span></td>
+                    <td><span>{{vm.ipAddresses.private.join(', ') || '未设置'}}</span></td>
+                    <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
-                        <span>{{vm.vmState}}</span>
+                        <span>{{vm.status | vmStatusFilter}}</span>
                     </td>
-                    <td><span>{{vm.regionDisplayName}}</span></td>
                     <td><span>{{vm.image.name}}</span></td>
-                    <td><span>{{vm.ipAddresses.private[0]}}</span></td>
-                    <td><span>{{vm.flavor.name}}</span></td>
-                    <td>
-                        <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
-                            <i class="fa fa-play-circle-o"></i>
-                        </a>
-                        <a href="javascript:void(0);" title="停止" ng-click="stopMcluster(vm)">
-                            <i class="fa fa-power-off"></i>
-                        </a>
-                        <a href="javascript:void(0);" title="删除" ng-if="mc.status===3" ng-click="deleteMcluster(vm)">
-                            <i class="fa fa-trash-o"></i>
-                        </a>
-                    </td>
+                    <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
+                    <td><span class="iconfont icon-monitor"></span></td>
+                    <td><span>{{vm.created | date:'yyyy-MM-dd'}}</span></td>
+                    <td><span class="iconfont icon-computer"></span></td>
                 </tr>
                 </tbody>
             </table>
