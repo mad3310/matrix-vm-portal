@@ -11,7 +11,7 @@ public interface BillUserAmountMapper {
     //取得用户余额信息
     BillUserAmount getUserAmout(long userId);
     //创建默认账户
-    long insertUserAmountDefault(long userId);
+    void insertUserAmountDefault(long userId);
     //扣费
     Long reduceAmount(BillUserAmount userAmount);
     //充值

@@ -2,12 +2,9 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope', '$modal', 'Config', 'HttpService','WidgetService',
-    function ($scope, $modal, Config, HttpService,WidgetService) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
+    function ($scope, $modal, Config, HttpService,WidgetService,CurrentContext) {
       $scope.searchVmName = '';
-
-      $scope.regionList = [];
-      $scope.selectedRegion = {};
 
       $scope.vmList = [];
 
@@ -47,7 +44,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
-          HttpService.doPost(Config.urls.vm_start.replace('{region}', region), data).success(function (data, status, headers, config) {
+          HttpService.doPost(Config.urls.vm_start.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
             if(data.result===1){
               $modalInstance.close(data);
               WidgetService.notifySuccess('创建云主机成功');
@@ -102,7 +99,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               return $scope.items;
             },
             region: function () {
-              return $scope.selectedRegion.selected;
+              return CurrentContext.regionId;
             }
           }
         });
@@ -116,25 +113,17 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       var refreshVmList = function () {
-          var region = $scope.selectedRegion.selected,
-            queryParams = {
+            var queryParams = {
               name: $scope.searchVmName,
               currentPage: $scope.currentPage,
               recordsPerPage: $scope.pageSize
             };
-          HttpService.doGet(Config.urls.vm_list.replace('{region}', region), {
+          HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), {
             currentPage: 1,
             recordsPerPage: 3
           }).success(function (data, status, headers, config) {
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
-          });
-        },
-        initPageComponents = function () {
-          HttpService.doGet(Config.urls.vm_regions).success(function (data, status, headers, config) {
-            $scope.regionList = data.data;
-            $scope.selectedRegion.selected = $scope.regionList[0];
-            refreshVmList();
           });
         },
         getCheckedVm=function(){
@@ -143,7 +132,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           });
         };
 
-      initPageComponents();
+      refreshVmList();
 
     }
   ]);

@@ -1,5 +1,9 @@
 package com.letv.portal.controller.billing;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
+import com.letv.portal.service.order.IOrderService;
 
 /**Program Name: BaseProductController <br>
  * Description:  基础产品<br>
@@ -28,13 +33,28 @@ public class UserAccountController {
 	
 	@Autowired
 	private BillUserAmountService billUserAmountService;
+	@Autowired
+	private IOrderService orderService;
 	
-	@RequestMapping(value="/{userId}",method=RequestMethod.GET)   
+	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
-		BillUserAmount userAmount = this.billUserAmountService.getUserAmount(userId);
+		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
+		DecimalFormat formatter = new DecimalFormat("0.000");// billUserAmount.getAvailableAmount().doubleValue()
+	    String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
 		obj.setData(userAmount);
 		return obj;
 	}
+
+	@RequestMapping(value="/order/un/{userId}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject unReadOrder(@PathVariable Long userId, ResultObject obj) {
+	   /* Map<String, Object> params = new HashMap<String,Object>();
+	    params.put("userId", userId);
+	    params.put("status", 0); //unRead
+	    Integer count = this.orderService.selectByMapCount(params);*/
+		obj.setData(0);
+		return obj;
+	}
+	
 	@RequestMapping(value="/post/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject create(@PathVariable Long userId, ResultObject obj) {
 		this.billUserAmountService.createUserAmount(userId);
