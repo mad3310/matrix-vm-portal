@@ -1,6 +1,12 @@
 .text-gray{color:#888}
 .no-paddingR{padding-right:0;}
 .no-paddingL{padding-left:0;}
+/*滚动条*/
+::-webkit-scrollbar{width: 7px;box-shadow: 2px 2px 3px 0;}
+::-webkit-scrollbar-track{background-color:rgba(235,235,235,1);}
+::-webkit-scrollbar-thumb{background-color:rgba(0, 0, 0,.2);}
+::-webkit-scrollbar-button {height:7px;background-color:rgba(0,0,0,.2);}
+::-webkit-scrollbar-corner{background-color:rgba(0,0,0,.2);}
 .main-body{width:1079px;width:100%;min-width:1079px;}
 /*account*/
 .body-account{height:200px;padding-top:45px;border:1px solid #ededed;font-size:12px;color:#333;}
@@ -17,9 +23,9 @@
 .operation-title .title{padding-left:20px;font-size:14px;}
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;}
-.body-operation .operation-items{height:170px;margin:10px 0 0 0;border-bottom:1px solid #ededed;}
+.body-operation .operation-items{height:170px;margin:10px 0 0 0;overflow:hidden;}
 .body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border:1px solid #ededed;border-bottom:0;}
-.body-operation .operation-items li.last{}
+.body-operation .operation-items li.last{border-bottom:1px solid #ededed;padding-bottom: 9px;}
 .operation-items .items-desc{margin-top:5px;}
 /*.operation-items li.last .items-desc{margin-top:6px;}*/
 

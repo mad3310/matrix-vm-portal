@@ -35,12 +35,15 @@
 .icon-mark:before { content: "\e610"; }
 .icon-attentionfill:before { content: "\e611"; }
 .icon-attention:before { content: "\e612"; }
+.icon-computer:before { content: "\e62f"; }
+.icon-arrow01:before { content: "\e62e"; }
 .icon-radiobox:before { content: "\e613"; }
 .icon-rounddown:before { content: "\e614"; }
 .icon-writefill:before { content: "\e615"; }
 .icon-write:before { content: "\e616"; }
 .icon-add:before { content: "\e617"; }
 .icon-move:before { content: "\e618"; }
+.icon-monitor:before { content: "\e631"; }
 .icon-yunzhuji:before { content: "\e619"; }
 .icon-rds:before { content: "\e61a"; }
 .icon-gce:before { content: "\e61b"; }
