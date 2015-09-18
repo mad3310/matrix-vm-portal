@@ -11,6 +11,7 @@ import org.jclouds.openstack.nova.v2_0.domain.KeyPair;
 
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
 public class MultiVmCreateContext {
 
@@ -20,6 +21,7 @@ public class MultiVmCreateContext {
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
 	private NetworkManagerImpl networkManager;
+	private VolumeManagerImpl volumeManager;
 
 //	private ApiSession apiSession;
 	private ThreadLocal<ApiCache> apiCacheThreadLocal=new ThreadLocal<ApiCache>();
@@ -60,6 +62,14 @@ public class MultiVmCreateContext {
 //	public ApiSession getApiSession() {
 //		return apiSession;
 //	}
+	
+	public void setVolumeManager(VolumeManagerImpl volumeManager) {
+		this.volumeManager = volumeManager;
+	}
+	
+	public VolumeManagerImpl getVolumeManager() {
+		return volumeManager;
+	}
 	
 	public void setFloatingNetwork(Network floatingNetwork) {
 		this.floatingNetwork = floatingNetwork;

@@ -431,6 +431,26 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	public void waitingVolume(VolumeApi volumeApi, String volumeId,
+			long sleepTime, Checker<Volume> checker) throws OpenStackException {
+		try {
+			while (true) {
+				Volume volume = volumeApi.get(volumeId);
+				if (checker.check(volume)) {
+					Thread.sleep(sleepTime);
+				} else {
+					break;
+				}
+			}
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
 	public void waitingVolumeCreated(final String region, final String volumeId)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<CinderApi, Void>() {

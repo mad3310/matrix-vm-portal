@@ -7,18 +7,21 @@ import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 
 public class VMCreate {
 
 	private VMCreateConf2 vmCreateConf;
 	private VMManagerImpl vmManager;
 	private NetworkManagerImpl networkManager;
+	private VolumeManagerImpl volumeManager;
 
 	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
-			NetworkManagerImpl networkManager) {
+			NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager) {
 		this.vmCreateConf = vmCreateConf;
 		this.vmManager = vmManager;
 		this.networkManager = networkManager;
+		this.volumeManager = volumeManager;
 	}
 
 	public void run() throws OpenStackException {
@@ -28,6 +31,7 @@ public class VMCreate {
 				multiVmCreateContext.setVmCreateConf(vmCreateConf);
 				multiVmCreateContext.setVmManager(vmManager);
 				multiVmCreateContext.setNetworkManager(networkManager);
+				multiVmCreateContext.setVolumeManager(volumeManager);
 
 				List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
 				tasks.add(new CheckVmCreateConfTask());

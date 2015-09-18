@@ -6,6 +6,7 @@ import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
+import com.letv.portal.service.openstack.resource.manager.impl.Checker;
 
 public class CreateVolumeTask implements VmsCreateSubTask {
 
@@ -60,11 +61,21 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 			return;
 		}
 
+		Checker<Volume> volumeChecker = new Checker<Volume>() {
+
+			@Override
+			public boolean check(Volume volume) throws Exception {
+				return volume.getStatus() == Volume.Status.CREATING;
+			}
+		};
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
 			if (vmCreateContext.getServerCreated() == null
 					&& vmCreateContext.getVolume() != null) {
-				context.getApiCache().getVolumeApi()
-						.delete(vmCreateContext.getVolume().getId());
+				final String volumeId = vmCreateContext.getVolume().getId();
+				context.getVolumeManager().waitingVolume(
+						context.getApiCache().getVolumeApi(), volumeId, 100,
+						volumeChecker);
+				context.getApiCache().getVolumeApi().delete(volumeId);
 			}
 		}
 	}
