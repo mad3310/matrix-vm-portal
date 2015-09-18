@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService, $scope, $modalInstance, items, region) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, $scope, $modalInstance,$timeout, items, region) {
 
     $scope.activeFlow = 1;
     $scope.vmName = '';
@@ -26,6 +26,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityPasswordConfirm = '';
     $scope.vmCount = '';
 
+    $scope.hackRzSlider= Utility.getRzSliderHack($scope);
     $scope.selectVmImage = function (vmImage) {
       $scope.selectedVmImage = vmImage;
     };

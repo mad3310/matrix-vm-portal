@@ -6,7 +6,8 @@ define([
   'services/Config',
   'services/HttpService',
   'services/WidgetService',
-  'services/CurrentContext'
+  'services/CurrentContext',
+  'services/Utility',
 ],function(serviceModule){
 
 });
