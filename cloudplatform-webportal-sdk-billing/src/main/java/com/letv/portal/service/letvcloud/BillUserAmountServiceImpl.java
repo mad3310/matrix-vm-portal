@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.letv.common.exception.CommonException;
 import com.letv.common.paging.impl.Page;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
-import com.letv.portal.dao.letvcloud.BillServiceOrderMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
 import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
@@ -31,8 +30,6 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     BillUserAmountMapper billUserAmountMapper;
     @Autowired
     BillRechargeRecordMapper billRechargeRecordMapper;
-    @Autowired
-    BillServiceOrderMapper billServiceOrderDao;
 
     @Override
     public void createUserAmount(Long userId) throws CommonException {
@@ -95,7 +92,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 
     @Override
     public Map<Long, Date> getAllUserArrears(String serviceCode) {
-        List<Long> users = billServiceOrderDao.getUserByServiceCode(serviceCode);
+        List<Long> users = null;//billServiceOrderDao.getUserByServiceCode(serviceCode);
         Map<Long, Date> result = new HashMap<Long, Date>();
         for (Long userId : users) {
             BillUserAmount amount = billUserAmountMapper.getUserArrears(userId);

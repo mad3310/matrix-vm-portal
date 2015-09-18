@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
@@ -55,8 +56,8 @@ public class UserAccountController {
 		return obj;
 	}
 	
-	@RequestMapping(value="/post/{userId}",method=RequestMethod.GET)   
-	public @ResponseBody ResultObject create(@PathVariable Long userId, ResultObject obj) {
+	@RequestMapping(method=RequestMethod.POST)   
+	public @ResponseBody ResultObject create(@RequestParam(required=true) Long userId, ResultObject obj) {
 		this.billUserAmountService.createUserAmount(userId);
 		return obj;
 	}
