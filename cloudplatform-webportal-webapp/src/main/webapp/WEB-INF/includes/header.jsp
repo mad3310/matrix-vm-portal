@@ -23,4 +23,4 @@
             <span>帮助中心</span>
         </a>
     </div>
-    <script src="/static/javascripts/jquery-1.11.3.js"></script>
+    <input id="userId" type="text" class="hide" value="${sessionScope.userSession.userId}">
