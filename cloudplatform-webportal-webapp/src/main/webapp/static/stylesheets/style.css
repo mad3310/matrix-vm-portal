@@ -542,6 +542,35 @@ body {
     background-color: #b3b3b3;
     text-align: center;
 }
+
+.virtual-machine-view .vm-list th .icon-righticon{
+    color: white;
+    background-color: white;
+}
+
+.virtual-machine-view .vm-list th .icon-righticon.checked{
+    color: #088ac2;
+}
+
+.virtual-machine-view .vm-list tr .icon-checkiconfill{
+    color: white;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.virtual-machine-view .vm-list tr .icon-checkiconfill.checked{
+    border-width: 0;
+    font-size: 18px;
+    color: #088ac2;
+}
+.virtual-machine-view .vm-list .icon-monitor{
+    font-size: 24px;
+    color: #f5c131;
+}
+.virtual-machine-view .vm-list .icon-computer{
+    font-size: 24px;
+    color: #08c2b3;
+}
 .vm-create-form  rzslider{width: 70%;}
 .vm-create-form .disk-volume,.vm-create-form .disk-volume-unit{display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 3px;}
 /*end virtual-machine-view style*/

@@ -46,8 +46,8 @@ define(['filters/app.filter'], function (filterModule) {
     }
   });
 
-  filterModule.filter('mclusterStatusFilter', ['Config', function (Config) {
-    var allStatuses = Config.mclusterStatuses;
+  filterModule.filter('vmStatusFilter', ['Config', function (Config) {
+    var allStatuses = Config.vmStatuses;
     return function (input) {
       var out = '';
       for (var i = 0, leng = allStatuses.length; i < leng; i++) {
@@ -58,6 +58,13 @@ define(['filters/app.filter'], function (filterModule) {
       }
       return out || '未知';
     }
+  }]);
+
+  filterModule.filter('vmFlavorFilter', [ function () {
+    return function (flavor) {
+      return [flavor.vcpus+'核',Math.ceil(flavor.ram/1024)+'G',flavor.disk+'G'].join('/');
+    }
+
   }]);
 
   filterModule.filter('sideMenuUrlFilter', [function () {
