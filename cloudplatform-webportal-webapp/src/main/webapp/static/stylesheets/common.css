@@ -192,6 +192,7 @@ body {
     height: 30px;
     width: 210px;
     border: none;
+    padding: 2px;
 }
 
 .le-search-box input:focus {
