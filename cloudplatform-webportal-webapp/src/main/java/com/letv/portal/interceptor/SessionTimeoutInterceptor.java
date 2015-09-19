@@ -72,7 +72,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		if(session == null && ucCookie !=null) {
 			session = getUserdetailinfo(ucCookie.getValue(),request);
 		}
-		if(session == null ) {
+		if(ucCookie == null ) {
 			return toLogin(request, response);
 		} else {
 			return pass(session,request);
