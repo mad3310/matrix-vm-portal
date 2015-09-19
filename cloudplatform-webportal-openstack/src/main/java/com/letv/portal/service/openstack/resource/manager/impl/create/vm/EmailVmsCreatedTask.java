@@ -27,7 +27,7 @@ public class EmailVmsCreatedTask implements VmsCreateSubTask {
 			Map<String, Object> vmModel = new HashMap<String, Object>();
 			vmModel.put("region", context.getRegionDisplayName());
 			vmModel.put("vmId", vmContext.getServerCreated().getId());
-			vmModel.put("vmName", vmContext.getServerCreated().getName());
+			vmModel.put("vmName", vmContext.getServer().getName());
 			vmModel.put("adminUserName", "root");
 			if (context.getKeyPair() != null) {
 				vmModel.put("keyPairName", context.getKeyPair().getName());
