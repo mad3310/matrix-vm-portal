@@ -56,11 +56,11 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
     }
 
 
-    @Override
+    /*@Override
     public List<BillMonthDetailBilling> queryUserServiceDetailBilling(String orderId, String month) {
         List<BillMonthDetailBilling> billMonthDetailBillingList = billUserBillingDao.getUserBillingDetails(orderId, month);
         return billMonthDetailBillingList;
-    }
+    }*/
 
     @Override
     public List<String> getUserBillingYears(Long userId) {

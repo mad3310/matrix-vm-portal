@@ -1,11 +1,20 @@
 package com.letv.portal.letvcloud;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Map;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.letv.common.paging.impl.Page;
 import com.letv.portal.junitBase.AbstractTest;
+import com.letv.portal.model.letvcloud.BillRechargeRecord;
+import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 
 
@@ -35,11 +44,53 @@ public class TestBillUserAmountService extends AbstractTest {
 	
 	private final static Logger logger = LoggerFactory.getLogger(TestBillUserAmountService.class);
 
+	private final static Long userId = 000001L;
+	private final static String tradeNum = "00001000010001";
+	private final static String orderId = "order001";
+	
 	@Test
 	public void testCreateUserAmount() {
-		Long userId = 000000L;
 		this.billUserAmountService.createUserAmount(userId);
 	}
 	
-  
+	@Test
+	public void testGetUserAmount() {
+		BillUserAmount userAmount = this.billUserAmountService.getUserAmount(userId);
+		Assert.assertNotNull(userAmount);
+		Assert.assertNotNull(userAmount.getAvailableAmount());
+		logger.info("userAmount amount:{}",userAmount.getAvailableAmount());
+	}
+
+	@Test
+	public void testRecharge() {
+		/*DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String tradeNum = format.format(System.currentTimeMillis());*/
+		String tradeNum = "00001000010002";
+		this.billUserAmountService.recharge(userId, BigDecimal.valueOf(100.00),tradeNum, 1);
+		this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, BigDecimal.valueOf(100.00));
+	}
+	
+	@Test
+	public void testGetUserAmountRecord(){
+		Page page = new Page(0,10);
+		Page userAmountRecords = this.billUserAmountService.getUserAmountRecord(page, userId);
+		Assert.assertNotNull(userAmountRecords);
+		logger.info("userAmountRecords total:{}",userAmountRecords.getTotalRecords());
+	}
+	
+	@Test
+	public void testGetRechargeRecord(){
+		BillRechargeRecord rechargeRecord = this.billUserAmountService.getRechargeRecord(tradeNum);
+		Assert.assertNotNull(rechargeRecord);
+		logger.info("userAmountRecord amount:{}",rechargeRecord.getAmount());
+	}
+	
+	@Test
+	public void testGetUserAmountState(){
+		Map<String, Object> userAmountState = this.billUserAmountService.getUserAmountState(userId);
+		Assert.assertNotNull(userAmountState);
+		for (Map.Entry<String, Object> entry : userAmountState.entrySet()) {
+	        logger.info("userAmountState.key{},userAmountState.value{}",entry.getKey(),entry.getValue());
+        }
+	}
 }
