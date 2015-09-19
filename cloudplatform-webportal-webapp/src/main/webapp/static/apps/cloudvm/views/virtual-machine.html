@@ -283,14 +283,14 @@
                                     <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.required" class="le-input-validation">密码不能为空</span>
                                 </div>
                             </div>
-                            <div class="inputs-item nomargin row clearfix">
-                                <div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>
-                                <div class="col-sm-10">
-                                    <input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.required" class="le-input-validation">确认密码不能为空</span>
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>
-                                </div>
-                            </div>
+                            <!--<div class="inputs-item nomargin row clearfix">-->
+                                <!--<div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />-->
+                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.required" class="le-input-validation">确认密码不能为空</span>-->
+                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
                                 <div class="col-sm-10">

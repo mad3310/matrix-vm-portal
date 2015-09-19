@@ -23,7 +23,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityType = 'key';
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
-    $scope.vmSecurityPasswordConfirm = '';
+    //$scope.vmSecurityPasswordConfirm = '';
     $scope.allVmBuyPeriods = Config.allVmBuyPeriods;
     $scope.vmBuyPeriod = 1;
     $scope.vmCount = 1;
