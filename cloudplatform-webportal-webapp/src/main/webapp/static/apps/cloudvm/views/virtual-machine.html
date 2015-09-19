@@ -154,7 +154,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">CPU：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                    <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
                                         <span>{{vmCpu}}核</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -163,7 +163,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">内存：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                    <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
                                         <span>{{vmRam/1024 | number:0}}G</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -172,7 +172,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">数据盘：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
+                                    <div class="letv-mutiCheck check-disk-type" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
                                         <span>{{vmDiskType.name}}</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -223,11 +223,11 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">网络：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
+                                    <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
                                         <span>绑定公网IP</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
-                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
+                                    <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
                                         <span>稍后设置</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -245,7 +245,7 @@
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2;hackRzSlider();"><span>上一步</span></div>
                                 <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=4"><span>下一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
@@ -291,10 +291,19 @@
                                     <span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>
                                 </div>
                             </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
+                                <div class="col-sm-10">
+                                    <div class="letv-mutiCheck check-buy-period" ng-repeat="vmBuyPeriod in allVmBuyPeriods" ng-class="{'selected':isSelectedVmBuyPeriod(vmBuyPeriod)}" ng-click="selectVmBuyPeriod(vmBuyPeriod)">
+                                        <span>{{vmBuyPeriod | vmBuyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span>
+                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=3"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=3;hackRzSlider();"><span>上一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
