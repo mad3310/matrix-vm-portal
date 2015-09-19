@@ -27,4 +27,9 @@
 	   	<type>jar</type>
      </dependency>
   </dependencies>
+  
+  <build>
+  	<outputDirectory>${project.build.directory}/classes</outputDirectory>
+  	<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+  </build>
 </project>
