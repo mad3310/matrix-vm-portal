@@ -55,7 +55,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 			sub.setSubscriptionNumber(SerialNumberUtil.getNumber(1));
 			sub.setProductId(id);
 			sub.setBaseRegionId(Long.parseLong((String)map.get("region")));
-			sub.setHclusterId(Long.parseLong((String)map.get("area")));
+			//sub.setHclusterId(Long.parseLong((String)map.get("area")));
 			sub.setChargeType(map.get("chargeType")==null?0:Integer.parseInt((String)map.get("chargeType")));
 			sub.setOrderNum(Integer.parseInt((String)map.get("order_num")));
 			sub.setProductInfoRecordId(productInfoRecordId);
