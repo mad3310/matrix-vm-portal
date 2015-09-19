@@ -24,7 +24,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
     $scope.vmSecurityPasswordConfirm = '';
-    $scope.vmOrderPeriod = 1;
+    $scope.allVmBuyPeriods = Config.allVmBuyPeriods;
+    $scope.vmBuyPeriod = 1;
     $scope.vmCount = 1;
     $scope.vmTotalPrice = '';
 
@@ -52,6 +53,12 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.isSelectedVmDiskType = function (vmDiskType) {
       return $scope.selectedVmDiskType === vmDiskType;
+    };
+    $scope.selectVmBuyPeriod = function (vmBuyPeriod) {
+      $scope.vmBuyPeriod = vmBuyPeriod;
+    };
+    $scope.isSelectedVmBuyPeriod = function (vmBuyPeriod) {
+      return $scope.vmBuyPeriod === vmBuyPeriod;
     };
     $scope.createVm = function () {
       var data = {
@@ -100,9 +107,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         $scope.dataDiskVolume,
         $scope.networkBandWidth,
         $scope.vmCount,
-        $scope.vmOrderPeriod].join('_');
+        $scope.vmBuyPeriod].join('_');
     }, function (value) {
-      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmOrderPeriod) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmBuyPeriod) {
         setVmPrice();
       }
     });
@@ -158,7 +165,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       setVmPrice=function(){
         var data= {
           region: region,
-          order_time: $scope.vmOrderPeriod,
+          order_time: $scope.vmBuyPeriod,
           order_num: $scope.vmCount,
           os_broadband: $scope.networkBandWidth,
           os_storage: $scope.dataDiskVolume,

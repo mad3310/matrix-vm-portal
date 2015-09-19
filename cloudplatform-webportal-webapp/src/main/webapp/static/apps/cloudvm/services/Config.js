@@ -34,6 +34,7 @@ define(['services/app.service'], function (serviceModule) {
       {"text": "删除中", "value": "deleting"},
       {"text": "异常", "value": "error"},
     ];
+    config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
 });
