@@ -571,8 +571,13 @@ body {
     font-size: 24px;
     color: #08c2b3;
 }
-.vm-create-form  rzslider{width: 70%;}
-.vm-create-form .disk-volume,.vm-create-form .disk-volume-unit{display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 3px;}
+.vm-create-form  rzslider{width: 70%;top: 3px;}
+.vm-create-form .disk-volume,
+.vm-create-form .disk-volume-unit,
+.vm-create-form .network-bandwidth,
+.vm-create-form .network-bandwidth-unit {
+    display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 6px;
+}
 /*end virtual-machine-view style*/
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}

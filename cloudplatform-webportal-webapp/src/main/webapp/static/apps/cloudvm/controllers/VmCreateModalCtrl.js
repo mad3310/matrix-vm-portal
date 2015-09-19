@@ -15,7 +15,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedVmRam = null;
     $scope.vmDiskTypeList = [];
     $scope.selectedVmDiskType = null;
-    $scope.dataDiskVolume = 50;
+    $scope.dataDiskVolume = 10;
     $scope.vmNetworkType = 'primary';
     $scope.vmNetworkPublicIpModel = 'now';
     $scope.networkBandWidth = 2;

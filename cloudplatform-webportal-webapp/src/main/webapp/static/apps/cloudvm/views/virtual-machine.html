@@ -194,7 +194,7 @@
                         <div class="left-button">
                             <div class="col-sm-12">
                                 <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=1"><span>上一步</span></div>
-                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3"><span>下一步</span></div>
+                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3;hackRzSlider();"><span>下一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
@@ -231,6 +231,15 @@
                                         <span>稍后设置</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
+                                <div class="col-sm-10">
+                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="0" rz-slider-ceil="50" rz-slider-always-show-bar="true">
+                                    </rzslider>
+                                    <input type="text" ng-model="networkBandWidth" class="le-form-control network-bandwidth" />
+                                    <span class="network-bandwidth-unit">Mb/s</span>
                                 </div>
                             </div>
                         </div>
