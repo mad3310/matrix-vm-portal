@@ -1000,7 +1000,6 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
 	private boolean isDeleteFinished(Server server) throws OpenStackException {
 		if (server == null) {
-			recordVmDeleted();
 			return true;
 		}
 		return server.getStatus() == Status.ERROR;
