@@ -24,7 +24,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
     $scope.vmSecurityPasswordConfirm = '';
-    $scope.vmCount = '';
+    $scope.vmOrderPeriod = 1;
+    $scope.vmCount = 1;
+    $scope.vmTotalPrice = '';
 
     $scope.hackRzSlider= Utility.getRzSliderHack($scope);
     $scope.selectVmImage = function (vmImage) {
@@ -92,6 +94,19 @@ define(['controllers/app.controller'], function (controllerModule) {
       }
     });
 
+    $scope.$watch(function(){
+      return [$scope.selectedVmCpu,
+        $scope.selectedVmRam,
+        $scope.dataDiskVolume,
+        $scope.networkBandWidth,
+        $scope.vmCount,
+        $scope.vmOrderPeriod].join('_');
+    }, function (value) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmOrderPeriod) {
+        setVmPrice();
+      }
+    });
+
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null;
@@ -138,6 +153,24 @@ define(['controllers/app.controller'], function (controllerModule) {
       setSelectedVmSharedNetworkId = function () {
         HttpService.doGet(Config.urls.vm_network_shared_list,{region:region}).success(function (data, status, headers, config) {
           selectedVmSharedNetwork=data.data[0];
+        });
+      },
+      setVmPrice=function(){
+        var data= {
+          region: region,
+          order_time: $scope.vmOrderPeriod,
+          order_num: $scope.vmCount,
+          os_broadband: $scope.networkBandWidth,
+          os_storage: $scope.dataDiskVolume,
+          cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam
+        };
+        HttpService.doPost(Config.urls.vm_calculate_price,data).success(function (data, status, headers, config) {
+          if(data.result===1){
+            $scope.vmTotalPrice=data.data;
+          }
+          else{
+            WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+          }
         });
       };
     ;

@@ -296,17 +296,16 @@
                     <div class="right-top">
                         <div class="top-title"><span>配置详情</span><span class="fa fa-angle-double-down"></span></div>
                         <ul class="top-items">
-                            <li>区域：<span>北京</span></li>
-                            <li>镜像：<span>北京</span></li>
-                            <li>CPU：<span>1核</span></li>
-                            <li>内存：<span>2GB</span></li>
-                            <li>硬盘：<span>500GB</span></li>
-                            <li>主机名：<span>test_001</span></li>
-                            <li>数量：<span>1台</span></li>
+                            <li>镜像：<span>{{selectedVmImage.name}}</span></li>
+                            <li>CPU：<span>{{selectedVmCpu}}核</span></li>
+                            <li>内存：<span>{{selectedVmRam/1024 | number:0}}GB</span></li>
+                            <li>硬盘：<span>{{dataDiskVolume}}GB</span></li>
+                            <li>主机名：<span>{{vmName}}</span></li>
+                            <li>数量：<span>{{vmCount}}台</span></li>
                         </ul>
                     </div>
                     <div class="right-bottom">
-                        <span>合计：<span class="price">60</span>元/小时</span>
+                        <span>合计：<span class="price">{{vmTotalPrice}}</span>元/小时</span>
                         <button class="btn btn-le-red btn-submit-order" ng-click="createVm()"><span>提交订单</span></button>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ define(['services/app.service'], function (serviceModule) {
       vm_delete: '/ecs/region/{region}/vm-delete',
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
+      vm_calculate_price:'/billing/calculate/price/2',
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
