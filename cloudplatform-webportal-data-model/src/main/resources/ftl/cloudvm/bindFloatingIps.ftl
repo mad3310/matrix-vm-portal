@@ -45,7 +45,7 @@ p {
         <th width="100px">端口号</th>
         <th width="400px">绑定时间</th>
 	</tr>
-    #foreach($vm in $vmList)
+	<#list vmList as vm>
 	<tr>
         <td>${vm.region}</td>
         <td>${vm.vmId}</td>
@@ -54,7 +54,7 @@ p {
         <td>${vm.port}</td>
         <td>${vm.bindTime}</td>
 	</tr>
-    #end
+	</#list>
 </table>
 <br/>
 <p>本邮件由系统发出，请勿回复。<br/>如有问题，联系系统管理员。</p>

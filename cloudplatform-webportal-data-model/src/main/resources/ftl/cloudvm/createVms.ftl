@@ -46,17 +46,17 @@ p {
 		<th width="100px">密码</th>
 		<th width="400px">创建时间</th>
 	</tr>
-	#foreach($vm in $vmList)
+	<#list vmList as vm>
 	<tr>
 		<td>${vm.region}</td>
 		<td>${vm.vmId}</td>
 		<td>${vm.vmName}</td>
 		<td>${vm.adminUserName}</td>
-        <td>${!vm.keyPairName}</td>
-		<td>${!vm.password}</td>
+        <td>${vm.keyPairName!''}</td>
+		<td>${vm.password!''}</td>
 		<td>${vm.createTime}</td>
 	</tr>
-	#end
+	</#list>
 </table>
 <br/>
 <p>本邮件由系统发出，请勿回复。<br/>如有问题，联系系统管理员。</p>
