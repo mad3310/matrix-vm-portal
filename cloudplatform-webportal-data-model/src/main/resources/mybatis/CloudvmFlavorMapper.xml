@@ -32,7 +32,7 @@
 				and f.ID=#{id}
 			</if>
 			<if test="region != null ">
-				and s.REGION=#{region}
+				and f.REGION=#{region}
 			</if>
 			<if test="flavorId != null ">
 				and f.FLAVOR_ID=#{flavorId}

@@ -1016,18 +1016,22 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 			public Void run(NovaApi novaApi) throws Exception {
 
 				ServerApi serverApi = novaApi.getServerApi(region);
-				waitingVM(vm.getId(), serverApi, new ServerChecker() {
+				String vmId = vm.getId();
+				waitingVM(vmId, serverApi, new ServerChecker() {
 
 					@Override
 					public boolean check(Server server) throws Exception {
 						return isDeleteFinished(server);
 					}
 				});
+
+				if(serverApi.get(vmId) == null){
+					recordVmDeleted(region, vm.getId());
+				}
+
 				return null;
 			}
 		});
-
-        recordVmDeleted(region,vm.getId());
 	}
 
 	@Override
@@ -1526,9 +1530,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	private void recordVmDeleted(String region,String vmId) throws OpenStackException {
         ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
         CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
-        cloudvmServerService.delete(cloudvmServer);
-
-        decVmCount();
+		if(cloudvmServer!=null) {
+			cloudvmServerService.delete(cloudvmServer);
+			decVmCount();
+		}
     }
 
 	private void decVmCount() throws OpenStackException{
