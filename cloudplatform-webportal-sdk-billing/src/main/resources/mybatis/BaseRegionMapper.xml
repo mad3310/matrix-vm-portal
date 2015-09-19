@@ -6,6 +6,7 @@
 
 	<resultMap id="BaseResultMap" type="BaseRegion">
 	    <result column="ID" property="id" />
+	    <result column="CODE" property="code" />
 	    <result column="NAME" property="name" />
 	    <result column="DESCN" property="descn" />
 	    <result column="DELETED" property="deleted" />
@@ -16,15 +17,15 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    region.ID,region.NAME,region.DESCN,region.DELETED,region.CREATE_TIME,
+	    region.ID,region.CODE,region.NAME,region.DESCN,region.DELETED,region.CREATE_TIME,
 	    region.UPDATE_TIME,region.CREATE_USER,region.UPDATE_USER
 	</sql>
 	
 	<insert id="insert" parameterType="BaseRegion" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_BASE_REGION 
-	        (NAME,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
+	        (CODE,NAME,DESCN,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER) 
 	    values
-	        (#{name},#{descn},#{deleted},now(),#{updateTime},#{createUser},#{updateUser})
+	        (#{code},#{name},#{descn},#{deleted},now(),#{updateTime},#{createUser},#{updateUser})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -32,6 +33,9 @@
 	    <trim suffixOverrides=",">
 	        <if test="id != null ">
 	            and region.ID=#{id}
+	        </if>
+	        <if test="code != null ">
+	            and region.CODE=#{code}
 	        </if>
 	        <if test="name != null ">
 	            and region.NAME=#{name}

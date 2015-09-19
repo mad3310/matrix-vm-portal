@@ -75,13 +75,11 @@
 	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />,region.NAME,hcluster.HCLUSTER_NAME_ALIAS
+	        <include refid="Base_Column_List" />,region.NAME
 	    from
 	        MATRIX_BILLING_PRODUCT_REGION productRegion
 	    left join 
 	    	MATRIX_BILLING_BASE_REGION region on productRegion.BASE_REGION_ID=region.ID
-	    left join
-	    	WEBPORTAL_HCLUSTER hcluster on productRegion.HCLUSTER_ID=hcluster.ID
 	        <include refid="Common_Where_Clause" />
 	</select>
 

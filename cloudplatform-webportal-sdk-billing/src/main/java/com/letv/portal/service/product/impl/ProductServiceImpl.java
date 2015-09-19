@@ -16,15 +16,18 @@ import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.portal.dao.base.IBasePriceDao;
+import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductDao;
 import com.letv.portal.dao.product.IProductElementDao;
 import com.letv.portal.dao.product.IProductRegionDao;
+import com.letv.portal.model.base.BaseRegion;
 import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.product.Product;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.product.ProductRegion;
 import com.letv.portal.service.calculate.ICalculateService;
+import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.product.IProductService;
 
@@ -46,9 +49,13 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	@Autowired
 	private IBasePriceDao basePriceDao;
 	@Autowired
+	private IBaseRegionDao baseRegionDao;
+	@Autowired
 	private IProductRegionDao productRegionDao;
 	@Autowired
 	private ICalculateService calculateService;
+	@Autowired
+	private IHostCalculateService hostCalculateService;
 
 	@Override
 	public IBaseDao<Product> getDao() {
@@ -160,7 +167,20 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 
 	@Override
 	public Double queryProductPrice(Long id, Map<String, Object> map) {
+		if(map.get("region")==null) {
+			return null;
+		}
+		//把地域的编号转换为地域的ID
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("code", map.get("region"));
+		List<BaseRegion> regions = this.baseRegionDao.selectByMap(params);
+		if(regions!=null && regions.size()>0) {
+			map.put("region", regions.get(0).getId());
+		}
 		if(validateData(id, map)) {
+			if(id==2) {
+				return hostCalculateService.calculatePrice(id, map);
+			}
 			return calculateService.calculatePrice(id, map);
 		}
 		return null;
@@ -182,10 +202,11 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", id);
 		params.put("baseRegionId", map.get("region")==null?-1:map.get("region"));
-		params.put("hclusterId", map.get("area")==null?-1:map.get("area"));
+		//取消可用区概念了，地域变为可用区，例如：北京1，北京2
+		//params.put("hclusterId", map.get("area")==null?-1:map.get("area"));
 		List<ProductRegion> regions = this.productRegionDao.selectByMap(params);
 		if(regions==null || regions.size()==0) {
-			logger.info("validateData, this product not belongs to the region! region : "+map.get("region")+", area : "+map.get("area"));
+			logger.info("validateData, this product not belongs to the region! region : "+map.get("region"));
 			return false;
 		}
 		//**********验证产品在该地域是否存在end******************
@@ -194,6 +215,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		params.put("productId", id);
 		List<ProductElement> productElements = this.productElementDao.selectByMap(params);
 		Map<String, Set<String>> standards = new HashMap<String, Set<String>>();
+		Map<String, String> chargeTypes = new HashMap<String, String>();
 		for (ProductElement productElement : productElements) {
 			params.clear();
 			params.put("baseElementId", productElement.getBaseElementId());
@@ -202,21 +224,32 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				Set<String> set = null;
 				if(standards.containsKey(baseStandard.getStandard())) {
 					set = standards.get(baseStandard.getStandard());
+					if(baseStandard.getBasePrice()!=null && (Integer.parseInt(baseStandard.getBasePrice().getType())==1 || Integer.parseInt(baseStandard.getBasePrice().getType())==2)) {//阶梯定价或线性定价
+						if(Double.parseDouble(set.iterator().next())<Double.parseDouble(baseStandard.getValue())) {//只放入最大值
+							set.clear();
+						}
+					}
+					set.add(baseStandard.getValue());
 				} else {
 					set = new HashSet<String>();
+					set.add(baseStandard.getValue());
+					standards.put(baseStandard.getStandard(), set);
 				}
-				set.add(baseStandard.getValue());
-				standards.put(baseStandard.getStandard(), set);
+			}
+			if(baseStandards!=null && baseStandards.size()!=0 && baseStandards.get(0).getBasePrice()!=null) {
+				chargeTypes.put(baseStandards.get(0).getStandard(), baseStandards.get(0).getBasePrice().getType());
 			}
 		}
 		for (String standard : standards.keySet()) {
-			List<Integer> chargeType = this.basePriceDao.selectChargeTypeByStandard(standard);
-			if(chargeType!=null && chargeType.size()>0 && chargeType.get(0)==0) {//基础定价
+			if(chargeTypes.get(standard)==null) {
+				continue;
+			}
+			if(Integer.parseInt((String)chargeTypes.get(standard))==0) {//基础定价
 				if(map.get(standard)==null || !standards.get(standard).contains(map.get(standard))) {
 					logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within array");
 					return false;
 				}
-			} else if(chargeType!=null && chargeType.size()>0 && chargeType.get(0)==1 || chargeType!=null && chargeType.size()>0 && chargeType.get(0)==2) {//阶梯定价/线性定价
+			} else if(Integer.parseInt((String)chargeTypes.get(standard))==1 || Integer.parseInt((String)chargeTypes.get(standard))==2) {//阶梯定价/线性定价
 				Iterator<String> it = standards.get(standard).iterator();
 				if(map.get(standard)==null || Double.parseDouble((String)map.get(standard))<0 
 						|| Double.parseDouble((String)map.get(standard))>Double.parseDouble(it.next())) {
