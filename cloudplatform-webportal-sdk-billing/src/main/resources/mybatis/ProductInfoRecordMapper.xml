@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mappes.dtd">
+<mapper namespace="com.letv.portal.dao.product.IProductInfoRecordDao">
+
+	<resultMap id="BaseResultMap" type="ProductInfoRecord">
+	    <result column="ID" property="id" />
+	    <result column="PARAMS" property="params" />
+	    <result column="SERVICE_TYPE" property="serviceType" />
+	    <result column="USER_ID" property="userId" />
+	    <result column="DELETED" property="deleted" />
+	    <result column="CREATE_TIME" property="createTime" />
+	    <result column="UPDATE_TIME" property="updateTime" />
+	    <result column="CREATE_USER" property="createUser" />
+	    <result column="UPDATE_USER" property="updateUser" />
+	    <result column="DESCN" property="descn" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+	    record.ID,record.PARAMS,record.SERVICE_TYPE,record.USER_ID,record.DELETED,
+	    record.CREATE_TIME,record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN
+	</sql>
+	
+	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_PRODUCT_INFO_RECORD 
+	        (PARAMS,SERVICE_TYPE,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	    values
+	        (#{params},#{serviceType},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	</insert>
+	
+	<sql id="Common_Where_Clause">
+	    where 1=1
+	    <trim suffixOverrides=",">
+	        <if test="id != null ">
+	            and record.ID=#{id}
+	        </if>
+	        <if test="params != null ">
+	            and record.PARAMS=#{params}
+	        </if>
+	        <if test="serviceType != null ">
+	            and record.SERVICE_TYPE=#{serviceType}
+	        </if>
+	        <if test="userId != null ">
+	            and record.USER_ID=#{userId}
+	        </if>
+	        <if test="deleted != null ">
+	            and record.DELETED=#{deleted}
+	        </if>
+	        <if test="createTime != null ">
+	            and record.CREATE_TIME=#{createTime}
+	        </if>
+	        <if test="updateTime != null ">
+	            and record.UPDATE_TIME=#{updateTime}
+	        </if>
+	        <if test="createUser != null ">
+	            and record.CREATE_USER=#{createUser}
+	        </if>
+	        <if test="updateUser != null ">
+	            and record.UPDATE_USER=#{updateUser}
+	        </if>
+	        <if test="descn != null ">
+	            and record.DESCN=#{descn}
+	        </if>
+	    </trim>
+	</sql>
+	
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+	    select
+	        <include refid="Base_Column_List" />
+	    from
+	        MATRIX_PRODUCT_INFO_RECORD record
+	        <include refid="Common_Where_Clause" />
+	</select>
+
+
+
+</mapper>   

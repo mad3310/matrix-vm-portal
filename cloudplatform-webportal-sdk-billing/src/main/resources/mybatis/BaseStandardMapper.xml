@@ -22,7 +22,6 @@
 	    <association property="basePrice" javaType="BasePrice">
 			<result column="PRICE_ID" property="id" />
 			<result column="CHARGE_TYPE" property="type" />
-			<result column="CHARGE_TYPE" property="type" />
 			<result column="PRICE" property="price" />
 			<result column="AMOUNT" property="amount" />
 		</association>
@@ -88,9 +87,11 @@
 	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />
+	        <include refid="Base_Column_List" />, price.ID PRICE_ID, price.TYPE CHARGE_TYPE, price.AMOUNT, price.PRICE
 	    from
 	        MATRIX_BILLING_BASE_STANDARD standard
+	    left join 
+	    	MATRIX_BILLING_BASE_PRICE price on standard.ID=price.BASE_STANDARD_ID
 	        <include refid="Common_Where_Clause" />
 	</select>
 	

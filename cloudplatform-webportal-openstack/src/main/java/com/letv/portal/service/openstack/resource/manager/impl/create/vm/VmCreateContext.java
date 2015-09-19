@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
 import org.jclouds.openstack.neutron.v2.domain.Port;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 
 public class VmCreateContext {
@@ -11,7 +12,16 @@ public class VmCreateContext {
 	private Volume volume;
 	private FloatingIP floatingIp;
 	private ServerCreated serverCreated;
-	
+	private Server server;
+
+	public void setServer(Server server) {
+		this.server = server;
+	}
+
+	public Server getServer() {
+		return server;
+	}
+
 	public void setSubnetPort(Port subnetPort) {
 		this.subnetPort = subnetPort;
 	}

@@ -46,8 +46,8 @@ define(['filters/app.filter'], function (filterModule) {
     }
   });
 
-  filterModule.filter('mclusterStatusFilter', ['Config', function (Config) {
-    var allStatuses = Config.mclusterStatuses;
+  filterModule.filter('vmStatusFilter', ['Config', function (Config) {
+    var allStatuses = Config.vmStatuses;
     return function (input) {
       var out = '';
       for (var i = 0, leng = allStatuses.length; i < leng; i++) {
@@ -58,6 +58,27 @@ define(['filters/app.filter'], function (filterModule) {
       }
       return out || '未知';
     }
+  }]);
+
+  filterModule.filter('vmBuyPeriodFilter', [ function () {
+    return function (period,isSelected) {
+      var out = null;
+      if (period <= 9) {
+        out = isSelected ? period + '个月' : period;
+      }
+      else {
+        out = parseInt(period / 12) + '年';
+      }
+      return out;
+    }
+
+  }]);
+
+  filterModule.filter('vmFlavorFilter', [ function () {
+    return function (flavor) {
+      return [flavor.vcpus+'核',Math.ceil(flavor.ram/1024)+'G',flavor.disk+'G'].join('/');
+    }
+
   }]);
 
   filterModule.filter('sideMenuUrlFilter', [function () {

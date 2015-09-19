@@ -4,6 +4,15 @@ body{margin:0;}
 table{border-spacing:0;border-collapse:collapse;}
 td,th{padding:0;}
 a{text-decoration:none;}
+.btn{border-radius:2px;}
+.btn-le-blue,.btn-le-blueGreen,.btn-le-green,.btn-le-yellow,.btn-le-red{width:100px;height:30px;padding:0 12px;line-height:30px;font-size:1.4rem;border:none;}
+.btn-le-blue:hover,.btn-le-blueGreen:hover,.btn-le-green:hover,.btn-le-yellow:hover,.btn-le-red:hover{color:#333;cursor:pointer;}
+.btn-le-blue>*,.btn-le-blueGreen>*,.btn-le-green>*,.btn-le-yellow>*,.btn-le-red>*{line-height:30px;}
+.btn-le-blue{background-color:#088ac2;color:#fff;}
+.btn-le-blueGreen {background-color:#08aec2;color:#fff;}
+.btn-le-green {background-color:#08c2b3;color:#fff;}
+.btn-le-yellow {background-color:#f5c131;color:#fff;}
+.btn-le-red {background-color: #ff3c37;color: #fff;}
 .text-left{text-align:left;}
 .text-center{text-align:center;}
 .text-right{text-align:right;}

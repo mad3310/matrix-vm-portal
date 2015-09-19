@@ -1,79 +1,70 @@
 <div class="virtual-machine-view" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
-        <div class="le-col-3">
+        <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
             <button class="btn btn-le-blueGreen" ng-click="startVm('400')"><span>启动</span></button>
             <button class="btn btn-le-green" ng-click="openVmCreateModal('720')"><span>重启</span></button>
+            <div dropdown class="more-operation-dropdown">
+                <a href class="btn btn-le-yellow" dropdown-toggle>
+                    更多操作
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
+                    <li><a href="javascript:void(0);">绑定云硬盘</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="le-col-1">
-                <div dropdown class="more-operation-dropdown">
-                      <a href class="btn btn-default btn-le-yellow" dropdown-toggle>
-                          更多操作
-                      </a>
-                      <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                          <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
-                          <li><a href="javascript:void(0);">绑定云硬盘</a></li>
-                      </ul>
-                </div>
-        </div>
-        <div class="le-col-2 pull-right">
-            <div class="le-search-box">
+        <div class="le-col-6">
+            <div class="le-search-box pull-right">
                 <input type="text" ng-model="searchVmName" ng-change="doSearch()"/>
                 <span class="search-icon"></span>
             </div>
         </div>
     </div>
     <div class="le-row vm-list">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th>
-                    <div class="letv-checkbox">
-                        <span class="fa fa-check"></span>
-                    </div>
-                </th>
-                <th><span>云主机名称</span></th>
-                <th><span>状态</span></th>
-                <th><span>区域</span></th>
-                <th><span>镜像名称</span></th>
-                <th><span>网络</span></th>
-                <th><span>配置</span></th>
-                <th><span>操作</span></th>
-            </tr>
-            </thead>
-            <tbody id="tby">
-            <tr ng-repeat="vm in vmList">
-                <td>
-                    <div class="letv-checkbox" ng-class="{active:vm.checked}" ng-click="checkVm(vm)">
-                        <span class="fa fa-check"></span>
-                    </div>
-                </td>
-                <td><a class="link" href="/detail/mcluster/{{vm.id}}">{{vm.name}}</a></td>
-                <td>
-                    <span>{{vm.vmState}}</span>
-                </td>
-                <td><span>{{vm.regionDisplayName}}</span></td>
-                <td><span>{{vm.image.name}}</span></td>
-                <td><span>{{vm.ipAddresses.private[0]}}</span></td>
-                <td><span>{{vm.flavor.name}}</span></td>
-                <td>
-                    <a href="javascript:void(0);" title="启动" ng-click="startMcluster(vm)">
-                        <i class="fa fa-play-circle-o"></i>
-                    </a>
-                    <a href="javascript:void(0);" title="停止" ng-click="stopMcluster(vm)">
-                        <i class="fa fa-power-off"></i>
-                    </a>
-                    <a href="javascript:void(0);" title="删除" ng-if="mc.status===3" ng-click="deleteMcluster(vm)">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
-                    total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
-                    last-text="&raquo;">
-        </pagination>
+        <div class="le-col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllVmChecked()}" ng-click="checkAllVm()"></span>
+                    </th>
+                    <th><span>名称</span></th>
+                    <th><span>内网IP</span></th>
+                    <th><span>公网IP</span></th>
+                    <th><span>状态</span></th>
+                    <th><span>镜像</span></th>
+                    <th><span>配置</span></th>
+                    <th><span>监控</span></th>
+                    <th><span>创建时间</span></th>
+                    <th><span>VNC登录</span></th>
+                </tr>
+                </thead>
+                <tbody id="tby">
+                <tr ng-repeat="vm in vmList">
+                    <td>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
+                    </td>
+                    <td><span>{{vm.name}}</span></td>
+                    <td><span>{{vm.ipAddresses.private.join(', ') || '未设置'}}</span></td>
+                    <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
+                    <td>
+                        <span>{{vm.status | vmStatusFilter}}</span>
+                    </td>
+                    <td><span>{{vm.image.name}}</span></td>
+                    <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
+                    <td><span class="iconfont icon-monitor"></span></td>
+                    <td><span>{{vm.created | date:'yyyy-MM-dd'}}</span></td>
+                    <td><span class="iconfont icon-computer"></span></td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                        total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                        last-text="&raquo;">
+            </pagination>
+        </div>
+
     </div>
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
     </toaster-container>
@@ -163,7 +154,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">CPU：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
+                                    <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
                                         <span>{{vmCpu}}核</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -172,7 +163,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">内存：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
+                                    <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
                                         <span>{{vmRam/1024 | number:0}}G</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -181,7 +172,7 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">数据盘：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
+                                    <div class="letv-mutiCheck check-disk-type" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
                                         <span>{{vmDiskType.name}}</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
@@ -203,7 +194,7 @@
                         <div class="left-button">
                             <div class="col-sm-12">
                                 <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=1"><span>上一步</span></div>
-                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3"><span>下一步</span></div>
+                                <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=3;hackRzSlider();"><span>下一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
@@ -232,20 +223,29 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">网络：</span></div>
                                 <div class="col-sm-10">
-                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
+                                    <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
                                         <span>绑定公网IP</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
-                                    <div class="letv-mutiCheck flowthree" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
+                                    <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
                                         <span>稍后设置</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
                                 </div>
                             </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
+                                <div class="col-sm-10">
+                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="0" rz-slider-ceil="50" rz-slider-always-show-bar="true">
+                                    </rzslider>
+                                    <input type="text" ng-model="networkBandWidth" class="le-form-control network-bandwidth" />
+                                    <span class="network-bandwidth-unit">Mb/s</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=2;hackRzSlider();"><span>上一步</span></div>
                                 <div class="btn btn-le-blue pull-right" ng-click="$event.preventDefault();activeFlow=4"><span>下一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
@@ -283,18 +283,27 @@
                                     <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.required" class="le-input-validation">密码不能为空</span>
                                 </div>
                             </div>
+                            <!--<div class="inputs-item nomargin row clearfix">-->
+                                <!--<div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>-->
+                                <!--<div class="col-sm-10">-->
+                                    <!--<input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />-->
+                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.required" class="le-input-validation">确认密码不能为空</span>-->
+                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
                             <div class="inputs-item nomargin row clearfix">
-                                <div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>
+                                <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
                                 <div class="col-sm-10">
-                                    <input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.required" class="le-input-validation">确认密码不能为空</span>
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>
+                                    <div class="letv-mutiCheck check-buy-period" ng-repeat="vmBuyPeriod in allVmBuyPeriods" ng-class="{'selected':isSelectedVmBuyPeriod(vmBuyPeriod)}" ng-click="selectVmBuyPeriod(vmBuyPeriod)">
+                                        <span>{{vmBuyPeriod | vmBuyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span>
+                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="left-button">
                             <div class="col-sm-12">
-                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=3"><span>上一步</span></div>
+                                <div class="btn btn-le-blue pull-left" ng-click="$event.preventDefault();activeFlow=3;hackRzSlider();"><span>上一步</span></div>
                                 <div class="clearfix"></div>
                             </div>
                             <div class="clearfix"></div>
@@ -305,17 +314,16 @@
                     <div class="right-top">
                         <div class="top-title"><span>配置详情</span><span class="fa fa-angle-double-down"></span></div>
                         <ul class="top-items">
-                            <li>区域：<span>北京</span></li>
-                            <li>镜像：<span>北京</span></li>
-                            <li>CPU：<span>1核</span></li>
-                            <li>内存：<span>2GB</span></li>
-                            <li>硬盘：<span>500GB</span></li>
-                            <li>主机名：<span>test_001</span></li>
-                            <li>数量：<span>1台</span></li>
+                            <li>镜像：<span>{{selectedVmImage.name}}</span></li>
+                            <li>CPU：<span>{{selectedVmCpu}}核</span></li>
+                            <li>内存：<span>{{selectedVmRam/1024 | number:0}}GB</span></li>
+                            <li>硬盘：<span>{{dataDiskVolume}}GB</span></li>
+                            <li>主机名：<span>{{vmName}}</span></li>
+                            <li>数量：<span>{{vmCount}}台</span></li>
                         </ul>
                     </div>
                     <div class="right-bottom">
-                        <span>合计：<span class="price">60</span>元/小时</span>
+                        <span>合计：<span class="price">{{vmTotalPrice}}</span>元/小时</span>
                         <button class="btn btn-le-red btn-submit-order" ng-click="createVm()"><span>提交订单</span></button>
                     </div>
                 </div>

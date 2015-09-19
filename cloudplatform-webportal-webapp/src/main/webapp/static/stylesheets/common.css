@@ -155,31 +155,6 @@ body {
 
 /*end le-form-control style*/
 
-/*begin letv-checkbox style*/
-.letv-checkbox {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #ededed;
-    background: #fff;
-    padding: 1px;
-    color: #fff;
-    font-size: 12px;
-    font-weight: 400;
-    text-align: center;
-    position: relative;
-}
-
-.letv-checkbox span{
-    position: absolute;
-    left: 2px;
-}
-
-.letv-checkbox.active {
-    border: 1px solid #0874a2;
-    background: #088ac2;
-}
-/*end letv-checkbox style*/
-
 /*begin le-search-box style*/
 .le-search-box{
     height: 32px;
@@ -192,6 +167,7 @@ body {
     height: 30px;
     width: 210px;
     border: none;
+    padding: 2px;
 }
 
 .le-search-box input:focus {
@@ -292,9 +268,23 @@ body {
 }
 /*end le-confim style*/
 
-/*end le-input-validation style*/
+/*begin le-input-validation style*/
 input.ng-invalid.ng-touched {
     border: 1px solid #ff3c37;
 }
 .le-input-validation{font-size: 12px;color: #ff3c37;line-height: 20px;}
 /*end le-input-validation style*/
+
+/*begin letv-checkbox style*/
+.letv-mutiCheck{height:24px;border:1px solid #dbdbdb;margin:5px 2px 5px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
+.letv-mutiCheck span{line-height: 22px}
+.letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
+.letv-mutiCheck.selected{border-color:#088ac2; }
+.letv-mutiCheck.selected i{color: #088ac2;}
+/*begin letv-checkbox style*/
+
+/*begin letv-radioCheck style*/
+.letv-radioCheck{width: 80px;height: 22px;line-height: 20px;padding: 0;margin: 0;}
+.letv-radioCheck i.iconfont{color: #dbdbdb; }
+.letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
+/*begin letv-radioCheck style*/

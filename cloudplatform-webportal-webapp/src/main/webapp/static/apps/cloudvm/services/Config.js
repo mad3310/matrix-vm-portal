@@ -16,20 +16,25 @@ define(['services/app.service'], function (serviceModule) {
       vm_delete: '/ecs/region/{region}/vm-delete',
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
+      vm_calculate_price:'/billing/calculate/price/2',
     };
-    config.mclusterStatuses = [
-      {"text": "请选择状态", "value": ""},
-      {"text": "运行中", "value": "1"},
-      {"text": "创建中", "value": "2"},
-      {"text": "创建失败", "value": "3"},
-      {"text": "异常", "value": "5"},
-      {"text": "启动中", "value": "7"},
-      {"text": "停止中", "value": "8"},
-      {"text": "已停止", "value": "9"},
-      {"text": "删除中", "value": "10"},
-      {"text": "危险", "value": "13"},
-      {"text": "严重危险", "value": "14"}
+    config.vmStatuses = [
+      {"text": "活跃", "value": "ACTIVE"},
+      {"text": "创建中", "value": "BUILD"},
+      {"text": "已暂停", "value": "PAUSED"},
+      {"text": "已挂起", "value": "SUSPENDED"},
+      {"text": "已删除", "value": "DELETED"},
+      {"text": "已停止", "value": "SHUTOFF"},
     ];
+    config.vmDiskStatuses = [
+      {"text": "创建中", "value": "creating"},
+      {"text": "可用的", "value": "available"},
+      {"text": "挂载中", "value": "attaching"},
+      {"text": "使用中", "value": "in-use"},
+      {"text": "删除中", "value": "deleting"},
+      {"text": "异常", "value": "error"},
+    ];
+    config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
 });

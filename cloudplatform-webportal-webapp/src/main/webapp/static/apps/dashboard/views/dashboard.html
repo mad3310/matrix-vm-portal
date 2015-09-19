@@ -8,27 +8,27 @@
 				<div class="le-col-5">
 					<div>早上好：<span class="text-blue">{{username}}&nbsp;</span>先生/女士</div>
 					<ul>
-						<li><i class="icon iconfont">&#xe600;</i></li>
-						<li><i class="icon iconfont">&#xe609;</i></li>
-						<li><img src="../static/images/dashboard/identification.png"></li>
+						<li><i class="iconfont icon-icon" ng-class="{1:'', 'undefined':'text-gray'}[mobileStatus]"></i></li>
+						<li><i class="iconfont icon-xinfeng" ng-class="{1:'', 'undefined':'text-gray'}[emailStatus]"></i></li>
+						<li><i class="iconfont icon-shenfenrenzheng" ng-class="{1:'', 'undefined':'text-gray'}[userStatus]"></i></li>
 					</ul>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-6">
 						<div>消息中心</div>
-						<div class="message"><span class="message-num">10</span><span class="text-gray">条</span></div>
+						<div class="message"><span class="message-num">{{message}}</span><span class="text-gray">条</span></div>
 					</div>
 					<div class="le-col-6">
 						<div>我的账单</div>
-						<div class="message"><span class="message-num">0</span><span class="text-gray">条</span></div>
+						<div class="message"><span class="message-num">{{billMes}}</span><span class="text-gray">条</span></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
 			<div class="clearfix">
 				<div class="le-col-offset-2 le-col-5">
-					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥10.245</span></div>
-					<div><span class="text-gray">预估：</span>&nbsp;&nbsp;¥10.245&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
+					<div>账户余额：&nbsp;&nbsp;<span class="remain">¥{{remain}}</span></div>
+					<div style="margin-top:10px;"><span class="text-gray">预估：</span>&nbsp;&nbsp;¥0.000&nbsp;&nbsp;<span class="text-gray">元/天</span></div>
 				</div>
 				<div class="le-col-5">
 					<div class="le-col-offset-6 le-col-6">
@@ -58,7 +58,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥10.245</span>
+								<span>¥0.000</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行2个</span>
@@ -77,7 +77,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0</span>
+								<span>¥0.000</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>
@@ -97,7 +97,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0</span>
+								<span>¥0.000</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>
@@ -116,7 +116,7 @@
 							<span>每日消费</span>
 							<div class="productDesc-consume">
 								<span class="iconfont icon-moneyicon"></span> <!-- 钱袋图标 -->
-								<span>¥0</span>
+								<span>¥0.000</span>
 							</div>
 							<div class="row">
 								<span class="le-col-6">运行0个</span>

@@ -4,6 +4,8 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
+import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
+import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;
@@ -84,7 +86,13 @@ public class OpenStackServiceImpl implements OpenStackService {
 	
 	@Autowired
 	private ICloudvmVmCountService cloudvmVmCountService;
-	
+
+	@Autowired
+	private ICloudvmFlavorService cloudvmFlavorService;
+
+	@Autowired
+	private ICloudvmServerService cloudvmServerService;
+
 	@Autowired
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
 	
@@ -126,6 +134,8 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setPasswordService(passwordService);
 		openStackServiceGroup.setSessionService(sessionService);
 		openStackServiceGroup.setCloudvmVmCountService(cloudvmVmCountService);
+		openStackServiceGroup.setCloudvmFlavorService(cloudvmFlavorService);
+		openStackServiceGroup.setCloudvmServerService(cloudvmServerService);
 		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);
 		openStackServiceGroup.setErrorEmailService(errorEmailService);
 	}

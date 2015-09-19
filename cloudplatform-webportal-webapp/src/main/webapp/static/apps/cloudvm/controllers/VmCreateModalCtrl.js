@@ -15,7 +15,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedVmRam = null;
     $scope.vmDiskTypeList = [];
     $scope.selectedVmDiskType = null;
-    $scope.dataDiskVolume = 50;
+    $scope.dataDiskVolume = 10;
     $scope.vmNetworkType = 'primary';
     $scope.vmNetworkPublicIpModel = 'now';
     $scope.networkBandWidth = 2;
@@ -23,8 +23,11 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityType = 'key';
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
-    $scope.vmSecurityPasswordConfirm = '';
-    $scope.vmCount = '';
+    //$scope.vmSecurityPasswordConfirm = '';
+    $scope.allVmBuyPeriods = Config.allVmBuyPeriods;
+    $scope.vmBuyPeriod = 1;
+    $scope.vmCount = 1;
+    $scope.vmTotalPrice = '';
 
     $scope.hackRzSlider= Utility.getRzSliderHack($scope);
     $scope.selectVmImage = function (vmImage) {
@@ -50,6 +53,12 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.isSelectedVmDiskType = function (vmDiskType) {
       return $scope.selectedVmDiskType === vmDiskType;
+    };
+    $scope.selectVmBuyPeriod = function (vmBuyPeriod) {
+      $scope.vmBuyPeriod = vmBuyPeriod;
+    };
+    $scope.isSelectedVmBuyPeriod = function (vmBuyPeriod) {
+      return $scope.vmBuyPeriod === vmBuyPeriod;
     };
     $scope.createVm = function () {
       var data = {
@@ -89,6 +98,19 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.$watch('selectedVmRam', function (value) {
       if (value != null) {
         setSelectedVmFlavor();
+      }
+    });
+
+    $scope.$watch(function(){
+      return [$scope.selectedVmCpu,
+        $scope.selectedVmRam,
+        $scope.dataDiskVolume,
+        $scope.networkBandWidth,
+        $scope.vmCount,
+        $scope.vmBuyPeriod].join('_');
+    }, function (value) {
+      if ($scope.selectedVmCpu &&$scope.selectedVmRam && $scope.dataDiskVolume && $scope.networkBandWidth && $scope.vmCount && $scope.vmBuyPeriod) {
+        setVmPrice();
       }
     });
 
@@ -138,6 +160,24 @@ define(['controllers/app.controller'], function (controllerModule) {
       setSelectedVmSharedNetworkId = function () {
         HttpService.doGet(Config.urls.vm_network_shared_list,{region:region}).success(function (data, status, headers, config) {
           selectedVmSharedNetwork=data.data[0];
+        });
+      },
+      setVmPrice=function(){
+        var data= {
+          region: region,
+          order_time: $scope.vmBuyPeriod,
+          order_num: $scope.vmCount,
+          os_broadband: $scope.networkBandWidth,
+          os_storage: $scope.dataDiskVolume,
+          cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam
+        };
+        HttpService.doPost(Config.urls.vm_calculate_price,data).success(function (data, status, headers, config) {
+          if(data.result===1){
+            $scope.vmTotalPrice=data.data;
+          }
+          else{
+            WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+          }
         });
       };
     ;

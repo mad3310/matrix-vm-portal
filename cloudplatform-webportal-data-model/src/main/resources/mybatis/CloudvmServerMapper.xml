@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmServerDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmServer">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="FLAVOR_ID" property="flavorId" />
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_ADMIN_OP_LOG table all fields -->
+	<sql id="Base_Column_List">
+		s.ID,s.REGION,s.SERVER_ID,s.FLAVOR_ID,
+		s.DELETED,s.CREATE_TIME,s.CREATE_USER,s.UPDATE_TIME,s.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and s.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and s.REGION=#{region}
+			</if>
+			<if test="serverId != null ">
+				and s.SERVER_ID=#{serverId}
+			</if>
+			<if test="flavorId != null ">
+				and s.FLAVOR_ID=#{flavorId}
+			</if>
+			<if test="deleted != null  ">
+				and s.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and s.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and s.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and s.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and s.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmServer" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_SERVER(REGION,SERVER_ID,FLAVOR_ID,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{serverId},#{flavorId},#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmServer">
+		update WEBPORTAL_CLOUDVM_SERVER
+		set
+		ID=#{id},
+		REGION=#{region},
+		SERVER_ID=#{serverId},
+		FLAVOR_ID=#{flavorId},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmServer">
+		delete from WEBPORTAL_CLOUDVM_SERVER where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		where  s.ID = #{id};
+	</select>
+
+</mapper>

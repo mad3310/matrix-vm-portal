@@ -15,6 +15,8 @@ public class BaseRegion extends BaseModel{
 
 	private static final long serialVersionUID = 4187977926839991202L;
 	
+	private String code;
+	
 	private String name;
 	
 	private String descn;
@@ -23,6 +25,14 @@ public class BaseRegion extends BaseModel{
 	
 	public BaseRegion(Long id) {
 		super.setId(id);
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getDescn() {

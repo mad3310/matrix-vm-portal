@@ -44,7 +44,7 @@ public class BindFloatingIpTask implements VmsCreateSubTask {
 			Map<String, Object> vmModel = new HashMap<String, Object>();
 			vmModel.put("region", context.getRegionDisplayName());
 			vmModel.put("vmId", vmContext.getServerCreated().getId());
-			vmModel.put("vmName", vmContext.getServerCreated().getName());
+			vmModel.put("vmName", vmContext.getServer().getName());
 			vmModel.put("ip", vmContext.getFloatingIp().getFloatingIpAddress());
 			vmModel.put("port", 22);
 			vmModel.put("bindTime", format.format(bindDates.remove(0)));
