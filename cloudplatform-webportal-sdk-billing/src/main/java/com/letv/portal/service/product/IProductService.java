@@ -14,7 +14,16 @@ import com.letv.portal.service.IBaseService;
  */
 public interface IProductService extends IBaseService<Product> {
 	Map<String, Object> queryProductDetailById(Long id);
-	Double queryProductPrice(Long id, Map<String,Object> map);
+	/**
+	  * @Title: getRegionIdByCode
+	  * @Description: 地域名称获取地域ID
+	  * @param regionCode
+	  * @return Long   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月19日 下午4:30:07
+	  */
+	Long getRegionIdByCode(String regionCode);
 	/**
 	  * @Title: validateData
 	  * @Description: 验证产品信息是否合法

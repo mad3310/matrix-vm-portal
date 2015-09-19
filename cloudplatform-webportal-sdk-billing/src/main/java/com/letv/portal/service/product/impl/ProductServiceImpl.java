@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
-import com.letv.portal.dao.base.IBasePriceDao;
 import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductDao;
@@ -26,8 +25,6 @@ import com.letv.portal.model.base.BaseStandard;
 import com.letv.portal.model.product.Product;
 import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.product.ProductRegion;
-import com.letv.portal.service.calculate.ICalculateService;
-import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.product.IProductService;
 
@@ -47,15 +44,9 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	@Autowired
 	private IBaseStandardDao baseStandardDao;
 	@Autowired
-	private IBasePriceDao basePriceDao;
-	@Autowired
 	private IBaseRegionDao baseRegionDao;
 	@Autowired
 	private IProductRegionDao productRegionDao;
-	@Autowired
-	private ICalculateService calculateService;
-	@Autowired
-	private IHostCalculateService hostCalculateService;
 
 	@Override
 	public IBaseDao<Product> getDao() {
@@ -165,40 +156,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		ret.put("region", regionsList);
 	}
 
-	@Override
-	public Double queryProductPrice(Long id, Map<String, Object> map) {
-		if(map.get("region")==null) {
-			return null;
-		}
-		//把地域的编号转换为地域的ID
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("code", map.get("region"));
-		List<BaseRegion> regions = this.baseRegionDao.selectByMap(params);
-		if(regions!=null && regions.size()>0) {
-			map.put("region", regions.get(0).getId());
-		}
-		if(validateData(id, map)) {
-			if(id==2) {
-				return hostCalculateService.calculatePrice(id, map);
-			}
-			return calculateService.calculatePrice(id, map);
-		}
-		return null;
-	}
-	
-	/**
-	  * @Title: validateData
-	  * @Description: 验证产品元素值是否合法
-	  * @param id
-	  * @param map
-	  * @return boolean   
-	  * @throws 
-	  * @author lisuxiao
-	  * @date 2015年9月1日 下午4:23:04
-	  */
-	@Override
-	public boolean validateData(Long id, Map<String, Object> map) {
-		//**********验证产品在该地域是否存在start******************
+	protected boolean validateRegion(Long id, Map<String, Object> map) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", id);
 		params.put("baseRegionId", map.get("region")==null?-1:map.get("region"));
@@ -209,13 +167,26 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 			logger.info("validateData, this product not belongs to the region! region : "+map.get("region"));
 			return false;
 		}
-		//**********验证产品在该地域是否存在end******************
-		
+		return true;
+	}
+	
+	/**
+	  * @Title: getStandardsInfoByProductElements
+	  * @Description: 获取该产品下元素的规格及相应的计费类型
+	  * @param id
+	  * @param map
+	  * @param standards
+	  * @param chargeTypes void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月19日 下午3:34:48
+	  */
+	protected void getStandardsInfoByProductElements(Long id, Map<String, Object> map, 
+			Map<String, Set<String>> standards, Map<String, String> chargeTypes) {
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.clear();
 		params.put("productId", id);
 		List<ProductElement> productElements = this.productElementDao.selectByMap(params);
-		Map<String, Set<String>> standards = new HashMap<String, Set<String>>();
-		Map<String, String> chargeTypes = new HashMap<String, String>();
 		for (ProductElement productElement : productElements) {
 			params.clear();
 			params.put("baseElementId", productElement.getBaseElementId());
@@ -240,33 +211,35 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				chargeTypes.put(baseStandards.get(0).getStandard(), baseStandards.get(0).getBasePrice().getType());
 			}
 		}
-		for (String standard : standards.keySet()) {
-			if(chargeTypes.get(standard)==null) {
-				continue;
-			}
-			if(Integer.parseInt((String)chargeTypes.get(standard))==0) {//基础定价
-				if(map.get(standard)==null || !standards.get(standard).contains(map.get(standard))) {
-					logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within array");
-					return false;
-				}
-			} else if(Integer.parseInt((String)chargeTypes.get(standard))==1 || Integer.parseInt((String)chargeTypes.get(standard))==2) {//阶梯定价/线性定价
-				Iterator<String> it = standards.get(standard).iterator();
-				if(map.get(standard)==null || Double.parseDouble((String)map.get(standard))<0 
-						|| Double.parseDouble((String)map.get(standard))>Double.parseDouble(it.next())) {
-					logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within range");
-					return false;
-				}
-			}
+	}
+	
+	protected boolean validateChargeTypeZero(Map<String, Object> map, String standard, Map<String, Set<String>> standards) {
+		if(map.get(standard)==null || !standards.get(standard).contains(map.get(standard))) {
+			logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within array");
+			return false;
 		}
-		
-		//**********验证购买产品数量和时长是否在规定范围内start******************
+		return true;
+	}
+	protected boolean validateChargeTypeOneOrTwo(Map<String, Object> map, String standard, Map<String, Set<String>> standards) {
+		Iterator<String> it = standards.get(standard).iterator();
+		if(map.get(standard)==null || Double.parseDouble((String)map.get(standard))<0 
+				|| Double.parseDouble((String)map.get(standard))>Double.parseDouble(it.next())) {
+			logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within range");
+			return false;
+		}
+		return true;
+	}
+	protected boolean validateOrderNum(Map<String, Object> map, Map<String, Set<String>> standards) {
 		Iterator<String> it = standards.get("order_num").iterator();
-		if(map.get("order_num")==null || Double.parseDouble((String)map.get("order_num"))<0 
+		if(map.get("order_num")==null || Double.parseDouble((String)map.get("order_num"))<1 
 				|| Double.parseDouble((String)map.get("order_num"))>Double.parseDouble(it.next())) {
 			logger.info("validateData, map order_num standard is :"+map.get("order_num")+", standard not within range");
 			return false;
 		}
-		if(map.get("order_time")==null || Double.parseDouble((String)map.get("order_time"))<0 
+		return true;
+	}
+	protected boolean validateOrderTime(Map<String, Object> map) {
+		if(map.get("order_time")==null || Double.parseDouble((String)map.get("order_time"))<1 
 				|| (Double.parseDouble((String)map.get("order_time"))>9 && Double.parseDouble((String)map.get("order_time"))!=12 && 
 				Double.parseDouble((String)map.get("order_time"))!=24 && Double.parseDouble((String)map.get("order_time"))!=36)) {
 			logger.info("validateData, map order_time standard is :"+map.get("order_time")+", standard not within range");
@@ -280,8 +253,67 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 				map.put("order_time", "30");
 			}
 		}
+		return true;
+	}
+	
+	/**
+	  * @Title: validateData
+	  * @Description: 验证产品元素值是否合法
+	  * @param id
+	  * @param map
+	  * @return boolean   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月1日 下午4:23:04
+	  */
+	@Override
+	public boolean validateData(Long id, Map<String, Object> map) {
+		//**********验证产品在该地域是否存在start******************
+		if(!validateRegion(id, map)) {
+			return false;
+		}
+		//**********验证产品在该地域是否存在end******************
+		
+		Map<String, Set<String>> standards = new HashMap<String, Set<String>>();
+		Map<String, String> chargeTypes = new HashMap<String, String>();
+		getStandardsInfoByProductElements(id, map, standards, chargeTypes);
+		
+		for (String standard : standards.keySet()) {
+			if(chargeTypes.get(standard)==null) {
+				continue;
+			}
+			if(Integer.parseInt((String)chargeTypes.get(standard))==0) {//基础定价
+				if(!validateChargeTypeZero(map, standard, standards)) {
+					return false;
+				}
+			} else if(Integer.parseInt((String)chargeTypes.get(standard))==1 || Integer.parseInt((String)chargeTypes.get(standard))==2) {//阶梯定价/线性定价
+				if(!validateChargeTypeOneOrTwo(map, standard, standards)) {
+					return false;
+				}
+			}
+		}
+		
+		//**********验证购买产品数量和时长是否在规定范围内start******************
+		if(!validateOrderNum(map, standards) || !validateOrderTime(map)) {
+			return false;
+		}
 		//**********验证购买产品数量和时长是否在规定范围内end******************
 		return true;
+	}
+
+	@Override
+	public Long getRegionIdByCode(String regionCode) {
+		if(regionCode==null) {
+			return null;
+		}
+		//把地域的编号转换为地域的ID
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("code", regionCode);
+		List<BaseRegion> regions = this.baseRegionDao.selectByMap(params);
+		if(regions!=null && regions.size()>0) {
+			return regions.get(0).getId();
+		}
+		return null;
 	}
 
 
