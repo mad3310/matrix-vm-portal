@@ -37,10 +37,8 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     }
 
     @Override
-    public String recharge(long userId, BigDecimal amount, int type) {
+    public String recharge(long userId, BigDecimal amount, String tradeNum,int type) {
         BillRechargeRecord record = new BillRechargeRecord();
-        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String tradeNum = format.format(System.currentTimeMillis());
         record.setTradeNum(tradeNum);
         record.setAmount(amount);
         record.setUserId(userId);
@@ -60,7 +58,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         billRechargeRecordMapper.updateSuc(recordSuc);
 
         //充值业务逻辑
-        long ret;
+        int ret;
         int count = 0;
         do {
             ret = this.addUserAmount(userId, amount);
@@ -71,7 +69,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     }
 
     //充值业务逻辑
-    private long addUserAmount(Long userId, BigDecimal amount) {
+    private int addUserAmount(Long userId, BigDecimal amount) {
         BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
 
         //账户余额
@@ -84,7 +82,7 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         if (ZERO.compareTo(availableAmount) == 1 && ZERO.compareTo(totalAmount) == 0) {
             billUserAmountMapper.updateArrearageTime(userId);
         }
-        long ret = billUserAmountMapper.addAmount(billUserAmount);
+        int ret = billUserAmountMapper.addAmount(billUserAmount);
 
         return ret;
 
@@ -112,20 +110,17 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 
     @Override
     public Page getUserAmountRecord(Page pageInfo, Long userId) {
-    	Page pageResult = null;
-       /* Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
-        params.put("offset", pageInfo.getOffset());
-        params.put("rows", pageInfo.getRows());
+        params.put("offset", pageInfo.getCurrentPage());
+        params.put("rows", pageInfo.getRecordsPerPage());
         List<BillRechargeRecord> records = billRechargeRecordMapper.getUserAmountRecord(params);
         if (records != null && records.size() > 0) {
-            pageResult = new PageResult();
-            pageResult.setRows(records);
+        	pageInfo.setData(records);
             int addCnt = billRechargeRecordMapper.getAddRecordCnt(userId);
-            pageResult.setTotal(addCnt);
-        }*/
-
-        return pageResult;
+            pageInfo.setTotalRecords(addCnt);
+        }
+        return pageInfo;
     }
 
     @Override

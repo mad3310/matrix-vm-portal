@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,11 +57,11 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
     }
 
 
-    @Override
+    /*@Override
     public List<BillMonthDetailBilling> queryUserServiceDetailBilling(String orderId, String month) {
         List<BillMonthDetailBilling> billMonthDetailBillingList = billUserBillingDao.getUserBillingDetails(orderId, month);
         return billMonthDetailBillingList;
-    }
+    }*/
 
     @Override
     public List<String> getUserBillingYears(Long userId) {
@@ -83,6 +84,7 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
             monthList.add(firstMonth.toString("yyyyMM"));
             firstMonth = firstMonth.plusMonths(1);
         }
+        Collections.reverse(monthList);
         return monthList;
     }
 }

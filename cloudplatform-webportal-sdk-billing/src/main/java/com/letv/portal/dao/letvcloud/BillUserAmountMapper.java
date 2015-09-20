@@ -11,13 +11,13 @@ public interface BillUserAmountMapper {
     //取得用户余额信息
     BillUserAmount getUserAmout(long userId);
     //创建默认账户
-    void insertUserAmountDefault(long userId);
+    int insertUserAmountDefault(long userId);
     //扣费
-    Long reduceAmount(BillUserAmount userAmount);
+    int reduceAmount(BillUserAmount userAmount);
     //充值
-    Long addAmount(BillUserAmount userAmount);
+    int addAmount(BillUserAmount userAmount);
     //设置欠费时间为空
-    Long updateArrearageTime(Long userId);
+    int updateArrearageTime(Long userId);
     //判断用户是否欠费
     BillUserAmount getUserArrears(long userId);
 

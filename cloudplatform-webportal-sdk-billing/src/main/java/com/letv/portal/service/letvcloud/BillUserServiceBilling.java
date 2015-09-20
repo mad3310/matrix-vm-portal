@@ -24,7 +24,7 @@ public interface BillUserServiceBilling {
      * @param month
      * @return
      */
-    List<BillMonthDetailBilling> queryUserServiceDetailBilling(String orderId,String month);
+    //List<BillMonthDetailBilling> queryUserServiceDetailBilling(String orderId,String month);
 
     /**
      * 查询用户的账单年份

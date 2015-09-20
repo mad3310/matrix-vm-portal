@@ -1,5 +1,6 @@
 package com.letv.portal.controller.billing;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
+import com.letv.common.util.DataFormat;
 import com.letv.common.util.HttpUtil;
 import com.letv.portal.dao.base.IBaseRegionDao;
 import com.letv.portal.model.base.BaseRegion;
@@ -69,7 +71,7 @@ public class CalculateController {
 			obj.setResult(0);
 			obj.addMsg("输入参数不合法");
 		} else {
-			obj.setData(ret);
+			obj.setData(DataFormat.formatBigDecimalToString(new BigDecimal(ret)));
 		}
 		return obj;
 	}

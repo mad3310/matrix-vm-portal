@@ -8,7 +8,12 @@ import java.util.Date;
  * Created by wanglei14 on 2015/6/29.
  */
 public class BillRechargeRecord implements Serializable{
-    private String tradeNum;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1082098815328114238L;
+
+	private String tradeNum;
 
     private long userId;
 
