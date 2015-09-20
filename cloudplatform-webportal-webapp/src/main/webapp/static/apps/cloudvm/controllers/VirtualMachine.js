@@ -114,7 +114,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           templateUrl: 'VmCreateModalTpl',
           controller: 'VmCreateModalCtrl',
           size: size,
-          resolve: {
+          backdrop: 'static',
+          keyboard:false,
+            resolve: {
             items: function () {
               return $scope.items;
             },

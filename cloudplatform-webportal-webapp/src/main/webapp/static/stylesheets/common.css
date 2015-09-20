@@ -288,3 +288,39 @@ input.ng-invalid.ng-touched {
 .letv-radioCheck i.iconfont{color: #dbdbdb; }
 .letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
 /*begin letv-radioCheck style*/
+
+/*begin letv-numeric-input style*/
+numeric-input{
+    height: 34px;
+    width: 60px;
+    position: relative;
+    display: block;
+    border: 1px solid #d2d2d2;
+}
+numeric-input input.input-value{
+    height: 100%;
+    width: 45px;
+    border-width: 0;
+}
+
+numeric-input input.input-value:focus {
+    outline:none;
+}
+numeric-input .up-down{
+    display: block;
+    height: 100%;
+    width: 15px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #f5f5f5;
+}
+numeric-input .up-down > a{
+    height: 50%;
+    display: block;
+    text-align: center;
+}
+numeric-input .up-down > a > i{
+    color: #666;
+}
+/*begin letv-numeric-input style*/
