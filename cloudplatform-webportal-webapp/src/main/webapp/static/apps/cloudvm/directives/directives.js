@@ -69,8 +69,16 @@ define(['directives/app.directive'],function (directiveModule) {
     directiveModule.directive('numericInput', function () {
         return {
             restrict: 'AE',
+            scope: {
+                model: '=numericModel'
+            },
             link: function (scope, element, attrs) {
-                return element;
+                scope.up=function(){
+                    scope.model++;
+                };
+                scope.down=function(){
+                    scope.model--;
+                };
             },
             templateUrl: '/static/apps/cloudvm/directives/numeric-input/template.html'
         };
