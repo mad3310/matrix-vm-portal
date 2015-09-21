@@ -14,6 +14,12 @@
                 <li><a href="javascript:void(0);">北京二区</a></li>
             </ul>
         </div>
+        <a href="/account/logout" class="header-logout pull-right">
+            <span>退出</span>
+        </a>
+        <div class="header-separator pull-right">
+            <i class="separator"></i>
+        </div>
         <a href="http://uc.letvcloud.com/userView/ucOverview.do" class="header-account pull-right">
             <img src="/static/images/nav-account.png" class="account-icon" />
             <span>${sessionScope.userSession.userName}</span>

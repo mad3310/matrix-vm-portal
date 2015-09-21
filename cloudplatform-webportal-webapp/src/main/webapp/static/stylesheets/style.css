@@ -196,25 +196,36 @@ body {
 
 }
 
-.header .header-help, .header .header-account {
+.header .header-help, .header .header-account,.header .header-logout,.header .header-separator {
     height: 70px;
+    line-height: 70px;
 }
 
-.header .header-help {
-    margin-right: 30px;
-}
-
-.header .header-account {
+.header .header-help{
     margin-right: 20px;
 }
+.header .header-account{
+    margin-right: 10px;
+}
+.header .header-logout{
+    margin-right: 20px;
+    margin-left: 10px;
+ }
 
 .header .header-help .help-icon, .header .header-account .account-icon {
-    line-height: 70px;
+
 }
 
-.header .header-help span, .header .header-account span {
-    line-height: 70px;
+.header .header-help span, .header .header-account span ,.header .header-logout span{
     font-size: 14px;
+}
+
+.header .header-separator .separator{
+    display: block;
+    border-left: 1px solid white;
+    width: 1px;
+    height: 14px;
+    margin-top: 28px;
 }
 
 .header .header-region{
