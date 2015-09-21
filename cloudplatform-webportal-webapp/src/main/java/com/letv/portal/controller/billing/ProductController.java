@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.result.ResultObject;
-import com.letv.portal.model.DbModel;
+import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.product.IProductInfoRecordService;
 import com.letv.portal.service.product.IProductService;
 import com.letv.portal.service.subscription.ISubscriptionService;
 
@@ -36,6 +37,8 @@ public class ProductController {
 	@Autowired
 	IProductService productService;
 	@Autowired
+	IProductInfoRecordService productInfoRecordService;
+	@Autowired
 	ISubscriptionService subscriptionService;
 	@Autowired
 	IOrderService orderService;
@@ -45,6 +48,42 @@ public class ProductController {
 	@RequestMapping(value="/product/{id}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject queryProductDetail(@PathVariable Long id, ResultObject obj) {
 		obj.setData(this.productService.queryProductDetailById(id));
+		return obj;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/buy/{id}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String calculateData, ResultObject obj) {
+		Map<String, Object> billingParams = JSONObject.parseObject(calculateData, Map.class);
+		
+		for(int i=0; i<Integer.parseInt((String)billingParams.get("order_num")); i++) {
+			//保存表单信息
+			ProductInfoRecord record = new ProductInfoRecord();
+			record.setParams(paramsData);
+			record.setProductType(id+"");
+			if(i==0) {
+				record.setInvokeType("1");
+			} else {
+				record.setInvokeType("0");
+			}
+			this.productInfoRecordService.insert(record);
+			//生产订阅
+			Subscription sub = this.subscriptionService.createSubscription(id, billingParams, record.getId());
+			if(sub.getChargeType()==0) {//包年包月,立即生产订单
+				if(i==0) {
+					//生产总订单
+				}
+				//生成子订单
+				Long orderId = this.orderService.createOrder(sub.getId());
+				obj.setData(orderId);
+			}
+		}
+		
+		
+		
+		
+		
+		
 		return obj;
 	}
 	

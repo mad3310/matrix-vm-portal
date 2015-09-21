@@ -17,8 +17,15 @@ public class ProductInfoRecord extends BaseModel{
 	
 	private String params;//页面参数
 	private String productType;//商品类型,2-云主机
+	private String invokeType;//调用类型，1-去调用，0-不调用
 	private String descn;
 	
+	public String getInvokeType() {
+		return invokeType;
+	}
+	public void setInvokeType(String invokeType) {
+		this.invokeType = invokeType;
+	}
 	public String getParams() {
 		return params;
 	}
