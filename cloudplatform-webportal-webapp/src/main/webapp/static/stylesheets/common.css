@@ -134,7 +134,7 @@ body {
 .le-form-control {
     display: block;
     width: 100%;
-    height: 34px;
+    height: 30px;
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857143;
@@ -276,7 +276,7 @@ input.ng-invalid.ng-touched {
 /*end le-input-validation style*/
 
 /*begin letv-checkbox style*/
-.letv-mutiCheck{height:24px;border:1px solid #dbdbdb;margin:5px 2px 5px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
+.letv-mutiCheck{height:24px;border:1px solid #dbdbdb;margin:3px 2px 3px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
 .letv-mutiCheck span{line-height: 22px}
 .letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
 .letv-mutiCheck.selected{border-color:#088ac2; }
@@ -284,14 +284,14 @@ input.ng-invalid.ng-touched {
 /*begin letv-checkbox style*/
 
 /*begin letv-radioCheck style*/
-.letv-radioCheck{width: 80px;height: 22px;line-height: 20px;padding: 0;margin: 0;}
+.letv-radioCheck{width: 80px;height: 22px;line-height: 30px;padding: 0;margin:0;display: inline-block;}
 .letv-radioCheck i.iconfont{color: #dbdbdb; }
 .letv-radioCheck.selected i.iconfont,.letv-radioCheck.selected span.letv-radio-content{color: #088ac2; }
 /*begin letv-radioCheck style*/
 
 /*begin letv-numeric-input style*/
 numeric-input{
-    height: 34px;
+    height: 30px;
     width: 60px;
     position: relative;
     display: block;
@@ -301,6 +301,7 @@ numeric-input input.input-value{
     height: 100%;
     width: 45px;
     border-width: 0;
+    padding: 0 0 0 2px;
 }
 
 numeric-input input.input-value:focus {
@@ -319,6 +320,7 @@ numeric-input .up-down > a{
     height: 50%;
     display: block;
     text-align: center;
+    line-height: 14px;
 }
 numeric-input .up-down > a > i{
     color: #666;
