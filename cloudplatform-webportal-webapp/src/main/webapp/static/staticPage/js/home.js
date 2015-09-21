@@ -52,7 +52,9 @@ function topNavHover(){
 	$('.item-product').unbind('hover').hover(function(){ //top-nav 滑过效果
 		time=setTimeout(function(){
 			_navUl.slideDown('400', function() {
-				$('.item-product').children('div').removeClass('hide');
+				if(_navUl.is(':visible')){
+					$('.item-product').children('div').removeClass('hide');
+				}
 			});
 		},200);
 	},function(){
