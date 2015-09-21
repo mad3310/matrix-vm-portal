@@ -112,14 +112,16 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public Page getUserAmountRecord(Page pageInfo, Long userId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
-        params.put("offset", pageInfo.getCurrentPage());
+        params.put("offset", pageInfo.getStartRowPosition());
         params.put("rows", pageInfo.getRecordsPerPage());
         List<BillRechargeRecord> records = billRechargeRecordMapper.getUserAmountRecord(params);
         if (records != null && records.size() > 0) {
         	pageInfo.setData(records);
-            int addCnt = billRechargeRecordMapper.getAddRecordCnt(userId);
-            pageInfo.setTotalRecords(addCnt);
+        } else {
+        	pageInfo.setData(null);
         }
+        int addCnt = billRechargeRecordMapper.getAddRecordCnt(userId);
+        pageInfo.setTotalRecords(addCnt);
         return pageInfo;
     }
 

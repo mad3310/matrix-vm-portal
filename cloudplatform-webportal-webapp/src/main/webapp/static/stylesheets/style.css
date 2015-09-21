@@ -618,7 +618,7 @@ body {
 .inputs-item>.col-sm-9{padding-left:0;padding-right:0;}
 .inputs-item>.col-sm-10{padding-left:0;}
 .inputs-item input{width: 70%;}
-.system-content{padding:5px 0 5px 0;font-size:12px;margin-bottom: 0;}
+.system-content{padding:5px 0 5px 0;font-size:12px;margin-bottom: 0;list-style: none;}
 .system-content li{padding:2px 5px;width: 50%;float: left;}
 .system-content .letv-radioCheck{width: 100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .body-right{height:375px;background:#f5f5f5;font-size:12px;color:#333;}
@@ -634,7 +634,7 @@ body {
 .flowthree-type{padding:7px 0;}
 .flowthree-type i{color: #088ac2;}
 /*input-self*/
-.letv-control-label{line-height:34px;font-size: 12px}
+.letv-control-label{line-height:30px;font-size: 12px}
 /*tab-self*/
 .letv-nav-tab>li{margin-right:10px;}
 .letv-nav-tab>li>a{padding:6px 24px;border-radius:2px;font-size:12px;background:#e6e6e6;color:#333;}

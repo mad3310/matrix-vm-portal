@@ -44,7 +44,7 @@ public class UserAccountApiController {
 	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject balance(@PathVariable Long userId, ResultObject obj) {
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
-		DecimalFormat formatter = new DecimalFormat("0.000");// billUserAmount.getAvailableAmount().doubleValue()
+		DecimalFormat formatter = new DecimalFormat("0.00");// billUserAmount.getAvailableAmount().doubleValue()
 	    String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
 		obj.setData(userAmount);
 		return obj;
@@ -55,12 +55,19 @@ public class UserAccountApiController {
 		obj.setData(billUserAmount);
 		return obj;
 	}
+	@RequestMapping(value="/createUserAmount/{userId}",method=RequestMethod.GET)
+	public @ResponseBody ResultObject create(@PathVariable Long userId, ResultObject obj) {
+		this.billUserAmountService.createUserAmount(userId);
+		return obj;
+	}
+	
 	@RequestMapping(value="/recharge/record/{userId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long userId, ResultObject obj) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
 		page.setRecordsPerPage(recordsPerPage);
-		obj.setData(this.billUserAmountService.getUserAmountRecord(page, userId));
+		page = this.billUserAmountService.getUserAmountRecord(page, userId);
+		obj.setData(page);
 		return obj;
 	}
 	
