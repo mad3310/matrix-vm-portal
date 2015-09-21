@@ -40,7 +40,7 @@ public class UserAccountController {
 	@RequestMapping(value="/balance/{userId}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject account(@PathVariable Long userId, ResultObject obj) {
 		BillUserAmount billUserAmount = this.billUserAmountService.getUserAmount(userId);
-		DecimalFormat formatter = new DecimalFormat("0.000");// billUserAmount.getAvailableAmount().doubleValue()
+		DecimalFormat formatter = new DecimalFormat("0.00");// billUserAmount.getAvailableAmount().doubleValue()
 	    String userAmount = formatter.format(billUserAmount.getAvailableAmount().doubleValue());
 		obj.setData(userAmount);
 		return obj;
@@ -53,12 +53,6 @@ public class UserAccountController {
 	    params.put("status", 0); //unRead
 	    Integer count = this.orderService.selectByMapCount(params);*/
 		obj.setData(0);
-		return obj;
-	}
-	
-	@RequestMapping(method=RequestMethod.POST)   
-	public @ResponseBody ResultObject create(@RequestParam(required=true) Long userId, ResultObject obj) {
-		this.billUserAmountService.createUserAmount(userId);
 		return obj;
 	}
 	
