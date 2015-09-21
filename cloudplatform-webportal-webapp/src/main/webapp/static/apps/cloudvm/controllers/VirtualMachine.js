@@ -114,7 +114,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           templateUrl: 'VmCreateModalTpl',
           controller: 'VmCreateModalCtrl',
           size: size,
-          resolve: {
+          backdrop: 'static',
+          keyboard:false,
+            resolve: {
             items: function () {
               return $scope.items;
             },
@@ -138,7 +140,9 @@ define(['controllers/app.controller'], function (controllerModule) {
               currentPage: $scope.currentPage,
               recordsPerPage: $scope.pageSize
             };
+          WidgetService.showSpin();
           HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
+            WidgetService.hideSpin();
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
           });

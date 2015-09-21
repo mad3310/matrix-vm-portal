@@ -70,7 +70,7 @@
     </toaster-container>
     <script type="text/ng-template" id="VmCreateModalTpl">
             <div class="modal-header letv-modal-header vm-create-modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h3 class="modal-title">创建云主机</h3>
             </div>
             <div class="modal-body vm-create-modal-body">
@@ -298,6 +298,12 @@
                                         <span>{{vmBuyPeriod | vmBuyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span>
                                         <i class="iconfont icon-checkroundfillicon1"></i>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2"><span class="letv-control-label">购买数量：</span></div>
+                                <div class="col-sm-10">
+                                    <numeric-input numeric-model="vmCount"></numeric-input>
                                 </div>
                             </div>
                         </div>

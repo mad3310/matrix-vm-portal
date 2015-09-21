@@ -70,24 +70,17 @@ define(['directives/app.directive'],function (directiveModule) {
         return {
             restrict: 'AE',
             scope: {
-                option: '=option'
+                model: '=numericModel'
             },
             link: function (scope, element, attrs) {
-                var modalEl = element.children().first();
-                modalEl.modal({
-                    show: false,
-                    backdrop: false
-                });
-                scope.$watch('option.isShow', function (newValue, oldValue) {
-                    if (newValue) {
-                        modalEl.modal('show');
-                    }
-                    else {
-                        modalEl.modal('hide');
-                    }
-                });
+                scope.up=function(){
+                    scope.model++;
+                };
+                scope.down=function(){
+                    scope.model--;
+                };
             },
-            templateUrl: './numeric-input/template.html'
+            templateUrl: '/static/apps/cloudvm/directives/numeric-input/template.html'
         };
     });
 });

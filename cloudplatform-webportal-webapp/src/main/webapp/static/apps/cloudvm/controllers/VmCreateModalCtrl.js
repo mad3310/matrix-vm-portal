@@ -29,6 +29,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmCount = 1;
     $scope.vmTotalPrice = '';
 
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
     $scope.hackRzSlider= Utility.getRzSliderHack($scope);
     $scope.selectVmImage = function (vmImage) {
       $scope.selectedVmImage = vmImage;

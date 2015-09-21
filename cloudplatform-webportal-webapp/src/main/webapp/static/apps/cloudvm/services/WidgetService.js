@@ -34,6 +34,14 @@ define(['services/app.service'],function (serviceModule) {
       service.notifyWarning=function(message){
         toaster.pop('warning', null, message, 2000, 'trustedHtml');
       };
+      service.showSpin=function(message){
+        $('body').append("<div class=\"spin\"></div>");
+        $('body').append("<div class=\"far-spin\"></div>");
+      };
+      service.hideSpin=function(message){
+        $('body').find('.spin').remove();
+        $('body').find('.far-spin').remove();
+      };
 
       return service;
     }]);
