@@ -12,10 +12,12 @@ a{text-decoration:none;}
 .btn-le-blueGreen {background-color:#08aec2;color:#fff;}
 .btn-le-green {background-color:#08c2b3;color:#fff;}
 .btn-le-yellow {background-color:#f5c131;color:#fff;}
-.btn-le-red {background-color: #ff3c37;color: #fff;}
+.btn-le-red {background-color:#ff3c37;color: #fff;}
 .text-left{text-align:left;}
 .text-center{text-align:center;}
 .text-right{text-align:right;}
+.text-red{color:#ff3c37}
+.text-blue{color:#088ac2}
 .bg-blue{background:rgba(9,138,195,.7)}
 .bg-yellow{background:rgba(245,193,48,.7)}
 .bg-green{background:rgba(39,199,151,.7)}
