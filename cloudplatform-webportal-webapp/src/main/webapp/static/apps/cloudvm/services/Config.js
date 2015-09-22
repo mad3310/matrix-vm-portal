@@ -6,6 +6,7 @@ define(['services/app.service'], function (serviceModule) {
     var config = {};
     config.urls = {
       vm_regions: '/ecs/regions/',
+      region_list:'/ecs/region/list',
       vm_list: '/ecs/region/{region}',
       image_list: '/osi/region/{region}',
       flavor_group_data: '/osf/region/{region}/group',
@@ -19,6 +20,7 @@ define(['services/app.service'], function (serviceModule) {
       vm_network_shared_list:'/osn/network/shared/list',
       vm_calculate_price:'/billing/calculate/price/2',
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
+      disk_list:'/osv/region/{region}',
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
