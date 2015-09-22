@@ -17,6 +17,7 @@ import com.letv.portal.model.cloudvm.CloudvmFlavor;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -1225,6 +1226,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 						vcpusRamFlavorResources.put(flavorResource.getDisk(),
 								flavorResource);
 					}
+
+					if (vcpusRamFlavorResources.keySet().size() > 1) {
+						throw new OpenStackException(
+								"There are repeated flavors.", "存在重复的规格");
+					}
 				}
 
 				return flavorResources;
@@ -1649,9 +1655,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 	}
 
 	@Override
-	public void create2(VMCreateConf2 conf) throws OpenStackException {
+	public MultiVmCreateContext create2(VMCreateConf2 conf) throws OpenStackException {
 		checkUserEmail();
-		new VMCreate(conf, this, this.networkManager, this.volumeManager).run();
+		return new VMCreate(conf, this, this.networkManager, this.volumeManager).run();
 	}
 
 }

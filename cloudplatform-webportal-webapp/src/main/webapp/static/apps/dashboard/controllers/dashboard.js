@@ -27,7 +27,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						var _data=data.data;
 						$scope.username=_data.contacts;
 						$scope.mobileStatus=_data.mobileStatus;
-						$scope.emailStatus=_data.messageStatus;
+						$scope.emailStatus=_data.emailStatus;
 						$scope.userStatus=_data.userStatus;
 					}
 				});

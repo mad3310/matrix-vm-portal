@@ -24,7 +24,7 @@ public class VMCreate {
 		this.volumeManager = volumeManager;
 	}
 
-	public void run() throws OpenStackException {
+	public MultiVmCreateContext run() throws OpenStackException {
 		if (vmCreateConf.getCount() > 0) {
 			try {
 				MultiVmCreateContext multiVmCreateContext = new MultiVmCreateContext();
@@ -46,6 +46,7 @@ public class VMCreate {
 				VmsCreateSubTasksExecutor executor = new VmsCreateSubTasksExecutor(
 						tasks, multiVmCreateContext);
 				executor.run();
+				return multiVmCreateContext;
 			} catch (OpenStackException ex) {
 				throw ex;
 			} catch (Exception ex) {

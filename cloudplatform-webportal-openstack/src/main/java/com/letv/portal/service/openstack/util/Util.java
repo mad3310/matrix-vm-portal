@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.openstack.OpenStackSession;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Header;
@@ -115,5 +117,10 @@ public class Util {
 		}
 
 		return str;
+	}
+
+	public static OpenStackSession session(SessionServiceImpl sessionService) {
+		return (OpenStackSession) sessionService.getSession()
+				.getOpenStackSession();
 	}
 }

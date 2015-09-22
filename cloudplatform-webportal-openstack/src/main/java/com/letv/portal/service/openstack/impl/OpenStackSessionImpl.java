@@ -99,10 +99,17 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 	@Override
 	public void init() throws OpenStackException {
+		init(false);
+	}
+
+	@Override
+	public void init(boolean loginedUser) throws OpenStackException {
 		if (!isInit) {
 			initUserWithOutOpenStack();
 			initUser();
-			initResources();
+			if (!loginedUser) {
+				initResources();
+			}
 			isInit = true;
 			SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
 			Session session = sessionService.getSession();
