@@ -47,6 +47,18 @@ public class VMController {
 		return result;
 	}
 
+	@RequestMapping(value = "/region/list", method = RequestMethod.GET)
+	public @ResponseBody ResultObject listRegion() {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getVMManager()
+					.listRegion());
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/regions/group", method = RequestMethod.GET)
 	public @ResponseBody ResultObject groupRegions() {
 		ResultObject result = new ResultObject();

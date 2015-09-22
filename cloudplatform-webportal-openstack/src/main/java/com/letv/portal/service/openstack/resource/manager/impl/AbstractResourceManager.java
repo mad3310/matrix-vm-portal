@@ -1,10 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.Closeable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
@@ -87,6 +84,23 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 		if (!getRegions().contains(region)) {
 			throw new RegionNotFoundException(region);
 		}
+	}
+
+	@Override
+	public List<Region> listRegion() throws OpenStackException {
+		Set<String> regionCodes = getRegions();
+		List<CloudvmRegion> cloudvmRegions = OpenStackServiceImpl
+				.getOpenStackServiceGroup().getCloudvmRegionService().selectAll();
+		List<Region> regions = new LinkedList<Region>();
+		for (CloudvmRegion cloudvmRegion : cloudvmRegions) {
+			if (regionCodes.contains(cloudvmRegion.getCode())) {
+				Region region = new Region();
+				region.setId(cloudvmRegion.getCode());
+				region.setName(cloudvmRegion.getDisplayName());
+				regions.add(region);
+			}
+		}
+		return regions;
 	}
 
 	@Override
