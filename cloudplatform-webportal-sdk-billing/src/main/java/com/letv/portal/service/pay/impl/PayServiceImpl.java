@@ -71,7 +71,7 @@ public class PayServiceImpl implements IPayService {
 			if (price == 0.0D) {
 				try {
 					if (updateOrderPayInfo(orderSubs, "9999", price + "", 2)) {
-						response.sendRedirect(this.PAY_SUCCESS + "?orderNumber=" + orderNumber);
+						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 						return ret;
 					} else {
 						throw new ValidateException("更新订单状态异常");
@@ -81,7 +81,7 @@ public class PayServiceImpl implements IPayService {
 				}
 			}
 			String url = getParams(order.getOrderNumber(), price, pattern,this.PAY_CALLBACK,
-					this.PAY_SUCCESS + "?orderNumber=" + orderNumber, orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
+					this.PAY_SUCCESS + "/" + orderNumber, orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
 							orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductDescn():orderSubs.get(0).getSubscription().getProductDescn()+"...", null, params);
 
 			if ("1".equals(pattern)) {//支付宝方法
