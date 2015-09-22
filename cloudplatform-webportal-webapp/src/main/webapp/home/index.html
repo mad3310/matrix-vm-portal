@@ -73,12 +73,6 @@
 					<img class="carouse-img" src="/static/staticPage/img/banner-img.png">
 				</div>
 			</div>
-			<!-- <div class="carousel-control">
-				<img src="/static/staticPage/img/line-short.png">
-				<img src="/static/staticPage/img/line-long.png">
-				<img src="/static/staticPage/img/line-short.png">
-				<img src="/static/staticPage/img/line-short.png">
-			</div> -->
 		</div>
 		<div class="top-carousel hide" self-carousel-id="1"> <!-- lunbo banner -->
 			<div class="carousel-content clearfix">
@@ -92,36 +86,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="top-carousel hide" self-carousel-id="2"> <!-- lunbo banner -->
-			<div class="carousel-content clearfix">
-				<div class="col-md-5">
-					<div class="content-title"><span>SLB</span>免费试用啦！</div>
-					<div class="content-desc">参与即送500G   BOS存储空间</div>
-					<div class="content-tryNow"><a><span>立即试用</span></a></div>
-				</div>
-				<div class="col-md-7">
-					<img class="carouse-img" src="/static/staticPage/img/advantage-safety.png">
-				</div>
-			</div>
-		</div>
-		<div class="top-carousel hide" self-carousel-id="3"> <!-- lunbo banner -->
-			<div class="carousel-content clearfix">
-				<div class="col-md-5">
-					<div class="content-title"><span>RDS</span>免费试用啦！</div>
-					<div class="content-desc">参与即送500G   BOS存储空间</div>
-					<div class="content-tryNow"><a><span>立即试用</span></a></div>
-				</div>
-				<div class="col-md-7">
-					<img class="carouse-img" src="/static/staticPage/img/banner-img.png">
-				</div>
-			</div>
-		</div>
 	</div>
 	<div class="carousel-control">
 		<img self-carousel-id="0" src="/static/staticPage/img/line-long.png">
 		<img self-carousel-id="1" class="control-short" src="/static/staticPage/img/line-long.png">
-		<img self-carousel-id="2" class="control-short" src="/static/staticPage/img/line-long.png">
-		<img self-carousel-id="3" class="control-short" src="/static/staticPage/img/line-long.png">
 	</div>
 </div>
 <div class="main-body nav-uls hide"></div> <!-- 遮罩 -->
@@ -135,14 +103,14 @@
 			</div>
 		</div>
 		<div class="col-md-4 bg-green">
-			<img src="/static/staticPage/img/advantage-safety.png">
+			<img src="/static/staticPage/img/advantage-gold.png">
 			<div class="anvantage-desc">
 				<div>金牌服务</div>
 				<div><span class="desc-specific">7×24小时服务支持,为您保驾护航，百倍故障赔偿</span></div>
 			</div>
 		</div>
 		<div class="col-md-4 bg-yellow">
-			<img src="/static/staticPage/img/advantage-safety.png">
+			<img src="/static/staticPage/img/advantage-free.png">
 			<div class="anvantage-desc">
 				<div>免费试用</div>
 				<div><span class="desc-specific">全网产品7天免费试用</span></div>
@@ -166,7 +134,7 @@
 					<dd  class="col-md-6">
 						<div class="product-title">云主机</div>
 						<div class="product-desc">安全稳定，追求卓越</div>
-						<div class="product-more">查看详情>></div>
+						<div class="product-more"><a href="products.html">查看详情>></a></div>
 					</dd>
 				</dl>
 				<div class="col-md-offset-2 product-try">
@@ -184,7 +152,7 @@
 					<dd  class="col-md-6">
 						<div class="product-title">关系型数据库</div>
 						<div class="product-desc">性能监控，弹性伸缩</div>
-						<div class="product-more">查看详情>></div>
+						<div class="product-more"><a href="products.html">查看详情>></a></div>
 					</dd>
 				</dl>
 				<div class="col-md-offset-2 product-try">
@@ -202,7 +170,7 @@
 					<dd  class="col-md-6">
 						<div class="product-title">云引擎</div>
 						<div class="product-desc">扩展服务，快捷开发</div>
-						<div class="product-more">查看详情>></div>
+						<div class="product-more"><a href="products.html">查看详情>></a></div>
 					</dd>
 				</dl>
 				<div class="col-md-offset-2 product-try">
@@ -220,7 +188,7 @@
 					<dd  class="col-md-6">
 						<div class="product-title">负载均衡</div>
 						<div class="product-desc">扩展服务，快捷开发</div>
-						<div class="product-more">查看详情>></div>
+						<div class="product-more"><a href="products.html">查看详情>></a></div>
 					</dd>
 				</dl>
 				<div class="col-md-offset-2 product-try">
@@ -237,45 +205,30 @@
 		<h4>Customer Case</h4>
 	</div>
 	<div class="customer-tab clearfix">
-		<div class="col-md-2 tab-item active">视频</div>
-		<div class="col-md-2 tab-item">电商</div>
-		<div class="col-md-2 tab-item">游戏</div>
-		<div class="col-md-2 tab-item">移动应用</div>
-		<div class="col-md-2 tab-item">政企</div>
-		<div class="col-md-2 tab-item tab-item-last">金融</div>
+		<div class="col-md-2 tab-item active" self-customer-tab='customer-video'>视频</div>
+		<div class="col-md-2 tab-item" self-customer-tab="customer-ebusiness">电商</div>
+		<div class="col-md-2 tab-item" self-customer-tab="customer-game">游戏</div>
+		<div class="col-md-2 tab-item" self-customer-tab="customer-mobile">移动应用</div>
+		<div class="col-md-2 tab-item" self-customer-tab="customer-goverment">政企</div>
+		<div class="col-md-2 tab-item tab-item-last" self-customer-tab="customer-finance">金融</div>
 	</div>
-	<!-- <div class="col-md-offset-1 col-md-10 customer-hoverTip">
-		<div class="hoverTip">
-			<div class="clearfix">
-				<div class="col-md-10">
-					<div>致力于为消费者提供愉悦的在线购物体验</div>
-					<div class="hoverTip-desc">京东致力于为消费者提供愉悦的在线购物体验。通过内容丰富、人性化的网站（www.jd.com）和移动客户端，京东以富有竞争力的价格，提供具有丰富品类及卓越品质的商品和服务。</div>
-				</div>
-				<div class="col-md-2">
-					<img src="/static/staticPage/img/JD.png">
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="clearfix"></div> -->
-	<!-- <div class="customer-axisX"></div> -->
-	<div class="customer-logos clearfix">
-		<div class="col-md-offset-1 col-md-10 customer-hoverTip" style="position:relative;bottom:24px;">
+	<div class="customer-logos clearfix" self-customer-type='customer-video'>
+		<div class="col-md-offset-1 col-md-10 customer-hoverTip logo-focus" style="position:relative;bottom:24px;">
 			<div class="hoverTip">
 				<div class="clearfix">
 					<div class="col-md-10">
-						<div>致力于为消费者提供愉悦的在线购物体验</div>
+						<div class="hoverTip-title">致力于为消费者提供愉悦的在线购物体验</div>
 						<div class="hoverTip-desc">京东致力于为消费者提供愉悦的在线购物体验。通过内容丰富、人性化的网站（www.jd.com）和移动客户端，京东以富有竞争力的价格，提供具有丰富品类及卓越品质的商品和服务。</div>
 					</div>
-					<div class="col-md-2">
-						<img src="/static/staticPage/img/JD.png">
+					<div class="col-md-2 tipImg">
+						<img src="/static/staticPage/img/partner-zhejiangTV.png">
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 		<div class="customer-axisX" style="position:relative"></div>
-		<div class="col-md-2 logo-focus"><img class="logo-img" src="/static/staticPage/img/JD.png">
+		<div class="col-md-2 logo-focus"><img class="logo-img" src="/static/staticPage/img/partner-zhejiangTV.png">
 			<!-- 小圆点 -->
 			<span class="tip-point"><i></i></span>
 			<!-- 画三角形 -->
@@ -283,7 +236,12 @@
 			<!-- 白线缺口 -->
 			<span class="white-line line-start"></span>
 		</div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-hs.jpg">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<span class="white-line line-middle"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-qnw.png">
 			<span class="tip-point"><i></i></span>
 			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
 			<span class="white-line line-middle"></span>
@@ -293,22 +251,77 @@
 			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
 			<span class="white-line line-middle"></span>
 		</div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+	</div>
+	<div class="customer-logos hide clearfix" self-customer-type="customer-ebusiness">
+		<div class="col-md-offset-1 col-md-10 customer-hoverTip logo-focus" style="position:relative;bottom:24px;">
+			<div class="hoverTip">
+				<div class="clearfix">
+					<div class="col-md-10">
+						<div class="hoverTip-title">致力于为消费者提供愉悦的在线购物体验</div>
+						<div class="hoverTip-desc">京东致力于为消费者提供愉悦的在线购物体验。通过内容丰富、人性化的网站（www.jd.com）和移动客户端，京东以富有竞争力的价格，提供具有丰富品类及卓越品质的商品和服务。</div>
+					</div>
+					<div class="col-md-2 tipImg">
+						<img src="/static/staticPage/img/JD.png">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="customer-axisX" style="position:relative"></div>
+		<div class="col-md-2 logo-focus"><img class="logo-img" src="/static/staticPage/img/partner-JD.png">
+			<!-- 小圆点 -->
+			<span class="tip-point"><i></i></span>
+			<!-- 画三角形 -->
+			<span class="tip-triangle tip-triangle-start"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-start"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-dd.jpg">
 			<span class="tip-point"><i></i></span>
 			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
 			<span class="white-line line-middle"></span>
 		</div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-tb.jpg">
 			<span class="tip-point"><i></i></span>
 			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
 			<span class="white-line line-middle"></span>
 		</div>
-		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/letv.png">
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-wph.jpg">
 			<span class="tip-point"><i></i></span>
-			<span class="tip-triangle tip-triangle-end"><i class="triangle-1"></i><i class="triangle-2"></i></span>
-			<span class="white-line line-end"></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<span class="white-line line-middle"></span>
 		</div>
-</div>
+	</div>
+	<div class="customer-logos hide clearfix" self-customer-type="customer-goverment">
+		<div class="col-md-offset-1 col-md-10 customer-hoverTip logo-focus" style="position:relative;bottom:24px;">
+			<div class="hoverTip">
+				<div class="clearfix">
+					<div class="col-md-10">
+						<div class="hoverTip-title">致力于为消费者提供愉悦的在线购物体验</div>
+						<div class="hoverTip-desc">京东致力于为消费者提供愉悦的在线购物体验。通过内容丰富、人性化的网站（www.jd.com）和移动客户端，京东以富有竞争力的价格，提供具有丰富品类及卓越品质的商品和服务。</div>
+					</div>
+					<div class="col-md-2 tipImg">
+						<img src="/static/staticPage/img/anli-logo-djw.jpg">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="customer-axisX" style="position:relative"></div>
+		<div class="col-md-2 logo-focus"><img class="logo-img" src="/static/staticPage/img/anli-logo-djw.jpg">
+			<!-- 小圆点 -->
+			<span class="tip-point"><i></i></span>
+			<!-- 画三角形 -->
+			<span class="tip-triangle tip-triangle-start"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<!-- 白线缺口 -->
+			<span class="white-line line-start"></span>
+		</div>
+		<div class="col-md-2"><img class="logo-img" src="/static/staticPage/img/anli-logo-qnw.png">
+			<span class="tip-point"><i></i></span>
+			<span class="tip-triangle tip-triangle-middle"><i class="triangle-1"></i><i class="triangle-2"></i></span>
+			<span class="white-line line-middle"></span>
+		</div>
+	</div>
 </div>
 <div class="main-body"> <!-- 合作伙伴 -->
 	<div class="body-partners">
@@ -336,7 +349,7 @@
 				<div class="pull-left arrow-right"></div>
 			</div>
 			<dl>
-				<dt>乐视云计算平台发布会</dt>
+				<dt><a href="http://www.letvcloud.com/player.html" target="_blank">乐视云计算平台发布会</a></dt>
 				<dd>乐视云计算平台发布会，帮客户解决的问题描述，乐视云计算平台 发布会，帮客户解决的问题描述</dd>
 				<dd>2015-09-01 </dd>
 			</dl>
