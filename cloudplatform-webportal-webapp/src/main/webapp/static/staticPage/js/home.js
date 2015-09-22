@@ -192,7 +192,6 @@ function tabClick(){
 			$('html, body').scrollTop($(_anchor).offset().top)
 			return false;
 		}else{
-			console.log('a')
 			window.location.hash='#anchor-andvantage';
 			// $('body').animate({
 			// 	scrollTop:720
@@ -224,13 +223,18 @@ function customerToolInit() {
 	(function tooltip(){
 		$(".customer-logos div").click(function() {
 			$(".customer-logos div").removeClass('logo-focus');
+			$('.customer-hoverTip').addClass('logo-focus');
 			$(this).addClass("logo-focus");
+			var img=$(this).find('img').attr('src');
+			$('.tipImg').find('img').attr('src',img);
 		});
 	})();
 	(function tabinit(){
 		$(".customer-tab div").click(function() {
 			$(".customer-tab div").removeClass('active');
 			$(this).addClass("active");
+			var customerType=$(this).attr('self-customer-tab');
+			$('.customer-logos[self-customer-type='+customerType+']').removeClass('hide').siblings('.customer-logos').addClass('hide')
 		});
 	})();
 }
