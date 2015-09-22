@@ -7,8 +7,8 @@
 	<resultMap id="BaseResultMap" type="ProductInfoRecord">
 	    <result column="ID" property="id" />
 	    <result column="PARAMS" property="params" />
-	    <result column="SERVICE_TYPE" property="serviceType" />
-	    <result column="USER_ID" property="userId" />
+	    <result column="PRODUCT_TYPE" property="productType" />
+	    <result column="INVOKE_TYPE" property="invokeType" />
 	    <result column="DELETED" property="deleted" />
 	    <result column="CREATE_TIME" property="createTime" />
 	    <result column="UPDATE_TIME" property="updateTime" />
@@ -18,15 +18,15 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    record.ID,record.PARAMS,record.SERVICE_TYPE,record.USER_ID,record.DELETED,
-	    record.CREATE_TIME,record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN
+	    record.ID,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
+	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN
 	</sql>
 	
 	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_PRODUCT_INFO_RECORD 
-	        (PARAMS,SERVICE_TYPE,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	        (PARAMS,PRODUCT_TYPE,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
 	    values
-	        (#{params},#{serviceType},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	        (#{params},#{productType},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -38,11 +38,11 @@
 	        <if test="params != null ">
 	            and record.PARAMS=#{params}
 	        </if>
-	        <if test="serviceType != null ">
-	            and record.SERVICE_TYPE=#{serviceType}
+	        <if test="productType != null ">
+	            and record.PRODUCT_TYPE=#{productType}
 	        </if>
-	        <if test="userId != null ">
-	            and record.USER_ID=#{userId}
+	        <if test="invokeType != null ">
+	            and record.INVOKE_TYPE=#{invokeType}
 	        </if>
 	        <if test="deleted != null ">
 	            and record.DELETED=#{deleted}

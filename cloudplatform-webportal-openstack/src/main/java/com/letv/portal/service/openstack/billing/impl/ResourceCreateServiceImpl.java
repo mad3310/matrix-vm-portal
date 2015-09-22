@@ -1,6 +1,8 @@
 package com.letv.portal.service.openstack.billing.impl;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.model.UserVo;
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
@@ -33,6 +35,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Autowired
     private OpenStackService openStackService;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
     public List<ResourceLocator> createVm(long userId, String reqParaJson) throws MatrixException {
         try {
@@ -42,7 +47,8 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             });
 
-            OpenStackSession openStackSession = openStackService.createSession(Long.toString(userId), "email", "user name");
+            UserVo userVo = userService.getUcUserById(userId);
+            OpenStackSession openStackSession = openStackService.createSession(Long.toString(userId), userVo.getEmail(), userVo.getUsername());
             openStackSession.init(true);
 
             MultiVmCreateContext multiVmCreateContext = openStackSession.getVMManager().create2(vmCreateConf);

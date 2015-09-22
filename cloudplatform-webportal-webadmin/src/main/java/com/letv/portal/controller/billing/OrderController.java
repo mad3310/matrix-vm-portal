@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.service.order.IOrderDetailService;
 import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.order.IOrderSubDetailService;
+import com.letv.portal.service.order.IOrderSubService;
 
 /**
  * 订单接口
@@ -33,7 +34,9 @@ public class OrderController {
 	@Autowired
 	IOrderService orderService;
 	@Autowired
-	IOrderDetailService orderDetailService;
+	IOrderSubService orderSubService;
+	@Autowired
+	IOrderSubDetailService orderDetailService;
 	
 	/**
 	  * @Title: list
@@ -89,7 +92,7 @@ public class OrderController {
 	public @ResponseBody ResultObject modifyPriceById(@PathVariable Long id, Page page,HttpServletRequest request,ResultObject obj) {
 		Map<String,Object> params = HttpUtil.requestParam2Map(request);
 		params.put("orderId", id);
-		this.orderService.modifyPriceById(params);
+		this.orderSubService.modifyPriceById(params);
 		return obj;
 	}
 	

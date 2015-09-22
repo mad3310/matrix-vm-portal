@@ -1,6 +1,6 @@
 package com.letv.portal.service.order;
 
-import com.letv.portal.model.order.OrderDetail;
+import com.letv.portal.model.order.OrderSubDetail;
 import com.letv.portal.service.IBaseService;
 
 /**
@@ -8,6 +8,6 @@ import com.letv.portal.service.IBaseService;
  * @author lisuxiao
  *
  */
-public interface IOrderDetailService extends IBaseService<OrderDetail> {
+public interface IOrderSubDetailService extends IBaseService<OrderSubDetail> {
 
 }

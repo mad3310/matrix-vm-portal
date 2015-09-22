@@ -144,6 +144,18 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 		params.put("used", 1);
 		params.put("deleted", 0);
 		params.put("date", new Date());
+		String across = null;//交界值
+		for (BaseStandard baseStandard : baseStandards) {
+			if("3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
+				if(across==null) {
+					across = baseStandard.getValue();
+				} else {
+					if(Double.parseDouble(across)>Double.parseDouble(baseStandard.getValue())) {
+						across = baseStandard.getValue();
+					}
+				}
+			}
+		}
 		for (BaseStandard baseStandard : baseStandards) {
 			if(set.contains(baseStandard.getStandard())) {
 				break;
@@ -157,6 +169,8 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 				price = super.getPriceByTypeOne(baseStandard, standardValue, productPrice, price, set);
 			} else if("2".equals(baseStandard.getBasePrice().getType())) {
 				price = super.getPriceByTypeTwo(baseStandard, standardValue, productPrice, price, set);
+			} else if("3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
+				price = getPriceByTypeThree(baseStandard, standardValue, productPrice, price, set, across);
 			}
 			
 		}
