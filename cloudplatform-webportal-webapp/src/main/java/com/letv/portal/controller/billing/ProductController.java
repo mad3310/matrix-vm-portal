@@ -119,12 +119,12 @@ public class ProductController {
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
 		Map<String, Object> billingParams = JSONObject.parseObject(paramsData, Map.class);
 		
+		transferParamsDateToCalculate(billingParams, id);
+		
 		Long regionId = productService.getRegionIdByCode((String)billingParams.get("region"));
 		if(regionId!=null) {
 			billingParams.put("region", regionId+"");
 		}
-		
-		transferParamsDateToCalculate(billingParams, id);
 		
 		String orderTime = (String)billingParams.get("order_time");
 		
