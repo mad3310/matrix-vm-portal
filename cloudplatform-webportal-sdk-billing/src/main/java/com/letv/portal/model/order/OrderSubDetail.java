@@ -12,13 +12,13 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
  * @author lisuxiao
  *
  */
-@Alias("OrderDetail")
-public class OrderDetail extends BaseModel{
+@Alias("OrderSubDetail")
+public class OrderSubDetail extends BaseModel{
 
 	private static final long serialVersionUID = 727699783805627057L;
 
 	private Long subscriptionDetailId;//订阅详情ID
-	private Long orderId;//订单ID
+	private Long orderSubId;//子订单ID
 	private Double amount;//使用量
 	private Double price;//产品元素单价*购买时长*数量
 	private Date startTime;//开始时间
@@ -39,11 +39,11 @@ public class OrderDetail extends BaseModel{
 	public void setSubscriptionDetailId(Long subscriptionDetailId) {
 		this.subscriptionDetailId = subscriptionDetailId;
 	}
-	public Long getOrderId() {
-		return orderId;
+	public Long getOrderSubId() {
+		return orderSubId;
 	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setOrderSubId(Long orderSubId) {
+		this.orderSubId = orderSubId;
 	}
 	public Double getAmount() {
 		return amount;

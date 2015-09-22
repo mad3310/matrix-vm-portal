@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, $scope, $modalInstance,$timeout, items, region) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, $scope, $modalInstance,$timeout,$window, items, region) {
 
     $scope.activeFlow = 1;
     $scope.vmName = '';
@@ -80,10 +80,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         privateSubnetId:'',
         snapshotId:'',
       };
-      HttpService.doPost(Config.urls.vm_create, data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),calculateData:JSON.stringify(calculatePriceData)}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('创建云主机成功');
+          $window.location.href = '/payment/'+data.data;
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云主机失败');
@@ -119,7 +119,8 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     var flavorGroupData = null,
       selectedVmFlavor = null,
-      selectedVmSharedNetwork=null;
+      selectedVmSharedNetwork=null,
+      calculatePriceData= null;
     var initComponents = function () {
         initVmImageSelector();
         initVmCpuSelector();
@@ -166,14 +167,15 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       },
       setVmPrice=function(){
-        var data= {
+        var data={
           region: region,
-          order_time: $scope.vmBuyPeriod,
-          order_num: $scope.vmCount,
-          os_broadband: $scope.networkBandWidth,
-          os_storage: $scope.dataDiskVolume,
+          order_time: $scope.vmBuyPeriod.toString(),
+          order_num: $scope.vmCount.toString(),
+          os_broadband: $scope.networkBandWidth.toString(),
+          os_storage: $scope.dataDiskVolume.toString(),
           cpu_ram: $scope.selectedVmCpu + '_' + $scope.selectedVmRam
         };
+        calculatePriceData=data;
         HttpService.doPost(Config.urls.vm_calculate_price,data).success(function (data, status, headers, config) {
           if(data.result===1){
             $scope.vmTotalPrice=data.data;

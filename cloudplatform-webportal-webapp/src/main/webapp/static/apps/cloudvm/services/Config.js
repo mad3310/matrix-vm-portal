@@ -11,6 +11,7 @@ define(['services/app.service'], function (serviceModule) {
       flavor_group_data: '/osf/region/{region}/group',
       vm_create_old: '/ecs/region/{region}/vm-create',
       vm_create: '/ecs/vm/create',
+      vm_buy: '/billing/buy/2',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
       vm_delete: '/ecs/region/{region}/vm-delete',
