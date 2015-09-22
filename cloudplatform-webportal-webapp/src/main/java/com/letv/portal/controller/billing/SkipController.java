@@ -37,5 +37,11 @@ public class SkipController {
 		mav.setViewName("/payment/payment");
 		return mav;
 	}
+	@RequestMapping(value ="/payment/success/{orderNum}",method=RequestMethod.GET)
+	public ModelAndView paySuccess(@PathVariable String orderNum,ModelAndView mav){
+		mav.addObject("orderNum",orderNum);
+		mav.setViewName("/payment/paycomplete");
+		return mav;
+	}
 	
 }

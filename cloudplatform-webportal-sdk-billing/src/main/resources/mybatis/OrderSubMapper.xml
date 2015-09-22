@@ -36,6 +36,12 @@
 		    <result column="STATUS" property="status" />
 		    <result column="PAY_NUMBER" property="payNumber" />
 		</association>
+		
+		<association property="productInfoRecord" javaType="ProductInfoRecord">
+			<result column="PARAMS" property="params" />
+		    <result column="PRODUCT_TYPE" property="productType" />
+		    <result column="INVOKE_TYPE" property="invokeType" />
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
@@ -155,7 +161,7 @@
 	    select
 	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,
-	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join
@@ -164,6 +170,8 @@
 	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
 	    left join
 	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
+	    left join
+	    	MATRIX_PRODUCT_INFO_RECORD record on sub.PRODUCT_INFO_RECORD_ID=record.ID
 	        <include refid="Common_Where_Clause" />
 			<if test="orderNumber != null  and orderNumber != ''">
 				and od.ORDER_NUMBER = #{orderNumber}
