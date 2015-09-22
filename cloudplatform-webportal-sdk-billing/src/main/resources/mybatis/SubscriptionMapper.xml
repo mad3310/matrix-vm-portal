@@ -9,9 +9,7 @@
 	    <result column="SUBSCRIPTION_NUMBER" property="subscriptionNumber" />
 	    <result column="PRODUCT_ID" property="productId" />
 	    <result column="BASE_REGION_ID" property="baseRegionId" />
-	    <result column="HCLUSTER_ID" property="hclusterId" />
 	    <result column="CHARGE_TYPE" property="chargeType" />
-	    <result column="ORDER_NUM" property="orderNum" />
 	    <result column="ORDER_TIME" property="orderTime" />
 	    <result column="VALID" property="valid" />
 	    <result column="START_TIME" property="startTime" />
@@ -27,13 +25,11 @@
 	    
 	    <result column="PRODUCT_NAME" property="productName" />
 	    <result column="BASE_REGION_NAME" property="baseRegionName" />
-	    <result column="HCLUSTER_NAME" property="hclusterName" />
-	    <result column="USER_NAME" property="userName" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    subscription.ID,subscription.PRODUCT_ID,subscription.BASE_REGION_ID,subscription.HCLUSTER_ID,subscription.SUBSCRIPTION_NUMBER,
-	    subscription.CHARGE_TYPE,subscription.ORDER_NUM,subscription.ORDER_TIME,subscription.VALID,
+	    subscription.ID,subscription.PRODUCT_ID,subscription.BASE_REGION_ID,subscription.SUBSCRIPTION_NUMBER,
+	    subscription.CHARGE_TYPE,subscription.ORDER_TIME,subscription.VALID,
 	    subscription.START_TIME,subscription.END_TIME,subscription.USER_ID,subscription.DELETED,
 	    subscription.CREATE_TIME,subscription.UPDATE_TIME,subscription.CREATE_USER,subscription.UPDATE_USER,
 	    subscription.DESCN,subscription.PRODUCT_INFO_RECORD_ID
@@ -41,9 +37,9 @@
 	
 	<insert id="insert" parameterType="Subscription" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_SUBSCRIPTION 
-	        (SUBSCRIPTION_NUMBER,PRODUCT_ID,BASE_REGION_ID,HCLUSTER_ID,CHARGE_TYPE,ORDER_NUM,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PRODUCT_INFO_RECORD_ID) 
+	        (SUBSCRIPTION_NUMBER,PRODUCT_ID,BASE_REGION_ID,CHARGE_TYPE,ORDER_TIME,VALID,START_TIME,END_TIME,USER_ID,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PRODUCT_INFO_RECORD_ID) 
 	    values
-	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{hclusterId},#{chargeType},#{orderNum},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
+	        (#{subscriptionNumber},#{productId},#{baseRegionId},#{chargeType},#{orderTime},#{valid},#{startTime},#{endTime},#{userId},#{deleted},#{createTime},#{updateTime},#{createUser},#{updateUser},#{descn},#{productInfoRecordId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -61,14 +57,8 @@
 	        <if test="baseRegionId != null ">
 	            and subscription.BASE_REGION_ID=#{baseRegionId}
 	        </if>
-	        <if test="hclusterId != null ">
-	            and subscription.HCLUSTER_ID=#{hclusterId}
-	        </if>
 	        <if test="chargeType != null ">
 	            and subscription.CHARGE_TYPE=#{chargeType}
-	        </if>
-	        <if test="orderNum != null ">
-	            and subscription.ORDER_NUM=#{orderNum}
 	        </if>
 	        <if test="orderTime != null ">
 	            and subscription.ORDER_TIME=#{orderTime}
@@ -137,17 +127,12 @@
 	    	MATRIX_BILLING_PRODUCT product on subscription.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
-		left join
-	    	WEBPORTAL_USER user on subscription.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
-	        </if>
-	        <if test="userName != null and userName != '' ">
-	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
 	        </if>
 	</select>
 	
@@ -155,24 +140,19 @@
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
 			<include refid="Base_Column_List" />,product.NAME PRODUCT_NAME,
-			region.NAME BASE_REGION_NAME,user.USERNAME USER_NAME
+			region.NAME BASE_REGION_NAME
 		from 
 			MATRIX_BILLING_SUBSCRIPTION subscription
 		left join
 	    	MATRIX_BILLING_PRODUCT product on subscription.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on subscription.BASE_REGION_ID=region.ID
-		left join
-	    	WEBPORTAL_USER user on subscription.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
 			<if test="productName != null and productName != '' ">
 	            and product.NAME like CONCAT('%','${productName}','%') escape '^' 
 	        </if>
 	        <if test="baseRegionName != null and baseRegionName != '' ">
 	            and region.NAME like CONCAT('%','${baseRegionName}','%') escape '^'
-	        </if>
-	        <if test="userName != null and userName != '' ">
-	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
 	        </if>
 		ORDER BY subscription.CREATE_TIME DESC
 			<if test="page != null">

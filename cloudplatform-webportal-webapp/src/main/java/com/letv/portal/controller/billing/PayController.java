@@ -1,6 +1,8 @@
 package com.letv.portal.controller.billing;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.letv.common.exception.ValidateException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.order.Order;
+import com.letv.portal.model.order.OrderSub;
+import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.proxy.IDbProxy;
-import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
+import com.letv.portal.service.product.IProductInfoRecordService;
 
 /**
  * 订单接口
@@ -38,7 +43,9 @@ public class PayController {
 	@Autowired
 	private IDbProxy dbProxy;
 	@Autowired
-	private IOrderService orderService;
+	private IOrderSubService orderSubService;
+	@Autowired
+	private IProductInfoRecordService productInfoRecordService;
 
 	/**
 	  * @Title: pay
@@ -63,10 +70,20 @@ public class PayController {
 	@RequestMapping(value="/success/{orderId}",method=RequestMethod.GET)   
 	public void paySuccess(@PathVariable Long orderId) {
 		//根据订阅中产品类型调用相应的创建服务地址
-		Order order = this.orderService.selectOrderById(orderId);
-		if(order.getStatus()==2 && order.getPayNumber()!=null) {//支付成功
-			if(order.getSubscription().getProductId()==1) {//rds
-				this.dbProxy.build(order.getSubscription().getProductInfoRecordId());
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderId(orderId);
+		if(orderSubs==null || orderSubs.size()==0) {
+			throw new ValidateException("无法查询到订单，订单ID："+orderId);
+		}
+		if(orderSubs.get(0).getOrder().getStatus()==2 && orderSubs.get(0).getOrder().getPayNumber()!=null) {//支付成功
+			for (OrderSub orderSub : orderSubs) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("id", orderSub.getSubscription().getProductInfoRecordId());
+				params.put("invokeType", 1);
+				List<ProductInfoRecord> records = productInfoRecordService.selectByMap(params);
+				//TODO 进行服务创建
+				if(orderSub.getSubscription().getProductId()==1) {//rds
+					this.dbProxy.build(orderSub.getSubscription().getProductInfoRecordId());
+				}
 			}
 		}
 	}

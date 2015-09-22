@@ -8,6 +8,8 @@
 	    <result column="ID" property="id" />
 	    <result column="ORDER_ID" property="orderId" />
 	    <result column="SUBSCRIPTION_ID" property="subscriptionId" />
+	    <result column="START_TIME" property="startTime" />
+    	<result column="END_TIME" property="endTime" />
 	    <result column="PRICE" property="price" />
 	    <result column="DISCOUNT_PRICE" property="discountPrice" />
 	    <result column="DELETED" property="deleted" />
@@ -20,36 +22,41 @@
 	    <association property="subscription" javaType="Subscription">
 			<result column="PRODUCT_ID" property="productId" />
 		    <result column="BASE_REGION_ID" property="baseRegionId" />
-		    <result column="HCLUSTER_ID" property="hclusterId" />
 		    <result column="CHARGE_TYPE" property="chargeType" />
 		    <result column="ORDER_TIME" property="orderTime" />
 		    <result column="VALID" property="valid" />
 		    <result column="PRODUCT_INFO_RECORD_ID" property="productInfoRecordId" />
 		    <result column="PRODUCT_NAME" property="productName" />
+		    <result column="PRODUCT_DESCN" property="productDescn" />
 		    <result column="BASE_REGION_NAME" property="baseRegionName" />
-		    <result column="HCLUSTER_NAME" property="hclusterName" />
-		    <result column="USER_NAME" property="userName" />
+		</association>
+		
+		<association property="order" javaType="Order">
+			<result column="ORDER_NUMBER" property="orderNumber" />
+		    <result column="STATUS" property="status" />
+		    <result column="PAY_NUMBER" property="payNumber" />
 		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-	    od.ID,od.SUBSCRIPTION_ID,od.START_TIME,od.END_TIME,od.PRICE,od.DISCOUNT_PRICE,od.STATUS,od.ORDER_NUMBER,
-	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN,od.PAY_NUMBER
+		orderSub.ID,orderSub.ORDER_ID,orderSub.SUBSCRIPTION_ID,orderSub.START_TIME,
+		orderSub.END_TIME,orderSub.PRICE,orderSub.DISCOUNT_PRICE,orderSub.DELETED,
+		orderSub.CREATE_TIME,orderSub.UPDATE_TIME,orderSub.CREATE_USER,orderSub.UPDATE_USER,orderSub.DESCN
 	</sql>
 	
-	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
-	    insert into MATRIX_BILLING_ORDER 
-	        (ORDER_NUMBER,SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	<insert id="insert" parameterType="OrderSub" useGeneratedKeys="true" keyProperty="id" >
+	    insert into MATRIX_BILLING_ORDER_SUB 
+	        (ORDER_ID,SUBSCRIPTION_ID,START_TIME,END_TIME,PRICE,DISCOUNT_PRICE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
 	    values
-	        (#{orderNumber},#{subscriptionId},#{startTime},#{endTime},#{price},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	        (#{orderId},#{subscriptionId},#{startTime},#{endTime},#{price},#{discountPrice},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
 	</insert>
 	
 	<!--根据id，有选择的修改记录 -->
-	<update id="updateBySelective" parameterType="Order">
-		update MATRIX_BILLING_ORDER
+	<update id="updateBySelective" parameterType="OrderSub">
+		update MATRIX_BILLING_ORDER_SUB
 		<set>
-			<if test="orderNumber != null ">
-	            ORDER_NUMBER=#{orderNumber},
+			<if test="orderId != null ">
+	            ORDER_ID=#{orderId},
 	        </if>
 			<if test="subscriptionId != null ">
 	            SUBSCRIPTION_ID=#{subscriptionId},
@@ -62,9 +69,6 @@
 	        </if>
 	        <if test="price != null ">
 	            PRICE=#{price},
-	        </if>
-	        <if test="status != null ">
-	            STATUS=#{status},
 	        </if>
 	        <if test="deleted != null ">
 	            DELETED=#{deleted},
@@ -82,17 +86,14 @@
 	            UPDATE_USER=#{updateUser},
 	        </if>
 	        <if test="descn != null ">
-	            DESCN=#{descn},
-	        </if>
-	        <if test="payNumber != null ">
-	            PAY_NUMBER=#{payNumber}
+	            DESCN=#{descn}
 	        </if>
 		</set>
 		where ID=#{id}
 	</update>
 	<!--根据id，修改折扣价 -->
 	<update id="modifyPriceById" parameterType="java.util.Map">
-		update MATRIX_BILLING_ORDER
+		update MATRIX_BILLING_ORDER_SUB
 		<set>
 	        <if test="discountPrice != null ">
 	            DISCOUNT_PRICE=#{discountPrice},
@@ -109,61 +110,64 @@
 	    where 1=1
 	    <trim suffixOverrides=",">
 	        <if test="id != null ">
-	            and od.ID=#{id}
+	            and orderSub.ID=#{id}
 	        </if>
-	        <if test="orderNumber != null ">
-	            and od.ORDER_NUMBER like CONCAT('%','${orderNumber}','%') escape '^' 
+	        <if test="orderId != null ">
+	            and orderSub.ORDER_ID=#{orderId}
 	        </if>
 	        <if test="subscriptionId != null ">
-	            and od.SUBSCRIPTION_ID=#{subscriptionId}
+	            and orderSub.SUBSCRIPTION_ID=#{subscriptionId}
 	        </if>
 	        <if test="startTime != null ">
-	            and od.START_TIME=#{startTime}
+	            and orderSub.START_TIME=#{startTime}
 	        </if>
 	        <if test="endTime != null ">
-	            and od.END_TIME=#{endTime}
+	            and orderSub.END_TIME=#{endTime}
 	        </if>
 	        <if test="price != null ">
-	            and od.PRICE=#{price}
+	            and orderSub.PRICE=#{price}
 	        </if>
 	        <if test="discountPrice != null ">
-	            and od.DISCOUNT_PRICE=#{discountPrice}
-	        </if>
-	        <if test="status != null ">
-	            and od.STATUS=#{status}
+	            and orderSub.DISCOUNT_PRICE=#{discountPrice}
 	        </if>
 	        <if test="deleted != null ">
-	            and od.DELETED=#{deleted}
+	            and orderSub.DELETED=#{deleted}
 	        </if>
 	        <if test="createTime != null ">
-	            and od.CREATE_TIME=#{createTime}
+	            and orderSub.CREATE_TIME=#{createTime}
 	        </if>
 	        <if test="updateTime != null ">
-	            and od.UPDATE_TIME=#{updateTime}
+	            and orderSub.UPDATE_TIME=#{updateTime}
 	        </if>
 	        <if test="createUser != null ">
-	            and od.CREATE_USER=#{createUser}
+	            and orderSub.CREATE_USER=#{createUser}
 	        </if>
 	        <if test="updateUser != null ">
-	            and od.UPDATE_USER=#{updateUser}
+	            and orderSub.UPDATE_USER=#{updateUser}
 	        </if>
 	        <if test="descn != null ">
-	            and od.DESCN=#{descn}
+	            and orderSub.DESCN=#{descn}
 	        </if>
 	    </trim>
 	</sql>
 	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
-	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.HCLUSTER_ID,
-	        sub.CHARGE_TYPE,sub.ORDER_NUM,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME
+	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
+	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER
 	    from
-	        MATRIX_BILLING_ORDER od
+	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join
-	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+	        MATRIX_BILLING_ORDER od on orderSub.ORDER_ID=od.ID
+	    left join
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
 	    left join
 	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
 	        <include refid="Common_Where_Clause" />
+			<if test="orderNumber != null  and orderNumber != ''">
+				and od.ORDER_NUMBER = #{orderNumber}
+			</if>
 	        <if test="userId != null  and userId != ''">
 				and sub.USER_ID = #{userId}
 			</if>
@@ -174,41 +178,31 @@
 		select 
 			count(1) 
 		from 
-			MATRIX_BILLING_ORDER od
+			MATRIX_BILLING_ORDER_SUB orderSub
 		left join
-	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
 		left join
 	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
-		left join
-	    	WEBPORTAL_USER user on sub.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
-			<if test="userName != null and userName != '' ">
-	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
-	        </if>
 	</select>
 	
 	<!-- 分页：根据条件查询 -->
 	<select id="selectPageByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 		select
-			<include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,sub.HCLUSTER_ID,
-	        sub.CHARGE_TYPE,sub.ORDER_NUM,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,
-	        product.NAME PRODUCT_NAME,region.NAME BASE_REGION_NAME,user.USERNAME USER_NAME
+			<include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
+	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,
+	        product.NAME PRODUCT_NAME,region.NAME BASE_REGION_NAME
 		from 
-			MATRIX_BILLING_ORDER od
+			MATRIX_BILLING_ORDER_SUB orderSub
 		left join
-	    	MATRIX_BILLING_SUBSCRIPTION sub on od.SUBSCRIPTION_ID=sub.ID
+	    	MATRIX_BILLING_SUBSCRIPTION sub on orderSub.SUBSCRIPTION_ID=sub.ID
 		left join
 	    	MATRIX_BILLING_PRODUCT product on sub.PRODUCT_ID=product.ID
 		left join
 	    	MATRIX_BILLING_BASE_REGION region on sub.BASE_REGION_ID=region.ID
-		left join
-	    	WEBPORTAL_USER user on sub.USER_ID=user.ID
 			<include refid="Common_Where_Clause" />
-			<if test="userName != null and userName != '' ">
-	            and user.USERNAME like CONCAT('%','${userName}','%') escape '^' 
-	        </if>
 		ORDER BY od.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}

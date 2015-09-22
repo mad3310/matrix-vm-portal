@@ -1,25 +1,13 @@
 package com.letv.portal.service.pay.impl;
 
-import com.letv.common.exception.ValidateException;
-import com.letv.common.session.Session;
-import com.letv.common.session.SessionServiceImpl;
-import com.letv.common.util.HttpClient;
-import com.letv.common.util.MD5;
-import com.letv.portal.constant.Constant;
-import com.letv.portal.model.order.Order;
-import com.letv.portal.model.subscription.Subscription;
-import com.letv.portal.service.order.IOrderService;
-import com.letv.portal.service.pay.IPayService;
-import com.mysql.jdbc.StringUtils;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +18,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.letv.common.exception.ValidateException;
+import com.letv.common.session.SessionServiceImpl;
+import com.letv.common.util.HttpClient;
+import com.letv.common.util.MD5;
+import com.letv.portal.constant.Arithmetic4Double;
+import com.letv.portal.constant.Constant;
+import com.letv.portal.model.order.Order;
+import com.letv.portal.model.order.OrderSub;
+import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.order.IOrderSubService;
+import com.letv.portal.service.pay.IPayService;
+import com.mysql.jdbc.StringUtils;
+
 @Service("payService")
 public class PayServiceImpl implements IPayService {
 	
@@ -37,6 +38,8 @@ public class PayServiceImpl implements IPayService {
 
 	@Autowired
 	IOrderService orderService;
+	@Autowired
+	IOrderSubService orderSubService;
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
@@ -50,10 +53,11 @@ public class PayServiceImpl implements IPayService {
 	public Map<String, Object> pay(Long orderId, Map<String, Object> map,
 			HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		Order order = this.orderService.selectOrderById(orderId);
-		if (order == null) {
-			throw new ValidateException("参数未查出数据,orderId=" + orderId);
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderId(orderId);
+		if (orderSubs == null || orderSubs.size()==0) {
+			throw new ValidateException("参数未查出订单数据,orderId=" + orderId);
 		}
+		Order order = orderSubs.get(0).getOrder();
 		if (order.getStatus().intValue() == 1) {
 			ret.put("alert", "订单状态已失效");
 			ret.put("status", 1);
@@ -63,11 +67,11 @@ public class PayServiceImpl implements IPayService {
 		} else {
 			String pattern = (String) map.get("pattern");
 			Map<String, String> params = new HashMap<String, String>();
-			double price = getValidOrderPrice(order);
+			double price = getValidOrderPrice(orderSubs);
 			if (price == 0.0D) {
 				try {
-					if (updateOrderPayInfo(order, "9999", price + "", 2)) {
-						response.sendRedirect(this.PAY_SUCCESS + "?id=" + order.getId());
+					if (updateOrderPayInfo(orderSubs, "9999", price + "", 2)) {
+						response.sendRedirect(this.PAY_SUCCESS + "?id=" + orderSubs.get(0).getOrderId());
 						return ret;
 					} else {
 						throw new ValidateException("更新订单状态异常");
@@ -77,8 +81,8 @@ public class PayServiceImpl implements IPayService {
 				}
 			}
 			String url = getParams(order.getOrderNumber(), price, pattern,this.PAY_CALLBACK,
-					this.PAY_SUCCESS + "?id=" + order.getId(), order.getSubscription().getProductName(), 
-					order.getSubscription().getProductName(), null, params);
+					this.PAY_SUCCESS + "?id=" + orderSubs.get(0).getOrderId(), orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
+							orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductDescn():orderSubs.get(0).getSubscription().getProductDescn()+"...", null, params);
 
 			if ("1".equals(pattern)) {//支付宝方法
 				try {
@@ -89,7 +93,7 @@ public class PayServiceImpl implements IPayService {
 			} else if ("2".equals(pattern)) {//微信支付
 				String str = HttpClient.get(getPayUrl(url, params), 2000, 2000);
 				ret = transResult(str);
-				if (!updateOrderPayInfo(order, (String) ret.get("ordernumber"),
+				if (!updateOrderPayInfo(orderSubs, (String) ret.get("ordernumber"),
 						(String) ret.get("price"), null)) {
 					ret.put("alert", "微信方式支付异常");
 				}
@@ -165,17 +169,17 @@ public class PayServiceImpl implements IPayService {
 			return false;
 		}
 
-		Order order = this.orderService.selectOrderByOrderNumber((String) map.get("corderid"));
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber((String) map.get("corderid"));
 
 		//②支付成功已通知服务器并且order的状态为已支付
-		if (Integer.parseInt((String) map.get("stat")) == 1 && order.getStatus() == 2) {
+		if (Integer.parseInt((String) map.get("stat")) == 1 && orderSubs.get(0).getOrder().getStatus() == 2) {
 			return true;
 		}
 		
 		//③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
-		String sign = getSign("4", Constant.SIGN_KEY, order.getOrderNumber(), getValidOrderPrice(order) + "");
+		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0).getOrder().getOrderNumber(), getValidOrderPrice(orderSubs) + "");
 		if (sign != null && sign.equals(map.get("sign"))) {
-			return updateOrderPayInfo(order, (String) map.get("ordernumber"),
+			return updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
 					(String) map.get("money"), 2);
 		}
 		return false;
@@ -190,18 +194,23 @@ public class PayServiceImpl implements IPayService {
 	  * @author lisuxiao
 	  * @date 2015年9月17日 下午4:23:46
 	  */
-	private double getValidOrderPrice(Order order) {
-		if ((order.getDiscountPrice() == null)
-				|| (order.getDiscountPrice() < 0.0D)) {//使用原价
-			return order.getPrice();
+	private double getValidOrderPrice(List<OrderSub> orderSubs) {
+		double price = 0;
+		for (OrderSub orderSub : orderSubs) {
+			if ((orderSub.getDiscountPrice() == null)
+					|| (orderSub.getDiscountPrice() < 0.0D)) {//使用原价
+				price = Arithmetic4Double.add(price, orderSub.getPrice());
+			} else {
+				price = Arithmetic4Double.add(price, orderSub.getDiscountPrice());//使用折扣价
+			}
 		}
-		return order.getDiscountPrice();//使用折扣价
+		return price;
 	}
 
-	private boolean updateOrderPayInfo(Order order, String orderNumber, String price, Integer status) {
-		if (getValidOrderPrice(order) == Double.parseDouble(price)) {
+	private boolean updateOrderPayInfo(List<OrderSub> orderSubs, String orderNumber, String price, Integer status) {
+		if (getValidOrderPrice(orderSubs) == Double.parseDouble(price)) {
 			Order o = new Order();
-			o.setId(order.getId());
+			o.setId(orderSubs.get(0).getOrderId());
 			o.setStatus(status);
 			o.setUpdateTime(new Timestamp(new Date().getTime()));
 			o.setPayNumber(orderNumber);
@@ -212,7 +221,8 @@ public class PayServiceImpl implements IPayService {
 	}
 
 	public Map<String, Object> queryState(Long orderId) {
-		Order order = this.orderService.selectOrderById(orderId);
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderId(orderId);
+		Order order = orderSubs.get(0).getOrder();
 		if (order==null || order.getPayNumber() == null) {
 			return null;
 		}
@@ -225,7 +235,7 @@ public class PayServiceImpl implements IPayService {
 		Map<String, Object> map = transResult(ret);
 
 		if ((map.get("status") != null) && (Integer) map.get("status")==1) {//支付成功
-			if (updateOrderPayInfo(order, (String) map.get("ordernumber"), (String) map.get("money"), 2)) {
+			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"), (String) map.get("money"), 2)) {
 				return map;
 			}
 			return null;

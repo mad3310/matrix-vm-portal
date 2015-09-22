@@ -12,8 +12,8 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
  * @author lisuxiao
  *
  */
-@Alias("OrderDetail")
-public class OrderDetail extends BaseModel{
+@Alias("OrderSubDetail")
+public class OrderSubDetail extends BaseModel{
 
 	private static final long serialVersionUID = 727699783805627057L;
 
