@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.letv.common.exception.CommonException;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.dao.letvcloud.BillRechargeRecordMapper;
 import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
 import com.letv.portal.model.letvcloud.BillRechargeRecord;
@@ -42,12 +43,11 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 	    String tradeNum = format.format(System.currentTimeMillis());
         BillRechargeRecord record = new BillRechargeRecord();
-        record.setTradeNum(tradeNum);
+        record.setTradeNum(tradeNum+PasswordRandom.genStr(16));
         record.setAmount(amount);
         record.setUserId(userId);
         record.setRechargeType(type);
         billRechargeRecordMapper.insert(record);
-
         return tradeNum;
     }
 
