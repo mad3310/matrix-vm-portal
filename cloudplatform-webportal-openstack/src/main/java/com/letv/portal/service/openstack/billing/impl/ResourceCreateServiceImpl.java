@@ -8,6 +8,7 @@ import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VmCreateContext;
@@ -38,6 +39,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Autowired
     private IUserService userService;
 
+    private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
+        UserVo userVo = userService.getUcUserById(userId);
+        OpenStackSession openStackSession = openStackService.createSession(Long.toString(userId), userVo.getEmail(), userVo.getUsername());
+        openStackSession.init(true);
+        return openStackSession;
+    }
+
     @Override
     public List<ResourceLocator> createVm(long userId, String reqParaJson) throws MatrixException {
         try {
@@ -47,9 +55,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
             });
 
-            UserVo userVo = userService.getUcUserById(userId);
-            OpenStackSession openStackSession = openStackService.createSession(Long.toString(userId), userVo.getEmail(), userVo.getUsername());
-            openStackSession.init(true);
+            OpenStackSession openStackSession = createOpenStackSession(userId);
 
             MultiVmCreateContext multiVmCreateContext = openStackSession.getVMManager().create2(vmCreateConf);
 
@@ -58,6 +64,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
                 resourceLocators.add(new ResourceLocator(multiVmCreateContext.getVmCreateConf().getRegion(), vmCreateContext.getServer().getId()));
             }
             return resourceLocators;
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
+    }
+
+    @Override
+    public FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException {
+        try {
+            OpenStackSession openStackSession = createOpenStackSession(userId);
+            return openStackSession.getVMManager().getFlavorResource(region, flavorId);
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
