@@ -14,13 +14,14 @@
 </head>
 <body>
 	<input id="userId" type="text" class="hide" value="${sessionScope.userSession.userId}">
+	<input id="orderNum" type="text" class="hide" value="${orderNum}">
 	<div class="main-body">
 		<div class="order">
 			<div class="order-title">订单支付</div>
 			<div class="order-pay">
-				<div class="pay-item">账号名称：<span class="item-desc">letvcloud@letv.com</span></div>
+				<div class="pay-item">账号名称：<span class="item-desc account">letvcloud@letv.com</span></div>
 				<div class="pay-item">
-					<span>可用余额：</span><span class="item-desc">¥100</span>
+					<span>可用余额：</span><span class="item-desc remain">¥100</span>
 					<button class="btn btn-le-red item-recharge">充值</buttom>
 				</div>
 				<div class="pay-item">本次需支付：<span class="text-red item-desc">¥1000</span></div>
@@ -30,7 +31,8 @@
 					<!-- <button class="payoption"><img src="/static/staticPage/img/wechat.png"></button> -->
 				</div>
 				<div class="pay-item">
-					<button class="btn btn-le-blue item-pay">确认支付</button>
+					<button class="btn btn-le-blue item-pay" id="pay">确认支付</button>
+					<!-- <a class="btn btn-le-blue item-pay" id="pay">确认支付</a> -->
 				</div>
 			</div>
 		</div>
@@ -56,10 +58,12 @@
 							<th width="12.5%">支付费用</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="order-tbody">
 						<tr>
 							<td>0100002010010</td>
-							<td><div style="width:50%;text-align:right;">购买服务器</div></td>
+							<td>
+								<div style="width:50%;text-align:right;">购买服务器</div>
+							</td>
 							<td>1</td>
 							<td class="price">105.00元/月</td>
 							<td>1个月</td>
@@ -105,39 +109,128 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="main-body" style="position:absolute;z-index:200;background:rgba(0,0,0,.3)">
-		
-	</div> -->
+	<div class="modal-container hide">
+		<div class="modal">
+			<div class="modal-top">
+				<div class="modal-title"><span>充值完成前请不要关闭此窗口</span>
+				<span class="iconfont icon-add"></span>
+				<span class="clearfix"></span>
+				</div>
+			</div>
+			<div class="modal-content">
+				<div>请在新开充值页面上完成付款后，再继续支付。</div>
+				<div class="buttons clearfix text-center">
+					<div class="col-md-offset-2 col-md-4"><button class="btn btn-le-blue paybtn">充值完成</buttom></div>
+					<div class="col-md-4"><button class="btn btn-le-red paybtn">充值遇到问题</buttom></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
+<script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
-	$('.title-rollup').unbind('click').click(function(){
-		var _target=$('.ordertable');
-		var _targetI=$('.icon-arrow01');
-		var _targetTxt=$('.rollup-text');
-		if(_target.hasClass('opacity')){
-			_target.removeClass('opacity')
-			_target.css({
-				opacity: '0',
-				transition: 'opacity .2s ease-in'
-			});
-			_targetI.css({
-				transform:'rotate(0deg)',
-				transition:'transform .2s ease-in'
-			});
-			_targetTxt.text('展开');
+rollup();
+var width=document.body.scrollWidth;
+var height=document.body.scrollHeight;
+var userid=$('#userId').val();
+var orderNum=$('#orderNum').val();
+var payurl="/user/"+userid;
+var remainurl="/userAccount/balance/"+userid;
+$.ajax({
+	url:payurl,
+	type: 'get',
+	success:function(data){
+		var _data=data.data;
+		if(data.result==0){//error
 		}else{
-			_target.css({
-				opacity: '1',
-				transition: 'opacity .2s ease-in'
-			});
-			_target.addClass('opacity');
-			_targetI.css({
-				transform:'rotate(180deg)',
-				transition:'transform .2s ease-in'
-			});
-			_targetTxt.text('收起');
+			$('.account').text(_data.email);
 		}
-	});
+	}
+});
+$.ajax({
+	url:remainurl,
+	type: 'get',
+	success:function(data){
+		var _data=data.data;
+		if(data.result==0){//error
+		}else{
+			$('.remain').text(_data);
+		}
+	}
+});
+$('#pay').unbind('click').click(function(event){
+	window.open('/pay/'+orderNum+'?pattern=1');
+	$('.modal-container').css({
+		width:width,
+		height:height
+	}).removeClass('hide');
+});
+// $.ajax({
+// 	url: '/order/'+orderNum,
+// 	type: 'get',
+// 	success:function(data){
+// 		if(data.result==0){//error
+
+// 		}else{
+// 			var _target=$('#order-tbody');
+// 			var orderArray=data.data;
+// 			var order,orderHtml='';
+// 			for(var i in orderArray){
+// 				order=orderArray[i];
+
+// 				orderHtml=orderHtml+'<tr>'
+// 										+'<td>'+order.orderNumber'</td>'
+// 										+'<td><div style="width:50%;text-align:right;">购买服务器</div></td>'
+// 										+'<td>'+order.params.count+'</td>'
+// 										//+'<td class="price">105.00元/月</td>'
+// 										+'<td>1个月</td>'
+// 										+'<td class="price">¥'+order.totalPrice+'</td>'
+// 									+'</tr>'
+// 									+'<tr>'
+// 										+'<td></td>'
+// 										+'<td>'
+// 											+'<div class="payitems">'
+// 												+'<div class="payitem clearfix">'
+// 													+'<div class="text-right">配置&nbsp;:</div><div class="payitem-desc">&nbsp;1核，2G内存，无数据盘</div>'
+// 												+'</div>'
+// 												+'<div class="payitem clearfix">'
+// 													+'<div class="text-right">带宽&nbsp;:</div><div class="payitem-desc">&nbsp;'+order.bandWidth+'Mbps</div>'
+// 												+'</div>'
+// 												+'<div class="payitem clearfix">'
+// 													+'<div class="text-right">操作系统&nbsp;:</div><div class="payitem-desc">&nbsp;CentOS 6.6 32位</div>'
+// 												+'</div>'
+// 												// +'<div class="payitem clearfix">'
+// 												// 	+'<div class="text-right">安全组件&nbsp;:</div><div class="payitem-desc">&nbsp;安全加固组件</div>'
+// 												// +'</div>'
+// 												+'<div class="payitem clearfix">'
+// 													+'<div class="text-right">地域&nbsp;:</div><div class="payitem-desc">&nbsp;华东区-上海</div>'
+// 												+'</div>'
+// 												+'<div class="payitem clearfix">'
+// 													+'<div class="text-right">所属网络&nbsp;:</div><div class="payitem-desc">&nbsp;基础网络</div>'
+// 												+'</div>'
+// 												// +'<div class="payitem clearfix">'
+// 												// 	+'<div class="text-right">可用区&nbsp;:</div><div class="payitem-desc">&nbsp;上海一区</div>'
+// 												// +'</div>'
+// 												// +'<div class="payitem clearfix">'
+// 												// 	+'<div class="text-right">作为网关&nbsp;:</div><div class="payitem-desc">&nbsp;否</div>'
+// 												// +'</div>'
+// 											+'</div>'
+// 										+'</td>'
+// 										+'<td></td>'
+// 										+'<td></td>'
+// 										//+'<td></td>'
+// 										+'<td></td>'
+// 									+'</tr>';
+// 			}
+// 		}
+// 	}
+// })
+// .done(function(data) {
+// 	console.log(data);
+// })
+// .fail(function(data) {
+// 	console.log(data);
+// });
 </script>
 </html>
