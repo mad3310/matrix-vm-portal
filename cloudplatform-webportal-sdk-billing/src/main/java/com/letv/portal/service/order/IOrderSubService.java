@@ -46,4 +46,6 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @date 2015年9月13日 上午11:44:44
 	  */
 	void modifyPriceById(Map<String, Object> params);
+	
+	List<Map<String, Object>> queryOrderInfo(String orderNumber);
 }

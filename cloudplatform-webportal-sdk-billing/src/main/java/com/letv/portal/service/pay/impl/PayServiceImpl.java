@@ -50,12 +50,12 @@ public class PayServiceImpl implements IPayService {
 	@Value("${pay.success}")
 	private String PAY_SUCCESS;
 
-	public Map<String, Object> pay(Long orderId, Map<String, Object> map,
+	public Map<String, Object> pay(String orderNumber, Map<String, Object> map,
 			HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderId(orderId);
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
 		if (orderSubs == null || orderSubs.size()==0) {
-			throw new ValidateException("参数未查出订单数据,orderId=" + orderId);
+			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
 		}
 		Order order = orderSubs.get(0).getOrder();
 		if (order.getStatus().intValue() == 1) {
@@ -71,7 +71,7 @@ public class PayServiceImpl implements IPayService {
 			if (price == 0.0D) {
 				try {
 					if (updateOrderPayInfo(orderSubs, "9999", price + "", 2)) {
-						response.sendRedirect(this.PAY_SUCCESS + "?id=" + orderSubs.get(0).getOrderId());
+						response.sendRedirect(this.PAY_SUCCESS + "?orderNumber=" + orderNumber);
 						return ret;
 					} else {
 						throw new ValidateException("更新订单状态异常");
@@ -81,7 +81,7 @@ public class PayServiceImpl implements IPayService {
 				}
 			}
 			String url = getParams(order.getOrderNumber(), price, pattern,this.PAY_CALLBACK,
-					this.PAY_SUCCESS + "?id=" + orderSubs.get(0).getOrderId(), orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
+					this.PAY_SUCCESS + "?orderNumber=" + orderNumber, orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
 							orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductDescn():orderSubs.get(0).getSubscription().getProductDescn()+"...", null, params);
 
 			if ("1".equals(pattern)) {//支付宝方法
@@ -220,8 +220,11 @@ public class PayServiceImpl implements IPayService {
 		return false;
 	}
 
-	public Map<String, Object> queryState(Long orderId) {
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderId(orderId);
+	public Map<String, Object> queryState(String orderNumber) {
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
+		if (orderSubs==null || orderSubs.size() == 0) {
+			return null;
+		}
 		Order order = orderSubs.get(0).getOrder();
 		if (order==null || order.getPayNumber() == null) {
 			return null;

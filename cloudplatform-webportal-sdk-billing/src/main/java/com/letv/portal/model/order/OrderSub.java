@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
+import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
 
 
@@ -27,8 +28,16 @@ public class OrderSub extends BaseModel{
 	private Double discountPrice;//折扣价
 	private Subscription subscription;//订阅实体
 	
-	private Order order;
+	private Order order;//订单主表
 	
+	private ProductInfoRecord productInfoRecord;//商品记录表
+	
+	public ProductInfoRecord getProductInfoRecord() {
+		return productInfoRecord;
+	}
+	public void setProductInfoRecord(ProductInfoRecord productInfoRecord) {
+		this.productInfoRecord = productInfoRecord;
+	}
 	public Order getOrder() {
 		return order;
 	}

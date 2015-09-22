@@ -1,8 +1,6 @@
 package com.letv.portal.controller.billing;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +24,8 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
+import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.product.IHostProductService;
@@ -70,6 +70,8 @@ public class ProductController {
 	private ICalculateService calculateService;
 	@Autowired
 	private IHostCalculateService hostCalculateService;
+	@Autowired
+	private ResourceCreateService resourceCreateService;
 	
 	
 	@RequestMapping(value="/product/{id}",method=RequestMethod.GET)   
@@ -102,15 +104,28 @@ public class ProductController {
 		return totalPrice;
 	}
 	
+	private void transferParamsDateToCalculate(Map<String, Object> billingParams, Long id) {
+		if(id==2) {//云主机参数转换
+			FlavorResource flavor = resourceCreateService.getFlavor(sessionService.getSession().getUserId(), (String)billingParams.get("region"), (String)billingParams.get("flavorId"));
+			billingParams.put("cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
+			billingParams.put("os_storage", billingParams.get("volumeSize")+"");
+			billingParams.put("os_broadband", billingParams.get("bandWidth")+"");
+			billingParams.put("order_num", billingParams.get("count")+"");
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
-	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String calculateData, ResultObject obj) {
-		Map<String, Object> billingParams = JSONObject.parseObject(calculateData, Map.class);
+	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
+		Map<String, Object> billingParams = JSONObject.parseObject(paramsData, Map.class);
 		
 		Long regionId = productService.getRegionIdByCode((String)billingParams.get("region"));
 		if(regionId!=null) {
 			billingParams.put("region", regionId+"");
 		}
+		
+		transferParamsDateToCalculate(billingParams, id);
+		
 		String orderTime = (String)billingParams.get("order_time");
 		
 		if(validateData(id, billingParams)) {//验证参数合法性
@@ -136,6 +151,7 @@ public class ProductController {
 						o.setOrderNumber(SerialNumberUtil.getNumber(2));
 						o.setStatus(0);
 						o.setCreateUser(sessionService.getSession().getUserId());
+						o.setDescn(displayData);
 						this.orderService.insert(o);
 						obj.setData(o.getOrderNumber());
 					}
