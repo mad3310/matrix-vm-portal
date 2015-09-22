@@ -137,7 +137,7 @@ public class ProductController {
 						o.setStatus(0);
 						o.setCreateUser(sessionService.getSession().getUserId());
 						this.orderService.insert(o);
-						obj.setData(o.getId());
+						obj.setData("orderNumber:"+o.getOrderNumber());
 					}
 					
 					List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMapAndTime(sub.getId());
