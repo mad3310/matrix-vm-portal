@@ -7,6 +7,7 @@ define(['services/app.service','jquery'],function (serviceModule,$) {
       var service = {};
 
       service.regionId=$('#region_id').val();
+      service.allRegionData=null;
 
       return service;
     }]);

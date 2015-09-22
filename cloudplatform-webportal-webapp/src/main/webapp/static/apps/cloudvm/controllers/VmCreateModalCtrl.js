@@ -79,8 +79,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         count:$scope.vmCount,
         privateSubnetId:'',
         snapshotId:'',
+        order_time: $scope.vmBuyPeriod.toString(),
       };
-      HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),calculateData:JSON.stringify(calculatePriceData)}).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:''}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           $window.location.href = '/payment/'+data.data;
@@ -184,6 +185,15 @@ define(['controllers/app.controller'], function (controllerModule) {
             WidgetService.notifyError(data.msgs[0]||'计算总价失败');
           }
         });
+      },
+      buildDisplayData=function(){
+        var data=[];
+        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join(','));
+        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join(','));
+        data.push(['镜像',$scope.selectedVmImage.name].join(','));
+        data.push(['地域',region].join(','));
+        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join(','));
+        return data;
       };
     ;
     initComponents();
