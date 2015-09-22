@@ -42,13 +42,15 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public String recharge(long userId, BigDecimal amount,int type) {
     	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
 	    String tradeNum = format.format(System.currentTimeMillis());
+	    String random = PasswordRandom.genStr(6);
+	    String trade = tradeNum +random;
         BillRechargeRecord record = new BillRechargeRecord();
-        record.setTradeNum(tradeNum+PasswordRandom.genStr(16));
+        record.setTradeNum(trade);
         record.setAmount(amount);
         record.setUserId(userId);
         record.setRechargeType(type);
         billRechargeRecordMapper.insert(record);
-        return tradeNum;
+        return trade;
     }
 
     @Override
