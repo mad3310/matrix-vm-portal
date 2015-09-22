@@ -1,6 +1,7 @@
 package com.letv.portal.service.openstack.billing;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.service.openstack.resource.FlavorResource;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface ResourceCreateService {
     List<ResourceLocator> createVm(long userId, String reqParaJson) throws MatrixException;
+
+    FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException;
 }
