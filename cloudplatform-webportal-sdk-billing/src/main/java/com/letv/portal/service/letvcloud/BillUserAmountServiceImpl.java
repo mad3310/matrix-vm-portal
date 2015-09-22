@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     }
 
     @Override
-    public String recharge(long userId, BigDecimal amount, String tradeNum,int type) {
+    public String recharge(long userId, BigDecimal amount,int type) {
+    	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String tradeNum = format.format(System.currentTimeMillis());
         BillRechargeRecord record = new BillRechargeRecord();
         record.setTradeNum(tradeNum);
         record.setAmount(amount);

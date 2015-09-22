@@ -63,10 +63,7 @@ public class TestBillUserAmountService extends AbstractTest {
 
 	@Test
 	public void testRecharge() {
-		/*DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-	    String tradeNum = format.format(System.currentTimeMillis());*/
-		String tradeNum = "00001000010002";
-		this.billUserAmountService.recharge(userId, BigDecimal.valueOf(100.00),tradeNum, 1);
+		String tradeNum = this.billUserAmountService.recharge(userId, BigDecimal.valueOf(100.00), 1);
 		this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, BigDecimal.valueOf(100.00));
 	}
 	

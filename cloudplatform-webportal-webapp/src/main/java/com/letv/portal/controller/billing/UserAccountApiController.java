@@ -1,5 +1,6 @@
 package com.letv.portal.controller.billing;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.paging.impl.Page;
 import com.letv.common.result.ResultObject;
+import com.letv.portal.model.letvcloud.BillRechargeRecord;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
@@ -61,7 +63,25 @@ public class UserAccountApiController {
 		return obj;
 	}
 	
-	@RequestMapping(value="/recharge/record/{userId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)   
+	@RequestMapping(value="/recharge",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long userId,@RequestParam(required=true) String chargeMoney,@RequestParam(required=true) int type, ResultObject obj) {
+		String tradeNum = this.billUserAmountService.recharge(userId, new BigDecimal(chargeMoney), type);
+		obj.setData(tradeNum);
+		return obj;
+	}
+	@RequestMapping(value="/rechargeSuccess",method=RequestMethod.POST)   
+	public @ResponseBody ResultObject recharge(@RequestParam(required=true) Long userId,@RequestParam(required=true) String tradeNum,@RequestParam(required=true) String orderId,@RequestParam(required=true) String chargeMoney, ResultObject obj) {
+		long rechargeSuccess = this.billUserAmountService.rechargeSuccess(userId, tradeNum, orderId, new BigDecimal(chargeMoney));
+		obj.setData(rechargeSuccess);
+		return obj;
+	}
+	@RequestMapping(value="/recharge/{tradeNum}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject rechargeRecord(@PathVariable String tradeNum, ResultObject obj) {
+		BillRechargeRecord rechargeRecord = this.billUserAmountService.getRechargeRecord(tradeNum);
+		obj.setData(rechargeRecord);
+		return obj;
+	}
+	@RequestMapping(value="/recharge/{userId}/{currentPage}/{recordsPerPage}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject rechargeRecord(@PathVariable int currentPage,@PathVariable int recordsPerPage,@PathVariable Long userId, ResultObject obj) {
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
