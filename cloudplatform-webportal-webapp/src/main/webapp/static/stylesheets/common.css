@@ -329,7 +329,7 @@ numeric-input .up-down > a > i{
 
 /*begin spin style*/
 .spin {
-    background-image: url('/static/images/fading-loader.svg');
+    background-image: url('/static/images/stick-loading.gif');
     background-size: 50px 50px;
     position: absolute;
     left: 48%;
