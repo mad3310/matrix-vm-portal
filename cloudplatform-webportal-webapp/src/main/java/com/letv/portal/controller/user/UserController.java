@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.common.exception.OauthException;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.Session;
 import com.letv.common.util.CookieUtil;

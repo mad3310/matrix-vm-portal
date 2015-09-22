@@ -156,7 +156,7 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
                                         <span>{{vmCpu}}核</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
                                         <span>{{vmRam/1024 | number:0}}G</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>
@@ -202,22 +202,19 @@
                     </div>
                     <div id="left-flowthree" ng-class="{hide:activeFlow!=3}">
                         <div class="left-inputs">
-                            <div class="inputs-item nomargin row clearfix network-type">
-                                <div class="col-sm-2"><span class="letv-control-label">类型：</span></div>
-                                <div class="col-sm-10 row flowthree-type">
-                                    <div class="col-sm-4">
-                                        <div class="letv-radioCheck selected">
-                                            <i class="iconfont icon-checkblockicon"></i>
-                                            <span class="letv-radio-content">基础网络</span>
-                                        </div>
+                            <div class="inputs-item nomargin row clearfix">
+                                <div class="col-sm-2">
+                                    <span class="letv-control-label">类型：</span>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="letv-radioCheck selected">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">基础网络</span>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <div class="letv-radioCheck">
-                                            <i class="iconfont icon-checkblockicon"></i>
-                                            <span class="letv-radio-content">私有网络</span>
-                                        </div>
+                                    <div class="letv-radioCheck">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">私有网络</span>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">
@@ -256,20 +253,15 @@
                         <div class="left-inputs">
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">登录方式：</span></div>
-                                <div class="col-sm-10 row flowthree-type">
-                                    <div class="col-sm-4">
-                                        <div class="letv-radioCheck">
-                                            <i class="iconfont icon-checkblockicon"></i>
-                                            <span class="letv-radio-content">密钥</span>
-                                        </div>
+                                <div class="col-sm-10">
+                                    <div class="letv-radioCheck">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">密钥</span>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <div class="letv-radioCheck selected">
-                                            <i class="iconfont icon-checkblockicon"></i>
-                                            <span class="letv-radio-content">密码</span>
-                                        </div>
+                                    <div class="letv-radioCheck selected">
+                                        <i class="iconfont icon-checkblockicon"></i>
+                                        <span class="letv-radio-content">密码</span>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">

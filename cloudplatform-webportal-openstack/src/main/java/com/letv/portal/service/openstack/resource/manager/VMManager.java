@@ -15,6 +15,7 @@ import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 
 public interface VMManager extends ResourceManager {
@@ -40,7 +41,7 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, PollingInterruptedException,
 			OpenStackException;
 
-	void create2(VMCreateConf2 conf2) throws OpenStackException;
+	MultiVmCreateContext create2(VMCreateConf2 conf2) throws OpenStackException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,

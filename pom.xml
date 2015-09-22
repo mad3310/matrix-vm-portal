@@ -782,7 +782,7 @@
                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
                 <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
                  <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                 
+                  <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
                  <webportal.local.http>http://10.200.91.144:18081</webportal.local.http>
                 <webportal.admin.http>http://10.200.91.144:18080</webportal.admin.http>
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>

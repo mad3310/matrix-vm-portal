@@ -28,9 +28,7 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.CookieUtil;
 import com.letv.common.util.HttpsClient;
-import com.letv.common.util.IpUtil;
-import com.letv.portal.controller.user.UserVo;
-import com.letv.portal.model.UserLogin;
+import com.letv.portal.model.UserVo;
 import com.letv.portal.proxy.ILoginProxy;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.mysql.jdbc.StringUtils;
@@ -72,7 +70,7 @@ public class SessionTimeoutInterceptor  implements HandlerInterceptor{
 		if(session == null && ucCookie !=null) {
 			session = getUserdetailinfo(ucCookie.getValue(),request);
 		}
-		if(ucCookie == null ) {
+		if(ucCookie == null || session == null) {
 			return toLogin(request, response);
 		} else {
 			return pass(session,request);

@@ -74,9 +74,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         adminPass: $scope.vmSecurityPassword,
         bindFloatingIp: $scope.vmNetworkPublicIpModel === 'now',
         sharedNetworkId:selectedVmSharedNetwork.id,
-        bandWidth:1,
+        bandWidth:$scope.networkBandWidth,
         keyPairName:'',
-        count:1,
+        count:$scope.vmCount,
         privateSubnetId:'',
         snapshotId:'',
       };

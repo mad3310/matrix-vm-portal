@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,9 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     }
 
     @Override
-    public String recharge(long userId, BigDecimal amount, String tradeNum,int type) {
+    public String recharge(long userId, BigDecimal amount,int type) {
+    	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String tradeNum = format.format(System.currentTimeMillis());
         BillRechargeRecord record = new BillRechargeRecord();
         record.setTradeNum(tradeNum);
         record.setAmount(amount);
@@ -112,14 +115,16 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     public Page getUserAmountRecord(Page pageInfo, Long userId) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
-        params.put("offset", pageInfo.getCurrentPage());
+        params.put("offset", pageInfo.getStartRowPosition());
         params.put("rows", pageInfo.getRecordsPerPage());
         List<BillRechargeRecord> records = billRechargeRecordMapper.getUserAmountRecord(params);
         if (records != null && records.size() > 0) {
         	pageInfo.setData(records);
-            int addCnt = billRechargeRecordMapper.getAddRecordCnt(userId);
-            pageInfo.setTotalRecords(addCnt);
+        } else {
+        	pageInfo.setData(null);
         }
+        int addCnt = billRechargeRecordMapper.getAddRecordCnt(userId);
+        pageInfo.setTotalRecords(addCnt);
         return pageInfo;
     }
 

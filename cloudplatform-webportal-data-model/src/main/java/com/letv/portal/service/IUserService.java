@@ -1,6 +1,7 @@
 package com.letv.portal.service;
 
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.UserVo;
 
 
 public interface IUserService extends IBaseService<UserModel>{
@@ -14,4 +15,6 @@ public interface IUserService extends IBaseService<UserModel>{
 	public UserModel getUserById(Long userId);
 	
 	public UserModel getUserByNameAndEmail(String userNamePassport, String email);
+	
+	public UserVo getUcUserById(Long userId);
 }
