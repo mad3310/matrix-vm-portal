@@ -50,6 +50,7 @@
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
                         <span>{{vm.status | vmStatusFilter}}</span>
+                        <span ng-if="vm.status== 'BUILD'" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
@@ -156,7 +157,7 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-cpu" ng-repeat="vmCpu in vmCpuList" ng-class="{'selected':isSelectedVmCpu(vmCpu)}" ng-click="selectVmCpu(vmCpu)">
                                         <span>{{vmCpu}}核</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +166,7 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-ram" ng-repeat="vmRam in vmRamList" ng-class="{'selected':isSelectedVmRam(vmRam)}" ng-click="selectVmRam(vmRam)">
                                         <span>{{vmRam/1024 | number:0}}G</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>

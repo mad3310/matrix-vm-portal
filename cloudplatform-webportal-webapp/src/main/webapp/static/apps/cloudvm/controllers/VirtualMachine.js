@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VirtualMachineCrtl', ['$scope', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope, $modal, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VirtualMachineCrtl', ['$scope','$interval', '$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval, $modal, Config, HttpService,WidgetService,CurrentContext) {
       $scope.searchVmName = '';
 
       $scope.vmList = [];
@@ -135,16 +135,29 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       var refreshVmList = function () {
-            var queryParams = {
-              name: $scope.searchVmName,
-              currentPage: $scope.currentPage,
-              recordsPerPage: $scope.pageSize
-            };
+          var queryParams = {
+            name: $scope.searchVmName,
+            currentPage: $scope.currentPage,
+            recordsPerPage: $scope.pageSize
+          };
           WidgetService.showSpin();
           HttpService.doGet(Config.urls.vm_list.replace('{region}', CurrentContext.regionId), queryParams).success(function (data, status, headers, config) {
             WidgetService.hideSpin();
             $scope.vmList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
+
+            $scope.vmList.filter(function(vm){return vm.status=='BUILD'}).forEach(function(vm) {
+              var vmDetailUrl = Config.urls.vm_detail.replace('{region}', CurrentContext.regionId).replace('{vmId}', vm.id);
+              var buildStatusInterval = $interval(function () {
+                HttpService.doGet(vmDetailUrl).success(function (data, status, headers, config) {
+                  if (data.result === 1 && data.data.status != 'BUILD') {
+                    vm.status = data.data.status;
+                    $interval.cancel(buildStatusInterval);
+                  }
+                });
+              }, 5000);
+            });
+
           });
         },
         getCheckedVm=function(){

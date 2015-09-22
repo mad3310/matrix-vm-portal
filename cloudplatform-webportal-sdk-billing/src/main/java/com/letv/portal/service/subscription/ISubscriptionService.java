@@ -1,5 +1,6 @@
 package com.letv.portal.service.subscription;
 
+import java.util.Date;
 import java.util.Map;
 
 import com.letv.portal.model.subscription.Subscription;
@@ -22,5 +23,5 @@ public interface ISubscriptionService extends IBaseService<Subscription> {
 	  * @author lisuxiao
 	  * @date 2015年9月6日 下午3:58:11
 	  */
-	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId);
+	Subscription createSubscription(Long id, Map<String, Object> map, Long productInfoRecordId, Date d, String orderTime);
 }

@@ -11,12 +11,14 @@ define(['services/app.service'], function (serviceModule) {
       flavor_group_data: '/osf/region/{region}/group',
       vm_create_old: '/ecs/region/{region}/vm-create',
       vm_create: '/ecs/vm/create',
+      vm_buy: '/billing/buy/2',
       vm_start: '/ecs/region/{region}/vm-start',
       vm_stop: '/ecs/region/{region}/vm-stop',
       vm_delete: '/ecs/region/{region}/vm-delete',
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
       vm_calculate_price:'/billing/calculate/price/2',
+      vm_detail:'/ecs/region/{region}/vm/{vmId}',
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
