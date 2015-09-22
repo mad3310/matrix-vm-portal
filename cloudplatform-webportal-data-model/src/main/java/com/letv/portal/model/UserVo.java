@@ -1,4 +1,4 @@
-package com.letv.portal.controller.user;
+package com.letv.portal.model;
 
 import java.io.Serializable;
 
@@ -28,6 +28,9 @@ public class UserVo implements Serializable {
 	private String email;
 	private String mobile;
 	private Integer mobileStatus;
+	
+	public UserVo() {
+	}
 	
 	public UserVo(Long userId, String username, String email,String mobile, Integer mobileStatus) {
 		this.userId = userId;

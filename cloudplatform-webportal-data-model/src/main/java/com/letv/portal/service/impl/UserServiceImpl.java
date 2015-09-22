@@ -7,15 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.exception.CommonException;
-import com.letv.common.exception.ValidateException;
+import com.letv.common.util.HttpsClient;
 import com.letv.portal.dao.IUserDao;
 import com.letv.portal.enumeration.UserStatus;
 import com.letv.portal.model.UserModel;
+import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 
 
@@ -24,6 +27,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 	
 	@Autowired
 	private IUserDao userDao;
+	
+	@Value("${uc.auth.api.http}")
+	private String UC_AUTH_API_HTTP;
 	
 	public UserServiceImpl() {
 		super(UserModel.class);
@@ -95,4 +101,31 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel> implements IUser
 		return users.get(0);
 	}
 
+	@Override
+	public UserVo getUcUserById(Long userId) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(UC_AUTH_API_HTTP).append("/userInfoById.do?userId=").append(userId);
+		String result = HttpsClient.sendXMLDataByGet(buffer.toString(),1000,2000);
+		Map<String,Object> resultMap = this.transResult(result);
+		UserVo user = new UserVo();
+		
+		user.setUserId(Long.valueOf((Integer) resultMap.get("id")));
+		user.setUsername((String) resultMap.get("contacts"));
+		user.setEmail((String) resultMap.get("email"));
+		user.setMobile((String) resultMap.get("mobile"));
+		return user;
+	}
+	
+	private Map<String,Object> transResult(String result){
+		if(StringUtils.isEmpty(result))
+			return null;
+		ObjectMapper resultMapper = new ObjectMapper();
+		Map<String,Object> jsonResult = new HashMap<String,Object>();
+		try {
+			jsonResult = resultMapper.readValue(result, Map.class);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonResult;
+	}
 }
