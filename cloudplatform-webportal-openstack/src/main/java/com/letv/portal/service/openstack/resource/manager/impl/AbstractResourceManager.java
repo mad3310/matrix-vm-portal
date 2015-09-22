@@ -237,6 +237,7 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 	}
 
 	public boolean isAuthority() {
-		return limitedUserEmails.contains(openStackUser.getEmail());
+//		return limitedUserEmails.contains(openStackUser.getEmail());
+		return true;
 	}
 }
