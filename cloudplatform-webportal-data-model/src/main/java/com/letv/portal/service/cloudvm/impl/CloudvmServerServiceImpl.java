@@ -63,4 +63,12 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
         }
         return null;
     }
+
+    @Override
+    public int selectByUserIdCount(long userId) {
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("createUser", userId);
+        return cloudvmServerDao.selectByMapCount(paras);
+    }
+
 }

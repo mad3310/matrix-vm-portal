@@ -8,4 +8,5 @@ import com.letv.portal.service.IBaseService;
  */
 public interface ICloudvmServerService extends IBaseService<CloudvmServer> {
     CloudvmServer selectByServerId(String region, String serverId);
+    int selectByUserIdCount(long userId);
 }
