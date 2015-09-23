@@ -1523,9 +1523,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         }
         cloudvmServerService.insert(cloudvmServer);
 
-        incVmCount();
+//        incVmCount();
     }
 
+    @Deprecated
     private void incVmCount() throws OpenStackException {
         ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
                 .getOpenStackServiceGroup().getCloudvmVmCountService();
@@ -1544,10 +1545,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
         if (cloudvmServer != null) {
             cloudvmServerService.delete(cloudvmServer);
-            decVmCount();
+//            decVmCount();
         }
     }
 
+    @Deprecated
     private void decVmCount() throws OpenStackException {
         ICloudvmVmCountService cloudvmVmCountService = OpenStackServiceImpl
                 .getOpenStackServiceGroup().getCloudvmVmCountService();

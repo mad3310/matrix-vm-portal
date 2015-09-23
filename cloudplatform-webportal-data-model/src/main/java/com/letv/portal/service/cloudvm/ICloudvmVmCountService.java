@@ -6,6 +6,7 @@ import com.letv.portal.service.IBaseService;
 /**
  * Created by zhouxianguang on 2015/8/19.
  */
+@Deprecated
 public interface ICloudvmVmCountService extends IBaseService<CloudvmVmCount>{
     CloudvmVmCount getVmCountOfCurrentUser();
     void createVmCountOfCurrentUser(int count);
