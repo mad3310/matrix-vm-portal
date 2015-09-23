@@ -1,7 +1,7 @@
-<div class="view-common" ng-controller="VmNetworkCrtl">
+<div class="view-common" ng-controller="VmVpcCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-disabled="true"><span>创建云硬盘</span></button>
+            <button class="btn btn-le-blue" ng-disabled="true"><span>创建vpc</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
@@ -17,27 +17,25 @@
                 <thead>
                 <tr>
                     <th>
-                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllDiskChecked()}" ng-click="checkAllDisk()"></span>
+                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllVpcChecked()}" ng-click="checkAllVpc()"></span>
                     </th>
                     <th><span>名称</span></th>
-                    <th><span>类型</span></th>
-                    <th><span>大小</span></th>
+                    <th><span>子网</span></th>
                     <th><span>状态</span></th>
                     <th><span>创建时间</span></th>
                 </tr>
                 </thead>
                 <tbody id="tby">
-                <tr ng-repeat="disk in diskList">
+                <tr ng-repeat="vpc in vpcList">
                     <td>
-                        <span class="iconfont icon-checkiconfill" ng-class="{checked:disk.checked}" ng-click="checkDisk(disk)"></span>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vpc.checked}" ng-click="checkVpc(vpc)"></span>
                     </td>
-                    <td><span>{{disk.name|| '未设置'}}</span></td>
-                    <td><span>{{disk.volumeType}}</span></td>
-                    <td><span>{{disk.size}}GB</span></td>
+                    <td><span>{{vpc.name|| '未设置'}}</span></td>
+                    <td><span>{{vpc.subnets | vpcSubnetsFilter}}</span></td>
                     <td>
-                        <span>{{disk.status | diskStatusFilter}}</span>
+                        <span>{{vpc.status | vpcStatusFilter}}</span>
                     </td>
-                    <td><span>{{disk.created | date:'yyyy-MM-dd'}}</span></td>
+                    <td><span>{{vpc.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
                 </tbody>
             </table>
