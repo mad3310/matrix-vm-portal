@@ -39,6 +39,13 @@ define(['services/app.service'], function (serviceModule) {
       {"text": "删除中", "value": "deleting"},
       {"text": "异常", "value": "error"},
     ];
+    config.vmVpcStatuses = [
+      {"text": "活跃", "value": "ACTIVE"},
+      {"text": "可用", "value": "DOWN"},
+      {"text": "创建中", "value": "BUILD"},
+      {"text": "不可用", "value": "ERROR"},
+      {"text": "不可用", "value": "UNRECOGNIZED"},
+    ];
     config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);

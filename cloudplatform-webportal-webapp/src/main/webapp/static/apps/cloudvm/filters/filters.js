@@ -75,12 +75,12 @@ define(['filters/app.filter'], function (filterModule) {
   }]);
 
   filterModule.filter('vpcStatusFilter', ['Config', function (Config) {
-    var allDiskStatuses = Config.vmDiskStatuses;
+    var allStatuses = Config.vmVpcStatuses;
     return function (input) {
       var out = '';
-      for (var i = 0, leng = allDiskStatuses.length; i < leng; i++) {
-        if (allDiskStatuses[i].value == input) {
-          out = allDiskStatuses[i].text;
+      for (var i = 0, leng = allStatuses.length; i < leng; i++) {
+        if (allStatuses[i].value == input) {
+          out = allStatuses[i].text;
           break;
         }
       }
