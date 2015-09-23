@@ -2,7 +2,7 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('CloudDiskCrtl', ['$scope','$interval', 'Config', 'HttpService','WidgetService','CurrentContext',
+  controllerModule.controller('VmNetworkCrtl', ['$scope','$interval', 'Config', 'HttpService','WidgetService','CurrentContext',
     function ($scope,$interval, Config, HttpService,WidgetService,CurrentContext) {
 
       $scope.diskList = [];
