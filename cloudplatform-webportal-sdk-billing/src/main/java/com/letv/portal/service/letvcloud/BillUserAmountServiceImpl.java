@@ -44,14 +44,28 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    String tradeNum = format.format(System.currentTimeMillis());
 	    String random = PasswordRandom.genStr(6);
 	    String trade = tradeNum +random;
-        BillRechargeRecord record = new BillRechargeRecord();
-        record.setTradeNum(trade);
-        record.setAmount(amount);
-        record.setUserId(userId);
-        record.setRechargeType(type);
-        billRechargeRecordMapper.insert(record);
-        return trade;
+        return recharge(userId, amount, trade, type);
     }
+    
+    @Override
+	public String recharge(long userId, BigDecimal amount, String tradeNum,
+			int type) {
+    	BillRechargeRecord record = this.billRechargeRecordMapper.getAmount(tradeNum);
+    	if(record == null) {
+    		record = new BillRechargeRecord();
+    		record.setTradeNum(tradeNum);
+    		record.setAmount(amount);
+    		record.setUserId(userId);
+    		record.setRechargeType(type);
+    		billRechargeRecordMapper.insert(record);
+    	} else {
+    		Map<String, Object> recordParam = new HashMap<String, Object>();
+            recordParam.put("amount", amount);
+            recordParam.put("tradeNum", tradeNum);
+    		this.billRechargeRecordMapper.updateAmount(recordParam);
+    	}
+        return tradeNum;
+	}
 
     @Override
     @Transactional
@@ -72,6 +86,27 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         //充值失败次数
         return ret;
     }
+    @Override
+	public long rechargeSuccess(Long userId, String tradeNum, String orderNum,
+			BigDecimal amount, boolean isUpdateAmount) {
+    	Map<String, Object> recordSuc = new HashMap<String, Object>();
+        recordSuc.put("tradeNum", tradeNum);
+        recordSuc.put("orderNum", orderNum);
+        recordSuc.put("amount", amount);
+        billRechargeRecordMapper.updateSuc(recordSuc);
+        int ret = 0;
+        if(isUpdateAmount) {
+        	//充值业务逻辑
+        	int count = 0;
+        	do {
+        		ret = this.addUserAmount(userId, amount);
+        		count++;
+        	} while (ret < 1 && count < 10);
+        	//充值失败次数
+        	
+        }
+        return ret;
+	}
 
     //充值业务逻辑
     private int addUserAmount(Long userId, BigDecimal amount) {

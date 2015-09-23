@@ -14,4 +14,5 @@ public interface BillRechargeRecordMapper {
     BillRechargeRecord getAmount(String tradeNum);
     List<BillRechargeRecord> getUserAmountRecord(Map<String,Object> params);
     int getAddRecordCnt(Long userId);
+	void updateAmount(Map<String, Object> recordParam);
 }

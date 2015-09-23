@@ -22,4 +22,22 @@
       GROUP BY SUBSTRING(t.billingMonth,1,4)
       ORDER BY SUBSTRING(t.billingMonth,1,4)  DESC
   </select>
+  <insert id="insert" parameterType="com.letv.portal.model.letvcloud.BillUserBilling">
+      insert into bill_user_billing(
+        billingId,
+        orderId,
+        billingMonth,
+        billingMoney,
+        userId,
+        serviceCode
+      )values(
+        #{billingId},
+        #{orderId},
+        #{billingMonth},
+        #{billingMoney},
+        #{userId},
+        #{serviceCode}
+      )
+    </insert>
+    
 </mapper>
