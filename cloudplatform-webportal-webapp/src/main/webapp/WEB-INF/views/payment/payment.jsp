@@ -22,9 +22,9 @@
 				<div class="pay-item">账号名称：<span class="item-desc account">letvcloud@letv.com</span></div>
 				<div class="pay-item">
 					<span>可用余额：</span><span class="item-desc remain">¥100</span>
-					<button class="btn btn-le-red item-recharge">充值</buttom>
+					<button class="btn btn-le-red item-recharge hide">充值</buttom>
 				</div>
-				<div class="pay-item">本次需支付：<span class="text-red item-desc">¥1000</span></div>
+				<div class="pay-item">本次需支付：<span class="text-red item-desc" id="orderpay" style="padding-left:15px;">¥1000</span></div>
 				<div class="pay-item">
 					<span>支付方式：</span>
 					<button class="payoption active"><img src="/static/staticPage/img/zhifubao.png"></button>
@@ -32,7 +32,6 @@
 				</div>
 				<div class="pay-item">
 					<button class="btn btn-le-blue item-pay" id="pay">确认支付</button>
-					<!-- <a class="btn btn-le-blue item-pay" id="pay">确认支付</a> -->
 				</div>
 			</div>
 		</div>
@@ -46,65 +45,19 @@
 				</span>
 				<div class="clearfix"></div>
 			</div>
-			<div class="price-table ordertable opacity">
+			<div class="price-table ordertable opacity clearfix">
 				<table class="col-md-12">
 					<thead>
 						<tr>
 							<th width="12.5%">订单号</th>
 							<th width="37.5%">配置</th>
 							<th width="12.5%">数量</th>
-							<th width="12.5%">单价</th>
+							<!-- <th width="12.5%">单价</th> -->
 							<th width="12.5%">使用时长</th>
 							<th width="12.5%">支付费用</th>
 						</tr>
 					</thead>
-					<tbody id="order-tbody">
-						<tr>
-							<td>0100002010010</td>
-							<td>
-								<div style="width:50%;text-align:right;">购买服务器</div>
-							</td>
-							<td>1</td>
-							<td class="price">105.00元/月</td>
-							<td>1个月</td>
-							<td class="price">¥105</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>
-								<div class="payitems">
-									<div class="payitem clearfix">
-										<div class="text-right">配置&nbsp;:</div><div class="payitem-desc">&nbsp;1核，2G内存，无数据盘</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">带宽&nbsp;:</div><div class="payitem-desc">&nbsp;1Mbps</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">操作系统&nbsp;:</div><div class="payitem-desc">&nbsp;CentOS 6.6 32位</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">安全组件&nbsp;:</div><div class="payitem-desc">&nbsp;安全加固组件</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">地域&nbsp;:</div><div class="payitem-desc">&nbsp;华东区-上海</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">所属网络&nbsp;:</div><div class="payitem-desc">&nbsp;基础网络</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">可用区&nbsp;:</div><div class="payitem-desc">&nbsp;上海一区</div>
-									</div>
-									<div class="payitem clearfix">
-										<div class="text-right">作为网关&nbsp;:</div><div class="payitem-desc">&nbsp;否</div>
-									</div>
-								</div>
-							</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
+					<tbody id="order-tbody"></tbody>
 				</table>
 			</div>
 		</div>
@@ -130,107 +83,17 @@
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
-rollup();
-var width=document.body.scrollWidth;
-var height=document.body.scrollHeight;
-var userid=$('#userId').val();
-var orderNum=$('#orderNum').val();
-var payurl="/user/"+userid;
-var remainurl="/userAccount/balance/"+userid;
-$.ajax({
-	url:payurl,
-	type: 'get',
-	success:function(data){
-		var _data=data.data;
-		if(data.result==0){//error
-		}else{
-			$('.account').text(_data.email);
-		}
-	}
+rollup();//展开&收起
+userInfo();//用户名&余额
+goPay();//支付
+orderDetail();//订单详情
+$(window).resize(function(event) {
+	var width=document.body.scrollWidth;
+    var height=document.body.scrollHeight;
+    $('.modal-container').css({
+        width:width,
+        height:height
+    })
 });
-$.ajax({
-	url:remainurl,
-	type: 'get',
-	success:function(data){
-		var _data=data.data;
-		if(data.result==0){//error
-		}else{
-			$('.remain').text(_data);
-		}
-	}
-});
-$('#pay').unbind('click').click(function(event){
-	window.open('/pay/'+orderNum+'?pattern=1');
-	$('.modal-container').css({
-		width:width,
-		height:height
-	}).removeClass('hide');
-});
-// $.ajax({
-// 	url: '/order/'+orderNum,
-// 	type: 'get',
-// 	success:function(data){
-// 		if(data.result==0){//error
-
-// 		}else{
-// 			var _target=$('#order-tbody');
-// 			var orderArray=data.data;
-// 			var order,orderHtml='';
-// 			for(var i in orderArray){
-// 				order=orderArray[i];
-
-// 				orderHtml=orderHtml+'<tr>'
-// 										+'<td>'+order.orderNumber'</td>'
-// 										+'<td><div style="width:50%;text-align:right;">购买服务器</div></td>'
-// 										+'<td>'+order.params.count+'</td>'
-// 										//+'<td class="price">105.00元/月</td>'
-// 										+'<td>1个月</td>'
-// 										+'<td class="price">¥'+order.totalPrice+'</td>'
-// 									+'</tr>'
-// 									+'<tr>'
-// 										+'<td></td>'
-// 										+'<td>'
-// 											+'<div class="payitems">'
-// 												+'<div class="payitem clearfix">'
-// 													+'<div class="text-right">配置&nbsp;:</div><div class="payitem-desc">&nbsp;1核，2G内存，无数据盘</div>'
-// 												+'</div>'
-// 												+'<div class="payitem clearfix">'
-// 													+'<div class="text-right">带宽&nbsp;:</div><div class="payitem-desc">&nbsp;'+order.bandWidth+'Mbps</div>'
-// 												+'</div>'
-// 												+'<div class="payitem clearfix">'
-// 													+'<div class="text-right">操作系统&nbsp;:</div><div class="payitem-desc">&nbsp;CentOS 6.6 32位</div>'
-// 												+'</div>'
-// 												// +'<div class="payitem clearfix">'
-// 												// 	+'<div class="text-right">安全组件&nbsp;:</div><div class="payitem-desc">&nbsp;安全加固组件</div>'
-// 												// +'</div>'
-// 												+'<div class="payitem clearfix">'
-// 													+'<div class="text-right">地域&nbsp;:</div><div class="payitem-desc">&nbsp;华东区-上海</div>'
-// 												+'</div>'
-// 												+'<div class="payitem clearfix">'
-// 													+'<div class="text-right">所属网络&nbsp;:</div><div class="payitem-desc">&nbsp;基础网络</div>'
-// 												+'</div>'
-// 												// +'<div class="payitem clearfix">'
-// 												// 	+'<div class="text-right">可用区&nbsp;:</div><div class="payitem-desc">&nbsp;上海一区</div>'
-// 												// +'</div>'
-// 												// +'<div class="payitem clearfix">'
-// 												// 	+'<div class="text-right">作为网关&nbsp;:</div><div class="payitem-desc">&nbsp;否</div>'
-// 												// +'</div>'
-// 											+'</div>'
-// 										+'</td>'
-// 										+'<td></td>'
-// 										+'<td></td>'
-// 										//+'<td></td>'
-// 										+'<td></td>'
-// 									+'</tr>';
-// 			}
-// 		}
-// 	}
-// })
-// .done(function(data) {
-// 	console.log(data);
-// })
-// .fail(function(data) {
-// 	console.log(data);
-// });
 </script>
 </html>

@@ -112,7 +112,6 @@ a:hover{cursor:pointer;}
 .product-try span{font-size:1.4rem;color:#ff3c37}
 .product-use,.product-price{width:182px;height:37px;margin-left: -1px;margin-top: -1px;;-ms-transition:0.5s;-webkit-transition:0.5s;transition:0.5s;}
 .product-use{background-color: #088AC2;color:#f5f9fb;}
-
 /* by yk start
  *产品推荐交互效果
  * */
@@ -123,11 +122,12 @@ a:hover{cursor:pointer;}
 .recommend-product > div:hover .product-price{margin-top:-38px;}
 .recommend-product > div:hover .product-iconfont{background-color: #088AC2; }
 .recommend-product > div:hover .product-iconfont> .iconfont{color:#FFFFFF;}
-
+.recommend-product > div a{color:inherit;}
 /* by yk start
  *客户案例交互效果
  * */
-.main-customer .customer-logos> div{position:relative; }
+.main-customer .customer-logos> div{position:relative;}
+.customer-logos .logo:hover{cursor:pointer;}
 .customer-logos>div:not(.logo-focus) img{opacity: 0.3;filter: alpha(opacity=30);-webkit-filter: grayscale(100%);-moz-filter: grayscale(100%);filter:grayscale(100%);filter: gray;}
 .customer-logos  .tip-point{width: 12px;height:12px;border: 1px solid #CCCCCC;border-radius :50%;position: absolute;background-color: #DDDDDD;left:50%;margin-left: -6px;margin-top: -21px;text-align:left;}
 .customer-logos .tip-point >i{width: 6px;height:6px;border-radius :50%;position: absolute;background-color: #CCCCCC;margin-left: 2px;margin-top: 2px;}
@@ -248,7 +248,8 @@ a:hover{cursor:pointer;}
 .price-table{margin-top:10px;}
 .price-table table{text-align:center;}
 .price-table thead{font-size:1.4rem;background:rgb(9,138,195);color:#fff;}
-.price-table th,.price-table td{font-weight:400;padding:20px 0;}
+.price-table th{font-weight:400;padding:15px 0;}
+.price-table td{font-weight:400;padding:10px 0;}
 .price-table td{padding:15px 0;border:1px solid #d9d9d9;background:#f7f7f7;color:#888;}
 .price-table td.no-bg{padding-left:25px;text-align:left;background:#fcfcfc;}
 .price-table-desc{font-size:1.4rem;color:#333;margin-top:10px;}
@@ -266,7 +267,7 @@ a:hover{cursor:pointer;}
 .body-product-help dl dt{margin:0 0 20px 0;font-size:1.8rem;}
 .body-product-help dl dd{margin:0 0 10px 0;}
 /*订单支付*/
-.order{width:100%;padding:40px 0 0 0;font-size:1.2rem;color:#333;}
+.order{width:100%;padding:30px 0 0 0;font-size:1.2rem;color:#333;}
 .order .order-title{font-size:1.4rem;}
 .order-title .title-rollup{font-size:1.2rem;color:#088ac2;float:right;}
 .title-rollup .rollup-text{float:left;}
@@ -291,12 +292,26 @@ a:hover{cursor:pointer;}
 .payoption:hover{cursor:pointer;border-color:#088ac2;}
 .payoption img{height:23px;}
 .payoption.active{border-color:#088ac2;}
+.paycomplete{text-align:center;font-size:1.4rem;color:#333;}
+.paycomplete .icon-roundcheckfill{font-size:40px;}
+.paycomplete .paytitle{height:120px;padding:26px 0;font-size:2.4rem;background:#f6f7f9;}
+.paytitle .title{margin:20px 0;}
+.paytitle .shortline{height:1px;width:40px;margin:0 auto;border-bottom:2px solid #c6c6c6;}
+.paycomplete .paydesc{padding-top:110px;}
+.paydesc .desc{font-size:1.4rem;color:#333;text-align:center;}
+.desc .desc-tip{width:400px;margin:0 auto;overflow:hidden;}
+.desc-tip .desc-success{height:45px;margin-left:30px;font-size:2rem;line-height:45px;float:left;}
+.desc-tip .desc-pay{height:45px;margin-left:20px;line-height:45px;float:left;}
+.desc .desc-ordernum{margin-top:20px;padding-left:15px;}
+.paycomplete .successicon{width:45px;height:45px;background-image:url(img/complete.png);float:left}
+.paycomplete .successicon.fail{background-image:url(img/pay-wrong.png);background-size:100%;background-repeat:no-repeat;}
 /*订单支付-弹窗*/
 .modal-container{position:absolute;top:0;z-index:200;width:100%;height:100%;text-align:center;background:rgba(0,0,0,.3);}
 .modal{position:fixed;top:30%;left:50%;margin-left:-270px;width:540px;height:280px;padding:20px;box-shadow:0 3px 9px rgba(0,0,0,.5);background:#fff;}
 .modal .modal-top{padding-bottom:10px;border-bottom:1px solid #088bc3;text-align:center;color:#088bc3}
 .modal-top .modal-title{font-size:1.8rem;}
 .modal-top .iconfont{font-size:2.3rem;display:inline-block;float:right;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);-o-transform:rotate(45deg);transform:rotate(45deg);}
+.modal-top .iconfont:hover{cursor:pointer;}
 .modal .modal-content{padding:50px 0 0 0;font-size:1.4rem;color:#333}
 .modal-content .buttons{padding:50px 0;}
 .buttons .paybtn{width:120px;text-align:center;}

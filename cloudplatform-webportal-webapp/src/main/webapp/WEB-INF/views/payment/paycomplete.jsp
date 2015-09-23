@@ -12,24 +12,26 @@
 	<link rel="stylesheet" href="/static/staticPage/css/common.css">
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 </head>
-<style>
-.paycomplete{padding-top:20%;text-align:center;font-size:1.4rem;color:#333;}
-.paycomplete .icon-roundcheckfill{font-size:40px;}
-.paycomplete .paytitle{padding:0 20px 25px;font-size:1.8rem;}
-.paycomplete .payredirect{margin-top:50px;}
-</style>
 <body>
+	<input type="text" class="hide" value="${orderNum}" id="orderNum">
 	<div class="main-body">
 		<div class="paycomplete">
-			<div>
-				<span class="iconfont icon-roundcheckfill text-blue"></span>
-				<span class="paytitle">您已成功付款</span>
-				<span>付款金额：<span class="text-red">¥105.00</span></span>
+			<div class="paytitle">
+				<div class="title">乐视云计算支付状态</div>
+				<p class="shortline"></p>
 			</div>
-			<div class="payredirect">
-				<span class="text-blue">页面自动跳转中...</span>
+			<div class="paydesc">
+				<div class="desc">
+					<div class="desc-tip clearfix"></div>
+					<div class="desc-ordernum">支付订单号：<span id="payNum"></span></div>
+				</div>
 			</div>
 		</div>
 	</div>
 </body>
+<script src="/static/javascripts/jquery-1.11.3.js"></script>
+<script src="${ctx}/static/page-js/payment/payment.js"></script>
+<script>
+timeStatus()//订单支付状态查询
+</script>
 </html>
