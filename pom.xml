@@ -124,7 +124,7 @@
             <id>test</id>
             <properties>
             	<!-- db配置 -->
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/matrix_demo?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
                 <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
                 <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
                 
@@ -133,6 +133,7 @@
                 <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
                 <!-- 用户中心及oauth配置 -->
                 <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://uc.letvcloud.com/api</uc.auth.api.http>
                 <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
                 
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
