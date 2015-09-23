@@ -1,0 +1,72 @@
+<div class="view-common" ng-controller="VmNetworkCrtl">
+    <div class="le-row operate-panel">
+        <div class="le-col-6 le-btn-group">
+            <button class="btn btn-le-blue" ng-disabled="true"><span>创建云硬盘</span></button>
+            <div dropdown class="more-operation-dropdown">
+                <a href class="btn btn-le-yellow" dropdown-toggle>
+                    更多操作
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="le-row list-common">
+        <div class="le-col-12">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                         <span class="iconfont icon-righticon"  ng-class="{checked:isAllDiskChecked()}" ng-click="checkAllDisk()"></span>
+                    </th>
+                    <th><span>名称</span></th>
+                    <th><span>类型</span></th>
+                    <th><span>大小</span></th>
+                    <th><span>状态</span></th>
+                    <th><span>创建时间</span></th>
+                </tr>
+                </thead>
+                <tbody id="tby">
+                <tr ng-repeat="disk in diskList">
+                    <td>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:disk.checked}" ng-click="checkDisk(disk)"></span>
+                    </td>
+                    <td><span>{{disk.name|| '未设置'}}</span></td>
+                    <td><span>{{disk.volumeType}}</span></td>
+                    <td><span>{{disk.size}}GB</span></td>
+                    <td>
+                        <span>{{disk.status | diskStatusFilter}}</span>
+                    </td>
+                    <td><span>{{disk.created | date:'yyyy-MM-dd'}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+                        total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
+                        last-text="&raquo;">
+            </pagination>
+        </div>
+
+    </div>
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
+    </toaster-container>
+
+    <script type="text/ng-template" id="ConfirmModalTpl">
+            <div class="le-confirm">
+                <div class="le-row confirm-header">
+                    <span class="confirm-title">{{title}}</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-row confirm-content">
+                    <i class="iconfont icon-icon1"></i>
+                    <span class="confirm-message">{{confirmMessage}}</span>
+                </div>
+                <div class="le-row confirm-operation">
+                    <button class="btn btn-le-blue" ng-click="ok()">确定</button>
+                    <button class="btn btn-le-yellow" ng-click="cancel()">取消</button>
+                </div>
+            </div>
+    </script>
+</div>

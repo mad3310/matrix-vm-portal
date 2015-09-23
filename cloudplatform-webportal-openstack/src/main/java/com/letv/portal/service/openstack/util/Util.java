@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import com.letv.common.exception.MatrixException;
+import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
 import org.apache.commons.io.IOUtils;
@@ -16,6 +18,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -23,6 +26,17 @@ import org.codehaus.jackson.type.TypeReference;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
 public class Util {
+	public static void throwException(Exception ex) throws OpenStackException {
+		if (ex instanceof ValidateException) {
+			throw (ValidateException) ex;
+		} else if (ex instanceof MatrixException) {
+			throw (MatrixException) ex;
+		} else if (ex instanceof OpenStackException) {
+			throw (OpenStackException) ex;
+		}
+		throw new OpenStackException("后台错误", ex);
+	}
+
 	public static String generateRandomPassword(int length) {
 		final String charactors = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		Random random = new Random();
@@ -35,10 +49,13 @@ public class Util {
 	}
 
 	public static <T> T fromJson(String json,
-			@SuppressWarnings("rawtypes") TypeReference typeReference)
+								 @SuppressWarnings("rawtypes") TypeReference typeReference, boolean compatibleWithUnknownProperties)
 			throws OpenStackException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
+			if (compatibleWithUnknownProperties) {
+				objectMapper.getDeserializationConfig().disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+			}
 			return objectMapper.readValue(json, typeReference);
 		} catch (JsonParseException e) {
 			throw new OpenStackException("请求数据格式错误", e);
@@ -47,6 +64,11 @@ public class Util {
 		} catch (IOException e) {
 			throw new OpenStackException("后台服务错误", e);
 		}
+	}
+
+	public static <T> T fromJson(String json,
+								 @SuppressWarnings("rawtypes") TypeReference typeReference) throws OpenStackException {
+		return fromJson(json, typeReference, false);
 	}
 
 	public static void throwExceptionOfResponse(HttpResponse resp)

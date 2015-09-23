@@ -10,8 +10,8 @@ define(['jquery'],function($){
   var sideMenuData = [
       {url: '/profile/#/dashboard', title: '概览', icon: 'iconfont icon-blockicon'},
       {url: '/cvm/#/vm', title: '云主机', icon: 'iconfont icon-yunzhuji'},
-      {url: '/cvm/#/cloud-disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
-      {url: '/cvm/#/cloud-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
+      {url: '/cvm/#/vm-disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
+      {url: '/cvm/#/vm-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
       {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds'}
     ],
     sideMenuItemEl = null,

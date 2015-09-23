@@ -6,7 +6,8 @@ define([
     'controllers/VirtualMachine',
     'controllers/VmCreateModalCtrl',
     'controllers/ConfirmModalCtrl',
-    'controllers/CloudDiskCrtl'
+    'controllers/VmDiskCrtl',
+    'controllers/VmNetworkCrtl'
   ],
   function (controllerModule) {
 

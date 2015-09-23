@@ -23,17 +23,17 @@ define(['app'],function (app) {
           }
         },
         {
-          url: '/cloud-disk',
+          url: '/vm-disk',
           title: '云硬盘',
           config: {
-            templateUrl: '/static/apps/cloudvm/views/cloud-disk.html'
+            templateUrl: '/static/apps/cloudvm/views/vm-disk.html'
           }
         },
         {
-          url: '/cloud-vpc',
+          url: '/vm-vpc',
           title: '私有网络',
           config: {
-            template: '私有网络'
+            templateUrl: '/static/apps/cloudvm/views/vm-network.html'
           }
         }];
     };

@@ -1,5 +1,8 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.common.exception.MatrixException;
+import com.letv.common.exception.ValidateException;
+import com.letv.portal.service.openstack.util.Util;
 import org.jclouds.openstack.nova.v2_0.domain.Network;
 import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
@@ -12,12 +15,12 @@ public class CreateVmsTask implements VmsCreateSubTask {
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
 		for (int i = 0; i < context.getVmCreateConf().getCount(); i++) {
-			createOneVm(context, context.getVmCreateContexts().get(i));
+			createOneVm(context, context.getVmCreateContexts().get(i), i);
 		}
 	}
 
 	private void createOneVm(MultiVmCreateContext context,
-			VmCreateContext vmContext) throws OpenStackException {
+							 VmCreateContext vmContext, int vmIndex) throws OpenStackException {
 		CreateServerOptions options = new CreateServerOptions();
 
 		if (context.getKeyPair() != null) {
@@ -52,7 +55,13 @@ public class CreateVmsTask implements VmsCreateSubTask {
 		vmContext.setServer(context.getApiCache().getServerApi().get(serverCreated.getId()));
 
 		context.getVmManager().recordVmCreated(context.getVmCreateConf().getRegion(),vmContext.getServer());
-	}
+
+        try {
+            context.getVmCreateListener().vmCreated(context.getVmCreateConf().getRegion(), serverCreated.getId(), vmIndex, context.getListenerUserData());
+        } catch (Exception ex) {
+            Util.throwException(ex);
+        }
+    }
 
 	@Override
 	public void rollback(MultiVmCreateContext context)
