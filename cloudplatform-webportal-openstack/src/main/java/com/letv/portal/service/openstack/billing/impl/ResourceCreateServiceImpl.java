@@ -43,7 +43,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
-        OpenStackSession openStackSession = openStackService.createSession(Long.toString(userId), userVo.getEmail(), userVo.getUsername());
+        String email = userVo.getEmail();
+        String userName = userVo.getUsername();
+        OpenStackSession openStackSession = openStackService.createSession(email, email, userName);
         openStackSession.init(true);
         return openStackSession;
     }
