@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,23 +27,33 @@ import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
+import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
+import com.letv.portal.service.product.IProductInfoRecordService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("payService")
 public class PayServiceImpl implements IPayService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(PayServiceImpl.class);
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(PayServiceImpl.class);
 
 	@Autowired
-	IOrderService orderService;
+	private IOrderService orderService;
 	@Autowired
-	IOrderSubService orderSubService;
+	private IOrderSubService orderSubService;
+	@Autowired
+	private ResourceCreateService resourceCreateService;
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
+	
+	@Autowired
+	private IProductInfoRecordService productInfoRecordService;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -53,8 +64,9 @@ public class PayServiceImpl implements IPayService {
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map,
 			HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
-		if (orderSubs == null || orderSubs.size()==0) {
+		List<OrderSub> orderSubs = this.orderSubService
+				.selectOrderSubByOrderNumber(orderNumber);
+		if (orderSubs == null || orderSubs.size() == 0) {
 			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
 		}
 		Order order = orderSubs.get(0).getOrder();
@@ -71,7 +83,8 @@ public class PayServiceImpl implements IPayService {
 			if (price == 0.0D) {
 				try {
 					if (updateOrderPayInfo(orderSubs, "9999", price + "", 2)) {
-						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
+						response.sendRedirect(this.PAY_SUCCESS + "/"
+								+ orderNumber);
 						return ret;
 					} else {
 						throw new ValidateException("更新订单状态异常");
@@ -80,20 +93,27 @@ public class PayServiceImpl implements IPayService {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
 			}
-			String url = getParams(order.getOrderNumber(), price, pattern,this.PAY_CALLBACK,
-					this.PAY_SUCCESS + "/" + orderNumber, orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductName():orderSubs.get(0).getSubscription().getProductName()+"...", 
-							orderSubs.size()==1?orderSubs.get(0).getSubscription().getProductDescn():orderSubs.get(0).getSubscription().getProductDescn()+"...", null, params);
+			String url = getParams(order.getOrderNumber(), price, pattern,
+					this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
+					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription()
+							.getProductName() : orderSubs.get(0)
+							.getSubscription().getProductName()
+							+ "...", orderSubs.size() == 1 ? orderSubs.get(0)
+							.getSubscription().getProductDescn() : orderSubs
+							.get(0).getSubscription().getProductDescn()
+							+ "...", null, params);
 
-			if ("1".equals(pattern)) {//支付宝方法
+			if ("1".equals(pattern)) {// 支付宝方法
 				try {
 					response.sendRedirect(getPayUrl(url, params));
 				} catch (IOException e) {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
-			} else if ("2".equals(pattern)) {//微信支付
+			} else if ("2".equals(pattern)) {// 微信支付
 				String str = HttpClient.get(getPayUrl(url, params), 2000, 2000);
 				ret = transResult(str);
-				if (!updateOrderPayInfo(orderSubs, (String) ret.get("ordernumber"),
+				if (!updateOrderPayInfo(orderSubs,
+						(String) ret.get("ordernumber"),
 						(String) ret.get("price"), null)) {
 					ret.put("alert", "微信方式支付异常");
 				}
@@ -107,8 +127,10 @@ public class PayServiceImpl implements IPayService {
 			String productDesc, String defaultBank, Map<String, String> params) {
 		try {
 			params.put("corderid", number);
-			params.put("userid", this.sessionService.getSession().getUserId()+ "");
-			params.put("username", URLEncoder.encode(this.sessionService.getSession().getUserName(), "UTF-8"));
+			params.put("userid", this.sessionService.getSession().getUserId()
+					+ "");
+			params.put("username", URLEncoder.encode(this.sessionService
+					.getSession().getUserName(), "UTF-8"));
 			params.put("companyid", "4");
 			params.put("deptid", "112");
 			params.put("productid", "0");
@@ -118,17 +140,17 @@ public class PayServiceImpl implements IPayService {
 			params.put("buyType", "0");
 			params.put("pid", "0");
 			params.put("chargetype", "1");
-			params.put("productname", URLEncoder.encode(productName, "UTF-8"));
-			params.put("productdesc", URLEncoder.encode(productDesc, "UTF-8"));
+			params.put("productname", productName==null?"":URLEncoder.encode(productName, "UTF-8"));
+			params.put("productdesc", productDesc==null?"":URLEncoder.encode(productDesc, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			logger.error("payService getParams had error :", e);
 		}
 
-		if ("1".equals(pattern)) {//支付宝支付
+		if ("1".equals(pattern)) {// 支付宝支付
 			params.put("defaultbank", defaultBank);
 			return Constant.PAY_URL;
 		}
-		if ("2".equals(pattern)) {//微信支付
+		if ("2".equals(pattern)) {// 微信支付
 			return Constant.WX_URL;
 		}
 		return null;
@@ -154,7 +176,8 @@ public class PayServiceImpl implements IPayService {
 		if (StringUtils.isNullOrEmpty(result))
 			return jsonResult;
 		try {
-			jsonResult = (Map<String, Object>) resultMapper.readValue(result, Map.class);
+			jsonResult = (Map<String, Object>) resultMapper.readValue(result,
+					Map.class);
 		} catch (Exception e) {
 			logger.error("transResult had error:", e);
 		}
@@ -162,52 +185,66 @@ public class PayServiceImpl implements IPayService {
 	}
 
 	public boolean callback(Map<String, Object> map) {
-		//①验证必须字段
+		// ①验证必须字段
 		if ((map.get("corderid") == null) || (map.get("stat") == null)
-				|| (map.get("money") == null)
-				|| (map.get("ordernumber") == null)) {
-			return false;
+				 || (map.get("money") == null)
+				 || (map.get("ordernumber") == null)) {
+			 return false;
 		}
 
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber((String) map.get("corderid"));
+		List<OrderSub> orderSubs = this.orderSubService
+				.selectOrderSubByOrderNumberWithOutSession((String) map
+						.get("corderid"));
+		if (orderSubs == null || orderSubs.size() == 0) {
+			throw new ValidateException("无法查询到订单，订单编号："
+					+ (String) map.get("corderid"));
+		}
 
-		//②支付成功已通知服务器并且order的状态为已支付
-		if (Integer.parseInt((String) map.get("stat")) == 1 && orderSubs.get(0).getOrder().getStatus() == 2) {
+		// ②支付成功已通知服务器并且order的状态为已支付
+		if (Integer.parseInt((String) map.get("stat")) == 1
+				&& orderSubs.get(0).getOrder().getStatus() == 2) {
 			return true;
 		}
-		
-		//③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
-		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0).getOrder().getOrderNumber(), getValidOrderPrice(orderSubs) + "");
+
+		// ③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
+		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0)
+				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs)
+				+ "");
 		if (sign != null && sign.equals(map.get("sign"))) {
-			return updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
-					(String) map.get("money"), 2);
+			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
+					(String) map.get("money"), 2)) {
+				// ④创建应用实例
+				return createInstance(orderSubs);
+			}
 		}
 		return false;
 	}
 
 	/**
-	  * @Title: getValidOrderPrice
-	  * @Description: 获取有效的价格(优先使用折扣价)
-	  * @param order
-	  * @return double   
-	  * @throws 
-	  * @author lisuxiao
-	  * @date 2015年9月17日 下午4:23:46
-	  */
+	 * @Title: getValidOrderPrice
+	 * @Description: 获取有效的价格(优先使用折扣价)
+	 * @param order
+	 * @return double
+	 * @throws
+	 * @author lisuxiao
+	 * @date 2015年9月17日 下午4:23:46
+	 */
 	private double getValidOrderPrice(List<OrderSub> orderSubs) {
 		double price = 0;
 		for (OrderSub orderSub : orderSubs) {
 			if ((orderSub.getDiscountPrice() == null)
-					|| (orderSub.getDiscountPrice() < 0.0D)) {//使用原价
+					|| (orderSub.getDiscountPrice() < 0.0D)) {// 使用原价
 				price = Arithmetic4Double.add(price, orderSub.getPrice());
 			} else {
-				price = Arithmetic4Double.add(price, orderSub.getDiscountPrice());//使用折扣价
+				price = Arithmetic4Double.add(price,
+						orderSub.getDiscountPrice());// 使用折扣价
 			}
 		}
 		return price;
 	}
 
-	private boolean updateOrderPayInfo(List<OrderSub> orderSubs, String orderNumber, String price, Integer status) {
+	private boolean updateOrderPayInfo(List<OrderSub> orderSubs,
+			String orderNumber, String price, Integer status) {
 		if (getValidOrderPrice(orderSubs) == Double.parseDouble(price)) {
 			Order o = new Order();
 			o.setId(orderSubs.get(0).getOrderId());
@@ -221,24 +258,27 @@ public class PayServiceImpl implements IPayService {
 	}
 
 	public Map<String, Object> queryState(String orderNumber) {
-		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
-		if (orderSubs==null || orderSubs.size() == 0) {
+		List<OrderSub> orderSubs = this.orderSubService
+				.selectOrderSubByOrderNumber(orderNumber);
+		if (orderSubs == null || orderSubs.size() == 0) {
 			return null;
 		}
 		Order order = orderSubs.get(0).getOrder();
-		if (order==null || order.getPayNumber() == null) {
+		if (order == null || order.getPayNumber() == null) {
 			return null;
 		}
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("companyid", "4");
 		params.put("corderid", order.getPayNumber());
-		params.put("sign", getSign("4", Constant.SIGN_KEY, order.getPayNumber(), null));
+		params.put("sign",
+				getSign("4", Constant.SIGN_KEY, order.getPayNumber(), null));
 		String url = getPayUrl(Constant.QUERY_URL, params);
 		String ret = HttpClient.get(url, 2000, 2000);
 		Map<String, Object> map = transResult(ret);
 
-		if ((map.get("status") != null) && (Integer) map.get("status")==1) {//支付成功
-			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"), (String) map.get("money"), 2)) {
+		if ((map.get("status") != null) && (Integer) map.get("status") == 1) {// 支付成功
+			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
+					(String) map.get("money"), 2)) {
 				return map;
 			}
 			return null;
@@ -247,7 +287,8 @@ public class PayServiceImpl implements IPayService {
 		return map;
 	}
 
-	private String getSign(String companyId, String key, String payNumber, String money) {
+	private String getSign(String companyId, String key, String payNumber,
+			String money) {
 		if ((companyId == null) || (key == null) || (payNumber == null)) {
 			return null;
 		}
@@ -264,6 +305,46 @@ public class PayServiceImpl implements IPayService {
 		sb.append(companyId);
 		MD5 m = new MD5();
 		return m.getMD5ofStr(sb.toString()).toLowerCase();
+	}
+
+	private boolean createInstance(List<OrderSub> orderSubs) {
+		for (OrderSub orderSub : orderSubs) {
+			// 进行服务创建
+			if (orderSub.getSubscription().getProductId() == 2) {// openstack
+				if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+					List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
+					for (OrderSub orders : orderSubs) {
+						records.add(orders.getProductInfoRecord());
+					}
+					this.resourceCreateService.createVm(
+							orderSub.getCreateUser(),
+							orderSub.getProductInfoRecord().getParams(),new VmCreateListener(){
+								@SuppressWarnings("unchecked")
+								@Override
+								public void vmCreated(String region,
+										String vmId, int vmIndex,
+										Object userData) throws Exception {
+									List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
+									if(vmIndex>records.size()) {
+										throw new ValidateException("云主机回调vmIndex超出List范围！");
+									}
+									ProductInfoRecord record = records.get(vmIndex);
+									record.setParams(null);
+									record.setProductType(null);
+									record.setInvokeType(null);
+									record.setInstanceId(region+"_"+vmId);
+									productInfoRecordService.updateBySelective(record);
+									
+									logger.info("callback success!");
+								}
+								
+							}, records);
+					logger.info("createInstance success!");
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
