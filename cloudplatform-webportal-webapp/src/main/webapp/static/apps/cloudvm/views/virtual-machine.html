@@ -1,4 +1,4 @@
-<div class="virtual-machine-view" ng-controller="VirtualMachineCrtl">
+<div class="view-common" ng-controller="VirtualMachineCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="le-row vm-list">
+    <div class="le-row list-common">
         <div class="le-col-12">
             <table class="table table-hover">
                 <thead>
@@ -74,7 +74,7 @@
                 <button type="button" class="close" ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">×</span></button>
                 <h3 class="modal-title">创建云主机</h3>
             </div>
-            <div class="modal-body vm-create-modal-body">
+            <div class="modal-body">
                 <form novalidate class="vm-create-form" name="vm_create_form">
                 <div class="col-sm-8 body-left">
                     <div class="left-flow clearfix">

@@ -354,3 +354,137 @@ numeric-input .up-down > a > i{
     opacity:0;
 }
 /*end spin style*/
+
+/*begin view-common style*/
+.view-common .operate-panel > .le-btn-group > .btn{
+    margin-right: 10px;
+}
+
+
+.view-common .operate-panel .more-operation-dropdown{
+    width: 100px;
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+    margin-left: 20px;
+}
+
+.view-common .operate-panel .more-operation-dropdown .dropdown-menu{
+    min-width: auto;
+    width: 100%;
+    background-color: #f5f5f5;
+    margin:0;
+    padding: 0 0 5px;
+}
+.view-common .operate-panel .more-operation-dropdown .dropdown-menu >li >a{
+    padding: 2px 0;
+    text-align: center;
+}
+.view-common .operate-panel .more-operation-dropdown .dropdown-menu >li >a:hover{
+    color: white;
+    background-color: #b3b3b3;
+    text-align: center;
+}
+
+.view-common .list-common th .icon-righticon{
+    color: white;
+    background-color: white;
+}
+
+.view-common .list-common th .icon-righticon.checked{
+    color: #088ac2;
+}
+
+.view-common .list-common tr .icon-checkiconfill{
+    color: white;
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.view-common .list-common tr .icon-checkiconfill.checked{
+    border-width: 0;
+    font-size: 18px;
+    color: #088ac2;
+}
+.view-common .list-common .icon-monitor{
+    font-size: 24px;
+    color: #f5c131;
+}
+.view-common .list-common .icon-computer{
+    font-size: 24px;
+    color: #08c2b3;
+}
+.view-common .list-common .status-loading{
+    display: inline-block;
+    position: relative;
+    top: 7px;
+    left: 5px;
+    background-image: url('/static/images/point-loading.gif');
+    background-size: cover;
+    background-position: center;
+    height: 24px;
+    width: 24px;
+}
+/*end view-common style*/
+
+/*begin btn-le style*/
+.btn-le-blue, .btn-le-blueGreen, .btn-le-green, .btn-le-yellow, .btn-le-red {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+    font-size: 14px;
+    border: none;
+}
+
+.btn-le-blue > *, .btn-le-blueGreen > *, .btn-le-green > *, .btn-le-yellow > *, .btn-le-red > * {
+    line-height: 30px;
+}
+
+.btn-le-blue {
+    background-color: #088ac2;
+    color: #fff;
+}
+
+.btn-le-blueGreen {
+    background-color: #08aec2;
+    color: #fff;
+}
+
+.btn-le-green {
+    background-color: #08c2b3;
+    color: #fff;
+}
+
+.btn-le-yellow {
+    background-color: #f5c131;
+    color: #fff;
+}
+
+.btn-le-red {
+    background-color: #ff3c37;
+    color: #fff;
+}
+/*end btn-le style*/
+
+/*begin le-text style*/
+.text-blue {
+    color: #077cae;
+}
+
+.text-blueGreen {
+    color: #08aec2;
+}
+
+.text-green {
+    color: #08c2b3;
+}
+
+.text-yellow {
+    color: #f5c131;
+}
+
+.text-red {
+    color: #ff3c37;
+}
+/*end le-text style*/

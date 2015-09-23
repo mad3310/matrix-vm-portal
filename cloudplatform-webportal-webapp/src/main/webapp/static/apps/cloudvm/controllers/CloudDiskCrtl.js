@@ -16,27 +16,27 @@ define(['controllers/app.controller'], function (controllerModule) {
 
 
 
-      $scope.isAllVmChecked=function(){
-        var unCheckedVms=$scope.diskList.filter(function(vm){
-          return vm.checked===false || vm.checked===undefined;
+      $scope.isAllDiskChecked=function(){
+        var unCheckedDisks=$scope.diskList.filter(function(disk){
+          return disk.checked===false || disk.checked===undefined;
         });
-        return unCheckedVms.length==0;
+        return unCheckedDisks.length==0;
       };
-      $scope.checkAllVm=function(){
-        if($scope.isAllVmChecked()){
-          $scope.diskList.forEach(function(vm){
-            vm.checked=false;
+      $scope.checkAllDisk=function(){
+        if($scope.isAllDiskChecked()){
+          $scope.diskList.forEach(function(disk){
+            disk.checked=false;
           });
         }
         else{
-          $scope.diskList.forEach(function(vm){
-            vm.checked=true;
+          $scope.diskList.forEach(function(disk){
+            disk.checked=true;
           });
         }
 
       };
-      $scope.checkVm = function (vm) {
-        vm.checked = vm.checked === true ? false : true;
+      $scope.checkDisk = function (disk) {
+        disk.checked = disk.checked === true ? false : true;
       };
 
       var refreshDiskList = function () {
@@ -51,11 +51,6 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.diskList = data.data.data;
             $scope.totalItems = data.data.totalRecords;
 
-          });
-        },
-        getCheckedVm=function(){
-          return $scope.diskList.filter(function(item){
-            return item.checked===true;
           });
         };
 
