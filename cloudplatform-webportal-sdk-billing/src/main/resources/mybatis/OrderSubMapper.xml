@@ -35,6 +35,7 @@
 			<result column="ORDER_NUMBER" property="orderNumber" />
 		    <result column="STATUS" property="status" />
 		    <result column="PAY_NUMBER" property="payNumber" />
+		    <result column="ORDER_DESCN" property="descn" />
 		</association>
 		
 		<association property="productInfoRecord" javaType="ProductInfoRecord">
@@ -161,7 +162,7 @@
 	    select
 	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,
-	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.DESCN ORDER_DESCN,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join
