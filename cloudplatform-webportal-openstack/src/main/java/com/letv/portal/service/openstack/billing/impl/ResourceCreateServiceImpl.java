@@ -18,6 +18,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -47,6 +48,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         return openStackSession;
     }
 
+    @Async
     @Override
     public void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
