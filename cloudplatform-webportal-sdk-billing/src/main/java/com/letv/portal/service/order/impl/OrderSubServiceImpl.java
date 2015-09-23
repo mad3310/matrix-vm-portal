@@ -120,7 +120,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			ret.put("payNumber", orderSub.getOrder().getPayNumber());
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
-			ret.put("params", orderSub.getDescn());
+			ret.put("params", orderSub.getOrder().getDescn());
 			retList.add(ret);
 			judgeParam.add(orderSub.getProductInfoRecord().getParams());
 		}
