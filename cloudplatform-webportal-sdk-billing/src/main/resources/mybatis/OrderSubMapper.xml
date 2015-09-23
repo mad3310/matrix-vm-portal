@@ -39,9 +39,11 @@
 		</association>
 		
 		<association property="productInfoRecord" javaType="ProductInfoRecord">
+			<result column="RECORD_ID" property="id" />
 			<result column="PARAMS" property="params" />
 		    <result column="PRODUCT_TYPE" property="productType" />
 		    <result column="INVOKE_TYPE" property="invokeType" />
+		    <result column="INSTANCE_ID" property="instanceId" />
 		</association>
 	</resultMap>
 	
@@ -162,7 +164,8 @@
 	    select
 	        <include refid="Base_Column_List" />,sub.PRODUCT_ID,sub.BASE_REGION_ID,
 	        sub.CHARGE_TYPE,sub.ORDER_TIME,sub.VALID,sub.PRODUCT_INFO_RECORD_ID,product.NAME PRODUCT_NAME,product.DESCN PRODUCT_DESCN,
-	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.DESCN ORDER_DESCN,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE
+	        od.ORDER_NUMBER,od.STATUS,od.PAY_NUMBER,od.DESCN ORDER_DESCN,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,
+	        record.ID RECORD_ID,record.INSTANCE_ID
 	    from
 	        MATRIX_BILLING_ORDER_SUB orderSub
 	    left join

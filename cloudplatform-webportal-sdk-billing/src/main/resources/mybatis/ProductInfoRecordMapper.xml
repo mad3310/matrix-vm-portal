@@ -15,18 +15,19 @@
 	    <result column="CREATE_USER" property="createUser" />
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
+	    <result column="INSTANCE_ID" property="instanceId" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 	    record.ID,record.PARAMS,record.PRODUCT_TYPE,record.INVOKE_TYPE,record.DELETED,record.CREATE_TIME,
-	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN
+	    record.UPDATE_TIME,record.CREATE_USER,record.UPDATE_USER,record.DESCN,record.INSTANCE_ID
 	</sql>
 	
 	<insert id="insert" parameterType="ProductInfoRecord" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_PRODUCT_INFO_RECORD 
-	        (PARAMS,PRODUCT_TYPE,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN) 
+	        (PARAMS,PRODUCT_TYPE,INVOKE_TYPE,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,INSTANCE_ID) 
 	    values
-	        (#{params},#{productType},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn})
+	        (#{params},#{productType},#{invokeType},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{instanceId})
 	</insert>
 	
 	<sql id="Common_Where_Clause">
@@ -62,6 +63,9 @@
 	        <if test="descn != null ">
 	            and record.DESCN=#{descn}
 	        </if>
+	        <if test="instanceId != null ">
+	            and record.INSTANCE_ID=#{instanceId}
+	        </if>
 	    </trim>
 	</sql>
 	
@@ -72,6 +76,44 @@
 	        MATRIX_PRODUCT_INFO_RECORD record
 	        <include refid="Common_Where_Clause" />
 	</select>
+	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="ProductInfoRecord">
+		update MATRIX_PRODUCT_INFO_RECORD
+		<set>
+			<if test="params != null ">
+	            PARAMS=#{params},
+	        </if>
+	        <if test="productType != null ">
+	            PRODUCT_TYPE=#{productType},
+	        </if>
+	        <if test="invokeType != null ">
+	            INVOKE_TYPE=#{invokeType},
+	        </if>
+	        <if test="deleted != null ">
+	            DELETED=#{deleted},
+	        </if>
+	        <if test="createTime != null ">
+	            CREATE_TIME=#{createTime},
+	        </if>
+	        <if test="updateTime != null ">
+	            UPDATE_TIME=#{updateTime},
+	        </if>
+	        <if test="createUser != null ">
+	            CREATE_USER=#{createUser},
+	        </if>
+	        <if test="updateUser != null ">
+	            UPDATE_USER=#{updateUser},
+	        </if>
+	        <if test="descn != null ">
+	            DESCN=#{descn},
+	        </if>
+	        <if test="instanceId != null ">
+	            INSTANCE_ID=#{instanceId}
+	        </if>
+		</set>
+		where ID=#{id}
+	</update>
 
 
 
