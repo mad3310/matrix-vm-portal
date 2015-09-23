@@ -103,18 +103,20 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	}
 
 	@Override
-	public void init(boolean loginedUser) throws OpenStackException {
+	public void init(boolean withOutSession) throws OpenStackException {
 		if (!isInit) {
 			initUserWithOutOpenStack();
 			initUser();
-			if (!loginedUser) {
+			if (!withOutSession) {
 				initResources();
 			}
 			isInit = true;
-			SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
-			Session session = sessionService.getSession();
-			session.setOpenStackSession(this);
-			sessionService.setSession(session, "CloudVm.OpenStack");
+			if(!withOutSession) {
+				SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
+				Session session = sessionService.getSession();
+				session.setOpenStackSession(this);
+				sessionService.setSession(session, "CloudVm.OpenStack");
+			}
 		}
 	}
 

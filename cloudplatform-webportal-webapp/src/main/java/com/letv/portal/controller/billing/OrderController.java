@@ -51,5 +51,25 @@ public class OrderController {
 		return obj;
 	}
 	
-	
+	/**
+	  * @Title: queryOrderPayInfo
+	  * @Description: 获取订单支付信息
+	  * @param orderNumber
+	  * @param obj
+	  * @return ResultObject   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月23日 上午10:53:00
+	  */
+	@RequestMapping(value="/pay/{orderNumber}",method=RequestMethod.GET)   
+	public @ResponseBody ResultObject queryOrderPayInfo(@PathVariable String orderNumber, ResultObject obj) {
+		Map<String, Object> ret = this.orderSubService.queryOrderPayInfo(orderNumber);
+		if(ret==null) {
+			obj.setResult(0);
+			obj.addMsg("未获取到订单支付信息，请联系管理员！订单编号："+orderNumber);
+		} else {
+			obj.setData(ret);
+		}
+		return obj;
+	}
 }

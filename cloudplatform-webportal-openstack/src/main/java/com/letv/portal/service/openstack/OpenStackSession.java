@@ -27,7 +27,7 @@ public interface OpenStackSession extends Closeable, Serializable {
 
     void init() throws OpenStackException;
 
-    void init(boolean loginedUser) throws OpenStackException;
+    void init(boolean withOutSession) throws OpenStackException;
 
 //    Set<String> listRegions();
 //
