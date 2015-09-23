@@ -54,16 +54,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
 
             VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
-            });
+            },true);
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
-            MultiVmCreateContext multiVmCreateContext = openStackSession.getVMManager().create2(vmCreateConf);
+            openStackSession.getVMManager().createForBilling(vmCreateConf, listener, listenerUserData);
 
-            List<ResourceLocator> resourceLocators = new LinkedList<ResourceLocator>();
-            for (VmCreateContext vmCreateContext : multiVmCreateContext.getVmCreateContexts()) {
-                resourceLocators.add(new ResourceLocator(multiVmCreateContext.getVmCreateConf().getRegion(), vmCreateContext.getServer().getId()));
-            }
+//            List<ResourceLocator> resourceLocators = new LinkedList<ResourceLocator>();
+//            for (VmCreateContext vmCreateContext : multiVmCreateContext.getVmCreateContexts()) {
+//                resourceLocators.add(new ResourceLocator(multiVmCreateContext.getVmCreateConf().getRegion(), vmCreateContext.getServer().getId()));
+//            }
 //            return resourceLocators;
         } catch (OpenStackException e) {
             throw e.matrixException();

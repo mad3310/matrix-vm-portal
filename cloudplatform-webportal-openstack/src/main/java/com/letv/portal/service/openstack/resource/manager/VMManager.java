@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
+import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -41,7 +42,9 @@ public interface VMManager extends ResourceManager {
 			APINotAvailableException, PollingInterruptedException,
 			OpenStackException;
 
-	MultiVmCreateContext create2(VMCreateConf2 conf2) throws OpenStackException;
+	void create2(VMCreateConf2 conf) throws OpenStackException;
+
+	void createForBilling(VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,

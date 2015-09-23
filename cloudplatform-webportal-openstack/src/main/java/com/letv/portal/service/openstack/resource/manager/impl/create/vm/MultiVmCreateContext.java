@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
 import java.util.List;
 
+import com.letv.portal.service.openstack.billing.VmCreateListener;
 import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Subnet;
@@ -38,7 +39,10 @@ public class MultiVmCreateContext {
 	private Network floatingNetwork;
 	
 	private List<VmCreateContext> vmCreateContexts;
-	
+
+	private VmCreateListener vmCreateListener;
+	private Object listenerUserData;
+
 //	public void setOpenStackConf(OpenStackConf openStackConf) {
 //		this.openStackConf = openStackConf;
 //	}
@@ -189,5 +193,21 @@ public class MultiVmCreateContext {
 	
 	public ApiCache getApiCache() {
 		return apiCacheThreadLocal.get();
+	}
+
+	public void setVmCreateListener(VmCreateListener vmCreateListener) {
+		this.vmCreateListener = vmCreateListener;
+	}
+
+	public VmCreateListener getVmCreateListener() {
+		return vmCreateListener;
+	}
+
+	public void setListenerUserData(Object listenerUserData) {
+		this.listenerUserData = listenerUserData;
+	}
+
+	public Object getListenerUserData() {
+		return listenerUserData;
 	}
 }
