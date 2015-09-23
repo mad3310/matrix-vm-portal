@@ -96,6 +96,13 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	    params.put("userId", sessionService.getSession().getUserId());
 	    return this.orderSubDao.selectByMap(params);
 	}
+	
+	@Override
+	public List<OrderSub> selectOrderSubByOrderNumberWithOutSession(String orderNumber) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderNumber", orderNumber);
+		return this.orderSubDao.selectByMap(params);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -120,6 +127,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			ret.put("payNumber", orderSub.getOrder().getPayNumber());
 			ret.put("orderNumber", orderSub.getOrder().getOrderNumber());
 			ret.put("orderTime", orderSub.getSubscription().getOrderTime());
+			ret.put("orderNum", (Integer)params.get("count"));
 			ret.put("params", orderSub.getOrder().getDescn());
 			retList.add(ret);
 			judgeParam.add(orderSub.getProductInfoRecord().getParams());
@@ -169,6 +177,21 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			}
 		}
 		return price;
+	}
+
+	@Override
+	public Map<String, Object> queryOrderPayInfo(String orderNumber) {
+		List<OrderSub> orderSubs = selectOrderSubByOrderNumber(orderNumber);
+		if(orderSubs==null || orderSubs.size()==0) {
+			return null;
+		}
+		Map<String, Object> ret = new HashMap<String, Object>();
+		if(orderSubs.get(0).getOrder().getPayNumber()==null) {
+			ret.put("totalPrice", getValidTotalOrderPrice(orderSubs));
+			ret.put("payNumber", orderSubs.get(0).getOrder().getPayNumber());
+		}
+		ret.put("status", orderSubs.get(0).getOrder().getStatus());
+		return null;
 	}
 
 

@@ -36,6 +36,7 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @date 2015年9月17日 下午4:44:38
 	  */
 	List<OrderSub> selectOrderSubByOrderNumber(String orderNumber);
+	List<OrderSub> selectOrderSubByOrderNumberWithOutSession(String orderNumber);
 	
 	/**
 	  * @Title: modifyPriceById
@@ -48,4 +49,15 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	void modifyPriceById(Map<String, Object> params);
 	
 	List<Map<String, Object>> queryOrderInfo(String orderNumber);
+	
+	/**
+	  * @Title: queryOrderPayInfo
+	  * @Description: 获取订单支付信息
+	  * @param orderNumber
+	  * @return Map<String,Object>   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年9月23日 上午10:47:13
+	  */
+	Map<String, Object> queryOrderPayInfo(String orderNumber);
 }
