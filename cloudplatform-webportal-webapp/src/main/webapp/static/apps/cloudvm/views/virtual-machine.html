@@ -176,7 +176,7 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-disk-type" ng-repeat="vmDiskType in vmDiskTypeList" ng-class="{'selected':isSelectedVmDiskType(vmDiskType)}" ng-click="selectVmDiskType(vmDiskType)">
                                         <span>{{vmDiskType.name}}</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>
@@ -224,21 +224,21 @@
                                 <div class="col-sm-10">
                                     <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='now'}" ng-click="vmNetworkPublicIpModel='now'">
                                         <span>绑定公网IP</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                     <div class="letv-mutiCheck check-network-type" ng-class="{'selected':vmNetworkPublicIpModel=='later'}" ng-click="vmNetworkPublicIpModel='later'">
                                         <span>稍后设置</span>
-                                        <i class="iconfont icon-checkroundfillicon1"></i>
+                                        <i class="iconfont icon-checkroundfillicon"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
                                 <div class="col-sm-10">
-                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="0" rz-slider-ceil="50" rz-slider-always-show-bar="true">
+                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-always-show-bar="true">
                                     </rzslider>
                                     <input type="text" ng-model="networkBandWidth" class="le-form-control network-bandwidth" />
-                                    <span class="network-bandwidth-unit">Mb/s</span>
+                                    <span class="network-bandwidth-unit">Mbps</span>
                                 </div>
                             </div>
                         </div>
@@ -312,14 +312,14 @@
                 </div>
                 <div class="col-sm-4 body-right">
                     <div class="right-top">
-                        <div class="top-title"><span>配置详情</span><span class="fa fa-angle-double-down"></span></div>
+                        <div class="top-title"><span>配置详情</span><i class="iconfont icon-rounddown"></i></div>
                         <ul class="top-items">
-                            <li>镜像：<span>{{selectedVmImage.name}}</span></li>
-                            <li>CPU：<span>{{selectedVmCpu}}核</span></li>
-                            <li>内存：<span>{{selectedVmRam/1024 | number:0}}GB</span></li>
-                            <li>硬盘：<span>{{dataDiskVolume}}GB</span></li>
-                            <li>主机名：<span>{{vmName}}</span></li>
-                            <li>数量：<span>{{vmCount}}台</span></li>
+                            <li><span class="title">镜像：</span><span class="value">{{selectedVmImage.name}}</span></li>
+                            <li><span class="title">CPU：</span><span class="value">{{selectedVmCpu}}核</span></li>
+                            <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
+                            <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
+                            <li><span class="title">主机名：</span><span class="value">{{vmName}}</span></li>
+                            <li><span class="title">数量：</span><span class="value">{{vmCount}}台</span></li>
                         </ul>
                     </div>
                     <div class="right-bottom">
