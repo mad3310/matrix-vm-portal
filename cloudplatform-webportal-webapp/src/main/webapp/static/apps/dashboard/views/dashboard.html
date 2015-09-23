@@ -52,7 +52,7 @@
 						<div class="product">
 							<span class="iconfont icon-yunzhuji"></span>
 							<div class="product-title">云主机</div>
-							<div class="product-num">2个</div>
+							<div class="product-num">{{ecs}}个</div>
 						</div>
 						<div class="productDesc">
 							<span>每日消费</span>
@@ -61,7 +61,7 @@
 								<span>¥0.000</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行2个</span>
+								<span class="le-col-6">运行1个</span>
 								<span class="le-col-6">停0个</span>
 							</div>
 						</div>
@@ -139,7 +139,7 @@
 					<span class="more" ng-click='expanderToggle()'>更多</span>
 					<div class="clearfix"></div>
 				</div>
-				<ul class="operation-items">
+				<!-- <ul class="operation-items">
 					<li>
 						<div>创建云主机实例</div>
 						<div class="items-desc">
@@ -233,6 +233,18 @@
 						<div class="items-desc">
 							<span>Welsdfell_jksdfj_001</span>
 							<span class="pull-right">15:36</span>
+							<div class="clearfix"></div>
+						</div>
+					</li>
+				</ul> -->
+				<ul class="operation-items">
+					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1}">
+						<div>{{operation.action}}</div>
+						<div class="items-desc">
+							<span>{{operation.content}}</span>
+							<!-- <span class="pull-right" ng-if="$index>10">{{operation.createTime|date:'yyyy-mm-dd'}}</span>
+							<span class="pull-right" ng-if="$index<=10">{{operation.createTime|date:'hh:mm'}}</span> -->
+							<span class="pull-right" data-picker>{{operation.createTime|date:'hh:mm'}}</span>
 							<div class="clearfix"></div>
 						</div>
 					</li>
