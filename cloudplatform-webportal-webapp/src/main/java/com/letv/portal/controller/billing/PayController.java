@@ -86,7 +86,7 @@ public class PayController {
 				//进行服务创建
 				if(orderSub.getSubscription().getProductId()==2) {//openstack
 					if("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-//						List<ResourceLocator> locator = this.resourceCreateService.createVm(sessionService.getSession().getUserId(), orderSub.getProductInfoRecord().getParams());
+						//List<ResourceLocator> locator = this.resourceCreateService.createVm(sessionService.getSession().getUserId(), orderSub.getProductInfoRecord().getParams());
 						//保存id到record表
 						for (OrderSub sub : orderSubs) {
 							if("1".equals(orderSub.getProductInfoRecord().getProductType())) {
