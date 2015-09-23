@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
@@ -127,6 +128,10 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 			if (openStackUser.getEmail().endsWith("@letv.com")) {
 				openStackUser.setInternalUser(true);
+			}
+
+			if (!openStackUser.getEmail().contains("@") || !openStackUser.getUserId().contains("@")) {
+				throw new OpenStackException(MessageFormat.format("invalid user email or id,email:'{0}',userId:'{1}'.", openStackUser.getEmail(), openStackUser.getUserId()), "用户信息不合法");
 			}
 
 			openStackUser.setPrivateNetworkName(openStackConf

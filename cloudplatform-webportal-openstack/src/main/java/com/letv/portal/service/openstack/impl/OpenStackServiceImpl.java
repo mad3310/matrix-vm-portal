@@ -144,7 +144,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 	public OpenStackSession createSession(String userId, String email,
 			String userName) throws OpenStackException {
 		OpenStackUser openStackUser = new OpenStackUser();
-		openStackUser.setUserId(email);
+		openStackUser.setUserId(userId);
 		openStackUser.setEmail(email);
 		openStackUser.setUserName(userName);
 //		openStackUser.setFirstLogin(false);
