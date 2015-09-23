@@ -3,13 +3,14 @@
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openVmCreateModal('720')"><span>创建云主机</span></button>
             <button class="btn btn-le-blueGreen" ng-click="startVm('400')"><span>启动</span></button>
-            <button class="btn btn-le-green" ng-click="openVmCreateModal('720')"><span>重启</span></button>
+            <button class="btn btn-le-green" ng-click="stopVm('400')"><span>停止</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
                     <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
+                    <li><a href="javascript:void(0);">重启云主机</a></li>
                     <li><a href="javascript:void(0);">绑定云硬盘</a></li>
                 </ul>
             </div>

@@ -28,29 +28,47 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = $modal.open({
-          templateUrl: 'ConfirmModalTpl',
-          controller: 'ConfirmModalCtrl',
-          size: size,
-          resolve: {
-            message:function(){
-              return  '确定要启动云主机test吗？';
-            },
-            title:function(){
-              return  '启动云主机';
-            }
-          }
-        });
+        var modalInstance = WidgetService.openConfirmModal('启动云主机','确定要启动云主机（'+checkedVms[0].name+'）吗？');
 
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
+          WidgetService.notifyInfo('云主机启动执行中...');
           HttpService.doPost(Config.urls.vm_start.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
             if(data.result===1){
-              $modalInstance.close(data);
-              WidgetService.notifySuccess('创建云主机成功');
+              checkedVms[0].status='ACTIVE';
+              modalInstance.close(data);
+              WidgetService.notifySuccess('启动云主机成功');
             }
             else{
-              WidgetService.notifyError(data.msgs[0]||'创建云主机失败');
+              WidgetService.notifyError(data.msgs[0]||'启动云主机失败');
+            }
+          });
+        }, function () {
+        });
+      };
+
+      $scope.stopVm=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        var data={
+          vmId: checkedVms[0].id
+        };
+        var modalInstance = WidgetService.openConfirmModal('停止云主机','确定要停止云主机（'+checkedVms[0].name+'）吗？');
+
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          WidgetService.notifyInfo('云主机停止执行中...');
+          HttpService.doPost(Config.urls.vm_stop.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              checkedVms[0].status='SHUTOFF';
+              modalInstance.close(data);
+              WidgetService.notifySuccess('停止云主机成功');
+            }
+            else{
+              WidgetService.notifyError(data.msgs[0]||'停止云主机失败');
             }
           });
         }, function () {
@@ -66,9 +84,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         var data={
           vmId: checkedVms[0].id
         };
-        var modalInstance = WidgetService.openConfirmModal('删除云主机','确定要删除云主机test吗？');
+        var modalInstance = WidgetService.openConfirmModal('删除云主机','确定要删除云主机（'+checkedVms[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
+          WidgetService.notifyInfo('云主机删除执行中...');
           HttpService.doPost(Config.urls.vm_delete.replace('{region}', checkedVms[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
               modalInstance.close(data);
@@ -107,7 +126,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         vm.checked = vm.checked === true ? false : true;
       };
 
-      $scope.items = ['item1', 'item2', 'item3'];
       $scope.openVmCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,

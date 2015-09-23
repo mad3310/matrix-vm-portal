@@ -108,6 +108,9 @@ html {font-family:'Microsoft YaHei';font-size:62.5%;-webkit-tap-highlight-color:
     line-height: 32px;
 }
 
+.modal-dialog {
+    margin: 100px auto;
+}
 
 .modal-400 {
     width: 400px;
@@ -121,6 +124,19 @@ html {font-family:'Microsoft YaHei';font-size:62.5%;-webkit-tap-highlight-color:
     border-radius: 2px;
 }
 
+.pagination{
+    border-radius: 2px;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    background-color: #088ac2;
+    border-color: #088ac2;
+}
 /*end override bootstrap style*/
 
 /*begin override rzslider style*/
@@ -163,7 +179,29 @@ rzslider span.rz-bubble{
 .close:hover, .close:focus{
     opacity: 1;
 }
-/*begin override toaster style*/
+.toast-warning {
+    background-color: #f5c131;
+}
+.toast-error {
+    background-color: #ff3c37;
+}
+.toast-success {
+    background-color: #08c2b3;
+}
+.toast-info {
+    background-color: #088ac2;
+}
+#toast-container > div {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    box-shadow: none;
+}
+#toast-container > div:hover {
+    box-shadow: none;
+}
+/*end override toaster style*/
+
 
 /*begin header style*/
 body {
