@@ -47,6 +47,145 @@
     <aspectj.version>1.6.8</aspectj.version>
     <jclouds.version>1.9.0-matrix.2</jclouds.version>
   </properties>
+  
+  <!-- 部署环境相关配置-->
+    <!-- 1. 如果是本地测试[默认是Windows系统] 则使用local配置的属性-->
+    <!-- 2. 如果是服务器测试[默认是Linux系统] 则使用test配置的属性-->
+    <!-- 3. 如果是服务器上线[默认是Linux系统] 则使用production配置的属性-->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+            	<activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- db配置 -->
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                
+                <!-- 支付回调callBack地址，需开发人员配置个人ip地址 -->
+                <pay.callback>http://10.58.184.122/pay/callback</pay.callback>
+                <!-- 支付回调成功跳转页面 -->
+                <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
+                <!-- 用户中心及oauth配置 -->
+                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://uc.letvcloud.com/api</uc.auth.api.http>
+                <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
+                
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
+                
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
+                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
+                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
+                
+                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
+                <start.timing.jobs>N</start.timing.jobs>
+                <webportal.log.path>D:</webportal.log.path>
+                <!-- fixed and zabbix config -->
+                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
+                 <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
+                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.name>cloude_api</zabbix.name>
+                <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.host.groupid>9,10</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                <task.executor.size>30</task.executor.size>
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
+                <openstack.keystone.version>2.0</openstack.keystone.version>
+                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
+                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
+                <openstack.keystone.protocol>http</openstack.keystone.protocol>
+                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
+                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
+                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
+                <openstack.neutron.network.global.public.id>78c06463-1723-4312-9554-b0afbb77269d</openstack.neutron.network.global.public.id>
+                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
+                <openstack.neutron.network.user.private.name>__user_private_network</openstack.neutron.network.user.private.name>
+                <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
+                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
+                <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+            	<!-- db配置 -->
+                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
+                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
+                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
+                
+                <!-- 支付回调callBack地址 -->
+                <pay.callback>http://10.200.91.144/pay/callback</pay.callback>
+                <pay.success>http://matrix.letvcloud.com/payment/success</pay.success>
+                <!-- 用户中心及oauth配置 -->
+                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
+                <uc.auth.api.http>http://uc.letvcloud.com/api</uc.auth.api.http>
+                <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
+                
+                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
+                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
+                
+                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
+                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
+                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
+                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
+                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
+                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
+                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
+                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
+                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
+                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
+                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
+                
+                <start.timing.jobs>N</start.timing.jobs>
+                <webportal.log.path>/var/log</webportal.log.path>
+                <!-- fixed and zabbix config -->
+                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
+                <fixedpush.url.port>29350</fixedpush.url.port>
+                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
+                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
+                <zabbix.name>cloude_api</zabbix.name>
+                <zabbix.pwd>zabbix</zabbix.pwd>
+                <zabbix.template.normal>10108</zabbix.template.normal>
+                <zabbix.template.vip>10452</zabbix.template.vip>
+                <zabbix.host.groupid>9,10</zabbix.host.groupid>
+                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
+                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
+                <task.executor.size>30</task.executor.size>
+                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
+                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
+                <openstack.keystone.version>2.0</openstack.keystone.version>
+                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
+                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
+                <openstack.keystone.protocol>http</openstack.keystone.protocol>
+                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
+                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
+                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
+                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
+                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
+                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
+                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
+                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
+                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
+            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
+            </properties>
+        </profile>
+
+    </profiles>
 
   <dependencyManagement>
       <dependencies>
@@ -443,7 +582,7 @@
       </dependencies>
   </dependencyManagement>
   
-  <build>
+    <build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -594,523 +733,6 @@
 			</testResource>
 		</testResources>
 	</build>
-	
-
-    <!-- 部署环境相关配置-->
-    <!-- 1. 如果是本地测试[默认是Windows系统] 则使用local配置的属性-->
-    <!-- 2. 如果是服务器测试[默认是Linux系统] 则使用test配置的属性-->
-    <!-- 3. 如果是服务器上线[默认是Linux系统] 则使用production配置的属性-->
-    <profiles>
-        <profile>
-            <id>local</id>
-            <activation>
-            	<activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-              <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
-
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                
-                <webportal.local.http>http://matrix.letvcloud.com:8081</webportal.local.http>
-                <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
-                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                 
-                <webportal.log.path>D:</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                 <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
-                <zabbix.host.groupid>9,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
-                <task.executor.size>30</task.executor.size>
-                
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>78c06463-1723-4312-9554-b0afbb77269d</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>dev_linux</id>
-            <properties>
-               <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.6</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
-                 <webportal.local.http>http://matrix.letvcloud.com:8081</webportal.local.http>
-                 <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                 
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                 
-                <webportal.log.path>/tmp/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                 <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
-                <zabbix.host.groupid>9,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
-                <task.executor.size>30</task.executor.size>
-                
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.58.241.211</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>abcdefg12345</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>REGISTER</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>78c06463-1723-4312-9554-b0afbb77269d</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-        
-        <profile>
-            <id>test</id>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://10.154.28.164:3306/matrix_demo?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>webportal</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>webportal</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.10</matrix.slb.default.image>
-                <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>letv/mcluster:0.0.2</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>letv/mcluster_vip_gbalancer:0.0.3</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                  <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
-                 <webportal.local.http>http://10.200.91.144:18081</webportal.local.http>
-                <webportal.admin.http>http://10.200.91.144:18080</webportal.admin.http>
-                <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</service.notice.email.to>
-                
-                <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.200.90.51/zabbix_test/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>zabbix</zabbix.pwd>
-                <zabbix.template.normal>10108</zabbix.template.normal>
-                <zabbix.template.vip>10452</zabbix.template.vip>
-                <zabbix.host.groupid>9,10</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>10364</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>125.91.9.96</zabbix.host.usermacro>
-                
-                <task.executor.size>30</task.executor.size>
-                
-                <com.letv.cache.implStyle>Local</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>production</id>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>paascloud_wr</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.0</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.0</matrix.rds.vip.default.image>
-                 <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                
-                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
-                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                <webportal.errormail.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;zhangzeng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
-                <zabbix.template.normal>23187</zabbix.template.normal>
-                <zabbix.template.vip>65134</zabbix.template.vip>
-                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
-                <task.executor.size>150</task.executor.size>
-                
-                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-            </properties>
-        </profile>
-          <profile>
-            <id>production-app</id>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>wr_app</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
-                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                 <webportal.errormail.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;zhangzeng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
-                <zabbix.template.normal>23187</zabbix.template.normal>
-                <zabbix.template.vip>65134</zabbix.template.vip>
-                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
-                <task.executor.size>150</task.executor.size>
-                
-                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-          <profile>
-            <id>production-admin</id>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>wr_admin</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-               <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
-                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                 <webportal.errormail.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;zhangzeng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
-                <zabbix.template.normal>23187</zabbix.template.normal>
-                <zabbix.template.vip>65134</zabbix.template.vip>
-                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
-                <task.executor.size>150</task.executor.size>
-                
-                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-          <profile>
-            <id>production-task</id>
-            <properties>
-                <cloudplatform.webportal.db.driverClassName>com.mysql.jdbc.Driver</cloudplatform.webportal.db.driverClassName>
-                <cloudplatform.webportal.db.url>jdbc:mysql://127.0.0.1:3306/paascloud_test?useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull</cloudplatform.webportal.db.url>
-                <cloudplatform.webportal.db.username>wr_task</cloudplatform.webportal.db.username>
-                <cloudplatform.webportal.db.password>snlPiwCu</cloudplatform.webportal.db.password>
-                <cloudplatform.webportal.db.maxPoolSize>10</cloudplatform.webportal.db.maxPoolSize>
-                <cloudplatform.webportal.db.minPoolSize>5</cloudplatform.webportal.db.minPoolSize>
-                <cloudplatform.webportal.db.initialPoolSize>5</cloudplatform.webportal.db.initialPoolSize>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>1800</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.maxIdleTime>3600</cloudplatform.webportal.db.maxIdleTime>
-                <cloudplatform.webportal.db.acquireIncrement>3</cloudplatform.webportal.db.acquireIncrement>
-                <cloudplatform.webportal.db.maxConnectionAge>14400</cloudplatform.webportal.db.maxConnectionAge>
-                <cloudplatform.webportal.db.maxIdleTimeExcessConnections>3600</cloudplatform.webportal.db.maxIdleTimeExcessConnections>
-                <cloudplatform.webportal.db.preferredTestQuery>select 1 from dual</cloudplatform.webportal.db.preferredTestQuery>
-                <cloudplatform.webportal.db.testConnectionOnCheckout>false</cloudplatform.webportal.db.testConnectionOnCheckout>
-                <cloudplatform.webportal.db.idleConnectionTestPeriod>60</cloudplatform.webportal.db.idleConnectionTestPeriod>
-                <cloudplatform.webportal.db.numHelperThreads>4</cloudplatform.webportal.db.numHelperThreads>
-                
-                 <matrix.slb.default.image>10.160.140.32:5000/letv/gbalancer-cluster:0.0.9</matrix.slb.default.image>
-                 <matrix.gce.nginx.default.image>10.160.140.32:5000/letv/base-nginx:logstash-forwarder-0.0.8</matrix.gce.nginx.default.image>
-                <matrix.gce.jetty.default.image>10.160.140.32:5000/letv/base-jetty:logstash-forwarder-0.0.10</matrix.gce.jetty.default.image>
-                <matrix.logstash.default.image>10.160.140.32:5000/letv/base-jetty:logstash-0.0.3</matrix.logstash.default.image>
-                 <matrix.rds.data.default.image>10.160.140.32:5000/letv-mcluster:v0.1.3</matrix.rds.data.default.image>
-                <matrix.rds.vip.default.image>10.160.140.32:5000/letv_mcluster_gbalancer:0.1.3</matrix.rds.vip.default.image>
-                <matrix.cbase.default.image>10.160.140.32:5000/lihanlin1/cbase:V4</matrix.cbase.default.image>
-                <webportal.local.http>http://matrix.lecloud.com</webportal.local.http>
-                <webportal.admin.http>http://matrix-manage.lecloud.com</webportal.admin.http>
-                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
-                <!-- 使用邮件组无法识别，暂时使用邮箱名 -->
-                <!-- <webportal.errormail.to>Mcluster_Members@letv.com</webportal.errormail.to> -->
-                 <webportal.errormail.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com</webportal.errormail.to>
-                <service.notice.email.to>zhoubingzheng@letv.com;yaokuo@letv.com;zhouxianguang@letv.com;liuhao1@letv.com;lisuxiao@letv.com;zhangzeng@letv.com;wulicheng@letv.com;gaoqiang3@letv.com</service.notice.email.to>
-                <start.timing.jobs>N</start.timing.jobs>
-                
-                <webportal.log.path>/var/log</webportal.log.path>
-                
-                <!-- fixed and zabbix config -->
-                <fixedpush.url.ip>10.154.29.106</fixedpush.url.ip>
-                <fixedpush.url.port>29350</fixedpush.url.port>
-                <fixedpush.url>http://oss.letv.cn:9310/comm_searchMachineSnrByIp.action?ip=</fixedpush.url>
-                
-                <zabbix.post.url>http://10.0.51.13/zabbix/api_jsonrpc.php</zabbix.post.url>
-                <zabbix.name>cloude_api</zabbix.name>
-                <zabbix.pwd>cloud_api_zabbix</zabbix.pwd>
-                <zabbix.template.normal>23187</zabbix.template.normal>
-                <zabbix.template.vip>65134</zabbix.template.vip>
-                <zabbix.host.groupid>216,132,107</zabbix.host.groupid>
-                <zabbix.host.proxy_hostid>19554</zabbix.host.proxy_hostid>
-                <zabbix.host.usermacro>115.182.93.59</zabbix.host.usermacro>
-                
-                <task.executor.size>150</task.executor.size>
-                
-                <com.letv.cache.implStyle>Remote</com.letv.cache.implStyle>
-
-                <openstack.keystone.host>10.154.128.200</openstack.keystone.host>
-                <openstack.keystone.version>2.0</openstack.keystone.version>
-                <openstack.keystone.public.port>5000</openstack.keystone.public.port>
-                <openstack.keystone.admin.port>35357</openstack.keystone.admin.port>
-                <openstack.keystone.protocol>http</openstack.keystone.protocol>
-                <!-- "openstack.keystone.user.password.salt" is the salt of user password,switching environment need to switch salt,salt can't be changed in the same environment. -->
-                <openstack.keystone.user.password.salt>8lHNIC3Jm3ZXispy6uUX0XKQ5qw</openstack.keystone.user.password.salt>
-                <openstack.keystone.user.register.token>ZGpma2RraGhkaGZkamtrZXJqcmRlCg</openstack.keystone.user.register.token>
-                <openstack.neutron.network.global.public.id>44f54bcf-64df-4590-aea8-6e8e204d96cf</openstack.neutron.network.global.public.id>
-                <openstack.neutron.network.global.shared.id></openstack.neutron.network.global.shared.id>
-                <openstack.neutron.network.user.private.name>__matrix_user_private_network</openstack.neutron.network.user.private.name>
-                <openstack.neutron.network.user.private.subnet.name>__matrix_user_private_network_subnet</openstack.neutron.network.user.private.subnet.name>
-                <openstack.neutron.network.user.private.subnet.cidr>192.168.1.0/24</openstack.neutron.network.user.private.subnet.cidr>
-                <openstack.neutron.router.user.private.name>__matrix_user_private_router</openstack.neutron.router.user.private.name>
-            	<openstack.neutron.router.gateway.bandWidth>250</openstack.neutron.router.gateway.bandWidth>
-            </properties>
-        </profile>
-
-    </profiles>
-  
    <repositories>
    		<repository>
       		<id>matrix.releases</id>
@@ -1123,17 +745,6 @@
             <url>http://maven.letv.cn/nexus/content/groups/public/</url>
         </repository>
     </repositories>
-	<!-- <repositories> <repository> <snapshots> <enabled>false</enabled> </snapshots> 
-		<id>central</id> <name>Maven Repository Switchboard</name> <url>http://repo1.maven.org/maven2</url> 
-		</repository> <repository> <id>java.net2</id> <name>java.net Repository hosting 
-		the jee6 artifacts</name> <url>http://download.java.net/maven/2</url> </repository> 
-		<repository> <id>jboss-public-repository-group</id> <name>JBoss Public Repository 
-		Group</name> <url>http://repository.jboss.org/nexus/content/groups/public/</url> 
-		<layout>default</layout> <releases> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
-		</releases> <snapshots> <enabled>true</enabled> <updatePolicy>never</updatePolicy> 
-		</snapshots> </repository> <repository> <id>JBOSS</id> <name>JBoss Repository 
-		Deprecated</name> <url>http://repository.jboss.org/maven2/</url> </repository> 
-		</repositories> -->
     <pluginRepositories>
         <pluginRepository>
 			<id>letv.public</id>
