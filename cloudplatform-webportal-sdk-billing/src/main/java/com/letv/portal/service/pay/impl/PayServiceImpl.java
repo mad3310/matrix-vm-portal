@@ -186,11 +186,11 @@ public class PayServiceImpl implements IPayService {
 
 	public boolean callback(Map<String, Object> map) {
 		// ①验证必须字段
-		 if ((map.get("corderid") == null) || (map.get("stat") == null)
+		if ((map.get("corderid") == null) || (map.get("stat") == null)
 				 || (map.get("money") == null)
 				 || (map.get("ordernumber") == null)) {
 			 return false;
-		 }
+		}
 
 		List<OrderSub> orderSubs = this.orderSubService
 				.selectOrderSubByOrderNumberWithOutSession((String) map
@@ -340,6 +340,7 @@ public class PayServiceImpl implements IPayService {
 								
 							}, records);
 					logger.info("createInstance success!");
+					return true;
 				}
 			}
 		}
