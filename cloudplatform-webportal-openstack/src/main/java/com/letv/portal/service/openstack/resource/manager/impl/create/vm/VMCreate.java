@@ -19,14 +19,16 @@ public class VMCreate {
 	private VMManagerImpl vmManager;
 	private NetworkManagerImpl networkManager;
 	private VolumeManagerImpl volumeManager;
+	private Long userId;
 
 	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
 			NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager) {
-		this(vmCreateConf, vmManager, networkManager, volumeManager, null, null);
+		this(null, vmCreateConf, vmManager, networkManager, volumeManager, null, null);
 	}
 
-	public VMCreate(VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
+	public VMCreate(Long userId, VMCreateConf2 vmCreateConf, VMManagerImpl vmManager,
 					NetworkManagerImpl networkManager, VolumeManagerImpl volumeManager, VmCreateListener vmCreateListener, Object listenerUserData) {
+		this.userId = userId;
 		this.vmCreateConf = vmCreateConf;
 		this.vmCreateListener = vmCreateListener;
 		this.listenerUserData = listenerUserData;
@@ -45,6 +47,7 @@ public class VMCreate {
 				multiVmCreateContext.setVolumeManager(volumeManager);
 				multiVmCreateContext.setVmCreateListener(vmCreateListener);
 				multiVmCreateContext.setListenerUserData(listenerUserData);
+				multiVmCreateContext.setUserId(userId);
 
 				List<VmsCreateSubTask> tasks = new ArrayList<VmsCreateSubTask>();
 				tasks.add(new CheckVmCreateConfTask());

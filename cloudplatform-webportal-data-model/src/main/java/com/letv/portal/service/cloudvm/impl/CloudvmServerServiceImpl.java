@@ -1,6 +1,7 @@
 package com.letv.portal.service.cloudvm.impl;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmServerDao;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
@@ -42,13 +43,19 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
 
     @Override
     public void insert(CloudvmServer cloudvmServer) {
-        cloudvmServer.setCreateUser(sessionService.getSession().getUserId());
+        Session session = sessionService.getSession();
+        if (session != null) {
+            cloudvmServer.setCreateUser(session.getUserId());
+        }
         super.insert(cloudvmServer);
     }
 
     @Override
     public void update(CloudvmServer cloudvmServer) {
-        cloudvmServer.setUpdateUser(sessionService.getSession().getUserId());
+        Session session = sessionService.getSession();
+        if (session != null) {
+            cloudvmServer.setUpdateUser(session.getUserId());
+        }
         super.update(cloudvmServer);
     }
 

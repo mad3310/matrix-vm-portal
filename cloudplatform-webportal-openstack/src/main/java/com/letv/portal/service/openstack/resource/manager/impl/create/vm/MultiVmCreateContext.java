@@ -42,6 +42,7 @@ public class MultiVmCreateContext {
 
 	private VmCreateListener vmCreateListener;
 	private Object listenerUserData;
+	private Long userId;
 
 //	public void setOpenStackConf(OpenStackConf openStackConf) {
 //		this.openStackConf = openStackConf;
@@ -209,5 +210,13 @@ public class MultiVmCreateContext {
 
 	public Object getListenerUserData() {
 		return listenerUserData;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
+		return userId;
 	}
 }

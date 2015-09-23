@@ -1497,6 +1497,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     // }
 
     public void recordVmCreated(String region, Server server) throws OpenStackException {
+        recordVmCreated(null, region, server);
+    }
+
+    public void recordVmCreated(Long userId, String region, Server server) throws OpenStackException {
         ICloudvmFlavorService cloudvmFlavorService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmFlavorService();
         if (cloudvmFlavorService.selectByFlavorId(region, server.getFlavor().getId()) == null) {
             FlavorResource flavorResource = getFlavorResource(region, server.getFlavor().getId());
@@ -1514,6 +1518,9 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         cloudvmServer.setRegion(region);
         cloudvmServer.setServerId(server.getId());
         cloudvmServer.setFlavorId(server.getFlavor().getId());
+        if (userId != null) {
+            cloudvmServer.setCreateUser(userId);
+        }
         cloudvmServerService.insert(cloudvmServer);
 
         incVmCount();
@@ -1660,7 +1667,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @Override
-    public void createForBilling(VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException {
-        new VMCreate(conf, this, this.networkManager, this.volumeManager, listener, listenerUserData).run();
+    public void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException {
+        new VMCreate(userId, conf, this, this.networkManager, this.volumeManager, listener, listenerUserData).run();
     }
 }
