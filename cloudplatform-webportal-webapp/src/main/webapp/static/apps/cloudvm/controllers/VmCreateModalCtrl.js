@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility, $scope, $modalInstance,$timeout,$window, items, region) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, items, region) {
 
     $scope.activeFlow = 1;
     $scope.vmName = '';
@@ -81,7 +81,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         snapshotId:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
-      HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:''}).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
           $window.location.href = '/payment/'+data.data;
@@ -188,14 +188,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       buildDisplayData=function(){
         var data=[];
-        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join(','));
-        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join(','));
-        data.push(['镜像',$scope.selectedVmImage.name].join(','));
-        data.push(['地域',region].join(','));
-        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join(','));
-        return data;
+        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join('/:'));
+        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
+        data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
+        data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
+        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join('/:'));
+        return data.join('/;');
       };
-    ;
     initComponents();
   });
 

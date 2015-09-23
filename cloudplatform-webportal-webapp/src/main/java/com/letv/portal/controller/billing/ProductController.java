@@ -1,6 +1,7 @@
 package com.letv.portal.controller.billing;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,24 +105,26 @@ public class ProductController {
 		return totalPrice;
 	}
 	
-	private void transferParamsDateToCalculate(Map<String, Object> billingParams, Long id) {
+	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
 		if(id==2) {//云主机参数转换
-			FlavorResource flavor = resourceCreateService.getFlavor(sessionService.getSession().getUserId(), (String)billingParams.get("region"), (String)billingParams.get("flavorId"));
+			FlavorResource flavor = resourceCreateService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
 			billingParams.put("cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
-			billingParams.put("os_storage", billingParams.get("volumeSize")+"");
-			billingParams.put("os_broadband", billingParams.get("bandWidth")+"");
-			billingParams.put("order_num", billingParams.get("count")+"");
+			billingParams.put("os_storage", params.get("volumeSize")+"");
+			billingParams.put("os_broadband", params.get("bandWidth")+"");
+			billingParams.put("order_num", params.get("count")+"");
+			billingParams.put("order_time", params.get("order_time")+"");
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
-		Map<String, Object> billingParams = JSONObject.parseObject(paramsData, Map.class);
+		Map<String, Object> paramsDataMap = JSONObject.parseObject(paramsData, Map.class);
+		Map<String, Object> billingParams = new HashMap<String, Object>();
 		
-		transferParamsDateToCalculate(billingParams, id);
+		transferParamsDateToCalculate(paramsDataMap, id, billingParams);
 		
-		Long regionId = productService.getRegionIdByCode((String)billingParams.get("region"));
+		Long regionId = productService.getRegionIdByCode((String)paramsDataMap.get("region"));
 		if(regionId!=null) {
 			billingParams.put("region", regionId+"");
 		}

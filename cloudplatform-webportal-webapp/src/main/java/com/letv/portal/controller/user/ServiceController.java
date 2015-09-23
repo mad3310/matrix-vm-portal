@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
+import com.letv.portal.service.cloudvm.ICloudvmServerService;
 
 
 /**Program Name: ServiceController <br>
@@ -28,6 +29,8 @@ public class ServiceController {
 	
 	@Autowired
 	private SessionServiceImpl sessionService;
+	@Autowired
+	private ICloudvmServerService cloudvmServerService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(ServiceController.class);
 	
@@ -42,7 +45,7 @@ public class ServiceController {
 	public @ResponseBody ResultObject recentOperate(ResultObject obj) throws Exception{
 		Long userId = sessionService.getSession().getUserId();
 		Map<String,Object> services = new HashMap<String,Object>();
-		services.put("ecs", 1);
+		services.put("ecs", this.cloudvmServerService.selectByUserIdCount(userId));
 		services.put("rds", 0);
 		services.put("disk", 0);
 		services.put("gce", 0);

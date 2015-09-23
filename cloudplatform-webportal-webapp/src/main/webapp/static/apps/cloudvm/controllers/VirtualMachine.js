@@ -115,26 +115,26 @@ define(['controllers/app.controller'], function (controllerModule) {
           controller: 'VmCreateModalCtrl',
           size: size,
           backdrop: 'static',
-          keyboard:false,
-          resolve:{loadAllRegionData:function($q,CurrentContext){
-            if(CurrentContext.allRegionData){
-              return true;
-            }
-            else{
-              var deferred = $q.defer();
-              HttpService.doGet(Config.urls.region_list).success(function (data, status, headers, config) {
-                CurrentContext.allRegionData=data.data;
-                deferred.resolve(true);
-              });
-              return deferred.promise;
-            }
-          }},
-            resolve: {
+          keyboard: false,
+          resolve: {
             items: function () {
               return $scope.items;
             },
             region: function () {
               return CurrentContext.regionId;
+            },
+            loadAllRegionData:function($q,CurrentContext){
+              if(CurrentContext.allRegionData){
+                return true;
+              }
+              else{
+                var deferred = $q.defer();
+                HttpService.doGet(Config.urls.region_list).success(function (data, status, headers, config) {
+                  CurrentContext.allRegionData=data.data;
+                  deferred.resolve(true);
+                });
+                return deferred.promise;
+              }
             }
           }
         });
