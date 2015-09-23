@@ -188,12 +188,12 @@ define(['controllers/app.controller'], function (controllerModule) {
       },
       buildDisplayData=function(){
         var data=[];
-        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join(','));
-        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join(','));
-        data.push(['镜像',$scope.selectedVmImage.name].join(','));
-        data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join(','));
-        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join(','));
-        return data.join(';');
+        data.push(['配置',selectedVmFlavor.vcpus+'核, '+selectedVmFlavor.ram/1024+'G内存, '+ $scope.dataDiskVolume+'G数据盘'].join('/:'));
+        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
+        data.push(['镜像',$scope.selectedVmImage.name].join('/:'));
+        data.push(['地域',CurrentContext.allRegionData.filter(function(regionData){return regionData.id==region;})[0].name].join('/:'));
+        data.push(['网络类型',$scope.vmNetworkType == 'primary'?'私有网络':'基础网络'].join('/:'));
+        return data.join('/;');
       };
     initComponents();
   });
