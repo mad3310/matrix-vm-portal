@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
+import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
@@ -47,7 +48,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public List<ResourceLocator> createVm(long userId, String reqParaJson) throws MatrixException {
+    public void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
 //            Session session = sessionService.getSession();
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
@@ -63,7 +64,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             for (VmCreateContext vmCreateContext : multiVmCreateContext.getVmCreateContexts()) {
                 resourceLocators.add(new ResourceLocator(multiVmCreateContext.getVmCreateConf().getRegion(), vmCreateContext.getServer().getId()));
             }
-            return resourceLocators;
+//            return resourceLocators;
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
