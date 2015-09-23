@@ -33,7 +33,7 @@ define(['app'],function (app) {
           url: '/vm-vpc',
           title: '私有网络',
           config: {
-            templateUrl: '/static/apps/cloudvm/views/vm-network.html'
+            templateUrl: '/static/apps/cloudvm/views/vm-vpc.html'
           }
         }];
     };

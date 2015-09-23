@@ -74,6 +74,26 @@ define(['filters/app.filter'], function (filterModule) {
     }
   }]);
 
+  filterModule.filter('vpcStatusFilter', ['Config', function (Config) {
+    var allDiskStatuses = Config.vmDiskStatuses;
+    return function (input) {
+      var out = '';
+      for (var i = 0, leng = allDiskStatuses.length; i < leng; i++) {
+        if (allDiskStatuses[i].value == input) {
+          out = allDiskStatuses[i].text;
+          break;
+        }
+      }
+      return out || '未知';
+    }
+  }]);
+
+  filterModule.filter('vpcSubnetsFilter', ['Config', function (Config) {
+    return function (input) {
+      return input.map(function(subnet){return subnet.name;}).join(', ') || '未设置';
+    }
+  }]);
+
   filterModule.filter('vmBuyPeriodFilter', [ function () {
     return function (period,isSelected) {
       var out = null;

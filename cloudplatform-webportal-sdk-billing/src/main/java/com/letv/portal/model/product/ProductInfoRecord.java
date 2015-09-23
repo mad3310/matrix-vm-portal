@@ -19,7 +19,14 @@ public class ProductInfoRecord extends BaseModel{
 	private String productType;//商品类型,2-云主机
 	private String invokeType;//调用类型，1-去调用，0-不调用
 	private String descn;
+	private String instanceId;//实例ID
 	
+	public String getInstanceId() {
+		return instanceId;
+	}
+	public void setInstanceId(String instanceId) {
+		this.instanceId = instanceId;
+	}
 	public String getInvokeType() {
 		return invokeType;
 	}

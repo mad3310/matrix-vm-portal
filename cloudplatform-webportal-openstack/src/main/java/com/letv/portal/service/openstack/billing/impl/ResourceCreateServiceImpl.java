@@ -58,7 +58,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
-            openStackSession.getVMManager().createForBilling(vmCreateConf, listener, listenerUserData);
+            openStackSession.getVMManager().createForBilling(userId, vmCreateConf, listener, listenerUserData);
 
 //            List<ResourceLocator> resourceLocators = new LinkedList<ResourceLocator>();
 //            for (VmCreateContext vmCreateContext : multiVmCreateContext.getVmCreateContexts()) {

@@ -44,7 +44,7 @@ public interface VMManager extends ResourceManager {
 
 	void create2(VMCreateConf2 conf) throws OpenStackException;
 
-	void createForBilling(VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException;
+	void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException;
 
 	void publish(String region, VMResource vm) throws RegionNotFoundException,
 			APINotAvailableException, TaskNotFinishedException,

@@ -7,7 +7,7 @@ define([
     'controllers/VmCreateModalCtrl',
     'controllers/ConfirmModalCtrl',
     'controllers/VmDiskCrtl',
-    'controllers/VmNetworkCrtl'
+    'controllers/VmVpcCrtl'
   ],
   function (controllerModule) {
 
