@@ -76,11 +76,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             errorEmailService.sendExceptionEmail(e, "计费调用创建云主机", userId, reqParaJson);
-            if (e instanceof OpenStackException) {
-                throw ((OpenStackException) e).matrixException();
-            } else {
-                throw new MatrixException("后台错误", e);
-            }
+            Util.throwMatrixException(e);
         }
     }
 

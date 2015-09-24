@@ -37,6 +37,16 @@ public class Util {
 		throw new OpenStackException("后台错误", ex);
 	}
 
+	public static void throwMatrixException(Exception ex) throws MatrixException {
+		if (ex instanceof RuntimeException) {
+			throw (RuntimeException) ex;
+		} else if (ex instanceof OpenStackException) {
+			throw ((OpenStackException) ex).matrixException();
+		} else {
+			throw new MatrixException("后台错误", ex);
+		}
+	}
+
 	public static String generateRandomPassword(int length) {
 		final String charactors = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		Random random = new Random();
