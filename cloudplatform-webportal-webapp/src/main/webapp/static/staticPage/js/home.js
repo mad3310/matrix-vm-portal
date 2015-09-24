@@ -150,7 +150,7 @@ function scrollNav(){
         		_target.append(_tabClone)
         	}
         	_target.removeClass('hide');
-        	if(vtop>=3055){
+        	if(vtop>=2855){//3055
         		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
         	}else if(vtop>=2077){
 				_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
@@ -223,16 +223,27 @@ function customerToolInit() {
 	var brands={
 		'lantv':'中国蓝提供广电云服务，助力浙广向新媒体转型/;乐视云计算为中国蓝TV提供一体化新媒体服务，提高工作效率，节省带宽成本。',
 		'huashutv':'致力于打造新媒体平台/;CDN解决方案，为华数提供流畅、稳定、快速的网络加速保障以及安全保障，使用户无论在何时何地都能观看流畅高清视频。乐视云以稳定充足的带宽保障，快速有效运维保障，提高了服务质量，节省了各类维护成本。',
-		'a':'b'
+		'JD':'打造专业的综合网上购物商城/;乐视云计算是一个专业的平台，是京东商城值得信赖的合作伙伴。',
+		'TB':'中国最大的个人网上交易社区(C2C),作为专业的购物网站拥有全球时尚前沿的消费者购物集市/;使用乐视云计算云视频解决方案，乐视云作为淘宝服务商，为天猫及淘宝广大卖家提供视频上传、存储、转码以及播放的服务。通过视频的展示，丰富的卖家店铺，也提升了商品销量。',
+		'DD':'知名的综合性网上购物商城/;使用乐视云计算云视频解决方案，乐视云为当当提供集拍摄、上传、转码、存储、分发、播放等全流程一体化的技术服务。同时视频的真实拍摄，为用户的选择提供真实参考，更好表现商品，提高商品转化率。',
+		'lemall':'乐视TV自营的B2C电视垂直类购物网站/;使用乐视云计算关系型数据库服务，多主架构、稳定高效，节约成本，提高商品转化率。',
+		'BW':'中国儿童成长第一门户/;乐视云视频助力贝瓦网，为亿万儿童提供多姿多彩的快乐童年，提高了自产内容的衍生价值，节省了技术和人员的成本投入，视频的全景呈现，提升了用户体验，专注视频内容的极致清晰流畅体验，为用户的观赏更加真实。',
+		'JH':'京翰教育是K12中小学教育，目前处于线下转线上的阶段/;乐视云服务既满足现有业务需求的情况下，又满足防盗链、视频加密又未来对点播业务的需求。乐视云视频，使用播放器定制，自主品牌LOGO及水印，API上传及管理功能，防盗链功能，提升品牌价值，实现多终端播放。',
+		'GSX':'跟谁学是一个O2O找好老师学习服务教育平台/;乐视云视频从上传、转码、存储及分发的整套视频解决方案节省技术投入成本，API接口快速实现视频的上传及管理功能。提供流畅，清晰的视频播放体验。',
+		'DJ':'党建网/;共青团中央需要稳定快速的一体化的视频平台，试用乐视云一体化的云视频解决方案，解决传转存发播的一系列题。提高工作效率，节省各类成本。',
+		'ledisk':'乐视云盘是乐视网用户精心打造的一项智能云服务/;乐视云计算为云盘用户提供数据存储服务，多主架构、稳定高效，节约成本，数据安全可靠。'
 	};
 	(function tooltip(){
-		$(".customer-logos div").click(function() {
-			$(".customer-logos div").removeClass('logo-focus');
-			$('.customer-hoverTip').addClass('logo-focus');
+		$(".customer-logos div.logo").click(function() {
+			$(".customer-logos div.logo").removeClass('logo-focus');
 			$(this).addClass("logo-focus");
 			var img=$(this).find('img').attr('src');
-			$('.tipImg').find('img').attr('src',img);
+			$(this).siblings('div.customer-hoverTip').find('.tipImg').find('img').attr('src',img);
 			var brand=$(this).attr('self-customer-brand');
+			var branddesc=brands[brand];
+			var branddescArray=branddesc.split('/;');
+			$(this).siblings('div.customer-hoverTip').find('.hoverTip-title').text(branddescArray[0]);
+			$(this).siblings('div.customer-hoverTip').find('.hoverTip-desc').text(branddescArray[1]);
 		});
 	})();
 	(function tabinit(){
@@ -240,7 +251,17 @@ function customerToolInit() {
 			$(".customer-tab div").removeClass('active');
 			$(this).addClass("active");
 			var customerType=$(this).attr('self-customer-tab');
-			$('.customer-logos[self-customer-type='+customerType+']').removeClass('hide').siblings('.customer-logos').addClass('hide')
+			$('.customer-logos[self-customer-type='+customerType+']').removeClass('hide').siblings('.customer-logos').addClass('hide');
+			$('.customer-logos[self-customer-type='+customerType+']').children('.logo:first').addClass('logo-focus').siblings('.logo').removeClass('logo-focus');
+			var _target=$('.logo.logo-focus:visible');
+			var img=_target.find('img').attr('src');
+			var brand=_target.attr('self-customer-brand');
+			var _change=_target.siblings('.customer-hoverTip');
+			var branddesc=brands[brand];
+			var branddescArray=branddesc.split('/;');
+			_change.find('img').attr('src',img);
+			_change.find('.hoverTip-title').text(branddescArray[0]);
+			_change.find('.hoverTip-desc').text(branddescArray[1]);
 		});
 	})();
 }

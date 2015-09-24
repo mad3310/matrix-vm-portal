@@ -10,9 +10,16 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.billMes='';
 			$scope.expander='';
 			$scope.ecs='';
+			$scope.ecs_sleep='';
 			$scope.expander.layout= "normal";
 
-			$scope.expanderToggle = function(){
+			$scope.expanderToggle = function(element){
+				var _target=element.target||element.srcElement;
+				if($(_target).hasClass('zhankai')){
+					$(_target).removeClass('zhankai').text('更多')
+				}else{
+					$(_target).addClass('zhankai').text('收起')
+				}
 				$scope.expander.layout === "top-expander"? $scope.expander.layout = "top-shrink":$scope.expander.layout="top-expander";
 			}
 			var inite=function(){
@@ -67,6 +74,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
 						$scope.ecs=data.data.ecs;
+						$scope.ecs_sleep=data.data['ecs-sleep'];
 					}
 				});
 			}
