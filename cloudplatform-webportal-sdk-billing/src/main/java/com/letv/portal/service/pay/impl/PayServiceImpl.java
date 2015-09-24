@@ -62,6 +62,7 @@ public class PayServiceImpl implements IPayService {
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
+	@Autowired
 	private IUserService userService;
 	
 	@Autowired
@@ -242,7 +243,8 @@ public class PayServiceImpl implements IPayService {
 				
 				//发送用户通知
 				//写入最近操作
-				UserVo ucUser = this.userService.getUcUserById(orderSubs.get(0).getCreateUser());
+				Long createUser = orderSubs.get(0).getCreateUser();
+				UserVo ucUser = this.userService.getUcUserById(createUser);
 				if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
 				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云主机已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
 				
