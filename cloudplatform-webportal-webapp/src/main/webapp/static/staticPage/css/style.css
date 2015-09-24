@@ -83,6 +83,7 @@ a:hover{cursor:pointer;}
 .carousel-content .content-title{margin-bottom:20px;padding-top:50px;font-size:4.8rem;letter-spacing:.2rem;}
 .content-title span{color:#f5c131}
 .carousel-content .content-desc{margin-bottom: 45px;}
+.content-desc .desc-item{margin-bottom:15px;}
 .carousel-content .content-tryNow{width:120px;height:40px;margin-left:20px;padding:0 20px;border:1px solid #fff;border-radius:40px;line-height:38px;}
 .content-tryNow:hover{cursor:pointer;-webkit-transform:scale(1.1);-moz-transform:scale(1.1);-ms-transform:scale(1.1);-o-transform:scale(1.1);transform:scale(1.1);}
 .content-tryNow a{color:inherit;}

@@ -139,8 +139,10 @@ function carousels(){
 }
 // products:scroll-nav
 function scrollNav(){
+	var scrollh=document.body.scrollHeight;
 	$(window).scroll(function(){  
         var vtop=$(document).scrollTop();
+        var height=$(this).height();
         var _target=$('.tab-fixed')
         if(vtop>=645){
         	$('.tab-layout').addClass('hide');
@@ -150,15 +152,26 @@ function scrollNav(){
         		_target.append(_tabClone)
         	}
         	_target.removeClass('hide');
-        	if(vtop>=2855){//3055
+        	if(vtop+height==scrollh){//到底部
         		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
-        	}else if(vtop>=2077){
-				_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
-        	}else if(vtop>=1097){
-        		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
         	}else{
-        		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
+        		if(vtop>=2077){
+					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else if(vtop>=1097){
+	        		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
+	        	}else{
+	        		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
+	        	}
         	}
+    //     	if(vtop>=2855){//3055
+    //     		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
+    //     	}else if(vtop>=2077){
+				// _target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
+    //     	}else if(vtop>=1097){
+    //     		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
+    //     	}else{
+    //     		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
+    //     	}
         }else{
         	var _tabClone='';
 			if(_target.children().length>0){
