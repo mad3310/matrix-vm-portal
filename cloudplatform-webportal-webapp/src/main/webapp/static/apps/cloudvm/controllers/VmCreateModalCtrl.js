@@ -64,6 +64,9 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
     $scope.createVm = function () {
+      if($scope.vmName=='' || $scope.vmSecurityPassword==''){
+        return;
+      }
       var data = {
         region:region,
         name: $scope.vmName,
@@ -94,6 +97,17 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.closeModal = function () {
       $modalInstance.dismiss('cancel');
     };
+
+    $scope.$watch('vmName', function (value) {
+      if (value && value.length>15) {
+        $scope.vmName='';
+      }
+    });
+    $scope.$watch('vmSecurityPassword', function (value) {
+      if (value && value.length>15) {
+        $scope.vmSecurityPassword='';
+      }
+    });
     $scope.$watch('selectedVmCpu', function (value) {
       if (value != null) {
         initVmRamSelector();
@@ -126,7 +140,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null,
-      calculatePriceData= null;
+      calculatePriceData= null,
+      textReg= /[a-zA-Z_0-9]{1,15}/g;
     var initComponents = function () {
         initVmImageSelector();
         initVmCpuSelector();
