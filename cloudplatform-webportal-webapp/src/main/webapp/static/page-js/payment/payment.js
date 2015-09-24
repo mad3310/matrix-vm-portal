@@ -181,15 +181,15 @@ function queryStatus(){
                 if(_target.status==0){//支付不成功
                     _tiphtml='<div class="successicon fail"></div>'
                             +'<div  class="desc-success">支付处理中...</div>'
-                            +'<div class="desc-pay">待支付金额¥<span class="price">'+_target.totalPrice+'</span>元</div>';
-                    _tip.append(_tiphtml);
-                    _paynum.text('-');
+                            // +'<div class="desc-pay">待支付金额¥<span class="price">'+_target.totalPrice+'</span>元</div>';
+                    // _paynum.text('-');
                 }else{
                     _tiphtml='<div class="successicon"></div>'
                             +'<div  class="desc-success">支付成功</div>'
                             +'<div class="desc-pay">恭喜您成功支付¥<span class="price">'+_target.totalPrice+'</span>元</div>';
-                    _paynum.text(_target.payNumber);
+                    _paynum.text('支付订单号：'+_target.payNumber);
                 }
+                _tip.append(_tiphtml);
             }
         }
     })
@@ -211,8 +211,12 @@ function timeStatus(){
                             clearInterval(time);
                         }
                     }else{
-                        _tip.children('div:eq(1)').text('支付不成功！');
+                        _tip.html('');
+                        var _tiphtml='<div class="successicon"></div>'
+                            +'<div  class="desc-success">支付成功</div>'
+                            +'<div class="desc-pay">恭喜您成功支付¥<span class="price">'+data.data.totalPrice+'</span>元</div>';
                         clearInterval(time);
+                        _tip.append(_tiphtml);
                     }  
                 })
             },3000);

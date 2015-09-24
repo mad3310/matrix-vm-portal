@@ -224,7 +224,12 @@
 		<dependency>
 		  <groupId>org.hibernate</groupId>
 		  <artifactId>hibernate-validator</artifactId>
+		  <!-- httpClient -->
 		</dependency>
+		 <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
 		<dependency>
 	        	<groupId>com.letv.cloudplatform</groupId>
 	        	<artifactId>webportal-cache-client</artifactId>

@@ -372,6 +372,19 @@ public class HttpClient {
 
 		return body;
 	}
+	public static HttpResponse getResponse(String url,int connectionTimeout, int soTimeout) {
+		
+		DefaultHttpClient httpclient = getHttpclient(connectionTimeout,
+				soTimeout, null, null);
+
+		logger.info("create httpget:" + url);
+		HttpGet get = new HttpGet(url);
+		HttpResponse response = sendRequest(httpclient, get);
+
+		httpclient.getConnectionManager().shutdown();
+
+		return response;
+	}
 
 	private static DefaultHttpClient getHttpclient(Boolean isMonitor,
 			String username, String password) {

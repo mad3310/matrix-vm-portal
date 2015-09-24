@@ -27,11 +27,14 @@ import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
 import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.model.UserVo;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
+import com.letv.portal.service.message.SendMsgUtils;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.order.IOrderService;
@@ -59,9 +62,12 @@ public class PayServiceImpl implements IPayService {
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
+	private IUserService userService;
 	
 	@Autowired
 	private IProductInfoRecordService productInfoRecordService;
+	@Autowired
+	private SendMsgUtils sendMessage;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -233,6 +239,12 @@ public class PayServiceImpl implements IPayService {
 				SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 				//生成用户账单。
 				this.billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), df.format(new Date()), (String)map.get("money"));
+				
+				//发送用户通知
+				//写入最近操作
+				UserVo ucUser = this.userService.getUcUserById(orderSubs.get(0).getCreateUser());
+				if(ucUser !=null && !StringUtils.isNullOrEmpty(ucUser.getMobile()))
+				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云主机已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
 				
 				// ④创建应用实例
 				return createInstance(orderSubs);

@@ -61,8 +61,8 @@
 								<span>¥0.000</span>
 							</div>
 							<div class="row">
-								<span class="le-col-6">运行1个</span>
-								<span class="le-col-6">停0个</span>
+								<span class="le-col-6">运行{{ecs}}个</span>
+								<span class="le-col-6">停{{ecs_sleep}}个</span>
 							</div>
 						</div>
 						<div class="clearfix"></div>
@@ -136,7 +136,7 @@
 				<div class="operation-title">
 					<span class="operation-column"></span>
 					<span class="title">最近操作</span>
-					<span class="more" ng-click='expanderToggle()'>更多</span>
+					<a class="more" ng-click='expanderToggle($event)'>更多</a>
 					<div class="clearfix"></div>
 				</div>
 				<!-- <ul class="operation-items">
@@ -147,104 +147,16 @@
 							<span class="pull-right">15:36</span>
 							<div class="clearfix"></div>
 						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li>
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
-					<li class="last">
-						<div>创建云主机实例</div>
-						<div class="items-desc">
-							<span>Welsdfell_jksdfj_001</span>
-							<span class="pull-right">15:36</span>
-							<div class="clearfix"></div>
-						</div>
-					</li>
+					</li>					
 				</ul> -->
 				<ul class="operation-items">
-					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1}">
+					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1,third:$index==2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
 							<span>{{operation.content}}</span>
 							<!-- <span class="pull-right" ng-if="$index>10">{{operation.createTime|date:'yyyy-mm-dd'}}</span>
 							<span class="pull-right" ng-if="$index<=10">{{operation.createTime|date:'hh:mm'}}</span> -->
-							<span class="pull-right" data-picker>{{operation.createTime|date:'hh:mm'}}</span>
+							<span class="pull-right" data-picker>{{operation.createTime|date:'yyyy-mm-dd hh:mm'}}</span>
 							<div class="clearfix"></div>
 						</div>
 					</li>
