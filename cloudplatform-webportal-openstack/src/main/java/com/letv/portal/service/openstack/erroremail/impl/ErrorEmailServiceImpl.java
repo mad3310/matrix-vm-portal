@@ -42,7 +42,7 @@ public class ErrorEmailServiceImpl implements ErrorEmailService {
 		if (errorEmailEnabled) {
 			MailMessage mailMessage = new MailMessage(errorEmailFrom,
 					errorEmailTo, "异常错误发生", "erroremail.ftl", mailMessageModel);
-			mailMessage.setHtml(true);
+			mailMessage.setHtml(false);
 			defaultEmailSender.sendMessage(mailMessage);
 		}
 	}
