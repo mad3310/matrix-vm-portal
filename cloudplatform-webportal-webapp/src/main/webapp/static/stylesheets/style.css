@@ -508,9 +508,10 @@ body {
 /*end virtual-machine-view style*/
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}
-.letv-modal-header{height:50px;border-bottom:1px solid #088ac2;text-align:center;font-size:16px;color:#088ac2;margin: 0 15px;padding-left: 0;padding-right: 0;}
-.letv-modal-header .modal-title{font-size:16px;}
-.letv-modal-header .close{font-size:32px;font-weight:400;line-height:.5;color:#088ac2;filter:alpha(opacity=100);opacity:1;}
+.letv-modal-header{height:50px;line-height:50px;border-bottom:1px solid #088ac2;text-align:center;font-size:16px;color:#088ac2;margin: 0 15px;padding: 0;}
+.letv-modal-header .modal-title{font-size:16px;line-height: 50px;}
+.letv-modal-header .close{height: 50px;line-height: 50px;margin: 0;}
+.letv-modal-header .close > i {font-size: 30px;transform: rotate(45deg);display: inline-block;color: #088ac2;font-weight: 100;opacity: 1;}
 /*modal-vm-create*/
 .body-left .left-flow{margin-top:5px;}
 .left-flow .flow-desc{width:56px;text-align:center;font-size:14px;color:#088ac2}
