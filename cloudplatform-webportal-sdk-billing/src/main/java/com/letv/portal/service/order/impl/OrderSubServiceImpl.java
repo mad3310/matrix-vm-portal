@@ -186,7 +186,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 			return null;
 		}
 		Map<String, Object> ret = new HashMap<String, Object>();
-		if(orderSubs.get(0).getOrder().getPayNumber()==null) {
+		if(orderSubs.get(0).getOrder().getPayNumber()!=null) {
 			ret.put("totalPrice", getValidTotalOrderPrice(orderSubs));
 			ret.put("payNumber", orderSubs.get(0).getOrder().getPayNumber());
 		}
