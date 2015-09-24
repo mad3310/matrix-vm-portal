@@ -1,9 +1,13 @@
 package com.letv.portal.service.openstack.erroremail.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import com.letv.common.util.ExceptionUtils;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +45,24 @@ public class ErrorEmailServiceImpl implements ErrorEmailService {
 			mailMessage.setHtml(true);
 			defaultEmailSender.sendMessage(mailMessage);
 		}
+	}
+
+	@Override
+	public void sendExceptionEmail(Exception exception, String function, long userId, String contextMessage) {
+		Map<String, Object> mailMessageModel = new HashMap<String, Object>();
+		mailMessageModel.put("requestUrl", "功能: " + function);
+		mailMessageModel.put("exceptionId", "用户ID：" + userId);
+		mailMessageModel.put("exceptionParams", "上下文信息：" + contextMessage);
+		String exceptionMessage = exception.getMessage();
+		if (exception instanceof OpenStackException) {
+			exceptionMessage += (" " + ((OpenStackException) exception)
+					.getUserMessage());
+		}
+		mailMessageModel.put("exceptionMessage", exceptionMessage);
+		mailMessageModel.put("exceptionContent",
+				ExceptionUtils.getRootCauseStackTrace(exception));
+
+		this.sendErrorEmail(mailMessageModel);
 	}
 
 }
