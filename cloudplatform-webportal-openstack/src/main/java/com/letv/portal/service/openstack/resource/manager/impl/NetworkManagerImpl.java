@@ -765,9 +765,9 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 			}
 			String numStr = ipAndNum[1];
 			int num = Integer.parseInt(numStr);
-			return isSubnetCidrValid1(ipFragments, num)
+			return ipFragments[0] != 10 && (isSubnetCidrValid1(ipFragments, num)
 					|| isSubnetCidrValid2(ipFragments, num)
-					|| isSubnetCidrValid3(ipFragments, num);
+					|| isSubnetCidrValid3(ipFragments, num));
 		} catch (NumberFormatException e) {
 			return false;
 		}
