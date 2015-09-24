@@ -15,10 +15,12 @@ define(['controllers/app.controller'], function (controllerModule) {
 
 			$scope.expanderToggle = function(element){
 				var _target=element.target||element.srcElement;
-				if($(_target).hasClass('zhankai')){
-					$(_target).removeClass('zhankai').text('更多')
+				if($(_target).parent().parent().hasClass('zhankai')){
+					$(_target).parent().parent().removeClass('zhankai');
+					$(_target).text('更多');
 				}else{
-					$(_target).addClass('zhankai').text('收起')
+					$(_target).parent().parent().addClass('zhankai');
+					$(_target).text('收起');
 				}
 				$scope.expander.layout === "top-expander"? $scope.expander.layout = "top-shrink":$scope.expander.layout="top-expander";
 			}
