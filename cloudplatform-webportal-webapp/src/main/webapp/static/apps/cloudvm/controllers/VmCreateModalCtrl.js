@@ -99,6 +99,11 @@ define(['controllers/app.controller'], function (controllerModule) {
         initVmRamSelector();
       }
     });
+    $scope.$watch('selectedVmCpu', function (value) {
+      if (value != null) {
+        initVmRamSelector();
+      }
+    });
     $scope.$watch('selectedVmRam', function (value) {
       if (value != null) {
         setSelectedVmFlavor();
