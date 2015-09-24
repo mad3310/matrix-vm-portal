@@ -56,12 +56,14 @@ public class CreateVmsTask implements VmsCreateSubTask {
 
 		context.getVmManager().recordVmCreated(context.getUserId(), context.getVmCreateConf().getRegion(), vmContext.getServer());
 
-        try {
-            context.getVmCreateListener().vmCreated(context.getVmCreateConf().getRegion(), serverCreated.getId(), vmIndex, context.getListenerUserData());
-        } catch (Exception ex) {
-            Util.throwException(ex);
-        }
-    }
+		if (context.getVmCreateListener() != null) {
+			try {
+				context.getVmCreateListener().vmCreated(context.getVmCreateConf().getRegion(), serverCreated.getId(), vmIndex, context.getListenerUserData());
+			} catch (Exception ex) {
+				Util.throwException(ex);
+			}
+		}
+	}
 
 	@Override
 	public void rollback(MultiVmCreateContext context)
