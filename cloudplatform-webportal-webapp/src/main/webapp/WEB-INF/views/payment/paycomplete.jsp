@@ -23,7 +23,7 @@
 			<div class="paydesc">
 				<div class="desc">
 					<div class="desc-tip clearfix"></div>
-					<div class="desc-ordernum">支付订单号：<span id="payNum"></span></div>
+					<div class="desc-ordernum" id="payNum"></div>
 				</div>
 			</div>
 		</div>

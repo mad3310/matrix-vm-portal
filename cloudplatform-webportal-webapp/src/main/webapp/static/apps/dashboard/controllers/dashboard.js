@@ -10,6 +10,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 			$scope.billMes='';
 			$scope.expander='';
 			$scope.ecs='';
+			$scope.ecs_sleep='';
 			$scope.expander.layout= "normal";
 
 			$scope.expanderToggle = function(){
@@ -67,6 +68,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						WidgetService.notifyError('获取服务信息失败！')
 					}else{
 						$scope.ecs=data.data.ecs;
+						$scope.ecs_sleep=data.data['ecs-sleep'];
 					}
 				});
 			}

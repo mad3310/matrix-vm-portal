@@ -23,9 +23,9 @@
 .operation-title .title{padding-left:20px;font-size:14px;}
 .operation-title .more{color:#088ac2;float:right;}
 .operation-title .more:hover{cursor:pointer;}
-.body-operation .operation-items{height:170px;margin:10px 0 0 0;overflow:hidden;}
-.body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border:1px solid #ededed;border-bottom:0;}
-.body-operation .operation-items li.last{border-bottom:1px solid #ededed;padding-bottom: 9px;}
+.body-operation .operation-items{height:170px;margin:10px 0 0 0;border:1px solid #ededed;overflow:hidden;}
+.body-operation .operation-items li{padding:8px 15px 8px 20px;list-style:none;border-bottom:1px solid #ededed;}
+.body-operation .operation-items li.last{border-bottom:0;padding-bottom: 9px;}
 .operation-items .items-desc{margin-top:5px;}
 /*.operation-items li.last .items-desc{margin-top:6px;}*/
 
