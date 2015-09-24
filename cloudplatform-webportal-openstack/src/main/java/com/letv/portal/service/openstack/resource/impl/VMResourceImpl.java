@@ -53,36 +53,45 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 		// this.networkResource = networkManager.get(region, resource.get);
 
 		ipAddresses = new IPAddresses();
-		Map<String, List<String>> networkNameToPublicIps = new HashMap<String, List<String>>();
-		Set<String> privateIPs = new HashSet<String>();
+//		Map<String, List<String>> networkNameToPublicIps = new HashMap<String, List<String>>();
+		Set<String> publicIPs = new HashSet<String>();
+//		Set<String> privateIPs = new HashSet<String>();
 		for (FloatingIP floatingIP : floatingIPs) {
 			if (!StringUtils.equals(
 					floatingIP.getIp(),
 					floatingIP.getFixedIp())) {
 				if (server.getId().equals(floatingIP.getInstanceId())) { // && user.getPublicNetworkName().equals(floatingIP.getPool())
-					String publicNetworkName = floatingIP.getPool();
+//					String publicNetworkName = floatingIP.getPool();
 					String ip = floatingIP.getIp();
-					if (networkNameToPublicIps.get(publicNetworkName) == null) {
-						networkNameToPublicIps.put(publicNetworkName, new LinkedList<String>());
-					}
-					networkNameToPublicIps.get(publicNetworkName).add(ip);
-					privateIPs.add(floatingIP.getFixedIp());
+//					if (networkNameToPublicIps.get(publicNetworkName) == null) {
+//						networkNameToPublicIps.put(publicNetworkName, new LinkedList<String>());
+//					}
+//					networkNameToPublicIps.get(publicNetworkName).add(ip);
+					publicIPs.add(ip);
+//					privateIPs.add(floatingIP.getFixedIp());
 				}
 			}
 		}
 		Multimap<String, Address> addresses = server.getAddresses();
 		for (Entry<String, Address> entry : addresses.entries()) {
-			final String networkName = entry.getKey();
+//			final String networkName = entry.getKey();
 			final String ip = entry.getValue().getAddr();
-			if (networkNameToPublicIps.get(networkName) != null && networkNameToPublicIps.get(networkName).contains(ip)) {
+
+			if (publicIPs.contains(ip)) {
 				ipAddresses.getPublicIP().add(ip);
-			} else if (ip.startsWith("10.")) {
-				ipAddresses.getSharedIP().add(ip);
-			} else if (user.getSharedNetworkName() != null && user.getSharedNetworkName().equals(networkName)) {
-				ipAddresses.getInternalIP().add(ip);
 			} else {
 				ipAddresses.getPrivateIP().add(ip);
 			}
+
+//			if (networkNameToPublicIps.get(networkName) != null && networkNameToPublicIps.get(networkName).contains(ip)) {
+//				ipAddresses.getPublicIP().add(ip);
+//			} else if (ip.startsWith("10.")) {
+//				ipAddresses.getSharedIP().add(ip);
+//			} else if (user.getSharedNetworkName() != null && user.getSharedNetworkName().equals(networkName)) {
+//				ipAddresses.getInternalIP().add(ip);
+//			} else {
+//				ipAddresses.getPrivateIP().add(ip);
+//			}
 
 //			ipAddresses.getPrivateIP().add(ip);
 //
