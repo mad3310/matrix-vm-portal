@@ -486,6 +486,10 @@ body {
     display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 6px;
 }
 
+.vm-create-form .disk-volume{
+    padding: 6px 4px;
+}
+
 .vm-create-form .check-cpu,
 .vm-create-form .check-ram,
 .vm-create-form .check-disk-type{
@@ -529,15 +533,16 @@ body {
 .system-content li{padding:2px 5px;width: 50%;float: left;}
 .system-content .letv-radioCheck{width: 100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .body-right{height:375px;background:#f5f5f5;font-size:12px;color:#333;}
-.body-right .right-top{margin-top:15px;border-bottom:1px solid #d2d2d2;font-size:14px;}
+.body-right .right-top{margin-top:15px;border-bottom:1px solid #d2d2d2;font-size:14px;height: 279px;}
 .body-right .right-top span{margin-right: 5px;}
 .right-top ul{margin:30px 0 0 0;padding:0;}
 .right-top ul li{margin-bottom:10px;list-style:none;font-size:12px;color:#666;}
 .right-top li span.title{display: inline-block;width: 60px;text-align: right;}
-.right-top li span.value{padding-left:10px;}
+.right-top li span.value{}
 .body-right .right-bottom{padding:10px 0 0 25px;}
-.body-right .right-bottom > span{line-height: 30px;}
-.body-right .right-bottom span.price{padding:0 5px 0 10px;font-size:18px;color:#ff3c37;line-height: 30px;}
+.body-right .right-bottom > span{display: block;line-height: 30px;height: 30px;}
+.body-right .right-bottom span.title,.body-right .right-bottom span.unit{vertical-align: middle}
+.body-right .right-bottom span.price{padding:0 5px 0 0;font-size:18px;color:#ff3c37;vertical-align: middle}
 .body-right .right-bottom .btn-submit-order{margin-top: 10px;}
 /*.body-left .left-button{margin-top:60px;}*/
 .flowthree-type{padding:7px 0;}

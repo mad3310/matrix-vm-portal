@@ -8,6 +8,7 @@ import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.ResourceLocator;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
@@ -41,6 +42,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private ErrorEmailService errorEmailService;
+
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
         String email = userVo.getEmail();
@@ -58,7 +62,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
 
             VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
-            },true);
+            }, true);
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
@@ -69,8 +73,10 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //                resourceLocators.add(new ResourceLocator(multiVmCreateContext.getVmCreateConf().getRegion(), vmCreateContext.getServer().getId()));
 //            }
 //            return resourceLocators;
-        } catch (OpenStackException e) {
-            throw e.matrixException();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            errorEmailService.sendExceptionEmail(e, "计费调用创建云主机", userId, reqParaJson);
+            Util.throwMatrixException(e);
         }
     }
 

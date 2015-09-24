@@ -42,7 +42,7 @@
                 </tr>
                 </thead>
                 <tbody id="tby">
-                <tr ng-repeat="vm in vmList">
+                <tr ng-if="vmList.length>0" ng-repeat="vm in vmList">
                     <td>
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:vm.checked}" ng-click="checkVm(vm)"></span>
                     </td>
@@ -59,9 +59,12 @@
                     <td><span>{{vm.created | date:'yyyy-MM-dd'}}</span></td>
                     <td><span class="iconfont icon-computer"></span></td>
                 </tr>
+                <tr ng-if="vmList.length==0">
+                    <td colspan=10>暂无云主机，去创建吧。</td>
+                </tr>
                 </tbody>
             </table>
-            <pagination boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
+            <pagination ng-if="vmList.length>0" boundary-links="true" direction-links="false" ng-change="onPageChange()" items-per-page="pageSize"
                         total-items="totalItems" ng-model="currentPage" class="pagination-sm" first-text="&laquo;"
                         last-text="&raquo;">
             </pagination>
@@ -182,9 +185,9 @@
                             </div>
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-offset-2">
-                                    <rzslider rz-slider-model="dataDiskVolume" rz-slider-floor="0" rz-slider-ceil="100" rz-slider-always-show-bar="true">
+                                    <rzslider rz-slider-model="dataDiskVolume" rz-slider-floor="10" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
                                     </rzslider>
-                                    <input type="text" ng-model="dataDiskVolume" class="le-form-control disk-volume" />
+                                    <input type="text" ng-model="dataDiskVolume" ng-disabled="true" class="le-form-control disk-volume" />
                                     <span class="disk-volume-unit">GB</span>
                                 </div>
                             </div>
@@ -235,9 +238,9 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
                                 <div class="col-sm-10">
-                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-always-show-bar="true">
+                                    <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-step="1" rz-slider-always-show-bar="true">
                                     </rzslider>
-                                    <input type="text" ng-model="networkBandWidth" class="le-form-control network-bandwidth" />
+                                    <input type="text" ng-model="networkBandWidth" ng-disabled="true" class="le-form-control network-bandwidth" />
                                     <span class="network-bandwidth-unit">Mbps</span>
                                 </div>
                             </div>
@@ -277,14 +280,6 @@
                                     <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.required" class="le-input-validation">密码不能为空</span>
                                 </div>
                             </div>
-                            <!--<div class="inputs-item nomargin row clearfix">-->
-                                <!--<div class="col-sm-2"><span class="letv-control-label">确认密码：</span></div>-->
-                                <!--<div class="col-sm-10">-->
-                                    <!--<input type="password" name='confirm_password' class="le-form-control" ng-model="vmSecurityPasswordConfirm" ng-model-options="{ updateOn: 'blur' }" required password-verify="vmSecurityPassword" />-->
-                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.required" class="le-input-validation">确认密码不能为空</span>-->
-                                    <!--<span ng-show="(vm_create_form.$submitted || vm_create_form.confirm_password.$touched) && vm_create_form.confirm_password.$error.passwordVerify" class="le-input-validation">密码不相等</span>-->
-                                <!--</div>-->
-                            <!--</div>-->
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
                                 <div class="col-sm-10">
@@ -323,8 +318,12 @@
                         </ul>
                     </div>
                     <div class="right-bottom">
-                        <span>合计：<span class="price">{{vmTotalPrice}}</span>元/小时</span>
-                        <button class="btn btn-le-red btn-submit-order" ng-click="createVm()"><span>提交订单</span></button>
+                        <span>
+                            <span class="title">合计：</span>
+                            <span class="price">{{vmTotalPrice}}</span>
+                            <span class="unit">元</span>
+                        </span>
+                        <button class="btn btn-le-red btn-submit-order" ng-click="createVm(formName.inputFieldName.$valid)"><span>提交订单</span></button>
                     </div>
                 </div>
                 <div class="clearfix"></div>

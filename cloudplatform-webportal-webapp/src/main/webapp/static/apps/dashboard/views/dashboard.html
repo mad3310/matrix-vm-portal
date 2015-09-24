@@ -49,11 +49,11 @@
 				</div>
 				<div class="buyed-products row">
 					<div class="le-col-6 no-paddingR">
-						<div class="product">
+						<a class="product" href="/cvm/#/vm">
 							<span class="iconfont icon-yunzhuji"></span>
 							<div class="product-title">云主机</div>
 							<div class="product-num">{{ecs}}个</div>
-						</div>
+						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
@@ -68,11 +68,11 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="le-col-6 no-paddingL">
-						<div class="product harddisk">
+						<a class="product harddisk" href="javascript:void(0);">
 							<span class="iconfont icon-cloudstorageicon"></span>
 							<div class="product-title">运硬盘</div>
 							<div class="product-num">0个</div>
-						</div>
+						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
@@ -88,11 +88,11 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="le-col-6 no-paddingR">
-						<div class="product harddisk">
+						<a class="product harddisk" href="javascript:void(0);">
 							<span class="iconfont icon-rds"></span>
 							<div class="product-title">数据库</div>
 							<div class="product-num">0个</div>
-						</div>
+						</a>
 						<div class="productDesc">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
@@ -107,11 +107,11 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="le-col-6 no-paddingL">
-						<div class="product">
+						<a class="product" href="javascript:void(0);">
 							<span class="iconfont icon-gce"></span>
 							<div class="product-title">云引擎</div>
 							<div class="product-num">0个</div>
-						</div>
+						</a>
 						<div class="productDesc last">
 							<span>每日消费</span>
 							<div class="productDesc-consume">
@@ -280,7 +280,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>云主机快照<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -298,7 +298,7 @@
 					<div class="le-col-6 no-paddingR no-paddingL">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>CPU<span>（核）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -315,7 +315,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>内存<span>（GB）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -333,7 +333,7 @@
 					<div class="le-col-6 no-paddingR no-paddingL">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>容量性云硬盘<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -350,7 +350,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>容量性云硬盘容量<span>（GB）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -368,7 +368,7 @@
 					<div class="le-col-6 no-paddingR no-paddingL">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>性能性云硬盘<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -385,7 +385,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>性能性云硬盘容量<span>（GB）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -403,7 +403,7 @@
 					<div class="le-col-6 no-paddingR no-paddingL">
 						<div class="quota-item last">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>公网IP<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -420,7 +420,7 @@
 					<div class="le-col-6 no-paddingR">
 						<div class="quota-item last">
 							<div class="item-source">
-								<div>云主机<span>（个）</span></div>
+								<div>私有网络VPC<span>（个）</span></div>
 								<div class="source-precent">
 									<div class="active" style="width:30%"></div>
 									<div class="unactive" style="width:70%"></div>
@@ -473,7 +473,7 @@
 					<span class="iconfont icon-loadblance"></span>
 				</div>
 				<div class="item-title le-col-6 text-left">
-					<span>云引擎</span>
+					<span>负载均衡SLB</span>
 					<div class="item-desc">扩展服务、快捷开发</div>
 					<div><a class="item-detail" href="#">查看详情>></a></div>
 				</div>
@@ -491,7 +491,7 @@
 					<span class="iconfont icon-rds1"></span>
 				</div>
 				<div class="item-title le-col-6 text-left">
-					<span>云引擎</span>
+					<span>关系型数据库</span>
 					<div class="item-desc">扩展服务、快捷开发</div>
 					<div><a class="item-detail" href="#">查看详情>></a></div>
 				</div>
