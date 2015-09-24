@@ -10,7 +10,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       $scope.currentPage = 1;
       $scope.totalItems = 0;
-      $scope.pageSize = 3;
+      $scope.pageSize = 10;
       $scope.onPageChange = function () {
         refreshVmList();
       };

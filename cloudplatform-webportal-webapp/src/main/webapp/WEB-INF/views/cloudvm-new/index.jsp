@@ -3,6 +3,8 @@
     <!DOCTYPE html>
     <html>
        <head>
+            <meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             <title>Le云控制台</title>
             <link rel="shortcut icon" href="/static/images/favicon.ico">
             <link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
@@ -12,7 +14,6 @@
             <link rel="stylesheet" href="/static/stylesheets/rzslider.css">
             <link rel="stylesheet" href="/static/stylesheets/common.css">
             <link rel="stylesheet" href="/static/stylesheets/style.css">
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         </head>
         <style>
         .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}
