@@ -28,5 +28,24 @@ define(['directives/app.directive'],function (directiveModule) {
             }
         };
     });
-
+//     directiveModule.directive('dataPicker', ['$filter',function($filter) {
+//     var dateFilter = $filter('date');
+//     return {
+//         require: 'ngModel',
+//         link: function(scope, elm, attrs, ctrl) {
+//             function formatter(value) {
+//                 return dateFilter(value,'yyyy-MM-dd'); //format
+//             }
+//             function formatterRemote(value) {
+//                 return dateFilter(value,'hh::mm'); //format2
+//             }
+//             function parser() {
+//                 return ctrl.$modelValue;
+//             }
+//             ctrl.$formatters.push(formatter);
+//             ctrl.$formatters.push(formatterRemote);
+//             ctrl.$parsers.unshift(parser);
+//         }
+//     };
+// }]);
 });

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
 import com.letv.portal.letvcloud.bill.vo.BillMonthDetailBilling;
 import com.letv.portal.model.letvcloud.BillUserBilling;
 
@@ -15,4 +16,5 @@ import com.letv.portal.model.letvcloud.BillUserBilling;
     List<BillMonthDetailBilling> getUserBillingDetails(@Param(value = "orderId")String orderId,@Param(value = "month")String month);
 
     List<String> getUserBillingYears(Long userId);
+	void insert(BillUserBilling bill);
 }

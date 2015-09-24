@@ -8,18 +8,31 @@ define(['jquery'],function($){
 
   /*配置页面的左侧菜单*/
   var sideMenuData = [
-      {url: '/profile/#/dashboard?hashUrl=dashboard', title: '概览', icon: 'iconfont icon-blockicon'},
-      {url: '/cvm/#/vm?hashUrl=vm', title: '云主机', icon: 'iconfont icon-yunzhuji'},
-      {url: '/cvm/#/vm-disk?hashUrl=vm-disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
-      {url: '/cvm/#/vm-vpc?hashUrl=vm-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
-      {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds'}
+      {url: '/profile/#/dashboard', title: '概览', icon: 'iconfont icon-blockicon',isSubmenuFisrt:true},
+      {url: '/cvm/#/vm', title: '云主机', icon: 'iconfont icon-yunzhuji',isSubmenuFisrt:true},
+      {url: '/cvm/#/vm-disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
+      {url: '/cvm/#/vm-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
+      {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds',isSubmenuFisrt:true}
     ],
     sideMenuItemEl = null,
     sideMenuItemEls = [],
     sideMenuEl = $('.side-menu'),
-    currentUrl = window.location.pathname + window.location.hash;
+    path=window.location.pathname,
+    hash=window.location.hash,
+    currentUrl = path + hash;
+
+  var isMenuActive=function(sideMenuItem){
+    var result=false;
+    if(!hash){
+      result=sideMenuItem.url.indexOf(path)>-1 && sideMenuItem.isSubmenuFisrt;
+    }
+    else {
+      result = sideMenuData[i].url === currentUrl;
+    }
+    return result;
+  };
   for (var i = 0, leng = sideMenuData.length; i < leng; i++) {
-    sideMenuItemEl = '<li class="menu-item' + (sideMenuData[i].url === currentUrl ? ' active' : '') + '">' +
+    sideMenuItemEl = '<li class="menu-item' + (isMenuActive(sideMenuData[i]) ? ' active' : '') + '">' +
       '<a href="' + sideMenuData[i].url + '">' +
       '<i class="' + sideMenuData[i].icon + '"></i>' +
       '<span>' + sideMenuData[i].title + '</span>' +

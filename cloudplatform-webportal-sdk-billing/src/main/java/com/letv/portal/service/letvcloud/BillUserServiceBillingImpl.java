@@ -1,23 +1,23 @@
 package com.letv.portal.service.letvcloud;
 
-import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
-import com.letv.portal.dao.letvcloud.BillUserBillingMapper;
-import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
-import com.letv.portal.letvcloud.bill.vo.BillMonthDetailBilling;
-import com.letv.portal.model.letvcloud.BillUserAmount;
-import com.letv.portal.model.letvcloud.BillUserBilling;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
 
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.letv.portal.dao.letvcloud.BillUserAmountMapper;
+import com.letv.portal.dao.letvcloud.BillUserBillingMapper;
+import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
+import com.letv.portal.model.letvcloud.BillUserAmount;
+import com.letv.portal.model.letvcloud.BillUserBilling;
 
 /**
  * Created by chenliusong on 2015/6/29.
@@ -87,4 +87,18 @@ public class BillUserServiceBillingImpl implements BillUserServiceBilling {
         Collections.reverse(monthList);
         return monthList;
     }
+
+
+	@Override
+	public void add(Long userId,String serviceCode,Long orderId,String billingMonth,String billingMoney) {
+		BillUserBilling billUserBilling = new BillUserBilling();
+		billUserBilling.setUserId(userId);
+		billUserBilling.setServiceCode(serviceCode);
+		billUserBilling.setOrderId(orderId);
+		billUserBilling.setBillingMonth(billingMonth);
+		billUserBilling.setBillingMoney(billingMoney);
+		billUserBilling.setBillingId(UUID.randomUUID().toString());
+		this.billUserBillingDao.insert(billUserBilling);
+		
+	}
 }

@@ -28,6 +28,14 @@
         </set>
         where tradeNum= #{tradeNum}
     </update>
+    <update id="updateAmount" parameterType="java.util.HashMap">
+        update bill_recharge_record
+        <set>
+            amount = #{amount},
+            lastUpdateTime=NOW()
+        </set>
+        where tradeNum= #{tradeNum}
+    </update>
     <select id="getAmount" parameterType="java.lang.String" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
         select
         userId,amount,rechargeType,orderNum,success

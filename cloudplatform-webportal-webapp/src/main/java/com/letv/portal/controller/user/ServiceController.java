@@ -46,6 +46,7 @@ public class ServiceController {
 		Long userId = sessionService.getSession().getUserId();
 		Map<String,Object> services = new HashMap<String,Object>();
 		services.put("ecs", this.cloudvmServerService.selectByUserIdCount(userId));
+		services.put("ecs-sleep", 0);
 		services.put("rds", 0);
 		services.put("disk", 0);
 		services.put("gce", 0);

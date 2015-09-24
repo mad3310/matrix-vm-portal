@@ -220,6 +220,11 @@ function iflogged(){
 	});
 }
 function customerToolInit() {
+	var brands={
+		'lantv':'中国蓝提供广电云服务，助力浙广向新媒体转型/;乐视云计算为中国蓝TV提供一体化新媒体服务，提高工作效率，节省带宽成本。',
+		'huashutv':'致力于打造新媒体平台/;CDN解决方案，为华数提供流畅、稳定、快速的网络加速保障以及安全保障，使用户无论在何时何地都能观看流畅高清视频。乐视云以稳定充足的带宽保障，快速有效运维保障，提高了服务质量，节省了各类维护成本。',
+		'a':'b'
+	};
 	(function tooltip(){
 		$(".customer-logos div").click(function() {
 			$(".customer-logos div").removeClass('logo-focus');
@@ -227,6 +232,7 @@ function customerToolInit() {
 			$(this).addClass("logo-focus");
 			var img=$(this).find('img').attr('src');
 			$('.tipImg').find('img').attr('src',img);
+			var brand=$(this).attr('self-customer-brand');
 		});
 	})();
 	(function tabinit(){

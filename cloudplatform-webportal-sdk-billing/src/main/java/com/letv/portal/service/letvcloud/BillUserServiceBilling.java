@@ -1,9 +1,9 @@
 package com.letv.portal.service.letvcloud;
 
-import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
-import com.letv.portal.letvcloud.bill.vo.BillMonthDetailBilling;
-
 import java.util.List;
+
+import com.letv.portal.letvcloud.bill.vo.BillMonthBilling;
+import com.letv.portal.model.letvcloud.BillUserBilling;
 
 /**
  * Created by chenliusong on 2015/6/28.
@@ -33,6 +33,8 @@ public interface BillUserServiceBilling {
      * @return
      */
     List<String> getUserBillingYears(Long userId);
+    
+    public void add(Long userId,String serviceCode,Long orderId,String billingMonth,String billingMoney);
 
     /**
      * 根据年份查询用户账单月

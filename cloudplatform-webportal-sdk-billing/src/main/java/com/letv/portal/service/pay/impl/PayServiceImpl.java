@@ -2,8 +2,10 @@ package com.letv.portal.service.pay.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +30,8 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.service.letvcloud.BillUserAmountService;
+import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.order.IOrderService;
@@ -48,6 +52,10 @@ public class PayServiceImpl implements IPayService {
 	private IOrderSubService orderSubService;
 	@Autowired
 	private ResourceCreateService resourceCreateService;
+	@Autowired
+	private BillUserAmountService billUserAmountService;
+	@Autowired
+	private BillUserServiceBilling billUserServiceBilling;
 
 	@Autowired(required = false)
 	private SessionServiceImpl sessionService;
@@ -93,6 +101,10 @@ public class PayServiceImpl implements IPayService {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
 			}
+			//增加用户充值信息
+			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), BigDecimal.valueOf(price),orderNumber,Integer.valueOf(pattern));
+			
+			//充值
 			String url = getParams(order.getOrderNumber(), price, pattern,
 					this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription()
@@ -186,11 +198,11 @@ public class PayServiceImpl implements IPayService {
 
 	public boolean callback(Map<String, Object> map) {
 		// ①验证必须字段
-		 if ((map.get("corderid") == null) || (map.get("stat") == null)
+		if ((map.get("corderid") == null) || (map.get("stat") == null)
 				 || (map.get("money") == null)
 				 || (map.get("ordernumber") == null)) {
 			 return false;
-		 }
+		}
 
 		List<OrderSub> orderSubs = this.orderSubService
 				.selectOrderSubByOrderNumberWithOutSession((String) map
@@ -211,8 +223,17 @@ public class PayServiceImpl implements IPayService {
 				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs)
 				+ "");
 		if (sign != null && sign.equals(map.get("sign"))) {
+			
 			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
 					(String) map.get("money"), 2)) {
+				
+				Order order = orderSubs.get(0).getOrder();
+				//更改用户充值信息
+				this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
+				SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+				//生成用户账单。
+				this.billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), df.format(new Date()), (String)map.get("money"));
+				
 				// ④创建应用实例
 				return createInstance(orderSubs);
 			}
@@ -340,6 +361,7 @@ public class PayServiceImpl implements IPayService {
 								
 							}, records);
 					logger.info("createInstance success!");
+					return true;
 				}
 			}
 		}
