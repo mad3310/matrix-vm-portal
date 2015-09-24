@@ -197,7 +197,7 @@ a:hover{cursor:pointer;}
 .footer .footer-right{border-left:1px solid #9aa9af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .footer-right .right-logo img{width:50px;width:100%;min-width:50px;}
 .footer-right .right-logo,.right-logo div{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.footer-right .right-desc{padding:15px 0 0 0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.footer-right .right-desc{padding:15px 0 0 5px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .right-desc div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .followus{padding-left:11px;}
 /* 返回顶部 */
