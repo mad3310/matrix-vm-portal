@@ -13,10 +13,13 @@ public class IPAddresses {
 	
 	private List<String> sharedIP;
 
+	private List<String> internalIP;
+
 	public IPAddresses() {
 		privateIP = new LinkedList<String>();
 		publicIP = new LinkedList<String>();
 		sharedIP = new LinkedList<String>();
+		internalIP = new LinkedList<String>();
 	}
 
 	@JsonProperty("private")
@@ -46,4 +49,12 @@ public class IPAddresses {
 		this.sharedIP = sharedIP;
 	}
 
+	@JsonProperty("internal")
+	public List<String> getInternalIP() {
+		return internalIP;
+	}
+
+	public void setInternalIP(List<String> internalIP) {
+		this.internalIP = internalIP;
+	}
 }
