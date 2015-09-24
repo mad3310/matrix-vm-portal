@@ -58,7 +58,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            logger.info("ResourceCreateServiceImpl.createVm session = ", session);
 
             VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
-            },true);
+            }, true);
 
             OpenStackSession openStackSession = createOpenStackSession(userId);
 
@@ -70,7 +70,11 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            }
 //            return resourceLocators;
         } catch (OpenStackException e) {
+            logger.error(e.getMessage(), e);
             throw e.matrixException();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new MatrixException("后台错误", e);
         }
     }
 
