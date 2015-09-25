@@ -66,6 +66,21 @@ define(['directives/app.directive'],function (directiveModule) {
         };
     });
 
+    directiveModule.directive('textRestrict', function() {
+        var TEXT_REGEX= /[a-zA-Z_0-9]{1,15}/g;
+        return {
+            require: 'ngModel',
+            link: function(scope, elm, attrs, ctrl) {
+                ctrl.$validators.textRestrict = function(modelValue, viewValue) {
+                    if (viewValue && viewValue.length>0 && viewValue.length<10) {
+                        return true;
+                    }
+                    return false;
+                };
+            }
+        };
+    });
+
     directiveModule.directive('numericInput', function () {
         return {
             restrict: 'AE',
