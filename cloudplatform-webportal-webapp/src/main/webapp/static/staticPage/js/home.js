@@ -140,6 +140,7 @@ function carousels(){
 // products:scroll-nav
 function scrollNav(){
 	var scrollh=document.body.scrollHeight;
+	// console.log(scrollh)
 	$(window).scroll(function(){  
         var vtop=$(document).scrollTop();
         var height=$(this).height();
@@ -152,7 +153,8 @@ function scrollNav(){
         		_target.append(_tabClone)
         	}
         	_target.removeClass('hide');
-        	if(vtop+height==scrollh){//到底部
+        	// console.log(vtop+height)
+        	if(vtop+height>=scrollh){//到底部
         		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
         	}else{
         		if(vtop>=2077){

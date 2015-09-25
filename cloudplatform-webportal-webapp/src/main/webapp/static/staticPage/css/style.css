@@ -211,6 +211,7 @@ a:hover{cursor:pointer;}
 .desc-title .icon-yunzhuji{font-size:5.0rem;}
 .top-product-desc .product-desc-btn{width:160px;height:40px;margin-top:55px;border:1px solid #f5c131;padding:5px 30px;font-size:1.8rem;line-height:28px;text-align:center;color:#fff;background:#f5c131;}
 .product-desc-btn:hover{cursor:pointer;border: 1px solid #EAB00F;background:#EAB00F}
+.product-desc-btn a{color:#fff;}
 .top-product-tab{height:60px;margin-top:110px;padding:10px 0;font-size:1.6rem;text-align:center;line-height:40px;color:#333;}
 .top-product-tab .tab-item{background:#fff;color:#333;}
 .top-product-tab .tab-item:hover{cursor:pointer;color:#fff;background:#088ac2}
