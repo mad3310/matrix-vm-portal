@@ -28,6 +28,8 @@
 .body-operation .operation-items li.last{border-bottom:0;padding-bottom: 9px;}
 .body-operation .operation-items li.third{border-bottom:0;}
 .body-operation.zhankai .operation-items li.third{border-bottom:1px solid #ededed;}
+.body-operation .operation-items li.gotop{display:none;}
+.body-operation.zhankai .operation-items li.gotop{display:block;}
 .operation-items .items-desc{margin-top:5px;}
 /*.operation-items li.last .items-desc{margin-top:6px;}*/
 
