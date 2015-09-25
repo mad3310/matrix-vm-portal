@@ -30,6 +30,9 @@ define(['services/app.service'], function (serviceModule) {
       {"text": "已挂起", "value": "SUSPENDED"},
       {"text": "已删除", "value": "DELETED"},
       {"text": "已停止", "value": "SHUTOFF"},
+      {"text": "启动中", "value": "STARTING"},
+      {"text": "停止中", "value": "STOPING"},
+      {"text": "删除中", "value": "DELETEING"},
     ];
     config.vmDiskStatuses = [
       {"text": "创建中", "value": "creating"},

@@ -72,7 +72,7 @@ define(['directives/app.directive'],function (directiveModule) {
             require: 'ngModel',
             link: function(scope, elm, attrs, ctrl) {
                 ctrl.$validators.textRestrict = function(modelValue, viewValue) {
-                    if (viewValue && viewValue.length>0 && viewValue.length<10) {
+                    if (viewValue && viewValue.length>0 && viewValue.length<15) {
                         return true;
                     }
                     return false;

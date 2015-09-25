@@ -51,7 +51,7 @@
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
                         <span>{{vm.status | vmStatusFilter}}</span>
-                        <span ng-if="vm.status== 'BUILD'" class="status-loading"></span>
+                        <span ng-if="['BUILD','STARTING','STOPING','DELETEING'].indexOf(vm.status)>-1" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
@@ -314,6 +314,7 @@
                             <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
                             <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
                             <li><span class="title">主机名：</span><span class="value">{{vmName}}</span></li>
+                            <li><span class="title">购买时长：</span><span class="value">{{vmBuyPeriod | vmBuyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span></li>
                             <li><span class="title">数量：</span><span class="value">{{vmCount}}台</span></li>
                         </ul>
                     </div>

@@ -25,6 +25,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
+        if(checkedVms[0].status!=='SHUTOFF'){
+          WidgetService.notifyWarning('云主机当前状态不可启动');
+          return;
+        }
         var data={
           vmId: checkedVms[0].id
         };
@@ -33,6 +37,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云主机启动执行中...');
+          checkedVms[0].status='STARTING';
           HttpService.doPost(Config.urls.vm_start.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
             if(data.result===1){
               checkedVms[0].status='ACTIVE';
@@ -53,6 +58,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
+        if(checkedVms[0].status!=='ACTIVE'){
+          WidgetService.notifyWarning('云主机当前状态不可停止');
+          return;
+        }
         var data={
           vmId: checkedVms[0].id
         };
@@ -61,6 +70,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云主机停止执行中...');
+          checkedVms[0].status='STOPING';
           HttpService.doPost(Config.urls.vm_stop.replace('{region}', CurrentContext.regionId), data).success(function (data, status, headers, config) {
             if(data.result===1){
               checkedVms[0].status='SHUTOFF';
@@ -88,8 +98,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云主机删除执行中...');
+          checkedVms[0].status='DELETEING';
           HttpService.doPost(Config.urls.vm_delete.replace('{region}', checkedVms[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
+              checkedVms[0].status='DELETED';
               modalInstance.close(data);
               WidgetService.notifySuccess('删除云主机成功');
               refreshVmList();
