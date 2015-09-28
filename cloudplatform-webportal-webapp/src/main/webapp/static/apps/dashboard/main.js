@@ -27,10 +27,6 @@ require.config({
       deps: ['angular'],
       exports: 'angular-route'
     },
-    'ui-select': {
-      deps: ['angular'],
-      exports: 'ui-select'
-    },
     'ui-bootstrap': {
       deps: ['angular'],
       exports: 'ui-bootstrap'
@@ -38,10 +34,6 @@ require.config({
     'ng-toaster': {
       deps: ['angular', 'angular-animate'],
       exports: 'ng-toaster'
-    },
-    'ng-rzslider': {
-      deps: ['angular'],
-      exports: 'ng-rzslider'
     },
     'bootstrap': {
       deps: ['jquery'],

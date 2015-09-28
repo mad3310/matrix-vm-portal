@@ -1,7 +1,7 @@
 /**
  * Created by jiangfei on 2015/8/19.
  */
-define(['services/app.service'], function (serviceModule) {
+define(['./common.service'], function (serviceModule) {
   serviceModule.factory('Config', [function () {
     var config = {};
     config.urls = {
