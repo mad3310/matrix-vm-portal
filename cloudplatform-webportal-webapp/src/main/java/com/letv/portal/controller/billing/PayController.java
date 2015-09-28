@@ -1,8 +1,8 @@
 package com.letv.portal.controller.billing;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.common.exception.ValidateException;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.model.order.OrderSub;
-import com.letv.portal.model.product.Product;
-import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.proxy.IDbProxy;
-import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
@@ -107,6 +107,33 @@ public class PayController {
 	public @ResponseBody ResultObject queryStat(@PathVariable String orderNumber, ResultObject obj) {
 		obj.setData(this.payService.queryState(orderNumber));
 		return obj;
+	}
+	
+	@RequestMapping(value="/qrcodeImage/{orderNumber}",method=RequestMethod.GET)
+	public void generateQRcode(@PathVariable String orderNumber, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("请求微信生成二维码，userId=" + sessionService.getSession().getUserId() + ", 订单编码=" + orderNumber);
+		Map<String,Object> params = HttpUtil.requestParam2Map(request);
+		Map<String,Object> ret = this.payService.pay(orderNumber, params, response);
+		String content = (String) ret.get("wxurl");// 内容
+		if(content!=null) {
+			int width = 200; // 图像宽度
+			int height = 200; // 图像高度
+			String format = "png";
+			Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+			hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+			try {
+				BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, width, height, hints);// 生成矩阵
+				OutputStream outputStream = response.getOutputStream();
+				MatrixToImageWriter.writeToStream(bitMatrix, format, outputStream);
+				outputStream.flush();
+			} catch (Exception e) {
+				logger.error("生产二维码异常:", e);
+			}
+		} else {
+			logger.info("订单已支付，或数据异常!");
+		}
+		
+		
 	}
 	
 }

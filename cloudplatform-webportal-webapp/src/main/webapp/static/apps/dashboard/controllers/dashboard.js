@@ -21,6 +21,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 				}else{
 					$(_target).parent().parent().addClass('zhankai');
 					$(_target).text('收起');
+					$('.operation-items').scrollTop();
 				}
 				$scope.expander.layout === "top-expander"? $scope.expander.layout = "top-shrink":$scope.expander.layout="top-expander";
 			}
@@ -40,7 +41,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 						$scope.username=_data.contacts;
 						$scope.mobileStatus=_data.mobileStatus;
 						$scope.emailStatus=_data.emailStatus;
-						$scope.userStatus=_data.userStatus;
+						$scope.userStatus=_data.examineStatus;
 					}
 				});
 				$http.get(messageurl).success(function(data){

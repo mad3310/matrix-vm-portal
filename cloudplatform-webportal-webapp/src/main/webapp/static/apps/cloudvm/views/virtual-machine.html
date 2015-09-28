@@ -51,7 +51,7 @@
                     <td><span>{{vm.ipAddresses.public.join(', ') || '未设置'}}</span></td>
                     <td>
                         <span>{{vm.status | vmStatusFilter}}</span>
-                        <span ng-if="vm.status== 'BUILD'" class="status-loading"></span>
+                        <span ng-if="['BUILD','STARTING','STOPING','DELETEING'].indexOf(vm.status)>-1" class="status-loading"></span>
                     </td>
                     <td><span>{{vm.image.name}}</span></td>
                     <td><span>{{vm.flavor | vmFlavorFilter}}</span></td>
@@ -115,8 +115,8 @@
                             <div class="inputs-item clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">主机名称：</span></div>
                                 <div class="col-sm-10">
-                                    <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" required />
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.required" class="le-input-validation">名称不能为空</span>
+                                    <input type="text" name="vm_name" class="le-form-control" ng-model="vmName" placeholder="请输入云主机名称" text-restrict />
+                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.vm_name.$touched) && vm_create_form.vm_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                                 </div>
                             </div>
                             <div class="inputs-item clearfix">
@@ -276,8 +276,8 @@
                             <div class="inputs-item nomargin row clearfix">
                                 <div class="col-sm-2"><span class="letv-control-label">密码：</span></div>
                                 <div class="col-sm-10">
-                                    <input type="password" name='password' class="le-form-control" ng-model="vmSecurityPassword" ng-model-options="{ updateOn: 'blur' }" required />
-                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.required" class="le-input-validation">密码不能为空</span>
+                                    <input type="password" name='password' class="le-form-control" ng-model="vmSecurityPassword" text-restrict />
+                                    <span ng-show="(vm_create_form.$submitted || vm_create_form.password.$touched) && vm_create_form.password.$error.textRestrict" class="le-input-validation">密码不符合规则</span>
                                 </div>
                             </div>
                             <div class="inputs-item nomargin row clearfix">
@@ -314,6 +314,7 @@
                             <li><span class="title">内存：</span><span class="value">{{selectedVmRam/1024 | number:0}}GB</span></li>
                             <li><span class="title">硬盘：</span><span class="value">{{dataDiskVolume}}GB</span></li>
                             <li><span class="title">主机名：</span><span class="value">{{vmName}}</span></li>
+                            <li><span class="title">购买时长：</span><span class="value">{{vmBuyPeriod | vmBuyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span></li>
                             <li><span class="title">数量：</span><span class="value">{{vmCount}}台</span></li>
                         </ul>
                     </div>

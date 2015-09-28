@@ -64,9 +64,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
     $scope.createVm = function () {
-      if($scope.vmName=='' || $scope.vmSecurityPassword==''){
-        return;
-      }
+      if (!$scope.vm_create_form.$valid) return;
       var data = {
         region:region,
         name: $scope.vmName,
@@ -140,8 +138,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     var flavorGroupData = null,
       selectedVmFlavor = null,
       selectedVmSharedNetwork=null,
-      calculatePriceData= null,
-      textReg= /[a-zA-Z_0-9]{1,15}/g;
+      calculatePriceData= null;
     var initComponents = function () {
         initVmImageSelector();
         initVmCpuSelector();
