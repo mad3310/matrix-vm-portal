@@ -10,7 +10,6 @@
 	<link rel="stylesheet" href="/static/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/static/stylesheets/font-awesome.css">
     <link rel="stylesheet" href="/static/stylesheets/common.css">
-    <link rel="stylesheet" href="/static/stylesheets/style-cloudvm.css">
     <link rel="stylesheet" type="text/css" href="/static/stylesheets/style-profile.css">
 	<title>Le云控制台</title>
 </head>
