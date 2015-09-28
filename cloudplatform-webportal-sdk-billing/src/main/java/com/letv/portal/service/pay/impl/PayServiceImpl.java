@@ -76,8 +76,7 @@ public class PayServiceImpl implements IPayService {
 	@Value("${pay.success}")
 	private String PAY_SUCCESS;
 
-	public Map<String, Object> pay(String orderNumber, Map<String, Object> map,
-			HttpServletResponse response) {
+	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		List<OrderSub> orderSubs = this.orderSubService
 				.selectOrderSubByOrderNumber(orderNumber);
@@ -112,30 +111,26 @@ public class PayServiceImpl implements IPayService {
 			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), BigDecimal.valueOf(price),orderNumber,Integer.valueOf(pattern));
 			
 			//充值
-			String url = getParams(order.getOrderNumber(), price, pattern,
-					this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
-					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription()
-							.getProductName() : orderSubs.get(0)
-							.getSubscription().getProductName()
-							+ "...", orderSubs.size() == 1 ? orderSubs.get(0)
-							.getSubscription().getProductDescn() : orderSubs
-							.get(0).getSubscription().getProductDescn()
-							+ "...", null, params);
+			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
+					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
+					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
-			if ("1".equals(pattern)) {// 支付宝方法
+			if (Constant.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
+				logger.info("去支付宝支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				try {
 					response.sendRedirect(getPayUrl(url, params));
 				} catch (IOException e) {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
-			} else if ("2".equals(pattern)) {// 微信支付
-				String str = HttpClient.get(getPayUrl(url, params), 2000, 2000);
+			} else if (Constant.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
+				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
+				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
-				if (!updateOrderPayInfo(orderSubs,
-						(String) ret.get("ordernumber"),
-						(String) ret.get("price"), null)) {
+				if (!updateOrderPayInfo(orderSubs, (String) ret.get("ordernumber"), (String) ret.get("price"), null)) {
 					ret.put("alert", "微信方式支付异常");
 				}
+			} else {
+				ret.put("alert", "方式支付异常");
 			}
 		}
 		return ret;
@@ -165,11 +160,11 @@ public class PayServiceImpl implements IPayService {
 			logger.error("payService getParams had error :", e);
 		}
 
-		if ("1".equals(pattern)) {// 支付宝支付
+		if (Constant.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝支付
 			params.put("defaultbank", defaultBank);
 			return Constant.PAY_URL;
 		}
-		if ("2".equals(pattern)) {// 微信支付
+		if (Constant.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
 			return Constant.WX_URL;
 		}
 		return null;

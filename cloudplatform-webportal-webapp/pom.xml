@@ -197,9 +197,9 @@
             <artifactId>commons-fileupload</artifactId>
         </dependency>
          <dependency>
-  <groupId>commons-io</groupId>
-  <artifactId>commons-io</artifactId>
-</dependency>
+		  <groupId>commons-io</groupId>
+		  <artifactId>commons-io</artifactId>
+		</dependency>
         <!-- SECURITY begin -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -210,6 +210,16 @@
 			<artifactId>shiro-ehcache</artifactId>
 		</dependency>
 		<!-- SECURITY end -->
+		
+		<!-- zxing -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
 		
 		<dependency>
 			<groupId>opensymphony</groupId>

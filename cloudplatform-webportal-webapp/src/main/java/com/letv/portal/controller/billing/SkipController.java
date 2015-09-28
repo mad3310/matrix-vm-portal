@@ -1,5 +1,7 @@
 package com.letv.portal.controller.billing;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -41,6 +43,14 @@ public class SkipController {
 	public ModelAndView paySuccess(@PathVariable String orderNum,ModelAndView mav){
 		mav.addObject("orderNum",orderNum);
 		mav.setViewName("/payment/paycomplete");
+		return mav;
+	}
+	
+	@RequestMapping(value ="/payment/wxpay",method=RequestMethod.GET)
+	public ModelAndView wxPay(HttpServletRequest request,ModelAndView mav){
+		mav.addObject("orderNum",request.getParameter("orderNum"));
+		mav.addObject("money",request.getParameter("money"));
+		mav.setViewName("/payment/wxpay");
 		return mav;
 	}
 	

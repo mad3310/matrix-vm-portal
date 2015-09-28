@@ -11,5 +11,9 @@ public class Constant {
 	public static final String QUERY_URL = "http://api.zhifu.letv.com/pay/querystat";//查询订单号接口
 	
 	public static final String SIGN_KEY = "6033bd29078a5e094bf53748238aae82";//支付验证所需key
+	
+	public static final String ALI_PAY_PATTERN = "1";//支付宝支付方式
+	
+	public static final String WX_PAY_PATTERN = "2";//微信支付方式
 
 }
