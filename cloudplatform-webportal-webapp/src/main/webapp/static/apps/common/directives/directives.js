@@ -70,7 +70,7 @@ define(['./common.directive'],function (directiveModule) {
                     scope.model--;
                 };
             },
-            templateUrl: '/static/apps/cloudvm/directives/numeric-input/template.html'
+            templateUrl: '/static/apps/common/directives/numeric-input/template.html'
         };
     });
 });
