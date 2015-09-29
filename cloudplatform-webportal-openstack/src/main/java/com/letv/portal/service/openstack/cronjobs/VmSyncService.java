@@ -13,7 +13,7 @@ public interface VmSyncService {
 
     void create(long userId, String region, Server server);
 
-    void update(CloudvmServer cloudvmServer, Server server);
+    void update(String region, Server server);
 
-    void delete(CloudvmServer cloudvmServer);
+    void delete(String region, String vmId);
 }

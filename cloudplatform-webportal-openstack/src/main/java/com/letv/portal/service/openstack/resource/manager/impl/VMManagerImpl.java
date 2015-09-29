@@ -535,7 +535,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                             conf.getFlavorResource().getId(),
                             createServerOptions);
                     Server server = serverApi.get(serverCreated.getId());
-//                    recordVmCreated(region, server);
+                    recordVmCreated(OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService().getSession().getUserId(),region,server);
                     VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
                             regionDisplayName, server, VMManagerImpl.this,
                             imageManager, openStackUser);
@@ -1080,7 +1080,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                     @Override
                     public boolean check(Server server) {
-                        return isStartFinished(server);
+                        boolean result = isStartFinished(server);
+                        if(result){
+                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,server);
+                        }
+                        return result;
                     }
                 });
                 return null;
@@ -1137,7 +1141,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                     @Override
                     public boolean check(Server server) {
-                        return isStopFinished(server);
+                        boolean result = isStopFinished(server);
+                        if(result) {
+                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,server);
+                        }
+                        return result;
                     }
                 });
 
@@ -1513,7 +1521,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             cloudvmFlavorService.insert(cloudvmFlavor);
         }
 
-        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().create(userId,region,server);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().create(userId, region, server);
 //        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
 //        CloudvmServer cloudvmServer = new CloudvmServer();
 //        cloudvmServer.setRegion(region);
@@ -1542,13 +1550,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     private void recordVmDeleted(String region, String vmId) throws OpenStackException {
-        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
-        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
-        if (cloudvmServer != null) {
-            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(cloudvmServer);
+//        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
+//        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
+//        if (cloudvmServer != null) {
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(region, vmId);
 //            cloudvmServerService.delete(cloudvmServer);
 //            decVmCount();
-        }
+//        }
     }
 
     @Deprecated
@@ -1613,7 +1621,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                 floatingIPApi.addToServer(floatingIP.getIp(), vmId);
 
-                emailBindIP(get(region, vmId), floatingIP.getIp());
+                VMResource vmResource = get(region, vmId);
+                emailBindIP(vmResource, floatingIP.getIp());
+
+                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,((VMResourceImpl)vmResource).server);
 
                 return null;
             }
@@ -1654,6 +1665,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 }
 
                 floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
+
+                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,serverApi.get(vmId));
 
                 return null;
             }

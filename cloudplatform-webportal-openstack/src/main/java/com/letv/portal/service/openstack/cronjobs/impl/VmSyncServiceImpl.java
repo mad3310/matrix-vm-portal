@@ -106,7 +106,6 @@ public class VmSyncServiceImpl implements VmSyncService {
         }
     }
 
-    @Override
     public void update(CloudvmServer cloudvmServer, Server server) {
         boolean needUpdate = false;
 
@@ -248,7 +247,6 @@ public class VmSyncServiceImpl implements VmSyncService {
         }
     }
 
-    @Override
     public void delete(CloudvmServer cloudvmServer) {
         cloudvmServerAddressService.deleteByRegionAndServerId(cloudvmServer.getRegion(), cloudvmServer.getServerId());
         cloudvmServerMetadataService.deleteByRegionAndServerId(cloudvmServer.getRegion(), cloudvmServer.getServerId());
@@ -299,6 +297,22 @@ public class VmSyncServiceImpl implements VmSyncService {
         createAddress(userId, region, server);
         createMetadata(userId, region, server);
         createLink(userId, region, server);
+    }
+
+    @Override
+    public void update(String region, Server server) {
+        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, server.getId());
+        if (cloudvmServer != null) {
+            update(cloudvmServer, server);
+        }
+    }
+
+    @Override
+    public void delete(String region, String vmId) {
+        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
+        if (cloudvmServer != null) {
+            delete(cloudvmServer);
+        }
     }
 
     private void createLink(long userId, String region, Server server) {
