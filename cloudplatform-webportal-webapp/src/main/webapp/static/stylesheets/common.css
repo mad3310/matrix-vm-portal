@@ -241,7 +241,7 @@ body {
 }
 
 .header .header-brand .brand-logo {
-
+width:150px;height:40px;
 }
 
 .header .header-help, .header .header-account,.header .header-logout,.header .header-separator {

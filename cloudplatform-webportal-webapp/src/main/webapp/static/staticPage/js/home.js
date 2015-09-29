@@ -230,6 +230,11 @@ function iflogged(){
 				var name=data.data.contacts;
 				_target.addClass('hide');
 				$('.logged').removeClass('hide').find('.logged-name').text(name);
+				if(data.data.userAvatar){
+					$(".logged .icon-my").addClass('hide').next().children('img').attr('src',data.data.userAvatar).removeClass('hide')
+				}else{
+					$(".logged .account-img").addClass('hide').parent().prev().removeClass('hide');
+				}
 			}
 		}
 	});
