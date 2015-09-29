@@ -10,6 +10,10 @@
 	<link rel="stylesheet" href="/static/staticPage/css/common.css">
 	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 </head>
+<style>
+	.canvas-img{position:relative;width:261px;height:207px;left:50%;margin-left:-130px;}
+	.canvas-img #canvas{position:absolute;right:60px;bottom:52px;}
+</style>
 <body>
 <div class="main-body body-top"><!-- header&banner -->
 	<div class="top-nav clearfix"> 
@@ -108,7 +112,10 @@
 			</div>
 		</div>
 		<div class="col-md-4 bg-green">
-			<img src="/static/staticPage/img/advantage-gold.png">
+			<div class="canvas-img">
+				<img src="/static/staticPage/img/advantage-gold.png">
+				<canvas id="canvas"></canvas>
+			</div>
 			<div class="anvantage-desc">
 				<div>金牌服务</div>
 				<div><span class="desc-specific">7×24小时服务支持,为您保驾护航，百倍故障赔偿</span></div>
@@ -532,4 +539,50 @@ topNavHover();//导航滑过效果
 navMore();//登录注册
 carousels();//轮播
 iflogged();//判断是否登录
+</script>
+<script>
+	function clock(){
+		var canvas=document.getElementById('canvas');
+		canvas.height=54;  
+    	canvas.width=54; 
+		var ctx=canvas.getContext("2d");
+		
+		ctx.lineWidth=4;
+		ctx.shadowBlur=3;
+		ctx.shadowOffsetX=3;
+		ctx.shadowColor="rgba(0,0,0,.2)";
+		ctx.strokeStyle="#f5c131";
+		ctx.beginPath();
+		ctx.arc(canvas.width/2,canvas.height/2,22,0,2*Math.PI);
+		ctx.stroke();
+		ctx.save();
+		
+		var date=new Date();
+		var min=date.getMinutes();
+		var sec=date.getSeconds();
+
+		ctx.translate(canvas.width/2,canvas.height/2);
+		ctx.lineCap="round";
+		ctx.rotate(min*(Math.PI/30)+(Math.PI/1800)*sec);
+		ctx.beginPath();
+		ctx.moveTo(-5,0);
+		ctx.lineTo(12,0);
+		ctx.stroke();
+		ctx.restore();
+		ctx.save();
+
+		ctx.translate(canvas.width/2,canvas.height/2);
+		ctx.lineCap="round";
+		ctx.rotate(sec*(Math.PI/30));
+		ctx.beginPath();
+		ctx.moveTo(-5,0);
+		ctx.lineTo(15,0);
+		ctx.stroke();
+		ctx.restore();
+		ctx.save();
+	}
+	clock();
+	setInterval(function(){
+		clock();
+	},1000)
 </script>
