@@ -117,4 +117,8 @@
 		from WEBPORTAL_CLOUDVM_SERVER_META_DATA m
 		<include refid="Example_Where_Clause" />
 	</select>
+
+	<update id="deleteByRegionAndServerId" parameterType="java.util.Map">
+		delete from WEBPORTAL_CLOUDVM_SERVER_META_DATA where REGION = #{region} and SERVER_ID = #{serverId}
+	</update>
 </mapper>

@@ -52,4 +52,15 @@ public class CloudvmServerLink extends BaseModel{
     public void setHref(String href) {
         this.href = href;
     }
+
+    @Override
+    public String toString() {
+        return "CloudvmServerLink{" +
+                "region='" + region + '\'' +
+                ", serverId='" + serverId + '\'' +
+                ", relation='" + relation + '\'' +
+                ", type='" + type + '\'' +
+                ", href='" + href + '\'' +
+                '}';
+    }
 }

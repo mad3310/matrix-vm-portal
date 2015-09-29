@@ -54,4 +54,15 @@ public class CloudvmServerAddress extends BaseModel {
     public void setVersion(int version) {
         this.version = version;
     }
+
+    @Override
+    public String toString() {
+        return "CloudvmServerAddress{" +
+                "region='" + region + '\'' +
+                ", serverId='" + serverId + '\'' +
+                ", networkName='" + networkName + '\'' +
+                ", addr='" + addr + '\'' +
+                ", version=" + version +
+                '}';
+    }
 }

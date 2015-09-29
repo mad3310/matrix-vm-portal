@@ -161,6 +161,19 @@
 		</if>
 	</select>
 
+	<select id="selectByMapForSync" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER s
+		<if test="id != null">
+			where s.ID > #{id}
+		</if>
+		ORDER BY s.ID ASC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
 	<!-- 物理删除 -->
 	<update id="delete" parameterType="CloudvmServer">
 		delete from WEBPORTAL_CLOUDVM_SERVER where ID = #{id}

@@ -8,12 +8,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.letv.common.result.ResultObject;
@@ -53,6 +55,9 @@ public class CronJobsController {
 	
 	@Autowired
 	private ICronJobsProxy cronJobsProxy;
+
+	@Autowired
+	private VmSyncService vmSyncService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(CronJobsController.class);
 		
@@ -335,5 +340,10 @@ public class CronJobsController {
 		this.monitorProxy.deleteMonitorErrorData();
 		return obj;
 	}
-	
+
+	@RequestMapping(value="/openstack/sync/vm",method=RequestMethod.GET)
+	public @ResponseBody ResultObject syncVm(@RequestParam int recordsPerPage,ResultObject obj){
+		this.vmSyncService.sync(recordsPerPage);
+		return obj;
+	}
 }

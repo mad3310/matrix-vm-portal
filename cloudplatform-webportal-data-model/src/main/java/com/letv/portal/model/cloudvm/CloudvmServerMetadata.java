@@ -43,4 +43,14 @@ public class CloudvmServerMetadata extends BaseModel {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "CloudvmServerMetadata{" +
+                "region='" + region + '\'' +
+                ", serverId='" + serverId + '\'' +
+                ", key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }
