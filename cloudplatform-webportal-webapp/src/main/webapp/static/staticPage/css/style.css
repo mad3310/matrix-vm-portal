@@ -57,6 +57,7 @@ a:hover{cursor:pointer;}
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);background-position:center top;overflow:hidden;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
+.top-nav .brand-logo{width:150px;height:40px;}
 .top-nav .nav-item{margin-right:50px;font-size:1.8rem;color:#fff;float:left;}
 .top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
