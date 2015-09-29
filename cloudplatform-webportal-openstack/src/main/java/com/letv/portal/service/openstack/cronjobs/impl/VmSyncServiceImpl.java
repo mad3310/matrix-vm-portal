@@ -23,11 +23,11 @@ import com.letv.portal.service.openstack.model.factory.CloudvmServerLinkUtil;
 import com.letv.portal.service.openstack.model.factory.CloudvmServerMetadataUtil;
 import com.letv.portal.service.openstack.resource.manager.impl.ApiRunnable;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedAttributes;
 import org.jclouds.openstack.nova.v2_0.domain.ServerExtendedStatus;
 import org.jclouds.openstack.v2_0.domain.Link;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -255,4 +255,90 @@ public class VmSyncServiceImpl implements VmSyncService {
         cloudvmServerLinkService.deleteByRegionAndServerId(cloudvmServer.getRegion(), cloudvmServer.getServerId());
         cloudvmServerService.delete(cloudvmServer);
     }
+
+    @Override
+    public void create(long userId, String region, Server server) {
+        CloudvmServer cloudvmServer = new CloudvmServer();
+        cloudvmServer.setRegion(region);
+        cloudvmServer.setServerId(server.getId());
+        cloudvmServer.setFlavorId(server.getFlavor().getId());
+        cloudvmServer.setName(server.getName());
+        cloudvmServer.setServerUuid(server.getUuid());
+        cloudvmServer.setTenantId(server.getTenantId());
+        cloudvmServer.setUserId(server.getUserId());
+        cloudvmServer.setUpdated(server.getUpdated());
+        cloudvmServer.setCreated(server.getCreated());
+        cloudvmServer.setHostId(server.getHostId());
+        cloudvmServer.setAccessIpv4(server.getAccessIPv4());
+        cloudvmServer.setAccessIpv6(server.getAccessIPv6());
+        cloudvmServer.setStatus(server.getStatus().value());
+        cloudvmServer.setImageId(server.getImage().getId());
+        cloudvmServer.setKeyName(server.getKeyName());
+        cloudvmServer.setConfigDrive(server.getConfigDrive());
+        if (server.getExtendedStatus().isPresent()) {
+            ServerExtendedStatus serverExtendedStatus = server.getExtendedStatus().get();
+            cloudvmServer.setExtendedStatusTaskState(serverExtendedStatus.getTaskState());
+            cloudvmServer.setExtendedStatusVmState(serverExtendedStatus.getVmState());
+            cloudvmServer.setExtendedPowerState(serverExtendedStatus.getPowerState());
+        }
+        if (server.getExtendedAttributes().isPresent()) {
+            ServerExtendedAttributes serverExtendedAttributes = server.getExtendedAttributes().get();
+            cloudvmServer.setExtendedAttributesHostName(serverExtendedAttributes.getHostName());
+            cloudvmServer.setExtendedAttributesHypervisorHostName(serverExtendedAttributes.getHypervisorHostName());
+            cloudvmServer.setExtendedAttributesInstanceName(serverExtendedAttributes.getInstanceName());
+        }
+        if (server.getDiskConfig().isPresent()) {
+            cloudvmServer.setDiskConfig(server.getDiskConfig().get());
+        }
+        if (server.getAvailabilityZone().isPresent()) {
+            cloudvmServer.setAvailabilityZone(server.getAvailabilityZone().get());
+        }
+        cloudvmServer.setCreateUser(userId);
+        cloudvmServerService.insert(cloudvmServer);
+
+        createAddress(userId, region, server);
+        createMetadata(userId, region, server);
+        createLink(userId, region, server);
+    }
+
+    private void createLink(long userId, String region, Server server) {
+        for (Link remoteLink : server.getLinks()) {
+            CloudvmServerLink localServerLink = new CloudvmServerLink();
+            localServerLink.setRegion(region);
+            localServerLink.setServerId(server.getId());
+            localServerLink.setHref(remoteLink.getHref().toString());
+            localServerLink.setRelation(remoteLink.getRelation().value());
+            if (remoteLink.getType().isPresent()) {
+                localServerLink.setType(remoteLink.getType().get());
+            }
+            localServerLink.setCreateUser(userId);
+            cloudvmServerLinkService.insert(localServerLink);
+        }
+    }
+
+    private void createMetadata(long userId, String region, Server server) {
+        for (Map.Entry<String, String> remoteMetadata : server.getMetadata().entrySet()) {
+            CloudvmServerMetadata localServerMetadata = new CloudvmServerMetadata();
+            localServerMetadata.setRegion(region);
+            localServerMetadata.setServerId(server.getId());
+            localServerMetadata.setKey(remoteMetadata.getKey());
+            localServerMetadata.setValue(remoteMetadata.getValue());
+            localServerMetadata.setCreateUser(userId);
+            cloudvmServerMetadataService.insert(localServerMetadata);
+        }
+    }
+
+    private void createAddress(long userId, String region, Server server) {
+        for (Map.Entry<String, Address> mapEntry : server.getAddresses().entries()) {
+            CloudvmServerAddress localServerAddress = new CloudvmServerAddress();
+            localServerAddress.setRegion(region);
+            localServerAddress.setServerId(server.getId());
+            localServerAddress.setNetworkName(mapEntry.getKey());
+            localServerAddress.setAddr(mapEntry.getValue().getAddr());
+            localServerAddress.setVersion(mapEntry.getValue().getVersion());
+            localServerAddress.setCreateUser(userId);
+            cloudvmServerAddressService.insert(localServerAddress);
+        }
+    }
+
 }

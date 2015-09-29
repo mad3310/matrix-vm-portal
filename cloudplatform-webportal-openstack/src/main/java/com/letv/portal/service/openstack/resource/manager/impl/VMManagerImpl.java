@@ -535,7 +535,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                             conf.getFlavorResource().getId(),
                             createServerOptions);
                     Server server = serverApi.get(serverCreated.getId());
-                    recordVmCreated(region, server);
+//                    recordVmCreated(region, server);
                     VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
                             regionDisplayName, server, VMManagerImpl.this,
                             imageManager, openStackUser);
@@ -1496,11 +1496,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     // this.identityManager = identityManager;
     // }
 
-    public void recordVmCreated(String region, Server server) throws OpenStackException {
-        recordVmCreated(null, region, server);
-    }
+//    public void recordVmCreated(String region, Server server) throws OpenStackException {
+//        recordVmCreated(null, region, server);
+//    }
 
-    public void recordVmCreated(Long userId, String region, Server server) throws OpenStackException {
+    public void recordVmCreated(long userId, String region, Server server) throws OpenStackException {
         ICloudvmFlavorService cloudvmFlavorService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmFlavorService();
         if (cloudvmFlavorService.selectByFlavorId(region, server.getFlavor().getId()) == null) {
             FlavorResource flavorResource = getFlavorResource(region, server.getFlavor().getId());
@@ -1513,15 +1513,16 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             cloudvmFlavorService.insert(cloudvmFlavor);
         }
 
-        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
-        CloudvmServer cloudvmServer = new CloudvmServer();
-        cloudvmServer.setRegion(region);
-        cloudvmServer.setServerId(server.getId());
-        cloudvmServer.setFlavorId(server.getFlavor().getId());
-        if (userId != null) {
-            cloudvmServer.setCreateUser(userId);
-        }
-        cloudvmServerService.insert(cloudvmServer);
+        OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().create(userId,region,server);
+//        ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
+//        CloudvmServer cloudvmServer = new CloudvmServer();
+//        cloudvmServer.setRegion(region);
+//        cloudvmServer.setServerId(server.getId());
+//        cloudvmServer.setFlavorId(server.getFlavor().getId());
+//        if (userId != null) {
+//            cloudvmServer.setCreateUser(userId);
+//        }
+//        cloudvmServerService.insert(cloudvmServer);
 
 //        incVmCount();
     }
@@ -1544,7 +1545,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         ICloudvmServerService cloudvmServerService = OpenStackServiceImpl.getOpenStackServiceGroup().getCloudvmServerService();
         CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(region, vmId);
         if (cloudvmServer != null) {
-            cloudvmServerService.delete(cloudvmServer);
+            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().delete(cloudvmServer);
+//            cloudvmServerService.delete(cloudvmServer);
 //            decVmCount();
         }
     }
