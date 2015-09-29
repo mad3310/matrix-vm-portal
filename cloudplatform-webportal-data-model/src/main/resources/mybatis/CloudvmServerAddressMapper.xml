@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmServerAddressDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmServerAddress">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="SERVER_ID" property="serverId"/>
+		<result column="NETWORK_NAME" property="networkName"/>
+		<result column="ADDR" property="addr"/>
+		<result column="VERSION" property="version"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_SERVER_ADDRESS table all fields -->
+	<sql id="Base_Column_List">
+		a.ID,a.REGION,a.SERVER_ID,a.NETWORK_NAME,a.ADDR,a.VERSION,
+		a.DELETED,a.CREATE_TIME,a.CREATE_USER,a.UPDATE_TIME,a.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and a.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and a.REGION=#{region}
+			</if>
+			<if test="serverId != null ">
+				and a.SERVER_ID=#{serverId}
+			</if>
+			<if test="deleted != null  ">
+				and a.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and a.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and a.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and a.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and a.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmServerAddress" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_SERVER_ADDRESS(REGION,SERVER_ID,NETWORK_NAME,ADDR,VERSION,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{serverId},#{networkName},#{addr},#{version}
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmServerAddress">
+		update WEBPORTAL_CLOUDVM_SERVER_ADDRESS
+		set
+		ID=#{id},
+		REGION=#{region},
+		SERVER_ID=#{serverId},
+		NETWORK_NAME=#{networkName},
+		ADDR=#{addr},
+		VERSION=#{version},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER_ADDRESS a
+		<include refid="Example_Where_Clause" />
+		ORDER BY a.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmServerAddress">
+		delete from WEBPORTAL_CLOUDVM_SERVER_ADDRESS where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_SERVER_ADDRESS a
+		where  a.ID = #{id};
+	</select>
+
+	<!-- 列表总数 -->
+	<select id="selectByMapCount" resultType="java.lang.Integer"
+			parameterType="java.util.Map">
+		select count(1)
+		from WEBPORTAL_CLOUDVM_SERVER_ADDRESS a
+		<include refid="Example_Where_Clause" />
+	</select>
+</mapper>
