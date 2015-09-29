@@ -1,7 +1,8 @@
     <%@ page language="java" pageEncoding="UTF-8"%>
     <div class="header">
         <a href="/home/index.html" class="header-brand pull-left">
-            <img src="/static/images/brand-logo.png" class="brand-logo" />
+            <!-- <img src="/static/images/brand-logo.png" class="brand-logo" /> -->
+            <img class="brand-logo" src="http://i3.letvimg.com/lc01_lecloud/201509/25/11/14/letvcloud-logo.png">
         </a>
         <div class="header-region dropdown pull-left ">
             <a id="drop1" href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

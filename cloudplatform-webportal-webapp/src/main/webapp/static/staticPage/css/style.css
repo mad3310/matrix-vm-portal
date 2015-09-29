@@ -57,7 +57,9 @@ a:hover{cursor:pointer;}
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);background-position:center top;overflow:hidden;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
+.top-nav .brand-logo{width:150px;height:40px;}
 .top-nav .nav-item{margin-right:50px;font-size:1.8rem;color:#fff;float:left;}
+.top-nav a{color:transparent;}
 .top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
 .nav-item .item-arrow{position:relative;}
@@ -72,6 +74,7 @@ a:hover{cursor:pointer;}
 .top-nav .nav-more{width:105px;height:23px;border:1px solid #fff;border-radius:30px;margin:7.5px 0;overflow:hidden}
 .top-nav .logged{font-size:1.4rem;}
 .logged .icon-my{font-size:2.8rem;}
+.logged .account-img{width:26px;height:26px;border-radius:50%;position:relative;top:8px;}
 .logged a{color:#fff;padding:2px;}
 .more-login,.more-reg{height:21px;padding:0 10px;line-height:21px;}
 .more-login{border-right:1px solid #fff;}

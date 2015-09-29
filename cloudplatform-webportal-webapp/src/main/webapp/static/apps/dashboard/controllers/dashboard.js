@@ -2,6 +2,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 	controllerModule.controller('DashboardCtrl', ['$scope', '$modal', 'Config', 'HttpService','$http','WidgetService',
 	     function ($scope, $modal, Config, HttpService,$http,WidgetService) {
 			$scope.username = "";
+			$scope.userimg='';
 			$scope.message='';
 			$scope.mobileStatus='';
 			$scope.emailStatus='';
@@ -39,6 +40,13 @@ define(['controllers/app.controller'], function (controllerModule) {
 					}else{
 						var _data=data.data;
 						$scope.username=_data.contacts;
+						// $scope.userimg=_data.userAvatar;
+						if(_data.userAvatar){
+							$scope.userimg=_data.userAvatar;
+							$('.account-icon').attr('src',_data.userAvatar);
+						}else{
+							$scope.userimg="../static/images/dashboard/account.png"
+						}
 						$scope.mobileStatus=_data.mobileStatus;
 						$scope.emailStatus=_data.emailStatus;
 						$scope.userStatus=_data.examineStatus;

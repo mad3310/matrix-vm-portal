@@ -7,7 +7,6 @@ require.config({
     'angular': '/static/javascripts/angular',
     'angular-animate': '/static/javascripts/angular-animate',
     'angular-route': '/static/javascripts/angular-route',
-    'ui-select': '/static/javascripts/select',
     'ui-bootstrap': '/static/javascripts/ui-bootstrap-tpls-0.13.3',
     'ng-toaster': '/static/javascripts/toaster',
     'ng-rzslider': '/static/javascripts/rzslider',
@@ -26,10 +25,6 @@ require.config({
     'angular-route': {
       deps: ['angular'],
       exports: 'angular-route'
-    },
-    'ui-select': {
-      deps: ['angular'],
-      exports: 'ui-select'
     },
     'ui-bootstrap': {
       deps: ['angular'],
