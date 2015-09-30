@@ -92,8 +92,9 @@ public class VmSyncServiceImpl implements VmSyncService {
                             Server server = novaApi.getServerApi(cloudvmServer.getRegion()).get(cloudvmServer.getServerId());
                             if (server == null) {
                                 delete(cloudvmServer);
+                            } else {
+                                update(cloudvmServer, server);
                             }
-                            update(cloudvmServer, server);
                             return null;
                         }
                     });

@@ -79,5 +79,6 @@
         <typeAlias alias="CloudvmVmCount" type="com.letv.portal.model.cloudvm.CloudvmVmCount"/>
         <typeAlias alias="CloudvmFlavor" type="com.letv.portal.model.cloudvm.CloudvmFlavor"/>
         <typeAlias alias="CloudvmServer" type="com.letv.portal.model.cloudvm.CloudvmServer"/>
+        <typeAlias alias="CloudvmImage" type="com.letv.portal.model.cloudvm.CloudvmImage"/>
     </typeAliases>
 </configuration>
