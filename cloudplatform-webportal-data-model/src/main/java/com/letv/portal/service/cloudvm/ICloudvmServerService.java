@@ -12,11 +12,17 @@ import java.util.List;
 public interface ICloudvmServerService extends IBaseService<CloudvmServer> {
     CloudvmServer selectByServerId(String region, String serverId);
 
+    CloudvmServer selectByServerId(Long userId, String region, String serverId);
+
     int selectByUserIdCount(long userId);
 
     List<CloudvmServer> selectForSync(Long minId, Page page);
 
     List<CloudvmServer> selectByName(String region, String name, Page page);
 
+    List<CloudvmServer> selectByName(Long userId, String region, String name, Page page);
+
     int countByName(String region, String name);
+
+    int countByName(Long userId, String region, String name);
 }

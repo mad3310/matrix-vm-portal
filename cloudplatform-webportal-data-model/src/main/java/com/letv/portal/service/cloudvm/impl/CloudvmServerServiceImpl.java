@@ -63,14 +63,22 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
 
     @Override
     public CloudvmServer selectByServerId(String region, String serverId) {
-        if(StringUtils.isEmpty(region)){
+        return selectByServerId(null, region, serverId);
+    }
+
+    @Override
+    public CloudvmServer selectByServerId(Long userId, String region, String serverId) {
+        if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }
-        if(StringUtils.isEmpty(serverId)){
+        if (StringUtils.isEmpty(serverId)) {
             throw new ValidateException("虚拟机ID不能为空");
         }
 
         Map<String, Object> paras = new HashMap<String, Object>();
+        if (userId != null) {
+            paras.put("createUser", userId);
+        }
         paras.put("region", region);
         paras.put("serverId", serverId);
         List<CloudvmServer> resultList = selectByMap(paras);
@@ -101,10 +109,18 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
 
     @Override
     public List<CloudvmServer> selectByName(String region, String name, Page page) {
-        if(StringUtils.isEmpty(region)){
+        return selectByName(null, region, name, page);
+    }
+
+    @Override
+    public List<CloudvmServer> selectByName(Long userId, String region, String name, Page page) {
+        if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }
         Map<String, Object> paras = new HashMap<String, Object>();
+        if (userId != null) {
+            paras.put("createUser", userId);
+        }
         paras.put("region", region);
         if (StringUtils.isNotEmpty(name)) {
             paras.put("name", name);
@@ -117,10 +133,18 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
 
     @Override
     public int countByName(String region, String name) {
-        if(StringUtils.isEmpty(region)){
+        return countByName(null, region, name);
+    }
+
+    @Override
+    public int countByName(Long userId, String region, String name) {
+        if (StringUtils.isEmpty(region)) {
             throw new ValidateException("地域不能为空");
         }
         Map<String, Object> paras = new HashMap<String, Object>();
+        if (userId != null) {
+            paras.put("createUser", userId);
+        }
         paras.put("region", region);
         if (StringUtils.isNotEmpty(name)) {
             paras.put("name", name);

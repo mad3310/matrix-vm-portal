@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.local.query.service.impl;
 
 import com.letv.common.exception.ValidateException;
 import com.letv.common.paging.impl.Page;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.cloudvm.CloudvmServer;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
@@ -30,11 +31,18 @@ public class VmQueryServiceImpl implements VmQueryService {
     @Autowired
     private RegionQueryService regionQueryService;
 
+    @Autowired
+    private SessionServiceImpl sessionService;
+
+    protected long getCurrentUserId(){
+        return sessionService.getSession().getUserId();
+    }
+
     @Override
     public VMResource get(String regionCode, String vmId) throws OpenStackException {
         Region region = regionQueryService.get(regionCode);
 
-        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(regionCode, vmId);
+        CloudvmServer cloudvmServer = cloudvmServerService.selectByServerId(getCurrentUserId(), regionCode, vmId);
         if (cloudvmServer == null) {
             throw new ResourceNotFoundException("VM", "虚拟机", vmId);
         }
@@ -55,7 +63,7 @@ public class VmQueryServiceImpl implements VmQueryService {
             }
             page = new Page(currentPage, recordsPerPage);
         }
-        List<CloudvmServer> cloudvmServers = cloudvmServerService.selectByName(regionCode, name, page);
+        List<CloudvmServer> cloudvmServers = cloudvmServerService.selectByName(getCurrentUserId(), regionCode, name, page);
         List<VMResource> vmResources = new LinkedList<VMResource>();
         for (CloudvmServer cloudvmServer : cloudvmServers) {
             vmResources.add(new LocalVmResource(region, cloudvmServer));
@@ -64,7 +72,7 @@ public class VmQueryServiceImpl implements VmQueryService {
         if (page == null) {
             page = new Page();
         }
-        page.setTotalRecords(cloudvmServerService.countByName(regionCode, name));
+        page.setTotalRecords(cloudvmServerService.countByName(getCurrentUserId(), regionCode, name));
         page.setData(vmResources);
         return page;
     }
