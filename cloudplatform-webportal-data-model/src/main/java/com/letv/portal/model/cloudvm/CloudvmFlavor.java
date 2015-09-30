@@ -11,14 +11,14 @@ public class CloudvmFlavor extends BaseModel {
 
     private String region;
     private String flavorId;
-    private int vcpus;
-    private int ram;
-    private int disk;
+    private Integer vcpus;
+    private Integer ram;
+    private Integer disk;
 
     public CloudvmFlavor() {
     }
 
-    public CloudvmFlavor(String region, String flavorId, int vcpus, int ram, int disk) {
+    public CloudvmFlavor(String region, String flavorId, Integer vcpus, Integer ram, Integer disk) {
         this();
         this.region = region;
         this.flavorId = flavorId;
@@ -35,27 +35,27 @@ public class CloudvmFlavor extends BaseModel {
         this.flavorId = flavorId;
     }
 
-    public int getVcpus() {
+    public Integer getVcpus() {
         return vcpus;
     }
 
-    public void setVcpus(int vcpus) {
+    public void setVcpus(Integer vcpus) {
         this.vcpus = vcpus;
     }
 
-    public int getRam() {
+    public Integer getRam() {
         return ram;
     }
 
-    public void setRam(int ram) {
+    public void setRam(Integer ram) {
         this.ram = ram;
     }
 
-    public int getDisk() {
+    public Integer getDisk() {
         return disk;
     }
 
-    public void setDisk(int disk) {
+    public void setDisk(Integer disk) {
         this.disk = disk;
     }
 

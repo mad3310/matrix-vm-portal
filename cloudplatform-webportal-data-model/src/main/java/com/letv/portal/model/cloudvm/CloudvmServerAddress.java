@@ -13,7 +13,7 @@ public class CloudvmServerAddress extends BaseModel {
     private String serverId;
     private String networkName;
     private String addr;
-    private int version;
+    private Integer version;
 
     public String getRegion() {
         return region;
@@ -47,11 +47,11 @@ public class CloudvmServerAddress extends BaseModel {
         this.addr = addr;
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 

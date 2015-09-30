@@ -23,6 +23,7 @@ import com.letv.portal.service.openstack.model.util.CloudvmServerLinkUtil;
 import com.letv.portal.service.openstack.model.util.CloudvmServerMetadataUtil;
 import com.letv.portal.service.openstack.resource.manager.impl.ApiRunnable;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
@@ -118,14 +119,26 @@ public class VmSyncServiceImpl implements VmSyncService {
             needUpdate = true;
         }
         String taskState = null;
+        String vmState = null;
+        Integer powerState = null;
         Optional<ServerExtendedStatus> serverExtendedStatusOptional = server
                 .getExtendedStatus();
         if (!serverExtendedStatusOptional.isPresent()) {
             ServerExtendedStatus serverExtendedStatus = serverExtendedStatusOptional.get();
             taskState = serverExtendedStatus.getTaskState();
+            vmState = serverExtendedStatus.getVmState();
+            powerState = serverExtendedStatus.getPowerState();
         }
         if (!StringUtils.equals(cloudvmServer.getExtendedStatusTaskState(), taskState)) {
             cloudvmServer.setExtendedStatusTaskState(taskState);
+            needUpdate = true;
+        }
+        if (!StringUtils.equals(cloudvmServer.getExtendedStatusVmState(), vmState)) {
+            cloudvmServer.setExtendedStatusVmState(vmState);
+            needUpdate = true;
+        }
+        if (!ObjectUtils.equals(cloudvmServer.getExtendedPowerState(), powerState)) {
+            cloudvmServer.setExtendedPowerState(powerState);
             needUpdate = true;
         }
 
