@@ -1,4 +1,4 @@
-package com.letv.portal.service.openstack.model.factory;
+package com.letv.portal.service.openstack.model.util;
 
 import com.letv.portal.model.cloudvm.CloudvmServerMetadata;
 import org.apache.commons.lang3.StringUtils;

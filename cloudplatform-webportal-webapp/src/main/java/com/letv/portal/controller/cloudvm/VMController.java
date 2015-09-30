@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.letv.portal.service.openstack.exception.UserOperationException;
 
+import com.letv.portal.service.openstack.local.query.service.VmQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,9 @@ public class VMController {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
+
+	@Autowired
+	private VmQueryService vmQueryService;
 
 	@RequestMapping(value = "/regions", method = RequestMethod.GET)
 	public @ResponseBody ResultObject regions() {
@@ -78,11 +82,12 @@ public class VMController {
 			@RequestParam(required = false) Integer recordsPerPage) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util
-					.session(sessionService)
-					.getVMManager()
-					.listByRegionGroup(region, Util.optPara(name), currentPage,
-							recordsPerPage));
+//			result.setData(Util
+//					.session(sessionService)
+//					.getVMManager()
+//					.listByRegionGroup(region, Util.optPara(name), currentPage,
+//							recordsPerPage));
+			result.setData(vmQueryService.list(region,name,currentPage,recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}
@@ -109,8 +114,9 @@ public class VMController {
 			@PathVariable String vmId) {
 		ResultObject result = new ResultObject();
 		try {
-			result.setData(Util.session(sessionService).getVMManager()
-					.get(region, vmId));
+//			result.setData(Util.session(sessionService).getVMManager()
+//					.get(region, vmId));
+			result.setData(vmQueryService.get(region,vmId));
 		} catch (OpenStackException e) {
 			throw e.matrixException();
 		}

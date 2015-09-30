@@ -7,13 +7,17 @@ public class Region {
 	private String country;
 	private String cityId;
 	private String city;
-	private int number;
+	private Integer number;
 
 	public Region() {
 	}
+
+	public Region(String id, String name) {
+		this(id, name, null, null, null, null, null);
+	}
 	
 	public Region(String id, String name, String countryId, String country,
-			String cityId, String city, int number) {
+			String cityId, String city, Integer number) {
 		this();
 		this.id = id;
 		this.name = name;
@@ -48,11 +52,11 @@ public class Region {
 		this.city = city;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 

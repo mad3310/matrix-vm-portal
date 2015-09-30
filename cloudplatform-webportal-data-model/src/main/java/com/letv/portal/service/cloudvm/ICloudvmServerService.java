@@ -15,4 +15,8 @@ public interface ICloudvmServerService extends IBaseService<CloudvmServer> {
     int selectByUserIdCount(long userId);
 
     List<CloudvmServer> selectForSync(Long minId, Page page);
+
+    List<CloudvmServer> selectByName(String region, String name, Page page);
+
+    int countByName(String region, String name);
 }
