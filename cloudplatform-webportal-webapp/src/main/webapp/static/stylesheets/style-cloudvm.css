@@ -7,8 +7,11 @@
     display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;position: relative;top: 6px;
 }
 
-.vm-create-form .disk-volume{
-    padding: 6px 4px;
+.vm-create-form .disk-volume,
+.vm-create-form .network-bandwidth{
+    border: 1px solid #d2d2d2;
+    height: auto;
+    text-align: center;
 }
 
 .vm-create-form .check-cpu,
