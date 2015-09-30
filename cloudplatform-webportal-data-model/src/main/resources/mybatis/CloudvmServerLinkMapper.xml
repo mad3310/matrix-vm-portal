@@ -20,7 +20,7 @@
 
 	<!-- WEBPORTAL_CLOUDVM_SERVER_LINK table all fields -->
 	<sql id="Base_Column_List">
-		l.ID,l.REGION,l.SERVER_ID,l.RELATION,l.TYPE,l.HREF
+		l.ID,l.REGION,l.SERVER_ID,l.RELATION,l.TYPE,l.HREF,
 		l.DELETED,l.CREATE_TIME,l.CREATE_USER,l.UPDATE_TIME,l.UPDATE_USER
 	</sql>
 
