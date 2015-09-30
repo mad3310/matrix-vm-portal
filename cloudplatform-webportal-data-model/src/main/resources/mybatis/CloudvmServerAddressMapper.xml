@@ -61,7 +61,7 @@
 		WEBPORTAL_CLOUDVM_SERVER_ADDRESS(REGION,SERVER_ID,NETWORK_NAME,ADDR,VERSION,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{region},#{serverId},#{networkName},#{addr},#{version}
+		#{region},#{serverId},#{networkName},#{addr},#{version},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 

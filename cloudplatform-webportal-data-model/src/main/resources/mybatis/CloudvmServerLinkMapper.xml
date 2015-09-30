@@ -61,7 +61,7 @@
 		WEBPORTAL_CLOUDVM_SERVER_LINK(REGION,SERVER_ID,RELATION,`TYPE`,HREF,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{region},#{serverId},#{relation},#{type},#{href}
+		#{region},#{serverId},#{relation},#{type},#{href},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 
