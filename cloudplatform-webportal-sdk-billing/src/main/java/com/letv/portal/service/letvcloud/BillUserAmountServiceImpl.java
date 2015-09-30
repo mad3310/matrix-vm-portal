@@ -7,8 +7,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,8 @@ import com.letv.portal.model.letvcloud.BillUserAmount;
  */
 @Service
 public class BillUserAmountServiceImpl implements BillUserAmountService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(BillUserAmountServiceImpl.class);
 
     private static final BigDecimal ZERO = new BigDecimal("0");
     @Autowired
@@ -183,5 +186,42 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         }
         return result;
     }
+    
+    private Object obj = new Object();
+
+	@Override
+	public boolean updateUserAmountFromAvailableToFreeze(long userId, BigDecimal price) {
+		logger.info("开始转移可用余额到冻结余额,用户id:"+userId+",金额："+price);
+		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
+		synchronized(obj) {
+			if(billUserAmount.getAvailableAmount().compareTo(price)>=0) {
+				billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().subtract(price));
+				billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().add(price));
+				billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
+				logger.info("转移可用余额到冻结余额成功,用户id:"+userId+",金额："+price);
+				return true;
+			} else {
+				logger.error("账户可用余额小于需要转移金额,用户id:"+userId+",金额："+price);
+				return false;
+			}
+		}
+	}
+
+	@Override
+	public synchronized boolean reduceFreezeAmount(long userId, BigDecimal price) {
+		logger.info("开始扣除冻结金额,用户id:"+userId+",金额："+price);
+		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
+		synchronized(obj) {
+			if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
+				billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
+				billUserAmountMapper.reduceFreezeAmount(billUserAmount);
+				logger.info("扣除冻结金额成功,用户id:"+userId+",金额："+price);
+				return true;
+			} else {
+				logger.error("冻结金额小于需要扣除金额,用户id:"+userId+",金额："+price);
+				return false;
+			}
+		}
+	}
 
 }
