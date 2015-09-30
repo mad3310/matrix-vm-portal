@@ -1,6 +1,7 @@
 package com.letv.portal.service.cloudvm.impl;
 
 import com.letv.common.dao.IBaseDao;
+import com.letv.common.paging.impl.Page;
 import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.dao.cloudvm.ICloudvmServerDao;
@@ -76,6 +77,18 @@ public class CloudvmServerServiceImpl extends BaseServiceImpl<CloudvmServer>
         Map<String, Object> paras = new HashMap<String, Object>();
         paras.put("createUser", userId);
         return cloudvmServerDao.selectByMapCount(paras);
+    }
+
+    @Override
+    public List<CloudvmServer> selectForSync(Long minId, Page page) {
+        Map<String, Object> paras = new HashMap<String, Object>();
+        if (minId != null) {
+            paras.put("id", minId);
+        }
+        if (page != null) {
+            paras.put("page", page);
+        }
+        return cloudvmServerDao.selectByMapForSync(paras);
     }
 
 }

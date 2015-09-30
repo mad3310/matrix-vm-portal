@@ -2,6 +2,7 @@ package com.letv.portal.service.openstack.impl;
 
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import org.springframework.scheduling.SchedulingTaskExecutor;
 
 import com.letv.common.email.ITemplateMessageSender;
@@ -21,6 +22,7 @@ public class OpenStackServiceGroup {
 	private ErrorEmailService errorEmailService;
 	private ICloudvmFlavorService cloudvmFlavorService;
 	private ICloudvmServerService cloudvmServerService;
+	private VmSyncService vmSyncService;
 
 	public ICloudvmRegionService getCloudvmRegionService() {
 		return cloudvmRegionService;
@@ -95,5 +97,13 @@ public class OpenStackServiceGroup {
 
 	public void setCloudvmServerService(ICloudvmServerService cloudvmServerService) {
 		this.cloudvmServerService = cloudvmServerService;
+	}
+
+	public void setVmSyncService(VmSyncService vmSyncService) {
+		this.vmSyncService = vmSyncService;
+	}
+
+	public VmSyncService getVmSyncService() {
+		return vmSyncService;
 	}
 }

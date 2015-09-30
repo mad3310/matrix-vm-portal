@@ -59,6 +59,7 @@ a:hover{cursor:pointer;}
 .body-top .top-nav{height:62px;position:relative;z-index:200;line-height:45px;}
 .top-nav .brand-logo{width:150px;height:40px;}
 .top-nav .nav-item{margin-right:50px;font-size:1.8rem;color:#fff;float:left;}
+.top-nav a{color:transparent;}
 .top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
 .nav-item .item-arrow{position:relative;}

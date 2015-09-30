@@ -11,6 +11,9 @@ import com.letv.portal.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouxianguang on 2015/9/28.
@@ -28,5 +31,21 @@ public class CloudvmServerAddressServiceImpl extends BaseServiceImpl<CloudvmServ
     @Override
     public IBaseDao<CloudvmServerAddress> getDao() {
         return cloudvmServerAddressDao;
+    }
+
+    @Override
+    public List<CloudvmServerAddress> selectByRegionAndServerId(String region, String serverId) {
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("region", region);
+        paras.put("serverId", serverId);
+        return cloudvmServerAddressDao.selectByMap(paras);
+    }
+
+    @Override
+    public void deleteByRegionAndServerId(String region, String serverId) {
+        Map<String, Object> paras = new HashMap<String, Object>();
+        paras.put("region", region);
+        paras.put("serverId", serverId);
+        cloudvmServerAddressDao.deleteByRegionAndServerId(paras);
     }
 }

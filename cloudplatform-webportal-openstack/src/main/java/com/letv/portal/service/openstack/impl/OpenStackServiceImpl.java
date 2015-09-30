@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;
@@ -99,6 +100,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private ErrorEmailService errorEmailService;
 
+	@Autowired
+	private VmSyncService vmSyncService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 	
 	private static OpenStackServiceImpl INSTANCE;
@@ -138,6 +142,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setCloudvmServerService(cloudvmServerService);
 		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);
 		openStackServiceGroup.setErrorEmailService(errorEmailService);
+		openStackServiceGroup.setVmSyncService(vmSyncService);
 	}
 
 	@Override

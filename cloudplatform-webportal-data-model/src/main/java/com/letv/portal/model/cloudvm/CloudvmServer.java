@@ -29,7 +29,7 @@ public class CloudvmServer extends BaseModel {
 	private String configDrive;
 	private String extendedStatusTaskState;
 	private String extendedStatusVmState;
-	private String extendedPowerState;
+	private int extendedPowerState;
 	private String extendedAttributesInstanceName;
 	private String extendedAttributesHostName;
 	private String extendedAttributesHypervisorHostName;
@@ -190,11 +190,11 @@ public class CloudvmServer extends BaseModel {
 		this.extendedStatusVmState = extendedStatusVmState;
 	}
 
-	public String getExtendedPowerState() {
+	public int getExtendedPowerState() {
 		return extendedPowerState;
 	}
 
-	public void setExtendedPowerState(String extendedPowerState) {
+	public void setExtendedPowerState(int extendedPowerState) {
 		this.extendedPowerState = extendedPowerState;
 	}
 
