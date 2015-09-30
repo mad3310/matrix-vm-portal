@@ -39,4 +39,8 @@ public interface BillUserAmountService {
      * @return
      */
     Map<String, Object> getUserAmountState(long userId);
+    //把用户可用余额部分或全部金额转为冻结金额
+    boolean updateUserAmountFromAvailableToFreeze(long userId, BigDecimal price);
+    //扣除冻结余额
+    boolean reduceFreezeAmount(long userId, BigDecimal price);
 }
