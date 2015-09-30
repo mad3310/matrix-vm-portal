@@ -214,9 +214,21 @@
 			<dd>秒级创建，按需快速获取基础资源，支持批量创建；无需考虑硬件选型、采购、部署、维护、扩容等复杂度，有效缩短业务建设周期，提升工作</dd>
 			<dd class="clearfix"><div class="try-btn pull-right">开通试用</div></dd>
 		</dl>
-		<div class="col-md-5">
-			<img src="/static/staticPage/img/banner-img.png">
+		<div class="col-md-5 text-left" style="padding:30px 0 0 20px;">
+			<!-- <img src="/static/staticPage/img/banner-img.png"> -->
+			<div style="position:relative;">
+				<img src="/static/staticPage/img/build.png" id="build">
+				<img src="/static/staticPage/img/time.png" id="time">
+				<img src="/static/staticPage/img/slb.png" id="slb">
+				<img src="/static/staticPage/img/user.png" id="user">
+				<img src="/static/staticPage/img/builds.png" id="builds">
+				<img src="/static/staticPage/img/cogs.png" id="cogs">
+				<img src="/static/staticPage/img/gce.png" id="gce">
+				<img src="/static/staticPage/img/earth.png" id="earth">
+			</div>
+			<canvas id="productcanvas" width="500" height="240"></canvas>
 		</div>
+		<div class="clearfix"></div>
 	</div>
 	<div>
 		<img class="price-tip" src="/static/staticPage/img/products/dot.png">
@@ -399,6 +411,75 @@
 <script src="/static/staticPage/js/home.js" type="text/javascript" charset="utf-8"></script>
 </html>
 <script>
+var canvas=document.getElementById('productcanvas');
+function ParamEllipse(x, y, a, b) { 
+	var canvas=document.getElementById('productcanvas');
+	var context=canvas.getContext("2d");
+	context.lineWidth = 1.1; 
+	context.strokeStyle="#76bbda" 
+	var step=(a>b)?1/a:1/b; 
+	context.beginPath(); 
+	context.moveTo(x+a,y);
+	var img=document.getElementById("a");
+	for (var i = 0; i < 2 * Math.PI; i += step){ 
+		context.lineTo(x + a * Math.cos(i), y + b * Math.sin(i)); 
+	} 
+	context.closePath(); 
+	context.stroke();
+};
+function imgtranslate(x,y,a,b){
+	var temp=0;
+	var _time=document.getElementById("time");
+	var _slb=document.getElementById("slb");
+	var _user=document.getElementById("user");
+	var _builds=document.getElementById("builds");
+	var _cogs=document.getElementById("cogs");
+	var _gce=document.getElementById("gce");
+	var _earth=document.getElementById("earth");
+	var step=Math.PI/24;
+	var step_cogs=Math.PI/12;
+	var temp_slb=2*Math.PI/3;
+	var temp_user=Math.PI/6;
+	var temp_builds=2.5*Math.PI/2;
+	var temp_cogs=Math.PI/2;
+	var temp_gce=0;
+	var temp_earth=3*Math.PI/2;
+	setInterval(function(){
+		temp=temp+step;
+		_time.style.left=x-20+a*Math.cos(temp)+"px";
+		_time.style.top=y-20+b*Math.sin(temp)+"px";
+		_time.style.transition="all 1s";
+		temp_slb=temp_slb+step;
+		_slb.style.left=x-20+a*Math.cos(temp_slb)+"px";
+		_slb.style.top=y-20+b*Math.sin(temp_slb)+"px";
+		_slb.style.transition="all 1s";
+		temp_user=temp_user+step;
+		_user.style.left=x-20+a*Math.cos(temp_user)+"px";
+		_user.style.top=y-20+b*Math.sin(temp_user)+"px";
+		_user.style.transition="all 1s";
+		temp_builds=temp_builds+step;
+		_builds.style.left=x-20+a*Math.cos(temp_builds)+"px";
+		_builds.style.top=y-20+b*Math.sin(temp_builds)+"px";
+		_builds.style.transition="all 1s";
+		temp_cogs=temp_cogs+step_cogs;
+		_cogs.style.left=x-20+(canvas.width/2-66)* Math.cos(temp_cogs)+"px";
+		_cogs.style.top=y-20+(canvas.height/2-26)* Math.sin(temp_cogs)+"px";
+		_cogs.style.transition="all 1s";
+		temp_gce=temp_gce+step_cogs;
+		_gce.style.left=x-20+(canvas.width/2-66)* Math.cos(temp_gce)+"px";
+		_gce.style.top=y-20+(canvas.height/2-26)* Math.sin(temp_gce)+"px";
+		_gce.style.transition="all 1s";
+		temp_earth=temp_earth+step_cogs;
+		_earth.style.left=x-20+(canvas.width/2-66)* Math.cos(temp_earth)+"px";
+		_earth.style.top=y-20+(canvas.height/2-26)* Math.sin(temp_earth)+"px";
+		_earth.style.transition="all 1s";
+	},1000)	
+}
+ParamEllipse(canvas.width/2, canvas.height/2,canvas.width/2-5,canvas.height/2-5);//椭圆
+ParamEllipse(canvas.width/2,canvas.height/2-10,canvas.width/2-66,canvas.height/2-26);
+ParamEllipse(canvas.width/2,canvas.height/2-25,canvas.width/2-100,canvas.height/2-50); 
+imgtranslate(canvas.width/2,canvas.height/2,canvas.width/2-5,canvas.height/2-5);
+
 topNavHover();//导航滑过效果
 navMore();//登录注册
 scrollNav();//滚动事件	
