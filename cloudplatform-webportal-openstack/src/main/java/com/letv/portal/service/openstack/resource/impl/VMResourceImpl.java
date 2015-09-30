@@ -241,11 +241,11 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	}
 
 	@Override
-	public int getPowerState() {
+	public Integer getPowerState() {
 		Optional<ServerExtendedStatus> extendedStatus = server
 				.getExtendedStatus();
 		if (!extendedStatus.isPresent()) {
-			return -1;
+			return null;
 		} else {
 			return extendedStatus.get().getPowerState();
 		}

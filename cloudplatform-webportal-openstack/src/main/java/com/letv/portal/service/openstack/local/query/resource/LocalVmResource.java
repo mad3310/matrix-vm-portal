@@ -45,7 +45,7 @@ public class LocalVmResource implements VMResource {
     }
 
     @Override
-    public int getPowerState() {
+    public Integer getPowerState() {
         return cloudvmServer.getExtendedPowerState();
     }
 
