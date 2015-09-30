@@ -264,6 +264,15 @@ a:hover{cursor:pointer;}
 .price-table-desc p{margin:10px 0;}
 .try-btn{width:160px;height:35px;margin-top:30px;border:1px solid #088ac2;border-radius:2px;text-align:center;line-height:35px;color:#088ac2}
 .try-btn:hover{cursor:pointer;color:#fff;background:#088ac2}
+#productcanvas{margin-left:25px;}
+#build{width:240px;height:170px;position:absolute;top:0;left:0;margin-left:155px;margin-top:-30px;z-index:150}
+#time{width:40px;height:40px;position:absolute;top:100px;left:475px;z-index:100}
+#slb{width:40px;height:40px;position:absolute;top:200px;left:107.5px;z-index:100}
+#user{width:40px;height:40px;position:absolute;top:157.5px;left:442px;z-index:100}
+#builds{width:40px;height:40px;position:absolute;top:18.68px;left:56.7px;z-index:100}
+#cogs{width:40px;height:40px;position:absolute;top:194px;left:230px;z-index:100}
+#gce{width:40px;height:40px;position:absolute;top:100px;left:414px;z-index:100}
+#earth{width:40px;height:40px;position:absolute;top:6px;left:230px;z-index:100}
 /*help*/
 .body-product-help{height:240px;margin:35px 0;font-size:1.2rem;color:#fff;overflow:hidden;}
 .body-product-help a:hover,.body-product-help a:active{color:#088ac2}
