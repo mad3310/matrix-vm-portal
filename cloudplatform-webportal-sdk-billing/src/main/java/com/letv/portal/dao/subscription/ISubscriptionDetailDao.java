@@ -8,4 +8,5 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 
 public interface ISubscriptionDetailDao extends IBaseDao<SubscriptionDetail> {
 	List<SubscriptionDetail> selectByMapAndTime(Map<String, Object> params);
+	void updateBuyTime(Map<String, Object> params);
 }

@@ -99,6 +99,62 @@
 	    </trim>
 	</sql>
 	
+	<!--根据id，有选择的修改记录 -->
+	<update id="updateBySelective" parameterType="OrderSub">
+		update MATRIX_BILLING_SUBSCRIPTION
+		<set>
+			<if test="subscriptionNumber != null ">
+	            SUBSCRIPTION_NUMBER=#{subscriptionNumber},
+	        </if>
+			<if test="productId != null ">
+	            PRODUCT_ID=#{productId},
+	        </if>
+	        <if test="baseRegionId != null ">
+	            BASE_REGION_ID=#{baseRegionId},
+	        </if>
+	        <if test="chargeType != null ">
+	            CHARGE_TYPE=#{chargeType},
+	        </if>
+	        <if test="orderTime != null ">
+	            ORDER_TIME=#{orderTime},
+	        </if>
+	        <if test="valid != null ">
+	            VALID=#{valid},
+	        </if>
+	        <if test="startTime != null ">
+	            START_TIME=#{startTime},
+	        </if>
+	        <if test="endTime != null ">
+	            END_TIME=#{endTime},
+	        </if>
+	        <if test="userId != null and userId != '' ">
+	            USER_ID=#{userId},
+	        </if>
+	        <if test="deleted != null ">
+	            DELETED=#{deleted},
+	        </if>
+	        <if test="createTime != null ">
+	            CREATE_TIME=#{createTime},
+	        </if>
+	        <if test="updateTime != null ">
+	            UPDATE_TIME=#{updateTime},
+	        </if>
+	        <if test="createUser != null and createUser != '' ">
+	            CREATE_USER=#{createUser},
+	        </if>
+	        <if test="updateUser != null and updateUser != '' ">
+	            UPDATE_USER=#{updateUser},
+	        </if>
+	        <if test="descn != null ">
+	            DESCN=#{descn},
+	        </if>
+	        <if test="productInfoRecordId != null ">
+	            PRODUCT_INFO_RECORD_ID=#{productInfoRecordId}
+	        </if>
+		</set>
+		where ID=#{id}
+	</update>
+	
 	<select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
 	    select
 	        <include refid="Base_Column_List" />

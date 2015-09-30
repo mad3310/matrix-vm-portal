@@ -51,7 +51,7 @@ public class CalculateController {
 	@RequestMapping(value="/price/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject queryProductPrice( @PathVariable Long id, HttpServletRequest request, ResultObject obj) {
 		Map<String,Object> map = HttpUtil.requestParam2Map(request);
-		Double ret = null;
+		BigDecimal ret = null;
 		
 		Long regionId = productService.getRegionIdByCode((String)map.get("region"));
 		if(regionId!=null) {
@@ -71,7 +71,7 @@ public class CalculateController {
 			obj.setResult(0);
 			obj.addMsg("输入参数不合法");
 		} else {
-			obj.setData(DataFormat.formatBigDecimalToString(new BigDecimal(ret)));
+			obj.setData(DataFormat.formatBigDecimalToString(ret));
 		}
 		return obj;
 	}

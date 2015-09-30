@@ -1,5 +1,6 @@
 package com.letv.portal.service.order.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.dao.IBaseDao;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.dao.order.IOrderSubDao;
 import com.letv.portal.dao.order.IOrderSubDetailDao;
 import com.letv.portal.model.order.OrderSub;
@@ -47,7 +47,7 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	}
 
 	@Override
-	public Long createOrder(Subscription sub, Long orderId, List<SubscriptionDetail> subDetails, double totalPrice) {
+	public Long createOrder(Subscription sub, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice) {
 		OrderSub orderSub = new OrderSub();
 		orderSub.setSubscriptionId(sub.getId());
 		orderSub.setOrderId(orderId);
@@ -146,13 +146,13 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	  * @author lisuxiao
 	  * @date 2015年9月22日 下午5:49:23
 	  */
-	private double getValidProductOrderPrice(OrderSub orderSub, double count) {
-		double price = 0;
+	private BigDecimal getValidProductOrderPrice(OrderSub orderSub, int count) {
+		BigDecimal price = new BigDecimal(0);
 		if ((orderSub.getDiscountPrice() == null)
-				|| (orderSub.getDiscountPrice() < 0.0D)) {//使用原价
-			price = Arithmetic4Double.multi(count, orderSub.getPrice());
+				|| (orderSub.getDiscountPrice().compareTo(price)<0)) {//使用原价
+			price = orderSub.getPrice().multiply(new BigDecimal(count));
 		} else {
-			price = Arithmetic4Double.multi(count, orderSub.getDiscountPrice());//使用折扣价
+			price = orderSub.getDiscountPrice().multiply(new BigDecimal(count));//使用折扣价
 		}
 		return price;
 	}
@@ -166,14 +166,14 @@ public class OrderSubServiceImpl extends BaseServiceImpl<OrderSub> implements IO
 	  * @author lisuxiao
 	  * @date 2015年9月17日 下午4:23:46
 	  */
-	private double getValidTotalOrderPrice(List<OrderSub> orderSubs) {
-		double price = 0;
+	private BigDecimal getValidTotalOrderPrice(List<OrderSub> orderSubs) {
+		BigDecimal price = new BigDecimal(0);
 		for (OrderSub orderSub : orderSubs) {
 			if ((orderSub.getDiscountPrice() == null)
-					|| (orderSub.getDiscountPrice() < 0.0D)) {//使用原价
-				price = Arithmetic4Double.add(price, orderSub.getPrice());
+					|| (orderSub.getDiscountPrice().compareTo(price)<0)) {//使用原价
+				price = orderSub.getPrice().add(price);
 			} else {
-				price = Arithmetic4Double.add(price, orderSub.getDiscountPrice());//使用折扣价
+				price = orderSub.getDiscountPrice().add(price);//使用折扣价
 			}
 		}
 		return price;

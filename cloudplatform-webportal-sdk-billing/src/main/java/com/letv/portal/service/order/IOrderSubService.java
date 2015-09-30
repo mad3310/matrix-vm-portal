@@ -1,5 +1,6 @@
 package com.letv.portal.service.order;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public interface IOrderSubService extends IBaseService<OrderSub> {
 	  * @author lisuxiao
 	  * @date 2015年9月7日 下午3:08:06
 	 */
-	Long createOrder(Subscription subscription, Long orderId, List<SubscriptionDetail> subDetails, double totalPrice);
+	Long createOrder(Subscription subscription, Long orderId, List<SubscriptionDetail> subDetails, BigDecimal totalPrice);
 	List<OrderSub> selectOrderSubByOrderId(Long orderId);
 	/**
 	  * @Title: selectOrderByOrderNumber

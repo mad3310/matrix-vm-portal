@@ -1,5 +1,6 @@
 package com.letv.portal.service.calculate;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 
@@ -9,7 +10,7 @@ import java.util.Map;
  *
  */
 public interface ICalculateService {
-	Double calculatePrice(Long productId, Map<String, Object> map);
+	BigDecimal calculatePrice(Long productId, Map<String, Object> map);
 	/**
 	  * @Title: calculateStandardPrice
 	  * @Description: 计算产品中具体规格价格
@@ -24,6 +25,6 @@ public interface ICalculateService {
 	  * @author lisuxiao
 	  * @date 2015年9月7日 下午4:51:12
 	  */
-	Double calculateStandardPrice(Long productId, Long baseRegionId, String standardName, String standardValue, 
+	BigDecimal calculateStandardPrice(Long productId, Long baseRegionId, String standardName, String standardValue, 
 			Integer orderNum, Integer orderTime);
 }

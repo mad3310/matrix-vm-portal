@@ -1,5 +1,6 @@
 package com.letv.portal.model.product;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.apache.ibatis.type.Alias;
@@ -20,7 +21,7 @@ public class ProductPrice extends BaseModel{
 	private Long productId;
 	private Long baseRegionId;
 	private Long basePriceId;
-	private Double price;
+	private BigDecimal price;
 	private String version;
 	private Boolean used;
 	private Timestamp startTime;
@@ -52,9 +53,6 @@ public class ProductPrice extends BaseModel{
 	public void setBasePriceId(Long basePriceId) {
 		this.basePriceId = basePriceId;
 	}
-	public Double getPrice() {
-		return price;
-	}
 	public String getVersion() {
 		return version;
 	}
@@ -70,7 +68,10 @@ public class ProductPrice extends BaseModel{
 	public String getDescn() {
 		return descn;
 	}
-	public void setPrice(Double price) {
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	public void setVersion(String version) {

@@ -1,5 +1,6 @@
 package com.letv.portal.model.order;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -24,8 +25,8 @@ public class OrderSub extends BaseModel{
 	private String descn;//描述
 	private Date startTime;//开始时间
 	private Date endTime;//结束时间
-	private Double price;//价格
-	private Double discountPrice;//折扣价
+	private BigDecimal price;//价格
+	private BigDecimal discountPrice;//折扣价
 	private Subscription subscription;//订阅实体
 	
 	private Order order;//订单主表
@@ -74,16 +75,16 @@ public class OrderSub extends BaseModel{
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	public Double getDiscountPrice() {
+	public BigDecimal getDiscountPrice() {
 		return discountPrice;
 	}
-	public void setDiscountPrice(Double discountPrice) {
+	public void setDiscountPrice(BigDecimal discountPrice) {
 		this.discountPrice = discountPrice;
 	}
 	public Subscription getSubscription() {

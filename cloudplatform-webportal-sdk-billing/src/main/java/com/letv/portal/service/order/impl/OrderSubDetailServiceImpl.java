@@ -1,5 +1,7 @@
 package com.letv.portal.service.order.impl;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,11 @@ public class OrderSubDetailServiceImpl extends BaseServiceImpl<OrderSubDetail> i
 	@Override
 	public IBaseDao<OrderSubDetail> getDao() {
 		return this.orderSubDetailDao;
+	}
+
+	@Override
+	public void updateBuyTime(Map<String, Object> params) {
+		this.orderSubDetailDao.updateBuyTime(params);
 	}
 
 }

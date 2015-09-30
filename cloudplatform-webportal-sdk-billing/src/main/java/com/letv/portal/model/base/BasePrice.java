@@ -1,6 +1,8 @@
 package com.letv.portal.model.base;
 
 
+import java.math.BigDecimal;
+
 import org.apache.ibatis.type.Alias;
 
 import com.letv.common.model.BaseModel;
@@ -21,7 +23,7 @@ public class BasePrice extends BaseModel{
 	private String type;//计费类型：0-基础价格，1-阶梯，2-线性
 	private String amount;//使用量
 	private String unit;//单位
-	private Double price;//单位价格
+	private BigDecimal price;//单位价格
 	private String descn;//描述
 	
 	public String getType() {
@@ -29,9 +31,6 @@ public class BasePrice extends BaseModel{
 	}
 	public String getUnit() {
 		return unit;
-	}
-	public Double getPrice() {
-		return price;
 	}
 	public String getDescn() {
 		return descn;
@@ -48,9 +47,6 @@ public class BasePrice extends BaseModel{
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-	public void setPrice(Double price) {
-		this.price = price;
-	}
 	public void setDescn(String descn) {
 		this.descn = descn;
 	}
@@ -59,5 +55,11 @@ public class BasePrice extends BaseModel{
 	}
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+	public BigDecimal getPrice() {
+		return price;
+	}
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 }

@@ -42,5 +42,10 @@ public class SubscriptionDetailServiceImpl extends BaseServiceImpl<SubscriptionD
 		return this.subscriptionDetailDao.selectByMapAndTime(params);
 	}
 
+	@Override
+	public void updateBuyTime(Map<String, Object> params) {
+		this.subscriptionDetailDao.updateBuyTime(params);
+	}
+
 
 }

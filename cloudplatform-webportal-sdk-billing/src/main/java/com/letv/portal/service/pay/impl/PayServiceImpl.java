@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +26,13 @@ import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
-import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.constant.Constant;
 import com.letv.portal.model.UserVo;
+import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.order.OrderSub;
 import com.letv.portal.model.product.ProductInfoRecord;
+import com.letv.portal.model.subscription.Subscription;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
@@ -38,9 +40,12 @@ import com.letv.portal.service.message.SendMsgUtils;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
 import com.letv.portal.service.order.IOrderService;
+import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
 import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
+import com.letv.portal.service.subscription.ISubscriptionDetailService;
+import com.letv.portal.service.subscription.ISubscriptionService;
 import com.mysql.jdbc.StringUtils;
 
 @Service("payService")
@@ -54,6 +59,8 @@ public class PayServiceImpl implements IPayService {
 	@Autowired
 	private IOrderSubService orderSubService;
 	@Autowired
+	private IOrderSubDetailService orderSubDetailService;
+	@Autowired
 	private ResourceCreateService resourceCreateService;
 	@Autowired
 	private BillUserAmountService billUserAmountService;
@@ -65,6 +72,10 @@ public class PayServiceImpl implements IPayService {
 	@Autowired
 	private IUserService userService;
 	
+	@Autowired
+	private ISubscriptionService subscriptionService;
+	@Autowired
+	private ISubscriptionDetailService subscriptionDetailService;
 	@Autowired
 	private IProductInfoRecordService productInfoRecordService;
 	@Autowired
@@ -78,8 +89,11 @@ public class PayServiceImpl implements IPayService {
 
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		List<OrderSub> orderSubs = this.orderSubService
-				.selectOrderSubByOrderNumber(orderNumber);
+		String pattern = (String) map.get("pattern");
+		if(pattern==null || (!Constant.ALI_PAY_PATTERN.equals(pattern) && !Constant.WX_PAY_PATTERN.equals(pattern))) {
+			throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
+		}
+		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
 		if (orderSubs == null || orderSubs.size() == 0) {
 			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
 		}
@@ -91,14 +105,38 @@ public class PayServiceImpl implements IPayService {
 			ret.put("alert", "订单状态已支付成功，请勿重复提交");
 			ret.put("status", 2);
 		} else {
-			String pattern = (String) map.get("pattern");
-			Map<String, String> params = new HashMap<String, String>();
-			double price = getValidOrderPrice(orderSubs);
-			if (price == 0.0D) {
+			String userMoney = (String)map.get("accountMoney");
+			BigDecimal price = getValidOrderPrice(orderSubs);
+			if(userMoney!=null && Double.parseDouble(userMoney)>0) {
+				BigDecimal accountMoney = new BigDecimal(userMoney);
+				//验证账户金额>=accountaccountMoney
+				BillUserAmount userAmount = this.billUserAmountService.getUserAmount(this.sessionService.getSession().getUserId());
+				if(userAmount.getAvailableAmount().compareTo(accountMoney)==-1) {
+					throw new ValidateException("账户余额小于传入金额!");
+				}
+				
+				price = price.subtract(accountMoney);//需要支付的金额=总价-账户所选余额
+				if(price.doubleValue()<0) {
+					throw new ValidateException("传入金额不合法!");
+				}
+				//更新使用账户余额到订单表
+				Order account = new Order();
+				account.setId(orderSubs.get(0).getOrderId());
+				account.setAccountPrice(accountMoney);
+				this.orderService.updateBySelective(account);
+			}
+			
+			if (price.doubleValue() == 0) {
 				try {
-					if (updateOrderPayInfo(orderSubs, "9999", price + "", 2)) {
-						response.sendRedirect(this.PAY_SUCCESS + "/"
-								+ orderNumber);
+					//设置用户支付部分余额为冻结余额
+					if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
+						ret.put("alert", "用户可使用余额不足");
+						return ret;
+					}
+					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), "9999", 2)) {
+						//创建应用实例
+						createInstance(orderSubs);
+						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
 						return ret;
 					} else {
 						throw new ValidateException("更新订单状态异常");
@@ -107,10 +145,13 @@ public class PayServiceImpl implements IPayService {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
 			}
+			
+			
 			//增加用户充值信息
-			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), BigDecimal.valueOf(price),orderNumber,Integer.valueOf(pattern));
+			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), price,orderNumber,Integer.valueOf(pattern));
 			
 			//充值
+			Map<String, String> params = new HashMap<String, String>();
 			String url = getParams(order.getOrderNumber(), price, pattern, this.PAY_CALLBACK, this.PAY_SUCCESS + "/" + orderNumber,
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
@@ -126,17 +167,19 @@ public class PayServiceImpl implements IPayService {
 				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
-				if (!updateOrderPayInfo(orderSubs, (String) ret.get("ordernumber"), (String) ret.get("price"), null)) {
+				if(getValidOrderPrice(orderSubs).subtract(order.getAccountPrice()).compareTo(new BigDecimal((String) ret.get("price")))==0) {
+					if (!updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) ret.get("ordernumber"), null)) {
+						ret.put("alert", "微信方式支付异常");
+					}
+				} else {
 					ret.put("alert", "微信方式支付异常");
 				}
-			} else {
-				ret.put("alert", "方式支付异常");
 			}
 		}
 		return ret;
 	}
 
-	private String getParams(String number, double price, String pattern,
+	private String getParams(String number, BigDecimal price, String pattern,
 			String backUrl, String frontUrl, String productName,
 			String productDesc, String defaultBank, Map<String, String> params) {
 		try {
@@ -150,7 +193,7 @@ public class PayServiceImpl implements IPayService {
 			params.put("productid", "0");
 			params.put("backurl", backUrl);
 			params.put("fronturl", frontUrl);
-			params.put("price", price + "");
+			params.put("price", price.doubleValue()+"");
 			params.put("buyType", "0");
 			params.put("pid", "0");
 			params.put("chargetype", "1");
@@ -222,19 +265,20 @@ public class PayServiceImpl implements IPayService {
 
 		// ③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
 		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0)
-				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs)
+				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice())
 				+ "");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
-			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
-					(String) map.get("money"), 2)) {
+			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), 2)) {
 				
-				Order order = orderSubs.get(0).getOrder();
 				//更改用户充值信息
-				this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
-				SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-				//生成用户账单。
-				this.billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), df.format(new Date()), (String)map.get("money"));
+				//this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), order.getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")),false);
+				this.billUserAmountService.rechargeSuccess(orderSubs.get(0).getCreateUser(), orderSubs.get(0).getOrder().getOrderNumber(), (String) map.get("ordernumber"), new BigDecimal((String) map.get("money")));
+				//设置用户支付部分余额为冻结余额
+				if(!this.billUserAmountService.updateUserAmountFromAvailableToFreeze(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs))) {
+					return false;
+				}
+				
 				
 				//发送用户通知
 				//写入最近操作
@@ -259,32 +303,27 @@ public class PayServiceImpl implements IPayService {
 	 * @author lisuxiao
 	 * @date 2015年9月17日 下午4:23:46
 	 */
-	private double getValidOrderPrice(List<OrderSub> orderSubs) {
-		double price = 0;
+	private BigDecimal getValidOrderPrice(List<OrderSub> orderSubs) {
+		BigDecimal price = new BigDecimal(0);
 		for (OrderSub orderSub : orderSubs) {
 			if ((orderSub.getDiscountPrice() == null)
-					|| (orderSub.getDiscountPrice() < 0.0D)) {// 使用原价
-				price = Arithmetic4Double.add(price, orderSub.getPrice());
+					|| (orderSub.getDiscountPrice().compareTo(price)<0)) {// 使用原价
+				price = orderSub.getPrice().add(price);
 			} else {
-				price = Arithmetic4Double.add(price,
-						orderSub.getDiscountPrice());// 使用折扣价
+				price = orderSub.getDiscountPrice().add(price);// 使用折扣价
 			}
 		}
 		return price;
 	}
 
-	private boolean updateOrderPayInfo(List<OrderSub> orderSubs,
-			String orderNumber, String price, Integer status) {
-		if (getValidOrderPrice(orderSubs) == Double.parseDouble(price)) {
-			Order o = new Order();
-			o.setId(orderSubs.get(0).getOrderId());
-			o.setStatus(status);
-			o.setUpdateTime(new Timestamp(new Date().getTime()));
-			o.setPayNumber(orderNumber);
-			this.orderService.updateBySelective(o);
-			return true;
-		}
-		return false;
+	private boolean updateOrderPayInfo(long orderId, String orderNumber, Integer status) {
+		Order o = new Order();
+		o.setId(orderId);
+		o.setStatus(status);
+		o.setUpdateTime(new Timestamp(new Date().getTime()));
+		o.setPayNumber(orderNumber);
+		this.orderService.updateBySelective(o);
+		return true;
 	}
 
 	public Map<String, Object> queryState(String orderNumber) {
@@ -307,9 +346,10 @@ public class PayServiceImpl implements IPayService {
 		Map<String, Object> map = transResult(ret);
 
 		if ((map.get("status") != null) && (Integer) map.get("status") == 1) {// 支付成功
-			if (updateOrderPayInfo(orderSubs, (String) map.get("ordernumber"),
-					(String) map.get("money"), 2)) {
-				return map;
+			if(getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).compareTo(new BigDecimal((String) map.get("money")))==0) {
+				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), 2)) {
+					return map;
+				}
 			}
 			return null;
 		}
@@ -337,7 +377,7 @@ public class PayServiceImpl implements IPayService {
 		return m.getMD5ofStr(sb.toString()).toLowerCase();
 	}
 
-	private boolean createInstance(List<OrderSub> orderSubs) {
+	private boolean createInstance(final List<OrderSub> orderSubs) {
 		for (OrderSub orderSub : orderSubs) {
 			// 进行服务创建
 			if (orderSub.getSubscription().getProductId() == 2) {// openstack
@@ -365,7 +405,18 @@ public class PayServiceImpl implements IPayService {
 									record.setInstanceId(region+"_"+vmId);
 									productInfoRecordService.updateBySelective(record);
 									
-									logger.info("callback success!");
+									//云主机创建成功后减冻结余额
+									billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())));
+									if(vmIndex==orderSubs.size()) {
+										SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+										//生成用户账单。
+										billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+												df.format(new Date()), getValidOrderPrice(orderSubs).toString());
+										//更新订阅订单起始时间
+										updateSubscriptionAndOrderTime(orderSubs);
+									}
+									
+									logger.info("callback success! num="+vmIndex);
 								}
 								
 							}, records);
@@ -375,6 +426,34 @@ public class PayServiceImpl implements IPayService {
 			}
 		}
 		return false;
+	}
+	
+	private void updateSubscriptionAndOrderTime(List<OrderSub> orderSubs) {
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		Map<String, Object> updateParams = new HashMap<String, Object>();
+		updateParams.put("startTime", date);
+		for (OrderSub orderSub : orderSubs) {
+			Subscription subscription = new Subscription();
+			subscription.setId(orderSub.getSubscriptionId());
+			subscription.setStartTime(date);
+			cal.setTimeInMillis(date.getTime());
+			cal.add(Calendar.MONTH, orderSub.getSubscription().getOrderTime());
+			subscription.setEndTime(cal.getTime());
+			this.subscriptionService.updateBySelective(subscription);
+			
+			updateParams.put("endTime", cal.getTime());
+			updateParams.put("subscriptionId", orderSub.getSubscriptionId());
+			this.subscriptionDetailService.updateBuyTime(updateParams);
+			
+			OrderSub o = new OrderSub();
+			o.setId(orderSub.getId());
+			o.setStartTime(date);
+			o.setEndTime(cal.getTime());
+			this.orderSubService.updateBySelective(o);
+			updateParams.put("orderSubId", orderSub.getId());
+			this.orderSubDetailService.updateBuyTime(updateParams);
+		}
 	}
 
 }

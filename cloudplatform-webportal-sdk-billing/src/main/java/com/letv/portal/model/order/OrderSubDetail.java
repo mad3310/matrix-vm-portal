@@ -1,5 +1,6 @@
 package com.letv.portal.model.order;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
@@ -20,7 +21,7 @@ public class OrderSubDetail extends BaseModel{
 	private Long subscriptionDetailId;//订阅详情ID
 	private Long orderSubId;//子订单ID
 	private Double amount;//使用量
-	private Double price;//产品元素单价*购买时长*数量
+	private BigDecimal price;//产品元素单价*购买时长*数量
 	private Date startTime;//开始时间
 	private Date endTime;//结束时间
 	private String descn;//描述
@@ -51,10 +52,10 @@ public class OrderSubDetail extends BaseModel{
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	public Date getStartTime() {

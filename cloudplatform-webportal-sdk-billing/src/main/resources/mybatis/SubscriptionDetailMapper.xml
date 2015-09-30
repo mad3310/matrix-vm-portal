@@ -125,5 +125,20 @@
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>
 	</select>	
+	
+	<!-- 变更购买起止时间 -->
+	<update id="updateBuyTime" parameterType="java.util.Map">
+		update MATRIX_BILLING_SUBSCRIPTION_DETAIL
+		<set>
+	        <if test="startTime != null ">
+	            START_TIME=#{startTime},
+	        </if>
+	        UPDATE_TIME=now(),
+	        <if test="endTime != null ">
+	            END_TIME=#{endTime}
+	        </if>
+		</set>
+		where SUBSCRIPTION_ID=#{subscriptionId}
+	</update>
 
 </mapper>   

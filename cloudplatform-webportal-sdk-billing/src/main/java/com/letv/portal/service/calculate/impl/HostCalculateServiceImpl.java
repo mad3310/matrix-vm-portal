@@ -1,5 +1,6 @@
 package com.letv.portal.service.calculate.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +11,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.dao.base.IBaseStandardDao;
 import com.letv.portal.dao.product.IProductPriceDao;
 import com.letv.portal.model.base.BaseStandard;
@@ -31,7 +31,7 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 	
 	/**
 	  * @Title: getPriceByTypeThree
-	  * @Description: TODO
+	  * @Description: 计算计费类型为3-云主机双线性费用
 	  * @param baseStandard
 	  * @param standardValue
 	  * @param productPrice
@@ -42,44 +42,40 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 	  * @author lisuxiao
 	  * @date 2015年9月18日 下午5:24:23
 	  */
-	protected double getPriceByTypeThree(BaseStandard baseStandard, String standardValue, 
-			ProductPrice productPrice, double p, Set<String> set, String across) {
-		double price = p;
-		if(Double.parseDouble(standardValue)>Double.parseDouble(across)) {
+	protected BigDecimal getPriceByTypeThree(BaseStandard baseStandard, String standardValue, 
+			ProductPrice productPrice, BigDecimal p, Set<String> set, String across) {
+		BigDecimal price = p;
+		BigDecimal bdAcross = new BigDecimal(across);
+		BigDecimal bdStandardValue = new BigDecimal(standardValue);
+		if(bdStandardValue.compareTo(bdAcross)>0) {
 			if(baseStandard.getValue().equals(across)) {
 				if(productPrice!=null && productPrice.getPrice()!=null) {
-					Double ret = Arithmetic4Double.multi(productPrice.getPrice(), Double.parseDouble(across));
-					price = Arithmetic4Double.add(price, ret);
+					price = productPrice.getPrice().multiply(bdAcross).add(price);
 				} else {
-					Double ret = Arithmetic4Double.multi(baseStandard.getBasePrice().getPrice(), Double.parseDouble(across));
-					price = Arithmetic4Double.add(price, ret);
+					price = baseStandard.getBasePrice().getPrice().multiply(bdAcross).add(price);
 				}
 			} else {
-				double value = Arithmetic4Double.sub(Double.parseDouble(standardValue), Double.parseDouble(across));
+				BigDecimal value = bdStandardValue.subtract(bdAcross);
 				if(productPrice!=null && productPrice.getPrice()!=null) {
-					Double ret = Arithmetic4Double.multi(productPrice.getPrice(), value);
-					price = Arithmetic4Double.add(price, ret);
+					price = productPrice.getPrice().multiply(value).add(price);
 				} else {
-					Double ret = Arithmetic4Double.multi(baseStandard.getBasePrice().getPrice(), value);
-					price = Arithmetic4Double.add(price, ret);
+					price = baseStandard.getBasePrice().getPrice().multiply(value).add(price);
 				}
 			}
 		} else {
 			set.add(baseStandard.getStandard());
 			if(productPrice!=null && productPrice.getPrice()!=null) {
-				Double ret = Arithmetic4Double.multi(productPrice.getPrice(), Double.parseDouble(standardValue));
-				price = Arithmetic4Double.add(price, ret);
+				price = productPrice.getPrice().multiply(bdStandardValue).add(price);
 			} else {
-				Double ret = Arithmetic4Double.multi(baseStandard.getBasePrice().getPrice(), Double.parseDouble(standardValue));
-				price = Arithmetic4Double.add(price, ret);
+				price = baseStandard.getBasePrice().getPrice().multiply(bdStandardValue).add(price);
 			}
 		}
 		return price;
 	}
 	
 	@Override
-	public Double calculatePrice(Long productId, Map<String, Object> map) {
-		Double price = 0d;
+	public BigDecimal calculatePrice(Long productId, Map<String, Object> map) {
+		BigDecimal price = new BigDecimal(0);
 		
 		List<BaseStandard> baseStandards = super.getBaseStandard(productId);
 		
@@ -122,17 +118,17 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			
 		}
 		//购买时间
-		price = Arithmetic4Double.multi(price, Double.parseDouble((String)map.get("order_time")));
+		price = price.multiply(new BigDecimal((String)map.get("order_time")));
 		//购买台数
-		price = Arithmetic4Double.multi(price, Double.parseDouble((String)map.get("order_num")));
+		price = price.multiply(new BigDecimal((String)map.get("order_num")));
 		return price;
 	}
 
 	@Override
-	public Double calculateStandardPrice(Long productId, Long baseRegionId,
+	public BigDecimal calculateStandardPrice(Long productId, Long baseRegionId,
 			String standardName, String standardValue, Integer orderNum,
 			Integer orderTime) {
-		Double price = 0d;
+		BigDecimal price = new BigDecimal(0);
 		
 		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByStandard(standardName);
 		
@@ -176,9 +172,9 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 		}
 		
 		//购买时间
-		price = Arithmetic4Double.multi(price, orderTime);
+		price = price.multiply(new BigDecimal(orderTime));
 		//购买台数
-		price = Arithmetic4Double.multi(price, orderNum);
+		price = price.multiply(new BigDecimal(orderNum));
 		return price;
 	}
 

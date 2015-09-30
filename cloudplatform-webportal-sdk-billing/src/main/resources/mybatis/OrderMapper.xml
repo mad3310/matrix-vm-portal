@@ -15,18 +15,19 @@
 	    <result column="UPDATE_USER" property="updateUser" />
 	    <result column="DESCN" property="descn" />
 	    <result column="PAY_NUMBER" property="payNumber" />
+	    <result column="ACCOUNT_PRICE" property="accountPrice" />
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 	    od.ID,od.ORDER_NUMBER,od.STATUS,
-	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN,od.PAY_NUMBER
+	    od.DELETED,od.CREATE_TIME,od.UPDATE_TIME,od.CREATE_USER,od.UPDATE_USER,od.DESCN,od.PAY_NUMBER,od.ACCOUNT_PRICE
 	</sql>
 	
 	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="id" >
 	    insert into MATRIX_BILLING_ORDER 
-	        (ORDER_NUMBER,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PAY_NUMBER) 
+	        (ORDER_NUMBER,STATUS,DELETED,CREATE_TIME,UPDATE_TIME,CREATE_USER,UPDATE_USER,DESCN,PAY_NUMBER,ACCOUNT_PRICE) 
 	    values
-	        (#{orderNumber},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber})
+	        (#{orderNumber},#{status},#{deleted},now(),#{updateTime},#{createUser},#{updateUser},#{descn},#{payNumber},#{accountPrice})
 	</insert>
 	
 	<!--根据id，有选择的修改记录 -->
@@ -58,7 +59,10 @@
 	            DESCN=#{descn},
 	        </if>
 	        <if test="payNumber != null ">
-	            PAY_NUMBER=#{payNumber}
+	            PAY_NUMBER=#{payNumber},
+	        </if>
+	        <if test="accountPrice != null ">
+	            ACCOUNT_PRICE=#{accountPrice}
 	        </if>
 		</set>
 		where ID=#{id}
@@ -96,6 +100,9 @@
 	        </if>
 	        <if test="payNumber != null ">
 	            and od.PAY_NUMBER=#{payNumber}
+	        </if>
+	        <if test="accountPrice != null ">
+	            and od.ACCOUNT_PRICE=#{accountPrice}
 	        </if>
 	    </trim>
 	</sql>

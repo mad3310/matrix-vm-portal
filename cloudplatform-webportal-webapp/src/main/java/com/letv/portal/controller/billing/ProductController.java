@@ -1,5 +1,6 @@
 package com.letv.portal.controller.billing;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +89,7 @@ public class ProductController {
 			return productService.validateData(id, map);
 		}
 	}
-	private double getOrderTotalPrice(Long id, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime) {
+	private BigDecimal getOrderTotalPrice(Long id, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime) {
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
 			if(id==2) {
 				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getStandardName(), subscriptionDetail.getStandardValue(),
@@ -98,9 +99,9 @@ public class ProductController {
 						1, Integer.parseInt(orderTime)));
 			}
 		}
-		Double totalPrice = 0d;
+		BigDecimal totalPrice = new BigDecimal(0);
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
-			totalPrice = Arithmetic4Double.add(totalPrice, subscriptionDetail.getPrice());
+			totalPrice = subscriptionDetail.getPrice().add(totalPrice);
 		}
 		return totalPrice;
 	}
@@ -160,7 +161,7 @@ public class ProductController {
 					}
 					
 					List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMapAndTime(sub.getId());
-					double totalPrice = getOrderTotalPrice(id, sub, subDetails, (String)billingParams.get("order_time"));
+					BigDecimal totalPrice = getOrderTotalPrice(id, sub, subDetails, (String)billingParams.get("order_time"));
 					
 					//生成子订单
 					this.orderSubService.createOrder(sub, o.getId(), subDetails, totalPrice);
