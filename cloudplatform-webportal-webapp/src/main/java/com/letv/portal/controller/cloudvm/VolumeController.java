@@ -97,13 +97,14 @@ public class VolumeController {
 	@RequestMapping(value = "/region/{region}/volume-create", method = RequestMethod.POST)
 	public @ResponseBody ResultObject create(@PathVariable String region,
 			@RequestParam int size,
+			@RequestParam(required = false) String volumeTypeId,
 			@RequestParam(required = false) String name,
 			@RequestParam(required = false) String description,
 			@RequestParam(required = false) Integer count) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getVolumeManager()
-					.create(region, size, name, description, count);
+					.create(region, size, volumeTypeId, name, description, count);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

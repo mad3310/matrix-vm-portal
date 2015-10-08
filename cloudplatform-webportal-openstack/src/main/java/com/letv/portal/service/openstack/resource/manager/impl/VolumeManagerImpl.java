@@ -10,6 +10,7 @@ import java.util.Set;
 import com.letv.portal.service.openstack.exception.*;
 
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
@@ -305,7 +306,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	}
 
 	@Override
-	public void create(final String region, final int sizeGB,
+	public void create(final String region, final int sizeGB, final String volumeTypeId,
 			final String name, final String description, final Integer countPara)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<CinderApi, Void>() {
@@ -322,8 +323,17 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							"云硬盘的大小不能小于或等于零。");
 				}
 
-				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 				CreateVolumeOptions createVolumeOptions = new CreateVolumeOptions();
+
+				if (StringUtils.isNotEmpty(volumeTypeId)) {
+					VolumeTypeApi volumeTypeApi = cinderApi.getVolumeTypeApi(region);
+					VolumeType volumeType = volumeTypeApi.get(volumeTypeId);
+					if (volumeType == null) {
+						throw new ResourceNotFoundException("Volume Type", "云硬盘类型", volumeTypeId);
+					}
+					createVolumeOptions.volumeType(volumeType.getId());
+				}
+
 				if (name != null) {
 					createVolumeOptions.name(name);
 				}
@@ -339,6 +349,8 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							"The count of volume is less than or equal to zero.",
 							"云硬盘的数量不能小于或等于0");
 				}
+
+				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 
 				{
 					List<? extends Volume> volumes = volumeApi.list().toList();
