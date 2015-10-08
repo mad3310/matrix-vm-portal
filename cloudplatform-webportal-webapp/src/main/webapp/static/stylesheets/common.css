@@ -131,6 +131,10 @@ body {
     width: 720px;
 }
 
+.modal-500 {
+    width: 500px;
+}
+
 .modal-content{
     border-radius: 2px;
 }
@@ -968,3 +972,30 @@ numeric-input .up-down > a > i{
     color: #ff3c37;
 }
 /*end le-text style*/
+
+/*begin le-modal style*/
+.le-modal-header{
+    height: 50px;
+    padding: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    color: #088ac2;
+    border-bottom: 1px solid #088ac2;
+    text-align: center;
+}
+.le-modal-header .header-title,.le-modal-header .close{
+    line-height: 50px;
+    vertical-align: middle;
+}
+.le-modal-header .header-title{
+    font-size: 16px;
+}
+.le-modal-header .close > i{
+    font-size: 30px;
+    transform:rotate(45deg);
+    display: block;
+    color: #088ac2;
+    font-weight: 100;
+    opacity: 1;
+}
+/*end le-modal style*/
