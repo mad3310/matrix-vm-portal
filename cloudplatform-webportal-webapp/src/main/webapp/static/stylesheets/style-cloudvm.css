@@ -29,7 +29,6 @@
     padding: 0 4px;
     width: auto;
 }
-/*end virtual-machine-view style*/
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}
 .letv-modal-header{height:50px;line-height:50px;border-bottom:1px solid #088ac2;text-align:center;font-size:16px;color:#088ac2;margin: 0 15px;padding: 0;}
@@ -88,4 +87,8 @@
 .letv-radio-parent .parent-child{margin:3.5px;}
 .parent-child .child-dot{width:5px;height:5px;background:#088ac2;transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg); }
 .parent-child .child-dot.unactive{background:#c8c8c8}
-/*end container-cluster-view style*/
+/*end virtual-machine-view style*/
+
+/*begin view-vm-disk style*/
+
+/*end view-vm-disk style*/

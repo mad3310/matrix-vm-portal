@@ -1,7 +1,7 @@
-<div class="view-common" ng-controller="VmDiskCrtl">
+<div class="view-common view-vm-disk" ng-controller="VmDiskCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-disabled="true"><span>创建云硬盘</span></button>
+            <button class="btn btn-le-blue" ng-click="openVmDiskCreateModal('500')"><span>创建云硬盘</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
@@ -51,10 +51,67 @@
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
     </toaster-container>
 
+    <script type="text/ng-template" id="VmDiskCreateModalTpl">
+        <div class="modal-vm-disk-create">
+            <form novalidate class="form-vm-disk-create" name="vm_disk_create_form">
+                <div class="le-modal-header">
+                    <span class="header-title">创建云硬盘</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3">
+                            <span>名称</span>
+                        </div>
+                        <div class="le-col-9">
+                            <input type="text" ng-model="diskName" />
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3">
+                            <span>类型</span>
+                        </div>
+                        <div class="le-col-9">
+                            <div class="letv-mutiCheck check-disk-type" ng-repeat="diskType in diskTypeList" ng-class="{'selected':isSelectedDiskType(diskType)}" ng-click="selectDiskType(diskType)">
+                                <span>{{diskType.name}}</span>
+                                <i class="iconfont icon-checkroundfillicon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3">
+                            <span>容量</span>
+                        </div>
+                        <div class="le-col-9">
+                                <rzslider rz-slider-model="diskVolume" rz-slider-floor="10" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
+                                </rzslider>
+                                <span class="disk-volume">{{diskVolume}}</span>
+                                <span class="disk-volume-unit">GB</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3">
+                            <span>数量</span>
+                        </div>
+                        <div class="le-col-9">
+                            <numeric-input numeric-model="diskCount"></numeric-input>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-9 le-col-offset-3">
+                            <button ng-click="createDisk()">创建</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
     <script type="text/ng-template" id="ConfirmModalTpl">
             <div class="le-confirm">
-                <div class="le-row confirm-header">
-                    <span class="confirm-title">{{title}}</span>
+                <div class="le-modal-header">
+                    <span class="header-title">{{title}}</span>
                     <a class="close" ng-click="closeModal()">
                         <i class="iconfont icon-add"></i>
                     </a>
