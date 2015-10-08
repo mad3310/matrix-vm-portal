@@ -9,6 +9,7 @@ import java.util.Set;
 
 import com.letv.portal.service.openstack.exception.*;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
@@ -27,6 +28,7 @@ import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		implements VolumeManager {
@@ -532,4 +534,15 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	// this.identityManager = identityManager;
 	// }
 
+	@Override
+	public <ReturnType> ReturnType runWithApi(ApiRunnable<CinderApi, ReturnType> task) throws OpenStackException {
+		try {
+			CinderApi api = OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().getCinderApi();
+			return task.run(api);
+		} catch (OpenStackException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new OpenStackException("后台错误", ex);
+		}
+	}
 }

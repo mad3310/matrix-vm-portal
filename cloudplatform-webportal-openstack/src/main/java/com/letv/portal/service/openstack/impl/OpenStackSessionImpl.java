@@ -332,6 +332,10 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		}
 	}
 
+	public OpenStackUser getOpenStackUser() {
+		return openStackUser;
+	}
+
 	// private NovaApi novaApi;
 	// private String tenantName;
 	// private String userName;

@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.util.SubnetUtils;
 import org.apache.commons.net.util.SubnetUtils.SubnetInfo;
+import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.AllocationPool;
 import org.jclouds.openstack.neutron.v2.domain.ExternalGatewayInfo;
@@ -2537,4 +2539,15 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		return NeutronApi.class;
 	}
 
+	@Override
+	public <ReturnType> ReturnType runWithApi(ApiRunnable<NeutronApi, ReturnType> task) throws OpenStackException {
+		try {
+			NeutronApi api = OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().getNeutronApi();
+			return task.run(api);
+		} catch (OpenStackException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new OpenStackException("后台错误", ex);
+		}
+	}
 }
