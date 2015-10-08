@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
+import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.SchedulingTaskExecutor;
@@ -63,7 +64,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Value("${openstack.neutron.router.user.private.name}")
 	private String userPrivateRouterName;
-	
+
 	@Value("${openstack.neutron.router.gateway.bandWidth}")
 	private String routerGatewayBandWidth;
 
@@ -84,7 +85,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
-	
+
 	@Autowired
 	private ICloudvmVmCountService cloudvmVmCountService;
 
@@ -96,21 +97,24 @@ public class OpenStackServiceImpl implements OpenStackService {
 
 	@Autowired
 	private SchedulingTaskExecutor threadPoolTaskExecutor;
-	
+
 	@Autowired
 	private ErrorEmailService errorEmailService;
 
 	@Autowired
 	private VmSyncService vmSyncService;
 
+	@Autowired
+	private ApiService apiService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
-	
+
 	private static OpenStackServiceImpl INSTANCE;
 
 	public OpenStackServiceImpl() {
 		INSTANCE=this;
 	}
-	
+
 	@PostConstruct
 	public void open() {
 //		ConfigUtil.class.getName();
@@ -143,6 +147,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setThreadPoolTaskExecutor(threadPoolTaskExecutor);
 		openStackServiceGroup.setErrorEmailService(errorEmailService);
 		openStackServiceGroup.setVmSyncService(vmSyncService);
+		openStackServiceGroup.setApiService(apiService);
 	}
 
 	@Override
@@ -162,4 +167,12 @@ public class OpenStackServiceImpl implements OpenStackService {
 	public static OpenStackServiceGroup getOpenStackServiceGroup() {
 		return INSTANCE.openStackServiceGroup;
 	}
+
+    public static OpenStackConf getOpenStackConf() {
+        return INSTANCE.openStackConf;
+    }
+
+    public static String createCredentialsIdentity(String email) {
+        return email + ":" + email;
+    }
 }

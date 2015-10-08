@@ -535,7 +535,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                             conf.getFlavorResource().getId(),
                             createServerOptions);
                     Server server = serverApi.get(serverCreated.getId());
-                    recordVmCreated(OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService().getSession().getUserId(),region,server);
+                    recordVmCreated(OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService().getSession().getUserId(), region, server);
                     VMResourceImpl vmResourceImpl = new VMResourceImpl(region,
                             regionDisplayName, server, VMManagerImpl.this,
                             imageManager, openStackUser);
@@ -1081,8 +1081,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     @Override
                     public boolean check(Server server) {
                         boolean result = isStartFinished(server);
-                        if(result){
-                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,server);
+                        if (result) {
+                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, server);
                         }
                         return result;
                     }
@@ -1142,8 +1142,8 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     @Override
                     public boolean check(Server server) {
                         boolean result = isStopFinished(server);
-                        if(result) {
-                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,server);
+                        if (result) {
+                            OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, server);
                         }
                         return result;
                     }
@@ -1624,7 +1624,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 VMResource vmResource = get(region, vmId);
                 emailBindIP(vmResource, floatingIP.getIp());
 
-                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,((VMResourceImpl)vmResource).server);
+                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, ((VMResourceImpl) vmResource).server);
 
                 return null;
             }
@@ -1666,7 +1666,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
 
                 floatingIPApi.removeFromServer(floatingIP.getIp(), vmId);
 
-                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region,serverApi.get(vmId));
+                OpenStackServiceImpl.getOpenStackServiceGroup().getVmSyncService().update(region, serverApi.get(vmId));
 
                 return null;
             }
@@ -1686,5 +1686,17 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     @Override
     public void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException {
         new VMCreate(userId, conf, this, this.networkManager, this.volumeManager, listener, listenerUserData).run();
+    }
+
+    @Override
+    public <ReturnType> ReturnType runWithApi(ApiRunnable<NovaApi, ReturnType> task) throws OpenStackException {
+        try {
+            NovaApi api = OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().getNovaApi();
+            return task.run(api);
+        } catch (OpenStackException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new OpenStackException("后台错误", ex);
+        }
     }
 }

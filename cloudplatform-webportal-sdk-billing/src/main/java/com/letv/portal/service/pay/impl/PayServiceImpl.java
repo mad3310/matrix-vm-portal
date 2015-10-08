@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.letv.common.exception.ValidateException;
@@ -133,7 +134,7 @@ public class PayServiceImpl implements IPayService {
 						ret.put("alert", "用户可使用余额不足");
 						return ret;
 					}
-					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), "9999", 2)) {
+					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), "9999", 2)) {//9999代表订单支付金额为0或，订单金额全部使用账户余额支付
 						//创建应用实例
 						createInstance(orderSubs);
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
@@ -265,8 +266,7 @@ public class PayServiceImpl implements IPayService {
 
 		// ③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
 		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0)
-				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice())
-				+ "");
+				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
 			if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), 2)) {
@@ -288,7 +288,8 @@ public class PayServiceImpl implements IPayService {
 				this.sendMessage.sendMessage(ucUser.getMobile(), "尊敬的用户，您购买的云主机已成功支付"+map.get("money")+"元，请登录网站matrix.letvcloud.com进行体验！如有问题，可拨打客服电话。");
 				
 				// ④创建应用实例
-				return createInstance(orderSubs);
+				createInstance(orderSubs);
+				return true;
 			}
 		}
 		return false;
@@ -347,14 +348,10 @@ public class PayServiceImpl implements IPayService {
 
 		if ((map.get("status") != null) && (Integer) map.get("status") == 1) {// 支付成功
 			if(getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).compareTo(new BigDecimal((String) map.get("money")))==0) {
-				if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), (String) map.get("ordernumber"), 2)) {
-					return map;
-				}
+				return map;
 			}
-			return null;
 		}
-
-		return map;
+		return null;
 	}
 
 	private String getSign(String companyId, String key, String payNumber,
@@ -377,7 +374,8 @@ public class PayServiceImpl implements IPayService {
 		return m.getMD5ofStr(sb.toString()).toLowerCase();
 	}
 
-	private boolean createInstance(final List<OrderSub> orderSubs) {
+	@Async
+	private void createInstance(final List<OrderSub> orderSubs) {
 		for (OrderSub orderSub : orderSubs) {
 			// 进行服务创建
 			if (orderSub.getSubscription().getProductId() == 2) {// openstack
@@ -407,7 +405,7 @@ public class PayServiceImpl implements IPayService {
 									
 									//云主机创建成功后减冻结余额
 									billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())));
-									if(vmIndex==orderSubs.size()) {
+									if((vmIndex+1)==orderSubs.size()) {
 										SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
 										//生成用户账单。
 										billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
@@ -421,11 +419,9 @@ public class PayServiceImpl implements IPayService {
 								
 							}, records);
 					logger.info("createInstance success!");
-					return true;
 				}
 			}
 		}
-		return false;
 	}
 	
 	private void updateSubscriptionAndOrderTime(List<OrderSub> orderSubs) {
@@ -439,6 +435,11 @@ public class PayServiceImpl implements IPayService {
 			subscription.setStartTime(date);
 			cal.setTimeInMillis(date.getTime());
 			cal.add(Calendar.MONTH, orderSub.getSubscription().getOrderTime());
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+	        cal.set(Calendar.MINUTE, 0);
+	        cal.set(Calendar.SECOND, 0);
+	        cal.set(Calendar.MILLISECOND, 0);
+	        cal.add(Calendar.DAY_OF_MONTH, 1);
 			subscription.setEndTime(cal.getTime());
 			this.subscriptionService.updateBySelective(subscription);
 			
