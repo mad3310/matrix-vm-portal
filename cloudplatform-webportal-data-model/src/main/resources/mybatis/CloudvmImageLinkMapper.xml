@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.letv.portal.dao.cloudvm.ICloudvmImageLinkDao">
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="CloudvmImageLink">
+		<result column="ID" property="id" />
+		<result column="REGION" property="region"/>
+		<result column="IMAGE_ID" property="imageId"/>
+		<result column="RELATION" property="relation"/>
+		<result column="TYPE" property="type"/>
+		<result column="HREF" property="href"/>
+		<result column="DELETED" property="deleted" />
+		<result column="CREATE_TIME" property="createTime" />
+		<result column="CREATE_USER" property="createUser" />
+		<result column="UPDATE_TIME" property="updateTime" />
+		<result column="UPDATE_USER" property="updateUser" />
+	</resultMap>
+
+	<!-- WEBPORTAL_CLOUDVM_IMAGE_LINK table all fields -->
+	<sql id="Base_Column_List">
+		l.ID,l.REGION,l.IMAGE_ID,l.RELATION,l.TYPE,l.HREF,
+		l.DELETED,l.CREATE_TIME,l.CREATE_USER,l.UPDATE_TIME,l.UPDATE_USER
+	</sql>
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null  ">
+				and l.ID=#{id}
+			</if>
+			<if test="region != null ">
+				and l.REGION=#{region}
+			</if>
+			<if test="imageId != null ">
+				and l.IMAGE_ID=#{imageId}
+			</if>
+			<if test="deleted != null  ">
+				and l.DELETED=#{deleted}
+			</if>
+			<if test="createTime != null  ">
+				and l.CREATE_TIME=#{createTime}
+			</if>
+			<if test="createUser != null  ">
+				and l.CREATE_USER=#{createUser}
+			</if>
+			<if test="updateTime != null  ">
+				and l.UPDATE_TIME=#{updateTime}
+			</if>
+			<if test="updateUser != null  ">
+				and l.UPDATE_USER=#{updateUser}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 插入记录 -->
+	<insert id="insert" parameterType="CloudvmImageLink" useGeneratedKeys="true" keyProperty="id" >
+		insert into
+		WEBPORTAL_CLOUDVM_IMAGE_LINK(REGION,IMAGE_ID,RELATION,`TYPE`,HREF,
+		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
+		values(
+		#{region},#{imageId},#{relation},#{type},#{href},
+		#{deleted},now(),#{createUser},null,null)
+	</insert>
+
+	<!-- 更新 -->
+	<update id="update" parameterType="CloudvmImageLink">
+		update WEBPORTAL_CLOUDVM_IMAGE_LINK
+		set
+		ID=#{id},
+		REGION=#{region},
+		IMAGE_ID=#{imageId},
+		RELATION=#{relation},
+		`TYPE`=#{type},
+		HREF=#{href},
+		DELETED=#{deleted},
+		CREATE_TIME=#{createTime},
+		CREATE_USER=#{createUser},
+		UPDATE_TIME=now(),
+		UPDATE_USER=#{updateUser}
+		where ID=#{id}
+	</update>
+
+	<!-- 根据条件查询 -->
+	<select id="selectByMap" resultMap="BaseResultMap"
+			parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE_LINK l
+		<include refid="Example_Where_Clause" />
+		ORDER BY l.CREATE_TIME DESC
+		<if test="page != null">
+			limit #{page.startRowPosition},#{page.recordsPerPage}
+		</if>
+	</select>
+
+	<!-- 物理删除 -->
+	<update id="delete" parameterType="CloudvmImageLink">
+		delete from WEBPORTAL_CLOUDVM_IMAGE_LINK where ID = #{id}
+	</update>
+
+	<!-- 根据id查询-->
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from WEBPORTAL_CLOUDVM_IMAGE_LINK l
+		where  l.ID = #{id};
+	</select>
+
+	<update id="deleteByRegionAndImageId" parameterType="java.util.Map">
+		delete from WEBPORTAL_CLOUDVM_IMAGE_LINK where REGION = #{region} and IMAGE_ID = #{imageId}
+	</update>
+</mapper>

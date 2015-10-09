@@ -60,6 +60,8 @@ a:hover{cursor:pointer;}
 .top-nav .brand-logo{width:150px;height:40px;}
 .top-nav .nav-item{margin-right:50px;font-size:1.8rem;color:#fff;float:left;}
 .top-nav a{color:transparent;}
+.top-nav li a{color:#fff;}
+.top-nav li a:hover{cursor:pointer;color:#088ac2}
 .top-nav .nav-item>a{color:#fff;}
 .top-nav .nav-item a:hover{cursor:pointer;color:#088ac2}
 .nav-item .item-arrow{position:relative;}
@@ -68,6 +70,7 @@ a:hover{cursor:pointer;}
 .item-uls{width:100%;position:absolute;left:0;line-height:normal}
 .item-uls .uls-items{margin:0 auto;margin-top:10px;padding-top:20px;}
 .uls-items .items-type{font-size:1.6rem;color:#088ac2;}
+.items-type a{color:#088ac2;}
 .uls-items ul{margin:0;margin-top:20px;padding:0;}
 .uls-items ul li{list-style:none;margin-bottom:10px;font-size:1.4rem;}
 .nav-uls{height:225px;position:absolute;top:0;left:0;z-index:100;color:#fff;background:rgba(0,0,0,.3);}

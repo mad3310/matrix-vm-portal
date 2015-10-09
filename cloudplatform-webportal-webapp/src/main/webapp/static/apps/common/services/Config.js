@@ -21,7 +21,9 @@ define(['./common.service'], function (serviceModule) {
       vm_calculate_price:'/billing/calculate/price/2',
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
+      disk_create:'/osv/region/{region}/volume-create',
       vpc_list:'/osn/network/private/list',
+      floatIP_list:'/osn/floatingip/list'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

@@ -25,7 +25,7 @@ public interface VolumeManager extends ResourceManager {
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;
 
-	void create(String region, int sizeGB, String name, String description,
+	void create(String region, int sizeGB, String volumeTypeId, String name, String description,
 			Integer count) throws RegionNotFoundException, OpenStackException;
 
 	void delete(String region, VolumeResource volumeResource)

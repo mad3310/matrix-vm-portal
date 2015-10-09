@@ -5,9 +5,7 @@ import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.billing.ResourceCreateService;
-import com.letv.portal.service.openstack.billing.ResourceLocator;
-import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.openstack.billing.*;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
@@ -88,5 +86,20 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         } catch (OpenStackException e) {
             throw e.matrixException();
         }
+    }
+
+    @Override
+    public void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException {
+
+    }
+
+    @Override
+    public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
+
+    }
+
+    @Override
+    public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
+
     }
 }

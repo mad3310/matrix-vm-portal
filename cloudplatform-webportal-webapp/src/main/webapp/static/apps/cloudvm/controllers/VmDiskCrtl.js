@@ -2,8 +2,8 @@
  * Created by jiangfei on 2015/8/12.
  */
 define(['controllers/app.controller'], function (controllerModule) {
-  controllerModule.controller('VmDiskCrtl', ['$scope','$interval', 'Config', 'HttpService','WidgetService','CurrentContext',
-    function ($scope,$interval, Config, HttpService,WidgetService,CurrentContext) {
+  controllerModule.controller('VmDiskCrtl', ['$scope','$interval','$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
+    function ($scope,$interval,$modal, Config, HttpService,WidgetService,CurrentContext) {
 
       $scope.diskList = [];
 
@@ -15,6 +15,28 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
 
+      $scope.openVmDiskCreateModal = function (size) {
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmDiskCreateModalTpl',
+          controller: 'VmDiskCreateModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshVmList();
+          }
+        }, function () {
+        });
+      };
 
       $scope.isAllDiskChecked=function(){
         var unCheckedDisks=$scope.diskList.filter(function(disk){

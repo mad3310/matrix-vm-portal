@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
@@ -19,6 +20,7 @@ import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.impl.ImageResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 
 public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> implements
 		ImageManager {
@@ -161,4 +163,15 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 		return GlanceApi.class;
 	}
 
+	@Override
+	public <ReturnType> ReturnType runWithApi(ApiRunnable<GlanceApi, ReturnType> task) throws OpenStackException {
+		try {
+			GlanceApi api = OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().getGlanceApi();
+			return task.run(api);
+		} catch (OpenStackException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new OpenStackException("后台错误", ex);
+		}
+	}
 }
