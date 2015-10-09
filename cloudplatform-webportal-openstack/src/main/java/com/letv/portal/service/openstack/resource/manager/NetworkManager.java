@@ -90,7 +90,7 @@ public interface NetworkManager extends ResourceManager {
 			Integer recordsPerPage) throws OpenStackException;
 
 	void createFloatingIp(String region, String name, String publicNetwrokId,
-			int bandWidth) throws OpenStackException;
+			int bandWidth, int count) throws OpenStackException;
 
 	void editFloatingIp(String region, String floatingIpId, String name,
 			int bandWidth) throws OpenStackException;

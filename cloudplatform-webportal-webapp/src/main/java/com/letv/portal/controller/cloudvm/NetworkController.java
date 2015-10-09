@@ -422,11 +422,12 @@ public class NetworkController {
 	public @ResponseBody ResultObject createFloatingIp(
 			@RequestParam String region, @RequestParam String name,
 			@RequestParam String publicNetworkId,
-			@RequestParam Integer bandWidth) {
+			@RequestParam Integer bandWidth,
+			@RequestParam Integer count) {
 		ResultObject result = new ResultObject();
 		try {
 			Util.session(sessionService).getNetworkManager()
-					.createFloatingIp(region, name, publicNetworkId, bandWidth);
+					.createFloatingIp(region, name, publicNetworkId, bandWidth, count);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

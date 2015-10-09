@@ -2382,7 +2382,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 	@Override
 	public void createFloatingIp(final String region, final String name,
-			final String publicNetworkId, final int bandWidth)
+			final String publicNetworkId, final int bandWidth, final int count)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<NeutronApi, Void>() {
 
@@ -2402,6 +2402,12 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 					throw new UserOperationException("bandWidth <= 0",
 							"带宽必须大于0");
 				}
+
+                if (count <= 0) {
+                    throw new UserOperationException(
+                            "The count of floating IP is less than or equal to zero.",
+                            "公网IP的数量不能小于或等于0");
+                }
 
 				Optional<QuotaApi> quotaApiOptional = neutronApi
 						.getQuotaApi(region);
@@ -2436,7 +2442,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 				final int floatingIpCountQuota = quota.getFloatingIp()
 						- quota.getRouter();
-				if (floatingIpCount >= floatingIpCountQuota) {
+				if (floatingIpCount + count > floatingIpCountQuota) {
 					throw new UserOperationException(
 							"Floating IP count exceeding the quota.",
 							"公网IP数量超过配额");
@@ -2445,14 +2451,16 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				final int floatingIpBandWidthQuota = quota.getBandWidth()
 						- quota.getRouter()
 						* openStackConf.getRouterGatewayBandWidth();
-				if (totalBandWidth + bandWidth > floatingIpBandWidthQuota) {
+				if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
 					throw new UserOperationException(
 							"Floating IP band width exceeding the quota.",
 							"公网IP带宽超过配额");
 				}
 
-				floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
-						.name(name).fipQos(createFipQos(bandWidth)).build());
+                for (int i = 0; i < count; i++) {
+                    floatingIPApi.create(FloatingIP.createBuilder(publicNetworkId)
+                            .name(name).fipQos(createFipQos(bandWidth)).build());
+                }
 
 				return null;
 			}
