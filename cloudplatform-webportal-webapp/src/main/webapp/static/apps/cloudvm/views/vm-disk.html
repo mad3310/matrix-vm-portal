@@ -62,18 +62,18 @@
                 </div>
                 <div class="le-modal-body">
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>名称</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">名称：</span>
                         </div>
-                        <div class="le-col-9">
-                            <input type="text" ng-model="diskName" />
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" />
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>类型</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">类型：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control">
                             <div class="letv-mutiCheck check-disk-type" ng-repeat="diskType in diskTypeList" ng-class="{'selected':isSelectedDiskType(diskType)}" ng-click="selectDiskType(diskType)">
                                 <span>{{diskType.name}}</span>
                                 <i class="iconfont icon-checkroundfillicon"></i>
@@ -81,27 +81,27 @@
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>容量</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">容量：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control col-slider">
                                 <rzslider rz-slider-model="diskVolume" rz-slider-floor="10" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
                                 </rzslider>
-                                <span class="disk-volume">{{diskVolume}}</span>
-                                <span class="disk-volume-unit">GB</span>
+                                <span class="slider-number">{{diskVolume}}</span>
+                                <span class="slider-unit">GB</span>
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>数量</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">数量：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control">
                             <numeric-input numeric-model="diskCount"></numeric-input>
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-9 le-col-offset-3">
-                            <button ng-click="createDisk()">创建</button>
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-red" ng-click="createDisk()"><span>提交订单</span></button>
                         </div>
                     </div>
                 </div>

@@ -159,7 +159,7 @@ rzslider {
     margin: 0;
 }
 rzslider span.rz-pointer{
-    top: -4px;
+    top: -3px;
     border-radius: 0;
     width: 10px;
     height: 16px;
@@ -585,6 +585,31 @@ width:150px;height:40px;
   }
 /*end col style*/
 
+/*begin col-slider style*/
+.col-slider{
+    height: 30px;
+    line-height: 30px;
+}
+.col-slider rzslider{
+    top: -3px;
+}
+.col-slider .slider-number,
+.col-slider .slider-unit {
+    display:inline-block;width: 40px;height: 20px;font-size: 12px;line-height: 20px;
+}
+.col-slider .slider-number{
+    border: 1px solid #d2d2d2;
+    height: auto;
+    text-align: center;
+}
+/*end col-slider style*/
+
+/*begin col-submit-order style*/
+.col-submit-order{
+    text-align: center;
+}
+/*end col-submit-order style*/
+
 /*begin clearfix style*/
 .le-clearfix:before,
 .le-clearfix:after,
@@ -621,7 +646,6 @@ width:150px;height:40px;
     background-image: none;
     border: 1px solid #d2d2d2;
 }
-
 /*end le-form-control style*/
 
 /*begin le-list-inline style*/
@@ -997,5 +1021,14 @@ numeric-input .up-down > a > i{
     color: #088ac2;
     font-weight: 100;
     opacity: 1;
+}
+.le-modal-body{
+    padding: 10px;
+}
+.le-modal-body .col-label{
+     text-align: right;
+ }
+.le-modal-body .col-control{
+    padding: 0;
 }
 /*end le-modal style*/
