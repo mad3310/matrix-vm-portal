@@ -20,29 +20,31 @@ public class RouterResourceImpl extends AbstractResource implements
 	// private List<PortResource> ports;
 	private List<SubnetResource> subnets;
 	private NetworkResource networkResource;
+	private String gatewayIp;
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router) {
-		this(region, regionDisplayName, router, null, null);
+		this(region, regionDisplayName, router, null, null, null);
 	}
 
 	public RouterResourceImpl(String region, String regionDisplayName,
-			Router router, NetworkResource networkResource) {
-		this(region, regionDisplayName, router, networkResource,
+			Router router, NetworkResource networkResource, String gatewayIp) {
+		this(region, regionDisplayName, router, networkResource, gatewayIp,
 				new ArrayList<SubnetResource>());
 	}
 
 	public RouterResourceImpl(String region, String regionDisplayName,
 			Router router, List<SubnetResource> subnets) {
-		this(region, regionDisplayName, router, null, subnets);
+		this(region, regionDisplayName, router, null, null, subnets);
 	}
 
 	public RouterResourceImpl(String region, String regionDisplayName,
-			Router router, NetworkResource networkResource,
+			Router router, NetworkResource networkResource, String gatewayIp,
 			List<SubnetResource> subnets) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;
 		this.router = router;
+		this.gatewayIp = gatewayIp;
 		this.networkResource = networkResource;
 		this.subnets = subnets;
 	}
@@ -99,5 +101,10 @@ public class RouterResourceImpl extends AbstractResource implements
 	@Override
 	public NetworkResource getCarrier() {
 		return networkResource;
+	}
+
+	@Override
+	public String getGatewayIp() {
+		return gatewayIp;
 	}
 }

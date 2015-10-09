@@ -1,4 +1,4 @@
-package com.letv.portal.service.openstack.jclouds.cache;
+package com.letv.portal.service.openstack.cronjobs.impl.cache;
 
 import com.google.common.cache.*;
 import com.letv.common.exception.MatrixException;

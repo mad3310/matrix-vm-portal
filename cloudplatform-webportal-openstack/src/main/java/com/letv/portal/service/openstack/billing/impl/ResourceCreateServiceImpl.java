@@ -52,6 +52,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         return openStackSession;
     }
 
+    private void processException(Exception e, String function, Long userId, String contextMessage) {
+        logger.error(e.getMessage(), e);
+        errorEmailService.sendExceptionEmail(e, function, userId, contextMessage);
+        Util.throwMatrixException(e);
+    }
+
     @Async
     @Override
     public void createVm(long userId, String reqParaJson, VmCreateListener listener, Object listenerUserData) throws MatrixException {
@@ -72,9 +78,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 //            }
 //            return resourceLocators;
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            errorEmailService.sendExceptionEmail(e, "计费调用创建云主机", userId, reqParaJson);
-            Util.throwMatrixException(e);
+            processException(e, "计费调用创建云主机", userId, reqParaJson);
         }
     }
 
@@ -88,18 +92,36 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
         }
     }
 
+    @Async
     @Override
     public void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException {
+        try {
+            OpenStackSession openStackSession = createOpenStackSession(userId);
 
+        } catch (Exception e) {
+            processException(e, "计费调用创建云硬盘", userId, reqParaJson);
+        }
     }
 
+    @Async
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
+        try {
+            OpenStackSession openStackSession = createOpenStackSession(userId);
 
+        } catch (Exception e) {
+            processException(e, "计费调用创建公网IP", userId, reqParaJson);
+        }
     }
 
+    @Async
     @Override
     public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
+        try {
+            OpenStackSession openStackSession = createOpenStackSession(userId);
 
+        } catch (Exception e) {
+            processException(e, "计费调用创建路由", userId, reqParaJson);
+        }
     }
 }
