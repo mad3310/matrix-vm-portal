@@ -11,9 +11,22 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 public interface ApiService {
     NovaApi getNovaApi();
 
+    NovaApi getNovaApi(Long userId, String sessionId);
+
     NeutronApi getNeutronApi();
+
+    NeutronApi getNeutronApi(Long userId, String sessionId);
 
     CinderApi getCinderApi();
 
+    CinderApi getCinderApi(Long userId, String sessionId);
+
     GlanceApi getGlanceApi();
+
+    GlanceApi getGlanceApi(Long userId, String sessionId);
+
+    void clearCache();
+
+    void clearCache(Long userId, String sessionId);
+
 }

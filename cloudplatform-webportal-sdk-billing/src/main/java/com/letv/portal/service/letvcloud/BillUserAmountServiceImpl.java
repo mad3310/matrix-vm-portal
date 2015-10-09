@@ -47,27 +47,32 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 	    String tradeNum = format.format(System.currentTimeMillis());
 	    String random = PasswordRandom.genStr(6);
 	    String trade = tradeNum +random;
-        return recharge(userId, amount, trade, type);
+	    BillRechargeRecord record = new BillRechargeRecord();
+        record.setTradeNum(trade);
+        record.setAmount(amount);
+        record.setUserId(userId);
+        record.setRechargeType(type);
+        billRechargeRecordMapper.insert(record);
+        return trade;
     }
     
     @Override
-	public String recharge(long userId, BigDecimal amount, String tradeNum,
+	public String recharge(long userId, BigDecimal amount, String orderCode,
 			int type) {
-    	BillRechargeRecord record = this.billRechargeRecordMapper.getAmount(tradeNum);
-    	if(record == null) {
-    		record = new BillRechargeRecord();
-    		record.setTradeNum(tradeNum);
-    		record.setAmount(amount);
-    		record.setUserId(userId);
-    		record.setRechargeType(type);
-    		billRechargeRecordMapper.insert(record);
-    	} else {
-    		Map<String, Object> recordParam = new HashMap<String, Object>();
-            recordParam.put("amount", amount);
-            recordParam.put("tradeNum", tradeNum);
-    		this.billRechargeRecordMapper.updateAmount(recordParam);
-    	}
-        return tradeNum;
+    	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+	    String tradeNum = format.format(System.currentTimeMillis());
+	    String random = PasswordRandom.genStr(6);
+	    String trade = tradeNum +random;
+	    
+    	BillRechargeRecord record = new BillRechargeRecord();
+		record.setTradeNum(trade);
+		record.setAmount(amount);
+		record.setUserId(userId);
+		record.setRechargeType(type);
+		record.setOrderCode(orderCode);
+		
+		billRechargeRecordMapper.insert(record);
+        return trade;
 	}
 
     @Override

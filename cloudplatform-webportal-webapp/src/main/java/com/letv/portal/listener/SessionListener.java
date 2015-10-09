@@ -2,6 +2,7 @@ package com.letv.portal.listener;
 
 import com.letv.common.session.Session;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,8 @@ public class SessionListener implements HttpSessionListener {
                     logger.error(e.getMessage(), e);
                 }
             }
+
+            OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().clearCache(session.getUserId(), sessionEvent.getSession().getId());
         }
     }
 }

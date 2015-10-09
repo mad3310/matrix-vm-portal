@@ -35,7 +35,21 @@ define(['app'],function (app) {
           config: {
             templateUrl: '/static/apps/cloudvm/views/vm-vpc.html'
           }
-        }];
+        },
+          {
+              url: '/vm-router',
+              title: '云路由',
+              config: {
+                  templateUrl: '/static/apps/cloudvm/views/vm-router.html'
+              }
+          },
+          {
+              url: '/vm-floatIP',
+              title: '公网IP',
+              config: {
+                  templateUrl: '/static/apps/cloudvm/views/vm-floatIP.html'
+              }
+          }];
     };
 
   app.constant('routes', getRoutes());

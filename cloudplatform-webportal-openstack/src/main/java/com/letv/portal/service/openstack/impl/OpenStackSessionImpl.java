@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
+import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.neutron.v2.domain.Rule;
@@ -31,6 +32,7 @@ import com.letv.portal.service.openstack.resource.manager.impl.ImageManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * Created by zhouxianguang on 2015/6/8.

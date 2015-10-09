@@ -43,7 +43,7 @@ import java.util.Set;
  * Created by zhouxianguang on 2015/9/28.
  */
 @Service
-public class VmSyncServiceImpl implements VmSyncService {
+public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSyncService {
 
     @Autowired
     private ICloudvmServerService cloudvmServerService;

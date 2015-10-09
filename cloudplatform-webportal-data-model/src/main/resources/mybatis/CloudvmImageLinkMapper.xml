@@ -56,22 +56,22 @@
 	</sql>
 
 	<!-- 插入记录 -->
-	<insert id="insert" parameterType="CloudvmServerLink" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="insert" parameterType="CloudvmImageLink" useGeneratedKeys="true" keyProperty="id" >
 		insert into
-		WEBPORTAL_CLOUDVM_SERVER_LINK(REGION,SERVER_ID,RELATION,`TYPE`,HREF,
+		WEBPORTAL_CLOUDVM_IMAGE_LINK(REGION,IMAGE_ID,RELATION,`TYPE`,HREF,
 		DELETED,CREATE_TIME,CREATE_USER,UPDATE_TIME,UPDATE_USER)
 		values(
-		#{region},#{serverId},#{relation},#{type},#{href},
+		#{region},#{imageId},#{relation},#{type},#{href},
 		#{deleted},now(),#{createUser},null,null)
 	</insert>
 
 	<!-- 更新 -->
-	<update id="update" parameterType="CloudvmServerLink">
-		update WEBPORTAL_CLOUDVM_SERVER_LINK
+	<update id="update" parameterType="CloudvmImageLink">
+		update WEBPORTAL_CLOUDVM_IMAGE_LINK
 		set
 		ID=#{id},
 		REGION=#{region},
-		SERVER_ID=#{serverId},
+		IMAGE_ID=#{imageId},
 		RELATION=#{relation},
 		`TYPE`=#{type},
 		HREF=#{href},
@@ -88,7 +88,7 @@
 			parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CLOUDVM_SERVER_LINK l
+		from WEBPORTAL_CLOUDVM_IMAGE_LINK l
 		<include refid="Example_Where_Clause" />
 		ORDER BY l.CREATE_TIME DESC
 		<if test="page != null">
@@ -97,27 +97,19 @@
 	</select>
 
 	<!-- 物理删除 -->
-	<update id="delete" parameterType="CloudvmServerLink">
-		delete from WEBPORTAL_CLOUDVM_SERVER_LINK where ID = #{id}
+	<update id="delete" parameterType="CloudvmImageLink">
+		delete from WEBPORTAL_CLOUDVM_IMAGE_LINK where ID = #{id}
 	</update>
 
 	<!-- 根据id查询-->
 	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
 		select
 		<include refid="Base_Column_List" />
-		from WEBPORTAL_CLOUDVM_SERVER_LINK l
+		from WEBPORTAL_CLOUDVM_IMAGE_LINK l
 		where  l.ID = #{id};
 	</select>
 
-	<!-- 列表总数 -->
-	<select id="selectByMapCount" resultType="java.lang.Integer"
-			parameterType="java.util.Map">
-		select count(1)
-		from WEBPORTAL_CLOUDVM_SERVER_LINK l
-		<include refid="Example_Where_Clause" />
-	</select>
-
-	<update id="deleteByRegionAndServerId" parameterType="java.util.Map">
-		delete from WEBPORTAL_CLOUDVM_SERVER_LINK where REGION = #{region} and SERVER_ID = #{serverId}
+	<update id="deleteByRegionAndImageId" parameterType="java.util.Map">
+		delete from WEBPORTAL_CLOUDVM_IMAGE_LINK where REGION = #{region} and IMAGE_ID = #{imageId}
 	</update>
 </mapper>
