@@ -28,8 +28,15 @@ public class BillRechargeRecord implements Serializable{
     private String orderNum;
 
     private int success;
+    
+    private String orderCode;//订单编号
 
-    public String getTradeNum() {
+    
+    public String getOrderCode() {
+		return orderCode;
+	}
+
+	public String getTradeNum() {
         return tradeNum;
     }
 
@@ -92,4 +99,9 @@ public class BillRechargeRecord implements Serializable{
     public void setSuccess(int success) {
         this.success = success;
     }
+    
+    public void setOrderCode(String orderCode) {
+		this.orderCode = orderCode;
+	}
+
 }

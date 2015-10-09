@@ -8,14 +8,16 @@
         amount,
         rechargeType,
         createdTime,
-        lastUpdateTime
+        lastUpdateTime,
+        orderCode
       )values(
         #{tradeNum},
         #{userId},
         #{amount},
         #{rechargeType},
         NOW(),
-        NOW()
+        NOW(),
+        #{orderCode}
       )
     </insert>
     <update id="updateSuc" parameterType="java.util.HashMap">
