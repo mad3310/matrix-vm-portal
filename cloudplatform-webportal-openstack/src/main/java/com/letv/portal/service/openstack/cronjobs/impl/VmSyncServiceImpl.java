@@ -18,6 +18,7 @@ import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.jclouds.cache.SyncLocalApiCache;
 import com.letv.portal.service.openstack.model.util.CloudvmServerAddressUtil;
 import com.letv.portal.service.openstack.model.util.CloudvmServerLinkUtil;
 import com.letv.portal.service.openstack.model.util.CloudvmServerMetadataUtil;
@@ -74,30 +75,32 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
 
     @Override
     public void sync(int recordsPerPage) throws MatrixException {
+        SyncLocalApiCache apiCache = new SyncLocalApiCache();
         try {
-            Map<Long, OpenStackSession> userIdToOpenStackSession = new HashMap<Long, OpenStackSession>();
+//            Map<Long, OpenStackSession> userIdToOpenStackSession = new HashMap<Long, OpenStackSession>();
             Long minId = null;
             int currentPage = 1;
             List<CloudvmServer> cloudvmServers = cloudvmServerService.selectForSync(minId, new Page(currentPage, recordsPerPage));
             while (!cloudvmServers.isEmpty()) {
                 for (final CloudvmServer cloudvmServer : cloudvmServers) {
-                    OpenStackSession openStackSession = userIdToOpenStackSession.get(cloudvmServer.getCreateUser());
-                    if (openStackSession == null) {
-                        openStackSession = createOpenStackSession(cloudvmServer.getCreateUser());
+                    NovaApi novaApi = apiCache.getApi(cloudvmServer.getCreateUser(), NovaApi.class);
+//                    OpenStackSession openStackSession = userIdToOpenStackSession.get(cloudvmServer.getCreateUser());
+//                    if (openStackSession == null) {
+//                        openStackSession = createOpenStackSession(cloudvmServer.getCreateUser());
+//                    }
+//                    VMManagerImpl vmManager = (VMManagerImpl) openStackSession.getVMManager();
+//                    vmManager.runWithApi(new ApiRunnable<NovaApi, Void>() {
+//                        @Override
+//                        public Void run(NovaApi novaApi) throws Exception {
+                    Server server = novaApi.getServerApi(cloudvmServer.getRegion()).get(cloudvmServer.getServerId());
+                    if (server == null) {
+                        delete(cloudvmServer);
+                    } else {
+                        update(cloudvmServer, server);
                     }
-                    VMManagerImpl vmManager = (VMManagerImpl) openStackSession.getVMManager();
-                    vmManager.runWithApi(new ApiRunnable<NovaApi, Void>() {
-                        @Override
-                        public Void run(NovaApi novaApi) throws Exception {
-                            Server server = novaApi.getServerApi(cloudvmServer.getRegion()).get(cloudvmServer.getServerId());
-                            if (server == null) {
-                                delete(cloudvmServer);
-                            } else {
-                                update(cloudvmServer, server);
-                            }
-                            return null;
-                        }
-                    });
+//                            return null;
+//                        }
+//                    });
                 }
                 minId = cloudvmServers.get(cloudvmServers.size() - 1).getId();
                 currentPage++;
@@ -105,6 +108,8 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
             }
         } catch (OpenStackException e) {
             throw e.matrixException();
+        } finally {
+            apiCache.close();
         }
     }
 

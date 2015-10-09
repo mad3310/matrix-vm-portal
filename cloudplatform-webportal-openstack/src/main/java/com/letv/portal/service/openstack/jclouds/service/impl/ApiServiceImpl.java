@@ -62,15 +62,11 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
 
     private Cache<ApiCacheKey, Closeable> apiCache;
 
-    private Map<Class<? extends Closeable>, String> apiToProvider;
-
-    public ApiServiceImpl() {
-        apiToProvider = ImmutableMap.<Class<? extends Closeable>, String>builder()
-                .put(NovaApi.class, "openstack-nova")
-                .put(NeutronApi.class, "openstack-neutron")
-                .put(CinderApi.class, "openstack-cinder")
-                .put(GlanceApi.class, "openstack-glance").build();
-    }
+    public static final Map<Class<? extends Closeable>, String> apiToProvider = ImmutableMap.<Class<? extends Closeable>, String>builder()
+            .put(NovaApi.class, "openstack-nova")
+            .put(NeutronApi.class, "openstack-neutron")
+            .put(CinderApi.class, "openstack-cinder")
+            .put(GlanceApi.class, "openstack-glance").build();
 
     private void init(ServletContext servletContext) {
         apiCache = CacheBuilder.newBuilder().removalListener(RemovalListeners.asynchronous(new RemovalListener<ApiCacheKey, Closeable>() {

@@ -1,5 +1,6 @@
 package com.letv.portal.service.openstack.impl;
 
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
@@ -26,6 +27,15 @@ public class OpenStackServiceGroup {
 	private ICloudvmServerService cloudvmServerService;
 	private VmSyncService vmSyncService;
 	private ApiService apiService;
+	private IUserService userService;
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+
+	public IUserService getUserService() {
+		return userService;
+	}
 
 	public void setApiService(ApiService apiService) {
 		this.apiService = apiService;

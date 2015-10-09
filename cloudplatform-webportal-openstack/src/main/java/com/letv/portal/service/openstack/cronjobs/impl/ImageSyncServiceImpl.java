@@ -1,7 +1,11 @@
 package com.letv.portal.service.openstack.cronjobs.impl;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.service.cloudvm.ICloudvmImageLinkService;
+import com.letv.portal.service.cloudvm.ICloudvmImagePropertyService;
+import com.letv.portal.service.cloudvm.ICloudvmImageService;
 import com.letv.portal.service.openstack.cronjobs.ImageSyncService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,6 +13,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ImageSyncServiceImpl extends AbstractSyncServiceImpl implements ImageSyncService {
+
+    @Autowired
+    private ICloudvmImageService cloudvmImageService;
+
+    @Autowired
+    private ICloudvmImagePropertyService cloudvmImagePropertyService;
+
+    @Autowired
+    private ICloudvmImageLinkService cloudvmImageLinkService;
+
+
+
     @Override
     public void sync(int recordsPerPage) throws MatrixException {
 
