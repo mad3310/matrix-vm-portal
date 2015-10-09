@@ -175,4 +175,8 @@ public class OpenStackServiceImpl implements OpenStackService {
     public static String createCredentialsIdentity(String email) {
         return email + ":" + email;
     }
+
+	public static String createOpenStackUserId(String email){
+		return email;
+	}
 }

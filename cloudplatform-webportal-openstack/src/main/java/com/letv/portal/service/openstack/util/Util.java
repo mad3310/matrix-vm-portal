@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
@@ -26,6 +27,11 @@ import org.codehaus.jackson.type.TypeReference;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
 public class Util {
+
+	public static String generateRandomSessionId(){
+		return UUID.randomUUID().toString();
+	}
+
 	public static void throwException(Exception ex) throws OpenStackException {
 		if (ex instanceof ValidateException) {
 			throw (ValidateException) ex;
