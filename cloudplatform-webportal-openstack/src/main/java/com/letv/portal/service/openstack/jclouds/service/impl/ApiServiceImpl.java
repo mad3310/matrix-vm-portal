@@ -7,8 +7,6 @@ import com.letv.common.session.Session;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
-import com.letv.portal.service.openstack.OpenStackService;
-import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
@@ -34,7 +32,6 @@ import javax.servlet.ServletContext;
 import java.io.Closeable;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -125,24 +122,26 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         return new OpenStackUserInfo(userId, sessionId, email, password);
     }
 
+    private <T extends Closeable> T getApi(final Class<T> apiType, final OpenStackUserInfo userInfo) throws ExecutionException {
+        return (T) apiCache.get(new ApiCacheKey(userInfo.getUserId(), userInfo.getSessionId(), apiType), new Callable<Closeable>() {
+            @Override
+            public Closeable call() throws Exception {
+                return ContextBuilder
+                        .newBuilder(apiToProvider.get(apiType))
+                        .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
+                        .credentials(
+                                OpenStackServiceImpl.createCredentialsIdentity(userInfo.getEmail()),
+                                userInfo.getPassword()).modules(Contants.jcloudsContextBuilderModules)
+                        .buildApi(apiType);
+            }
+        });
+    }
+
     private <T extends Closeable> T getApi(final Class<T> apiType, Long userId, String sessionId) {
         try {
-            final String provider = apiToProvider.get(apiType);
-
             final OpenStackUserInfo userInfo = getUserInfo(userId, sessionId);
 
-            return (T) apiCache.get(new ApiCacheKey(userInfo.getUserId(), userInfo.getSessionId(), apiType), new Callable<Closeable>() {
-                @Override
-                public Closeable call() throws Exception {
-                    return ContextBuilder
-                            .newBuilder(provider)
-                            .endpoint(OpenStackServiceImpl.getOpenStackConf().getPublicEndpoint())
-                            .credentials(
-                                    OpenStackServiceImpl.createCredentialsIdentity(userInfo.getEmail()),
-                                    userInfo.getPassword()).modules(Contants.jcloudsContextBuilderModules)
-                            .buildApi(apiType);
-                }
-            });
+            return getApi(apiType, userInfo);
         } catch (ExecutionException e) {
             throw new MatrixException("后台错误", e);
         } catch (NoSuchAlgorithmException e) {
@@ -211,6 +210,49 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
         } catch (NoSuchAlgorithmException e) {
             throw new MatrixException("后台错误", e);
         }
+    }
+
+    @Override
+    public void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword) {
+        final OpenStackUserInfo userInfo = new OpenStackUserInfo(userId, sessionId, openStackUserId, openStackUserPassword);
+
+        Util.concurrentRunAndWait(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getApi(CinderApi.class, userInfo);
+                } catch (ExecutionException e) {
+                    throw new MatrixException("后台错误", e);
+                }
+            }
+        },new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getApi(NovaApi.class, userInfo);
+                } catch (ExecutionException e) {
+                    throw new MatrixException("后台错误", e);
+                }
+            }
+        },new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getApi(GlanceApi.class, userInfo);
+                } catch (ExecutionException e) {
+                    throw new MatrixException("后台错误", e);
+                }
+            }
+        },new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getApi(NeutronApi.class, userInfo);
+                } catch (ExecutionException e) {
+                    throw new MatrixException("后台错误", e);
+                }
+            }
+        });
     }
 
     private static class OpenStackUserInfo {
