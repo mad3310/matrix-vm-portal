@@ -24,6 +24,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       var data = {
         name: $scope.diskName,
         description:'',
+        volumeTypeId:$scope.selectedDiskType.id,
         size: $scope.diskVolume,
         count:$scope.diskCount
       };

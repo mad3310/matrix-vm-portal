@@ -44,6 +44,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云硬盘');
           return;
         }
+        if(checkedDisks[0].status !=='available'){
+          WidgetService.notifyWarning('云硬盘当前状态不可挂载到云主机');
+          return;
+        }
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
           templateUrl: 'VmDiskAttachModalTpl',
@@ -55,21 +59,54 @@ define(['controllers/app.controller'], function (controllerModule) {
             region: function () {
               return CurrentContext.regionId;
             },
-            diskId: function () {
-              return checkedDisks[0].id;
+            disk: function () {
+              return checkedDisks[0];
             }
           }
         });
 
         modalInstance.result.then(function (resultData) {
           if(resultData &&resultData.result===1){
-            //refreshVmList();
+            refreshDiskList();
           }
         }, function () {
         });
       };
 
-      $scope.deleteDisk=function(size){
+      $scope.detachDisk=function(){
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        if(checkedDisks[0].status !=='in-use'){
+          WidgetService.notifyWarning('云硬盘当前状态不可解挂');
+          return;
+        }
+        var data={
+          vmId: checkedDisks[0].attachments[0].vmId,
+          volumeId: checkedDisks[0].id,
+        };
+        var modalInstance = WidgetService.openConfirmModal('解挂云硬盘','确定要从云主机（'+checkedDisks[0].attachments[0].name+'）解挂云硬盘（'+checkedDisks[0].name+'）吗？');
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          WidgetService.notifyInfo('云硬盘解挂执行中...');
+          checkedDisks[0].status='detaching';
+          HttpService.doPost(Config.urls.disk_detach.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              modalInstance.close(data);
+              WidgetService.notifySuccess('解挂云硬盘成功');
+              refreshDiskList();
+            }
+            else{
+              WidgetService.notifyError(data.msgs[0]||'解挂云硬盘失败');
+            }
+          });
+        }, function () {
+        });
+      };
+
+      $scope.deleteDisk=function(){
         var checkedDisks=getCheckedDisk();
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
@@ -82,10 +119,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云硬盘删除执行中...');
-          checkedDisks[0].status='DELETEING';
+          checkedDisks[0].status='deleting';
           HttpService.doPost(Config.urls.disk_delete.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
             if(data.result===1){
-              checkedDisks[0].status='DELETED';
+              checkedDisks[0].status='deleted';
               modalInstance.close(data);
               WidgetService.notifySuccess('删除云硬盘成功');
               refreshDiskList();
@@ -146,7 +183,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
-  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,diskId) {
+  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
 
     $scope.vmList=[];
     $scope.vmListSelectorData=[];
@@ -158,13 +195,14 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     $scope.attachDisk = function () {
       var data = {
-        vmId:$scope.selectedVm.id,
-        volumeId:diskId
+        vmId:$scope.selectedVm.value,
+        volumeId:disk.id
       };
+      disk.status='attaching';
       HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifyError('云硬盘挂载成功');
+          WidgetService.notifySuccess('云硬盘挂载成功');
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
