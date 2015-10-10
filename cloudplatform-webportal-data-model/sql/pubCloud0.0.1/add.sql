@@ -106,3 +106,16 @@ CREATE TABLE `bill_user_invoice` (
 alter table bill_user_amount modify column availableAmount decimal(10,2);
 alter table bill_user_amount modify column freezeAmount decimal(10,2);
 alter table bill_recharge_record modify column amount decimal(10,2);
+
+/*add by lisuxiao*/
+alter table bill_recharge_record add column orderCode varchar(50) DEFAULT NULL COMMENT '订单编号';
+CREATE TABLE `WEBPORTAL_OPERATE` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '最近操作表主键',
+  `ACTION` varchar(100) DEFAULT NULL COMMENT '动作',
+  `CONTENT` varchar(100) DEFAULT NULL COMMENT '内容',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `CREATE_USER` bigint(20) unsigned DEFAULT NULL COMMENT '创建用户',
+  `DESCN` varchar(200) DEFAULT NULL COMMENT '描述',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='最近操作表'
+
