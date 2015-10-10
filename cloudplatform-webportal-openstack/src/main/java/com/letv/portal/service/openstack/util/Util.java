@@ -2,15 +2,22 @@ package com.letv.portal.service.openstack.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -26,6 +33,34 @@ import org.codehaus.jackson.type.TypeReference;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 
 public class Util {
+
+	public static String generateRandomSessionId(){
+		return UUID.randomUUID().toString();
+	}
+
+	private static final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+
+    public static void concurrentRunAndWait(Runnable currentThreadTask, Runnable... otherTasks) {
+        ListenableFuture[] futures = new ListenableFuture[otherTasks.length];
+        for (int i = 0; i < otherTasks.length; i++) {
+            futures[i] = executorService.submit(otherTasks[i]);
+        }
+
+        currentThreadTask.run();
+
+        try {
+            Futures.successfulAsList(futures).get();
+        } catch (Exception e) {
+            throw new MatrixException("后台错误", e);
+        }
+    }
+
+	public static void concurrentRun(Runnable... tasks) {
+		for (Runnable task : tasks) {
+			executorService.submit(task);
+		}
+	}
+
 	public static void throwException(Exception ex) throws OpenStackException {
 		if (ex instanceof ValidateException) {
 			throw (ValidateException) ex;

@@ -7,6 +7,9 @@
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li><a href="javascript:void(0);" ng-click="deleteDisk()">删除云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="openVmDiskAttachModal('500')">挂载云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="detachDisk()">解挂云硬盘</a></li>
                 </ul>
             </div>
         </div>
@@ -36,6 +39,7 @@
                     <td><span>{{disk.size}}GB</span></td>
                     <td>
                         <span>{{disk.status | diskStatusFilter}}</span>
+                        <span ng-if="['creating','attaching','deleting','detaching'].indexOf(disk.status)>-1" class="status-loading"></span>
                     </td>
                     <td><span>{{disk.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
@@ -62,18 +66,18 @@
                 </div>
                 <div class="le-modal-body">
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>名称</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">名称：</span>
                         </div>
-                        <div class="le-col-9">
-                            <input type="text" ng-model="diskName" />
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" />
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>类型</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">类型：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control">
                             <div class="letv-mutiCheck check-disk-type" ng-repeat="diskType in diskTypeList" ng-class="{'selected':isSelectedDiskType(diskType)}" ng-click="selectDiskType(diskType)">
                                 <span>{{diskType.name}}</span>
                                 <i class="iconfont icon-checkroundfillicon"></i>
@@ -81,31 +85,56 @@
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>容量</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">容量：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control col-slider">
                                 <rzslider rz-slider-model="diskVolume" rz-slider-floor="10" rz-slider-ceil="2048" rz-slider-step="10" rz-slider-always-show-bar="true">
                                 </rzslider>
-                                <span class="disk-volume">{{diskVolume}}</span>
-                                <span class="disk-volume-unit">GB</span>
+                                <span class="slider-number">{{diskVolume}}</span>
+                                <span class="slider-unit">GB</span>
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-3">
-                            <span>数量</span>
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">数量：</span>
                         </div>
-                        <div class="le-col-9">
+                        <div class="le-col-9 col-control">
                             <numeric-input numeric-model="diskCount"></numeric-input>
                         </div>
                     </div>
                     <div class="le-row">
-                        <div class="le-col-9 le-col-offset-3">
-                            <button ng-click="createDisk()">创建</button>
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-red" ng-click="createDisk()"><span>提交订单</span></button>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmDiskAttachModalTpl">
+        <div class="modal-vm-disk-create">
+                <div class="le-modal-header">
+                    <span class="header-title">挂载云硬盘</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">云主机：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <le-select select-model="selectedVm" select-options="vmListSelectorData"></le-select>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-red" ng-click="attachDisk()"><span>挂载云硬盘</span></button>
+                        </div>
+                    </div>
+                </div>
         </div>
     </script>
     <script type="text/ng-template" id="ConfirmModalTpl">

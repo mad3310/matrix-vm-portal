@@ -11,7 +11,9 @@ define([
     'controllers/VmVpcCrtl',
     'controllers/VmFloatIpCrtl',
     'controllers/VmRouterCtrl',
-    'controllers/VmRouterCreateModalCtrl'
+    'controllers/VmRouterCreateModalCtrl', 
+    'controllers/VmIPcreateModalCtrl',
+    'controllers/VmIpBindVmModalCtrl'
   ],
   function (controllerModule) {
 

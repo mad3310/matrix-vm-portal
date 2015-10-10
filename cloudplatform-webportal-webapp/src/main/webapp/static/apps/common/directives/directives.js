@@ -73,4 +73,39 @@ define(['./common.directive'],function (directiveModule) {
             templateUrl: '/static/apps/common/directives/numeric-input/template.html'
         };
     });
+
+    directiveModule.directive('leSelect', function ($document) {
+        return {
+            restrict: 'AE',
+            scope: {
+                model: '=selectModel',
+                options:'=selectOptions'
+            },
+            link: function (scope, element, attrs) {
+                scope.toggleSelect=function(){
+                    scope.isOpen = true;
+                    $document.bind('click',closeDropdown);
+                };
+                scope.selectOption=function(selectedOption){
+                    scope.model=selectedOption;
+                };
+                var toggleElement = element.find('.le-select-toggle');
+                var closeDropdown=function( evt ) {
+                    if(!scope.isOpen){
+                        return;
+                    }
+                    if ( evt && toggleElement && toggleElement[0].contains(evt.target) ) {
+                        return;
+                    }
+
+                    $document.unbind('click', closeDropdown);
+                    scope.isOpen = false;
+                    if (!scope.$$phase) {
+                        scope.$apply();
+                    }
+                };
+            },
+            templateUrl: '/static/apps/common/directives/le-select/template.html'
+        };
+    });
 });

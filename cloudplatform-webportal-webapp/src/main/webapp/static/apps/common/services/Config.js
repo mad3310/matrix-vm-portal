@@ -22,12 +22,18 @@ define(['./common.service'], function (serviceModule) {
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',
+      disk_delete:'/osv/region/{region}/volume-delete',
+      disk_attach:'/ecs/region/{region}/vm-attach-volume',
+      disk_detach:'/ecs/region/{region}/vm-detach-volume',
       vpc_list:'/osn/network/private/list',
       floatIP_list:'/osn/floatingip/list',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
       router_create:'/osn/router/create',
       router_delete:'/osn/router/delete'
+      floatIP_list:'/osn/floatingip/list',
+      floatIP_create:'/osn/floatingip/create',
+      floatIp_delete:'/osn/floatingip/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
@@ -47,6 +53,8 @@ define(['./common.service'], function (serviceModule) {
       {"text": "使用中", "value": "in-use"},
       {"text": "删除中", "value": "deleting"},
       {"text": "异常", "value": "error"},
+      {"text": "已删除", "value": "deleted"},
+      {"text": "解挂中", "value": "detaching"},
     ];
     config.vmVpcStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

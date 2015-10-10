@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import javax.annotation.PostConstruct;
 
+import com.letv.portal.service.IUserService;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
 import com.letv.portal.service.cloudvm.ICloudvmServerService;
 import com.letv.portal.service.openstack.cronjobs.VmSyncService;
@@ -107,6 +108,9 @@ public class OpenStackServiceImpl implements OpenStackService {
 	@Autowired
 	private ApiService apiService;
 
+	@Autowired
+	private IUserService userService;
+
 	private OpenStackServiceGroup openStackServiceGroup;
 
 	private static OpenStackServiceImpl INSTANCE;
@@ -148,6 +152,7 @@ public class OpenStackServiceImpl implements OpenStackService {
 		openStackServiceGroup.setErrorEmailService(errorEmailService);
 		openStackServiceGroup.setVmSyncService(vmSyncService);
 		openStackServiceGroup.setApiService(apiService);
+		openStackServiceGroup.setUserService(userService);
 	}
 
 	@Override
@@ -175,4 +180,8 @@ public class OpenStackServiceImpl implements OpenStackService {
     public static String createCredentialsIdentity(String email) {
         return email + ":" + email;
     }
+
+	public static String createOpenStackUserId(String email){
+		return email;
+	}
 }

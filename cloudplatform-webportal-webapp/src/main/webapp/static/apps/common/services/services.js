@@ -8,6 +8,7 @@ define([
   './WidgetService',
   './CurrentContext',
   './Utility',
+  './ModelService'
 ],function(serviceModule){
 
 });

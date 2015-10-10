@@ -11,4 +11,5 @@ public interface RouterResource extends Resource{
 	List<SubnetResource> getSubnets();
 	Long getCreated();
 	NetworkResource getCarrier();
+	String getGatewayIp();
 }

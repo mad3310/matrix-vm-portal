@@ -1,13 +1,23 @@
 <div class="view-common" ng-controller="VmFloatIpCrtl">
     <div class="le-row operate-panel">
         <div class="le-col-6 le-btn-group">
-            <button class="btn btn-le-blue" ng-disabled="true"><span>创建公网IP</span></button>
+            <button class="btn btn-le-blue" ng-click="openIPcreateModal(500)"><span>创建公网IP</span></button>
+            <button class="btn btn-le-blueGreen" ng-click="bindVm(500)"><span>绑定云主机</span></button>
+            <button class="btn btn-le-green" ng-disabled="true"><span>绑定路由器</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li><a href="javascript:void(0);" ng-click="deleteIp(400)">删除公网IP</a></li>
+                    <li><a href="javascript:void(0);">解绑云主机</a></li>
                 </ul>
+            </div>
+        </div>
+        <div class="le-col-6">
+            <div class="le-search-box pull-right">
+                <input type="text" />
+                <span class="search-icon"></span>
             </div>
         </div>
     </div>
@@ -20,10 +30,11 @@
                          <span class="iconfont icon-righticon"  ng-class="{checked:isAllFipChecked()}" ng-click="checkAllFip()"></span>
                     </th>
                     <th><span>名称</span></th>
-                    <th><span>地域</span></th>
-                    <th><span>带宽</span></th>
                     <th><span>IP地址</span></th>
                     <th><span>状态</span></th>
+                    <th><span>已绑定资源</span></th>
+                    <th><span>带宽</span></th> 
+                    <th><span>线路</span></th>
                     <th><span>创建时间</span></th>
                 </tr>
                 </thead>
@@ -33,12 +44,11 @@
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:fIp.checked}" ng-click="checkFip(fIp)"></span>
                     </td>
                     <td><span>{{fIp.name|| '未设置'}}</span></td>
-                    <td><span>{{fIp.regionDisplayName}}</span></td>
-                    <td><span>{{fIp.bandWidth}}</span></td>
                     <td><span>{{fIp.ipAddress}}</span></td>
-                    <td>
-                        <span>{{fIp.status}}</span>
-                    </td>
+                    <td><span>{{fIp.status}}</span></td>
+                    <td><span>{{fIp.bindResource.name||'-'}}</span></td>
+                    <td><span>{{fIp.bandWidth}}</span></td>
+                    <td><span>{{fIp.carrier.name}}</span></td>
                     <td><span>{{fIp.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
                 </tbody>
@@ -52,7 +62,100 @@
     </div>
     <toaster-container toaster-options="{'time-out': 3000, 'close-button':true,'position-class':'toast-bottom-right'}">
     </toaster-container>
-
+    <script type="text/ng-template" id="vmIPcreateModalTpl">
+        <div class="modal-header letv-modal-header">
+            <span class="header-title">创建公网IP</span>
+            <a class="close" ng-click="closeModal()">
+                <i class="iconfont icon-add"></i>
+            </a>
+        </div>
+        <div class="modal-body">
+            <form class="vm-create-form">
+                <div>
+                    <div class="left-inputs">
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-2"><span class="letv-control-label">名称：</span></div>
+                            <div class="col-sm-10">
+                                <input type="text" name="ipName" class="le-form-control ng-pristine ng-untouched ng-invalid ng-invalid-text-restrict" ng-model="ipName" placeholder="请输入公网IP名称" text-restrict="" style="">
+                                
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-2"><span class="letv-control-label">带宽：</span></div>
+                            <div class="col-sm-10">
+                                <rzslider rz-slider-model="networkBandWidth" rz-slider-floor="1" rz-slider-ceil="50" rz-slider-step="1" rz-slider-always-show-bar="true">
+                                </rzslider>
+                                <span class="network-bandwidth">{{networkBandWidth}}</span>
+                                <span class="network-bandwidth-unit">Mbps</span>
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-2"><span class="letv-control-label">线路：</span></div>
+                            <div class="col-sm-10">
+                                <div class="letv-mutiCheck check-carrier" ng-repeat="carrier in carrierList" ng-class="{'selected':isSelectedCarrier(carrier)}" ng-click="selectCarrier(carrier)">
+                                    <span>{{carrier.name}}</span>
+                                    <i class="iconfont icon-checkroundfillicon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-2"><span class="letv-control-label">数量：</span></div>
+                            <div class="col-sm-10">
+                                <numeric-input numeric-model="ipCount" class="ng-isolate-scope">
+                                    <input class="input-value ng-pristine ng-valid ng-touched" type="text" ng-model="model" style="">
+                                    <span class="up-down">
+                                        <a class="up" href="javascript:void(0);" ng-click="up()"><i class="fa fa-caret-up"></i></a>
+                                        <a class="down" href="javascript:void(0);" ng-click="down()"><i class="fa fa-caret-down"></i></a>
+                                    </span>
+                                </numeric-input>
+                            </div>
+                        </div>
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-offset-2"><span class="control-label"><b>合计：</b><span class="text-red">100.00</span>&nbsp;元/小时（<span class="text-red">1000.00</span>元/月）</span></div>
+                        </div>
+                    </div>
+                    <div class="left-button">
+                        <div class="col-sm-12">
+                            <div class="btn btn-le-blue pull-right" ng-click="createIP()"><span>提交</span></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmIPbindVmMOdalTpl">
+        <div class="modal-header letv-modal-header">
+            <span class="header-title">绑定云主机</span>
+            <a class="close" ng-click="closeModal()">
+                <i class="iconfont icon-add"></i>
+            </a>
+        </div>
+        <div class="modal-body">
+            <form class="vm-create-form">
+                <div>
+                    <div class="left-inputs">
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-2"><span class="letv-control-label">公网IP：</span></div>
+                            <div class="col-sm-10">
+                                <span class="letv-control-label">127.0.0.1</span>
+                            </div>
+                        </div>
+                        
+                        <div class="inputs-item nomargin row clearfix">
+                            <div class="col-sm-offset-2"><span class="control-label"><b>合计：</b><span class="text-red">100.00</span>&nbsp;元/小时（<span class="text-red">1000.00</span>元/月）</span></div>
+                        </div>
+                    </div>
+                    <div class="left-button">
+                        <div class="col-sm-12">
+                            <div class="btn btn-le-blue pull-right" ng-click="IpbingVm()"><span>提交</span></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
     <script type="text/ng-template" id="ConfirmModalTpl">
             <div class="le-confirm">
                 <div class="le-row confirm-header">

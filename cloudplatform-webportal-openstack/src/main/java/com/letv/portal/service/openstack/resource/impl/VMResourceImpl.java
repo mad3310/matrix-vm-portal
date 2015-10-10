@@ -35,6 +35,11 @@ public class VMResourceImpl extends AbstractResource implements VMResource {
 	private String regionDisplayName;
 	private List<VolumeResource> volumes;
 
+	public VMResourceImpl(String region, Server server) {
+		this.region = region;
+		this.server = server;
+	}
+
 	public VMResourceImpl(String region, String regionDisplayName, Server server) {
 		this.region = region;
 		this.regionDisplayName = regionDisplayName;

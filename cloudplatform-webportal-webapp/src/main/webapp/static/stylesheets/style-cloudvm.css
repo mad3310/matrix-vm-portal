@@ -90,5 +90,13 @@
 /*end virtual-machine-view style*/
 
 /*begin view-vm-disk style*/
-
+.form-vm-disk-create rzslider {
+    width: 250px;
+}
+.form-vm-disk-create .check-disk-type{
+    width: 60px;
+}
+.input-disk-name{
+    width: 250px;
+}
 /*end view-vm-disk style*/
