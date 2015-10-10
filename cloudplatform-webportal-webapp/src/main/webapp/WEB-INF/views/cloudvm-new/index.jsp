@@ -13,6 +13,7 @@
             <link rel="stylesheet" href="/static/stylesheets/rzslider.css">
             <link rel="stylesheet" href="/static/stylesheets/common.css">
             <link rel="stylesheet" href="/static/stylesheets/style-cloudvm.css">
+           <link rel="stylesheet" href="/static/stylesheets/style-router.css">
         </head>
         <style>
         .main .side-bar{height:100%;margin-top:0;padding-top:10px;z-index:200;background:#ebebeb;}

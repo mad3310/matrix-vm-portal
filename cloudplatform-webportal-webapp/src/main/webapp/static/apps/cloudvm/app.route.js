@@ -38,7 +38,7 @@ define(['app'],function (app) {
         },
           {
               url: '/vm-router',
-              title: '云路由',
+              title: '路由器',
               config: {
                   templateUrl: '/static/apps/cloudvm/views/vm-router.html'
               }
