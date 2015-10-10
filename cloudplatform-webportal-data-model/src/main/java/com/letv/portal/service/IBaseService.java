@@ -104,6 +104,7 @@ public interface IBaseService<T> {
 	  * @author lisuxiao
 	  * @date 2015年7月27日 上午11:38:37
 	  */
+	@Deprecated
 	<K, V> Page queryByPagination(Page page, Map<K,V> params);
 	/**
 	  * @Title: queryPaginationByMap
