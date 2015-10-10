@@ -9,7 +9,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.ipCount = 1;
     $scope.carrierList='';
     $scope.selectedCarrier = null;
-
+    Utility.getRzSliderHack($scope);
     HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
       $scope.carrierList=data.data;
     });
