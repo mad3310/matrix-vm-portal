@@ -22,6 +22,7 @@ define(['./common.service'], function (serviceModule) {
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',
+      disk_delete:'/osv/region/{region}/volume-delete',
       vpc_list:'/osn/network/private/list',
       floatIP_list:'/osn/floatingip/list',
       floatIP_create:'/osn/floatingip/create'
