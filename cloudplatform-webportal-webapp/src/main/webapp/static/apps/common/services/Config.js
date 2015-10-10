@@ -25,7 +25,8 @@ define(['./common.service'], function (serviceModule) {
       disk_delete:'/osv/region/{region}/volume-delete',
       vpc_list:'/osn/network/private/list',
       floatIP_list:'/osn/floatingip/list',
-      floatIP_create:'/osn/floatingip/create'
+      floatIP_create:'/osn/floatingip/create',
+      floatIp_delete:'/osn/floatingip/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

@@ -8,6 +8,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.ipName = '';
     $scope.ipCount = 1;
     $scope.carrierList='';
+    $scope.selectedCarrier = null;
 
     $scope.diskTypeList = [];
     $scope.selectedDiskType = null;
@@ -19,6 +20,12 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };
+    $scope.selectCarrier = function (carrier) {
+      $scope.selectedCarrier = carrier;
+    };
+    $scope.isSelectedCarrier = function (carrier) {
+      return $scope.selectedCarrier = carrier;
+    };
     $scope.isSelectedDiskType = function (diskType) {
       return $scope.selectedDiskType === diskType;
     };
@@ -27,15 +34,18 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.createIP = function () {
       var data = {
-        region:$scope.region,
+        'region':region,
         name: $scope.ipName,
-        bandWidth: $scope.bandWidth,
+        publicNetworkId:$scope.selectedCarrier.id,
+        bandWidth: $scope.networkBandWidth,
         count:$scope.ipCount
       };
       HttpService.doPost(Config.urls.floatIP_create,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          WidgetService.notifySuccess('创建公网IP成功');
+          // $window.location.href = '/payment/'+data.data;
+          
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建公网IP失败');
