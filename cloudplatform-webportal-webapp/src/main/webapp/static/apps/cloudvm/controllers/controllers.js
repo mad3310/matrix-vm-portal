@@ -10,8 +10,12 @@ define([
     'controllers/VmDiskCreateModalCtrl',
     'controllers/VmVpcCrtl',
     'controllers/VmFloatIpCrtl',
+    'controllers/VmRouterCtrl',
+    'controllers/VmRouterCreateModalCtrl',
+    'controllers/VmRouterEditModalCtrl',
     'controllers/VmIPcreateModalCtrl',
-    'controllers/VmIpBindVmModalCtrl'
+    'controllers/VmIpBindVmModalCtrl',
+    'controllers/VmIpEditModalCtrl'
   ],
   function (controllerModule) {
 

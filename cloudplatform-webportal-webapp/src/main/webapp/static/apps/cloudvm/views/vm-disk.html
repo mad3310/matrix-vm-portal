@@ -7,7 +7,7 @@
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><a href="javascript:void(0);" ng-click="deleteDisk()">删除云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="editDisk()">删除云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="openVmDiskAttachModal('500')">挂载云硬盘</a></li>
                     <li><a href="javascript:void(0);" ng-click="detachDisk()">解挂云硬盘</a></li>
                 </ul>
@@ -113,7 +113,7 @@
         </div>
     </script>
     <script type="text/ng-template" id="VmDiskAttachModalTpl">
-        <div class="modal-vm-disk-create">
+        <div class="modal-vm-disk-attach">
                 <div class="le-modal-header">
                     <span class="header-title">挂载云硬盘</span>
                     <a class="close" ng-click="closeModal()">
@@ -135,6 +135,31 @@
                         </div>
                     </div>
                 </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmDiskEditModalTpl">
+        <div class="modal-vm-disk-edit">
+            <div class="le-modal-header">
+                <span class="header-title">编辑云硬盘</span>
+                <a class="close" ng-click="closeModal()">
+                    <i class="iconfont icon-add"></i>
+                </a>
+            </div>
+            <div class="le-modal-body">
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">名称：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <input type="text" class="le-form-control input-disk-name" ng-model="diskName" />
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-12 col-submit-order">
+                        <button class="btn btn-le-red" ng-click="editDisk()"><span>编辑</span></button>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
     <script type="text/ng-template" id="ConfirmModalTpl">

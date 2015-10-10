@@ -3,9 +3,10 @@ package com.letv.portal.controller.cloudvm;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
-
 import com.letv.portal.service.openstack.local.query.service.VmQueryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
+import com.letv.portal.service.operate.IRecentOperateService;
 
 @Controller
 @RequestMapping("/ecs")
@@ -35,6 +37,9 @@ public class VMController {
 
 	@Autowired
 	private SessionServiceImpl sessionService;
+	
+	@Autowired
+	private IRecentOperateService recentOperateService;
 
 	@Autowired
 	private VmQueryService vmQueryService;
@@ -251,6 +256,8 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.deleteSync(region, vmResource);
+			//保存删除操作
+			this.recentOperateService.saveInfo(Constant.DELETE_OPENSTACK, vmResource.getName(), this.sessionService.getSession().getUserId(), null);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -282,6 +289,8 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.startSync(region, vmResource);
+			//保存启动操作
+			this.recentOperateService.saveInfo(Constant.START_OPENSTACK, vmResource.getName(), this.sessionService.getSession().getUserId(), null);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -313,6 +322,8 @@ public class VMController {
 			VMManager vmManager = Util.session(sessionService).getVMManager();
 			VMResource vmResource = vmManager.get(region, vmId);
 			vmManager.stopSync(region, vmResource);
+			//保存停止操作
+			this.recentOperateService.saveInfo(Constant.STOP_OPENSTACK, vmResource.getName(), this.sessionService.getSession().getUserId(), null);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

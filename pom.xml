@@ -134,7 +134,7 @@
                 <!-- 用户中心及oauth配置 -->
                 <uc.auth.http>http://uc.letvcloud.com</uc.auth.http>
                 <uc.auth.api.http>http://uc.letvcloud.com/api</uc.auth.api.http>
-                <webportal.local.http>http://matrix.letvcloud.com</webportal.local.http>
+                <webportal.local.http>http://matrix.letvcloud.com:8081</webportal.local.http>
                 
                 <oauth.auth.http>https://login.lecloud.com</oauth.auth.http>
                 <webportal.admin.http>http://127.0.0.1:8080</webportal.admin.http>

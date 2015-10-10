@@ -108,6 +108,19 @@ define(['./common.filter'], function (filterModule) {
 
   }]);
 
+  filterModule.filter('publicNetworkGatewayFilter',[ function () {
+    return function (input) {
+      var out = '';
+      if(input == 'true'){
+        out = '开启'
+      }
+      else{
+        out = '关闭'
+      }
+      return out;
+    }
+  }]);
+
   filterModule.filter('vmFlavorFilter', [ function () {
     return function (flavor) {
       return [flavor.vcpus+'核',Math.ceil(flavor.ram/1024)+'G',flavor.disk+'G'].join('/');

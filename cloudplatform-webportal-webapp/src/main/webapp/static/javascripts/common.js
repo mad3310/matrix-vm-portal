@@ -12,7 +12,8 @@ define(['jquery'],function($){
       {url: '/cvm/#/vm', title: '云主机', icon: 'iconfont icon-yunzhuji',isSubmenuFisrt:true},
       {url: '/cvm/#/vm-disk', title: '云硬盘', icon:  'iconfont icon-cloudstorageicon'},
       {url: '/cvm/#/vm-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
-      {url:'/cvm/#/vm-floatIP',title:'公网IP',icon:'iconfont icon-yunzhuji'},
+      {url: '/cvm/#/vm-floatIP',title:'公网IP',icon:'iconfont icon-ipicon'},
+      {url: '/cvm/#/vm-router',title:'路由器',icon:'iconfont icon-routeicon'},
       {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds',isSubmenuFisrt:true}
     ],
     sideMenuItemEl = null,

@@ -135,6 +135,37 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openVmDiskEditModal=function(size){
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmDiskEditModalTpl',
+          controller: 'VmDiskEditModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            disk: function () {
+              return checkedDisks[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.isAllDiskChecked=function(){
         var unCheckedDisks=$scope.diskList.filter(function(disk){
           return disk.checked===false || disk.checked===undefined;
@@ -225,6 +256,34 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
     initComponents();
+
+  });
+
+  controllerModule.controller('VmDiskEditModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
+
+    $scope.diskName=disk.name;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.editDisk = function () {
+      var data = {
+        vmId:$scope.selectedVm.value,
+        volumeId:disk.id
+      };
+      disk.status='attaching';
+      HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云硬盘挂载成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+        }
+      });
+    };
+
 
   });
 
