@@ -240,10 +240,14 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 
 			@Override
 			public Network run(NeutronApi neutronApi) throws Exception {
-				return neutronApi.getNetworkApi(region).get(
-						openStackConf.getGlobalPublicNetworkId());
+				return getPublicNetwork(neutronApi, region);
 			}
 		});
+	}
+
+	public Network getPublicNetwork(NeutronApi neutronApi, String region) {
+		return neutronApi.getNetworkApi(region).get(
+				openStackConf.getGlobalPublicNetworkId());
 	}
 
 	public Subnet getUserPrivateSubnet(final String region)

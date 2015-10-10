@@ -189,7 +189,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 				for (String region : neutronApi.getConfiguredRegions()) {
 					NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-					Network publicNetwork = networkManager.getPublicNetwork(region);
+					Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
 					// for (Network network : networkApi.list().concat().toList()) {
 					// if ("__public_network".equals(network.getName())) {
 					// publicNetwork = network;
