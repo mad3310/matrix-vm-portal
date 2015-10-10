@@ -13,7 +13,8 @@ define([
     'controllers/VmRouterCtrl',
     'controllers/VmRouterCreateModalCtrl', 
     'controllers/VmIPcreateModalCtrl',
-    'controllers/VmIpBindVmModalCtrl'
+    'controllers/VmIpBindVmModalCtrl',
+    'controllers/VmIpEditModalCtrl'
   ],
   function (controllerModule) {
 
