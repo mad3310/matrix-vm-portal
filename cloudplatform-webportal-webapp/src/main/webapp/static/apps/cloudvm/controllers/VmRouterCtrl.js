@@ -60,6 +60,21 @@ define(['controllers/app.controller'], function (controllerModule) {
         router.checked = router.checked === true ? false : true;
       };
 
+      $scope.editRouter = function(){
+        var checkedRouters=getCheckedRouter();
+        if(checkedRouters.length !==1){
+          WidgetService.notifyWarning('请选中一个路由器');
+          return;
+        }
+        openVmRouterEditModal('500',{
+          region:checkedRouters[0].region,
+          routerId: checkedRouters[0].id,
+          routerName: checkedRouters[0].name,
+          publicNetworkGatewayEnable : checkedRouters[0].publicNetworkGatewayEnable,
+          publicNetworkId:checkedRouters[0].carrier.id
+        });
+      }
+
       $scope.deleteRouter = function(){
         var checkedRouters=getCheckedRouter();
         if(checkedRouters.length !==1){
@@ -88,6 +103,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           });
         }, function () {
         });
+      };
+      $scope.functionDisable = function(){
+        WidgetService.notifyWarning('此功能尚未开放,敬请期待...');
       }
 
       var refreshRouterList = function () {
@@ -107,6 +125,28 @@ define(['controllers/app.controller'], function (controllerModule) {
           getCheckedRouter=function(){
             return $scope.routerList.filter(function(item){
               return item.checked===true;
+            });
+          },
+          openVmRouterEditModal = function (size,data) {
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'VmRouterEditModalTpl',
+              controller: 'VmRouterEditModalCtrl',
+              size: size,
+              backdrop: 'static',
+              keyboard: false,
+              resolve: {
+                routerInfo: function () {
+                  return data;
+                }
+              }
+            });
+
+            modalInstance.result.then(function (resultData) {
+              if(resultData &&resultData.result===1){
+                refreshRouterList();
+              }
+            }, function () {
             });
           };
       refreshRouterList();

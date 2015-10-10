@@ -11,7 +11,8 @@ define([
     'controllers/VmVpcCrtl',
     'controllers/VmFloatIpCrtl',
     'controllers/VmRouterCtrl',
-    'controllers/VmRouterCreateModalCtrl', 
+    'controllers/VmRouterCreateModalCtrl',
+    'controllers/VmRouterEditModalCtrl',
     'controllers/VmIPcreateModalCtrl',
     'controllers/VmIpBindVmModalCtrl',
     'controllers/VmIpEditModalCtrl'
