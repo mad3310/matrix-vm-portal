@@ -28,6 +28,7 @@ import com.letv.common.session.SessionServiceImpl;
 import com.letv.common.util.HttpClient;
 import com.letv.common.util.MD5;
 import com.letv.portal.constant.Constant;
+import com.letv.portal.constant.Constants;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.model.letvcloud.BillUserAmount;
 import com.letv.portal.model.order.Order;
@@ -94,7 +95,7 @@ public class PayServiceImpl implements IPayService {
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
 		String pattern = (String) map.get("pattern");
-		if(pattern==null || (!Constant.ALI_PAY_PATTERN.equals(pattern) && !Constant.WX_PAY_PATTERN.equals(pattern))) {
+		if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
 			throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
 		}
 		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
@@ -160,14 +161,14 @@ public class PayServiceImpl implements IPayService {
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductName() : orderSubs.get(0).getSubscription().getProductName()+ "...", 
 					orderSubs.size() == 1 ? orderSubs.get(0).getSubscription().getProductDescn() : orderSubs.get(0).getSubscription().getProductDescn()+ "...", null, params);
 
-			if (Constant.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
+			if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝方法
 				logger.info("去支付宝支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				try {
 					response.sendRedirect(getPayUrl(url, params));
 				} catch (IOException e) {
 					logger.error("pay inteface sendRedirect had error, ", e);
 				}
-			} else if (Constant.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
+			} else if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
 				logger.info("去微信支付：userId=" + sessionService.getSession().getUserId() +"交易信息=订单编号：" + order.getOrderNumber()+",价格："+price);
 				String str = HttpClient.get(getPayUrl(url, params), 6000, 6000);
 				ret = transResult(str);
@@ -207,12 +208,12 @@ public class PayServiceImpl implements IPayService {
 			logger.error("payService getParams had error :", e);
 		}
 
-		if (Constant.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝支付
+		if (Constants.ALI_PAY_PATTERN.equals(pattern)) {// 支付宝支付
 			params.put("defaultbank", defaultBank);
-			return Constant.PAY_URL;
+			return Constants.PAY_URL;
 		}
-		if (Constant.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
-			return Constant.WX_URL;
+		if (Constants.WX_PAY_PATTERN.equals(pattern)) {// 微信支付
+			return Constants.WX_URL;
 		}
 		return null;
 	}
@@ -268,7 +269,7 @@ public class PayServiceImpl implements IPayService {
 		}
 
 		// ③验证请求是否合法，规则：corderid=xxx&key&money=xxx&companyid=4
-		String sign = getSign("4", Constant.SIGN_KEY, orderSubs.get(0)
+		String sign = getSign("4", Constants.SIGN_KEY, orderSubs.get(0)
 				.getOrder().getOrderNumber(), getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).doubleValue()+"");
 		if (sign != null && sign.equals(map.get("sign"))) {
 			
@@ -344,8 +345,8 @@ public class PayServiceImpl implements IPayService {
 		params.put("companyid", "4");
 		params.put("corderid", order.getPayNumber());
 		params.put("sign",
-				getSign("4", Constant.SIGN_KEY, order.getPayNumber(), null));
-		String url = getPayUrl(Constant.QUERY_URL, params);
+				getSign("4", Constants.SIGN_KEY, order.getPayNumber(), null));
+		String url = getPayUrl(Constants.QUERY_URL, params);
 		String ret = HttpClient.get(url, 2000, 2000);
 		Map<String, Object> map = transResult(ret);
 
