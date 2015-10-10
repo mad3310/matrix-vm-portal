@@ -33,6 +33,8 @@ public interface VMManager extends ResourceManager {
 			throws RegionNotFoundException, ResourceNotFoundException,
 			APINotAvailableException, OpenStackException;
 
+	List<VMResource> listVmUnbindedFloatingIp(String region) throws OpenStackException;
+
 	VMResource get(String region, String id) throws RegionNotFoundException,
 			ResourceNotFoundException, APINotAvailableException,
 			OpenStackException;

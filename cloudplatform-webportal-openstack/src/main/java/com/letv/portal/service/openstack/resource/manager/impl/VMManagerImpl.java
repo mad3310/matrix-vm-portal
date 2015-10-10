@@ -29,13 +29,8 @@ import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
 import org.jclouds.openstack.neutron.v2.domain.Network;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
-import org.jclouds.openstack.nova.v2_0.domain.Console;
-import org.jclouds.openstack.nova.v2_0.domain.Flavor;
-import org.jclouds.openstack.nova.v2_0.domain.FloatingIP;
-import org.jclouds.openstack.nova.v2_0.domain.Quota;
-import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.*;
 import org.jclouds.openstack.nova.v2_0.domain.Server.Status;
-import org.jclouds.openstack.nova.v2_0.domain.ServerCreated;
 import org.jclouds.openstack.nova.v2_0.extensions.ConsolesApi;
 import org.jclouds.openstack.nova.v2_0.extensions.FloatingIPApi;
 import org.jclouds.openstack.nova.v2_0.extensions.QuotaApi;
@@ -43,6 +38,7 @@ import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
+import org.jclouds.openstack.v2_0.options.PaginationOptions;
 import org.slf4j.Logger;
 
 import com.google.common.base.Optional;
@@ -273,6 +269,37 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                 }
 
                 return page;
+            }
+        });
+    }
+
+    @Override
+    public List<VMResource> listVmUnbindedFloatingIp(final String region) throws OpenStackException {
+        return runWithApi(new ApiRunnable<NovaApi, List<VMResource>>() {
+            @Override
+            public List<VMResource> run(NovaApi novaApi) throws Exception {
+                checkRegion(region);
+//                String regionDisplayName = getRegionDisplayName(region);
+                ServerApi serverApi = novaApi.getServerApi(region);
+
+                Set<String> publicIpAddresses = networkManager.listPublicFloatingIpAddressAsSet(region);
+
+                List<Server> servers = serverApi.listInDetail().concat().toList();
+                List<VMResource> vmResources = new LinkedList<VMResource>();
+                for (Server server : servers) {
+                    boolean isBindedPublicIp = false;
+                    for (Address address : server.getAddresses().values()) {
+                        if (publicIpAddresses.contains(address.getAddr())) {
+                            isBindedPublicIp = true;
+                            break;
+                        }
+                    }
+                    if(!isBindedPublicIp) {
+                        vmResources.add(new VMResourceImpl(region, server));
+                    }
+                }
+
+                return vmResources;
             }
         });
     }
