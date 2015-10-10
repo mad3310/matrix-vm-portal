@@ -40,6 +40,7 @@ import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.SendMsgUtils;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
 import com.letv.portal.service.order.IOrderSubService;
@@ -81,6 +82,8 @@ public class PayServiceImpl implements IPayService {
 	private IProductInfoRecordService productInfoRecordService;
 	@Autowired
 	private SendMsgUtils sendMessage;
+	@Autowired
+	private IRecentOperateService recentOperateService;
 
 	@Value("${pay.callback}")
 	private String PAY_CALLBACK;
@@ -418,6 +421,8 @@ public class PayServiceImpl implements IPayService {
 								}
 								
 							}, records);
+					String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
+					this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK, content, this.sessionService.getSession().getUserId(), null);;
 					logger.info("createInstance success!");
 				}
 			}

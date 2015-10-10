@@ -124,8 +124,8 @@ public class OpenStackSessionImpl implements OpenStackSession {
 												  final Session session = sessionService.getSession();
 												  sessionRef.set(session);
 												  final long userId = session.getUserId();
-												  final String openStackUserId=openStackUser.getUserId();
-												  final String openStackUserPassword=openStackUser.getPassword();
+												  final String openStackUserId = openStackUser.getUserId();
+												  final String openStackUserPassword = openStackUser.getPassword();
 												  final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
 												  OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId,sessionId,openStackUserId,openStackUserPassword);
 											  }
@@ -184,91 +184,128 @@ public class OpenStackSessionImpl implements OpenStackSession {
 	private void initResources() {
 		try {
 			// if (openStackUser.getFirstLogin()) {
-			NeutronApi neutronApi = networkManager.openApi();
+			final NeutronApi neutronApi = networkManager.openApi();
 			try {
-				for (String region : neutronApi.getConfiguredRegions()) {
-					NetworkApi networkApi = neutronApi.getNetworkApi(region);
+				for (final String region : neutronApi.getConfiguredRegions()) {
+					final NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
-					Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
-					// for (Network network : networkApi.list().concat().toList()) {
-					// if ("__public_network".equals(network.getName())) {
-					// publicNetwork = network;
-					// break;
-					// }
-					// }
-					if (publicNetwork == null) {
-						throw new OpenStackException(
-								"can not find public network under region: " + region,
-								"后台服务异常");
-					}
-					openStackUser.setPublicNetworkName(publicNetwork.getName());
-
-					if (openStackUser.getInternalUser() && !openStackConf.getGlobalSharedNetworkId().isEmpty()) {
-						openStackUser.setSharedNetworkName(networkApi.get(
-								openStackConf.getGlobalSharedNetworkId()).getName());
-					}
-
-					Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
-							.getSecurityGroupApi(region);
-					if (!securityGroupApiOptional.isPresent()) {
-						throw new APINotAvailableException(SecurityGroupApi.class);
-					}
-					SecurityGroupApi securityGroupApi = securityGroupApiOptional.get();
-
-					SecurityGroup defaultSecurityGroup = null;
-					for (SecurityGroup securityGroup : securityGroupApi
-							.listSecurityGroups().concat().toList()) {
-						if ("default".equals(securityGroup.getName())) {
-							defaultSecurityGroup = securityGroup;
-							break;
+					Util.concurrentRunAndWait(new Runnable() {
+						@Override
+						public void run() {
+							Network publicNetwork = networkManager.getPublicNetwork(neutronApi, region);
+							// for (Network network : networkApi.list().concat().toList()) {
+							// if ("__public_network".equals(network.getName())) {
+							// publicNetwork = network;
+							// break;
+							// }
+							// }
+							if (publicNetwork == null) {
+								throw new OpenStackException(
+										"can not find public network under region: " + region,
+										"后台服务异常").matrixException();
+							}
+							openStackUser.setPublicNetworkName(publicNetwork.getName());
 						}
-					}
-					if (defaultSecurityGroup == null) {
-						defaultSecurityGroup = securityGroupApi
-								.create(SecurityGroup.CreateSecurityGroup
-										.createBuilder().name("default").build());
-					}
+					}, new Runnable() {
+						@Override
+						public void run() {
+							Optional<SecurityGroupApi> securityGroupApiOptional = neutronApi
+									.getSecurityGroupApi(region);
+							if (!securityGroupApiOptional.isPresent()) {
+								throw new APINotAvailableException(SecurityGroupApi.class).matrixException();
+							}
+							final SecurityGroupApi securityGroupApi = securityGroupApiOptional.get();
 
-					Rule pingRule = null, sshRule = null;
-					for (Rule rule : defaultSecurityGroup.getRules()) {
-						if (pingRule != null && sshRule != null) {
-							break;
-						}
-						if (pingRule == null) {
-							if (rule.getDirection() == RuleDirection.INGRESS
-									&& rule.getEthertype() == RuleEthertype.IPV4
-									&& rule.getProtocol() == RuleProtocol.ICMP
-									&& "0.0.0.0/0".equals(rule.getRemoteIpPrefix())) {
-								pingRule = rule;
+							SecurityGroup defaultSecurityGroup = null;
+							for (SecurityGroup securityGroup : securityGroupApi
+									.listSecurityGroups().concat().toList()) {
+								if ("default".equals(securityGroup.getName())) {
+									defaultSecurityGroup = securityGroup;
+									break;
+								}
+							}
+							if (defaultSecurityGroup == null) {
+								defaultSecurityGroup = securityGroupApi
+										.create(SecurityGroup.CreateSecurityGroup
+												.createBuilder().name("default").build());
+							}
+
+							Rule pingRule=null , sshRule=null;
+							for (Rule rule : defaultSecurityGroup.getRules()) {
+								if (pingRule != null && sshRule != null) {
+									break;
+								}
+								if (pingRule == null) {
+									if (rule.getDirection() == RuleDirection.INGRESS
+											&& rule.getEthertype() == RuleEthertype.IPV4
+											&& rule.getProtocol() == RuleProtocol.ICMP
+											&& "0.0.0.0/0".equals(rule.getRemoteIpPrefix())) {
+										pingRule = rule;
+									}
+								}
+								if (sshRule == null) {
+									if (rule.getDirection() == RuleDirection.INGRESS
+											&& rule.getEthertype() == RuleEthertype.IPV4
+											&& rule.getProtocol() == RuleProtocol.TCP
+											&& "0.0.0.0/0".equals(rule.getRemoteIpPrefix())
+											&& rule.getPortRangeMin() == 22
+											&& rule.getPortRangeMax() == 22) {
+										sshRule = rule;
+									}
+								}
+							}
+
+							if (pingRule == null && sshRule == null) {
+								final SecurityGroup defaultSecurityGroupRef = defaultSecurityGroup;
+								Util.concurrentRunAndWait(new Runnable() {
+									@Override
+									public void run() {
+										securityGroupApi.create(Rule.CreateRule
+												.createBuilder(RuleDirection.INGRESS,
+														defaultSecurityGroupRef.getId())
+												.ethertype(RuleEthertype.IPV4)
+												.protocol(RuleProtocol.ICMP)
+												.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
+									}
+								}, new Runnable() {
+									@Override
+									public void run() {
+										securityGroupApi.create(Rule.CreateRule
+												.createBuilder(RuleDirection.INGRESS,
+														defaultSecurityGroupRef.getId())
+												.ethertype(RuleEthertype.IPV4)
+												.protocol(RuleProtocol.TCP).portRangeMin(22)
+												.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
+									}
+								});
+							} else {
+								if (pingRule == null) {
+									securityGroupApi.create(Rule.CreateRule
+											.createBuilder(RuleDirection.INGRESS,
+													defaultSecurityGroup.getId())
+											.ethertype(RuleEthertype.IPV4)
+											.protocol(RuleProtocol.ICMP)
+											.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
+								}
+								if (sshRule == null) {
+									securityGroupApi.create(Rule.CreateRule
+											.createBuilder(RuleDirection.INGRESS,
+													defaultSecurityGroup.getId())
+											.ethertype(RuleEthertype.IPV4)
+											.protocol(RuleProtocol.TCP).portRangeMin(22)
+											.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
+								}
 							}
 						}
-						if (sshRule == null) {
-							if (rule.getDirection() == RuleDirection.INGRESS
-									&& rule.getEthertype() == RuleEthertype.IPV4
-									&& rule.getProtocol() == RuleProtocol.TCP
-									&& "0.0.0.0/0".equals(rule.getRemoteIpPrefix())
-									&& rule.getPortRangeMin() == 22
-									&& rule.getPortRangeMax() == 22) {
-								sshRule = rule;
+					}, new Runnable() {
+						@Override
+						public void run() {
+							if (openStackUser.getInternalUser() && !openStackConf.getGlobalSharedNetworkId().isEmpty()) {
+								openStackUser.setSharedNetworkName(networkApi.get(
+										openStackConf.getGlobalSharedNetworkId()).getName());
 							}
 						}
-					}
-					if (pingRule == null) {
-						pingRule = securityGroupApi.create(Rule.CreateRule
-								.createBuilder(RuleDirection.INGRESS,
-										defaultSecurityGroup.getId())
-								.ethertype(RuleEthertype.IPV4)
-								.protocol(RuleProtocol.ICMP)
-								.remoteIpPrefix("0.0.0.0/0").portRangeMax(255).portRangeMin(0).build());
-					}
-					if (sshRule == null) {
-						sshRule = securityGroupApi.create(Rule.CreateRule
-								.createBuilder(RuleDirection.INGRESS,
-										defaultSecurityGroup.getId())
-								.ethertype(RuleEthertype.IPV4)
-								.protocol(RuleProtocol.TCP).portRangeMin(22)
-								.portRangeMax(22).remoteIpPrefix("0.0.0.0/0").build());
-					}
+					});
 				}
 			} finally {
 				try {
