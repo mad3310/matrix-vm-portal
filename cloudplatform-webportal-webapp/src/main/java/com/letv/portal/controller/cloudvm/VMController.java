@@ -432,4 +432,18 @@ public class VMController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/vm/unbindedfloatingip/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listVmUnbindedFloatingIp(@RequestParam String region) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util.session(sessionService).getVMManager()
+					.listVmUnbindedFloatingIp(region));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }

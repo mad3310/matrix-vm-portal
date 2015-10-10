@@ -2566,6 +2566,32 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	Set<String> listPublicFloatingIpAddressAsSet(final String region) throws OpenStackException {
+		return runWithApi(new ApiRunnable<NeutronApi, Set<String>>() {
+			@Override
+			public Set<String> run(NeutronApi neutronApi) throws Exception {
+				Optional<FloatingIPApi> floatingIPApiOptional = neutronApi.getFloatingIPApi(region);
+				if (!floatingIPApiOptional.isPresent()) {
+					throw new APINotAvailableException(FloatingIPApi.class);
+				}
+				FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+				Set<String> ipAddressSet = new HashSet<String>();
+				List<FloatingIP> floatingIPs = floatingIPApi.list().concat().toList();
+				for (FloatingIP floatingIP : floatingIPs) {
+					if (isPublicFloatingIp(floatingIP)) {
+						ipAddressSet.add(floatingIP.getFloatingIpAddress());
+					}
+				}
+				return ipAddressSet;
+			}
+		});
+	}
+
+	public static boolean isPublicFloatingIp(FloatingIP floatingIP) {
+		return !StringUtils.equals(floatingIP.getFixedIpAddress(), floatingIP.getFloatingIpAddress());
+	}
+
 	@Override
 	protected String getProviderOrApi() {
 		return "openstack-neutron";

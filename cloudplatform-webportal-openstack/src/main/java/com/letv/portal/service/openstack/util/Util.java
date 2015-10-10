@@ -55,6 +55,12 @@ public class Util {
         }
     }
 
+	public static void concurrentRun(Runnable... tasks) {
+		for (Runnable task : tasks) {
+			executorService.submit(task);
+		}
+	}
+
 	public static void throwException(Exception ex) throws OpenStackException {
 		if (ex instanceof ValidateException) {
 			throw (ValidateException) ex;
