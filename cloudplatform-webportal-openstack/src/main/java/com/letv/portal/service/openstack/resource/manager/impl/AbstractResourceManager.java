@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 import java.io.Closeable;
 import java.util.*;
 
+import com.letv.portal.service.openstack.util.Contants;
 import org.jclouds.ContextBuilder;
 import org.jclouds.logging.slf4j.config.SLF4JLoggingModule;
 
@@ -47,10 +48,10 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 	protected abstract String getProviderOrApi();
 
 	protected abstract Class<ApiType> getApiClass();
-	
+
 	public ApiType openApi() {
-		Iterable<Module> modules = ImmutableSet
-				.<Module> of(new SLF4JLoggingModule());
+//		Iterable<Module> modules = ImmutableSet
+//				.<Module> of(new SLF4JLoggingModule());
 
 		ApiType api = ContextBuilder
 				.newBuilder(getProviderOrApi())
@@ -58,7 +59,7 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 				.credentials(
 						openStackUser.getUserId() + ":"
 								+ openStackUser.getUserId(),
-						openStackUser.getPassword()).modules(modules)
+						openStackUser.getPassword()).modules(Contants.jcloudsContextBuilderModules)
 				.buildApi(getApiClass());
 		return api;
 	}
