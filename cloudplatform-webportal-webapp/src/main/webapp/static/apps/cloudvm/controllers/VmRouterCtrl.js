@@ -71,7 +71,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           routerId: checkedRouters[0].id,
           routerName: checkedRouters[0].name,
           publicNetworkGatewayEnable : checkedRouters[0].publicNetworkGatewayEnable,
-          publicNetworkId:checkedRouters[0].carrier.id
+          publicNetworkId:checkedRouters[0].carrier?checkedRouters[0].carrier.id:null
         });
       }
 

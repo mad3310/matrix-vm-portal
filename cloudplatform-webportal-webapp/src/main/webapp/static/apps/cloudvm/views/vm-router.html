@@ -56,7 +56,7 @@
     </toaster-container>
 
     <script type="text/ng-template" id="VmRouterCreateModalTpl">
-        <div class="modal-vm-router-create">
+        <div class="modal-vm-disk-create">
             <form novalidate class="form-vm-router-create" name="vm_router_create_form">
                 <div class="le-modal-header">
                     <span class="header-title">创建路由器</span>
@@ -64,96 +64,79 @@
                         <i class="iconfont icon-add"></i>
                     </a>
                 </div>
-                <div class="le-modal-body modal-body">
-                    <div class="col-sm-8 body-left">
-                        <div class="le-row inputs-item nomargin clearfix">
-                            <div class="le-col-4">
-                                <span>名称</span>
-                            </div>
-                            <div class="le-col-8">
-                                <input type="text" ng-model="routerName" />
-                            </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">名称：</span>
                         </div>
-                        <div class="le-row inputs-item nomargin clearfix">
-                            <div class="le-col-4 radio-check-label">
-                                <span>公网网关</span>
-                            </div>
-                            <div class="le-col-8 radio-check-group">
-                                <div class="letv-radioCheck" ng-class="{'selected':enablePublicNetworkGateway=='true'}" ng-click="enablePublicNetworkGateway='true'">
-                                    <i class="iconfont icon-checkblockicon"></i>
-                                    <span class="letv-radio-content">开启</span>
-                                </div>
-                                <div class="letv-radioCheck" ng-class="{'selected':enablePublicNetworkGateway=='flase'}" ng-click="enablePublicNetworkGateway='flase'">
-                                    <i class="iconfont icon-checkblockicon"></i>
-                                    <span class="letv-radio-content">关闭</span>
-                                </div>
-                            </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" />
                         </div>
                     </div>
-                    <div class="col-sm-4 body-right router-body-right">
-                        <div class="right-top">
-                            <div class="top-title"><span>配置详情</span><i class="iconfont icon-rounddown"></i></div>
-                            <ul class="top-items">
-                                <li><span class="title">名称：</span><span class="value">{{routerName}}</span></li>
-                                <li><span class="title">公网网关：</span><span class="value">{{enablePublicNetworkGateway| publicNetworkGatewayFilter:enablePublicNetworkGateway}}</span></li>
-                            </ul>btn-le-blue
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">公网网关：</span>
                         </div>
-                        <div class="right-bottom">
-                        <span>
-                            <span class="title">合计：</span>
-                            <span class="price">0</span>
-                            <span class="unit">元</span>
-                        </span>
-                            <button class="btn btn-le-red btn-submit-order" ng-click="createRouter()"><span>提交订单</span></button>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </form>
-        </div>
-    </script>
-    <script type="text/ng-template" id="VmRouterEditModalTpl">
-        <div class="modal-header letv-modal-header">
-            <span class="header-title">修改路由器</span>
-            <a class="close" ng-click="closeModal()">
-                <i class="iconfont icon-add"></i>
-            </a>
-        </div>
-        <div class="modal-body">
-            <form class="vm-edit-form">
-                <div class="col-sm-8 body-left">
-                    <div class="le-row inputs-item nomargin clearfix">
-                        <div class="le-col-4">
-                            <span>名称</span>
-                        </div>
-                        <div class="le-col-8">
-                            <input type="text" ng-model="editRouterName" />
-                        </div>
-                    </div>
-                    <div class="le-row inputs-item nomargin clearfix">
-                        <div class="le-col-4 radio-check-label">
-                            <span>公网网关</span>
-                        </div>
-                        <div class="le-col-8 radio-check-group">
-                            <div class="letv-radioCheck" ng-class="{'selected':editEnablePublicNetworkGateway==true}" ng-click="editEnablePublicNetworkGateway=true">
+                        <div class="le-col-9 col-control">
+                            <div class="letv-radioCheck" ng-class="{'selected':enablePublicNetworkGateway=='true'}" ng-click="enablePublicNetworkGateway='true'">
                                 <i class="iconfont icon-checkblockicon"></i>
                                 <span class="letv-radio-content">开启</span>
                             </div>
-                            <div class="letv-radioCheck" ng-class="{'selected':editEnablePublicNetworkGateway==flase}" ng-click="editEnablePublicNetworkGateway=flase">
+                            <div class="letv-radioCheck" ng-class="{'selected':enablePublicNetworkGateway=='false'}" ng-click="enablePublicNetworkGateway='false'">
                                 <i class="iconfont icon-checkblockicon"></i>
                                 <span class="letv-radio-content">关闭</span>
                             </div>
                         </div>
                     </div>
-                    <div class="left-button">
-                        <div class="col-sm-12">
-                            <div class="btn btn-le-blue pull-right" ng-click="editRouter()"><span>提交</span></div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-red" ng-click="createRouter()"><span>提交订单</span></button>
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
             </form>
         </div>
+    </script>
+
+    <script type="text/ng-template" id="VmRouterEditModalTpl">
+        <form novalidate class="form-vm-router-create" name="vm_router_create_form">
+        <div class="letv-modal-header">
+            <span class="header-title">修改路由器</span>
+            <a class="close" ng-click="closeModal()">
+                <i class="iconfont icon-add"></i>
+            </a>
+        </div>
+        <div class="le-modal-body">
+            <div class="le-row">
+                <div class="le-col-3 col-label">
+                    <span class="letv-control-label">名称：</span>
+                </div>
+                <div class="le-col-9 col-control">
+                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" />
+                </div>
+            </div>
+            <div class="le-row">
+                <div class="le-col-3 col-label">
+                    <span class="letv-control-label">公网网关：</span>
+                </div>
+                <div class="le-col-9 col-control">
+                    <div class="letv-radioCheck" ng-class="{'selected':editEnablePublicNetworkGateway==true}" ng-click="editEnablePublicNetworkGateway=true">
+                        <i class="iconfont icon-checkblockicon"></i>
+                        <span class="letv-radio-content">开启</span>
+                    </div>
+                    <div class="letv-radioCheck" ng-class="{'selected':editEnablePublicNetworkGateway==false}" ng-click="editEnablePublicNetworkGateway=false">
+                        <i class="iconfont icon-checkblockicon"></i>
+                        <span class="letv-radio-content">关闭</span>
+                    </div>
+                </div>
+            </div>
+            <div class="le-row">
+                <div class="le-col-12 col-submit-order">
+                    <button class="btn btn-le-red" ng-click="editRouter()"><span>提交修改</span></button>
+                </div>
+            </div>
+        </div>
+        </form>
     </script>
 
     <script type="text/ng-template" id="ConfirmModalTpl">

@@ -7,6 +7,10 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.editRouterName = routerInfo.routerName;
     $scope.editEnablePublicNetworkGateway = routerInfo.publicNetworkGatewayEnable;
 
+    if(routerInfo.publicNetworkGatewayEnable===false){
+      getPublicNetworkId();
+    }
+
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };
@@ -29,6 +33,13 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+
+    function getPublicNetworkId() {
+      HttpService.doGet(Config.urls.network_public_list,{region:routerInfo.region}).success(function (data, status, headers, config) {
+        routerInfo.publicNetworkId = data.data[0].id;
+      });
+    };
+
 
   });
 
