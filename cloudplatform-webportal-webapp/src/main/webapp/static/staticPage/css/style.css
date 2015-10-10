@@ -267,7 +267,7 @@ a:hover{cursor:pointer;}
 .price-table-desc p{margin:10px 0;}
 .try-btn{width:160px;height:35px;margin-top:30px;border:1px solid #088ac2;border-radius:2px;text-align:center;line-height:35px;color:#088ac2}
 .try-btn:hover{cursor:pointer;color:#fff;background:#088ac2}
-#productcanvas{margin-left:35px;}
+#productcanvas{margin-left:15px;}
 #build{width:240px;height:170px;position:absolute;top:0;left:0;margin-left:155px;margin-top:-30px;z-index:150}
 #time{width:40px;height:40px;position:absolute;top:100px;left:475px;z-index:100}
 #slb{width:40px;height:40px;position:absolute;top:200px;left:107.5px;z-index:100}
