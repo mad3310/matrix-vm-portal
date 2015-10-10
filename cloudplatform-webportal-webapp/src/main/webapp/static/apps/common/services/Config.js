@@ -22,9 +22,13 @@ define(['./common.service'], function (serviceModule) {
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',
+      disk_delete:'/osv/region/{region}/volume-delete',
+      disk_attach:'/ecs/region/{region}/vm-attach-volume',
+      disk_detach:'/ecs/region/{region}/vm-detach-volume',
       vpc_list:'/osn/network/private/list',
       floatIP_list:'/osn/floatingip/list',
-      floatIP_create:'/osn/floatingip/create'
+      floatIP_create:'/osn/floatingip/create',
+      floatIp_delete:'/osn/floatingip/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

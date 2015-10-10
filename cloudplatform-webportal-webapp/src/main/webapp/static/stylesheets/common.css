@@ -828,7 +828,53 @@ numeric-input .up-down > a{
 numeric-input .up-down > a > i{
     color: #666;
 }
-/*begin letv-numeric-input style*/
+/*end letv-numeric-input style*/
+
+/*begin le-select style*/
+le-select{
+    height: 30px;
+    width: 100%;
+    position: relative;
+    display: block;
+    border: 1px solid #d2d2d2;
+}
+le-select .le-select-toggle{
+    height: 100%;
+}
+le-select .le-select-toggle .select-value{
+    line-height: 30px;
+    margin-left: 4px;
+}
+le-select .le-select-toggle .select-arrow{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    width: 20px;
+}
+le-select .le-select-toggle .select-arrow i{
+    font-size: 20px;
+    line-height: 28px;
+}
+le-select .le-select-menu{
+    display: none;
+    list-style: none;
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    width: 100%;
+    margin-top: 1px;
+    background-color: white;
+    border: 1px solid #d2d2d2;
+}
+le-select .le-select-menu li{
+    padding: 0 2px;
+}
+le-select .le-select-menu.open{
+    display: block;
+}
+/*end le-select style*/
 
 /*begin spin style*/
 .spin {

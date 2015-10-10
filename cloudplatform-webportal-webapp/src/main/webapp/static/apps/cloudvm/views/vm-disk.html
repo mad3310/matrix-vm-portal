@@ -7,6 +7,9 @@
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
+                    <li><a href="javascript:void(0);" ng-click="deleteDisk('400')">删除云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="openVmDiskAttachModal('400')">挂载云硬盘</a></li>
+                    <li><a href="javascript:void(0);">解挂云硬盘</a></li>
                 </ul>
             </div>
         </div>
@@ -106,6 +109,31 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmDiskAttachModalTpl">
+        <div class="modal-vm-disk-create">
+                <div class="le-modal-header">
+                    <span class="header-title">挂载云硬盘</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">云主机：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <le-select select-model="selectedVm" select-options="vmListSelectorData"></le-select>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-red" ng-click="attachDisk()"><span>挂载云硬盘</span></button>
+                        </div>
+                    </div>
+                </div>
         </div>
     </script>
     <script type="text/ng-template" id="ConfirmModalTpl">

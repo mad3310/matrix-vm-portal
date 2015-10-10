@@ -38,6 +38,66 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openVmDiskAttachModal = function (size) {
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmDiskAttachModalTpl',
+          controller: 'VmDiskAttachModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            diskId: function () {
+              return checkedDisks[0].id;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshVmList();
+          }
+        }, function () {
+        });
+      };
+
+      $scope.deleteDisk=function(size){
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        var data={
+          volumeId: checkedDisks[0].id
+        };
+        var modalInstance = WidgetService.openConfirmModal('删除云硬盘','确定要删除云硬盘（'+checkedDisks[0].name+'）吗？');
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          WidgetService.notifyInfo('云硬盘删除执行中...');
+          checkedDisks[0].status='DELETEING';
+          HttpService.doPost(Config.urls.disk_delete.replace('{region}', checkedDisks[0].region), data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              checkedDisks[0].status='DELETED';
+              modalInstance.close(data);
+              WidgetService.notifySuccess('删除云硬盘成功');
+              refreshDiskList();
+            }
+            else{
+              WidgetService.notifyError(data.msgs[0]||'删除云硬盘失败');
+            }
+          });
+        }, function () {
+        });
+      };
+
       $scope.isAllDiskChecked=function(){
         var unCheckedDisks=$scope.diskList.filter(function(disk){
           return disk.checked===false || disk.checked===undefined;
@@ -74,11 +134,60 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.totalItems = data.data.totalRecords;
 
           });
+      },
+        getCheckedDisk=function(){
+          return $scope.diskList.filter(function(item){
+            return item.checked===true;
+          });
         };
 
       refreshDiskList();
 
     }
   ]);
+
+  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,diskId) {
+
+    $scope.vmList=[];
+    $scope.vmListSelectorData=[];
+    $scope.selectedVm=null;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.attachDisk = function () {
+      var data = {
+        vmId:$scope.selectedVm.id,
+        volumeId:diskId
+      };
+      HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifyError('云硬盘挂载成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+        }
+      });
+    };
+
+    var initComponents = function () {
+        initVmSelector();
+      },
+      initVmSelector = function () {
+        HttpService.doGet(Config.urls.vm_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.vmList = data.data.data;
+          $scope.vmListSelectorData=$scope.vmList.map(function(vm){
+            return new ModelService.SelectModel(vm.name,vm.id);
+          });
+          $scope.selectedVm=$scope.vmListSelectorData[0];
+        });
+
+      };
+
+    initComponents();
+
+  });
 
 });
