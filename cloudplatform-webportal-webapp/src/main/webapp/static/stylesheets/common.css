@@ -817,7 +817,8 @@ numeric-input .up-down{
     position: absolute;
     right: 0;
     top: 0;
-    background: #f5f5f5;
+    background: #e6e6e6;
+    color: #999999;
 }
 numeric-input .up-down > a{
     height: 50%;
@@ -836,10 +837,10 @@ le-select{
     width: 100%;
     position: relative;
     display: block;
-    border: 1px solid #d2d2d2;
 }
 le-select .le-select-toggle{
     height: 100%;
+    border: 1px solid #d2d2d2;
 }
 le-select .le-select-toggle .select-value{
     line-height: 30px;
@@ -847,14 +848,17 @@ le-select .le-select-toggle .select-value{
 }
 le-select .le-select-toggle .select-arrow{
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 1px;
+    top: 1px;
     display: block;
-    height: 100%;
-    width: 20px;
+    height: 28px;
+    width: 30px;
+    text-align: center;
+    color: #999999;
+    background: #e6e6e6;
 }
 le-select .le-select-toggle .select-arrow i{
-    font-size: 20px;
+    font-size: 18px;
     line-height: 28px;
 }
 le-select .le-select-menu{
@@ -864,15 +868,23 @@ le-select .le-select-menu{
     z-index: 1000;
     top: 100%;
     width: 100%;
-    margin-top: 1px;
+    padding: 2px 0px 4px;
     background-color: white;
     border: 1px solid #d2d2d2;
-}
-le-select .le-select-menu li{
-    padding: 0 2px;
+    border-top-width: 0;
 }
 le-select .le-select-menu.open{
     display: block;
+}
+le-select .le-select-menu li{
+    padding: 4px;
+}
+le-select .le-select-menu li:hover{
+    background: #f5f5f5;
+}
+le-select .le-select-menu li a{
+    text-decoration: none;
+    color: black;
 }
 /*end le-select style*/
 

@@ -99,4 +99,7 @@
 .input-disk-name{
     width: 250px;
 }
+.modal-vm-disk-attach le-select{
+    width: 250px;
+}
 /*end view-vm-disk style*/
