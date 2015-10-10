@@ -71,7 +71,7 @@ public class VolumeController {
 			result.setData(Util
 					.session(sessionService)
 					.getVolumeManager()
-					.listByRegionGroup(region, Util.optPara(name), currentPage,
+					.list(region, Util.optPara(name), currentPage,
 							recordsPerPage));
 		} catch (OpenStackException e) {
 			throw e.matrixException();

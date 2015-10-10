@@ -2,14 +2,16 @@ package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.letv.portal.service.openstack.exception.*;
 
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
+import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.util.Ref;
+import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
@@ -30,14 +32,17 @@ import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		implements VolumeManager {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 378518940119989827L;
+
+	private VMManagerImpl vmManager;
 
 	// private CinderApi cinderApi;
 
@@ -134,8 +139,104 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+    public Page list(final String region, final String name, final Integer currentPagePara, final Integer recordsPerPage) throws OpenStackException {
+        return runWithApi(new ApiRunnable<CinderApi, Page>() {
+            @Override
+            public Page run(final CinderApi cinderApi) throws Exception {
+                checkRegion(region);
+
+                final Ref<Integer> currentPageRef = new Ref<Integer>();
+
+                final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+                final Map<String, Server> idToServer = new HashMap<String, Server>();
+                final Ref<Integer> volumeCountRef = new Ref<Integer>();
+
+                Util.concurrentRunAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            List<Server> servers = vmManager.listServer(region);
+                            for (Server server : servers) {
+                                idToServer.put(server.getId(), server);
+                            }
+                        } catch (OpenStackException e) {
+                            throw e.matrixException();
+                        }
+                    }
+                },new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Integer currentPage = null;
+                            if (currentPagePara != null) {
+                                currentPage = currentPagePara - 1;
+                                currentPageRef.set(currentPage);
+                            }
+
+                            String regionDisplayName = getRegionDisplayName(region);
+
+                            List<? extends Volume> volumes = cinderApi.getVolumeApi(region).listInDetail().toList();
+                            int volumeCount = 0;
+                            for (Volume volume : volumes) {
+                                if (name == null
+                                        || (volume.getName() != null && volume
+                                        .getName().contains(name))) {
+                                    if (currentPage == null
+                                            || recordsPerPage == null) {
+                                        volumeResources.add(new VolumeResourceImpl(
+                                                region, regionDisplayName, volume));
+                                    } else if (volumeCount < (currentPage + 1)
+                                            * recordsPerPage && volumeCount >= currentPage
+                                            * recordsPerPage) {
+                                        volumeResources
+                                                .add(new VolumeResourceImpl(
+                                                        region,
+                                                        regionDisplayName,
+                                                        volume));
+                                    }
+                                    volumeCount++;
+                                }
+                            }
+                            volumeCountRef.set(volumeCount);
+                        } catch (OpenStackException e) {
+                            throw e.matrixException();
+                        }
+                    }
+                });
+
+                for (VolumeResource volumeResource : volumeResources) {
+                    for (VolumeAttachmentResource volumeAttachmentResource : volumeResource.getAttachments()) {
+                        String vmId = volumeAttachmentResource.getVmId();
+                        if (vmId != null) {
+                            Server server = idToServer.get(vmId);
+                            if (server != null) {
+                                String vmName = server.getName();
+                                ((VolumeAttachmentResourceImpl) volumeAttachmentResource).setVmName(vmName);
+                            }
+                        }
+                    }
+                }
+
+                Page page = new Page();
+                page.setData(volumeResources);
+                page.setTotalRecords(volumeCountRef.get());
+                if (recordsPerPage != null) {
+                    page.setRecordsPerPage(recordsPerPage);
+                } else {
+                    page.setRecordsPerPage(10);
+                }
+                if (currentPageRef.get() != null) {
+                    page.setCurrentPage(currentPageRef.get() + 1);
+                } else {
+                    page.setCurrentPage(1);
+                }
+                return page;
+            }
+        });
+    }
+
 	/**
-	 * 
+	 *
 	 * @param regions
 	 * @param name
 	 * @param currentPagePara
@@ -147,6 +248,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	 * @throws APINotAvailableException
 	 * @throws OpenStackException
 	 */
+	@Deprecated
 	private Page listByRegions(final Set<String> regions, final String name,
 			final Integer currentPagePara, final Integer recordsPerPage)
 			throws RegionNotFoundException, ResourceNotFoundException,
@@ -154,69 +256,87 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		return runWithApi(new ApiRunnable<CinderApi, Page>() {
 
 			@Override
-			public Page run(CinderApi cinderApi) throws Exception {
-				Integer currentPage = null;
-				if (currentPagePara != null) {
-					currentPage = currentPagePara - 1;
-				}
+			public Page run(final CinderApi cinderApi) throws Exception {
+				final Ref<Integer> currentPageRef = new Ref<Integer>();
+				final Ref<Integer> volumeCountRef = new Ref<Integer>();
 
-				Map<String, String> transMap = getRegionCodeToDisplayNameMap();
-				List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
-				int volumeCount = 0;
-				boolean needCollect = true;
-				for (String region : regions) {
-					VolumeApi volumeApi = cinderApi.getVolumeApi(region);
-					if (needCollect) {
-						String regionDisplayName = transMap.get(region);
-						List<? extends Volume> volumes = volumeApi
-								.listInDetail().toList();
-						for (Volume volume : volumes) {
-							if (name == null
-									|| (volume.getName() != null && volume
+				final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
+
+				Util.concurrentRunAndWait(new Runnable() {
+					@Override
+					public void run() {
+						Integer currentPage = null;
+						if (currentPagePara != null) {
+							currentPage = currentPagePara - 1;
+							currentPageRef.set(currentPage);
+						}
+
+						final Map<String, String> transMap = getRegionCodeToDisplayNameMap();
+
+						int volumeCount = 0;
+						boolean needCollect = true;
+						for (String region : regions) {
+							VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+							if (needCollect) {
+								String regionDisplayName = transMap.get(region);
+								List<? extends Volume> volumes = volumeApi
+										.listInDetail().toList();
+								for (Volume volume : volumes) {
+									if (name == null
+											|| (volume.getName() != null && volume
 											.getName().contains(name))) {
-								if (currentPage == null
-										|| recordsPerPage == null) {
-									volumeResources.add(new VolumeResourceImpl(
-											region, regionDisplayName, volume));
-								} else {
-									if (needCollect) {
-										if (volumeCount >= (currentPage + 1)
-												* recordsPerPage) {
-											needCollect = false;
-										} else if (volumeCount >= currentPage
-												* recordsPerPage) {
-											volumeResources
-													.add(new VolumeResourceImpl(
-															region,
-															regionDisplayName,
-															volume));
+										if (currentPage == null
+												|| recordsPerPage == null) {
+											volumeResources.add(new VolumeResourceImpl(
+													region, regionDisplayName, volume));
+										} else {
+											if (needCollect) {
+												if (volumeCount >= (currentPage + 1)
+														* recordsPerPage) {
+													needCollect = false;
+												} else if (volumeCount >= currentPage
+														* recordsPerPage) {
+													volumeResources
+															.add(new VolumeResourceImpl(
+                                                                    region,
+                                                                    regionDisplayName,
+                                                                    volume));
+												}
+											}
 										}
+										volumeCount++;
 									}
 								}
-								volumeCount++;
-							}
-						}
-					} else {
-						for (Volume volume : volumeApi.list().toList()) {
-							if (name == null
-									|| (volume.getName() != null && volume
+							} else {
+								for (Volume volume : volumeApi.list().toList()) {
+									if (name == null
+											|| (volume.getName() != null && volume
 											.getName().contains(name))) {
-								volumeCount++;
+										volumeCount++;
+									}
+								}
 							}
 						}
+
+						volumeCountRef.set(volumeCount);
 					}
-				}
+				}, new Runnable() {
+					@Override
+					public void run() {
+
+					}
+				});
 
 				Page page = new Page();
 				page.setData(volumeResources);
-				page.setTotalRecords(volumeCount);
+				page.setTotalRecords(volumeCountRef.get());
 				if (recordsPerPage != null) {
 					page.setRecordsPerPage(recordsPerPage);
 				} else {
 					page.setRecordsPerPage(10);
 				}
-				if (currentPage != null) {
-					page.setCurrentPage(currentPage + 1);
+				if (currentPageRef.get() != null) {
+					page.setCurrentPage(currentPageRef.get() + 1);
 				} else {
 					page.setCurrentPage(1);
 				}
@@ -556,5 +676,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		} catch (Exception ex) {
 			throw new OpenStackException("后台错误", ex);
 		}
+	}
+
+	public void setVmManager(VMManagerImpl vmManager) {
+		this.vmManager = vmManager;
 	}
 }

@@ -97,6 +97,7 @@ public class OpenStackSessionImpl implements OpenStackSession {
 		networkManager.setVmManager(vmManager);
 
 		// volumeManager.setIdentityManager(identityManager);
+		volumeManager.setVmManager(vmManager);
 
 		isClosed = false;
 

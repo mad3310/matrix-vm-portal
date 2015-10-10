@@ -7,6 +7,7 @@ import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
 public class VolumeAttachmentResourceImpl implements VolumeAttachmentResource {
 
 	private VolumeAttachment volumeAttachment;
+	private String vmName;
 
 	public VolumeAttachmentResourceImpl(VolumeAttachment volumeAttachment) {
 		this.volumeAttachment = volumeAttachment;
@@ -25,6 +26,15 @@ public class VolumeAttachmentResourceImpl implements VolumeAttachmentResource {
 	@Override
 	public String getVmId() {
 		return volumeAttachment.getServerId();
+	}
+
+	public void setVmName(String vmName) {
+		this.vmName = vmName;
+	}
+
+	@Override
+	public String getVmName() {
+		return vmName;
 	}
 
 	@Override

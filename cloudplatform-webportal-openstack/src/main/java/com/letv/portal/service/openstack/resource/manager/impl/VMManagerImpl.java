@@ -1726,4 +1726,13 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             throw new OpenStackException("后台错误", ex);
         }
     }
+
+    List<Server> listServer(final String region) throws OpenStackException {
+        return runWithApi(new ApiRunnable<NovaApi, List<Server>>() {
+            @Override
+            public List<Server> run(NovaApi novaApi) throws Exception {
+                return novaApi.getServerApi(region).listInDetail().concat().toList();
+            }
+        });
+    }
 }
