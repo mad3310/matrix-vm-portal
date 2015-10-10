@@ -7,9 +7,9 @@
                     更多操作
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
-                    <li><a href="javascript:void(0);" ng-click="deleteDisk('400')">删除云硬盘</a></li>
-                    <li><a href="javascript:void(0);" ng-click="openVmDiskAttachModal('400')">挂载云硬盘</a></li>
-                    <li><a href="javascript:void(0);">解挂云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="deleteDisk()">删除云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="openVmDiskAttachModal('500')">挂载云硬盘</a></li>
+                    <li><a href="javascript:void(0);" ng-click="detachDisk()">解挂云硬盘</a></li>
                 </ul>
             </div>
         </div>
@@ -39,6 +39,7 @@
                     <td><span>{{disk.size}}GB</span></td>
                     <td>
                         <span>{{disk.status | diskStatusFilter}}</span>
+                        <span ng-if="['creating','attaching','deleting','detaching'].indexOf(disk.status)>-1" class="status-loading"></span>
                     </td>
                     <td><span>{{disk.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
