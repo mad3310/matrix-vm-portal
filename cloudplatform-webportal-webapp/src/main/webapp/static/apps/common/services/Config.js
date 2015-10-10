@@ -33,7 +33,10 @@ define(['./common.service'], function (serviceModule) {
       router_delete:'/osn/router/delete',
       floatIP_list:'/osn/floatingip/list',
       floatIP_create:'/osn/floatingip/create',
-      floatIp_delete:'/osn/floatingip/delete'
+      floatIp_delete:'/osn/floatingip/delete',
+      floatIP_edit:'/osn/floatingip/edit',
+      floatIp_bindVm:'/ecs/vm/floatingip/bind',
+      floatIp_unbindVm:'/ecs/vm/floatingip/unbind'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
