@@ -10,10 +10,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.carrierList='';
     $scope.selectedCarrier = null;
 
-    $scope.diskTypeList = [];
-    $scope.selectedDiskType = null;
-    $scope.diskVolume = 10;
-
     HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
       $scope.carrierList=data.data;
     });
@@ -25,12 +21,6 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.isSelectedCarrier = function (carrier) {
       return $scope.selectedCarrier = carrier;
-    };
-    $scope.isSelectedDiskType = function (diskType) {
-      return $scope.selectedDiskType === diskType;
-    };
-    $scope.selectDiskType = function (diskType) {
-      $scope.selectedDiskType = diskType;
     };
     $scope.createIP = function () {
       var data = {
@@ -52,19 +42,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-
-    var initComponents = function () {
-        initDiskTypeSelector();
-      },
-      initDiskTypeSelector = function () {
-        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
-          $scope.diskTypeList=data.data;
-          $scope.selectedDiskType = $scope.diskTypeList[0];
-        });
-      };
-
-    initComponents();
-
   });
 
 });

@@ -49,5 +49,14 @@ public class Constant {
 
 	//是否查询mysql不变数据的开关
 	public static boolean QUERY_MYSQL_CONSTANT_DATA = false;
+	
+	//创建云主机
+	public static final String CREATE_OPENSTACK = "创建云主机";
+	//启动云主机
+	public static final String START_OPENSTACK = "启动云主机";
+	//停止云主机
+	public static final String STOP_OPENSTACK = "停止云主机";
+	//删除云主机
+	public static final String DELETE_OPENSTACK = "删除云主机";
 
 }
