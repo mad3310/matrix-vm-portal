@@ -15,5 +15,8 @@ public class Constant {
 	public static final String ALI_PAY_PATTERN = "1";//支付宝支付方式
 	
 	public static final String WX_PAY_PATTERN = "2";//微信支付方式
+	
+	//创建云主机
+	public static final String CREATE_OPENSTACK = "创建云主机";
 
 }
