@@ -968,11 +968,11 @@ numeric-input .up-down > a > i{
     background-color: #ff3c37;
     color: #fff;
 }
-.btn-le-blue:hover{color:#fff;background:#077CAE;}
-.btn-le-blueGreen:hover{color:#fff;background:#0592A2;}
-.btn-le-green:hover{color:#fff;background:#06A094}
-.btn-le-yellow:hover{color:#fff;background:rgb(234,176,15);}
-.btn-le-red:hover{color:#fff;background:#E41E19}
+.btn-le-blue:hover,.btn-le-blue:active,.btn-le-blue:focus{color:#fff;background:#077CAE;}
+.btn-le-blueGreen:hover,.btn-le-blueGreen:active,.btn-le-blueGreen:focus{color:#fff;background:#0592A2;}
+.btn-le-green:hover,.btn-le-green:active,.btn-le-green:focus{color:#fff;background:#06A094}
+.btn-le-yellow:hover,.btn-le-yellow:active,.btn-le-yellow:focus{color:#fff;background:rgb(234,176,15);}
+.btn-le-red:hover,.btn-le-red:active,.btn-le-red:focus{color:#fff;background:#E41E19}
 /*end btn-le style*/
 
 /*begin le-text style*/
