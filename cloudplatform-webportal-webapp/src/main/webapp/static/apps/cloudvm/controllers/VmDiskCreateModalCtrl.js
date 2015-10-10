@@ -5,6 +5,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
 
+    Utility.getRzSliderHack($scope)();
     $scope.diskName = '';
     $scope.diskTypeList = [];
     $scope.selectedDiskType = null;
