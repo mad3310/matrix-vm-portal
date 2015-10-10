@@ -30,7 +30,7 @@ define(['./common.service'], function (serviceModule) {
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
       router_create:'/osn/router/create',
-      router_delete:'/osn/router/delete'
+      router_delete:'/osn/router/delete',
       floatIP_list:'/osn/floatingip/list',
       floatIP_create:'/osn/floatingip/create',
       floatIp_delete:'/osn/floatingip/delete'
