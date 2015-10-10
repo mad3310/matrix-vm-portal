@@ -39,6 +39,11 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.openVmDiskAttachModal = function (size) {
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
           templateUrl: 'VmDiskAttachModalTpl',
@@ -49,6 +54,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           resolve: {
             region: function () {
               return CurrentContext.regionId;
+            },
+            diskId: function () {
+              return checkedDisks[0].id;
             }
           }
         });
@@ -138,47 +146,44 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
-  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility, $scope, $modalInstance, region) {
+  controllerModule.controller('VmDiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,diskId) {
 
-    $scope.diskName = '';
-    $scope.diskTypeList = [];
-    $scope.selectedDiskType = null;
-    $scope.diskVolume = 10;
-    $scope.diskCount = 1;
-
-    $scope.vmList=[{text:'vm1',value:1},{text:'vm2',value:2},{text:'vm3',value:3}];
-    $scope.selectVm=$scope.vmList[0];
+    $scope.vmList=[];
+    $scope.vmListSelectorData=[];
+    $scope.selectedVm=null;
 
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };
 
-    $scope.createDisk = function () {
+    $scope.attachDisk = function () {
       var data = {
-        name: $scope.diskName,
-        description:'',
-        size: $scope.diskVolume,
-        count:$scope.diskCount
+        vmId:$scope.selectedVm.id,
+        volumeId:diskId
       };
-      HttpService.doPost(Config.urls.disk_create.replace('{region}',region), data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          WidgetService.notifyError('云硬盘挂载成功');
         }
         else{
-          WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');
+          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
         }
       });
     };
 
     var initComponents = function () {
-        initDiskTypeSelector();
+        initVmSelector();
       },
-      initDiskTypeSelector = function () {
-        HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
-          $scope.diskTypeList=data.data;
-          $scope.selectedDiskType = $scope.diskTypeList[0];
+      initVmSelector = function () {
+        HttpService.doGet(Config.urls.vm_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.vmList = data.data.data;
+          $scope.vmListSelectorData=$scope.vmList.map(function(vm){
+            return new ModelService.SelectModel(vm.name,vm.id);
+          });
+          $scope.selectedVm=$scope.vmListSelectorData[0];
         });
+
       };
 
     initComponents();

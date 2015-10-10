@@ -125,12 +125,12 @@
                             <span class="letv-control-label">云主机：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <le-select select-model="selectVm" select-options="vmList"></le-select>
+                            <le-select select-model="selectedVm" select-options="vmListSelectorData"></le-select>
                         </div>
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-red"><span>挂载云硬盘</span></button>
+                            <button class="btn btn-le-red" ng-click="attachDisk()"><span>挂载云硬盘</span></button>
                         </div>
                     </div>
                 </div>
