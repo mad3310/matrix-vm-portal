@@ -771,7 +771,7 @@ width:150px;height:40px;
 /*end le-confim style*/
 
 /*begin le-input-validation style*/
-input.ng-invalid.ng-touched {
+input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
     border: 1px solid #ff3c37;
 }
 .le-input-validation{font-size: 12px;color: #ff3c37;line-height: 20px;}
@@ -1088,5 +1088,8 @@ le-select .le-select-menu li a{
  }
 .le-modal-body .col-control{
     padding: 0;
+}
+.le-modal-body .col-control input{
+    display: inline-block;
 }
 /*end le-modal style*/
