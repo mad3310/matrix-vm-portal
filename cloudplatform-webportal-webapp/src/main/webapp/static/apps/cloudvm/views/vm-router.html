@@ -44,9 +44,9 @@
                         <span class="iconfont icon-checkiconfill" ng-class="{checked:router.checked}" ng-click="checkRouter(router)"></span>
                     </td>
                     <td><span>{{router.name|| '未设置'}}</span></td>
-                    <td><span>{{router.status}}</span></td>
+                    <td><span>{{router.status|routerStatusFilter}}</span></td>
                     <td><span>{{router.gatewayIp}}</span></td>
-                    <td><span>{{router.carrier.name}}</span></td>
+                    <td><span>{{router.subnets | routerSubnetFilter}}</span></td>
                     <td><span>{{router.created | date:'yyyy-MM-dd'}}</span></td>
                 </tr>
                 </tbody>

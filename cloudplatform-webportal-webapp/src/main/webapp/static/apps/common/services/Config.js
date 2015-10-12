@@ -31,6 +31,7 @@ define(['./common.service'], function (serviceModule) {
       network_public_list:'/osn/network/public/list',
       subnet_list:'/osn/subnet/private/list',
       subnet_associate:'/osn/router/subnet/associate',
+      subnet_remove:'/osn/router/subnet/separate',
       router_create:'/osn/router/create',
       router_edit:'/osn/router/edit',
       router_delete:'/osn/router/delete',

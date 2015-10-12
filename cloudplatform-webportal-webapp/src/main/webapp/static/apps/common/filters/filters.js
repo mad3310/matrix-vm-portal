@@ -163,4 +163,40 @@ define(['./common.filter'], function (filterModule) {
       return out || '未知';
     }
   }]);
+  filterModule.filter('routerSubnetFilter',[function(){
+    return function (input) {
+      var out = '';
+      if(input[0] == null){
+        return '--'
+      }else{
+        for(var i= 0,len = input.length;i<len;i++){
+          if(out !== ''){
+            out = out +','+ input[i].name
+          }else{
+            out = input[i].name
+          }
+        }
+        return out;
+      }
+    }
+  }]);
+  filterModule.filter('routerStatusFilter',[function(){
+    return function (input) {
+      var out = '';
+      if(input === 'ACTIVE'){
+        out='活跃';
+      }else if(input === 'DOWN'){
+        out = '关闭';
+      }else if(input === 'BUILD'){
+        out = '构建中';
+      }else if(input === 'ERROR'){
+        out = '错误';
+      }else if(input === 'UNRECOGNIZED'){
+        out = '未识别';
+      }else{
+        out = '未知';
+      }
+      return out;
+    }
+  }]);
 });
