@@ -479,12 +479,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 				{
 					List<? extends Volume> volumes = volumeApi.list().toList();
-					int volumeCount = count;
-					int volumeTotalSize = count * sizeGB;
-					for (Volume volume : volumes) {
-						volumeCount++;
-						volumeTotalSize += volume.getSize();
-					}
+					List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(region).list().toList();
 
 					VolumeQuota volumeQuota = cinderApi.getQuotaApi(region)
 							.getByTenant(openStackUser.getTenantId());
@@ -492,12 +487,12 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 						throw new OpenStackException(
 								"Volume quota is not available.", "云硬盘配额不可用。");
 					}
-					if (volumeTotalSize > volumeQuota.getGigabytes()) {
+					if (sumGigabytes(volumes, snapshots) + count * sizeGB > volumeQuota.getGigabytes()) {
 						throw new UserOperationException(
 								"Volume size exceeding the quota.",
 								"云硬盘大小超过配额。");
 					}
-					if (volumeCount > volumeQuota.getVolumes()) {
+					if (volumes.size() + count > volumeQuota.getVolumes()) {
 						throw new UserOperationException(
 								"Volume count exceeding the quota.",
 								"云硬盘数量超过配额。");
@@ -720,7 +715,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
-	private int sumGigabytes(List<? extends Volume> volumes, List<? extends Snapshot> snapshots) {
+	public static int sumGigabytes(List<? extends Volume> volumes, List<? extends Snapshot> snapshots) {
 		int gibabytes = 0;
 		for (Volume volume : volumes) {
 			gibabytes += volume.getSize();
@@ -749,7 +744,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				VolumeQuota quota = cinderApi.getQuotaApi(region).getByTenant(openStackUser.getTenantId());
 				if (quota == null) {
 					throw new OpenStackException(
-							"Volume quota is not available.", "云硬盘配额不可用。");
+							"Volume snapshot quota is not available.", "云硬盘快照配额不可用。");
 				}
 				List<? extends Volume> volumes = volumeApi.list().toList();
 				List<? extends Snapshot> snapshots = snapshotApi.list().toList();
