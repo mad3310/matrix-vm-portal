@@ -10,4 +10,5 @@ public interface VolumeSnapshotResource extends Resource {
     String getStatus();
     Integer getSize();
     Long getCreated();
+    String getDescription();
 }

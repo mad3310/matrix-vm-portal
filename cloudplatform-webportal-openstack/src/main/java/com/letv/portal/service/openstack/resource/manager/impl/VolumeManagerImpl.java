@@ -21,6 +21,7 @@ import org.jclouds.openstack.cinder.v1.domain.*;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
+import org.jclouds.openstack.cinder.v1.options.CreateSnapshotOptions;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 
 import com.letv.common.paging.impl.Page;
@@ -714,6 +715,29 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 				page.setData(volumeSnapshotResources);
 				return page;
+			}
+		});
+	}
+
+	@Override
+	public void createVolumeSnapshot(final String region, final String volumeId, final String name, final String description) throws OpenStackException {
+		runWithApi(new ApiRunnable<CinderApi, Void>() {
+			@Override
+			public Void run(CinderApi cinderApi) throws Exception {
+				checkRegion(region);
+
+				Volume volume = cinderApi.getVolumeApi(region).get(volumeId);
+				if (volume == null) {
+					throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
+				}
+
+				CreateSnapshotOptions createSnapshotOptions = CreateSnapshotOptions.Builder.name(name).description(description);
+				if (volume.getAttachments() != null && !volume.getAttachments().isEmpty()) {
+					createSnapshotOptions = createSnapshotOptions.force();
+				}
+				cinderApi.getSnapshotApi(region).create(volumeId, createSnapshotOptions);
+
+				return null;
 			}
 		});
 	}
