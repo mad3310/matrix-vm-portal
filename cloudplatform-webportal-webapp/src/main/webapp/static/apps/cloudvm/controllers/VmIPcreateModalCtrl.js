@@ -4,12 +4,12 @@
 define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmIPcreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+    Utility.getRzSliderHack($scope)();
     $scope.networkBandWidth=2;
     $scope.ipName = '';
     $scope.ipCount = 1;
     $scope.carrierList='';
     $scope.selectedCarrier = null;
-    Utility.getRzSliderHack($scope);
     HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
       $scope.carrierList=data.data;
     });
