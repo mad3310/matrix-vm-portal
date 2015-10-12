@@ -15,6 +15,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $modalInstance.dismiss('cancel');
     };
     $scope.editRouter = function () {
+      if (!$scope.vm_router_edit_form.$valid) return;
       var data = {
         region:routerInfo.region,
         routerId:routerInfo.routerId,

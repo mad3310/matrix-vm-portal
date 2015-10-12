@@ -76,7 +76,8 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" />
+                            <input type="text" class="le-form-control input-disk-name" ng-model="routerName" name="router_name" text-restrict/>
+                            <span ng-show="(vm_router_create_form.$submitted || vm_router_create_form.router_name.$touched) && vm_router_create_form.router_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                         </div>
                     </div>
                     <div class="le-row">
@@ -105,7 +106,7 @@
     </script>
 
     <script type="text/ng-template" id="VmRouterEditModalTpl">
-        <form novalidate class="form-vm-router-create" name="vm_router_create_form">
+        <form novalidate class="form-vm-router-create" name="vm_router_edit_form">
         <div class="letv-modal-header">
             <span class="header-title">修改路由器</span>
             <a class="close" ng-click="closeModal()">
@@ -118,7 +119,8 @@
                     <span class="letv-control-label">名称：</span>
                 </div>
                 <div class="le-col-9 col-control">
-                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" />
+                    <input type="text" class="le-form-control input-disk-name" ng-model="editRouterName" name="edit_router_name" text-restrict/>
+                    <span ng-show="(vm_router_edit_form.$submitted || vm_router_edit_form.edit_router_name.$touched) && vm_router_edit_form.edit_router_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                 </div>
             </div>
             <div class="le-row">
@@ -146,7 +148,7 @@
     </script>
 
     <script type="text/ng-template" id="AssociateSubnetModalTpl">
-        <form novalidate class="form-vm-router-create" name="vm_router_create_form">
+        <form novalidate class="form-vm-router-create" name="associate_subnet_form">
             <div class="letv-modal-header">
                 <span class="header-title">关联子网</span>
                 <a class="close" ng-click="closeModal()">
