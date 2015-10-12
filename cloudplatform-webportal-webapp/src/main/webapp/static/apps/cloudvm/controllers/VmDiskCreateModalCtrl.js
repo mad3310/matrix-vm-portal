@@ -22,6 +22,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.selectedDiskType = diskType;
     };
     $scope.createDisk = function () {
+      if (!$scope.vm_disk_create_form.$valid) return;
       var data = {
         name: $scope.diskName,
         description:'',
@@ -32,7 +33,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       HttpService.doPost(Config.urls.disk_create.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;
+          WidgetService.notifySuccess('创建云硬盘成功');
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');

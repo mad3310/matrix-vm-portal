@@ -23,6 +23,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.selectedCarrier = carrier;
     };
     $scope.createIP = function () {
+      if (!$scope.vm_ip_create_form.$valid) return;
       var data = {
         'region':region,
         name: $scope.ipName,
