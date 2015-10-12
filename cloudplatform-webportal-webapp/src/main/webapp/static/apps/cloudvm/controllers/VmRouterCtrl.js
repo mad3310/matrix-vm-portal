@@ -92,6 +92,19 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       }
 
+      $scope.removeSubnet = function(){
+        var checkedRouters=getCheckedRouter();
+        if(checkedRouters.length !==1){
+          WidgetService.notifyWarning('请选中一个路由器');
+          return;
+        }
+        removeSubnetModal('500',{
+          region:checkedRouters[0].region,
+          routerId: checkedRouters[0].id,
+          routerName: checkedRouters[0].name
+        });
+      }
+
       $scope.deleteRouter = function(){
         var checkedRouters=getCheckedRouter();
         if(checkedRouters.length !==1){
@@ -165,12 +178,34 @@ define(['controllers/app.controller'], function (controllerModule) {
               }
             }, function () {
             });
-          };
+          },
           associateSubnetModal = function (size,data) {
             var modalInstance = $modal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'AssociateSubnetModalTpl',
               controller: 'AssociateSubnetModalCtrl',
+              size: size,
+              backdrop: 'static',
+              keyboard: false,
+              resolve: {
+                routerInfo: function () {
+                  return data;
+                }
+              }
+            });
+
+            modalInstance.result.then(function (resultData) {
+              if(resultData &&resultData.result===1){
+                refreshRouterList();
+              }
+            }, function () {
+            });
+          },
+          removeSubnetModal = function (size,data) {
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'RemoveSubnetModalTpl',
+              controller: 'RemoveSubnetModalCtrl',
               size: size,
               backdrop: 'static',
               keyboard: false,
