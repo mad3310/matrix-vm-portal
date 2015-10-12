@@ -33,6 +33,9 @@ public interface VolumeManager extends ResourceManager {
 	void delete(String region, VolumeResource volumeResource)
 			throws OpenStackException;
 
+	void deleteSync(String region, VolumeResource volumeResource)
+			throws OpenStackException;
+
 	List<VolumeTypeResource> listVolumeType(String region) throws OpenStackException;
 
 }

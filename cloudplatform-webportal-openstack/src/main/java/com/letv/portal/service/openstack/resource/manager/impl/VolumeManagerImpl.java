@@ -33,6 +33,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
@@ -538,6 +539,20 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				return null;
 			}
 
+		});
+	}
+
+	@Override
+	public void deleteSync(final String region, final VolumeResource volumeResource)
+			throws OpenStackException {
+		delete(region, volumeResource);
+
+		waitingVolume(region, volumeResource.getId(), new VolumeChecker() {
+
+			@Override
+			public boolean check(Volume volume) {
+				return volume == null;
+			}
 		});
 	}
 

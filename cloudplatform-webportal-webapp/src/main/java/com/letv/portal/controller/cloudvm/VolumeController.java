@@ -121,7 +121,7 @@ public class VolumeController {
 		try {
 			VolumeManager volumeManager = Util.session(sessionService)
 					.getVolumeManager();
-			volumeManager.delete(region, volumeManager.get(region, volumeId));
+			volumeManager.deleteSync(region, volumeManager.get(region, volumeId));
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
