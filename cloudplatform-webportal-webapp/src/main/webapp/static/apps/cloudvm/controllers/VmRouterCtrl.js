@@ -14,6 +14,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         refreshRouterList();
       };
 
+      $scope.doSearch = function () {
+        refreshRouterList();
+      };
+
       $scope.openVmRouterCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
@@ -75,6 +79,19 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       }
 
+      $scope.associateSubnet = function(){
+        var checkedRouters=getCheckedRouter();
+        if(checkedRouters.length !==1){
+          WidgetService.notifyWarning('请选中一个路由器');
+          return;
+        }
+        associateSubnetModal('500',{
+          region:checkedRouters[0].region,
+          routerId: checkedRouters[0].id,
+          routerName: checkedRouters[0].name
+        });
+      }
+
       $scope.deleteRouter = function(){
         var checkedRouters=getCheckedRouter();
         if(checkedRouters.length !==1){
@@ -110,7 +127,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       var refreshRouterList = function () {
             var queryParams = {
-              name: '',
+              name: $scope.searchRouterName,
               currentPage: $scope.currentPage,
               recordsPerPage: $scope.pageSize
             };
@@ -149,6 +166,29 @@ define(['controllers/app.controller'], function (controllerModule) {
             }, function () {
             });
           };
+          associateSubnetModal = function (size,data) {
+            var modalInstance = $modal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'AssociateSubnetModalTpl',
+              controller: 'AssociateSubnetModalCtrl',
+              size: size,
+              backdrop: 'static',
+              keyboard: false,
+              resolve: {
+                routerInfo: function () {
+                  return data;
+                }
+              }
+            });
+
+            modalInstance.result.then(function (resultData) {
+              if(resultData &&resultData.result===1){
+                refreshRouterList();
+              }
+            }, function () {
+            });
+          };
+
       refreshRouterList();
     }
   ]);

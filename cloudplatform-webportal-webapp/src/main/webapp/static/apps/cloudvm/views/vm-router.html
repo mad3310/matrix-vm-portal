@@ -10,10 +10,16 @@
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
                     <li><a href="javascript:void(0);" ng-click="functionDisable()">绑定公网IP</a></li>
                     <li><a href="javascript:void(0);" ng-click="functionDisable()">解绑公网IP</a></li>
-                    <li><a href="javascript:void(0);" ng-click="functionDisable()">关联子网</a></li>
+                    <li><a href="javascript:void(0);" ng-click="associateSubnet()">关联子网</a></li>
                     <li><a href="javascript:void(0);" ng-click="functionDisable()">解除关联子网</a></li>
                     <li><a href="javascript:void(0);" ng-click="editRouter()">编辑路由器</a></li>
                 </ul>
+            </div>
+        </div>
+        <div class="le-col-6">
+            <div class="le-search-box pull-right">
+                <input type="text" ng-model="searchRouterName" ng-model-options="{debounce:500}" ng-change="doSearch()"/>
+                <span class="search-icon"></span>
             </div>
         </div>
     </div>
@@ -136,6 +142,40 @@
                 </div>
             </div>
         </div>
+        </form>
+    </script>
+
+    <script type="text/ng-template" id="AssociateSubnetModalTpl">
+        <form novalidate class="form-vm-router-create" name="vm_router_create_form">
+            <div class="letv-modal-header">
+                <span class="header-title">关联子网</span>
+                <a class="close" ng-click="closeModal()">
+                    <i class="iconfont icon-add"></i>
+                </a>
+            </div>
+            <div class="le-modal-body">
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">名称：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <span class="letv-control-label">{{associateRouterName}}</span>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
+                        <span class="letv-control-label">子网：</span>
+                    </div>
+                    <div class="le-col-8 col-control">
+                        <le-select select-model="selectedSubnet" select-options="subnetListSelectorData"></le-select>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-12 col-submit-order">
+                        <button class="btn btn-le-red" ng-click="associateSubnet()"><span>添加关联</span></button>
+                    </div>
+                </div>
+            </div>
         </form>
     </script>
 
