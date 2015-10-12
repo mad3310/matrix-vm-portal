@@ -163,4 +163,23 @@ public class VolumeController {
 		return result;
 	}
 
+	@RequestMapping(value = "/volume/snapshot/create", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject createVolumeSnapshot(@RequestParam String region,
+						@RequestParam String volumeId,
+						@RequestParam(required = false) String name,
+						@RequestParam(required = false) String description) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVolumeManager()
+					.createVolumeSnapshot(region, volumeId, name, description);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
