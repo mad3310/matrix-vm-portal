@@ -1597,6 +1597,10 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
                     throw new ResourceNotFoundException("VM", "虚拟机", vmId);
                 }
 
+                if (server.getStatus() == Status.ERROR) {
+                    throw new UserOperationException("VM status is \"ERROR\", cannot bind the floating IP.", "虚拟机状态为错误，不能绑定公网IP");
+                }
+
                 Optional<FloatingIPApi> floatingIPApiOptional = novaApi
                         .getFloatingIPApi(region);
                 if (!floatingIPApiOptional.isPresent()) {
