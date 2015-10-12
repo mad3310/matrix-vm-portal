@@ -38,4 +38,6 @@ public interface VolumeManager extends ResourceManager {
 
 	List<VolumeTypeResource> listVolumeType(String region) throws OpenStackException;
 
+	Page listVolumeSnapshot(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
+
 }
