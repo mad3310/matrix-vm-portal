@@ -1,7 +1,7 @@
 define(['controllers/app.controller'], function (controllerModule) {
   controllerModule.controller('VmIpEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,floatIp) {
-    $scope.networkBandWidth=2;
-    $scope.ipName = '';
+    $scope.networkBandWidth=floatIp.bandWidth;
+    $scope.ipName=floatIp.name;
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
     };
