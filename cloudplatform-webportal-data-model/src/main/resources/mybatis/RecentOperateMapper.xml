@@ -56,6 +56,7 @@
 	        <if test="date != null">
 	      		and operate.CREATE_TIME &gt;= #{date}
 	    	</if>
+	    	ORDER BY operate.CREATE_TIME DESC
 	</select>
 
 	<!-- 分页：根据条件查询 -->
@@ -65,7 +66,7 @@
 		from 
 			WEBPORTAL_OPERATE operate
 			<include refid="Common_Where_Clause" />
-		ORDER BY dictionary.CREATE_TIME DESC
+		ORDER BY operate.CREATE_TIME DESC
 			<if test="page != null">
 	      		limit #{page.startRowPosition},#{page.recordsPerPage}
 	    	</if>

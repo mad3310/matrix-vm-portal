@@ -6,6 +6,7 @@ define(['controllers/app.controller'], function (controllerModule) {
   controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
 
     Utility.getRzSliderHack($scope)();
+    $scope.isOrderSubmiting=false;
     $scope.diskName = '';
     $scope.diskTypeList = [];
     $scope.selectedDiskType = null;
@@ -30,6 +31,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         size: $scope.diskVolume,
         count:$scope.diskCount
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.disk_create.replace('{region}',region), data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -37,6 +39,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };

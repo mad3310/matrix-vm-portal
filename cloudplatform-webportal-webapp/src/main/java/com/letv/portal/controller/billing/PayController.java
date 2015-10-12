@@ -105,7 +105,12 @@ public class PayController {
 	  */
 	@RequestMapping(value="/queryStat/{orderNumber}",method=RequestMethod.GET)   
 	public @ResponseBody ResultObject queryStat(@PathVariable String orderNumber, ResultObject obj) {
-		obj.setData(this.payService.queryState(orderNumber));
+		Map<String, Object> ret = this.payService.queryState(orderNumber);
+		if(ret==null) {
+			obj.setResult(0);
+		} else {
+			obj.setData(ret);
+		}
 		return obj;
 	}
 	

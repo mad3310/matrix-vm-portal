@@ -103,12 +103,15 @@
                             <span class="letv-control-label">数量：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <numeric-input numeric-model="diskCount"></numeric-input>
+                            <numeric-input numeric-model="diskCount" numeric-max="20" numeric-min="1"></numeric-input>
                         </div>
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-blue" ng-click="createDisk()"><span>提交订单</span></button>
+                            <button class="btn btn-le-blue" ng-click="createDisk()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
                         </div>
                     </div>
                 </div>

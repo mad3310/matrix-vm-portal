@@ -17,7 +17,7 @@
         </div>
         <div class="le-col-6">
             <div class="le-search-box pull-right">
-                <input type="text" ng-model="searchVmName" ng-change="doSearch()"/>
+                <input type="text" ng-model="searchVmName" ng-model-options="{debounce:500}" ng-change="doSearch()"/>
                 <span class="search-icon"></span>
             </div>
         </div>

@@ -13,6 +13,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $modalInstance.dismiss('cancel');
     };
     $scope.createRouter = function () {
+      if (!$scope.vm_router_create_form.$valid) return;
       var data = {
         region:region,
         name: $scope.routerName,

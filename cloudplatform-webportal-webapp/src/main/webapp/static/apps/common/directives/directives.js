@@ -60,14 +60,26 @@ define(['./common.directive'],function (directiveModule) {
         return {
             restrict: 'AE',
             scope: {
-                model: '=numericModel'
+                model: '=numericModel',
+                max: '=numericMax',
+                min: '=numericMin',
             },
             link: function (scope, element, attrs) {
+                if(scope.max===undefined){
+                    scope.max=10;
+                }
+                if(scope.min===undefined){
+                    scope.min=1;
+                }
                 scope.up=function(){
-                    scope.model++;
+                    if(++scope.model>scope.max){
+                        --scope.model;
+                    }
                 };
                 scope.down=function(){
-                    scope.model--;
+                    if(--scope.model<scope.min){
+                        ++scope.model;
+                    }
                 };
             },
             templateUrl: '/static/apps/common/directives/numeric-input/template.html'

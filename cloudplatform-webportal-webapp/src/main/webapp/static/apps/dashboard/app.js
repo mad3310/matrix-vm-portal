@@ -10,6 +10,7 @@ define([
   'controllers/controllers',
   '../common/services/services',
   '../common/directives/directives',
+  'directives/directives',
   '../common/filters/filters'
 ], function (angular) {
   var app = angular.module('myApp', [
@@ -22,6 +23,7 @@ define([
     'app.controller',
     'common.service',
     'common.directive',
+    'app.directive',
     'common.filter'
   ]);
 

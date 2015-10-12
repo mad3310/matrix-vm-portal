@@ -29,6 +29,8 @@ define(['./common.service'], function (serviceModule) {
       floatIP_list:'/osn/floatingip/list',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
+      subnet_list:'/osn/subnet/private/list',
+      subnet_associate:'/osn/router/subnet/associate',
       router_create:'/osn/router/create',
       router_edit:'/osn/router/edit',
       router_delete:'/osn/router/delete',

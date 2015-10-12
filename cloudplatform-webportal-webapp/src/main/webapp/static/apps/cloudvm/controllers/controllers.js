@@ -13,6 +13,7 @@ define([
     'controllers/VmRouterCtrl',
     'controllers/VmRouterCreateModalCtrl',
     'controllers/VmRouterEditModalCtrl',
+    'controllers/RouterAssociateSubnetModalCtrl',
     'controllers/VmIPcreateModalCtrl',
     'controllers/VmIpBindVmModalCtrl',
     'controllers/VmIpEditModalCtrl'
