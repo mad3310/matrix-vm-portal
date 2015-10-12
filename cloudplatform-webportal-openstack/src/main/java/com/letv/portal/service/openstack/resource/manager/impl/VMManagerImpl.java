@@ -1,24 +1,33 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
-import java.io.IOException;
-import java.net.URI;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.base.Optional;
+import com.letv.common.email.bean.MailMessage;
+import com.letv.common.paging.impl.Page;
+import com.letv.common.util.PasswordRandom;
 import com.letv.portal.model.cloudvm.CloudvmFlavor;
-import com.letv.portal.model.cloudvm.CloudvmServer;
+import com.letv.portal.model.cloudvm.CloudvmVmCount;
 import com.letv.portal.service.cloudvm.ICloudvmFlavorService;
-import com.letv.portal.service.cloudvm.ICloudvmServerService;
+import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
+import com.letv.portal.service.openstack.exception.*;
+import com.letv.portal.service.openstack.impl.OpenStackConf;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.impl.OpenStackUser;
+import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.VMResource;
+import com.letv.portal.service.openstack.resource.VolumeResource;
+import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
+import com.letv.portal.service.openstack.resource.manager.ImageManager;
+import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
+import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VMManager;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
+import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
+import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
+import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
 import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonParseException;
@@ -38,42 +47,14 @@ import org.jclouds.openstack.nova.v2_0.extensions.VolumeAttachmentApi;
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.nova.v2_0.options.CreateServerOptions;
-import org.jclouds.openstack.v2_0.options.PaginationOptions;
+import org.jclouds.openstack.v2_0.domain.Resource;
 import org.slf4j.Logger;
 
-import com.google.common.base.Optional;
-import com.letv.common.email.bean.MailMessage;
-import com.letv.common.paging.impl.Page;
-import com.letv.common.util.PasswordRandom;
-import com.letv.portal.model.cloudvm.CloudvmVmCount;
-import com.letv.portal.service.cloudvm.ICloudvmVmCountService;
-import com.letv.portal.service.openstack.exception.APINotAvailableException;
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.PollingInterruptedException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
-import com.letv.portal.service.openstack.exception.TaskNotFinishedException;
-import com.letv.portal.service.openstack.exception.UserOperationException;
-import com.letv.portal.service.openstack.exception.VMDeleteException;
-import com.letv.portal.service.openstack.exception.VMStatusException;
-import com.letv.portal.service.openstack.impl.OpenStackConf;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
-import com.letv.portal.service.openstack.impl.OpenStackUser;
-import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.impl.FlavorResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.VMResourceImpl;
-import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
-import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.RegionAndVmId;
-import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
-import com.letv.portal.service.openstack.resource.manager.VMManager;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
-import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
-import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
-import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
+import java.io.IOException;
+import java.net.URI;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         VMManager {
@@ -1727,11 +1708,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         }
     }
 
-    List<Server> listServer(final String region) throws OpenStackException {
-        return runWithApi(new ApiRunnable<NovaApi, List<Server>>() {
+    List<Resource> listServer(final String region) throws OpenStackException {
+        return runWithApi(new ApiRunnable<NovaApi, List<Resource>>() {
             @Override
-            public List<Server> run(NovaApi novaApi) throws Exception {
-                return novaApi.getServerApi(region).listInDetail().concat().toList();
+            public List<Resource> run(NovaApi novaApi) throws Exception {
+                return novaApi.getServerApi(region).list().concat().toList();
             }
         });
     }

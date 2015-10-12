@@ -33,6 +33,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.v2_0.domain.Resource;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		implements VolumeManager {
@@ -148,15 +149,15 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
                 final Ref<Integer> currentPageRef = new Ref<Integer>();
 
                 final List<VolumeResource> volumeResources = new LinkedList<VolumeResource>();
-                final Map<String, Server> idToServer = new HashMap<String, Server>();
+                final Map<String, Resource> idToServer = new HashMap<String, Resource>();
                 final Ref<Integer> volumeCountRef = new Ref<Integer>();
 
                 Util.concurrentRunAndWait(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            List<Server> servers = vmManager.listServer(region);
-                            for (Server server : servers) {
+                            List<Resource> servers = vmManager.listServer(region);
+                            for (Resource server : servers) {
                                 idToServer.put(server.getId(), server);
                             }
                         } catch (OpenStackException e) {
@@ -208,7 +209,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
                     for (VolumeAttachmentResource volumeAttachmentResource : volumeResource.getAttachments()) {
                         String vmId = volumeAttachmentResource.getVmId();
                         if (vmId != null) {
-                            Server server = idToServer.get(vmId);
+							Resource server = idToServer.get(vmId);
                             if (server != null) {
                                 String vmName = server.getName();
                                 ((VolumeAttachmentResourceImpl) volumeAttachmentResource).setVmName(vmName);
