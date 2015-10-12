@@ -151,7 +151,7 @@
 					</li>					
 				</ul> -->
 				<ul class="operation-items">
-					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1,third:$index==2,gotop:$index>2}">
+					<li ng-repeat="operation in expander" ng-class="{last:$index==expander.length-1&&expander.length>=10,third:$index==2,gotop:$index>2}">
 						<div>{{operation.action}}</div>
 						<div class="items-desc">
 							<span>{{operation.content}}</span>

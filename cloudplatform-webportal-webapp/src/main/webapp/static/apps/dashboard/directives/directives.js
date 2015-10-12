@@ -15,6 +15,7 @@ define(['directives/app.directive'],function (directiveModule) {
             link: function (scope, element, attrs) {
             	scope.$watch('layout',function(){
             		var item = element.find(".operation-items");
+                    console.log(item)
             		if(scope.layout == 'top-expander'){
             			item.addClass("operation-expander");
             			item.height(item.height()+415);

@@ -4,21 +4,21 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.common.util.StringUtil;
 import com.letv.portal.service.openstack.exception.*;
 
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.resource.VolumeAttachmentResource;
+import com.letv.portal.service.openstack.resource.VolumeSnapshotResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeAttachmentResourceImpl;
+import com.letv.portal.service.openstack.resource.impl.VolumeSnapshotResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VMManager;
 import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
-import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.domain.*;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
-import org.jclouds.openstack.cinder.v1.domain.VolumeAttachment;
-import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
-import org.jclouds.openstack.cinder.v1.domain.VolumeType;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
@@ -33,6 +33,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
+import org.jclouds.openstack.nova.v2_0.domain.VolumeSnapshot;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
@@ -664,6 +665,55 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 
 				return volumeTypeResources;
+			}
+		});
+	}
+
+	@Override
+	public Page listVolumeSnapshot(final String region, final String name, final Integer currentPage, final Integer recordsPerPage) throws OpenStackException {
+		return runWithApi(new ApiRunnable<CinderApi, Page>() {
+			@Override
+			public Page run(final CinderApi cinderApi) throws Exception {
+				checkRegion(region);
+
+				final Map<String, Volume> idToVolume = new HashMap<String, Volume>();
+				final Ref<List<? extends Snapshot>> volumeSnapshotsRef = new Ref<List<? extends Snapshot>>();
+				final Page page = new Page(currentPage, recordsPerPage);
+
+				Util.concurrentRunAndWait(new Runnable() {
+					@Override
+					public void run() {
+						List<? extends Snapshot> allVolumeSnapshots = cinderApi.getSnapshotApi(region).list().toList();
+						page.setTotalRecords(allVolumeSnapshots.size());
+						if (currentPage == null || recordsPerPage == null) {
+							volumeSnapshotsRef.set(allVolumeSnapshots);
+						} else {
+							int fromIndex = (currentPage - 1) * recordsPerPage;
+							int toIndex = fromIndex + recordsPerPage;
+							toIndex = toIndex < allVolumeSnapshots.size() ? toIndex : allVolumeSnapshots.size();
+							try {
+								volumeSnapshotsRef.set(allVolumeSnapshots.subList(fromIndex, toIndex));
+							}catch (IndexOutOfBoundsException e){
+								volumeSnapshotsRef.set(new ArrayList<Snapshot>());
+							}
+						}
+					}
+				}, new Runnable() {
+					@Override
+					public void run() {
+						List<? extends Volume> volumes = cinderApi.getVolumeApi(region).list().toList();
+						for (Volume volume : volumes) {
+							idToVolume.put(volume.getId(), volume);
+						}
+					}
+				});
+
+				List<VolumeSnapshotResource> volumeSnapshotResources = new LinkedList<VolumeSnapshotResource>();
+				for (Snapshot snapshot : volumeSnapshotsRef.get()) {
+					volumeSnapshotResources.add(new VolumeSnapshotResourceImpl(region, snapshot, idToVolume.get(snapshot.getVolumeId())));
+				}
+				page.setData(volumeSnapshotResources);
+				return page;
 			}
 		});
 	}
