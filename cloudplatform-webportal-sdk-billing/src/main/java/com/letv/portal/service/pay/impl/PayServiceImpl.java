@@ -49,6 +49,7 @@ import com.letv.portal.service.pay.IPayService;
 import com.letv.portal.service.product.IProductInfoRecordService;
 import com.letv.portal.service.subscription.ISubscriptionDetailService;
 import com.letv.portal.service.subscription.ISubscriptionService;
+import com.letv.portal.util.SerialNumberUtil;
 import com.mysql.jdbc.StringUtils;
 
 @Service("payService")
@@ -94,10 +95,7 @@ public class PayServiceImpl implements IPayService {
 
 	public Map<String, Object> pay(String orderNumber, Map<String, Object> map, HttpServletResponse response) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		String pattern = (String) map.get("pattern");
-		if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
-			throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
-		}
+		
 		List<OrderSub> orderSubs = this.orderSubService.selectOrderSubByOrderNumber(orderNumber);
 		if (orderSubs == null || orderSubs.size() == 0) {
 			throw new ValidateException("参数未查出订单数据,orderNumber=" + orderNumber);
@@ -138,7 +136,8 @@ public class PayServiceImpl implements IPayService {
 						ret.put("alert", "用户可使用余额不足");
 						return ret;
 					}
-					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), "9999", 2)) {//9999代表订单支付金额为0或，订单金额全部使用账户余额支付
+					//3代表订单支付金额为0或订单金额全部使用账户余额支付时流水编号自己生成
+					if (updateOrderPayInfo(orderSubs.get(0).getOrderId(), SerialNumberUtil.getNumber(3), 2)) {
 						//创建应用实例
 						createInstance(orderSubs);
 						response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
@@ -151,6 +150,10 @@ public class PayServiceImpl implements IPayService {
 				}
 			}
 			
+			String pattern = (String) map.get("pattern");
+			if(pattern==null || (!Constants.ALI_PAY_PATTERN.equals(pattern) && !Constants.WX_PAY_PATTERN.equals(pattern))) {
+				throw new ValidateException("传入的支付方式异常，支付方式："+pattern);
+			}
 			
 			//增加用户充值信息
 			this.billUserAmountService.recharge(orderSubs.get(0).getCreateUser(), price,orderNumber,Integer.valueOf(pattern));
@@ -350,7 +353,7 @@ public class PayServiceImpl implements IPayService {
 		String ret = HttpClient.get(url, 2000, 2000);
 		Map<String, Object> map = transResult(ret);
 
-		if ((map.get("status") != null) && (Integer) map.get("status") == 1) {// 支付成功
+		if ((map.get("status") != null) && ((Integer) map.get("status") == 1 || (Integer) map.get("status") == 2)) {// 支付成功
 			if(getValidOrderPrice(orderSubs).subtract(orderSubs.get(0).getOrder().getAccountPrice()).compareTo(new BigDecimal((String) map.get("money")))==0) {
 				return map;
 			}
