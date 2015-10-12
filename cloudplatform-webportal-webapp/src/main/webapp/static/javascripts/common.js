@@ -47,5 +47,21 @@ define(['jquery'],function($){
     sideMenuEl.children('.menu-item').removeClass('active');
     $(e.target).closest('li').addClass('active');
   });
-
+  // 用户头像修改
+  var userid=$('#userId').val();
+  var usinfourl="/user/"+userid;
+  $.ajax({
+    url:usinfourl,
+    type: 'get',
+    success:function(data){
+      if(data.result==0){//error
+      }else{
+        var _data=data.data;
+        if(_data.userAvatar){
+          $('.account-icon').attr('src',_data.userAvatar);
+        }
+      }
+    }
+  });
+  
 });
