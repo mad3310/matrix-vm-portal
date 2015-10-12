@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.*;
 import org.jclouds.openstack.cinder.v1.domain.Volume.Status;
+import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.cinder.v1.options.CreateSnapshotOptions;
@@ -719,6 +720,17 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	private int sumGigabytes(List<? extends Volume> volumes, List<? extends Snapshot> snapshots) {
+		int gibabytes = 0;
+		for (Volume volume : volumes) {
+			gibabytes += volume.getSize();
+		}
+		for (Snapshot snapshot : snapshots) {
+			gibabytes += snapshot.getSize();
+		}
+		return gibabytes;
+	}
+
 	@Override
 	public void createVolumeSnapshot(final String region, final String volumeId, final String name, final String description) throws OpenStackException {
 		runWithApi(new ApiRunnable<CinderApi, Void>() {
@@ -726,16 +738,37 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 			public Void run(CinderApi cinderApi) throws Exception {
 				checkRegion(region);
 
-				Volume volume = cinderApi.getVolumeApi(region).get(volumeId);
+				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+				SnapshotApi snapshotApi = cinderApi.getSnapshotApi(region);
+
+				Volume volume = volumeApi.get(volumeId);
 				if (volume == null) {
 					throw new ResourceNotFoundException("Volume", "云硬盘", volumeId);
+				}
+
+				VolumeQuota quota = cinderApi.getQuotaApi(region).getByTenant(openStackUser.getTenantId());
+				if (quota == null) {
+					throw new OpenStackException(
+							"Volume quota is not available.", "云硬盘配额不可用。");
+				}
+				List<? extends Volume> volumes = volumeApi.list().toList();
+				List<? extends Snapshot> snapshots = snapshotApi.list().toList();
+				if (sumGigabytes(volumes, snapshots) + volume.getSize() > quota.getGigabytes()) {
+					throw new UserOperationException(
+							"Volume snapshot size exceeding the quota.",
+							"云硬盘快照大小超过配额。");
+				}
+				if (snapshots.size() + 1 > quota.getSnapshots()) {
+					throw new UserOperationException(
+							"Volume snapshot count exceeding the quota.",
+							"云硬盘快照数量超过配额。");
 				}
 
 				CreateSnapshotOptions createSnapshotOptions = CreateSnapshotOptions.Builder.name(name).description(description);
 				if (volume.getAttachments() != null && !volume.getAttachments().isEmpty()) {
 					createSnapshotOptions = createSnapshotOptions.force();
 				}
-				cinderApi.getSnapshotApi(region).create(volumeId, createSnapshotOptions);
+				snapshotApi.create(volumeId, createSnapshotOptions);
 
 				return null;
 			}
