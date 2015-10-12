@@ -798,6 +798,7 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
 /*begin letv-numeric-input style*/
 numeric-input{
     height: 30px;
+    line-height: 20px;
     width: 60px;
     position: relative;
     display: block;
