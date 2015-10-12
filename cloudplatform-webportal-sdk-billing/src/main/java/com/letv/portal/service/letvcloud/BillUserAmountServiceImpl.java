@@ -59,20 +59,26 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
     @Override
 	public String recharge(long userId, BigDecimal amount, String orderCode,
 			int type) {
-    	DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-	    String tradeNum = format.format(System.currentTimeMillis());
-	    String random = PasswordRandom.genStr(6);
-	    String trade = tradeNum +random;
-	    
-    	BillRechargeRecord record = new BillRechargeRecord();
-		record.setTradeNum(trade);
-		record.setAmount(amount);
-		record.setUserId(userId);
-		record.setRechargeType(type);
-		record.setOrderCode(orderCode);
-		
-		billRechargeRecordMapper.insert(record);
-        return trade;
+    	List<BillRechargeRecord> records = this.billRechargeRecordMapper.getAmountByOrderCode(orderCode);
+    	if(records == null || records.size()==0) {
+    		BillRechargeRecord record = new BillRechargeRecord();
+    		DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+    	    String tradeNum = format.format(System.currentTimeMillis());
+    	    String random = PasswordRandom.genStr(6);
+    	    String trade = tradeNum +random;
+    		record.setTradeNum(trade);
+    		record.setAmount(amount);
+    		record.setUserId(userId);
+    		record.setRechargeType(type);
+    		record.setOrderCode(orderCode);
+    		billRechargeRecordMapper.insert(record);
+    	} else {
+    		Map<String, Object> recordParam = new HashMap<String, Object>();
+            recordParam.put("amount", amount);
+            recordParam.put("orderCode", orderCode);
+    		this.billRechargeRecordMapper.updateAmount(recordParam);
+    	}
+        return orderCode;
 	}
 
     @Override
@@ -93,6 +99,24 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
         } while (ret < 1 && count < 10);
         //充值失败次数
         return ret;
+    }
+    @Override
+    public long rechargeSuccessByOrderCode(Long userId, String orderCode, String orderNum, BigDecimal amount) {
+    	Map<String, Object> recordSuc = new HashMap<String, Object>();
+    	recordSuc.put("orderCode", orderCode);
+    	recordSuc.put("orderNum", orderNum);
+    	recordSuc.put("amount", amount);
+    	billRechargeRecordMapper.updateSucByOrderCode(recordSuc);
+    	
+    	//充值业务逻辑
+    	int ret;
+    	int count = 0;
+    	do {
+    		ret = this.addUserAmount(userId, amount);
+    		count++;
+    	} while (ret < 1 && count < 10);
+    	//充值失败次数
+    	return ret;
     }
     @Override
 	public long rechargeSuccess(Long userId, String tradeNum, String orderNum,

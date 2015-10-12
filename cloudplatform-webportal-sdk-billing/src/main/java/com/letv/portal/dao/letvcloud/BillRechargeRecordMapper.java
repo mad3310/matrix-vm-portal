@@ -11,7 +11,9 @@ import com.letv.portal.model.letvcloud.BillRechargeRecord;
 public interface BillRechargeRecordMapper {
     int insert(BillRechargeRecord record);
     int updateSuc(Map<String,Object> params);
+    int updateSucByOrderCode(Map<String,Object> params);
     BillRechargeRecord getAmount(String tradeNum);
+    List<BillRechargeRecord> getAmountByOrderCode(String orderCode);
     List<BillRechargeRecord> getUserAmountRecord(Map<String,Object> params);
     int getAddRecordCnt(Long userId);
 	void updateAmount(Map<String, Object> recordParam);
