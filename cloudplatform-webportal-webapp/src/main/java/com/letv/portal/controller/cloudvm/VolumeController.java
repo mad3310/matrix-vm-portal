@@ -142,4 +142,25 @@ public class VolumeController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/volume/snapshot/list", method = RequestMethod.GET)
+	public
+	@ResponseBody
+	ResultObject listVolumeSnapshot(@RequestParam String region,
+									@RequestParam(required = false) String name,
+									@RequestParam(required = false) Integer currentPage,
+									@RequestParam(required = false) Integer recordsPerPage) {
+		ResultObject result = new ResultObject();
+		try {
+			result.setData(Util
+					.session(sessionService)
+					.getVolumeManager()
+					.listVolumeSnapshot(region, name, currentPage,
+							recordsPerPage));
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
+
 }
