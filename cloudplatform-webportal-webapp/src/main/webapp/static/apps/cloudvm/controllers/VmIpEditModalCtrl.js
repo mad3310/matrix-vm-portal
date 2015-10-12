@@ -7,6 +7,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $modalInstance.dismiss('cancel');
     };
     $scope.editIP=function () {
+      if (!$scope.vm_ip_edit_form.$valid) return;
       var data = {
         'region':region,
         floatingIpId:floatIp.id,

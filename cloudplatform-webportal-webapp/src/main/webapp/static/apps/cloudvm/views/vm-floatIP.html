@@ -3,7 +3,7 @@
         <div class="le-col-6 le-btn-group">
             <button class="btn btn-le-blue" ng-click="openIPcreateModal(500)"><span>创建公网IP</span></button>
             <button class="btn btn-le-blueGreen" ng-click="bindVm(500)"><span>绑定云主机</span></button>
-            <button class="btn btn-le-green" ng-disabled="true"><span>绑定路由器</span></button>
+            <button class="btn btn-le-green hide" ng-disabled="true"><span>绑定路由器</span></button>
             <div dropdown class="more-operation-dropdown">
                 <a href class="btn btn-le-yellow" dropdown-toggle>
                     更多操作
@@ -46,7 +46,7 @@
                     </td>
                     <td><span>{{fIp.name|| '未设置'}}</span></td>
                     <td><span>{{fIp.ipAddress}}</span></td>
-                    <td><span>{{fIp.status}}</span></td>
+                    <td><span>{{fIp.status | vmFloatIpFilter}}</span></td>
                     <td><span>{{fIp.bindResource.name||'-'}}</span></td>
                     <td><span>{{fIp.bandWidth}}</span></td>
                     <td><span>{{fIp.carrier.name}}</span></td>
@@ -74,13 +74,14 @@
             </a>
         </div>
         <div class="modal-body">
-            <form class="vm-create-form">
+            <form novalidate class="vm-create-form" name="vm_ip_create_form">
                 <div>
                     <div class="left-inputs">
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">名称：</span></div>
                             <div class="col-sm-10">
-                                <input type="text" name="ipName" class="le-form-control ng-pristine ng-untouched ng-invalid ng-invalid-text-restrict" ng-model="ipName" placeholder="请输入公网IP名称" text-restrict="" style="">
+                                <input type="text" name="ip_name" ng-model="ipName" class="le-form-control" placeholder="请输入公网IP名称" text-restrict>
+                                <span ng-show="(vm_ip_create_form.$submitted || vm_ip_create_form.ip_name.$touched) && vm_ip_create_form.ip_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                                 
                             </div>
                         </div>
@@ -114,13 +115,13 @@
                                 </numeric-input>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix">
+                        <div class="inputs-item nomargin row clearfix hide">
                             <div class="col-sm-offset-2"><span class="control-label"><b>合计：</b><span class="text-red">100.00</span>&nbsp;元/小时（<span class="text-red">1000.00</span>元/月）</span></div>
                         </div>
                     </div>
                     <div class="left-button">
                         <div class="col-sm-12">
-                            <div class="btn btn-le-blue pull-right" ng-click="createIP()"><span>提交</span></div>
+                            <button class="btn btn-le-blue pull-right" ng-click="createIP()"><span>提交</span></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -178,14 +179,14 @@
             </a>
         </div>
         <div class="modal-body">
-            <form class="vm-create-form">
+            <form novalidate class="vm-create-form" name="vm_ip_edit_form">
                 <div>
                     <div class="left-inputs">
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">名称：</span></div>
                             <div class="col-sm-10">
-                                <input type="text" name="ipName" class="le-form-control ng-pristine ng-untouched ng-invalid ng-invalid-text-restrict" ng-model="ipName" placeholder="请输入公网IP名称" text-restrict="" style="">
-                                
+                                <input type="text" name="ip_name" class="le-form-control" ng-model="ipName" placeholder="请输入公网IP名称" text-restrict>
+                                <span ng-show="(vm_ip_edit_form.$submitted || vm_ip_edit_form.ip_name.$touched) && vm_ip_edit_form.ip_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">
@@ -197,13 +198,13 @@
                                 <span class="network-bandwidth-unit">Mbps</span>
                             </div>
                         </div>
-                        <div class="inputs-item nomargin row clearfix">
+                        <div class="inputs-item nomargin row clearfix hide">
                             <div class="col-sm-offset-2"><span class="control-label"><b>合计：</b><span class="text-red">100.00</span>&nbsp;元/小时（<span class="text-red">1000.00</span>元/月）</span></div>
                         </div>
                     </div>
                     <div class="left-button">
                         <div class="col-sm-12">
-                            <div class="btn btn-le-blue pull-right" ng-click="editIP()"><span>提交</span></div>
+                            <button class="btn btn-le-blue pull-right" ng-click="editIP()"><span>提交</span></button>
                         </div>
                         <div class="clearfix"></div>
                     </div>

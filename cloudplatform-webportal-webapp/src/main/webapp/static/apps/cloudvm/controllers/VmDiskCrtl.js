@@ -32,7 +32,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
         modalInstance.result.then(function (resultData) {
           if(resultData &&resultData.result===1){
-            //refreshVmList();
+            refreshDiskList();
           }
         }, function () {
         });
@@ -87,7 +87,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           vmId: checkedDisks[0].attachments[0].vmId,
           volumeId: checkedDisks[0].id,
         };
-        var modalInstance = WidgetService.openConfirmModal('解挂云硬盘','确定要从云主机（'+checkedDisks[0].attachments[0].name+'）解挂云硬盘（'+checkedDisks[0].name+'）吗？');
+        var modalInstance = WidgetService.openConfirmModal('解挂云硬盘','确定要从云主机（'+(checkedDisks[0].attachments[0] && checkedDisks[0].attachments[0].vmName)+'）解挂云硬盘（'+checkedDisks[0].name+'）吗？');
         modalInstance.result.then(function (resultData) {
           if(!resultData) return resultData;
           WidgetService.notifyInfo('云硬盘解挂执行中...');
@@ -110,6 +110,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         var checkedDisks=getCheckedDisk();
         if(checkedDisks.length !==1){
           WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        if(checkedDisks[0].status!=='available' && checkedDisks[0].status!=='error'){
+          WidgetService.notifyWarning('云硬盘当前状态不可删除');
           return;
         }
         var data={

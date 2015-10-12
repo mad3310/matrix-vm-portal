@@ -69,6 +69,10 @@ define(['./common.service'], function (serviceModule) {
       {"text": "不可用", "value": "ERROR"},
       {"text": "不可用", "value": "UNRECOGNIZED"},
     ];
+    config.vmFloatIpStatuses={
+      'AVAILABLE':'可用的',
+      'BINDED':'已绑定'
+    }
     config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
