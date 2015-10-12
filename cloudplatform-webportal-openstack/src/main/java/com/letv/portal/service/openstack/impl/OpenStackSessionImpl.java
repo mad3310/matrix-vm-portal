@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.portal.model.UserVo;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.util.Ref;
 import com.letv.portal.service.openstack.util.Util;
@@ -106,24 +107,19 @@ public class OpenStackSessionImpl implements OpenStackSession {
 
 	@Override
 	public void init() throws OpenStackException {
-		init(false);
+		init(null);
 	}
 
 	@Override
-	public void init(boolean withOutSession) throws OpenStackException {
+	public void init(final Session session) throws OpenStackException {
 		if (!isInit) {
 			isInit = true;
 			initUserWithOutOpenStack();
 			initUser();
-			if (!withOutSession) {
-				final SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
-
-				final Ref<Session> sessionRef = new Ref();
+			if (session!=null) {
 				Util.concurrentRunAndWait(new Runnable() {
 											  @Override
 											  public void run() {
-												  final Session session = sessionService.getSession();
-												  sessionRef.set(session);
 												  final long userId = session.getUserId();
 												  final String openStackUserId = openStackUser.getUserId();
 												  final String openStackUserPassword = openStackUser.getPassword();
@@ -139,9 +135,17 @@ public class OpenStackSessionImpl implements OpenStackSession {
 						}
 				);
 
-				Session session = sessionRef.get();
 				session.setOpenStackSession(this);
+				final SessionServiceImpl sessionService = OpenStackServiceImpl.getOpenStackServiceGroup().getSessionService();
 				sessionService.setSession(session, "CloudVm.OpenStack");
+			}
+		}else{
+			if(session != null){
+				final long userId = session.getUserId();
+				final String openStackUserId = openStackUser.getUserId();
+				final String openStackUserPassword = openStackUser.getPassword();
+				final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+				OpenStackServiceImpl.getOpenStackServiceGroup().getApiService().loadAllApiForCurrentSession(userId,sessionId,openStackUserId,openStackUserPassword);
 			}
 		}
 	}

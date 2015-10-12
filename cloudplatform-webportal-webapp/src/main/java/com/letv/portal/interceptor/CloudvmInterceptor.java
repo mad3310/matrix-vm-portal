@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.common.session.Session;
+import com.letv.portal.model.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -54,7 +56,8 @@ public class CloudvmInterceptor implements HandlerInterceptor {
         if (null != checkUrls && checkUrls.length >= 1) {
             for (String url : checkUrls) {
                 if (requestUrl.contains(url)) {
-                    OpenStackSession openStackSession = Util.session(sessionService);
+                    Session session = sessionService.getSession();
+                    OpenStackSession openStackSession = (OpenStackSession) session.getOpenStackSession();
                     if (!openStackSession.isAuthority()) {
                         boolean isAjaxRequest = (request.getHeader("x-requested-with") != null) ? true : false;
                         if (isAjaxRequest) {
@@ -65,7 +68,7 @@ public class CloudvmInterceptor implements HandlerInterceptor {
                         return false;
                     }else{
                         try {
-                            openStackSession.init();
+                            openStackSession.init(session);
                         }catch(OpenStackException e){
                             throw e.matrixException();
                         }

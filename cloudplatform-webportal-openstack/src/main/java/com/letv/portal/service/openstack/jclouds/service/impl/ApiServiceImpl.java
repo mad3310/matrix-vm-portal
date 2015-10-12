@@ -216,7 +216,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
     public void loadAllApiForCurrentSession(long userId, String sessionId, String openStackUserId, String openStackUserPassword) {
         final OpenStackUserInfo userInfo = new OpenStackUserInfo(userId, sessionId, openStackUserId, openStackUserPassword);
 
-        Util.concurrentRunAndWait(new Runnable() {
+        Util.concurrentRun(new Runnable() {
             @Override
             public void run() {
                 try {

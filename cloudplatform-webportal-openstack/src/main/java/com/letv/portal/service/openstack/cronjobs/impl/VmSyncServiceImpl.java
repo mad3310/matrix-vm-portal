@@ -66,7 +66,7 @@ public class VmSyncServiceImpl extends AbstractSyncServiceImpl implements VmSync
         String email = userVo.getEmail();
         String userName = userVo.getUsername();
         OpenStackSession openStackSession = openStackService.createSession(email, email, userName);
-        openStackSession.init(true);
+        openStackSession.init(null);
         return openStackSession;
     }
 

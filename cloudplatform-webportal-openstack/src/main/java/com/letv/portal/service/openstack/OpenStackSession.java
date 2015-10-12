@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack;
 
+import com.letv.common.session.Session;
+import com.letv.portal.model.UserVo;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.manager.ImageManager;
 import com.letv.portal.service.openstack.resource.manager.NetworkManager;
@@ -25,9 +27,9 @@ public interface OpenStackSession extends Closeable, Serializable {
 
     boolean isAuthority();
 
-    void init() throws OpenStackException;
+    void init(Session session) throws OpenStackException;
 
-    void init(boolean withOutSession) throws OpenStackException;
+    void init() throws OpenStackException;
 
 //    Set<String> listRegions();
 //
