@@ -22,7 +22,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         return unCheckedFips.length==0;
       };
       $scope.checkAllFip=function(){
-        if($scope.isAllVpcChecked()){
+        if($scope.isAllFipChecked()){
           $scope.floatIpList.forEach(function(fIp){
             fIp.checked=false;
           });

@@ -155,5 +155,12 @@ define(['./common.filter'], function (filterModule) {
       return out || '未知';
     }
   }]);
-
+  filterModule.filter('vmFloatIpFilter',['Config',function(Config){
+    var allIpStatuses = Config.vmFloatIpStatuses;
+    return function (input) {
+      var out = '';
+      out=allIpStatuses[input]
+      return out || '未知';
+    }
+  }]);
 });
