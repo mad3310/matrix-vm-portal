@@ -182,4 +182,21 @@ public class VolumeController {
 		}
 		return result;
 	}
+
+	@RequestMapping(value = "/volume/snapshot/delete", method = RequestMethod.POST)
+	public
+	@ResponseBody
+	ResultObject deleteVolumeSnapshot(@RequestParam String region, @RequestParam String snapshotId) {
+		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVolumeManager()
+					.deleteVolumeSnapshot(region, snapshotId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
+		return result;
+	}
 }
