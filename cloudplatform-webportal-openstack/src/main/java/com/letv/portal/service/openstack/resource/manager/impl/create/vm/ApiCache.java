@@ -3,6 +3,7 @@ package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.cinder.v1.features.VolumeTypeApi;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
@@ -244,5 +245,14 @@ public class ApiCache {
 			this.cache.put(VolumeAttachmentApi.class, volumeAttachmentApi);
 		}
 		return volumeAttachmentApi;
+	}
+
+	public SnapshotApi getVolumeSnapshotApi() {
+		SnapshotApi snapshotApi = (SnapshotApi) this.cache.get(SnapshotApi.class);
+		if (snapshotApi == null) {
+			snapshotApi = apiSession.getCinderApi().getSnapshotApi(region);
+			this.cache.put(SnapshotApi.class, snapshotApi);
+		}
+		return snapshotApi;
 	}
 }

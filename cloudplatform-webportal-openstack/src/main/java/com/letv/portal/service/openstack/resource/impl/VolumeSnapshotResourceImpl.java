@@ -59,6 +59,11 @@ public class VolumeSnapshotResourceImpl implements VolumeSnapshotResource {
     }
 
     @Override
+    public String getDescription() {
+        return snapshot.getDescription();
+    }
+
+    @Override
     public String getRegion() {
         return region;
     }
