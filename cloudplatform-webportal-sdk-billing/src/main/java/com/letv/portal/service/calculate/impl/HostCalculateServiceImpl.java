@@ -100,7 +100,8 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			}
 		}
 		for (BaseStandard baseStandard : baseStandards) {
-			if(set.contains(baseStandard.getStandard())) {
+			//当该规格已经计算或者计算参数中没有该规格时
+			if(set.contains(baseStandard.getStandard()) || map.get(baseStandard.getStandard())==null) {
 				continue;
 			}
 			params.put("basePriceId", baseStandard.getBasePrice().getId());
