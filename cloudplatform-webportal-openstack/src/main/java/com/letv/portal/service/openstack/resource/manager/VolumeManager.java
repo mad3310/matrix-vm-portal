@@ -41,4 +41,6 @@ public interface VolumeManager extends ResourceManager {
 	Page listVolumeSnapshot(String region, String name, Integer currentPage, Integer recordsPerPage) throws OpenStackException;
 
 	void createVolumeSnapshot(String region, String volumeId, String name, String description) throws OpenStackException;
+
+	void deleteVolumeSnapshot(String region, String snapshotId) throws OpenStackException;
 }

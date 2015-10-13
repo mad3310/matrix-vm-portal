@@ -778,6 +778,66 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	}
 
 	@Override
+	public void deleteVolumeSnapshot(final String region, final String snapshotId) throws OpenStackException {
+		runWithApi(new ApiRunnable<CinderApi, Void>() {
+			@Override
+			public Void run(CinderApi cinderApi) throws Exception {
+				checkRegion(region);
+
+				SnapshotApi snapshotApi = cinderApi.getSnapshotApi(region);
+
+				Snapshot snapshot = snapshotApi.get(snapshotId);
+				if (snapshot == null) {
+					throw new ResourceNotFoundException("Volume Snapshot", "云硬盘快照", snapshotId);
+				}
+
+				Status status = snapshot.getStatus();
+				if (status != Status.AVAILABLE && status != Status.ERROR) {
+					throw new UserOperationException(
+							"Volume snapshot is not removable.", "云硬盘快照不是可删除的状态。");
+				}
+
+				boolean isSuccess = snapshotApi.delete(snapshotId);
+				if (!isSuccess) {
+					throw new OpenStackException(MessageFormat.format(
+							"Volume snapshot \"{0}\" delete failed.",
+							snapshotId), MessageFormat.format(
+							"云硬盘快照“{0}”删除失败。", snapshotId));
+				}
+
+				waitingVolumeSnapshot(snapshotApi, snapshotId, new Checker<Snapshot>() {
+					@Override
+					public boolean check(Snapshot snapshot) throws Exception {
+						return snapshot == null;
+					}
+				});
+
+				return null;
+			}
+		});
+	}
+
+	public void waitingVolumeSnapshot(final SnapshotApi snapshotApi, final String snapshotId,
+									  final Checker<Snapshot> checker) throws OpenStackException {
+		try {
+			Snapshot snapshot = null;
+			while (true) {
+				snapshot = snapshotApi.get(snapshotId);
+				if (checker.check(snapshot)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
+	}
+
+	@Override
 	protected String getProviderOrApi() {
 		return "openstack-cinder";
 	}
