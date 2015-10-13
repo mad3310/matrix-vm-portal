@@ -431,7 +431,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	}
 
 	@Override
-	public void create(final String region, final int sizeGB, final String volumeTypeId,
+	public void create(final String region, final int sizeGB, final String volumeTypeId, final String volumeSnapshotId,
 			final String name, final String description, final Integer countPara)
 			throws OpenStackException {
 		runWithApi(new ApiRunnable<CinderApi, Void>() {
@@ -464,6 +464,9 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				}
 				if (description != null) {
 					createVolumeOptions.description(description);
+				}
+				if (volumeSnapshotId != null) {
+
 				}
 				Integer count = countPara;
 				if (count == null) {
