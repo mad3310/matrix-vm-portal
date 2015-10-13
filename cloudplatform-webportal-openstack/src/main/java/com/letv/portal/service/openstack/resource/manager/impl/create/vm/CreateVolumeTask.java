@@ -1,5 +1,7 @@
 package com.letv.portal.service.openstack.resource.manager.impl.create.vm;
 
+import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
+import org.jclouds.openstack.cinder.v1.domain.Snapshot;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.domain.VolumeQuota;
 import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
@@ -7,6 +9,8 @@ import org.jclouds.openstack.cinder.v1.options.CreateVolumeOptions;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.resource.manager.impl.Checker;
+
+import java.util.List;
 
 public class CreateVolumeTask implements VmsCreateSubTask {
 
@@ -16,12 +20,8 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 			return;
 		}
 
-		int totalVolumeCount = 0, totalVolumeSize = 0;
-		for (Volume volume : context.getApiCache().getVolumeApi().list()
-				.toList()) {
-			totalVolumeCount++;
-			totalVolumeSize += volume.getSize();
-		}
+		List<? extends Volume> volumes = context.getApiCache().getVolumeApi().list().toList();
+		List<? extends Snapshot> snapshots = context.getApiCache().getVolumeSnapshotApi().list().toList();
 
 		VolumeQuota quota = context
 				.getApiCache()
@@ -32,12 +32,12 @@ public class CreateVolumeTask implements VmsCreateSubTask {
 			throw new OpenStackException("Cinder quota is not available.",
 					"云硬盘的配额不可用。");
 		}
-		if (totalVolumeCount + context.getVmCreateConf().getCount() > quota
+		if (volumes.size() + context.getVmCreateConf().getCount() > quota
 				.getVolumes()) {
 			throw new UserOperationException(
 					"Volume count exceeding the quota.", "云硬盘数量超过配额。");
 		}
-		if (totalVolumeSize + context.getVmCreateConf().getCount()
+		if (VolumeManagerImpl.sumGigabytes(volumes,snapshots) + context.getVmCreateConf().getCount()
 				* context.getVmCreateConf().getVolumeSize() > quota
 					.getGigabytes()) {
 			throw new UserOperationException(
