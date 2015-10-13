@@ -5,6 +5,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, items, region) {
 
+    $scope.isOrderSubmiting=false;
     $scope.activeFlow = 1;
     $scope.vmName = '';
     $scope.vmImageList = [];
@@ -82,6 +83,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         snapshotId:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.vm_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -89,6 +91,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云主机失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };
