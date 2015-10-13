@@ -49,7 +49,14 @@ define(['app'],function (app) {
               config: {
                   templateUrl: '/static/apps/cloudvm/views/vm-floatIP.html'
               }
-          }];
+          },
+        {
+          url: '/vm-snapshot',
+          title: '快照',
+          config: {
+            templateUrl: '/static/apps/cloudvm/views/vm-snapshot.html'
+          }
+        }];
     };
 
   app.constant('routes', getRoutes());
