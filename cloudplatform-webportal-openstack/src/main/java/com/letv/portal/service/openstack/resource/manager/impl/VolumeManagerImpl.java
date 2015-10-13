@@ -525,6 +525,13 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 							"Volume is not removable.", "云硬盘不是可删除的状态。");
 				}
 
+				List<? extends Snapshot> snapshots = cinderApi.getSnapshotApi(region).list().toList();
+				for (Snapshot snapshot : snapshots) {
+					if (StringUtils.equals(snapshot.getVolumeId(), volumeResource.getId())) {
+						throw new UserOperationException("There is a snapshot of the volume.", "云硬盘有快照，请先把云硬盘的快照删掉，再删除云硬盘。");
+					}
+				}
+
 				VolumeApi volumeApi = cinderApi.getVolumeApi(region);
 				boolean isSuccess = volumeApi.delete(volumeResource.getId());
 				if (!isSuccess) {
