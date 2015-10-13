@@ -21,6 +21,8 @@ public interface BillUserAmountService {
     public String recharge(long userId,BigDecimal amount,String tradeNum,int type);
     //充值成功更余额
     public long rechargeSuccess(Long userId,String tradeNum,String orderNum,BigDecimal amount);
+    //充值成功更余额
+    public long rechargeSuccessByOrderCode(Long userId,String orderCode,String orderNum,BigDecimal amount);
     //充值成功不更余额
     public long rechargeSuccess(Long userId,String tradeNum,String orderNum,BigDecimal amount,boolean isUpdateAmount);
     //获取某产品线所有欠费用户及开始欠费时间

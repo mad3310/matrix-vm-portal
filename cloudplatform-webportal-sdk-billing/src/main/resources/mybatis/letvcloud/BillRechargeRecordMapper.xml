@@ -30,19 +30,35 @@
         </set>
         where tradeNum= #{tradeNum}
     </update>
+    <update id="updateSucByOrderCode" parameterType="java.util.HashMap">
+        update bill_recharge_record
+        <set>
+            orderNum = #{orderNum},
+            amount = #{amount},
+            success = 1,
+            lastUpdateTime=NOW()
+        </set>
+        where orderCode= #{orderCode}
+    </update>
     <update id="updateAmount" parameterType="java.util.HashMap">
         update bill_recharge_record
         <set>
             amount = #{amount},
             lastUpdateTime=NOW()
         </set>
-        where tradeNum= #{tradeNum}
+        where orderCode= #{orderCode}
     </update>
     <select id="getAmount" parameterType="java.lang.String" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
         select
         userId,amount,rechargeType,orderNum,success
         from bill_recharge_record
         where tradeNum = #{tradeNum}
+    </select>
+    <select id="getAmountByOrderCode" parameterType="java.lang.String" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
+        select
+        userId,amount,rechargeType,orderNum,success
+        from bill_recharge_record
+        where orderCode = #{orderCode}
     </select>
     <select id="getUserAmountRecord" resultType="com.letv.portal.model.letvcloud.BillRechargeRecord">
         select createdTime,rechargeType,amount,success from bill_recharge_record
