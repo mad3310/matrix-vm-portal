@@ -18,7 +18,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.openVmDiskCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
-          templateUrl: 'VmDiskCreateModalTpl',
+          templateUrl: '/static/apps/cloudvm/templates/vm-disk-create-modal.html',
           controller: 'VmDiskCreateModalCtrl',
           size: size,
           backdrop: 'static',
