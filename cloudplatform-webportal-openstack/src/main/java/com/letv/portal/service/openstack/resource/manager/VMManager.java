@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.common.paging.impl.Page;
-import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.exception.APINotAvailableException;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.exception.PollingInterruptedException;
@@ -16,7 +16,6 @@ import com.letv.portal.service.openstack.exception.VMStatusException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.VMResource;
 import com.letv.portal.service.openstack.resource.VolumeResource;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 
 public interface VMManager extends ResourceManager {

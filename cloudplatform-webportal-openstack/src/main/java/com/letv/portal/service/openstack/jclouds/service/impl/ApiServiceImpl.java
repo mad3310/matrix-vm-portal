@@ -77,7 +77,7 @@ public class ApiServiceImpl implements ApiService, ServletContextAware {
                     throw new MatrixException("后台错误", e);
                 }
             }
-        }, Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))).expireAfterAccess(600, TimeUnit.MINUTES).build();
+        }, Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()))).expireAfterAccess(600, TimeUnit.MINUTES).maximumSize(50).build();
     }
 
     @PreDestroy

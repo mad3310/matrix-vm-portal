@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.SendMsgUtils;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
-import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
@@ -393,7 +394,7 @@ public class PayServiceImpl implements IPayService {
 					}
 					this.resourceCreateService.createVm(
 							orderSub.getCreateUser(),
-							orderSub.getProductInfoRecord().getParams(),new VmCreateListener(){
+							orderSub.getProductInfoRecord().getParams(),new VmCreateAdapter(){
 								@SuppressWarnings("unchecked")
 								@Override
 								public void vmCreated(String region,

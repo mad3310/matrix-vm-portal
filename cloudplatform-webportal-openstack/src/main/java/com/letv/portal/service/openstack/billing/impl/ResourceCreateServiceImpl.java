@@ -6,12 +6,14 @@ import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
 import com.letv.portal.service.openstack.billing.*;
+import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.resource.FlavorResource;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.MultiVmCreateContext;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
-import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VmCreateContext;
 import com.letv.portal.service.openstack.util.Util;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
@@ -19,9 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by zhouxianguang on 2015/9/21.
