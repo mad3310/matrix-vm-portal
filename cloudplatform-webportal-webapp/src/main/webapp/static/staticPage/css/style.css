@@ -294,10 +294,14 @@ a:hover{cursor:pointer;}
 .title-rollup .icon-arrow01{display:block;float:left;-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);transform:rotate(180deg);}
 .title-rollup:hover{cursor:pointer;}
 .order .order-pay{margin:20px 0 0 0;border:1px solid #ededed;padding:30px 0 25px 30px;background:#fbfbfb;}
-.order-pay .pay-item{margin-bottom:10px;}
+.order-pay .pay-item{margin-bottom:10px;min-height:20px;}
+.pay-item .item-title{width:75px;text-align:right;display:inline-block;}
 .pay-item .item-desc{padding-left:25px;font-size:1.4rem;}
+.item-desc .desc-input{position:relative;top:0;left:0;}
+.desc-input .input-china{position:absolute;top:0;left:5px}
 .item-recharge{margin-left:50px;}
 .item-pay{width:180px;margin-top:35px;}
+.remainPay{width:120px;height:30px;padding:6px 12px;font-size:1.4rem;line-height:1.42857143;color:#555;background-color:#fff;background-image:none;border:1px solid #d2d2d2;}
 .price-table.ordertable{margin-top:20px;background:#fbfbfb;color:#666;display:block;}
 .ordertable.opacity{opacity:1;}
 .price-table.ordertable thead{border:1px solid #ededed;color:#666;background:none;}
@@ -325,6 +329,17 @@ a:hover{cursor:pointer;}
 .desc .desc-ordernum{margin-top:20px;padding-left:15px;}
 .paycomplete .successicon{width:45px;height:45px;background-image:url(img/complete.png);float:left}
 .paycomplete .successicon.fail{background-image:url(img/pay-wrong.png);background-size:100%;background-repeat:no-repeat;}
+.WeChatQR_Buttom{width:800px;height:550px;margin:auto;margin-top:25px;margin-bottom:15px;border:1px solid #eaeaea;text-align:center;background-color: #fefefe;}
+.WeChatQR_Buttom .WeChatPay{height:70px;width:100%;line-height:70px;font-size:22px;}
+.WeChatPay img{margin-right:20px;vertical-align: middle;}
+.WeChatQR_Buttom .WeChat_Money{height:60px;font-size:24px;line-height:60px;color:#fa5258;}
+.WeChat_mask{height:100%;background:#000;opacity:.7;filter:alpha(opacity=70);}
+.WeChat_wrap{position:absolute;top:0;left:0;width:100%;padding-top:44px;text-align:center;color:#fff;line-height:26px;}
+.WeChat_wrap p{margin: 0 0 10px;}
+.WeChatQR_Buttom .WeChat_PlayCode{margin-top:20px;font-size:16px;font-weight:800;}
+.WeChat_PlayCode img{margin-right:20px;vertical-align: middle;}
+#WeChat_Box {position: relative;}
+#WeChatRefresh{position:absolute;top:26px;left:50%;margin-left:-74px;width:148px;height:148px;cursor:pointer;}
 /*订单支付-弹窗*/
 .modal-container{position:absolute;top:0;z-index:200;width:100%;height:100%;text-align:center;background:rgba(0,0,0,.3);}
 .modal{position:fixed;top:30%;left:50%;margin-left:-270px;width:540px;height:280px;padding:20px;box-shadow:0 3px 9px rgba(0,0,0,.5);background:#fff;}
