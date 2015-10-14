@@ -26,6 +26,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           resolve: {
             region: function () {
               return CurrentContext.regionId;
+            },
+            diskSnapshot: function () {
+              return undefined;
             }
           }
         });

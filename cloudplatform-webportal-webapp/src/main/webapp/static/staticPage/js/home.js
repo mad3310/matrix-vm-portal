@@ -139,11 +139,13 @@ function carousels(){
 }
 // products:scroll-nav
 function scrollNav(){
-	var scrollh=document.body.scrollHeight;
-	// console.log(scrollh)
+	// var scrollh=document.body.scrollHeight;
+	var scrollh=$(document).height();
+	console.log(scrollh+"   ccc")
 	$(window).scroll(function(){  
-        var vtop=$(document).scrollTop();
+        var vtop=$(this).scrollTop();
         var height=$(this).height();
+        console.log(height+"     dddd   "+vtop)
         var _target=$('.tab-fixed')
         if(vtop>=645){
         	$('.tab-layout').addClass('hide');
@@ -154,9 +156,14 @@ function scrollNav(){
         	}
         	_target.removeClass('hide');
         	// console.log(vtop+height)
-        	if(vtop+height>=scrollh){//到底部
+        	// console.log(scrollh)
+        	var tempH=vtop+height;
+        	if(tempH>=scrollh){//到底部
+        		console.log('a')
         		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
         	}else{
+        		console.log(vtop+height+"   aa")
+        		console.log(scrollh+"    bbb")
         		if(vtop>=2077){
 					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
 	        	}else if(vtop>=1097){

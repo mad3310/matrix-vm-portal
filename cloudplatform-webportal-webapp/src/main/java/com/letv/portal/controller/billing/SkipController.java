@@ -50,6 +50,7 @@ public class SkipController {
 	public ModelAndView wxPay(HttpServletRequest request,ModelAndView mav){
 		mav.addObject("orderNum",request.getParameter("orderNum"));
 		mav.addObject("money",request.getParameter("money"));
+		mav.addObject("accountMoney",request.getParameter("accountMoney"));
 		mav.setViewName("/payment/wxpay");
 		return mav;
 	}

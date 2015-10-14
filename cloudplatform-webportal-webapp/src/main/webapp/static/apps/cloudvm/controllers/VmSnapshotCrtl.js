@@ -14,6 +14,37 @@ define(['controllers/app.controller'], function (controllerModule) {
         refreshSnapshotList();
       };
 
+      $scope.openVmDiskCreateModal = function (size) {
+        var checkedSnapshots=getCheckedSnapshot();
+        if(checkedSnapshots.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: '/static/apps/cloudvm/templates/vm-disk-create-modal.html',
+          controller: 'VmDiskCreateModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            diskSnapshot: function () {
+              return checkedSnapshots[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.deleteSnapshot=function(){
         var checkedSnapshots=getCheckedSnapshot();
         if(checkedSnapshots.length !==1){

@@ -3,7 +3,7 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region,diskSnapshot) {
 
     Utility.getRzSliderHack($scope)();
     $scope.diskName = '';
@@ -56,14 +56,20 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       },
       initSnapshotTypeSelector=function(){
-        HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '1', recordsPerPage: '100'}).success(function (data, status, headers, config) {
-          $scope.snapshotList = data.data.data;
-          $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
-            return new ModelService.SelectModel(snapshot.name,snapshot.id);
-          });
-          $scope.snapshotListSelectorData.unshift(new ModelService.SelectModel('请选择快照',''));
+        if(diskSnapshot){
+          $scope.snapshotListSelectorData=[new ModelService.SelectModel(diskSnapshot.name,diskSnapshot.id)];
           $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
-        });
+        }
+        else{
+          HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '1', recordsPerPage: '1000'}).success(function (data, status, headers, config) {
+            $scope.snapshotList = data.data.data;
+            $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
+              return new ModelService.SelectModel(snapshot.name,snapshot.id);
+            });
+            $scope.snapshotListSelectorData.unshift(new ModelService.SelectModel('请选择快照',''));
+            $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
+          });
+        }
       };
 
     initComponents();
