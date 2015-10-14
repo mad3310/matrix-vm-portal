@@ -73,7 +73,7 @@
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <input type="text" class="le-form-control input-disk-name" ng-model="diskName" name="disk_name" text-restrict />
+                            <input type="text" class="le-form-control" ng-model="diskName" name="disk_name" text-restrict />
                             <span ng-show="(vm_disk_create_form.$submitted || vm_disk_create_form.disk_name.$touched) && vm_disk_create_form.disk_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-blue" ng-click="createDisk()" ng-disabled="isOrderSubmiting">
+                            <button class="btn btn-le-blue" ng-click="vm_disk_create_form.$valid && !isOrderSubmiting && createDisk()" ng-disabled="isOrderSubmiting">
                                 <span ng-if="!isOrderSubmiting">提交订单</span>
                                 <span ng-if="isOrderSubmiting">订单提交中...</span>
                             </button>
@@ -190,7 +190,10 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-blue" ng-click="createDiskSnapshot()"><span>创建快照</span></button>
+                            <button class="btn btn-le-blue" ng-click="vm_disk_snapshot_create_form.$valid && !isOrderSubmiting && createDiskSnapshot()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
                         </div>
                     </div>
                 </form>
