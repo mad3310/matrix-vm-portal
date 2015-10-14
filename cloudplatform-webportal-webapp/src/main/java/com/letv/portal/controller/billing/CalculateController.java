@@ -1,8 +1,6 @@
 package com.letv.portal.controller.billing;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.letv.common.result.ResultObject;
 import com.letv.common.util.DataFormat;
 import com.letv.common.util.HttpUtil;
-import com.letv.portal.dao.base.IBaseRegionDao;
-import com.letv.portal.model.base.BaseRegion;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
 import com.letv.portal.service.product.IHostProductService;
@@ -47,6 +43,30 @@ public class CalculateController {
 	@Autowired
 	IHostCalculateService hostCalculateService;
 	
+	/**
+	  * @Title: transferParams
+	  * @Description: 转换参数（匹配计费参数）
+	  * @param params
+	  * @param id void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月13日 下午3:29:17
+	  */
+	private void transferParams(Map<String, Object> params, Long id) {
+		if(id==3) {//云硬盘
+			if("SAS".equals(params.get("volumeType"))) {
+				params.put("os_storage_sas", params.get("volumeSize")+"");
+			} else if("SSD".equals(params.get("volumeType"))) {
+				params.put("os_storage_ssd", params.get("volumeSize")+"");
+			} else if("SATA".equals(params.get("volumeType"))) {
+				params.put("os_storage", params.get("volumeSize")+"");
+			}
+		} else if(id==4) {//公网IP
+			
+		} else if(id==5) {//路由器
+			
+		}
+	}
 
 	@RequestMapping(value="/price/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject queryProductPrice( @PathVariable Long id, HttpServletRequest request, ResultObject obj) {
@@ -58,7 +78,9 @@ public class CalculateController {
 			map.put("region", regionId);
 		}
 		
-		if(id==2) {//云主机走自己的验证和计算
+		transferParams(map, id);
+		
+		if(id==2 || id==3 || id==4 || id==5) {//云主机走自己的验证和计算
 			if(hostProductService.validateData(id, map)) {
 				ret =  hostCalculateService.calculatePrice(id, map);
 			}

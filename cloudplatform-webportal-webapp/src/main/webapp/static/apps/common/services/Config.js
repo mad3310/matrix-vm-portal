@@ -26,7 +26,6 @@ define(['./common.service'], function (serviceModule) {
       disk_attach:'/ecs/region/{region}/vm-attach-volume',
       disk_detach:'/ecs/region/{region}/vm-detach-volume',
       vpc_list:'/osn/network/private/list',
-      floatIP_list:'/osn/floatingip/list',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
       subnet_list:'/osn/subnet/private/list',

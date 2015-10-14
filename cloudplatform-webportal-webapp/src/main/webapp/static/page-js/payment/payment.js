@@ -1,3 +1,94 @@
+//余额选择
+function remainChose(){
+    $('.self-checkbox').unbind('click').click(function(event) {
+        var _target=$(this);
+        if(_target.hasClass('active')){
+            // $('.remainInput').addClass('hide');
+            $('.remainInput').css({
+                transform:'translateY(-40px)',
+                opacity:0,
+                position:'absolute',
+                transition:'all .5s ease-in',
+            });
+            _target.removeClass('active');
+        }else{
+            _target.addClass('active');
+            // $('.remainInput').removeClass('hide')
+            $('.remainInput').css({
+                transform:'translateY(0px)',
+                opacity:1,
+                position:'relative',
+                transition:'all .5s ease-in',
+            });
+        }
+        alloptionsHandle();
+    });
+}
+//余额支付金额校验，非负、不可大于订单金额，不可大于余额金额
+function moneyInputVali(){
+    var flag=false;
+    var _target=$('.remainPay');
+    var _paybtn=$('#pay');
+    var _errordesc=$('.error-desc');
+    var reg=/^-?\d+(\.\d{1,2})?$/;
+    var remain=orderDetail();
+    remain.done(function(){
+        var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+        var remain=$('.remain').text().substring(1);
+        var compare=(orderPaynum>remain)?remain:orderPaynum;
+        _target.unbind('change').change(function(event){
+            var money=_target.val();
+            if(money){
+                if(reg.test(money)){
+                    if(money<0){
+                        _target.addClass('has-error');
+                        _errordesc.text('输入不合法数字！请输入两位小数');
+                        _paybtn.attr('disabled', 'true');
+                    }else{
+                        if(money>compare){
+                            _target.addClass('has-error');
+                            _errordesc.text('支付金额有问题！');
+                            _paybtn.attr('disabled', 'true');
+                        }else{
+                            _target.removeClass('has-error');
+                            _errordesc.addClass('hide');
+                            _paybtn.removeAttr('disabled');
+                            flag=true;
+                        }
+                    }
+                }else{//不是数字
+                    _target.addClass('has-error');
+                    _errordesc.text('输入不合法数字！请输入两位小数');
+                    _paybtn.attr('disabled', 'true');
+                }
+            }else{
+                if($('.self-checkbox').hasClass('active')){
+                    _target.addClass('has-error');
+                    _errordesc.text('输入不合法数字！请输入两位小数');
+                    _paybtn.attr('disabled', 'true'); 
+                }else{
+                    flag=true;
+                    _target.removeClass('has-error');
+                    _errordesc.addClass('hide');
+                    _paybtn.removeAttr('disabled')
+                }
+            } 
+            return flag;
+        });
+    })
+}
+//支付方式选择
+function payOptionChose(){
+    $('.payoption').unbind('click').click(function(event) {
+        var _target=$(this);
+        if(_target.hasClass('active')){
+            _target.removeClass('active');
+        }else{
+            _target.addClass('active').siblings().removeClass('active');
+        }
+        alloptionsHandle();
+    });
+}
 //展开&收起
 function rollup(){
 	$('.title-rollup').unbind('click').click(function(){
@@ -52,7 +143,7 @@ function userInfo(){
             var _data=data.data;
             if(data.result==0){//error
             }else{
-                $('.remain').text(_data);
+                $('.remain').text('¥'+_data);
             }
         }
     });
@@ -61,10 +152,10 @@ function userInfo(){
 function orderDetail(){
     var orderNum=$('#orderNum').val();
     var orderurl='/order/'+orderNum
-    $.ajax({
-     url:orderurl,
-     type: 'get',
-     success:function(data){
+    return $.ajax({
+    url:orderurl,
+    type: 'get',
+    success:function(data){
          if(data.result==0){//error
              alert(data.msgs)
          }else{
@@ -99,9 +190,6 @@ function orderDetail(){
                                          +'<td>'
                                              +'<div class="payitems">'
                                                 +paramsHtml
-                                                 // +'<div class="payitem clearfix">'
-                                                 //     +'<div class="text-right">配置&nbsp;:</div><div class="payitem-desc">&nbsp;1核，2G内存，无数据盘</div>'
-                                                 // +'</div>'
                                              +'</div>'
                                          +'</td>'
                                          +'<td></td>'
@@ -110,36 +198,75 @@ function orderDetail(){
                                      +'</tr>';
             }
             $('#orderpay').text('¥'+totalprice);
+            $('.remainPay').val(totalprice);
             _target.append(orderHtml);
          }
      }
     });
 }
+//支付按钮状态
+function alloptionsHandle(){
+    var _paybtn=$('#pay');
+    // 检查当前的支付方式
+    var _alloption=$('.alloption.active');
+    if(_alloption.length>0){
+        _paybtn.removeAttr('disabled');
+    }else{//未选择支付方式
+        _paybtn.attr('disabled','true');
+    }
+}
 //窗口&跳转支付
 function goPay(){
     var width=document.body.scrollWidth;
     var orderNum=$('#orderNum').val();
+    var remain=orderDetail();
     $('#pay').unbind('click').click(function(event){//窗口&跳转支付
-        $.ajax({
-            url: '/order/pay/'+orderNum,
-            type: 'get',
-            success:function(data){
-                var height=document.body.scrollHeight;
-                if(data.result==0){//error
-                }else{
-                    if(data.data.status==1){//已失效
-                        alert('订单已失效')
-                    }else{
-                        window.open('/pay/'+orderNum+'?pattern=1');
-                        $('.modal-container').css({
-                            width:width,
-                            height:height
-                        }).removeClass('hide');
-                    }
-                }
+        remain.done(function(){
+
+            var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
+            var remainPaynum=$('.remainPay').val();
+            var money=orderPaynum-remainPaynum;
+            // 检查当前的支付方式
+            var _alloption=$('.alloption.active');
+            var alloptions={
+                '0':'/pay/'+orderNum+'?accountMoney='+remainPaynum,//余额支付
+                '1':'/pay/'+orderNum+'?pattern=1',//支付宝
+                '2':'/payment/wxpay?orderNum='+orderNum+'&money='+orderPaynum+'&accountMoney=0',//微信
+                '01':'/pay/'+orderNum+'?pattern=1&accountMoney='+remainPaynum,//余额&支付宝
+                '02':'/payment/wxpay?orderNum='+orderNum+'&money='+money.toFixed(2)+'&accountMoney='+remainPaynum//余额&微信
             }
-        });
+            var option='';
+            if(_alloption.length>0){
+                $.ajax({
+                    url: '/order/pay/'+orderNum,
+                    type: 'get',
+                    success:function(data){
+                        var height=document.body.scrollHeight;
+                        if(data.result==0){//error
+                        }else{
+                            if(data.data.status==1){//已失效
+                                alert('订单已失效')
+                            }else{
+                                if(_alloption.length>1){//组合支付
+                                    option='0'+$('.payoption.active').attr('self-payoption');
+                                }else{//一种支付方式
+                                    option=$('.alloption.active').attr('self-payoption');
+                                }
+                                var payoption=alloptions[option];
+                                window.open(payoption);
+                                $('.modal-container').css({
+                                    width:width,
+                                    height:height
+                                }).removeClass('hide');
+                            }
+                        }
+                    }
+                });
+            }else{//未选择支付方式
+            }
+        });   
     });
+    
     $('.paybtn').unbind('click').click(function(event) {//隐藏窗口
         $.ajax({
             url: '/order/pay/'+orderNum,
@@ -161,7 +288,6 @@ function goPay(){
     $('.icon-add').unbind('click').click(function(event) {
         $('.modal-container').addClass('hide');
     });
-
 }
 //订单支付状态api
 function queryStatus(){

@@ -18,7 +18,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.openVmDiskCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
-          templateUrl: 'VmDiskCreateModalTpl',
+          templateUrl: '/static/apps/cloudvm/templates/vm-disk-create-modal.html',
           controller: 'VmDiskCreateModalCtrl',
           size: size,
           backdrop: 'static',
@@ -26,6 +26,9 @@ define(['controllers/app.controller'], function (controllerModule) {
           resolve: {
             region: function () {
               return CurrentContext.regionId;
+            },
+            diskSnapshot: function () {
+              return undefined;
             }
           }
         });
@@ -336,6 +339,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         volumeId:disk.id,
         name:$scope.diskSnapshotName
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.snapshot_disk_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -343,6 +347,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'云硬盘快照创建失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.letv.common.result.ResultObject;
 import com.letv.common.session.SessionServiceImpl;
-import com.letv.portal.constant.Arithmetic4Double;
 import com.letv.portal.model.order.Order;
 import com.letv.portal.model.product.ProductInfoRecord;
 import com.letv.portal.model.subscription.Subscription;
@@ -112,6 +111,23 @@ public class ProductController {
 			billingParams.put("cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
 			billingParams.put("os_storage", params.get("volumeSize")+"");
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
+			billingParams.put("order_num", params.get("count")+"");
+			billingParams.put("order_time", params.get("order_time")+"");
+		} else if(id==3) {//云硬盘
+			if("SAS".equals(params.get("volumeType"))) {
+				params.put("os_storage_sas", params.get("volumeSize")+"");
+			} else if("SSD".equals(params.get("volumeType"))) {
+				params.put("os_storage_ssd", params.get("volumeSize")+"");
+			} else if("SATA".equals(params.get("volumeType"))) {
+				params.put("os_storage", params.get("volumeSize")+"");
+			}
+			billingParams.put("order_num", params.get("count")+"");
+			billingParams.put("order_time", params.get("order_time")+"");
+		} else if(id==4) {//公网IP
+			billingParams.put("os_broadband", params.get("bandWidth")+"");
+			billingParams.put("order_num", params.get("count")+"");
+			billingParams.put("order_time", params.get("order_time")+"");
+		} else if(id==5) {//路由器
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		}
