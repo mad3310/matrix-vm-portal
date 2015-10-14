@@ -1106,5 +1106,6 @@ le-select .le-select-menu li a{
 }
 .le-modal-body .col-control input{
     display: inline-block;
+    width: 250px;
 }
 /*end le-modal style*/

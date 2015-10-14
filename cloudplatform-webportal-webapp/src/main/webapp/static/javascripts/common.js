@@ -14,6 +14,7 @@ define(['jquery'],function($){
       {url: '/cvm/#/vm-vpc', title: '私有网络', icon:  'iconfont icon-neticon'},
       {url: '/cvm/#/vm-floatIP',title:'公网IP',icon:'iconfont icon-ipicon'},
       {url: '/cvm/#/vm-router',title:'路由器',icon:'iconfont icon-routeicon'},
+      {url: '/cvm/#/vm-snapshot',title:'快照',icon:'iconfont icon-snapshoticon'},
       {url: '/rds', title: '关系型数据库', icon:  'iconfont icon-rds',isSubmenuFisrt:true}
     ],
     sideMenuItemEl = null,

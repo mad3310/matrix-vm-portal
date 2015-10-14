@@ -16,7 +16,8 @@ define([
     'controllers/RouterAssociateSubnetModalCtrl',
     'controllers/VmIPcreateModalCtrl',
     'controllers/VmIpBindVmModalCtrl',
-    'controllers/VmIpEditModalCtrl'
+    'controllers/VmIpEditModalCtrl',
+      'controllers/VmSnapshotCrtl'
   ],
   function (controllerModule) {
 

@@ -40,7 +40,10 @@ define(['./common.service'], function (serviceModule) {
       floatIp_delete:'/osn/floatingip/delete',
       floatIP_edit:'/osn/floatingip/edit',
       floatIp_bindVm:'/ecs/vm/floatingip/bind',
-      floatIp_unbindVm:'/ecs/vm/floatingip/unbind'
+      floatIp_unbindVm:'/ecs/vm/floatingip/unbind',
+      snapshot_disk_list:'/osv/volume/snapshot/list',
+      snapshot_disk_create:'/osv/volume/snapshot/create',
+      snapshot_disk_delete:'/osv/volume/snapshot/delete',
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
