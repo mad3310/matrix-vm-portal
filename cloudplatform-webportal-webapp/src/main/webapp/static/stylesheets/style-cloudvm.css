@@ -96,9 +96,6 @@
 .form-vm-disk-create .check-disk-type{
     width: 60px;
 }
-.input-disk-name{
-    width: 250px;
-}
 .modal-vm-disk-attach le-select{
     width: 250px;
 }

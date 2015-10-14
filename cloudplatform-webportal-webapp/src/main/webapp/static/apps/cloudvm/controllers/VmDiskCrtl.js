@@ -170,6 +170,37 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openVmDiskSnapshotCreateModal=function(size){
+        var checkedDisks=getCheckedDisk();
+        if(checkedDisks.length !==1){
+          WidgetService.notifyWarning('请选中一个云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmDiskSnapshotCreateModalTpl',
+          controller: 'VmDiskSnapshotCreateModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            disk: function () {
+              return checkedDisks[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.isAllDiskChecked=function(){
         var unCheckedDisks=$scope.diskList.filter(function(disk){
           return disk.checked===false || disk.checked===undefined;
@@ -288,6 +319,33 @@ define(['controllers/app.controller'], function (controllerModule) {
       });
     };
 
+
+  });
+
+  controllerModule.controller('VmDiskSnapshotCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,disk) {
+
+    $scope.diskSnapshotName='';
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.createDiskSnapshot = function () {
+      var data = {
+        region:region,
+        volumeId:disk.id,
+        name:$scope.diskSnapshotName
+      };
+      HttpService.doPost(Config.urls.snapshot_disk_create, data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云硬盘快照创建成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云硬盘快照创建失败');
+        }
+      });
+    };
 
   });
 
