@@ -19,17 +19,30 @@
 		<div class="order">
 			<div class="order-title">订单支付</div>
 			<div class="order-pay">
-				<div class="pay-item">账号名称：<span class="item-desc account">letvcloud@letv.com</span></div>
-				<div class="pay-item">
-					<span>可用余额：</span><span class="item-desc remain">¥100</span>
-					<button class="btn btn-le-red item-recharge hide">充值</buttom>
+				<div class="pay-item"><span class="item-title">账号名称：</span><span class="item-desc account">letvcloud@letv.com</span></div>
+				<div class="pay-item"><span class="item-title">本次需支付：</span><span class="text-red item-desc" id="orderpay">¥1000</span></div>
+				<div class="pay-item" style="position:relative;z-index:200">
+					<span class="item-title">可用余额：</span><span class="item-desc remain">¥100</span>
+					<span class="item-desc">
+						<span class="iconfont icon-checkiconfill self-checkbox alloption active" self-payoption='0'></span>
+						<span style="padding-left:5px;">使用余额</span>
+					</span>
+					<!-- <button class="btn btn-le-red item-recharge hide">充值</button> -->
 				</div>
-				<div class="pay-item">本次需支付：<span class="text-red item-desc" id="orderpay" style="padding-left:15px;">¥1000</span></div>
-				<div class="pay-item">
-					<span>支付方式：</span>
-					<button class="payoption active"><img src="/static/staticPage/img/zhifubao.png"></button>
-					<!-- <button class="payoption"><img src="/static/staticPage/img/wechat.png"></button> -->
+				<div class="pay-item remainInput" style="position:relative;z-index:100">
+					<span class="item-title">余额支付：</span>
+					<span class="item-desc">
+						<span class="desc-input">
+							<span class="input-china">¥</span><input type="text" class="remainPay" maxlength='12'/></span>
+						<span class="error-desc text-red"></span>
+					</span>
 				</div>
+				<div class="pay-item payoptions">
+					<span class="item-title">支付方式：</span>
+					<button class="payoption alloption" self-payoption='1'><img src="/static/staticPage/img/zhifubao.png"></button>
+					<button class="payoption alloption" self-payoption='2'><img src="/static/staticPage/img/wechat.png"></button>
+				</div>
+				
 				<div class="pay-item">
 					<button class="btn btn-le-blue item-pay" id="pay">确认支付</button>
 				</div>
@@ -83,6 +96,9 @@
 <script src="/static/javascripts/jquery-1.11.3.js"></script>
 <script src="${ctx}/static/page-js/payment/payment.js"></script>
 <script>
+remainChose();//余额支付
+moneyInputVali();//余额输入校验
+payOptionChose();//支付方式选择
 rollup();//展开&收起
 userInfo();//用户名&余额
 goPay();//支付
