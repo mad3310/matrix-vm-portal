@@ -15,22 +15,24 @@ public class BindFloatingIpTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
-		List<Date> bindDates = new LinkedList<Date>();
+		Map<String, Date> floatingIpIdToBindDate = new HashMap<String, Date>();
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			context.getApiCache()
-					.getNovaFloatingIPApi()
-					.addToServer(
-							vmCreateContext.getFloatingIp()
-									.getFloatingIpAddress(),
-							vmCreateContext.getServerCreated().getId());
-			bindDates.add(new Date());
+			if (context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId()) != null) {
+				context.getApiCache()
+						.getNovaFloatingIPApi()
+						.addToServer(
+								vmCreateContext.getFloatingIp()
+										.getFloatingIpAddress(),
+								vmCreateContext.getServerCreated().getId());
+				floatingIpIdToBindDate.put(vmCreateContext.getFloatingIp().getId(), new Date());
+			}
 		}
 
-		emailBindFloatingIp(context, bindDates);
+		emailBindFloatingIp(context, floatingIpIdToBindDate);
 	}
 
 	private void emailBindFloatingIp(MultiVmCreateContext context,
-			List<Date> bindDates) throws OpenStackException {
+									 Map<String,Date> floatingIpIdToBindDate) throws OpenStackException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Map<String, Object> mailMessageModel = new HashMap<String, Object>();
@@ -41,14 +43,17 @@ public class BindFloatingIpTask implements VmsCreateSubTask {
 		mailMessageModel.put("vmList", vmModelList);
 
 		for (VmCreateContext vmContext : context.getVmCreateContexts()) {
-			Map<String, Object> vmModel = new HashMap<String, Object>();
-			vmModel.put("region", context.getRegionDisplayName());
-			vmModel.put("vmId", vmContext.getServerCreated().getId());
-			vmModel.put("vmName", vmContext.getServer().getName());
-			vmModel.put("ip", vmContext.getFloatingIp().getFloatingIpAddress());
-			vmModel.put("port", 22);
-			vmModel.put("bindTime", format.format(bindDates.remove(0)));
-			vmModelList.add(vmModel);
+			Date bindTime = floatingIpIdToBindDate.get(vmContext.getFloatingIp().getId());
+			if (bindTime != null) {
+				Map<String, Object> vmModel = new HashMap<String, Object>();
+				vmModel.put("region", context.getRegionDisplayName());
+				vmModel.put("vmId", vmContext.getServerCreated().getId());
+				vmModel.put("vmName", vmContext.getServer().getName());
+				vmModel.put("ip", vmContext.getFloatingIp().getFloatingIpAddress());
+				vmModel.put("port", 22);
+				vmModel.put("bindTime", format.format(bindTime));
+				vmModelList.add(vmModel);
+			}
 		}
 
 		MailMessage mailMessage = new MailMessage("乐视云平台web-portal系统", context
