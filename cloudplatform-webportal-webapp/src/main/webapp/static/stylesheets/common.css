@@ -1104,8 +1104,11 @@ le-select .le-select-menu li a{
     padding: 0;
     line-height: 30px;
 }
-.le-modal-body .col-control input{
+.le-modal-body .col-control > input{
     display: inline-block;
+}
+.le-modal-body .col-control > input,
+.le-modal-body .col-control > le-select{
     width: 250px;
 }
 /*end le-modal style*/

@@ -3,13 +3,15 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region) {
+  controllerModule.controller('VmDiskCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext,ModelService, $scope, $modalInstance,$timeout,$window, region) {
 
     Utility.getRzSliderHack($scope)();
-    $scope.isOrderSubmiting=false;
     $scope.diskName = '';
     $scope.diskTypeList = [];
     $scope.selectedDiskType = null;
+    $scope.snapshotList = [];
+    $scope.snapshotListSelectorData = [];
+    $scope.selectedSnapshot = null;
     $scope.diskVolume = 10;
     $scope.diskCount = 1;
 
@@ -23,7 +25,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.selectedDiskType = diskType;
     };
     $scope.createDisk = function () {
-      if (!$scope.vm_disk_create_form.$valid) return;
       var data = {
         name: $scope.diskName,
         description:'',
@@ -46,11 +47,22 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     var initComponents = function () {
         initDiskTypeSelector();
+        initSnapshotTypeSelector();
       },
       initDiskTypeSelector = function () {
         HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
           $scope.diskTypeList=data.data;
           $scope.selectedDiskType = $scope.diskTypeList[0];
+        });
+      },
+      initSnapshotTypeSelector=function(){
+        HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '1', recordsPerPage: '100'}).success(function (data, status, headers, config) {
+          $scope.snapshotList = data.data.data;
+          $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
+            return new ModelService.SelectModel(snapshot.name,snapshot.id);
+          });
+          $scope.snapshotListSelectorData.unshift(new ModelService.SelectModel('请选择快照',''));
+          $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
         });
       };
 
