@@ -15,7 +15,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +39,11 @@ import com.letv.portal.service.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.SendMsgUtils;
-import com.letv.portal.service.openstack.billing.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
-import com.letv.portal.service.openstack.billing.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
-import com.letv.portal.service.openstack.billing.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.RouterCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.VmCreateAdapter;
+import com.letv.portal.service.openstack.billing.listeners.VolumeCreateAdapter;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
@@ -417,7 +416,7 @@ public class PayServiceImpl implements IPayService {
 	//创建路由器
 	private void createRouter(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建路由器！");
-		this.resourceCreateService.createRouter(createUser, params, new RouterCreateListener() {
+		this.resourceCreateService.createRouter(createUser, params, new RouterCreateAdapter() {
 			@Override
 			public void routerCreated(String region, String routerId, int routerIndex,
 					Object userData) throws Exception {
@@ -433,7 +432,7 @@ public class PayServiceImpl implements IPayService {
 	//创建公网IP
 	private void createFloatingIp(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建公网IP！");
-		this.resourceCreateService.createFloatingIp(createUser, params, new FloatingIpCreateListener() {
+		this.resourceCreateService.createFloatingIp(createUser, params, new FloatingIpCreateAdapter() {
 			@Override
 			public void floatingIpCreated(String region, String floatingIpId,
 					int floatingIpIndex, Object userData) throws Exception {
@@ -449,7 +448,7 @@ public class PayServiceImpl implements IPayService {
 	//创建云硬盘
 	private void createVolume(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建云硬盘！");
-		this.resourceCreateService.createVolume(createUser, params, new VolumeCreateListener(){
+		this.resourceCreateService.createVolume(createUser, params, new VolumeCreateAdapter(){
 			@Override
 			public void volumeCreated(String region, String volumeId,
 					int volumeIndex, Object userData) throws Exception {
@@ -465,7 +464,7 @@ public class PayServiceImpl implements IPayService {
 	//创建云主机
 	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
-		this.resourceCreateService.createVm(createUser, params, new VmCreateListener(){
+		this.resourceCreateService.createVm(createUser, params, new VmCreateAdapter() {
 			@Override
 			public void vmCreated(String region,
 					String vmId, int vmIndex,
