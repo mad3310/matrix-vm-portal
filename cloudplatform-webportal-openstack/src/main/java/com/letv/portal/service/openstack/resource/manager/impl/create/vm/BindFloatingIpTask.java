@@ -10,14 +10,19 @@ import java.util.Map;
 import com.letv.common.email.bean.MailMessage;
 import com.letv.portal.service.openstack.exception.OpenStackException;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import org.jclouds.openstack.neutron.v2.domain.FloatingIP;
+import org.jclouds.openstack.nova.v2_0.domain.Server;
 
 public class BindFloatingIpTask implements VmsCreateSubTask {
 
 	@Override
 	public void run(MultiVmCreateContext context) throws OpenStackException {
 		Map<String, Date> floatingIpIdToBindDate = new HashMap<String, Date>();
+
 		for (VmCreateContext vmCreateContext : context.getVmCreateContexts()) {
-			if (context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId()) != null) {
+			Server server = context.getApiCache().getServerApi().get(vmCreateContext.getServerCreated().getId());
+			FloatingIP floatingIP = context.getApiCache().getNeutronFloatingIpApi().get(vmCreateContext.getFloatingIp().getId());
+			if (server != null && server.getStatus() != Server.Status.ERROR && floatingIP != null) {
 				context.getApiCache()
 						.getNovaFloatingIPApi()
 						.addToServer(

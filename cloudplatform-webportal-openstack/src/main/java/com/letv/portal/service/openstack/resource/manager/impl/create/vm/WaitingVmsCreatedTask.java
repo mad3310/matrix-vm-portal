@@ -26,7 +26,7 @@ public class WaitingVmsCreatedTask implements VmsCreateSubTask {
 						.toArray(new VmCreateContext[0])) {
 					Server server = context.getApiCache().getServerApi()
 							.get(vmCreateContext.getServerCreated().getId());
-					if (!server.getAddresses().get(vmNetworkName).isEmpty()) {
+					if (server == null || server.getStatus() == Server.Status.ERROR || !server.getAddresses().get(vmNetworkName).isEmpty()) {
 						unFinishedVms.remove(vmCreateContext);
 					}
 				}
