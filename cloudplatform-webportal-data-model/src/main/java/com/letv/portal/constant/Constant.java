@@ -58,5 +58,11 @@ public class Constant {
 	public static final String STOP_OPENSTACK = "停止云主机";
 	//删除云主机
 	public static final String DELETE_OPENSTACK = "删除云主机";
+	//创建云硬盘
+	public static final String CREATE_OPENSTACK_VOLUME = "创建云硬盘";
+	//创建公网IP
+	public static final String CREATE_OPENSTACK_FLOATINGIP = "创建公网IP";
+	//创建路由器
+	public static final String CREATE_OPENSTACK_ROUTER = "创建路由器";
 
 }

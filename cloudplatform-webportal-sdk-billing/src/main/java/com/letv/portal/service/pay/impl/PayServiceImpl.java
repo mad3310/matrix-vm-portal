@@ -39,8 +39,11 @@ import com.letv.portal.service.IUserService;
 import com.letv.portal.service.letvcloud.BillUserAmountService;
 import com.letv.portal.service.letvcloud.BillUserServiceBilling;
 import com.letv.portal.service.message.SendMsgUtils;
+import com.letv.portal.service.openstack.billing.FloatingIpCreateListener;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.RouterCreateListener;
 import com.letv.portal.service.openstack.billing.VmCreateListener;
+import com.letv.portal.service.openstack.billing.VolumeCreateListener;
 import com.letv.portal.service.operate.IRecentOperateService;
 import com.letv.portal.service.order.IOrderService;
 import com.letv.portal.service.order.IOrderSubDetailService;
@@ -107,6 +110,12 @@ public class PayServiceImpl implements IPayService {
 		} else if (order.getStatus().intValue() == 2) {
 			ret.put("alert", "订单状态已支付成功，请勿重复提交");
 			ret.put("status", 2);
+			try {
+				response.sendRedirect(this.PAY_SUCCESS + "/" + orderNumber);
+			} catch (IOException e) {
+				logger.error("pay inteface sendRedirect had error, ", e);
+			}
+			return ret;
 		} else {
 			String userMoney = (String)map.get("accountMoney");
 			BigDecimal price = getValidOrderPrice(orderSubs);
@@ -383,53 +392,115 @@ public class PayServiceImpl implements IPayService {
 
 	@Async
 	private void createInstance(final List<OrderSub> orderSubs) {
+		List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
+		for (OrderSub orders : orderSubs) {
+			records.add(orders.getProductInfoRecord());
+		}
 		for (OrderSub orderSub : orderSubs) {
 			// 进行服务创建
-			if (orderSub.getSubscription().getProductId() == 2) {// openstack
-				if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
-					List<ProductInfoRecord> records = new ArrayList<ProductInfoRecord>();
-					for (OrderSub orders : orderSubs) {
-						records.add(orders.getProductInfoRecord());
-					}
-					this.resourceCreateService.createVm(
-							orderSub.getCreateUser(),
-							orderSub.getProductInfoRecord().getParams(),new VmCreateListener(){
-								@SuppressWarnings("unchecked")
-								@Override
-								public void vmCreated(String region,
-										String vmId, int vmIndex,
-										Object userData) throws Exception {
-									List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
-									if(vmIndex>records.size()) {
-										throw new ValidateException("云主机回调vmIndex超出List范围！");
-									}
-									ProductInfoRecord record = records.get(vmIndex);
-									record.setParams(null);
-									record.setProductType(null);
-									record.setInvokeType(null);
-									record.setInstanceId(region+"_"+vmId);
-									productInfoRecordService.updateBySelective(record);
-									
-									//云主机创建成功后减冻结余额
-									billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())));
-									if((vmIndex+1)==orderSubs.size()) {
-										SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-										//生成用户账单。
-										billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
-												df.format(new Date()), getValidOrderPrice(orderSubs).toString());
-										//更新订阅订单起始时间
-										updateSubscriptionAndOrderTime(orderSubs);
-									}
-									
-									logger.info("callback success! num="+vmIndex);
-								}
-								
-							}, records);
-					String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
-					this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK, content, this.sessionService.getSession().getUserId(), null);;
-					logger.info("createInstance success!");
+			if ("1".equals(orderSub.getProductInfoRecord().getInvokeType())) {
+				if (orderSub.getSubscription().getProductId() == 2) {//云主机
+					createVm(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records);
+				} else if(orderSub.getSubscription().getProductId() == 3) {//云硬盘
+					createVolume(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records);
+				} else if(orderSub.getSubscription().getProductId() == 4) {//公网IP
+					createFloatingIp(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records);
+				} else if(orderSub.getSubscription().getProductId() == 5) {//路由
+					createRouter(orderSubs, orderSub.getCreateUser(), orderSub.getProductInfoRecord().getParams(), records);
 				}
 			}
+			
+		}
+	}
+	
+	//创建路由器
+	private void createRouter(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建路由器！");
+		this.resourceCreateService.createRouter(createUser, params, new RouterCreateListener() {
+			@Override
+			public void routerCreated(String region, String routerId, int routerIndex,
+					Object userData) throws Exception {
+				serviceCallback(orderSubs, region, routerId, routerIndex, userData);
+				logger.info("路由器回调成功! num="+routerIndex);
+			}
+		}, records);
+		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
+		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_ROUTER, content, this.sessionService.getSession().getUserId(), null);;
+		logger.info("调用创建路由器成功!");
+	}
+	
+	//创建公网IP
+	private void createFloatingIp(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建公网IP！");
+		this.resourceCreateService.createFloatingIp(createUser, params, new FloatingIpCreateListener() {
+			@Override
+			public void floatingIpCreated(String region, String floatingIpId,
+					int floatingIpIndex, Object userData) throws Exception {
+				serviceCallback(orderSubs, region, floatingIpId, floatingIpIndex, userData);
+				logger.info("公网IP回调成功! num="+floatingIpIndex);
+			}
+		}, records);
+		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
+		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_FLOATINGIP, content, this.sessionService.getSession().getUserId(), null);;
+		logger.info("调用创建公网IP成功!");
+	}
+
+	//创建云硬盘
+	private void createVolume(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建云硬盘！");
+		this.resourceCreateService.createVolume(createUser, params, new VolumeCreateListener(){
+			@Override
+			public void volumeCreated(String region, String volumeId,
+					int volumeIndex, Object userData) throws Exception {
+				serviceCallback(orderSubs, region, volumeId, volumeIndex, userData);
+				logger.info("云硬盘回调成功! num="+volumeIndex);
+			}
+		}, records);
+		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
+		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_VOLUME, content, this.sessionService.getSession().getUserId(), null);;
+		logger.info("调用创建云硬盘成功!");
+	}
+	
+	//创建云主机
+	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+		logger.info("开始创建云主机！");
+		this.resourceCreateService.createVm(createUser, params, new VmCreateListener(){
+			@Override
+			public void vmCreated(String region,
+					String vmId, int vmIndex,
+					Object userData) throws Exception {
+				serviceCallback(orderSubs, region, vmId, vmIndex, userData);
+				logger.info("云主机回调成功! num="+vmIndex);
+			}
+		}, records);
+		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
+		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK, content, this.sessionService.getSession().getUserId(), null);;
+		logger.info("调用创建云主机成功!");
+	}
+	//服务创建成功后回调
+	@SuppressWarnings("unchecked")
+	private void serviceCallback(List<OrderSub> orderSubs, String region, String id, int index, Object userData) {
+		List<ProductInfoRecord> records = (List<ProductInfoRecord>) userData;
+		if(index>records.size()) {
+			throw new ValidateException("服务回调index超出List范围！");
+		}
+		//①更新商品信息记录表（添加实例ID）
+		ProductInfoRecord record = records.get(index);
+		record.setParams(null);
+		record.setProductType(null);
+		record.setInvokeType(null);
+		record.setInstanceId(region+"_"+id);
+		productInfoRecordService.updateBySelective(record);
+		
+		//②云主机创建成功后减冻结余额
+		billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())));
+		if((index+1)==orderSubs.size()) {
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+			//③生成用户账单。
+			billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+					df.format(new Date()), getValidOrderPrice(orderSubs).toString());
+			//④更新订阅订单起始时间
+			updateSubscriptionAndOrderTime(orderSubs);
 		}
 	}
 	
