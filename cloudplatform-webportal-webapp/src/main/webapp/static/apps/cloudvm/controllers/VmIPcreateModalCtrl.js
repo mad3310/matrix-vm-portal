@@ -10,6 +10,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.ipCount = 1;
     $scope.carrierList='';
     $scope.selectedCarrier = null;
+    $scope.allFloatipBuyPeriods = Config.allBuyPeriods;
+    $scope.floatipBuyPeriod = $scope.allFloatipBuyPeriods[0];
+    $scope.totalPrice='';
     HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
       $scope.carrierList=data.data;
     });
@@ -44,6 +47,36 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+
+    $scope.$watch(function(){
+      return [
+        $scope.ipCount,
+        $scope.networkBandWidth,
+        $scope.floatipBuyPeriod].join('_');
+    }, function (value) {
+      if ($scope.ipCount && $scope.networkBandWidth && $scope.floatipBuyPeriod) {
+        setFloatipPrice();
+      }
+    });
+
+    var setFloatipPrice=function(){
+      var data={
+        region: region,
+        order_time: $scope.floatipBuyPeriod.toString(),
+        order_num: $scope.ipCount.toString(),
+        os_broadband:$scope.networkBandWidth.toString()
+      };
+      HttpService.doPost(Config.urls.floatip_calculate_price,data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $scope.totalPrice=data.data;
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+        }
+      });
+    }
+
+
   });
 
 });
