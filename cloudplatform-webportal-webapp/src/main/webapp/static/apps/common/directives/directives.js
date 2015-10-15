@@ -120,4 +120,23 @@ define(['./common.directive'],function (directiveModule) {
             templateUrl: '/static/apps/common/directives/le-select/template.html'
         };
     });
+
+    directiveModule.directive('buyPeriodSelector', function () {
+        return {
+            restrict: 'AE',
+            scope: {
+                selectedBuyPeriod: '=buyPeriodModel',
+                allBuyPeriods:'=buyPeriodOptions'
+            },
+            link: function (scope, element, attrs) {
+                scope.selectBuyPeriod = function (buyPeriod) {
+                    scope.selectedBuyPeriod = buyPeriod;
+                };
+                scope.isSelectedBuyPeriod = function (buyPeriod) {
+                    return scope.selectedBuyPeriod === buyPeriod;
+                };
+            },
+            templateUrl: '/static/apps/common/directives/buy-period-selector/template.html'
+        };
+    });
 });

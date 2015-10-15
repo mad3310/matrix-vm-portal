@@ -51,9 +51,7 @@
                         <span class="letv-control-label">购买时长：</span>
                     </div>
                     <div class="le-col-9 col-control">
-                        <div class="letv-mutiCheck check-buy-period" ng-repeat="diskBuyPeriod in allDiskBuyPeriods" ng-class="{'selected':isSelectedDiskBuyPeriod(diskBuyPeriod)}" ng-click="selectDiskBuyPeriod(diskBuyPeriod)">
-                            <span>{{diskBuyPeriod | buyPeriodFilter:isSelectedDiskBuyPeriod(diskBuyPeriod) }}</span>
-                        </div>
+                        <buy-period-selector buy-period-model="diskBuyPeriod" buy-period-options="allDiskBuyPeriods"></buy-period-selector>
                     </div>
                 </div>
                 <div class="le-row">
