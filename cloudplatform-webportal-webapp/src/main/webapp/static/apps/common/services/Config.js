@@ -20,6 +20,8 @@ define(['./common.service'], function (serviceModule) {
       vm_network_shared_list:'/osn/network/shared/list',
       vm_calculate_price:'/billing/calculate/price/2',
       disk_calculate_price:'/billing/calculate/price/3',
+      floatip_calculate_price:'/billing/calculate/price/4',
+      route_calculate_price:'/billing/calculate/price/5',
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',

@@ -8,6 +8,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.routerName = '';
     $scope.enablePublicNetworkGateway = 'true';
     $scope.publicNetworkId = '';
+    $scope.allRouteBuyPeriods = Config.allBuyPeriods;
+    $scope.routeBuyPeriod = $scope.allRouteBuyPeriods[0];
 
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
@@ -33,6 +35,11 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+    $scope.$watch('routeBuyPeriod', function (value) {
+      if (value) {
+        setRoutePrice();
+      }
+    });
 
     var initComponents = function () {
         initRouterTypeSelector();
@@ -40,6 +47,22 @@ define(['controllers/app.controller'], function (controllerModule) {
       initRouterTypeSelector = function () {
         HttpService.doGet(Config.urls.network_public_list,{region:region}).success(function (data, status, headers, config) {
           $scope.publicNetworkId = data.data[0].id;
+        });
+      },
+      setRoutePrice=function(){
+        var data={
+          region: region,
+          order_time: $scope.routeBuyPeriod.toString(),
+          order_num: '1',
+          os_router:'router'
+        };
+        HttpService.doPost(Config.urls.route_calculate_price,data).success(function (data, status, headers, config) {
+          if(data.result===1){
+            $scope.totalPrice=data.data;
+          }
+          else{
+            WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+          }
         });
       };
 
