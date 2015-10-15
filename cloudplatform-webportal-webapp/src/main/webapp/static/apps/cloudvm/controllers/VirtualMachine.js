@@ -141,7 +141,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.openVmCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
-          templateUrl: 'VmCreateModalTpl',
+          templateUrl: '/static/apps/cloudvm/templates/vm-create-modal.html',
           controller: 'VmCreateModalCtrl',
           size: size,
           backdrop: 'static',
