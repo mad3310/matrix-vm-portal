@@ -615,6 +615,9 @@ width:150px;height:40px;
 .col-submit-order button{
     margin-right: 30px;
 }
+.col-submit-order .order-price{font-size:12px;line-height: 30px;margin-right: 2px;}
+.col-submit-order .order-price span.title,.order-price span.unit{}
+.col-submit-order .order-price span.price{padding:0;font-size:16px;color:#ff3c37;}
 /*end col-submit-order style*/
 
 /*begin clearfix style*/

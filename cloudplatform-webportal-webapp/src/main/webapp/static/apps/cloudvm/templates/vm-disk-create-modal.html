@@ -66,15 +66,15 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-12 col-submit-order">
+                        <span class="order-price">
+                            <span class="title">合计：</span>
+                            <span class="price">{{totalPrice}}</span>
+                            <span class="unit">元</span>
+                        </span>
                         <button class="btn btn-le-blue" ng-click="vm_disk_create_form.$valid && !isOrderSubmiting && createDisk()" ng-disabled="isOrderSubmiting">
                             <span ng-if="!isOrderSubmiting">提交订单</span>
                             <span ng-if="isOrderSubmiting">订单提交中...</span>
                         </button>
-                        <span class="price">
-                            <span class="title">合计：</span>
-                            <span class="number">{{totalPrice}}</span>
-                            <span class="unit">元</span>
-                        </span>
                     </div>
                 </div>
             </div>
