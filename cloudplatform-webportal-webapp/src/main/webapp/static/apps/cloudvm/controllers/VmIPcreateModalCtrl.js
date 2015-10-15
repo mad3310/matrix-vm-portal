@@ -10,6 +10,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.ipCount = 1;
     $scope.carrierList='';
     $scope.selectedCarrier = null;
+    $scope.allFloatipBuyPeriods = Config.allBuyPeriods;
+    $scope.floatipBuyPeriod = $scope.allFloatipBuyPeriods[0];
+    $scope.totalPrice='';
     HttpService.doGet('/osn/network/public/list',{'region':region}).success(function(data) {
       $scope.carrierList=data.data;
     });
@@ -23,7 +26,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.selectedCarrier = carrier;
     };
     $scope.createIP = function () {
-      if (!$scope.vm_ip_create_form.$valid) return;
       var data = {
         'region':region,
         name: $scope.ipName,
@@ -31,6 +33,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         bandWidth: $scope.networkBandWidth,
         count:$scope.ipCount
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.floatIP_create,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -40,9 +43,40 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建公网IP失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };
+
+    $scope.$watch(function(){
+      return [
+        $scope.ipCount,
+        $scope.networkBandWidth,
+        $scope.floatipBuyPeriod].join('_');
+    }, function (value) {
+      if ($scope.ipCount && $scope.networkBandWidth && $scope.floatipBuyPeriod) {
+        setFloatipPrice();
+      }
+    });
+
+    var setFloatipPrice=function(){
+      var data={
+        region: region,
+        order_time: $scope.floatipBuyPeriod.toString(),
+        order_num: $scope.ipCount.toString(),
+        os_broadband:$scope.networkBandWidth.toString()
+      };
+      HttpService.doPost(Config.urls.floatip_calculate_price,data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $scope.totalPrice=data.data;
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+        }
+      });
+    }
+
+
   });
 
 });
