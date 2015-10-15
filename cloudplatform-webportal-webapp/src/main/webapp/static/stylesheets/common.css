@@ -797,6 +797,16 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
 .letv-mutiCheck.selected i{color: #088ac2;}
 /*begin letv-checkbox style*/
 
+/*begin check-buy-period style*/
+.check-buy-period{
+    width: 36px;
+}
+.check-buy-period.selected{
+    padding: 0 4px;
+    width: auto;
+}
+/*end check-buy-period style*/
+
 /*begin letv-radioCheck style*/
 .radio-check-group{line-height: 30px;}
 .letv-radioCheck{width: 80px;height: 22px;line-height: 22px;padding: 0;margin:0;display: inline-block;}

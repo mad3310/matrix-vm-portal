@@ -14,6 +14,9 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.selectedSnapshot = null;
     $scope.diskVolume = 10;
     $scope.diskCount = 1;
+    $scope.allDiskBuyPeriods = Config.allBuyPeriods;
+    $scope.diskBuyPeriod = $scope.allDiskBuyPeriods[0];
+    $scope.totalPrice='';
 
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
@@ -44,6 +47,24 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
+    $scope.selectDiskBuyPeriod = function (buyPeriod) {
+      $scope.diskBuyPeriod = buyPeriod;
+    };
+    $scope.isSelectedDiskBuyPeriod = function (buyPeriod) {
+      return $scope.diskBuyPeriod === buyPeriod;
+    };
+
+    $scope.$watch(function(){
+      return [
+        ($scope.selectedDiskType &&  $scope.selectedDiskType.name) || '',
+        $scope.diskCount,
+        $scope.diskVolume,
+        $scope.diskBuyPeriod].join('_');
+    }, function (value) {
+      if ($scope.selectedDiskType && $scope.diskVolume && $scope.diskCount && $scope.diskBuyPeriod) {
+        setDiskPrice();
+      }
+    });
 
     var initComponents = function () {
         initDiskTypeSelector();
@@ -52,7 +73,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       initDiskTypeSelector = function () {
         HttpService.doGet(Config.urls.vm_disk_type,{region:region}).success(function (data, status, headers, config) {
           $scope.diskTypeList=data.data;
-          $scope.selectedDiskType = $scope.diskTypeList[0];
+          $scope.selectedDiskType = $scope.diskTypeList[1];
         });
       },
       initSnapshotTypeSelector=function(){
@@ -70,6 +91,23 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
           });
         }
+      },
+      setDiskPrice=function(){
+        var data={
+          region: region,
+          order_time: $scope.diskBuyPeriod.toString(),
+          order_num: $scope.diskCount.toString(),
+          volumeType: $scope.selectedDiskType.name,
+          volumeSize: $scope.diskVolume.toString(),
+        };
+        HttpService.doPost(Config.urls.disk_calculate_price,data).success(function (data, status, headers, config) {
+          if(data.result===1){
+            $scope.totalPrice=data.data;
+          }
+          else{
+            WidgetService.notifyError(data.msgs[0]||'计算总价失败');
+          }
+        });
       };
 
     initComponents();
