@@ -19,6 +19,7 @@ define(['./common.service'], function (serviceModule) {
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
       vm_calculate_price:'/billing/calculate/price/2',
+      disk_calculate_price:'/billing/calculate/price/3',
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',
@@ -76,7 +77,7 @@ define(['./common.service'], function (serviceModule) {
       'AVAILABLE':'可用的',
       'BINDED':'已绑定'
     }
-    config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
+    config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
 });

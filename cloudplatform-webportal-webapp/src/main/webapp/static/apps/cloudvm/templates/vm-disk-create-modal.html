@@ -48,6 +48,16 @@
                 </div>
                 <div class="le-row">
                     <div class="le-col-3 col-label">
+                        <span class="letv-control-label">购买时长：</span>
+                    </div>
+                    <div class="le-col-9 col-control">
+                        <div class="letv-mutiCheck check-buy-period" ng-repeat="diskBuyPeriod in allDiskBuyPeriods" ng-class="{'selected':isSelectedDiskBuyPeriod(diskBuyPeriod)}" ng-click="selectDiskBuyPeriod(diskBuyPeriod)">
+                            <span>{{diskBuyPeriod | buyPeriodFilter:isSelectedDiskBuyPeriod(diskBuyPeriod) }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="le-row">
+                    <div class="le-col-3 col-label">
                         <span class="letv-control-label">数量：</span>
                     </div>
                     <div class="le-col-9 col-control">
@@ -60,6 +70,11 @@
                             <span ng-if="!isOrderSubmiting">提交订单</span>
                             <span ng-if="isOrderSubmiting">订单提交中...</span>
                         </button>
+                        <span class="price">
+                            <span class="title">合计：</span>
+                            <span class="number">{{totalPrice}}</span>
+                            <span class="unit">元</span>
+                        </span>
                     </div>
                 </div>
             </div>
