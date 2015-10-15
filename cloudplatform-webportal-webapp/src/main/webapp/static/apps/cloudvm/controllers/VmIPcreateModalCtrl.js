@@ -23,7 +23,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.selectedCarrier = carrier;
     };
     $scope.createIP = function () {
-      if (!$scope.vm_ip_create_form.$valid) return;
       var data = {
         'region':region,
         name: $scope.ipName,
@@ -31,6 +30,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         bandWidth: $scope.networkBandWidth,
         count:$scope.ipCount
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.floatIP_create,data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
@@ -40,6 +40,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建公网IP失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };
