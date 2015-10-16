@@ -97,7 +97,7 @@ function carousels(){
 			$('.carousel-control img:eq('+nxtIndex+')').removeClass('control-short');
 			_targetParent.children(':first').removeClass('hide').find('.carousel-content .col-md-5').addClass('fadeIn')
 			_targetParent.children(':first').find('.carousel-content .col-md-7').addClass('slideR');
-		},3000);
+		},5000);
 	}
 	//轮播control
 	$('.carousel-control').unbind('click').click(function(event) {
@@ -134,7 +134,7 @@ function carousels(){
 			$('.carousel-control img:eq('+nxtIndex+')').removeClass('control-short');
 			_targetParent.children(':first').removeClass('hide').find('.carousel-content .col-md-5').addClass('fadeIn')
 			_targetParent.children(':first').find('.carousel-content .col-md-7').addClass('slideR');
-		},3000);
+		},5000);
 	});
 }
 // products:scroll-nav

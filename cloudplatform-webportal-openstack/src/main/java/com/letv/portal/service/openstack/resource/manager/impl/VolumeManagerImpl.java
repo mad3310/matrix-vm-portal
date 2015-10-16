@@ -690,7 +690,12 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 				final Map<String, Volume> idToVolume = new HashMap<String, Volume>();
 				final Ref<List<? extends Snapshot>> volumeSnapshotsRef = new Ref<List<? extends Snapshot>>();
-				final Page page = new Page(currentPage, recordsPerPage);
+				final Page page;
+				if (currentPage == null || recordsPerPage == null) {
+					page = new Page();
+				} else {
+					page = new Page(currentPage, recordsPerPage);
+				}
 
 				Util.concurrentRunAndWait(new Runnable() {
 					@Override
