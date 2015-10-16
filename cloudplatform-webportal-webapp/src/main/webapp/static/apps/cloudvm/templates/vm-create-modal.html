@@ -207,10 +207,7 @@
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-buy-period" ng-repeat="vmBuyPeriod in allVmBuyPeriods" ng-class="{'selected':isSelectedVmBuyPeriod(vmBuyPeriod)}" ng-click="selectVmBuyPeriod(vmBuyPeriod)">
-                                    <span>{{vmBuyPeriod | buyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span>
-                                    <i class="iconfont icon-checkroundfillicon1"></i>
-                                </div>
+                                <buy-period-selector buy-period-model="vmBuyPeriod" buy-period-options="allVmBuyPeriods"></buy-period-selector>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">
