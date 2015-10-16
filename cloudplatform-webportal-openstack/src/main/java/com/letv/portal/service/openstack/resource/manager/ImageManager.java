@@ -16,4 +16,6 @@ public interface ImageManager extends ResourceManager {
 
 	Map<String, Map<String, ImageResource>> group(String region)
 			throws RegionNotFoundException, OpenStackException;
+
+	void delete(String region,String imageId) throws OpenStackException;
 }

@@ -504,6 +504,14 @@ public class VMController {
 	@ResponseBody
 	ResultObject deleteVmSnapshot(@RequestParam String region, @RequestParam String vmSnapshotId) {
 		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getImageManager().delete(region, vmSnapshotId);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 

@@ -1,20 +1,22 @@
 package com.letv.portal.service.openstack.resource.manager.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.letv.portal.service.openstack.exception.*;
 import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import org.jclouds.openstack.cinder.v1.domain.Snapshot;
+import org.jclouds.openstack.cinder.v1.features.SnapshotApi;
 import org.jclouds.openstack.glance.v1_0.GlanceApi;
+import org.jclouds.openstack.glance.v1_0.domain.Image;
 import org.jclouds.openstack.glance.v1_0.domain.ImageDetails;
 import org.jclouds.openstack.glance.v1_0.features.ImageApi;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.exception.RegionNotFoundException;
-import com.letv.portal.service.openstack.exception.ResourceNotFoundException;
 import com.letv.portal.service.openstack.impl.OpenStackConf;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.ImageResource;
@@ -151,6 +153,62 @@ public class ImageManagerImpl extends AbstractResourceManager<GlanceApi> impleme
 				return imageResources;
 			}
 		});
+	}
+
+	@Override
+	public void delete(final String region, final String imageId) throws OpenStackException {
+		runWithApi(new ApiRunnable<GlanceApi, Void>() {
+			@Override
+			public Void run(GlanceApi glanceApi) throws Exception {
+				checkRegion(region);
+
+				ImageApi imageApi = glanceApi.getImageApi(region);
+				ImageDetails image = imageApi.get(imageId);
+				if (image == null || image.isPublic()) {
+					throw new ResourceNotFoundException("Image", "虚拟机快照", imageId);
+				}
+				if (image.getStatus() == Image.Status.PENDING_DELETE) {
+					throw new UserOperationException("Image is deleting.", "虚拟机快照正在删除中");
+				}
+
+				boolean isSuccess = imageApi.delete(imageId);
+				if (!isSuccess) {
+					throw new OpenStackException(MessageFormat.format(
+							"Image \"{0}\" delete failed.",
+							imageId), MessageFormat.format(
+							"虚拟机快照“{0}”删除失败。", imageId));
+				}
+
+				waitingImage(imageApi, imageId, new Checker<ImageDetails>() {
+					@Override
+					public boolean check(ImageDetails image) throws Exception {
+						return image == null;
+					}
+				});
+
+				return null;
+			}
+		});
+	}
+
+	public void waitingImage(final ImageApi imageApi, final String imageId,
+							 final Checker<ImageDetails> checker) throws OpenStackException {
+		try {
+			ImageDetails image = null;
+			while (true) {
+				image = imageApi.get(imageId);
+				if (checker.check(image)) {
+					break;
+				}
+				Thread.sleep(1000);
+			}
+		} catch (InterruptedException e) {
+			throw new PollingInterruptedException(e);
+		} catch (OpenStackException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new OpenStackException("后台错误", e);
+		}
 	}
 
 	@Override
