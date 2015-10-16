@@ -3,7 +3,6 @@ package com.letv.portal.service.product.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +26,7 @@ import com.letv.portal.model.product.ProductElement;
 import com.letv.portal.model.product.ProductRegion;
 import com.letv.portal.service.impl.BaseServiceImpl;
 import com.letv.portal.service.product.IProductService;
+import com.letv.portal.util.ValidateUtil;
 
 @Service("productService")
 public class ProductServiceImpl extends BaseServiceImpl<Product> implements IProductService {
@@ -182,7 +182,7 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 	  * @date 2015年9月19日 下午3:34:48
 	  */
 	protected void getStandardsInfoByProductElements(Long id, Map<String, Object> map, 
-			Map<String, Set<String>> standards, Map<String, String> chargeTypes) {
+			Map<String, List<Map<String,String>>> standards, Map<String, String> chargeTypes) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.clear();
 		params.put("productId", id);
@@ -192,54 +192,67 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 			params.put("baseElementId", productElement.getBaseElementId());
 			List<BaseStandard> baseStandards = this.baseStandardDao.selectByMap(params);
 			for (BaseStandard baseStandard : baseStandards) {
-				Set<String> set = null;
-				if(standards.containsKey(baseStandard.getStandard())) {
-					set = standards.get(baseStandard.getStandard());
-					if(baseStandard.getBasePrice()!=null && (Integer.parseInt(baseStandard.getBasePrice().getType())==1 || Integer.parseInt(baseStandard.getBasePrice().getType())==2)) {//阶梯定价或线性定价
-						if(Double.parseDouble(set.iterator().next())<Double.parseDouble(baseStandard.getValue())) {//只放入最大值
-							set.clear();
-						}
-					}
-					set.add(baseStandard.getValue());
+				List<Map<String, String>> list = null;
+				Map<String, String> typeAndValue = new HashMap<String, String>();
+				typeAndValue.put("type", baseStandard.getType());
+				typeAndValue.put("value", baseStandard.getValue());
+				if(standards.containsKey(baseStandard.getBaseElement().getName())) {
+					list = standards.get(baseStandard.getBaseElement().getName());
+					list.add(typeAndValue);
 				} else {
-					set = new HashSet<String>();
-					set.add(baseStandard.getValue());
-					standards.put(baseStandard.getStandard(), set);
+					list = new ArrayList<Map<String, String>>();
+					list.add(typeAndValue);
+					standards.put(baseStandard.getBaseElement().getName(), list);
 				}
 			}
 			if(baseStandards!=null && baseStandards.size()!=0 && baseStandards.get(0).getBasePrice()!=null) {
-				chargeTypes.put(baseStandards.get(0).getStandard(), baseStandards.get(0).getBasePrice().getType());
+				chargeTypes.put(baseStandards.get(0).getBaseElement().getName(), baseStandards.get(0).getBasePrice().getType());
 			}
 		}
 	}
 	
-	protected boolean validateChargeTypeZero(Map<String, Object> map, String standard, Map<String, Set<String>> standards) {
-		if(map.get(standard)==null || !standards.get(standard).contains(map.get(standard))) {
-			logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within array");
-			return false;
+	protected boolean validateChargeTypeZero(Map<String, Object> map, String element, Map<String, List<Map<String, String>>> elements) {
+		if(map.get(element)!=null) {
+			List<Map<String, String>> ls = elements.get(element);
+			for (Map<String, String> map2 : ls) {
+				if(map.get(element+"_type")==null ? map.get(element).equals(map2.get("value")) : 
+					map.get(element+"_type").equals(map2.get("type")) && map.get(element).equals(map2.get("value"))) {
+					return true;
+				}
+			}
 		}
-		return true;
+		logger.info("validateData, map "+element+" element is :"+map.get(element)+", element not within");
+		return false;
 	}
-	protected boolean validateChargeTypeOneOrTwo(Map<String, Object> map, String standard, Map<String, Set<String>> standards) {
-		Iterator<String> it = standards.get(standard).iterator();
-		if(map.get(standard)==null || Double.parseDouble((String)map.get(standard))<0 
-				|| Double.parseDouble((String)map.get(standard))>Double.parseDouble(it.next())) {
-			logger.info("validateData, map "+standard+" standard is :"+map.get(standard)+", standard not within range");
-			return false;
+	protected boolean validateChargeTypeOneOrTwo(Map<String, Object> map, String element, Map<String, List<Map<String, String>>> elements) {
+		if(map.get(element)!=null) {
+			List<Map<String, String>> ls = elements.get(element);
+			for (Map<String, String> map2 : ls) {
+				if(map.get(element+"_type")!=null ? map.get(element+"_type").equals(map2.get("type")) && Double.parseDouble((String)map.get(element))>0
+						&& Double.parseDouble((String)map.get(element))<Double.parseDouble((String)map2.get("value")) : Double.parseDouble((String)map.get(element))>0
+						&& Double.parseDouble((String)map.get(element))<Double.parseDouble((String)map2.get("value"))) {
+						return true;
+				} 
+			}
 		}
-		return true;
+		logger.info("validateData, map "+element+" element is :"+map.get(element)+", element not within range");
+		return false;
 	}
-	protected boolean validateOrderNum(Map<String, Object> map, Map<String, Set<String>> standards) {
-		Iterator<String> it = standards.get("order_num").iterator();
-		if(map.get("order_num")==null || Double.parseDouble((String)map.get("order_num"))<1 
-				|| Double.parseDouble((String)map.get("order_num"))>Double.parseDouble(it.next())) {
-			logger.info("validateData, map order_num standard is :"+map.get("order_num")+", standard not within range");
-			return false;
+	protected boolean validateOrderNum(Map<String, Object> map, Map<String, List<Map<String, String>>> elements) {
+		if(map.get("order_num")!=null) {
+			List<Map<String, String>> ls = elements.get("order_num");
+			for (Map<String, String> map2 : ls) {
+				if(ValidateUtil.isNumeric((String)map.get("order_num")) && Double.parseDouble((String)map.get("order_num"))>0
+						&& Double.parseDouble((String)map.get("order_num"))<Double.parseDouble((String)map2.get("value"))) {
+					return true;
+				}
+			}
 		}
-		return true;
+		logger.info("validateData, map order_num standard is :"+map.get("order_num")+", standard not within range");
+		return false;
 	}
 	protected boolean validateOrderTime(Map<String, Object> map) {
-		if(map.get("order_time")==null || Double.parseDouble((String)map.get("order_time"))<1 
+		if(map.get("order_time")==null || !ValidateUtil.isNumeric((String)map.get("order_num")) || Double.parseDouble((String)map.get("order_time"))<1 
 				|| (Double.parseDouble((String)map.get("order_time"))>9 && Double.parseDouble((String)map.get("order_time"))!=12 && 
 				Double.parseDouble((String)map.get("order_time"))!=24 && Double.parseDouble((String)map.get("order_time"))!=36)) {
 			logger.info("validateData, map order_time standard is :"+map.get("order_time")+", standard not within range");
@@ -274,27 +287,27 @@ public class ProductServiceImpl extends BaseServiceImpl<Product> implements IPro
 		}
 		//**********验证产品在该地域是否存在end******************
 		
-		Map<String, Set<String>> standards = new HashMap<String, Set<String>>();
+		Map<String, List<Map<String, String>>> elements = new HashMap<String, List<Map<String, String>>>();
 		Map<String, String> chargeTypes = new HashMap<String, String>();
-		getStandardsInfoByProductElements(id, map, standards, chargeTypes);
+		getStandardsInfoByProductElements(id, map, elements, chargeTypes);
 		
-		for (String standard : standards.keySet()) {
+		for (String standard : elements.keySet()) {
 			if(chargeTypes.get(standard)==null) {
 				continue;
 			}
 			if(Integer.parseInt((String)chargeTypes.get(standard))==0) {//基础定价
-				if(!validateChargeTypeZero(map, standard, standards)) {
+				if(!validateChargeTypeZero(map, standard, elements)) {
 					return false;
 				}
 			} else if(Integer.parseInt((String)chargeTypes.get(standard))==1 || Integer.parseInt((String)chargeTypes.get(standard))==2) {//阶梯定价/线性定价
-				if(!validateChargeTypeOneOrTwo(map, standard, standards)) {
+				if(!validateChargeTypeOneOrTwo(map, standard, elements)) {
 					return false;
 				}
 			}
 		}
 		
 		//**********验证购买产品数量和时长是否在规定范围内start******************
-		if(!validateOrderNum(map, standards) || !validateOrderTime(map)) {
+		if(!validateOrderNum(map, elements) || !validateOrderTime(map)) {
 			return false;
 		}
 		//**********验证购买产品数量和时长是否在规定范围内end******************

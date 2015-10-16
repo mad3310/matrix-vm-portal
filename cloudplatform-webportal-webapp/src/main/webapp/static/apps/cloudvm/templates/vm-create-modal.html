@@ -207,10 +207,7 @@
                         <div class="inputs-item nomargin row clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">购买时长：</span></div>
                             <div class="col-sm-10">
-                                <div class="letv-mutiCheck check-buy-period" ng-repeat="vmBuyPeriod in allVmBuyPeriods" ng-class="{'selected':isSelectedVmBuyPeriod(vmBuyPeriod)}" ng-click="selectVmBuyPeriod(vmBuyPeriod)">
-                                    <span>{{vmBuyPeriod | buyPeriodFilter:isSelectedVmBuyPeriod(vmBuyPeriod) }}</span>
-                                    <i class="iconfont icon-checkroundfillicon1"></i>
-                                </div>
+                                <buy-period-selector buy-period-model="vmBuyPeriod" buy-period-options="allVmBuyPeriods"></buy-period-selector>
                             </div>
                         </div>
                         <div class="inputs-item nomargin row clearfix">
@@ -248,7 +245,7 @@
                             <span class="price">{{vmTotalPrice}}</span>
                             <span class="unit">元</span>
                         </span>
-                    <button class="btn btn-le-red btn-submit-order" ng-click="createVm()" ng-disabled="isOrderSubmiting">
+                    <button class="btn btn-le-red btn-submit-order" ng-click="vm_create_form.$valid && !isOrderSubmiting &&createVm()" ng-disabled="isOrderSubmiting">
                         <span ng-if="!isOrderSubmiting">提交订单</span>
                         <span ng-if="isOrderSubmiting">订单提交中...</span>
                     </button>

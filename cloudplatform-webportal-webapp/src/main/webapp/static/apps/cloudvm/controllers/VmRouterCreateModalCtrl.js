@@ -15,13 +15,13 @@ define(['controllers/app.controller'], function (controllerModule) {
       $modalInstance.dismiss('cancel');
     };
     $scope.createRouter = function () {
-      if (!$scope.vm_router_create_form.$valid) return;
       var data = {
         region:region,
         name: $scope.routerName,
         enablePublicNetworkGateway: $scope.enablePublicNetworkGateway,
         publicNetworkId:$scope.publicNetworkId
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.router_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           /*$modalInstance.close(data);
@@ -30,8 +30,8 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifySuccess(data.msgs[0]||'创建路由器完成');
         }
         else{
-          $modalInstance.dismiss('cancel');
           WidgetService.notifyError(data.msgs[0]||'创建路由器失败');
+          $scope.isOrderSubmiting=false;
         }
       });
     };
