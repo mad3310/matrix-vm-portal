@@ -28,10 +28,15 @@ define(['./common.service'], function (serviceModule) {
       disk_delete:'/osv/region/{region}/volume-delete',
       disk_attach:'/ecs/region/{region}/vm-attach-volume',
       disk_detach:'/ecs/region/{region}/vm-detach-volume',
+      subnet_list:'/osn/subnet/private/list',
+      subnet_create:'/osn/subnet/private/create',
       vpc_list:'/osn/network/private/list',
+      vpc_delete:'/osn/network/private/delete',
+      vpc_create:'/osn/network/private/create',
+      vpc_edit:'/osn/network/private/edit',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
-      subnet_list:'/osn/subnet/private/list',
+      available_for_router_subnet_list:'/osn/network/private/available_for_router_interface/list',
       subnet_associate:'/osn/router/subnet/associate',
       subnet_remove:'/osn/router/subnet/separate',
       router_create:'/osn/router/create',
@@ -45,7 +50,7 @@ define(['./common.service'], function (serviceModule) {
       floatIp_unbindVm:'/ecs/vm/floatingip/unbind',
       snapshot_disk_list:'/osv/volume/snapshot/list',
       snapshot_disk_create:'/osv/volume/snapshot/create',
-      snapshot_disk_delete:'/osv/volume/snapshot/delete',
+      snapshot_disk_delete:'/osv/volume/snapshot/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},

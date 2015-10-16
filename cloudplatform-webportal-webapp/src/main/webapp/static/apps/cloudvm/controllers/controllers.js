@@ -15,8 +15,10 @@ define([
     'controllers/VmRouterEditModalCtrl',
     'controllers/RouterAssociateSubnetModalCtrl',
     'controllers/VmIPcreateModalCtrl',
+    'controllers/VmIpBindVmModalCtrl',
+    'controllers/VmIpEditModalCtrl',
       'controllers/VmSnapshotCrtl'
   ],
   function (controllerModule) {
 
-  });
+    });
