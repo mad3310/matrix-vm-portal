@@ -98,10 +98,16 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个路由器');
           return;
         }
+        console.log(checkedRouters[0].subnets);
+        if(checkedRouters[0].subnets.length === 0){
+          WidgetService.notifyWarning("选择路由没有关联子网");
+          return;
+        }
         removeSubnetModal('500',{
           region:checkedRouters[0].region,
           routerId: checkedRouters[0].id,
-          routerName: checkedRouters[0].name
+          routerName: checkedRouters[0].name,
+          subnets:checkedRouters[0].subnets
         });
       }
 

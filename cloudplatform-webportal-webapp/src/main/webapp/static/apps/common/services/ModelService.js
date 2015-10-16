@@ -6,9 +6,10 @@ define(['./common.service'],function (serviceModule) {
     function ($modal,toaster) {
       var service = {};
 
-      service.SelectModel=function(text,value){
+      service.SelectModel=function(text,value,option){
         this.text=text;
         this.value=value;
+        this.relatedOption = option||{};
       };
 
       return service;

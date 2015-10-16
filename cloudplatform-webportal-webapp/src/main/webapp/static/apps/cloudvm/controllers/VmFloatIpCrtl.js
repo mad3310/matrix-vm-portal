@@ -39,7 +39,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.openIPcreateModal=function(size){
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
-          templateUrl: 'vmIPcreateModalTpl',
+          templateUrl: '/static/apps/cloudvm/templates/vm-floatip-create-modal.html',
           controller: 'VmIPcreateModalCtrl',
           size: size,
           backdrop: 'static',
@@ -224,4 +224,59 @@ define(['controllers/app.controller'], function (controllerModule) {
     }
   ]);
 
+  controllerModule.controller('VmIpBindVmModalCtrl', function (Config, HttpService,WidgetService,ModelService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,bindfloatIp,avalibleVm) {
+    $scope.floatIpName=bindfloatIp.name;
+    $scope.floatIp=bindfloatIp.ipAddress;
+    $scope.vmListSelectorData=avalibleVm.map(function(vm){
+      return new ModelService.SelectModel(vm.name,vm.id);
+    });
+    $scope.selectedVm=$scope.vmListSelectorData[0];
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.IpbingVm=function(){
+      var data={
+        'region':region,
+        vmId:$scope.selectedVm.value,
+        floatingIpId:bindfloatIp.id
+      }
+      HttpService.doPost(Config.urls.floatIp_bindVm,data).success(function(data){
+        if(data.result==0){//error
+          WidgetService.notifyError(data.msgs[0]||'绑定云主机出错');
+        }else{
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('绑定云主机成功');
+        }
+
+      });
+    }
+  });
+
+  controllerModule.controller('VmIpEditModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,floatIp) {
+    Utility.getRzSliderHack($scope)();
+    $scope.networkBandWidth=floatIp.bandWidth;
+    $scope.ipName=floatIp.name;
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+    $scope.editIP=function () {
+      if (!$scope.vm_ip_edit_form.$valid) return;
+      var data = {
+        'region':region,
+        floatingIpId:floatIp.id,
+        name: $scope.ipName,
+        bandWidth: $scope.networkBandWidth,
+      };
+      HttpService.doPost(Config.urls.floatIP_edit,data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('修改公网IP成功');
+          // $window.location.href = '/payment/'+data.data;
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'修改公网IP失败');
+        }
+      });
+    };
+  });
 });

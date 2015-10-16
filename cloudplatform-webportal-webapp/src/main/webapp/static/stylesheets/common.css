@@ -596,6 +596,7 @@ width:150px;height:40px;
 }
 .col-slider rzslider{
     top: -3px;
+    width: 250px;
 }
 .col-slider .slider-number,
 .col-slider .slider-unit {
@@ -615,6 +616,9 @@ width:150px;height:40px;
 .col-submit-order button{
     margin-right: 30px;
 }
+.col-submit-order .order-price{font-size:12px;line-height: 30px;margin-right: 2px;}
+.col-submit-order .order-price span.title,.order-price span.unit{}
+.col-submit-order .order-price span.price{padding:0;font-size:16px;color:#ff3c37;}
 /*end col-submit-order style*/
 
 /*begin clearfix style*/
@@ -790,22 +794,22 @@ input.ng-invalid.ng-touched,form.ng-submitted input.ng-invalid {
 /*end le-input-validation style*/
 
 /*begin letv-checkbox style*/
-.letv-mutiCheck{height:24px;line-height: 24px;border:1px solid #dbdbdb;margin:3px 2px 3px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
+.letv-mutiCheck{line-height: 22px;border:1px solid #dbdbdb;margin:3px 3px 2px 0;font-size:12px;color:#333;display:inline-block;text-align: center;}
 .letv-mutiCheck span{line-height: 22px}
 .letv-mutiCheck i{line-height: 22px;color: #dbdbdb;}
 .letv-mutiCheck.selected{border-color:#088ac2; }
 .letv-mutiCheck.selected i{color: #088ac2;}
 /*begin letv-checkbox style*/
 
-/*begin check-buy-period style*/
-.check-buy-period{
+/*begin buy-period-selector style*/
+buy-period-selector .check-buy-period{
     width: 36px;
 }
-.check-buy-period.selected{
+buy-period-selector .check-buy-period.selected{
     padding: 0 4px;
     width: auto;
 }
-/*end check-buy-period style*/
+/*end buy-period-selector style*/
 
 /*begin letv-radioCheck style*/
 .radio-check-group{line-height: 30px;}

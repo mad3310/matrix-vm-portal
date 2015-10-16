@@ -47,12 +47,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-    $scope.selectDiskBuyPeriod = function (buyPeriod) {
-      $scope.diskBuyPeriod = buyPeriod;
-    };
-    $scope.isSelectedDiskBuyPeriod = function (buyPeriod) {
-      return $scope.diskBuyPeriod === buyPeriod;
-    };
 
     $scope.$watch(function(){
       return [
