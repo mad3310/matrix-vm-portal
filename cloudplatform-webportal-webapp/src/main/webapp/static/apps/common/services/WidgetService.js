@@ -8,7 +8,7 @@ define(['./common.service'],function (serviceModule) {
 
       service.openConfirmModal = function (title, message) {
         return $modal.open({
-          templateUrl: 'ConfirmModalTpl',
+          templateUrl: '/static/apps/cloudvm/templates/confirm-modal.html',
           controller: 'ConfirmModalCtrl',
           size: '400',
           resolve: {
