@@ -89,6 +89,22 @@ define(['controllers/app.controller'], function (controllerModule) {
                     gatewayIp:checkedSubnets[0].gatewayIp
                 });
             };
+            $scope.associateRouter = function(){
+                var checkedSubnets=getCheckedSubnet();
+                if(checkedSubnets.length !==1){
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                if(checkedSubnets[0].router !== null){
+                    WidgetService.notifyWarning('该子网已绑定路由');
+                    return;
+                }
+                associateRouterModal('500',{
+                    region:checkedSubnets[0].region,
+                    subnetId: checkedSubnets[0].id,
+                    subnetName: checkedSubnets[0].name
+                });
+            }
 
             $scope.deleteVpc = function () {
                 var checkedVpcs = getCheckedVpc();
@@ -96,7 +112,6 @@ define(['controllers/app.controller'], function (controllerModule) {
                     WidgetService.notifyWarning('请选中一个VPC');
                     return;
                 }
-                console.log(checkedVpcs);
                 var data = {
                     region: checkedVpcs[0].region,
                     networkId: checkedVpcs[0].id
@@ -126,7 +141,6 @@ define(['controllers/app.controller'], function (controllerModule) {
                     WidgetService.notifyWarning('请选中一个子网');
                     return;
                 }
-                console.log(checkedSubnets);
                 var data = {
                     region: checkedSubnets[0].region,
                     subnetId: checkedSubnets[0].id
@@ -145,6 +159,40 @@ define(['controllers/app.controller'], function (controllerModule) {
                         }
                         else {
                             WidgetService.notifyError(data.msgs[0] || '删除子网失败');
+                        }
+                    });
+                }, function () {
+                });
+            };
+            $scope.unbundRouter = function () {
+                var checkedSubnets = getCheckedSubnet();
+                if (checkedSubnets.length !== 1) {
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                if(checkedSubnets[0].router === null){
+                    WidgetService.notifyWarning('该子网还没有绑定路由');
+                    return;
+                }
+                var data = {
+                    region: checkedSubnets[0].region,
+                    subnetId: checkedSubnets[0].id,
+                    routerId:checkedSubnets[0].router.id
+                };
+                var modalInstance = WidgetService.openConfirmModal('解绑路由', '确定要对子网（' + checkedSubnets[0].name + '）路由解绑吗？');
+                modalInstance.result.then(function (resultData) {
+                    if (!resultData) return resultData;
+                    WidgetService.notifyInfo('子网路由解绑执行中...');
+                    checkedSubnets[0].status = 'UNBUNDLING';
+                    HttpService.doPost(Config.urls.subnet_remove, data).success(function (data, status, headers, config) {
+                        if (data.result === 1) {
+                            checkedSubnets[0].status = 'UNBUNDED';
+                            modalInstance.close(data);
+                            WidgetService.notifySuccess('子网路由解绑成功');
+                            refreshSubnetList();
+                        }
+                        else {
+                            WidgetService.notifyError(data.msgs[0] || '子网路由解绑失败');
                         }
                     });
                 }, function () {
@@ -253,6 +301,27 @@ define(['controllers/app.controller'], function (controllerModule) {
                     modalInstance.result.then(function (resultData) {
                         if (resultData && resultData.result === 1) {
                             refreshVpcList();
+                        }
+                    }, function () {
+                    });
+                },
+                associateRouterModal = function (size, data) {
+                    var modalInstance = $modal.open({
+                        animation: $scope.animationsEnabled,
+                        templateUrl: 'AssociateRouterModalTpl',
+                        controller: 'AssociateRouterModalCtrl',
+                        size: size,
+                        backdrop: 'static',
+                        keyboard: false,
+                        resolve: {
+                            subnetInfo: function () {
+                                return data;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (resultData) {
+                        if (resultData && resultData.result === 1) {
+                            refreshSubnetList();
                         }
                     }, function () {
                     });
