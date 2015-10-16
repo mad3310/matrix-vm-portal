@@ -88,14 +88,14 @@ public class ProductController {
 			return productService.validateData(id, map);
 		}
 	}
-	private BigDecimal getOrderTotalPrice(Long id, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime) {
+	private BigDecimal getOrderTotalPrice(Long id, Subscription sub, List<SubscriptionDetail> subDetails, String orderTime, Map<String, Object> billingParams) {
 		for (SubscriptionDetail subscriptionDetail : subDetails) {
-			if(id==2) {
+			if(id==2 || id==3 || id==4 || id==5) {
 				subscriptionDetail.setPrice(this.hostCalculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getStandardName(), subscriptionDetail.getStandardValue(),
-						1, Integer.parseInt(orderTime)));
+						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getStandardName()+"_type")));
 			} else {
 				subscriptionDetail.setPrice(this.calculateService.calculateStandardPrice(sub.getProductId(), sub.getBaseRegionId(), subscriptionDetail.getStandardName(), subscriptionDetail.getStandardValue(),
-						1, Integer.parseInt(orderTime)));
+						1, Integer.parseInt(orderTime), (String)billingParams.get(subscriptionDetail.getStandardName()+"_type")));
 			}
 		}
 		BigDecimal totalPrice = new BigDecimal(0);
@@ -108,19 +108,16 @@ public class ProductController {
 	private void transferParamsDateToCalculate(Map<String, Object> params, Long id, Map<String, Object> billingParams) {
 		if(id==2) {//云主机参数转换
 			FlavorResource flavor = resourceCreateService.getFlavor(sessionService.getSession().getUserId(), (String)params.get("region"), (String)params.get("flavorId"));
-			billingParams.put("cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
+			billingParams.put("os_cpu_ram", flavor.getVcpus()+"_"+flavor.getRam());
+			billingParams.put("os_cpu_ram_type", flavor.getVcpus()+"_"+flavor.getRam());
 			billingParams.put("os_storage", params.get("volumeSize")+"");
+			billingParams.put("os_storage_type", "SATA");
 			billingParams.put("os_broadband", params.get("bandWidth")+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==3) {//云硬盘
-			if("SAS".equals(params.get("volumeType"))) {
-				params.put("os_storage_sas", params.get("volumeSize")+"");
-			} else if("SSD".equals(params.get("volumeType"))) {
-				params.put("os_storage_ssd", params.get("volumeSize")+"");
-			} else if("SATA".equals(params.get("volumeType"))) {
-				params.put("os_storage", params.get("volumeSize")+"");
-			}
+			billingParams.put("os_storage", params.get("volumeSize")+"");
+			billingParams.put("os_storage_type", params.get("volumeType")+"");
 			billingParams.put("order_num", params.get("count")+"");
 			billingParams.put("order_time", params.get("order_time")+"");
 		} else if(id==4) {//公网IP
@@ -177,7 +174,7 @@ public class ProductController {
 					}
 					
 					List<SubscriptionDetail> subDetails = this.subscriptionDetailService.selectByMapAndTime(sub.getId());
-					BigDecimal totalPrice = getOrderTotalPrice(id, sub, subDetails, (String)billingParams.get("order_time"));
+					BigDecimal totalPrice = getOrderTotalPrice(id, sub, subDetails, (String)billingParams.get("order_time"), billingParams);
 					
 					//生成子订单
 					this.orderSubService.createOrder(sub, o.getId(), subDetails, totalPrice);

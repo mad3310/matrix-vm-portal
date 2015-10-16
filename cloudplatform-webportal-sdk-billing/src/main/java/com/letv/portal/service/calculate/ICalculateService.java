@@ -20,11 +20,12 @@ public interface ICalculateService {
 	  * @param standardValue 规格值
 	  * @param orderNum 购买数量
 	  * @param orderTime 购买时长
+	  * @param standardType 规格类型
 	  * @return Double 价格
 	  * @throws 
 	  * @author lisuxiao
 	  * @date 2015年9月7日 下午4:51:12
 	  */
 	BigDecimal calculateStandardPrice(Long productId, Long baseRegionId, String standardName, String standardValue, 
-			Integer orderNum, Integer orderTime);
+			Integer orderNum, Integer orderTime, String standardType);
 }

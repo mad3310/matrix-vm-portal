@@ -65,11 +65,12 @@ public class CalculateServiceImpl implements ICalculateService {
 	  * @author lisuxiao
 	  * @date 2015年9月18日 下午4:45:44
 	  */
-	protected BigDecimal getPriceByTypeZero(BaseStandard baseStandard, String standardValue, 
+	protected BigDecimal getPriceByTypeZero(BaseStandard baseStandard, String standardValue, String standardType,
 			ProductPrice productPrice, BigDecimal p, Set<String> set) {
 		BigDecimal price = p;
-		if(baseStandard.getValue().equals(standardValue)) {
-			set.add(baseStandard.getStandard());
+		if(standardType==null ? baseStandard.getValue().equals(standardValue) : 
+			baseStandard.getValue().equals(standardValue) && standardType.equals(baseStandard.getType())) {
+			set.add(baseStandard.getBaseElement().getName());
 			if(productPrice!=null && productPrice.getPrice()!=null) {
 				price = productPrice.getPrice().add(price);
 			} else {
@@ -92,13 +93,16 @@ public class CalculateServiceImpl implements ICalculateService {
 	  * @author lisuxiao
 	  * @date 2015年9月18日 下午4:54:11
 	  */
-	protected BigDecimal getPriceByTypeOne(BaseStandard baseStandard, String standardValue, 
+	protected BigDecimal getPriceByTypeOne(BaseStandard baseStandard, String standardValue, String standardType,
 			ProductPrice productPrice, BigDecimal p, Set<String> set) {
 		BigDecimal price = p;
 		
 		String[] str = baseStandard.getBasePrice().getAmount().split("-");
-		if(Double.parseDouble(str[0])<=Double.parseDouble(standardValue) && Double.parseDouble(str[1])>=Double.parseDouble(standardValue)) {
-			set.add(baseStandard.getStandard());
+		if(standardType==null ? 
+				Double.parseDouble(str[0])<=Double.parseDouble(standardValue) && Double.parseDouble(str[1])>=Double.parseDouble(standardValue) :
+				Double.parseDouble(str[0])<=Double.parseDouble(standardValue) && Double.parseDouble(str[1])>=Double.parseDouble(standardValue) &&
+				standardType.equals(baseStandard.getType())) {
+			set.add(baseStandard.getBaseElement().getName());
 			if(productPrice!=null && productPrice.getPrice()!=null) {
 				price = productPrice.getPrice().multiply(new BigDecimal(standardValue)).add(price);
 			} else {
@@ -122,15 +126,17 @@ public class CalculateServiceImpl implements ICalculateService {
 	  * @author lisuxiao
 	  * @date 2015年9月18日 下午4:56:05
 	  */
-	protected BigDecimal getPriceByTypeTwo(BaseStandard baseStandard, String standardValue, 
+	protected BigDecimal getPriceByTypeTwo(BaseStandard baseStandard, String standardValue, String standardType,
 			ProductPrice productPrice, BigDecimal p, Set<String> set) {
 		BigDecimal price = p;
 		
-		set.add(baseStandard.getStandard());
-		if(productPrice!=null && productPrice.getPrice()!=null) {
-			price = productPrice.getPrice().multiply(new BigDecimal(standardValue)).add(price);
-		} else {
-			price = baseStandard.getBasePrice().getPrice().multiply(new BigDecimal(standardValue)).add(price);
+		if(standardType==null ? true : standardType.equals(baseStandard.getType())) {
+			set.add(baseStandard.getBaseElement().getName());
+			if(productPrice!=null && productPrice.getPrice()!=null) {
+				price = productPrice.getPrice().multiply(new BigDecimal(standardValue)).add(price);
+			} else {
+				price = baseStandard.getBasePrice().getPrice().multiply(new BigDecimal(standardValue)).add(price);
+			}
 		}
 		return price;
 	}
@@ -157,11 +163,11 @@ public class CalculateServiceImpl implements ICalculateService {
 			
 			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
 			if("0".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeZero(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = getPriceByTypeZero(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			} else if("1".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeOne(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = getPriceByTypeOne(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			} else if("2".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeTwo(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = getPriceByTypeTwo(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			}
 			
 		}
@@ -175,10 +181,10 @@ public class CalculateServiceImpl implements ICalculateService {
 	@Override
 	public BigDecimal calculateStandardPrice(Long productId, Long baseRegionId,
 			String standardName, String standardValue, Integer orderNum,
-			Integer orderTime) {
+			Integer orderTime, String standardType) {
 		BigDecimal price = new BigDecimal(0);
 		
-		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByStandard(standardName);
+		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByElementName(standardName);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", productId);
@@ -196,11 +202,11 @@ public class CalculateServiceImpl implements ICalculateService {
 			
 			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
 			if("0".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeZero(baseStandard, standardValue, productPrice, price, set);
+				price = getPriceByTypeZero(baseStandard, standardValue, standardType, productPrice, price, set);
 			} else if("1".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeOne(baseStandard, standardValue, productPrice, price, set);
+				price = getPriceByTypeOne(baseStandard, standardValue, standardType, productPrice, price, set);
 			} else if("2".equals(baseStandard.getBasePrice().getType())) {
-				price = getPriceByTypeTwo(baseStandard, standardValue, productPrice, price, set);
+				price = getPriceByTypeTwo(baseStandard, standardValue, standardType, productPrice, price, set);
 			}
 			
 		}

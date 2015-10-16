@@ -42,32 +42,34 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 	  * @author lisuxiao
 	  * @date 2015年9月18日 下午5:24:23
 	  */
-	protected BigDecimal getPriceByTypeThree(BaseStandard baseStandard, String standardValue, 
+	protected BigDecimal getPriceByTypeThree(BaseStandard baseStandard, String standardValue, String standardType,
 			ProductPrice productPrice, BigDecimal p, Set<String> set, String across) {
 		BigDecimal price = p;
 		BigDecimal bdAcross = new BigDecimal(across);
 		BigDecimal bdStandardValue = new BigDecimal(standardValue);
-		if(bdStandardValue.compareTo(bdAcross)>0) {
-			if(baseStandard.getValue().equals(across)) {
-				if(productPrice!=null && productPrice.getPrice()!=null) {
-					price = productPrice.getPrice().multiply(bdAcross).add(price);
+		if(standardType==null ? true : baseStandard.equals(standardType)) {
+			if(bdStandardValue.compareTo(bdAcross)>0) {
+				if(baseStandard.getValue().equals(across)) {
+					if(productPrice!=null && productPrice.getPrice()!=null) {
+						price = productPrice.getPrice().multiply(bdAcross).add(price);
+					} else {
+						price = baseStandard.getBasePrice().getPrice().multiply(bdAcross).add(price);
+					}
 				} else {
-					price = baseStandard.getBasePrice().getPrice().multiply(bdAcross).add(price);
+					BigDecimal value = bdStandardValue.subtract(bdAcross);
+					if(productPrice!=null && productPrice.getPrice()!=null) {
+						price = productPrice.getPrice().multiply(value).add(price);
+					} else {
+						price = baseStandard.getBasePrice().getPrice().multiply(value).add(price);
+					}
 				}
 			} else {
-				BigDecimal value = bdStandardValue.subtract(bdAcross);
+				set.add(baseStandard.getBaseElement().getName());
 				if(productPrice!=null && productPrice.getPrice()!=null) {
-					price = productPrice.getPrice().multiply(value).add(price);
+					price = productPrice.getPrice().multiply(bdStandardValue).add(price);
 				} else {
-					price = baseStandard.getBasePrice().getPrice().multiply(value).add(price);
+					price = baseStandard.getBasePrice().getPrice().multiply(bdStandardValue).add(price);
 				}
-			}
-		} else {
-			set.add(baseStandard.getStandard());
-			if(productPrice!=null && productPrice.getPrice()!=null) {
-				price = productPrice.getPrice().multiply(bdStandardValue).add(price);
-			} else {
-				price = baseStandard.getBasePrice().getPrice().multiply(bdStandardValue).add(price);
 			}
 		}
 		return price;
@@ -100,21 +102,21 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			}
 		}
 		for (BaseStandard baseStandard : baseStandards) {
-			//当该规格已经计算或者计算参数中没有该规格时
-			if(set.contains(baseStandard.getStandard()) || map.get(baseStandard.getStandard())==null) {
+			//当该元素已经计算或者计算参数中没有该元素时
+			if(set.contains(baseStandard.getBaseElement().getName()) || map.get(baseStandard.getBaseElement().getName())==null) {
 				continue;
 			}
 			params.put("basePriceId", baseStandard.getBasePrice().getId());
 			
 			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
 			if("0".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeZero(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = super.getPriceByTypeZero(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			} else if("1".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeOne(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = super.getPriceByTypeOne(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			} else if("2".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeTwo(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set);
+				price = super.getPriceByTypeTwo(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set);
 			} else if("3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
-				price = getPriceByTypeThree(baseStandard, (String)map.get(baseStandard.getStandard()), productPrice, price, set, across);
+				price = getPriceByTypeThree(baseStandard, (String)map.get(baseStandard.getBaseElement().getName()), (String)map.get(baseStandard.getBaseElement().getName()+"_type"), productPrice, price, set, across);
 			}
 			
 		}
@@ -128,10 +130,10 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 	@Override
 	public BigDecimal calculateStandardPrice(Long productId, Long baseRegionId,
 			String standardName, String standardValue, Integer orderNum,
-			Integer orderTime) {
+			Integer orderTime, String standardType) {
 		BigDecimal price = new BigDecimal(0);
 		
-		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByStandard(standardName);
+		List<BaseStandard> baseStandards = this.baseStandardDao.selectBaseStandardWithPriceByElementName(standardName);
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", productId);
@@ -161,13 +163,13 @@ public class HostCalculateServiceImpl extends CalculateServiceImpl implements IH
 			
 			ProductPrice productPrice = this.productPriceDao.selectProductPriceByMap(params);
 			if("0".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeZero(baseStandard, standardValue, productPrice, price, set);
+				price = super.getPriceByTypeZero(baseStandard, standardValue, standardType, productPrice, price, set);
 			} else if("1".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeOne(baseStandard, standardValue, productPrice, price, set);
+				price = super.getPriceByTypeOne(baseStandard, standardValue, standardType, productPrice, price, set);
 			} else if("2".equals(baseStandard.getBasePrice().getType())) {
-				price = super.getPriceByTypeTwo(baseStandard, standardValue, productPrice, price, set);
+				price = super.getPriceByTypeTwo(baseStandard, standardValue, standardType, productPrice, price, set);
 			} else if("3".equals(baseStandard.getBasePrice().getType())) {//3-云主机双线性
-				price = getPriceByTypeThree(baseStandard, standardValue, productPrice, price, set, across);
+				price = getPriceByTypeThree(baseStandard, standardValue, standardType, productPrice, price, set, across);
 			}
 			
 		}

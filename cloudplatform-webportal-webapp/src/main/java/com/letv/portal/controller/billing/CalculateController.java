@@ -53,14 +53,13 @@ public class CalculateController {
 	  * @date 2015年10月13日 下午3:29:17
 	  */
 	private void transferParams(Map<String, Object> params, Long id) {
-		if(id==3) {//云硬盘
-			if("SAS".equals(params.get("volumeType"))) {
-				params.put("os_storage_sas", params.get("volumeSize")+"");
-			} else if("SSD".equals(params.get("volumeType"))) {
-				params.put("os_storage_ssd", params.get("volumeSize")+"");
-			} else if("SATA".equals(params.get("volumeType"))) {
-				params.put("os_storage", params.get("volumeSize")+"");
-			}
+		if(id==2) {//云主机参数转换
+			params.put("os_cpu_ram", params.get("cpu_ram"));
+			params.put("os_cpu_ram_type", params.get("cpu_ram"));
+			params.put("os_storage_type", "SATA");
+		} else if(id==3) {//云硬盘
+			params.put("os_storage", params.get("volumeSize")+"");
+			params.put("os_storage_type", params.get("volumeType")+"");
 		} else if(id==4) {//公网IP
 			
 		} else if(id==5) {//路由器
