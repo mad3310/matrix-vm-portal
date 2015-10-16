@@ -1685,6 +1685,26 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         });
     }
 
+    @Override
+    public void createImageFromVm(final String region,final String vmId,final String name) throws OpenStackException {
+        runWithApi(new ApiRunnable<NovaApi, Void>() {
+            @Override
+            public Void run(NovaApi novaApi) throws Exception {
+                checkRegion(region);
+
+                ServerApi serverApi = novaApi.getServerApi(region);
+                Server server = serverApi.get(vmId);
+                if (server == null) {
+                    throw new ResourceNotFoundException("VM", "虚拟机", vmId);
+                }
+
+                serverApi.createImageFromServer(name, vmId);
+
+                return null;
+            }
+        });
+    }
+
     private static boolean isPublicIp(FloatingIP floatingIP) {
         return !StringUtils.equals(floatingIP.getFixedIp(), floatingIP.getIp());
     }

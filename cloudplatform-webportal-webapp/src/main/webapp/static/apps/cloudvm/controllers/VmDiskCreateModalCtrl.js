@@ -76,7 +76,7 @@ define(['controllers/app.controller'], function (controllerModule) {
           $scope.selectedSnapshot=$scope.snapshotListSelectorData[0];
         }
         else{
-          HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '1', recordsPerPage: '1000'}).success(function (data, status, headers, config) {
+          HttpService.doGet(Config.urls.snapshot_disk_list,{region:region,name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
             $scope.snapshotList = data.data.data;
             $scope.snapshotListSelectorData=$scope.snapshotList.map(function(snapshot){
               return new ModelService.SelectModel(snapshot.name,snapshot.id);

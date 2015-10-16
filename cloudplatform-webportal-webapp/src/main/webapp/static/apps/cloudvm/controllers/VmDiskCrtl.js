@@ -5,6 +5,7 @@ define(['controllers/app.controller'], function (controllerModule) {
   controllerModule.controller('VmDiskCrtl', ['$scope','$interval','$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
     function ($scope,$interval,$modal, Config, HttpService,WidgetService,CurrentContext) {
 
+      $scope.searchName='';
       $scope.diskList = [];
 
       $scope.currentPage = 1;
@@ -14,6 +15,9 @@ define(['controllers/app.controller'], function (controllerModule) {
         refreshDiskList();
       };
 
+      $scope.doSearch = function () {
+        refreshDiskList();
+      };
 
       $scope.openVmDiskCreateModal = function (size) {
         var modalInstance = $modal.open({
@@ -229,7 +233,7 @@ define(['controllers/app.controller'], function (controllerModule) {
 
       var refreshDiskList = function () {
           var queryParams = {
-            name: '',
+            name: $scope.searchName,
             currentPage: $scope.currentPage,
             recordsPerPage: $scope.pageSize
           };

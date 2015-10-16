@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -466,11 +467,9 @@ public class PayServiceImpl implements IPayService {
 		logger.info("开始创建云主机！");
 		this.resourceCreateService.createVm(createUser, params, new VmCreateAdapter() {
 			@Override
-			public void vmCreated(String region,
-					String vmId, int vmIndex,
-					Object userData) throws Exception {
-				serviceCallback(orderSubs, region, vmId, vmIndex, userData);
-				logger.info("云主机回调成功! num="+vmIndex);
+			public void vmCreated(VmCreateEvent event) throws Exception {
+				serviceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVmIndex(), event.getUserData());
+				logger.info("云主机回调成功! num="+event.getVmIndex());
 			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
