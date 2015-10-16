@@ -76,6 +76,19 @@ define(['controllers/app.controller'], function (controllerModule) {
                     name: checkedVpcs[0].name
                 });
             };
+            $scope.editSubnet = function () {
+                var checkedSubnets = getCheckedSubnet();
+                if (checkedSubnets.length !== 1) {
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                openVmSubnetEditModal('500', {
+                    region: checkedSubnets[0].region,
+                    subnetId: checkedSubnets[0].id,
+                    name: checkedSubnets[0].name,
+                    gatewayIp:checkedSubnets[0].gatewayIp
+                });
+            };
 
             $scope.deleteVpc = function () {
                 var checkedVpcs = getCheckedVpc();
@@ -102,6 +115,36 @@ define(['controllers/app.controller'], function (controllerModule) {
                         }
                         else {
                             WidgetService.notifyError(data.msgs[0] || '删除VPC失败');
+                        }
+                    });
+                }, function () {
+                });
+            };
+            $scope.deleteSubnet = function () {
+                var checkedSubnets = getCheckedSubnet();
+                if (checkedSubnets.length !== 1) {
+                    WidgetService.notifyWarning('请选中一个子网');
+                    return;
+                }
+                console.log(checkedSubnets);
+                var data = {
+                    region: checkedSubnets[0].region,
+                    subnetId: checkedSubnets[0].id
+                };
+                var modalInstance = WidgetService.openConfirmModal('删除子网', '确定要删除子网（' + checkedSubnets[0].name + '）吗？');
+                modalInstance.result.then(function (resultData) {
+                    if (!resultData) return resultData;
+                    WidgetService.notifyInfo('子网删除执行中...');
+                    checkedSubnets[0].status = 'DELETEING';
+                    HttpService.doPost(Config.urls.subnet_delete, data).success(function (data, status, headers, config) {
+                        if (data.result === 1) {
+                            checkedSubnets[0].status = 'DELETED';
+                            modalInstance.close(data);
+                            WidgetService.notifySuccess('删除子网成功');
+                            refreshSubnetList();
+                        }
+                        else {
+                            WidgetService.notifyError(data.msgs[0] || '删除子网失败');
                         }
                     });
                 }, function () {
@@ -210,6 +253,27 @@ define(['controllers/app.controller'], function (controllerModule) {
                     modalInstance.result.then(function (resultData) {
                         if (resultData && resultData.result === 1) {
                             refreshVpcList();
+                        }
+                    }, function () {
+                    });
+                },
+                openVmSubnetEditModal = function (size, data) {
+                    var modalInstance = $modal.open({
+                        animation: $scope.animationsEnabled,
+                        templateUrl: 'SubnetEditModalTpl',
+                        controller: 'SubnetEditModalCtrl',
+                        size: size,
+                        backdrop: 'static',
+                        keyboard: false,
+                        resolve: {
+                            subnetInfo: function () {
+                                return data;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (resultData) {
+                        if (resultData && resultData.result === 1) {
+                            refreshSubnetList();
                         }
                     }, function () {
                     });

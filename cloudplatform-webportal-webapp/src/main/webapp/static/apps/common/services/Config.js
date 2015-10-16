@@ -30,6 +30,8 @@ define(['./common.service'], function (serviceModule) {
       disk_detach:'/ecs/region/{region}/vm-detach-volume',
       subnet_list:'/osn/subnet/private/list',
       subnet_create:'/osn/subnet/private/create',
+      subnet_delete:'/osn/subnet/private/delete',
+      subnet_edit:'/osn/subnet/private/edit',
       vpc_list:'/osn/network/private/list',
       vpc_delete:'/osn/network/private/delete',
       vpc_create:'/osn/network/private/create',

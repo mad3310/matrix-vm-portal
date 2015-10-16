@@ -9,6 +9,7 @@ define([
         'controllers/VmDiskCrtl',
         'controllers/VmDiskCreateModalCtrl',
         'controllers/vpcController/SubnetCreateModalCtrl',
+        'controllers/vpcController/SubnetEditModalCtrl',
         'controllers/vpcController/VmVpcCtrl',
         'controllers/vpcController/VpcCreateModalCtrl',
         'controllers/vpcController/VpcEditModalCtrl',
