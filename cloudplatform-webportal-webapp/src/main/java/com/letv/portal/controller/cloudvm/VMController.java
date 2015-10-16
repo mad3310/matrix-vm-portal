@@ -487,6 +487,15 @@ public class VMController {
 	@ResponseBody
 	ResultObject createVmSnapshot(@RequestParam String region, @RequestParam String vmId, @RequestParam String name) {
 		ResultObject result = new ResultObject();
+		try {
+			Util.session(sessionService).getVMManager()
+					.createImageFromVm(region, vmId, name);
+		} catch (UserOperationException e) {
+			result.addMsg(e.getUserMessage());
+			result.setResult(0);
+		} catch (OpenStackException e) {
+			throw e.matrixException();
+		}
 		return result;
 	}
 
