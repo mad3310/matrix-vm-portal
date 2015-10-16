@@ -162,14 +162,6 @@
                 <div class="le-modal-body">
                     <div class="le-row">
                         <div class="le-col-3 col-label">
-                            <span class="letv-control-label">私有网络：</span>
-                        </div>
-                        <div class="le-col-8 col-control">
-                            <le-select select-model="selectedVpc" select-options="vpcListSelectorData"></le-select>
-                        </div>
-                    </div>
-                    <div class="le-row">
-                        <div class="le-col-3 col-label">
                             <span class="letv-control-label">名称：</span>
                         </div>
                         <div class="le-col-9 col-control">
@@ -181,7 +173,7 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-3 col-label">
-                            <span class="letv-control-label">子网地址：</span>
+                            <span class="letv-control-label">私有网络：</span>
                         </div>
                         <div class="le-col-8 col-control">
                             <le-select select-model="selectedVpc" select-options="vpcListSelectorData"></le-select>
@@ -189,10 +181,18 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-3 col-label">
+                            <span class="letv-control-label">子网地址：</span>
+                        </div>
+                        <div class="le-col-8 col-control">
+                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData"></le-select>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
                             <span class="letv-control-label">子网网关：</span>
                         </div>
                         <div class="le-col-9 col-control">
-                            <span class="letv-control-label">{{associateRouterName}}</span>
+                            <span class="letv-control-label">{{selectedCidr.relatedOption.gatewayIp}}</span>
                         </div>
                     </div>
                     <div class="le-row">

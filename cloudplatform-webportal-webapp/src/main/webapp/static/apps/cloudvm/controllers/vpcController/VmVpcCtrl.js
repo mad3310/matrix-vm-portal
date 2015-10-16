@@ -51,6 +51,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     resolve: {
                         subnetInfo: function () {
                             return {
+                                region:CurrentContext.regionId,
 
                             };
                         }

@@ -98,7 +98,8 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个路由器');
           return;
         }
-        if(!checkedRouters[0].subnets){
+        console.log(checkedRouters[0].subnets);
+        if(checkedRouters[0].subnets.length === 0){
           WidgetService.notifyWarning("选择路由没有关联子网");
           return;
         }
