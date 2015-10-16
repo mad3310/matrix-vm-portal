@@ -245,7 +245,7 @@
                             <span class="price">{{vmTotalPrice}}</span>
                             <span class="unit">元</span>
                         </span>
-                    <button class="btn btn-le-red btn-submit-order" ng-click="createVm()" ng-disabled="isOrderSubmiting">
+                    <button class="btn btn-le-red btn-submit-order" ng-click="vm_create_form.$valid && !isOrderSubmiting &&createVm()" ng-disabled="isOrderSubmiting">
                         <span ng-if="!isOrderSubmiting">提交订单</span>
                         <span ng-if="isOrderSubmiting">订单提交中...</span>
                     </button>

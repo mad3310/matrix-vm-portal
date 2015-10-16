@@ -5,7 +5,6 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, items, region) {
 
-    $scope.isOrderSubmiting=false;
     $scope.activeFlow = 1;
     $scope.vmName = '';
     $scope.vmImageList = [];
@@ -65,7 +64,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       return $scope.vmBuyPeriod === vmBuyPeriod;
     };
     $scope.createVm = function () {
-      if (!$scope.vm_create_form.$valid) return;
       var data = {
         region:region,
         name: $scope.vmName,
