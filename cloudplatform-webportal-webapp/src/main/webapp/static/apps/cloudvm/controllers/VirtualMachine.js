@@ -138,6 +138,41 @@ define(['controllers/app.controller'], function (controllerModule) {
         vm.checked = vm.checked === true ? false : true;
       };
 
+      $scope.openDiskAttachModal = function (size) {
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        if(checkedVms[0].status !=='ACTIVE'){
+          WidgetService.notifyWarning('云主机当前状态不可挂载云硬盘');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'DiskAttachModalTpl',
+          controller: 'DiskAttachModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            refreshVmList();
+          }
+        }, function () {
+        });
+      };
+
       $scope.openVmCreateModal = function (size) {
         var modalInstance = $modal.open({
           animation: $scope.animationsEnabled,
@@ -213,5 +248,52 @@ define(['controllers/app.controller'], function (controllerModule) {
 
     }
   ]);
+
+  controllerModule.controller('DiskAttachModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.diskList=[];
+    $scope.diskListSelectorData=[];
+    $scope.selectedDisk=null;
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.attachDisk = function () {
+      var data = {
+        vmId:vm.id,
+        volumeId:$scope.selectedDisk.value
+      };
+      WidgetService.notifyInfo('云硬盘挂载执行中');
+      HttpService.doPost(Config.urls.disk_attach.replace('{region}',region), data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云硬盘挂载成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云硬盘挂载失败');
+        }
+      });
+    };
+
+    var initComponents = function () {
+        initDiskSelector();
+      },
+      initDiskSelector = function () {
+        HttpService.doGet(Config.urls.disk_list.replace('{region}',region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
+          $scope.diskList = data.data.data;
+          $scope.diskListSelectorData=$scope.diskList.filter(function(disk){
+            return disk.name && disk.status==='available';
+          }).map(function(disk){
+            return new ModelService.SelectModel(disk.name,disk.id);
+          });
+          $scope.selectedDisk=$scope.diskListSelectorData[0];
+        });
+
+      };
+
+    initComponents();
+
+  });
 
 });
