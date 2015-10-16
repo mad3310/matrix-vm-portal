@@ -44,6 +44,7 @@
 .icon-add:before { content: "\e617"; }
 .icon-move:before { content: "\e618"; }
 .icon-monitor:before { content: "\e631"; }
+.icon-erji3:before { content: "\e630"; }
 .icon-yunzhuji:before { content: "\e619"; }
 .icon-rds:before { content: "\e61a"; }
 .icon-gce:before { content: "\e61b"; }
@@ -64,3 +65,5 @@
 .icon-righticon:before { content: "\e62a"; }
 .icon-moneyicon:before { content: "\e62b"; }
 .icon-checkroundfillicon:before { content: "\e62d"; }
+.icon-envelope:before { content: "\e632"; }
+.icon-baoxiu:before { content: "\e633"; }
