@@ -94,7 +94,7 @@ define(['./common.filter'], function (filterModule) {
     }
   }]);
 
-  filterModule.filter('vmBuyPeriodFilter', [ function () {
+  filterModule.filter('buyPeriodFilter', [ function () {
     return function (period,isSelected) {
       var out = null;
       if (period <= 9) {

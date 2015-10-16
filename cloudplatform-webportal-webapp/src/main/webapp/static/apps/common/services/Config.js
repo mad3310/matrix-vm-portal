@@ -19,16 +19,26 @@ define(['./common.service'], function (serviceModule) {
       vm_disk_type:'/osv/volume/type/list',
       vm_network_shared_list:'/osn/network/shared/list',
       vm_calculate_price:'/billing/calculate/price/2',
+      disk_calculate_price:'/billing/calculate/price/3',
+      floatip_calculate_price:'/billing/calculate/price/4',
+      route_calculate_price:'/billing/calculate/price/5',
       vm_detail:'/ecs/region/{region}/vm/{vmId}',
       disk_list:'/osv/region/{region}',
       disk_create:'/osv/region/{region}/volume-create',
       disk_delete:'/osv/region/{region}/volume-delete',
       disk_attach:'/ecs/region/{region}/vm-attach-volume',
       disk_detach:'/ecs/region/{region}/vm-detach-volume',
+      subnet_list:'/osn/subnet/private/list',
+      subnet_create:'/osn/subnet/private/create',
+      subnet_delete:'/osn/subnet/private/delete',
+      subnet_edit:'/osn/subnet/private/edit',
       vpc_list:'/osn/network/private/list',
+      vpc_delete:'/osn/network/private/delete',
+      vpc_create:'/osn/network/private/create',
+      vpc_edit:'/osn/network/private/edit',
       router_list:'/osn/router/list',
       network_public_list:'/osn/network/public/list',
-      subnet_list:'/osn/subnet/private/list',
+      available_for_router_subnet_list:'/osn/network/private/available_for_router_interface/list',
       subnet_associate:'/osn/router/subnet/associate',
       subnet_remove:'/osn/router/subnet/separate',
       router_create:'/osn/router/create',
@@ -42,7 +52,7 @@ define(['./common.service'], function (serviceModule) {
       floatIp_unbindVm:'/ecs/vm/floatingip/unbind',
       snapshot_disk_list:'/osv/volume/snapshot/list',
       snapshot_disk_create:'/osv/volume/snapshot/create',
-      snapshot_disk_delete:'/osv/volume/snapshot/delete',
+      snapshot_disk_delete:'/osv/volume/snapshot/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
@@ -76,7 +86,7 @@ define(['./common.service'], function (serviceModule) {
       'AVAILABLE':'可用的',
       'BINDED':'已绑定'
     }
-    config.allVmBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
+    config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
 });

@@ -31,13 +31,20 @@ define(['controllers/app.controller'], function (controllerModule) {
     var initComponents = function () {
       initSubnetSelector();
     },initSubnetSelector = function () {
-      HttpService.doGet(Config.urls.subnet_list.replace('{region}',routerInfo.region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
-        $scope.subnetList = data.data.data;
+      HttpService.doGet(Config.urls.available_for_router_subnet_list,{region:routerInfo.region}).success(function (data, status, headers, config) {
+        var vpcList = data.data;
+        $scope.subnetList = [];
+        for(var i= 0,len=vpcList.length;i<len;i++){
+          (function(subnets){
+            for(var i= 0,len=subnets.length;i<len;i++){
+              $scope.subnetList.push(subnets[i]);
+            }
+          })(vpcList[i].subnets)
+        }
         $scope.subnetListSelectorData=$scope.subnetList.map(function(subnet){
           return new ModelService.SelectModel(subnet.name,subnet.id);
         });
         $scope.selectedSubnet=$scope.subnetListSelectorData[0];
-        console.log($scope.selectedSubnet);
       });
     };
     initComponents();
@@ -45,7 +52,13 @@ define(['controllers/app.controller'], function (controllerModule) {
 
   controllerModule.controller('RemoveSubnetModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance,$timeout,$window, routerInfo) {
     $scope.routerName = routerInfo.routerName;
-
+    /*初始化已关联子网选择框--start*/
+    $scope.subnetList = routerInfo.subnets;
+    $scope.subnetListSelectorData=$scope.subnetList.map(function(subnet){
+      return new ModelService.SelectModel(subnet.name,subnet.id);
+    });
+    $scope.selectedSubnet=$scope.subnetListSelectorData[0];
+    /*初始化已关联子网选择框--end*/
 
     $scope.closeModal=function(){
       $modalInstance.dismiss('cancel');
@@ -67,20 +80,6 @@ define(['controllers/app.controller'], function (controllerModule) {
         }
       });
     };
-
-    var initComponents = function () {
-      initSubnetSelector();
-    },initSubnetSelector = function () {
-      HttpService.doGet(Config.urls.subnet_list.replace('{region}',routerInfo.region),{name: '', currentPage:'', recordsPerPage: ''}).success(function (data, status, headers, config) {
-        $scope.subnetList = data.data.data;
-        $scope.subnetListSelectorData=$scope.subnetList.map(function(subnet){
-          return new ModelService.SelectModel(subnet.name,subnet.id);
-        });
-        $scope.selectedSubnet=$scope.subnetListSelectorData[0];
-        console.log($scope.selectedSubnet);
-      });
-    };
-    initComponents();
   });
 
 });

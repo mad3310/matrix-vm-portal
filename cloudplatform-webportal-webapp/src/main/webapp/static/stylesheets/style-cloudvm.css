@@ -22,13 +22,6 @@
 .vm-create-form .check-network-type{
     width: 90px;
 }
-.vm-create-form .check-buy-period{
-    width: 36px;
-}
-.vm-create-form .check-buy-period.selected{
-    padding: 0 4px;
-    width: auto;
-}
 /*modal-self*/
 .modal-720{width:720px;min-width:720px;}
 .letv-modal-header{height:50px;line-height:50px;border-bottom:1px solid #088ac2;text-align:center;font-size:16px;color:#088ac2;margin: 0 15px;padding: 0;}
@@ -90,9 +83,6 @@
 /*end virtual-machine-view style*/
 
 /*begin view-vm-disk style*/
-.form-vm-disk-create rzslider {
-    width: 250px;
-}
 .form-vm-disk-create .check-disk-type{
     width: 60px;
 }

@@ -25,8 +25,8 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.vmSecurityKey = 'key1';
     $scope.vmSecurityPassword = '';
     //$scope.vmSecurityPasswordConfirm = '';
-    $scope.allVmBuyPeriods = Config.allVmBuyPeriods;
-    $scope.vmBuyPeriod = 1;
+    $scope.allVmBuyPeriods = Config.allBuyPeriods;
+    $scope.vmBuyPeriod = $scope.allVmBuyPeriods[0];
     $scope.vmCount = 1;
     $scope.vmTotalPrice = '';
 
