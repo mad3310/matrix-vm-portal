@@ -71,7 +71,7 @@ public class SubscriptionServiceImpl extends BaseServiceImpl<Subscription> imple
 		sub.setCreateTime(new Timestamp(date.getTime()));
 		this.subscriptionDao.insert(sub);
 		for (String key : map.keySet()) {
-			if("region".equals(key) || "area".equals(key) || "chargeType".equals(key) 
+			if("region".equals(key) || key.endsWith("_type") 
 					|| "order_num".equals(key) || "order_time".equals(key)) {
 				continue;
 			}

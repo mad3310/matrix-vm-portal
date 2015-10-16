@@ -22,7 +22,14 @@ public class BaseStandard extends BaseModel{
 	private String unit;//单位
 	private String descn;//描述
 	private BasePrice basePrice;//基础价格
+	private BaseElement baseElement;//基础元素
 	
+	public BaseElement getBaseElement() {
+		return baseElement;
+	}
+	public void setBaseElement(BaseElement baseElement) {
+		this.baseElement = baseElement;
+	}
 	public BasePrice getBasePrice() {
 		return basePrice;
 	}
