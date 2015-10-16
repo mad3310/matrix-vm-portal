@@ -4,7 +4,7 @@
 define(['controllers/app.controller'], function (controllerModule) {
     controllerModule.controller('VmVpcCtrl', ['$scope', '$interval', '$modal', 'Config', 'HttpService', 'WidgetService', 'CurrentContext',
         function ($scope, $interval, $modal, Config, HttpService, WidgetService, CurrentContext) {
-            $scope.tabShow = 'subnet';
+            $scope.tabShow='vpc';
             $scope.vpcList = [];
             $scope.subnetList = [];
             $scope.vpc = $scope.subnet = {
@@ -243,6 +243,14 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.checkSubnet = function (subnet) {
                 subnet.checked = subnet.checked === true ? false : true;
             };
+            $scope.switchTabToSubnet=function(){
+                $scope.tabShow='subnet';
+                refreshSubnetList();
+            }
+            $scope.switchTabToVpc=function(){
+                $scope.tabShow='vpc';
+                refreshVpcList();
+            }
 
             var refreshVpcList = function () {
                     var queryParams = {
@@ -347,10 +355,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     }, function () {
                     });
                 };
-
             refreshVpcList();
-            refreshSubnetList();
         }
-
     ]);
 });
