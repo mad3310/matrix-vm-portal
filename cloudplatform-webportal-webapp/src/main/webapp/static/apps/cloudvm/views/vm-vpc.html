@@ -1,7 +1,7 @@
 <div class="view-common" ng-controller="VmVpcCtrl">
-    <div class="le-col-12 le-tab-header">
-        <div class="le-tab-btn le-tab-active" ng-click="switchTabToVpc()"><span>VPC</span></div>
-        <div class="le-tab-btn" ng-click="switchTabToSubnet()"><span>子网</span></div>
+    <div class="le-row le-tab-header">
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'vpc'}" ng-click="switchTabToVpc()"><span>VPC</span></div><!--消除空格
+        --><div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'subnet'}" ng-click="switchTabToSubnet()"><span>子网</span></div>
     </div>
     <div ng-show="tabShow === 'vpc'">
         <div class="le-row operate-panel">

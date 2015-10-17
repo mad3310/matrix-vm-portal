@@ -93,7 +93,8 @@
 
 .le-tab-header{
     border-bottom: solid 1px #e4e4e4;
-    margin-bottom: 45px;
+    margin: 0px 12px 12px 12px;
+    padding-bottom: 0px;
 }
 .le-tab-btn span{
     display: block;
@@ -101,10 +102,20 @@
     line-height: 32px;
 
 }
+.le-tab-btn span:hover{
+    cursor:pointer
+}
 .le-tab-btn{
     display: inline-block;
     width: 90px;
     height: 32px;
     border:solid #e4e4e4;
     border-width: 1px 1px 0px 1px;
+}
+.le-tab-active{
+    color: #6aacd2;
+}
+.le-tab-btn:first-child{
+    margin-left: 12px;
+    border-right: 0px;
 }
