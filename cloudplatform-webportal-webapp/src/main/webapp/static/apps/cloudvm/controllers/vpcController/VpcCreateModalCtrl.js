@@ -18,13 +18,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         region:region,
         name: $scope.vpcCreate.name,
       };
+      $scope.isOrderSubmiting=true;
       HttpService.doPost(Config.urls.vpc_create, data).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close({result:1});
           WidgetService.notifySuccess(data.msgs[0]||'创建VPC完成');
         }
         else{
-          $modalInstance.dismiss('cancel');
+          $scope.isOrderSubmiting=false;
           WidgetService.notifyError(data.msgs[0]||'创建VPC失败');
         }
       });
