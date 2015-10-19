@@ -4,7 +4,7 @@
 define(['controllers/app.controller'], function (controllerModule) {
     controllerModule.controller('VmVpcCtrl', ['$scope', '$interval', '$modal', 'Config', 'HttpService', 'WidgetService', 'CurrentContext',
         function ($scope, $interval, $modal, Config, HttpService, WidgetService, CurrentContext) {
-            $scope.tabShow = 'subnet';
+            $scope.tabShow='vpc';
             $scope.vpcList = [];
             $scope.subnetList = [];
             $scope.vpc = $scope.subnet = {
@@ -62,6 +62,21 @@ define(['controllers/app.controller'], function (controllerModule) {
                         refreshSubnetList();
                     }
                 }, function () {
+                });
+            };
+            $scope.subnetCreateWithVpc = function () {
+                var checkedVpcs = getCheckedVpc();
+                if (checkedVpcs.length !== 1) {
+                    WidgetService.notifyWarning('请选中一个VPC');
+                    return;
+                }
+                openSubnetCreateWithVpcModal('500', {
+                    region: checkedVpcs[0].region,
+                    vpcForSubnet:{
+                        vpcId: checkedVpcs[0].id,
+                        name: checkedVpcs[0].name
+
+                    }
                 });
             };
             $scope.editVpc = function () {
@@ -243,6 +258,14 @@ define(['controllers/app.controller'], function (controllerModule) {
             $scope.checkSubnet = function (subnet) {
                 subnet.checked = subnet.checked === true ? false : true;
             };
+            $scope.switchTabToSubnet=function(){
+                $scope.tabShow='subnet';
+                refreshSubnetList();
+            }
+            $scope.switchTabToVpc=function(){
+                $scope.tabShow='vpc';
+                refreshVpcList();
+            }
 
             var refreshVpcList = function () {
                     var queryParams = {
@@ -305,6 +328,27 @@ define(['controllers/app.controller'], function (controllerModule) {
                     }, function () {
                     });
                 },
+                openSubnetCreateWithVpcModal = function (size,data) {
+                    var modalInstance = $modal.open({
+                        animation: $scope.animationsEnabled,
+                        templateUrl: 'SubnetCreateWithVpcModalTpl',
+                        controller: 'SubnetCreateWithVpcModalCtrl',
+                        size: size,
+                        backdrop: 'static',
+                        keyboard: false,
+                        resolve: {
+                            subnetInfo: function () {
+                                return data;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (resultData) {
+                        if (resultData && resultData.result === 1) {
+                            refreshVpcList();
+                        }
+                    }, function () {
+                    });
+                },
                 associateRouterModal = function (size, data) {
                     var modalInstance = $modal.open({
                         animation: $scope.animationsEnabled,
@@ -347,10 +391,7 @@ define(['controllers/app.controller'], function (controllerModule) {
                     }, function () {
                     });
                 };
-
             refreshVpcList();
-            refreshSubnetList();
         }
-
     ]);
 });

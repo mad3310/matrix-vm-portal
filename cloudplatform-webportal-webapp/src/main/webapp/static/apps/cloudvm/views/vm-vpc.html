@@ -1,13 +1,57 @@
 <div class="view-common" ng-controller="VmVpcCtrl">
-    <div class="le-row operate-panel">
-        <div class="le-col-6 le-btn-group">
-            <div ng-show="tabShow == 'vpc'">
+    <div class="le-row le-tab-header">
+        <div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'vpc'}" ng-click="switchTabToVpc()"><span>VPC</span></div><!--消除空格
+        --><div class="le-tab-btn" ng-class="{'le-tab-active': tabShow === 'subnet'}" ng-click="switchTabToSubnet()"><span>子网</span></div>
+    </div>
+    <div ng-show="tabShow === 'vpc'">
+        <div class="le-row operate-panel">
+            <div class="le-col-6 le-btn-group">
                 <button class="btn btn-le-blue" ng-click="openVpcCreateModal('500')"><span>创建vpc</span></button>
-                <button class="btn btn-le-blueGreen" ng-click=""><span>创建子网</span></button>
+                <button class="btn btn-le-blueGreen" ng-click="subnetCreateWithVpc()"><span>创建子网</span></button>
                 <button class="btn btn-le-blueGreen" ng-click="deleteVpc()"><span>删除vpc</span></button>
                 <button class="btn btn-le-green" ng-click="editVpc()"><span>修改vpc</span></button>
             </div>
-            <div ng-show="tabShow == 'subnet'">
+        </div>
+        <div class="le-row list-common">
+            <div class="le-col-12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                        <span class="iconfont icon-righticon" ng-class="{checked:isAllVpcChecked()}"
+                              ng-click="checkAllVpc()"></span>
+                        </th>
+                        <th><span>名称</span></th>
+                        <th><span>子网</span></th>
+                        <th><span>状态</span></th>
+                        <th><span>创建时间</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="tby">
+                    <tr ng-repeat="vpc in vpcList">
+                        <td>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vpc.checked}"
+                              ng-click="checkVpc(vpc)"></span>
+                        </td>
+                        <td><span>{{vpc.name|| '未设置'}}</span></td>
+                        <td><span>{{vpc.subnets | vpcSubnetsFilter}}</span></td>
+                        <td>
+                            <span>{{vpc.status | vpcStatusFilter}}</span>
+                        </td>
+                        <td><span>{{vpc.created | date:'yyyy-MM-dd'}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <pagination boundary-links="true" direction-links="false" ng-change="vpc.onPageChange()"
+                            items-per-page="vpc.pageSize" total-items="vpc.totalItems" ng-model="vpc.currentPage"
+                            class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
+                </pagination>
+            </div>
+        </div>
+    </div>
+    <div ng-show="tabShow === 'subnet'">
+        <div class="le-row operate-panel">
+            <div class="le-col-6 le-btn-group">
                 <button class="btn btn-le-blue" ng-click="openSubnetCreateModal('500')"><span>创建子网</span></button>
                 <button class="btn btn-le-blueGreen" ng-click="deleteSubnet()"><span>删除子网</span></button>
                 <div dropdown class="more-operation-dropdown">
@@ -24,69 +68,41 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="le-row list-common">
-        <div class="le-col-12" ng-show="tabShow == 'vpc'">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>
-                        <span class="iconfont icon-righticon" ng-class="{checked:isAllVpcChecked()}"
-                              ng-click="checkAllVpc()"></span>
-                    </th>
-                    <th><span>名称</span></th>
-                    <th><span>子网</span></th>
-                    <th><span>状态</span></th>
-                    <th><span>创建时间</span></th>
-                </tr>
-                </thead>
-                <tbody id="tby">
-                <tr ng-repeat="vpc in vpcList">
-                    <td>
-                        <span class="iconfont icon-checkiconfill" ng-class="{checked:vpc.checked}"
-                              ng-click="checkVpc(vpc)"></span>
-                    </td>
-                    <td><span>{{vpc.name|| '未设置'}}</span></td>
-                    <td><span>{{vpc.subnets | vpcSubnetsFilter}}</span></td>
-                    <td>
-                        <span>{{vpc.status | vpcStatusFilter}}</span>
-                    </td>
-                    <td><span>{{vpc.created | date:'yyyy-MM-dd'}}</span></td>
-                </tr>
-                </tbody>
-            </table>
-            <pagination boundary-links="true" direction-links="false" ng-change="vpc.onPageChange()"  items-per-page="vpc.pageSize" total-items="vpc.totalItems" ng-model="vpc.currentPage" class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
-            </pagination>
-        </div>
-        <div class="le-col-12" ng-show="tabShow == 'subnet'">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>
-                        <span class="iconfont icon-righticon" ng-class="{checked:isAllSubnetChecked()}" ng-click="checkAllSubnet()"></span>
-                    </th>
-                    <th><span>名称</span></th>
-                    <th><span>VPC</span></th>
-                    <th><span>网段</span></th>
-                    <th><span>绑定路由</span></th>
-                    <th><span>创建时间</span></th>
-                </tr>
-                </thead>
-                <tbody id="subnet-tby">
-                <tr ng-repeat="subnet in subnetList">
-                    <td>
-                        <span class="iconfont icon-checkiconfill" ng-class="{checked:subnet.checked}" ng-click="checkSubnet(subnet)"></span>
-                    </td>
-                    <td><span>{{subnet.name|| '未设置'}}</span></td>
-                    <td><span>{{subnet.network.name}}</span></td>
-                    <td><span>{{subnet.cidr}}</span></td>
-                    <td><span>{{subnet.router.name}}</span></td>
-                    <td><span>{{subnet.created | date:'yyyy-MM-dd'}}</span></td>
-                </tr>
-                </tbody>
-            </table>
-            <pagination boundary-links="true" direction-links="false" ng-change="subnet.onPageChange()" items-per-page="subnet.pageSize" total-items="subnet.totalItems" ng-model="subnet.currentPage" class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
-            </pagination>
+        <div class="le-row list-common">
+            <div class="le-col-12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>
+                        <span class="iconfont icon-righticon" ng-class="{checked:isAllSubnetChecked()}"
+                              ng-click="checkAllSubnet()"></span>
+                        </th>
+                        <th><span>名称</span></th>
+                        <th><span>VPC</span></th>
+                        <th><span>网段</span></th>
+                        <th><span>绑定路由</span></th>
+                        <th><span>创建时间</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="subnet-tby">
+                    <tr ng-repeat="subnet in subnetList">
+                        <td>
+                        <span class="iconfont icon-checkiconfill" ng-class="{checked:subnet.checked}"
+                              ng-click="checkSubnet(subnet)"></span>
+                        </td>
+                        <td><span>{{subnet.name|| '未设置'}}</span></td>
+                        <td><span>{{subnet.network.name}}</span></td>
+                        <td><span>{{subnet.cidr}}</span></td>
+                        <td><span>{{subnet.router.name}}</span></td>
+                        <td><span>{{subnet.created | date:'yyyy-MM-dd'}}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <pagination boundary-links="true" direction-links="false" ng-change="subnet.onPageChange()"
+                            items-per-page="subnet.pageSize" total-items="subnet.totalItems" ng-model="subnet.currentPage"
+                            class="pagination-sm" first-text="&laquo;" last-text="&raquo;">
+                </pagination>
+            </div>
         </div>
     </div>
     <toaster-container
@@ -115,7 +131,10 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-blue" ng-click="createVpc()"><span>提交订单</span></button>
+                            <button class="btn btn-le-blue" ng-click="vpc_create_form.$valid && !isOrderSubmiting && createVpc()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -195,7 +214,7 @@
                         <div class="le-col-9 col-control">
                             <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
                                    name="subnet_name" text-restrict/>
-                            <span ng-show="(vm_subnet_create_form.$submitted || vm_subnet_create_form.subnet_name.$touched) && vm_subnet_create_form.subnet_name.$error.textRestrict"
+                            <span ng-show="(subnet_create_form.$submitted || subnet_create_form.subnet_name.$touched) && subnet_create_form.subnet_name.$error.textRestrict"
                                   class="le-input-validation">名称不符合规则</span>
                         </div>
                     </div>
@@ -225,7 +244,67 @@
                     </div>
                     <div class="le-row">
                         <div class="le-col-12 col-submit-order">
-                            <button class="btn btn-le-blue" ng-click="createSubnet()"><span>提交订单</span></button>
+                            <button class="btn btn-le-blue" ng-click="subnet_create_form.$valid && !isOrderSubmiting && createSubnet()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+    <script type="text/ng-template" id="SubnetCreateWithVpcModalTpl">
+        <div class="modal-vm-disk-create">
+            <form novalidate class="form-vm-subnet-create" name="subnet_create_with_vpc_form">
+                <div class="le-modal-header">
+                    <span class="header-title">创建子网</span>
+                    <a class="close" ng-click="closeModal()">
+                        <i class="iconfont icon-add"></i>
+                    </a>
+                </div>
+                <div class="le-modal-body">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">名称：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-disk-name" ng-model="subnetCreate.name"
+                                   name="subnet_name" text-restrict/>
+                            <span ng-show="(subnet_create_with_vpc_form.$submitted || subnet_create_with_vpc_form.subnet_name.$touched) && subnet_create_with_vpc_form.subnet_name.$error.textRestrict"
+                                  class="le-input-validation">名称不符合规则</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">私有网络：</span>
+                        </div>
+                        <div class="le-col-8 col-control">
+                            <span class="letv-control-label">{{subnetCreate.vpcForSubnet.name}}</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">子网地址：</span>
+                        </div>
+                        <div class="le-col-8 col-control">
+                            <le-select select-model="selectedCidr" select-options="cidrListSelectorData"></le-select>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">子网网关：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <span class="letv-control-label">{{selectedCidr.relatedOption.gatewayIp}}</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-blue" ng-click="subnet_create_with_vpc_form.$valid && !isOrderSubmiting && createSubnet()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
                         </div>
                     </div>
                 </div>
