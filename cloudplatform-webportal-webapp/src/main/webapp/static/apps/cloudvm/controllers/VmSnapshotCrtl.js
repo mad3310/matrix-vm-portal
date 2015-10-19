@@ -5,11 +5,52 @@ define(['controllers/app.controller'], function (controllerModule) {
   controllerModule.controller('VmSnapshotCrtl', ['$scope','$interval','$modal', 'Config', 'HttpService','WidgetService','CurrentContext',
     function ($scope,$interval,$modal, Config, HttpService,WidgetService,CurrentContext) {
 
-      $scope.snapshotList = [];
+      var refreshSnapshotList = function () {
+          var isVmTabActive=isVmSnapshotTabActive();
+          var queryParams = {
+            region:CurrentContext.regionId,
+            name: '',
+            currentPage: isVmTabActive?$scope.vmCurrentPage:$scope.diskCurrentPage,
+            recordsPerPage: $scope.pageSize
+          };
+          var url= isVmTabActive?Config.urls.snapshot_vm_list:Config.urls.snapshot_disk_list
+          WidgetService.showSpin();
+          HttpService.doGet(url, queryParams).success(function (data, status, headers, config) {
+            WidgetService.hideSpin();
+            if(isVmTabActive){
+              $scope.vmSnapshotList = data.data.data;
+              $scope.vmTotalItems = data.data.totalRecords;
+            }
+            else{
+              $scope.diskSnapshotList = data.data.data;
+              $scope.diskTotalItems = data.data.totalRecords;
+            }
 
-      $scope.currentPage = 1;
-      $scope.totalItems = 0;
+          });
+        },
+        getCheckedSnapshot=function(){
+          var snapshotList=getCurrentSnapshotList();
+          return snapshotList.filter(function(item){
+            return item.checked===true;
+          });
+        },
+        getCurrentSnapshotList=function(){
+          return isVmSnapshotTabActive()?$scope.vmSnapshotList:$scope.diskSnapshotList;
+        },
+        isVmSnapshotTabActive=function(){
+          return $scope.tabShow === 'VmSnapshot';
+        };
+
+      $scope.tabShow = 'VmSnapshot';
+      $scope.vmSnapshotList = [];
+      $scope.diskSnapshotList = [];
+
+      $scope.vmCurrentPage = 1;
+      $scope.vmTotalItems = 0;
+      $scope.diskCurrentPage = 1;
+      $scope.diskTotalItems = 0;
       $scope.pageSize = 10;
+      $scope.refreshSnapshotList = refreshSnapshotList;
       $scope.onPageChange = function () {
         refreshSnapshotList();
       };
@@ -80,19 +121,21 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
       $scope.isAllSnapshotChecked=function(){
-        var unCheckedSnapshots=$scope.snapshotList.filter(function(snapshot){
+        var snapshotList=getCurrentSnapshotList();
+        var unCheckedSnapshots=snapshotList.filter(function(snapshot){
           return snapshot.checked===false || snapshot.checked===undefined;
         });
         return unCheckedSnapshots.length==0;
       };
       $scope.checkAllSnapshot=function(){
+        var snapshotList=getCurrentSnapshotList();
         if($scope.isAllSnapshotChecked()){
-          $scope.snapshotList.forEach(function(snapshot){
+          snapshotList.forEach(function(snapshot){
             snapshot.checked=false;
           });
         }
         else{
-          $scope.snapshotList.forEach(function(snapshot){
+          snapshotList.forEach(function(snapshot){
             snapshot.checked=true;
           });
         }
@@ -101,27 +144,6 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.checkSnapshot = function (snapshot) {
         snapshot.checked = snapshot.checked === true ? false : true;
       };
-
-      var refreshSnapshotList = function () {
-          var queryParams = {
-            region:CurrentContext.regionId,
-            name: '',
-            currentPage: $scope.currentPage,
-            recordsPerPage: $scope.pageSize
-          };
-          WidgetService.showSpin();
-          HttpService.doGet(Config.urls.snapshot_disk_list, queryParams).success(function (data, status, headers, config) {
-            WidgetService.hideSpin();
-            $scope.snapshotList = data.data.data;
-            $scope.totalItems = data.data.totalRecords;
-
-          });
-      },
-        getCheckedSnapshot=function(){
-          return $scope.snapshotList.filter(function(item){
-            return item.checked===true;
-          });
-        };
 
       refreshSnapshotList();
 

@@ -52,7 +52,10 @@ define(['./common.service'], function (serviceModule) {
       floatIp_unbindVm:'/ecs/vm/floatingip/unbind',
       snapshot_disk_list:'/osv/volume/snapshot/list',
       snapshot_disk_create:'/osv/volume/snapshot/create',
-      snapshot_disk_delete:'/osv/volume/snapshot/delete'
+      snapshot_disk_delete:'/osv/volume/snapshot/delete',
+      snapshot_vm_list:'/ecs/vm/snapshot/list',
+      snapshot_vm_create:'/ecs/vm/snapshot/create',
+      snapshot_vm_delete:'/ecs/vm/snapshot/delete'
     };
     config.vmStatuses = [
       {"text": "活跃", "value": "ACTIVE"},
@@ -85,7 +88,7 @@ define(['./common.service'], function (serviceModule) {
     config.vmFloatIpStatuses={
       'AVAILABLE':'可用的',
       'BINDED':'已绑定'
-    }
+    };
     config.allBuyPeriods = [1,2,3,4,5,6,7,8,9,12,24,36];
     return config;
   }]);
