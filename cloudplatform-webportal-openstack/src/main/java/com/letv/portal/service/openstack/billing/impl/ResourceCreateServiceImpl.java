@@ -12,10 +12,19 @@ import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
+import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
+import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
+import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
+import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.util.Util;
 import org.codehaus.jackson.type.TypeReference;
+import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +50,9 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
     @Autowired
     private ErrorEmailService errorEmailService;
+
+    @Autowired
+    private ApiService apiService;
 
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
@@ -95,8 +107,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createVolume(long userId, String reqParaJson, VolumeCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            OpenStackSession openStackSession = createOpenStackSession(userId);
-
+            VolumeCreateConf volumeCreateConf = Util.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
+            }, true);
+            final String sessionId = Util.generateRandomSessionId();
+            final OpenStackSession openStackSession = createOpenStackSession(userId);
+            try {
+                CinderApi cinderApi = apiService.getCinderApi(userId, sessionId);
+                ((VolumeManagerImpl) openStackSession.getVolumeManager()).create(cinderApi, volumeCreateConf, listener, listenerUserData);
+            } finally {
+                apiService.clearCache(userId, sessionId);
+            }
         } catch (Exception e) {
             processException(e, "计费调用创建云硬盘", userId, reqParaJson);
         }
@@ -106,8 +126,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            OpenStackSession openStackSession = createOpenStackSession(userId);
-
+            FloatingIpCreateConf floatingIpCreateConf = Util.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
+            }, true);
+            final String sessionId = Util.generateRandomSessionId();
+            final OpenStackSession openStackSession = createOpenStackSession(userId);
+            try {
+                NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+                ((NetworkManagerImpl) openStackSession.getNetworkManager()).createFloatingIp(neutronApi, floatingIpCreateConf, listener, listenerUserData);
+            } finally {
+                apiService.clearCache(userId, sessionId);
+            }
         } catch (Exception e) {
             processException(e, "计费调用创建公网IP", userId, reqParaJson);
         }
@@ -117,8 +145,16 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException {
         try {
-            OpenStackSession openStackSession = createOpenStackSession(userId);
-
+            RouterCreateConf routerCreateConf = Util.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
+            }, true);
+            final String sessionId = Util.generateRandomSessionId();
+            final OpenStackSession openStackSession = createOpenStackSession(userId);
+            try {
+                NeutronApi neutronApi = apiService.getNeutronApi(userId, sessionId);
+                ((NetworkManagerImpl) openStackSession.getNetworkManager()).createRouter(neutronApi, routerCreateConf, listener, listenerUserData);
+            } finally {
+                apiService.clearCache(userId, sessionId);
+            }
         } catch (Exception e) {
             processException(e, "计费调用创建路由", userId, reqParaJson);
         }

@@ -53,8 +53,7 @@ public interface NetworkManager extends ResourceManager {
 	RouterResource getRouter(String region, String id)
 			throws OpenStackException;
 
-	void createRouter(String region, String name,
-			boolean enablePublicNetworkGateway, String publicNetworkId)
+	void createRouter(RouterCreateConf routerCreateConf)
 			throws OpenStackException;
 
 	void editRouter(String region, String routerId, String name,
@@ -89,8 +88,7 @@ public interface NetworkManager extends ResourceManager {
 	Page listFloatingIp(String region, String name, Integer currentPage,
 			Integer recordsPerPage) throws OpenStackException;
 
-	void createFloatingIp(String region, String name, String publicNetwrokId,
-			int bandWidth, int count) throws OpenStackException;
+	void createFloatingIp(FloatingIpCreateConf floatingIpCreateConf) throws OpenStackException;
 
 	void editFloatingIp(String region, String floatingIpId, String name,
 			int bandWidth) throws OpenStackException;
