@@ -91,6 +91,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
+        if(checkedVms[0].taskState){
+          WidgetService.notifyWarning('云主机当前状态不可删除');
+          return;
+        }
         var data={
           vmId: checkedVms[0].id
         };

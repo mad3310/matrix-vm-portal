@@ -86,10 +86,10 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
-      $scope.deleteSnapshot=function(){
+      $scope.deleteDiskSnapshot=function(){
         var checkedSnapshots=getCheckedSnapshot();
         if(checkedSnapshots.length !==1){
-          WidgetService.notifyWarning('请选中一个云硬盘');
+          WidgetService.notifyWarning('请选中一个云硬盘快照');
           return;
         }
         if(checkedSnapshots[0].status!=='available' && checkedSnapshots[0].status!=='error'){
@@ -114,6 +114,40 @@ define(['controllers/app.controller'], function (controllerModule) {
             }
             else{
               WidgetService.notifyError(data.msgs[0]||'删除云硬盘快照失败');
+            }
+          });
+        }, function () {
+        });
+      };
+
+      $scope.deleteVmSnapshot=function(){
+        var checkedSnapshots=getCheckedSnapshot();
+        if(checkedSnapshots.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机快照');
+          return;
+        }
+        if(checkedSnapshots[0].status!=='available' && checkedSnapshots[0].status!=='error'){
+          WidgetService.notifyWarning('云主机快照当前状态不可删除');
+          return;
+        }
+        var data={
+          region:checkedSnapshots[0].region,
+          snapshotId: checkedSnapshots[0].id
+        };
+        var modalInstance = WidgetService.openConfirmModal('删除云主机快照','确定要删除云主机快照（'+checkedSnapshots[0].name+'）吗？');
+        modalInstance.result.then(function (resultData) {
+          if(!resultData) return resultData;
+          WidgetService.notifyInfo('云主机快照删除执行中...');
+          checkedSnapshots[0].status='DELETEING';
+          HttpService.doPost(Config.urls.snapshot_vm_delete, data).success(function (data, status, headers, config) {
+            if(data.result===1){
+              checkedSnapshots[0].status='DELETED';
+              modalInstance.close(data);
+              WidgetService.notifySuccess('删除云主机快照成功');
+              refreshSnapshotList();
+            }
+            else{
+              WidgetService.notifyError(data.msgs[0]||'删除云主机快照失败');
             }
           });
         }, function () {
