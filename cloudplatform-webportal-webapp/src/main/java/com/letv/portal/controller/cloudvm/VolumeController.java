@@ -1,5 +1,6 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -104,8 +105,16 @@ public class VolumeController {
 			@RequestParam(required = false) Integer count) {
 		ResultObject result = new ResultObject();
 		try {
+			VolumeCreateConf volumeCreateConf =new VolumeCreateConf();
+			volumeCreateConf.setRegion(region);
+			volumeCreateConf.setSize(size);
+			volumeCreateConf.setVolumeTypeId(volumeTypeId);
+			volumeCreateConf.setVolumeSnapshotId(volumeSnapshotId);
+			volumeCreateConf.setName(name);
+			volumeCreateConf.setDescription(description);
+			volumeCreateConf.setCount(count);
 			Util.session(sessionService).getVolumeManager()
-					.create(region, size, volumeTypeId, volumeSnapshotId, name, description, count);
+					.create(volumeCreateConf);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

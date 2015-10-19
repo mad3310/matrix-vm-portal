@@ -1,5 +1,7 @@
 package com.letv.portal.controller.cloudvm;
 
+import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
+import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -268,10 +270,14 @@ public class NetworkController {
 			@RequestParam String publicNetworkId) {
 		ResultObject result = new ResultObject();
 		try {
+			RouterCreateConf routerCreateConf = new RouterCreateConf();
+			routerCreateConf.setRegion(region);
+			routerCreateConf.setName(name);
+			routerCreateConf.setEnablePublicNetworkGateway(enablePublicNetworkGateway);
+			routerCreateConf.setPublicNetworkId(publicNetworkId);
 			Util.session(sessionService)
 					.getNetworkManager()
-					.createRouter(region, name, enablePublicNetworkGateway,
-							publicNetworkId);
+					.createRouter(routerCreateConf);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
@@ -426,8 +432,14 @@ public class NetworkController {
 			@RequestParam Integer count) {
 		ResultObject result = new ResultObject();
 		try {
+			FloatingIpCreateConf floatingIpCreateConf = new FloatingIpCreateConf();
+			floatingIpCreateConf.setRegion(region);
+			floatingIpCreateConf.setName(name);
+			floatingIpCreateConf.setPublicNetworkId(publicNetworkId);
+			floatingIpCreateConf.setBandWidth(bandWidth);
+			floatingIpCreateConf.setCount(count);
 			Util.session(sessionService).getNetworkManager()
-					.createFloatingIp(region, name, publicNetworkId, bandWidth, count);
+					.createFloatingIp(floatingIpCreateConf);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);
