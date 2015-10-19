@@ -11,6 +11,7 @@
                 <ul class="dropdown-menu" aria-labelledby="simple-dropdown">
                     <li><a href="javascript:void(0);" ng-click="deleteVm('400')">删除云主机</a></li>
                     <li><a href="javascript:void(0);">重启云主机</a></li>
+                    <li><a href="javascript:void(0);" ng-click="openVmSnapshotCreateModal('500')">创建快照</a></li>
                     <li><a href="javascript:void(0);" ng-click="openDiskAttachModal('500')">绑定云硬盘</a></li>
                 </ul>
             </div>
@@ -96,6 +97,37 @@
                         <button class="btn btn-le-blue" ng-click="attachDisk()"><span>挂载云硬盘</span></button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="VmSnapshotCreateModalTpl">
+        <div class="modal-vm-snapshot-create">
+            <div class="le-modal-header">
+                <span class="header-title">创建云主机快照</span>
+                <a class="close" ng-click="closeModal()">
+                    <i class="iconfont icon-add"></i>
+                </a>
+            </div>
+            <div class="le-modal-body">
+                <form novalidate class="form-vm-snapshot-create" name="vm_snapshot_create_form">
+                    <div class="le-row">
+                        <div class="le-col-3 col-label">
+                            <span class="letv-control-label">快照名称：</span>
+                        </div>
+                        <div class="le-col-9 col-control">
+                            <input type="text" class="le-form-control input-vm-snapshot-name" ng-model="vmSnapshotName" name="vm_snapshot_name" text-restrict />
+                            <span ng-show="(vm_snapshot_create_form.$submitted || vm_snapshot_create_form.vm_snapshot_name.$touched) && vm_snapshot_create_form.vm_snapshot_name.$error.textRestrict" class="le-input-validation">名称不符合规则</span>
+                        </div>
+                    </div>
+                    <div class="le-row">
+                        <div class="le-col-12 col-submit-order">
+                            <button class="btn btn-le-blue" ng-click="vm_snapshot_create_form.$valid && !isOrderSubmiting && createVmSnapshot()" ng-disabled="isOrderSubmiting">
+                                <span ng-if="!isOrderSubmiting">提交订单</span>
+                                <span ng-if="isOrderSubmiting">订单提交中...</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </script>

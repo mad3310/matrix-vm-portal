@@ -91,6 +91,10 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyWarning('请选中一个云主机');
           return;
         }
+        if(checkedVms[0].taskState){
+          WidgetService.notifyWarning('云主机当前状态不可删除');
+          return;
+        }
         var data={
           vmId: checkedVms[0].id
         };
@@ -212,6 +216,37 @@ define(['controllers/app.controller'], function (controllerModule) {
         });
       };
 
+      $scope.openVmSnapshotCreateModal=function(size){
+        var checkedVms=getCheckedVm();
+        if(checkedVms.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'VmSnapshotCreateModalTpl',
+          controller: 'VmSnapshotCreateModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vm: function () {
+              return checkedVms[0];
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
       var refreshVmList = function () {
           var queryParams = {
             name: $scope.searchVmName,
@@ -293,6 +328,35 @@ define(['controllers/app.controller'], function (controllerModule) {
       };
 
     initComponents();
+
+  });
+
+  controllerModule.controller('VmSnapshotCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,ModelService, $scope, $modalInstance, region,vm) {
+
+    $scope.vmSnapshotName='';
+
+    $scope.closeModal=function(){
+      $modalInstance.dismiss('cancel');
+    };
+
+    $scope.createVmSnapshot = function () {
+      var data = {
+        region:region,
+        vmId:vm.id,
+        name:$scope.vmSnapshotName
+      };
+      $scope.isOrderSubmiting=true;
+      HttpService.doPost(Config.urls.snapshot_vm_create, data).success(function (data, status, headers, config) {
+        if(data.result===1){
+          $modalInstance.close(data);
+          WidgetService.notifySuccess('云主机快照创建成功');
+        }
+        else{
+          WidgetService.notifyError(data.msgs[0]||'云主机快照创建失败');
+          $scope.isOrderSubmiting=false;
+        }
+      });
+    };
 
   });
 
