@@ -517,7 +517,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				try {
 					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
 				} catch (Exception e) {
-					Util.throwException(e);
+					Util.processBillingException(e);
 				}
 			}
 		}

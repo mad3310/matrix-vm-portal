@@ -16,6 +16,7 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -31,8 +32,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Util {
+
+	private static final Logger logger = LoggerFactory.getLogger(Util.class);
+
+	public static void processBillingException(Exception ex) {
+		logger.error(ex.getMessage(), ex);
+		OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(ex, "计费系统", null, "");
+	}
 
 	public static String generateRandomSessionId(){
 		return UUID.randomUUID().toString();

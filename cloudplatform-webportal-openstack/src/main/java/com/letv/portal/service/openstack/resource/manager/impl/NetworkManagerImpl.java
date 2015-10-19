@@ -1408,7 +1408,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
             try {
                 listener.routerCreated(new RouterCreateEvent(region, router.getId(), 0, listenerUserData));
             } catch (Exception e) {
-                Util.throwException(e);
+                Util.processBillingException(e);
             }
         }
     }
@@ -2489,7 +2489,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					listener.floatingIpCreated(new FloatingIpCreateEvent(region, floatingIP.getId(), i, listenerUserData));
 				} catch (Exception e) {
-					Util.throwException(e);
+					Util.processBillingException(e);
 				}
 			}
 		}

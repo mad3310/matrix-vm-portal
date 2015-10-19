@@ -1719,7 +1719,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             try {
                 listener.vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId, listenerUserData));
             } catch (Exception e) {
-                Util.throwException(e);
+                Util.processBillingException(e);
             }
         }
     }
