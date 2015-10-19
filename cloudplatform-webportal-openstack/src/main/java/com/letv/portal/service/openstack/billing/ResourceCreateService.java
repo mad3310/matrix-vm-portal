@@ -1,10 +1,7 @@
 package com.letv.portal.service.openstack.billing;
 
 import com.letv.common.exception.MatrixException;
-import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 
 /**
@@ -20,4 +17,6 @@ public interface ResourceCreateService {
     void createFloatingIp(long userId, String reqParaJson, FloatingIpCreateListener listener, Object listenerUserData) throws MatrixException;
 
     void createRouter(long userId, String reqParaJson, RouterCreateListener listener, Object listenerUserData) throws MatrixException;
+
+    void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException;
 }

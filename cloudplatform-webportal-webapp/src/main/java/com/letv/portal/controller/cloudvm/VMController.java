@@ -9,6 +9,7 @@ import com.letv.portal.constant.Constant;
 import com.letv.portal.service.openstack.exception.UserOperationException;
 import com.letv.portal.service.openstack.local.query.service.VmQueryService;
 
+import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.util.Params;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,6 @@ import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.ImageResource;
 import com.letv.portal.service.openstack.resource.NetworkResource;
 import com.letv.portal.service.openstack.resource.VMResource;
-import com.letv.portal.service.openstack.resource.manager.ImageManager;
-import com.letv.portal.service.openstack.resource.manager.NetworkManager;
-import com.letv.portal.service.openstack.resource.manager.VMCreateConf;
-import com.letv.portal.service.openstack.resource.manager.VMManager;
-import com.letv.portal.service.openstack.resource.manager.VolumeManager;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.operate.IRecentOperateService;
 
@@ -488,8 +484,12 @@ public class VMController {
 	ResultObject createVmSnapshot(@RequestParam String region, @RequestParam String vmId, @RequestParam String name) {
 		ResultObject result = new ResultObject();
 		try {
+			VmSnapshotCreateConf createConf = new VmSnapshotCreateConf();
+			createConf.setRegion(region);
+			createConf.setVmId(vmId);
+			createConf.setName(name);
 			Util.session(sessionService).getVMManager()
-					.createImageFromVm(region, vmId, name);
+					.createImageFromVm(createConf);
 		} catch (UserOperationException e) {
 			result.addMsg(e.getUserMessage());
 			result.setResult(0);

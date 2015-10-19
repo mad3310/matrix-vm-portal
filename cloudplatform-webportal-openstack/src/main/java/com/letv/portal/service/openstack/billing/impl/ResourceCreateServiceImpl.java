@@ -5,26 +5,25 @@ import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
 import com.letv.portal.service.openstack.OpenStackSession;
-import com.letv.portal.service.openstack.billing.*;
-import com.letv.portal.service.openstack.billing.listeners.FloatingIpCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.RouterCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VmCreateListener;
-import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
+import com.letv.portal.service.openstack.billing.ResourceCreateService;
+import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
-import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
 import com.letv.portal.service.openstack.resource.manager.RouterCreateConf;
+import com.letv.portal.service.openstack.resource.manager.VmSnapshotCreateConf;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.resource.manager.impl.NetworkManagerImpl;
+import com.letv.portal.service.openstack.resource.manager.impl.VMManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.VolumeManagerImpl;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
 import com.letv.portal.service.openstack.util.Util;
 import org.codehaus.jackson.type.TypeReference;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.neutron.v2.NeutronApi;
+import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +156,25 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             }
         } catch (Exception e) {
             processException(e, "计费调用创建路由", userId, reqParaJson);
+        }
+    }
+
+    @Async
+    @Override
+    public void createVmSnapshot(long userId, String reqParaJson, VmSnapshotCreateListener listener, Object listenerUserData) throws MatrixException {
+        try {
+            VmSnapshotCreateConf vmSnapshotCreateConf = Util.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
+            }, true);
+            final String sessionId = Util.generateRandomSessionId();
+            final OpenStackSession openStackSession = createOpenStackSession(userId);
+            try {
+                NovaApi novaApi = apiService.getNovaApi(userId, sessionId);
+                ((VMManagerImpl) openStackSession.getVMManager()).createImageFromVm(novaApi, vmSnapshotCreateConf, listener, listenerUserData);
+            } finally {
+                apiService.clearCache(userId, sessionId);
+            }
+        } catch (Exception e) {
+            processException(e, "计费调用创建虚拟机快照", userId, reqParaJson);
         }
     }
 }

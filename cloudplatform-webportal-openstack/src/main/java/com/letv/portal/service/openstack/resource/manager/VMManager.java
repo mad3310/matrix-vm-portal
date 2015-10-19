@@ -111,5 +111,5 @@ public interface VMManager extends ResourceManager {
 	void unbindFloatingIp(String region, String vmId, String floatingIpId)
 			throws OpenStackException;
 
-	void createImageFromVm(String region,String vmId,String name) throws OpenStackException;
+	void createImageFromVm(VmSnapshotCreateConf createConf) throws OpenStackException;
 }
