@@ -123,10 +123,10 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
             }, true);
             OpenStackSession openStackSession = getOpenStackSession();
             openStackSession.getVMManager().checkCreate2(vmCreateConf);
+            return new CheckResult();
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
-        return new CheckResult();
     }
 
     @Override
@@ -161,11 +161,14 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkVolumeCreatePara(String reqParaJson) {
         try {
-
+            VolumeCreateConf volumeCreateConf = Util.fromJson(reqParaJson, new TypeReference<VolumeCreateConf>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getVolumeManager().checkCreate(volumeCreateConf);
+            return new CheckResult();
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
-        return new CheckResult();
     }
 
     @Async
@@ -190,11 +193,14 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkFloatingIpCreatePara(String reqParaJson) {
         try {
-
+            FloatingIpCreateConf floatingIpCreateConf = Util.fromJson(reqParaJson, new TypeReference<FloatingIpCreateConf>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getNetworkManager().checkCreateFloatingIp(floatingIpCreateConf);
+            return new CheckResult();
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
-        return new CheckResult();
     }
 
     @Async
@@ -219,11 +225,14 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkRouterCreatePara(String reqParaJson) {
         try {
-
+            RouterCreateConf routerCreateConf = Util.fromJson(reqParaJson, new TypeReference<RouterCreateConf>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getNetworkManager().checkCreateRouter(routerCreateConf);
+            return new CheckResult();
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
-        return new CheckResult();
     }
 
     @Async
@@ -248,10 +257,13 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public CheckResult checkVmSnapshotCreatePara(String reqParaJson) {
         try {
-
+            VmSnapshotCreateConf vmSnapshotCreateConf = Util.fromJson(reqParaJson, new TypeReference<VmSnapshotCreateConf>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getVMManager().checkCreateImageFromVm(vmSnapshotCreateConf);
+            return new CheckResult();
         } catch (Exception e) {
             return new CheckResult(Util.getUserMessage(e));
         }
-        return new CheckResult();
     }
 }

@@ -114,4 +114,6 @@ public interface VMManager extends ResourceManager {
 			throws OpenStackException;
 
 	void createImageFromVm(VmSnapshotCreateConf createConf) throws OpenStackException;
+
+	void checkCreateImageFromVm(VmSnapshotCreateConf vmSnapshotCreateConf);
 }
