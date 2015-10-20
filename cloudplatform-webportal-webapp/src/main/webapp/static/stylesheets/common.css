@@ -81,6 +81,8 @@ body {
 .icon-checkroundfillicon:before { content: "\e62d"; }
 .icon-envelope:before { content: "\e632"; }
 .icon-baoxiu:before { content: "\e633"; }
+.icon-menucol:before { content: "\e634"; }
+.icon-menuquick:before { content: "\e635"; }
 /*end custom iconfont style*/
 
 /*begin override bootstrap style*/

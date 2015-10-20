@@ -77,9 +77,9 @@ public class HostProductServiceImpl extends ProductServiceImpl implements IHostP
 		if(map.get(element)!=null) {
 			List<Map<String, String>> ls = elements.get(element);
 			for (Map<String, String> map2 : ls) {
-				if(map.get(element+"_type")!=null ? map.get(element+"_type").equals(map2.get("type")) && Double.parseDouble((String)map.get(element))>0
-						&& Double.parseDouble((String)map.get(element))<Double.parseDouble((String)map2.get("value")) : Double.parseDouble((String)map.get(element))>0
-						&& Double.parseDouble((String)map.get(element))<Double.parseDouble((String)map2.get("value"))) {
+				if(map.get(element+"_type")!=null ? map.get(element+"_type").equals(map2.get("type")) && Double.parseDouble((String)map.get(element))>=0
+						&& Double.parseDouble((String)map.get(element))<=Double.parseDouble((String)map2.get("value")) : Double.parseDouble((String)map.get(element))>=0
+						&& Double.parseDouble((String)map.get(element))<=Double.parseDouble((String)map2.get("value"))) {
 					return true;
 				}
 			}
