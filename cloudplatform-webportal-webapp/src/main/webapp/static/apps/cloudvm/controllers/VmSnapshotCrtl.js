@@ -104,7 +104,7 @@ define(['controllers/app.controller'], function (controllerModule) {
               return CurrentContext.regionId;
             },
             vmSnapshot: function () {
-              return {name:'jf-sp-test-1',id:'234'};
+              return checkedSnapshots[0];
             },
             loadAllRegionData:function($q,CurrentContext){
               if(CurrentContext.allRegionData){
