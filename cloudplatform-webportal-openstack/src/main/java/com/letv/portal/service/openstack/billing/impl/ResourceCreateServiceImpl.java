@@ -1,6 +1,8 @@
 package com.letv.portal.service.openstack.billing.impl;
 
 import com.letv.common.exception.MatrixException;
+import com.letv.common.session.Session;
+import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.model.UserVo;
 import com.letv.portal.service.IUserService;
 import com.letv.portal.service.openstack.OpenStackService;
@@ -10,6 +12,7 @@ import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.billing.listeners.*;
 import com.letv.portal.service.openstack.erroremail.ErrorEmailService;
 import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackSessionImpl;
 import com.letv.portal.service.openstack.jclouds.service.ApiService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.openstack.resource.manager.FloatingIpCreateConf;
@@ -54,12 +57,32 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Autowired
     private ApiService apiService;
 
+    @Autowired
+    private SessionServiceImpl sessionService;
+
     private OpenStackSession createOpenStackSession(long userId) throws OpenStackException {
         UserVo userVo = userService.getUcUserById(userId);
         String email = userVo.getEmail();
         String userName = userVo.getUsername();
         OpenStackSession openStackSession = openStackService.createSession(email, email, userName);
         openStackSession.init(null);
+        return openStackSession;
+    }
+
+    private OpenStackSession getOpenStackSession() throws OpenStackException {
+        Session session = sessionService.getSession();
+        OpenStackSessionImpl openStackSession = null;
+        if (session != null) {
+            openStackSession = (OpenStackSessionImpl) session.getOpenStackSession();
+            openStackSession.init(session);
+        }
+
+//        if (openStackSession != null) {
+//            return openStackSession;
+//        } else {
+//            return createOpenStackSession(userId);
+//        }
+
         return openStackSession;
     }
 
@@ -94,7 +117,15 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public CheckResult checkVmCreatePara(long userId, String reqParaJson) {
+    public CheckResult checkVmCreatePara(String reqParaJson) {
+        try {
+            VMCreateConf2 vmCreateConf = Util.fromJson(reqParaJson, new TypeReference<VMCreateConf2>() {
+            }, true);
+            OpenStackSession openStackSession = getOpenStackSession();
+            openStackSession.getVMManager().checkCreate2(vmCreateConf);
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
         return new CheckResult();
     }
 
@@ -128,7 +159,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public CheckResult checkVolumeCreatePara(long userId, String reqParaJson) {
+    public CheckResult checkVolumeCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
         return new CheckResult();
     }
 
@@ -152,7 +188,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public CheckResult checkFloatingIpCreatePara(long userId, String reqParaJson) {
+    public CheckResult checkFloatingIpCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
         return new CheckResult();
     }
 
@@ -176,7 +217,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public CheckResult checkRouterCreatePara(long userId, String reqParaJson) {
+    public CheckResult checkRouterCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
         return new CheckResult();
     }
 
@@ -200,7 +246,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     }
 
     @Override
-    public CheckResult checkVmSnapshotCreatePara(long userId, String reqParaJson) {
+    public CheckResult checkVmSnapshotCreatePara(String reqParaJson) {
+        try {
+
+        } catch (Exception e) {
+            return new CheckResult(Util.getUserMessage(e));
+        }
         return new CheckResult();
     }
 }

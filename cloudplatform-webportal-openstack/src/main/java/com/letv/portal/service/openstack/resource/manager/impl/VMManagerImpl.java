@@ -1735,6 +1735,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     }
 
     @Override
+    public void checkCreate2(VMCreateConf2 conf)throws OpenStackException{
+
+    }
+
+    @Override
     public void createForBilling(long userId, VMCreateConf2 conf, VmCreateListener listener, Object listenerUserData) throws OpenStackException {
         new VMCreate(userId, conf, this, this.networkManager, this.volumeManager, listener, listenerUserData).run();
     }
