@@ -3,41 +3,86 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="X-UA-compatible" content="IE=edge,chrome=1"/>
-	<meta name="viewpoint" content="width=device-width,initial-scale=1"/>
-	<!-- bootstrap css -->
-	<link type="text/css" rel="stylesheet" href="../../../static/css/bootstrap.min.css"/>
-	<!-- fontawesome css -->
-	<link type="text/css" rel="stylesheet" href="../../../static/css/font-awesome.min.css"/>
-	<!-- ui-css -->
-	<link type="text/css" rel="stylesheet" href="../../../static/css/ui-css/common.css"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<title>乐视云计算-最专业的VaaS云平台</title>
+	<meta name="Keywords" content="乐视云计算，云计算，VaaS，视频存储，免费空间，企业视频，云主机，开放平台">
+	<link rel="shortcut icon" href="/static/staticPage/img/favicon.ico">
+	<link rel="stylesheet" href="/static/staticPage/css/common.css">
+	<link rel="stylesheet" href="/static/staticPage/css/style.css">
 	<title>404错误</title>
 </head>
-<!-- center body -->
-<div class="container">
-	<div class="col-md-12 text-center">
-		<div><img src="../../../static/img/error.png"></div>
-		<p class="text-muted"><b>404警告！您探索了一个未知领域！</b></p>
-		<p class="text-muted"><a href="<%=ConfigUtil.getString("webportal.local.http") %>"><span class="text-muted">返回乐视云首页</span></a></p>
+<body>
+<div class="main-body text-center">
+	<div class="body-errorimg"><img src="../../../static/img/error.png"></div>
+	<div class="body-error"><span class="error_alert">404警告！</span><span class="error_text">您探索了一个未知领域！</span></div>
+	<div class="error_return"><a href="<%=ConfigUtil.getString("webportal.local.http") %>"><span>返回首页</span></a></div>
+</div>
+<div class="main-body body-footer"> <!-- 页脚 -->
+	<div class="footer clearfix">
+		<div class="col-md-8">
+			<div class="col-md-2">
+				<div class="footer-linkTitle">关于我们</div>
+				<ul>
+					<li>- 云点播</li>
+					<li>- 云直播</li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<div class="footer-linkTitle">意见反馈</div>
+				<ul>
+					<li>- 常见问题</li>
+					<li>- 支持中心</li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<div class="footer-linkTitle">友情链接</div>
+				<ul>
+					<li>- 代理合作</li>
+					<li>- 商务合作</li>
+				</ul>
+			</div>
+			<div class="col-md-2">
+				<div class="footer-linkTitle">联系我们</div>
+				<ul>
+					<li>400-600-8888</li>
+				</ul>
+			</div>
+			<div class="col-md-offset-2 col-md-2">
+				<div><img src="/static/staticPage/img/letv-code.png"></div>
+				<div class="followus"><span>关注我们</span></div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="col-md-4">
+			<div class="footer-right clearfix">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="col-md-5 right-logo">
+						<img src="/static/staticPage/img/credible-cloud.png">
+						<div>可信云认证</div>
+					</div>
+					<div class="col-md-7 right-desc">
+						<div>云主机 NO.01018</div>
+						<div>云缓存 NO.01018</div>
+						<div>云数据库 NO.01018</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="col-md-offset-1 col-md-5">
+					<div class="col-md-5 right-logo">
+						<img src="/static/staticPage/img/iso.png">
+						<div>ISO27001认证 </div>
+					</div>
+					<div class="col-md-7 right-desc">
+						<div>2013新标准</div>
+						<div>NO.IS617259 </div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-<!-- end center body -->
-<!-- footer links-->
-<footer class="mt50">
-	<div class="col-md-12 text-muted text-center">
-		<ul class="list-inline">
-			<li><a href="http://www.letv.com"><span class="text-muted">乐视网</span></a></li>
-			<li><a href="http://www.wangjiu.com"><span class="text-muted">网酒网</span></a></li>
-			<li><a href="http://shop.letv.com"><span class="text-muted">乐视商城</span></a></li>
-			<li><a href="http://pan.letv.com"><span class="text-muted">乐视云盘</span></a></li>
-			<li><a href="http://www.lelife.com"><span class="text-muted">乐生活</span></a></li>
-			<li><a href="http://client.pc.letv.com/pc/download"><span class="text-muted">PC客户端</span></a></li>
-		</ul>
-		<p>网络文化经营许可证 文网文[2009]221号</p>
-		<p>Copyright &copy; 2004-2015 乐视网（letv.com）All rights reserved.</p>
-	</div>
-</footer>
-<!-- end footer links -->
 </body>
 </html>

@@ -1,62 +1,6 @@
 .main-body{width:100%;min-width:1280px;max-width:1920px;}
 a:hover{cursor:pointer;}
 .active{color:#088ac2}
-/* font-face */
-@font-face {font-family: "iconfont";src: url('../../fonts/iconfont.eot'); /* IE9*/src: url('../../fonts/iconfont.eot?#iefix') format('embedded-opentype'),url('../../fonts/iconfont.woff') format('woff'), /* chrome、firefox */url('../../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/url('../../fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */}
-.iconfont{font-family:"iconfont" !important;font-size:16px;font-style:normal;-webkit-font-smoothing: antialiased;-webkit-text-stroke-width: 0.2px;-moz-osx-font-smoothing: grayscale;}
-.icon-roundcheckfill:before { content: "\e600"; }
-.icon-roundcheck:before { content: "\e601"; }
-.icon-myfill:before { content: "\e602"; }
-.icon-my:before { content: "\e603"; }
-.icon-round:before { content: "\e604"; }
-.icon-roundaddfill:before { content: "\e605"; }
-.icon-roundadd:before { content: "\e606"; }
-.icon-info:before { content: "\e607"; }
-.icon-shenfenrenzheng:before { content: "\e62c"; }
-.icon-icon:before { content: "\e608"; }
-.icon-camera:before { content: "\e609"; }
-.icon-game:before { content: "\e60a"; }
-.icon-movie:before { content: "\e60b"; }
-.icon-music:before { content: "\e60c"; }
-.icon-shopping:before { content: "\e60d"; }
-.icon-weixin:before { content: "\e60e"; }
-.icon-xinfeng:before { content: "\e60f"; }
-.icon-mark:before { content: "\e610"; }
-.icon-attentionfill:before { content: "\e611"; }
-.icon-attention:before { content: "\e612"; }
-.icon-computer:before { content: "\e62f"; }
-.icon-arrow01:before { content: "\e62e"; }
-.icon-radiobox:before { content: "\e613"; }
-.icon-rounddown:before { content: "\e614"; }
-.icon-writefill:before { content: "\e615"; }
-.icon-write:before { content: "\e616"; }
-.icon-add:before { content: "\e617"; }
-.icon-move:before { content: "\e618"; }
-.icon-monitor:before { content: "\e631"; }
-.icon-erji3:before { content: "\e630"; }
-.icon-yunzhuji:before { content: "\e619"; }
-.icon-rds:before { content: "\e61a"; }
-.icon-gce:before { content: "\e61b"; }
-.icon-loadblance:before { content: "\e61c"; }
-.icon-proback:before { content: "\e61d"; }
-.icon-rds1:before { content: "\e61e"; }
-.icon-blockicon:before { content: "\e61f"; }
-.icon-cloudstorageicon:before { content: "\e620"; }
-.icon-ipicon:before { content: "\e621"; }
-.icon-neticon:before { content: "\e622"; }
-.icon-routeicon:before { content: "\e623"; }
-.icon-shearicon:before { content: "\e624"; }
-.icon-snapshoticon:before { content: "\e625"; }
-.icon-icon1:before { content: "\e626"; }
-.icon-icon2:before { content: "\e627"; }
-.icon-checkblockicon:before { content: "\e628"; }
-.icon-checkiconfill:before { content: "\e629"; }
-.icon-righticon:before { content: "\e62a"; }
-.icon-moneyicon:before { content: "\e62b"; }
-.icon-checkroundfillicon:before { content: "\e62d"; }
-.icon-envelope:before { content: "\e632"; }
-.icon-baoxiu:before { content: "\e633"; }
-/*end custom iconfont style*/
 /*top*/
 .body-top{height:720px;padding:15px 0;font-size:1.4rem;color:#fff;background-image:url(img/header-bg.png);background-position:center top;overflow:hidden;}
 .body-connectUs{background-image:none;background-color:#003752;}
@@ -344,6 +288,32 @@ a:hover{cursor:pointer;}
 .tree-lineR3{animation-delay:9s;}
 .tree-lineR2{animation-delay:10s;}
 .tree-lineR1{animation-delay:11s;}
+/*帮助中心*/
+.body-helpcenter{height:75px;background-image:none;background-color:#003752;}
+.helpcenter-help{background-color:#f7f7f7;}
+.help-menu{padding-right:15px;}
+.help-menu ul{margin-top:0;margin-bottom:0;width:100%;padding:30px 0 30px 0;border-bottom:1px solid #e7e8e8;list-style:none;font-size:1.4rem;color:#333;}
+.help-menu ul.last{border-bottom:0;}
+.help-menu ul li{padding-top:10px;padding-bottom:10px;list-style:none;}
+.help-menu ul li:hover{cursor:pointer;}
+.menu-coltitle{font-size:1.8rem;}
+.menu-coltitle i{margin-right:10px;font-size:2.8rem;color:#818181;}
+.menu-parent{margin-top:20px;padding-left: 20px;}
+.menu-parent i{margin-right:5px;color:#818181;}
+ul.menu-sub{padding-top:15px;border-bottom:none;}
+ul.menu-sub li{padding:10px 10px 10px 40px;}
+.menu-sub .active{border-left:5px solid #088ac2;padding-left:35px;padding-right:10px;background-color:#fff;}
+.help-center{padding:70px 30px 0 30px;background-color:#fff;}
+.help-center .productIntro-title{margin-bottom:30px;font-size:3.6rem;color:#088ac2}
+.help-center .productIntro-desc{font-size:1.4rem;color:#333;line-height:2.8rem;}
+.top-product-tab.helpcenter-tab{margin-top:30px;}
+.help-center .product-intro{padding-top:50px;padding-bottom:40px;border-bottom:1px solid #e7e8e8;font-size:2.4rem;color:#333;}
+.product-intro .intro-desc{margin-top:30px;font-size:1.4rem;line-height:2.4rem;}
+.product-intro .intro-sub{margin-top:25px;}
+.intro-sub .intro-logo{margin:0 auto;width:100px;height:100px;border:1px solid #e7e8e8;border-radius:15px;padding-top:5px;text-align:center;background-color:#f7f7f7;float:left;}
+.intro-logo i{font-size:8rem;color:#088ac2}
+.intro-sub .intro-subTitle{font-size:1.8rem;}
+.intro-sub .intro-subDesc{margin-top:15px;padding-bottom:20px;font-size:1.4rem;font-color:#333;line-height:2.4rem;}
 /*订单支付*/
 .order{width:100%;padding:30px 0 0 0;font-size:1.2rem;color:#333;}
 .order .order-title{font-size:1.4rem;}
@@ -408,6 +378,15 @@ a:hover{cursor:pointer;}
 .modal .modal-content{padding:50px 0 0 0;font-size:1.4rem;color:#333}
 .modal-content .buttons{padding:50px 0;}
 .buttons .paybtn{width:120px;text-align:center;}
+/*404\500\浏览器提示页*/
+.body-errorimg{padding-top:30%;}
+.body-errorimg img{margin-top:-274px;}
+.body-error{margin-top:40px;}
+.body-error .error_text{font-size:2.4rem;font-weight:400;color:#333;}
+.body-error .error_alert{font-size:3rem;font-weight:400;color:#088ac2;}
+.error_return{margin:40px auto 100px;width:200px;height:50px;line-height:50px;border-radius:2px;font-size:3rem;text-align:center;color:#fff;background:#28c797;}
+.error_return:hover{cursor:pointer;background-color:#1BAF82}
+.error_return a{color:#fff;}
 /*动画*/
 @keyframes ani {to{stroke-dashoffset:0;}}
 @keyframes anistart{to{stroke-dashoffset:60;}}

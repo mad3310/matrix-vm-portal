@@ -31,15 +31,14 @@ define(['controllers/app.controller'], function (controllerModule) {
         name: $scope.ipName,
         publicNetworkId:$scope.selectedCarrier.id,
         bandWidth: $scope.networkBandWidth,
-        count:$scope.ipCount
+        count:$scope.ipCount,
+        order_time: $scope.floatipBuyPeriod.toString(),
       };
       $scope.isOrderSubmiting=true;
-      HttpService.doPost(Config.urls.floatIP_create,data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.floatip_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('创建公网IP成功');
-          // $window.location.href = '/payment/'+data.data;
-          
+          $window.location.href = '/payment/'+data.data;
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建公网IP失败');
@@ -74,7 +73,12 @@ define(['controllers/app.controller'], function (controllerModule) {
           WidgetService.notifyError(data.msgs[0]||'计算总价失败');
         }
       });
-    }
+    },
+      buildDisplayData=function(){
+        var data=[];
+        data.push(['带宽',$scope.networkBandWidth+'Mbps'].join('/:'));
+        return data.join('/;');
+      };
 
 
   });
