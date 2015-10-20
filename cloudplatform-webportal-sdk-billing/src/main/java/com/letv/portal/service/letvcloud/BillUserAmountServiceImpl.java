@@ -235,9 +235,27 @@ public class BillUserAmountServiceImpl implements BillUserAmountService {
 			}
 		}
 	}
+	
+	@Override
+	public boolean updateUserAmountFromFreezeToAvailable(long userId, BigDecimal price) {
+		logger.info("开始转移冻结余额到可用余额,用户id:"+userId+",金额："+price);
+		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
+		synchronized(obj) {
+			if(billUserAmount.getFreezeAmount().compareTo(price)>=0) {
+				billUserAmount.setAvailableAmount(billUserAmount.getAvailableAmount().add(price));
+				billUserAmount.setFreezeAmount(billUserAmount.getFreezeAmount().subtract(price));
+				billUserAmountMapper.updateUserAmountFromAvailableToFreeze(billUserAmount);
+				logger.info("转移冻结余额到可用余额成功,用户id:"+userId+",金额："+price);
+				return true;
+			} else {
+				logger.error("账户冻结余额小于需要转移金额,用户id:"+userId+",金额："+price);
+				return false;
+			}
+		}
+	}
 
 	@Override
-	public synchronized boolean reduceFreezeAmount(long userId, BigDecimal price) {
+	public boolean reduceFreezeAmount(long userId, BigDecimal price) {
 		logger.info("开始扣除冻结金额,用户id:"+userId+",金额："+price);
 		BillUserAmount billUserAmount = billUserAmountMapper.getUserAmout(userId);
 		synchronized(obj) {

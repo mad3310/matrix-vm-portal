@@ -95,6 +95,10 @@ public interface NetworkManager extends ResourceManager {
 	
 	List<NetworkResource> listShared(String region) throws OpenStackException;
 
+	void checkCreateFloatingIp(FloatingIpCreateConf floatingIpCreateConf) throws OpenStackException;
+
+	void checkCreateRouter(RouterCreateConf routerCreateConf);
+
 	// void editPort(String region, String portId, String name)
 	// throws OpenStackException;
 	//

@@ -49,16 +49,23 @@ function toTop() {
 // common:top-nav-hover
 function topNavHover(){
 	var _navUl=$('.nav-uls');var time='';
+	var helpcenter=$('.body-helpcenter');
 	$('.item-product').unbind('hover').hover(function(){ //top-nav 滑过效果
 		time=setTimeout(function(){
 			_navUl.slideDown('400', function() {
 				if(_navUl.is(':visible')){
 					$('.item-product').children('div').removeClass('hide');
 				}
+				if(helpcenter.length>0){
+					helpcenter.css('height', '225px');
+				}
 			});
 		},200);
 	},function(){
 		clearTimeout(time);
+		if(helpcenter.length>0){
+			helpcenter.css('height', '75px');
+		}
 		$('.item-product').children('div').addClass('hide');
 		_navUl.hide();
 	});
@@ -138,16 +145,14 @@ function carousels(){
 	});
 }
 // products:scroll-nav
-function scrollNav(){
-	// var scrollh=document.body.scrollHeight;
-	var scrollh=$(document).height();
-	console.log(scrollh+"   ccc")
+function scrollNav(sheight){
+	var scrollh=document.body.scrollHeight;
+	// var scrollh=$(document).height();
 	$(window).scroll(function(){  
         var vtop=$(this).scrollTop();
         var height=$(this).height();
-        console.log(height+"     dddd   "+vtop)
         var _target=$('.tab-fixed')
-        if(vtop>=645){
+        if(vtop>=sheight){
         	$('.tab-layout').addClass('hide');
         	var _tabClone=$('.tab-layout').children().clone();
         	if(_target.children().length>0){
@@ -155,15 +160,10 @@ function scrollNav(){
         		_target.append(_tabClone)
         	}
         	_target.removeClass('hide');
-        	// console.log(vtop+height)
-        	// console.log(scrollh)
         	var tempH=vtop+height;
         	if(tempH>=scrollh){//到底部
-        		console.log('a')
-        		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
+        		_target.children().children('div:last').addClass('active-item').siblings().removeClass('active-item');
         	}else{
-        		console.log(vtop+height+"   aa")
-        		console.log(scrollh+"    bbb")
         		if(vtop>=2077){
 					_target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
 	        	}else if(vtop>=1097){
@@ -171,16 +171,8 @@ function scrollNav(){
 	        	}else{
 	        		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
 	        	}
+
         	}
-    //     	if(vtop>=2855){//3055
-    //     		_target.children().children('div:eq(3)').addClass('active-item').siblings().removeClass('active-item');
-    //     	}else if(vtop>=2077){
-				// _target.children().children('div:eq(2)').addClass('active-item').siblings().removeClass('active-item');
-    //     	}else if(vtop>=1097){
-    //     		_target.children().children('div:eq(1)').addClass('active-item').siblings().removeClass('active-item');
-    //     	}else{
-    //     		_target.children().children('div:eq(0)').addClass('active-item').siblings().removeClass('active-item');
-    //     	}
         }else{
         	var _tabClone='';
 			if(_target.children().length>0){

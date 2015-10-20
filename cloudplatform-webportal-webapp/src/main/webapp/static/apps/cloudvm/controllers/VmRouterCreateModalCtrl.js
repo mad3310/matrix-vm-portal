@@ -19,15 +19,15 @@ define(['controllers/app.controller'], function (controllerModule) {
         region:region,
         name: $scope.routerName,
         enablePublicNetworkGateway: $scope.enablePublicNetworkGateway,
-        publicNetworkId:$scope.publicNetworkId
+        publicNetworkId:$scope.publicNetworkId,
+        count:1,//为了给计费提供支持
+        order_time: $scope.routeBuyPeriod.toString()
       };
       $scope.isOrderSubmiting=true;
-      HttpService.doPost(Config.urls.router_create, data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.router_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
-          /*$modalInstance.close(data);
-          $window.location.href = '/payment/'+data.data;*/
-          $modalInstance.close({result:1});
-          WidgetService.notifySuccess(data.msgs[0]||'创建路由器完成');
+          $modalInstance.close(data);
+          $window.location.href = '/payment/'+data.data;
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建路由器失败');
@@ -64,6 +64,11 @@ define(['controllers/app.controller'], function (controllerModule) {
             WidgetService.notifyError(data.msgs[0]||'计算总价失败');
           }
         });
+      },
+      buildDisplayData=function(){
+        var data=[];
+        data.push(['数量','1'].join('/:'));
+        return data.join('/;');
       };
 
     initComponents();

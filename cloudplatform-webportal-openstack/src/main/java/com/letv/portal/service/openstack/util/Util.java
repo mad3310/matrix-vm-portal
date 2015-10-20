@@ -1,13 +1,5 @@
 package com.letv.portal.service.openstack.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
@@ -16,23 +8,46 @@ import com.letv.common.exception.MatrixException;
 import com.letv.common.exception.ValidateException;
 import com.letv.common.session.SessionServiceImpl;
 import com.letv.portal.service.openstack.OpenStackSession;
+import com.letv.portal.service.openstack.exception.OpenStackException;
+import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.letv.portal.service.openstack.exception.OpenStackException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Executors;
 
 public class Util {
+
+	private static final Logger logger = LoggerFactory.getLogger(Util.class);
+
+	public static String getUserMessage(Exception e) {
+		if (e instanceof OpenStackException) {
+			return ((OpenStackException) e).getUserMessage();
+		} else {
+			return "后台错误";
+		}
+	}
+
+	public static void processBillingException(Exception ex) {
+		logger.error(ex.getMessage(), ex);
+		OpenStackServiceImpl.getOpenStackServiceGroup().getErrorEmailService().sendExceptionEmail(ex, "计费系统", null, "");
+	}
 
 	public static String generateRandomSessionId(){
 		return UUID.randomUUID().toString();

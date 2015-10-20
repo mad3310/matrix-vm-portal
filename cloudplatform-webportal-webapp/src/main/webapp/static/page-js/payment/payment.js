@@ -50,9 +50,14 @@ function moneyInputVali(){
                             _errordesc.text('支付金额有问题！');
                             _paybtn.attr('disabled', 'true');
                         }else{
+                            if(money==compare){
+                                _paybtn.addAttr('disabled');
+                            }else{
+                                _paybtn.removeAttr('disabled');
+                            }
                             _target.removeClass('has-error');
                             _errordesc.addClass('hide');
-                            _paybtn.removeAttr('disabled');
+                            
                             flag=true;
                         }
                     }
@@ -136,7 +141,7 @@ function userInfo(){
             }
         }
     });
-    $.ajax({
+    return $.ajax({
         url:remainurl,
         type: 'get',
         success:function(data){
@@ -198,7 +203,14 @@ function orderDetail(){
                                      +'</tr>';
             }
             $('#orderpay').text('¥'+totalprice);
-            $('.remainPay').val(totalprice);
+            var userRemain=userInfo();
+            userRemain.done(function(data){
+                if(Number(data.data)>=Number(totalprice)){
+                    $('.remainPay').val(totalprice);
+                }else{
+                    $('.remainPay').val(data.data);
+                }
+            });
             _target.append(orderHtml);
          }
      }
@@ -222,7 +234,6 @@ function goPay(){
     var remain=orderDetail();
     $('#pay').unbind('click').click(function(event){//窗口&跳转支付
         remain.done(function(){
-
             var orderPaynum=Number($('#orderpay').text().substring(1));//订单金额
             var remainPaynum=$('.remainPay').val();
             var money=orderPaynum-remainPaynum;
@@ -248,7 +259,11 @@ function goPay(){
                                 alert('订单已失效')
                             }else{
                                 if(_alloption.length>1){//组合支付
-                                    option='0'+$('.payoption.active').attr('self-payoption');
+                                    if(money==0){//默认支付宝全额付
+                                        option='0';
+                                    }else{
+                                       option='0'+$('.payoption.active').attr('self-payoption'); 
+                                    }
                                 }else{//一种支付方式
                                     option=$('.alloption.active').attr('self-payoption');
                                 }

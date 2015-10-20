@@ -24,6 +24,7 @@ import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.*;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreate;
 import com.letv.portal.service.openstack.resource.manager.impl.create.vm.VMCreateConf2;
+import com.letv.portal.service.openstack.resource.manager.impl.create.vm.check.VMCreateCheck;
 import com.letv.portal.service.openstack.resource.manager.impl.task.AddVolumes;
 import com.letv.portal.service.openstack.resource.manager.impl.task.BindFloatingIP;
 import com.letv.portal.service.openstack.resource.manager.impl.task.WaitingVMCreated;
@@ -1700,6 +1701,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
         });
     }
 
+    @Override
+    public void checkCreateImageFromVm(VmSnapshotCreateConf vmSnapshotCreateConf) {
+
+    }
+
     public void createImageFromVm(NovaApi novaApi, VmSnapshotCreateConf createConf, VmSnapshotCreateListener listener, Object listenerUserData) throws OpenStackException {
         final String region = createConf.getRegion();
         final String vmId = createConf.getVmId();
@@ -1719,7 +1725,7 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
             try {
                 listener.vmSnapshotCreated(new VmSnapshotCreateEvent(region, imageId, listenerUserData));
             } catch (Exception e) {
-                Util.throwException(e);
+                Util.processBillingException(e);
             }
         }
     }
@@ -1732,6 +1738,11 @@ public class VMManagerImpl extends AbstractResourceManager<NovaApi> implements
     public void create2(VMCreateConf2 conf) throws OpenStackException {
         checkUserEmail();
         new VMCreate(conf, this, this.networkManager, this.volumeManager).run();
+    }
+
+    @Override
+    public void checkCreate2(VMCreateConf2 conf) throws OpenStackException {
+        new VMCreateCheck(conf, this, networkManager, volumeManager).run();
     }
 
     @Override

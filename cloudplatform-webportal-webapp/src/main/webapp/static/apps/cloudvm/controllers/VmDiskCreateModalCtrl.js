@@ -29,17 +29,19 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.createDisk = function () {
       var data = {
+        region:region,
         name: $scope.diskName,
         description:'',
         volumeTypeId:$scope.selectedDiskType.id,
         size: $scope.diskVolume,
-        count:$scope.diskCount
+        count:$scope.diskCount,
+        order_time: $scope.diskBuyPeriod.toString()
       };
       $scope.isOrderSubmiting=true;
-      HttpService.doPost(Config.urls.disk_create.replace('{region}',region), data).success(function (data, status, headers, config) {
+      HttpService.doPost(Config.urls.disk_buy, {paramsData:JSON.stringify(data),displayData:buildDisplayData()}).success(function (data, status, headers, config) {
         if(data.result===1){
           $modalInstance.close(data);
-          WidgetService.notifySuccess('创建云硬盘成功');
+          $window.location.href = '/payment/'+data.data;
         }
         else{
           WidgetService.notifyError(data.msgs[0]||'创建云硬盘失败');
@@ -102,6 +104,12 @@ define(['controllers/app.controller'], function (controllerModule) {
             WidgetService.notifyError(data.msgs[0]||'计算总价失败');
           }
         });
+      },
+      buildDisplayData=function(){
+        var data=[];
+        data.push(['类型',$scope.selectedDiskType.name].join('/:'));
+        data.push(['容量',$scope.diskVolume+'Mbps'].join('/:'));
+        return data.join('/;');
       };
 
     initComponents();

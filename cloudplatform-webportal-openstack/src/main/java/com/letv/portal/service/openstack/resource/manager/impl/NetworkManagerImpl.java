@@ -1408,7 +1408,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
             try {
                 listener.routerCreated(new RouterCreateEvent(region, router.getId(), 0, listenerUserData));
             } catch (Exception e) {
-                Util.throwException(e);
+                Util.processBillingException(e);
             }
         }
     }
@@ -2406,6 +2406,94 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				});
 	}
 
+	@Override
+	public void checkCreateFloatingIp(final FloatingIpCreateConf createConf) throws OpenStackException{
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkCreateFloatingIp(neutronApi,createConf);
+				return null;
+			}
+		});
+	}
+	
+	public void checkCreateFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf) throws OpenStackException {
+		final String region = createConf.getRegion();
+		final String name = createConf.getName();
+		final String publicNetworkId = createConf.getPublicNetworkId();
+		final Integer bandWidth = createConf.getBandWidth();
+		final Integer count = createConf.getCount();
+
+		checkRegion(region);
+
+		NetworkApi networkApi = neutronApi.getNetworkApi(region);
+
+		Network publicNetwork = networkApi.get(publicNetworkId);
+		if (publicNetwork == null || !publicNetwork.getExternal()) {
+			throw new ResourceNotFoundException("Public Network", "线路",
+					publicNetworkId);
+		}
+
+		if (bandWidth <= 0) {
+			throw new UserOperationException("bandWidth <= 0",
+					"带宽必须大于0");
+		}
+
+		if (count <= 0) {
+			throw new UserOperationException(
+					"The count of floating IP is less than or equal to zero.",
+					"公网IP的数量不能小于或等于0");
+		}
+
+		Optional<QuotaApi> quotaApiOptional = neutronApi
+				.getQuotaApi(region);
+		if (!quotaApiOptional.isPresent()) {
+			throw new APINotAvailableException(QuotaApi.class);
+		}
+		QuotaApi quotaApi = quotaApiOptional.get();
+
+		Optional<FloatingIPApi> floatingIPApiOptional = neutronApi
+				.getFloatingIPApi(region);
+		if (!floatingIPApiOptional.isPresent()) {
+			throw new APINotAvailableException(FloatingIPApi.class);
+		}
+		FloatingIPApi floatingIPApi = floatingIPApiOptional.get();
+
+		int totalBandWidth = 0;
+		int floatingIpCount = 0;
+		for (FloatingIP floatingIP : floatingIPApi.list().concat()
+				.toList()) {
+			if (!StringUtils.equals(floatingIP.getFixedIpAddress(),
+					floatingIP.getFloatingIpAddress())) {
+				floatingIpCount++;
+				totalBandWidth += getBandWidth(floatingIP.getFipQos());
+			}
+		}
+
+		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+		if (quota == null) {
+			throw new OpenStackException(
+					"User quota is not available.", "用户配额不可用");
+		}
+
+		final int floatingIpCountQuota = quota.getFloatingIp()
+				- quota.getRouter();
+		if (floatingIpCount + count > floatingIpCountQuota) {
+			throw new UserOperationException(
+					"Floating IP count exceeding the quota.",
+					"公网IP数量超过配额");
+		}
+
+		final int floatingIpBandWidthQuota = quota.getBandWidth()
+				- quota.getRouter()
+				* openStackConf.getRouterGatewayBandWidth();
+		if (totalBandWidth + bandWidth * count > floatingIpBandWidthQuota) {
+			throw new UserOperationException(
+					"Floating IP band width exceeding the quota.",
+					"公网IP带宽超过配额");
+		}
+	}
+
 	public void createFloatingIp(NeutronApi neutronApi, FloatingIpCreateConf createConf, FloatingIpCreateListener listener, Object listenerUserData) throws OpenStackException {
 		final String region = createConf.getRegion();
 		final String name = createConf.getName();
@@ -2489,7 +2577,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				try {
 					listener.floatingIpCreated(new FloatingIpCreateEvent(region, floatingIP.getId(), i, listenerUserData));
 				} catch (Exception e) {
-					Util.throwException(e);
+					Util.processBillingException(e);
 				}
 			}
 		}
@@ -2602,6 +2690,11 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				return networkResources;
 			}
 		});
+	}
+
+	@Override
+	public void checkCreateRouter(RouterCreateConf routerCreateConf) {
+
 	}
 
 	Set<String> listPublicFloatingIpAddressAsSet(final String region) throws OpenStackException {

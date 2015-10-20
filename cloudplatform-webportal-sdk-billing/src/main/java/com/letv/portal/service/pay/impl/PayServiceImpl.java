@@ -12,10 +12,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -418,11 +427,24 @@ public class PayServiceImpl implements IPayService {
 	private void createRouter(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建路由器！");
 		this.resourceCreateService.createRouter(createUser, params, new RouterCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			
 			@Override
-			public void routerCreated(String region, String routerId, int routerIndex,
-					Object userData) throws Exception {
-				serviceCallback(orderSubs, region, routerId, routerIndex, userData);
-				logger.info("路由器回调成功! num="+routerIndex);
+			public void routerCreated(RouterCreateEvent event) throws Exception {
+				logger.info("路由器创建成功回调! num="+event.getRouterIndex());
+				successCount.incrementAndGet();
+				serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
+			
+			@Override
+			public void routerCreateFailed(RouterCreateFailEvent event)
+					throws Exception {
+				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getRouterIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
@@ -434,12 +456,26 @@ public class PayServiceImpl implements IPayService {
 	private void createFloatingIp(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建公网IP！");
 		this.resourceCreateService.createFloatingIp(createUser, params, new FloatingIpCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			
 			@Override
-			public void floatingIpCreated(String region, String floatingIpId,
-					int floatingIpIndex, Object userData) throws Exception {
-				serviceCallback(orderSubs, region, floatingIpId, floatingIpIndex, userData);
-				logger.info("公网IP回调成功! num="+floatingIpIndex);
+			public void floatingIpCreated(FloatingIpCreateEvent event) throws Exception {
+				logger.info("公网IP创建成功回调! num="+event.getFloatingIpIndex());
+				successCount.incrementAndGet();
+				serviceCallback(orderSubs, event.getRegion(), event.getFloatingIpId(), event.getFloatingIpIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
+			
+			@Override
+			public void floatingIpCreateFailed(FloatingIpCreateFailEvent event)
+					throws Exception {
+				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getFloatingIpIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
+			
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
 		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_FLOATINGIP, content, this.sessionService.getSession().getUserId(), null);;
@@ -450,12 +486,25 @@ public class PayServiceImpl implements IPayService {
 	private void createVolume(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
 		logger.info("开始创建云硬盘！");
 		this.resourceCreateService.createVolume(createUser, params, new VolumeCreateAdapter(){
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+			
 			@Override
-			public void volumeCreated(String region, String volumeId,
-					int volumeIndex, Object userData) throws Exception {
-				serviceCallback(orderSubs, region, volumeId, volumeIndex, userData);
-				logger.info("云硬盘回调成功! num="+volumeIndex);
+			public void volumeCreated(VolumeCreateEvent event) throws Exception {
+				logger.info("云硬盘创建成功回调! num="+event.getVolumeIndex());
+				successCount.incrementAndGet();
+				serviceCallback(orderSubs, event.getRegion(), event.getVolumeId(), event.getVolumeIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
+			@Override
+			public void volumeCreateFailed(VolumeCreateFailEvent event)
+					throws Exception {
+				logger.info("云硬盘创建失败回调! num="+event.getVolumeIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getVolumeIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
+			
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
 		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_VOLUME, content, this.sessionService.getSession().getUserId(), null);;
@@ -463,19 +512,67 @@ public class PayServiceImpl implements IPayService {
 	}
 	
 	//创建云主机
-	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, List<ProductInfoRecord> records) {
+	private void createVm(final List<OrderSub> orderSubs, long createUser, String params, final List<ProductInfoRecord> records) {
 		logger.info("开始创建云主机！");
 		this.resourceCreateService.createVm(createUser, params, new VmCreateAdapter() {
+			private AtomicInteger successCount = new AtomicInteger();
+			private AtomicInteger failCount = new AtomicInteger();
+
 			@Override
 			public void vmCreated(VmCreateEvent event) throws Exception {
+				logger.info("云主机创建成功回调! num="+event.getVmIndex());
+				successCount.incrementAndGet();
 				serviceCallback(orderSubs, event.getRegion(), event.getVmId(), event.getVmIndex(), event.getUserData());
-				logger.info("云主机回调成功! num="+event.getVmIndex());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
+
+			@Override
+			public void vmCreateFailed(VmCreateFailEvent event) throws Exception {
+				logger.info("云主机创建失败回调! num="+event.getVmIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getVmIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
 		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK, content, this.sessionService.getSession().getUserId(), null);;
 		logger.info("调用创建云主机成功!");
 	}
+	
+	/**
+	  * @Title: checkOrderFinished
+	  * @Description: 验证该批次服务是否全部回调完成
+	  * @param orderSubs
+	  * @param successCount
+	  * @param failCount void   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月20日 下午2:37:43
+	  */
+	private void checkOrderFinished(List<OrderSub> orderSubs, int successCount, int failCount){
+		if(successCount+failCount==orderSubs.size()){
+			logger.info("云主机创建全部回调完成.");
+			
+			BigDecimal succPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(successCount));
+			BigDecimal failPrice = getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())).multiply(new BigDecimal(failCount));
+			
+			//②减少成功个数冻结余额，转移失败个数冻结金额到可用余额
+			if(succPrice.compareTo(new BigDecimal(0))==1) {
+				billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), succPrice);
+			}
+			if(failPrice.compareTo(new BigDecimal(0))==1) {
+				billUserAmountService.updateUserAmountFromFreezeToAvailable(orderSubs.get(0).getCreateUser(), failPrice);
+			}
+			
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
+			//③生成用户账单。
+			billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
+					df.format(new Date()), succPrice.toString());
+			//④更新订阅订单起始时间
+			updateSubscriptionAndOrderTime(orderSubs);
+		}
+	}
+	
 	//服务创建成功后回调
 	@SuppressWarnings("unchecked")
 	private void serviceCallback(List<OrderSub> orderSubs, String region, String id, int index, Object userData) {
@@ -490,17 +587,15 @@ public class PayServiceImpl implements IPayService {
 		record.setInvokeType(null);
 		record.setInstanceId(region+"_"+id);
 		productInfoRecordService.updateBySelective(record);
-		
-		//②云主机创建成功后减冻结余额
-		billUserAmountService.reduceFreezeAmount(orderSubs.get(0).getCreateUser(), getValidOrderPrice(orderSubs).divide(new BigDecimal(orderSubs.size())));
-		if((index+1)==orderSubs.size()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-			//③生成用户账单。
-			billUserServiceBilling.add(orderSubs.get(0).getCreateUser(), "1", orderSubs.get(0).getOrderId(), 
-					df.format(new Date()), getValidOrderPrice(orderSubs).toString());
-			//④更新订阅订单起始时间
-			updateSubscriptionAndOrderTime(orderSubs);
-		}
+	}
+	
+	//服务创建失败后回调
+	private void serviceCallbackWithFailed(List<OrderSub> orderSubs, String region, int index, Object userData) {
+		//①更改该条订阅为0-无效
+		Subscription subscription = new Subscription();
+		subscription.setId(orderSubs.get(index).getSubscriptionId());
+		subscription.setValid(0);
+		this.subscriptionService.update(subscription);
 	}
 	
 	private void updateSubscriptionAndOrderTime(List<OrderSub> orderSubs) {

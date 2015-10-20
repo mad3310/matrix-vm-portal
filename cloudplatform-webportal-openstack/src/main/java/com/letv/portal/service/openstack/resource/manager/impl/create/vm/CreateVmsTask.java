@@ -61,7 +61,7 @@ public class CreateVmsTask implements VmsCreateSubTask {
 			try {
 				context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), serverCreated.getId(), vmIndex, context.getListenerUserData()));
 			} catch (Exception ex) {
-				Util.throwException(ex);
+				Util.processBillingException(ex);
 			}
 		}
 	}
