@@ -46,16 +46,16 @@
                         <div class="inputs-item clearfix">
                             <div class="col-sm-2"><span class="letv-control-label">镜像：</span></div>
                             <div class="col-sm-10">
-                                <ul class="nav nav-tabs letv-nav-tab" role="tablist">
-                                    <li role="presentation" class="active">
-                                        <a href="#system" data-toggle="tab" aria-controls="system" class="activea" aria-expanded="true">系统镜像</a>
+                                <ul class="nav nav-tabs letv-nav-tab">
+                                    <li ng-class="{active:imageActiveTab === 'image'}" ng-click="!isDesignatedVmSnapshot && (imageActiveTab = 'image')">
+                                        <a href="javascript:void(0);">系统镜像</a>
                                     </li>
-                                    <li role="presentation" class="">
-                                        <a href="#hostSnap" data-toggle="tab" aria-controls="hostSnap" aria-expanded="false">主机快照</a>
+                                    <li ng-class="{active:imageActiveTab === 'snapshot'}" ng-click="imageActiveTab = 'snapshot';">
+                                        <a href="javascript:void(0);">主机快照</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content letv-tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="system">
+                                    <div class="tab-pane" ng-class="{active:imageActiveTab === 'image'}">
                                         <ul class="system-content clearfix">
                                             <li ng-repeat="vmImage in vmImageList">
                                                 <div class="letv-radioCheck" ng-class="{'selected':isSelectedVmImage(vmImage)}" ng-click="selectVmImage(vmImage)">
@@ -65,7 +65,15 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="hostSnap">
+                                    <div class="tab-pane" ng-class="{active:imageActiveTab === 'snapshot'}">
+                                        <ul class="system-content clearfix">
+                                            <li ng-repeat="vmSnapshot in vmSnapshotList">
+                                                <div class="letv-radioCheck" ng-class="{'selected':isSelectedVmSnapshot(vmSnapshot)}" ng-click="selectVmSnapshot(vmSnapshot)">
+                                                    <i class="iconfont icon-checkblockicon"></i>
+                                                    <span class="letv-radio-content" title="{{vmSnapshot.name}}">{{vmSnapshot.name}}</span>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

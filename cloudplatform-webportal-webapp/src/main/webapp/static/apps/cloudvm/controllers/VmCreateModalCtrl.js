@@ -3,12 +3,16 @@
  */
 define(['controllers/app.controller'], function (controllerModule) {
 
-  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, items, region) {
+  controllerModule.controller('VmCreateModalCtrl', function (Config, HttpService,WidgetService,Utility,CurrentContext, $scope, $modalInstance,$timeout,$window, region,vmSnapshot) {
 
+    $scope.isDesignatedVmSnapshot = vmSnapshot?true:false;
     $scope.activeFlow = 1;
     $scope.vmName = '';
+    $scope.imageActiveTab = $scope.isDesignatedVmSnapshot? 'snapshot': 'image';
     $scope.vmImageList = [];
     $scope.selectedVmImage = null;
+    $scope.vmSnapshotList = [];
+    $scope.selectedVmSnapshot = null;
     $scope.vmCpuList = [];
     $scope.selectedVmCpu = null;
     $scope.vmRamList = [];
@@ -39,6 +43,12 @@ define(['controllers/app.controller'], function (controllerModule) {
     $scope.isSelectedVmImage = function (vmImage) {
       return $scope.selectedVmImage === vmImage;
     };
+    $scope.selectVmSnapshot = function (vmImage) {
+      $scope.selectedVmSnapshot = vmImage;
+    };
+    $scope.isSelectedVmSnapshot = function (vmImage) {
+      return $scope.selectedVmSnapshot === vmImage;
+    };
     $scope.selectVmCpu = function (vmCpu) {
       $scope.selectedVmCpu = vmCpu;
     };
@@ -67,7 +77,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       var data = {
         region:region,
         name: $scope.vmName,
-        imageId: $scope.selectedVmImage.id,
+        imageId:$scope.imageActiveTab === 'image'? $scope.selectedVmImage.id:'',
         flavorId: selectedVmFlavor.id,
         volumeTypeId:$scope.selectedVmDiskType.id,
         volumeSize: $scope.dataDiskVolume,
@@ -77,7 +87,7 @@ define(['controllers/app.controller'], function (controllerModule) {
         bandWidth:$scope.networkBandWidth,
         keyPairName:'',
         count:$scope.vmCount,
-        privateSubnetId:'',
+        privateSubnetId:$scope.imageActiveTab === 'snapshot'? $scope.selectedVmImage.id:'',
         snapshotId:'',
         order_time: $scope.vmBuyPeriod.toString(),
       };
@@ -142,15 +152,29 @@ define(['controllers/app.controller'], function (controllerModule) {
       calculatePriceData= null;
     var initComponents = function () {
         initVmImageSelector();
+        initVmSnapshotSelector();
         initVmCpuSelector();
         initVmDiskTypeSelector();
         setSelectedVmSharedNetworkId();
       },
       initVmImageSelector = function () {
+        if($scope.isDesignatedVmSnapshot) return;
         HttpService.doGet(Config.urls.image_list.replace('{region}', region)).success(function (data, status, headers, config) {
           $scope.vmImageList = data.data;
           $scope.selectedVmImage = $scope.vmImageList[0];
         });
+      },
+      initVmSnapshotSelector = function () {
+        if($scope.isDesignatedVmSnapshot){
+          $scope.vmSnapshotList.push(vmSnapshot);
+          $scope.selectedVmSnapshot = $scope.vmSnapshotList[0];
+        }
+        else{
+          HttpService.doGet(Config.urls.snapshot_vm_list,{region:region, name: '', currentPage: '', recordsPerPage: ''}).success(function (data, status, headers, config) {
+            $scope.vmSnapshotList = data.data.data;
+            $scope.selectedVmSnapshot = $scope.vmSnapshotList[0];
+          });
+        }
       },
       initVmCpuSelector = function () {
         HttpService.doGet(Config.urls.flavor_group_data.replace('{region}', region)).success(function (data, status, headers, config) {

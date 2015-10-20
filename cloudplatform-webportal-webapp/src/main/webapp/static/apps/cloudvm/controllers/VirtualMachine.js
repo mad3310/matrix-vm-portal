@@ -186,11 +186,11 @@ define(['controllers/app.controller'], function (controllerModule) {
           backdrop: 'static',
           keyboard: false,
           resolve: {
-            items: function () {
-              return $scope.items;
-            },
             region: function () {
               return CurrentContext.regionId;
+            },
+            vmSnapshot: function () {
+              return undefined;
             },
             loadAllRegionData:function($q,CurrentContext){
               if(CurrentContext.allRegionData){

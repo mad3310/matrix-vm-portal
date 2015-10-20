@@ -58,7 +58,7 @@ define(['controllers/app.controller'], function (controllerModule) {
       $scope.openVmDiskCreateModal = function (size) {
         var checkedSnapshots=getCheckedSnapshot();
         if(checkedSnapshots.length !==1){
-          WidgetService.notifyWarning('请选中一个云硬盘');
+          WidgetService.notifyWarning('请选中一个云硬盘快照');
           return;
         }
         var modalInstance = $modal.open({
@@ -81,6 +81,50 @@ define(['controllers/app.controller'], function (controllerModule) {
         modalInstance.result.then(function (resultData) {
           if(resultData &&resultData.result===1){
             //refreshDiskList();
+          }
+        }, function () {
+        });
+      };
+
+      $scope.openVmCreateModal = function (size) {
+        var checkedSnapshots=getCheckedSnapshot();
+        if(checkedSnapshots.length !==1){
+          WidgetService.notifyWarning('请选中一个云主机快照');
+          return;
+        }
+        var modalInstance = $modal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: '/static/apps/cloudvm/templates/vm-create-modal.html',
+          controller: 'VmCreateModalCtrl',
+          size: size,
+          backdrop: 'static',
+          keyboard: false,
+          resolve: {
+            region: function () {
+              return CurrentContext.regionId;
+            },
+            vmSnapshot: function () {
+              return {name:'jf-sp-test-1',id:'234'};
+            },
+            loadAllRegionData:function($q,CurrentContext){
+              if(CurrentContext.allRegionData){
+                return true;
+              }
+              else{
+                var deferred = $q.defer();
+                HttpService.doGet(Config.urls.region_list).success(function (data, status, headers, config) {
+                  CurrentContext.allRegionData=data.data;
+                  deferred.resolve(true);
+                });
+                return deferred.promise;
+              }
+            }
+          }
+        });
+
+        modalInstance.result.then(function (resultData) {
+          if(resultData &&resultData.result===1){
+            //refreshVmList();
           }
         }, function () {
         });
