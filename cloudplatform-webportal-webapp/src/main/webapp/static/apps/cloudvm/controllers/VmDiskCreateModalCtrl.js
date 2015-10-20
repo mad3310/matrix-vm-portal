@@ -29,6 +29,7 @@ define(['controllers/app.controller'], function (controllerModule) {
     };
     $scope.createDisk = function () {
       var data = {
+        region:region,
         name: $scope.diskName,
         description:'',
         volumeTypeId:$scope.selectedDiskType.id,
