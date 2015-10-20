@@ -44,4 +44,6 @@ public interface VolumeManager extends ResourceManager {
 	void deleteVolumeSnapshot(String region, String snapshotId) throws OpenStackException;
 
 	void checkCreate(VolumeCreateConf volumeCreateConf) throws OpenStackException;
+
+    VolumeTypeResource getVolumeTypeResource(String region, String volumeTypeId) throws OpenStackException;
 }

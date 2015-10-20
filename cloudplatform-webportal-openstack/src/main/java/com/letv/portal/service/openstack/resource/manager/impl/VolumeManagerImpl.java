@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -34,6 +35,7 @@ import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
@@ -79,6 +81,12 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				return api.getConfiguredRegions();
 			}
 		});
+	}
+
+	public void checkRegion(CinderApi cinderApi, String region) throws OpenStackException,RegionNotFoundException {
+		if (!cinderApi.getConfiguredRegions().contains(region)) {
+			throw new RegionNotFoundException(region);
+		}
 	}
 
 	@Override
@@ -452,6 +460,23 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	@Override
+	public VolumeTypeResource getVolumeTypeResource(final String region, final String volumeTypeId) throws OpenStackException {
+		return runWithApi(new ApiRunnable<CinderApi, VolumeTypeResource>() {
+			@Override
+			public VolumeTypeResource run(CinderApi cinderApi) throws Exception {
+				checkRegion(region);
+
+				VolumeTypeApi volumeTypeApi = cinderApi.getVolumeTypeApi(region);
+				VolumeType volumeType = volumeTypeApi.get(volumeTypeId);
+				if (volumeType == null) {
+					throw new ResourceNotFoundException("Volume Type", "云硬盘类型", volumeTypeId);
+				}
+				return new VolumeTypeResourceImpl(region, volumeType);
+			}
+		});
+	}
+
 	private void checkCreate(CinderApi cinderApi, VolumeCreateConf volumeCreateConf) throws OpenStackException {
 		checkUserEmail();
 
@@ -522,11 +547,10 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 	}
 
-	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
-			throws OpenStackException {
+	private void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData, List<Volume> successCreatedVolumes) throws OpenStackException{
 		checkUserEmail();
 
-		checkRegion(volumeCreateConf.getRegion());
+		checkRegion(cinderApi, volumeCreateConf.getRegion());
 		if (volumeCreateConf.getSize() <= 0) {
 			throw new UserOperationException(
 					"The size of the cloud disk can not be less than or equal to zero.",
@@ -594,9 +618,46 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 		for (int i = 0; i < count; i++) {
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
-			if (listener != null) {
+			if (successCreatedVolumes != null) {
+				successCreatedVolumes.add(volume);
+			}
+		}
+	}
+
+	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
+			throws OpenStackException {
+		List<Volume> successCreatedVolumes = null;
+		if (listener != null) {
+			successCreatedVolumes = new LinkedList<Volume>();
+		}
+
+		try {
+			create(cinderApi, volumeCreateConf, listener, listenerUserData, successCreatedVolumes);
+		} catch (Exception ex){
+			notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,ex,listener,listenerUserData);
+			Util.throwException(ex);
+		}
+		notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,null,listener,listenerUserData);
+	}
+
+	private void notifyVolumeCreateListener(VolumeCreateConf volumeCreateConf, List<Volume> successCreatedVolumes, Exception exception, VolumeCreateListener listener, Object listenerUserData) {
+		if (listener != null) {
+			int successCreatedVolumesCount = successCreatedVolumes.size();
+			int volumesCount = volumeCreateConf.getCount();
+			int volumeIndex = 0;
+
+			for (; volumeIndex < successCreatedVolumesCount; volumeIndex++) {
 				try {
-					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
+					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndex).getId(), volumeIndex, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+
+			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			for (; volumeIndex < volumesCount; volumeIndex++) {
+				try {
+					listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndex, reason, listenerUserData));
 				} catch (Exception e) {
 					Util.processBillingException(e);
 				}

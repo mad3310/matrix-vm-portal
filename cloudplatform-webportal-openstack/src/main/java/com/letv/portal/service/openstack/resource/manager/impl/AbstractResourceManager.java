@@ -17,6 +17,7 @@ import com.letv.portal.service.openstack.impl.OpenStackServiceImpl;
 import com.letv.portal.service.openstack.impl.OpenStackUser;
 import com.letv.portal.service.openstack.resource.Region;
 import com.letv.portal.service.openstack.resource.manager.ResourceManager;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 
 public abstract class AbstractResourceManager<ApiType extends Closeable>
 		implements ResourceManager, Closeable {

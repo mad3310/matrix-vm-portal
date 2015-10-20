@@ -56,14 +56,6 @@ public class CreateVmsTask implements VmsCreateSubTask {
 		vmContext.setServer(context.getApiCache().getServerApi().get(serverCreated.getId()));
 
 		context.getVmManager().recordVmCreated(context.getUserId(), context.getVmCreateConf().getRegion(), vmContext.getServer());
-
-		if (context.getVmCreateListener() != null) {
-			try {
-				context.getVmCreateListener().vmCreated(new VmCreateEvent(context.getVmCreateConf().getRegion(), serverCreated.getId(), vmIndex, context.getListenerUserData()));
-			} catch (Exception ex) {
-				Util.processBillingException(ex);
-			}
-		}
 	}
 
 	@Override

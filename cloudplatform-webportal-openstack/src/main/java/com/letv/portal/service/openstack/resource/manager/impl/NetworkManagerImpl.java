@@ -104,6 +104,12 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		// neutronApi.close();
 	}
 
+	public void checkRegion(NeutronApi neutronApi, String region) throws OpenStackException,RegionNotFoundException {
+		if (!neutronApi.getConfiguredRegions().contains(region)) {
+			throw new RegionNotFoundException(region);
+		}
+	}
+
 	@Override
 	public Set<String> getRegions() throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, Set<String>>() {
@@ -1343,13 +1349,66 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		});
 	}
 
+	@Override
+	public void checkCreateRouter(final RouterCreateConf routerCreateConf)throws OpenStackException {
+		runWithApi(new ApiRunnable<NeutronApi, Void>() {
+			@Override
+			public Void run(NeutronApi neutronApi) throws Exception {
+				checkCreateRouter(neutronApi,routerCreateConf);
+				return null;
+			}
+		});
+	}
+
+	private void checkCreateRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf) throws OpenStackException {
+		final String region = routerCreateConf.getRegion();
+		final String name = routerCreateConf.getName();
+		final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
+		final String publicNetworkId = routerCreateConf.getPublicNetworkId();
+
+		checkRegion(region);
+
+		Optional<RouterApi> routerApiOptional = neutronApi
+				.getRouterApi(region);
+		if (!routerApiOptional.isPresent()) {
+			throw new APINotAvailableException(RouterApi.class);
+		}
+		RouterApi routerApi = routerApiOptional.get();
+
+		int existsRouterCount = routerApi.list().concat().toList()
+				.size();
+
+		Optional<QuotaApi> quotaApiOptional = neutronApi
+				.getQuotaApi(region);
+		if (!quotaApiOptional.isPresent()) {
+			throw new APINotAvailableException(QuotaApi.class);
+		}
+		QuotaApi quotaApi = quotaApiOptional.get();
+
+		Quota quota = quotaApi.getByTenant(openStackUser.getTenantId());
+
+		if (quota.getRouter() <= existsRouterCount) {
+			throw new UserOperationException(
+					"Router count exceeding the quota.", "路由数量超过配额");
+		}
+
+		if (enablePublicNetworkGateway) {
+			NetworkApi networkApi = neutronApi.getNetworkApi(region);
+			Network publicNetwork = networkApi.get(publicNetworkId);
+			if (publicNetwork == null || !publicNetwork.getExternal()) {
+				throw new ResourceNotFoundException("Public Network",
+						"线路", publicNetworkId);
+			}
+		}
+	}
+
     public void createRouter(NeutronApi neutronApi, RouterCreateConf routerCreateConf, RouterCreateListener listener, Object listenerUserData) throws OpenStackException {
         final String region = routerCreateConf.getRegion();
         final String name = routerCreateConf.getName();
         final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
         final String publicNetworkId = routerCreateConf.getPublicNetworkId();
 
-        checkRegion(region);
+        checkRegion(neutronApi,region);
 
         Optional<RouterApi> routerApiOptional = neutronApi
                 .getRouterApi(region);
@@ -2501,7 +2560,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		final Integer bandWidth = createConf.getBandWidth();
 		final Integer count = createConf.getCount();
 
-		checkRegion(region);
+		checkRegion(neutronApi,region);
 
 		NetworkApi networkApi = neutronApi.getNetworkApi(region);
 
@@ -2690,11 +2749,6 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 				return networkResources;
 			}
 		});
-	}
-
-	@Override
-	public void checkCreateRouter(RouterCreateConf routerCreateConf) {
-
 	}
 
 	Set<String> listPublicFloatingIpAddressAsSet(final String region) throws OpenStackException {
