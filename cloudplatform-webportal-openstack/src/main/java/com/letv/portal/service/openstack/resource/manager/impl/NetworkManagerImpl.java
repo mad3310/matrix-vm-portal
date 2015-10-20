@@ -1402,7 +1402,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
         final boolean enablePublicNetworkGateway = routerCreateConf.getEnablePublicNetworkGateway();
         final String publicNetworkId = routerCreateConf.getPublicNetworkId();
 
-        checkRegion(region);
+        checkRegion(neutronApi,region);
 
         Optional<RouterApi> routerApiOptional = neutronApi
                 .getRouterApi(region);
@@ -2554,7 +2554,7 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		final Integer bandWidth = createConf.getBandWidth();
 		final Integer count = createConf.getCount();
 
-		checkRegion(region);
+		checkRegion(neutronApi,region);
 
 		NetworkApi networkApi = neutronApi.getNetworkApi(region);
 

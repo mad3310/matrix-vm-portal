@@ -539,8 +539,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		}
 	}
 
-	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
-			throws OpenStackException {
+	private void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData, List<Volume> successCreatedVolumes) throws OpenStackException{
 		checkUserEmail();
 
 		checkRegion(volumeCreateConf.getRegion());
@@ -611,12 +610,17 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 		for (int i = 0; i < count; i++) {
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
-			if (listener != null) {
-				try {
-					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
-				} catch (Exception e) {
-					Util.processBillingException(e);
-				}
+			successCreatedVolumes.add(volume);
+		}
+	}
+
+	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
+			throws OpenStackException {
+		if (listener != null) {
+			try {
+				listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
+			} catch (Exception e) {
+				Util.processBillingException(e);
 			}
 		}
 	}
