@@ -104,6 +104,12 @@ public class NetworkManagerImpl extends AbstractResourceManager<NeutronApi>
 		// neutronApi.close();
 	}
 
+	public void checkRegion(NeutronApi neutronApi, String region) throws OpenStackException,RegionNotFoundException {
+		if (!neutronApi.getConfiguredRegions().contains(region)) {
+			throw new RegionNotFoundException(region);
+		}
+	}
+
 	@Override
 	public Set<String> getRegions() throws OpenStackException {
 		return runWithApi(new ApiRunnable<NeutronApi, Set<String>>() {

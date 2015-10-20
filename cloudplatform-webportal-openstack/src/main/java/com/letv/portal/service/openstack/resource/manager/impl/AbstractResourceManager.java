@@ -88,12 +88,6 @@ public abstract class AbstractResourceManager<ApiType extends Closeable>
 		}
 	}
 
-	public void checkRegion(NeutronApi neutronApi, String region) throws OpenStackException,RegionNotFoundException {
-		if (!neutronApi.getConfiguredRegions().contains(region)) {
-			throw new RegionNotFoundException(region);
-		}
-	}
-
 	@Override
 	public List<Region> listRegion() throws OpenStackException {
 		Set<String> regionCodes = getRegions();

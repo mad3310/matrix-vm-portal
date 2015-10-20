@@ -34,6 +34,7 @@ import com.letv.portal.service.openstack.resource.VolumeTypeResource;
 import com.letv.portal.service.openstack.resource.impl.VolumeResourceImpl;
 import com.letv.portal.service.openstack.resource.impl.VolumeTypeResourceImpl;
 import com.letv.portal.service.openstack.resource.manager.VolumeManager;
+import org.jclouds.openstack.neutron.v2.NeutronApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
 
 public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
@@ -79,6 +80,12 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 				return api.getConfiguredRegions();
 			}
 		});
+	}
+
+	public void checkRegion(CinderApi cinderApi, String region) throws OpenStackException,RegionNotFoundException {
+		if (!cinderApi.getConfiguredRegions().contains(region)) {
+			throw new RegionNotFoundException(region);
+		}
 	}
 
 	@Override
@@ -542,7 +549,7 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 	private void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData, List<Volume> successCreatedVolumes) throws OpenStackException{
 		checkUserEmail();
 
-		checkRegion(volumeCreateConf.getRegion());
+		checkRegion(cinderApi, volumeCreateConf.getRegion());
 		if (volumeCreateConf.getSize() <= 0) {
 			throw new UserOperationException(
 					"The size of the cloud disk can not be less than or equal to zero.",
@@ -610,15 +617,19 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 		for (int i = 0; i < count; i++) {
 			Volume volume = volumeApi.create(volumeCreateConf.getSize(), createVolumeOptions);
-			successCreatedVolumes.add(volume);
+			if (successCreatedVolumes != null) {
+				successCreatedVolumes.add(volume);
+			}
 		}
 	}
 
 	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
 			throws OpenStackException {
 		if (listener != null) {
+
+			
 			try {
-				listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
+//				listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
 			} catch (Exception e) {
 				Util.processBillingException(e);
 			}
