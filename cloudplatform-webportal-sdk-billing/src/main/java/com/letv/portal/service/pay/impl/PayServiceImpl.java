@@ -17,7 +17,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServletResponse;
 
 import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.FloatingIpCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateEvent;
+import com.letv.portal.service.openstack.billing.listeners.event.RouterCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VmCreateFailEvent;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -435,6 +437,15 @@ public class PayServiceImpl implements IPayService {
 				serviceCallback(orderSubs, event.getRegion(), event.getRouterId(), event.getRouterIndex(), event.getUserData());
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
+			
+			@Override
+			public void routerCreateFailed(RouterCreateFailEvent event)
+					throws Exception {
+				logger.info("路由器创建失败回调! num="+event.getRouterIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getRouterIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
 		this.recentOperateService.saveInfo(Constant.CREATE_OPENSTACK_ROUTER, content, this.sessionService.getSession().getUserId(), null);;
@@ -456,6 +467,14 @@ public class PayServiceImpl implements IPayService {
 				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
 			}
 			
+			@Override
+			public void floatingIpCreateFailed(FloatingIpCreateFailEvent event)
+					throws Exception {
+				logger.info("公网IP创建失败回调! num="+event.getFloatingIpIndex());
+				failCount.incrementAndGet();
+				serviceCallbackWithFailed(orderSubs, event.getRegion(), event.getFloatingIpIndex(), event.getUserData());
+				checkOrderFinished(orderSubs, successCount.get(), failCount.get());
+			}
 			
 		}, records);
 		String content = (String) transResult(orderSubs.get(0).getProductInfoRecord().getParams()).get("name");
