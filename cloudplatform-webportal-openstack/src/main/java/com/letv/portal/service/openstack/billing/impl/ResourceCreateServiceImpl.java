@@ -133,7 +133,7 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
     @Override
     public FlavorResource getFlavor(long userId, String region, String flavorId) throws MatrixException {
         try {
-            OpenStackSession openStackSession = createOpenStackSession(userId);
+            OpenStackSession openStackSession = getOpenStackSession();
             return openStackSession.getVMManager().getFlavorResource(region, flavorId);
         } catch (OpenStackException e) {
             throw e.matrixException();
@@ -174,7 +174,12 @@ public class ResourceCreateServiceImpl implements ResourceCreateService {
 
     @Override
     public VolumeTypeResource getVolumeType(long userId, String region, String volumeTypeId) throws MatrixException {
-        return null;
+        try {
+            OpenStackSession openStackSession = getOpenStackSession();
+            return openStackSession.getVolumeManager().getVolumeTypeResource(region, volumeTypeId);
+        } catch (OpenStackException e) {
+            throw e.matrixException();
+        }
     }
 
     @Async

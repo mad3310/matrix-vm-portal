@@ -452,6 +452,23 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 		});
 	}
 
+	@Override
+	public VolumeTypeResource getVolumeTypeResource(final String region, final String volumeTypeId) throws OpenStackException {
+		return runWithApi(new ApiRunnable<CinderApi, VolumeTypeResource>() {
+			@Override
+			public VolumeTypeResource run(CinderApi cinderApi) throws Exception {
+				checkRegion(region);
+
+				VolumeTypeApi volumeTypeApi = cinderApi.getVolumeTypeApi(region);
+				VolumeType volumeType = volumeTypeApi.get(volumeTypeId);
+				if (volumeType == null) {
+					throw new ResourceNotFoundException("Volume Type", "云硬盘类型", volumeTypeId);
+				}
+				return new VolumeTypeResourceImpl(region, volumeType);
+			}
+		});
+	}
+
 	private void checkCreate(CinderApi cinderApi, VolumeCreateConf volumeCreateConf) throws OpenStackException {
 		checkUserEmail();
 
