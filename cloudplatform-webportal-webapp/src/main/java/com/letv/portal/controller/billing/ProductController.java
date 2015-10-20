@@ -25,6 +25,7 @@ import com.letv.portal.model.subscription.SubscriptionDetail;
 import com.letv.portal.proxy.IDbProxy;
 import com.letv.portal.service.calculate.ICalculateService;
 import com.letv.portal.service.calculate.IHostCalculateService;
+import com.letv.portal.service.openstack.billing.CheckResult;
 import com.letv.portal.service.openstack.billing.ResourceCreateService;
 import com.letv.portal.service.openstack.resource.FlavorResource;
 import com.letv.portal.service.order.IOrderService;
@@ -129,10 +130,40 @@ public class ProductController {
 			billingParams.put("order_time", params.get("order_time")+"");
 		}
 	}
+	/**
+	  * @Title: validateParamsDataByServiceProvider
+	  * @Description: 去服务提供方验证参数是否合法
+	  * @param id
+	  * @param params
+	  * @return CheckResult   
+	  * @throws 
+	  * @author lisuxiao
+	  * @date 2015年10月20日 上午11:27:46
+	  */
+	private CheckResult validateParamsDataByServiceProvider(Long id, String params) {
+		CheckResult ret = null;
+		if(id==2) {//云主机参数转换
+			ret = this.resourceCreateService.checkVmCreatePara(params);
+		} else if(id==3) {//云硬盘
+			ret = this.resourceCreateService.checkVolumeCreatePara(params);
+		} else if(id==4) {//公网IP
+			ret = this.resourceCreateService.checkFloatingIpCreatePara(params);
+		} else if(id==5) {//路由器
+			ret = this.resourceCreateService.checkRouterCreatePara(params);
+		}
+		return ret;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/buy/{id}",method=RequestMethod.POST)   
 	public @ResponseBody ResultObject buy(@PathVariable Long id, String paramsData, String displayData, ResultObject obj) {
+		//去服务提供方验证参数是否合法
+		CheckResult validateResult = validateParamsDataByServiceProvider(id, paramsData);
+		if(!validateResult.isSuccess()) {
+			obj.setResult(0);
+			obj.addMsg(validateResult.getFailureReason());
+			return obj;
+		}
 		Map<String, Object> paramsDataMap = JSONObject.parseObject(paramsData, Map.class);
 		Map<String, Object> billingParams = new HashMap<String, Object>();
 		
