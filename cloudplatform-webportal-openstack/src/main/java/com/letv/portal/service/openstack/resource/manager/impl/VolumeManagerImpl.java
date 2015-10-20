@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
+import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateFailEvent;
 import com.letv.portal.service.openstack.resource.manager.VolumeCreateConf;
 import com.letv.portal.service.openstack.billing.listeners.VolumeCreateListener;
 import com.letv.portal.service.openstack.billing.listeners.event.VolumeCreateEvent;
@@ -625,13 +626,41 @@ public class VolumeManagerImpl extends AbstractResourceManager<CinderApi>
 
 	public void create(CinderApi cinderApi, VolumeCreateConf volumeCreateConf, VolumeCreateListener listener, Object listenerUserData)
 			throws OpenStackException {
+		List<Volume> successCreatedVolumes = null;
 		if (listener != null) {
+			successCreatedVolumes = new LinkedList<Volume>();
+		}
 
-			
-			try {
-//				listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), volume.getId(), i, listenerUserData));
-			} catch (Exception e) {
-				Util.processBillingException(e);
+		try {
+			create(cinderApi, volumeCreateConf, listener, listenerUserData, successCreatedVolumes);
+		} catch (Exception ex){
+			notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,ex,listener,listenerUserData);
+			Util.throwException(ex);
+		}
+		notifyVolumeCreateListener(volumeCreateConf,successCreatedVolumes,null,listener,listenerUserData);
+	}
+
+	private void notifyVolumeCreateListener(VolumeCreateConf volumeCreateConf, List<Volume> successCreatedVolumes, Exception exception, VolumeCreateListener listener, Object listenerUserData) {
+		if (listener != null) {
+			int successCreatedVolumesCount = successCreatedVolumes.size();
+			int volumesCount = volumeCreateConf.getCount();
+			int volumeIndex = 0;
+
+			for (; volumeIndex < successCreatedVolumesCount; volumeIndex++) {
+				try {
+					listener.volumeCreated(new VolumeCreateEvent(volumeCreateConf.getRegion(), successCreatedVolumes.get(volumeIndex).getId(), volumeIndex, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
+			}
+
+			String reason = exception != null ? Util.getUserMessage(exception) : "后台错误";
+			for (; volumeIndex < volumesCount; volumeIndex++) {
+				try {
+					listener.volumeCreateFailed(new VolumeCreateFailEvent(volumeCreateConf.getRegion(), volumeIndex, reason, listenerUserData));
+				} catch (Exception e) {
+					Util.processBillingException(e);
+				}
 			}
 		}
 	}
